@@ -85,8 +85,7 @@ at any given time.</p>
 	<li>The XML file is initially validated by the underlying XML parsers to confirm that it adheres to the DDMS schema.</li>
 	<li>As the objects are built in Java, the schema rules are revalidated in Java. This is not essential for file-based resources, but
 	becomes more important when we are building from scratch.</li>
-	<li>Next, any rules mandated in the DDMS Specification but not implemented in the schema are validated (such as constraints on latitude/longitude values). Today,
-	this is done with custom Java code, although it could be handled with Schematron in the future.</li>
+	<li>Next, any rules mandated in the DDMS Specification but not implemented in the schema are validated (such as constraints on latitude/longitude values).</li>
 	<li>Validating any DDMS component will implicitly validate any nested components, so when the top-level Resource is finally created, this will trigger a 
 	revalidation of all the subcomponents. This is probably overkill, but I view it as harmless right now.</li>
 </ul>
