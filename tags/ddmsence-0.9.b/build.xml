@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="DDMSence" default="compile" basedir=".">
+	
+	<target name="dist" depends="clean, compile, docs, tests" description="Performs a full build of the project and creates the bin/src downloads">
+		<mkdir dir="${jars.dir}" />
+		<mkdir dir="${dist.dir}/ddmsence-src-${version}" />
+		<mkdir dir="${dist.dir}/ddmsence-bin-${version}" />
+
+		<!-- Build the src-flavored download archive -->
+		<copy todir="${dist.dir}/ddmsence-src-${version}" includeEmptyDirs="false">
+			<fileset dir=".">
+				<exclude name=".settings/**"/>
+				<exclude name="notes.txt"/>
+				<exclude name="${output.dir}/**"/>				
+		    </fileset>
+		</copy>
+		<copy todir="${dist.dir}/ddmsence-src-${version}" file="${conf.dir}/LICENSE.txt" />
+		<zip destfile="${dist.dir}/ddmsence-src-${version}.zip" basedir="${dist.dir}" includes="ddmsence-src-${version}/**" />
+		<delete quiet="true" dir="${dist.dir}/ddmsence-src-${version}" />
+		
+		<!-- Build the bin-flavored download archive -->
+		<jar destfile="${jars.dir}/DDMSence-${version}.jar" basedir="${compile.main.dir}" />
+		<jar destfile="${jars.dir}/DDMSence-samples-${version}.jar" basedir="${compile.samples.dir}" />
+		<copy todir="${dist.dir}/ddmsence-bin-${version}" includeEmptyDirs="false">
+			<fileset dir=".">
+				<exclude name=".classpath"/>
+				<exclude name=".project"/>
+				<exclude name="build.xml"/>
+				<exclude name="notes.txt"/>
+				<exclude name=".settings/**"/>
+				<exclude name="${src.main.dir}/**"/>
+				<exclude name="${src.test.dir}/**"/>
+				<exclude name="${conf.dir}/**"/>
+				<exclude name="${output.dir}/**"/>
+				<exclude name="${data.dir}/schemas/**"/>
+				<exclude name="${data.dir}/test/**"/>
+				<exclude name="${data.dir}/web/**"/>		
+		    </fileset>
+		</copy>
+		<copy todir="${dist.dir}/ddmsence-bin-${version}" file="${conf.dir}/LICENSE.txt" />
+		<copy todir="${dist.dir}/ddmsence-bin-${version}/lib">
+			<fileset dir="${jars.dir}" />
+		</copy>
+		<zip destfile="${dist.dir}/ddmsence-bin-${version}.zip" basedir="${dist.dir}" includes="ddmsence-bin-${version}/**" />
+		<delete quiet="true" dir="${dist.dir}/ddmsence-bin-${version}" />
+	</target>
+		
+	<target name="clean" depends="__config" description="Removes the temporary build directories">
+		<delete quiet="true" dir="${output.dir}" />	
+	</target>
+	
+	<target name="compile" depends="__config" description="Compiles the Java classes and copies property files">
+		<mkdir dir="${compile.main.dir}" />
+		<mkdir dir="${compile.samples.dir}" />
+		<mkdir dir="${compile.test.dir}" />
+		<javac srcdir="${src.main.dir}" destdir="${compile.main.dir}" classpathref="classpath.compile" />
+		<copy todir="${compile.main.dir}">
+			<fileset refid="files.properties" />
+			<fileset refid="files.schemas" />
+		</copy>
+		<javac srcdir="${src.samples.dir}" destdir="${compile.samples.dir}" classpathref="classpath.samples" />
+		<javac srcdir="${src.test.dir}" destdir="${compile.test.dir}" classpathref="classpath.test" />
+		<copy todir="${compile.test.dir}">
+			<fileset refid="files.properties" />
+			<fileset refid="files.schemas" />
+		</copy>
+	</target>
+	
+	<target name="docs" depends="__config" description="Generates API Documentation">
+		<tstamp>
+			<format property="javadoc.time" pattern="MM/dd/yyyy hh:mm aa" />
+		</tstamp>
+		<javadoc packagenames="buri.ddmsence.*" sourcepath="${src.main.dir}" destdir="${docs.dir}" classpathref="classpath.compile"
+			overview="${conf.dir}/javadoc-overview.html"
+            use="true" splitindex="false"
+            windowtitle="DDMSence ${version} API"
+            docencoding="UTF-8" charset="UTF-8"
+            doctitle="DDMSence ${version}"		
+            bottom="Copyright 2010 by Brian Uri!&lt;br /&gt;Generated on ${javadoc.time}&lt;br /&gt;&lt;a target='_top' href='http://ddmsence.urizone.net/'&gt;http://ddmsence.urizone.net/&lt;/a&gt;"
+			stylesheetfile="${conf.dir}/javadoc-stylesheet.css"
+		/>
+	</target>
+	
+	<target name="tests" depends="__config" description="Runs unit tests">
+		<delete quiet="true" dir="${reports.dir}" />
+		<mkdir dir="${reports.dir}" />
+		<junit printsummary="false" haltonfailure="true" fork="yes">
+			<classpath refid="classpath.test" />
+	      	<formatter type="brief" usefile="false" />
+	      	<formatter type="xml" />
+	      	<batchtest todir="${reports.dir}">
+	        	<fileset dir="${compile.test.dir}" includes="**/*Test.class" />
+	      	</batchtest>
+	    </junit>
+	</target>	
+
+	<target name="zip" depends="__config" description="Creates a ZIP of the entire project">
+		<tstamp>
+			<format property="backupStamp" pattern="yyMMdd-HHmm"/>
+		</tstamp>		
+		<zip destfile="../${backupStamp}-DDMSence.zip" basedir=".." includes="DDMSence/**" excludes="DDMSence/output/**" />
+	</target>
+			
+	<target name="__config">
+	    <property name="version" value="0.9.b" />
+		<property name="conf.dir" value="conf" />
+		<property name="data.dir" value="data" />
+		<property name="src.main.dir" value="src/main" />
+		<property name="src.samples.dir" value="src/samples" />
+		<property name="src.test.dir" value="src/test" />
+		<property name="output.dir" value="output" />
+		<property name="compile.main.dir" value="${output.dir}/classes/main/" />
+		<property name="compile.samples.dir" value="${output.dir}/classes/samples/" />
+		<property name="compile.test.dir" value="${output.dir}/classes/test/" />
+		<property name="docs.dir" value="${output.dir}/docs" />
+		<property name="jars.dir" value="${output.dir}/jars" />
+		<property name="dist.dir" value="${output.dir}/dist" />
+		<property name="reports.dir" value="${output.dir}/reports" />
+		
+		<path id="classpath.compile">
+			<fileset dir="lib/" includes="*.jar" />
+		</path>
+		<path id="classpath.samples">
+			<path refid="classpath.compile" />
+			<pathelement location="${compile.main.dir}" />
+		</path>
+		<path id="classpath.test">
+			<path refid="classpath.compile" />
+			<pathelement location="${compile.main.dir}" />
+			<pathelement location="${compile.test.dir}" />
+			<fileset dir="lib/test/" includes="*.jar" />
+		</path>
+		
+		<fileset dir="${conf.dir}" id="files.properties">
+			<include name="*.properties" />
+			<include name="log4j.*" />
+		</fileset>				
+		<fileset dir="${data.dir}" id="files.schemas">
+			<include name="schemas/**" />	
+		</fileset>	
+	</target>	
+	
+</project>
