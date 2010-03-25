@@ -26,7 +26,7 @@ import junit.framework.TestCase;
  * <p>Tests related to ValidationMessages</p>
  * 
  * @author Brian Uri!
- * @since 0.9.b
+ * @since 0.9.c
  */
 public class ValidationMessageTest extends TestCase {
 
