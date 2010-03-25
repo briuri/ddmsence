@@ -42,7 +42,7 @@ sample applications. This version is believed to be stable, and is intended to b
 	<li>A change in major version will include major architecture changes or break backwards compatibility.</li>
 	<li>A change in minor version will include new features or minor bug fixes.</li>
 	<li>A change in patch version will be limited to minor bug fixes.</li>
-	<li>If the patch version is the letter "<b>b</b>", the release may be unstable. Major/minor numbers will increment after a beta release (so the beta/pre-release version of 1.2 is probably 1.1.b, and NOT 1.2.b).</li>
+	<li>If the patch version is a letter, such as "<b>b</b>", the release may be unstable. Major/minor numbers will increment after an unstable release (so the beta/pre-release version of 1.2 is probably 1.1.b, and NOT 1.2.b).</li>
 </ul>
 
 <div class="clear"></div>
