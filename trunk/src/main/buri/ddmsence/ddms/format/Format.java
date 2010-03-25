@@ -126,13 +126,12 @@ public final class Format extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A mimeType exists, and is not empty.</li>
 	 * <li>Exactly 1 mimeType, 0-1 extents, and 0-1 mediums exist.</li>
-	 * <li>If set, the extent is a valid component.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Element mediaElement = getChild(MEDIA_NAME);
 		Util.requireDDMSValue("Media element", mediaElement);
@@ -140,10 +139,13 @@ public final class Format extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(mediaElement, MIME_TYPE_NAME, 1, 1);
 		Util.requireBoundedDDMSChildCount(mediaElement, MediaExtent.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(mediaElement, MEDIUM_NAME, 0, 1);
+		
+		if (Util.isEmpty(getMedium()) && mediaElement.getChildElements(MEDIUM_NAME, mediaElement.getNamespaceURI()).size() == 1)
+			addWarning("A ddms:medium element was found with no value.");
 		if (getExtent() != null)
-			getExtent().validate();
+			addWarnings(getExtent().getValidationWarnings());
 	}
-	
+		
 	/**
 	 * @see AbstractBaseComponent#toHTML()
 	 */

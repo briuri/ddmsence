@@ -108,10 +108,15 @@ public final class Source extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		if (!Util.isEmpty(getSchemaHref())) {
 			Util.requireDDMSValidURI(getSchemaHref());
+		}
+		
+		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()) && 
+			Util.isEmpty(getSchemaQualifier()) && Util.isEmpty(getSchemaHref())) {
+			addWarning("A completely empty ddms:source element was found.");
 		}
 	}
 	

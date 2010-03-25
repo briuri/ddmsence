@@ -163,7 +163,7 @@ public final class Position extends AbstractBaseComponent {
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		getSRSAttributes().validate();
 		if (!Util.isBounded(getCoordinates().size(), 2, 3))
@@ -173,6 +173,8 @@ public final class Position extends AbstractBaseComponent {
 		}
 		Util.requireValidLatitude(getCoordinates().get(0));
 		Util.requireValidLongitude(getCoordinates().get(1));
+		
+		addWarnings(getSRSAttributes().getValidationWarnings());
 	}
 	
 	/**

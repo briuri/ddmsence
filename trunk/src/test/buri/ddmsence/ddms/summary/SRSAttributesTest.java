@@ -144,8 +144,6 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 		// No optional fields
 		testConstructor(WILL_SUCCEED, null, null, null, null);
 	}
-
-
 	
 	public void testElementConstructorInvalid() {
 		// srsName not a URI
@@ -205,6 +203,14 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 		
 		// Dimension is a positive integer
 		testConstructor(WILL_FAIL, TEST_SRS_NAME, new Integer(-1), TEST_AXIS_LABELS, TEST_UOM_LABELS);		
+	}
+	
+	public void testWarnings() {
+		// No warnings
+		Element element = Util.buildElement(GML_PREFIX, Position.NAME, GML_NAMESPACE, null);
+		addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util.getXsList(TEST_UOM_LABELS));
+		SRSAttributes component = testConstructor(WILL_SUCCEED, element);
+		assertEquals(0, component.getValidationWarnings().size());
 	}
 	
 	public void testConstructorEquality() {

@@ -90,7 +90,7 @@ public final class Identifier extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
 		Util.requireDDMSValue("value attribute", getValue());

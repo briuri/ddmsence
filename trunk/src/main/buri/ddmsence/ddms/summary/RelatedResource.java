@@ -114,23 +114,22 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * <li>A value exists and is not empty.</li>
 	 * <li>The qualifier is a valid URI.</li>
 	 * <li>At least 1 link exists.</li>
-	 * <li>All links are valid components.</li>
 	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException  if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
 		Util.requireDDMSValue("value attribute", getValue());
 		Util.requireDDMSValidURI(getQualifier());
 		if (getChild(Link.NAME) == null)
 			throw new InvalidDDMSException("At least 1 link must exist.");
-		for (Link link : getLinks()) {
-			link.validate();
-		}
+		
+		for (Link link : getLinks())
+			addWarnings(link.getValidationWarnings());
 	}
 	
 	/**

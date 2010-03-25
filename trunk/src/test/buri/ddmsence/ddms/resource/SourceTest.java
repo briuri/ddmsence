@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.SecurityAttributesTest;
 import buri.ddmsence.util.Util;
 
@@ -153,6 +154,18 @@ public class SourceTest extends AbstractComponentTestCase {
 	public void testDataConstructorInvalidHrefNotURI() {
 		// Href not URI
 		testConstructor(WILL_FAIL, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, INVALID_URI);
+	}
+	
+	public void testWarnings() {
+		// No warnings
+		Source component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+		
+		Element element = Util.buildDDMSElement(Source.NAME, null);
+		component = testConstructor(WILL_SUCCEED, element);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+		assertEquals("A completely empty ddms:source element was found.", component.getValidationWarnings().get(0).getText());		
 	}
 	
 	public void testConstructorEquality() {

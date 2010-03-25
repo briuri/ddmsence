@@ -204,7 +204,13 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 		// relationship not URI
 		testConstructor(WILL_FAIL, TEST_RESOURCES, INVALID_URI, TEST_DIRECTION);
 	}
-		
+	
+	public void testWarnings() {
+		// No warnings
+		RelatedResources component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		RelatedResources elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		RelatedResources dataComponent = testConstructor(WILL_SUCCEED, TEST_RESOURCES, TEST_RELATIONSHIP, TEST_DIRECTION);

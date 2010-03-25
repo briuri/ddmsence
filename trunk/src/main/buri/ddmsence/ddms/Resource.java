@@ -436,7 +436,6 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>The SecurityAttributes are valid.</li>
-	 * <li>All subcomponents must be valid.</li>
 	 * <li>1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights, 0-1 formats, exactly 1
 	 * subjectCoverage, and exactly 1 security element must exist.</li>
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
@@ -445,7 +444,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		String testResourceElement = getAttributeValue(RESOURCE_ELEMENT_NAME, ICISM_NAMESPACE);
 		Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, testResourceElement);
@@ -470,10 +469,13 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Format.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), SubjectCoverage.NAME, 1, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.NAME, 1, 1);
-		for (IDDMSComponent component : getTopLevelComponents())
-			component.validate();
+		
+		for (IDDMSComponent component : getTopLevelComponents()) {
+			addWarnings(component.getValidationWarnings());
+		}		
+		addWarnings(getSecurityAttributes().getValidationWarnings());
 	}
-
+	
 	/**
 	 * @see AbstractBaseComponent#toHTML()
 	 */

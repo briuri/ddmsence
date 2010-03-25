@@ -257,7 +257,13 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 		// MinVerticalExtent is not less than MaxVerticalExtent
 		testConstructor(WILL_FAIL, TEST_MAX, TEST_MIN, TEST_UOM, TEST_DATUM);
 	}
-		
+	
+	public void testWarnings() {
+		// No warnings
+		VerticalExtent component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		VerticalExtent elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		VerticalExtent dataComponent = testConstructor(WILL_SUCCEED, TEST_MIN, TEST_MAX, TEST_UOM, TEST_DATUM);

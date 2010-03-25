@@ -132,13 +132,12 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>At least 1 of Keyword.NAME or Category.NAME must exist.</li>
-	 * <li>All categories and keywords are valid components.</li>
 	 * <li>The SecurityAttributes are valid.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Element subjectElement = getChild(SUBJECT_NAME);
 		Util.requireDDMSValue("Subject element", subjectElement);
@@ -146,10 +145,14 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			+ subjectElement.getChildElements(Category.NAME, subjectElement.getNamespaceURI()).size();
 		if (count < 1)
 			throw new InvalidDDMSException("At least 1 keyword or category must exist.");
-		for (Keyword keyword : getKeywords())
-			keyword.validate();
-		for (Category category : getCategories())
-			category.validate();
+		
+		for (Keyword keyword : getKeywords()) {
+			addWarnings(keyword.getValidationWarnings());
+		}
+		for (Category category : getCategories()) {
+			addWarnings(category.getValidationWarnings());
+		}
+		addWarnings(getSecurityAttributes().getValidationWarnings());
 	}
 	
 	/**

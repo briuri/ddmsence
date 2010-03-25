@@ -106,10 +106,14 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		if (!Util.isEmpty(getAddress()))
 			Util.requireDDMSValue(PROTOCOL_NAME, getProtocol());
+		
+		if (Util.isEmpty(getAddress()) && Util.isEmpty(getProtocol()))
+			addWarning("A completely empty ddms:virtualCoverage element was found.");
+		addWarnings(getSecurityAttributes().getValidationWarnings());
 	}
 	
 	/**

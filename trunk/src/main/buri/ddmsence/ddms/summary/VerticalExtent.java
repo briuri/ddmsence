@@ -184,7 +184,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSValue(MIN_VERTICAL_EXTENT_NAME, getMinVerticalExtent());
 		Util.requireDDMSValue(MAX_VERTICAL_EXTENT_NAME, getMaxVerticalExtent());

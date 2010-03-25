@@ -91,7 +91,7 @@ public final class Keyword extends AbstractBaseComponent {
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSValue("value attribute", getValue());
 	}

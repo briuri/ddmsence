@@ -172,6 +172,12 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, TEST_PARENT_TYPE, TEST_QUALIFIER, "");
 	}
 	
+	public void testWarnings() {
+		// No warnings
+		CountryCode component = testConstructor(WILL_SUCCEED, "postalAddress", getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		CountryCode elementComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement());
 		CountryCode dataComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, TEST_QUALIFIER, TEST_VALUE);

@@ -130,6 +130,12 @@ public class RightsTest extends AbstractComponentTestCase {
 		testConstructor(WILL_SUCCEED, true, true, true);
 	}
 	
+	public void testWarnings() {
+		// No warnings
+		Rights component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		Rights elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		Rights dataComponent = testConstructor(WILL_SUCCEED, true, true, false);

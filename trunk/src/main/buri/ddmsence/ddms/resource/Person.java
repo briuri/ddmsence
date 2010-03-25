@@ -42,10 +42,10 @@ import buri.ddmsence.util.Util;
  * 
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>A phone number can be set without a value.</li>
- * <li>An email can be set without a value.</li>
- * <li>A userID can be set without a value.</li>
- * <li>An affiliation can be set without a value.</li>
+ * <li>A phone number can be set with no value.</li>
+ * <li>An email can be set with no value.</li>
+ * <li>A userID can be set with no value.</li>
+ * <li>An affiliation can be set with no value.</li>
  * </ul>
  * </td></tr></table>
  * 
@@ -139,12 +139,17 @@ public final class Person extends AbstractProducer {
 	 * @throws InvalidDDMSException
 	 *             if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSValue(SURNAME_NAME, getSurname());
 		Util.requireBoundedDDMSChildCount(getEntityElement(), SURNAME_NAME, 1, 1);
 		Util.requireBoundedDDMSChildCount(getEntityElement(), USERID_NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getEntityElement(), AFFILIATION_NAME, 0, 1);
+		
+		if (Util.isEmpty(getUserID()) && getEntityElement().getChildElements(USERID_NAME, getEntityElement().getNamespaceURI()).size() == 1)
+			addWarning("A ddms:userID element was found with no value.");
+		if (Util.isEmpty(getAffiliation()) && getEntityElement().getChildElements(AFFILIATION_NAME, getEntityElement().getNamespaceURI()).size() == 1)
+			addWarning("A ddms:affiliation element was found with no value.");
 	}
 		
 	/**

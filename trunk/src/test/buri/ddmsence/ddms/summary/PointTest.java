@@ -242,6 +242,12 @@ public class PointTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, null, TEST_SRS_ATTRIBUTES, TEST_ID);		
 	}
 		
+	public void testWarnings() {
+		// No warnings
+		Point component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		Point elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		Point dataComponent = testConstructor(WILL_SUCCEED, TEST_POSITION, TEST_SRS_ATTRIBUTES, TEST_ID);

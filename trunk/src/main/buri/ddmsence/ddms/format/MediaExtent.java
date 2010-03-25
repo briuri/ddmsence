@@ -36,7 +36,7 @@ import buri.ddmsence.util.Util;
  * 
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>A qualifier can be set without a value.</li>
+ * <li>A qualifier can be set with no value.</li>
  * <li>An extent can be set without a qualifier or value.</li>
  * </ul>
  * </td></tr></table>
@@ -95,13 +95,18 @@ public final class MediaExtent extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
 		if (!Util.isEmpty(getQualifier())) {
 			Util.requireDDMSValidURI(getQualifier());
 		}
+		
+		if (!Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))
+			addWarning("A qualifier has been set without an accompanying value attribute.");
+		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))
+			addWarning("A completely empty ddms:extent element was found.");
 	}
 	
 	/**

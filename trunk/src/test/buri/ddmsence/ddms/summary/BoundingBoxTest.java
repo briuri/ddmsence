@@ -199,6 +199,12 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, TEST_WEST, TEST_EAST, 91, TEST_NORTH);
 	}
 		
+	public void testWarnings() {
+		// No warnings
+		BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		BoundingBox elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		BoundingBox dataComponent = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);

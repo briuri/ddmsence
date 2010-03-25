@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms.security;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -32,6 +33,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -86,6 +88,8 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class SecurityAttributes {
+	
+	private List<ValidationMessage> _warnings;
 	
 	private String _cachedClassification = null;
 	private List<String> _cachedOwnerProducers = null;
@@ -302,13 +306,23 @@ public final class SecurityAttributes {
 	 *  
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	private void validate() throws InvalidDDMSException {
 		if (!Util.isEmpty(getClassification()))
 			validateClassification(getClassification());
 		if (getDeclassDate() != null && !getDeclassDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException("The declassDate must be in the xs:date format (YYYY-MM-DD).");
 		if (getDateOfExemptedSource() != null && !getDateOfExemptedSource().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException("The dateOfExemptedSource must be in the xs:date format (YYYY-MM-DD).");		
+	}
+	
+	/**
+	 * Returns a list of any warning messages that occurred during validation. Warnings
+	 * do not prevent a valid component from being formed.
+	 * 
+	 * @return a list of warnings
+	 */
+	public List<ValidationMessage> getValidationWarnings() {
+		return (Collections.unmodifiableList(getWarnings()));
 	}
 	
 	/**
@@ -462,6 +476,22 @@ public final class SecurityAttributes {
 		return (result);
 	}	
 
+	/**
+	 * Accessor for the list of validation warnings.
+	 * 
+	 * <p>
+	 * This is the private copy that should be manipulated during validation.
+	 * Lazy initialization.
+	 * </p>
+	 * 
+	 * @return an editable list of warnings
+	 */
+	protected List<ValidationMessage> getWarnings() {
+		if (_warnings == null)
+			_warnings = new ArrayList<ValidationMessage>();
+		return (_warnings);
+	}
+	
 	/**
 	 * Accessor for the classification attribute.
 	 */

@@ -138,7 +138,7 @@ public final class Dates extends AbstractBaseComponent {
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		if (getCreated() != null)
 			Util.requireDDMSDateFormat(getCreated().getXMLSchemaType());
@@ -148,6 +148,10 @@ public final class Dates extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getValidTil().getXMLSchemaType());
 		if (getInfoCutOff() != null)
 			Util.requireDDMSDateFormat(getInfoCutOff().getXMLSchemaType());
+		
+		if (getCreated() == null && getPosted() == null && getValidTil() == null && getInfoCutOff() == null) {
+			addWarning("A completely empty ddms:dates element was found.");
+		}
 	}
 	
 	/**

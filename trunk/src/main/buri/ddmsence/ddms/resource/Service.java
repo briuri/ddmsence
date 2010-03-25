@@ -40,8 +40,8 @@ import buri.ddmsence.ddms.security.SecurityAttributes;
  * 
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>A phone number can be set without a value.</li>
- * <li>An email can be set without a value.</li>
+ * <li>A phone number can be set with no value.</li>
+ * <li>An email can be set with no value.</li>
  * </ul>
  * </td></tr></table>
  * 
@@ -97,7 +97,7 @@ public final class Service extends AbstractProducer {
 	 * @see AbstractProducer#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 	}
 		

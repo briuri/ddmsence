@@ -127,7 +127,7 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		validateParentType(getParentType());
 		Util.requireDDMSValue("qualifier attribute", getQualifier());

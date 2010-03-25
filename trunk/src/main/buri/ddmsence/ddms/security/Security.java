@@ -92,7 +92,7 @@ public final class Security extends AbstractBaseComponent {
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		if (Util.isEmpty(getAttributeValue(EXCLUDE_FROM_ROLLUP_NAME, ICISM_NAMESPACE)))
 			throw new InvalidDDMSException("The excludeFromRollup attribute is required.");
@@ -101,8 +101,10 @@ public final class Security extends AbstractBaseComponent {
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 		getSecurityAttributes().requireOwnerProducer();		
+		
+		addWarnings(getSecurityAttributes().getValidationWarnings());
 	}
-	
+		
 	/**
 	 * @see AbstractBaseComponent#toHTML()
 	 */
@@ -111,7 +113,6 @@ public final class Security extends AbstractBaseComponent {
 		html.append(buildHTMLMeta("security.excludeFromRollup", String.valueOf(getExcludeFromRollup()), true));
 		html.append(getSecurityAttributes().toHTML(Security.NAME));
 		return (html.toString());
-
 	}
 	
 	/**

@@ -269,6 +269,12 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, TEST_GEO_ID, TEST_BOX, null, null, null);
 	}
 	
+	public void testWarnings() {
+		// No warnings
+		GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		GeospatialCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		GeospatialCoverage dataComponent = testConstructor(WILL_SUCCEED, TEST_GEO_ID, null, null, null, null);

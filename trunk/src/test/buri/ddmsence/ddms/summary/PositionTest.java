@@ -195,6 +195,12 @@ public class PositionTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, newCoords, TEST_SRS_ATTRIBUTES);
 	}
 		
+	public void testWarnings() {
+		// No warnings
+		Position component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		Position elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		Position dataComponent = testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);

@@ -207,6 +207,12 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, null, null, null, null);
 	}
 	
+	public void testWarnings() {
+		// No warnings
+		GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		GeographicIdentifier elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		GeographicIdentifier dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, TEST_COUNTRY_CODE, null);

@@ -153,7 +153,6 @@ public final class Point extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The SRS Attributes are valid.</li>
 	 * <li>The srsName is required.</li>
-	 * <li>The position is valid.</li>
 	 * <li>If the position has an srsName, it matches the srsName of this Point.</li>
 	 * <li>The ID is required, and must be a valid NCName.</li>
 	 * <li>Does not perform any special validation on the third coordinate (height above ellipsoid).</li>
@@ -161,20 +160,21 @@ public final class Point extends AbstractBaseComponent {
 	 *
 	 * @see AbstractBaseComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
 		getSRSAttributes().validate();
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
-		
 		Util.requireDDMSValue("position", getPosition());
-		getPosition().validate();
-		
+
 		String srsName = getPosition().getSRSAttributes().getSrsName();
 		if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))
 			throw new InvalidDDMSException("The srsName of the position must match the srsName of the Point.");
 		Util.requireDDMSValue(ID_NAME, getId());
 		Util.requireValidNCName(getId());
+		
+		addWarnings(getPosition().getValidationWarnings());
+		addWarnings(getSRSAttributes().getValidationWarnings());
 	}
 	
 	/**

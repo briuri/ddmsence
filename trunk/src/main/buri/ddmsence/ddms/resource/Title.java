@@ -97,14 +97,16 @@ public final class Title extends AbstractSimpleString {
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSValue("title value", getValue());
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 		getSecurityAttributes().requireOwnerProducer();
+		
+		addWarnings(getSecurityAttributes().getValidationWarnings());
 	}
-	
+			
 	/**
 	 * @see AbstractBaseComponent#toHTML()
 	 */

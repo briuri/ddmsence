@@ -139,6 +139,12 @@ public class KeywordTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, "");
 	}
 	
+	public void testWarnings() {
+		// No warnings
+		Keyword component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		Keyword elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		Keyword dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE);

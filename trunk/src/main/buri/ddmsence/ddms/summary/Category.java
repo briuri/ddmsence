@@ -102,7 +102,7 @@ public final class Category extends AbstractBaseComponent {
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSValue("label attribute", getLabel());
 		if (!Util.isEmpty(getQualifier())) {

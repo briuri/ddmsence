@@ -145,6 +145,12 @@ public class TitleTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, "");
 	}
 		
+	public void testWarnings() {
+		// No warnings
+		Title component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+		
 	public void testConstructorEquality() {
 		Title elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		Title dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE);

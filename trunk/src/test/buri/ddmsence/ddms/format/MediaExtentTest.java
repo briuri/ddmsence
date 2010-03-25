@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.format;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.Util;
 
@@ -153,6 +154,27 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 		
 		// Qualifier not URI
 		testConstructor(WILL_FAIL, INVALID_URI, TEST_VALUE);
+	}
+	
+	public void testWarnings() {
+		// No warnings
+		MediaExtent component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+		
+		// Qualifier without value
+		Element element = Util.buildDDMSElement(MediaExtent.NAME, null);
+		Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
+		component = testConstructor(WILL_SUCCEED, element);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+		assertEquals("A qualifier has been set without an accompanying value attribute.", component.getValidationWarnings().get(0).getText());
+		
+		// Neither attribute
+		element = Util.buildDDMSElement(MediaExtent.NAME, null);
+		component = testConstructor(WILL_SUCCEED, element);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+		assertEquals("A completely empty ddms:extent element was found.", component.getValidationWarnings().get(0).getText());
 	}
 	
 	public void testConstructorEquality() {

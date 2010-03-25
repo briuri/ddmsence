@@ -333,6 +333,12 @@ public class PolygonTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, newPositions, TEST_SRS_ATTRIBUTES, TEST_ID);	
 	}
 		
+	public void testWarnings() {
+		// No warnings
+		Polygon component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		Polygon elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		Polygon dataComponent = testConstructor(WILL_SUCCEED, TEST_POSITIONS, TEST_SRS_ATTRIBUTES, TEST_ID);

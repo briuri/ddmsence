@@ -171,6 +171,12 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, null, null);
 	}
 	
+	public void testWarnings() {
+		// No warnings
+		BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		BoundingGeometry elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		BoundingGeometry dataComponent = testConstructor(WILL_SUCCEED, null, TEST_POINTS);

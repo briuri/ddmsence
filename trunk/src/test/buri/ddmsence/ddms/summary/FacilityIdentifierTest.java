@@ -164,7 +164,13 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 		// Empty osuffix
 		testConstructor(WILL_FAIL, TEST_BENUMBER, "");
 	}
-		
+	
+	public void testWarnings() {
+		// No warnings
+		FacilityIdentifier component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		FacilityIdentifier elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		FacilityIdentifier dataComponent = testConstructor(WILL_SUCCEED, TEST_BENUMBER, TEST_OSUFFIX);

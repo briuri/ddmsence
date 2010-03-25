@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.SecurityAttributesTest;
 import buri.ddmsence.util.Util;
 
@@ -134,6 +135,20 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		
 		// No optional fields
 		testConstructor(WILL_SUCCEED, "");
+	}
+	
+	public void testWarnings() throws InvalidDDMSException {
+		// No warnings
+		Subtitle component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+		
+		// No value
+		Element element = Util.buildDDMSElement(Subtitle.NAME, null);
+		SecurityAttributesTest.getFixture(false).addTo(element);
+		component = testConstructor(WILL_SUCCEED, element);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+		assertEquals("A ddms:subtitle element was found with no subtitle value.", component.getValidationWarnings().get(0).getText());
 	}
 	
 	public void testConstructorEquality() {
