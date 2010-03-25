@@ -93,8 +93,6 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A name exists and is not empty.</li>
 	 * </td></tr></table>
-	 * 
-	 * @see IDDMSComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSValue("name", getName());
