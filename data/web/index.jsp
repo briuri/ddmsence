@@ -15,7 +15,7 @@
 	<meta name="title" content="DDMSence Home Page" />
 	<meta name="title.classification" content="U" />
 	<meta name="title.ownerProducer" content="USA" />
-	<meta name="subtitle" content="Version 0.9.b" />
+	<meta name="subtitle" content="Version 0.9.c" />
 	<meta name="subtitle.classification" content="U" />
 	<meta name="subtitle.ownerProducer" content="USA" />
 	<meta name="description" content="An open source Java library for DDMS." />
@@ -58,7 +58,7 @@
 	<meta name="security.excludeFromRollup" content="true" />
 	<meta name="security.classification" content="U" />
 	<meta name="security.ownerProducer" content="USA" />
-	<meta name="ddms.generator" content="DDMSence 0.9.b" />
+	<meta name="ddms.generator" content="DDMSence 0.9.c" />
 	
 </head>
 <body>
@@ -85,14 +85,17 @@ and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is
 
 <h1>Current Progress</h1>
 
-<p><u>03/24/2010</u>: DDMSence v0.9.b is now available for download! It provides a full implementation of the core layers of DDMS 3.0, 
-in addition to three sample applications. This version is believed to be stable, and is intended to be a limited audience 
+<p><u>03/25/2010</u>: DDMSence v0.9.c adds warning support to the validation system. I chose to release this build sooner than expected, because
+it removes one method from a major interface. This version is believed to be stable, and is intended to be a limited audience 
 release for early feedback.</p>
+
+<p><u>03/24/2010</u>: DDMSence v0.9.b is now available for download! It provides a full implementation of the core layers of DDMS 3.0, 
+in addition to three sample applications.</p>
 
 <h1>On the Horizon</h1>
 
 <p>Over the next few weeks, I plan on additional polish and testing, and will improve the component validation system as outlined in
-<a href="http://code.google.com/p/ddmsence/issues/list">Issues #6 and #7</a>. Unless there are major flaws discovered, I would like to
+<a href="http://code.google.com/p/ddmsence/issues/list">Issue #6</a>. Unless there are major flaws discovered, I would like to
 release an official 1.0 version to the general populace in April.</p>
 
 <p>Here are some areas which I would like to improve after 1.0:</p>
