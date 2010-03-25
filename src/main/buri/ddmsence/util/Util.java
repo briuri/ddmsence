@@ -24,6 +24,7 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -272,6 +273,8 @@ public class Util {
 	 * @throws InvalidDDMSException if any name is not an NCName.
 	 */
 	public static void requireValidNCNames(List<String> names) throws InvalidDDMSException {
+		if (names == null)
+			names = Collections.emptyList();
 		for (String name : names) {
 			requireValidNCName(name);
 		}
@@ -286,6 +289,7 @@ public class Util {
 	 */
 	public static void requireValidNCName(String name) throws InvalidDDMSException {
 		try {
+			Util.requireDDMSValue("name", name);
 			new Element(name);
 		}
 		catch (IllegalNameException e) {
@@ -303,6 +307,7 @@ public class Util {
 	 * @throws InvalidDDMSException if the string cannot be built into a URI
 	 */
 	public static void requireDDMSValidURI(String uri) throws InvalidDDMSException {
+		Util.requireValue("uri", uri);
 		try {
 			new URI(uri);
 		}
@@ -318,7 +323,7 @@ public class Util {
 	 * @throws InvalidDDMSException
 	 */
 	public static void requireValidLongitude(Double value) throws InvalidDDMSException {
-		if ((new Double(-180)).compareTo(value) > 0 || (new Double(180)).compareTo(value) < 0)
+		if (value == null || (new Double(-180)).compareTo(value) > 0 || (new Double(180)).compareTo(value) < 0)
 			throw new InvalidDDMSException("A longitude value must be between -180 and 180 degrees: " + value);
 	}
 	
@@ -329,7 +334,7 @@ public class Util {
 	 * @throws InvalidDDMSException
 	 */
 	public static void requireValidLatitude(Double value) throws InvalidDDMSException {
-		if ((new Double(-90)).compareTo(value) > 0 || (new Double(90)).compareTo(value) < 0)
+		if (value == null || (new Double(-90)).compareTo(value) > 0 || (new Double(90)).compareTo(value) < 0)
 			throw new InvalidDDMSException("A latitude value must be between -90 and 90 degrees: " + value);
 	}
 	
