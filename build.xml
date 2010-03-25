@@ -10,7 +10,6 @@
 		<copy todir="${dist.dir}/ddmsence-src-${version}" includeEmptyDirs="false">
 			<fileset dir=".">
 				<exclude name=".settings/**"/>
-				<exclude name="notes.txt"/>
 				<exclude name="${output.dir}/**"/>				
 		    </fileset>
 		</copy>
