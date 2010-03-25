@@ -37,7 +37,7 @@ command line parameters.</p>
 
 <p>When you run <u>Escort</u> you will see a simple text screen:</p>
 
-<div class="example"><pre>Escort: a DDMSence 0.9.b Sample
+<div class="example"><pre>Escort: a DDMSence 0.9.c Sample
 
 This program allows you to build a DDMS resource from scratch.
 If you do not know how to answer a question, a suggested valid answer is provided in square brackets.

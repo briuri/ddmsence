@@ -9,7 +9,7 @@
 
 <h1>Downloads</h1>
 
-<p>Before you begin, you will need a <a href="http://java.sun.com/javase/downloads/index.jsp" target="_new">JRE or JDK</a> which supports 1.5.x or higher.</p>
+<p>Before you begin, you will need a <a href="http://java.sun.com/javase/downloads/index.jsp" target="_new">JRE or JDK</a> which supports Java 1.5.x or higher.</p>
 
 <p>Downloads come in two flavor:</p>
 
@@ -24,16 +24,23 @@ I have include the <b>.project</b> file if you wish to import the project into E
 
 <h3>Latest Release</h3>
 
-<p>Version <b>0.9.b</b> is the initial beta release. It provides a full implementation of the core layers of DDMS 3.0, in addition to a few
+<p>Version <b>0.9.c</b> (3/25/2010) improves the validation system to support warnings in addition to errors, as outlined in <a href="http://code.google.com/p/ddmsence/issues/detail?id=7">Issue #7</a>.
+One method of the <b>IDDMSComponent</b> interface was removed, which breaks compatibility with 0.9.b. This version is believed to be stable, and is intended to be a limited audience release
+for early feedback.</p>
+
+<b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.c.zip">ddmsence-bin-0.9.c.zip</a></b> (1.8 MB)<br />
+<br />
+<b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.c.zip">ddmsence-src-0.9.c.zip</a></b> (2.5 MB)<br />
+
+<h3>Older Releases</h3>
+
+<p>Version <b>0.9.b</b> (3/24/2010) is the initial beta release. It provides a full implementation of the core layers of DDMS 3.0, in addition to a few
 sample applications. This version is believed to be stable, and is intended to be a limited audience release for early feedback.</p>
 
 <b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.b.zip">ddmsence-bin-0.9.b.zip</a></b> (1.8 MB)<br />
 <br />
 <b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.b.zip">ddmsence-src-0.9.b.zip</a></b> (2.5 MB)<br />
 
-<h3>Older Releases</h3>
-
-<p>There are no earlier releases available at this time.</p>
 
 <h3>Versioning</h3>
 
