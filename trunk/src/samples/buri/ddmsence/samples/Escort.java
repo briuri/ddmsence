@@ -92,7 +92,6 @@ import buri.ddmsence.util.PropertyReader;
 public class Escort {
 
 	private static final BufferedReader INPUT_STREAM = new BufferedReader(new InputStreamReader(System.in));
-	private static final String VERSION = PropertyReader.getProperty("version");
 	private static final String SAMPLE_DIR = PropertyReader.getProperty("sample.data");
 	
 	/**
@@ -120,7 +119,7 @@ public class Escort {
 	 * The main execution loop of the program
 	 */
 	private void run() throws IOException {
-		println("Escort: a DDMSence " + VERSION + " Sample\n");
+		println("Escort: a DDMSence Sample\n");
 		
 		println("This program allows you to build a DDMS resource from scratch.");
 		println("If you do not know how to answer a question, a suggested valid answer is provided in square brackets.\nHowever, this is not a default value (hitting Enter will answer the question with an empty string).\n\n");

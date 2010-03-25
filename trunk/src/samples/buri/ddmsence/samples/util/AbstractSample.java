@@ -66,8 +66,7 @@ public abstract class AbstractSample implements ActionListener {
 	protected static final String FILE = "File";
 	protected static final String OPEN = "Open...";
 	protected static final String EXIT = "Exit";
-
-	protected static final String VERSION = PropertyReader.getProperty("version");
+	
 	protected static final String SAMPLE_DIR = PropertyReader.getProperty("sample.data");
 	
 	/**
@@ -106,7 +105,7 @@ public abstract class AbstractSample implements ActionListener {
 		JPanel contentPane = new JPanel(new BorderLayout());
 		if (!Util.isEmpty(getDefaultInstructions()))
 			contentPane.add(new JLabel(getDefaultInstructions(), JLabel.CENTER), BorderLayout.CENTER);
-		JFrame frame = new JFrame(title + ": a DDMSence " + VERSION + " Sample");
+		JFrame frame = new JFrame(title + ": a DDMSence Sample");
 		frame.setSize(size);
 		frame.setPreferredSize(size);
 		if (hasFileMenu)

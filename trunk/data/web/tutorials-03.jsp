@@ -67,7 +67,7 @@ a List of DDMS components. The name of the getter will be a capitalized version 
 
 <p>Next, let's click on the "Keyword" tab to see a pie graph of keyword usage.</p>
 
-<img src="../images/escape-02.png" width="400" height="266" title="Second Screen" />
+<img src="../images/escape-02.png" width="400" height="268" title="Second Screen" />
 <p class="figure">Figure 3. The Keyword Distribution</p>
  
 <div class="example"><pre>Distribution distribution = new Distribution();
@@ -93,7 +93,7 @@ up into single words (to make the visualization more exciting).</p>
 
 <p>The last visualization can be seen in the "Dates" tab.</p>
 
-<img src="../images/escape-03.png" width="400" height="265" title="Third Screen" />
+<img src="../images/escape-03.png" width="400" height="266" title="Third Screen" />
 <p class="figure">Figure 5. The Dates Distribution</p>
 
 <p>The source code for this visualization can be found in the <b>buildDateGraph()</b> method. Dates can appear in a DDMS Resource in multiple locations:</p>

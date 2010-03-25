@@ -71,7 +71,7 @@ shows an example of how the Java object model can be built with basic data types
 <h4>Escape</h4>
 
 <p>
-<img src="../images/escape-thumb.png" width="300" height="200" title="Escape Screenshot" align="right" />
+<img src="../images/escape-thumb.png" width="300" height="198" title="Escape Screenshot" align="right" />
 <u>Escape</u> is a tool that loads multiple DDMS Resource files and then exposes various statistics about them through the 
 <a href="http://code.google.com/apis/visualization/documentation/gallery.html" target="_new">Google Visualization API</a>. Charts in this sample
 application are limited to non-interactive visualizations, but provide the foundation for the more complex interactive cases: for example, it would
