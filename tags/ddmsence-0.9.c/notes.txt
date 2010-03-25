@@ -1,0 +1,7 @@
+Notes for DDMS Team:
+	- Schema Issues:
+		- The schema comments on producer entities still refers to a "ddms:producer" element which no longer exists.
+		- There are many places where an element is required, but is allowed to have an empty value. Is this intended?
+	- Suggestions for more Examples:		
+		- It would be nice to have HTML/Text examples for boundingBox, boundingGeometry, and verticalExtent.
+		- If a Person/Organization/etc. has multiple names, phones, emails, how is the Text/HTML output rendered?
