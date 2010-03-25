@@ -359,6 +359,141 @@ public class UtilTest extends TestCase {
 		}
 	}
 	
+	public void testRequireValidNCNamesNull() throws InvalidDDMSException {
+		Util.requireValidNCNames(null);
+	}
+	
+	public void testRequireValidNCNamesValid() throws InvalidDDMSException {
+		List<String> names = new ArrayList<String>();
+		names.add("test");
+		Util.requireValidNCNames(names);
+	}
+	
+	public void testRequireValidNCNamesInvalid() throws InvalidDDMSException {
+		List<String> names = new ArrayList<String>();
+		names.add("1test");
+		try {
+			Util.requireValidNCNames(names);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
+	public void testRequireValidNCNameNull() {
+		try {
+			Util.requireValidNCName(null);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
+	public void testRequireValidNCNameInvalidName() {
+		try {
+			Util.requireValidNCName("1TEST");
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}		
+	}
+	
+	public void testRequireValidNCNameInvalidNamespace() {
+		try {
+			Util.requireValidNCName("xmlns:TEST");
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}		
+	}
+	
+	public void testRequireValidNCNameValid() throws InvalidDDMSException {
+		Util.requireValidNCName("name");
+	}
+	
+	public void testRequireDDMSValidURIValid() throws InvalidDDMSException {
+		Util.requireDDMSValidURI("test");
+	}
+
+	public void testRequireDDMSValidURIInvalid() {
+		try {
+			Util.requireDDMSValidURI(":::::");
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}	
+	}
+	
+	public void testRequireDDMSValidURINull() throws InvalidDDMSException {
+		try {
+			Util.requireDDMSValidURI(null);
+			fail("Allowed invalid data.");
+		}
+		catch (IllegalArgumentException e) {
+			// Good
+		}	
+	}
+
+	public void testRequireValidLongitudeNull() {
+		try {
+			Util.requireValidLongitude(null);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}			
+	}
+	
+	public void testRequireValidLongitudeOutOfBounds() {
+		try {
+			Util.requireValidLongitude(new Double(-181));
+			fail("Allowed invalid data.");
+			
+			Util.requireValidLongitude(new Double(181));
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}	
+	}
+	
+	public void testRequireValidLongitudeValid() throws InvalidDDMSException {
+		Util.requireValidLongitude(new Double(0));
+	}
+	
+	public void testRequireValidLatitudeNull() {
+		try {
+			Util.requireValidLatitude(null);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}	
+	}
+	
+	public void testRequireValidLatitudeOutOfBounds() {
+		try {
+			Util.requireValidLatitude(new Double(-91));
+			fail("Allowed invalid data.");
+			
+			Util.requireValidLatitude(new Double(91));
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}	
+	}
+	
+	public void testRequireValidLatitudeValid() throws InvalidDDMSException {
+		Util.requireValidLatitude(new Double(0));
+	}
+	
+	
 	public void testIsBoundedBadRange() {
 		try {
 			Util.isBounded(0, 10, 0);
