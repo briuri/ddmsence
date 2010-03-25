@@ -85,18 +85,21 @@ and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is
 
 <h1>Current Progress</h1>
 
-<p><b>03/24/2010</b>: DDMSence v0.9.b is now available for download! It provides a full implementation of the core layers of DDMS 3.0, 
+<p><u>03/24/2010</u>: DDMSence v0.9.b is now available for download! It provides a full implementation of the core layers of DDMS 3.0, 
 in addition to three sample applications. This version is believed to be stable, and is intended to be a limited audience 
 release for early feedback.</p>
 
 <h1>On the Horizon</h1>
 
-<p>Here are some areas which I would like to improve after the initial beta release:</p>
+<p>Over the next few weeks, I plan on additional polish and testing, and will improve the component validation system as outlined in
+<a href="http://code.google.com/p/ddmsence/issues/list">Issues #6 and #7</a>. Unless there are major flaws discovered, I would like to
+release an official 1.0 version to the general populace in April.</p>
+
+<p>Here are some areas which I would like to improve after 1.0:</p>
 <ul>
-	<li>Adding support for the extensible portions of DDMS components (Person, Organization, Service, Unknown, keyword, category, and the Resource itself).</li>
 	<li>Supporting DDMS 2.0 (and possibly earlier versions).</li>
-	<li>Improving the usefulness of validation error messages with file/component locator information.</li>
-	<li>Reworking validation to include both errors and warnings.</li>
+	<li>Adding support for the extensible portions of DDMS components (Person, Organization, Service, Unknown, keyword, category, and the Resource itself).</li>
+	<li>Improving the support and validation of ICISM security attributes.</li>
 </ul>
 <p>Please follow the "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list of defects and enhancements.</p>
 			
