@@ -156,6 +156,12 @@ public class CategoryTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, INVALID_URI, TEST_CODE, TEST_LABEL);
 	}
 	
+	public void testWarnings() {
+		// No warnings
+		Category component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		Category elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		Category dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);

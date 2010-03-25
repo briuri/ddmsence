@@ -198,6 +198,12 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, TEST_NAME, "N/A", TEST_END);
 	}
 	
+	public void testWarnings() {
+		// No warnings
+		TemporalCoverage component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		TemporalCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		TemporalCoverage dataComponent = testConstructor(WILL_SUCCEED, TEST_NAME, TEST_START, TEST_END);

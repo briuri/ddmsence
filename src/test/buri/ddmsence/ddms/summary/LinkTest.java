@@ -206,6 +206,12 @@ public class LinkTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, INVALID_URI, TEST_ROLE, TEST_TITLE, TEST_LABEL);
 	}
 	
+	public void testWarnings() throws InvalidDDMSException {
+		// No warnings
+		Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() throws InvalidDDMSException {
 		Link elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 		Link dataComponent = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);

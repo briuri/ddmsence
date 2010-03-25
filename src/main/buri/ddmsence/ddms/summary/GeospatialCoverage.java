@@ -150,7 +150,6 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Any subcomponents are valid.</li>
 	 * <li>At least 1 of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent must be used.</li>
 	 * <li>No more than 1 geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent can be used.</li>
 	 * <li>If a geographicIdentifer is used and contains a facilityIdentifier, no other subcomponents can be used.</li>
@@ -160,7 +159,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Element extElement = getChild(GEOSPATIAL_EXTENT_NAME);
 		Util.requireDDMSValue("GeospatialExtent element", extElement);
@@ -173,23 +172,23 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		
 		int validComponents = 0;
 		if (getGeographicIdentifier() != null) {
-			getGeographicIdentifier().validate();
+			addWarnings(getGeographicIdentifier().getValidationWarnings());
 			validComponents++;
 		}
 		if (getBoundingBox() != null) {
-			getBoundingBox().validate();
+			addWarnings(getBoundingBox().getValidationWarnings());
 			validComponents++;
 		}
 		if (getBoundingGeometry() != null) {
-			getBoundingGeometry().validate();
+			addWarnings(getBoundingGeometry().getValidationWarnings());
 			validComponents++;
 		}
 		if (getPostalAddress() != null) {
-			getPostalAddress().validate();
+			addWarnings(getPostalAddress().getValidationWarnings());
 			validComponents++;
 		}
 		if (getVerticalExtent() != null) {
-			getVerticalExtent().validate();
+			addWarnings(getVerticalExtent().getValidationWarnings());
 			validComponents++;
 		}
 		if (validComponents == 0) {
@@ -197,7 +196,9 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		}
 		if (hasFacilityIdentifier() && validComponents > 1) {
 			throw new InvalidDDMSException("A geographicIdentifier containing a facilityIdentifier cannot be used in tandem with any other coverage elements.");
-		}		
+		}	
+		
+		addWarnings(getSecurityAttributes().getValidationWarnings());
 	}
 	
 	/**

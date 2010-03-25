@@ -108,20 +108,20 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>At least 1 polygon or point exists.</li>
-	 * <li>All polygons and points are valid.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */	
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		if (getPolygons().size() + getPoints().size() == 0) {
 			throw new InvalidDDMSException("At least 1 of Polygon or Point must be used.");
 		}
+		
 		for (Polygon polygon : getPolygons())
-			polygon.validate();
+			addWarnings(polygon.getValidationWarnings());
 		for (Point point : getPoints())
-			point.validate();
+			addWarnings(point.getValidationWarnings());		
 	}
 	
 	/**

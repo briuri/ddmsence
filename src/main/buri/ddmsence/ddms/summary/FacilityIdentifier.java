@@ -93,7 +93,7 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSValue(BE_NUMBER_NAME, getBeNumber());
 		Util.requireDDMSValue(OSUFFIX_NAME, getOsuffix());

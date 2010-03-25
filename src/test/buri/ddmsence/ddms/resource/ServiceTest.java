@@ -188,6 +188,12 @@ public class ServiceTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, names, TEST_PHONES, TEST_EMAILS);
 	}
 		
+	public void testWarnings() {
+		// No warnings
+		Service component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		Service elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		Service dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);

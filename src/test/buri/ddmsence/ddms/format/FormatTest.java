@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.format;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.Util;
 
@@ -196,6 +197,27 @@ public class FormatTest extends AbstractComponentTestCase {
 		
 		// Empty mimeType
 		testConstructor(WILL_FAIL, "", TEST_EXTENT, TEST_MEDIUM);
+	}
+		
+	public void testWarnings() throws InvalidDDMSException {
+		// No warnings
+		Format component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+		
+		// Medium element with no value or empty value
+		Element mediaElement = Util.buildDDMSElement("Media", null);
+		mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
+		mediaElement.appendChild(Util.buildDDMSElement("medium", null));
+		Element element = Util.buildDDMSElement(Format.NAME, null);
+		element.appendChild(mediaElement);
+		component = testConstructor(WILL_SUCCEED, element);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+		assertEquals("A ddms:medium element was found with no value.", component.getValidationWarnings().get(0).getText());
+		
+		// Nested warnings
+		component = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, new MediaExtent("sizeBytes", ""), TEST_MEDIUM);
+		assertEquals(1, component.getValidationWarnings().size());
 	}
 	
 	public void testConstructorEquality() {

@@ -25,6 +25,7 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.Util;
 
@@ -239,6 +240,19 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		for (int i = 0; i < 7; i++)
 			streets.add("Street" + i);
 		testConstructor(WILL_FAIL, streets, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, TEST_COUNTRY_CODE, true);
+	}
+	
+	public void testWarnings() {
+		// No warnings
+		PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+		
+		// Empty element
+		Element element = Util.buildDDMSElement(PostalAddress.NAME, null);
+		component = testConstructor(WILL_SUCCEED, element);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+		assertEquals("A completely empty ddms:postalAddress element was found.", component.getValidationWarnings().get(0).getText());
 	}
 	
 	public void testConstructorEquality() {

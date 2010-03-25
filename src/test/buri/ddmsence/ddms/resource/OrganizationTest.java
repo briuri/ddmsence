@@ -189,6 +189,12 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, names, TEST_PHONES, TEST_EMAILS);
 	}
 	
+	public void testWarnings() {
+		// No warnings
+		Organization component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		Organization elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		Organization dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);

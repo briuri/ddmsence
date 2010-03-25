@@ -179,7 +179,6 @@ public final class Polygon extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The SRS Attributes are valid.</li>
 	 * <li>The srsName is required.</li>
-	 * <li>All positions are valid.</li>
 	 * <li>If the position has an srsName, it matches the srsName of this Polygon.</li>
 	 * <li>The ID is required, and must be a valid NCName.</li>
 	 * <li>The first and last position coordinates must be identical (a closed polygon).</li>
@@ -188,7 +187,7 @@ public final class Polygon extends AbstractBaseComponent {
 	 *
 	 * @see AbstractBaseComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
 		getSRSAttributes().validate();
@@ -201,7 +200,7 @@ public final class Polygon extends AbstractBaseComponent {
 		}
 		List<Position> positions = getPositions();
 		for (Position pos : positions) {
-			pos.validate();
+			addWarnings(pos.getValidationWarnings());
 			if (pos.getSRSAttributes() != null) {
 				String srsName = pos.getSRSAttributes().getSrsName();
 				if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))
@@ -215,6 +214,7 @@ public final class Polygon extends AbstractBaseComponent {
 		if (!positions.isEmpty() && !positions.get(0).equals(positions.get(positions.size() - 1))) {
 			throw new InvalidDDMSException("The first and last position in the Polygon must be the same.");
 		}
+		addWarnings(getSRSAttributes().getValidationWarnings());
 	}
 	
 	/**

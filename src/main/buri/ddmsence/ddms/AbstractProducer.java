@@ -212,7 +212,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();	
 		validateProducerType(getProducerType());
 		Elements elements = getXOMElement().getChildElements();
@@ -229,8 +229,24 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		}
 		if (!foundNonEmptyName)
 			throw new InvalidDDMSException("At least 1 name element must have a non-empty value.");
+		
+		Elements phoneElements = entityElement.getChildElements(PHONE_NAME, entityElement.getNamespaceURI());
+		for (int i = 0; i < phoneElements.size(); i++) {
+			if (Util.isEmpty(phoneElements.get(i).getValue())) {
+				addWarning("A ddms:phone element was found with no value.");
+				break;
+			}
+		}
+		Elements emailElements = entityElement.getChildElements(EMAIL_NAME, entityElement.getNamespaceURI());
+		for (int i = 0; i < emailElements.size(); i++) {
+			if (Util.isEmpty(emailElements.get(i).getValue())) {
+				addWarning("A ddms:email element was found with no value.");
+				break;
+			}
+		}
+		addWarnings(getSecurityAttributes().getValidationWarnings());
 	}
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

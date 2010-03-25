@@ -218,6 +218,12 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, null, TEST_QUALIFIER, TEST_VALUE);
 	}
 	
+	public void testWarnings() throws InvalidDDMSException {
+		// No warnings
+		RelatedResource component = testConstructor(WILL_SUCCEED, getFixtureElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() throws InvalidDDMSException {
 		RelatedResource elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 		RelatedResource dataComponent = testConstructor(WILL_SUCCEED, TEST_LINKS, TEST_QUALIFIER, TEST_VALUE);

@@ -24,6 +24,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.format.Format;
+import buri.ddmsence.ddms.format.MediaExtent;
 import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.resource.Identifier;
 import buri.ddmsence.ddms.resource.Language;
@@ -743,6 +744,18 @@ public class ResourceTest extends AbstractComponentTestCase {
 		components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 		components.add(new Keyword("test"));
 		testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+	}
+	
+	public void testWarnings() throws InvalidDDMSException {
+		// No warnings
+		Resource component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+			
+		// Nested warnings
+		List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
+		components.add(new Format("test", new MediaExtent("test", ""), "test"));
+		component = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+		assertEquals(1, component.getValidationWarnings().size());
 	}
 	
 	public void testConstructorEquality() {

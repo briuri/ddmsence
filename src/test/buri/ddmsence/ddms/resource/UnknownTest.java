@@ -179,6 +179,12 @@ public class UnknownTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, names, TEST_PHONES, TEST_EMAILS);
 	}
 		
+	public void testWarnings() {
+		// No warnings
+		Unknown component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+		
 	public void testConstructorEquality() {
 		Unknown elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		Unknown dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);

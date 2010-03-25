@@ -159,7 +159,7 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSValue("relationship attribute", getRelationship());
 		Util.requireDDMSValidURI(getRelationship());
@@ -167,9 +167,10 @@ public final class RelatedResources extends AbstractBaseComponent {
 			validateRelationshipDirection(getDirection());
 		if (getChild(RelatedResource.NAME) == null)
 			throw new InvalidDDMSException("At least 1 RelatedResource must exist.");
-		for (RelatedResource resource : getRelatedResources()) {
-			resource.validate();
-		}
+		
+		for (RelatedResource related : getRelatedResources())
+			addWarnings(related.getValidationWarnings());
+		addWarnings(getSecurityAttributes().getValidationWarnings());
 	}
 	
 	/**

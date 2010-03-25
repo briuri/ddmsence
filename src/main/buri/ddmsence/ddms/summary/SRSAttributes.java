@@ -26,6 +26,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.Util;
 
 /**
@@ -53,6 +54,8 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class SRSAttributes {
+	
+	private List<ValidationMessage> _warnings;
 	
 	private String _cachedSrsName;
 	private Integer _cachedSrsDimension;
@@ -142,7 +145,7 @@ public final class SRSAttributes {
 	 * 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		if (!Util.isEmpty(getSrsName()))
 			Util.requireDDMSValidURI(getSrsName());
 		if (getSrsDimension() != null && getSrsDimension().intValue() < 0)
@@ -153,6 +156,16 @@ public final class SRSAttributes {
 			throw new InvalidDDMSException("The uomLabels attribute can only be used in tandem with axisLabels.");
 		Util.requireValidNCNames(getAxisLabels());
 		Util.requireValidNCNames(getUomLabels());
+	}
+	
+	/**
+	 * Returns a list of any warning messages that occurred during validation. Warnings
+	 * do not prevent a valid component from being formed.
+	 * 
+	 * @return a list of warnings
+	 */
+	public List<ValidationMessage> getValidationWarnings() {
+		return (Collections.unmodifiableList(getWarnings()));
 	}
 	
 	/**
@@ -181,6 +194,22 @@ public final class SRSAttributes {
 		result = 7 * result + getAxisLabels().hashCode();
 		result = 7 * result + getUomLabels().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the list of validation warnings.
+	 * 
+	 * <p>
+	 * This is the private copy that should be manipulated during validation.
+	 * Lazy initialization.
+	 * </p>
+	 * 
+	 * @return an editable list of warnings
+	 */
+	protected List<ValidationMessage> getWarnings() {
+		if (_warnings == null)
+			_warnings = new ArrayList<ValidationMessage>();
+		return (_warnings);
 	}
 	
 	/**

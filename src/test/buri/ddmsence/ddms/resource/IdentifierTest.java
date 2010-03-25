@@ -171,6 +171,12 @@ public class IdentifierTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, INVALID_URI, TEST_VALUE);
 	}
 	
+	public void testWarnings() {
+		// No warnings
+		Identifier component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		Identifier elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		Identifier dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);

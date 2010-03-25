@@ -19,6 +19,8 @@
  */
 package buri.ddmsence.ddms;
 
+import java.util.List;
+
 import nu.xom.Element;
 
 /**
@@ -60,12 +62,14 @@ public interface IDDMSComponent {
 	public String getName();
 
 	/**
-	 * Validates the component using its own set of rules.
+	 * Returns a list of any warning messages that occurred during validation. Warnings
+	 * do not prevent a valid component from being formed. A parent component should
+	 * also claim the warnings of its child elements.
 	 * 
-	 * @throws InvalidDDMSException if there are any missing or malformed pieces
+	 * @return a list of warnings
 	 */
-	public void validate() throws InvalidDDMSException;
-
+	public List<ValidationMessage> getValidationWarnings();
+	
 	/**
 	 * Renders this component as HTML.
 	 * 

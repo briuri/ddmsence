@@ -169,6 +169,12 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, null, null);
 	}
 	
+	public void testWarnings() {
+		// No warnings
+		SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());		
+	}
+	
 	public void testConstructorEquality() {
 		SubjectCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		SubjectCoverage dataComponent = testConstructor(WILL_SUCCEED, TEST_KEYWORDS, TEST_CATEGORIES);

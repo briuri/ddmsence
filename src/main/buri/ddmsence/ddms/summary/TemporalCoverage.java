@@ -196,7 +196,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException  if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Element periodElement = getChild(TIME_PERIOD_NAME);
 		Util.requireDDMSValue("TimePeriod element", periodElement);
@@ -211,6 +211,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getEnd().getXMLSchemaType());
 		else
 			validateExtendedDateType(getEndString());
+		
+		addWarnings(getSecurityAttributes().getValidationWarnings());
 	}
 	
 	/**

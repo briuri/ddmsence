@@ -139,8 +139,6 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>At least 1 of name, region, countryCode, or facilityIdentifier must exist.</li>
-	 * <li>If set, the countryCode is a valid component.</li>
-	 * <li>If set, the geographicIdentifier is a valid component.</li>
 	 * <li>No more than 1 countryCode or facilityIdentifier can exist.</li>
 	 * <li>If facilityIdentifier is used, no other components can exist.</li>
 	 * </td></tr></table>
@@ -148,20 +146,21 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		if (getNames().isEmpty() && getRegions().isEmpty() && getCountryCode() == null && getFacilityIdentifier() == null) {
 			throw new InvalidDDMSException("At least 1 of name, region, countryCode, or facilityIdentifier must exist.");
 		}
 		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), FacilityIdentifier.NAME, 0, 1);
-		if (getCountryCode() != null)
-			getCountryCode().validate();
 		if (hasFacilityIdentifier()) {
-			getFacilityIdentifier().validate();
+			addWarnings(getFacilityIdentifier().getValidationWarnings());
 			if (!getNames().isEmpty() || !getRegions().isEmpty() || getCountryCode() != null)
 				throw new InvalidDDMSException("facilityIdentifier cannot be used in tandem with other components.");
 		}
+		
+		if (getCountryCode() != null)
+			addWarnings(getCountryCode().getValidationWarnings());			
 	}
 	
 	/**

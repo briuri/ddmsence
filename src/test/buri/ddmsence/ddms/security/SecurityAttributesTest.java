@@ -180,6 +180,15 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, TEST_CLASS, TEST_OWNERS, more);
 	}
 	
+	public void testWarnings() throws InvalidDDMSException {
+		// No warnings
+		Element element = Util.buildDDMSElement(Security.NAME, null);
+		Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", ICISM_NAMESPACE, "true");
+		getFixture(true).addTo(element);
+		SecurityAttributes attr = testConstructor(WILL_SUCCEED, element);	
+		assertEquals(0, attr.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() throws InvalidDDMSException {
 		Element element = Util.buildDDMSElement(Security.NAME, null);
 		Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", ICISM_NAMESPACE, "true");

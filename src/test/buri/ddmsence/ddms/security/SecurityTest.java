@@ -139,6 +139,12 @@ public class SecurityTest extends AbstractComponentTestCase {
 		// No way to make an invalid one right now.
 	}
 	
+	public void testWarnings() {
+		// No warnings
+		Security component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+	}
+	
 	public void testConstructorEquality() {
 		Security elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
 		Security dataComponent = testConstructor(WILL_SUCCEED);

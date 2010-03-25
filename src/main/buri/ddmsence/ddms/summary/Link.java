@@ -113,7 +113,7 @@ public final class Link extends AbstractBaseComponent {
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSValue("type attribute", getType());
 		Util.requireDDMSValue("href attribute", getHref());

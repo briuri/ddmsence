@@ -87,8 +87,7 @@ at any given time.</p>
 	becomes more important when we are building from scratch.</li>
 	<li>Next, any rules mandated in the DDMS Specification but not implemented in the schema are validated (such as constraints on latitude/longitude values). Today,
 	this is done with custom Java code, although it could be handled with Schematron in the future.</li>
-	<li>Validating any DDMS component will implicitly validate any nested components, so when the top-level Resource is finally created, this will trigger a 
-	revalidation of all the subcomponents. This is probably overkill, but I view it as harmless right now.</li>
+	<li>Any warnings which do not actually result in an invalid component are stored on the component, and can be retrieved via <b>getValidationWarnings()</b>.</li>
 </ul>
 
 <h3>Conclusion</h3>

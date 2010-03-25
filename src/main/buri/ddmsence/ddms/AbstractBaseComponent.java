@@ -19,6 +19,10 @@
 */
 package buri.ddmsence.ddms;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -37,6 +41,7 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractBaseComponent implements IDDMSComponent {
 
+	private List<ValidationMessage> _warnings;
 	private Element _element;
 	
 	/** The GML prefix */
@@ -75,7 +80,15 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 	
 	/**
-	 * Base case for validation. This method can be overridden for more in-depth validation.
+	 * @see IDDMSComponent#getValidationWarnings()
+	 */
+	public List<ValidationMessage> getValidationWarnings() {
+		return (Collections.unmodifiableList(getWarnings()));
+	}
+	
+	/**
+	 * Base case for validation. This method can be overridden for more in-depth validation. It is always assumed
+	 * that the subcomponents of a component are already valid.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A name exists and is not empty.</li>
@@ -83,7 +96,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * 
 	 * @see IDDMSComponent#validate()
 	 */
-	public void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSValue("name", getName());
 	}
 	
@@ -233,6 +246,40 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 */
 	public String toString() {
 		return (toXML());
+	}
+	
+	/**
+	 * Convenience method to create a warning and add it to the list of validation warnings.
+	 * 
+	 * @param text the description text
+	 */
+	protected void addWarning(String text) {
+		getWarnings().add(ValidationMessage.newWarning(text));
+	}
+	
+	/**
+	 * Convenience method to add multiple warnings to the list of validation warnings.
+	 * 
+	 * @param warnings the list of validation messages to add
+	 */
+	protected void addWarnings(List<ValidationMessage> warnings) {
+		getWarnings().addAll(warnings);
+	}
+	
+	/**
+	 * Accessor for the list of validation warnings.
+	 * 
+	 * <p>
+	 * This is the private copy that should be manipulated during validation.
+	 * Lazy initialization.
+	 * </p>
+	 * 
+	 * @return an editable list of warnings
+	 */
+	private List<ValidationMessage> getWarnings() {
+		if (_warnings == null)
+			_warnings = new ArrayList<ValidationMessage>();
+		return (_warnings);
 	}
 	
 	/**

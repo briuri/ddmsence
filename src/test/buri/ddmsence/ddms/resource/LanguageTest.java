@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.Util;
 
 /**
@@ -143,6 +144,27 @@ public class LanguageTest extends AbstractComponentTestCase {
 	public void testDataConstructorInvalid() {
 		// Missing qualifier
 		testConstructor(WILL_FAIL, null, TEST_VALUE);
+	}
+		
+	public void testWarnings() {
+		// No warnings
+		Language component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals(0, component.getValidationWarnings().size());
+		
+		// Qualifier without value
+		Element element = Util.buildDDMSElement(Language.NAME, null);
+		Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
+		component = testConstructor(WILL_SUCCEED, element);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+		assertEquals("A qualifier has been set without an accompanying value attribute.", component.getValidationWarnings().get(0).getText());
+		
+		// Neither attribute
+		element = Util.buildDDMSElement(Language.NAME, null);
+		component = testConstructor(WILL_SUCCEED, element);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+		assertEquals("Neither a qualifier nor a value was set on this language.", component.getValidationWarnings().get(0).getText());
 	}
 	
 	public void testConstructorEquality() {

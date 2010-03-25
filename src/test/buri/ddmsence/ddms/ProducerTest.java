@@ -83,4 +83,28 @@ public class ProducerTest extends TestCase {
 			// Good
 		}
 	}
+	
+	public void testSharedWarnings() throws InvalidDDMSException {
+		// Empty phone
+		Element entityElement = Util.buildDDMSElement(Organization.NAME, null);
+		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
+		entityElement.appendChild(Util.buildDDMSElement("phone", ""));
+		Element producerElement = Util.buildDDMSElement("creator", null);
+		producerElement.appendChild(entityElement);
+		Organization component = new Organization(producerElement);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+		assertEquals("A ddms:phone element was found with no value.", component.getValidationWarnings().get(0).getText());
+
+		// Empty email
+		entityElement = Util.buildDDMSElement(Organization.NAME, null);
+		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
+		entityElement.appendChild(Util.buildDDMSElement("email", ""));
+		producerElement = Util.buildDDMSElement("creator", null);
+		producerElement.appendChild(entityElement);
+		component = new Organization(producerElement);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+		assertEquals("A ddms:email element was found with no value.", component.getValidationWarnings().get(0).getText());
+	}
 }
