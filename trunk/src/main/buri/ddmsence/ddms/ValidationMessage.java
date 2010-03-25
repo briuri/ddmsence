@@ -32,7 +32,7 @@ import buri.ddmsence.util.Util;
  * </p>
  * 
  * @author Brian Uri!
- * @since 0.9.b
+ * @since 0.9.c
  */
 public class ValidationMessage {
 
