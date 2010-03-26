@@ -109,7 +109,7 @@ is then tracked as it was in the previous two examples. A more useful graph migh
 dates to provide more examples of traversing a Resource, and to make the visualization more exciting.</p>
 
 <p>If you would like to add new Resources to the dataset, simply copy your XML files into the <b>data/samples/</b> directory, or use the <u>Escort</u> wizard
-application to generate Resources.</p>
+application to generate Resources. When you open up <u>Escape</u> again, your new files will be included in the metrics.</p>
 
 <h3>Conclusion</h3>
 

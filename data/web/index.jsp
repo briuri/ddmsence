@@ -94,15 +94,14 @@ in addition to three sample applications.</p>
 
 <h1>On the Horizon</h1>
 
-<p>Over the next few weeks, I plan on additional polish and testing, and will improve the component validation system as outlined in
-<a href="http://code.google.com/p/ddmsence/issues/list">Issue #6</a>. Unless there are major flaws discovered, I would like to
-release an official 1.0 version to the general populace in April.</p>
+<p>I am currently working on an official 1.0 release which will include further improvements to the validation system, additional support
+for ICISM security attributes, and minor improvements to the sample applications. Unless I hear of major design flaws in the 0.9.c
+release, I intend to release 1.0 in mid-April.</p>
 
 <p>Here are some areas which I would like to improve after 1.0:</p>
 <ul>
 	<li>Supporting DDMS 2.0 (and possibly earlier versions).</li>
 	<li>Adding support for the extensible portions of DDMS components (Person, Organization, Service, Unknown, keyword, category, and the Resource itself).</li>
-	<li>Improving the support and validation of ICISM security attributes.</li>
 </ul>
 <p>Please follow the "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list of defects and enhancements.</p>
 			
