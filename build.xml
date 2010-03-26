@@ -53,14 +53,16 @@
 		<mkdir dir="${compile.main.dir}" />
 		<mkdir dir="${compile.samples.dir}" />
 		<mkdir dir="${compile.test.dir}" />
+		<filter token="ddmsence.version" value="${version}"/>
+
 		<javac srcdir="${src.main.dir}" destdir="${compile.main.dir}" classpathref="classpath.compile" />
-		<copy todir="${compile.main.dir}">
+		<copy todir="${compile.main.dir}" filtering="true">
 			<fileset refid="files.properties" />
 			<fileset refid="files.schemas" />
 		</copy>
 		<javac srcdir="${src.samples.dir}" destdir="${compile.samples.dir}" classpathref="classpath.samples" />
 		<javac srcdir="${src.test.dir}" destdir="${compile.test.dir}" classpathref="classpath.test" />
-		<copy todir="${compile.test.dir}">
+		<copy todir="${compile.test.dir}" filtering="true">
 			<fileset refid="files.properties" />
 			<fileset refid="files.schemas" />
 		</copy>
@@ -98,7 +100,7 @@
 		<tstamp>
 			<format property="backupStamp" pattern="yyMMdd-HHmm"/>
 		</tstamp>		
-		<zip destfile="../${backupStamp}-DDMSence.zip" basedir=".." includes="DDMSence/**" excludes="DDMSence/output/**" />
+		<zip destfile="../${backupStamp}-DDMSence-${version}.zip" basedir=".." includes="DDMSence/**" excludes="DDMSence/output/**" />
 	</target>
 			
 	<target name="__config">
