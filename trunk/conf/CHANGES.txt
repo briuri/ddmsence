@@ -1,0 +1,19 @@
+DDMSence (pronounced "dee-dee-em-Essence") is an open source Java API which 
+supports the DoD Discovery Metadata Specification (DDMS).
+
+You can contact the author at ddmsence@urizone.net. The DDMSence
+home page is located at http://ddmsence.urizone.net/ .
+
+Copyright 2010 by Brian Uri!
+===========================================================================
+Release History
+===========================================================================
+v 0.9.c (3/25/2010):
+Adds support for validation warnings in addition to errors. This release
+removes the validate() method from the IDDMSComponent interface, because
+validating a valid component was overkill. In its place, getValidationWarnings()
+has been added.
+
+v 0.9.b (3/24/2010):
+Initial beta release. Contains full support for DDMS 3.0 Pre-Release and
+the three sample applications.

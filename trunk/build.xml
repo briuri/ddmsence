@@ -13,6 +13,7 @@
 				<exclude name="${output.dir}/**"/>				
 		    </fileset>
 		</copy>
+		<copy todir="${dist.dir}/ddmsence-src-${version}" file="${conf.dir}/CHANGES.txt" />
 		<copy todir="${dist.dir}/ddmsence-src-${version}" file="${conf.dir}/LICENSE.txt" />
 		<zip destfile="${dist.dir}/ddmsence-src-${version}.zip" basedir="${dist.dir}" includes="ddmsence-src-${version}/**" />
 		<delete quiet="true" dir="${dist.dir}/ddmsence-src-${version}" />
@@ -35,6 +36,7 @@
 				<exclude name="${data.dir}/web/**"/>		
 		    </fileset>
 		</copy>
+		<copy todir="${dist.dir}/ddmsence-bin-${version}" file="${conf.dir}/CHANGES.txt" />
 		<copy todir="${dist.dir}/ddmsence-bin-${version}" file="${conf.dir}/LICENSE.txt" />
 		<copy todir="${dist.dir}/ddmsence-bin-${version}/lib">
 			<fileset dir="${jars.dir}" />
