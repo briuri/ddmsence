@@ -93,13 +93,18 @@ public final class Link extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Link(String href, String role, String title, String label) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(Link.NAME, null);
-		Util.addAttribute(element, XLINK_PREFIX, TYPE_NAME, XLINK_NAMESPACE, FIXED_TYPE);
-		Util.addAttribute(element, XLINK_PREFIX, HREF_NAME, XLINK_NAMESPACE, href);
-		Util.addAttribute(element, XLINK_PREFIX, ROLE_NAME, XLINK_NAMESPACE, role);
-		Util.addAttribute(element, XLINK_PREFIX, TITLE_NAME, XLINK_NAMESPACE, title);
-		Util.addAttribute(element, XLINK_PREFIX, LABEL_NAME, XLINK_NAMESPACE, label);
-		setXOMElement(element, true);
+		try {
+			Element element = Util.buildDDMSElement(Link.NAME, null);
+			Util.addAttribute(element, XLINK_PREFIX, TYPE_NAME, XLINK_NAMESPACE, FIXED_TYPE);
+			Util.addAttribute(element, XLINK_PREFIX, HREF_NAME, XLINK_NAMESPACE, href);
+			Util.addAttribute(element, XLINK_PREFIX, ROLE_NAME, XLINK_NAMESPACE, role);
+			Util.addAttribute(element, XLINK_PREFIX, TITLE_NAME, XLINK_NAMESPACE, title);
+			Util.addAttribute(element, XLINK_PREFIX, LABEL_NAME, XLINK_NAMESPACE, label);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 
 	/**

@@ -70,7 +70,13 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @param element the XOM element representing this component
 	 */
 	protected AbstractBaseComponent(Element element) throws InvalidDDMSException {
-		setXOMElement(element, true);
+		try {
+			setXOMElement(element, true);
+		}
+		catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -298,14 +304,13 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	/**
 	 * Convenience method to add multiple warnings to the list of validation warnings.
 	 * 
-	 * <p>
-	 * Child locator information will be prefixed with the parent (this) locator information.
-	 * </p>
+	 * <p>Child locator information will be prefixed with the parent (this) locator information. This does not
+	 * overwrite the original warning -- it creates a new copy.</p>
 	 * 
 	 * @param warnings the list of validation messages to add
-	 * @param forAttributes, if true, the locator suffix is not used, because the attributes will
-	 * be for the topmost element (for example, warnings for gml:Polygon's security attributes
-	 * should not end up with a locator of /gml:Polygon/gml:exterior/gml:LinearRing).
+	 * @param forAttributes, if true, the locator suffix is not used, because the attributes will be for the topmost
+	 * element (for example, warnings for gml:Polygon's security attributes should not end up with a locator of
+	 * /gml:Polygon/gml:exterior/gml:LinearRing).
 	 */
 	protected void addWarnings(List<ValidationMessage> warnings, boolean forAttributes) {
 		for (ValidationMessage warning : warnings) {

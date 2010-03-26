@@ -191,9 +191,18 @@ public class FormatTest extends AbstractComponentTestCase {
 		element = Util.buildDDMSElement(Format.NAME, null);
 		element.appendChild(mediaElement);
 		testConstructor(WILL_FAIL, element);
+		
+		// Invalid Extent
+		Element extentElement = Util.buildDDMSElement(MediaExtent.NAME, null);
+		Util.addDDMSAttribute(extentElement, "value", "test");		
+		mediaElement = Util.buildDDMSElement("Media", null);
+		Util.addDDMSChildElement(mediaElement, "mimeType", "text/html");
+		mediaElement.appendChild(extentElement);		
+		element = Util.buildDDMSElement(Format.NAME, null);
+		testConstructor(WILL_FAIL, element);
 	}
 
-	public void testDataConstructorInvalid() {
+	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		// Missing mimeType
 		testConstructor(WILL_FAIL, null, TEST_EXTENT, TEST_MEDIUM);
 		

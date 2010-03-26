@@ -65,8 +65,13 @@ public final class Subtitle extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Subtitle(Element element) throws InvalidDDMSException {
-		_cachedSecurityAttributes = new SecurityAttributes(element);
-		setXOMElement(element, true);
+		try {
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -78,11 +83,16 @@ public final class Subtitle extends AbstractSimpleString {
 	 */
 	public Subtitle(String subtitle, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(Subtitle.NAME, subtitle);
-		Element element = getXOMElement();
-		_cachedSecurityAttributes = securityAttributes;
-		if (securityAttributes != null)
-			securityAttributes.addTo(element);
-		setXOMElement(element, true);
+		try {
+			Element element = getXOMElement();
+			_cachedSecurityAttributes = securityAttributes;
+			if (securityAttributes != null)
+				securityAttributes.addTo(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 
 	/**

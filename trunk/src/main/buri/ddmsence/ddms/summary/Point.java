@@ -118,12 +118,17 @@ public final class Point extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Point(Element element) throws InvalidDDMSException {
-		setXOMElement(element, false);
-		Element posElement = element.getFirstChildElement(Position.NAME, GML_NAMESPACE);
-		if (posElement != null)
-			_cachedPosition = new Position(posElement);
-		_cachedSrsAttributes = new SRSAttributes(element);
-		setXOMElement(element, true);
+		try {
+			setXOMElement(element, false);
+			Element posElement = element.getFirstChildElement(Position.NAME, GML_NAMESPACE);
+			if (posElement != null)
+				_cachedPosition = new Position(posElement);
+			_cachedSrsAttributes = new SRSAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -135,16 +140,21 @@ public final class Point extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Point(Position position, SRSAttributes srsAttributes, String id) throws InvalidDDMSException {
-		_cachedPosition = position;
-		_cachedSrsAttributes = srsAttributes;
-		Element element = Util.buildElement(GML_PREFIX, Point.NAME, GML_NAMESPACE, null);
-		if (position != null) {
-			element.appendChild(position.getXOMElementCopy());
+		try {
+			_cachedPosition = position;
+			_cachedSrsAttributes = srsAttributes;
+			Element element = Util.buildElement(GML_PREFIX, Point.NAME, GML_NAMESPACE, null);
+			if (position != null) {
+				element.appendChild(position.getXOMElementCopy());
+			}
+			if (srsAttributes != null)
+				srsAttributes.addTo(element);
+			Util.addAttribute(element, GML_PREFIX, ID_NAME, GML_NAMESPACE, id);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		if (srsAttributes != null)
-			srsAttributes.addTo(element);	
-		Util.addAttribute(element, GML_PREFIX, ID_NAME, GML_NAMESPACE, id);
-		setXOMElement(element, true);
 	}
 					
 	/**

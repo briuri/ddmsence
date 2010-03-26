@@ -101,8 +101,13 @@ public final class Person extends AbstractProducer {
 	public Person(String producerType, String surname, List<String> names, String userID, String affiliation,
 		List<String> phones, List<String> emails, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(producerType, Person.NAME, names, phones, emails, securityAttributes, false);
-		int insertIndex = (names == null ? 0 : names.size());
-		insertElements(insertIndex, surname, userID, affiliation);
+		try {
+			int insertIndex = (names == null ? 0 : names.size());
+			insertElements(insertIndex, surname, userID, affiliation);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 
 	/**

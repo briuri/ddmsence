@@ -103,14 +103,20 @@ public final class Position extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Position(Element element) throws InvalidDDMSException {
-		setXOMElement(element, false);
-		List<String> tuple = Arrays.asList(getCoordinatesAsXsList().split(" "));
-		_cachedCoordinates = new ArrayList<Double>();
-		for (String coordinate : tuple) {
-			_cachedCoordinates.add(getStringAsDouble(coordinate));
+		try {
+			setXOMElement(element, false);
+			List<String> tuple = Arrays.asList(getCoordinatesAsXsList().split(" "));
+			_cachedCoordinates = new ArrayList<Double>();
+			for (String coordinate : tuple) {
+				_cachedCoordinates.add(getStringAsDouble(coordinate));
+			}
+			_cachedSrsAttributes = new SRSAttributes(element);
+			setXOMElement(element, true);
+
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		_cachedSrsAttributes = new SRSAttributes(element);
-		setXOMElement(element, true);
 	}
 	
 	/**
@@ -121,14 +127,19 @@ public final class Position extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Position(List<Double> coordinates, SRSAttributes srsAttributes) throws InvalidDDMSException {
-		if (coordinates == null)
-			coordinates = Collections.emptyList();
-		_cachedSrsAttributes = (srsAttributes == null ? new SRSAttributes(null, null, null, null) : srsAttributes);
-		_cachedCoordinates = coordinates;
-		Element element = Util.buildElement(GML_PREFIX, Position.NAME, GML_NAMESPACE, Util.getXsList(coordinates));
-		if (srsAttributes != null)
-			srsAttributes.addTo(element);
-		setXOMElement(element, true);
+		try {
+			if (coordinates == null)
+				coordinates = Collections.emptyList();
+			_cachedSrsAttributes = (srsAttributes == null ? new SRSAttributes(null, null, null, null) : srsAttributes);
+			_cachedCoordinates = coordinates;
+			Element element = Util.buildElement(GML_PREFIX, Position.NAME, GML_NAMESPACE, Util.getXsList(coordinates));
+			if (srsAttributes != null)
+				srsAttributes.addTo(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**

@@ -48,7 +48,12 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	 * @param value		the value of the element's child text
 	 */
 	protected AbstractSimpleString(String name, String value) throws InvalidDDMSException {
-		setXOMElement(Util.buildDDMSElement(name, value), false);
+		try {
+			setXOMElement(Util.buildDDMSElement(name, value), false);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**

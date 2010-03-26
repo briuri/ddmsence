@@ -67,18 +67,23 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public BoundingGeometry(Element element) throws InvalidDDMSException {
-		Util.requireDDMSValue("boundingGeometry element", element);
-		_cachedPolygons = new ArrayList<Polygon>();
-		_cachedPoints = new ArrayList<Point>();
-		Elements polygons = element.getChildElements(Polygon.NAME, GML_NAMESPACE);
-		for (int i = 0; i < polygons.size(); i++) {
-			_cachedPolygons.add(new Polygon(polygons.get(i)));
+		try {
+			Util.requireDDMSValue("boundingGeometry element", element);
+			_cachedPolygons = new ArrayList<Polygon>();
+			_cachedPoints = new ArrayList<Point>();
+			Elements polygons = element.getChildElements(Polygon.NAME, GML_NAMESPACE);
+			for (int i = 0; i < polygons.size(); i++) {
+				_cachedPolygons.add(new Polygon(polygons.get(i)));
+			}
+			Elements points = element.getChildElements(Point.NAME, GML_NAMESPACE);
+			for (int i = 0; i < points.size(); i++) {
+				_cachedPoints.add(new Point(points.get(i)));
+			}
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		Elements points = element.getChildElements(Point.NAME, GML_NAMESPACE);
-		for (int i = 0; i < points.size(); i++) {
-			_cachedPoints.add(new Point(points.get(i)));
-		}
-		setXOMElement(element, true);
 	}
 	
 	/**
@@ -89,18 +94,23 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public BoundingGeometry(List<Polygon> polygons, List<Point> points) throws InvalidDDMSException {
-		if (polygons == null)
-			polygons = Collections.emptyList();
-		if (points == null)
-			points = Collections.emptyList();
-		Element element = Util.buildDDMSElement(BoundingGeometry.NAME, null);
-		for (Polygon polygon : polygons)
-			element.appendChild(polygon.getXOMElementCopy());
-		for (Point point : points)
-			element.appendChild(point.getXOMElementCopy());
-		_cachedPolygons = polygons;
-		_cachedPoints = points;
-		setXOMElement(element, true);
+		try {
+			if (polygons == null)
+				polygons = Collections.emptyList();
+			if (points == null)
+				points = Collections.emptyList();
+			Element element = Util.buildDDMSElement(BoundingGeometry.NAME, null);
+			for (Polygon polygon : polygons)
+				element.appendChild(polygon.getXOMElementCopy());
+			for (Point point : points)
+				element.appendChild(point.getXOMElementCopy());
+			_cachedPolygons = polygons;
+			_cachedPoints = points;
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 		
 	/**

@@ -80,22 +80,27 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public SubjectCoverage(Element element) throws InvalidDDMSException {
-		Util.requireDDMSValue("subjectCoverage element", element);
-		Element subjectElement = element.getChildElements().get(0);
-		_cachedKeywords = new ArrayList<Keyword>();
-		_cachedCategories = new ArrayList<Category>();
-		if (subjectElement != null) {
-			Elements keywords = subjectElement.getChildElements(Keyword.NAME, subjectElement.getNamespaceURI());
-			for (int i = 0; i < keywords.size(); i++) {
-				_cachedKeywords.add(new Keyword(keywords.get(i)));
+		try {
+			Util.requireDDMSValue("subjectCoverage element", element);
+			Element subjectElement = element.getChildElements().get(0);
+			_cachedKeywords = new ArrayList<Keyword>();
+			_cachedCategories = new ArrayList<Category>();
+			if (subjectElement != null) {
+				Elements keywords = subjectElement.getChildElements(Keyword.NAME, subjectElement.getNamespaceURI());
+				for (int i = 0; i < keywords.size(); i++) {
+					_cachedKeywords.add(new Keyword(keywords.get(i)));
+				}
+				Elements categories = subjectElement.getChildElements(Category.NAME, subjectElement.getNamespaceURI());
+				for (int i = 0; i < categories.size(); i++) {
+					_cachedCategories.add(new Category(categories.get(i)));
+				}
 			}
-			Elements categories = subjectElement.getChildElements(Category.NAME, subjectElement.getNamespaceURI());
-			for (int i = 0; i < categories.size(); i++) {
-				_cachedCategories.add(new Category(categories.get(i)));
-			}
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		_cachedSecurityAttributes = new SecurityAttributes(element);
-		setXOMElement(element, true);
 	}
 	
 	/**
@@ -107,25 +112,31 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public SubjectCoverage(List<Keyword> keywords, List<Category> categories, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		if (keywords == null)
-			keywords = Collections.emptyList();
-		if (categories == null)
-			categories = Collections.emptyList();
-		Element subjectElement = Util.buildDDMSElement(SUBJECT_NAME, null);
-		for (Keyword keyword : keywords) {
-			subjectElement.appendChild(keyword.getXOMElementCopy());
+		try {
+			if (keywords == null)
+				keywords = Collections.emptyList();
+			if (categories == null)
+				categories = Collections.emptyList();
+			Element subjectElement = Util.buildDDMSElement(SUBJECT_NAME, null);
+			for (Keyword keyword : keywords) {
+				subjectElement.appendChild(keyword.getXOMElementCopy());
+			}
+			for (Category category : categories) {
+				subjectElement.appendChild(category.getXOMElementCopy());
+			}
+			Element element = Util.buildDDMSElement(SubjectCoverage.NAME, null);
+			element.appendChild(subjectElement);
+
+			_cachedKeywords = keywords;
+			_cachedCategories = categories;
+			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
+				: securityAttributes);
+			_cachedSecurityAttributes.addTo(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		for (Category category : categories) {
-			subjectElement.appendChild(category.getXOMElementCopy());
-		}
-		Element element = Util.buildDDMSElement(SubjectCoverage.NAME, null);
-		element.appendChild(subjectElement);
-		
-		_cachedKeywords = keywords;
-		_cachedCategories = categories;
-		_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null) : securityAttributes);
-		_cachedSecurityAttributes.addTo(element);
-		setXOMElement(element, true);
 	}
 
 	/**

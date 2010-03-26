@@ -105,20 +105,26 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public TemporalCoverage(Element element) throws InvalidDDMSException {
-		Util.requireDDMSValue("temporalCoverage element", element);
-		Element periodElement = element.getFirstChildElement(TIME_PERIOD_NAME, element.getNamespaceURI());
-		if (periodElement != null) {
-			Element nameElement = periodElement.getFirstChildElement(TIME_PERIOD_NAME_NAME, element.getNamespaceURI());
-			if (nameElement != null && !Util.isEmpty(nameElement.getValue()))
-				_cachedName = nameElement.getValue();
-			Element startElement = periodElement.getFirstChildElement(START_NAME, element.getNamespaceURI());
-			Element endElement = periodElement.getFirstChildElement("end", element.getNamespaceURI());
-			String startString = (startElement == null ? "" : startElement.getValue());
-			String endString = (endElement == null ? "" : endElement.getValue());
-			loadDateCaches(startString, endString);
+		try {
+			Util.requireDDMSValue("temporalCoverage element", element);
+			Element periodElement = element.getFirstChildElement(TIME_PERIOD_NAME, element.getNamespaceURI());
+			if (periodElement != null) {
+				Element nameElement = periodElement.getFirstChildElement(TIME_PERIOD_NAME_NAME, element
+					.getNamespaceURI());
+				if (nameElement != null && !Util.isEmpty(nameElement.getValue()))
+					_cachedName = nameElement.getValue();
+				Element startElement = periodElement.getFirstChildElement(START_NAME, element.getNamespaceURI());
+				Element endElement = periodElement.getFirstChildElement("end", element.getNamespaceURI());
+				String startString = (startElement == null ? "" : startElement.getValue());
+				String endString = (endElement == null ? "" : endElement.getValue());
+				loadDateCaches(startString, endString);
+			}
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		_cachedSecurityAttributes = new SecurityAttributes(element);
-		setXOMElement(element, true);
 	}
 		
 	/**
@@ -131,22 +137,28 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public TemporalCoverage(String timePeriodName, String startString, String endString, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		Element periodElement = Util.buildDDMSElement(TIME_PERIOD_NAME, null);
-		if (!Util.isEmpty(timePeriodName))
+		try {
+			Element periodElement = Util.buildDDMSElement(TIME_PERIOD_NAME, null);
+			if (!Util.isEmpty(timePeriodName))
 				_cachedName = timePeriodName;
-		startString = (Util.isEmpty(startString) ? DEFAULT_VALUE : startString);
-		endString = (Util.isEmpty(endString) ? DEFAULT_VALUE : endString);
-		Util.addDDMSChildElement(periodElement, TIME_PERIOD_NAME_NAME, timePeriodName);
-		periodElement.appendChild(Util.buildDDMSElement(START_NAME, startString));
-		periodElement.appendChild(Util.buildDDMSElement(END_NAME, endString));
-		loadDateCaches(startString, endString);
-		
-		Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
-		element.appendChild(periodElement);
-		
-		_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null) : securityAttributes);
-		_cachedSecurityAttributes.addTo(element);
-		setXOMElement(element, true);
+			startString = (Util.isEmpty(startString) ? DEFAULT_VALUE : startString);
+			endString = (Util.isEmpty(endString) ? DEFAULT_VALUE : endString);
+			Util.addDDMSChildElement(periodElement, TIME_PERIOD_NAME_NAME, timePeriodName);
+			periodElement.appendChild(Util.buildDDMSElement(START_NAME, startString));
+			periodElement.appendChild(Util.buildDDMSElement(END_NAME, endString));
+			loadDateCaches(startString, endString);
+
+			Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+			element.appendChild(periodElement);
+
+			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
+				: securityAttributes);
+			_cachedSecurityAttributes.addTo(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 			
 	/**

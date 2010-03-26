@@ -121,16 +121,22 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	 * @param element the XOM element representing this component
 	 */
 	protected AbstractProducer(Element element) throws InvalidDDMSException {
-		Util.requireDDMSValue("producer element", element);
-		Element entityElement = element.getChildElements().get(0);
-		if (entityElement != null) {
-			_cachedNames = Util.getDDMSChildValues(entityElement, NAME_NAME);
-			_cachedPhones = Util.getDDMSChildValues(entityElement, PHONE_NAME);
-			_cachedEmails = Util.getDDMSChildValues(entityElement, EMAIL_NAME);
+		try {
+			Util.requireDDMSValue("producer element", element);
+			Element entityElement = element.getChildElements().get(0);
+			if (entityElement != null) {
+				_cachedNames = Util.getDDMSChildValues(entityElement, NAME_NAME);
+				_cachedPhones = Util.getDDMSChildValues(entityElement, PHONE_NAME);
+				_cachedEmails = Util.getDDMSChildValues(entityElement, EMAIL_NAME);
+			}
+			_producerType = element.getLocalName();
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		_producerType = element.getLocalName();		
-		_cachedSecurityAttributes = new SecurityAttributes(element);
-		setXOMElement(element, true);
+		
 	}
 	
 	/**
@@ -147,33 +153,39 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	 */
 	protected AbstractProducer(String producerType, String entityType, List<String> names, List<String> phones,
 		List<String> emails, SecurityAttributes securityAttributes, boolean validateNow) throws InvalidDDMSException {
-		Util.requireDDMSValue("entity type", entityType);
-		if (names == null)
-			names = Collections.emptyList();
-		if (phones == null)
-			phones = Collections.emptyList();
-		if (emails == null)
-			emails = Collections.emptyList();
-		Element entityElement = Util.buildDDMSElement(entityType, null);
-		for (String name : names) {
-			entityElement.appendChild(Util.buildDDMSElement(NAME_NAME, name));
+		try {
+			Util.requireDDMSValue("entity type", entityType);
+			if (names == null)
+				names = Collections.emptyList();
+			if (phones == null)
+				phones = Collections.emptyList();
+			if (emails == null)
+				emails = Collections.emptyList();
+			Element entityElement = Util.buildDDMSElement(entityType, null);
+			for (String name : names) {
+				entityElement.appendChild(Util.buildDDMSElement(NAME_NAME, name));
+			}
+			for (String phone : phones) {
+				entityElement.appendChild(Util.buildDDMSElement(PHONE_NAME, phone));
+			}
+			for (String email : emails) {
+				entityElement.appendChild(Util.buildDDMSElement(EMAIL_NAME, email));
+			}
+			Element element = Util.buildDDMSElement(producerType, null);
+			element.appendChild(entityElement);
+
+			_cachedNames = names;
+			_cachedPhones = phones;
+			_cachedEmails = emails;
+			_producerType = producerType;
+			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
+				: securityAttributes);
+			_cachedSecurityAttributes.addTo(element);
+			setXOMElement(element, validateNow);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		for (String phone : phones) {
-			entityElement.appendChild(Util.buildDDMSElement(PHONE_NAME, phone));
-		}
-		for (String email : emails) {
-			entityElement.appendChild(Util.buildDDMSElement(EMAIL_NAME, email));
-		}
-		Element element = Util.buildDDMSElement(producerType, null);
-		element.appendChild(entityElement);
-		
-		_cachedNames = names;
-		_cachedPhones = phones;
-		_cachedEmails = emails;
-		_producerType = producerType;
-		_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null) : securityAttributes);
-		_cachedSecurityAttributes.addTo(element);
-		setXOMElement(element, validateNow);
 	}
 	
 	/**

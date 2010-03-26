@@ -84,12 +84,17 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public BoundingBox(Element element) throws InvalidDDMSException {
-		Util.requireDDMSValue("boundingBox element", element);
-		_cachedWestBL = getChildTextAsDouble(element, WEST_BL_NAME);
-		_cachedEastBL = getChildTextAsDouble(element, EAST_BL_NAME);
-		_cachedSouthBL = getChildTextAsDouble(element, SOUTH_BL_NAME);
-		_cachedNorthBL = getChildTextAsDouble(element, NORTH_BL_NAME);
-		setXOMElement(element, true);
+		try {
+			Util.requireDDMSValue("boundingBox element", element);
+			_cachedWestBL = getChildTextAsDouble(element, WEST_BL_NAME);
+			_cachedEastBL = getChildTextAsDouble(element, EAST_BL_NAME);
+			_cachedSouthBL = getChildTextAsDouble(element, SOUTH_BL_NAME);
+			_cachedNorthBL = getChildTextAsDouble(element, NORTH_BL_NAME);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -102,16 +107,21 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public BoundingBox(double westBL, double eastBL, double southBL, double northBL) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(BoundingBox.NAME, null);
-		element.appendChild(Util.buildDDMSElement(WEST_BL_NAME, String.valueOf(westBL)));
-		element.appendChild(Util.buildDDMSElement(EAST_BL_NAME, String.valueOf(eastBL)));
-		element.appendChild(Util.buildDDMSElement(SOUTH_BL_NAME, String.valueOf(southBL)));
-		element.appendChild(Util.buildDDMSElement(NORTH_BL_NAME, String.valueOf(northBL)));
-		_cachedWestBL = Double.valueOf(westBL);
-		_cachedEastBL = Double.valueOf(eastBL);
-		_cachedSouthBL = Double.valueOf(southBL);
-		_cachedNorthBL = Double.valueOf(northBL);
-		setXOMElement(element, true);
+		try {
+			Element element = Util.buildDDMSElement(BoundingBox.NAME, null);
+			element.appendChild(Util.buildDDMSElement(WEST_BL_NAME, String.valueOf(westBL)));
+			element.appendChild(Util.buildDDMSElement(EAST_BL_NAME, String.valueOf(eastBL)));
+			element.appendChild(Util.buildDDMSElement(SOUTH_BL_NAME, String.valueOf(southBL)));
+			element.appendChild(Util.buildDDMSElement(NORTH_BL_NAME, String.valueOf(northBL)));
+			_cachedWestBL = Double.valueOf(westBL);
+			_cachedEastBL = Double.valueOf(eastBL);
+			_cachedSouthBL = Double.valueOf(southBL);
+			_cachedNorthBL = Double.valueOf(northBL);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 		
 	/**

@@ -82,9 +82,14 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public CountryCode(String parentType, Element element) throws InvalidDDMSException {
-		_parentType = parentType;
-		Util.requireDDMSValue("countryCode element", element);
-		setXOMElement(element, true);
+		try {
+			_parentType = parentType;
+			Util.requireDDMSValue("countryCode element", element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -97,9 +102,13 @@ public final class CountryCode extends AbstractQualifierValue {
 	 */
 	public CountryCode(String parentType, String qualifier, String value) throws InvalidDDMSException {
 		super(CountryCode.NAME, qualifier, value, false);
-		_parentType = parentType;
-		setXOMElement(getXOMElement(), true);
-		
+		try {
+			_parentType = parentType;
+			setXOMElement(getXOMElement(), true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**

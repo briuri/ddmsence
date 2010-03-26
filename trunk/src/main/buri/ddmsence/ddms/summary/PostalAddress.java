@@ -82,24 +82,30 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public PostalAddress(Element element) throws InvalidDDMSException {
-		Util.requireDDMSValue("postalAddress element", element);
-		_cachedStreets = Util.getDDMSChildValues(element, STREET_NAME);
-		Element cityElement = element.getFirstChildElement(CITY_NAME, element.getNamespaceURI());
-		if (cityElement != null)
-			_cachedCity = cityElement.getValue();
-		Element stateElement = element.getFirstChildElement(STATE_NAME, element.getNamespaceURI());
-		if (stateElement != null)
-			_cachedState = stateElement.getValue();
-		Element provinceElement = element.getFirstChildElement(PROVINCE_NAME, element.getNamespaceURI());
-		if (provinceElement != null)
-			_cachedProvince = provinceElement.getValue();
-		Element postalCodeElement = element.getFirstChildElement(POSTAL_CODE_NAME, element.getNamespaceURI());
-		if (postalCodeElement != null)
-			_cachedPostalCode = postalCodeElement.getValue();
-		Element countryCodeElement = element.getFirstChildElement(CountryCode.NAME, element.getNamespaceURI());
-		if (countryCodeElement != null)
-			_cachedCountryCode = new CountryCode(PostalAddress.NAME, countryCodeElement);
-		setXOMElement(element, true);
+		try {
+			Util.requireDDMSValue("postalAddress element", element);
+			String namespace = element.getNamespaceURI();
+			_cachedStreets = Util.getDDMSChildValues(element, STREET_NAME);
+			Element cityElement = element.getFirstChildElement(CITY_NAME, namespace);
+			if (cityElement != null)
+				_cachedCity = cityElement.getValue();
+			Element stateElement = element.getFirstChildElement(STATE_NAME, namespace);
+			if (stateElement != null)
+				_cachedState = stateElement.getValue();
+			Element provinceElement = element.getFirstChildElement(PROVINCE_NAME, namespace);
+			if (provinceElement != null)
+				_cachedProvince = provinceElement.getValue();
+			Element postalCodeElement = element.getFirstChildElement(POSTAL_CODE_NAME, namespace);
+			if (postalCodeElement != null)
+				_cachedPostalCode = postalCodeElement.getValue();
+			Element countryCodeElement = element.getFirstChildElement(CountryCode.NAME, namespace);
+			if (countryCodeElement != null)
+				_cachedCountryCode = new CountryCode(PostalAddress.NAME, countryCodeElement);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -114,27 +120,32 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public PostalAddress(List<String> streets, String city, String stateOrProvince, String postalCode, CountryCode countryCode, boolean hasState) throws InvalidDDMSException {
-		if (streets == null)
-			streets = Collections.emptyList();
-		Element element = Util.buildDDMSElement(PostalAddress.NAME, null);
-		for (String street : streets) {
-			element.appendChild(Util.buildDDMSElement(STREET_NAME, street));
+		try {
+			if (streets == null)
+				streets = Collections.emptyList();
+			Element element = Util.buildDDMSElement(PostalAddress.NAME, null);
+			for (String street : streets) {
+				element.appendChild(Util.buildDDMSElement(STREET_NAME, street));
+			}
+			Util.addDDMSChildElement(element, CITY_NAME, city);
+			if (hasState)
+				Util.addDDMSChildElement(element, STATE_NAME, stateOrProvince);
+			else
+				Util.addDDMSChildElement(element, PROVINCE_NAME, stateOrProvince);
+			Util.addDDMSChildElement(element, POSTAL_CODE_NAME, postalCode);
+			if (countryCode != null)
+				element.appendChild(countryCode.getXOMElementCopy());
+			_cachedStreets = streets;
+			_cachedCity = city;
+			_cachedState = hasState ? stateOrProvince : "";
+			_cachedProvince = hasState ? "" : stateOrProvince;
+			_cachedPostalCode = postalCode;
+			_cachedCountryCode = countryCode;
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		Util.addDDMSChildElement(element, CITY_NAME, city);
-		if (hasState)
-			Util.addDDMSChildElement(element, STATE_NAME, stateOrProvince);
-		else
-			Util.addDDMSChildElement(element, PROVINCE_NAME, stateOrProvince);
-		Util.addDDMSChildElement(element, POSTAL_CODE_NAME, postalCode);
-		if (countryCode != null)
-			element.appendChild(countryCode.getXOMElementCopy());
-		_cachedStreets = streets;
-		_cachedCity = city;
-		_cachedState = hasState ? stateOrProvince : ""; 
-		_cachedProvince = hasState ? "" : stateOrProvince;
-		_cachedPostalCode = postalCode;
-		_cachedCountryCode = countryCode;
-		setXOMElement(element, true);
 	}
 
 	/**

@@ -75,8 +75,13 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public VirtualCoverage(Element element) throws InvalidDDMSException {
-		_cachedSecurityAttributes = new SecurityAttributes(element);
-		setXOMElement(element, true);
+		try {
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -88,12 +93,18 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public VirtualCoverage(String address, String protocol, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(VirtualCoverage.NAME, null);
-		Util.addDDMSAttribute(element, ADDRESS_NAME, address);
-		Util.addDDMSAttribute(element, PROTOCOL_NAME, protocol);
-		_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null) : securityAttributes);
-		_cachedSecurityAttributes.addTo(element);
-		setXOMElement(element, true);
+		try {
+			Element element = Util.buildDDMSElement(VirtualCoverage.NAME, null);
+			Util.addDDMSAttribute(element, ADDRESS_NAME, address);
+			Util.addDDMSAttribute(element, PROTOCOL_NAME, protocol);
+			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
+				: securityAttributes);
+			_cachedSecurityAttributes.addTo(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 
 	/**

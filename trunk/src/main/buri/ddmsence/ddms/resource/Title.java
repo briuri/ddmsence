@@ -65,8 +65,13 @@ public final class Title extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Title(Element element) throws InvalidDDMSException {
-		_cachedSecurityAttributes = new SecurityAttributes(element);
-		setXOMElement(element, true);
+		try {
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -78,11 +83,16 @@ public final class Title extends AbstractSimpleString {
 	 */
 	public Title(String title, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(Title.NAME, title);
-		Element element = getXOMElement();
-		_cachedSecurityAttributes = securityAttributes;
-		if (securityAttributes != null)
-			securityAttributes.addTo(element);
-		setXOMElement(element, true);
+		try {
+			Element element = getXOMElement();
+			_cachedSecurityAttributes = securityAttributes;
+			if (securityAttributes != null)
+				securityAttributes.addTo(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 		
 	/**
