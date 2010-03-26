@@ -168,6 +168,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	public void testName() throws InvalidDDMSException {
 		RelatedResource component = testConstructor(WILL_SUCCEED, getFixtureElement());
 		assertEquals(RelatedResource.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + RelatedResource.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() throws InvalidDDMSException {

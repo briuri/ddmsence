@@ -111,6 +111,8 @@ public class KeywordTest extends AbstractComponentTestCase {
 	public void testName() {
 		Keyword component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Keyword.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + Keyword.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

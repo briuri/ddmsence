@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.format;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.Util;
 
 /**
@@ -143,9 +144,16 @@ public final class Format extends AbstractBaseComponent {
 		if (Util.isEmpty(getMedium()) && mediaElement.getChildElements(MEDIUM_NAME, mediaElement.getNamespaceURI()).size() == 1)
 			addWarning("A ddms:medium element was found with no value.");
 		if (getExtent() != null)
-			addWarnings(getExtent().getValidationWarnings());
+			addWarnings(getExtent().getValidationWarnings(), false);
 	}
-		
+	
+	/**
+	 * @see AbstractBaseComponent#getLocatorSuffix()
+	 */
+	protected String getLocatorSuffix() {
+		return (ValidationMessage.ELEMENT_PREFIX + DDMS_PREFIX + ":" + MEDIA_NAME);
+	}
+	
 	/**
 	 * @see AbstractBaseComponent#toHTML()
 	 */

@@ -134,6 +134,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	public void testName() {
 		SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(SubjectCoverage.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + SubjectCoverage.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

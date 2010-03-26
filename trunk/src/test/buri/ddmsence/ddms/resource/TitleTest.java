@@ -116,6 +116,8 @@ public class TitleTest extends AbstractComponentTestCase {
 	public void testName() {
 		Title component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Title.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + Title.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

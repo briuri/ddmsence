@@ -104,7 +104,7 @@ public final class Description extends AbstractSimpleString {
 				
 		if (Util.isEmpty(getValue()))
 			addWarning("A ddms:description element was found with no description value.");
-		addWarnings(getSecurityAttributes().getValidationWarnings());
+		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	
 	/**

@@ -126,6 +126,8 @@ public class SourceTest extends AbstractComponentTestCase {
 	public void testName() {
 		Source component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Source.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + Source.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {
@@ -165,7 +167,8 @@ public class SourceTest extends AbstractComponentTestCase {
 		component = testConstructor(WILL_SUCCEED, element);
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-		assertEquals("A completely empty ddms:source element was found.", component.getValidationWarnings().get(0).getText());		
+		assertEquals("A completely empty ddms:source element was found.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:source", component.getValidationWarnings().get(0).getLocator());
 	}
 	
 	public void testConstructorEquality() {

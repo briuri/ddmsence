@@ -129,6 +129,8 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	public void testName() {
 		VerticalExtent component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(VerticalExtent.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + VerticalExtent.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

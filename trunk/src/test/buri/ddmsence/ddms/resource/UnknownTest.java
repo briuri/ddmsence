@@ -146,6 +146,8 @@ public class UnknownTest extends AbstractComponentTestCase {
 	public void testName() {
 		Unknown component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(TEST_PRODUCER_TYPE, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + TEST_PRODUCER_TYPE, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

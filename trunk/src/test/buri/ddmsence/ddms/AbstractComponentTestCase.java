@@ -21,9 +21,8 @@ package buri.ddmsence.ddms;
 
 import java.io.File;
 
-import nu.xom.Element;
-
 import junit.framework.TestCase;
+import nu.xom.Element;
 import buri.ddmsence.util.DDMSReader;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;

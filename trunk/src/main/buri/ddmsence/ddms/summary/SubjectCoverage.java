@@ -27,6 +27,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.util.Util;
 
@@ -147,12 +148,19 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			throw new InvalidDDMSException("At least 1 keyword or category must exist.");
 		
 		for (Keyword keyword : getKeywords()) {
-			addWarnings(keyword.getValidationWarnings());
+			addWarnings(keyword.getValidationWarnings(), false);
 		}
 		for (Category category : getCategories()) {
-			addWarnings(category.getValidationWarnings());
+			addWarnings(category.getValidationWarnings(), false);
 		}
-		addWarnings(getSecurityAttributes().getValidationWarnings());
+		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#getLocatorSuffix()
+	 */
+	protected String getLocatorSuffix() {
+		return (ValidationMessage.ELEMENT_PREFIX + DDMS_PREFIX + ":" + SUBJECT_NAME);
 	}
 	
 	/**

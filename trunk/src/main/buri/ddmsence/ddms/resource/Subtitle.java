@@ -104,7 +104,7 @@ public final class Subtitle extends AbstractSimpleString {
 		
 		if (Util.isEmpty(getValue()))
 			addWarning("A ddms:subtitle element was found with no subtitle value.");
-		addWarnings(getSecurityAttributes().getValidationWarnings());
+		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 		
 	/**

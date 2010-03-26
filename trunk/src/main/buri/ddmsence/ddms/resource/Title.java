@@ -104,7 +104,7 @@ public final class Title extends AbstractSimpleString {
 		getSecurityAttributes().requireClassification();
 		getSecurityAttributes().requireOwnerProducer();
 		
-		addWarnings(getSecurityAttributes().getValidationWarnings());
+		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 			
 	/**

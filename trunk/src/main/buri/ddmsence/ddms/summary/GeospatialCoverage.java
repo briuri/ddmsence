@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.summary;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.util.Util;
 
@@ -172,23 +173,23 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		
 		int validComponents = 0;
 		if (getGeographicIdentifier() != null) {
-			addWarnings(getGeographicIdentifier().getValidationWarnings());
+			addWarnings(getGeographicIdentifier().getValidationWarnings(), false);
 			validComponents++;
 		}
 		if (getBoundingBox() != null) {
-			addWarnings(getBoundingBox().getValidationWarnings());
+			addWarnings(getBoundingBox().getValidationWarnings(), false);
 			validComponents++;
 		}
 		if (getBoundingGeometry() != null) {
-			addWarnings(getBoundingGeometry().getValidationWarnings());
+			addWarnings(getBoundingGeometry().getValidationWarnings(), false);
 			validComponents++;
 		}
 		if (getPostalAddress() != null) {
-			addWarnings(getPostalAddress().getValidationWarnings());
+			addWarnings(getPostalAddress().getValidationWarnings(), false);
 			validComponents++;
 		}
 		if (getVerticalExtent() != null) {
-			addWarnings(getVerticalExtent().getValidationWarnings());
+			addWarnings(getVerticalExtent().getValidationWarnings(), false);
 			validComponents++;
 		}
 		if (validComponents == 0) {
@@ -198,7 +199,14 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			throw new InvalidDDMSException("A geographicIdentifier containing a facilityIdentifier cannot be used in tandem with any other coverage elements.");
 		}	
 		
-		addWarnings(getSecurityAttributes().getValidationWarnings());
+		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#getLocatorSuffix()
+	 */
+	protected String getLocatorSuffix() {
+		return (ValidationMessage.ELEMENT_PREFIX + DDMS_PREFIX + ":" + GEOSPATIAL_EXTENT_NAME);
 	}
 	
 	/**

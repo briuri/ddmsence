@@ -129,7 +129,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 			throw new InvalidDDMSException("At least 1 link must exist.");
 		
 		for (Link link : getLinks())
-			addWarnings(link.getValidationWarnings());
+			addWarnings(link.getValidationWarnings(), false);
 	}
 	
 	/**

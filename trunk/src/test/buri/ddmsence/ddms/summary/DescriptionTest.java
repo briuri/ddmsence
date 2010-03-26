@@ -118,6 +118,8 @@ public class DescriptionTest extends AbstractComponentTestCase {
 	public void testName() {
 		Description component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Description.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + Description.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() throws InvalidDDMSException {
@@ -150,6 +152,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A ddms:description element was found with no description value.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:description", component.getValidationWarnings().get(0).getLocator());
 	}
 	
 	public void testConstructorEquality() {

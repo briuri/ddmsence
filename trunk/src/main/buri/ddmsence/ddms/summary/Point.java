@@ -173,8 +173,8 @@ public final class Point extends AbstractBaseComponent {
 		Util.requireDDMSValue(ID_NAME, getId());
 		Util.requireValidNCName(getId());
 		
-		addWarnings(getPosition().getValidationWarnings());
-		addWarnings(getSRSAttributes().getValidationWarnings());
+		addWarnings(getPosition().getValidationWarnings(), false);
+		addWarnings(getSRSAttributes().getValidationWarnings(), true);
 	}
 	
 	/**

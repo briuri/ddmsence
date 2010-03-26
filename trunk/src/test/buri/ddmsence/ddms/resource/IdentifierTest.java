@@ -114,6 +114,8 @@ public class IdentifierTest extends AbstractComponentTestCase {
 	public void testName() {
 		Identifier component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Identifier.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + Identifier.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

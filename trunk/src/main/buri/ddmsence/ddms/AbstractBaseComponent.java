@@ -43,6 +43,9 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 
 	private List<ValidationMessage> _warnings;
 	private Element _element;
+
+	/** The DDMS prefix, as defined in the ddms.prefix property */
+	public static final String DDMS_PREFIX = PropertyReader.getProperty("ddms.prefix");
 	
 	/** The GML prefix */
 	public static final String GML_PREFIX = PropertyReader.getProperty("gml.prefix");
@@ -71,12 +74,30 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 	
 	/**
-	 * Will return an empty string if the name is not set, but this cannot occur after instantiation.
+	 * Will return an empty string if the element is not set, but this cannot occur after instantiation.
+	 * 
+	 * @see IDDMSComponent#getPrefix()
+	 */
+	public String getPrefix() {
+		return (getXOMElement() == null ? "" : getXOMElement().getNamespacePrefix());
+	}
+	
+	/**
+	 * Will return an empty string if the element is not set, but this cannot occur after instantiation.
 	 * 
 	 * @see IDDMSComponent#getName()
 	 */
 	public String getName() {
 		return (getXOMElement() == null ? "" : getXOMElement().getLocalName());
+	}
+	
+	/**
+	 * Will return an empty string if the element is not set, but this cannot occur after instantiation.
+	 * 
+	 * @see IDDMSComponent#getQualifiedName()
+	 */
+	public String getQualifiedName() {
+		return (getXOMElement() == null ? "" : getXOMElement().getQualifiedName());
 	}
 	
 	/**
@@ -247,21 +268,50 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 	
 	/**
+	 * Can be overridden to change the locator string used in warnings and errors.
+	 * 
+	 * <p>
+	 * For components such as Format, there are wrapper elements that are not
+	 * implemented as Java objects. These elements should be included in the XPath
+	 * string used to identify the source of the error.
+	 * </p>
+	 * 
+	 * <p>For example, if a ddms:extent element has a warning and the ddms:format
+	 * element reports it, the locator information should be "/ddms:format/ddms:Media/ddms:extent"
+	 * and not the default of "/ddms:format/ddms:extent"</p>
+	 * 
+	 * @return an empty string, unless overridden.
+	 */
+	protected String getLocatorSuffix() {
+		return ("");
+	}
+	
+	/**
 	 * Convenience method to create a warning and add it to the list of validation warnings.
 	 * 
 	 * @param text the description text
 	 */
 	protected void addWarning(String text) {
-		getWarnings().add(ValidationMessage.newWarning(text));
+		getWarnings().add(ValidationMessage.newWarning(text, getQualifiedName() + getLocatorSuffix()));
 	}
 	
 	/**
 	 * Convenience method to add multiple warnings to the list of validation warnings.
 	 * 
+	 * <p>
+	 * Child locator information will be prefixed with the parent (this) locator information.
+	 * </p>
+	 * 
 	 * @param warnings the list of validation messages to add
+	 * @param forAttributes, if true, the locator suffix is not used, because the attributes will
+	 * be for the topmost element (for example, warnings for gml:Polygon's security attributes
+	 * should not end up with a locator of /gml:Polygon/gml:exterior/gml:LinearRing).
 	 */
-	protected void addWarnings(List<ValidationMessage> warnings) {
-		getWarnings().addAll(warnings);
+	protected void addWarnings(List<ValidationMessage> warnings, boolean forAttributes) {
+		for (ValidationMessage warning : warnings) {
+			String newLocator = getQualifiedName() + (forAttributes ? "" : getLocatorSuffix()) + warning.getLocator();
+			getWarnings().add(ValidationMessage.newWarning(warning.getText(), newLocator));
+		}
 	}
 	
 	/**

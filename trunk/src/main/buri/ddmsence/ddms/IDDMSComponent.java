@@ -55,12 +55,26 @@ import nu.xom.Element;
 public interface IDDMSComponent {
 
 	/**
+	 * Accessor for the prefix of the component, without a trailing colon
+	 * 
+	 * @return the prefix
+	 */
+	public String getPrefix();
+	
+	/**
 	 * Accessor for the name of the component
 	 * 
 	 * @return the name, without prefix
 	 */
 	public String getName();
 
+	/**
+	 * Accessor for the name of the component, including the prefix
+	 * 
+	 * @return the name, with prefix if available
+	 */
+	public String getQualifiedName();
+	
 	/**
 	 * Returns a list of any warning messages that occurred during validation. Warnings
 	 * do not prevent a valid component from being formed. A parent component should

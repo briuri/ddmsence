@@ -145,6 +145,8 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	public void testName() {
 		RelatedResources component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(RelatedResources.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + RelatedResources.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

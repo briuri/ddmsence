@@ -128,6 +128,8 @@ public class FormatTest extends AbstractComponentTestCase {
 	public void testName() {
 		Format component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Format.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + Format.NAME, component.getQualifiedName());
 	}
 
 	public void testElementConstructorValid() {
@@ -214,10 +216,14 @@ public class FormatTest extends AbstractComponentTestCase {
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A ddms:medium element was found with no value.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:format/ddms:Media", component.getValidationWarnings().get(0).getLocator());
 		
 		// Nested warnings
 		component = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, new MediaExtent("sizeBytes", ""), TEST_MEDIUM);
 		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals("A qualifier has been set without an accompanying value attribute.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:format/ddms:Media/ddms:extent", component.getValidationWarnings().get(0).getLocator());
+		
 	}
 	
 	public void testConstructorEquality() {

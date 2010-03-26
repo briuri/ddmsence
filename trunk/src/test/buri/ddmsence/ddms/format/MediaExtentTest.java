@@ -116,6 +116,8 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	public void testName() {
 		MediaExtent component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(MediaExtent.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + MediaExtent.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {
@@ -168,6 +170,7 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A qualifier has been set without an accompanying value attribute.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:extent", component.getValidationWarnings().get(0).getLocator());
 		
 		// Neither attribute
 		element = Util.buildDDMSElement(MediaExtent.NAME, null);
@@ -175,6 +178,7 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A completely empty ddms:extent element was found.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:extent", component.getValidationWarnings().get(0).getLocator());
 	}
 	
 	public void testConstructorEquality() {

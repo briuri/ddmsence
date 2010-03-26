@@ -156,6 +156,8 @@ public class LinkTest extends AbstractComponentTestCase {
 	public void testName() throws InvalidDDMSException {
 		Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 		assertEquals(Link.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + Link.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() throws InvalidDDMSException {

@@ -131,6 +131,8 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 	public void testName() {
 		BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(BoundingGeometry.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + BoundingGeometry.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

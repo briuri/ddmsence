@@ -122,6 +122,8 @@ public class CategoryTest extends AbstractComponentTestCase {
 	public void testName() {
 		Category component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Category.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + Category.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

@@ -116,6 +116,8 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	public void testName() {
 		VirtualCoverage component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(VirtualCoverage.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + VirtualCoverage.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {
@@ -158,6 +160,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A completely empty ddms:virtualCoverage element was found.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:virtualCoverage", component.getValidationWarnings().get(0).getLocator());
 	}
 	
 	public void testConstructorEquality() {

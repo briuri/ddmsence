@@ -119,9 +119,9 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 		}
 		
 		for (Polygon polygon : getPolygons())
-			addWarnings(polygon.getValidationWarnings());
+			addWarnings(polygon.getValidationWarnings(), false);
 		for (Point point : getPoints())
-			addWarnings(point.getValidationWarnings());		
+			addWarnings(point.getValidationWarnings(), false);		
 	}
 	
 	/**

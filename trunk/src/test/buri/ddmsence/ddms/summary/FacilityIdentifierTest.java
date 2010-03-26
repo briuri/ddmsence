@@ -117,6 +117,8 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	public void testName() {
 		FacilityIdentifier component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(FacilityIdentifier.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + FacilityIdentifier.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

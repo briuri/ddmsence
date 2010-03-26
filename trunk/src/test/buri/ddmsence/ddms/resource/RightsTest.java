@@ -114,6 +114,8 @@ public class RightsTest extends AbstractComponentTestCase {
 	public void testName() {
 		Rights component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Rights.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + Rights.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {
