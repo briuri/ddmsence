@@ -28,19 +28,21 @@ I have include the <b>.project</b> file if you wish to import the project into E
 One method of the <b>IDDMSComponent</b> interface was removed, which breaks compatibility with 0.9.b. This version is believed to be stable, and is intended to be a limited audience release
 for early feedback.</p>
 
-<b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.c.zip">ddmsence-bin-0.9.c.zip</a></b> (1.8 MB)<br />
-<br />
-<b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.c.zip">ddmsence-src-0.9.c.zip</a></b> (2.5 MB)<br />
+<ul>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.c.zip">ddmsence-bin-0.9.c.zip</a></b> (1.8 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.c.zip">ddmsence-src-0.9.c.zip</a></b> (2.5 MB)</li>
+<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=Milestone%3Dv0.9.c">Issues Resolved in v0.9.c</a></li>
+</ul>
 
 <h3>Older Releases</h3>
 
 <p>Version <b>0.9.b</b> (3/24/2010) is the initial beta release. It provides a full implementation of the core layers of DDMS 3.0, in addition to a few
 sample applications. This version is believed to be stable, and is intended to be a limited audience release for early feedback.</p>
 
-<b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.b.zip">ddmsence-bin-0.9.b.zip</a></b> (1.8 MB)<br />
-<br />
-<b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.b.zip">ddmsence-src-0.9.b.zip</a></b> (2.5 MB)<br />
-
+<ul>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.b.zip">ddmsence-bin-0.9.b.zip</a></b> (1.8 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.b.zip">ddmsence-src-0.9.b.zip</a></b> (2.5 MB)</li>
+</ul>
 
 <h3>Versioning</h3>
 
