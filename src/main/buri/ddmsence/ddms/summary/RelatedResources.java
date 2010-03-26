@@ -99,14 +99,19 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RelatedResources(Element element) throws InvalidDDMSException {
-		Util.requireDDMSValue("RelatedResources element", element);
-		_cachedResources = new ArrayList<RelatedResource>();
-		Elements resources = element.getChildElements(RelatedResource.NAME, element.getNamespaceURI());
-		for (int i = 0; i < resources.size(); i++) {
-			_cachedResources.add(new RelatedResource(resources.get(i)));
-		}		
-		_cachedSecurityAttributes = new SecurityAttributes(element);
-		setXOMElement(element, true);
+		try {
+			Util.requireDDMSValue("RelatedResources element", element);
+			_cachedResources = new ArrayList<RelatedResource>();
+			Elements resources = element.getChildElements(RelatedResource.NAME, element.getNamespaceURI());
+			for (int i = 0; i < resources.size(); i++) {
+				_cachedResources.add(new RelatedResource(resources.get(i)));
+			}
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -119,18 +124,24 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RelatedResources(List<RelatedResource> resources, String relationship, String direction, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(RelatedResources.NAME, null);
-		Util.addDDMSAttribute(element, RELATIONSHIP_NAME, relationship);
-		Util.addDDMSAttribute(element, DIRECTION_NAME, direction);
-		if (resources == null)
-			resources = Collections.emptyList();
-		for (RelatedResource resource : resources) {
-			element.appendChild(resource.getXOMElementCopy());
+		try {
+			Element element = Util.buildDDMSElement(RelatedResources.NAME, null);
+			Util.addDDMSAttribute(element, RELATIONSHIP_NAME, relationship);
+			Util.addDDMSAttribute(element, DIRECTION_NAME, direction);
+			if (resources == null)
+				resources = Collections.emptyList();
+			for (RelatedResource resource : resources) {
+				element.appendChild(resource.getXOMElementCopy());
+			}
+			_cachedResources = resources;
+			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
+				: securityAttributes);
+			_cachedSecurityAttributes.addTo(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		_cachedResources = resources;
-		_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null) : securityAttributes);
-		_cachedSecurityAttributes.addTo(element);
-		setXOMElement(element, true);		
 	}
 	
 	/**

@@ -83,20 +83,25 @@ public final class Format extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Format(Element element) throws InvalidDDMSException {
-		Util.requireDDMSValue("format element", element);
-		Element mediaElement = element.getFirstChildElement(MEDIA_NAME, element.getNamespaceURI());
-		if (mediaElement != null) {
-			Element mimeTypeElement = mediaElement.getFirstChildElement(MIME_TYPE_NAME, element.getNamespaceURI());
-			if (mimeTypeElement != null)
-				_cachedMimeType = mimeTypeElement.getValue();
-			Element extentElement = mediaElement.getFirstChildElement(MediaExtent.NAME, element.getNamespaceURI());
-			if (extentElement != null)
-				_cachedExtent = new MediaExtent(extentElement);
-			Element mediumElement = mediaElement.getFirstChildElement(MEDIUM_NAME, element.getNamespaceURI());
-			if (mediumElement != null)
-				_cachedMedium = mediumElement.getValue();
+		try {
+			Util.requireDDMSValue("format element", element);
+			Element mediaElement = element.getFirstChildElement(MEDIA_NAME, element.getNamespaceURI());
+			if (mediaElement != null) {
+				Element mimeTypeElement = mediaElement.getFirstChildElement(MIME_TYPE_NAME, element.getNamespaceURI());
+				if (mimeTypeElement != null)
+					_cachedMimeType = mimeTypeElement.getValue();
+				Element extentElement = mediaElement.getFirstChildElement(MediaExtent.NAME, element.getNamespaceURI());
+				if (extentElement != null)
+					_cachedExtent = new MediaExtent(extentElement);
+				Element mediumElement = mediaElement.getFirstChildElement(MEDIUM_NAME, element.getNamespaceURI());
+				if (mediumElement != null)
+					_cachedMedium = mediumElement.getValue();
+			}
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		setXOMElement(element, true);
 	}
 	
 	/**
@@ -108,17 +113,22 @@ public final class Format extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Format(String mimeType, MediaExtent extent, String medium) throws InvalidDDMSException {
-		Element mediaElement = Util.buildDDMSElement(MEDIA_NAME, null);
-		Util.addDDMSChildElement(mediaElement, MIME_TYPE_NAME, mimeType);
-		if (extent != null)
-			mediaElement.appendChild(extent.getXOMElementCopy());
-		Util.addDDMSChildElement(mediaElement, MEDIUM_NAME, medium);
-		Element element = Util.buildDDMSElement(Format.NAME, null);
-		element.appendChild(mediaElement);
-		_cachedMimeType = mimeType;
-		_cachedExtent = extent;
-		_cachedMedium = medium;
-		setXOMElement(element, true);
+		try {
+			Element mediaElement = Util.buildDDMSElement(MEDIA_NAME, null);
+			Util.addDDMSChildElement(mediaElement, MIME_TYPE_NAME, mimeType);
+			if (extent != null)
+				mediaElement.appendChild(extent.getXOMElementCopy());
+			Util.addDDMSChildElement(mediaElement, MEDIUM_NAME, medium);
+			Element element = Util.buildDDMSElement(Format.NAME, null);
+			element.appendChild(mediaElement);
+			_cachedMimeType = mimeType;
+			_cachedExtent = extent;
+			_cachedMedium = medium;
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 			
 	/**

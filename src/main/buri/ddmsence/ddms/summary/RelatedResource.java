@@ -77,13 +77,18 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RelatedResource(Element element) throws InvalidDDMSException {
-		Util.requireDDMSValue("RelatedResource element", element);
-		_cachedLinks = new ArrayList<Link>();
-		Elements links = element.getChildElements(Link.NAME, element.getNamespaceURI());
-		for (int i = 0; i < links.size(); i++) {
-			_cachedLinks.add(new Link(links.get(i)));
+		try {
+			Util.requireDDMSValue("RelatedResource element", element);
+			_cachedLinks = new ArrayList<Link>();
+			Elements links = element.getChildElements(Link.NAME, element.getNamespaceURI());
+			for (int i = 0; i < links.size(); i++) {
+				_cachedLinks.add(new Link(links.get(i)));
+			}
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		setXOMElement(element, true);
 	}
 	
 	/**
@@ -96,14 +101,19 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 */
 	public RelatedResource(List<Link> links, String qualifier, String value) throws InvalidDDMSException {
 		super(RelatedResource.NAME, qualifier, value, false);
-		Element element = getXOMElement();
-		if (links == null)
-			links = Collections.emptyList();
-		for (Link link : links) {
-			element.appendChild(link.getXOMElementCopy());
+		try {
+			Element element = getXOMElement();
+			if (links == null)
+				links = Collections.emptyList();
+			for (Link link : links) {
+				element.appendChild(link.getXOMElementCopy());
+			}
+			_cachedLinks = links;
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		_cachedLinks = links;
-		setXOMElement(element, true);		
 	}
 
 	/**

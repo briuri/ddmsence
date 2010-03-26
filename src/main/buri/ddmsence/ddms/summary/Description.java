@@ -65,8 +65,13 @@ public final class Description extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Description(Element element) throws InvalidDDMSException {
-		_cachedSecurityAttributes = new SecurityAttributes(element);
-		setXOMElement(element, true);
+		try {
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -78,11 +83,16 @@ public final class Description extends AbstractSimpleString {
 	 */
 	public Description(String description, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(Description.NAME, description);
-		Element element = getXOMElement();
-		_cachedSecurityAttributes = securityAttributes;
-		if (securityAttributes != null)
-			securityAttributes.addTo(element);
-		setXOMElement(element, true);
+		try {
+			Element element = getXOMElement();
+			_cachedSecurityAttributes = securityAttributes;
+			if (securityAttributes != null)
+				securityAttributes.addTo(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 		
 	/**

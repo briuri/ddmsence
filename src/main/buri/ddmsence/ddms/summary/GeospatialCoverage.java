@@ -88,27 +88,34 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public GeospatialCoverage(Element element) throws InvalidDDMSException {
-		Util.requireDDMSValue("geographicIdentifier element", element);
-		Element extElement = element.getFirstChildElement(GEOSPATIAL_EXTENT_NAME, element.getNamespaceURI());
-		if (extElement != null) {
-			Element geographicIdentifierElement = extElement.getFirstChildElement(GeographicIdentifier.NAME, extElement.getNamespaceURI());
-			if (geographicIdentifierElement != null)
-				_cachedGeographicIdentifier = new GeographicIdentifier(geographicIdentifierElement);
-			Element boundingBoxElement = extElement.getFirstChildElement(BoundingBox.NAME, extElement.getNamespaceURI());
-			if (boundingBoxElement != null)
-				_cachedBoundingBox = new BoundingBox(boundingBoxElement);
-			Element boundingGeometryElement = extElement.getFirstChildElement(BoundingGeometry.NAME, extElement.getNamespaceURI());
-			if (boundingGeometryElement != null)
-				_cachedBoundingGeometry = new BoundingGeometry(boundingGeometryElement);
-			Element postalAddressElement = extElement.getFirstChildElement(PostalAddress.NAME, extElement.getNamespaceURI());
-			if (postalAddressElement != null)
-				_cachedPostalAddress = new PostalAddress(postalAddressElement);
-			Element verticalExtentElement = extElement.getFirstChildElement(VerticalExtent.NAME, extElement.getNamespaceURI());
-			if (verticalExtentElement != null)
-				_cachedVerticalExtent = new VerticalExtent(verticalExtentElement);
+		try {
+			Util.requireDDMSValue("geographicIdentifier element", element);
+			String namespace = element.getNamespaceURI();
+			Element extElement = element.getFirstChildElement(GEOSPATIAL_EXTENT_NAME, namespace);
+			if (extElement != null) {
+				Element geographicIdentifierElement = extElement.getFirstChildElement(GeographicIdentifier.NAME,
+					namespace);
+				if (geographicIdentifierElement != null)
+					_cachedGeographicIdentifier = new GeographicIdentifier(geographicIdentifierElement);
+				Element boundingBoxElement = extElement.getFirstChildElement(BoundingBox.NAME, namespace);
+				if (boundingBoxElement != null)
+					_cachedBoundingBox = new BoundingBox(boundingBoxElement);
+				Element boundingGeometryElement = extElement.getFirstChildElement(BoundingGeometry.NAME, namespace);
+				if (boundingGeometryElement != null)
+					_cachedBoundingGeometry = new BoundingGeometry(boundingGeometryElement);
+				Element postalAddressElement = extElement.getFirstChildElement(PostalAddress.NAME, namespace);
+				if (postalAddressElement != null)
+					_cachedPostalAddress = new PostalAddress(postalAddressElement);
+				Element verticalExtentElement = extElement.getFirstChildElement(VerticalExtent.NAME, namespace);
+				if (verticalExtentElement != null)
+					_cachedVerticalExtent = new VerticalExtent(verticalExtentElement);
+			}
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		_cachedSecurityAttributes = new SecurityAttributes(element);
-		setXOMElement(element, true);
 	}
 	
 	/**
@@ -122,29 +129,36 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * @param securityAttributes any security attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public GeospatialCoverage(GeographicIdentifier geographicIdentifier, BoundingBox boundingBox, BoundingGeometry boundingGeometry,
-			PostalAddress postalAddress, VerticalExtent verticalExtent, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(GEOSPATIAL_EXTENT_NAME, null);
-		if (geographicIdentifier != null)
-			element.appendChild(geographicIdentifier.getXOMElementCopy());
-		if (boundingBox != null)
-			element.appendChild(boundingBox.getXOMElementCopy());
-		if (boundingGeometry != null)
-			element.appendChild(boundingGeometry.getXOMElementCopy());
-		if (postalAddress != null)
-			element.appendChild(postalAddress.getXOMElementCopy());
-		if (verticalExtent != null)
-			element.appendChild(verticalExtent.getXOMElementCopy());
-		Element coverageElement = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-		coverageElement.appendChild(element);
-		_cachedGeographicIdentifier = geographicIdentifier;
-		_cachedBoundingBox = boundingBox;
-		_cachedBoundingGeometry = boundingGeometry;
-		_cachedPostalAddress = postalAddress;
-		_cachedVerticalExtent = verticalExtent;
-		_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null) : securityAttributes);
-		_cachedSecurityAttributes.addTo(element);
-		setXOMElement(coverageElement, true);
+	public GeospatialCoverage(GeographicIdentifier geographicIdentifier, BoundingBox boundingBox,
+		BoundingGeometry boundingGeometry, PostalAddress postalAddress, VerticalExtent verticalExtent,
+		SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		try {
+			Element element = Util.buildDDMSElement(GEOSPATIAL_EXTENT_NAME, null);
+			if (geographicIdentifier != null)
+				element.appendChild(geographicIdentifier.getXOMElementCopy());
+			if (boundingBox != null)
+				element.appendChild(boundingBox.getXOMElementCopy());
+			if (boundingGeometry != null)
+				element.appendChild(boundingGeometry.getXOMElementCopy());
+			if (postalAddress != null)
+				element.appendChild(postalAddress.getXOMElementCopy());
+			if (verticalExtent != null)
+				element.appendChild(verticalExtent.getXOMElementCopy());
+			Element coverageElement = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
+			coverageElement.appendChild(element);
+			_cachedGeographicIdentifier = geographicIdentifier;
+			_cachedBoundingBox = boundingBox;
+			_cachedBoundingGeometry = boundingGeometry;
+			_cachedPostalAddress = postalAddress;
+			_cachedVerticalExtent = verticalExtent;
+			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
+				: securityAttributes);
+			_cachedSecurityAttributes.addTo(element);
+			setXOMElement(coverageElement, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 
 	/**

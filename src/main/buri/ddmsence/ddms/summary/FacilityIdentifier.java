@@ -76,10 +76,15 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public FacilityIdentifier(String beNumber, String osuffix) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(FacilityIdentifier.NAME, null);
-		Util.addDDMSAttribute(element, BE_NUMBER_NAME, beNumber);
-		Util.addDDMSAttribute(element, OSUFFIX_NAME, osuffix);
-		setXOMElement(element, true);
+		try {
+			Element element = Util.buildDDMSElement(FacilityIdentifier.NAME, null);
+			Util.addDDMSAttribute(element, BE_NUMBER_NAME, beNumber);
+			Util.addDDMSAttribute(element, OSUFFIX_NAME, osuffix);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 
 	/**

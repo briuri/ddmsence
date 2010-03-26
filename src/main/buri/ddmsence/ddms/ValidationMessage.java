@@ -73,10 +73,9 @@ public class ValidationMessage {
 	 */
 	private ValidationMessage(String type, String text, String locator) {
 		Util.requireValue("text", text);
-		Util.requireValue("locator", locator);
 		_type = type;
 		_text = text;
-		_locator = (locator == null ? "" : ELEMENT_PREFIX + locator);
+		setLocator(locator);
 	}
 	
 	/**
@@ -152,5 +151,14 @@ public class ValidationMessage {
 	 */
 	public String getLocator() {
 		return _locator;
+	}	
+	
+	/**
+	 * Accessor for the locator.
+	 * 
+	 * <p>If the locator is null, it will be set to an empty string. If not, it will be prefixed with a forward-slash.</p>
+	 */
+	public void setLocator(String locator) {
+		_locator = (locator == null ? "" : ELEMENT_PREFIX + locator);
 	}	
 }

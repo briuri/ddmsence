@@ -73,8 +73,13 @@ public final class Source extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Source(Element element) throws InvalidDDMSException {
-		_cachedSecurityAttributes = new SecurityAttributes(element);
-		setXOMElement(element, true);
+		try {
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -89,12 +94,18 @@ public final class Source extends AbstractQualifierValue {
 	 */
 	public Source(String qualifier, String value, String schemaQualifier, String schemaHref, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(Source.NAME, qualifier, value, false);
-		Element element = getXOMElement();
-		Util.addDDMSAttribute(element, SCHEMA_QUALIFIER_NAME, schemaQualifier);
-		Util.addDDMSAttribute(element, SCHEMA_HREF_NAME, schemaHref);
-		_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null) : securityAttributes);
-		_cachedSecurityAttributes.addTo(element);
-		setXOMElement(element, true);		
+		try {
+			Element element = getXOMElement();
+			Util.addDDMSAttribute(element, SCHEMA_QUALIFIER_NAME, schemaQualifier);
+			Util.addDDMSAttribute(element, SCHEMA_HREF_NAME, schemaHref);
+			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
+				: securityAttributes);
+			_cachedSecurityAttributes.addTo(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 
 	/**

@@ -82,20 +82,25 @@ public final class Dates extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Dates(Element element) throws InvalidDDMSException {
-		setXOMElement(element, false);
-		String created = getAttributeValue(CREATED_NAME);
-		if (!Util.isEmpty(created))
-			_cachedCreated = getFactory().newXMLGregorianCalendar(created);
-		String posted = getAttributeValue(POSTED_NAME);
-		if (!Util.isEmpty(posted))
-			_cachedPosted = getFactory().newXMLGregorianCalendar(posted);
-		String validTil = getAttributeValue(VALID_TIL_NAME);
-		if (!Util.isEmpty(validTil))
-			_cachedValidTil = getFactory().newXMLGregorianCalendar(validTil);
-		String infoCutOff = getAttributeValue(INFO_CUT_OFF_NAME);
-		if (!Util.isEmpty(infoCutOff))
-			_cachedInfoCutOff = getFactory().newXMLGregorianCalendar(infoCutOff);
-		setXOMElement(element, true);
+		try {
+			setXOMElement(element, false);
+			String created = getAttributeValue(CREATED_NAME);
+			if (!Util.isEmpty(created))
+				_cachedCreated = getFactory().newXMLGregorianCalendar(created);
+			String posted = getAttributeValue(POSTED_NAME);
+			if (!Util.isEmpty(posted))
+				_cachedPosted = getFactory().newXMLGregorianCalendar(posted);
+			String validTil = getAttributeValue(VALID_TIL_NAME);
+			if (!Util.isEmpty(validTil))
+				_cachedValidTil = getFactory().newXMLGregorianCalendar(validTil);
+			String infoCutOff = getAttributeValue(INFO_CUT_OFF_NAME);
+			if (!Util.isEmpty(infoCutOff))
+				_cachedInfoCutOff = getFactory().newXMLGregorianCalendar(infoCutOff);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 		
 	/**
@@ -109,24 +114,29 @@ public final class Dates extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Dates(String created, String posted, String validTil, String infoCutOff) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(Dates.NAME, null);		
-		if (!Util.isEmpty(created)) {
-			_cachedCreated = getFactory().newXMLGregorianCalendar(created);
-			Util.addDDMSAttribute(element, CREATED_NAME, getCreated().toXMLFormat());
+		try {
+			Element element = Util.buildDDMSElement(Dates.NAME, null);
+			if (!Util.isEmpty(created)) {
+				_cachedCreated = getFactory().newXMLGregorianCalendar(created);
+				Util.addDDMSAttribute(element, CREATED_NAME, getCreated().toXMLFormat());
+			}
+			if (!Util.isEmpty(posted)) {
+				_cachedPosted = getFactory().newXMLGregorianCalendar(posted);
+				Util.addDDMSAttribute(element, POSTED_NAME, getPosted().toXMLFormat());
+			}
+			if (!Util.isEmpty(validTil)) {
+				_cachedValidTil = getFactory().newXMLGregorianCalendar(validTil);
+				Util.addDDMSAttribute(element, VALID_TIL_NAME, getValidTil().toXMLFormat());
+			}
+			if (!Util.isEmpty(infoCutOff)) {
+				_cachedInfoCutOff = getFactory().newXMLGregorianCalendar(infoCutOff);
+				Util.addDDMSAttribute(element, INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat());
+			}
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		if (!Util.isEmpty(posted)) {
-			_cachedPosted = getFactory().newXMLGregorianCalendar(posted);
-			Util.addDDMSAttribute(element, POSTED_NAME, getPosted().toXMLFormat());
-		}
-		if (!Util.isEmpty(validTil)) {
-			_cachedValidTil = getFactory().newXMLGregorianCalendar(validTil);
-			Util.addDDMSAttribute(element, VALID_TIL_NAME, getValidTil().toXMLFormat());
-		}
-		if (!Util.isEmpty(infoCutOff)) {
-			_cachedInfoCutOff = getFactory().newXMLGregorianCalendar(infoCutOff);
-			Util.addDDMSAttribute(element, INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat());
-		}
-		setXOMElement(element, true);		
 	}
 	
 	/**

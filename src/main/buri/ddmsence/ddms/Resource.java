@@ -164,127 +164,112 @@ public final class Resource extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Resource(Element element) throws InvalidDDMSException {
-		setXOMElement(element, false);
-		
-		// Attributes
-		String createDate = getAttributeValue(CREATE_DATE_NAME, ICISM_NAMESPACE);
-		if (!Util.isEmpty(createDate))
-			_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
-		String desVersion = element.getAttributeValue(DES_VERSION_NAME, ICISM_NAMESPACE);
-		if (!Util.isEmpty(desVersion)) {
-			try {
-				_cachedDESVersion = Integer.valueOf(desVersion);
-			}
-			catch (NumberFormatException e) {
-				// This will be thrown as an InvalidDDMSException during validation
-			}
-		}
-		_cachedSecurityAttributes = new SecurityAttributes(element);
+		try {
+			String namespace = element.getNamespaceURI();
+			setXOMElement(element, false);
 
-		// Resource Layer
-		Elements components = element.getChildElements(Identifier.NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedIdentifiers.add(new Identifier(components.get(i)));
+			// Attributes
+			String createDate = getAttributeValue(CREATE_DATE_NAME, ICISM_NAMESPACE);
+			if (!Util.isEmpty(createDate))
+				_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
+			String desVersion = element.getAttributeValue(DES_VERSION_NAME, ICISM_NAMESPACE);
+			if (!Util.isEmpty(desVersion)) {
+				try {
+					_cachedDESVersion = Integer.valueOf(desVersion);
+				} catch (NumberFormatException e) {
+					// This will be thrown as an InvalidDDMSException during validation
+				}
+			}
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+
+			// Resource Layer
+			Elements components = element.getChildElements(Identifier.NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedIdentifiers.add(new Identifier(components.get(i)));
+			}
+			components = element.getChildElements(Title.NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedTitles.add(new Title(components.get(i)));
+			}
+			components = element.getChildElements(Subtitle.NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedSubtitles.add(new Subtitle(components.get(i)));
+			}
+			Element component = getChild(Description.NAME);
+			if (component != null)
+				_cachedDescription = new Description(component);
+			components = element.getChildElements(Language.NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedLanguages.add(new Language(components.get(i)));
+			}
+			component = getChild(Dates.NAME);
+			if (component != null)
+				_cachedDates = new Dates(component);
+			component = getChild(Rights.NAME);
+			if (component != null)
+				_cachedRights = new Rights(component);
+			components = element.getChildElements(Source.NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedSources.add(new Source(components.get(i)));
+			}
+			components = element.getChildElements(Type.NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedTypes.add(new Type(components.get(i)));
+			}
+			components = element.getChildElements(AbstractProducer.CREATOR_NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedCreators.add(getEntityFor(components.get(i)));
+			}
+			components = element.getChildElements(AbstractProducer.PUBLISHER_NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedPublishers.add(getEntityFor(components.get(i)));
+			}
+			components = element.getChildElements(AbstractProducer.CONTRIBUTOR_NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedContributors.add(getEntityFor(components.get(i)));
+			}
+			components = element.getChildElements(AbstractProducer.POC_NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedPointOfContacts.add(getEntityFor(components.get(i)));
+			}
+
+			// Format layer
+			component = getChild(Format.NAME);
+			if (component != null)
+				_cachedFormat = new Format(component);
+
+			// Summary layer
+			component = getChild(SubjectCoverage.NAME);
+			if (component != null)
+				_cachedSubjectCoverage = new SubjectCoverage(component);
+			components = element.getChildElements(VirtualCoverage.NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedVirtualCoverages.add(new VirtualCoverage(components.get(i)));
+			}
+			components = element.getChildElements(TemporalCoverage.NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedTemporalCoverages.add(new TemporalCoverage(components.get(i)));
+			}
+			components = element.getChildElements(GeospatialCoverage.NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedGeospatialCoverages.add(new GeospatialCoverage(components.get(i)));
+			}
+			components = element.getChildElements(RelatedResources.NAME, namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedRelatedResources.add(new RelatedResources(components.get(i)));
+			}
+
+			// Security layer
+			component = getChild(Security.NAME);
+			if (component != null)
+				_cachedSecurity = new Security(component);
+
+			populatedOrderedList();
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		components = element.getChildElements(Title.NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedTitles.add(new Title(components.get(i)));
-		}
-		components = element.getChildElements(Subtitle.NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedSubtitles.add(new Subtitle(components.get(i)));
-		}
-		Element component = getChild(Description.NAME);
-		if (component != null)
-			_cachedDescription = new Description(component);
-		components = element.getChildElements(Language.NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedLanguages.add(new Language(components.get(i)));
-		}
-		component = getChild(Dates.NAME);
-		if (component != null)
-			_cachedDates = new Dates(component);
-		component = getChild(Rights.NAME);
-		if (component != null)
-			_cachedRights = new Rights(component);		
-		components = element.getChildElements(Source.NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedSources.add(new Source(components.get(i)));
-		}
-		components = element.getChildElements(Type.NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedTypes.add(new Type(components.get(i)));
-		}
-		components = element.getChildElements(AbstractProducer.CREATOR_NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedCreators.add(getEntityFor(components.get(i)));
-		}
-		components = element.getChildElements(AbstractProducer.PUBLISHER_NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedPublishers.add(getEntityFor(components.get(i)));
-		}
-		components = element.getChildElements(AbstractProducer.CONTRIBUTOR_NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedContributors.add(getEntityFor(components.get(i)));
-		}
-		components = element.getChildElements(AbstractProducer.POC_NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedPointOfContacts.add(getEntityFor(components.get(i)));
-		}
-		
-		// Format layer
-		component = getChild(Format.NAME);
-		if (component != null)
-			_cachedFormat = new Format(component);
-		
-		// Summary layer
-		component = getChild(SubjectCoverage.NAME);
-		if (component != null)
-			_cachedSubjectCoverage = new SubjectCoverage(component);	
-		components = element.getChildElements(VirtualCoverage.NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedVirtualCoverages.add(new VirtualCoverage(components.get(i)));
-		}
-		components = element.getChildElements(TemporalCoverage.NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedTemporalCoverages.add(new TemporalCoverage(components.get(i)));
-		}
-		components = element.getChildElements(GeospatialCoverage.NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedGeospatialCoverages.add(new GeospatialCoverage(components.get(i)));
-		}
-		components = element.getChildElements(RelatedResources.NAME, element.getNamespaceURI());
-		for (int i = 0; i < components.size(); i++) {
-			_cachedRelatedResources.add(new RelatedResources(components.get(i)));
-		}
-		
-		// Security layer
-		component = getChild(Security.NAME);
-		if (component != null)
-			_cachedSecurity = new Security(component);
-		
-		populatedOrderedList();
-		setXOMElement(element, true);
-	}
-	
-	/**
-	 * Helper method to convert a XOM Element into a producer entity, based on
-	 * the producer entity type.
-	 * 
-	 * @param element the producerRole element (creator, contributor, etc.)
-	 * @return an IProducer
-	 */
-	private IProducer getEntityFor(Element element) throws InvalidDDMSException {
-		Element entityElement = element.getChildElements().get(0);
-		Util.requireDDMSValue("entity element", entityElement);
-		if (Person.NAME.equals(entityElement.getLocalName()))
-			return (new Person(element));
-		else if (Organization.NAME.equals(entityElement.getLocalName()))
-			return (new Organization(element));
-		else if (Service.NAME.equals(entityElement.getLocalName()))
-			return (new Service(element));
-		else // Unknown
-			return (new Unknown(element));
 	}
 
 	/**
@@ -312,88 +297,112 @@ public final class Resource extends AbstractBaseComponent {
 	 *             does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, boolean resourceElement, String createDate,
-			Integer desVersion, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		if (topLevelComponents == null)
-			topLevelComponents = Collections.emptyList();
-		Element element = Util.buildDDMSElement(Resource.NAME, null);
-		
-		// Attributes
-		Util.addAttribute(element, ICISM_PREFIX, RESOURCE_ELEMENT_NAME, ICISM_NAMESPACE, String.valueOf(resourceElement));
-		if (desVersion != null) {
-			_cachedDESVersion = desVersion;
-			Util.addAttribute(element, ICISM_PREFIX, DES_VERSION_NAME, ICISM_NAMESPACE, desVersion.toString());
-		}
-		if (!Util.isEmpty(createDate)) {
-			_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
-			Util.addAttribute(element, ICISM_PREFIX, CREATE_DATE_NAME, ICISM_NAMESPACE, getCreateDate().toXMLFormat());
-		}
-		_cachedSecurityAttributes = securityAttributes;
-		if (securityAttributes != null)
-			securityAttributes.addTo(element);
+		Integer desVersion, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		try {
+			if (topLevelComponents == null)
+				topLevelComponents = Collections.emptyList();
+			Element element = Util.buildDDMSElement(Resource.NAME, null);
 
-		for (IDDMSComponent component : topLevelComponents) {
-			// Resource Layer
-			if (component instanceof Identifier)
-				_cachedIdentifiers.add((Identifier) component);
-			else if (component instanceof Title)
-				_cachedTitles.add((Title) component);
-			else if (component instanceof Subtitle)
-				_cachedSubtitles.add((Subtitle) component);
-			else if (component instanceof Description)
-				_cachedDescription = (Description) component;
-			else if (component instanceof Language)
-				_cachedLanguages.add((Language) component);
-			else if (component instanceof Dates)
-				_cachedDates = (Dates) component;
-			else if (component instanceof Rights)
-				_cachedRights = (Rights) component;
-			else if (component instanceof Source)
-				_cachedSources.add((Source) component);
-			else if (component instanceof Type)
-				_cachedTypes.add((Type) component);
-			else if (component instanceof IProducer) {
-				IProducer producer = (IProducer) component;
-				if (AbstractProducer.CREATOR_NAME.equals(producer.getName())) {
-					_cachedCreators.add(producer);
-				}
-				else if (AbstractProducer.PUBLISHER_NAME.equals(producer.getName())) {
-					_cachedPublishers.add(producer);
-				}
-				else if (AbstractProducer.CONTRIBUTOR_NAME.equals(producer.getName())) {
-					_cachedContributors.add(producer);
-				}
-				else if (AbstractProducer.POC_NAME.equals(producer.getName())) {
-					_cachedPointOfContacts.add(producer);
-				}
+			// Attributes
+			Util.addAttribute(element, ICISM_PREFIX, RESOURCE_ELEMENT_NAME, ICISM_NAMESPACE, String
+				.valueOf(resourceElement));
+			if (desVersion != null) {
+				_cachedDESVersion = desVersion;
+				Util.addAttribute(element, ICISM_PREFIX, DES_VERSION_NAME, ICISM_NAMESPACE, desVersion.toString());
 			}
-			// Format layer
-			else if (component instanceof Format)
-				_cachedFormat = (Format) component;
-			// Summary layer
-			else if (component instanceof SubjectCoverage)
-				_cachedSubjectCoverage = (SubjectCoverage) component;
-			else if (component instanceof VirtualCoverage)
-				_cachedVirtualCoverages.add((VirtualCoverage) component);
-			else if (component instanceof TemporalCoverage)
-				_cachedTemporalCoverages.add((TemporalCoverage) component);
-			else if (component instanceof GeospatialCoverage)
-				_cachedGeospatialCoverages.add((GeospatialCoverage) component);
-			else if (component instanceof RelatedResources)
-				_cachedRelatedResources.add((RelatedResources) component);
-			// Security Layer
-			else if (component instanceof Security)
-				_cachedSecurity = (Security) component;
-			else
-				throw new InvalidDDMSException(component.getName() + " is not a valid top-level component in a ddms:Resource.");
-		}
-		populatedOrderedList();
-		for (IDDMSComponent component : getTopLevelComponents()) {
-			element.appendChild(component.getXOMElementCopy());
-		}
-		setXOMElement(element, true);
+			if (!Util.isEmpty(createDate)) {
+				_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
+				Util.addAttribute(element, ICISM_PREFIX, CREATE_DATE_NAME, ICISM_NAMESPACE, getCreateDate()
+					.toXMLFormat());
+			}
+			_cachedSecurityAttributes = securityAttributes;
+			if (securityAttributes != null)
+				securityAttributes.addTo(element);
 
+			for (IDDMSComponent component : topLevelComponents) {
+				// Resource Layer
+				if (component instanceof Identifier)
+					_cachedIdentifiers.add((Identifier) component);
+				else if (component instanceof Title)
+					_cachedTitles.add((Title) component);
+				else if (component instanceof Subtitle)
+					_cachedSubtitles.add((Subtitle) component);
+				else if (component instanceof Description)
+					_cachedDescription = (Description) component;
+				else if (component instanceof Language)
+					_cachedLanguages.add((Language) component);
+				else if (component instanceof Dates)
+					_cachedDates = (Dates) component;
+				else if (component instanceof Rights)
+					_cachedRights = (Rights) component;
+				else if (component instanceof Source)
+					_cachedSources.add((Source) component);
+				else if (component instanceof Type)
+					_cachedTypes.add((Type) component);
+				else if (component instanceof IProducer) {
+					IProducer producer = (IProducer) component;
+					if (AbstractProducer.CREATOR_NAME.equals(producer.getName())) {
+						_cachedCreators.add(producer);
+					} else if (AbstractProducer.PUBLISHER_NAME.equals(producer.getName())) {
+						_cachedPublishers.add(producer);
+					} else if (AbstractProducer.CONTRIBUTOR_NAME.equals(producer.getName())) {
+						_cachedContributors.add(producer);
+					} else if (AbstractProducer.POC_NAME.equals(producer.getName())) {
+						_cachedPointOfContacts.add(producer);
+					}
+				}
+				// Format layer
+				else if (component instanceof Format)
+					_cachedFormat = (Format) component;
+				// Summary layer
+				else if (component instanceof SubjectCoverage)
+					_cachedSubjectCoverage = (SubjectCoverage) component;
+				else if (component instanceof VirtualCoverage)
+					_cachedVirtualCoverages.add((VirtualCoverage) component);
+				else if (component instanceof TemporalCoverage)
+					_cachedTemporalCoverages.add((TemporalCoverage) component);
+				else if (component instanceof GeospatialCoverage)
+					_cachedGeospatialCoverages.add((GeospatialCoverage) component);
+				else if (component instanceof RelatedResources)
+					_cachedRelatedResources.add((RelatedResources) component);
+				// Security Layer
+				else if (component instanceof Security)
+					_cachedSecurity = (Security) component;
+				else
+					throw new InvalidDDMSException(component.getName()
+						+ " is not a valid top-level component in a ddms:Resource.");
+			}
+			populatedOrderedList();
+			for (IDDMSComponent component : getTopLevelComponents()) {
+				element.appendChild(component.getXOMElementCopy());
+			}
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 
+	/**
+	 * Helper method to convert a XOM Element into a producer entity, based on
+	 * the producer entity type.
+	 * 
+	 * @param element the producerRole element (creator, contributor, etc.)
+	 * @return an IProducer
+	 */
+	private IProducer getEntityFor(Element element) throws InvalidDDMSException {
+		Element entityElement = element.getChildElements().get(0);
+		Util.requireDDMSValue("entity element", entityElement);
+		if (Person.NAME.equals(entityElement.getLocalName()))
+			return (new Person(element));
+		else if (Organization.NAME.equals(entityElement.getLocalName()))
+			return (new Organization(element));
+		else if (Service.NAME.equals(entityElement.getLocalName()))
+			return (new Service(element));
+		else // Unknown
+			return (new Unknown(element));
+	}
+	
 	/**
 	 * Creates an ordered list of all the top-level components in this Resource, for ease of traversal.
 	 */

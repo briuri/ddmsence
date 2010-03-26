@@ -119,10 +119,15 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public VerticalExtent(Element element) throws InvalidDDMSException {
-		Util.requireDDMSValue("verticalExtent element", element);
-		_cachedMin = getChildTextAsDouble(element, MIN_VERTICAL_EXTENT_NAME);
-		_cachedMax = getChildTextAsDouble(element, MAX_VERTICAL_EXTENT_NAME);
-		setXOMElement(element, true);
+		try {
+			Util.requireDDMSValue("verticalExtent element", element);
+			_cachedMin = getChildTextAsDouble(element, MIN_VERTICAL_EXTENT_NAME);
+			_cachedMax = getChildTextAsDouble(element, MAX_VERTICAL_EXTENT_NAME);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -135,14 +140,19 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public VerticalExtent(double minVerticalExtent, double maxVerticalExtent, String unitOfMeasure, String datum) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(VerticalExtent.NAME, null);
-		Util.addDDMSAttribute(element, UOM_NAME, unitOfMeasure);
-		Util.addDDMSAttribute(element, DATUM_NAME, datum);
-		element.appendChild(Util.buildDDMSElement(MIN_VERTICAL_EXTENT_NAME, String.valueOf(minVerticalExtent)));
-		element.appendChild(Util.buildDDMSElement(MAX_VERTICAL_EXTENT_NAME, String.valueOf(maxVerticalExtent)));
-		_cachedMin = Double.valueOf(minVerticalExtent);
-		_cachedMax = Double.valueOf(maxVerticalExtent);
-		setXOMElement(element, true);
+		try {
+			Element element = Util.buildDDMSElement(VerticalExtent.NAME, null);
+			Util.addDDMSAttribute(element, UOM_NAME, unitOfMeasure);
+			Util.addDDMSAttribute(element, DATUM_NAME, datum);
+			element.appendChild(Util.buildDDMSElement(MIN_VERTICAL_EXTENT_NAME, String.valueOf(minVerticalExtent)));
+			element.appendChild(Util.buildDDMSElement(MAX_VERTICAL_EXTENT_NAME, String.valueOf(maxVerticalExtent)));
+			_cachedMin = Double.valueOf(minVerticalExtent);
+			_cachedMax = Double.valueOf(maxVerticalExtent);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 		
 	/**

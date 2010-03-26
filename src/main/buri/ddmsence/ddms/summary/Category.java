@@ -85,11 +85,16 @@ public final class Category extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Category(String qualifier, String code, String label) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(Category.NAME, null);
-		Util.addDDMSAttribute(element, QUALIFIER_NAME, qualifier);
-		Util.addDDMSAttribute(element, CODE_NAME, code);
-		Util.addDDMSAttribute(element, LABEL_NAME, label);
-		setXOMElement(element, true);
+		try {
+			Element element = Util.buildDDMSElement(Category.NAME, null);
+			Util.addDDMSAttribute(element, QUALIFIER_NAME, qualifier);
+			Util.addDDMSAttribute(element, CODE_NAME, code);
+			Util.addDDMSAttribute(element, LABEL_NAME, label);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 
 	/**

@@ -48,7 +48,12 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 	 * @param element the XOM element representing this component
 	 */
 	protected AbstractQualifierValue(Element element) throws InvalidDDMSException {
-		setXOMElement(element, true);
+		try {
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -61,10 +66,15 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 	 * 		they should not be validated in the superconstructor.
 	 */
 	protected AbstractQualifierValue(String name, String qualifier, String value, boolean validateNow) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(name, null);
-		Util.addDDMSAttribute(element, QUALIFIER_NAME, qualifier);
-		Util.addDDMSAttribute(element, VALUE_NAME, value);
-		setXOMElement(element, validateNow);
+		try {
+			Element element = Util.buildDDMSElement(name, null);
+			Util.addDDMSAttribute(element, QUALIFIER_NAME, qualifier);
+			Util.addDDMSAttribute(element, VALUE_NAME, value);
+			setXOMElement(element, validateNow);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 
 	

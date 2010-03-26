@@ -24,10 +24,23 @@ import java.net.URISyntaxException;
 /**
  * Exception class for attempts to generate invalid DDMS components.
  * 
+ * <p>
+ * The underlying data is stored as a ValidationMessage, which allows locator
+ * information to be set on it. Because InvalidDDMSExceptions are singular (one is thrown)
+ * while validation warnings are gathered from subcomponents and merged into a master list,
+ * we modify the exception itself when adding parent locator information.
+ * </p>
+ * 
+ * <p>Since a component is not nested in another component at the time of instantiation,
+ * it has no parent when a validation exception is thrown. Therefore, the locator info
+ * will always consist of the single element whose constructor was called.
+ *  
  * @author Brian Uri!
  * @since 0.9.b
  */
 public class InvalidDDMSException extends Exception {
+	
+	private ValidationMessage _message;
 	
 	private static final long serialVersionUID = -183915550465140589L;
 	
@@ -36,6 +49,7 @@ public class InvalidDDMSException extends Exception {
 	 */
 	public InvalidDDMSException(String message) {
 		super(message);
+		_message = ValidationMessage.newError(getMessage(), null);
 	}
 	
 	/**
@@ -43,6 +57,7 @@ public class InvalidDDMSException extends Exception {
 	 */
 	public InvalidDDMSException(Throwable nested) {
 		super(nested);
+		_message = ValidationMessage.newError(getMessage(), null);
 	}
 	
 	/**
@@ -51,6 +66,28 @@ public class InvalidDDMSException extends Exception {
 	 * @param e	the exception
 	 */
 	public InvalidDDMSException(URISyntaxException e) {
-		super("Invalid URI: " + e.getMessage(), e);
+		super("Invalid URI (" + e.getMessage() +")", e);
+		_message = ValidationMessage.newError(getMessage(), null);
 	}	
+	
+	/**
+	 * Accessor for the underlying ValidationMessage
+	 */
+	private ValidationMessage getValidationMessage() {
+		return _message;
+	}	
+	
+	/**
+	 * Accessor for the locator
+	 */
+	public String getLocator() {
+		return getValidationMessage().getLocator();
+	}	
+		
+	/**
+	 * Prefixes some string to the beginning of the existing locator.
+	 */
+	public void setLocator(String locator) {
+		getValidationMessage().setLocator(locator);
+	}
 }

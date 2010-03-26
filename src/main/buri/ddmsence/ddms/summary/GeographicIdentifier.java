@@ -78,16 +78,22 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public GeographicIdentifier(Element element) throws InvalidDDMSException {
-		Util.requireDDMSValue("geographicIdentifier element", element);
-		_cachedNames = Util.getDDMSChildValues(element, NAME_NAME);
-		_cachedRegions = Util.getDDMSChildValues(element, REGION_NAME);
-		Element countryCodeElement = element.getFirstChildElement(CountryCode.NAME, element.getNamespaceURI());
-		if (countryCodeElement != null)
-			_cachedCountryCode = new CountryCode(GeographicIdentifier.NAME, countryCodeElement);
-		Element facilityIdentifierElement = element.getFirstChildElement(FacilityIdentifier.NAME, element.getNamespaceURI());
-		if (facilityIdentifierElement != null)
-			_cachedFacilityIdentifier = new FacilityIdentifier(facilityIdentifierElement);
-		setXOMElement(element, true);
+		try {
+			Util.requireDDMSValue("geographicIdentifier element", element);
+			_cachedNames = Util.getDDMSChildValues(element, NAME_NAME);
+			_cachedRegions = Util.getDDMSChildValues(element, REGION_NAME);
+			Element countryCodeElement = element.getFirstChildElement(CountryCode.NAME, element.getNamespaceURI());
+			if (countryCodeElement != null)
+				_cachedCountryCode = new CountryCode(GeographicIdentifier.NAME, countryCodeElement);
+			Element facilityIdentifierElement = element.getFirstChildElement(FacilityIdentifier.NAME, element
+				.getNamespaceURI());
+			if (facilityIdentifierElement != null)
+				_cachedFacilityIdentifier = new FacilityIdentifier(facilityIdentifierElement);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -100,23 +106,28 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public GeographicIdentifier(List<String> names, List<String> regions, CountryCode countryCode) throws InvalidDDMSException {
-		if (names == null)
-			names = Collections.emptyList();
-		if (regions == null)
-			regions = Collections.emptyList();
-		Element element = Util.buildDDMSElement(GeographicIdentifier.NAME, null);
-		for (String name : names) {
-			element.appendChild(Util.buildDDMSElement(NAME_NAME, name));
+		try {
+			if (names == null)
+				names = Collections.emptyList();
+			if (regions == null)
+				regions = Collections.emptyList();
+			Element element = Util.buildDDMSElement(GeographicIdentifier.NAME, null);
+			for (String name : names) {
+				element.appendChild(Util.buildDDMSElement(NAME_NAME, name));
+			}
+			for (String region : regions) {
+				element.appendChild(Util.buildDDMSElement(REGION_NAME, region));
+			}
+			if (countryCode != null)
+				element.appendChild(countryCode.getXOMElementCopy());
+			_cachedNames = names;
+			_cachedRegions = regions;
+			_cachedCountryCode = countryCode;
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		for (String region : regions) {
-			element.appendChild(Util.buildDDMSElement(REGION_NAME, region));
-		}
-		if (countryCode != null)
-			element.appendChild(countryCode.getXOMElementCopy());
-		_cachedNames = names;
-		_cachedRegions = regions;
-		_cachedCountryCode = countryCode;
-		setXOMElement(element, true);
 	}
 
 	/**

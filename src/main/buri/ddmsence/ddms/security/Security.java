@@ -61,8 +61,13 @@ public final class Security extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Security(Element element) throws InvalidDDMSException {
-		_cachedSecurityAttributes = new SecurityAttributes(element);
-		setXOMElement(element, true);
+		try {
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -72,12 +77,17 @@ public final class Security extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Security(SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(Security.NAME, null);
-		Util.addAttribute(element, ICISM_PREFIX, EXCLUDE_FROM_ROLLUP_NAME, ICISM_NAMESPACE, FIXED_ROLLUP);
-		_cachedSecurityAttributes = securityAttributes;
-		if (securityAttributes != null)
-			securityAttributes.addTo(element);
-		setXOMElement(element, true);
+		try {
+			Element element = Util.buildDDMSElement(Security.NAME, null);
+			Util.addAttribute(element, ICISM_PREFIX, EXCLUDE_FROM_ROLLUP_NAME, ICISM_NAMESPACE, FIXED_ROLLUP);
+			_cachedSecurityAttributes = securityAttributes;
+			if (securityAttributes != null)
+				securityAttributes.addTo(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 
 	/**

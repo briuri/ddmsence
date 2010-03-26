@@ -77,9 +77,14 @@ public final class Keyword extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Keyword(String value) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(Keyword.NAME, null);
-		Util.addDDMSAttribute(element, VALUE_NAME, value);
-		setXOMElement(element, true);
+		try {
+			Element element = Util.buildDDMSElement(Keyword.NAME, null);
+			Util.addDDMSAttribute(element, VALUE_NAME, value);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 		
 	/**

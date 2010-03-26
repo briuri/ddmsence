@@ -131,20 +131,25 @@ public final class Polygon extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Polygon(Element element) throws InvalidDDMSException {
-		setXOMElement(element, false);
-		_cachedPositions = new ArrayList<Position>();
-		Element extElement = element.getFirstChildElement(EXTERIOR_NAME, GML_NAMESPACE);
-		if (extElement != null) {
-			Element ringElement = extElement.getFirstChildElement(LINEAR_RING_NAME, GML_NAMESPACE); 
-			if (ringElement != null) {
-				Elements positions = ringElement.getChildElements(Position.NAME, GML_NAMESPACE);
-				for (int i = 0; i < positions.size(); i++) {
-					_cachedPositions.add(new Position(positions.get(i)));
+		try {
+			setXOMElement(element, false);
+			_cachedPositions = new ArrayList<Position>();
+			Element extElement = element.getFirstChildElement(EXTERIOR_NAME, GML_NAMESPACE);
+			if (extElement != null) {
+				Element ringElement = extElement.getFirstChildElement(LINEAR_RING_NAME, GML_NAMESPACE);
+				if (ringElement != null) {
+					Elements positions = ringElement.getChildElements(Position.NAME, GML_NAMESPACE);
+					for (int i = 0; i < positions.size(); i++) {
+						_cachedPositions.add(new Position(positions.get(i)));
+					}
 				}
 			}
+			_cachedSrsAttributes = new SRSAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		_cachedSrsAttributes = new SRSAttributes(element);
-		setXOMElement(element, true);
 	}
 	
 	/**
@@ -156,22 +161,27 @@ public final class Polygon extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Polygon(List<Position> positions, SRSAttributes srsAttributes, String id) throws InvalidDDMSException {
-		if (positions == null)
-			positions = Collections.emptyList();
-		_cachedPositions = positions;
-		_cachedSrsAttributes = srsAttributes;
-		Element ringElement = Util.buildElement(GML_PREFIX, LINEAR_RING_NAME, GML_NAMESPACE, null);
-		for (Position pos : positions) {
-			ringElement.appendChild(pos.getXOMElementCopy());
+		try {
+			if (positions == null)
+				positions = Collections.emptyList();
+			_cachedPositions = positions;
+			_cachedSrsAttributes = srsAttributes;
+			Element ringElement = Util.buildElement(GML_PREFIX, LINEAR_RING_NAME, GML_NAMESPACE, null);
+			for (Position pos : positions) {
+				ringElement.appendChild(pos.getXOMElementCopy());
+			}
+			Element extElement = Util.buildElement(GML_PREFIX, EXTERIOR_NAME, GML_NAMESPACE, null);
+			extElement.appendChild(ringElement);
+			Element element = Util.buildElement(GML_PREFIX, Polygon.NAME, GML_NAMESPACE, null);
+			if (srsAttributes != null)
+				srsAttributes.addTo(element);
+			Util.addAttribute(element, GML_PREFIX, ID_NAME, GML_NAMESPACE, id);
+			element.appendChild(extElement);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
 		}
-		Element extElement = Util.buildElement(GML_PREFIX, EXTERIOR_NAME, GML_NAMESPACE, null);
-		extElement.appendChild(ringElement);
-		Element element = Util.buildElement(GML_PREFIX, Polygon.NAME, GML_NAMESPACE, null);
-		if (srsAttributes != null)
-			srsAttributes.addTo(element);	
-		Util.addAttribute(element, GML_PREFIX, ID_NAME, GML_NAMESPACE, id);
-		element.appendChild(extElement);
-		setXOMElement(element, true);
 	}
 					
 	/**
