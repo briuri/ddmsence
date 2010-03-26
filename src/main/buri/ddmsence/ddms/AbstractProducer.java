@@ -244,9 +244,16 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 				break;
 			}
 		}
-		addWarnings(getSecurityAttributes().getValidationWarnings());
+		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 		
+	/**
+	 * @see AbstractBaseComponent#getLocatorSuffix()
+	 */
+	protected String getLocatorSuffix() {
+		return (ValidationMessage.ELEMENT_PREFIX + DDMS_PREFIX + ":" + getEntityType());
+	}
+	
 	/**
 	 * @see Object#equals(Object)
 	 */

@@ -471,9 +471,9 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.NAME, 1, 1);
 		
 		for (IDDMSComponent component : getTopLevelComponents()) {
-			addWarnings(component.getValidationWarnings());
+			addWarnings(component.getValidationWarnings(), false);
 		}		
-		addWarnings(getSecurityAttributes().getValidationWarnings());
+		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	
 	/**

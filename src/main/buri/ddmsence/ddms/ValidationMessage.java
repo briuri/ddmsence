@@ -31,6 +31,20 @@ import buri.ddmsence.util.Util;
  * or stored as informational messages on the component itself (warnings).
  * </p>
  * 
+ * <p>
+ * The locator string provides additional information about the context of the
+ * error or warning. This string is implemented as an XPath string right now: if
+ * the error was coming from a ddms:identifier component, the locator would be "/ddms:identifier".
+ * Should a parent component choose to report the warnings/errors of a child component,
+ * the locator string could be expanded with parent information, such as "/ddms:Resource/ddms:identifier".
+ * </p>
+ * 
+ * <p>
+ * Please note that the XPath string is not intended to drill all the way down to the offending
+ * element or attribute. It should merely provide enough context so that the source of the
+ * message can be discovered.
+ * <p>
+ * 
  * @author Brian Uri!
  * @since 0.9.c
  */
@@ -38,6 +52,7 @@ public class ValidationMessage {
 
 	private String _type;
 	private String _text;
+	private String _locator;
 	
 	/** Constant type for a warning. */
 	public static final String WARNING_TYPE = "Warning";
@@ -45,36 +60,47 @@ public class ValidationMessage {
 	/** Constant type for an error. */
 	public static final String ERROR_TYPE = "Error";
 	
+	/** XPath prefix to separate elements */
+	public static final String ELEMENT_PREFIX = "/";
+
 	/**
 	 * Private constructor. Use factory methods to instantiate.
 	 * 
 	 * @param type the type of this message
-	 * @param text the description text
+	 * @param text the description text'
+	 * @param locator a locator string, in XPath format. For attributes, use empty string. The parent element will claim
+	 * the attributes.
 	 */
-	private ValidationMessage(String type, String text) {
+	private ValidationMessage(String type, String text, String locator) {
 		Util.requireValue("text", text);
+		Util.requireValue("locator", locator);
 		_type = type;
 		_text = text;
+		_locator = (locator == null ? "" : ELEMENT_PREFIX + locator);
 	}
 	
 	/**
 	 * Factory method to create a warning
 	 * 
 	 * @param text the description text
+	 * @param locator a locator string, in XPath format. For attributes, use empty string. The parent element will claim
+	 * the attributes.
 	 * @return a new warning message
 	 */
-	public static ValidationMessage newWarning(String text) {
-		return (new ValidationMessage(WARNING_TYPE, text));
+	public static ValidationMessage newWarning(String text, String locator) {
+		return (new ValidationMessage(WARNING_TYPE, text, locator));
 	}
 	
 	/**
 	 * Factory method to create an error
 	 * 
 	 * @param text the description text
+	 * @param locator a locator string, in XPath format. For attributes, use empty string. The parent element will claim
+	 * the attributes.
 	 * @return a new error message
 	 */
-	public static ValidationMessage newError(String text) {
-		return (new ValidationMessage(ERROR_TYPE, text));
+	public static ValidationMessage newError(String text, String locator) {
+		return (new ValidationMessage(ERROR_TYPE, text, locator));
 	}
 	
 	/**
@@ -94,7 +120,7 @@ public class ValidationMessage {
 		if (!(obj instanceof ValidationMessage))
 			return (false);
 		ValidationMessage test = (ValidationMessage) obj;
-		return (getType().equals(test.getType()) && getText().equals(test.getText()));		
+		return (getType().equals(test.getType()) && getText().equals(test.getText()) && getLocator().equals(test.getLocator()));		
 	}
 
 	/**
@@ -103,6 +129,7 @@ public class ValidationMessage {
 	public int hashCode() {
 		int result = getType().hashCode();
 		result = 7 * result + getText().hashCode();
+		result = 7 * result + getLocator().hashCode();
 		return (result);
 	}
 	
@@ -118,5 +145,12 @@ public class ValidationMessage {
 	 */
 	public String getText() {
 		return _text;
+	}	
+	
+	/**
+	 * Accessor for the locator
+	 */
+	public String getLocator() {
+		return _locator;
 	}	
 }

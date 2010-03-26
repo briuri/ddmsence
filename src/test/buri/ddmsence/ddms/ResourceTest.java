@@ -47,6 +47,7 @@ import buri.ddmsence.ddms.summary.Link;
 import buri.ddmsence.ddms.summary.Point;
 import buri.ddmsence.ddms.summary.Position;
 import buri.ddmsence.ddms.summary.PositionTest;
+import buri.ddmsence.ddms.summary.PostalAddress;
 import buri.ddmsence.ddms.summary.RelatedResource;
 import buri.ddmsence.ddms.summary.RelatedResources;
 import buri.ddmsence.ddms.summary.SRSAttributes;
@@ -428,6 +429,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 	public void testName() {
 		Resource component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Resource.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + Resource.NAME, component.getQualifiedName());
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
@@ -756,6 +759,18 @@ public class ResourceTest extends AbstractComponentTestCase {
 		components.add(new Format("test", new MediaExtent("test", ""), "test"));
 		component = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
 		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals("A qualifier has been set without an accompanying value attribute.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:Resource/ddms:format/ddms:Media/ddms:extent", component.getValidationWarnings().get(0).getLocator());
+		
+		// More nested warnings
+		Element element = Util.buildDDMSElement(PostalAddress.NAME, null);
+		PostalAddress address = new PostalAddress(element);
+		components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
+		components.add(new GeospatialCoverage(null, null, null, address, null, SecurityAttributesTest.getFixture(false)));
+		component = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals("A completely empty ddms:postalAddress element was found.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress", component.getValidationWarnings().get(0).getLocator());
 	}
 	
 	public void testConstructorEquality() {

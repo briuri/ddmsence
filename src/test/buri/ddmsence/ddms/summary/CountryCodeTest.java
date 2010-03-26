@@ -124,6 +124,8 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	public void testName() {
 		CountryCode component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement());
 		assertEquals(CountryCode.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + CountryCode.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

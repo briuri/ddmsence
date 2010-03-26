@@ -126,6 +126,8 @@ public class DatesTest extends AbstractComponentTestCase {
 	public void testName() {
 		Dates component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Dates.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + Dates.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {
@@ -168,6 +170,7 @@ public class DatesTest extends AbstractComponentTestCase {
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A completely empty ddms:dates element was found.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:dates", component.getValidationWarnings().get(0).getLocator());
 	}
 	
 	public void testConstructorEquality() {

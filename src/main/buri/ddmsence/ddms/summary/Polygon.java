@@ -27,6 +27,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.Util;
 
 /**
@@ -200,7 +201,7 @@ public final class Polygon extends AbstractBaseComponent {
 		}
 		List<Position> positions = getPositions();
 		for (Position pos : positions) {
-			addWarnings(pos.getValidationWarnings());
+			addWarnings(pos.getValidationWarnings(), false);
 			if (pos.getSRSAttributes() != null) {
 				String srsName = pos.getSRSAttributes().getSrsName();
 				if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))
@@ -214,9 +215,17 @@ public final class Polygon extends AbstractBaseComponent {
 		if (!positions.isEmpty() && !positions.get(0).equals(positions.get(positions.size() - 1))) {
 			throw new InvalidDDMSException("The first and last position in the Polygon must be the same.");
 		}
-		addWarnings(getSRSAttributes().getValidationWarnings());
+		addWarnings(getSRSAttributes().getValidationWarnings(), true);
 	}
 	
+	/**
+	 * @see AbstractBaseComponent#getLocatorSuffix()
+	 */
+	protected String getLocatorSuffix() {
+		return (ValidationMessage.ELEMENT_PREFIX + GML_PREFIX + ":" + EXTERIOR_NAME
+			+ ValidationMessage.ELEMENT_PREFIX + GML_PREFIX + ":" + LINEAR_RING_NAME);
+	}
+		
 	/**
 	 * @see AbstractBaseComponent#toHTML()
 	 */

@@ -113,7 +113,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		
 		if (Util.isEmpty(getAddress()) && Util.isEmpty(getProtocol()))
 			addWarning("A completely empty ddms:virtualCoverage element was found.");
-		addWarnings(getSecurityAttributes().getValidationWarnings());
+		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	
 	/**

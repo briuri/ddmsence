@@ -102,7 +102,7 @@ public final class Security extends AbstractBaseComponent {
 		getSecurityAttributes().requireClassification();
 		getSecurityAttributes().requireOwnerProducer();		
 		
-		addWarnings(getSecurityAttributes().getValidationWarnings());
+		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 		
 	/**

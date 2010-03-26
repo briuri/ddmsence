@@ -140,6 +140,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	public void testName() {
 		GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(GeospatialCoverage.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + GeospatialCoverage.NAME, component.getQualifiedName());
 	}
 
 	public void testElementConstructorValid() {

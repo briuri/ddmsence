@@ -204,8 +204,9 @@ public class PolygonTest extends AbstractComponentTestCase {
 	public void testName() {
 		Polygon component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Polygon.NAME, component.getName());
+		assertEquals(Polygon.GML_PREFIX, component.getPrefix());
+		assertEquals(Polygon.GML_PREFIX + ":" + Polygon.NAME, component.getQualifiedName());
 	}
-
 	
 	public void testElementConstructorValid() {
 		// All fields

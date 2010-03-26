@@ -154,13 +154,13 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), FacilityIdentifier.NAME, 0, 1);
 		if (hasFacilityIdentifier()) {
-			addWarnings(getFacilityIdentifier().getValidationWarnings());
+			addWarnings(getFacilityIdentifier().getValidationWarnings(), false);
 			if (!getNames().isEmpty() || !getRegions().isEmpty() || getCountryCode() != null)
 				throw new InvalidDDMSException("facilityIdentifier cannot be used in tandem with other components.");
 		}
 		
 		if (getCountryCode() != null)
-			addWarnings(getCountryCode().getValidationWarnings());			
+			addWarnings(getCountryCode().getValidationWarnings(), false);			
 	}
 	
 	/**

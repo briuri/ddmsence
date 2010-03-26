@@ -143,6 +143,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	public void testName() {
 		GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(GeographicIdentifier.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + GeographicIdentifier.NAME, component.getQualifiedName());
 	}
 
 	public void testElementConstructorValid() {

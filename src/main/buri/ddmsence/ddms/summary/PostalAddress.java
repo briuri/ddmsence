@@ -29,13 +29,7 @@ import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:postalAddress.
- * 
- * <p>
- * A format element contains a locally defined Media construct. This Media construct is a container for the mimeType,
- * extent, and medium of a resource. It exists only inside of a ddms:format parent, so it is not implemented as a Java
- * object.
- * </p>
- * 
+ *  
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
@@ -167,7 +161,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.NAME, 0, 1);
 		
 		if (getCountryCode() != null)
-			addWarnings(getCountryCode().getValidationWarnings());
+			addWarnings(getCountryCode().getValidationWarnings(), false);
 		if (getStreets().isEmpty() && Util.isEmpty(getCity()) && Util.isEmpty(getState()) && Util.isEmpty(getProvince()) &&
 				Util.isEmpty(getPostalCode()) && getCountryCode() == null) {
 			addWarning("A completely empty ddms:postalAddress element was found.");

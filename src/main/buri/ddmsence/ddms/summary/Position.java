@@ -174,7 +174,7 @@ public final class Position extends AbstractBaseComponent {
 		Util.requireValidLatitude(getCoordinates().get(0));
 		Util.requireValidLongitude(getCoordinates().get(1));
 		
-		addWarnings(getSRSAttributes().getValidationWarnings());
+		addWarnings(getSRSAttributes().getValidationWarnings(), true);
 	}
 	
 	/**

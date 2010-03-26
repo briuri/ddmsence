@@ -136,6 +136,8 @@ public class PositionTest extends AbstractComponentTestCase {
 	public void testName() {
 		Position component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Position.NAME, component.getName());
+		assertEquals(Position.GML_PREFIX, component.getPrefix());
+		assertEquals(Position.GML_PREFIX + ":" + Position.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

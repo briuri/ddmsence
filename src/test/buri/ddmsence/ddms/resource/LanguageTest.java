@@ -115,6 +115,8 @@ public class LanguageTest extends AbstractComponentTestCase {
 	public void testName() {
 		Language component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Language.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + Language.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {
@@ -158,6 +160,7 @@ public class LanguageTest extends AbstractComponentTestCase {
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A qualifier has been set without an accompanying value attribute.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:language", component.getValidationWarnings().get(0).getLocator());
 		
 		// Neither attribute
 		element = Util.buildDDMSElement(Language.NAME, null);
@@ -165,6 +168,7 @@ public class LanguageTest extends AbstractComponentTestCase {
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("Neither a qualifier nor a value was set on this language.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:language", component.getValidationWarnings().get(0).getLocator());
 	}
 	
 	public void testConstructorEquality() {

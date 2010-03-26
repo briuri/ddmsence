@@ -164,6 +164,8 @@ public class PersonTest extends AbstractComponentTestCase {
 	public void testName() {
 		Person component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(TEST_PRODUCER_TYPE, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + TEST_PRODUCER_TYPE, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {
@@ -252,7 +254,7 @@ public class PersonTest extends AbstractComponentTestCase {
 		assertEquals(0, component.getValidationWarnings().size());
 		
 		// Empty userID
-		Element entityElement = Util.buildDDMSElement(Organization.NAME, null);
+		Element entityElement = Util.buildDDMSElement(Person.NAME, null);
 		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 		entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
 		entityElement.appendChild(Util.buildDDMSElement("userID", ""));
@@ -262,9 +264,10 @@ public class PersonTest extends AbstractComponentTestCase {
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A ddms:userID element was found with no value.", component.getValidationWarnings().get(0).getText());
-
+		assertEquals("/ddms:creator/ddms:Person", component.getValidationWarnings().get(0).getLocator());
+		
 		// Empty affiliation
-		entityElement = Util.buildDDMSElement(Organization.NAME, null);
+		entityElement = Util.buildDDMSElement(Person.NAME, null);
 		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 		entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
 		entityElement.appendChild(Util.buildDDMSElement("affiliation", ""));
@@ -274,6 +277,7 @@ public class PersonTest extends AbstractComponentTestCase {
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A ddms:affiliation element was found with no value.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:creator/ddms:Person", component.getValidationWarnings().get(0).getLocator());
 	}
 	
 	public void testConstructorEquality() {

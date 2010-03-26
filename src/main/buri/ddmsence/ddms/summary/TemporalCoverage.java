@@ -28,6 +28,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.util.Util;
 
@@ -212,7 +213,14 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		else
 			validateExtendedDateType(getEndString());
 		
-		addWarnings(getSecurityAttributes().getValidationWarnings());
+		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#getLocatorSuffix()
+	 */
+	protected String getLocatorSuffix() {
+		return (ValidationMessage.ELEMENT_PREFIX + DDMS_PREFIX + ":" + TIME_PERIOD_NAME);
 	}
 	
 	/**

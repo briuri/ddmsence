@@ -169,8 +169,8 @@ public final class RelatedResources extends AbstractBaseComponent {
 			throw new InvalidDDMSException("At least 1 RelatedResource must exist.");
 		
 		for (RelatedResource related : getRelatedResources())
-			addWarnings(related.getValidationWarnings());
-		addWarnings(getSecurityAttributes().getValidationWarnings());
+			addWarnings(related.getValidationWarnings(), false);
+		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	
 	/**

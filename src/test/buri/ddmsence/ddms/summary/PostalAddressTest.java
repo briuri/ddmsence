@@ -162,6 +162,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	public void testName() {
 		PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(PostalAddress.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + PostalAddress.NAME, component.getQualifiedName());
 	}
 
 	public void testElementConstructorValid() {
@@ -253,6 +255,7 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A completely empty ddms:postalAddress element was found.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:postalAddress", component.getValidationWarnings().get(0).getLocator());
 	}
 	
 	public void testConstructorEquality() {

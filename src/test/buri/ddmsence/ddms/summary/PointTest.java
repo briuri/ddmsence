@@ -144,6 +144,8 @@ public class PointTest extends AbstractComponentTestCase {
 	public void testName() {
 		Point component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Point.NAME, component.getName());
+		assertEquals(Point.GML_PREFIX, component.getPrefix());
+		assertEquals(Point.GML_PREFIX + ":" + Point.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

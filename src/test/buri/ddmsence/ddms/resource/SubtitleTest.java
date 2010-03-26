@@ -117,6 +117,8 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	public void testName() {
 		Subtitle component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Subtitle.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + Subtitle.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() throws InvalidDDMSException {
@@ -149,6 +151,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A ddms:subtitle element was found with no subtitle value.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:subtitle", component.getValidationWarnings().get(0).getLocator());
 	}
 	
 	public void testConstructorEquality() {

@@ -126,6 +126,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	public void testName() {
 		TemporalCoverage component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(TemporalCoverage.NAME, component.getName());
+		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+		assertEquals(Util.DDMS_PREFIX + ":" + TemporalCoverage.NAME, component.getQualifiedName());
 	}
 	
 	public void testElementConstructorValid() {

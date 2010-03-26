@@ -19,8 +19,8 @@
 */
 package buri.ddmsence.ddms;
 
-import buri.ddmsence.ddms.resource.Rights;
 import junit.framework.TestCase;
+import buri.ddmsence.ddms.resource.Rights;
 
 /**
  * <p>Tests related to ValidationMessages</p>
@@ -31,18 +31,20 @@ import junit.framework.TestCase;
 public class ValidationMessageTest extends TestCase {
 
 	public void testFactory() {
-		ValidationMessage message = ValidationMessage.newWarning("Test");
+		ValidationMessage message = ValidationMessage.newWarning("Test", "ddms:test");
 		assertEquals(ValidationMessage.WARNING_TYPE, message.getType());
 		assertEquals("Test", message.getText());
+		assertEquals("/ddms:test", message.getLocator());
 		
-		message = ValidationMessage.newError("Test");
+		message = ValidationMessage.newError("Test", "ddms:test");
 		assertEquals(ValidationMessage.ERROR_TYPE, message.getType());
 		assertEquals("Test", message.getText());
+		assertEquals("/ddms:test", message.getLocator());
 	}
 	
 	public void testEquality() {
-		ValidationMessage message1 = ValidationMessage.newWarning("Test");
-		ValidationMessage message2 = ValidationMessage.newWarning("Test");
+		ValidationMessage message1 = ValidationMessage.newWarning("Test", "ddms:test");
+		ValidationMessage message2 = ValidationMessage.newWarning("Test", "ddms:test");
 		assertEquals(message1, message1);
 		assertEquals(message1, message2);
 		assertEquals(message1.hashCode(), message2.hashCode());
@@ -50,7 +52,7 @@ public class ValidationMessageTest extends TestCase {
 	}
 	
 	public void testInequalityWrongClass() throws InvalidDDMSException {
-		ValidationMessage message = ValidationMessage.newWarning("Test");
+		ValidationMessage message = ValidationMessage.newWarning("Test", "ddms:test");
 		Rights wrongComponent = new Rights(true, true, true);
 		assertFalse(message.equals(wrongComponent));
 	}
