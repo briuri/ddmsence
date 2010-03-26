@@ -35,7 +35,7 @@ objects. You might see an error message appear in your console, because I have i
 in the directory, which is used in the <u>Essentials</u> application. You can safely ignore this message, because <u>Escape</u> will ignore any files it could not convert.</p>
 
 <p>With a collection of Resources in hand, <u>Escape</u> examines the data in each Resource and builds frequency distribution charts based on various metrics. The
-chart that appears initially shows the distribution of MIME Types in the resources (the ddms:mimeType element nested inside of ddms:format).</p>
+chart that appears initially shows the distribution of MIME Types in the resources (the ddms:mimeType element nested inside of ddms:Media).</p>
 
 <img src="../images/escape-01.png" width="400" height="264" title="First Screen" />
 <p class="figure">Figure 1. The MIME Types Distribution</p>
