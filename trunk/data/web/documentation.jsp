@@ -166,7 +166,7 @@ The following convention is used to provide some consistency:</p>
 
 <p>The source code for DDMSence can be found in the "src'-flavored download on the <a href="downloads.jsp">Downloads</a> page. If you are interested in viewing the latest
 (unreleased and possibly unstable) source code, you can download it with any Subversion client:</p>
-<pre>svn checkout http://ddmsence.googlecode.com/svn/trunk/ ddmsence-read-only</pre>
+<pre>svn checkout <a href="http://ddmsence.googlecode.com/svn/trunk/">http://ddmsence.googlecode.com/svn/trunk/</a> ddmsence-read-only</pre>
 
 <a name="feedback"></a><h3>Feedback</h3>
 
