@@ -13,24 +13,24 @@
 
 <p>Downloads come in two flavor:</p>
 
-<p><b>ddmsence-bin-version.zip</b>: This download is intended for end users who wish to used DDMSence in their own projects. It contains the DDMSence JAR files,
+<p><b><code>ddmsence-bin-version.zip</code></b>: This download is intended for end users who wish to used DDMSence in their own projects. It contains the DDMSence JAR files,
 the complete API documentation (which is also available <a href="/docs/">online</a>), source code for the sample applications,
 and supporting 3rd-party JAR files. Sample applications can be run from the <a href="documentation.jsp#started">command line</a>.</p>
 
-<p><b>ddmsence-src-version.zip</b>: This download is intended for developers who wish to see what DDMSence is doing under the hood. It contains source 
-code for the main library, unit tests, and the sample applications, as well as supporting 3rd-party JAR files. This download contains a <b>build.xml</b> 
+<p><b><code>ddmsence-src-version.zip</code></b>: This download is intended for developers who wish to see what DDMSence is doing under the hood. It contains source 
+code for the main library, unit tests, and the sample applications, as well as supporting 3rd-party JAR files. This download contains a <code>build.xml</code> 
 file which will allow you to compile source code, run unit tests, generate API documentation, or even generate the "bin"-flavored archive with <a href="http://ant.apache.org/">Apache Ant</a>. 
-I have include the <b>.project</b> file if you wish to import the project into Eclipse.</p>
+I have include the <code>.project</code> file if you wish to import the project into Eclipse.</p>
 
 <h3>Latest Release</h3>
 
 <p>Version <b>0.9.c</b> (3/25/2010) improves the validation system to support warnings in addition to errors, as outlined in <a href="http://code.google.com/p/ddmsence/issues/detail?id=7">Issue #7</a>.
-One method of the <b>IDDMSComponent</b> interface was removed, which breaks compatibility with 0.9.b. This version is believed to be stable, and is intended to be a limited audience release
+One method of the <code>IDDMSComponent</code> interface was removed, which breaks compatibility with 0.9.b. This version is believed to be stable, and is intended to be a limited audience release
 for early feedback.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.c.zip">ddmsence-bin-0.9.c.zip</a></b> (1.8 MB)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.c.zip">ddmsence-src-0.9.c.zip</a></b> (2.5 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.c.zip"><code>ddmsence-bin-0.9.c.zip</code></a></b> (1.8 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.c.zip"><code>ddmsence-src-0.9.c.zip</code></a></b> (2.5 MB)</li>
 <li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=Milestone%3Dv0.9.c">Issues Resolved in v0.9.c</a></li>
 </ul>
 
@@ -40,8 +40,8 @@ for early feedback.</p>
 sample applications. This version is believed to be stable, and is intended to be a limited audience release for early feedback.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.b.zip">ddmsence-bin-0.9.b.zip</a></b> (1.8 MB)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.b.zip">ddmsence-src-0.9.b.zip</a></b> (2.5 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.b.zip"><code>ddmsence-bin-0.9.b.zip</code></a></b> (1.8 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.b.zip"><code>ddmsence-src-0.9.b.zip</code></a></b> (2.5 MB)</li>
 </ul>
 
 <h3>Versioning</h3>

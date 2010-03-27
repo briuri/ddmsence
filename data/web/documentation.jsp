@@ -96,7 +96,7 @@ in the "src"-flavored download. You should be aware of the following sections, w
 <ul>
 	<li>The class description describes cases where DDMSence is stricter than the DDMS specification, and allowed cases which are legal, but nonsensical.</li>
 	<li>The class description describes any nested elements or attributes for the implemented component and a link to the DDMS website for the complete specification.</li>
-	<li>The <b>validate</b> method description lists the specific rules used to validate a component. This section may be useful when building your own components.</li>
+	<li>The <code>validate</code> method description lists the specific rules used to validate a component. This section may be useful when building your own components.</li>
 </ul>
 <div class="clear"></div>
 
@@ -108,20 +108,20 @@ in the "src"-flavored download. You should be aware of the following sections, w
 followed these rules to determine which components are important enough to deserve a full-fledged Object:</p>
 
 <ul>
-	<li>Elements which are explicitly declared as DDMS Categories in the DDMS documentation are always implemented (ddms:identifier).</li>
-	<li>Elements which merely enclose important data AND which have no special attributes are never implemented (ddms:Media).</li>
-	<li>Data which can be represented as a simple Java type AND which has no special attributes is represented as a simple Java type (ddms:email).</li>
+	<li>Elements which are explicitly declared as DDMS Categories in the DDMS documentation are always implemented (<code>ddms:identifier</code>).</li>
+	<li>Elements which merely enclose important data AND which have no special attributes are never implemented (<code>ddms:Media</code>).</li>
+	<li>Data which can be represented as a simple Java type AND which has no special attributes is represented as a simple Java type (<code>ddms:email</code>).</li>
 	<li>Attributes are generally implemented as properties on an Object. The exceptions to this are the ICISM AttributeGroup, which decorates many DDMS components, and the SRS AttributeGroup, which decorates components in the GML profile.</li>
 </ul>
 
 <h4>Empty String vs. No Value</h4>
 
-<p>When analyzing xs:string-based components, DDMSence treats the absence of some element/attribute in the same manner as it would treat that element/attribute if it were
-present but had an empty string as a value. The DDMS schema generally uses xs:string without length restrictions, so an empty string is syntactically correct, even if the
+<p>When analyzing <code>xs:string</code>-based components, DDMSence treats the absence of some element/attribute in the same manner as it would treat that element/attribute if it were
+present but had an empty string as a value. The DDMS schema generally uses <code>xs:string</code> without length restrictions, so an empty string is syntactically correct, even if the
 resulting data is not logical. To provide some consistency in this library, I have tried to follow these rules:</p>
 
 <ul>
-	<li>A string-based accessor will always return an empty string instead of a <b>null</b> entity. This means that a missing element and an element with no value
+	<li>A string-based accessor will always return an empty string instead of a <code>null</code> entity. This means that a missing element and an element with no value
 	in an XML file are treated identically.</li>
 	<li>If the DDMS specification marks a component as Mandatory, but the schema allows an empty string, DDMSence will also require that the component have a non-empty value.</li> 
 	<li>If the DDMS specification marks a component as Optional, DDMSence will never be stricter than the DDMS schema. This could result in illogical constructs
