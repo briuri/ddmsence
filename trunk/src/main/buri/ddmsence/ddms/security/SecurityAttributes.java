@@ -54,14 +54,6 @@ import buri.ddmsence.util.Util;
  * <p>At this time, logical validation is only done on the data types of the various attributes, and the token value of "classification". I would
  * like to add additional validation in the future.</p>
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>When the classification is required, it must also be non-empty.</li>
- * <li>When an ownerProducer is required, it must also be non-empty.</li>
- * </ul>
- * </td></tr></table>
- * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ICISM:classification</u>: (optional)<br />
  * <u>ICISM:ownerProducer</u>: (optional)<br />
