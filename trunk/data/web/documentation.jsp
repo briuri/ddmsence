@@ -168,6 +168,8 @@ The following convention is used to provide some consistency:</p>
 (unreleased and possibly unstable) source code, you can download it with any Subversion client:</p>
 <pre>svn checkout <a href="http://ddmsence.googlecode.com/svn/trunk/">http://ddmsence.googlecode.com/svn/trunk/</a> ddmsence-read-only</pre>
 
+<p>An <a href="http://code.google.com/feeds/p/ddmsence/svnchanges/basic">Atom feed</a> of SVN commits is also available -- there are no email notifications at this time.</p>
+
 <a name="feedback"></a><h3>Feedback</h3>
 
 <p>I would love to hear about your experiences working with DDMSence, or suggestions for future functionality. You can contact me directly by email at
