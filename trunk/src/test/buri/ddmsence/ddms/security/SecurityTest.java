@@ -142,7 +142,14 @@ public class SecurityTest extends AbstractComponentTestCase {
 	}
 		
 	public void testDataConstructorInvalid() {
-		// No way to make an invalid one right now.
+		// Bad security attributes
+		try {
+			new Security((SecurityAttributes) null);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
 	}
 	
 	public void testWarnings() {

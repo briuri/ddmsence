@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.summary;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.SecurityAttributesTest;
 import buri.ddmsence.util.Util;
@@ -194,20 +195,45 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
 		element.appendChild(periodElement);
 		testConstructor(WILL_FAIL, element);
+		
+		// Bad range
+		periodElement = Util.buildDDMSElement("TimePeriod", null);
+		periodElement.appendChild(Util.buildDDMSElement("start", "2004"));
+		periodElement.appendChild(Util.buildDDMSElement("end", "2003"));
+		element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+		element.appendChild(periodElement);
+		testConstructor(WILL_FAIL, element);
 	}
 	
-	public void testDataConstructorInvalidWrongFormat() {
+	public void testDataConstructorInvalid() {
 		// Wrong date format (using xs:gDay here)
 		testConstructor(WILL_FAIL, TEST_NAME, "---31", TEST_END);
 		
 		// Wrong extended value
 		testConstructor(WILL_FAIL, TEST_NAME, "N/A", TEST_END);
+		
+		// Bad range
+		testConstructor(WILL_FAIL, TEST_NAME, "2004", "2003");
 	}
 	
 	public void testWarnings() {
 		// No warnings
 		TemporalCoverage component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(0, component.getValidationWarnings().size());
+		
+		// Empty name element
+		Element periodElement = Util.buildDDMSElement("TimePeriod", null);
+		periodElement.appendChild(Util.buildDDMSElement("name", null));
+		periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
+		periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
+		Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+		element.appendChild(periodElement);
+		component = testConstructor(WILL_SUCCEED, element);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+		assertEquals("A ddms:name element was found with no value. Defaulting to \"Unknown\".", component
+			.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:temporalCoverage/ddms:TimePeriod", component.getValidationWarnings().get(0).getLocator());
 	}
 	
 	public void testConstructorEquality() {
@@ -225,7 +251,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		dataComponent = testConstructor(WILL_SUCCEED, TEST_NAME, "Not Applicable", TEST_END);
 		assertFalse(elementComponent.equals(dataComponent));
 		
-		dataComponent = testConstructor(WILL_SUCCEED, TEST_NAME, TEST_START, "1950");
+		dataComponent = testConstructor(WILL_SUCCEED, TEST_NAME, TEST_START, "2050");
 		assertFalse(elementComponent.equals(dataComponent));
 	}
 	
@@ -286,7 +312,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 	
 	public void testDateEquality() {
-		TemporalCoverage component = testConstructor(WILL_SUCCEED, TEST_NAME, TEST_START, "1950");
+		TemporalCoverage component = testConstructor(WILL_SUCCEED, TEST_NAME, TEST_START, "2050");
 		assertEquals(component.getStart().toXMLFormat(), component.getStartString());
 		assertEquals(component.getEnd().toXMLFormat(), component.getEndString());
 	}

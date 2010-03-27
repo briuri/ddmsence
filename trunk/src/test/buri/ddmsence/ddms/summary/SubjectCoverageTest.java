@@ -25,6 +25,7 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.SecurityAttributesTest;
 import buri.ddmsence.util.Util;
@@ -178,7 +179,31 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	public void testWarnings() {
 		// No warnings
 		SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(0, component.getValidationWarnings().size());		
+		assertEquals(0, component.getValidationWarnings().size());
+		
+		// Identical keywords
+		Element subjectElement = Util.buildDDMSElement("Subject", null);
+		subjectElement.appendChild(TEST_KEYWORDS.get(0).getXOMElementCopy());
+		subjectElement.appendChild(TEST_KEYWORDS.get(0).getXOMElementCopy());
+		Element element = Util.buildDDMSElement(SubjectCoverage.NAME, null);
+		element.appendChild(subjectElement);
+		component = testConstructor(WILL_SUCCEED, element);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+		assertEquals("1 or more keywords have the same value.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:subjectCoverage/ddms:Subject", component.getValidationWarnings().get(0).getLocator());
+		
+		// Identical categories
+		subjectElement = Util.buildDDMSElement("Subject", null);
+		subjectElement.appendChild(TEST_CATEGORIES.get(0).getXOMElementCopy());
+		subjectElement.appendChild(TEST_CATEGORIES.get(0).getXOMElementCopy());
+		element = Util.buildDDMSElement(SubjectCoverage.NAME, null);
+		element.appendChild(subjectElement);
+		component = testConstructor(WILL_SUCCEED, element);
+		assertEquals(1, component.getValidationWarnings().size());
+		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+		assertEquals("1 or more categories have the same value.", component.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:subjectCoverage/ddms:Subject", component.getValidationWarnings().get(0).getLocator());
 	}
 	
 	public void testConstructorEquality() {
