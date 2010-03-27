@@ -21,7 +21,9 @@ package buri.ddmsence.ddms.summary;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -39,6 +41,13 @@ import buri.ddmsence.util.Util;
  * keywords and categories of a resource. It exists only inside of a ddms:format parent, so it is not implemented as a
  * Java object.
  * </p>
+ * 
+ * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
+ * <ul>
+ * <li>Duplicate keywords or categories can be used.</li>
+ * </ul>
+ * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:category</u>: a category (0-many optional), implemented as a {@link Category}<br />
@@ -160,6 +169,13 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		if (count < 1)
 			throw new InvalidDDMSException("At least 1 keyword or category must exist.");
 		
+		Set<Keyword> uniqueKeywords = new HashSet<Keyword>(getKeywords());
+		if (uniqueKeywords.size() != getKeywords().size())
+			addWarning("1 or more keywords have the same value.");
+		Set<Category> uniqueCategories = new HashSet<Category>(getCategories());
+		if (uniqueCategories.size() != getCategories().size())
+			addWarning("1 or more categories have the same value.");
+				
 		for (Keyword keyword : getKeywords()) {
 			addWarnings(keyword.getValidationWarnings(), false);
 		}

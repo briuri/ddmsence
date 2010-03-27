@@ -23,6 +23,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
+import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.ddms.security.SecurityAttributesTest;
 import buri.ddmsence.util.Util;
 
@@ -148,6 +149,17 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		Element element = Util.buildDDMSElement("unknownName", null);
 		SecurityAttributesTest.getFixture(false).addTo(element);
 		testConstructor(WILL_FAIL, element);
+	}
+	
+	public void testDataConstructorInvalid() {
+		// Bad security attributes
+		try {
+			new Subtitle(TEST_VALUE, (SecurityAttributes) null);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
 	}
 	
 	public void testWarnings() throws InvalidDDMSException {

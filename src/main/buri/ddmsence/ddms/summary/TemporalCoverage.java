@@ -46,6 +46,18 @@ import buri.ddmsence.util.Util;
  * xs:gYear, and the <code>XMLGregorianCalendar</code> class is used to enforce these restrictions.
  * </p>
  * 
+ * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * <p>DDMSence is stricter than the specification in the following ways:</p>
+ * <ul>
+ * <li>The end date cannot be before the start date.</li>
+ * </ul>
+ * 
+ * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
+ * <ul>
+ * <li>A time period name element can be used with no child text.</li>
+ * </ul>
+ * </td></tr></table>
+ * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:name</u>: An interval of time, which can be expressed as a named era (0-1 optional, default=Unknown). Zero or
  * 1 of these elements may appear.<br />
@@ -226,7 +238,15 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getEnd().getXMLSchemaType());
 		else
 			validateExtendedDateType(getEndString());
-		
+		if (getStart() != null && getEnd() != null) {
+			if (getStart().toGregorianCalendar().after(getEnd().toGregorianCalendar())) {
+				throw new InvalidDDMSException("The start date is after the end date.");
+			}
+		}
+
+		Element timePeriodName = periodElement.getFirstChildElement(TIME_PERIOD_NAME_NAME, periodElement.getNamespaceURI());
+		if (timePeriodName != null && Util.isEmpty(timePeriodName.getValue()))
+			addWarning("A ddms:name element was found with no value. Defaulting to \"" + DEFAULT_VALUE + "\".");
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	

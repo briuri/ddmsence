@@ -144,6 +144,17 @@ public class DescriptionTest extends AbstractComponentTestCase {
 		testConstructor(WILL_SUCCEED, "");
 	}
 	
+	public void testDataConstructorInvalid() {
+		// Bad security attributes
+		try {
+			new Description(TEST_VALUE, null);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
 	public void testWarnings() throws InvalidDDMSException {
 		// No warnings
 		Description component = testConstructor(WILL_SUCCEED, getValidElement());
