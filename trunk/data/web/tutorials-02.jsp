@@ -28,7 +28,7 @@ a few artificial limitations on the some elements:</p>
 
 <h3>Getting Started</h3>
 
-<p><u>Escort</u> can be run from the command line with the class, <b>buri.ddmsence.samples.Escort</b>. The application does not accept any
+<p><u>Escort</u> can be run from the command line with the class, <code>buri.ddmsence.samples.Escort</code>. The application does not accept any
 command line parameters.</p>
 
 <p>Please see "<a href="documentation.jsp#started">Getting Started</a>" section for classpath details and command line syntax.</p> 
@@ -51,8 +51,8 @@ Would you like to run in FAST mode? [Y/N]:</pre></div>
 <p>The wizard will walk you through each top-level component of a DDMS Resource. Each component you create must be valid before you can proceed to the
 next one. This process could be lengthy, so I suggest that you do your first run-through in FAST mode.</p>
 
-<p>First, let's try creating an invalid Identifier. The DDMS specification states that the qualifier must be a valid URI. Type in "<b>:::::</b>" as
-a qualifier and <b>test</b> as a value.</p>
+<p>First, let's try creating an invalid Identifier. The DDMS specification states that the qualifier must be a valid URI. Type in "<code>:::::</code>" as
+a qualifier and "<code>test</code>" as a value.</p>
 
 <div class="example"><pre>=== ddms:identifier (at least 1 required) ===
 Please enter the qualifier [URI]: :::::
@@ -62,13 +62,13 @@ Please enter the qualifier [URI]:</pre></div>
 <p class="figure">Figure 2. Outsmarting the Wizard</p>
 
 <p>Because the qualifier was an invalid URI, the wizard printed out the error message and then restarted the loop to get your input values. The value, 
-"/ddms:identifier" tells you which component was causing a problem and can be retrieved via <b>getLocator()</b> on the <b>InvalidDDMSException</b>. The format
+"<code>/ddms:identifier</code>" tells you which component was causing a problem and can be retrieved via <code>getLocator()</code> on the <code>InvalidDDMSException</code>. The format
 of the locator will be an XPath string, but should be enough to help you locate the offending component even if you have no XPath experience. (Skilled XPath
-developers will notice that ddms:identifier seems to be the root node in the string -- this is because it had not been added to the parent Resource at the time
+developers will notice that <code>ddms:identifier</code> seems to be the root node in the string -- this is because it had not been added to the parent Resource at the time
 of the exception).</p>
 
-<p>Now, let's take a look at the source code in <b>/src/samples/buri/ddmsence/samples/Escort.java</b> to see how this was accomplished. 
-The important lines are found in the <b>buildIdentifier()</b> method:</p>
+<p>Now, let's take a look at the source code in <code>/src/samples/buri/ddmsence/samples/Escort.java</code> to see how this was accomplished. 
+The important lines are found in the <code>buildIdentifier()</code> method:</p>
 
 <div class="example"><pre>while (true) {
    String qualifier = readString("the qualifier [URI]");
@@ -83,7 +83,7 @@ The important lines are found in the <b>buildIdentifier()</b> method:</p>
 <p class="figure">Figure 3. Source code to build an Identifier</p>
 
 <p>The example code above uses a loop which keeps asking you for values until a valid Identifier can be created. It then returns the valid
-Identifier back to the main wizard method, <b>run()</b>, and proceeds to the next top-level component. There is a <b>build<i>Component</i>()</b>
+Identifier back to the main wizard method, <code>run()</code>, and proceeds to the next top-level component. There is a <code>build<i>Component</i>()</code>
 method for each top-level component, so you can see how each one is built. (You can also see how any component is built by loading an XML file 
 into the <u>Essentials</u> application and viewing the generated Java code).</p>
 
@@ -129,10 +129,10 @@ The DDMS Resource is valid!
 No warnings were recorded.</pre></div>
 <p class="figure">Figure 4. Successful run of the Escort Wizard</p>
 
-<p>DDMSence stores warning messages on each component for conditions that aren't necessarily invalid. Calling <b>getValidationWarnings()</b> on any component will return
+<p>DDMSence stores warning messages on each component for conditions that aren't necessarily invalid. Calling <code>getValidationWarnings()</code> on any component will return
 the messages of that component and any subcomponents. In this run-through, no warnings were recorded. We will try an example with warnings later.</p>
 
-<p>The final step is to save your valid Resource as an XML file. Enter a filename, and the Resource will be saved in the <b>data/sample/</b> directory.</p>
+<p>The final step is to save your valid Resource as an XML file. Enter a filename, and the Resource will be saved in the <code>data/sample/</code> directory.</p>
 
 <div class="example"><pre>=== Saving the Resource ===
 This Resource will be saved as XML in the data/sample/ directory.
@@ -146,7 +146,7 @@ The Escort wizard is now finished.</pre></div>
 <p>Once the file is saved, you can open it with the <u>Essentials</u> application to view the Resource in different formats. You can also use the wizard
 to generate additional data files for the <u>Escape</U> application.</p>
 
-<p>If you were to run <u>Escort</u> again in COMPLETE mode, and then create an empty ddms:dates component, you would see a warning message when the Resource
+<p>If you were to run <u>Escort</u> again in COMPLETE mode, and then create an empty <code>ddms:dates</code> component, you would see a warning message when the Resource
 was generated:</p>
 
 <div class="example"><pre>=== ddms:dates (only 1 allowed) ===
@@ -164,12 +164,12 @@ The DDMS Resource is valid!
 <p class="figure">Figure 5. Triggering a Warning Condition</p>
 
 <p>As you can see, the locator information on warnings is in the same format as the information on errors. Because parent components claim the warnings of their children,
-a more detailed locator can be created. In this case, calling <b>getValidationWarnings()</b> on the Resource shows the full path of "/ddms:Resource/ddms:dates". If 
-you called <b>getValidationWarnings()</b> on the Dates component itself, the locator would be "/ddms:dates".</p>
+a more detailed locator can be created. In this case, calling <code>getValidationWarnings()</code> on the Resource shows the full path of "<code>/ddms:Resource/ddms:dates</code>". If 
+you called <code>getValidationWarnings()</code> on the Dates component itself, the locator would be "<code>/ddms:dates</code>".</p>
 
 <p>If a parent-child hierarchy has some DDMS elements which are not <a href="documentation.jsp#design">implemented as Java objects</a>, the locator string will
-include every element in the hierarchy. For example, a warning in a ddms:medium element will have a locator value of "/ddms:Resource/ddms:format/ddms:Media/ddms:medium"
-even though ddms:Media is not an implemented component (the medium is a property of a Format object in Java terms).</p>
+include every element in the hierarchy. For example, a warning in a <code>ddms:medium</code> element will have a locator value of "<code>/ddms:Resource/ddms:format/ddms:Media/ddms:medium</code>"
+even though <code>ddms:Media</code> is not an implemented component (the medium is a property of a Format object in Java terms).</p>
   
 <h3>Conclusion</h3>
 
