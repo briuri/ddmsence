@@ -126,11 +126,15 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 		return (formatXml(xml.toString(), preserveFormatting));		
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		VerticalExtent component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(VerticalExtent.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + VerticalExtent.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() {

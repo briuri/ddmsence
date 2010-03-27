@@ -109,11 +109,15 @@ public class SecurityTest extends AbstractComponentTestCase {
 		return (xml.toString());
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		Security component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Security.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + Security.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() {

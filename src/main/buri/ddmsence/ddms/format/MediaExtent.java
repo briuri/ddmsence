@@ -87,6 +87,7 @@ public final class MediaExtent extends AbstractQualifierValue {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If set, the qualifier is a valid URI.</li>
 	 * <li>If the value is set, a qualifier is required. and is not empty</li>
 	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
@@ -97,6 +98,7 @@ public final class MediaExtent extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
 		if (!Util.isEmpty(getQualifier())) {

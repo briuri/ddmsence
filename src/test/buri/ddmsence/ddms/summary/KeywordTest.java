@@ -108,11 +108,15 @@ public class KeywordTest extends AbstractComponentTestCase {
 		return (xml.toString());
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		Keyword component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Keyword.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + Keyword.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() {

@@ -111,6 +111,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If an address is provided, the protocol is required and must not be empty.</li>
 	 * <li>The SecurityAttributes are valid.</li>
 	 * </td></tr></table>
@@ -119,6 +120,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		if (!Util.isEmpty(getAddress()))
 			Util.requireDDMSValue(PROTOCOL_NAME, getProtocol());
 		

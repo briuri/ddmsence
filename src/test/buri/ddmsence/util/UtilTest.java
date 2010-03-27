@@ -231,6 +231,38 @@ public class UtilTest extends TestCase {
 		}
 	}
 	
+	public void testRequireDDMSQNameSuccess() {
+		try {
+			Element element = Util.buildDDMSElement("name", null);
+			Util.requireDDMSQName(element, Util.DDMS_PREFIX, "name");
+		}
+		catch (InvalidDDMSException e) {
+			fail("Did not allow valid data.");
+		}
+	}
+	
+	public void testRequireDDMSQNameFailure() {
+		// Bad Prefix
+		try {
+			Element element = Util.buildDDMSElement("name", null);
+			Util.requireDDMSQName(element, "prefix", "name");
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		// Bad Name
+		try {
+			Element element = Util.buildDDMSElement("name", null);
+			Util.requireDDMSQName(element, Util.DDMS_PREFIX, "newName");
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
 	public void testRequireValueNull() {
 		try {
 			Util.requireValue("description", null);

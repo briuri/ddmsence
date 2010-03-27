@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
+import buri.ddmsence.ddms.AbstractProducer;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.Util;
 
@@ -84,13 +85,18 @@ public final class Rights extends AbstractBaseComponent {
 	}
 		
 	/**
-	 * <p>Because no attributes are required, this method does not perform any additional validation 
-	 * beyond the validation done in the base class, <code>AbstractDDMSComponent</code>.</p>
+	 * Validates the component.
 	 * 
-	 * @see AbstractBaseComponent#validate()
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
+	 * </td></tr></table>
+	 * 
+	 * @see AbstractProducer#validate()
+	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 	}
 	
 	/**

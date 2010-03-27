@@ -142,11 +142,15 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 		return (formatXml(xml.toString(), preserveFormatting));		
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		RelatedResources component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(RelatedResources.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + RelatedResources.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() {

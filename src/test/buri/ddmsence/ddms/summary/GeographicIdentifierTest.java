@@ -140,11 +140,15 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		return (formatXml(xml.toString(), preserveFormatting));		
 	}
 
-	public void testName() {
+	public void testNameAndNamespace() {
 		GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(GeographicIdentifier.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + GeographicIdentifier.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 
 	public void testElementConstructorValid() {

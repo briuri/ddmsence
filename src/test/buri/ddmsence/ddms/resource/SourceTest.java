@@ -123,11 +123,15 @@ public class SourceTest extends AbstractComponentTestCase {
 		return (xml.toString());							
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		Source component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Source.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + Source.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() {

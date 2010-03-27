@@ -125,11 +125,15 @@ public class FormatTest extends AbstractComponentTestCase {
 		return (formatXml(xml.toString(), preserveFormatting));		
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		Format component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Format.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + Format.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 
 	public void testElementConstructorValid() {

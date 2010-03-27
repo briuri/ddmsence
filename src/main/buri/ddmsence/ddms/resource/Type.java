@@ -86,6 +86,7 @@ public final class Type extends AbstractQualifierValue {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If a value is set, a qualifier must exist and be non-empty.</li>
 	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
 	 * </td></tr></table>
@@ -95,6 +96,7 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
 		

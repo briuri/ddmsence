@@ -135,6 +135,7 @@ public final class Format extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A mimeType exists, and is not empty.</li>
 	 * <li>Exactly 1 mimeType, 0-1 extents, and 0-1 mediums exist.</li>
 	 * </td></tr></table>
@@ -144,6 +145,7 @@ public final class Format extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		Element mediaElement = getChild(MEDIA_NAME);
 		Util.requireDDMSValue("Media element", mediaElement);
 		Util.requireDDMSValue(MIME_TYPE_NAME, getMimeType());

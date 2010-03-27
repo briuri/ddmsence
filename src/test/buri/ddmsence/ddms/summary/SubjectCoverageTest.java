@@ -131,11 +131,15 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		return (formatXml(xml.toString(), preserveFormatting));		
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(SubjectCoverage.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + SubjectCoverage.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() {

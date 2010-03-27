@@ -25,6 +25,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractProducer;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of a producer element containing a ddms:Organization element.
@@ -90,16 +91,19 @@ public final class Organization extends AbstractProducer {
 	}
 	
 	/**
-	 * <p>
-	 * No further validation is done, beyond the validation performed in 
-	 * <code>AbstractProducer</code>.
-	 * </p>
+	 * Validates the component.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
+	 * </td></tr></table>
 	 * 
 	 * @see AbstractProducer#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, getProducerType());
+		Util.requireDDMSQName(getEntityElement(), DDMS_PREFIX, NAME);
 	}
 	
 	

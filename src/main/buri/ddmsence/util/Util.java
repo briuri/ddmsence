@@ -218,6 +218,24 @@ public class Util {
 	}
 	
 	/**
+	 * Asserts that the qualified name of an element matches the expected name
+	 * 
+	 * @param element the element to check
+	 * @param prefix the namespace prefix
+	 * @param localName the local name to compare to
+	 * @throws InvalidDDMSException if the value is invalid. Does nothing if value is null.
+	 */
+	public static void requireDDMSQName(Element element, String prefix, String localName) throws InvalidDDMSException {
+		Util.requireValue("element", element);
+		Util.requireValue("local name", localName);
+		if (prefix == null)
+			prefix = "";		
+		if (!localName.equals(element.getLocalName()) || !prefix.equals(element.getNamespacePrefix())) {
+			throw new InvalidDDMSException("Unexpected prefix and local name encountered: " + element.getQualifiedName());
+		}
+	}
+	
+	/**
 	 * Asserts that a value required, for general cases.
 	 * 
 	 * @param description	a descriptive name of the value

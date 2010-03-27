@@ -439,6 +439,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>resourceElement attribute must exist.</li>
 	 * <li>createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD).</li>
 	 * <li>DESVersion must exist and be a valid Integer.</li>
@@ -455,6 +456,7 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		String testResourceElement = getAttributeValue(RESOURCE_ELEMENT_NAME, ICISM_NAMESPACE);
 		Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, testResourceElement);
 		Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());

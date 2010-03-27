@@ -113,11 +113,15 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 		return (xml.toString());
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		MediaExtent component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(MediaExtent.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + MediaExtent.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() {

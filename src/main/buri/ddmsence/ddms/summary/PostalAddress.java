@@ -152,6 +152,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Either a state or a province can exist, but not both.</li>
 	 * <li>0-6 streets, 0-1 cities, 0-1 states, 0-1 provinces, 0-1 postal codes, and 0-1 country codes exist.</li>
 	 * </td></tr></table>
@@ -161,6 +162,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		if (!Util.isEmpty(getState()) && !Util.isEmpty(getProvince())) {
 			throw new InvalidDDMSException("Only 1 of state or province can be used.");
 		}
