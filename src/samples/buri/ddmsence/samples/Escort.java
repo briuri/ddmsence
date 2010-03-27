@@ -32,6 +32,7 @@ import java.util.List;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.format.MediaExtent;
 import buri.ddmsence.ddms.resource.Dates;
@@ -114,7 +115,7 @@ public class Escort {
 	 * Empty constructor
 	 */
 	public Escort() {}
-	
+		
 	/**
 	 * The main execution loop of the program
 	 */
@@ -122,140 +123,133 @@ public class Escort {
 		println("Escort: a DDMSence Sample\n");
 		
 		println("This program allows you to build a DDMS resource from scratch.");
-		println("If you do not know how to answer a question, a suggested valid answer is provided in square brackets.\nHowever, this is not a default value (hitting Enter will answer the question with an empty string).\n\n");
-		
-		println("Starting a new ddms:Resource...");
-		Resource resource;
+		println("If you do not know how to answer a question, a suggested valid answer is provided in square brackets.");
+		println("However, this is not a default value (hitting Enter will answer the question with an empty string).\n");
+
+		println("In FAST mode, Escort will only ask you to create top-level components which are required for a valid Resource.");
+		println("In COMPLETE mode, Escort will let you create all of the top-level components.");
+		boolean onlyRequiredComponents = confirm("Would you like to run in FAST mode?");
 		List<IDDMSComponent> topLevelComponents = new ArrayList<IDDMSComponent>();
-		
-		println("\nAt least 1 ddms:identifier is required.");
+				
+		printHead("ddms:identifier (at least 1 required)");
 		topLevelComponents.add(buildIdentifier());
-		while (confirm("Add another ddms:identifier?")) {
+		while (!onlyRequiredComponents && confirm("Add another ddms:identifier?")) {
 			topLevelComponents.add(buildIdentifier());	
 		}
 		
-		println("\nAt least 1 ddms:title is required.");
+		printHead("ddms:title (at least 1 required)");
 		topLevelComponents.add(buildTitle());
-		while (confirm("Add another ddms:title?")) {
+		while (!onlyRequiredComponents && confirm("Add another ddms:title?")) {
 			topLevelComponents.add(buildTitle());	
 		}
 		
-		println("\nddms:subtitle is optional.");
-		if (confirm("Add an optional ddms:subtitle?")) {
-			topLevelComponents.add(buildSubtitle());	
-			while (confirm("Add another ddms:subtitle?")) {
+		if (!onlyRequiredComponents) {
+			printHead("ddms:subtitle (any number allowed)");
+			if (confirm("Include this component?")) {
 				topLevelComponents.add(buildSubtitle());	
+				while (confirm("Add another ddms:subtitle?")) {
+					topLevelComponents.add(buildSubtitle());	
+				}
 			}
-		}
-		
-		println("\nddms:description is optional.");
-		if (confirm("Add the optional ddms:description?")) {
-			topLevelComponents.add(buildDescription());	
-		}
-		
-		println("\nddms:language is optional.");
-		if (confirm("Add an optional ddms:language?")) {
-			topLevelComponents.add(buildLanguage());	
-			while (confirm("Add another ddms:language?")) {
+			
+			printHead("ddms:description (only 1 allowed)");
+			if (confirm("Include this component?")) {
+				topLevelComponents.add(buildDescription());	
+			}
+			
+			printHead("ddms:language (any number allowed)");
+			if (confirm("Include this component?")) {
 				topLevelComponents.add(buildLanguage());	
+				while (confirm("Add another ddms:language?")) {
+					topLevelComponents.add(buildLanguage());	
+				}
 			}
-		}
-		
-		println("\nddms:dates is optional.");
-		if (confirm("Add the optional ddms:dates?")) {
-			topLevelComponents.add(buildDates());	
-		}
-		
-		println("\nddms:rights is optional.");
-		if (confirm("Add the optional ddms:rights?")) {
-			topLevelComponents.add(buildRights());	
-		}
+			
+			printHead("ddms:dates (only 1 allowed)");
+			if (confirm("Include this component?")) {
+				topLevelComponents.add(buildDates());	
+			}
+			
+			printHead("ddms:rights (only 1 allowed)");
+			if (confirm("Include this component?")) {
+				topLevelComponents.add(buildRights());	
+			}
 
-		println("\nddms:source is optional.");
-		if (confirm("Add an optional ddms:source?")) {
-			topLevelComponents.add(buildSource());	
-			while (confirm("Add another ddms:source?")) {
+			printHead("ddms:source (any number allowed)");
+			if (confirm("Include this component?")) {
 				topLevelComponents.add(buildSource());	
+				while (confirm("Add another ddms:source?")) {
+					topLevelComponents.add(buildSource());	
+				}
 			}
-		}
-		
-		println("\nddms:type is optional.");
-		if (confirm("Add an optional ddms:type?")) {
-			topLevelComponents.add(buildType());	
-			while (confirm("Add another ddms:type?")) {
+			
+			printHead("ddms:type (any number allowed)");
+			if (confirm("Include this component?")) {
 				topLevelComponents.add(buildType());	
+				while (confirm("Add another ddms:type?")) {
+					topLevelComponents.add(buildType());	
+				}
 			}
 		}
-		
-		println("\nAt least one producer (creator, publisher, contributor, pointOfContact) is required.");
+				
+		printHead("Producers: creator, publisher, contributor, and pointOfContact (at least 1 required)");
 		topLevelComponents.add(buildProducer());	
-		while (confirm("Add another producer?")) {
+		while (!onlyRequiredComponents && confirm("Add another producer?")) {
 			topLevelComponents.add(buildProducer());	
 		}
 		
-		println("\nddms:format is optional.");
-		if (confirm("Add the optional ddms:format?")) {
-			topLevelComponents.add(buildFormat());	
+		if (!onlyRequiredComponents) {
+			printHead("ddms:format (only 1 allowed)");
+			if (confirm("Include this component?")) {
+				topLevelComponents.add(buildFormat());	
+			}
 		}
 		
-		println("\nddms:subjectCoverage is required.");
+		printHead("ddms:subjectCoverage (exactly 1 required)");
 		topLevelComponents.add(buildSubjectCoverage());
 		
-		println("\nddms:virtualCoverage is optional.");
-		if (confirm("Add an optional ddms:virtualCoverage?")) {
-			topLevelComponents.add(buildVirtualCoverage());	
-			while (confirm("Add another ddms:virtualCoverage?")) {
+		if (!onlyRequiredComponents) {
+			printHead("ddms:virtualCoverage (any number allowed)");
+			if (confirm("Include this component?")) {
 				topLevelComponents.add(buildVirtualCoverage());	
+				while (confirm("Add another ddms:virtualCoverage?")) {
+					topLevelComponents.add(buildVirtualCoverage());	
+				}
 			}
-		}
-		
-		println("\nddms:temporalCoverage is optional.");
-		if (confirm("Add an optional ddms:temporalCoverage?")) {
-			topLevelComponents.add(buildTemporalCoverage());	
-			while (confirm("Add another ddms:temporalCoverage?")) {
+			
+			printHead("ddms:temporalCoverage (any number allowed)");
+			if (confirm("Include this component?")) {
 				topLevelComponents.add(buildTemporalCoverage());	
+				while (confirm("Add another ddms:temporalCoverage?")) {
+					topLevelComponents.add(buildTemporalCoverage());	
+				}
 			}
-		}
-		
-		println("\nddms:geospatialCoverage is optional.");
-		if (confirm("Add an optional ddms:geospatialCoverage?")) {
-			topLevelComponents.add(buildGeospatialCoverage());	
-			while (confirm("Add another ddms:geospatialCoverage?")) {
+			
+			printHead("ddms:geospatialCoverage (any number allowed)");
+			if (confirm("Include this component?")) {
 				topLevelComponents.add(buildGeospatialCoverage());	
+				while (confirm("Add another ddms:geospatialCoverage?")) {
+					topLevelComponents.add(buildGeospatialCoverage());	
+				}
 			}
-		}
-		
-		println("\nddms:relatedResources is optional.");
-		if (confirm("Add an optional ddms:relatedResources?")) {
-			topLevelComponents.add(buildRelatedResources());	
-			while (confirm("Add another ddms:relatedResources?")) {
+			
+			printHead("ddms:relatedResources (any number allowed)");
+			if (confirm("Include this component?")) {
 				topLevelComponents.add(buildRelatedResources());	
+				while (confirm("Add another ddms:relatedResources?")) {
+					topLevelComponents.add(buildRelatedResources());	
+				}
 			}
 		}
-		
-		println("\nddms:security is required.");
+				
+		printHead("ddms:security (exactly 1 required)");
 		topLevelComponents.add(buildSecurity());
-
-		println("\nYou are now done with top-level components. All that remains is the Resource attributes.");
-		while (true) {
-			boolean resourceElement = confirm("Does this tag set the classification for the resource as a whole?");
-			String createDate = readString("Resource createDate [2010-03-24]");
-			int desVersion = readInt("the Resource DESVersion [2]");
-			String classification = readString("the Resource classification [U]");
-			String ownerProducers = readString("the Resource's ownerProducers as a space-delimited string [USA AUS]");
-			try {
-				println("Validating...");
-				SecurityAttributes attr = new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null);
-				resource = new Resource(topLevelComponents, resourceElement, createDate, new Integer(desVersion), attr);
-				println("The DDMS Resource is valid!");
-				break;
-			}
-			catch (InvalidDDMSException e) {
-				println(e.getMessage());
-			}
-		}
 		
-		println("\nThis Resource will be saved as XML in the " + SAMPLE_DIR + " directory.");
+		printHead("ddms:Resource Attributes (all required)");
+		Resource resource = buildResource(topLevelComponents);
+		
+		printHead("Saving the Resource");
+		println("This Resource will be saved as XML in the " + SAMPLE_DIR + " directory.");
 		while (true) {
 			String filename = readString("a filename");
 			if (filename.length() > 0) {
@@ -264,6 +258,20 @@ public class Escort {
 			}
 		}
 		println("\nYou can now open your saved file with the Essentials application.");
+		println("The Escort wizard is now finished.");
+	}
+		
+	/**
+	 * Helper method to build a security attributes object
+	 * 
+	 * @param classification the classification
+	 * @param ownerProducers a space-delimited list of ownerProducers
+	 * @return a valid SecurityAttributes
+	 * @throws InvalidDDMSException
+	 */
+	private SecurityAttributes buildSecurityAttributes(String classification, String ownerProducers)
+		throws InvalidDDMSException {
+		return (new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null));
 	}
 	
 	/**
@@ -272,7 +280,7 @@ public class Escort {
 	 * @param filename the filename
 	 * @throws IOException
 	 */
-	private static void saveFile(String filename, Resource resource) throws IOException {
+	private void saveFile(String filename, Resource resource) throws IOException {
 		BufferedWriter writer = null;
 		try {
 			File outputFile = new File(SAMPLE_DIR, filename);
@@ -291,18 +299,15 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildIdentifier() throws IOException {
+	private IDDMSComponent buildIdentifier() throws IOException {
 		while (true) {
 			String qualifier = readString("the qualifier [URI]");
 			String value = readString("the value [testValue]");
 			try {
-				println("Validating...");
-				Identifier component = new Identifier(qualifier, value);
-				println("This component is valid.");
-				return (component);
+				return (new Identifier(qualifier, value));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -313,21 +318,18 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildTitle() throws IOException {
+	private IDDMSComponent buildTitle() throws IOException {
 		while (true) {
 			String text = readString("the title text [testTitle]");
 			String classification = readString("the title classification [U]");
 			String ownerProducers = readString("the title's ownerProducers as a space-delimited string [USA AUS]");
 			// Skipping the "additional" security attributes.
 			try {
-				println("Validating...");
-				SecurityAttributes attr = new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null);
-				Title component = new Title(text, attr);
-				println("This component is valid.");
-				return (component);
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new Title(text, attr));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -337,21 +339,18 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildSubtitle() throws IOException {
+	private IDDMSComponent buildSubtitle() throws IOException {
 		while (true) {
 			String text = readString("the subtitle text [testTitle]");
 			String classification = readString("the subtitle classification [U]");
 			String ownerProducers = readString("the subtitle's ownerProducers as a space-delimited string [USA AUS]");
 			// Skipping the "additional" security attributes.
 			try {
-				println("Validating...");
-				SecurityAttributes attr = new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null);
-				Subtitle component = new Subtitle(text, attr);
-				println("This component is valid.");
-				return (component);
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new Subtitle(text, attr));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -361,21 +360,18 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildDescription() throws IOException {
+	private IDDMSComponent buildDescription() throws IOException {
 		while (true) {
 			String text = readString("the description text [testTitle]");
 			String classification = readString("the description classification [U]");
 			String ownerProducers = readString("the description's ownerProducers as a space-delimited string [USA AUS]");
 			// Skipping the "additional" security attributes.
-			try {
-				println("Validating...");
-				SecurityAttributes attr = new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null);
-				Description component = new Description(text, attr);
-				println("This component is valid.");
-				return (component);
+			try {				
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new Description(text, attr));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -385,18 +381,15 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildLanguage() throws IOException {
+	private IDDMSComponent buildLanguage() throws IOException {
 		while (true) {
 			String qualifier = readString("the qualifier [URI]");
 			String value = readString("the value [testValue]");
 			try {
-				println("Validating...");
-				Language component = new Language(qualifier, value);
-				println("This component is valid.");
-				return (component);
+				return (new Language(qualifier, value));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -406,20 +399,17 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildDates() throws IOException {
+	private IDDMSComponent buildDates() throws IOException {
 		while (true) {
 			String created = readString("the created date [2010]");
 			String posted = readString("the posted date [2010]");
 			String validTil = readString("the validTil date [2010]");
 			String infoCutOff = readString("the infoCutOff date [2010]");
 			try {
-				println("Validating...");
-				Dates component = new Dates(created, posted, validTil, infoCutOff);
-				println("This component is valid.");
-				return (component);
+				return (new Dates(created, posted, validTil, infoCutOff));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -429,19 +419,16 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildRights() throws IOException {
+	private IDDMSComponent buildRights() throws IOException {
 		while (true) {
 			boolean privacy = confirm("Does this resource contain information protected by the Privacy Act?");
 			boolean intellectual = confirm("Does this resource have an intellectual property rights owner?");
 			boolean copyright = confirm("Is this resource protected by copyright?");
 			try {
-				println("Validating...");
-				Rights component = new Rights(privacy, intellectual, copyright);
-				println("This component is valid.");
-				return (component);
+				return (new Rights(privacy, intellectual, copyright));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -451,7 +438,7 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildSource() throws IOException {
+	private IDDMSComponent buildSource() throws IOException {
 		while (true) {
 			String qualifier = readString("the qualifier [URI]");
 			String value = readString("the value [testValue]");
@@ -461,14 +448,11 @@ public class Escort {
 			String ownerProducers = readString("the source's ownerProducers as a space-delimited string [USA AUS]");
 			// Skipping the "additional" security attributes.
 			try {
-				println("Validating...");
-				SecurityAttributes attr = new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null);
-				Source component = new Source(qualifier, value, schemaQualifier, schemHref, attr);
-				println("This component is valid.");
-				return (component);
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new Source(qualifier, value, schemaQualifier, schemHref, attr));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -478,28 +462,27 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildType() throws IOException {
+	private IDDMSComponent buildType() throws IOException {
 		while (true) {
 			String qualifier = readString("the qualifier [URI]");
 			String value = readString("the value [testValue]");
 			try {
-				println("Validating...");
-				Type component = new Type(qualifier, value);
-				println("This component is valid.");
-				return (component);
+				return (new Type(qualifier, value));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
+	
+
 	
 	/**
 	 * Builds a valid DDMS component
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildProducer() throws IOException {
+	private IDDMSComponent buildProducer() throws IOException {
 		println("Sample Limitation: This wizard only allows one name, phone number, and email per producer.");
 		while (true) {
 			String surname = null;
@@ -519,8 +502,7 @@ public class Escort {
 				userID = readString("the Person userID [123]");
 				affiliation = readString("the Person affiliation [DISA]");
 			}
-			try {
-				println("Validating...");
+			try {				
 				List<String> names = new ArrayList<String>();
 				names.add(entityName);
 				List<String> phones = new ArrayList<String>();
@@ -528,30 +510,22 @@ public class Escort {
 				List<String> emails = new ArrayList<String>();
 				emails.add(entityEmail);
 				
-				SecurityAttributes attr = new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null);
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				if (Person.NAME.equals(entityType)) {
-					Person person = new Person(producerType, surname, names, userID, affiliation, phones, emails, attr);
-					println("This component is valid.");
-					return (person);
+					return (new Person(producerType, surname, names, userID, affiliation, phones, emails, attr));
 				}
 				else if (Organization.NAME.equals(entityType)) {
-					Organization org = new Organization(producerType, names, phones, emails, attr);
-					println("This component is valid.");
-					return (org);
+					return (new Organization(producerType, names, phones, emails, attr));
 				}
 				else if (Service.NAME.equals(entityType)) {
-					Service service = new Service(producerType, names, phones, emails, attr);
-					println("This component is valid.");
-					return (service);
+					return (new Service(producerType, names, phones, emails, attr));
 				}
 				else if (Unknown.NAME.equals(entityType)) {
-					Unknown unknown = new Unknown(producerType, names, phones, emails, attr);
-					println("This component is valid.");
-					return (unknown);
+					return (new Unknown(producerType, names, phones, emails, attr));
 				}
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -561,21 +535,18 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildFormat() throws IOException {
+	private IDDMSComponent buildFormat() throws IOException {
 		while (true) {
 			String mimeType = readString("the mimeType [text/html]");
 			String qualifier = readString("the extent qualifier [URI]");
 			String value = readString("the extent value [testValue]");
 			String medium = readString("the mimeType [digital]");
 			try {
-				println("Validating...");
 				MediaExtent extent = new MediaExtent(qualifier, value);
-				Format component = new Format(mimeType, extent, medium);
-				println("This component is valid.");
-				return (component);
+				return (new Format(mimeType, extent, medium));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -585,7 +556,7 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildSubjectCoverage() throws IOException {
+	private IDDMSComponent buildSubjectCoverage() throws IOException {
 		println("Sample Limitation: This wizard only supports keywords, not categories.");
 		while (true) {
 			String keywords = readString("the keywords as a space-delimited string [ddms xml]");
@@ -593,19 +564,16 @@ public class Escort {
 			String classification = readString("the subject classification [U]");
 			String ownerProducers = readString("the subject's ownerProducers as a space-delimited string [USA AUS]");
 			// Skipping the "additional" security attributes.
-			try {
-				println("Validating...");
+			try {				
 				List<Keyword> keywordList = new ArrayList<Keyword>();
 				for (String keyword : Arrays.asList(keywords.split(" "))) {
 					keywordList.add(new Keyword(keyword));
 				}
-				SecurityAttributes attr = new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null);
-				SubjectCoverage component = new SubjectCoverage(keywordList, null, attr);
-				println("This component is valid.");
-				return (component);
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new SubjectCoverage(keywordList, null, attr));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -615,7 +583,7 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildTemporalCoverage() throws IOException {
+	private IDDMSComponent buildTemporalCoverage() throws IOException {
 		while (true) {
 			String timePeriodName = readString("the time period name [the 50s]");
 			String start = readString("the start date [1950]");
@@ -623,15 +591,12 @@ public class Escort {
 			String classification = readString("the temporalCoverage classification [U]");
 			String ownerProducers = readString("the temporalCoverage's ownerProducers as a space-delimited string [USA AUS]");
 			// Skipping the "additional" security attributes.
-			try {
-				println("Validating...");
-				SecurityAttributes attr = new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null);
-				TemporalCoverage component = new TemporalCoverage(timePeriodName, start, end, attr);
-				println("This component is valid.");
-				return (component);
+			try {				
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);			
+				return (new TemporalCoverage(timePeriodName, start, end, attr));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -641,7 +606,7 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildVirtualCoverage() throws IOException {
+	private IDDMSComponent buildVirtualCoverage() throws IOException {
 		while (true) {
 			String address = readString("the address [123.456.789.0]");
 			String protocol = readString("the protocol [IP]");
@@ -649,14 +614,11 @@ public class Escort {
 			String ownerProducers = readString("the virtualCoverage's ownerProducers as a space-delimited string [USA AUS]");
 			// Skipping the "additional" security attributes.
 			try {
-				println("Validating...");
-				SecurityAttributes attr = new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null);
-				VirtualCoverage component = new VirtualCoverage(address, protocol, attr);
-				println("This component is valid.");
-				return (component);
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new VirtualCoverage(address, protocol, attr));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -666,24 +628,21 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildGeospatialCoverage() throws IOException {
+	private IDDMSComponent buildGeospatialCoverage() throws IOException {
 		println("Sample Limitation: This wizard only supports geospatialCoverage defined with a facilityIdentifier.");
 		while (true) {
 			String beNumber = readString("the beNumber [1234DD56789]");
 			String osuffix = readString("the osuffix [DD123]");
 			String classification = readString("the geospatialCoverage classification [U]");
 			String ownerProducers = readString("the geospatialCoverage's ownerProducers as a space-delimited string [USA AUS]");	
-			try {
-				println("Validating...");
+			try {				
 				FacilityIdentifier facId = new FacilityIdentifier(beNumber, osuffix);
 				GeographicIdentifier geoId = new GeographicIdentifier(facId);
-				SecurityAttributes attr = new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null);
-				GeospatialCoverage component = new GeospatialCoverage(geoId, null, null, null, null, attr);
-				println("This component is valid.");
-				return (component);
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new GeospatialCoverage(geoId, null, null, null, null, attr));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -693,7 +652,7 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildRelatedResources() throws IOException {
+	private IDDMSComponent buildRelatedResources() throws IOException {
 		println("Sample Limitation: This wizard only supports a relatedResources element containing a single related resource. That resource contains a single link.");
 		
 		while (true) {
@@ -710,21 +669,18 @@ public class Escort {
 			String direction = readString("the direction [outbound]");
 			String classification = readString("the relatedResources classification [U]");
 			String ownerProducers = readString("the relatedResources ownerProducers as a space-delimited string [USA AUS]");	
-			try {
-				println("Validating...");
+			try {				
 				Link link = new Link(href, role, title, label);
 				List<Link> links = new ArrayList<Link>();
 				links.add(link);
 				RelatedResource related = new RelatedResource(links, qualifier, value);
 				List<RelatedResource> resources = new ArrayList<RelatedResource>();
 				resources.add(related);
-				SecurityAttributes attr = new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null);
-				RelatedResources component = new RelatedResources(resources, relationship, direction, attr);
-				println("This component is valid.");
-				return (component);
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new RelatedResources(resources, relationship, direction, attr));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
 			}
 		}
 	}
@@ -734,19 +690,47 @@ public class Escort {
 	 * 
 	 * @return a valid component
 	 */
-	private static IDDMSComponent buildSecurity() throws IOException {
+	private IDDMSComponent buildSecurity() throws IOException {
 		while (true) {
 			String classification = readString("the classification [U]");
 			String ownerProducers = readString("the ownerProducers as a space-delimited string [USA AUS]");	
-			try {
-				println("Validating...");
-				SecurityAttributes attr = new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null);
-				Security component = new Security(attr);
-				println("This component is valid.");
-				return (component);
+			try {				
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new Security(attr));
 			}
 			catch (InvalidDDMSException e) {
-				println(e.getMessage());
+				printError(e);
+			}
+		}
+	}
+	
+	/**
+	 * Builds a valid DDMS component
+	 * 
+	 * @return a valid Resource
+	 */
+	private Resource buildResource(List<IDDMSComponent> topLevelComponents) throws IOException {
+		while (true) {
+			boolean resourceElement = confirm("Does this tag set the classification for the resource as a whole?");
+			String createDate = readString("Resource createDate [2010-03-24]");
+			int desVersion = readInt("the Resource DESVersion [2]");
+			String classification = readString("the Resource classification [U]");
+			String ownerProducers = readString("the Resource's ownerProducers as a space-delimited string [USA AUS]");
+			try {				
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				Resource resource = new Resource(topLevelComponents, resourceElement, createDate, new Integer(desVersion), attr);
+				println("The DDMS Resource is valid!");
+				if (!resource.getValidationWarnings().isEmpty()) {
+					println("The following warnings were recorded:");
+					for (ValidationMessage warning : resource.getValidationWarnings())
+						println("   [WARNING] " + warning.getLocator() + ": " + warning.getText());
+				}
+				else
+					println("No warnings were recorded.");
+				return (resource);
+			}
+			catch (InvalidDDMSException e) {
+				printError(e);
 			}
 		}
 	}
@@ -758,7 +742,7 @@ public class Escort {
 	 * @return a boolean
 	 * @throws IOException
 	 */
-	private static boolean confirm(String text) throws IOException {
+	private boolean confirm(String text) throws IOException {
 		while (true) {
 			print(text + " [Y/N]: ");
 			System.out.flush();
@@ -779,7 +763,7 @@ public class Escort {
 	 *
 	 * @throws IOException
 	 */
-	private static int readInt(String name) throws IOException {
+	private int readInt(String name) throws IOException {
 		while (true) {
 			String input = readString(name);
 			try {
@@ -798,7 +782,7 @@ public class Escort {
 	 * 
 	 * @throws IOException
 	 */
-	private static String readString(String name) throws IOException {
+	private String readString(String name) throws IOException {
 		while (true) {
 			print("Please enter " + name + ": ");
 			System.out.flush();
@@ -809,11 +793,29 @@ public class Escort {
 	}
 
 	/**
+	 * Convenience method to print a title
+	 * 
+	 * @param title the text of the title
+	 */
+	private void printHead(String title) {
+		println("\n=== " + title + " ===");
+	}
+	
+	/**
+	 * Formats an error message
+	 * 
+	 * @param e the exception
+	 */
+	private void printError(InvalidDDMSException e) {
+		println("[ERROR] " + e.getLocator() + ": " + e.getMessage());
+	}
+	
+	/**
 	 * Convenience method to print a string.
 	 * 
 	 * @param str the string to print.
 	 */
-	private static void print(String str) {
+	private void print(String str) {
 		System.out.print(str);
 	}
 
@@ -822,7 +824,7 @@ public class Escort {
 	 * 
 	 * @param str the string to print.
 	 */
-	private static void println(String str) {
+	private void println(String str) {
 		System.out.println(str);
 	}
 }
