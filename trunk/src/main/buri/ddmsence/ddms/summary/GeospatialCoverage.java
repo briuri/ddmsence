@@ -165,6 +165,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent must be used.</li>
 	 * <li>No more than 1 geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent can be used.</li>
 	 * <li>If a geographicIdentifer is used and contains a facilityIdentifier, no other subcomponents can be used.</li>
@@ -176,6 +177,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		Element extElement = getChild(GEOSPATIAL_EXTENT_NAME);
 		Util.requireDDMSValue("GeospatialExtent element", extElement);
 		

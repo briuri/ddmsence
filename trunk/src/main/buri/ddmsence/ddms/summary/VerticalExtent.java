@@ -183,6 +183,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A MinVerticalExtent exists.</li>
 	 * <li>A MaxVerticalExtent exists.</li>
 	 * <li>A unitOfMeasure exists and has an appropriate value.</li>
@@ -196,6 +197,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		Util.requireDDMSValue(MIN_VERTICAL_EXTENT_NAME, getMinVerticalExtent());
 		Util.requireDDMSValue(MAX_VERTICAL_EXTENT_NAME, getMaxVerticalExtent());
 		Util.requireDDMSValue(UOM_NAME, getUnitOfMeasure());

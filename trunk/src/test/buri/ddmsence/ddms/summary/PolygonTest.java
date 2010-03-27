@@ -201,11 +201,15 @@ public class PolygonTest extends AbstractComponentTestCase {
 		return (formatXml(xml.toString(), preserveFormatting));		
 	}	
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		Polygon component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Polygon.NAME, component.getName());
 		assertEquals(Polygon.GML_PREFIX, component.getPrefix());
 		assertEquals(Polygon.GML_PREFIX + ":" + Polygon.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() {
@@ -213,7 +217,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 		testConstructor(WILL_SUCCEED, getValidElement());
 		
 		// No optional fields
-		Element element = Util.buildDDMSElement(Polygon.NAME, null);
+		Element element = Util.buildElement(GML_PREFIX, Polygon.NAME, GML_NAMESPACE, null);
 		Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE, TEST_SRS_ATTRIBUTES.getSrsName());
 		Util.addAttribute(element, GML_PREFIX, "id", GML_NAMESPACE, TEST_ID);
 		element.appendChild(wrapPositions(TEST_POSITIONS));

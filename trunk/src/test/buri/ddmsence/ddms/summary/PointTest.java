@@ -141,11 +141,15 @@ public class PointTest extends AbstractComponentTestCase {
 		return (formatXml(xml.toString(), preserveFormatting));		
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		Point component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Point.NAME, component.getName());
 		assertEquals(Point.GML_PREFIX, component.getPrefix());
 		assertEquals(Point.GML_PREFIX + ":" + Point.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() {
@@ -153,7 +157,7 @@ public class PointTest extends AbstractComponentTestCase {
 		testConstructor(WILL_SUCCEED, getValidElement());
 		
 		// No optional fields
-		Element element = Util.buildDDMSElement(Point.NAME, null);
+		Element element = Util.buildElement(GML_PREFIX, Point.NAME, GML_NAMESPACE, null);
 		Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE, TEST_SRS_ATTRIBUTES.getSrsName());
 		Util.addAttribute(element, GML_PREFIX, "id", GML_NAMESPACE, TEST_ID);
 		element.appendChild(TEST_POSITION.getXOMElementCopy());

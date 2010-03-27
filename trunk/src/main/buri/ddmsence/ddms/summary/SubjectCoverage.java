@@ -82,7 +82,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	public SubjectCoverage(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("subjectCoverage element", element);
-			Element subjectElement = element.getChildElements().get(0);
+			Element subjectElement = element.getFirstChildElement(SUBJECT_NAME, element.getNamespaceURI());
 			_cachedKeywords = new ArrayList<Keyword>();
 			_cachedCategories = new ArrayList<Category>();
 			if (subjectElement != null) {
@@ -143,7 +143,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>At least 1 of Keyword.NAME or Category.NAME must exist.</li>
+	 * <li>The qualified name of the element is correct.</li>
+	 * <li>At least 1 of "Keyword" or "Category" must exist.</li>
 	 * <li>The SecurityAttributes are valid.</li>
 	 * </td></tr></table>
 	 * 
@@ -151,6 +152,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		Element subjectElement = getChild(SUBJECT_NAME);
 		Util.requireDDMSValue("Subject element", subjectElement);
 		int count = subjectElement.getChildElements(Keyword.NAME, subjectElement.getNamespaceURI()).size()

@@ -128,6 +128,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A westBL exists.</li>
 	 * <li>An eastBL exists.</li>
 	 * <li>A southBL exists.</li>
@@ -140,6 +141,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 */	
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		Util.requireDDMSValue("westbound longitude", getWestBL());
 		Util.requireDDMSValue("eastbound longitude", getEastBL());
 		Util.requireDDMSValue("southbound latitude", getSouthBL());

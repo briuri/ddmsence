@@ -94,6 +94,7 @@ public final class Security extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The excludeFromRollup is set and has a value of "true".</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
@@ -104,6 +105,7 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		if (Util.isEmpty(getAttributeValue(EXCLUDE_FROM_ROLLUP_NAME, ICISM_NAMESPACE)))
 			throw new InvalidDDMSException("The excludeFromRollup attribute is required.");
 		if (!FIXED_ROLLUP.equals(String.valueOf(getExcludeFromRollup())))

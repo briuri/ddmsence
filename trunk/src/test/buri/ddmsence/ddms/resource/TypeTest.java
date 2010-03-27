@@ -112,11 +112,15 @@ public class TypeTest extends AbstractComponentTestCase {
 		return (xml.toString());
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		Type component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Type.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + Type.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() {

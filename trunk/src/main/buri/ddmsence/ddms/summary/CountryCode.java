@@ -127,6 +127,7 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The parent type is either geographicIdentifier or postalAddress.</li>
 	 * <li>The qualifier exists and is not empty.</li>
 	 * <li>The value exists and is not empty.</li>
@@ -138,6 +139,7 @@ public final class CountryCode extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		validateParentType(getParentType());
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
 		Util.requireDDMSValue("value attribute", getValue());

@@ -136,6 +136,7 @@ public final class Person extends AbstractProducer {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Surname exists and is not empty.</li>
 	 * <li>Exactly 1 surname, 0-1 userIDs, 0-1 affiliations exist.</li>
 	 * </td></tr></table>
@@ -146,6 +147,8 @@ public final class Person extends AbstractProducer {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, getProducerType());
+		Util.requireDDMSQName(getEntityElement(), DDMS_PREFIX, NAME);
 		Util.requireDDMSValue(SURNAME_NAME, getSurname());
 		Util.requireBoundedDDMSChildCount(getEntityElement(), SURNAME_NAME, 1, 1);
 		Util.requireBoundedDDMSChildCount(getEntityElement(), USERID_NAME, 0, 1);

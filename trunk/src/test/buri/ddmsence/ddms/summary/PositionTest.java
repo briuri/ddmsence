@@ -133,11 +133,15 @@ public class PositionTest extends AbstractComponentTestCase {
 		return (formatXml(xml.toString(), preserveFormatting));		
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		Position component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Position.NAME, component.getName());
 		assertEquals(Position.GML_PREFIX, component.getPrefix());
 		assertEquals(Position.GML_PREFIX + ":" + Position.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() {
@@ -145,7 +149,7 @@ public class PositionTest extends AbstractComponentTestCase {
 		testConstructor(WILL_SUCCEED, getValidElement());
 		
 		// No optional fields
-		Element element = Util.buildDDMSElement(Position.NAME, TEST_XS_LIST);		
+		Element element = Util.buildElement(GML_PREFIX, Position.NAME, GML_NAMESPACE, TEST_XS_LIST);		
 		testConstructor(WILL_SUCCEED, element);		
 	}
 	

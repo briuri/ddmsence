@@ -123,11 +123,15 @@ public class DatesTest extends AbstractComponentTestCase {
 		return (xml.toString());							
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		Dates component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Dates.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + Dates.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() {

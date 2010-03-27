@@ -143,6 +143,7 @@ public final class Dates extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If set, each date attribute adheres to an acceptable date format.</li>
 	 * </td></tr></table>
 	 * 
@@ -150,6 +151,7 @@ public final class Dates extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		if (getCreated() != null)
 			Util.requireDDMSDateFormat(getCreated().getXMLSchemaType());
 		if (getPosted() != null)

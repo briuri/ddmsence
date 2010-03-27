@@ -121,11 +121,15 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		return (xml.toString());
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		CountryCode component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement());
 		assertEquals(CountryCode.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + CountryCode.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, TEST_PARENT_TYPE, element);
 	}
 	
 	public void testElementConstructorValid() {

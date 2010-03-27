@@ -42,7 +42,7 @@ import buri.ddmsence.util.Util;
  * </p>
  * 
  * <p>
- * If not "Not Applicable" or Unknown.NAMe, date formats must adhere to one of: xs:dateTime, xs:date, xs:gYearMonth, or
+ * If not "Not Applicable" or "Unknown", date formats must adhere to one of: xs:dateTime, xs:date, xs:gYearMonth, or
  * xs:gYear, and the <code>XMLGregorianCalendar</code> class is used to enforce these restrictions.
  * </p>
  * 
@@ -164,8 +164,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	/**
 	 * Helper method to populate cached date variables.
 	 * 
-	 * @param startString the start string. Defaults to Unknown.NAMe if empty.
-	 * @param endString the end string. Defaults to Unknown.NAMe if empty.
+	 * @param startString the start string. Defaults to "Unknown" if empty.
+	 * @param endString the end string. Defaults to "Unknown" if empty.
 	 */
 	private void loadDateCaches(String startString, String endString) {
 		_cachedStartString = startString;
@@ -185,7 +185,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Asserts that an extended date is either "Not Applicable" or Unknown.NAMe.
+	 * Asserts that an extended date is either "Not Applicable" or "Unknown".
 	 * 
 	 * @param dateString	the string to check
 	 * @throws InvalidDDMSException if the value is null, empty or invalid.
@@ -200,6 +200,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>start is a valid date format.</li>
 	 * <li>end is a valid date format.</li>
 	 * <li>0-1 names, exactly 1 start, and exactly 1 end exist.</li>
@@ -211,6 +212,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		Element periodElement = getChild(TIME_PERIOD_NAME);
 		Util.requireDDMSValue("TimePeriod element", periodElement);
 		Util.requireBoundedDDMSChildCount(periodElement, TIME_PERIOD_NAME_NAME, 0, 1);
@@ -292,7 +294,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the XML calendar representing the start date. If the start date is "Not Applicable" or Unknown.NAMe
+	 * Accessor for the XML calendar representing the start date. If the start date is "Not Applicable" or "Unknown"
 	 * will return null. Use <code>getStartString</code> to retrieve the string representation.
 	 */
 	public XMLGregorianCalendar getStart() {
@@ -301,7 +303,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 
 	/**
 	 * Accessor for the start date as a string. If the value of start cannot be represented by an XML calendar, this will
-	 * return "Not Applicable" or Unknown.NAMe. Use <code>getStart</code> to work with this value as a calendar date.
+	 * return "Not Applicable" or "Unknown". Use <code>getStart</code> to work with this value as a calendar date.
 	 */
 	public String getStartString() {
 		if (getStart() != null)
@@ -310,7 +312,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the XML calendar representing the end date. If the end date is "Not Applicable" or Unknown.NAMe
+	 * Accessor for the XML calendar representing the end date. If the end date is "Not Applicable" or "Unknown"
 	 * will return null. Use <code>getEndString</code> to retrieve the string representation.
 	 */
 	public XMLGregorianCalendar getEnd() {
@@ -319,7 +321,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 
 	/**
 	 * Accessor for the end date as a string. If the value of end cannot be represented by an XML calendar, this will
-	 * return "Not Applicable" or Unknown.NAMe. Use <code>getEnd</code> to work with this value as a calendar date.
+	 * return "Not Applicable" or "Unknown". Use <code>getEnd</code> to work with this value as a calendar date.
 	 */
 	public String getEndString() {
 		if (getEnd() != null)

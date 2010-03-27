@@ -149,6 +149,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 of name, region, countryCode, or facilityIdentifier must exist.</li>
 	 * <li>No more than 1 countryCode or facilityIdentifier can exist.</li>
 	 * <li>If facilityIdentifier is used, no other components can exist.</li>
@@ -159,6 +160,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		if (getNames().isEmpty() && getRegions().isEmpty() && getCountryCode() == null && getFacilityIdentifier() == null) {
 			throw new InvalidDDMSException("At least 1 of name, region, countryCode, or facilityIdentifier must exist.");
 		}

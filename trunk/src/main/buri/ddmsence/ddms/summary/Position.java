@@ -164,6 +164,7 @@ public final class Position extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The srsAttributes are valid.</li>
 	 * <li>The position is represented by 2 or 3 coordinates.</li>
 	 * <li>Each coordinate is a valid Double value.</li>
@@ -176,6 +177,7 @@ public final class Position extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), GML_PREFIX, NAME);
 		getSRSAttributes().validate();
 		if (!Util.isBounded(getCoordinates().size(), 2, 3))
 			throw new InvalidDDMSException("A position must be represented by either 2 or 3 coordinates.");

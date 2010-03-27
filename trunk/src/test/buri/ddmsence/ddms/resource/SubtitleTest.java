@@ -114,11 +114,15 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		return (xml.toString());
 	}
 	
-	public void testName() {
+	public void testNameAndNamespace() {
 		Subtitle component = testConstructor(WILL_SUCCEED, getValidElement());
 		assertEquals(Subtitle.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + Subtitle.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() throws InvalidDDMSException {
@@ -137,6 +141,13 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		
 		// No optional fields
 		testConstructor(WILL_SUCCEED, "");
+	}
+	
+	public void testElementConstructorInvalid() throws InvalidDDMSException {
+		// Wrong name
+		Element element = Util.buildDDMSElement("unknownName", null);
+		SecurityAttributesTest.getFixture(false).addTo(element);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testWarnings() throws InvalidDDMSException {

@@ -117,6 +117,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 polygon or point exists.</li>
 	 * </td></tr></table>
 	 * 
@@ -124,6 +125,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 */	
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		if (getPolygons().size() + getPoints().size() == 0) {
 			throw new InvalidDDMSException("At least 1 of Polygon or Point must be used.");
 		}

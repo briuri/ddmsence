@@ -101,6 +101,7 @@ public final class Category extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A label exists and is not empty.</li>
 	 * <li>If a qualifier exists, it is a valid URI.</li>
 	 * </td></tr></table>
@@ -109,6 +110,7 @@ public final class Category extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		Util.requireDDMSValue("label attribute", getLabel());
 		if (!Util.isEmpty(getQualifier())) {
 			Util.requireDDMSValidURI(getQualifier());

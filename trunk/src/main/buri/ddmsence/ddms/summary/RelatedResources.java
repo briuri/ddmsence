@@ -160,6 +160,7 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A relationship exists and is not empty.</li>
 	 * <li>The relationship is a valid URI.</li>
 	 * <li>If set, the direction has a valid value.</li>
@@ -172,6 +173,7 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		Util.requireDDMSValue("relationship attribute", getRelationship());
 		Util.requireDDMSValidURI(getRelationship());
 		if (!Util.isEmpty(getDirection()))

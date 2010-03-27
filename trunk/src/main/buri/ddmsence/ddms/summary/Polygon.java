@@ -188,6 +188,7 @@ public final class Polygon extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The SRS Attributes are valid.</li>
 	 * <li>The srsName is required.</li>
 	 * <li>If the position has an srsName, it matches the srsName of this Polygon.</li>
@@ -200,6 +201,7 @@ public final class Polygon extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), GML_PREFIX, NAME);
 		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
 		getSRSAttributes().validate();
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());

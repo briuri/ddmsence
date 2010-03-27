@@ -120,6 +120,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A qualifier exists and is not empty.</li>
 	 * <li>A value exists and is not empty.</li>
 	 * <li>The qualifier is a valid URI.</li>
@@ -132,6 +133,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
 		Util.requireDDMSValue("value attribute", getValue());
 		Util.requireDDMSValidURI(getQualifier());

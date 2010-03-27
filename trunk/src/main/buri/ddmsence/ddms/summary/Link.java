@@ -111,6 +111,7 @@ public final class Link extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The type is set and has a value of "locator"</li>
 	 * <li>The href is set and non-empty.</li>
 	 * <li>The href is a valid URI.</li>
@@ -120,6 +121,7 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		Util.requireDDMSValue("type attribute", getType());
 		Util.requireDDMSValue("href attribute", getHref());
 		Util.requireDDMSValidURI(getHref());

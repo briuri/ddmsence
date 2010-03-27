@@ -91,6 +91,7 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A beNumber exists and is non-empty.</li>
 	 * <li>An osuffix exists and is non-empty.</li>
 	 * <li>Does not validate whether the attributes have logical values.</li>
@@ -100,6 +101,7 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		Util.requireDDMSValue(BE_NUMBER_NAME, getBeNumber());
 		Util.requireDDMSValue(OSUFFIX_NAME, getOsuffix());
 	}

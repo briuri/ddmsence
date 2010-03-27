@@ -153,11 +153,15 @@ public class LinkTest extends AbstractComponentTestCase {
 		return (xml.toString());
 	}
 	
-	public void testName() throws InvalidDDMSException {
+	public void testNameAndNamespace() throws InvalidDDMSException {
 		Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 		assertEquals(Link.NAME, component.getName());
 		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
 		assertEquals(Util.DDMS_PREFIX + ":" + Link.NAME, component.getQualifiedName());
+		
+		// Wrong name/namespace
+		Element element = Util.buildDDMSElement("wrongName", null);
+		testConstructor(WILL_FAIL, element);
 	}
 	
 	public void testElementConstructorValid() throws InvalidDDMSException {
