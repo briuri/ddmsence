@@ -308,7 +308,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * overwrite the original warning -- it creates a new copy.</p>
 	 * 
 	 * @param warnings the list of validation messages to add
-	 * @param forAttributes, if true, the locator suffix is not used, because the attributes will be for the topmost
+	 * @param forAttributes if true, the locator suffix is not used, because the attributes will be for the topmost
 	 * element (for example, warnings for gml:Polygon's security attributes should not end up with a locator of
 	 * /gml:Polygon/gml:exterior/gml:LinearRing).
 	 */
