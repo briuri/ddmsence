@@ -31,6 +31,7 @@
 				<exclude name="${src.test.dir}/**"/>
 				<exclude name="${conf.dir}/**"/>
 				<exclude name="${output.dir}/**"/>
+				<exclude name="${data.dir}/CVEnumISM/**"/>
 				<exclude name="${data.dir}/schemas/**"/>
 				<exclude name="${data.dir}/test/**"/>
 				<exclude name="${data.dir}/web/**"/>		
@@ -59,12 +60,14 @@
 		<copy todir="${compile.main.dir}" filtering="true">
 			<fileset refid="files.properties" />
 			<fileset refid="files.schemas" />
+			<fileset refid="files.cve" />
 		</copy>
 		<javac srcdir="${src.samples.dir}" destdir="${compile.samples.dir}" classpathref="classpath.samples" />
 		<javac srcdir="${src.test.dir}" destdir="${compile.test.dir}" classpathref="classpath.test" />
 		<copy todir="${compile.test.dir}" filtering="true">
 			<fileset refid="files.properties" />
 			<fileset refid="files.schemas" />
+			<fileset refid="files.cve" />
 		</copy>
 	</target>
 	
@@ -139,6 +142,9 @@
 		</fileset>				
 		<fileset dir="${data.dir}" id="files.schemas">
 			<include name="schemas/**" />	
+		</fileset>
+		<fileset dir="${data.dir}" id="files.cve">
+			<include name="CVEnumISM/**" />	
 		</fileset>	
 	</target>	
 	
