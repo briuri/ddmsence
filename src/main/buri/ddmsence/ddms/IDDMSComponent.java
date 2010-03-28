@@ -21,6 +21,8 @@ package buri.ddmsence.ddms;
 
 import java.util.List;
 
+import buri.ddmsence.ddms.security.SecurityAttributes;
+
 import nu.xom.Element;
 
 /**
@@ -74,6 +76,13 @@ public interface IDDMSComponent {
 	 * @return the name, with prefix if available
 	 */
 	public String getQualifiedName();
+	
+	/**
+	 * Returns any security attributes attached to this component. If the component is not allowed to have
+	 * attributes, this will be null. Otherwise, a valid SecurityAttributes object will be returned,
+	 * even if none of its properties are set.
+	 */
+	public SecurityAttributes getSecurityAttributes();
 	
 	/**
 	 * Returns a list of any warning messages that occurred during validation. Warnings

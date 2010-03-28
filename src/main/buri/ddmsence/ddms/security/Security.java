@@ -111,8 +111,7 @@ public final class Security extends AbstractBaseComponent {
 		if (!FIXED_ROLLUP.equals(String.valueOf(getExcludeFromRollup())))
 			throw new InvalidDDMSException("The excludeFromRollup attribute must have a fixed value of \"" + FIXED_ROLLUP + "\".");
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
-		getSecurityAttributes().requireClassification();
-		getSecurityAttributes().requireOwnerProducer();		
+		getSecurityAttributes().requireClassification();	
 		
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}

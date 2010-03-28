@@ -38,6 +38,7 @@ import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
 import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.Security;
+import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.ddms.security.SecurityAttributesTest;
 import buri.ddmsence.ddms.summary.BoundingGeometry;
 import buri.ddmsence.ddms.summary.Description;
@@ -828,4 +829,65 @@ public class ResourceTest extends AbstractComponentTestCase {
 		component = testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
 		assertEquals(getExpectedXMLOutput(false), component.toXML());	
 	}	
+	
+	public void testRollupTooRestrictive() throws InvalidDDMSException {
+		List<String> ownerProducers = new ArrayList<String>();
+		ownerProducers.add("USA");
+		Organization org = new Organization("creator", getAsList("DISA"), null, null, new SecurityAttributes("TS", ownerProducers, null));
+		
+		Element element = Util.buildDDMSElement(Resource.NAME, null);
+		Util.addAttribute(element, ICISM_PREFIX, Resource.RESOURCE_ELEMENT_NAME, ICISM_NAMESPACE, String.valueOf(TEST_RESOURCE_ELEMENT));
+		Util.addAttribute(element, ICISM_PREFIX, Resource.CREATE_DATE_NAME, ICISM_NAMESPACE, TEST_CREATE_DATE);
+		Util.addAttribute(element, ICISM_PREFIX, Resource.DES_VERSION_NAME, ICISM_NAMESPACE, String.valueOf(TEST_DES_VERSION));
+		SecurityAttributesTest.getFixture(false).addTo(element);
+		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
+		element.appendChild(TEST_TITLE.getXOMElementCopy());
+		element.appendChild(org.getXOMElementCopy());
+		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+		element.appendChild(TEST_SECURITY.getXOMElementCopy());
+		testConstructor(WILL_FAIL, element);
+	}
+	
+	public void testRollupWrongSystem() throws InvalidDDMSException {
+		List<String> ownerProducers = new ArrayList<String>();
+		ownerProducers.add("USA");
+		Organization org = new Organization("creator", getAsList("DISA"), null, null, new SecurityAttributes("CTSA", ownerProducers, null));
+		
+		Element element = Util.buildDDMSElement(Resource.NAME, null);
+		Util.addAttribute(element, ICISM_PREFIX, Resource.RESOURCE_ELEMENT_NAME, ICISM_NAMESPACE, String.valueOf(TEST_RESOURCE_ELEMENT));
+		Util.addAttribute(element, ICISM_PREFIX, Resource.CREATE_DATE_NAME, ICISM_NAMESPACE, TEST_CREATE_DATE);
+		Util.addAttribute(element, ICISM_PREFIX, Resource.DES_VERSION_NAME, ICISM_NAMESPACE, String.valueOf(TEST_DES_VERSION));
+		SecurityAttributesTest.getFixture(false).addTo(element);
+		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
+		element.appendChild(TEST_TITLE.getXOMElementCopy());
+		element.appendChild(org.getXOMElementCopy());
+		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+		element.appendChild(TEST_SECURITY.getXOMElementCopy());
+		testConstructor(WILL_FAIL, element);		
+	}
+	
+	public void testRollupCaveatWarning() throws InvalidDDMSException {
+		List<String> ownerProducers = new ArrayList<String>();
+		ownerProducers.add("USA");
+		Organization org = new Organization("creator", getAsList("DISA"), null, null, new SecurityAttributes("CTS-B", ownerProducers, null));
+		
+		Element element = Util.buildDDMSElement(Resource.NAME, null);
+		Util.addAttribute(element, ICISM_PREFIX, Resource.RESOURCE_ELEMENT_NAME, ICISM_NAMESPACE, String.valueOf(TEST_RESOURCE_ELEMENT));
+		Util.addAttribute(element, ICISM_PREFIX, Resource.CREATE_DATE_NAME, ICISM_NAMESPACE, TEST_CREATE_DATE);
+		Util.addAttribute(element, ICISM_PREFIX, Resource.DES_VERSION_NAME, ICISM_NAMESPACE, String.valueOf(TEST_DES_VERSION));
+
+		SecurityAttributes parentAttr = new SecurityAttributes("CTS-BALK", ownerProducers, null);
+		parentAttr.addTo(element);
+		
+		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
+		element.appendChild(new Title("DDMSence", parentAttr).getXOMElementCopy());
+		element.appendChild(org.getXOMElementCopy());
+		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+		element.appendChild(new Security(parentAttr).getXOMElementCopy());
+		Resource resource = testConstructor(WILL_SUCCEED, element);
+		assertEquals(1, resource.getValidationWarnings().size());
+		assertEquals("A security classification with a sharing caveat (i.e. CTS-B or CTS-BALK) is being used. Please review your ddms:Resource and confirm that security rollup is being handled correctly.", resource.getValidationWarnings().get(0).getText());
+		assertEquals("/ddms:Resource", resource.getValidationWarnings().get(0).getLocator());
+
+	}
 }

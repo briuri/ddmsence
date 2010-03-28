@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
+import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -104,6 +105,14 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 */
 	public String getQualifiedName() {
 		return (getXOMElement() == null ? "" : getXOMElement().getQualifiedName());
+	}
+	
+	/**
+	 * The base implementation of a DDMS component assumes that there are no security attributes. Components
+	 * with attributes should override this.
+	 */
+	public SecurityAttributes getSecurityAttributes() {
+		return (null);
 	}
 	
 	/**

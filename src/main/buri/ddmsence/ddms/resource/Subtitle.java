@@ -112,7 +112,6 @@ public final class Subtitle extends AbstractSimpleString {
 		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
-		getSecurityAttributes().requireOwnerProducer();
 		
 		if (Util.isEmpty(getValue()))
 			addWarning("A ddms:subtitle element was found with no subtitle value.");
