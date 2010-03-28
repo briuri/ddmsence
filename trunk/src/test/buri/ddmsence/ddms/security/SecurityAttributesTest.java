@@ -121,6 +121,25 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		return (attributes);
 	}
 	
+	public void testIsUSMarking() {
+		assertTrue(SecurityAttributes.isUSMarking("TS"));
+		assertFalse(SecurityAttributes.isUSMarking("CTS"));
+	}
+	
+	public void testGetMarkingIndex() {
+		assertEquals(-1, SecurityAttributes.getMarkingIndex("SuperSecret"));
+		assertEquals(SecurityAttributes.getMarkingIndex("CTS"), SecurityAttributes.getMarkingIndex("CTS-B"));
+		assertEquals(SecurityAttributes.getMarkingIndex("CTS"), SecurityAttributes.getMarkingIndex("CTS-BALK"));
+		assertTrue(SecurityAttributes.getMarkingIndex("TS") > SecurityAttributes.getMarkingIndex("C"));
+		assertTrue(SecurityAttributes.getMarkingIndex("CTS") > SecurityAttributes.getMarkingIndex("NU"));
+	}
+		
+	public void testHasSharingCaveat() {
+		assertTrue(SecurityAttributes.hasSharingCaveat("CTS-B"));
+		assertTrue(SecurityAttributes.hasSharingCaveat("CTS-BALK"));
+		assertFalse(SecurityAttributes.hasSharingCaveat("CTS"));
+	}
+		
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		// All fields
 		Element element = Util.buildDDMSElement(Security.NAME, null);
@@ -324,13 +343,11 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		
 		// Invalid classification
 		testConstructor(WILL_FAIL, "ZOO", TEST_OWNERS, TEST_OTHERS);
-	}
-	
-	public void testOwnerProducerValidation() throws InvalidDDMSException {
+
 		// No ownerProducers
-		SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, null, TEST_OTHERS);
+		dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, null, TEST_OTHERS);
 		try {
-			dataAttributes.requireOwnerProducer();
+			dataAttributes.requireClassification();
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -342,7 +359,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		owners.add("");
 		dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, owners, TEST_OTHERS);
 		try {
-			dataAttributes.requireOwnerProducer();
+			dataAttributes.requireClassification();
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

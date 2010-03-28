@@ -21,7 +21,9 @@ package buri.ddmsence.ddms;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
@@ -446,11 +448,13 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>The SecurityAttributes are valid.</li>
+	 * <li>The SecurityAttributes on any subcomponents are valid according to rollup rules.</li>
 	 * <li>1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights, 0-1 formats, exactly 1
 	 * subjectCoverage, and exactly 1 security element must exist.</li>
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
 	 * </td></tr></table>
 	 * 
+	 * @see Resource#validateRollup(SecurityAttributes, Set)
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
@@ -463,7 +467,7 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireDDMSValue(DES_VERSION_NAME, getDESVersion());
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
-		getSecurityAttributes().requireOwnerProducer();
+
 		if (!"true".equals(testResourceElement) && !"false".equals(testResourceElement))
 			throw new InvalidDDMSException("The resourceElement attribute must have a boolean value.");
 		if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
@@ -481,10 +485,68 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), SubjectCoverage.NAME, 1, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.NAME, 1, 1);
 		
+		Set<SecurityAttributes> childAttributes = new HashSet<SecurityAttributes>();
+		for (IDDMSComponent component : getTopLevelComponents()) {
+			if (component.getSecurityAttributes() != null && !(component instanceof Security))
+				childAttributes.add(component.getSecurityAttributes());
+		}
+		validateRollup(getSecurityAttributes(), childAttributes);
+		
 		for (IDDMSComponent component : getTopLevelComponents()) {
 			addWarnings(component.getValidationWarnings(), false);
-		}		
+		}
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+	}
+	
+	/**
+	 * Validates that the security attributes of any subcomponents are no more restrictive than
+	 * the parent attributes. Does not include the ddms:security tag which has a fixed
+	 * excludeFromRollup="true" attribute.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>For any subcomponent's security attributes:</li>
+	 * <ul>
+	 * <li>The classification must belong to the same classification system as the parent's
+	 * classification (US or NATO markings).</li>
+	 * <li>The classification cannot be more restrictive than the parent classification. The ordering
+	 * for US markings (from least to most restrictive) is [U, C, R, S, TS]. The ordering for NATO
+	 * markings (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTSA].</li>
+	 * <li>For the purposes of this validation, NATO markings with sharing caveats (CTS-B and CTS-BALK)
+	 * are considered as being equivalent to CTS. A validation warning will be generated, asking
+	 * the user to review the markings manually.</li>
+	 * </ul>
+	 * </td></tr></table>
+	 * 	
+	 * @param parentAttributes the master attributes to compare to
+	 * @param childAttributes a set of all nested attributes
+	 */
+	protected void validateRollup(SecurityAttributes parentAttributes, Set<SecurityAttributes> childAttributes) throws InvalidDDMSException {
+		Util.requireValue("parent security attributes", parentAttributes);
+		Util.requireValue("parent classification", parentAttributes.getClassification());
+		
+		String parentClass = parentAttributes.getClassification();
+		boolean isParentUS = SecurityAttributes.isUSMarking(parentClass);
+		int parentIndex = SecurityAttributes.getMarkingIndex(parentClass);
+		
+		boolean hasCaveat = SecurityAttributes.hasSharingCaveat(parentClass);
+		for (SecurityAttributes childAttr : childAttributes) {
+			String childClass = childAttr.getClassification();
+			if (Util.isEmpty(childClass))
+				continue;
+			boolean isChildUS = SecurityAttributes.isUSMarking(childClass);
+			int childIndex = SecurityAttributes.getMarkingIndex(childClass);
+			hasCaveat = hasCaveat || SecurityAttributes.hasSharingCaveat(childClass);
+			if (isParentUS != isChildUS) {
+				throw new InvalidDDMSException("The security classification of a nested component is using a different marking system than the ddms:Resource itself.");
+			}
+			if (childIndex > parentIndex) {
+				throw new InvalidDDMSException("The security classification of a nested component is more restrictive than the ddms:Resource itself.");
+			}			
+		}
+		if (hasCaveat) {
+			addWarning("A security classification with a sharing caveat (i.e. CTS-B or CTS-BALK) is being used. "
+				+ "Please review your ddms:Resource and confirm that security rollup is being handled correctly.");
+		}
 	}
 	
 	/**

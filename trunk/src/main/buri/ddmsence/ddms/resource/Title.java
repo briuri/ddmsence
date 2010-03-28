@@ -114,7 +114,6 @@ public final class Title extends AbstractSimpleString {
 		Util.requireDDMSValue("title value", getValue());
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
-		getSecurityAttributes().requireOwnerProducer();
 		
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
