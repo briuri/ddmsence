@@ -18,7 +18,6 @@ a few artificial limitations on the some elements:</p>
 
 <ul>
 	<li>The wizard will not ask for the ICISM "additional" attributes on any component.</li>
-	<li>The wizard only allows 1 name, 1 phone number, and 1 email address per producer entity.</li>
 	<li>The wizard builds SubjectCoverage components from keywords only, not categories.</li>
 	<li>The wizard only allows GeospatialCoverage components based on FacilityIdentifiers.</li>
 	<li>The wizard only allows a RelatedResources component to contain 1 RelatedResource, and that Resource only contains 1 Link.</li>
@@ -101,11 +100,14 @@ Please enter the title's ownerProducers as a space-delimited string [USA AUS]: U
 
 === Producers: creator, publisher, contributor, and pointOfContact (at least 1 required) ===
 Sample Limitation: This wizard only allows one name, phone number, and email per producer.
+Please enter the number of names this producer has [1]: 1
+Please enter the number of phone numbers this producer has [1]: 1
+Please enter the number of email addresses this producer has [1]: 1
 Please enter the producer type [creator]: creator
 Please enter the entity type [Organization]: Organization
-Please enter the entity name [John]: DISA
-Please enter the entity phone [703-885-1000]: 703-882-1000
-Please enter the entity email [ddms@fgm.com]: disa@disa.disa
+Please enter entity name #1 [test1]: DISA
+Please enter entity phone number #1 [test1]: 703-882-1000
+Please enter entity email #1 [test1]: disa@disa.disa
 Please enter the producer classification [U]: U
 Please enter the producer's ownerProducers as a space-delimited string [USA AUS]: USA
 
