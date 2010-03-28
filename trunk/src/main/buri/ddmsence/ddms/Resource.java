@@ -44,6 +44,7 @@ import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
 import buri.ddmsence.ddms.resource.Unknown;
+import buri.ddmsence.ddms.security.ControlledVocabulary;
 import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.ddms.summary.Description;
@@ -525,17 +526,17 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireValue("parent classification", parentAttributes.getClassification());
 		
 		String parentClass = parentAttributes.getClassification();
-		boolean isParentUS = SecurityAttributes.isUSMarking(parentClass);
-		int parentIndex = SecurityAttributes.getMarkingIndex(parentClass);
+		boolean isParentUS = ControlledVocabulary.isUSMarking(parentClass);
+		int parentIndex = ControlledVocabulary.getMarkingIndex(parentClass);
 		
-		boolean hasCaveat = SecurityAttributes.hasSharingCaveat(parentClass);
+		boolean hasCaveat = ControlledVocabulary.hasSharingCaveat(parentClass);
 		for (SecurityAttributes childAttr : childAttributes) {
 			String childClass = childAttr.getClassification();
 			if (Util.isEmpty(childClass))
 				continue;
-			boolean isChildUS = SecurityAttributes.isUSMarking(childClass);
-			int childIndex = SecurityAttributes.getMarkingIndex(childClass);
-			hasCaveat = hasCaveat || SecurityAttributes.hasSharingCaveat(childClass);
+			boolean isChildUS = ControlledVocabulary.isUSMarking(childClass);
+			int childIndex = ControlledVocabulary.getMarkingIndex(childClass);
+			hasCaveat = hasCaveat || ControlledVocabulary.hasSharingCaveat(childClass);
 			if (isParentUS != isChildUS) {
 				throw new InvalidDDMSException("The security classification of a nested component is using a different marking system than the ddms:Resource itself.");
 			}

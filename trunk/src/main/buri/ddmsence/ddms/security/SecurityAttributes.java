@@ -22,10 +22,8 @@ package buri.ddmsence.ddms.security;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
@@ -108,35 +106,6 @@ public final class SecurityAttributes {
 	
 	/** The ICISM namespace */
 	public static final String ICISM_NAMESPACE = PropertyReader.getProperty("icism.xmlNamespace");
-		
-	private static List<String> US_CLASSIFICATION_TYPES = new ArrayList<String>();
-	static {
-		US_CLASSIFICATION_TYPES.add("U");
-		US_CLASSIFICATION_TYPES.add("C");
-		US_CLASSIFICATION_TYPES.add("R");
-		US_CLASSIFICATION_TYPES.add("S");
-		US_CLASSIFICATION_TYPES.add("TS");
-	}
-	
-	private static List<String> NATO_CLASSIFICATION_TYPES = new ArrayList<String>();
-	static {		
-		NATO_CLASSIFICATION_TYPES.add("NU");
-		NATO_CLASSIFICATION_TYPES.add("NR");
-		NATO_CLASSIFICATION_TYPES.add("NC");
-		NATO_CLASSIFICATION_TYPES.add("NCA");
-		NATO_CLASSIFICATION_TYPES.add("NS");
-		NATO_CLASSIFICATION_TYPES.add("NSAT");	
-		NATO_CLASSIFICATION_TYPES.add("CTS");
-		NATO_CLASSIFICATION_TYPES.add("CTS-B");
-		NATO_CLASSIFICATION_TYPES.add("CTS-BALK");
-		NATO_CLASSIFICATION_TYPES.add("CTSA");
-	}
-	
-	private static Set<String> ALL_CLASSIFICATION_TYPES = new HashSet<String>();
-	static {
-		ALL_CLASSIFICATION_TYPES.addAll(US_CLASSIFICATION_TYPES);
-		ALL_CLASSIFICATION_TYPES.addAll(NATO_CLASSIFICATION_TYPES);
-	}
 
 	private static final String CLASSIFICATION_NAME = "classification";
 	private static final String OWNER_PRODUCER_NAME = "ownerProducer";
@@ -253,63 +222,6 @@ public final class SecurityAttributes {
 			return Collections.emptyList();
 		return (Arrays.asList(value.split(" ")));
 	}
-	
-	/**
-	 * Validates a classification against the allowed types.
-	 * 
-	 * @param classification the type to test
-	 * @throws InvalidDDMSException if the value is null, empty or invalid.
-	 */
-	public static void validateClassification(String classification) throws InvalidDDMSException {
-		Util.requireDDMSValue("classification", classification);
-		if (!ALL_CLASSIFICATION_TYPES.contains(classification))
-			throw new InvalidDDMSException("The classification must be one of " + ALL_CLASSIFICATION_TYPES);
-	}
-	
-	/**
-	 * Checks whether a marking is a US or NATO marking.
-	 * 
-	 * @param classification the classification to test
-	 * @return true for US, false for NATO
-	 */
-	public static boolean isUSMarking(String classification) {
-		return (US_CLASSIFICATION_TYPES.contains(classification));
-	}
-	
-	/**
-	 * Returns an index which can be used to determine how restrictive a marking is (with lower numbers being less
-	 * restrictive).
-	 * 
-	 * <p> The ordering for US markings (from least to most restrictive) is [U, C, R, S, TS]. The ordering for NATO
-	 * markings (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTSA]. </p>
-	 * 
-	 * <p>CTS-B and CTS-BALK will return the same index as CTS. </p>
-	 * 
-	 * @param classification the classification to test
-	 * @return an index, or -1 if the marking does not belong to any known systems.
-	 */
-	public static int getMarkingIndex(String classification) {
-		if (!Util.isEmpty(classification)) {
-			if (isUSMarking(classification))
-				return (US_CLASSIFICATION_TYPES.indexOf(classification));
-			if (hasSharingCaveat(classification)) {
-				classification = "CTS";
-			}
-			return (NATO_CLASSIFICATION_TYPES.indexOf(classification));
-		}
-		return (-1);
-	}
-	
-	/**
-	 * Checks if the classification is CTS-B or CTS-BALK.
-	 * 
-	 * @param classification the classification to test
-	 * @return true if it is, false otherwise
-	 */
-	public static boolean hasSharingCaveat(String classification) {
-		Util.requireValue("classification", classification);
-		return ("CTS-B".equals(classification) || "CTS-BALK".equals(classification));
-	}
 		
 	/**
 	 * Convenience method to add these attributes onto an existing XOM Element
@@ -355,7 +267,7 @@ public final class SecurityAttributes {
 	 */
 	private void validate() throws InvalidDDMSException {
 		if (!Util.isEmpty(getClassification()))
-			validateClassification(getClassification());
+			ControlledVocabulary.validateClassification(getClassification());
 		if (getDeclassDate() != null && !getDeclassDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException("The declassDate must be in the xs:date format (YYYY-MM-DD).");
 		if (getDateOfExemptedSource() != null && !getDateOfExemptedSource().getXMLSchemaType().equals(DatatypeConstants.DATE))
