@@ -76,7 +76,6 @@ import buri.ddmsence.util.PropertyReader;
  * 
  * <ul>
  * 		<li>"Additional" ICISM attributes</li>
- * 		<li>Additional names, phones, and emails in a producer element.</li>
  * 		<li>Categories in a subjectCoverage element.</li>
  * 		<li>GeospatialCoverage is only FacilityIdentifier-based.</li>
  * 		<li>Multiple links or RelatedResource elements in a relatedResoures element.</li>
@@ -474,9 +473,7 @@ public class Escort {
 			}
 		}
 	}
-	
 
-	
 	/**
 	 * Builds a valid DDMS component
 	 * 
@@ -485,15 +482,28 @@ public class Escort {
 	private IDDMSComponent buildProducer() throws IOException {
 		println("Sample Limitation: This wizard only allows one name, phone number, and email per producer.");
 		while (true) {
+			int numNames = readInt("the number of names this producer has [1]");
+			int numPhones = readInt("the number of phone numbers this producer has [1]");
+			int numEmails = readInt("the number of email addresses this producer has [1]");
+						
 			String surname = null;
 			String userID = null;
 			String affiliation = null;
 			String producerType = readString("the producer type [creator]");
 			String entityType = readString("the entity type [Organization]");
-			String entityName = readString("the entity name [John]");
-			String entityPhone = readString("the entity phone [703-885-1000]");
-			String entityEmail = readString("the entity email [ddms@fgm.com]");
-			// Skipping the multiple names/phones/emails allowed in a record.
+			
+			List<String> names = new ArrayList<String>();
+			for (int i = 0; i < numNames; i++) {
+				names.add(readString("entity name #" + (i + 1) + " [test" + (i + 1) + "]"));
+			}
+			List<String> phones = new ArrayList<String>();
+			for (int i = 0; i < numPhones; i++) {
+				phones.add(readString("entity phone number #" + (i + 1) + " [test" + (i + 1) + "]"));
+			}
+			List<String> emails = new ArrayList<String>();
+			for (int i = 0; i < numEmails; i++) {
+				emails.add(readString("entity email #" + (i + 1) + " [test" + (i + 1) + "]"));
+			}
 			String classification = readString("the producer classification [U]");
 			String ownerProducers = readString("the producer's ownerProducers as a space-delimited string [USA AUS]");
 			// Skipping the "additional" security attributes.
@@ -502,14 +512,7 @@ public class Escort {
 				userID = readString("the Person userID [123]");
 				affiliation = readString("the Person affiliation [DISA]");
 			}
-			try {				
-				List<String> names = new ArrayList<String>();
-				names.add(entityName);
-				List<String> phones = new ArrayList<String>();
-				phones.add(entityPhone);
-				List<String> emails = new ArrayList<String>();
-				emails.add(entityEmail);
-				
+			try {								
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				if (Person.NAME.equals(entityType)) {
 					return (new Person(producerType, surname, names, userID, affiliation, phones, emails, attr));
@@ -767,7 +770,10 @@ public class Escort {
 		while (true) {
 			String input = readString(name);
 			try {
-				return Integer.parseInt(input);
+				int value = Integer.parseInt(input);
+				if (value > 0)
+					return (value);
+				println("A positive integer is required.");
 			} catch (NumberFormatException nfe) {
 				println("This could not be converted into a number: " + input);
 			}
