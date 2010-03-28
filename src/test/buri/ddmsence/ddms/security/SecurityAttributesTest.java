@@ -122,22 +122,22 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	}
 	
 	public void testIsUSMarking() {
-		assertTrue(SecurityAttributes.isUSMarking("TS"));
-		assertFalse(SecurityAttributes.isUSMarking("CTS"));
+		assertTrue(ControlledVocabulary.isUSMarking("TS"));
+		assertFalse(ControlledVocabulary.isUSMarking("CTS"));
 	}
 	
 	public void testGetMarkingIndex() {
-		assertEquals(-1, SecurityAttributes.getMarkingIndex("SuperSecret"));
-		assertEquals(SecurityAttributes.getMarkingIndex("CTS"), SecurityAttributes.getMarkingIndex("CTS-B"));
-		assertEquals(SecurityAttributes.getMarkingIndex("CTS"), SecurityAttributes.getMarkingIndex("CTS-BALK"));
-		assertTrue(SecurityAttributes.getMarkingIndex("TS") > SecurityAttributes.getMarkingIndex("C"));
-		assertTrue(SecurityAttributes.getMarkingIndex("CTS") > SecurityAttributes.getMarkingIndex("NU"));
+		assertEquals(-1, ControlledVocabulary.getMarkingIndex("SuperSecret"));
+		assertEquals(ControlledVocabulary.getMarkingIndex("CTS"), ControlledVocabulary.getMarkingIndex("CTS-B"));
+		assertEquals(ControlledVocabulary.getMarkingIndex("CTS"), ControlledVocabulary.getMarkingIndex("CTS-BALK"));
+		assertTrue(ControlledVocabulary.getMarkingIndex("TS") > ControlledVocabulary.getMarkingIndex("C"));
+		assertTrue(ControlledVocabulary.getMarkingIndex("CTS") > ControlledVocabulary.getMarkingIndex("NU"));
 	}
 		
 	public void testHasSharingCaveat() {
-		assertTrue(SecurityAttributes.hasSharingCaveat("CTS-B"));
-		assertTrue(SecurityAttributes.hasSharingCaveat("CTS-BALK"));
-		assertFalse(SecurityAttributes.hasSharingCaveat("CTS"));
+		assertTrue(ControlledVocabulary.hasSharingCaveat("CTS-B"));
+		assertTrue(ControlledVocabulary.hasSharingCaveat("CTS-BALK"));
+		assertFalse(ControlledVocabulary.hasSharingCaveat("CTS"));
 	}
 		
 	public void testElementConstructorValid() throws InvalidDDMSException {
