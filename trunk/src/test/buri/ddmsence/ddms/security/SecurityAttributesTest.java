@@ -120,26 +120,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		}
 		return (attributes);
 	}
-	
-	public void testIsUSMarking() {
-		assertTrue(ControlledVocabulary.isUSMarking("TS"));
-		assertFalse(ControlledVocabulary.isUSMarking("CTS"));
-	}
-	
-	public void testGetMarkingIndex() {
-		assertEquals(-1, ControlledVocabulary.getMarkingIndex("SuperSecret"));
-		assertEquals(ControlledVocabulary.getMarkingIndex("CTS"), ControlledVocabulary.getMarkingIndex("CTS-B"));
-		assertEquals(ControlledVocabulary.getMarkingIndex("CTS"), ControlledVocabulary.getMarkingIndex("CTS-BALK"));
-		assertTrue(ControlledVocabulary.getMarkingIndex("TS") > ControlledVocabulary.getMarkingIndex("C"));
-		assertTrue(ControlledVocabulary.getMarkingIndex("CTS") > ControlledVocabulary.getMarkingIndex("NU"));
-	}
-		
-	public void testHasSharingCaveat() {
-		assertTrue(ControlledVocabulary.hasSharingCaveat("CTS-B"));
-		assertTrue(ControlledVocabulary.hasSharingCaveat("CTS-BALK"));
-		assertFalse(ControlledVocabulary.hasSharingCaveat("CTS"));
-	}
-		
+			
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		// All fields
 		Element element = Util.buildDDMSElement(Security.NAME, null);

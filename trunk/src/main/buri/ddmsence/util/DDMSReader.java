@@ -49,6 +49,7 @@ public class DDMSReader {
 
 	private XMLReader _reader;
 	
+	private static final String XML_READER_CLASS = PropertyReader.getProperty("xmlReader.class");
 	private static final String PROP_XERCES_VALIDATION = "http://xml.org/sax/features/validation";
 	private static final String PROP_XERCES_SCHEMA_VALIDATION = "http://apache.org/xml/features/validation/schema";
 	private static final String PROP_XERCES_EXTERNAL_LOCATION =
@@ -64,7 +65,7 @@ public class DDMSReader {
 	 */
 	public DDMSReader(String namespaceURI, String schemaLocation) throws SAXException {
 		Util.requireValue("schema location", schemaLocation);
-		_reader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
+		_reader = XMLReaderFactory.createXMLReader(XML_READER_CLASS);
 		URL xsd = getClass().getResource(schemaLocation);
 		if (xsd == null)
 			throw new SAXException("Unable to load a local copy of the schema for validation.");

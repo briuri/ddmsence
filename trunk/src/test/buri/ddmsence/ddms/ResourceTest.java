@@ -866,7 +866,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, element);		
 	}
 	
-	public void testRollupCaveatWarning() throws InvalidDDMSException {
+	public void testRollupManualReviewWarning() throws InvalidDDMSException {
 		List<String> ownerProducers = new ArrayList<String>();
 		ownerProducers.add("USA");
 		Organization org = new Organization("creator", getAsList("DISA"), null, null, new SecurityAttributes("CTS-B", ownerProducers, null));
@@ -886,7 +886,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		element.appendChild(new Security(parentAttr).getXOMElementCopy());
 		Resource resource = testConstructor(WILL_SUCCEED, element);
 		assertEquals(1, resource.getValidationWarnings().size());
-		assertEquals("A security classification with a sharing caveat (i.e. CTS-B or CTS-BALK) is being used. Please review your ddms:Resource and confirm that security rollup is being handled correctly.", resource.getValidationWarnings().get(0).getText());
+		assertEquals("A security classification from the set [R, CTS-B, or CTS-BALK] is being used. Please review your ddms:Resource and confirm that security rollup is being handled correctly.", resource.getValidationWarnings().get(0).getText());
 		assertEquals("/ddms:Resource", resource.getValidationWarnings().get(0).getLocator());
 
 	}

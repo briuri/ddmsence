@@ -267,7 +267,7 @@ public final class SecurityAttributes {
 	 */
 	private void validate() throws InvalidDDMSException {
 		if (!Util.isEmpty(getClassification()))
-			ControlledVocabulary.validateClassification(getClassification());
+			ControlledVocabulary.validateEnumeration(ControlledVocabulary.CVE_ALL_CLASSIFICATIONS, getClassification());
 		if (getDeclassDate() != null && !getDeclassDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException("The declassDate must be in the xs:date format (YYYY-MM-DD).");
 		if (getDateOfExemptedSource() != null && !getDateOfExemptedSource().getXMLSchemaType().equals(DatatypeConstants.DATE))

@@ -510,11 +510,11 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>The classification must belong to the same classification system as the parent's
 	 * classification (US or NATO markings).</li>
 	 * <li>The classification cannot be more restrictive than the parent classification. The ordering
-	 * for US markings (from least to most restrictive) is [U, C, R, S, TS]. The ordering for NATO
+	 * for US markings (from least to most restrictive) is [U, C, S, TS]. The ordering for NATO
 	 * markings (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTSA].</li>
-	 * <li>For the purposes of this validation, NATO markings with sharing caveats (CTS-B and CTS-BALK)
-	 * are considered as being equivalent to CTS. A validation warning will be generated, asking
-	 * the user to review the markings manually.</li>
+	 * <li>If the markings [R, CTS-B, or CTS-BALK are used, a validation warning will be generated, asking
+	 * the user to review the markings manually. I'm not sure how these compare to other markings in the
+	 * NATO scheme.</li>
 	 * </ul>
 	 * </td></tr></table>
 	 * 	
@@ -526,17 +526,17 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireValue("parent classification", parentAttributes.getClassification());
 		
 		String parentClass = parentAttributes.getClassification();
-		boolean isParentUS = ControlledVocabulary.isUSMarking(parentClass);
+		boolean isParentUS = ControlledVocabulary.enumerationContains(ControlledVocabulary.CVE_US_CLASSIFICATIONS, parentClass);
 		int parentIndex = ControlledVocabulary.getMarkingIndex(parentClass);
 		
-		boolean hasCaveat = ControlledVocabulary.hasSharingCaveat(parentClass);
+		boolean needsManualReview = ControlledVocabulary.needsManualReview(parentClass);
 		for (SecurityAttributes childAttr : childAttributes) {
 			String childClass = childAttr.getClassification();
 			if (Util.isEmpty(childClass))
 				continue;
-			boolean isChildUS = ControlledVocabulary.isUSMarking(childClass);
+			boolean isChildUS = ControlledVocabulary.enumerationContains(ControlledVocabulary.CVE_US_CLASSIFICATIONS, childClass);
 			int childIndex = ControlledVocabulary.getMarkingIndex(childClass);
-			hasCaveat = hasCaveat || ControlledVocabulary.hasSharingCaveat(childClass);
+			needsManualReview = needsManualReview || ControlledVocabulary.needsManualReview(childClass);
 			if (isParentUS != isChildUS) {
 				throw new InvalidDDMSException("The security classification of a nested component is using a different marking system than the ddms:Resource itself.");
 			}
@@ -544,8 +544,8 @@ public final class Resource extends AbstractBaseComponent {
 				throw new InvalidDDMSException("The security classification of a nested component is more restrictive than the ddms:Resource itself.");
 			}			
 		}
-		if (hasCaveat) {
-			addWarning("A security classification with a sharing caveat (i.e. CTS-B or CTS-BALK) is being used. "
+		if (needsManualReview) {
+			addWarning("A security classification from the set [R, CTS-B, or CTS-BALK] is being used. "
 				+ "Please review your ddms:Resource and confirm that security rollup is being handled correctly.");
 		}
 	}
