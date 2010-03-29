@@ -85,7 +85,7 @@ and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is
 
 <h1>Current Progress</h1>
 
-<p><u>03/29/2010</u>: Version 0.9.d includes further improvements to the validation system, controlled vocabulary validation for ICISM security
+<p><u>03/29/2010</u>: <a href="downloads.jsp">Version 0.9.d</a> includes further improvements to the validation system, controlled vocabulary validation for ICISM security
 attributes, and minor improvements to the sample applications. This version is believed to be stable, and is intended to be the release candidate
 for v1.0.0.</p>
 
@@ -112,7 +112,7 @@ There will be no enhancements added between v0.9.d and v1.0.0, although I may co
 <p><img src="./images/BU.jpg" width="73" height="100" title="BU" align="left" />
 <b>Brian Uri!</b> is a software engineer at <a href="http://www.fgm.com/" target="_new">FGM, Inc.</a> in Reston, VA. He has been a member
 of the <a href="http://metadata.dod.mil/" target="_new">DoD Metadata Registry</a> team since 2004, and is currently a
-technical lead on that project. This project grew out of my desire to gain more practical XML Schema experience and 
+technical lead on that project. This project grew out of the author's desire to gain more practical XML Schema experience and 
 an unusually large amount of free time.</p>
 
 <div class="clear"></div>
