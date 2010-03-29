@@ -15,7 +15,7 @@
 	<meta name="title" content="DDMSence Home Page" />
 	<meta name="title.classification" content="U" />
 	<meta name="title.ownerProducer" content="USA" />
-	<meta name="subtitle" content="Version 0.9.c" />
+	<meta name="subtitle" content="Multiple Versions" />
 	<meta name="subtitle.classification" content="U" />
 	<meta name="subtitle.ownerProducer" content="USA" />
 	<meta name="description" content="An open source Java library for DDMS." />
@@ -94,9 +94,9 @@ in addition to three sample applications.</p>
 
 <h1>On the Horizon</h1>
 
-<p>I am currently working on an official 1.0 release which will include further improvements to the validation system, additional support
-for ICISM security attributes, and minor improvements to the sample applications. Unless I hear of major design flaws in the 0.9.c
-release, I intend to release 1.0 in mid-April.</p>
+<p>I have finished work on the official 1.0.0 release, which includes further improvements to the validation system, additional support
+for ICISM security attributes, and minor improvements to the sample applications. I intend to release it in early April, after some additional polish and
+testing.</p>
 
 <p>Here are some areas which I would like to improve after 1.0:</p>
 <ul>
