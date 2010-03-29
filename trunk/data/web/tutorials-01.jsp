@@ -18,7 +18,7 @@ an example of how to create DDMS components from an XML file.</p>
 <p><u>Essentials</u> can be run from the command line with the class, <code>buri.ddmsence.samples.Essentials</code>. The application accepts a single 
 optional parameter: the name of a file to load upon startup.</p>
 
-<p>Please see "<a href="documentation.jsp#started">Getting Started</a>" section for classpath details and command line syntax.</p> 
+<p>Please see the "<a href="documentation.jsp#started">Getting Started</a>" section for classpath details and command line syntax.</p> 
 
 <h3>Walkthrough</h3>
 
@@ -82,7 +82,7 @@ at any given time.</p>
 <p>Validation from an XML file proceeds in the following order:</p>
 
 <ul>
-	<li>The XML file is initially validated by the underlying XML parsers to confirm that it adheres to the DDMS schema.</li>
+	<li>The XML file is initially validated by the underlying XML parsers to confirm that it is well-formed and adheres to the DDMS schema.</li>
 	<li>As the objects are built in Java, the schema rules are revalidated in Java. This is not essential for file-based resources, but
 	becomes more important when we are building from scratch.</li>
 	<li>Next, any rules mandated in the DDMS Specification but not implemented in the schema are validated (such as constraints on latitude/longitude values). Today,
