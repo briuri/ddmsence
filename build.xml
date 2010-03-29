@@ -107,7 +107,7 @@
 	</target>
 			
 	<target name="__config">
-	    <property name="version" value="0.9.c" />
+	    <property name="version" value="0.9.d" />
 		<property name="conf.dir" value="conf" />
 		<property name="data.dir" value="data" />
 		<property name="src.main.dir" value="src/main" />

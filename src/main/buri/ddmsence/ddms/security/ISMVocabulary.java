@@ -77,7 +77,7 @@ import buri.ddmsence.util.Util;
  * </p>
  * 
  * @author Brian Uri!
- * @since 1.0.0
+ * @since 0.9.d
  */
 public class ISMVocabulary {
 	

@@ -25,7 +25,7 @@ import buri.ddmsence.ddms.AbstractComponentTestCase;
  * <p>Tests related to the ICISM Controlled Vocabularies</p>
  * 
  * @author Brian Uri!
- * @since 1.0.0
+ * @since 0.9.d
  */
 public class ISMVocabularyTest extends AbstractComponentTestCase {
 	

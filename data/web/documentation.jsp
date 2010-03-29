@@ -29,14 +29,14 @@ with the "bin"-flavored download, which comes with the DDMSence JAR files pre-co
 <div class="example"><pre>REM Windows Commands
 cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;
 set DDMSENCE_CLASSPATH=lib/xercesImpl-2.9.1.jar;lib/xml-apis-1.3.04.jar;lib/xom-1.2.4.jar
-set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-0.9.c.jar;lib/ddmsence-samples-0.9.c.jar
+set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-0.9.d.jar;lib/ddmsence-samples-0.9.d.jar
 java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Escort</pre></div>
 <p class="figure">Figure 1. Running from a Windows/DOS Command Line</p>
 
 <div class="example"><pre># Linux Commands
 cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;
 ddmsence_classpath=lib/xercesImpl-2.9.1.jar:lib/xml-apis-1.3.04.jar:lib/xom-1.2.4.jar
-ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-0.9.c.jar:lib/ddmsence-samples-0.9.c.jar
+ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-0.9.d.jar:lib/ddmsence-samples-0.9.d.jar
 java -cp $ddmsence_classpath buri.ddmsence.samples.Escape</pre></div>
 <p class="figure">Figure 2. Running from a Linux Command Line</p>
 
