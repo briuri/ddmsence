@@ -11,7 +11,7 @@
 
 <p><u>Escape</u> is a tool that loads multiple DDMS Resource files and then exposes various statistics about them through the 
 <a href="http://code.google.com/apis/visualization/documentation/gallery.html" target="_new">Google Visualization API</a>. Charts in this sample
-application are limited to non-interactive visualizations, but provide the foundation for possible uses of the Flash-based Google charts: it would
+application are limited to non-interactive types, but provide the foundation for using the Flash-based Google charts: it would
 be possible to plot Temporal Coverage on an Annotated Timeline, or Geospatial Coverage on Google Maps. While the first two sample applications were 
 designed to teach developers how DDMSence works, the intent of this one is to provide brainstorming ideas for leveraging DDMS in other contexts.</p>
 
@@ -26,7 +26,7 @@ a formatted URL and renders some sort of chart.</p>
 <p><u>Escape</u> can be run from the command line with the class, <code>buri.ddmsence.samples.Escape</code>. The application does not accept any
 command line parameters. A network connection is needed to connect to Google (which also means that this application will not run in a SIPRNET environment).</p>
 
-<p>Please see "<a href="documentation.jsp#started">Getting Started</a>" section for classpath details and command line syntax.</p> 
+<p>Please see the "<a href="documentation.jsp#started">Getting Started</a>" section for classpath details and command line syntax.</p> 
 
 <h3>Walkthrough</h3>
 

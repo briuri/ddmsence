@@ -30,7 +30,7 @@ a few artificial limitations on the some elements:</p>
 <p><u>Escort</u> can be run from the command line with the class, <code>buri.ddmsence.samples.Escort</code>. The application does not accept any
 command line parameters.</p>
 
-<p>Please see "<a href="documentation.jsp#started">Getting Started</a>" section for classpath details and command line syntax.</p> 
+<p>Please see the "<a href="documentation.jsp#started">Getting Started</a>" section for classpath details and command line syntax.</p> 
 
 <h3>Walkthrough</h3>
 

@@ -62,7 +62,7 @@ an example of how to create DDMS components from an XML file.</p>
 <h4>Escort</h4>
 
 <p><u>Escort</u> is a step-by-step wizard for building a DDMS Resource from scratch, and then saving it to a file. The source code for this application
-shows an example of how the Java object model can be built with basic data types (possibly mapped from a database table or some other pre-existing entity).</p>
+shows an example of how the Java object model can be built with simple data type.</p>
 
 <ul>
 	<li><a href="tutorials-02.jsp">Tutorial #2: Escort</a></li>
@@ -72,7 +72,7 @@ shows an example of how the Java object model can be built with basic data types
 
 <p>
 <img src="../images/escape-thumb.png" width="300" height="198" title="Escape Screenshot" align="right" />
-<u>Escape</u> is a tool that loads multiple DDMS Resource files and then exposes various statistics about them through the 
+<u>Escape</u> is a tool that traverses multiple DDMS Resource files and then exposes various statistics about them through the 
 <a href="http://code.google.com/apis/visualization/documentation/gallery.html" target="_new">Google Visualization API</a>. Charts in this sample
 application are limited to non-interactive visualizations, but provide the foundation for the more complex interactive cases: for example, it would
 be possible to plot Temporal Coverage on an Annotated Timeline, or Geospatial Coverage on Google Maps. While the first two sample applications were 
@@ -111,7 +111,7 @@ followed these rules to determine which components are important enough to deser
 	<li>Elements which are explicitly declared as DDMS Categories in the DDMS documentation are always implemented (<code>ddms:identifier</code>).</li>
 	<li>Elements which merely enclose important data AND which have no special attributes are never implemented (<code>ddms:Media</code>).</li>
 	<li>Data which can be represented as a simple Java type AND which has no special attributes is represented as a simple Java type (<code>ddms:email</code>).</li>
-	<li>Attributes are generally implemented as properties on an Object. The exceptions to this are the ICISM AttributeGroup, which decorates many DDMS components, and the SRS AttributeGroup, which decorates components in the GML profile.</li>
+	<li>Attributes are generally implemented as properties on an Object. The exceptions to this are the ICISM Attribute Group, which decorates many DDMS components, and the SRS Attribute Group, which decorates components in the GML profile.</li>
 </ul>
 
 <h4>Empty String vs. No Value</h4>
@@ -139,7 +139,7 @@ and the approach I chose seemed more understandable from an object-oriented pers
 <h4>Immutability</h4>
 
 <p>All DDMS components are implemented as immutable objects, which means that their values cannot be changed after instantiation. Because the components are
-validated during instantiation, this also means that it should be impossible to have an invalid component at any given time: a component is either confirmed to be valid or does not exist.</p>
+validated during instantiation, this also means that it is impossible to have an invalid component at any given time: a component is either confirmed to be valid or does not exist.</p>
 
 <h4>Constructor Parameter Order</h4>
 
@@ -164,7 +164,7 @@ The following convention is used to provide some consistency:</p>
 
 <a name="source"></a><h3>Source Code Repository</h3>
 
-<p>The source code for DDMSence can be found in the "src'-flavored download on the <a href="downloads.jsp">Downloads</a> page. If you are interested in viewing the latest
+<p>The source code for DDMSence can be found in the "src"-flavored download on the <a href="downloads.jsp">Downloads</a> page. If you are interested in viewing the latest
 (unreleased and possibly unstable) source code, you can download it with any Subversion client:</p>
 <pre>svn checkout <a href="http://ddmsence.googlecode.com/svn/trunk/">http://ddmsence.googlecode.com/svn/trunk/</a> ddmsence-read-only</pre>
 
