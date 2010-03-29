@@ -44,6 +44,21 @@
 		</copy>
 		<zip destfile="${dist.dir}/ddmsence-bin-${version}.zip" basedir="${dist.dir}" includes="ddmsence-bin-${version}/**" />
 		<delete quiet="true" dir="${dist.dir}/ddmsence-bin-${version}" />
+		
+		<!-- Release Process (need to automate parts of this)
+		1) Update version in build.xml.
+		2) Double-check @since tags on new classes.
+		3) Update index.jsp to describe new release.
+		4) Update downloads.jsp to describe new release.
+		5) Update classpath on documentation.jsp.
+		6) Update CHANGES.txt.
+		7) Run "dist" target and review archives.
+		8) Delete and reupload javadoc.
+		9) Upload archives and deprecate last release.
+		10) Upload web files.
+		11) Commit changes and tag as new release. 
+		12) Announce on Google Groups
+		-->
 	</target>
 		
 	<target name="clean" depends="__config" description="Removes the temporary build directories">
