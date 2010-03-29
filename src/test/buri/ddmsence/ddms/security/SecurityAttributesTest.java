@@ -45,13 +45,13 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	}
 	private static final Map<String, String> TEST_OTHERS = new HashMap<String, String>();
 	static {
-		TEST_OTHERS.put("SCIcontrols", "A B");
-		TEST_OTHERS.put("SARIdentifier", "C D");
-		TEST_OTHERS.put("disseminationControls", "E F");
-		TEST_OTHERS.put("FGIsourceOpen", "G H");
-		TEST_OTHERS.put("FGIsourceProtected", "I J");
-		TEST_OTHERS.put("releasableTo", "K L");
-		TEST_OTHERS.put("nonICmarkings", "L M");		
+		TEST_OTHERS.put("SCIcontrols", "HCS");
+		TEST_OTHERS.put("SARIdentifier", "SAR-USA");
+		TEST_OTHERS.put("disseminationControls", "UCNI");
+		TEST_OTHERS.put("FGIsourceOpen", "ALA");
+		TEST_OTHERS.put("FGIsourceProtected", "FGI");
+		TEST_OTHERS.put("releasableTo", "AIA");
+		TEST_OTHERS.put("nonICmarkings", "SINFO");		
 		TEST_OTHERS.put("classifiedBy", " MN");
 		TEST_OTHERS.put("compilationReason", "NO");
 		TEST_OTHERS.put("derivativelyClassifiedBy", "OP");
@@ -59,8 +59,8 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		TEST_OTHERS.put("derivedFrom", "QR");			
 		TEST_OTHERS.put("declassDate", "2005-10-10");
 		TEST_OTHERS.put("declassEvent", "RS");
-		TEST_OTHERS.put("declassException", "ST");	
-		TEST_OTHERS.put("exemptedSource", "TU");
+		TEST_OTHERS.put("declassException", "25X1");	
+		TEST_OTHERS.put("typeOfExemptedSource", "OADR");
 		TEST_OTHERS.put("dateOfExemptedSource", "2005-10-11");
 	}
 	
@@ -210,42 +210,42 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		assertFalse(elementAttributes.equals(dataAttributes));
 		
 		List<String> owners = new ArrayList<String>(TEST_OWNERS);
-		owners.add("UK");
+		owners.add("AUS");
 		dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, owners, TEST_OTHERS);
 		assertFalse(elementAttributes.equals(dataAttributes));
 		
 		Map<String, String> changed = new HashMap<String, String>(TEST_OTHERS);
-		changed.put("SCIcontrols", DIFFERENT_VALUE);
+		changed.put("SCIcontrols", "TK");
 		dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 		assertFalse(elementAttributes.equals(dataAttributes));
 		
 		changed = new HashMap<String, String>(TEST_OTHERS);
-		changed.put("SARIdentifier", DIFFERENT_VALUE);
+		changed.put("SARIdentifier", "SAR-AIA");
 		dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 		assertFalse(elementAttributes.equals(dataAttributes));
 		
 		changed = new HashMap<String, String>(TEST_OTHERS);
-		changed.put("disseminationControls", DIFFERENT_VALUE);
+		changed.put("disseminationControls", "SAMI");
 		dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 		assertFalse(elementAttributes.equals(dataAttributes));
 		
 		changed = new HashMap<String, String>(TEST_OTHERS);
-		changed.put("FGIsourceOpen", DIFFERENT_VALUE);
+		changed.put("FGIsourceOpen", "BGR");
 		dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 		assertFalse(elementAttributes.equals(dataAttributes));
 		
 		changed = new HashMap<String, String>(TEST_OTHERS);
-		changed.put("FGIsourceProtected", DIFFERENT_VALUE);
+		changed.put("FGIsourceProtected", "BGR");
 		dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 		assertFalse(elementAttributes.equals(dataAttributes));
 		
 		changed = new HashMap<String, String>(TEST_OTHERS);
-		changed.put("releasableTo", DIFFERENT_VALUE);
+		changed.put("releasableTo", "BGR");
 		dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 		assertFalse(elementAttributes.equals(dataAttributes));
 				
 		changed = new HashMap<String, String>(TEST_OTHERS);
-		changed.put("nonICmarkings", DIFFERENT_VALUE);
+		changed.put("nonICmarkings", "SBU");
 		dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 		assertFalse(elementAttributes.equals(dataAttributes));
 		
@@ -280,12 +280,12 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		assertFalse(elementAttributes.equals(dataAttributes));
 		
 		changed = new HashMap<String, String>(TEST_OTHERS);
-		changed.put("declassException", DIFFERENT_VALUE);
+		changed.put("declassException", "25X4");
 		dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 		assertFalse(elementAttributes.equals(dataAttributes));
 		
 		changed = new HashMap<String, String>(TEST_OTHERS);
-		changed.put("typeOfExemptedSource", DIFFERENT_VALUE);
+		changed.put("typeOfExemptedSource", "X4");
 		dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 		assertFalse(elementAttributes.equals(dataAttributes));
 		
@@ -338,14 +338,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		// No non-empty ownerProducers
 		List<String> owners = new ArrayList<String>();
 		owners.add("");
-		dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, owners, TEST_OTHERS);
-		try {
-			dataAttributes.requireClassification();
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			// Good
-		}
+		dataAttributes = testConstructor(WILL_FAIL, TEST_CLASS, owners, TEST_OTHERS);
 	}
 	
 	public void testDateOutput() throws InvalidDDMSException {

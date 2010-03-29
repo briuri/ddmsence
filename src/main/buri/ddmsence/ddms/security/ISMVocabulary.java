@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -65,6 +67,9 @@ import buri.ddmsence.util.Util;
  * <li>CVEnumISMSAR.xml: tokens allowed in the "SARIdentifier" attribute</li>
  * <li>CVEnumISMSCIControls.xml: tokens allowed in the "SCIcontrols" attribute</li>
  * <li>CVEnumISMSourceMarked.xml: tokens allowed in the "typeOfExemptedSource" attribute</li>
+ * </ul>
+ * 
+ * <p>Some of these vocabularies include regular expression patterns.</p>
  * 
  * <p>
  * Separate Java lists of Classification values are maintained to calculate the ordering of 
@@ -74,7 +79,7 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 1.0.0
  */
-public class ControlledVocabulary {
+public class ISMVocabulary {
 	
 	/** Filename for the enumerations allowed in a declassException attribute */
 	public static final String CVE_DECLASS_EXCEPTION = "CVEnumISM25X.xml";
@@ -141,19 +146,25 @@ public class ControlledVocabulary {
 		ALL_CLASSIFICATION_TYPES.addAll(ORDERED_NATO_CLASSIFICATION_TYPES);
 	}	
 	
-	private static final Map<String, Set<String>> ENUMERATIONS = new HashMap<String, Set<String>>();
+	private static final Map<String, Set<String>> ENUM_TOKENS = new HashMap<String, Set<String>>();
+	private static final Map<String, Set<String>> ENUM_PATTERNS = new HashMap<String, Set<String>>();
 	
 	private static final String ENUMERATION_NAME = "Enumeration";
 	private static final String TERM_NAME = "Term";
 	private static final String VALUE_NAME = "Value";
+	private static final String REG_EXP_NAME = "regularExpression";
 	private static final String XML_READER_CLASS = PropertyReader.getProperty("xmlReader.class");
 	private static final String CVE_NAMESPACE = PropertyReader.getProperty("icism.cve.xmlNamespace");
 	private static final String CVE_LOCATION = PropertyReader.getProperty("icism.cve.enumLocation");
 	
+	static {
+		new ISMVocabulary();
+	}
+	
 	/**
 	 * Private to prevent instantiation
 	 */
-	private ControlledVocabulary() throws IOException {
+	private ISMVocabulary() {
 		try {
 			XMLReader reader = XMLReaderFactory.createXMLReader(XML_READER_CLASS);
 			Builder builder = new Builder(reader, false);
@@ -171,14 +182,17 @@ public class ControlledVocabulary {
 			loadEnumeration(builder, CVE_TYPE_EXEMPTED_SOURCE);
 		}
 		catch (SAXException e) {
-			throw new IOException(e);
+			throw new RuntimeException("Could not load controlled vocabularies: " + e.getMessage());
+		}
+		catch (IOException e) {
+			throw new RuntimeException("Could not load controlled vocabularies: " + e.getMessage());
 		}
 	}
 
 	/**
 	 * Opens the enumeration file and extracts a Set of String token values
-	 * based on the Term elements in the file. Stores them in the ENUMERATIONS
-	 * map with the key.
+	 * based on the Term elements in the file. Stores them in the ENUM_TOKENS
+	 * map with the key. If a pattern is discovered, it is stored in a separate mapping.
 	 * 
 	 * @param builder the XOM Builder to read the file with
 	 * @param enumerationKey the key for the enumeration, which doubles as the filename.
@@ -188,15 +202,22 @@ public class ControlledVocabulary {
 		try {
 			stream = getClass().getResourceAsStream(CVE_LOCATION + enumerationKey);
 			Document doc = builder.build(stream);
-			Set<String> values = new TreeSet<String>();
+			Set<String> tokens = new TreeSet<String>();
+			Set<String> patterns = new HashSet<String>();
 			Element enumerationElement = doc.getRootElement().getFirstChildElement(ENUMERATION_NAME, CVE_NAMESPACE);
 			Elements terms = enumerationElement.getChildElements(TERM_NAME, CVE_NAMESPACE);
 			for (int i = 0; i < terms.size(); i++) {
 				Element value = terms.get(i).getFirstChildElement(VALUE_NAME, CVE_NAMESPACE);
-				if (value != null)
-					values.add(value.getValue());
+				boolean isPattern = Boolean.valueOf(value.getAttributeValue(REG_EXP_NAME)).booleanValue();
+				if (value != null) {
+					if (isPattern)
+						patterns.add(value.getValue());
+					else
+						tokens.add(value.getValue());
+				}
 			}
-			ENUMERATIONS.put(enumerationKey, values);
+			ENUM_TOKENS.put(enumerationKey, tokens);
+			ENUM_PATTERNS.put(enumerationKey, patterns);
 		}
 		catch (ParsingException e) {
 			throw new IOException(e);
@@ -215,20 +236,38 @@ public class ControlledVocabulary {
 	 * @throws InvalidDDMSException if the value is not.
 	 */
 	public static void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
-		if (!enumerationContains(enumerationKey, value))
+		if (!enumContains(enumerationKey, value))
 			throw new InvalidDDMSException(value + " is not a valid enumeration token for this attribute, as specified in " + enumerationKey + ".");
 	}
 	
 	/**
-	 * Checks if a value exists in the controlled vocabulary identified by the key
+	 * Checks if a value exists in the controlled vocabulary identified by the key. If the value does not match the tokens, but the CVE also
+	 * contains patterns, the regular expression pattern is checked next. If neither tokens or patterns returns a match, return false.
 	 * 
 	 * @param enumerationKey the key of the enumeration
 	 * @param value the test value
 	 * @return true if the value exists in the enumeration, false otherwise
+	 * @throws IllegalArgumentException on an invalid key
 	 */
-	public static boolean enumerationContains(String enumerationKey, String value) {
+	public static boolean enumContains(String enumerationKey, String value) {
 		Util.requireValue("key", enumerationKey);
-		return (ENUMERATIONS.get(enumerationKey).contains(value));
+		Set<String> vocabulary = ENUM_TOKENS.get(enumerationKey);
+		if (vocabulary == null) {
+			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: " + enumerationKey);
+		}
+		boolean isValidToken = vocabulary.contains(value);
+		if (!isValidToken) {
+			Set<String> patterns = ENUM_PATTERNS.get(enumerationKey);
+			for (String patternString : patterns) {
+	            Pattern pattern = Pattern.compile(patternString);
+                Matcher matcher = pattern.matcher(value);
+                if (matcher.matches()) {
+					isValidToken = true;
+					break;
+				}
+			}
+		}
+		return (isValidToken);			
 	}
 	
 	/**
@@ -243,11 +282,11 @@ public class ControlledVocabulary {
 	 * @param classification the classification to test
 	 * @return an index, or -1 if the marking does not belong to any known systems.
 	 */
-	public static int getMarkingIndex(String classification) {
+	public static int getClassificationIndex(String classification) {
 		if (!Util.isEmpty(classification)) {
-			if (enumerationContains(CVE_US_CLASSIFICATIONS, classification))
+			if (enumContains(CVE_US_CLASSIFICATIONS, classification))
 				return (ORDERED_US_CLASSIFICATION_TYPES.indexOf(classification));
-			if (!needsManualReview(classification))
+			if (!classificationNeedsReview(classification))
 				return (ORDERED_NATO_CLASSIFICATION_TYPES.indexOf(classification));
 		}
 		return (-1);
@@ -263,7 +302,7 @@ public class ControlledVocabulary {
 	 * @param classification the classification to test
 	 * @return true if it is, false otherwise
 	 */
-	public static boolean needsManualReview(String classification) {
+	public static boolean classificationNeedsReview(String classification) {
 		Util.requireValue("classification", classification);
 		return ("CTS-B".equals(classification) || "CTS-BALK".equals(classification) || "R".equals(classification));
 	}

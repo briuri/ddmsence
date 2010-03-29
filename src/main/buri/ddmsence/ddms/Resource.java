@@ -44,7 +44,7 @@ import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
 import buri.ddmsence.ddms.resource.Unknown;
-import buri.ddmsence.ddms.security.ControlledVocabulary;
+import buri.ddmsence.ddms.security.ISMVocabulary;
 import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.ddms.summary.Description;
@@ -526,17 +526,17 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireValue("parent classification", parentAttributes.getClassification());
 		
 		String parentClass = parentAttributes.getClassification();
-		boolean isParentUS = ControlledVocabulary.enumerationContains(ControlledVocabulary.CVE_US_CLASSIFICATIONS, parentClass);
-		int parentIndex = ControlledVocabulary.getMarkingIndex(parentClass);
+		boolean isParentUS = ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, parentClass);
+		int parentIndex = ISMVocabulary.getClassificationIndex(parentClass);
 		
-		boolean needsManualReview = ControlledVocabulary.needsManualReview(parentClass);
+		boolean needsManualReview = ISMVocabulary.classificationNeedsReview(parentClass);
 		for (SecurityAttributes childAttr : childAttributes) {
 			String childClass = childAttr.getClassification();
 			if (Util.isEmpty(childClass))
 				continue;
-			boolean isChildUS = ControlledVocabulary.enumerationContains(ControlledVocabulary.CVE_US_CLASSIFICATIONS, childClass);
-			int childIndex = ControlledVocabulary.getMarkingIndex(childClass);
-			needsManualReview = needsManualReview || ControlledVocabulary.needsManualReview(childClass);
+			boolean isChildUS = ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, childClass);
+			int childIndex = ISMVocabulary.getClassificationIndex(childClass);
+			needsManualReview = needsManualReview || ISMVocabulary.classificationNeedsReview(childClass);
 			if (isParentUS != isChildUS) {
 				throw new InvalidDDMSException("The security classification of a nested component is using a different marking system than the ddms:Resource itself.");
 			}
