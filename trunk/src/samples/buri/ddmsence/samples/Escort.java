@@ -28,8 +28,10 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.IProducer;
@@ -52,17 +54,26 @@ import buri.ddmsence.ddms.resource.Type;
 import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.ddms.summary.BoundingBox;
+import buri.ddmsence.ddms.summary.BoundingGeometry;
 import buri.ddmsence.ddms.summary.Category;
+import buri.ddmsence.ddms.summary.CountryCode;
 import buri.ddmsence.ddms.summary.Description;
 import buri.ddmsence.ddms.summary.FacilityIdentifier;
 import buri.ddmsence.ddms.summary.GeographicIdentifier;
 import buri.ddmsence.ddms.summary.GeospatialCoverage;
 import buri.ddmsence.ddms.summary.Keyword;
 import buri.ddmsence.ddms.summary.Link;
+import buri.ddmsence.ddms.summary.Point;
+import buri.ddmsence.ddms.summary.Polygon;
+import buri.ddmsence.ddms.summary.Position;
+import buri.ddmsence.ddms.summary.PostalAddress;
 import buri.ddmsence.ddms.summary.RelatedResource;
 import buri.ddmsence.ddms.summary.RelatedResources;
+import buri.ddmsence.ddms.summary.SRSAttributes;
 import buri.ddmsence.ddms.summary.SubjectCoverage;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
+import buri.ddmsence.ddms.summary.VerticalExtent;
 import buri.ddmsence.ddms.summary.VirtualCoverage;
 import buri.ddmsence.samples.util.IComponentBuilder;
 import buri.ddmsence.util.PropertyReader;
@@ -77,7 +88,7 @@ import buri.ddmsence.util.PropertyReader;
  * </p>
  * 
  * <p>Currently, the wizard does not ask for the "Additional" ICISM security attributes, such as SCI controls or 
- * SAR Identifiers.</p>
+ * SAR Identifiers, or SRS Attributes on individual gml:pos elements.</p>
  * 
  * <p>For additional details about this application, please see the tutorial on the Documentation page of the DDMSence
  * website.
@@ -95,6 +106,15 @@ public class Escort {
 	
 	private static final Map<Class, IComponentBuilder> BUILDERS = new HashMap<Class, IComponentBuilder>();
 
+	private static final Set<String> GEOSPATIAL_TYPES = new HashSet<String>();
+	static {
+		GEOSPATIAL_TYPES.add("geographicIdentifier");
+		GEOSPATIAL_TYPES.add("boundingBox");
+		GEOSPATIAL_TYPES.add("boundingGeometry");
+		GEOSPATIAL_TYPES.add("postalAddress");
+		GEOSPATIAL_TYPES.add("verticalExtent");
+	}
+	
 	/**
 	 * Entry point
 	 * 
@@ -117,7 +137,7 @@ public class Escort {
 	public Escort() {
 		BUILDERS.put(Identifier.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				String qualifier = readString("the qualifier [URI]");
+				String qualifier = readString("the qualifier [testQualifier]");
 				String value = readString("the value [testValue]");
 				return (new Identifier(qualifier, value));
 			}		
@@ -126,30 +146,30 @@ public class Escort {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String text = readString("the title text [testTitle]");
 				String classification = readString("the title classification [U]");
-				String ownerProducers = readString("the title's ownerProducers as a space-delimited string [USA AUS]");
+				String ownerProducers = readString("the title's ownerProducers as a space-delimited string [USA]");
 				return (new Title(text, buildSecurityAttributes(classification, ownerProducers)));
 			}		
 		});
 		BUILDERS.put(Subtitle.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				String text = readString("the subtitle text [testTitle]");
+				String text = readString("the subtitle text [testSubtitle]");
 				String classification = readString("the subtitle classification [U]");
-				String ownerProducers = readString("the subtitle's ownerProducers as a space-delimited string [USA AUS]");
+				String ownerProducers = readString("the subtitle's ownerProducers as a space-delimited string [USA]");
 				return (new Subtitle(text, buildSecurityAttributes(classification, ownerProducers)));
 			}		
 		});
 		BUILDERS.put(Description.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				String text = readString("the description text [testTitle]");
+				String text = readString("the description text [testDescription]");
 				String classification = readString("the description classification [U]");
-				String ownerProducers = readString("the description's ownerProducers as a space-delimited string [USA AUS]");
+				String ownerProducers = readString("the description's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				return (new Description(text, attr));
 			}		
 		});
 		BUILDERS.put(Language.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				String qualifier = readString("the qualifier [URI]");
+				String qualifier = readString("the qualifier [testQualifier]");
 				String value = readString("the value [testValue]");
 				return (new Language(qualifier, value));
 			}		
@@ -173,19 +193,19 @@ public class Escort {
 		});
 		BUILDERS.put(Source.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				String qualifier = readString("the qualifier [URI]");
+				String qualifier = readString("the qualifier [testQualifier]");
 				String value = readString("the value [testValue]");
-				String schemaQualifier = readString("the schema qualifier [WSDL]");
+				String schemaQualifier = readString("the schema qualifier [testQualifier]");
 				String schemHref = readString("the schema href [testValue]");
 				String classification = readString("the source classification [U]");
-				String ownerProducers = readString("the source's ownerProducers as a space-delimited string [USA AUS]");
+				String ownerProducers = readString("the source's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				return (new Source(qualifier, value, schemaQualifier, schemHref, attr));
 			}		
 		});
 		BUILDERS.put(Type.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				String qualifier = readString("the qualifier [URI]");
+				String qualifier = readString("the qualifier [testQualifier]");
 				String value = readString("the value [testValue]");
 				return (new Type(qualifier, value));
 			}		
@@ -193,8 +213,8 @@ public class Escort {
 		BUILDERS.put(IProducer.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				int numNames = readInt("the number of names this producer has [1]");
-				int numPhones = readInt("the number of phone numbers this producer has [1]");
-				int numEmails = readInt("the number of email addresses this producer has [1]");
+				int numPhones = readInt("the number of phone numbers this producer has [0]");
+				int numEmails = readInt("the number of email addresses this producer has [0]");
 							
 				String surname = null;
 				String userID = null;
@@ -204,23 +224,23 @@ public class Escort {
 				
 				List<String> names = new ArrayList<String>();
 				for (int i = 0; i < numNames; i++) {
-					names.add(readString("entity name #" + (i + 1) + " [test" + (i + 1) + "]"));
+					names.add(readString("entity name #" + (i + 1) + " [testName" + (i + 1) + "]"));
 				}
 				List<String> phones = new ArrayList<String>();
 				for (int i = 0; i < numPhones; i++) {
-					phones.add(readString("entity phone number #" + (i + 1) + " [test" + (i + 1) + "]"));
+					phones.add(readString("entity phone number #" + (i + 1) + " [testPhone" + (i + 1) + "]"));
 				}
 				List<String> emails = new ArrayList<String>();
 				for (int i = 0; i < numEmails; i++) {
-					emails.add(readString("entity email #" + (i + 1) + " [test" + (i + 1) + "]"));
+					emails.add(readString("entity email #" + (i + 1) + " [testEmail" + (i + 1) + "]"));
 				}
 				String classification = readString("the producer classification [U]");
-				String ownerProducers = readString("the producer's ownerProducers as a space-delimited string [USA AUS]");
+				String ownerProducers = readString("the producer's ownerProducers as a space-delimited string [USA]");
 
 				if (Person.NAME.equals(entityType)) {
-					surname = readString("the Person surname [Smith]");
-					userID = readString("the Person userID [123]");
-					affiliation = readString("the Person affiliation [DISA]");
+					surname = readString("the Person surname [testSurname]");
+					userID = readString("the Person userID [testID]");
+					affiliation = readString("the Person affiliation [testOrg]");
 				}
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				if (Person.NAME.equals(entityType))
@@ -235,25 +255,25 @@ public class Escort {
 		});		
 		BUILDERS.put(Format.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				String mimeType = readString("the mimeType [text/html]");
-				String qualifier = readString("the extent qualifier [URI]");
+				String mimeType = readString("the mimeType [testType]");
+				String qualifier = readString("the extent qualifier [testQualifier]");
 				String value = readString("the extent value [testValue]");
-				String medium = readString("the mimeType [digital]");
+				String medium = readString("the medium [testValue]");
 				MediaExtent extent = new MediaExtent(qualifier, value);
 				return (new Format(mimeType, extent, medium));
 			}		
 		});
 		BUILDERS.put(Keyword.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				String keyword = readString("the keyword value");
+				String keyword = readString("the keyword value [testValue]");
 				return (new Keyword(keyword));
 			}
 		});
 		BUILDERS.put(Category.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				String qualifier = readString("the qualifier");
-				String code = readString("the code");
-				String label = readString("the label");
+				String qualifier = readString("the qualifier [testQualifier]");
+				String code = readString("the code [testCode]");
+				String label = readString("the label [testLabel]");
 				return (new Category(qualifier, code, label));
 			}
 		});
@@ -276,18 +296,18 @@ public class Escort {
 					categories.add((Category) inputLoop(Category.class));
 				}
 				String classification = readString("the subject classification [U]");
-				String ownerProducers = readString("the subject's ownerProducers as a space-delimited string [USA AUS]");
+				String ownerProducers = readString("the subject's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				return (new SubjectCoverage(keywords, categories, attr));
 			}		
 		});
 		BUILDERS.put(TemporalCoverage.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				String timePeriodName = readString("the time period name [the 50s]");
+				String timePeriodName = readString("the time period name [testName]");
 				String start = readString("the start date [1950]");
 				String end = readString("the end date [1959]");
 				String classification = readString("the temporalCoverage classification [U]");
-				String ownerProducers = readString("the temporalCoverage's ownerProducers as a space-delimited string [USA AUS]");
+				String ownerProducers = readString("the temporalCoverage's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);			
 				return (new TemporalCoverage(timePeriodName, start, end, attr));
 			}		
@@ -297,29 +317,195 @@ public class Escort {
 				String address = readString("the address [123.456.789.0]");
 				String protocol = readString("the protocol [IP]");
 				String classification = readString("the virtualCoverage classification [U]");
-				String ownerProducers = readString("the virtualCoverage's ownerProducers as a space-delimited string [USA AUS]");
+				String ownerProducers = readString("the virtualCoverage's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				return (new VirtualCoverage(address, protocol, attr));
 			}		
 		});
-		BUILDERS.put(GeospatialCoverage.class, new IComponentBuilder() {
+		BUILDERS.put(FacilityIdentifier.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				println("Sample Limitation: This wizard only supports geospatialCoverage defined with a facilityIdentifier.");
 				String beNumber = readString("the beNumber [1234DD56789]");
 				String osuffix = readString("the osuffix [DD123]");
+				return (new FacilityIdentifier(beNumber, osuffix));
+			}		
+		});
+		BUILDERS.put(GeographicIdentifier.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				int numNames = readInt("the number of names to include [1]");
+				int numRegions = readInt("the number of regions to include [0]");
+				List<String> names = new ArrayList<String>();
+				for (int i = 0; i < numNames; i++) {
+					names.add(readString("name #" + (i + 1) + " [testName" + (i + 1) + "]"));
+				}
+				List<String> regions = new ArrayList<String>();
+				for (int i = 0; i < numRegions; i++) {
+					regions.add(readString("region #" + (i + 1) + " [testRegion" + (i + 1) + "]"));
+				}	
+				CountryCode code = null;
+				if (confirm("Include a countryCode?")) {
+					String qualifier = readString("the qualifier [testQualifier]");
+					String value = readString("the value [USA]");
+					code = new CountryCode("geographicIdentifier", qualifier, value);
+				}
+				return (new GeographicIdentifier(names, regions, code));
+			}		
+		});
+		BUILDERS.put(BoundingBox.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String west = readString("the westbound longitude [0]");
+				String east = readString("the eastbound longitude [15]");
+				String south = readString("the southbound latitude [0]");
+				String north = readString("the northbound latitude [15]");
+				return (new BoundingBox(Double.valueOf(west).doubleValue(), Double.valueOf(east).doubleValue(), Double
+						.valueOf(south).doubleValue(), Double.valueOf(north).doubleValue()));
+			}
+		});
+		BUILDERS.put(Position.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String coordsString = readString("the coordinates as a space-delimited string [5.0 6.0 7.0]");
+				List<String> strings = Arrays.asList(coordsString.split(" "));
+				List<Double> coords = new ArrayList<Double>();
+				for (String string : strings) {
+					coords.add(Double.valueOf(string));
+				}
+				// Skipping SRS Attributes
+				return (new Position(coords, null));
+			}		
+		});
+		BUILDERS.put(Polygon.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				int numPositions = readInt("the number of positions in this polygon [4]");
+				if (numPositions < 4) {
+					println("At least 4 positions are required for a Polygon. Defaulting to 4.");
+					numPositions = 4;
+				}
+				List<Position> positions = new ArrayList<Position>();
+				for (int i = 0; i < numPositions - 1; i++) {
+					println("** Position #" + (i + 1));
+					positions.add((Position) inputLoop(Position.class));
+				}
+				println("The final position will be the first coordinate of the Polygon (to close the shape).");
+				positions.add(positions.get(0));
+				
+				String srsName = readString("the Polygon's srsName [testName]");
+				int srsDimension = readInt("the Polygon's srsDimension [1]");
+				String axisLabels = readString("the Polygon's Axis Labels, as a space-delimited string [x y]");
+				String uomLabels = readString("the Polygon's UOM Labels, as a space-delimited string [Meter Meter]");
+				String id = readString("the Polygon's gml:id [testId]");
+				
+				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), Arrays.asList(axisLabels.split(" ")), Arrays.asList(uomLabels.split(" ")));
+				return (new Polygon(positions, attr, id));
+			}		
+		});
+		BUILDERS.put(Point.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				Position position = (Position) inputLoop(Position.class);
+				String srsName = readString("the Point's srsName [testName]");
+				int srsDimension = readInt("the Point's srsDimension [1]");
+				String axisLabels = readString("the Point's Axis Labels, as a space-delimited string [x y]");
+				String uomLabels = readString("the Point's UOM Labels, as a space-delimited string [Meter Meter]");
+				String id = readString("the Point's gml:id [testId]");
+				
+				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), Arrays.asList(axisLabels.split(" ")), Arrays.asList(uomLabels.split(" ")));
+				return (new Point(position, attr, id));
+			}		
+		});
+		BUILDERS.put(BoundingGeometry.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				int numPolygons = readInt("the number of polygons to include [0]");
+				int numPoints = readInt("the number of points to include [1]");
+				if (numPolygons + numPoints == 0) {
+					println("At least 1 polygon or point is required. Defaulting to 1 point.");
+					numPoints = 1;
+				}
+				List<Polygon> polygons = new ArrayList<Polygon>();
+				for (int i = 0; i < numPolygons; i++) {
+					println("* Polygon #" + (i + 1));
+					polygons.add((Polygon) inputLoop(Polygon.class));
+				}
+				List<Point> points = new ArrayList<Point>();
+				for (int i = 0; i < numPoints; i++) {
+					println("* Point #" + (i + 1));
+					points.add((Point) inputLoop(Point.class));
+				}
+				return (new BoundingGeometry(polygons, points));
+			}		
+		});
+		BUILDERS.put(PostalAddress.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				int numStreets = readInt("the number of street address lines to include [1]");
+				if (numStreets > 6) {
+					println("A maximum of 6 street lines can be used. Defaulting to 6.");
+					numStreets = 6;
+				}
+				List<String> streets = new ArrayList<String>();
+				for (int i = 0; i < numStreets; i++) {
+					streets.add(readString("street #" + (i + 1) + " [testStreet" + (i + 1) + "]"));
+				}				
+				String city = readString("the city [testCity]");
+				boolean hasState = confirm("Does this postal address have a state (instead of a province)?");
+				String stateOrProvince = readString("the " + (hasState ? "state [testState]" : "province [testProvince]"));
+				String postalCode = readString("the postal code [testCode]");
+				CountryCode code = null;
+				if (confirm("Include a countryCode?")) {
+					String qualifier = readString("the qualifier [testQualifier]");
+					String value = readString("the value [USA]");
+					code = new CountryCode("postalAddress", qualifier, value);
+				}
+				return (new PostalAddress(streets, city, stateOrProvince, postalCode, code, hasState));
+			}		
+		});
+		BUILDERS.put(VerticalExtent.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String min = readString("the minimum vertical extent [0]");
+				String max = readString("the maximum vertical extent [15]");
+				String uom = readString("the unit of measure [Meter]");
+				String datum = readString("the datum [MSL]");
+				return (new VerticalExtent(Double.valueOf(min).doubleValue(), Double.valueOf(max).doubleValue(), uom, datum)); 
+			}		
+		});
+		BUILDERS.put(GeospatialCoverage.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				GeographicIdentifier geoId = null;
+				BoundingBox box = null;
+				BoundingGeometry geo = null;
+				PostalAddress address = null;
+				VerticalExtent extent = null;
+				if (confirm("Should the geospatialCoverage be defined in terms of a facilityIdentifier?")) {
+					geoId = new GeographicIdentifier((FacilityIdentifier) inputLoop(FacilityIdentifier.class));					
+				}
+				else {
+					String type = null;
+					while (!GEOSPATIAL_TYPES.contains(type)) {
+						type = readString("the coverage element type [geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent]");
+					}
+					if ("geographicIdentifier".equals(type)) {
+						geoId = (GeographicIdentifier) inputLoop(GeographicIdentifier.class);
+					}
+					else if ("boundingBox".equals(type)) {
+						box = (BoundingBox) inputLoop(BoundingBox.class);
+					}
+					else if ("boundingGeometry".equals(type)) {
+						geo = (BoundingGeometry) inputLoop(BoundingGeometry.class);
+					}
+					else if ("postalAddress".equals(type)) {
+						address = (PostalAddress) inputLoop(PostalAddress.class);
+					}
+					else if ("verticalExtent".equals(type)) {
+						extent = (VerticalExtent) inputLoop(VerticalExtent.class);
+					}
+				}
 				String classification = readString("the geospatialCoverage classification [U]");
-				String ownerProducers = readString("the geospatialCoverage's ownerProducers as a space-delimited string [USA AUS]");	
-				FacilityIdentifier facId = new FacilityIdentifier(beNumber, osuffix);
-				GeographicIdentifier geoId = new GeographicIdentifier(facId);
+				String ownerProducers = readString("the geospatialCoverage's ownerProducers as a space-delimited string [USA]");	
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new GeospatialCoverage(geoId, null, null, null, null, attr));
+				return (new GeospatialCoverage(geoId, box, geo, address, extent, attr));
 			}		
 		});
 		BUILDERS.put(Link.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				String href = readString("the link href [http://ddmsence.urizone.net/]");
-				String role = readString("the link role [testValue]");
-				String title = readString("the link title [testValue]");
+				String href = readString("the link href [testHref]");
+				String role = readString("the link role [testRole]");
+				String title = readString("the link title [testTitle]");
 				String label = readString("the link label [testValue]");
 				return (new Link(href, role, title, label));
 			}		
@@ -336,7 +522,7 @@ public class Escort {
 					println("** Link #" + (i + 1));
 					links.add((Link) inputLoop(Link.class));
 				}
-				String qualifier = readString("the RelatedResource qualifier [URI]");
+				String qualifier = readString("the RelatedResource qualifier [testQualifier]");
 				String value = readString("the RelatedResource value [testValue]");
 				return (new RelatedResource(links, qualifier, value));
 			}		
@@ -353,10 +539,10 @@ public class Escort {
 					println("** RelatedResource #" + (i + 1));
 					resources.add((RelatedResource) inputLoop(RelatedResource.class));
 				}
-				String relationship = readString("the relatedResources relationship [URI]");
+				String relationship = readString("the relatedResources relationship [testQualifier]");
 				String direction = readString("the relatedResources direction [outbound]");
 				String classification = readString("the relatedResources classification [U]");
-				String ownerProducers = readString("the relatedResources ownerProducers as a space-delimited string [USA AUS]");	
+				String ownerProducers = readString("the relatedResources ownerProducers as a space-delimited string [USA]");	
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				return (new RelatedResources(resources, relationship, direction, attr));
 			}		
@@ -364,7 +550,7 @@ public class Escort {
 		BUILDERS.put(Security.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String classification = readString("the classification [U]");
-				String ownerProducers = readString("the ownerProducers as a space-delimited string [USA AUS]");	
+				String ownerProducers = readString("the ownerProducers as a space-delimited string [USA]");	
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				return (new Security(attr));
 			}		
@@ -375,7 +561,7 @@ public class Escort {
 				String createDate = readString("Resource createDate [2010-03-24]");
 				int desVersion = readInt("the Resource DESVersion [2]");
 				String classification = readString("the Resource classification [U]");
-				String ownerProducers = readString("the Resource's ownerProducers as a space-delimited string [USA AUS]");
+				String ownerProducers = readString("the Resource's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				return (new Resource(getTopLevelComponents(), resourceElement, createDate, new Integer(desVersion), attr));
 			}		

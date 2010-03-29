@@ -15,8 +15,9 @@ shows an example of how the Java object model can be built with basic data types
 <p>I have implemented this wizard as a series of textual prompts, to avoid the overhead of having a full-fledged MVC Swing application (or implementing it as a web application and
 requiring a server to run). It is not as flashy, but this should make it easier to focus on the important sections of the source code.</p>
 
-<p>The only limitation on this application is that it will not ask you for the "Additional" ICISM security attributes, 
-such as "SCIcontrols" or "SARIdentifier". The is no good reason for this limitation, other than to make the wizard a little shorter.</p>
+<p>The only limitations on this application are that it will not ask you for the "Additional" ICISM security attributes, 
+such as "SCIcontrols" or "SARIdentifier", or SRS Attributes on individual gml:pos elements. There is no good reason for these limitation, other than to make the 
+wizard a little shorter.</p>
 
 <h3>Getting Started</h3>
 
@@ -97,52 +98,53 @@ is responsible for one top-level component. For example, here is the definition 
 <p class="figure">Figure 5. An anonymous builder that can build Identifiers from user input</p>
 
 <p>As soon as <code>inputLoop()</code> receives a valid component from a Builder, it returns that component to the main wizard method, <code>run()</code>. The main
-wizard saves the component in a list and moves on to the next component type. You can examine the constructor to see how each of the components is built. You can also
-see similar code by loading an XML file into the <u>Essentials</u> application and viewing its generated Java code.</p>
+wizard saves the component in a list and moves on to the next component type. You can examine the constructor to see the code needed to build each type of
+component. You can also see similar code by loading an XML file into the <u>Essentials</u> application and viewing its generated Java code.</p>
 
 <p>Let's use the wizard to create a valid Resource. You should be able to follow the prompts to the end, but if not, the output below is one possible
 road to a valid Resource.</p>
 
 <div class="example"><pre>=== ddms:identifier (at least 1 required) ===
-Please enter the qualifier [URI]: URI
+Please enter the qualifier [testQualifier]: testQualifier
 Please enter the value [testValue]: testValue
 
 === ddms:title (at least 1 required) ===
 Please enter the title text [testTitle]: testTitle
 Please enter the title classification [U]: U
-Please enter the title's ownerProducers as a space-delimited string [USA AUS]: USA
+Please enter the title's ownerProducers as a space-delimited string [USA]: USA
 
 === Producers: creator, publisher, contributor, and pointOfContact (at least 1 required) ===
-Sample Limitation: This wizard only allows one name, phone number, and email per producer.
 Please enter the number of names this producer has [1]: 1
-Please enter the number of phone numbers this producer has [1]: 1
-Please enter the number of email addresses this producer has [1]: 1
+Please enter the number of phone numbers this producer has [0]: 1
+Please enter the number of email addresses this producer has [0]: 1
 Please enter the producer type [creator]: creator
 Please enter the entity type [Organization]: Organization
-Please enter entity name #1 [test1]: DISA
-Please enter entity phone number #1 [test1]: 703-882-1000
-Please enter entity email #1 [test1]: disa@disa.disa
+Please enter entity name #1 [testName1]: DISA
+Please enter entity phone number #1 [testPhone1]: 703-885-1000
+Please enter entity email #1 [testEmail1]: disa@disa.disa
 Please enter the producer classification [U]: U
-Please enter the producer's ownerProducers as a space-delimited string [USA AUS]: USA
+Please enter the producer's ownerProducers as a space-delimited string [USA]: USA
 
 === ddms:subjectCoverage (exactly 1 required) ===
-Please enter the number of keywords to include [1]: 1
+Please enter the number of keywords to include [1]: 2
 Please enter the number of categories to include [0]: 0
 * Keyword #1
-Please enter the keyword value: DDMS
+Please enter the keyword value [testValue]: ddms
+* Keyword #2
+Please enter the keyword value [testValue]: xml
 Please enter the subject classification [U]: U
-Please enter the subject's ownerProducers as a space-delimited string [USA AUS]: USA
+Please enter the subject's ownerProducers as a space-delimited string [USA]: USA
 
 === ddms:security (exactly 1 required) ===
 Please enter the classification [U]: U
-Please enter the ownerProducers as a space-delimited string [USA AUS]: USA
+Please enter the ownerProducers as a space-delimited string [USA]: USA
 
 === ddms:Resource Attributes (all required) ===
-Does this tag set the classification for the resource as a whole? [Y/N]: y
+Does this tag set the classification for the resource as a whole? [Y/N]: Y
 Please enter Resource createDate [2010-03-24]: 2010-03-24
 Please enter the Resource DESVersion [2]: 2
 Please enter the Resource classification [U]: U
-Please enter the Resource's ownerProducers as a space-delimited string [USA AUS]: USA
+Please enter the Resource's ownerProducers as a space-delimited string [USA]: USA
 The DDMS Resource is valid!
 No warnings were recorded.</pre></div>
 <p class="figure">Figure 6. Successful run of the Escort Wizard</p>
