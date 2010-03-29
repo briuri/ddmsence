@@ -11,17 +11,28 @@
 
 <h2>Table of Contents</h2>
 <ul>
+	<li><a href="#feedback">Feedback</a></li>
 	<li><a href="#started">Getting Started</a></li>
 	<li><a href="#samples">Sample Applications</a></li>
 	<li><a href="#javadoc">JavaDoc API Documentation</a></li>
 	<li><a href="#design">Design Decisions</a></li>
 	<li><a href="#contributors">Contributors</a></li>
-	<li><a href="#feedback">Feedback</a></li>
 </ul>
+
+<a name="feedback"></a><h3>Feedback</h3>
+
+<p>I would love to hear about your experiences working with DDMSence, or suggestions for future functionality. 
+You can officially report a bug or enhancement suggestion on the <a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a> page,
+or use the <a href="http://groups.google.com/group/ddmsence">Discussion</a> area as a less formal method of discussion. Finally, you can also
+contact me directly by email at
+	<script type="text/javascript">
+		document.write("<a href=\"mailto:" + eMail + "\">" + eMail + "</a>.");
+	</script>
+</p>
 
 <a name="started"></a><h3>Getting Started</h3>
 
-<p>Begin by visiting the <a href="downloads.jsp">Downloads</a> page and downloading a copy of DDMSence. The remainder of this section will assume that you are working
+<p>Begin by visiting the <a href="downloads.jsp">Downloads</a> page and downloading a copy of DDMSence. The tutorials below will assume that you are working
 with the "bin"-flavored download, which comes with the DDMSence JAR files pre-compiled, and contains source code for the sample applications.</p>
 
 <p>Unzip the downloaded archive in a directory of your choice. You can then run the samples from the command line:</p>
@@ -68,11 +79,11 @@ shows an example of how the Java object model can be built with simple data type
 	<li><a href="tutorials-02.jsp">Tutorial #2: Escort</a></li>
 </ul>
 
+<img src="../images/escape-thumb.png" width="300" height="198" title="Escape Screenshot" align="right" />
+
 <h4>Escape</h4>
 
-<p>
-<img src="../images/escape-thumb.png" width="300" height="198" title="Escape Screenshot" align="right" />
-<u>Escape</u> is a tool that traverses multiple DDMS Resource files and then exposes various statistics about them through the 
+<p><u>Escape</u> is a tool that traverses multiple DDMS Resource files and then exposes various statistics about them through the 
 <a href="http://code.google.com/apis/visualization/documentation/gallery.html" target="_new">Google Visualization API</a>. Charts in this sample
 application are limited to non-interactive visualizations, but provide the foundation for the more complex interactive cases: for example, it would
 be possible to plot Temporal Coverage on an Annotated Timeline, or Geospatial Coverage on Google Maps. While the first two sample applications were 
@@ -174,16 +185,6 @@ or correct deficiencies!</p>
 
 <p>An <a href="http://code.google.com/feeds/p/ddmsence/svnchanges/basic">Atom feed</a> of SVN commits is also available -- there are no email notifications at this time.</p>
 
-
-<a name="feedback"></a><h3>Feedback</h3>
-
-<p>I would love to hear about your experiences working with DDMSence, or suggestions for future functionality. You can contact me directly by email at
-	<script type="text/javascript">
-		document.write("<a href=\"mailto:" + eMail + "\">" + eMail + "</a>");
-	</script>	
-	or use the <a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a> page to officially report a bug or enhancement suggestion. Finally, you can also
-	use the <a href="http://groups.google.com/group/ddmsence">Discussion</a> area as an open forum. I will seriously consider any suggestions you might have!</p>
-</p>
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>
 </body>
