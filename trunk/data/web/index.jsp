@@ -85,6 +85,10 @@ and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is
 
 <h1>Current Progress</h1>
 
+<p><u>03/29/2010</u>: DDMSence v0.9.d includes further improvements to the validation system, controlled vocabulary validation for ICISM security
+attributes, and minor improvements to the sample applications. This version is believed to be stable, and is intended to be the release candidate
+for v1.0.0.</p>
+
 <p><u>03/25/2010</u>: DDMSence v0.9.c adds warning support to the validation system. I chose to release this build sooner than expected, because
 it removes one method from a major interface. This version is believed to be stable, and is intended to be a limited audience 
 release for early feedback.</p>
@@ -94,9 +98,8 @@ in addition to three sample applications.</p>
 
 <h1>On the Horizon</h1>
 
-<p>I have finished work on the official 1.0.0 release, which includes further improvements to the validation system, additional support
-for ICISM security attributes, and minor improvements to the sample applications. I intend to release it in early April, after some additional polish and
-testing.</p>
+<p>I am currently polishing and testing the 0.9.d release. Unless there are major flaws found, I would like to release v1.0.0. in early April. There will
+be no enhancements added between 0.9.d and 1.0.0.</p>
 
 <p>Here are some areas which I would like to improve after 1.0:</p>
 <ul>

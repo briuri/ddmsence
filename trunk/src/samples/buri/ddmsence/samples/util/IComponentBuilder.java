@@ -33,7 +33,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
  * </p>
  * 
  * @author Brian Uri!
- * @since 1.0.0
+ * @since 0.9.d
  */
 public interface IComponentBuilder {
 

@@ -24,6 +24,18 @@ I have include the <code>.project</code> file if you wish to import the project 
 
 <h3>Latest Release</h3>
 
+<p>Version <b>0.9.d</b> (3/25/2010) includes further improvements to the validation system, controlled vocabulary validation for ICISM security
+attributes, and minor improvements to the sample applications. This version is believed to be stable, and is intended to be the release candidate
+for v1.0.0.</p>
+
+<ul>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.d.zip"><code>ddmsence-bin-0.9.d.zip</code></a></b> (1.9 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.d.zip"><code>ddmsence-src-0.9.d.zip</code></a></b> (2.3 MB)</li>
+<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=Milestone%3Dv1.0.0">Issues Resolved in v0.9.d</a> (tagged as v1.0.0 in Issue Tracker)</li>
+</ul>
+
+<h3>Older Releases</h3>
+
 <p>Version <b>0.9.c</b> (3/25/2010) improves the validation system to support warnings in addition to errors, as outlined in <a href="http://code.google.com/p/ddmsence/issues/detail?id=7">Issue #7</a>.
 One method of the <code>IDDMSComponent</code> interface was removed, which breaks compatibility with 0.9.b. This version is believed to be stable, and is intended to be a limited audience release
 for early feedback.</p>
@@ -33,8 +45,6 @@ for early feedback.</p>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.c.zip"><code>ddmsence-src-0.9.c.zip</code></a></b> (2.5 MB)</li>
 <li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=Milestone%3Dv0.9.c">Issues Resolved in v0.9.c</a></li>
 </ul>
-
-<h3>Older Releases</h3>
 
 <p>Version <b>0.9.b</b> (3/24/2010) is the initial beta release. It provides a full implementation of the core layers of DDMS 3.0, in addition to a few
 sample applications. This version is believed to be stable, and is intended to be a limited audience release for early feedback.</p>
@@ -54,6 +64,15 @@ sample applications. This version is believed to be stable, and is intended to b
 	<li>If the patch version is a letter, such as "<b>b</b>", the release may be unstable. Major/minor numbers will increment after an unstable release (so the beta/pre-release version of 1.2 is probably 1.1.b, and NOT 1.2.b).</li>
 </ul>
 
+<!--
+	1) Change version number in build.xml
+	2) Update CHANGES, web pages
+	3) Run "dist" target
+	4) Upload new JavaDoc
+	5) Upload new download archives
+	6) Upload new web pages
+	7) Check-in and Tag
+-->
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>
 </body>

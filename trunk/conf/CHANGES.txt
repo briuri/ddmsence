@@ -8,6 +8,11 @@ Copyright 2010 by Brian Uri!
 ===========================================================================
 Release History
 ===========================================================================
+v 0.9.d (3/29/2010):
+Includes further improvements to the validation system, controlled vocabulary 
+validation for ICISM security attributes, and minor improvements to the 
+sample applications.
+ 
 v 0.9.c (3/25/2010):
 Adds support for validation warnings in addition to errors. This release
 removes the validate() method from the IDDMSComponent interface, because
