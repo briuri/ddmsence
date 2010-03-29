@@ -48,22 +48,23 @@ import buri.ddmsence.util.Util;
  * 
  * <p>
  * Token values are read from the CVEnumISM.xml files accompanying the "XML Data Encoding Specification
- * for Information Security Marking Metadata Version 2 (Pre-Release)".
+ * for Information Security Marking Metadata Version 2 (Pre-Release)". They can then be used to validate
+ * the contents of the attributes in a {@link SecurityAttributes} instance.
  * </p>
  * 
  * <ul>
- * <li>CVEnumISM25X.xml</li>
- * <li>CVEnumISMClassificationAll.xml</li>
- * <li>CVEnumISMClassificationUS.xml</li>
- * <li>CVEnumISMDissem.xml</li>
- * <li>CVEnumISMFGIOpen.xml</li>
- * <li>CVEnumISMFGIProtected.xml</li>
- * <li>CVEnumISMNonIC.xml</li>
- * <li>CVEnumISMOwnerProducer.xml</li>
- * <li>CVEnumISMRelTo.xml</li>
- * <li>CVEnumISMSAR.xml</li>
- * <li>CVEnumISMSCIControls.xml</li>
- * <li>CVEnumISMSourceMarked.xml</li>
+ * <li>CVEnumISM25X.xml: tokens allowed in the "declassException" attribute</li>
+ * <li>CVEnumISMClassificationAll.xml: tokens allowed in the "classification" attribute</li>
+ * <li>CVEnumISMClassificationUS.xml: subset of the tokens allowed in the "classification" attribute</li>
+ * <li>CVEnumISMDissem.xml: tokens allowed in the "disseminationControls" attribute</li>
+ * <li>CVEnumISMFGIOpen.xml: tokens allowed in the "FGIsourceOpen" attribute</li>
+ * <li>CVEnumISMFGIProtected.xml: tokens allowed in the "FGIsourceProtected" attribute</li>
+ * <li>CVEnumISMNonIC.xml: tokens allowed in the "nonICmarkings" attribute</li>
+ * <li>CVEnumISMOwnerProducer.xml: tokens allowed in the "ownerProducer" attribute</li>
+ * <li>CVEnumISMRelTo.xml: tokens allowed in the "releasableTo" attribute</li>
+ * <li>CVEnumISMSAR.xml: tokens allowed in the "SARIdentifier" attribute</li>
+ * <li>CVEnumISMSCIControls.xml: tokens allowed in the "SCIcontrols" attribute</li>
+ * <li>CVEnumISMSourceMarked.xml: tokens allowed in the "typeOfExemptedSource" attribute</li>
  * 
  * <p>
  * Separate Java lists of Classification values are maintained to calculate the ordering of 
