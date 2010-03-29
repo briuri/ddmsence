@@ -47,10 +47,11 @@ import buri.ddmsence.util.Util;
  * 
  * <p>When validating this attribute group, the required/optional nature of the classification and ownerProducer attributes
  * are not checked. Because that limitation depends on the parent element (for example, ddms:title requires them, but ddms:creator does not),
- * the parent element should be responsible for checking.</p>
+ * the parent element should be responsible for checking, via <code>requireClassification()</code>.</p>
  * 
- * <p>At this time, logical validation is only done on the data types of the various attributes, and the token value of "classification". I would
- * like to add additional validation in the future.</p>
+ * <p>At this time, logical validation is only done on the data types of the various attributes, and the controlled vocabulary enumerations
+ * behind some of the attributes. I would like to add the complete constraints set from the "XML Data Encoding Specification
+ * for Information Security Marking Metadata Version 2 (Pre-Release)" document in the future.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ICISM:classification</u>: (optional)<br />
@@ -251,25 +252,60 @@ public final class SecurityAttributes {
 		if (getDateOfExemptedSource() != null)
 			Util.addAttribute(element, ICISM_PREFIX, DATE_OF_EXEMPTED_SOURCE_NAME, ICISM_NAMESPACE, getDateOfExemptedSource().toXMLFormat());
 	}
-		
+
 	/**
-	 * Validates the attribute group.
+	 * Validates the attribute group. Where appropriate the {@link ISMVocabulary} enumerations are validated.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>If set, the classification is must be a valid token.</li>
+	 * <table class="info">
+	 * <tr class="infoHeader">
+	 * <th>Rules</th>
+	 * </tr>
+	 * <tr>
+	 * <td class="infoBody">
+	 * <li>If set, the classification must be a valid token.</li>
+	 * <li>If set, the ownerProducers must be valid tokens.</li>
+	 * <li>If set, the SCIcontrols must be valid tokens.</li>
+	 * <li>If set, the SARIdentifiers must be valid tokens.</li>
+	 * <li>If set, the disseminationControls must be valid tokens.</li>
+	 * <li>If set, the FGIsourceOpen must be valid tokens.</li>
+	 * <li>If set, the FGIsourceProtected must be valid tokens.</li>
+	 * <li>If set, the releasableTo must be valid tokens.</li>
+	 * <li>If set, the nonICmarkings must be valid tokens.</li>
 	 * <li>If set, the declassDate is a valid xs:date value.</li>
+	 * <li>If set, the declassException must be a valid token.</li>
+	 * <li>If set, the typeOfExemptedSource must be a valid token.</li>
 	 * <li>If set, the dateOfExemptedSource is a valid xs:date value.</li>
-	 * <li>Does NOT do any validation on the whether any attributes have logical values, except for
-	 * "classification". 
-	 * </td></tr></table>
-	 *  
+	 * <li>Does NOT do any validation on the constraints described in the DES ISM specification.</li></td>
+	 * </tr>
+	 * </table>
+	 * 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	private void validate() throws InvalidDDMSException {
 		if (!Util.isEmpty(getClassification()))
-			ControlledVocabulary.validateEnumeration(ControlledVocabulary.CVE_ALL_CLASSIFICATIONS, getClassification());
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, getClassification());
+		for (String op : getOwnerProducers())
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_OWNER_PRODUCERS, op);
+		for (String sciControls : getSCIcontrols())
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_SCI_CONTROLS, sciControls);
+		for (String sarId : getSARIdentifier())
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_SAR_IDENTIFIER, sarId);
+		for (String dissemination : getDisseminationControls())
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, dissemination);
+		for (String fgiSourceOpen : getFGIsourceOpen())
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_FGI_SOURCE_OPEN, fgiSourceOpen);
+		for (String fgiSourceProtected : getFGIsourceProtected())
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_FGI_SOURCE_PROTECTED, fgiSourceProtected);
+		for (String releasableTo : getReleasableTo())
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_RELEASABLE_TO, releasableTo);
+		for (String nonIC : getNonICmarkings())
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_NON_IC_MARKINGS, nonIC);
 		if (getDeclassDate() != null && !getDeclassDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException("The declassDate must be in the xs:date format (YYYY-MM-DD).");
+		if (!Util.isEmpty(getDeclassException()))
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DECLASS_EXCEPTION, getDeclassException());
+		if (!Util.isEmpty(getTypeOfExemptedSource()))
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, getTypeOfExemptedSource());
 		if (getDateOfExemptedSource() != null && !getDateOfExemptedSource().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException("The dateOfExemptedSource must be in the xs:date format (YYYY-MM-DD).");		
 	}
