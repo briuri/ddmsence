@@ -85,22 +85,22 @@ and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is
 
 <h1>Current Progress</h1>
 
-<p><u>03/29/2010</u>: <a href="downloads.jsp">Version 0.9.d</a> includes further improvements to the validation system, controlled vocabulary validation for ICISM security
-attributes, and minor improvements to the sample applications. This version is believed to be stable, and is intended to be the test candidate
+<p><u>03/29/2010</u>: <a href="downloads.jsp">Version 0.9.d</a> is now available for download. This version is believed to be stable, and is intended to be the test candidate
 for v1.0.0.</p>
 
-<p><u>03/25/2010</u>: Version 0.9.c adds warning support to the validation system. I chose to release this build sooner than expected, because
-it removes one method from a major interface.</p>
+<ul>
+	<li>The core layers of the DDMS 3.0 Pre-Release specification are fully implemented.</li>
+	<li>Validation of DDMS components supports both warnings and errors.</li>
+	<li>ICISM security attributes are validated against their Controlled Vocabulary Enumerations, as defined by the Intelligence Community.</li>
+	<li>Three sample applications and accompanying tutorials provide an introduction to the library.</li>
+</ul>
 
-<p><u>03/24/2010</u>: Version 0.9.b is now available for download! It provides a full implementation of the core layers of DDMS 3.0, 
-in addition to three sample applications.</p>
+<p>I am currently polishing and testing the 0.9.d release, with the expectation that it can be promoted to an official 1.0.0 release in early 
+April. There will be no enhancements added between this release and v1.0.0, although I may correct any defects or add additional unit tests.</p>
 
 <h1>On the Horizon</h1>
 
-<p>I am currently polishing and testing the 0.9.d release, with the expectation that it can be promoted to the official 1.0.0 release in early April.
-There will be no enhancements added between v0.9.d and v1.0.0, although I may correct any major flaws or add additional unit tests.</p>
-
-<p>Here are some areas which I would like to improve after 1.0:</p>
+<p>Here are some areas which I would like to improve after v1.0.0:</p>
 <ul>
 	<li>Supporting DDMS 2.0 (and possibly earlier versions).</li>
 	<li>Adding support for the extensible portions of DDMS components (Person, Organization, Service, Unknown, keyword, category, and the Resource itself).</li>
@@ -112,7 +112,7 @@ There will be no enhancements added between v0.9.d and v1.0.0, although I may co
 <p><img src="./images/BU.jpg" width="73" height="100" title="BU" align="left" />
 <b>Brian Uri!</b> is a software engineer at <a href="http://www.fgm.com/" target="_new">FGM, Inc.</a> in Reston, VA. He has been a member
 of the <a href="http://metadata.dod.mil/" target="_new">DoD Metadata Registry</a> team since 2004, and is currently a
-technical lead on that project. This project grew out of the author's desire to gain more practical XML Schema experience and 
+technical lead on that project. DDMSence grew out of the author's desire to gain more practical XML Schema experience and 
 an unusually large amount of free time.</p>
 
 <div class="clear"></div>

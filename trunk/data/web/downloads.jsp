@@ -24,7 +24,7 @@ I have include the <code>.project</code> file if you wish to import the project 
 
 <h3>Latest Release</h3>
 
-<p>Version <b>0.9.d</b> (3/25/2010) includes further improvements to the validation system, controlled vocabulary validation for ICISM security
+<p>Version <b>0.9.d</b> (3/29/2010) includes further improvements to the validation system, controlled vocabulary validation for ICISM security
 attributes, and minor improvements to the sample applications. This version is believed to be stable, and is intended to be the test candidate
 for v1.0.0.</p>
 
