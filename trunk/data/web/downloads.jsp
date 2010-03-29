@@ -31,7 +31,7 @@ for v1.0.0.</p>
 <ul>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.d.zip"><code>ddmsence-bin-0.9.d.zip</code></a></b> (1.9 MB)</li>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.d.zip"><code>ddmsence-src-0.9.d.zip</code></a></b> (2.3 MB)</li>
-<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=Milestone%3Dv1.0.0">Issues Resolved in v0.9.d</a> (tagged as v1.0.0 in Issue Tracker)</li>
+<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=Milestone%3Dv1.0">Issues Resolved in v0.9.d</a> (tagged as v1.0 in Issue Tracker)</li>
 </ul>
 
 <h3>Older Releases</h3>

@@ -9,7 +9,7 @@
 
 <h1>Tutorial #3: <u>Escape</u></h1>
 
-<p><u>Escape</u> is a tool that loads multiple DDMS Resource files and then exposes various statistics about them through the 
+<p><u>Escape</u> is a tool that traverses multiple DDMS Resource files and then exposes various statistics about them through the 
 <a href="http://code.google.com/apis/visualization/documentation/gallery.html" target="_new">Google Visualization API</a>. Charts in this sample
 application are limited to non-interactive types, but provide the foundation for using the Flash-based Google charts: it would
 be possible to plot Temporal Coverage on an Annotated Timeline, or Geospatial Coverage on Google Maps. While the first two sample applications were 

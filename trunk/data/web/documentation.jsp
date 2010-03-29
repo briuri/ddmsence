@@ -15,7 +15,7 @@
 	<li><a href="#samples">Sample Applications</a></li>
 	<li><a href="#javadoc">JavaDoc API Documentation</a></li>
 	<li><a href="#design">Design Decisions</a></li>
-	<li><a href="#source">Source Code Repository</a></li>
+	<li><a href="#contributors">Contributors</a></li>
 	<li><a href="#feedback">Feedback</a></li>
 </ul>
 
@@ -162,13 +162,18 @@ The following convention is used to provide some consistency:</p>
 
 <p>Other than the immutability of objects, no special effort went into making DDMSence thread-safe, and no testing was done on its behavior in multithreaded environments.</p>
 
-<a name="source"></a><h3>Source Code Repository</h3>
+<a name="contributors"></a><h3>Contributors</h3>
+
+<p>DDMSence is a <a href="http://en.wikipedia.org/wiki/Benevolent_dictatorship#Open_Source_Usage" target="_new">benevolent dictatorship</a> -- I
+am the sole committer on the project for the forseeable future. However, I welcome any suggestions you might have on ways to improve the project
+or correct deficiencies!</p>
 
 <p>The source code for DDMSence can be found in the "src"-flavored download on the <a href="downloads.jsp">Downloads</a> page. If you are interested in viewing the latest
 (unreleased and possibly unstable) source code, you can download it with any Subversion client:</p>
 <pre>svn checkout <a href="http://ddmsence.googlecode.com/svn/trunk/">http://ddmsence.googlecode.com/svn/trunk/</a> ddmsence-read-only</pre>
 
 <p>An <a href="http://code.google.com/feeds/p/ddmsence/svnchanges/basic">Atom feed</a> of SVN commits is also available -- there are no email notifications at this time.</p>
+
 
 <a name="feedback"></a><h3>Feedback</h3>
 
@@ -177,8 +182,7 @@ The following convention is used to provide some consistency:</p>
 		document.write("<a href=\"mailto:" + eMail + "\">" + eMail + "</a>");
 	</script>	
 	or use the <a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a> page to officially report a bug or enhancement suggestion. Finally, you can also
-	use the <a href="http://groups.google.com/group/ddmsence">Discussion</a> area as an open forum. Although I am the sole committer on this project for the forseeable future,
-	I will seriously consider any suggestions you may have!
+	use the <a href="http://groups.google.com/group/ddmsence">Discussion</a> area as an open forum. I will seriously consider any suggestions you might have!</p>
 </p>
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>
