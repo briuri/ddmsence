@@ -13,17 +13,10 @@
 shows an example of how the Java object model can be built with basic data types (possibly mapped from a database table or some other pre-existing entity).</p>
 
 <p>I have implemented this wizard as a series of textual prompts, to avoid the overhead of having a full-fledged MVC Swing application (or implementing it as a web application and
-requiring a server to run). It is not as flashy, but this should make it easier to focus on the important sections of the source code. There are also
-a few artificial limitations on the some elements:</p>
+requiring a server to run). It is not as flashy, but this should make it easier to focus on the important sections of the source code.</p>
 
-<ul>
-	<li>The wizard will not ask for the ICISM "additional" attributes on any component.</li>
-	<li>The wizard builds SubjectCoverage components from keywords only, not categories.</li>
-	<li>The wizard only allows GeospatialCoverage components based on FacilityIdentifiers.</li>
-	<li>The wizard only allows a RelatedResources component to contain 1 RelatedResource, and that Resource only contains 1 Link.</li>
-</ul>
-
-<p>There are no good reasons for these omissions, other than to make the wizard a little simpler. I may remove these limitations in the future.</p>
+<p>The only limitation on this application is that it will not ask you for the "Additional" ICISM security attributes, 
+such as "SCIcontrols" or "SARIdentifier". The is no good reason for this limitation, other than to make the wizard a little shorter.</p>
 
 <h3>Getting Started</h3>
 
@@ -133,8 +126,10 @@ Please enter the producer classification [U]: U
 Please enter the producer's ownerProducers as a space-delimited string [USA AUS]: USA
 
 === ddms:subjectCoverage (exactly 1 required) ===
-Sample Limitation: This wizard only supports keywords, not categories.
-Please enter the keywords as a space-delimited string [ddms xml]: ddms xml ddmsence
+Please enter the number of keywords to include [1]: 1
+Please enter the number of categories to include [0]: 0
+* Keyword #1
+Please enter the keyword value: DDMS
 Please enter the subject classification [U]: U
 Please enter the subject's ownerProducers as a space-delimited string [USA AUS]: USA
 

@@ -52,6 +52,7 @@ import buri.ddmsence.ddms.resource.Type;
 import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.ddms.summary.Category;
 import buri.ddmsence.ddms.summary.Description;
 import buri.ddmsence.ddms.summary.FacilityIdentifier;
 import buri.ddmsence.ddms.summary.GeographicIdentifier;
@@ -75,18 +76,10 @@ import buri.ddmsence.util.PropertyReader;
  * the procedural structuring should make it easier to focus on the important sections of the source code.
  * </p>
  * 
- * <p>To simplify the wizard, some optional sections are skipped. I may add them in eventually, but I feel like
- * there are enough examples right now:</p>
+ * <p>Currently, the wizard does not ask for the "Additional" ICISM security attributes, such as SCI controls or 
+ * SAR Identifiers.</p>
  * 
- * <ul>
- * 		<li>"Additional" ICISM attributes</li>
- * 		<li>Categories in a subjectCoverage element.</li>
- * 		<li>GeospatialCoverage is only FacilityIdentifier-based.</li>
- * 		<li>Multiple links or RelatedResource elements in a relatedResoures element.</li>
- * </ul>
- * 
- * <p>
- * For additional details about this application, please see the tutorial on the Documentation page of the DDMSence
+ * <p>For additional details about this application, please see the tutorial on the Documentation page of the DDMSence
  * website.
  * </p>
  * 
@@ -250,19 +243,42 @@ public class Escort {
 				return (new Format(mimeType, extent, medium));
 			}		
 		});
+		BUILDERS.put(Keyword.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String keyword = readString("the keyword value");
+				return (new Keyword(keyword));
+			}
+		});
+		BUILDERS.put(Category.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String qualifier = readString("the qualifier");
+				String code = readString("the code");
+				String label = readString("the label");
+				return (new Category(qualifier, code, label));
+			}
+		});
 		BUILDERS.put(SubjectCoverage.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				println("Sample Limitation: This wizard only supports keywords, not categories.");
-				String keywords = readString("the keywords as a space-delimited string [ddms xml]");
-				// Skipping categories
+				int numKeywords = readInt("the number of keywords to include [1]");
+				int numCategories = readInt("the number of categories to include [0]");
+				if (numKeywords + numCategories == 0) {
+					println("At least 1 keyword or category is required. Defaulting to 1 keyword.");
+					numKeywords = 1;
+				}
+				List<Keyword> keywords = new ArrayList<Keyword>();
+				for (int i = 0; i < numKeywords; i++) {
+					println("* Keyword #" + (i + 1));
+					keywords.add((Keyword) inputLoop(Keyword.class));
+				}
+				List<Category> categories = new ArrayList<Category>();
+				for (int i = 0; i < numCategories; i++) {
+					println("* Category #" + (i + 1));
+					categories.add((Category) inputLoop(Category.class));
+				}
 				String classification = readString("the subject classification [U]");
 				String ownerProducers = readString("the subject's ownerProducers as a space-delimited string [USA AUS]");
-				List<Keyword> keywordList = new ArrayList<Keyword>();
-				for (String keyword : Arrays.asList(keywords.split(" "))) {
-					keywordList.add(new Keyword(keyword));
-				}
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new SubjectCoverage(keywordList, null, attr));
+				return (new SubjectCoverage(keywords, categories, attr));
 			}		
 		});
 		BUILDERS.put(TemporalCoverage.class, new IComponentBuilder() {
@@ -299,29 +315,48 @@ public class Escort {
 				return (new GeospatialCoverage(geoId, null, null, null, null, attr));
 			}		
 		});
-		BUILDERS.put(RelatedResources.class, new IComponentBuilder() {
+		BUILDERS.put(Link.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				println("Sample Limitation: This wizard only supports a relatedResources element containing a single related resource. That resource contains a single link.");
-				// Only allowing 1 link in a RelatedResource
-				// Only allowing 1 RelatedResource in a RelatedResources
 				String href = readString("the link href [http://ddmsence.urizone.net/]");
 				String role = readString("the link role [testValue]");
 				String title = readString("the link title [testValue]");
 				String label = readString("the link label [testValue]");
+				return (new Link(href, role, title, label));
+			}		
+		});
+		BUILDERS.put(RelatedResource.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				int numLinks = readInt("the number of links on this RelatedResource [1]");
+				if (numLinks == 0) {
+					println("At least 1 link is required. Defaulting to 1.");
+					numLinks = 1;
+				}
+				List<Link> links = new ArrayList<Link>();
+				for (int i = 0; i < numLinks; i++) {
+					println("** Link #" + (i + 1));
+					links.add((Link) inputLoop(Link.class));
+				}
 				String qualifier = readString("the RelatedResource qualifier [URI]");
 				String value = readString("the RelatedResource value [testValue]");
-				
-				String relationship = readString("the relationship [URI]");
-				String direction = readString("the direction [outbound]");
+				return (new RelatedResource(links, qualifier, value));
+			}		
+		});
+		BUILDERS.put(RelatedResources.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				int numRelated = readInt("the number of separate RelatedResource elements to include [1]");
+				if (numRelated == 0) {
+					println("At least 1 resource is required. Defaulting to 1.");
+					numRelated = 1;
+				}
+				List<RelatedResource> resources = new ArrayList<RelatedResource>();
+				for (int i = 0; i < numRelated; i++) {
+					println("** RelatedResource #" + (i + 1));
+					resources.add((RelatedResource) inputLoop(RelatedResource.class));
+				}
+				String relationship = readString("the relatedResources relationship [URI]");
+				String direction = readString("the relatedResources direction [outbound]");
 				String classification = readString("the relatedResources classification [U]");
 				String ownerProducers = readString("the relatedResources ownerProducers as a space-delimited string [USA AUS]");	
-
-				Link link = new Link(href, role, title, label);
-				List<Link> links = new ArrayList<Link>();
-				links.add(link);
-				RelatedResource related = new RelatedResource(links, qualifier, value);
-				List<RelatedResource> resources = new ArrayList<RelatedResource>();
-				resources.add(related);
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				return (new RelatedResources(resources, relationship, direction, attr));
 			}		
@@ -587,7 +622,7 @@ public class Escort {
 			String input = readString(name);
 			try {
 				int value = Integer.parseInt(input);
-				if (value > 0)
+				if (value >= 0)
 					return (value);
 				println("A positive integer is required.");
 			} catch (NumberFormatException nfe) {
