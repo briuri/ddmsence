@@ -86,7 +86,7 @@ and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is
 <h1>Current Progress</h1>
 
 <p><u>03/29/2010</u>: <a href="downloads.jsp">Version 0.9.d</a> includes further improvements to the validation system, controlled vocabulary validation for ICISM security
-attributes, and minor improvements to the sample applications. This version is believed to be stable, and is intended to be the release candidate
+attributes, and minor improvements to the sample applications. This version is believed to be stable, and is intended to be the test candidate
 for v1.0.0.</p>
 
 <p><u>03/25/2010</u>: Version 0.9.c adds warning support to the validation system. I chose to release this build sooner than expected, because
