@@ -66,25 +66,46 @@ of the locator will be an XPath string, but should be enough to help you locate 
 developers will notice that <code>ddms:identifier</code> seems to be the root node in the string -- this is because it had not been added to the parent Resource at the time
 of the exception).</p>
 
-<p>Now, let's take a look at the source code in <code>/src/samples/buri/ddmsence/samples/Escort.java</code> to see how this was accomplished. 
-The important lines are found in the <code>buildIdentifier()</code> method:</p>
+<p>Now, let's take a look at the source code in <code>/src/samples/buri/ddmsence/samples/Escort.java</code> to see how this was accomplished. The <code>run()</code>
+method defines the control flow for the program, and uses the helper method, <code>inputLoop()</code>, to ask for user input until a valid component can be created:</p>
 
-<div class="example"><pre>while (true) {
-   String qualifier = readString("the qualifier [URI]");
-   String value = readString("the value [testValue]");
-   try {
-      return (new Identifier(qualifier, value));
-   }
-   catch (InvalidDDMSException e) {
-      printError(e);
-   }
+
+<div class="example"><pre>printHead("ddms:identifier (at least 1 required)");
+getTopLevelComponents().add(inputLoop(Identifier.class));
+while (!onlyRequiredComponents && confirm("Add another ddms:identifier?")) {
+   getTopLevelComponents().add(inputLoop(Identifier.class));	
 }</pre></div>
-<p class="figure">Figure 3. Source code to build an Identifier</p>
+<p class="figure">Figure 3. Excerpt from the run() method</p>
+		
+<div class="example"><pre>private IDDMSComponent inputLoop(Class theClass) throws IOException {
+   IDDMSComponent component = null;
+   while (component == null) {
+      try {
+         component = BUILDERS.get(theClass).build();
+      }
+      catch (InvalidDDMSException e) {
+         printError(e);
+      }
+   }
+   return (component);
+}</pre></div>
+<p class="figure">Figure 4. Source code to continuously loop until a valid component is created</p>
 
-<p>The example code above uses a loop which keeps asking you for values until a valid Identifier can be created. It then returns the valid
-Identifier back to the main wizard method, <code>run()</code>, and proceeds to the next top-level component. There is a <code>build<i>Component</i>()</code>
-method for each top-level component, so you can see how each one is built. (You can also see how any component is built by loading an XML file 
-into the <u>Essentials</u> application and viewing the generated Java code).</p>
+<p>An anonymous implementation of <code>IComponentBuilder</code> is created (in the <u>Escort</u> constructor) for each DDMS Component class, and each Builder
+is responsible for one top-level component. For example, here is the definition of the Builder that builds Identifiers:</p>
+
+<div class="example"><pre>BUILDERS.put(Identifier.class, new IComponentBuilder() {
+   public IDDMSComponent build() throws IOException, InvalidDDMSException {
+      String qualifier = readString("the qualifier [URI]");
+      String value = readString("the value [testValue]");
+      return (new Identifier(qualifier, value));
+   }		
+});</pre></div>
+<p class="figure">Figure 5. An anonymous builder that can build Identifiers from user input</p>
+
+<p>As soon as <code>inputLoop()</code> receives a valid component from a Builder, it returns that component to the main wizard method, <code>run()</code>. The main
+wizard saves the component in a list and moves on to the next component type. You can examine the constructor to see how each of the components is built. You can also
+see similar code by loading an XML file into the <u>Essentials</u> application and viewing its generated Java code.</p>
 
 <p>Let's use the wizard to create a valid Resource. You should be able to follow the prompts to the end, but if not, the output below is one possible
 road to a valid Resource.</p>
@@ -129,7 +150,7 @@ Please enter the Resource classification [U]: U
 Please enter the Resource's ownerProducers as a space-delimited string [USA AUS]: USA
 The DDMS Resource is valid!
 No warnings were recorded.</pre></div>
-<p class="figure">Figure 4. Successful run of the Escort Wizard</p>
+<p class="figure">Figure 6. Successful run of the Escort Wizard</p>
 
 <p>DDMSence stores warning messages on each component for conditions that aren't necessarily invalid. Calling <code>getValidationWarnings()</code> on any component will return
 the messages of that component and any subcomponents. In this run-through, no warnings were recorded. We will try an example with warnings later.</p>
@@ -137,13 +158,14 @@ the messages of that component and any subcomponents. In this run-through, no wa
 <p>The final step is to save your valid Resource as an XML file. Enter a filename, and the Resource will be saved in the <code>data/sample/</code> directory.</p>
 
 <div class="example"><pre>=== Saving the Resource ===
+Would you like to save this file? [Y/N]: y
 This Resource will be saved as XML in the data/sample/ directory.
 Please enter a filename: myResource.xml
 File saved at F:\projects\DDMSence\data\sample\myResource.xml .
 
 You can now open your saved file with the Essentials application.
 The Escort wizard is now finished.</pre></div>
-<p class="figure">Figure 5. Saving the File</p>
+<p class="figure">Figure 7. Saving the File</p>
 
 <p>Once the file is saved, you can open it with the <u>Essentials</u> application to view the Resource in different formats. You can also use the wizard
 to generate additional data files for the <u>Escape</U> application.</p>
@@ -163,7 +185,7 @@ Please enter the infoCutOff date [2010]:
 The DDMS Resource is valid!
 [WARNING] /ddms:Resource/ddms:dates: A completely empty ddms:dates element was found.
 </pre></div>
-<p class="figure">Figure 5. Triggering a Warning Condition</p>
+<p class="figure">Figure 8. Triggering a Warning Condition</p>
 
 <p>As you can see, the locator information on warnings is in the same format as the information on errors. Because parent components claim the warnings of their children,
 a more detailed locator can be created. In this case, calling <code>getValidationWarnings()</code> on the Resource shows the full path of "<code>/ddms:Resource/ddms:dates</code>". If 
