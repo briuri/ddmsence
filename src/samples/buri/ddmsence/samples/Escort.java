@@ -214,6 +214,8 @@ public class Escort {
 		});
 		BUILDERS.put(IProducer.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String producerType = readString("the producer type [creator]");
+				String entityType = readString("the entity type [Organization]");
 				int numNames = readInt("the number of names this producer has [1]");
 				int numPhones = readInt("the number of phone numbers this producer has [0]");
 				int numEmails = readInt("the number of email addresses this producer has [0]");
@@ -221,13 +223,6 @@ public class Escort {
 					println("At least 1 name is required. Defaulting to 1 name.");
 					numNames = 1;
 				}
-				
-				String surname = null;
-				String userID = null;
-				String affiliation = null;
-				String producerType = readString("the producer type [creator]");
-				String entityType = readString("the entity type [Organization]");
-				
 				List<String> names = new ArrayList<String>();
 				for (int i = 0; i < numNames; i++) {
 					names.add(readString("entity name #" + (i + 1) + " [testName" + (i + 1) + "]"));
@@ -240,14 +235,17 @@ public class Escort {
 				for (int i = 0; i < numEmails; i++) {
 					emails.add(readString("entity email #" + (i + 1) + " [testEmail" + (i + 1) + "]"));
 				}
-				String classification = readString("the producer classification [U]");
-				String ownerProducers = readString("the producer's ownerProducers as a space-delimited string [USA]");
-
+				String surname = null;
+				String userID = null;
+				String affiliation = null;
 				if (Person.NAME.equals(entityType)) {
 					surname = readString("the Person surname [testSurname]");
 					userID = readString("the Person userID [testID]");
 					affiliation = readString("the Person affiliation [testOrg]");
 				}
+				String classification = readString("the producer classification [U]");
+				String ownerProducers = readString("the producer's ownerProducers as a space-delimited string [USA]");
+
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				if (Person.NAME.equals(entityType))
 					return (new Person(producerType, surname, names, userID, affiliation, phones, emails, attr));
