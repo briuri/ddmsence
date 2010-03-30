@@ -20,9 +20,8 @@
 package buri.ddmsence.samples;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -33,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nu.xom.Document;
+import nu.xom.Serializer;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.IProducer;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -77,6 +78,7 @@ import buri.ddmsence.ddms.summary.VerticalExtent;
 import buri.ddmsence.ddms.summary.VirtualCoverage;
 import buri.ddmsence.samples.util.IComponentBuilder;
 import buri.ddmsence.util.PropertyReader;
+import buri.ddmsence.util.Util;
 
 /**
  * DDMScort is a step-by-step wizard for building a DDMS Resource from scratch, and then saving it to a file.
@@ -215,7 +217,11 @@ public class Escort {
 				int numNames = readInt("the number of names this producer has [1]");
 				int numPhones = readInt("the number of phone numbers this producer has [0]");
 				int numEmails = readInt("the number of email addresses this producer has [0]");
-							
+				if (numNames == 0) {
+					println("At least 1 name is required. Defaulting to 1 name.");
+					numNames = 1;
+				}
+				
 				String surname = null;
 				String userID = null;
 				String affiliation = null;
@@ -749,16 +755,18 @@ public class Escort {
 	 * @throws IOException
 	 */
 	private void saveFile(String filename, Resource resource) throws IOException {
-		BufferedWriter writer = null;
+		FileOutputStream os = null;
 		try {
 			File outputFile = new File(SAMPLE_DIR, filename);
-			writer = new BufferedWriter(new FileWriter(outputFile));
-			writer.write(resource.toXML());
+			os = new FileOutputStream(outputFile);
+			Serializer serializer = new Serializer(os);
+			serializer.setIndent(3);
+			serializer.write(new Document(resource.getXOMElementCopy()));
 			println("File saved at " + outputFile.getAbsolutePath() + " .");
 		}
 		finally {
-			if (writer != null)
-				writer.close();
+			if (os != null)
+				os.close();
 		}
 	}
 
@@ -850,7 +858,8 @@ public class Escort {
 	 * @param e the exception
 	 */
 	private void printError(InvalidDDMSException e) {
-		println("[ERROR] " + e.getLocator() + ": " + e.getMessage());
+		String prefix = (Util.isEmpty(e.getLocator()) ? "" : e.getLocator() + ": ");
+		println("[ERROR] " + prefix + e.getMessage());
 	}
 	
 	/**
