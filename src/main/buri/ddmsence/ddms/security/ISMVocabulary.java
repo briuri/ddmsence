@@ -220,7 +220,7 @@ public class ISMVocabulary {
 			ENUM_PATTERNS.put(enumerationKey, patterns);
 		}
 		catch (ParsingException e) {
-			throw new IOException(e);
+			throw new IOException(e.getMessage());
 		}
 		finally {
 			if (stream != null)
