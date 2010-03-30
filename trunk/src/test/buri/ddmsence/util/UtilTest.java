@@ -242,6 +242,16 @@ public class UtilTest extends TestCase {
 	}
 	
 	public void testRequireDDMSQNameFailure() {
+		// Null Prefix = ""
+		try {
+			Element element = Util.buildDDMSElement("name", null);
+			Util.requireDDMSQName(element, null, "name");
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
 		// Bad Prefix
 		try {
 			Element element = Util.buildDDMSElement("name", null);
@@ -638,6 +648,16 @@ public class UtilTest extends TestCase {
 	
 	public void testCapitalizeSuccess() {
 		assertEquals("Ddms", Util.capitalize("ddms"));
+	}
+	
+	public void testBuildElementEmptyPrefix() {
+		Element element = Util.buildElement(null, "test", "", null);
+		assertNotNull(element);
+		assertEquals("test", element.getLocalName());
+		assertEquals("", element.getNamespaceURI());
+		assertEquals("", element.getNamespacePrefix());
+		assertEquals("test", element.getQualifiedName());
+		
 	}
 	
 	public void testBuildDDMSElement() {

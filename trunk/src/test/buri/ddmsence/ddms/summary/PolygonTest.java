@@ -402,4 +402,10 @@ public class PolygonTest extends AbstractComponentTestCase {
 		testConstructor(WILL_SUCCEED, TEST_POSITIONS, TEST_SRS_ATTRIBUTES, TEST_ID);
 		testConstructor(WILL_SUCCEED, TEST_POSITIONS, TEST_SRS_ATTRIBUTES, TEST_ID);
 	}
+	
+	public void testGetLocatorSuffix() {
+		// Because Positions don't have any ValidationWarnings, no existing code uses this locator method right now.
+		Polygon component = testConstructor(WILL_SUCCEED, getValidElement());
+		assertEquals("/gml:exterior/gml:LinearRing", component.getLocatorSuffix());
+	}
 }

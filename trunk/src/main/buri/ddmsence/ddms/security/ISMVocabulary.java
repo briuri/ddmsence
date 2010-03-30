@@ -37,7 +37,6 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.ParsingException;
 
-import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -181,10 +180,7 @@ public class ISMVocabulary {
 			loadEnumeration(builder, CVE_SCI_CONTROLS);
 			loadEnumeration(builder, CVE_TYPE_EXEMPTED_SOURCE);
 		}
-		catch (SAXException e) {
-			throw new RuntimeException("Could not load controlled vocabularies: " + e.getMessage());
-		}
-		catch (IOException e) {
+		catch (Exception e) {
 			throw new RuntimeException("Could not load controlled vocabularies: " + e.getMessage());
 		}
 	}
@@ -198,9 +194,8 @@ public class ISMVocabulary {
 	 * @param enumerationKey the key for the enumeration, which doubles as the filename.
 	 */
 	private void loadEnumeration(Builder builder, String enumerationKey) throws IOException {
-		InputStream stream = null;
 		try {
-			stream = getClass().getResourceAsStream(CVE_LOCATION + enumerationKey);
+			InputStream stream = getClass().getResourceAsStream(CVE_LOCATION + enumerationKey);
 			Document doc = builder.build(stream);
 			Set<String> tokens = new TreeSet<String>();
 			Set<String> patterns = new HashSet<String>();
@@ -221,10 +216,6 @@ public class ISMVocabulary {
 		}
 		catch (ParsingException e) {
 			throw new IOException(e.getMessage());
-		}
-		finally {
-			if (stream != null)
-				stream.close();
 		}
 	}
 	

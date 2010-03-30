@@ -81,6 +81,20 @@ public class DDMSReaderTest extends TestCase {
 		getReader().getElement(new File(TEST_DATA_DIR, "rights.xml"));
 	}
 	
+	public void testGetResourceFailure() throws IOException {
+		try {
+			getReader().getDDMSResource(new File(TEST_DATA_DIR, "rights.xml"));
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
+	public void testGetResourceSuccess() throws InvalidDDMSException, IOException {
+		getReader().getDDMSResource(new File(TEST_DATA_DIR, "resource.xml"));
+	}
+	
 	/**
 	 * Accessor for the reader
 	 */

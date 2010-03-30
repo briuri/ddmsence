@@ -51,9 +51,27 @@ public class ValidationMessageTest extends TestCase {
 		assertEquals(message1.toString(), message2.toString());
 	}
 	
+	public void testInequalityDifferentValues() throws InvalidDDMSException {
+		ValidationMessage message1 = ValidationMessage.newWarning("Test", "ddms:test");
+		ValidationMessage message2 = ValidationMessage.newError("Test", "ddms:test");
+		assertFalse(message1.equals(message2));
+		
+		message2 = ValidationMessage.newWarning("Test2", "ddms:test");
+		assertFalse(message1.equals(message2));
+		
+		message2 = ValidationMessage.newWarning("Test", "ddms:test2");
+		assertFalse(message1.equals(message2));
+	}
+	
 	public void testInequalityWrongClass() throws InvalidDDMSException {
 		ValidationMessage message = ValidationMessage.newWarning("Test", "ddms:test");
 		Rights wrongComponent = new Rights(true, true, true);
 		assertFalse(message.equals(wrongComponent));
+	}
+	
+	public void testLocatorEquality() throws InvalidDDMSException {
+		InvalidDDMSException e = new InvalidDDMSException("test");
+		e.setLocator("test");
+		assertEquals("/test", e.getLocator());
 	}
 }
