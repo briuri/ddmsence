@@ -46,8 +46,8 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Escort</pre></div>
 
 <div class="example"><pre># Linux Commands
 cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;
-ddmsence_classpath=lib/xercesImpl-2.9.1.jar:lib/xml-apis-1.3.04.jar:lib/xom-1.2.4.jar
-ddmsence_classpath=$ddmsence_classpath:lib/DDMSence-0.9.d.jar:lib/DDMSence-samples-0.9.d.jar
+set ddmsence_classpath=lib/xercesImpl-2.9.1.jar:lib/xml-apis-1.3.04.jar:lib/xom-1.2.4.jar
+set ddmsence_classpath=$ddmsence_classpath:lib/DDMSence-0.9.d.jar:lib/DDMSence-samples-0.9.d.jar
 java -cp $ddmsence_classpath buri.ddmsence.samples.Escape</pre></div>
 <p class="figure">Figure 2. Running from a Linux Command Line</p>
 
