@@ -51,6 +51,7 @@ ddmsence_classpath=$ddmsence_classpath:lib/DDMSence-0.9.d.jar:lib/DDMSence-sampl
 java -cp $ddmsence_classpath buri.ddmsence.samples.Escape</pre></div>
 <p class="figure">Figure 2. Running from a Linux Command Line</p>
 
+<!-- TODO: starting with v1.0.0, the JAR files will be all lowercase. -->
 
 <a name="samples"></a><h3>Sample Applications</h3>
 <!-- DDMScargo(t), DDMScrow, DDMSophagus, DDMStrogen, DDMStuary, DDMSquire, DDMSteem, DDMStablishment, DDMStimator, DDMScalator, DDMState -->
