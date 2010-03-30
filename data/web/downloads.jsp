@@ -9,7 +9,8 @@
 
 <h1>Downloads</h1>
 
-<p>Before you begin, you will need a <a href="http://java.sun.com/javase/downloads/index.jsp" target="_new">JRE or JDK</a> which supports Java 1.5.x or higher.</p>
+<p>Before you begin, you will need a <a href="http://java.sun.com/javase/downloads/index.jsp" target="_new">JRE or JDK</a> which supports Java 1.6. (Note: Java 1.6 is
+only a requirement for the v0.9 releases -- starting with v1.0.0, all JARs will be compiled under JDK 1.5.0_22).</p>
 
 <p>Downloads come in two flavor:</p>
 
