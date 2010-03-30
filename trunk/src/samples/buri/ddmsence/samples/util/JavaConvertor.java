@@ -381,7 +381,7 @@ public class JavaConvertor {
 		java.append("List<Category> categories = new ArrayList<Category>();\n");
 		for (Category category : subjectCoverage.getCategories())
 			java.append("categories.add(new Category(\"").append(category.getQualifier()).append("\", \"")
-				.append(category.getCode()).append("\", \"").append(category.getLabel()).append("\");");
+				.append(category.getCode()).append("\", \"").append(category.getLabel()).append("\"));\n");
 		java.append("SubjectCoverage subjectCoverage = new SubjectCoverage(keywords, categories, securityAttributes);\n");
 		java.append("topLevelComponents.add(subjectCoverage);\n");
 	}
