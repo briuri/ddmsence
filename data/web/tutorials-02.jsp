@@ -114,11 +114,11 @@ Please enter the title classification [U]: U
 Please enter the title's ownerProducers as a space-delimited string [USA]: USA
 
 === Producers: creator, publisher, contributor, and pointOfContact (at least 1 required) ===
+Please enter the producer type [creator]: creator
+Please enter the entity type [Organization]: Organization
 Please enter the number of names this producer has [1]: 1
 Please enter the number of phone numbers this producer has [0]: 1
 Please enter the number of email addresses this producer has [0]: 1
-Please enter the producer type [creator]: creator
-Please enter the entity type [Organization]: Organization
 Please enter entity name #1 [testName1]: DISA
 Please enter entity phone number #1 [testPhone1]: 703-885-1000
 Please enter entity email #1 [testEmail1]: disa@disa.disa
