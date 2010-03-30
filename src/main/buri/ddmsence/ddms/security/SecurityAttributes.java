@@ -330,12 +330,6 @@ public final class SecurityAttributes {
 
 		if (getOwnerProducers().size() == 0)
 			throw new InvalidDDMSException("At least 1 ownerProducer must be set.");
-		boolean foundNonEmptyOP = false;
-		for (String op : getOwnerProducers()) {
-			foundNonEmptyOP = foundNonEmptyOP || !Util.isEmpty(op);
-		}
-		if (!foundNonEmptyOP)
-			throw new InvalidDDMSException("At least 1 ownerProducer must have a non-empty value.");		
 	}
 	
 	/**
