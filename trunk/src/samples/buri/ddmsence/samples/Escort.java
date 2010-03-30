@@ -104,7 +104,7 @@ public class Escort {
 	private static final BufferedReader INPUT_STREAM = new BufferedReader(new InputStreamReader(System.in));
 	private static final String SAMPLE_DIR = PropertyReader.getProperty("sample.data");
 	
-	private static final Map<Class, IComponentBuilder> BUILDERS = new HashMap<Class, IComponentBuilder>();
+	private static final Map<Class<?>, IComponentBuilder> BUILDERS = new HashMap<Class<?>, IComponentBuilder>();
 
 	private static final Set<String> GEOSPATIAL_TYPES = new HashSet<String>();
 	static {
@@ -729,7 +729,7 @@ public class Escort {
 	 * @param theClass the class of the component to build
 	 * @return a valid component
 	 */
-	private IDDMSComponent inputLoop(Class theClass) throws IOException {
+	private IDDMSComponent inputLoop(Class<?> theClass) throws IOException {
 		IDDMSComponent component = null;
 		while (component == null) {
 			try {
