@@ -8,6 +8,9 @@ Copyright 2010 by Brian Uri!
 ===========================================================================
 Release History
 ===========================================================================
+v 1.0.0 (4/01/2010):
+First official stable release. JARs in "bin" release are compiled under Java 1.5.
+
 v 0.9.d (3/29/2010):
 Includes further improvements to the validation system, controlled vocabulary 
 validation for ICISM security attributes, and minor improvements to the 

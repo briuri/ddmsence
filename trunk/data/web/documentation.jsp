@@ -41,21 +41,19 @@ into a batch/shell script and run that script):</p>
 <div class="example"><pre>REM Windows Commands
 cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;
 set DDMSENCE_CLASSPATH=lib/xercesImpl-2.9.1.jar;lib/xml-apis-1.3.04.jar;lib/xom-1.2.4.jar
-set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/DDMSence-0.9.d.jar;lib/DDMSence-samples-0.9.d.jar
+set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-1.0.0.jar;lib/ddmsence-samples-1.0.0.jar
 java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre></div>
 <p class="figure">Figure 1. Running from a Windows/DOS Command Line</p>
 
 <div class="example"><pre>#!/bin/sh
 # Linux Commands
 cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;
-ddmsence_classpath=lib/xercesImpl-2.9.1.jar:lib/xml-apis-1.3.04.jar:lib/xom-1.2.4.jar:
-ddmsence_classpath=$ddmsence_classpath:lib/DDMSence-0.9.d.jar:lib/DDMSence-samples-0.9.d.jar
+ddmsence_classpath=lib/xercesImpl-2.9.1.jar:lib/xml-apis-1.3.04.jar:lib/xom-1.2.4.jar
+ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-1.0.0.jar:lib/ddmsence-samples-1.0.0.jar
 java -cp $ddmsence_classpath buri.ddmsence.samples.Essentials</pre></div>
 <p class="figure">Figure 2. Running from a Linux Command Line</p>
 
 <p>Note: The syntax for setting a classpath in Linux may vary, depending on the shell you are using.</p>
-
-<!-- TODO: starting with v1.0.0, the JAR files will be all lowercase. -->
 
 <a name="samples"></a><h3>Sample Applications</h3>
 <!-- DDMScargo(t), DDMScrow, DDMSophagus, DDMStrogen, DDMStuary, DDMSquire, DDMSteem, DDMStablishment, DDMStimator, DDMScalator, DDMState -->
