@@ -19,8 +19,8 @@
 		<delete quiet="true" dir="${dist.dir}/ddmsence-src-${version}" />
 		
 		<!-- Build the bin-flavored download archive -->
-		<jar destfile="${jars.dir}/DDMSence-${version}.jar" basedir="${compile.main.dir}" />
-		<jar destfile="${jars.dir}/DDMSence-samples-${version}.jar" basedir="${compile.samples.dir}" />
+		<jar destfile="${jars.dir}/ddmsence-${version}.jar" basedir="${compile.main.dir}" />
+		<jar destfile="${jars.dir}/ddmsence-samples-${version}.jar" basedir="${compile.samples.dir}" />
 		<copy todir="${dist.dir}/ddmsence-bin-${version}" includeEmptyDirs="false">
 			<fileset dir=".">
 				<exclude name=".classpath"/>
