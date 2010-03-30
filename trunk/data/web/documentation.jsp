@@ -35,21 +35,25 @@ contact me directly by email at
 <p>Begin by visiting the <a href="downloads.jsp">Downloads</a> page and downloading a copy of DDMSence. The tutorials below will assume that you are working
 with the "bin"-flavored download, which comes with the DDMSence JAR files pre-compiled, and contains source code for the sample applications.</p>
 
-<p>Unzip the downloaded archive in a directory of your choice. You can then run the samples from the command line:</p>
+<p>Unzip the downloaded archive in a directory of your choice. You can then run the samples from the command line by entering the lines below (or paste them
+into a batch/shell script and run that script):</p>
 
 <div class="example"><pre>REM Windows Commands
 cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;
 set DDMSENCE_CLASSPATH=lib/xercesImpl-2.9.1.jar;lib/xml-apis-1.3.04.jar;lib/xom-1.2.4.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/DDMSence-0.9.d.jar;lib/DDMSence-samples-0.9.d.jar
-java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Escort</pre></div>
+java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre></div>
 <p class="figure">Figure 1. Running from a Windows/DOS Command Line</p>
 
-<div class="example"><pre># Linux Commands
+<div class="example"><pre>#!/bin/sh
+# Linux Commands
 cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;
-set ddmsence_classpath=lib/xercesImpl-2.9.1.jar:lib/xml-apis-1.3.04.jar:lib/xom-1.2.4.jar
-set ddmsence_classpath=$ddmsence_classpath:lib/DDMSence-0.9.d.jar:lib/DDMSence-samples-0.9.d.jar
-java -cp $ddmsence_classpath buri.ddmsence.samples.Escape</pre></div>
+ddmsence_classpath=lib/xercesImpl-2.9.1.jar:lib/xml-apis-1.3.04.jar:lib/xom-1.2.4.jar:
+ddmsence_classpath=$ddmsence_classpath:lib/DDMSence-0.9.d.jar:lib/DDMSence-samples-0.9.d.jar
+java -cp $ddmsence_classpath buri.ddmsence.samples.Essentials</pre></div>
 <p class="figure">Figure 2. Running from a Linux Command Line</p>
+
+<p>Note: The syntax for setting a classpath in Linux may vary, depending on the shell you are using.</p>
 
 <!-- TODO: starting with v1.0.0, the JAR files will be all lowercase. -->
 

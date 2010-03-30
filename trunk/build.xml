@@ -71,14 +71,14 @@
 		<mkdir dir="${compile.test.dir}" />
 		<filter token="ddmsence.version" value="${version}"/>
 
-		<javac srcdir="${src.main.dir}" destdir="${compile.main.dir}" classpathref="classpath.compile" />
+		<javac srcdir="${src.main.dir}" destdir="${compile.main.dir}" classpathref="classpath.compile" source="1.5" />
 		<copy todir="${compile.main.dir}" filtering="true">
 			<fileset refid="files.properties" />
 			<fileset refid="files.schemas" />
 			<fileset refid="files.cve" />
 		</copy>
-		<javac srcdir="${src.samples.dir}" destdir="${compile.samples.dir}" classpathref="classpath.samples" />
-		<javac srcdir="${src.test.dir}" destdir="${compile.test.dir}" classpathref="classpath.test" />
+		<javac srcdir="${src.samples.dir}" destdir="${compile.samples.dir}" classpathref="classpath.samples" source="1.5" />
+		<javac srcdir="${src.test.dir}" destdir="${compile.test.dir}" classpathref="classpath.test" source="1.5" />
 		<copy todir="${compile.test.dir}" filtering="true">
 			<fileset refid="files.properties" />
 			<fileset refid="files.schemas" />
