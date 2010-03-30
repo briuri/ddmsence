@@ -85,8 +85,8 @@ and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is
 
 <h1>Current Progress</h1>
 
-<p><u>03/29/2010</u>: <a href="downloads.jsp">Version 0.9.d</a> is now available for download. This version is believed to be stable, and is intended to be the test candidate
-for v1.0.0.</p>
+<p><u>04/01/2010</u>: <a href="downloads.jsp">Version 1.0.0</a> is now available for download. This stable version is the first official public 
+release.</p>
 
 <ul>
 	<li>The core layers of the DDMS 3.0 Pre-Release specification are fully implemented.</li>
@@ -95,16 +95,15 @@ for v1.0.0.</p>
 	<li>Three sample applications and accompanying tutorials provide an introduction to the library.</li>
 </ul>
 
-<p>I am currently polishing and testing the 0.9.d release, with the expectation that it can be promoted to an official 1.0.0 release in early 
-April. There will be no enhancements added between this release and v1.0.0, although I may correct any defects or add additional unit tests.</p>
-
 <h1>On the Horizon</h1>
 
-<p>Here are some areas which I would like to improve after v1.0.0:</p>
+<p>Here are some areas which I would like to improve in future releases:</p>
 <ul>
 	<li>Supporting DDMS 2.0 (and possibly earlier versions).</li>
 	<li>Adding support for the extensible portions of DDMS components (Person, Organization, Service, Unknown, keyword, category, and the Resource itself).</li>
+	<li>Implementing the security constraints found in the "XML Data Encoding Specification for Information Security Marking Metadata".</li>
 </ul>
+
 <p>Please follow the "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list of defects and enhancements.</p>
 			
 <h1>About the Author</h1>
