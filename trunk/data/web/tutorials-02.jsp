@@ -16,7 +16,7 @@ shows an example of how the Java object model can be built with basic data types
 requiring a server to run). It is not as flashy, but this should make it easier to focus on the important sections of the source code.</p>
 
 <p>The only limitations on this application are that it will not ask you for the "Additional" ICISM security attributes, 
-such as "SCIcontrols" or "SARIdentifier", or SRS Attributes on individual gml:pos elements. There is no good reason for these limitation, other than to make the 
+such as "SCIcontrols" or "SARIdentifier", or SRS Attributes on individual gml:pos elements. There is no good reason for these limitations, other than to make the 
 wizard a little shorter.</p>
 
 <h3>Getting Started</h3>
@@ -48,10 +48,10 @@ next one. This process could be lengthy, so I suggest that you do your first run
 a qualifier and "<code>test</code>" as a value.</p>
 
 <div class="example"><pre>=== ddms:identifier (at least 1 required) ===
-Please enter the qualifier [URI]: :::::
+Please enter the qualifier [testQualifier]: :::::
 Please enter the value [testValue]: test
 [ERROR] /ddms:identifier: Invalid URI (Expected scheme name at index 0: :::::)
-Please enter the qualifier [URI]:</pre></div>
+Please enter the qualifier [testQualifier]:</pre></div>
 <p class="figure">Figure 2. Outsmarting the Wizard</p>
 
 <p>Because the qualifier was an invalid URI, the wizard printed out the error message and then restarted the loop to get your input values. The value, 
@@ -90,7 +90,7 @@ is responsible for one top-level component. For example, here is the definition 
 
 <div class="example"><pre>BUILDERS.put(Identifier.class, new IComponentBuilder() {
    public IDDMSComponent build() throws IOException, InvalidDDMSException {
-      String qualifier = readString("the qualifier [URI]");
+      String qualifier = readString("the qualifier [testQualifier]");
       String value = readString("the value [testValue]");
       return (new Identifier(qualifier, value));
    }		
@@ -158,7 +158,7 @@ the messages of that component and any subcomponents. In this run-through, no wa
 Would you like to save this file? [Y/N]: y
 This Resource will be saved as XML in the data/sample/ directory.
 Please enter a filename: myResource.xml
-File saved at F:\projects\DDMSence\data\sample\myResource.xml .
+File saved at "C:\ddmsence-bin-1.0.0\data\sample\myResource.xml".
 
 You can now open your saved file with the Essentials application.
 The Escort wizard is now finished.</pre></div>
@@ -190,7 +190,7 @@ you called <code>getValidationWarnings()</code> on the Dates component itself, t
 
 <p>If a parent-child hierarchy has some DDMS elements which are not <a href="documentation.jsp#design">implemented as Java objects</a>, the locator string will
 include every element in the hierarchy. For example, a warning in a <code>ddms:medium</code> element will have a locator value of "<code>/ddms:Resource/ddms:format/ddms:Media/ddms:medium</code>"
-even though <code>ddms:Media</code> is not an implemented component (the medium is a property of a Format object in Java terms).</p>
+even though <code>ddms:Media</code> is not an implemented component (the medium is a property on the Format object in the Java implementation).</p>
   
 <h3>Conclusion</h3>
 
