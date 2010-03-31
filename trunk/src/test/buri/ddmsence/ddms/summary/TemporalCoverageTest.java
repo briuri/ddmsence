@@ -55,6 +55,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	private TemporalCoverage testConstructor(boolean expectFailure, Element element) {
 		TemporalCoverage component = null;
 		try {
+			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new TemporalCoverage(element);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -76,7 +77,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	private TemporalCoverage testConstructor(boolean expectFailure, String timePeriodName, String startString, String endString) {
 		TemporalCoverage component = null;
 		try {
-			component = new TemporalCoverage(timePeriodName, startString, endString, null);
+			component = new TemporalCoverage(timePeriodName, startString, endString, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -93,6 +94,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"temporal.TimePeriod\" content=\"").append(TEST_NAME).append("\" />\n");
 		html.append("<meta name=\"temporal.DateStart\" content=\"").append(TEST_START).append("\" />\n");
 		html.append("<meta name=\"temporal.DateEnd\" content=\"").append(TEST_END).append("\" />\n");
+		html.append("<meta name=\"temporal.classification\" content=\"U\" />\n");
+		html.append("<meta name=\"temporal.ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}				
 				
@@ -104,6 +107,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		text.append("Time Period: ").append(TEST_NAME).append("\n");
 		text.append("Date Start: ").append(TEST_START).append("\n");
 		text.append("Date End: ").append(TEST_END).append("\n");
+		text.append("Time Period Classification: U\n");
+		text.append("Time Period ownerProducer: USA\n");
 		return (text.toString());
 	}
 		
@@ -114,7 +119,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:temporalCoverage xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\">\n\t");
+		xml.append("<ddms:temporalCoverage xmlns:ddms=\"").append(DDMS_NAMESPACE);
+		xml.append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t");
 		xml.append("<ddms:TimePeriod>\n\t\t");
 		xml.append("<ddms:name>").append(TEST_NAME).append("</ddms:name>\n\t\t");
 		xml.append("<ddms:start>").append(TEST_START).append("</ddms:start>\n\t\t");

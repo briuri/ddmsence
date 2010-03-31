@@ -56,6 +56,7 @@ public class SourceTest extends AbstractComponentTestCase {
 	private Source testConstructor(boolean expectFailure, Element element) {
 		Source component = null;
 		try {
+			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new Source(element);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -78,7 +79,7 @@ public class SourceTest extends AbstractComponentTestCase {
 	private Source testConstructor(boolean expectFailure, String qualifier, String value, String schemaQualifier, String schemaHref) {
 		Source component = null;
 		try {
-			component = new Source(qualifier, value, schemaQualifier, schemaHref, null);
+			component = new Source(qualifier, value, schemaQualifier, schemaHref, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -96,6 +97,8 @@ public class SourceTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"source.value\" content=\"").append(TEST_VALUE).append("\" />\n");
 		html.append("<meta name=\"source.schema.qualifier\" content=\"").append(TEST_SCHEMA_QUALIFIER).append("\" />\n");
 		html.append("<meta name=\"source.schema.href\" content=\"").append(TEST_SCHEMA_HREF).append("\" />\n");
+		html.append("<meta name=\"source.classification\" content=\"U\" />\n");
+		html.append("<meta name=\"source.ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}			
 	
@@ -108,6 +111,8 @@ public class SourceTest extends AbstractComponentTestCase {
 		text.append("Source Value: ").append(TEST_VALUE).append("\n");
 		text.append("Source Schema Qualifier: ").append(TEST_SCHEMA_QUALIFIER).append("\n");
 		text.append("Source Schema href: ").append(TEST_SCHEMA_HREF).append("\n");
+		text.append("Source Classification: U\n");
+		text.append("Source ownerProducer: USA\n");
 		return (text.toString());
 	}
 	
@@ -116,10 +121,11 @@ public class SourceTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:source xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" ");
+		xml.append("<ddms:source xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ");
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE).append("\" ");
 		xml.append("ddms:schemaQualifier=\"").append(TEST_SCHEMA_QUALIFIER).append("\" ");
-		xml.append("ddms:schemaHref=\"").append(TEST_SCHEMA_HREF).append("\" />");
+		xml.append("ddms:schemaHref=\"").append(TEST_SCHEMA_HREF).append("\" ");
+		xml.append("ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\" />");
 		return (xml.toString());							
 	}
 	

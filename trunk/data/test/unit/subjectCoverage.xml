@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--  Represents a single ddms:subjectCoverage element, for unit testing -->
-<ddms:subjectCoverage xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/">
+<ddms:subjectCoverage xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ICISM="urn:us:gov:ic:ism" ICISM:classification="U" ICISM:ownerProducer="USA">
 	<ddms:Subject>
 		<ddms:keyword ddms:value="DDMSence"/>
 		<ddms:keyword ddms:value="Uri"/>
