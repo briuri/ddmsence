@@ -3,7 +3,7 @@
 	<classpathentry kind="src" output="output/classes/main" path="src/main"/>
 	<classpathentry kind="src" output="output/classes/samples" path="src/samples"/>
 	<classpathentry kind="src" output="output/classes/test" path="src/test"/>
-	<classpathentry kind="lib" path="lib/xom-1.2.4.jar" sourcepath="D:/Temp/libraries/xom-1.2.4-src.zip"/>
+	<classpathentry kind="lib" path="lib/xom-1.2.4.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl-2.9.1.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis-1.3.04.jar"/>
 	<classpathentry kind="lib" path="lib/test/junit-4.8.1.jar"/>
