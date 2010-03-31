@@ -30,7 +30,7 @@ included in each release.</a></li>
 <p>Version <b>1.0.0</b> (4/1/2010) is the first official stable release of DDMSence.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.0.0.zip"><code>ddmsence-bin-1.0.0.zip</code></a></b> (1.9 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.0.0.zip"><code>ddmsence-bin-1.0.0.zip</code></a></b> (1.7 MB)</li>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.0.0.zip"><code>ddmsence-src-1.0.0.zip</code></a></b> (2.3 MB)</li>
 </ul>
 
