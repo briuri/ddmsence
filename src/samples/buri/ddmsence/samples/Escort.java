@@ -739,7 +739,7 @@ public class Escort {
 			try {
 				component = BUILDERS.get(theClass).build();
 			}
-			catch (InvalidDDMSException e) {
+			catch (Exception e) {
 				printError(e);
 			}
 		}
@@ -855,9 +855,14 @@ public class Escort {
 	 * 
 	 * @param e the exception
 	 */
-	private void printError(InvalidDDMSException e) {
-		String prefix = (Util.isEmpty(e.getLocator()) ? "" : e.getLocator() + ": ");
-		println("[ERROR] " + prefix + e.getMessage());
+	private void printError(Exception e) {
+		if (e instanceof InvalidDDMSException) {
+			InvalidDDMSException ide = (InvalidDDMSException) e;
+			String prefix = (Util.isEmpty(ide.getLocator()) ? "" : ide.getLocator() + ": ");
+			println("[ERROR] " + prefix + e.getMessage());
+		}
+		else
+			println("[ERROR]: " + e.getMessage());
 	}
 	
 	/**
