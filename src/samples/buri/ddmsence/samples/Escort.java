@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -398,8 +399,8 @@ public class Escort {
 				String axisLabels = readString("the Polygon's Axis Labels, as a space-delimited string [x y]");
 				String uomLabels = readString("the Polygon's UOM Labels, as a space-delimited string [Meter Meter]");
 				String id = readString("the Polygon's gml:id [testId]");
-				
-				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), Arrays.asList(axisLabels.split(" ")), Arrays.asList(uomLabels.split(" ")));
+								
+				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), asList(axisLabels), asList(uomLabels));
 				return (new Polygon(positions, attr, id));
 			}		
 		});
@@ -412,7 +413,7 @@ public class Escort {
 				String uomLabels = readString("the Point's UOM Labels, as a space-delimited string [Meter Meter]");
 				String id = readString("the Point's gml:id [testId]");
 				
-				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), Arrays.asList(axisLabels.split(" ")), Arrays.asList(uomLabels.split(" ")));
+				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), asList(axisLabels), asList(uomLabels));
 				return (new Point(position, attr, id));
 			}		
 		});
@@ -782,7 +783,19 @@ public class Escort {
 	 */
 	private SecurityAttributes buildSecurityAttributes(String classification, String ownerProducers)
 		throws InvalidDDMSException {
-		return (new SecurityAttributes(classification, Arrays.asList(ownerProducers.split(" ")), null));
+		return (new SecurityAttributes(classification, asList(ownerProducers), null));
+	}
+	
+	/**
+	 * Helper method to convert an XS List into a list of Strings.
+	 * 
+	 * @param string the space-delimited string
+	 * @return the List
+	 */
+	private List<String> asList(String string) {
+		if (Util.isEmpty(string))
+			return Collections.emptyList();
+		return (Arrays.asList(string.split(" ")));
 	}
 	
 	/**
@@ -860,6 +873,7 @@ public class Escort {
 	 * @param e the exception
 	 */
 	private void printError(Exception e) {
+		e.printStackTrace();
 		if (e instanceof InvalidDDMSException) {
 			InvalidDDMSException ide = (InvalidDDMSException) e;
 			String prefix = (Util.isEmpty(ide.getLocator()) ? "" : ide.getLocator() + ": ");
