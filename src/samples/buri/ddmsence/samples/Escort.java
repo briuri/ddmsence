@@ -765,7 +765,7 @@ public class Escort {
 			Serializer serializer = new Serializer(os);
 			serializer.setIndent(3);
 			serializer.write(doc);
-			println("File saved at " + outputFile.getAbsolutePath() + " .");
+			println("File saved at \"" + outputFile.getAbsolutePath() + "\".");
 		}
 		finally {
 			if (os != null)
