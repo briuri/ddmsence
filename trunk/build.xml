@@ -34,7 +34,8 @@
 				<exclude name="${data.dir}/CVEnumISM/**"/>
 				<exclude name="${data.dir}/schemas/**"/>
 				<exclude name="${data.dir}/test/**"/>
-				<exclude name="${data.dir}/web/**"/>		
+				<exclude name="${data.dir}/web/**"/>	
+				<exclude name="lib/test/**"/>
 		    </fileset>
 		</copy>
 		<copy todir="${dist.dir}/ddmsence-bin-${version}" file="${conf.dir}/CHANGES.txt" />
