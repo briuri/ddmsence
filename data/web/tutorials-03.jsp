@@ -11,10 +11,10 @@
 
 <p><u>Escape</u> is a tool that traverses multiple DDMS Resource files and then exposes various statistics about them through the 
 <a href="http://code.google.com/apis/visualization/documentation/gallery.html" target="_new">Google Visualization API</a>. Charts in this sample
-application are limited to non-interactive types, but provide the foundation for using the Flash-based Google charts: it would
+application are non-interactive, but provide the foundation for more complex cases: for example, it would
 be possible to plot Temporal Coverage on an Annotated Timeline, or Geospatial Coverage on Google Maps. While the first two sample applications were 
 designed to teach developers how DDMSence works, the intent of this one is to provide brainstorming ideas for leveraging DDMS in other contexts.</p>
-
+	
 <p>This application would be better suited as a web application, but I have implemented it with Swing, to minimize the amount of overhead required
 to run it.</p>
 
@@ -84,7 +84,8 @@ for (Resource resource : getResources()) {
          }
       }
    }
-}</pre></div>
+}
+return (buildPieGraphURL("DDMS%20Keyword%20Distribution", distribution, PIE_GRAPH));</pre></div>
 <p class="figure">Figure 4. Keyword source code</p>
 
 <p>The source code for this statistic is functionally identical to the source code for MIME Types. We are locating the Subject Coverage component
@@ -100,11 +101,43 @@ up into single words (to make the visualization more exciting).</p>
 
 <ul>
 	<li>There are four date attributes in the <code>ddms:dates</code> element, which apply to the resource being described.</li>
-	<li>If any ddms:temporalCoverage elements are defined, each one may have a date range defined for starting and ending.</li>
+	<li>If any <code>ddms:temporalCoverage</code> elements are defined, each one may have a start date and an end date.</li>
 	<li>The resource record itself has a createDate attribute.</li>
 </ul>
 
-<p>For this visualization, all date locations are checked, and then transformed into xs:year values (the Java pattern "YYYY"). The distribution
+<div class="example"><pre>Distribution distribution = new Distribution();
+for (Resource resource : getResources()) {
+   // Examine the ddms:dates element (optional field with optional attributes)
+   Dates dates = resource.getDates();
+   if (dates != null) {
+      if (dates.getCreated() != null)
+         distribution.incrementCount(String.valueOf(dates.getCreated().getYear()));
+      if (dates.getPosted() != null)
+         distribution.incrementCount(String.valueOf(dates.getPosted().getYear()));
+      if (dates.getValidTil() != null)
+         distribution.incrementCount(String.valueOf(dates.getValidTil().getYear()));
+      if (dates.getInfoCutOff() != null)
+         distribution.incrementCount(String.valueOf(dates.getInfoCutOff().getYear()));
+   }
+   
+   // Resource createDate (required field)
+   distribution.incrementCount(String.valueOf(resource.getCreateDate().getYear()));
+   
+   // ddms:temporalCoverage (optional field)
+   // getStart() returns the date if present. getStartString() returns the XML format or
+   // the two allowed strings, Not Applicable, and Unknown.
+   List<TemporalCoverage> timePeriods = resource.getTemporalCoverages();
+   for (TemporalCoverage timePeriod : timePeriods) {
+      if (timePeriod.getStart() != null)
+         distribution.incrementCount(String.valueOf(timePeriod.getStart().getYear()));
+      if (timePeriod.getEnd() != null)
+         distribution.incrementCount(String.valueOf(timePeriod.getEnd().getYear()));
+   }   
+}
+return (buildPieGraphURL("DDMS%20Date%20Distribution", distribution, PIE_GRAPH));</pre></div>
+<p class="figure">Figure 6. Date source code</p>
+
+<p>For this visualization, all date locations are checked, and then transformed into <code>xs:year</code> values (the Java pattern "YYYY"). The distribution
 is then tracked as it was in the previous two examples. A more useful graph might show just expiration dates or time periods -- I added the additional
 dates to provide more examples of traversing a Resource, and to make the visualization more exciting.</p>
 

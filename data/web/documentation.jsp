@@ -51,7 +51,7 @@ cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;
 ddmsence_classpath=lib/xercesImpl-2.9.1.jar:lib/xml-apis-1.3.04.jar:lib/xom-1.2.4.jar
 ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-1.0.0.jar:lib/ddmsence-samples-1.0.0.jar
 java -cp $ddmsence_classpath buri.ddmsence.samples.Essentials</pre></div>
-<p class="figure">Figure 2. Running from a Linux Command Line</p>
+<p class="figure">Figure 2. Running in Linux</p>
 
 <p>Note: The syntax for setting a classpath in Linux may vary, depending on the shell you are using.</p>
 
@@ -76,7 +76,7 @@ an example of how to create DDMS components from an XML file.</p>
 <h4>Escort</h4>
 
 <p><u>Escort</u> is a step-by-step wizard for building a DDMS Resource from scratch, and then saving it to a file. The source code for this application
-shows an example of how the Java object model can be built with simple data type.</p>
+shows an example of how the Java object model can be built with simple data types.</p>
 
 <ul>
 	<li><a href="tutorials-02.jsp">Tutorial #2: Escort</a></li>
@@ -88,7 +88,7 @@ shows an example of how the Java object model can be built with simple data type
 
 <p><u>Escape</u> is a tool that traverses multiple DDMS Resource files and then exposes various statistics about them through the 
 <a href="http://code.google.com/apis/visualization/documentation/gallery.html" target="_new">Google Visualization API</a>. Charts in this sample
-application are limited to non-interactive visualizations, but provide the foundation for the more complex interactive cases: for example, it would
+application are non-interactive, but provide the foundation for more complex cases: for example, it would
 be possible to plot Temporal Coverage on an Annotated Timeline, or Geospatial Coverage on Google Maps. While the first two sample applications were 
 designed to teach developers how DDMSence works, the intent of this one is to provide brainstorming ideas for leveraging DDMS in other contexts.</p>
 	
