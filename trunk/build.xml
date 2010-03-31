@@ -13,8 +13,8 @@
 				<exclude name="${output.dir}/**"/>				
 		    </fileset>
 		</copy>
-		<copy todir="${dist.dir}/ddmsence-src-${version}" file="${conf.dir}/CHANGES.txt" />
-		<copy todir="${dist.dir}/ddmsence-src-${version}" file="${conf.dir}/LICENSE.txt" />
+		<copy tofile="${dist.dir}/ddmsence-src-${version}/CHANGES.txt" file="${conf.dir}/CHANGES-template.txt" />
+		<copy tofile="${dist.dir}/ddmsence-src-${version}/LICENSE.txt" file="${conf.dir}/LICENSE-template.txt" />
 		<zip destfile="${dist.dir}/ddmsence-src-${version}.zip" basedir="${dist.dir}" includes="ddmsence-src-${version}/**" />
 		<delete quiet="true" dir="${dist.dir}/ddmsence-src-${version}" />
 		
@@ -38,8 +38,8 @@
 				<exclude name="lib/test/**"/>
 		    </fileset>
 		</copy>
-		<copy todir="${dist.dir}/ddmsence-bin-${version}" file="${conf.dir}/CHANGES.txt" />
-		<copy todir="${dist.dir}/ddmsence-bin-${version}" file="${conf.dir}/LICENSE.txt" />
+		<copy tofile="${dist.dir}/ddmsence-bin-${version}/CHANGES.txt" file="${conf.dir}/CHANGES-template.txt" />
+		<copy tofile="${dist.dir}/ddmsence-bin-${version}/LICENSE.txt" file="${conf.dir}/LICENSE-template.txt" />
 		<copy todir="${dist.dir}/ddmsence-bin-${version}/lib">
 			<fileset dir="${jars.dir}" />
 		</copy>
@@ -59,6 +59,7 @@
 		10) Upload web files.
 		11) Commit changes and tag as new release. 
 		12) Announce on Google Groups
+		13) Public Announcements
 		-->
 	</target>
 		
