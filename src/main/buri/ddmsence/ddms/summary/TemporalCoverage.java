@@ -265,6 +265,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		html.append(buildHTMLMeta("temporal.TimePeriod", getTimePeriodName(), false));
 		html.append(buildHTMLMeta("temporal.DateStart", getStartString(), true));
 		html.append(buildHTMLMeta("temporal.DateEnd", getEndString(), true));
+		html.append(getSecurityAttributes().toHTML("temporal"));
 		return (html.toString());
 	}
 		
