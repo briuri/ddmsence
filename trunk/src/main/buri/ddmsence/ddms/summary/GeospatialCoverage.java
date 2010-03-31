@@ -153,7 +153,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			_cachedVerticalExtent = verticalExtent;
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_cachedSecurityAttributes.addTo(coverageElement);
 			setXOMElement(coverageElement, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
