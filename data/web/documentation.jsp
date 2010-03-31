@@ -118,14 +118,17 @@ in the "src"-flavored download. You should be aware of the following sections, w
 
 <h4>Components Deserving an Object</h4>
 
-<p>Not all of the types defined in the DDMS schema are implemented as Java Objects. Many types are defined globally but only used once, or exist merely as wrappers for other components. I have
+<p>Not all of the elements defined in the DDMS schema are implemented as Java Objects. Many elements are defined globally but only used once, or exist merely as wrappers for other components. I have
 followed these rules to determine which components are important enough to deserve a full-fledged Object:</p>
 
 <ul>
 	<li>Elements which are explicitly declared as DDMS Categories in the DDMS documentation are always implemented (<code>ddms:identifier</code>).</li>
 	<li>Elements which merely enclose important data AND which have no special attributes are never implemented (<code>ddms:Media</code>).</li>
 	<li>Data which can be represented as a simple Java type AND which has no special attributes is represented as a simple Java type (<code>ddms:email</code>).</li>
-	<li>Attributes are generally implemented as properties on an Object. The exceptions to this are the ICISM Attribute Group, which decorates many DDMS components, and the SRS Attribute Group, which decorates components in the GML profile.</li>
+	<li>Attributes are generally implemented as properties on an Object. The exceptions to this are the 
+		<a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/security/SecurityAttributes.html">ICISM Attribute Group</a>, 
+		which decorates many DDMS components, and the <a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">SRS Attribute Group</a>,
+		which decorates components in the GML profile.</li>
 </ul>
 
 <h4>Empty String vs. No Value</h4>
@@ -163,10 +166,10 @@ The following convention is used to provide some consistency:</p>
 <ul>
 	<li>On constructors which build components from raw data:</li>
 		<ul>
-			<li>Information about the enclosing component that may affect this new component comes first (such as the producerType of an Organization).</li>
-			<li>The data or components needed to construct any nested elements comes next (such as the list of Keywords in a SubjectCoverage component).</li>
-			<li>The data needed to construct any attributes comes next (such as the ICISM SecurityAttributes).</li>
-			<li>Any remaining information that DDMSence needs comes last (such as the boolean flag on a PostalAddress which toggles between states and provinces).</li>
+			<li>Information about the enclosing component that may affect this new component comes first (such as the producerType of an <a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/resource/Organization.html">Organization</a>).</li>
+			<li>The data or components needed to construct any nested elements comes next (such as the list of Keywords in a <a href="http://ddmsence.urizone.net/docs/buri/ddmsence/ddms/summary/SubjectCoverage.html">SubjectCoverage</a> component).</li>
+			<li>The data needed to construct any attributes comes next (such as the <a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/security/SecurityAttributes.html">ICISM SecurityAttributes</a>).</li>
+			<li>Any remaining information that DDMSence needs comes last (such as the boolean flag on a <a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/summary/PostalAddress.html">PostalAddress</a> which toggles between states and provinces).</li>
 		</ul>
 	<li>On constructors which build components from XML files, a XOM element is generally the only parameter. Additional information is implicitly
 	loaded from the XOM element. </li>
