@@ -68,7 +68,8 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	private RelatedResources testConstructor(boolean expectFailure, Element element) {
 		RelatedResources component = null;
 		try {
-			component = new RelatedResources(element);
+			SecurityAttributesTest.getFixture(false).addTo(element);
+			component = new RelatedResources(element);			
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -89,7 +90,7 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	private RelatedResources testConstructor(boolean expectFailure, List<RelatedResource> resources, String relationship, String direction) {
 		RelatedResources component = null;
 		try {
-			component = new RelatedResources(resources, relationship, direction, null);
+			component = new RelatedResources(resources, relationship, direction, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -108,7 +109,9 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"RelatedResource.qualifier\" content=\"http://purl.org/dc/terms/URI\" />\n");
 		html.append("<meta name=\"RelatedResource.value\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
 		html.append("<meta name=\"Link.type\" content=\"locator\" />\n");
-		html.append("<meta name=\"Link.href\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");		
+		html.append("<meta name=\"Link.href\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
+		html.append("<meta name=\"RelatedResources.classification\" content=\"U\" />\n");
+		html.append("<meta name=\"RelatedResources.ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -123,6 +126,9 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 		text.append("Related Resource value: http://en.wikipedia.org/wiki/Tank\n");
 		text.append("Link type: locator\n");
 		text.append("Link href: http://en.wikipedia.org/wiki/Tank\n");
+		text.append("Related Resources Classification: U\n");
+		text.append("Related Resources ownerProducer: USA\n");
+
 		return (text.toString());
 	}
 	
@@ -133,8 +139,9 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:relatedResources xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" ");
-		xml.append("ddms:relationship=\"").append(TEST_RELATIONSHIP).append("\" ddms:direction=\"").append(TEST_DIRECTION).append("\">\n\t");
+		xml.append("<ddms:relatedResources xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ");
+		xml.append("ddms:relationship=\"").append(TEST_RELATIONSHIP).append("\" ddms:direction=\"");
+		xml.append(TEST_DIRECTION).append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t");
 		xml.append("<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n\t\t");
 		xml.append("<ddms:link xmlns:xlink=\"").append(XLINK_NAMESPACE).append("\" xlink:type=\"locator\" xlink:href=\"http://en.wikipedia.org/wiki/Tank\" />\n\t");
 		xml.append("</ddms:RelatedResource>\n");

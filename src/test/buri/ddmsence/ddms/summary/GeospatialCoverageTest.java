@@ -46,6 +46,10 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	private final VerticalExtent TEST_EXTENT;
 	private final SRSAttributes TEST_SRS_ATTRIBUTES;
 	
+	private static final String HTML_ICISM = "<meta name=\"geospatial.classification\" content=\"U\" />\n"
+		+ "<meta name=\"geospatial.ownerProducer\" content=\"USA\" />\n";
+	private static final String TEXT_ICISM = "Geospatial Classification: U\nGeospatial ownerProducer: USA\n";
+		
 	/**
 	 * Constructor
 	 */
@@ -72,6 +76,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	private GeospatialCoverage testConstructor(boolean expectFailure, Element element) {
 		GeospatialCoverage component = null;
 		try {
+			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new GeospatialCoverage(element);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -96,7 +101,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 			PostalAddress postalAddress, VerticalExtent verticalExtent) {
 		GeospatialCoverage component = null;
 		try {
-			component = new GeospatialCoverage(geographicIdentifier, boundingBox, boundingGeometry, postalAddress, verticalExtent, null);
+			component = new GeospatialCoverage(geographicIdentifier, boundingBox, boundingGeometry, postalAddress, verticalExtent, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -111,6 +116,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
 		html.append(TEST_GEO_ID.toHTML());
+		html.append(HTML_ICISM);
 		return (html.toString());
 	}
 	
@@ -120,6 +126,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
 		text.append(TEST_GEO_ID.toText());
+		text.append(TEXT_ICISM);
 		return (text.toString());
 	}
 
@@ -130,7 +137,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:geospatialCoverage xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\">\n\t");
+		xml.append("<ddms:geospatialCoverage xmlns:ddms=\"").append(DDMS_NAMESPACE);
+		xml.append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t");
 		xml.append("<ddms:GeospatialExtent>\n\t\t<ddms:geographicIdentifier>\n\t\t\t");
 		xml.append("<ddms:facilityIdentifier ddms:beNumber=\"1234DD56789\" ddms:osuffix=\"DD123\" />\n\t\t");
 		xml.append("</ddms:geographicIdentifier>\n\t</ddms:GeospatialExtent>\n</ddms:geospatialCoverage>");
@@ -357,16 +365,16 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		
 		component = testConstructor(WILL_SUCCEED, null, TEST_BOX, null, null, null);
-		assertEquals(TEST_BOX.toHTML(), component.toHTML());
+		assertEquals(TEST_BOX.toHTML() + HTML_ICISM, component.toHTML());
 
 		component = testConstructor(WILL_SUCCEED, null, null, TEST_GEOMETRY, null, null);
-		assertEquals(TEST_GEOMETRY.toHTML(), component.toHTML());
+		assertEquals(TEST_GEOMETRY.toHTML() + HTML_ICISM, component.toHTML());
 		
 		component = testConstructor(WILL_SUCCEED, null, null, null, TEST_ADDRESS, null);
-		assertEquals(TEST_ADDRESS.toHTML(), component.toHTML());
+		assertEquals(TEST_ADDRESS.toHTML() + HTML_ICISM, component.toHTML());
 		
 		component = testConstructor(WILL_SUCCEED, null, null, null, null, TEST_EXTENT);
-		assertEquals(TEST_EXTENT.toHTML(), component.toHTML());
+		assertEquals(TEST_EXTENT.toHTML() + HTML_ICISM, component.toHTML());
 	}	
 	
 	public void testTextOutput() {
@@ -377,16 +385,16 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		assertEquals(getExpectedTextOutput(), component.toText());
 		
 		component = testConstructor(WILL_SUCCEED, null, TEST_BOX, null, null, null);
-		assertEquals(TEST_BOX.toText(), component.toText());
+		assertEquals(TEST_BOX.toText() + TEXT_ICISM, component.toText());
 
 		component = testConstructor(WILL_SUCCEED, null, null, TEST_GEOMETRY, null, null);
-		assertEquals(TEST_GEOMETRY.toText(), component.toText());
+		assertEquals(TEST_GEOMETRY.toText() + TEXT_ICISM, component.toText());
 		
 		component = testConstructor(WILL_SUCCEED, null, null, null, TEST_ADDRESS, null);
-		assertEquals(TEST_ADDRESS.toText(), component.toText());
+		assertEquals(TEST_ADDRESS.toText() + TEXT_ICISM, component.toText());
 		
 		component = testConstructor(WILL_SUCCEED, null, null, null, null, TEST_EXTENT);
-		assertEquals(TEST_EXTENT.toText(), component.toText());
+		assertEquals(TEST_EXTENT.toText() + TEXT_ICISM, component.toText());
 	}
 	
 	public void testXMLOutput() {

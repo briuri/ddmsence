@@ -54,6 +54,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	private VirtualCoverage testConstructor(boolean expectFailure, Element element) {
 		VirtualCoverage component = null;
 		try {
+			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new VirtualCoverage(element);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -74,7 +75,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	private VirtualCoverage testConstructor(boolean expectFailure, String address, String protocol) {
 		VirtualCoverage component = null;
 		try {
-			component = new VirtualCoverage(address, protocol, null);
+			component = new VirtualCoverage(address, protocol, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -90,6 +91,8 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"virtual.address\" content=\"").append(TEST_ADDRESS).append("\" />\n");
 		html.append("<meta name=\"virtual.networkProtocol\" content=\"").append(TEST_PROTOCOL).append("\" />\n");
+		html.append("<meta name=\"virtual.classification\" content=\"U\" />\n");
+		html.append("<meta name=\"virtual.ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -100,6 +103,8 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		StringBuffer text = new StringBuffer();
 		text.append("Virtual address: ").append(TEST_ADDRESS).append("\n");
 		text.append("Network Protocol: ").append(TEST_PROTOCOL).append("\n");
+		text.append("Virtual Classification: U\n");
+		text.append("Virtual ownerProducer: USA\n");
 		return (text.toString());
 	}
 	
@@ -108,8 +113,8 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:virtualCoverage xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" ");
-		xml.append("ddms:address=\"").append(TEST_ADDRESS).append("\" ddms:protocol=\"").append(TEST_PROTOCOL).append("\" />");
+		xml.append("<ddms:virtualCoverage xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ");
+		xml.append("ddms:address=\"").append(TEST_ADDRESS).append("\" ddms:protocol=\"").append(TEST_PROTOCOL).append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\" />");
 		return (xml.toString());
 	}
 	

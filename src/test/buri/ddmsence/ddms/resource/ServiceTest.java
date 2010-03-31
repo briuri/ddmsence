@@ -66,6 +66,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 		try {
 			Element producerElement = Util.buildDDMSElement(TEST_PRODUCER_TYPE, null);
 			producerElement.appendChild(new Element(element));
+			SecurityAttributesTest.getFixture(false).addTo(producerElement);
 			component = new Service(producerElement);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -86,7 +87,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 	private Service testConstructor(boolean expectFailure, List<String> names, List<String> phones, List<String> emails) {
 		Service component = null;
 		try {
-			component = new Service(TEST_PRODUCER_TYPE, names, phones, emails, null);
+			component = new Service(TEST_PRODUCER_TYPE, names, phones, emails, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -107,6 +108,8 @@ public class ServiceTest extends AbstractComponentTestCase {
 			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".phone\" content=\"").append(phone).append("\" />\n");
 		for (String email: TEST_EMAILS)
 			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".email\" content=\"").append(email).append("\" />\n");
+		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".classification\" content=\"U\" />\n");
+		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 	
@@ -122,6 +125,8 @@ public class ServiceTest extends AbstractComponentTestCase {
 			text.append("Phone Number: ").append(phone).append("\n");
 		for (String email: TEST_EMAILS)
 			text.append("Email: ").append(email).append("\n");
+		text.append(Util.capitalize(TEST_PRODUCER_TYPE)).append(" Classification: U\n");
+		text.append(Util.capitalize(TEST_PRODUCER_TYPE)).append(" ownerProducer: USA\n");
 		return (text.toString());
 	}
 	
@@ -132,7 +137,8 @@ public class ServiceTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\"><ddms:Service>\n");
+		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" ");
+		xml.append("xmlns:ICISM=\"urn:us:gov:ic:ism\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"><ddms:Service>\n");
 		for (String name: TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
 		for (String phone: TEST_PHONES)

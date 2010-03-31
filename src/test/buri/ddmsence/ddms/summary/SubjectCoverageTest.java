@@ -62,6 +62,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	private SubjectCoverage testConstructor(boolean expectFailure, Element element) {
 		SubjectCoverage component = null;
 		try {
+			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new SubjectCoverage(element);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -82,7 +83,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	private SubjectCoverage testConstructor(boolean expectFailure, List<Keyword> keywords, List<Category> categories) {
 		SubjectCoverage component = null;
 		try {
-			component = new SubjectCoverage(keywords, categories, null);
+			component = new SubjectCoverage(keywords, categories, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -101,6 +102,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"subject.category.qualifier\" content=\"urn:buri:ddmsence:categories\" />\n");
 		html.append("<meta name=\"subject.category.code\" content=\"DDMS\" />\n");
 		html.append("<meta name=\"subject.category.label\" content=\"DDMS\" />\n");
+		html.append("<meta name=\"subject.classification\" content=\"U\" />\n");
+		html.append("<meta name=\"subject.ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -114,6 +117,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		text.append("Category Qualifier: urn:buri:ddmsence:categories\n");
 		text.append("Category Code: DDMS\n");
 		text.append("Category Label: DDMS\n");
+		text.append("Subject Classification: U\n");
+		text.append("Subject ownerProducer: USA\n");
 		return (text.toString());
 	}
 	
@@ -124,7 +129,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subjectCoverage xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\">\n\t<ddms:Subject>\n");
+		xml.append("<ddms:subjectCoverage xmlns:ddms=\"").append(DDMS_NAMESPACE);
+		xml.append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t<ddms:Subject>\n");
 		xml.append("\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
 		xml.append("\t\t<ddms:keyword ddms:value=\"Uri\" />\n");
 		xml.append("\t\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ddms:label=\"DDMS\" />\n");

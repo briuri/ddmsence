@@ -71,6 +71,7 @@ public class PersonTest extends AbstractComponentTestCase {
 		try {
 			Element producerElement = Util.buildDDMSElement(TEST_PRODUCER_TYPE, null);
 			producerElement.appendChild(new Element(element));
+			SecurityAttributesTest.getFixture(false).addTo(producerElement);
 			component = new Person(producerElement);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -95,7 +96,7 @@ public class PersonTest extends AbstractComponentTestCase {
 		List<String> phones, List<String> emails) {
 		Person component = null;
 		try {
-			component = new Person(TEST_PRODUCER_TYPE, surname, names, userID, affiliation, phones, emails, null);
+			component = new Person(TEST_PRODUCER_TYPE, surname, names, userID, affiliation, phones, emails, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -116,6 +117,8 @@ public class PersonTest extends AbstractComponentTestCase {
 			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".phone\" content=\"").append(phone).append("\" />\n");
 		for (String email: TEST_EMAILS)
 			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".email\" content=\"").append(email).append("\" />\n");
+		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".classification\" content=\"U\" />\n");
+		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".ownerProducer\" content=\"USA\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".surname\" content=\"").append(TEST_SURNAME).append("\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".userid\" content=\"").append(TEST_USERID).append("\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".affiliation\" content=\"").append(TEST_AFFILIATION).append("\" />\n");
@@ -134,6 +137,8 @@ public class PersonTest extends AbstractComponentTestCase {
 			text.append("Phone Number: ").append(phone).append("\n");
 		for (String email: TEST_EMAILS)
 			text.append("Email: ").append(email).append("\n");
+		text.append(Util.capitalize(TEST_PRODUCER_TYPE)).append(" Classification: U\n");
+		text.append(Util.capitalize(TEST_PRODUCER_TYPE)).append(" ownerProducer: USA\n");
 		text.append("Surname: ").append(TEST_SURNAME).append("\n");
 		text.append("UserID: ").append(TEST_USERID).append("\n");
 		text.append("Affiliation: ").append(TEST_AFFILIATION).append("\n");
@@ -147,7 +152,8 @@ public class PersonTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\"><ddms:Person>\n");
+		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" ");
+		xml.append("xmlns:ICISM=\"urn:us:gov:ic:ism\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"><ddms:Person>\n");
 		for (String name: TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
 		xml.append("\t<ddms:surname>").append(TEST_SURNAME).append("</ddms:surname>\n");
