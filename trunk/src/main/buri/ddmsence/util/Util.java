@@ -307,7 +307,7 @@ public class Util {
 	 */
 	public static void requireValidNCName(String name) throws InvalidDDMSException {
 		try {
-			Util.requireDDMSValue("name", name);
+			Util.requireDDMSValue("test NCName", name);
 			new Element(name);
 		}
 		catch (IllegalNameException e) {
