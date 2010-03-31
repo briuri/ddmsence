@@ -83,7 +83,7 @@ this library.</p>
 and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is being released under the GNU Lesser General Public License 
 (<a href="license.jsp">LGPL</a>).</p>
 
-<h1>Current Progress</h1>
+<h1>Current Release</h1>
 
 <p><u>04/01/2010</u>: <a href="downloads.jsp">Version 1.0.0</a> is now available for download. This stable version is the first official public 
 release.</p>
@@ -92,7 +92,7 @@ release.</p>
 	<li>The core layers of the DDMS 3.0 Pre-Release specification are fully implemented.</li>
 	<li>Validation of DDMS components supports both warnings and errors.</li>
 	<li>ICISM security attributes are validated against their Controlled Vocabulary Enumerations, as defined by the Intelligence Community.</li>
-	<li>Three sample applications and accompanying tutorials provide an introduction to the library.</li>
+	<li>Three sample applications and accompanying <a href="documentation.jsp#samples">tutorials</a> provide an introduction to the library.</li>
 </ul>
 
 <h1>On the Horizon</h1>
@@ -101,18 +101,19 @@ release.</p>
 <ul>
 	<li>Supporting DDMS 2.0 (and possibly earlier versions).</li>
 	<li>Adding support for the extensible portions of DDMS components (Person, Organization, Service, Unknown, keyword, category, and the Resource itself).</li>
-	<li>Implementing the security constraints found in the "XML Data Encoding Specification for Information Security Marking Metadata".</li>
+	<li>Implementing the security constraints found in the IC's "XML Data Encoding Specification for Information Security Marking Metadata" document.</li>
 </ul>
 
-<p>Please follow the "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list of defects and enhancements.</p>
+<p>Please follow the "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list
+ of enhancements under consideration.</p>
 			
 <h1>About the Author</h1>
 
 <p><img src="./images/BU.jpg" width="73" height="100" title="BU" align="left" />
-<b>Brian Uri!</b> is a software engineer at <a href="http://www.fgm.com/" target="_new">FGM, Inc.</a> in Reston, VA. He has been a member
+<b>Brian Uri!</b> is a software engineer at <a href="http://www.fgm.com/" target="_new">FGM, Inc.</a> in Reston, Virginia. He has been a member
 of the <a href="http://metadata.dod.mil/" target="_new">DoD Metadata Registry</a> team since 2004, and is currently a
-technical lead on that project. DDMSence grew out of the author's desire to gain more practical XML Schema experience and 
-an unusually large amount of free time.</p>
+technical lead on that project. DDMSence grew out of the author's desire to gain more practical XML Schema experience, to write something useful
+which had never been done before, and an unusually large amount of free time.</p>
 
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>
