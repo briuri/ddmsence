@@ -93,6 +93,7 @@
 			<format property="javadoc.time" pattern="MM/dd/yyyy hh:mm aa" />
 		</tstamp>
 		<javadoc packagenames="buri.ddmsence.*" sourcepath="${src.main.dir}" destdir="${docs.dir}" classpathref="classpath.compile"
+			noqualifier="java.*"
 			overview="${conf.dir}/javadoc-overview.html"
             use="true" splitindex="false"
             windowtitle="DDMSence ${version} API"
