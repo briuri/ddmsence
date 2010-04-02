@@ -97,9 +97,8 @@ release.</p>
 
 <h1>On the Horizon</h1>
 
-<p>Here are some areas which I would like to improve in future releases:</p>
+<p>I am currently working on supporting DDMS 2.0 for the next release. Among the issues I'm also considering for the future:</p>
 <ul>
-	<li>Supporting DDMS 2.0 (and possibly earlier versions).</li>
 	<li>Adding support for the extensible portions of DDMS components (Person, Organization, Service, Unknown, keyword, category, and the Resource itself).</li>
 	<li>Implementing the security constraints found in the IC's "XML Data Encoding Specification for Information Security Marking Metadata" document.</li>
 </ul>
