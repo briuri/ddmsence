@@ -74,7 +74,7 @@ a List of DDMS components. The name of the getter will be a capitalized version 
 for (Resource resource : getResources()) {
    // Check any records that have a keyword (subjectCoverage is required)
    if (!resource.getSubjectCoverage().getKeywords().isEmpty()) {
-      List<Keyword> keywords = resource.getSubjectCoverage().getKeywords();
+      List&lt;Keyword&gt; keywords = resource.getSubjectCoverage().getKeywords();
       // Record the counts for each keyword's usage
       for (Keyword keyword : keywords) {
          // Split multiword keywords.
@@ -126,7 +126,7 @@ for (Resource resource : getResources()) {
    // ddms:temporalCoverage (optional field)
    // getStart() returns the date if present. getStartString() returns the XML format or
    // the two allowed strings, Not Applicable, and Unknown.
-   List<TemporalCoverage> timePeriods = resource.getTemporalCoverages();
+   List&lt;TemporalCoverage&gt; timePeriods = resource.getTemporalCoverages();
    for (TemporalCoverage timePeriod : timePeriods) {
       if (timePeriod.getStart() != null)
          distribution.incrementCount(String.valueOf(timePeriod.getStart().getYear()));

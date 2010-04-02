@@ -16,6 +16,7 @@
 	<li><a href="#samples">Sample Applications</a></li>
 	<li><a href="#javadoc">JavaDoc API Documentation</a></li>
 	<li><a href="#design">Design Decisions</a></li>
+	<li><a href="#tips">Advanced Tips</a></li>
 	<li><a href="#contributors">Contributors</a></li>
 </ul>
 
@@ -131,6 +132,14 @@ followed these rules to determine which components are important enough to deser
 		which decorates components in the GML profile.</li>
 </ul>
 
+<h4>Producers and Producer Entities</h4>
+
+<p>In DDMS terms, there are producer roles (like "creator") and producer entities (like "Organization"). The DDMS schema models the relationship between
+the two as "a producer role which is filled by some entity". In the Java object model, this hierarchy is simplified as "a producer entity which fills 
+some role". The producer entity is modelled as an Object, and the producer role it is filling is a property on that Object. This design decision does not 
+affect any output -- it is only intended to make the producer hierarchy easier to understand on the Java side. I tried modeling producers both ways,
+and the approach I chose seemed more understandable from an object-oriented perspective.</p> 
+
 <h4>Empty String vs. No Value</h4>
 
 <p>When analyzing <code>xs:string</code>-based components, DDMSence treats the absence of some element/attribute in the same manner as it would treat that element/attribute if it were
@@ -144,14 +153,6 @@ resulting data is not logical. To provide some consistency in this library, I ha
 	<li>If the DDMS specification marks a component as Optional, DDMSence will never be stricter than the DDMS schema. This could result in illogical constructs
 	that are legal according to the schema, but I wanted to minimize the cases where this library might interfere with existing records.</li>
 </ul>
-
-<h4>Producers and Producer Entities</h4>
-
-<p>In DDMS terms, there are producer roles (like "creator") and producer entities (like "Organization"). The DDMS schema models the relationship between
-the two as "a producer role which is filled by some entity". In the Java object model, this hierarchy is simplified as "a producer entity which fills 
-some role". The producer entity is modelled as an Object, and the producer role it is filling is a property on that Object. This design decision does not 
-affect any output -- it is only intended to make the producer hierarchy easier to understand on the Java side. I tried modeling producers both ways,
-and the approach I chose seemed more understandable from an object-oriented perspective.</p> 
 
 <h4>Immutability</h4>
 
@@ -178,6 +179,76 @@ The following convention is used to provide some consistency:</p>
 <h4>Thread Safety</h4>
 
 <p>Other than the immutability of objects, no special effort went into making DDMSence thread-safe, and no testing was done on its behavior in multithreaded environments.</p>
+
+<a name="tips"></a><h3>Advanced Tips</h3>
+
+<h4>ICISM Security Attributes</h4>
+
+<p>
+ICISM security attributes are defined in the Intelligence Community's "XML Data Encoding Specification for Information Security Marking Metadata" document (DES) and
+implemented in the <a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/security/SecurityAttributes.html">SecurityAttributes</a> class. This class encapsulates
+the ICISM attributes which can decorate various DDMS components, such as <code>ddms:Resource</code> or <code>ddms:security</code>. The constructor which builds
+the attributes from a XOM element will simply load these attributes from the element itself. The constructor which builds the attributes from raw data is defined as:
+
+<div class="example"><pre>public SecurityAttributes(String classification, List&lt;String&gt; ownerProducers, Map&lt;String,String&gt; otherAttributes)</pre></div>
+<p class="figure">Figure 3. SecurityAttributes constructor</p>
+
+<p>Because the <code>classification</code> and <code>ownerProducers</code> are the most commonly referenced attributes (especially for Unclassified metadata) they are explicit parameters. Any other
+attribute can be added in a String-based map called <code>otherAttributes</code>. If an attribute is repeated, the last one in the list is used, and if an attribute does not match an
+expected attribute name, it is ignored. Here is an example which creates Confidential markings and puts them on a <code>ddms:title</code> element:</p>
+
+<div class="example"><pre>List&lt;String&gt; ownerProducers = new ArrayList&lt;String&gt;();
+ownerProducers.add("USA");
+ownerProducers.add("AUS");
+Map&lt;String, String&gt; otherAttributes = new HashMap&lt;String, String&gt;();
+otherAttributes.put("SCIcontrols", "HCS"); // This will be ignored, because there is a later duplicate.
+otherAttributes.put("SCIcontrols", "SI");
+otherAttributes.put("SARIdentifier", "SAR-USA");
+otherAttributes.put("classification", "U"); // This will be ignored, because the "classification" parameter takes precedence.
+SecurityAttributes security = new SecurityAttributes("C", ownerProducers, otherAttributes);
+Title title = new Title("My Confidential Notes", security);
+System.out.println(title.toXML());/pre></div>
+<p class="figure">Figure 4. Code to generate SecurityAttributes</p>
+
+<div class="example"><pre>&lt;ddms:title xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ICISM="urn:us:gov:ic:ism" 
+   ICISM:classification="C" ICISM:ownerProducer="USA AUS" ICISM:SCIcontrols="SI" ICISM:SARIdentifier="SAR-USA"&gt;
+   My Confidential Notes
+&lt;/ddms:title&gt;</pre></div>
+<p class="figure">Figure 5. The resultant XML element with security attributes</p>
+
+<p>The values assigned to some attributes must come from the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/">Controlled Vocabulary Enumerations</a>
+defined by the Intelligence Community. The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today.
+I would like to add this level of validation after the IC has finalized version 2 of the DES.</p>
+
+<h4>SRS Attributes</h4>
+
+<p>Spatial Reference System (SRS) attributes are defined in the DDMS' GML Profile and implemented as an <a href="<a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">SRSAttributes</a> class.
+They can be applied to <code>gml:Point</code>, <code>gml:Polygon</code>, and <code>gml:pos</code>.</p>
+
+<div class="example"><pre>SRSAttributes(String srsName, Integer srsDimension, List&lt;String&gt; axisLabels, List&lt;String&gt; uomLabels)</pre></div>
+<p class="figure">Figure 6. SRSAttributes constructor</p>
+
+<p>Here is an example which creates SRS attributes on a <code>gml:pos</code> element:</p>
+
+<div class="example"><pre>List&lt;String&gt; axisLabels = new ArrayList&lt;String&gt;();
+axisLabels.add("X");
+axisLabels.add("Y");
+List&lt;String&gt; uomLabels = new ArrayList&lt;String&gt;();
+uomLabels.add("Meter");
+uomLabels.add("Meter");
+SRSAttributes srsAttributes = new SRSAttributes("http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D", new Integer(10), axisLabels, uomLabels);
+List&lt;Double&gt; coordinates = new ArrayList&lt;Double&gt;();
+coordinates.add(new Double(32.1));
+coordinates.add(new Double(40.1));
+Position position = new Position(coordinates, srsAttributes);
+System.out.println(position.toXML());</pre></div>
+<p class="figure">Figure 7. Code to generate SRSAttributes</p>
+
+<div class="example"><pre>&lt;gml:pos srsName="http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D" srsDimension="10" 
+   axisLabels="X Y" uomLabels="Meter Meter"&gt;32.1 40.1&lt;/gml:pos&gt;</pre></div>
+<p class="figure">Figure 8. The resultant XML element with SRS attributes</p>
+  
+<p>Please note that the SRSAttributes do not belong in any XML namespace -- this is correct according to the DDMS GML Profile.</p>
 
 <a name="contributors"></a><h3>Contributors</h3>
 
