@@ -103,7 +103,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public ResourceTest() throws InvalidDDMSException {
-		super("resource.xml");
+		super("3.0/resource.xml");
 		TEST_IDENTIFIER = new Identifier("URI", "urn:buri:ddmsence:testIdentifier");
 		TEST_TITLE = new Title("DDMSence", SecurityAttributesTest.getFixture(false));
 		TEST_SUBTITLE = new Subtitle("Version 0.1", SecurityAttributesTest.getFixture(false));

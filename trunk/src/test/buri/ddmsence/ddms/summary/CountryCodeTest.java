@@ -41,7 +41,7 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public CountryCodeTest() {
-		super("countryCode.xml");
+		super("3.0/countryCode.xml");
 	}
 	
 	/**

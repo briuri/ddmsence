@@ -52,7 +52,7 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public RelatedResourcesTest() throws InvalidDDMSException {
-		super("relatedResources.xml");
+		super("3.0/relatedResources.xml");
 		TEST_LINKS = new ArrayList<Link>();
 		TEST_LINKS.add(new Link("http://en.wikipedia.org/wiki/Tank", null, null, null));
 		TEST_RESOURCES = new ArrayList<RelatedResource>();

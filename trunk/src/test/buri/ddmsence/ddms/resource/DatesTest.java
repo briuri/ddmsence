@@ -42,7 +42,7 @@ public class DatesTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public DatesTest() {
-		super("dates.xml");
+		super("3.0/dates.xml");
 	}
 	
 	/**

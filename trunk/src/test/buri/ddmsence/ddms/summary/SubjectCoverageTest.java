@@ -47,7 +47,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public SubjectCoverageTest() throws InvalidDDMSException {
-		super("subjectCoverage.xml");
+		super("3.0/subjectCoverage.xml");
 		TEST_KEYWORDS.add(new Keyword("DDMSence"));
 		TEST_KEYWORDS.add(new Keyword("Uri"));
 		TEST_CATEGORIES.add(new Category("urn:buri:ddmsence:categories", "DDMS", "DDMS"));

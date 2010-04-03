@@ -51,7 +51,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public UnknownTest() {
-		super("unknown.xml");
+		super("3.0/unknown.xml");
 	}
 	
 	/**

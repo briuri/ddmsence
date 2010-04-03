@@ -43,7 +43,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public TemporalCoverageTest() {
-		super("temporalCoverage.xml");
+		super("3.0/temporalCoverage.xml");
 	}
 	
 	/**

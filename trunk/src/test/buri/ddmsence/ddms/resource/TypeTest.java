@@ -40,7 +40,7 @@ public class TypeTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public TypeTest() {
-		super("type.xml");
+		super("3.0/type.xml");
 	}
 	
 	/**

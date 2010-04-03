@@ -44,7 +44,7 @@ public class FormatTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public FormatTest() throws InvalidDDMSException {
-		super("format.xml");
+		super("3.0/format.xml");
 		TEST_EXTENT = new MediaExtent("sizeBytes", "75000");
 	}
 	

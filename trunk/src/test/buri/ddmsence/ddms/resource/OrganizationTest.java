@@ -53,7 +53,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public OrganizationTest() {
-		super("organization.xml");
+		super("3.0/organization.xml");
 	}
 	
 	/**

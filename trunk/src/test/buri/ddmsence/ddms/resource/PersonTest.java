@@ -56,7 +56,7 @@ public class PersonTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public PersonTest() {
-		super("person.xml");
+		super("3.0/person.xml");
 	}
 	
 	/**

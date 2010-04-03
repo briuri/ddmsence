@@ -48,7 +48,7 @@ public class PositionTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public PositionTest() throws InvalidDDMSException {
-		super("position.xml", GML_NAMESPACE, GML_XSD);
+		super("3.0/position.xml", GML_NAMESPACE, GML_XSD);
 		TEST_SRS_ATTRIBUTES = SRSAttributesTest.getFixture();
 	}
 	

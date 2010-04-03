@@ -36,7 +36,7 @@ public class RightsTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public RightsTest() {
-		super("rights.xml");
+		super("3.0/rights.xml");
 	}
 	
 	/**

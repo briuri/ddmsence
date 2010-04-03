@@ -42,7 +42,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public VirtualCoverageTest() {
-		super("virtualCoverage.xml");
+		super("3.0/virtualCoverage.xml");
 	}
 	
 	/**

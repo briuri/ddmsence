@@ -46,7 +46,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public BoundingGeometryTest() throws InvalidDDMSException {
-		super("boundingGeometry.xml");
+		super("3.0/boundingGeometry.xml");
 		TEST_SRS_ATTRIBUTES = SRSAttributesTest.getFixture();
 		List<Position> positions = new ArrayList<Position>();
 		positions.add(new Position(PolygonTest.TEST_COORDS_1, null));

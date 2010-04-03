@@ -39,7 +39,7 @@ public class KeywordTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public KeywordTest() {
-		super("keyword.xml");
+		super("3.0/keyword.xml");
 	}
 	
 	/**
