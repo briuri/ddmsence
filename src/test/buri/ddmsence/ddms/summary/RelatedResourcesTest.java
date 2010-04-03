@@ -140,7 +140,7 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:relatedResources xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ");
+		xml.append("<ddms:relatedResources xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ");
 		xml.append("ddms:relationship=\"").append(TEST_RELATIONSHIP).append("\" ddms:direction=\"");
 		xml.append(TEST_DIRECTION).append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t");
 		xml.append("<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n\t\t");

@@ -37,7 +37,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
  */
 public class UtilTest extends TestCase {
 		
-	protected static final String TEST_NAMESPACE = DDMSVersion.getCurrentNamespace();
+	protected static final String TEST_NAMESPACE = DDMSVersion.getCurrentVersion().getNamespace();
 	
 	public void testGetNonNullStringNull() {
 		assertEquals("", Util.getNonNullString(null));
@@ -697,7 +697,7 @@ public class UtilTest extends TestCase {
 	}
 	
 	public void testBuildAttribute() {
-		Attribute attribute = Util.buildAttribute("ddms", "test", DDMSVersion.getCurrentNamespace(), "testValue");
+		Attribute attribute = Util.buildAttribute("ddms", "test", DDMSVersion.getCurrentVersion().getNamespace(), "testValue");
 		assertNotNull(attribute);
 		assertEquals("test", attribute.getLocalName());
 		assertEquals("testValue", attribute.getValue());

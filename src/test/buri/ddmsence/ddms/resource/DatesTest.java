@@ -116,7 +116,7 @@ public class DatesTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:dates xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\" ");
+		xml.append("<ddms:dates xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
 		xml.append("ddms:created=\"").append(TEST_CREATED).append("\" ");
 		xml.append("ddms:posted=\"").append(TEST_POSTED).append("\" ");
 		xml.append("ddms:validTil=\"").append(TEST_VALID).append("\" ");

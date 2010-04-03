@@ -118,7 +118,7 @@ public class FormatTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:format xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\">\n\t<ddms:Media>\n\t\t");
+		xml.append("<ddms:format xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\">\n\t<ddms:Media>\n\t\t");
 		xml.append("<ddms:mimeType>text/xml</ddms:mimeType>\n\t\t");
 		xml.append("<ddms:extent ddms:qualifier=\"sizeBytes\" ddms:value=\"75000\" />\n\t\t");
 		xml.append("<ddms:medium>digital</ddms:medium>\n\t");

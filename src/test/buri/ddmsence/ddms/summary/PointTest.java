@@ -44,7 +44,7 @@ public class PointTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public PointTest() throws InvalidDDMSException {
-		super("3.0/point.xml", DDMSVersion.getCurrentGmlNamespace(), DDMSVersion.getCurrentGmlSchema());
+		super("3.0/point.xml");
 		TEST_SRS_ATTRIBUTES = SRSAttributesTest.getFixture();
 		TEST_POSITION = new Position(PositionTest.TEST_COORDS, TEST_SRS_ATTRIBUTES);
 	}
@@ -126,7 +126,7 @@ public class PointTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<gml:Point xmlns:gml=\"").append(DDMSVersion.getCurrentGmlNamespace()).append("\" ");
+		xml.append("<gml:Point xmlns:gml=\"").append(DDMSVersion.getCurrentVersion().getGmlNamespace()).append("\" ");
 		xml.append("srsName=\"").append(TEST_SRS_ATTRIBUTES.getSrsName()).append("\" ");
 		xml.append("srsDimension=\"").append(TEST_SRS_ATTRIBUTES.getSrsDimension()).append("\" ");
 		xml.append("axisLabels=\"").append(TEST_SRS_ATTRIBUTES.getAxisLabelsAsXsList()).append("\" ");
@@ -158,9 +158,9 @@ public class PointTest extends AbstractComponentTestCase {
 		testConstructor(WILL_SUCCEED, getValidElement());
 		
 		// No optional fields
-		Element element = Util.buildElement(GML_PREFIX, Point.NAME, DDMSVersion.getCurrentGmlNamespace(), null);
+		Element element = Util.buildElement(GML_PREFIX, Point.NAME, DDMSVersion.getCurrentVersion().getGmlNamespace(), null);
 		Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE, TEST_SRS_ATTRIBUTES.getSrsName());
-		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), TEST_ID);
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentVersion().getGmlNamespace(), TEST_ID);
 		element.appendChild(TEST_POSITION.getXOMElementCopy());
 		testConstructor(WILL_SUCCEED, element);		
 	}
@@ -176,7 +176,7 @@ public class PointTest extends AbstractComponentTestCase {
 		Element element = Util.buildDDMSElement(Point.NAME, null);
 		SRSAttributes attr = new SRSAttributes(null, TEST_SRS_ATTRIBUTES.getSrsDimension(), null, null);
 		attr.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), TEST_ID);
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentVersion().getGmlNamespace(), TEST_ID);
 		element.appendChild(TEST_POSITION.getXOMElementCopy());
 		testConstructor(WILL_FAIL, element);
 		
@@ -184,7 +184,7 @@ public class PointTest extends AbstractComponentTestCase {
 		element = Util.buildDDMSElement(Point.NAME, null);
 		attr = new SRSAttributes("", TEST_SRS_ATTRIBUTES.getSrsDimension(), null, null);
 		attr.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), TEST_ID);
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentVersion().getGmlNamespace(), TEST_ID);
 		element.appendChild(TEST_POSITION.getXOMElementCopy());
 		testConstructor(WILL_FAIL, element);
 		
@@ -192,7 +192,7 @@ public class PointTest extends AbstractComponentTestCase {
 		element = Util.buildDDMSElement(Point.NAME, null);
 		attr = new SRSAttributes(DIFFERENT_VALUE, TEST_SRS_ATTRIBUTES.getSrsDimension(), TEST_SRS_ATTRIBUTES.getAxisLabels(), TEST_SRS_ATTRIBUTES.getUomLabels());
 		attr.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), TEST_ID);
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentVersion().getGmlNamespace(), TEST_ID);
 		element.appendChild(TEST_POSITION.getXOMElementCopy());
 		testConstructor(WILL_FAIL, element);
 		
@@ -205,21 +205,21 @@ public class PointTest extends AbstractComponentTestCase {
 		// Empty ID
 		element = Util.buildDDMSElement(Point.NAME, null);
 		TEST_SRS_ATTRIBUTES.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), "");
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentVersion().getGmlNamespace(), "");
 		element.appendChild(TEST_POSITION.getXOMElementCopy());
 		testConstructor(WILL_FAIL, element);
 		
 		// ID not NCName
 		element = Util.buildDDMSElement(Point.NAME, null);
 		TEST_SRS_ATTRIBUTES.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), "1TEST");
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentVersion().getGmlNamespace(), "1TEST");
 		element.appendChild(TEST_POSITION.getXOMElementCopy());
 		testConstructor(WILL_FAIL, element);	
 		
 		// Missing position
 		element = Util.buildDDMSElement(Point.NAME, null);
 		TEST_SRS_ATTRIBUTES.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), TEST_ID);
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentVersion().getGmlNamespace(), TEST_ID);
 		testConstructor(WILL_FAIL, element);
 	}
 	

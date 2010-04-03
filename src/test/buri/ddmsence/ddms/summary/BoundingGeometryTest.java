@@ -121,7 +121,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:boundingGeometry xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\">\n\t");
+		xml.append("<ddms:boundingGeometry xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\">\n\t");
 		xml.append("<gml:Point xmlns:gml=\"http://www.opengis.net/gml/3.2\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\" gml:id=\"IDValue\">\n\t\t");
 		xml.append("<gml:pos>32.1 40.1</gml:pos>\n\t");
 		xml.append("</gml:Point>\n");

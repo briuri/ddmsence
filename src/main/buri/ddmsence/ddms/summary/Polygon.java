@@ -167,7 +167,7 @@ public final class Polygon extends AbstractBaseComponent {
 				positions = Collections.emptyList();
 			_cachedPositions = positions;
 			_cachedSrsAttributes = srsAttributes;
-			String gmlNamespace = DDMSVersion.getCurrentGmlNamespace();
+			String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
 			Element ringElement = Util.buildElement(GML_PREFIX, LINEAR_RING_NAME, gmlNamespace, null);
 			for (Position pos : positions) {
 				ringElement.appendChild(pos.getXOMElementCopy());

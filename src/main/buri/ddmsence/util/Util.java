@@ -170,7 +170,7 @@ public class Util {
     public static String getFirstDDMSChildValue(Element parent, String name) {
     	Util.requireValue("parent element", parent);
     	Util.requireValue("child name", name);
-    	Element child = parent.getFirstChildElement(name, DDMSVersion.getCurrentNamespace());
+    	Element child = parent.getFirstChildElement(name, DDMSVersion.getCurrentVersion().getNamespace());
     	return (child == null ? "" : child.getValue());
     }
     
@@ -185,7 +185,7 @@ public class Util {
     	Util.requireValue("parent element", parent);
     	Util.requireValue("child name", name);
      	List<String> childTexts = new ArrayList<String>();
-		Elements childElements = parent.getChildElements(name, DDMSVersion.getCurrentNamespace());
+		Elements childElements = parent.getChildElements(name, DDMSVersion.getCurrentVersion().getNamespace());
 		for (int i = 0; i < childElements.size(); i++) {
 			childTexts.add(childElements.get(i).getValue());
 		}
@@ -260,7 +260,7 @@ public class Util {
 		throws InvalidDDMSException {
 		Util.requireValue("parent element", parent);
 		Util.requireValue("child name", childName);
-		int childCount = parent.getChildElements(childName, DDMSVersion.getCurrentNamespace()).size();
+		int childCount = parent.getChildElements(childName, DDMSVersion.getCurrentVersion().getNamespace()).size();
 		if (!isBounded(childCount, lowBound, highBound)) {
 			StringBuffer error = new StringBuffer();
 			if (lowBound == highBound) {
@@ -446,7 +446,7 @@ public class Util {
 	 * @param attributeValue the value of the attribute
 	 */
 	public static void addDDMSAttribute(Element element, String attributeName, String attributeValue) {
-		addAttribute(element, DDMS_PREFIX, attributeName, DDMSVersion.getCurrentNamespace(), attributeValue);
+		addAttribute(element, DDMS_PREFIX, attributeName, DDMSVersion.getCurrentVersion().getNamespace(), attributeValue);
 	}
 	
 	/**
@@ -487,7 +487,7 @@ public class Util {
 	 * @param childText the text of the element (optional)
 	 */
 	public static Element buildDDMSElement(String name, String childText) {
-		return (buildElement(DDMS_PREFIX, name, DDMSVersion.getCurrentNamespace(), childText));
+		return (buildElement(DDMS_PREFIX, name, DDMSVersion.getCurrentVersion().getNamespace(), childText));
 	}
 	
 	/**
@@ -516,7 +516,7 @@ public class Util {
 	 * @param value the value of the attribute
 	 */
 	public static Attribute buildDDMSAttribute(String name, String value) {
-		return (buildAttribute(DDMS_PREFIX, name, DDMSVersion.getCurrentNamespace(), value));
+		return (buildAttribute(DDMS_PREFIX, name, DDMSVersion.getCurrentVersion().getNamespace(), value));
 	} 
 	
 	/**

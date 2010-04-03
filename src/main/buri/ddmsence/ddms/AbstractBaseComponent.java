@@ -109,7 +109,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @see IDDMSComponent#getDDMSVersion()
 	 */
 	public String getDDMSVersion() {
-		return (DDMSVersion.getVersionFor(getXOMElement().getNamespaceURI()));
+		return (DDMSVersion.getVersionForNamespace(getXOMElement().getNamespaceURI()).getVersion());
 	}
 	
 	/**

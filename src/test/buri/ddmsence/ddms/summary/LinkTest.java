@@ -63,7 +63,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	protected static Element getFixtureElement() throws InvalidDDMSException {
 		Element linkElement = Util.buildDDMSElement(Link.NAME, null);
-		linkElement.addNamespaceDeclaration(Util.DDMS_PREFIX, DDMSVersion.getCurrentNamespace());
+		linkElement.addNamespaceDeclaration(Util.DDMS_PREFIX, DDMSVersion.getCurrentVersion().getNamespace());
 		linkElement.addNamespaceDeclaration(XLINK_PREFIX, XLINK_NAMESPACE);
 		linkElement.addAttribute(Util.buildAttribute(XLINK_PREFIX, "type", XLINK_NAMESPACE, TEST_TYPE));
 		linkElement.addAttribute(Util.buildAttribute(XLINK_PREFIX, "href", XLINK_NAMESPACE, TEST_HREF));
@@ -144,7 +144,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:link xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\" xmlns:xlink=\"").append(XLINK_NAMESPACE).append("\" ");
+		xml.append("<ddms:link xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" xmlns:xlink=\"").append(XLINK_NAMESPACE).append("\" ");
 		xml.append("xlink:type=\"").append(TEST_TYPE).append("\" ");
 		xml.append("xlink:href=\"").append(TEST_HREF).append("\" ");
 		xml.append("xlink:role=\"").append(TEST_ROLE).append("\" ");
@@ -170,7 +170,7 @@ public class LinkTest extends AbstractComponentTestCase {
 		
 		// No optional fields
 		Element element = Util.buildDDMSElement(Link.NAME, null);
-		element.addNamespaceDeclaration(Util.DDMS_PREFIX, DDMSVersion.getCurrentNamespace());
+		element.addNamespaceDeclaration(Util.DDMS_PREFIX, DDMSVersion.getCurrentVersion().getNamespace());
 		element.addNamespaceDeclaration(XLINK_PREFIX, XLINK_NAMESPACE);
 		element.addAttribute(Util.buildAttribute(XLINK_PREFIX, "type", XLINK_NAMESPACE, TEST_TYPE));
 		element.addAttribute(Util.buildAttribute(XLINK_PREFIX, "href", XLINK_NAMESPACE, TEST_HREF));

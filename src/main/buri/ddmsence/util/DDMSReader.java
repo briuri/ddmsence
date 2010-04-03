@@ -58,41 +58,37 @@ public class DDMSReader {
 	/**
 	 * Constructor
 	 * 
-	 * Creates a DDMSReader for the currently in-use version of DDMS.
+	 * Creates a DDMSReader which can process various versions of DDMS and GML
 	 */
 	public DDMSReader() throws SAXException {
-		this(DDMSVersion.getCurrentNamespace(), DDMSVersion.getCurrentSchema());
+		_reader = XMLReaderFactory.createXMLReader(XML_READER_CLASS);
+		StringBuffer schemas = new StringBuffer();
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion ddmsVersion = DDMSVersion.getVersionFor(version);
+			URL xsd = getUrlForSchema(ddmsVersion.getSchema());
+			schemas.append(ddmsVersion.getNamespace()).append(" ").append(xsd.toExternalForm()).append(" ");
+			xsd = getUrlForSchema(ddmsVersion.getGmlSchema());
+			schemas.append(ddmsVersion.getGmlNamespace()).append(" ").append(xsd.toExternalForm()).append(" ");
+		}
+		getReader().setFeature(PROP_XERCES_VALIDATION, true);
+		getReader().setFeature(PROP_XERCES_SCHEMA_VALIDATION, true);
+		getReader().setProperty(PROP_XERCES_EXTERNAL_LOCATION, schemas.toString().trim());
 	}
 	
 	/**
-	 * Constructor
+	 * Returns the URL location of a schema file
 	 * 
-	 * <p>
-	 * Generally, the parameter-less constructor is the simplest way to read a DDMS resource file.
-	 * </p>
-	 * 
-	 * <p>
-	 * By allowing the namespaceURI and schemaLocation to be passed in in this constructor,
-	 * this DDMSReader can be used for non-Resource XML files. For example, the gml:Point unit tests
-	 * create a DDMSReader that validates against the GML-Profile.xsd.
-	 * </p>
-	 * 
-	 * @param namespaceURI the namespace URI for the schema file
-	 * @param schemaLocation the local location of the schema file
+	 * @param schemaLocation the schema location
+	 * @return a URL
+	 * @throws IllegalArgumentException if the schema could not be found.
 	 */
-	public DDMSReader(String namespaceURI, String schemaLocation) throws SAXException {
-		Util.requireValue("schema location", schemaLocation);
-		_reader = XMLReaderFactory.createXMLReader(XML_READER_CLASS);
+	private URL getUrlForSchema(String schemaLocation) {
 		URL xsd = getClass().getResource(schemaLocation);
 		if (xsd == null)
 			throw new IllegalArgumentException("Unable to load a local copy of the schema for validation.");
-		String externalLocation = namespaceURI + " " + xsd.toExternalForm();
-		
-		getReader().setFeature(PROP_XERCES_VALIDATION, true);
-		getReader().setFeature(PROP_XERCES_SCHEMA_VALIDATION, true);
-		getReader().setProperty(PROP_XERCES_EXTERNAL_LOCATION, externalLocation);
+		return (xsd);
 	}
-	
+
 	/**
 	 * Accepts a file name and returns the root element in that file.
 	 * 
