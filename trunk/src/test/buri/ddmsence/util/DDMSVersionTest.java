@@ -45,8 +45,18 @@ public class DDMSVersionTest extends TestCase {
 	}
 	
 	public void testGetVersionFor() {
-		assertEquals("2.0", DDMSVersion.getVersionFor("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
-		assertEquals("", DDMSVersion.getVersionFor("TEST"));
+		assertEquals("2.0", DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/2.0/").getVersion());
+		assertEquals(null, DDMSVersion.getVersionForNamespace("TEST"));
+	}
+	
+	public void testGetVersionForInvalid() {
+		try {
+			DDMSVersion.getVersionFor("1.4");
+			fail("Allowed unsupported version.");
+		}
+		catch (UnsupportedVersionException e) {
+			// Good
+		}
 	}
 	
 	public void testGetSupportedVersions() {
