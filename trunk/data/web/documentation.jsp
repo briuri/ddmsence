@@ -210,6 +210,8 @@ Title title = new Title("My Confidential Notes", security);
 System.out.println(title.toXML());/pre></div>
 <p class="figure">Figure 4. Code to generate SecurityAttributes</p>
 
+<p>Note: The actual values assigned to each attribute in Figure 4 are for example's sake only, and might be illogical in real-world metadata.</p>
+
 <div class="example"><pre>&lt;ddms:title xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ICISM="urn:us:gov:ic:ism" 
    ICISM:classification="C" ICISM:ownerProducer="USA AUS" ICISM:SCIcontrols="SI" ICISM:SARIdentifier="SAR-USA"&gt;
    My Confidential Notes
