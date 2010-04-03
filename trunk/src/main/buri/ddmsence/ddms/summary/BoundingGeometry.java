@@ -70,7 +70,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	public BoundingGeometry(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("boundingGeometry element", element);
-			String gmlNamespace = DDMSVersion.getGmlNamespaceFor(element.getNamespaceURI());
+			String gmlNamespace = DDMSVersion.getVersionFor(element.getNamespaceURI()).getGmlNamespace();
 			_cachedPolygons = new ArrayList<Polygon>();
 			_cachedPoints = new ArrayList<Point>();
 			Elements polygons = element.getChildElements(Polygon.NAME, gmlNamespace);

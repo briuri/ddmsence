@@ -147,7 +147,7 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting, boolean hasState) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:postalAddress xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\">\n\t");
+		xml.append("<ddms:postalAddress xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\">\n\t");
 		xml.append("<ddms:street>1600 Pennsylvania Avenue, NW</ddms:street>\n\t");
 		xml.append("<ddms:city>Washington</ddms:city>\n\t");
 		if (hasState)

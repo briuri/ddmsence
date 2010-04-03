@@ -130,7 +130,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subjectCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace());
+		xml.append("<ddms:subjectCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace());
 		xml.append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t<ddms:Subject>\n");
 		xml.append("\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
 		xml.append("\t\t<ddms:keyword ddms:value=\"Uri\" />\n");

@@ -122,7 +122,7 @@ public class SourceTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:source xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ");
+		xml.append("<ddms:source xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ");
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE).append("\" ");
 		xml.append("ddms:schemaQualifier=\"").append(TEST_SCHEMA_QUALIFIER).append("\" ");
 		xml.append("ddms:schemaHref=\"").append(TEST_SCHEMA_HREF).append("\" ");

@@ -49,7 +49,7 @@ public class PositionTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public PositionTest() throws InvalidDDMSException {
-		super("3.0/position.xml", DDMSVersion.getCurrentGmlNamespace(), DDMSVersion.getCurrentGmlSchema());
+		super("3.0/position.xml");
 		TEST_SRS_ATTRIBUTES = SRSAttributesTest.getFixture();
 	}
 	
@@ -125,7 +125,7 @@ public class PositionTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<gml:pos xmlns:gml=\"").append(DDMSVersion.getCurrentGmlNamespace()).append("\" ");
+		xml.append("<gml:pos xmlns:gml=\"").append(DDMSVersion.getCurrentVersion().getGmlNamespace()).append("\" ");
 		xml.append("srsName=\"").append(SRSAttributesTest.TEST_SRS_NAME).append("\" ");
 		xml.append("srsDimension=\"").append(SRSAttributesTest.TEST_SRS_DIMENSION).append("\" ");
 		xml.append("axisLabels=\"").append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\" ");
@@ -150,7 +150,7 @@ public class PositionTest extends AbstractComponentTestCase {
 		testConstructor(WILL_SUCCEED, getValidElement());
 		
 		// No optional fields
-		Element element = Util.buildElement(GML_PREFIX, Position.NAME, DDMSVersion.getCurrentGmlNamespace(), TEST_XS_LIST);		
+		Element element = Util.buildElement(GML_PREFIX, Position.NAME, DDMSVersion.getCurrentVersion().getGmlNamespace(), TEST_XS_LIST);		
 		testConstructor(WILL_SUCCEED, element);		
 	}
 	

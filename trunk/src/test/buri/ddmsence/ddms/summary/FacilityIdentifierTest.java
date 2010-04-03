@@ -109,7 +109,7 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:facilityIdentifier xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\" ");
+		xml.append("<ddms:facilityIdentifier xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
 		xml.append("ddms:beNumber=\"").append(TEST_BENUMBER).append("\" ");
 		xml.append("ddms:osuffix=\"").append(TEST_OSUFFIX).append("\" />");
 		return (formatXml(xml.toString(), preserveFormatting));		

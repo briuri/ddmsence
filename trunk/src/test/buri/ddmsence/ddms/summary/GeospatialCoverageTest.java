@@ -138,7 +138,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:geospatialCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace());
+		xml.append("<ddms:geospatialCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace());
 		xml.append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t");
 		xml.append("<ddms:GeospatialExtent>\n\t\t<ddms:geographicIdentifier>\n\t\t\t");
 		xml.append("<ddms:facilityIdentifier ddms:beNumber=\"1234DD56789\" ddms:osuffix=\"DD123\" />\n\t\t");

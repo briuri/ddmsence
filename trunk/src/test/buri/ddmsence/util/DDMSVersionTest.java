@@ -49,35 +49,22 @@ public class DDMSVersionTest extends TestCase {
 		assertEquals("", DDMSVersion.getVersionFor("TEST"));
 	}
 	
-	public void testGetGmlNamespaceFor() {
-		assertEquals("http://www.opengis.net/gml", DDMSVersion.getGmlNamespaceFor("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
-		assertEquals("", DDMSVersion.getGmlNamespaceFor("TEST"));
-	}
-	
 	public void testGetSupportedVersions() {
 		assertFalse(DDMSVersion.getSupportedVersions().isEmpty());
-		assertTrue(DDMSVersion.getSupportedVersions().contains(DDMSVersion.DEFAULT_VERSION));
-	}
-	
-	public void testIsSupportedVersionSuccess() {
-		assertTrue(DDMSVersion.isSupported(DDMSVersion.DEFAULT_VERSION));
-	}
-	
-	public void testIsSupportedVersionFailure() {
-		assertFalse(DDMSVersion.isSupported("99"));
+		assertTrue(DDMSVersion.getSupportedVersions().contains("3.0"));
 	}
 	
 	public void testGetCurrentSchema() {
-		assertEquals("/schemas/3.0/DDMS/3.0/DDMS-v3_0.xsd", DDMSVersion.getCurrentSchema());
+		assertEquals("/schemas/3.0/DDMS/3.0/DDMS-v3_0.xsd", DDMSVersion.getCurrentVersion().getSchema());
 	}
 	
 	public void testGetCurrentNamespace() {
-		assertEquals("http://metadata.dod.mil/mdr/ns/DDMS/3.0/", DDMSVersion.getCurrentNamespace());
+		assertEquals("http://metadata.dod.mil/mdr/ns/DDMS/3.0/", DDMSVersion.getCurrentVersion().getNamespace());
 	}
 	
 	public void testGetNamespaceForValid() {
 		DDMSVersion.setCurrentVersion("2.0");
-		assertEquals("http://metadata.dod.mil/mdr/ns/DDMS/2.0/", DDMSVersion.getCurrentNamespace());
+		assertEquals("http://metadata.dod.mil/mdr/ns/DDMS/2.0/", DDMSVersion.getCurrentVersion().getNamespace());
 	}
 	
 	public void testSetCurrentVersionInvalid() {
@@ -92,6 +79,6 @@ public class DDMSVersionTest extends TestCase {
 	
 	public void testGetSchemaForValid() {
 		DDMSVersion.setCurrentVersion("2.0");
-		assertEquals("/schemas/2.0/DDMS/2.0/DDMS-v2_0.xsd", DDMSVersion.getCurrentSchema());
+		assertEquals("/schemas/2.0/DDMS/2.0/DDMS-v2_0.xsd", DDMSVersion.getCurrentVersion().getSchema());
 	}
 }

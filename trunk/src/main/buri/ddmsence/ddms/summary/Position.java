@@ -133,7 +133,7 @@ public final class Position extends AbstractBaseComponent {
 				coordinates = Collections.emptyList();
 			_cachedSrsAttributes = (srsAttributes == null ? new SRSAttributes(null, null, null, null) : srsAttributes);
 			_cachedCoordinates = coordinates;
-			Element element = Util.buildElement(GML_PREFIX, Position.NAME, DDMSVersion.getCurrentGmlNamespace(), Util.getXsList(coordinates));
+			Element element = Util.buildElement(GML_PREFIX, Position.NAME, DDMSVersion.getCurrentVersion().getGmlNamespace(), Util.getXsList(coordinates));
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);
 			setXOMElement(element, true);

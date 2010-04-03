@@ -153,7 +153,7 @@ public class PersonTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\" ");
+		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
 		xml.append("xmlns:ICISM=\"urn:us:gov:ic:ism\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"><ddms:Person>\n");
 		for (String name: TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");

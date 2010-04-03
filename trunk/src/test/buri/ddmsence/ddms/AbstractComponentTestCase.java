@@ -64,29 +64,17 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	protected void tearDown() throws Exception {
 		DDMSVersion.clearCurrentVersion();
 	}
-	
+		
 	/**
 	 * Constructor
 	 * 
 	 * @param validDocumentFile	the valid instance of some component to use as a correct base case.
 	 */
 	public AbstractComponentTestCase(String validDocumentFile) {
-		this(validDocumentFile, DDMSVersion.getCurrentNamespace(), DDMSVersion.getCurrentSchema());
-	}
-	
-	/**
-	 * Constructor
-	 * 
-	 * @param validDocumentFile	the valid instance of some component to use as a correct base case.
-	 * @param namespaceURI the namespace URI for the schema file
-	 * @param schemaLocation the local location of the schema file
-	 */
-	public AbstractComponentTestCase(String validDocumentFile, String namespaceURI, String schemaLocation) {
-		DDMSVersion.setCurrentVersion("3.0");
 		if (Util.isEmpty(validDocumentFile))
 			return;
 		try {
-			DDMSReader reader = new DDMSReader(namespaceURI, schemaLocation);
+			DDMSReader reader = new DDMSReader();
 			File file = new File(TEST_DATA_DIR, validDocumentFile);
 			_validElement = reader.getElement(file);
 		}
