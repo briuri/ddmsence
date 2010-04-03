@@ -207,7 +207,7 @@ otherAttributes.put("SARIdentifier", "SAR-USA");
 otherAttributes.put("classification", "U"); // This will be ignored, because the "classification" parameter takes precedence.
 SecurityAttributes security = new SecurityAttributes("C", ownerProducers, otherAttributes);
 Title title = new Title("My Confidential Notes", security);
-System.out.println(title.toXML());/pre></div>
+System.out.println(title.toXML());</pre></div>
 <p class="figure">Figure 4. Code to generate SecurityAttributes</p>
 
 <p>Note: The actual values assigned to each attribute in Figure 4 are for example's sake only, and might be illogical in real-world metadata.</p>
