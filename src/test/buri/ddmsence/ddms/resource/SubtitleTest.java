@@ -41,7 +41,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public SubtitleTest() {
-		super("subtitle.xml");
+		super("3.0/subtitle.xml");
 	}
 	
 	/**

@@ -51,7 +51,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public ServiceTest() {
-		super("service.xml");
+		super("3.0/service.xml");
 	}
 	
 	/**

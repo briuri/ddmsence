@@ -39,7 +39,7 @@ public class TitleTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public TitleTest() {
-		super("title.xml");
+		super("3.0/title.xml");
 	}
 	
 	/**

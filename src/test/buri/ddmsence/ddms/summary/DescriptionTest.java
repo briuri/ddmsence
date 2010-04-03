@@ -41,7 +41,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public DescriptionTest() {
-		super("description.xml");
+		super("3.0/description.xml");
 	}
 	
 	/**

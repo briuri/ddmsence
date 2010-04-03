@@ -41,7 +41,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public CategoryTest() {
-		super("category.xml");
+		super("3.0/category.xml");
 	}
 	
 	/**

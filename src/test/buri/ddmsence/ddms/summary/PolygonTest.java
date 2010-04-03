@@ -58,7 +58,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public PolygonTest() throws InvalidDDMSException {
-		super("polygon.xml", GML_NAMESPACE, GML_XSD);
+		super("3.0/polygon.xml", GML_NAMESPACE, GML_XSD);
 		TEST_SRS_ATTRIBUTES = SRSAttributesTest.getFixture();
 		TEST_POSITIONS.add(new Position(TEST_COORDS_1, TEST_SRS_ATTRIBUTES));
 		TEST_POSITIONS.add(new Position(TEST_COORDS_2, TEST_SRS_ATTRIBUTES));

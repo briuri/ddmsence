@@ -39,7 +39,7 @@ public class IdentifierTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public IdentifierTest() {
-		super("identifier.xml");
+		super("3.0/identifier.xml");
 	}
 	
 	/**

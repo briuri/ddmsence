@@ -54,7 +54,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public GeospatialCoverageTest() throws InvalidDDMSException {
-		super("geospatialCoverage.xml");
+		super("3.0/geospatialCoverage.xml");
 		TEST_SRS_ATTRIBUTES = SRSAttributesTest.getFixture();
 		TEST_GEO_ID = new GeographicIdentifier(new FacilityIdentifier("1234DD56789", "DD123"));
 		TEST_BOX = new BoundingBox(1.1, 2.2, 3.3, 4.4);

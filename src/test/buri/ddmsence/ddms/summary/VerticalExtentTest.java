@@ -42,7 +42,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public VerticalExtentTest() {
-		super("verticalExtent.xml");
+		super("3.0/verticalExtent.xml");
 	}
 	
 	/**

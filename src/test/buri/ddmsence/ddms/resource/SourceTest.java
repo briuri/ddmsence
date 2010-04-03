@@ -43,7 +43,7 @@ public class SourceTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public SourceTest() {
-		super("source.xml");
+		super("3.0/source.xml");
 	}
 	
 	/**

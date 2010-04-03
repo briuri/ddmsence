@@ -54,7 +54,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public GeographicIdentifierTest() throws InvalidDDMSException {
-		super("geographicIdentifier.xml");
+		super("3.0/geographicIdentifier.xml");
 		TEST_COUNTRY_CODE = new CountryCode(GeographicIdentifier.NAME, "ISO-3166", "USA");
 		TEST_FAC_ID = new FacilityIdentifier("1234DD56789", "DD123");
 	}

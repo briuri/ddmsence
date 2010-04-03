@@ -42,7 +42,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public BoundingBoxTest() {
-		super("boundingBox.xml");
+		super("3.0/boundingBox.xml");
 	}
 	
 	/**

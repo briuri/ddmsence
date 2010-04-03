@@ -40,7 +40,7 @@ public class LanguageTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public LanguageTest() {
-		super("language.xml");
+		super("3.0/language.xml");
 	}
 	
 	/**

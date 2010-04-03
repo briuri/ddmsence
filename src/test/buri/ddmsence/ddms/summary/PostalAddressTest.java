@@ -53,7 +53,7 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public PostalAddressTest() throws InvalidDDMSException {
-		super("postalAddress.xml");
+		super("3.0/postalAddress.xml");
 		TEST_COUNTRY_CODE = new CountryCode(PostalAddress.NAME, "ISO-3166", "USA");
 	}
 	

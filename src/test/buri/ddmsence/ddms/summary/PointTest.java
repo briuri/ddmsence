@@ -43,7 +43,7 @@ public class PointTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public PointTest() throws InvalidDDMSException {
-		super("point.xml", GML_NAMESPACE, GML_XSD);
+		super("3.0/point.xml", GML_NAMESPACE, GML_XSD);
 		TEST_SRS_ATTRIBUTES = SRSAttributesTest.getFixture();
 		TEST_POSITION = new Position(PositionTest.TEST_COORDS, TEST_SRS_ATTRIBUTES);
 	}

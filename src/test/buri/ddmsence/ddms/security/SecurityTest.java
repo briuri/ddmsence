@@ -37,7 +37,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public SecurityTest() {
-		super("security.xml");
+		super("3.0/security.xml");
 	}
 	
 	/**

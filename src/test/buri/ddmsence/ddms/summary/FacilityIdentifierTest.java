@@ -39,7 +39,7 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public FacilityIdentifierTest() {
-		super("facilityIdentifier.xml");
+		super("3.0/facilityIdentifier.xml");
 	}
 	
 	/**
