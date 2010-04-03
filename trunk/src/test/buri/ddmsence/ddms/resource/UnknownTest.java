@@ -26,6 +26,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.SecurityAttributesTest;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -137,7 +138,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" ");
+		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\" ");
 		xml.append("xmlns:ICISM=\"urn:us:gov:ic:ism\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"><ddms:Unknown>\n");
 		for (String name: TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");

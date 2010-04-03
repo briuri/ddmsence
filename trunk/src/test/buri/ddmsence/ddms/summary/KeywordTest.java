@@ -23,6 +23,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -103,7 +104,7 @@ public class KeywordTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:keyword xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" ");
+		xml.append("<ddms:keyword xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\" ");
 		xml.append("ddms:value=\"").append(TEST_VALUE).append("\" />");
 		return (xml.toString());
 	}

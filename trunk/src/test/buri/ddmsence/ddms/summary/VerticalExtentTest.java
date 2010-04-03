@@ -23,6 +23,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -117,7 +118,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:verticalExtent xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" ");
+		xml.append("<ddms:verticalExtent xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\" ");
 		xml.append("ddms:unitOfMeasure=\"").append(TEST_UOM).append("\" ");
 		xml.append("ddms:datum=\"").append(TEST_DATUM).append("\">\n\t");
 		xml.append("<ddms:MinVerticalExtent>").append(TEST_MIN).append("</ddms:MinVerticalExtent>\n\t");

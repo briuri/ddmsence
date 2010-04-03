@@ -25,6 +25,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.SecurityAttributesTest;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -119,7 +120,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:temporalCoverage xmlns:ddms=\"").append(DDMS_NAMESPACE);
+		xml.append("<ddms:temporalCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace());
 		xml.append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t");
 		xml.append("<ddms:TimePeriod>\n\t\t");
 		xml.append("<ddms:name>").append(TEST_NAME).append("</ddms:name>\n\t\t");

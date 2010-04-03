@@ -78,6 +78,13 @@ public interface IDDMSComponent {
 	public String getQualifiedName();
 	
 	/**
+	 * Returns the version number for the DDMS Namespace on this component
+	 * 
+	 * @return String
+	 */
+	public String getDDMSVersion();
+	
+	/**
 	 * Returns any security attributes attached to this component. If the component is not allowed to have
 	 * attributes, this will be null. Otherwise, a valid SecurityAttributes object will be returned,
 	 * even if none of its properties are set.

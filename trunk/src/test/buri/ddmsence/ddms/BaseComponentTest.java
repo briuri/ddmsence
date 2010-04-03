@@ -39,4 +39,9 @@ public class BaseComponentTest extends TestCase {
 		Rights rights = new Rights(true, true, true);
 		assertEquals(rights.toString(), rights.toXML());
 	}
+	
+	public void testVersion() throws InvalidDDMSException {
+		Rights rights = new Rights(true, true, true);
+		assertEquals("3.0", rights.getDDMSVersion());
+	}
 }

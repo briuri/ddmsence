@@ -23,6 +23,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.SecurityAttributesTest;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -107,7 +108,7 @@ public class TitleTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:title xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" ");
+		xml.append("<ddms:title xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\" ");
 		xml.append("xmlns:ICISM=\"urn:us:gov:ic:ism\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE).append("</ddms:title>");
 		return (xml.toString());

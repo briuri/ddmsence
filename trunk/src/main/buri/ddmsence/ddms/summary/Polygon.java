@@ -28,6 +28,7 @@ import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -134,11 +135,11 @@ public final class Polygon extends AbstractBaseComponent {
 		try {
 			setXOMElement(element, false);
 			_cachedPositions = new ArrayList<Position>();
-			Element extElement = element.getFirstChildElement(EXTERIOR_NAME, GML_NAMESPACE);
+			Element extElement = element.getFirstChildElement(EXTERIOR_NAME, element.getNamespaceURI());
 			if (extElement != null) {
-				Element ringElement = extElement.getFirstChildElement(LINEAR_RING_NAME, GML_NAMESPACE);
+				Element ringElement = extElement.getFirstChildElement(LINEAR_RING_NAME, element.getNamespaceURI());
 				if (ringElement != null) {
-					Elements positions = ringElement.getChildElements(Position.NAME, GML_NAMESPACE);
+					Elements positions = ringElement.getChildElements(Position.NAME, element.getNamespaceURI());
 					for (int i = 0; i < positions.size(); i++) {
 						_cachedPositions.add(new Position(positions.get(i)));
 					}
@@ -166,16 +167,17 @@ public final class Polygon extends AbstractBaseComponent {
 				positions = Collections.emptyList();
 			_cachedPositions = positions;
 			_cachedSrsAttributes = srsAttributes;
-			Element ringElement = Util.buildElement(GML_PREFIX, LINEAR_RING_NAME, GML_NAMESPACE, null);
+			String gmlNamespace = DDMSVersion.getCurrentGmlNamespace();
+			Element ringElement = Util.buildElement(GML_PREFIX, LINEAR_RING_NAME, gmlNamespace, null);
 			for (Position pos : positions) {
 				ringElement.appendChild(pos.getXOMElementCopy());
 			}
-			Element extElement = Util.buildElement(GML_PREFIX, EXTERIOR_NAME, GML_NAMESPACE, null);
+			Element extElement = Util.buildElement(GML_PREFIX, EXTERIOR_NAME, gmlNamespace, null);
 			extElement.appendChild(ringElement);
-			Element element = Util.buildElement(GML_PREFIX, Polygon.NAME, GML_NAMESPACE, null);
+			Element element = Util.buildElement(GML_PREFIX, Polygon.NAME, gmlNamespace, null);
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);
-			Util.addAttribute(element, GML_PREFIX, ID_NAME, GML_NAMESPACE, id);
+			Util.addAttribute(element, GML_PREFIX, ID_NAME, gmlNamespace, id);
 			element.appendChild(extElement);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
@@ -206,10 +208,11 @@ public final class Polygon extends AbstractBaseComponent {
 		getSRSAttributes().validate();
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
 		
-		Element extElement = getXOMElement().getFirstChildElement(EXTERIOR_NAME, GML_NAMESPACE);
+		Element extElement = getXOMElement().getFirstChildElement(EXTERIOR_NAME, getXOMElement().getNamespaceURI());
 		Util.requireDDMSValue("exterior element", extElement);
 		if (extElement != null) {
-			Util.requireDDMSValue("LinearRing element", extElement.getFirstChildElement(LINEAR_RING_NAME, GML_NAMESPACE));
+			Util.requireDDMSValue("LinearRing element", extElement.getFirstChildElement(LINEAR_RING_NAME,
+				getXOMElement().getNamespaceURI()));
 		}
 		List<Position> positions = getPositions();
 		for (Position pos : positions) {
@@ -306,7 +309,7 @@ public final class Polygon extends AbstractBaseComponent {
 	 * Accessor for the ID
 	 */
 	public String getId() {
-		return (getAttributeValue(ID_NAME, GML_NAMESPACE));
+		return (getAttributeValue(ID_NAME, getXOMElement().getNamespaceURI()));
 	}
 	
 	/**

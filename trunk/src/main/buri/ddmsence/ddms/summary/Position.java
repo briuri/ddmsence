@@ -27,6 +27,7 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -132,7 +133,7 @@ public final class Position extends AbstractBaseComponent {
 				coordinates = Collections.emptyList();
 			_cachedSrsAttributes = (srsAttributes == null ? new SRSAttributes(null, null, null, null) : srsAttributes);
 			_cachedCoordinates = coordinates;
-			Element element = Util.buildElement(GML_PREFIX, Position.NAME, GML_NAMESPACE, Util.getXsList(coordinates));
+			Element element = Util.buildElement(GML_PREFIX, Position.NAME, DDMSVersion.getCurrentGmlNamespace(), Util.getXsList(coordinates));
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);
 			setXOMElement(element, true);

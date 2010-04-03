@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.summary;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -120,7 +121,8 @@ public final class Point extends AbstractBaseComponent {
 	public Point(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			Element posElement = element.getFirstChildElement(Position.NAME, GML_NAMESPACE);
+			Element posElement = element.getFirstChildElement(Position.NAME, 
+				element.getNamespaceURI());
 			if (posElement != null)
 				_cachedPosition = new Position(posElement);
 			_cachedSrsAttributes = new SRSAttributes(element);
@@ -143,13 +145,13 @@ public final class Point extends AbstractBaseComponent {
 		try {
 			_cachedPosition = position;
 			_cachedSrsAttributes = srsAttributes;
-			Element element = Util.buildElement(GML_PREFIX, Point.NAME, GML_NAMESPACE, null);
+			Element element = Util.buildElement(GML_PREFIX, Point.NAME, DDMSVersion.getCurrentGmlNamespace(), null);
 			if (position != null) {
 				element.appendChild(position.getXOMElementCopy());
 			}
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);
-			Util.addAttribute(element, GML_PREFIX, ID_NAME, GML_NAMESPACE, id);
+			Util.addAttribute(element, GML_PREFIX, ID_NAME, DDMSVersion.getCurrentGmlNamespace(), id);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -255,7 +257,7 @@ public final class Point extends AbstractBaseComponent {
 	 * Accessor for the ID
 	 */
 	public String getId() {
-		return (getAttributeValue(ID_NAME, GML_NAMESPACE));
+		return (getAttributeValue(ID_NAME, getXOMElement().getNamespaceURI()));
 	}
 	
 	/**
