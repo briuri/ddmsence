@@ -27,6 +27,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -69,13 +70,14 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	public BoundingGeometry(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("boundingGeometry element", element);
+			String gmlNamespace = DDMSVersion.getGmlNamespaceFor(element.getNamespaceURI());
 			_cachedPolygons = new ArrayList<Polygon>();
 			_cachedPoints = new ArrayList<Point>();
-			Elements polygons = element.getChildElements(Polygon.NAME, GML_NAMESPACE);
+			Elements polygons = element.getChildElements(Polygon.NAME, gmlNamespace);
 			for (int i = 0; i < polygons.size(); i++) {
 				_cachedPolygons.add(new Polygon(polygons.get(i)));
 			}
-			Elements points = element.getChildElements(Point.NAME, GML_NAMESPACE);
+			Elements points = element.getChildElements(Point.NAME, gmlNamespace);
 			for (int i = 0; i < points.size(); i++) {
 				_cachedPoints.add(new Point(points.get(i)));
 			}

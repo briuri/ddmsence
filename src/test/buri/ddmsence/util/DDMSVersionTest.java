@@ -30,6 +30,30 @@ import buri.ddmsence.ddms.UnsupportedVersionException;
  */
 public class DDMSVersionTest extends TestCase {
 	
+	/**
+	 * Resets the in-use version of DDMS.
+	 */
+	protected void setUp() throws Exception {
+		DDMSVersion.clearCurrentVersion();
+	}
+	
+	/**
+	 * Resets the in-use version of DDMS.
+	 */
+	protected void tearDown() throws Exception {
+		DDMSVersion.clearCurrentVersion();
+	}
+	
+	public void testGetVersionFor() {
+		assertEquals("2.0", DDMSVersion.getVersionFor("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
+		assertEquals("", DDMSVersion.getVersionFor("TEST"));
+	}
+	
+	public void testGetGmlNamespaceFor() {
+		assertEquals("http://www.opengis.net/gml", DDMSVersion.getGmlNamespaceFor("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
+		assertEquals("", DDMSVersion.getGmlNamespaceFor("TEST"));
+	}
+	
 	public void testGetSupportedVersions() {
 		assertFalse(DDMSVersion.getSupportedVersions().isEmpty());
 		assertTrue(DDMSVersion.getSupportedVersions().contains(DDMSVersion.DEFAULT_VERSION));
@@ -43,21 +67,22 @@ public class DDMSVersionTest extends TestCase {
 		assertFalse(DDMSVersion.isSupported("99"));
 	}
 	
-	public void testGetDefaultSchema() {
-		assertEquals("/schemas/3.0/DDMS/3.0/DDMS-v3_0.xsd", DDMSVersion.getDefaultSchema());
+	public void testGetCurrentSchema() {
+		assertEquals("/schemas/3.0/DDMS/3.0/DDMS-v3_0.xsd", DDMSVersion.getCurrentSchema());
 	}
 	
-	public void testGetDefaultNamespace() {
-		assertEquals("http://metadata.dod.mil/mdr/ns/DDMS/3.0/", DDMSVersion.getDefaultNamespace());
+	public void testGetCurrentNamespace() {
+		assertEquals("http://metadata.dod.mil/mdr/ns/DDMS/3.0/", DDMSVersion.getCurrentNamespace());
 	}
 	
 	public void testGetNamespaceForValid() {
-		assertEquals("http://metadata.dod.mil/mdr/ns/DDMS/3.0/", DDMSVersion.getNamespaceFor("3.0"));
+		DDMSVersion.setCurrentVersion("2.0");
+		assertEquals("http://metadata.dod.mil/mdr/ns/DDMS/2.0/", DDMSVersion.getCurrentNamespace());
 	}
 	
-	public void testGetNamespaceForInvalid() {
+	public void testSetCurrentVersionInvalid() {
 		try {
-			DDMSVersion.getNamespaceFor("99");
+			DDMSVersion.setCurrentVersion("1.4");
 			fail("Allowed unsupported version.");
 		}
 		catch (UnsupportedVersionException e) {
@@ -66,16 +91,7 @@ public class DDMSVersionTest extends TestCase {
 	}
 	
 	public void testGetSchemaForValid() {
-		assertEquals("/schemas/3.0/DDMS/3.0/DDMS-v3_0.xsd", DDMSVersion.getSchemaFor("3.0"));
-	}
-	
-	public void testGetSchemaForInvalid() {
-		try {
-			DDMSVersion.getSchemaFor("99");
-			fail("Allowed unsupported version.");
-		}
-		catch (UnsupportedVersionException e) {
-			// Good
-		}
+		DDMSVersion.setCurrentVersion("2.0");
+		assertEquals("/schemas/2.0/DDMS/2.0/DDMS-v2_0.xsd", DDMSVersion.getCurrentSchema());
 	}
 }

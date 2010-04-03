@@ -26,6 +26,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -58,7 +59,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public PolygonTest() throws InvalidDDMSException {
-		super("3.0/polygon.xml", GML_NAMESPACE, GML_XSD);
+		super("3.0/polygon.xml", DDMSVersion.getCurrentGmlNamespace(), DDMSVersion.getCurrentGmlSchema());
 		TEST_SRS_ATTRIBUTES = SRSAttributesTest.getFixture();
 		TEST_POSITIONS.add(new Position(TEST_COORDS_1, TEST_SRS_ATTRIBUTES));
 		TEST_POSITIONS.add(new Position(TEST_COORDS_2, TEST_SRS_ATTRIBUTES));
@@ -113,11 +114,11 @@ public class PolygonTest extends AbstractComponentTestCase {
 	 * @return an exterior element containing a LinearRing element containing the positions
 	 */
 	private Element wrapPositions(List<Position> positions) {
-		Element ringElement = Util.buildElement(GML_PREFIX, "LinearRing", GML_NAMESPACE, null);
+		Element ringElement = Util.buildElement(GML_PREFIX, "LinearRing", DDMSVersion.getCurrentGmlNamespace(), null);
 		for (Position pos : positions) {
 			ringElement.appendChild(pos.getXOMElementCopy());
 		}
-		Element extElement = Util.buildElement(GML_PREFIX, "exterior", GML_NAMESPACE, null);
+		Element extElement = Util.buildElement(GML_PREFIX, "exterior", DDMSVersion.getCurrentGmlNamespace(), null);
 		extElement.appendChild(ringElement);
 		return (extElement);
 	}
@@ -163,7 +164,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<gml:Polygon xmlns:gml=\"").append(GML_NAMESPACE).append("\" ");
+		xml.append("<gml:Polygon xmlns:gml=\"").append(DDMSVersion.getCurrentGmlNamespace()).append("\" ");
 		xml.append("srsName=\"").append(TEST_SRS_ATTRIBUTES.getSrsName()).append("\" ");
 		xml.append("srsDimension=\"").append(TEST_SRS_ATTRIBUTES.getSrsDimension()).append("\" ");
 		xml.append("axisLabels=\"").append(TEST_SRS_ATTRIBUTES.getAxisLabelsAsXsList()).append("\" ");
@@ -217,9 +218,9 @@ public class PolygonTest extends AbstractComponentTestCase {
 		testConstructor(WILL_SUCCEED, getValidElement());
 		
 		// No optional fields
-		Element element = Util.buildElement(GML_PREFIX, Polygon.NAME, GML_NAMESPACE, null);
+		Element element = Util.buildElement(GML_PREFIX, Polygon.NAME, DDMSVersion.getCurrentGmlNamespace(), null);
 		Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE, TEST_SRS_ATTRIBUTES.getSrsName());
-		Util.addAttribute(element, GML_PREFIX, "id", GML_NAMESPACE, TEST_ID);
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), TEST_ID);
 		element.appendChild(wrapPositions(TEST_POSITIONS));
 		testConstructor(WILL_SUCCEED, element);		
 	}
@@ -234,7 +235,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 		Element element = Util.buildDDMSElement(Polygon.NAME, null);
 		SRSAttributes attr = new SRSAttributes(null, TEST_SRS_ATTRIBUTES.getSrsDimension(), null, null);
 		attr.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", GML_NAMESPACE, TEST_ID);
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), TEST_ID);
 		element.appendChild(wrapPositions(TEST_POSITIONS));
 		testConstructor(WILL_FAIL, element);
 		
@@ -242,7 +243,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 		element = Util.buildDDMSElement(Polygon.NAME, null);
 		attr = new SRSAttributes("", TEST_SRS_ATTRIBUTES.getSrsDimension(), null, null);
 		attr.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", GML_NAMESPACE, TEST_ID);
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), TEST_ID);
 		element.appendChild(wrapPositions(TEST_POSITIONS));
 		testConstructor(WILL_FAIL, element);
 		
@@ -250,7 +251,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 		element = Util.buildDDMSElement(Polygon.NAME, null);
 		attr = new SRSAttributes(DIFFERENT_VALUE, TEST_SRS_ATTRIBUTES.getSrsDimension(), TEST_SRS_ATTRIBUTES.getAxisLabels(), TEST_SRS_ATTRIBUTES.getUomLabels());
 		attr.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", GML_NAMESPACE, TEST_ID);
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), TEST_ID);
 		element.appendChild(wrapPositions(TEST_POSITIONS));
 		testConstructor(WILL_FAIL, element);
 		
@@ -263,28 +264,28 @@ public class PolygonTest extends AbstractComponentTestCase {
 		// Empty ID
 		element = Util.buildDDMSElement(Polygon.NAME, null);
 		TEST_SRS_ATTRIBUTES.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", GML_NAMESPACE, "");
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), "");
 		element.appendChild(wrapPositions(TEST_POSITIONS));
 		testConstructor(WILL_FAIL, element);
 		
 		// ID not NCName
 		element = Util.buildDDMSElement(Polygon.NAME, null);
 		TEST_SRS_ATTRIBUTES.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", GML_NAMESPACE, "1TEST");
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), "1TEST");
 		element.appendChild(wrapPositions(TEST_POSITIONS));
 		testConstructor(WILL_FAIL, element);
 
 		// Missing Positions
 		element = Util.buildDDMSElement(Polygon.NAME, null);
 		TEST_SRS_ATTRIBUTES.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", GML_NAMESPACE, TEST_ID);
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), TEST_ID);
 		element.appendChild(wrapPositions(new ArrayList<Position>()));
 		testConstructor(WILL_FAIL, element);
 		
 		// First position doesn't match last position.
 		element = Util.buildDDMSElement(Polygon.NAME, null);
 		TEST_SRS_ATTRIBUTES.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", GML_NAMESPACE, TEST_ID);
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), TEST_ID);
 		List<Position> newPositions = new ArrayList<Position>(TEST_POSITIONS);
 		newPositions.add(TEST_POSITIONS.get(1));
 		element.appendChild(wrapPositions(newPositions));
@@ -293,7 +294,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 		// Not enough positions
 		element = Util.buildDDMSElement(Polygon.NAME, null);
 		TEST_SRS_ATTRIBUTES.addTo(element);
-		Util.addAttribute(element, GML_PREFIX, "id", GML_NAMESPACE, TEST_ID);
+		Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentGmlNamespace(), TEST_ID);
 		newPositions = new ArrayList<Position>();
 		newPositions.add(TEST_POSITIONS.get(0));
 		element.appendChild(wrapPositions(newPositions));

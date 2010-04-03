@@ -45,14 +45,25 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	protected static final String INVALID_URI = ":::::";
 	protected static final String DIFFERENT_VALUE = "Different";
 	
-	protected static final String DDMS_NAMESPACE = DDMSVersion.getDefaultNamespace();
 	protected static final String GML_PREFIX = PropertyReader.getProperty("gml.prefix");
-	protected static final String GML_NAMESPACE = PropertyReader.getProperty("gml.xmlNamespace");
-	protected static final String GML_XSD = PropertyReader.getProperty("gml.xsdLocation");
 	protected static final String ICISM_PREFIX = PropertyReader.getProperty("icism.prefix");
 	protected static final String ICISM_NAMESPACE = PropertyReader.getProperty("icism.xmlNamespace");
 	
 	private static final String TEST_DATA_DIR = PropertyReader.getProperty("test.unit.data");
+	
+	/**
+	 * Resets the in-use version of DDMS.
+	 */
+	protected void setUp() throws Exception {
+		DDMSVersion.clearCurrentVersion();
+	}
+	
+	/**
+	 * Resets the in-use version of DDMS.
+	 */
+	protected void tearDown() throws Exception {
+		DDMSVersion.clearCurrentVersion();
+	}
 	
 	/**
 	 * Constructor
@@ -60,7 +71,7 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	 * @param validDocumentFile	the valid instance of some component to use as a correct base case.
 	 */
 	public AbstractComponentTestCase(String validDocumentFile) {
-		this(validDocumentFile, DDMSVersion.getDefaultNamespace(), DDMSVersion.getDefaultSchema());
+		this(validDocumentFile, DDMSVersion.getCurrentNamespace(), DDMSVersion.getCurrentSchema());
 	}
 	
 	/**
@@ -71,6 +82,7 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	 * @param schemaLocation the local location of the schema file
 	 */
 	public AbstractComponentTestCase(String validDocumentFile, String namespaceURI, String schemaLocation) {
+		DDMSVersion.setCurrentVersion("3.0");
 		if (Util.isEmpty(validDocumentFile))
 			return;
 		try {

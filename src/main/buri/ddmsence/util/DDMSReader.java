@@ -58,7 +58,24 @@ public class DDMSReader {
 	/**
 	 * Constructor
 	 * 
-	 * Loads the DDMS schemas for validation.
+	 * Creates a DDMSReader for the currently in-use version of DDMS.
+	 */
+	public DDMSReader() throws SAXException {
+		this(DDMSVersion.getCurrentNamespace(), DDMSVersion.getCurrentSchema());
+	}
+	
+	/**
+	 * Constructor
+	 * 
+	 * <p>
+	 * Generally, the parameter-less constructor is the simplest way to read a DDMS resource file.
+	 * </p>
+	 * 
+	 * <p>
+	 * By allowing the namespaceURI and schemaLocation to be passed in in this constructor,
+	 * this DDMSReader can be used for non-Resource XML files. For example, the gml:Point unit tests
+	 * create a DDMSReader that validates against the GML-Profile.xsd.
+	 * </p>
 	 * 
 	 * @param namespaceURI the namespace URI for the schema file
 	 * @param schemaLocation the local location of the schema file
@@ -68,7 +85,7 @@ public class DDMSReader {
 		_reader = XMLReaderFactory.createXMLReader(XML_READER_CLASS);
 		URL xsd = getClass().getResource(schemaLocation);
 		if (xsd == null)
-			throw new SAXException("Unable to load a local copy of the schema for validation.");
+			throw new IllegalArgumentException("Unable to load a local copy of the schema for validation.");
 		String externalLocation = namespaceURI + " " + xsd.toExternalForm();
 		
 		getReader().setFeature(PROP_XERCES_VALIDATION, true);

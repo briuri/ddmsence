@@ -41,7 +41,7 @@ public class DDMSReaderTest extends TestCase {
 	private static final String TEST_DATA_DIR = PropertyReader.getProperty("test.unit.data");
 	
 	public DDMSReaderTest() throws SAXException {
-		_reader = new DDMSReader(DDMSVersion.getDefaultNamespace(), DDMSVersion.getDefaultSchema());
+		_reader = new DDMSReader();
 	}
 	
 	public void testGetElementNull() throws InvalidDDMSException {

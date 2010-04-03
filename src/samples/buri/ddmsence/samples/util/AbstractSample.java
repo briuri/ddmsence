@@ -44,7 +44,6 @@ import javax.swing.JTextField;
 import org.xml.sax.SAXException;
 
 import buri.ddmsence.util.DDMSReader;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -74,7 +73,7 @@ public abstract class AbstractSample implements ActionListener {
 	 */
 	public AbstractSample(String title, Dimension size, boolean hasFileMenu) throws SAXException {
 		_frame = buildFrame(title, size, hasFileMenu);
-		_reader = new DDMSReader(DDMSVersion.getDefaultNamespace(), DDMSVersion.getDefaultSchema());
+		_reader = new DDMSReader();
 	}
 	
 	/**

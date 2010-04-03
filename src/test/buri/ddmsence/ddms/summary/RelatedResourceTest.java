@@ -70,7 +70,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	 */
 	private static Element getFixtureElement() throws InvalidDDMSException {
 		Element resourceElement = Util.buildDDMSElement(RelatedResource.NAME, null);
-		resourceElement.addNamespaceDeclaration(Util.DDMS_PREFIX, DDMSVersion.getDefaultNamespace());
+		resourceElement.addNamespaceDeclaration(Util.DDMS_PREFIX, DDMSVersion.getCurrentNamespace());
 		resourceElement.addAttribute(Util.buildDDMSAttribute("qualifier", TEST_QUALIFIER));
 		resourceElement.addAttribute(Util.buildDDMSAttribute("value", TEST_VALUE));
 		resourceElement.appendChild(new Element(LinkTest.getFixtureElement()));
@@ -154,7 +154,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:RelatedResource xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" ");
+		xml.append("<ddms:RelatedResource xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\" ");
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE).append("\">\n\t");
 		xml.append("<ddms:link xmlns:xlink=\"").append(XLINK_NAMESPACE).append("\" xlink:type=\"locator\" ");
 		xml.append("xlink:href=\"").append(TEST_VALUE).append("\" ");

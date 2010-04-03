@@ -25,6 +25,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.SecurityAttributesTest;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -113,7 +114,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:virtualCoverage xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ");
+		xml.append("<ddms:virtualCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\" xmlns:ICISM=\"urn:us:gov:ic:ism\" ");
 		xml.append("ddms:address=\"").append(TEST_ADDRESS).append("\" ddms:protocol=\"").append(TEST_PROTOCOL).append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\" />");
 		return (xml.toString());
 	}

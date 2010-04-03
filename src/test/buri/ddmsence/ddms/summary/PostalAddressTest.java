@@ -27,6 +27,7 @@ import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -146,7 +147,7 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting, boolean hasState) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:postalAddress xmlns:ddms=\"").append(DDMS_NAMESPACE).append("\">\n\t");
+		xml.append("<ddms:postalAddress xmlns:ddms=\"").append(DDMSVersion.getCurrentNamespace()).append("\">\n\t");
 		xml.append("<ddms:street>1600 Pennsylvania Avenue, NW</ddms:street>\n\t");
 		xml.append("<ddms:city>Washington</ddms:city>\n\t");
 		if (hasState)

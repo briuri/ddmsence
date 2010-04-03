@@ -25,6 +25,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -50,9 +51,6 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	
 	/** The GML prefix */
 	public static final String GML_PREFIX = PropertyReader.getProperty("gml.prefix");
-	
-	/** The GML namespace */
-	public static final String GML_NAMESPACE = PropertyReader.getProperty("gml.xmlNamespace");
 	
 	/** The ICISM prefix */
 	public static final String ICISM_PREFIX = PropertyReader.getProperty("icism.prefix");
@@ -105,6 +103,13 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 */
 	public String getQualifiedName() {
 		return (getXOMElement() == null ? "" : getXOMElement().getQualifiedName());
+	}
+	
+	/**
+	 * @see IDDMSComponent#getDDMSVersion()
+	 */
+	public String getDDMSVersion() {
+		return (DDMSVersion.getVersionFor(getXOMElement().getNamespaceURI()));
 	}
 	
 	/**
