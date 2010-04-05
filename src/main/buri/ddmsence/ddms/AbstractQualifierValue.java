@@ -25,23 +25,23 @@ import buri.ddmsence.util.Util;
 /**
  * Base class for DDMS elements which have a qualifier/value attribute, such as ddms:Identifier and ddms:source.
  * 
- * <p>
- * Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set before
- * the component is used.
- * </p>
+ * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
+ * before the component is used. </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public abstract class AbstractQualifierValue extends AbstractBaseComponent {
-	
+
 	protected static final String QUALIFIER_NAME = "qualifier";
 	protected static final String VALUE_NAME = "value";
+
 	/**
-	 * This implicit superconstructor does nothing. 
+	 * This implicit superconstructor does nothing.
 	 */
-	protected AbstractQualifierValue() throws InvalidDDMSException {}
-	
+	protected AbstractQualifierValue() throws InvalidDDMSException {
+	}
+
 	/**
 	 * Base constructor
 	 * 
@@ -59,11 +59,11 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 	/**
 	 * Constructor which builds from raw data.
 	 * 
-	 * @param name		the name of the element without a prefix
-	 * @param qualifier	the value of the qualifier attribute
-	 * @param value		the value of the value attribute
-	 * @param validateNow	true to validate the component immediately. Because Source entities have additional fields
-	 * 		they should not be validated in the superconstructor.
+	 * @param name the name of the element without a prefix
+	 * @param qualifier the value of the qualifier attribute
+	 * @param value the value of the value attribute
+	 * @param validateNow true to validate the component immediately. Because Source entities have additional fields
+	 * they should not be validated in the superconstructor.
 	 */
 	protected AbstractQualifierValue(String name, String qualifier, String value, boolean validateNow) throws InvalidDDMSException {
 		try {

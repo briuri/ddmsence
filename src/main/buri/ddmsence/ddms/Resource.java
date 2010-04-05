@@ -94,10 +94,10 @@ import buri.ddmsence.util.Util;
  * {@link Unknown}<br />
  * <u>ddms:publisher</u>: (0-many optional), implemented as a {@link Person}, {@link Organization}, {@link Service}, or
  * {@link Unknown}<br />
- * <u>ddms:contributor</u>: (0-many optional), implemented as a {@link Person}, {@link Organization}, {@link Service}, or
- * {@link Unknown}<br />
- * <u>ddms:pointOfContact</u>: (0-many optional), implemented as a {@link Person}, {@link Organization}, {@link Service}, or
- * {@link Unknown}<br />
+ * <u>ddms:contributor</u>: (0-many optional), implemented as a {@link Person}, {@link Organization}, {@link Service}, 
+ * or {@link Unknown}<br />
+ * <u>ddms:pointOfContact</u>: (0-many optional), implemented as a {@link Person}, {@link Organization}, 
+ * {@link Service}, or {@link Unknown}<br />
  * <u>ddms:format</u>: (0-1 optional), implemented as a {@link Format}<br />
  * <u>ddms:subjectCoverage</u>: (exactly 1 required), implemented as a {@link SubjectCoverage}<br />
  * <u>ddms:virtualCoverage</u>: (0-many optional), implemented as a {@link VirtualCoverage}<br />
@@ -110,7 +110,8 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ICISM:resourceElement</u>: Identifies whether this tag sets the classification for the xml file as a whole
  * (required, starting in DDMS v3.0)<br />
- * <u>ICISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in DDMS v3.0)<br />
+ * <u>ICISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in 
+ * DDMS v3.0)<br />
  * <u>ICISM:DESVersion</u>: Specifies the version of the Digital Encrpytion Schema version used for the security
  * markings on this record. (required, starting in DDMS v3.0)<br />
  * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS v3.0. The classification and
@@ -173,11 +174,8 @@ public final class Resource extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
-	 * <p>
-	 * DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However,
-	 * the 2.0 schema still allows "any" attributes on the Resource, so the 3.0 attribute values
-	 * will be loaded if present.
-	 * </p>
+	 * <p> DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 schema still
+	 * allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present. </p>
 	 * 
 	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -190,7 +188,8 @@ public final class Resource extends AbstractBaseComponent {
 			String createDate = getAttributeValue(CREATE_DATE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
 			if (!Util.isEmpty(createDate))
 				_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
-			String desVersion = element.getAttributeValue(DES_VERSION_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+			String desVersion = element.getAttributeValue(DES_VERSION_NAME, 
+				DDMSVersion.getCurrentVersion().getIcismNamespace());
 			if (!Util.isEmpty(desVersion)) {
 				try {
 					_cachedDESVersion = Integer.valueOf(desVersion);
@@ -347,19 +346,21 @@ public final class Resource extends AbstractBaseComponent {
 
 			// Attributes
 			if (resourceElement != null) {
-				Util.addAttribute(element, ICISM_PREFIX, RESOURCE_ELEMENT_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), String
-					.valueOf(resourceElement));
+				Util.addAttribute(element, ICISM_PREFIX, RESOURCE_ELEMENT_NAME, 
+					DDMSVersion.getCurrentVersion().getIcismNamespace(), String.valueOf(resourceElement));
 			}
 			if (desVersion != null) {
 				_cachedDESVersion = desVersion;
-				Util.addAttribute(element, ICISM_PREFIX, DES_VERSION_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), desVersion.toString());
+				Util.addAttribute(element, ICISM_PREFIX, DES_VERSION_NAME, 
+					DDMSVersion.getCurrentVersion().getIcismNamespace(), desVersion.toString());
 			}
 			if (!Util.isEmpty(createDate)) {
 				_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
-				Util.addAttribute(element, ICISM_PREFIX, CREATE_DATE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), getCreateDate()
-					.toXMLFormat());
+				Util.addAttribute(element, ICISM_PREFIX, CREATE_DATE_NAME, 
+					DDMSVersion.getCurrentVersion().getIcismNamespace(), getCreateDate().toXMLFormat());
 			}
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null) : securityAttributes);
+			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
+				: securityAttributes);
 			_cachedSecurityAttributes.addTo(element);
 
 			for (IDDMSComponent component : topLevelComponents) {
@@ -427,8 +428,7 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Helper method to convert a XOM Element into a producer entity, based on
-	 * the producer entity type.
+	 * Helper method to convert a XOM Element into a producer entity, based on the producer entity type.
 	 * 
 	 * @param element the producerRole element (creator, contributor, etc.)
 	 * @return an IProducer
@@ -442,7 +442,7 @@ public final class Resource extends AbstractBaseComponent {
 			return (new Organization(element));
 		else if (Service.NAME.equals(entityElement.getLocalName()))
 			return (new Service(element));
-		else // Unknown
+		else	// Unknown
 			return (new Unknown(element));
 	}
 	
@@ -519,7 +519,8 @@ public final class Resource extends AbstractBaseComponent {
 		if (getTitles().size() < 1)
 			throw new InvalidDDMSException("At least 1 title is required.");
 		if (getCreators().size() + getContributors().size() + getPublishers().size() + getPointOfContacts().size() == 0)
-			throw new InvalidDDMSException("At least 1 producer (creator, contributor, publisher, or pointOfContact) is required.");
+			throw new InvalidDDMSException(
+				"At least 1 producer (creator, contributor, publisher, or pointOfContact) is required.");
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Description.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Dates.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Rights.NAME, 0, 1);
@@ -536,7 +537,8 @@ public final class Resource extends AbstractBaseComponent {
 			validateRollup(getSecurityAttributes(), childAttributes);
 		}
 		else
-			addWarning("Security rollup validation is being skipped, because no classification exists on the ddms:Resource itself.");
+			addWarning("Security rollup validation is being skipped, because no classification exists "
+				+ "on the ddms:Resource itself.");
 		
 		for (IDDMSComponent component : getTopLevelComponents()) {
 			Util.requireSameVersion(this, component);
@@ -567,10 +569,11 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param parentAttributes the master attributes to compare to
 	 * @param childAttributes a set of all nested attributes
 	 */
-	protected void validateRollup(SecurityAttributes parentAttributes, Set<SecurityAttributes> childAttributes) throws InvalidDDMSException {
+	protected void validateRollup(SecurityAttributes parentAttributes, Set<SecurityAttributes> childAttributes)
+		throws InvalidDDMSException {
 		Util.requireValue("parent security attributes", parentAttributes);
 		Util.requireValue("parent classification", parentAttributes.getClassification());
-		
+
 		String parentClass = parentAttributes.getClassification();
 		boolean isParentUS = ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, parentClass);
 		int parentIndex = ISMVocabulary.getClassificationIndex(parentClass);
@@ -584,10 +587,12 @@ public final class Resource extends AbstractBaseComponent {
 			int childIndex = ISMVocabulary.getClassificationIndex(childClass);
 			needsManualReview = needsManualReview || ISMVocabulary.classificationNeedsReview(childClass);
 			if (isParentUS != isChildUS) {
-				throw new InvalidDDMSException("The security classification of a nested component is using a different marking system than the ddms:Resource itself.");
+				throw new InvalidDDMSException("The security classification of a nested component is using a "
+					+ "different marking system than the ddms:Resource itself.");
 			}
 			if (childIndex > parentIndex) {
-				throw new InvalidDDMSException("The security classification of a nested component is more restrictive than the ddms:Resource itself.");
+				throw new InvalidDDMSException("The security classification of a nested component is more "
+					+ "restrictive than the ddms:Resource itself.");
 			}			
 		}
 		if (needsManualReview) {
@@ -641,11 +646,11 @@ public final class Resource extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Resource))
 			return (false);
 		Resource test = (Resource) obj;
-		return (Util.nullEquals(isResourceElement(), test.isResourceElement()) && 
-				Util.nullEquals(getCreateDate(), test.getCreateDate()) &&
-				Util.nullEquals(getDESVersion(), test.getDESVersion()) &&
-				getSecurityAttributes().equals(test.getSecurityAttributes()) &&
-				Util.listEquals(getTopLevelComponents(), test.getTopLevelComponents()));
+		return (Util.nullEquals(isResourceElement(), test.isResourceElement())
+			&& Util.nullEquals(getCreateDate(), test.getCreateDate())
+			&& Util.nullEquals(getDESVersion(), test.getDESVersion())
+			&& getSecurityAttributes().equals(test.getSecurityAttributes()) 
+			&& Util.listEquals(getTopLevelComponents(),	test.getTopLevelComponents()));
 	}
 
 	/**

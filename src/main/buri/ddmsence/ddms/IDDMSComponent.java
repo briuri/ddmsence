@@ -82,18 +82,17 @@ public interface IDDMSComponent {
 	 * @return String
 	 */
 	public String getDDMSVersion();
-	
+
 	/**
-	 * Returns any security attributes attached to this component. If the component is not allowed to have
-	 * attributes, this will be null. Otherwise, a valid SecurityAttributes object will be returned,
-	 * even if none of its properties are set.
+	 * Returns any security attributes attached to this component. If the component is not allowed to have attributes,
+	 * this will be null. Otherwise, a valid SecurityAttributes object will be returned, even if none of its properties
+	 * are set.
 	 */
 	public SecurityAttributes getSecurityAttributes();
-	
+
 	/**
-	 * Returns a list of any warning messages that occurred during validation. Warnings
-	 * do not prevent a valid component from being formed. A parent component should
-	 * also claim the warnings of its child elements.
+	 * Returns a list of any warning messages that occurred during validation. Warnings do not prevent a valid component
+	 * from being formed. A parent component should also claim the warnings of its child elements.
 	 * 
 	 * @return a list of warnings
 	 */

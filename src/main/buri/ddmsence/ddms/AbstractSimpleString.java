@@ -22,13 +22,11 @@ package buri.ddmsence.ddms;
 import buri.ddmsence.util.Util;
 
 /**
- * Base class for DDMS elements which consist of simple child text, possibly decorated with attributes, such as 
+ * Base class for DDMS elements which consist of simple child text, possibly decorated with attributes, such as
  * ddms:description, ddms:title, and ddms:subtitle.
  * 
- * <p>
- * Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set before
- * the component is used.
- * </p>
+ * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
+ * before the component is used. </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -41,11 +39,11 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	protected AbstractSimpleString() throws InvalidDDMSException {}
 	
 	/**
-	 * Constructor which builds from raw data. The object is not validated at this point -- attributes
-	 * may be required which have not been created yet.
+	 * Constructor which builds from raw data. The object is not validated at this point -- attributes may be required
+	 * which have not been created yet.
 	 * 
-	 * @param name		the name of the element without a prefix
-	 * @param value		the value of the element's child text
+	 * @param name the name of the element without a prefix
+	 * @param value the value of the element's child text
 	 */
 	protected AbstractSimpleString(String name, String value) throws InvalidDDMSException {
 		try {
@@ -76,8 +74,8 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the child text of the description. The underlying XOM
-	 * method which retrieves the child text returns an empty string if not found.
+	 * Accessor for the child text of the description. The underlying XOM method which retrieves the child text returns
+	 * an empty string if not found.
 	 */
 	public String getValue() {
 		return (getXOMElement().getValue()); 
