@@ -488,11 +488,12 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>(v3.0) DESVersion must exist and be a valid Integer.</li>
 	 * <li>(v3.0) A classification is required.</li>
 	 * <li>(v3.0) At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>If this resource has security attributes, the SecurityAttributes on any subcomponents are valid according 
-	 * to rollup rules (security attributes are not required in DDMS 2.0).</li>
 	 * <li>1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights, 0-1 formats, exactly 1
 	 * subjectCoverage, and exactly 1 security element must exist.</li>
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
+	 * <li>If this resource has security attributes, the SecurityAttributes on any subcomponents are valid according 
+	 * to rollup rules (security attributes are not required in DDMS 2.0).</li>
+	 * <li>All child components are using the same version of DDMS.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see Resource#validateRollup(SecurityAttributes, Set)
@@ -526,8 +527,7 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Rights.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Format.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), SubjectCoverage.NAME, 1, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.NAME, 1, 1);
-		
+		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.NAME, 1, 1);	
 		if (!getSecurityAttributes().isEmpty()) {
 			Set<SecurityAttributes> childAttributes = new HashSet<SecurityAttributes>();
 			for (IDDMSComponent component : getTopLevelComponents()) {
@@ -536,12 +536,28 @@ public final class Resource extends AbstractBaseComponent {
 			}
 			validateRollup(getSecurityAttributes(), childAttributes);
 		}
-		else
-			addWarning("Security rollup validation is being skipped, because no classification exists "
-				+ "on the ddms:Resource itself.");
-		
 		for (IDDMSComponent component : getTopLevelComponents()) {
 			Util.requireSameVersion(this, component);
+		}
+		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>(v2.0) If ddms:Resource has no classification, warn about ignoring rollup validation.</li>
+	 * <li>Include all child component validation warnings, and any warnings from the security attributes.</li>
+	 * <li>(v3.0) validateRollup() warns about usage of R, CTS-B, or CTS-BALK.</li>
+	 * </td></tr></table>
+	 */
+	private void validateWarnings() {
+		if (getSecurityAttributes().isEmpty()) {
+			addWarning("Security rollup validation is being skipped, because no classification exists "
+				+ "on the ddms:Resource itself.");
+		}
+		for (IDDMSComponent component : getTopLevelComponents()) {
 			addWarnings(component.getValidationWarnings(), false);
 		}
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
@@ -569,9 +585,8 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param parentAttributes the master attributes to compare to
 	 * @param childAttributes a set of all nested attributes
 	 */
-	protected void validateRollup(SecurityAttributes parentAttributes, Set<SecurityAttributes> childAttributes)
+	private void validateRollup(SecurityAttributes parentAttributes, Set<SecurityAttributes> childAttributes)
 		throws InvalidDDMSException {
-		Util.requireValue("parent security attributes", parentAttributes);
 		Util.requireValue("parent classification", parentAttributes.getClassification());
 
 		String parentClass = parentAttributes.getClassification();
@@ -649,7 +664,7 @@ public final class Resource extends AbstractBaseComponent {
 		return (Util.nullEquals(isResourceElement(), test.isResourceElement())
 			&& Util.nullEquals(getCreateDate(), test.getCreateDate())
 			&& Util.nullEquals(getDESVersion(), test.getDESVersion())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes()) 
+			&& getSecurityAttributes().equals(test.getSecurityAttributes())
 			&& Util.listEquals(getTopLevelComponents(),	test.getTopLevelComponents()));
 	}
 
@@ -659,7 +674,7 @@ public final class Resource extends AbstractBaseComponent {
 	public int hashCode() {
 		int result = super.hashCode();
 		if (isResourceElement() != null)
-			result = 7 * result + Util.booleanHashCode(isResourceElement().booleanValue());
+			result = 7 * result + isResourceElement().hashCode();
 		if (getCreateDate() != null)
 			result = 7 * result + getCreateDate().hashCode();
 		if (getDESVersion() != null)
