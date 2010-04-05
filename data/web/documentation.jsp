@@ -180,9 +180,8 @@ The following convention is used to provide some consistency:</p>
 <h4>New Attributes in DDMS v3.0</h4>
 
 <p>Some attributes, such as ICISM:excludeFromRollup and ICISM:resouceElement are new in DDMS v3.0. When the accessors for these attributes are
-caleld on a DDMS 2.0 component, an arbitrary value will be returned instead of an UnsupportedVersionException. This decision allows DDMS records of varying versions to be
-traversed and queried in the same manner, without requiring too much knowledge of when specific attributes were introduced. The default value for the attribute
-will be listed in the API documentation for that attribute's accessor -- in general, boolean attributes will be <code>false</code> and other data types will be <code>null</code>.</p>
+caleld on a DDMS 2.0 component, a null value will be returned instead of an UnsupportedVersionException. This decision allows DDMS records of varying versions to be
+traversed and queried in the same manner, without requiring too much knowledge of when specific attributes were introduced.</p>
 
 <h4>Thread Safety</h4>
 
