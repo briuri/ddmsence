@@ -535,6 +535,8 @@ public final class Resource extends AbstractBaseComponent {
 			}
 			validateRollup(getSecurityAttributes(), childAttributes);
 		}
+		else
+			addWarning("Security rollup validation is being skipped, because no classification exists on the ddms:Resource itself.");
 		
 		for (IDDMSComponent component : getTopLevelComponents()) {
 			Util.requireSameVersion(this, component);
