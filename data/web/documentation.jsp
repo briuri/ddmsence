@@ -16,7 +16,11 @@
 	<li><a href="#samples">Sample Applications</a></li>
 	<li><a href="#javadoc">JavaDoc API Documentation</a></li>
 	<li><a href="#design">Design Decisions</a></li>
-	<li><a href="#tips">Advanced Tips</a></li>
+	<li><a href="#tips">Advanced Tips</a></li><ul>
+		<li><a href="#tips-version">Working with DDMS 2.0</a></li>
+		<li><a href="#tips-securityAttributes">ICISM Security Attributes</a></li>
+		<li><a href="#tips-srsAttributes">SRS Attributes</a></li>
+	</ul>
 	<li><a href="#contributors">Contributors</a></li>
 </ul>
 
@@ -189,7 +193,62 @@ traversed and queried in the same manner, without requiring too much knowledge o
 
 <a name="tips"></a><h3>Advanced Tips</h3>
 
-<h4>ICISM Security Attributes</h4>
+<a name="tips-version"></a><h4>Working with DDMS 2.0</h4>
+
+<p>Starting with DDMSence v1.1, two versions of DDMS are supported: 2.0 and 3.0. When building DDMS components from XML files, the 
+<code>DDMSReader</code> class can automatically use the correct version of DDMS based on the XML namespace defined in the file.
+When building DDMS components from scratch, the <code><a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">DDMSVersion</a></code>
+class controls the version being used. There is an instance of <code>DDMSVersion</code> for each supported version, and this 
+instance contains the specific XML namespaces used for DDMS, GML, and ICISM components.</p>
+
+<div class="example"><pre>DDMSVersion.setCurrentVersion("2.0");
+DDMSVersion version = DDMSVersion.getCurrentVersion();
+System.out.println("In DDMS v" + version.getVersion() + ", the following namespaces are used: ");
+System.out.println("ddms: " + version.getNamespace());
+System.out.println("gml: " + version.getGmlNamespace());
+System.out.println("ICISM: " + version.getIcismNamespace());
+System.out.println("Are we using DDMS 2.0? " + DDMSVersion.isCurrentVersion("2.0"));
+System.out.println("If I see the namespace, http://metadata.dod.mil/mdr/ns/DDMS/3.0/, I know we are using DDMS v"
+	+ DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/").getVersion());
+
+Identifier identifier = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
+   "http://www.whitehouse.gov/news/releases/2005/06/20050621.html");
+System.out.println("This identifier was created with DDMS v" + identifier.getDDMSVersion());
+
+DDMSVersion.setCurrentVersion("3.0");
+Identifier identifier2 = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
+   "http://www.whitehouse.gov/news/releases/2005/06/20050621.html");
+System.out.println("This identifier was created with DDMS v" + identifier2.getDDMSVersion());</pre></div>
+<p class="figure">Figure 4. Using a different version of DDMS</p>
+
+<div class="example"><pre>In DDMS v2.0, the following namespaces are used: 
+ddms: http://metadata.dod.mil/mdr/ns/DDMS/2.0/
+gml: http://www.opengis.net/gml
+ICISM: urn:us:gov:ic:ism:v2
+Are we using DDMS 2.0? true
+If I see the namespace, http://metadata.dod.mil/mdr/ns/DDMS/3.0/, I know we are using DDMS v3.0
+This identifier was created with DDMS v2.0
+This identifier was created with DDMS v3.0</pre></div>
+<p class="figure">Figure 5. Output of the code in Figure 4</p>
+
+<p>Calling <code>DDMSVersion.setCurrentVersion("2.0")</code> will make any components you create from that point on obey DDMS 2.0 
+validation rules. The default version if you never call this method is "3.0". The version is maintained as a static variable, so this 
+is not a thread-safe approach, but I believe that the most common use cases will deal with DDMS components of a single version at a time,
+and I wanted the versioning mechanism to be as unobstrusive as possible.</p>
+
+<p>The validation rules between DDMS 2.0 and 3.0 are very similar, but there are a few major differences. For example, the <code>Unknown</code>
+entity for producers was not introduced until DDMS 3.0, so attempts to create one in DDMS 2.0 will fail.</p>
+
+<div class="example"><pre>DDMSVersion.setCurrentVersion("2.0");
+List&lt;String&gt; names = new ArrayList&lt;String&gt;();
+names.add("Unknown Entity");
+Unknown unknown = new Unknown("creator", names, null, null, null);</pre></div>
+<p class="figure">Figure 6. This code will throw an InvalidDDMSException</p>
+
+<p>Please read the DDMS 3.0 release notes, bundled in the DDMS 3.0 package, for a complete list of the differences between 2.0 and 3.0. Also note
+that you cannot mix multiple DDMS versions within the same Resource.</p>
+
+<a name="tips-securityAttributes"></a><h4>ICISM Security Attributes</h4>
 
 <p>
 ICISM security attributes are defined in the Intelligence Community's "XML Data Encoding Specification for Information Security Marking Metadata" document (DES) and
@@ -198,7 +257,7 @@ the ICISM attributes which can decorate various DDMS components, such as <code>d
 the attributes from a XOM element will simply load these attributes from the element itself. The constructor which builds the attributes from raw data is defined as:
 
 <div class="example"><pre>public SecurityAttributes(String classification, List&lt;String&gt; ownerProducers, Map&lt;String,String&gt; otherAttributes)</pre></div>
-<p class="figure">Figure 3. SecurityAttributes constructor</p>
+<p class="figure">Figure 7. SecurityAttributes constructor</p>
 
 <p>Because the <code>classification</code> and <code>ownerProducers</code> are the most commonly referenced attributes (especially for Unclassified metadata) they are explicit parameters. Any other
 attribute can be added in a String-based map called <code>otherAttributes</code>. If an attribute is repeated, the last one in the list is used, and if an attribute does not match an
@@ -215,27 +274,27 @@ otherAttributes.put("classification", "U"); // This will be ignored, because the
 SecurityAttributes security = new SecurityAttributes("C", ownerProducers, otherAttributes);
 Title title = new Title("My Confidential Notes", security);
 System.out.println(title.toXML());</pre></div>
-<p class="figure">Figure 4. Code to generate SecurityAttributes</p>
+<p class="figure">Figure 8. Code to generate SecurityAttributes</p>
 
-<p>Note: The actual values assigned to each attribute in Figure 4 are for example's sake only, and might be illogical in real-world metadata.</p>
+<p>Note: The actual values assigned to each attribute in Figure 8 are for example's sake only, and might be illogical in real-world metadata.</p>
 
 <div class="example"><pre>&lt;ddms:title xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ICISM="urn:us:gov:ic:ism" 
    ICISM:classification="C" ICISM:ownerProducer="USA AUS" ICISM:SCIcontrols="SI" ICISM:SARIdentifier="SAR-USA"&gt;
    My Confidential Notes
 &lt;/ddms:title&gt;</pre></div>
-<p class="figure">Figure 5. The resultant XML element with security attributes</p>
+<p class="figure">Figure 9. The resultant XML element with security attributes</p>
 
 <p>The values assigned to some attributes must come from the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/">Controlled Vocabulary Enumerations</a>
 defined by the Intelligence Community. The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today.
 I would like to add this level of validation after the IC has finalized version 2 of the DES.</p>
 
-<h4>SRS Attributes</h4>
+<a name="tips-srsAttributes"></a><h4>SRS Attributes</h4>
 
-<p>Spatial Reference System (SRS) attributes are defined in the DDMS' GML Profile and implemented as an <a href="<a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">SRSAttributes</a> class.
+<p>Spatial Reference System (SRS) attributes are defined in the DDMS' GML Profile and implemented as an <a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">SRSAttributes</a> class.
 They can be applied to <code>gml:Point</code>, <code>gml:Polygon</code>, and <code>gml:pos</code>.</p>
 
 <div class="example"><pre>SRSAttributes(String srsName, Integer srsDimension, List&lt;String&gt; axisLabels, List&lt;String&gt; uomLabels)</pre></div>
-<p class="figure">Figure 6. SRSAttributes constructor</p>
+<p class="figure">Figure 10. SRSAttributes constructor</p>
 
 <p>Here is an example which creates SRS attributes on a <code>gml:pos</code> element:</p>
 
@@ -251,11 +310,11 @@ coordinates.add(new Double(32.1));
 coordinates.add(new Double(40.1));
 Position position = new Position(coordinates, srsAttributes);
 System.out.println(position.toXML());</pre></div>
-<p class="figure">Figure 7. Code to generate SRSAttributes</p>
+<p class="figure">Figure 11. Code to generate SRSAttributes</p>
 
 <div class="example"><pre>&lt;gml:pos srsName="http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D" srsDimension="10" 
    axisLabels="X Y" uomLabels="Meter Meter"&gt;32.1 40.1&lt;/gml:pos&gt;</pre></div>
-<p class="figure">Figure 8. The resultant XML element with SRS attributes</p>
+<p class="figure">Figure 12. The resultant XML element with SRS attributes</p>
   
 <p>Please note that the SRSAttributes do not belong in any XML namespace -- this is correct according to the DDMS GML Profile.</p>
 

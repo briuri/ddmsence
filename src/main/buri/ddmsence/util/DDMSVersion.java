@@ -42,12 +42,14 @@ import buri.ddmsence.ddms.UnsupportedVersionException;
  * The ddmsence.properties file has six properties which can be a comma-separated list:
  * </p>
  * 
- * <li>ddms.supportedVersions: i.e. "2.0,3.0"</li>
- * <li>ddms.xmlNamespaces: i.e. "http://metadata.dod.mil/mdr/ns/DDMS/2.0/,http://metadata.dod.mil/mdr/ns/DDMS/3.0/"</li>
- * <li>ddms.xsdLocations: i.e. "/schemas/2.0/DDMS/2.0/DDMS-v2_0.xsd,/schemas/3.0/DDMS/3.0/DDMS-v3_0.xsd"</li>
- * <li>gml.xmlNamespaces: i.e. "http://www.opengis.net/gml,http://www.opengis.net/gml/3.2"</li>
- * <li>gml.xsdLocations: i.e. "/schemas/2.0/DDMS/2.0/DDMS-GML-Profile.xsd,/schemas/3.0/DDMS/3.0/DDMS-GML-Profile.xsd"</li>
- * <li>icism.xmlNamespaces: i.e. "urn:us:gov:ic:ism:v2,urn:us:gov:ic:ism"</li> 
+ * 
+ * <li><code>ddms.supportedVersions</code>: i.e. "2.0,3.0"</li>
+ * <li><code>ddms.xmlNamespaces</code>: i.e. "http://metadata.dod.mil/mdr/ns/DDMS/2.0/,http://metadata.dod.mil/mdr/ns/DDMS/3.0/"</li>
+ * <li><code>ddms.xsdLocations</code>: i.e. "/schemas/2.0/DDMS/2.0/DDMS-v2_0.xsd,/schemas/3.0/DDMS/3.0/DDMS-v3_0.xsd"</li>
+ * <li><code>gml.xmlNamespaces</code>: i.e. "http://www.opengis.net/gml,http://www.opengis.net/gml/3.2"</li>
+ * <li><code>gml.xsdLocations</code>: i.e. "/schemas/2.0/DDMS/2.0/DDMS-GML-Profile.xsd,/schemas/3.0/DDMS/3.0/DDMS-GML-Profile.xsd"</li>
+ * <li><code>icism.xmlNamespaces</code>: i.e. "urn:us:gov:ic:ism:v2,urn:us:gov:ic:ism"</li>
+ *  
  * 
  * <p>
  * The number of items in each property must match the number of supported DDMS versions. The format of an xsdLocation should
@@ -207,7 +209,13 @@ public class DDMSVersion {
 		setCurrentVersion(DEFAULT_VERSION_NUMBER);
 	}
 	
-
+	/**
+	 * @see Object#toString()
+	 */
+	public String toString() {
+		return (getVersion());
+	}
+	
 	/**
 	 * Accessor for the version number
 	 */
