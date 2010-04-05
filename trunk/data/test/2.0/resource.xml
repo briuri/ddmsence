@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ddms:Resource xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/2.0/" xmlns:ICISM="urn:us:gov:ic:ism:v2" ICISM:resourceElement="false">
+<ddms:Resource xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/2.0/" xmlns:ICISM="urn:us:gov:ic:ism:v2" ICISM:DESVersion="2">
 	<ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence:testIdentifier" />
 	<ddms:title ICISM:classification="U" ICISM:ownerProducer="USA">DDMSence</ddms:title>
 	<ddms:subtitle ICISM:classification="U" ICISM:ownerProducer="USA">Version 0.1</ddms:subtitle>

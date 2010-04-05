@@ -94,7 +94,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 	private List<IDDMSComponent> TEST_TOP_LEVEL_COMPONENTS;
 	private List<IDDMSComponent> TEST_NO_OPTIONAL_COMPONENTS;
 
-	private static final boolean TEST_RESOURCE_ELEMENT = true;
+	private static final Boolean TEST_RESOURCE_ELEMENT = Boolean.TRUE;
 	private static final Integer TEST_DES_VERSION = new Integer(2);
 	private static final String TEST_CREATE_DATE = "2010-01-21";
 
@@ -207,27 +207,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		}
 		return (component);
 	}
-
-	/**
-	 * Helper method to create an object which is expected to be valid.
-	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
-	 * @param topLevelComponents a list of top level components
-	 * @return a valid object
-	 */
-	private Resource testConstructor(boolean expectFailure, List<IDDMSComponent> topLevelComponents) {
-		Resource component = null;
-		try {
-			component = new Resource(topLevelComponents);
-			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
-			checkConstructorFailure(expectFailure, e);
-		}
-		return (component);
-	}
 	
 	/**
-	 * Helper method to create an object which is expected to be valid.
+	 * Helper method to create a DDMS 3.0 object which is expected to be valid.
 	 * 
 	 * @param expectFailure true if this operation is expected to succeed, false otherwise
 	 * @param topLevelComponents a list of top level components
@@ -237,11 +219,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 	 * @return a valid object
 	 */
 	private Resource testConstructor(boolean expectFailure, List<IDDMSComponent> topLevelComponents,
-		boolean resourceElement, String createDate, Integer desVersion) {
+		Boolean resourceElement, String createDate, Integer desVersion) {
 		Resource component = null;
 		try {
-			component = new Resource(topLevelComponents, resourceElement, createDate, desVersion,
-				SecurityAttributesTest.getFixture(false));
+			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null : SecurityAttributesTest.getFixture(false));
+			component = new Resource(topLevelComponents, resourceElement, createDate, desVersion, attr);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -261,8 +243,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 			html.append("<meta name=\"security.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"security.ownerProducer\" content=\"USA\" />\n");
 		}
-		else
-			html.append("<meta name=\"security.resourceElement\" content=\"false\" />\n");
+		else {
+			// Adding the optional ICISM tag allows the namespace declaration to definitely be in the Resource element.
+			html.append("<meta name=\"security.DESVersion\" content=\"2\" />\n");
+		}
 		html.append("<meta name=\"identifier.qualifier\" content=\"URI\" />\n");
 		html.append("<meta name=\"identifier.value\" content=\"urn:buri:ddmsence:testIdentifier\" />\n");
 		html.append("<meta name=\"title\" content=\"DDMSence\" />\n");
@@ -342,8 +326,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 			text.append("Classification: U\n");
 			text.append("ownerProducer: USA\n");
 		}
-		else
-			text.append("ResourceElement: false\n");
+		else {
+			// Adding the optional ICISM tag allows the namespace declaration to definitely be in the Resource element.
+			text.append("DES Version: 2\n");
+		}
 		text.append("Identifier qualifier: URI\n");
 		text.append("Identifier value: urn:buri:ddmsence:testIdentifier\n");
 		text.append("Title: DDMSence\n");
@@ -422,8 +408,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
 			xml.append(" ICISM:resourceElement=\"true\" ICISM:DESVersion=\"2\" ICISM:createDate=\"2010-01-21\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
 		}
-		else
-			xml.append(" ICISM:resourceElement=\"false\"");
+		else {
+			// Adding the optional ICISM tag allows the namespace declaration to definitely be in the Resource element.
+			xml.append(" ICISM:DESVersion=\"2\"");
+		}
 		xml.append(">\n");
 		xml.append("\t<ddms:identifier ddms:qualifier=\"URI\" ddms:value=\"urn:buri:ddmsence:testIdentifier\" />\n");
 		xml.append("\t<ddms:title ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">DDMSence</ddms:title>\n");
@@ -957,7 +945,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			createComponents();
 			
 			Resource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			Resource dataComponent = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS) :
+			Resource dataComponent = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION) :
 				testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION));
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -1007,7 +995,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			component = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS) :
+			component = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION) :
 				testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		}
@@ -1021,7 +1009,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
-			component = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS) :
+			component = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION) :
 				testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION));
 			assertEquals(getExpectedTextOutput(), component.toText());
 		}
@@ -1035,7 +1023,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS) :
+			component = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION) :
 				testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}

@@ -108,13 +108,13 @@ public final class Security extends AbstractBaseComponent {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			if (Util.isEmpty(getAttributeValue(EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace())))
+			if (getExcludeFromRollup() == null)
 				throw new InvalidDDMSException("The excludeFromRollup attribute is required.");
 			if (!FIXED_ROLLUP.equals(String.valueOf(getExcludeFromRollup())))
 				throw new InvalidDDMSException("The excludeFromRollup attribute must have a fixed value of \"" + FIXED_ROLLUP + "\".");
 		}
 		else {
-			if (!Util.isEmpty(getAttributeValue(EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace())))
+			if (getExcludeFromRollup() != null)
 				throw new InvalidDDMSException("The excludeFromRollup attribute cannot be used before DDMS v3.0.");
 		}
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
@@ -128,7 +128,7 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		if (!DDMSVersion.isCurrentVersion("2.0"))
+		if (getExcludeFromRollup() != null)
 			html.append(buildHTMLMeta("security.excludeFromRollup", String.valueOf(getExcludeFromRollup()), true));
 		html.append(getSecurityAttributes().toHTML(Security.NAME));
 		return (html.toString());
@@ -139,7 +139,7 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		if (!DDMSVersion.isCurrentVersion("2.0"))
+		if (getExcludeFromRollup() != null)
 			text.append(buildTextLine("Exclude From Rollup", String.valueOf(getExcludeFromRollup()), true));
 		text.append(getSecurityAttributes().toText(""));
 		return (text.toString());
@@ -153,7 +153,7 @@ public final class Security extends AbstractBaseComponent {
 			return (false);
 		Security test = (Security) obj;
 		return (getSecurityAttributes().equals(test.getSecurityAttributes()) &&
-				(getExcludeFromRollup() == test.getExcludeFromRollup()));
+				Util.nullEquals(getExcludeFromRollup(), test.getExcludeFromRollup()));
 	}
 
 	/**
@@ -161,17 +161,22 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 7 * result + Util.booleanHashCode(getExcludeFromRollup());
+		if (getExcludeFromRollup() != null)
+			result = 7 * result + Util.booleanHashCode(getExcludeFromRollup().booleanValue());
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
 	
 	/**
-	 * Accessor for the excludeFromRollup attribute. Because this attribute does not exist in DDMS v2.0, the default
-	 * value when unset is "false".
+	 * Accessor for the excludeFromRollup attribute. This may be null for DDMS v2.0 components.
 	 */
-	public boolean getExcludeFromRollup() {
-		return (Boolean.valueOf(getAttributeValue(EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace())));
+	public Boolean getExcludeFromRollup() {
+		String value = getAttributeValue(EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		if ("true".equals(value))
+			return (Boolean.TRUE);
+		if ("false".equals(value))
+			return (Boolean.FALSE);
+		return (null);
 	}
 	
 	/**
