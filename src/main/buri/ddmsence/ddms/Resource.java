@@ -195,7 +195,7 @@ public final class Resource extends AbstractBaseComponent {
 				try {
 					_cachedDESVersion = Integer.valueOf(desVersion);
 				} catch (NumberFormatException e) {
-				// 	This will be thrown as an InvalidDDMSException during validation
+					// 	This will be thrown as an InvalidDDMSException during validation
 				}
 			}
 			_cachedSecurityAttributes = new SecurityAttributes(element);
@@ -311,7 +311,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents) throws InvalidDDMSException {
-		this(topLevelComponents, false, null, null, null);
+		this(topLevelComponents, null, null, null, null);
 	}
 
 	/**
@@ -330,15 +330,15 @@ public final class Resource extends AbstractBaseComponent {
 	 * allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present. </p>
 	 * 
 	 * @param topLevelComponents a list of top level components
-	 * @param resourceElement value of the resourceElement attribute (required)
-	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required)
-	 * @param desVersion the DES Version as an Integer (required)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
+	 * @param resourceElement value of the resourceElement attribute (required in v3.0)
+	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required in v3.0)
+	 * @param desVersion the DES Version as an Integer (required in v3.0)
+	 * @param securityAttributes any security attributes (classification and ownerProducer are required in v3.0)
 	 * 
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
 	 * does not belong at the top-level of the Resource.
 	 */
-	public Resource(List<IDDMSComponent> topLevelComponents, boolean resourceElement, String createDate,
+	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
 		Integer desVersion, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			if (topLevelComponents == null)
@@ -346,8 +346,10 @@ public final class Resource extends AbstractBaseComponent {
 			Element element = Util.buildDDMSElement(Resource.NAME, null);
 
 			// Attributes
-			Util.addAttribute(element, ICISM_PREFIX, RESOURCE_ELEMENT_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), String
-				.valueOf(resourceElement));
+			if (resourceElement != null) {
+				Util.addAttribute(element, ICISM_PREFIX, RESOURCE_ELEMENT_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), String
+					.valueOf(resourceElement));
+			}
 			if (desVersion != null) {
 				_cachedDESVersion = desVersion;
 				Util.addAttribute(element, ICISM_PREFIX, DES_VERSION_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), desVersion.toString());
@@ -501,13 +503,12 @@ public final class Resource extends AbstractBaseComponent {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			String testResourceElement = getAttributeValue(RESOURCE_ELEMENT_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
-			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, testResourceElement);
+			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
 			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
 			Util.requireDDMSValue(DES_VERSION_NAME, getDESVersion());
 			Util.requireDDMSValue("security attributes", getSecurityAttributes());
 			getSecurityAttributes().requireClassification();
-			if (!"true".equals(testResourceElement) && !"false".equals(testResourceElement))
+			if (isResourceElement() == null)
 				throw new InvalidDDMSException("The resourceElement attribute must have a boolean value.");
 			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 				throw new InvalidDDMSException("The createDate must be in the xs:date format (YYYY-MM-DD).");
@@ -598,7 +599,8 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("security.resourceElement", String.valueOf(isResourceElement()), true));
+		if (isResourceElement() != null)
+			html.append(buildHTMLMeta("security.resourceElement", String.valueOf(isResourceElement()), true));
 		if (getCreateDate() != null)
 			html.append(buildHTMLMeta("security.createDate", getCreateDate().toXMLFormat(), true));
 		if (getDESVersion() != null)
@@ -616,7 +618,8 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("ResourceElement", String.valueOf(isResourceElement()), true));
+		if (isResourceElement() != null)
+			text.append(buildTextLine("ResourceElement", String.valueOf(isResourceElement()), true));
 		if (getCreateDate() != null)
 			text.append(buildTextLine("Create Date", getCreateDate().toXMLFormat(), true));
 		if (getDESVersion() != null)
@@ -636,7 +639,7 @@ public final class Resource extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Resource))
 			return (false);
 		Resource test = (Resource) obj;
-		return (isResourceElement() == test.isResourceElement() && 
+		return (Util.nullEquals(isResourceElement(), test.isResourceElement()) && 
 				Util.nullEquals(getCreateDate(), test.getCreateDate()) &&
 				Util.nullEquals(getDESVersion(), test.getDESVersion()) &&
 				getSecurityAttributes().equals(test.getSecurityAttributes()) &&
@@ -648,7 +651,8 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 7 * result + Util.booleanHashCode(isResourceElement());
+		if (isResourceElement() != null)
+			result = 7 * result + Util.booleanHashCode(isResourceElement().booleanValue());
 		if (getCreateDate() != null)
 			result = 7 * result + getCreateDate().hashCode();
 		if (getDESVersion() != null)
@@ -801,11 +805,15 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the resourceElement attribute. Because this attribute is not required on DDMS v2.0 Resource components,
-	 * the default value when unset is "false".
+	 * Accessor for the resourceElement attribute. This may be null for v2.0 Resource components.
 	 */
-	public boolean isResourceElement() {
-		return (Boolean.valueOf(getAttributeValue(RESOURCE_ELEMENT_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace())));
+	public Boolean isResourceElement() {
+		String value = getAttributeValue(RESOURCE_ELEMENT_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		if ("true".equals(value))
+			return (Boolean.TRUE);
+		if ("false".equals(value))
+			return (Boolean.FALSE);
+		return (null);
 	}
 
 	/**
