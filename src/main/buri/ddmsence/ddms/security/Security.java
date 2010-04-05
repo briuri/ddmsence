@@ -53,7 +53,8 @@ public final class Security extends AbstractBaseComponent {
 	/** The element name of this component */
 	public static final String NAME = "security";
 	
-	private static final String EXCLUDE_FROM_ROLLUP_NAME = "excludeFromRollup";
+	/** Attribute name */
+	public static final String EXCLUDE_FROM_ROLLUP_NAME = "excludeFromRollup";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -107,7 +108,7 @@ public final class Security extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
-		if (!DDMSVersion.isCurrentVersion("2.0")) {
+		if (!"2.0".equals(getDDMSVersion())) {
 			if (getExcludeFromRollup() == null)
 				throw new InvalidDDMSException("The excludeFromRollup attribute is required.");
 			if (!FIXED_ROLLUP.equals(String.valueOf(getExcludeFromRollup())))

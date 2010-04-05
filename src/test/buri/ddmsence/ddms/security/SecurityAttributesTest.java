@@ -46,25 +46,45 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	}
 	private static final Map<String, String> TEST_OTHERS = new HashMap<String, String>();
 	static {
-		TEST_OTHERS.put("SCIcontrols", "HCS");
-		TEST_OTHERS.put("SARIdentifier", "SAR-USA");
-		TEST_OTHERS.put("disseminationControls", "UCNI");
-		TEST_OTHERS.put("FGIsourceOpen", "ALA");
-		TEST_OTHERS.put("FGIsourceProtected", "FGI");
-		TEST_OTHERS.put("releasableTo", "AIA");
-		TEST_OTHERS.put("nonICmarkings", "SINFO");
-		TEST_OTHERS.put("classifiedBy", " MN");
-		TEST_OTHERS.put("compilationReason", "NO");
-		TEST_OTHERS.put("derivativelyClassifiedBy", "OP");
-		TEST_OTHERS.put("classificationReason", "PQ");
-		TEST_OTHERS.put("derivedFrom", "QR");
-		TEST_OTHERS.put("declassDate", "2005-10-10");
-		TEST_OTHERS.put("declassEvent", "RS");
-		TEST_OTHERS.put("declassException", "25X1");
-		TEST_OTHERS.put("typeOfExemptedSource", "OADR");
-		TEST_OTHERS.put("dateOfExemptedSource", "2005-10-11");
+		TEST_OTHERS.put(SecurityAttributes.SCI_CONTROLS_NAME, "HCS");
+		TEST_OTHERS.put(SecurityAttributes.SAR_IDENTIFIER_NAME, "SAR-USA");
+		TEST_OTHERS.put(SecurityAttributes.DISSEMINATION_CONTROLS_NAME, "UCNI");
+		TEST_OTHERS.put(SecurityAttributes.FGI_SOURCE_OPEN_NAME, "ALA");
+		TEST_OTHERS.put(SecurityAttributes.FGI_SOURCE_PROTECTED_NAME, "FGI");
+		TEST_OTHERS.put(SecurityAttributes.RELEASABLE_TO_NAME, "AIA");
+		TEST_OTHERS.put(SecurityAttributes.NON_IC_MARKINGS_NAME, "SINFO");
+		TEST_OTHERS.put(SecurityAttributes.CLASSIFIED_BY_NAME, " MN");
+		TEST_OTHERS.put(SecurityAttributes.COMPILATION_REASON_NAME, "NO");
+		TEST_OTHERS.put(SecurityAttributes.DERIVATIVELY_CLASSIFIED_BY_NAME, "OP");
+		TEST_OTHERS.put(SecurityAttributes.CLASSIFICATION_REASON_NAME, "PQ");
+		TEST_OTHERS.put(SecurityAttributes.DERIVED_FROM_NAME, "QR");
+		TEST_OTHERS.put(SecurityAttributes.DECLASS_DATE_NAME, "2005-10-10");
+		TEST_OTHERS.put(SecurityAttributes.DECLASS_EVENT_NAME, "RS");
+		TEST_OTHERS.put(SecurityAttributes.DECLASS_EXCEPTION_NAME, "25X1");
+		TEST_OTHERS.put(SecurityAttributes.TYPE_OF_EXEMPTED_SOURCE_NAME, "OADR");
+		TEST_OTHERS.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-11");
 	}
-
+	private static final Map<String, String> TEST_OTHERS_20 = new HashMap<String, String>();
+	static {
+		TEST_OTHERS_20.put(SecurityAttributes.SCI_CONTROLS_NAME, "HCS");
+		TEST_OTHERS_20.put(SecurityAttributes.SAR_IDENTIFIER_NAME, "SAR-USA");
+		TEST_OTHERS_20.put(SecurityAttributes.DISSEMINATION_CONTROLS_NAME, "UCNI");
+		TEST_OTHERS_20.put(SecurityAttributes.FGI_SOURCE_OPEN_NAME, "ALA");
+		TEST_OTHERS_20.put(SecurityAttributes.FGI_SOURCE_PROTECTED_NAME, "FGI");
+		TEST_OTHERS_20.put(SecurityAttributes.RELEASABLE_TO_NAME, "AIA");
+		TEST_OTHERS_20.put(SecurityAttributes.NON_IC_MARKINGS_NAME, "SINFO");
+		TEST_OTHERS_20.put(SecurityAttributes.CLASSIFIED_BY_NAME, " MN");
+		TEST_OTHERS_20.put(SecurityAttributes.DERIVATIVELY_CLASSIFIED_BY_NAME, "OP");
+		TEST_OTHERS_20.put(SecurityAttributes.CLASSIFICATION_REASON_NAME, "PQ");
+		TEST_OTHERS_20.put(SecurityAttributes.DERIVED_FROM_NAME, "QR");
+		TEST_OTHERS_20.put(SecurityAttributes.DECLASS_DATE_NAME, "2005-10-10");
+		TEST_OTHERS_20.put(SecurityAttributes.DECLASS_EVENT_NAME, "RS");
+		TEST_OTHERS_20.put(SecurityAttributes.DECLASS_EXCEPTION_NAME, "25X1");
+		TEST_OTHERS_20.put(SecurityAttributes.TYPE_OF_EXEMPTED_SOURCE_NAME, "OADR");
+		TEST_OTHERS_20.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-11");
+		TEST_OTHERS_20.put(SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, "true");
+	}
+	
 	/**
 	 * Constructor
 	 */
@@ -79,7 +99,8 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	 * @return SecurityAttributes
 	 */
 	public static SecurityAttributes getFixture(boolean includeAll) throws InvalidDDMSException {
-		return (new SecurityAttributes(TEST_CLASS, TEST_OWNERS, includeAll ? TEST_OTHERS : null));
+		Map<String, String> others = (DDMSVersion.isCurrentVersion("2.0") ? TEST_OTHERS_20 : TEST_OTHERS);
+		return (new SecurityAttributes(TEST_CLASS, TEST_OWNERS, includeAll ? others : null));
 	}
 
 	/**
@@ -128,18 +149,18 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			// All fields
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), "true");
 			getFixture(true).addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 
 			// No optional fields
 			element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), "true");
-			Util.addAttribute(element, ICISM_PREFIX, "classification", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.CLASSIFICATION_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), TEST_CLASS);
-			Util.addAttribute(element, ICISM_PREFIX, "ownerProducer", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.OWNER_PRODUCER_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), Util.getXsList(TEST_OWNERS));
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -148,14 +169,15 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testDataConstructorValid() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			Map<String, String> others = (DDMSVersion.isCurrentVersion("2.0") ? TEST_OTHERS_20 : TEST_OTHERS);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, TEST_OTHERS);
+			testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, others);
 
 			// No optional fields
 			testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, null);
 
 			// Extra fields
-			Map<String, String> more = new HashMap<String, String>(TEST_OTHERS);
+			Map<String, String> more = new HashMap<String, String>(others);
 			more.put("notAnAttribute", "test");
 			testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, more);
 		}
@@ -166,27 +188,27 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			// invalid declassDate
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), "true");
-			Util.addAttribute(element, ICISM_PREFIX, "classification", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.CLASSIFICATION_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), TEST_CLASS);
-			Util.addAttribute(element, ICISM_PREFIX, "ownerProducer", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.OWNER_PRODUCER_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), Util.getXsList(TEST_OWNERS));
-			Util.addAttribute(element, ICISM_PREFIX, "declassDate",
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.DECLASS_DATE_NAME,
 				DDMSVersion.getCurrentVersion().getIcismNamespace(), "2001");
 			testConstructor(WILL_FAIL, element);
 
 			// invalid dateOfExemptedSource
 			element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), "true");
-			Util.addAttribute(element, ICISM_PREFIX, "classification", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.CLASSIFICATION_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), TEST_CLASS);
-			Util.addAttribute(element, ICISM_PREFIX, "ownerProducer", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.OWNER_PRODUCER_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), Util.getXsList(TEST_OWNERS));
-			Util.addAttribute(element, ICISM_PREFIX, "declassDate",
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.DECLASS_DATE_NAME,
 				DDMSVersion.getCurrentVersion().getIcismNamespace(), "2001");
-			Util.addAttribute(element, ICISM_PREFIX, "dateOfExemptedSource", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), "2001");
 			testConstructor(WILL_FAIL, element);
 		}
@@ -197,12 +219,12 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			// invalid declassDate
 			Map<String, String> more = new HashMap<String, String>(TEST_OTHERS);
-			more.put("declassDate", "2004");
+			more.put(SecurityAttributes.DECLASS_DATE_NAME, "2004");
 			testConstructor(WILL_FAIL, TEST_CLASS, TEST_OWNERS, more);
 
 			// invalid dateOfExemptedSource
 			more = new HashMap<String, String>(TEST_OTHERS);
-			more.put("dateOfExemptedSource", "2004");
+			more.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2004");
 			testConstructor(WILL_FAIL, TEST_CLASS, TEST_OWNERS, more);
 		}
 	}
@@ -212,7 +234,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			// No warnings
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes attr = testConstructor(WILL_SUCCEED, element);
@@ -223,12 +245,14 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			Map<String, String> others = (DDMSVersion.isCurrentVersion("2.0") ? TEST_OTHERS_20 : TEST_OTHERS);
+			
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
-			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, TEST_OTHERS);
+			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, others);
 
 			assertEquals(elementAttributes, elementAttributes);
 			assertEquals(elementAttributes, dataAttributes);
@@ -239,98 +263,108 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			Map<String, String> others = (DDMSVersion.isCurrentVersion("2.0") ? TEST_OTHERS_20 : TEST_OTHERS);
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
-			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, "C", TEST_OWNERS, TEST_OTHERS);
+			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, "C", TEST_OWNERS, others);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
 			List<String> owners = new ArrayList<String>(TEST_OWNERS);
 			owners.add("AUS");
-			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, owners, TEST_OTHERS);
+			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, owners, others);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			Map<String, String> changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("SCIcontrols", "TK");
+			Map<String, String> changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.SCI_CONTROLS_NAME, "TK");
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("SARIdentifier", "SAR-AIA");
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.SAR_IDENTIFIER_NAME, "SAR-AIA");
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("disseminationControls", "SAMI");
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.DISSEMINATION_CONTROLS_NAME, "SAMI");
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("FGIsourceOpen", "BGR");
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.FGI_SOURCE_OPEN_NAME, "BGR");
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("FGIsourceProtected", "BGR");
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.FGI_SOURCE_PROTECTED_NAME, "BGR");
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("releasableTo", "BGR");
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.RELEASABLE_TO_NAME, "BGR");
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("nonICmarkings", "SBU");
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.NON_IC_MARKINGS_NAME, "SBU");
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("classifiedBy", DIFFERENT_VALUE);
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.CLASSIFIED_BY_NAME, DIFFERENT_VALUE);
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("compilationReason", DIFFERENT_VALUE);
+			if (!DDMSVersion.isCurrentVersion("2.0")) {
+				changed = new HashMap<String, String>(others);
+				changed.put(SecurityAttributes.COMPILATION_REASON_NAME, DIFFERENT_VALUE);
+				dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
+				assertFalse(elementAttributes.equals(dataAttributes));
+			}
+
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.DERIVATIVELY_CLASSIFIED_BY_NAME, DIFFERENT_VALUE);
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("derivativelyClassifiedBy", DIFFERENT_VALUE);
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.DERIVED_FROM_NAME, DIFFERENT_VALUE);
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("derivedFrom", DIFFERENT_VALUE);
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.DECLASS_DATE_NAME, "2001-10-10");
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("declassDate", "2001-10-10");
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.DECLASS_EVENT_NAME, DIFFERENT_VALUE);
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("declassEvent", DIFFERENT_VALUE);
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.DECLASS_EXCEPTION_NAME, "25X4");
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("declassException", "25X4");
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.TYPE_OF_EXEMPTED_SOURCE_NAME, "X4");
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("typeOfExemptedSource", "X4");
+			changed = new HashMap<String, String>(others);
+			changed.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2001-10-10");
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
-
-			changed = new HashMap<String, String>(TEST_OTHERS);
-			changed.put("dateOfExemptedSource", "2001-10-10");
-			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
-			assertFalse(elementAttributes.equals(dataAttributes));
+			
+			if (DDMSVersion.isCurrentVersion("2.0")) {
+				changed = new HashMap<String, String>(others);
+				changed.put(SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, "false");
+				dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
+				assertFalse(elementAttributes.equals(dataAttributes));
+			}
 		}
 	}
 
@@ -346,8 +380,10 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testClassificationValidation() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			Map<String, String> others = (DDMSVersion.isCurrentVersion("2.0") ? TEST_OTHERS_20 : TEST_OTHERS);
+			
 			// Missing classification
-			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, null, TEST_OWNERS, TEST_OTHERS);
+			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, null, TEST_OWNERS, others);
 			try {
 				dataAttributes.requireClassification();
 				fail("Allowed invalid data.");
@@ -356,7 +392,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			}
 
 			// Empty classification
-			dataAttributes = testConstructor(WILL_SUCCEED, "", TEST_OWNERS, TEST_OTHERS);
+			dataAttributes = testConstructor(WILL_SUCCEED, "", TEST_OWNERS, others);
 			try {
 				dataAttributes.requireClassification();
 				fail("Allowed invalid data.");
@@ -365,10 +401,10 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			}
 
 			// Invalid classification
-			testConstructor(WILL_FAIL, "ZOO", TEST_OWNERS, TEST_OTHERS);
+			testConstructor(WILL_FAIL, "ZOO", TEST_OWNERS, others);
 
 			// No ownerProducers
-			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, null, TEST_OTHERS);
+			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, null, others);
 			try {
 				dataAttributes.requireClassification();
 				fail("Allowed invalid data.");
@@ -379,7 +415,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			// No non-empty ownerProducers
 			List<String> owners = new ArrayList<String>();
 			owners.add("");
-			dataAttributes = testConstructor(WILL_FAIL, TEST_CLASS, owners, TEST_OTHERS);
+			dataAttributes = testConstructor(WILL_FAIL, TEST_CLASS, owners, others);
 		}
 	}
 
@@ -387,13 +423,64 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Map<String, String> others = new HashMap<String, String>();
-			others.put("declassDate", "2005-10-10");
-			others.put("dateOfExemptedSource", "2005-10-10");
+			others.put(SecurityAttributes.DECLASS_DATE_NAME, "2005-10-10");
+			others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-10");
 			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
 			assertEquals(
 				"<meta name=\"declassDate\" content=\"2005-10-10\" />\n<meta name=\"dateOfExemptedSource\" content=\"2005-10-10\" />\n",
 				dataAttributes.toHTML(""));
 			assertEquals("Declass Date: 2005-10-10\nDate Of Exempted Source: 2005-10-10\n", dataAttributes.toText(""));
 		}
+	}
+	
+	public void testOldClassifications() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		testConstructor(WILL_SUCCEED, "NS-S", TEST_OWNERS, null);
+		testConstructor(WILL_SUCCEED, "NS-A", TEST_OWNERS, null);
+		DDMSVersion.setCurrentVersion("3.0");
+		testConstructor(WILL_FAIL, "NS-S", TEST_OWNERS, null);
+		testConstructor(WILL_FAIL, "NS-A", TEST_OWNERS, null);
+	}
+	
+	public void testCompilationReason() throws InvalidDDMSException {
+		try {
+			DDMSVersion.setCurrentVersion("2.0");
+			new SecurityAttributes(TEST_CLASS, TEST_OWNERS, TEST_OTHERS);
+			fail("Allowed compilationReason to be used in DDMS 2.0.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
+	public void testDeclassManualReview() throws InvalidDDMSException {
+		Map<String, String> map = new HashMap(TEST_OTHERS);
+		map.put(SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, "true");
+		try {
+			DDMSVersion.setCurrentVersion("3.0");
+			new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
+			fail("Allowed declassManualReview to be used in DDMS 3.0.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		DDMSVersion.setCurrentVersion("2.0");
+		map.remove(SecurityAttributes.COMPILATION_REASON_NAME);
+		new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
+	}
+	
+	public void testMultipleDeclassException() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		Map<String, String> map = new HashMap(TEST_OTHERS_20);
+		map.put(SecurityAttributes.DECLASS_EXCEPTION_NAME, "25X1 25X2");
+		new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
+	}
+	
+	public void testMultipleTypeExempted() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		Map<String, String> map = new HashMap(TEST_OTHERS_20);
+		map.put(SecurityAttributes.TYPE_OF_EXEMPTED_SOURCE_NAME, "X1 X2");
+		new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
 	}
 }

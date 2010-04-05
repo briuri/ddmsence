@@ -297,4 +297,14 @@ public class ISMVocabulary {
 		Util.requireValue("classification", classification);
 		return ("CTS-B".equals(classification) || "CTS-BALK".equals(classification) || "R".equals(classification));
 	}
+	
+	/**
+	 * Checks if one of the classifications that existed in DDMS 2.0 but was removed for DDMS 3.0 is being used.
+	 * 
+	 * @param classification the classification to test
+	 * @return true if it is one of the removed enums, false otherwise
+	 */
+	public static boolean usingOldClassification(String classification) {
+		return ("NS-S".equals(classification) || "NS-A".equals(classification));
+	}
 }
