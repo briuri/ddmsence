@@ -581,7 +581,7 @@ public class Escort {
 	private void run() throws IOException {
 		println("Escort: a DDMSence Sample\n");
 		
-		println("This program allows you to build a DDMS resource from scratch.");
+		println("This program allows you to build a DDMS 3.0 resource from scratch.");
 		println("If you do not know how to answer a question, a suggested valid answer is provided in square brackets.");
 		println("However, this is not a default value (hitting Enter will answer the question with an empty string).\n");
 
