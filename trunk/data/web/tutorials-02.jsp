@@ -32,7 +32,7 @@ command line parameters.</p>
 
 <div class="example"><pre>Escort: a DDMSence Sample
 
-This program allows you to build a DDMS resource from scratch.
+This program allows you to build a DDMS 3.0 resource from scratch.
 If you do not know how to answer a question, a suggested valid answer is provided in square brackets.
 However, this is not a default value (hitting Enter will answer the question with an empty string).
 
