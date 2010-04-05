@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms;
 
 import junit.framework.TestCase;
@@ -31,46 +31,44 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public class ProducerTest extends TestCase {
-	
+
 	public void testValidateProducerTypeSuccess() throws InvalidDDMSException {
 		Organization.validateProducerType(Organization.CONTRIBUTOR_NAME);
 	}
-	
+
 	public void testValidateProducerTypeFailure() {
 		try {
 			Organization.validateProducerType("editor");
 			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
-	
+
 	public void testValidateProducerEntityTypeSuccess() throws InvalidDDMSException {
 		Organization.validateProducerEntityType(Organization.NAME);
 	}
-	
+
 	public void testValidateProducerEntityTypeFailure() {
 		try {
 			Organization.validateProducerEntityType("Corporation");
 			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
-	
+
 	private Element getBigEntity() {
 		Element element = Util.buildDDMSElement(Organization.NAME, null);
 		element.appendChild(Util.buildDDMSElement(Organization.NAME_NAME, "org1"));
-		
+
 		Element element2 = Util.buildDDMSElement(Organization.NAME, null);
 		element2.appendChild(Util.buildDDMSElement(Organization.NAME_NAME, "org2"));
-		
+
 		Element producerElement = Util.buildDDMSElement("creator", null);
 		producerElement.appendChild(element);
 		producerElement.appendChild(element2);
-		
+
 		return (producerElement);
 	}
 
@@ -78,12 +76,11 @@ public class ProducerTest extends TestCase {
 		try {
 			new Organization(getBigEntity());
 			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
-	
+
 	public void testSharedWarnings() throws InvalidDDMSException {
 		// Empty phone
 		Element entityElement = Util.buildDDMSElement(Organization.NAME, null);
@@ -94,7 +91,8 @@ public class ProducerTest extends TestCase {
 		Organization component = new Organization(producerElement);
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-		assertEquals("A ddms:phone element was found with no value.", component.getValidationWarnings().get(0).getText());
+		assertEquals("A ddms:phone element was found with no value.", component.getValidationWarnings().get(0)
+			.getText());
 
 		// Empty email
 		entityElement = Util.buildDDMSElement(Organization.NAME, null);
@@ -105,6 +103,7 @@ public class ProducerTest extends TestCase {
 		component = new Organization(producerElement);
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-		assertEquals("A ddms:email element was found with no value.", component.getValidationWarnings().get(0).getText());
+		assertEquals("A ddms:email element was found with no value.", component.getValidationWarnings().get(0)
+			.getText());
 	}
 }

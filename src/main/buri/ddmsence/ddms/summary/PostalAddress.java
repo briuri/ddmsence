@@ -155,6 +155,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Either a state or a province can exist, but not both.</li>
 	 * <li>0-6 streets, 0-1 cities, 0-1 states, 0-1 provinces, 0-1 postal codes, and 0-1 country codes exist.</li>
+	 * <li>If a countryCode exists, it is using the same version of DDMS.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -173,8 +174,10 @@ public final class PostalAddress extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), POSTAL_CODE_NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.NAME, 0, 1);
 		
-		if (getCountryCode() != null)
+		if (getCountryCode() != null) {
+			Util.requireSameVersion(this, getCountryCode());
 			addWarnings(getCountryCode().getValidationWarnings(), false);
+		}
 		if (getStreets().isEmpty() && Util.isEmpty(getCity()) && Util.isEmpty(getState()) && Util.isEmpty(getProvince()) &&
 				Util.isEmpty(getPostalCode()) && getCountryCode() == null) {
 			addWarning("A completely empty ddms:postalAddress element was found.");

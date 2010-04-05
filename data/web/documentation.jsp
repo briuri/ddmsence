@@ -109,7 +109,8 @@ designed to teach developers how DDMSence works, the intent of this one is to pr
 The API documentation is also bundled with the "bin"-flavored download on the <a href="downloads.jsp">Downloads</a> page, and can be generated from source code 
 in the "src"-flavored download. You should be aware of the following sections, which appear on every DDMS component's page:
 <ul>
-	<li>The class description describes cases where DDMSence is stricter than the DDMS specification, and allowed cases which are legal, but nonsensical.</li>
+	<li>The class description describes cases where DDMSence is stricter than the DDMS specification, and allowed cases which are legal, but nonsensical. If this varies
+	for different versions of DDMS, the version number will be indicated. If no version number is listed, the constraint applies to all versions.</li>
 	<li>The class description describes any nested elements or attributes for the implemented component and a link to the DDMS website for the complete specification.</li>
 	<li>The <code>validate</code> method description lists the specific rules used to validate a component. This section may be useful when building your own components.</li>
 </ul>
@@ -175,6 +176,13 @@ The following convention is used to provide some consistency:</p>
 	<li>On constructors which build components from XML files, a XOM element is generally the only parameter. Additional information is implicitly
 	loaded from the XOM element. </li>
 </ul>
+
+<h4>New Attributes in DDMS v3.0</h4>
+
+<p>Some attributes, such as ICISM:excludeFromRollup and ICISM:resouceElement are new in DDMS v3.0. When the accessors for these attributes are
+caleld on a DDMS 2.0 component, an arbitrary value will be returned instead of an UnsupportedVersionException. This decision allows DDMS records of varying versions to be
+traversed and queried in the same manner, without requiring too much knowledge of when specific attributes were introduced. The default value for the attribute
+will be listed in the API documentation for that attribute's accessor -- in general, boolean attributes will be <code>false</code> and other data types will be <code>null</code>.</p>
 
 <h4>Thread Safety</h4>
 

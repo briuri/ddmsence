@@ -110,13 +110,16 @@ public class DDMSReader {
 	}
 	
 	/**
-	 * Accepts a file name and returns the DDMS Resource identified by the root element in that file.
+	 * Accepts a file name and returns the DDMS Resource identified by the root element in that file (also
+	 * sets the DDMSVersion based on the data in the file).
 	 * 
 	 * @param file the file containing the DDMS Resource.
 	 * @return a XOM element representing the DDMS component read from the root node of the file.
 	 * @throws InvalidDDMSException if the component could not be built 
 	 */
 	public Resource getDDMSResource(File file) throws IOException, InvalidDDMSException {
+		Element resourceElement = getElement(file);
+		DDMSVersion.setCurrentVersion(DDMSVersion.getVersionForNamespace(resourceElement.getNamespaceURI()).getVersion());
 		return (new Resource(getElement(file)));
 	}
 	

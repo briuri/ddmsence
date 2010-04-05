@@ -140,8 +140,10 @@ public final class RelatedResource extends AbstractQualifierValue {
 		if (getChild(Link.NAME) == null)
 			throw new InvalidDDMSException("At least 1 link must exist.");
 		
-		for (Link link : getLinks())
+		for (Link link : getLinks()) {
+			Util.requireSameVersion(this, link);
 			addWarnings(link.getValidationWarnings(), false);
+		}
 	}
 	
 	/**

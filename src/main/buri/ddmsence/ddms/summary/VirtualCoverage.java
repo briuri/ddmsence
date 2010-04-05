@@ -23,6 +23,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -44,7 +45,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:address</u>: a computer or telecommunications network address, or a network name or locale. (optional).<br />
  * <u>ddms:protocol</u>: the type of rules for data transfer that apply to the Virtual Address (can stand alone, but
  * should be used if address is provided)<br />
- * This class is also decorated with ICISM {@link SecurityAttributes}. The classification and
+ * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS v3.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 
@@ -113,7 +114,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If an address is provided, the protocol is required and must not be empty.</li>
-	 * <li>The SecurityAttributes are valid.</li>
+	 * <li>The SecurityAttributes do not exist in DDMS v2.0.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -126,6 +127,9 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		
 		if (Util.isEmpty(getAddress()) && Util.isEmpty(getProtocol()))
 			addWarning("A completely empty ddms:virtualCoverage element was found.");
+		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes can only be applied to this component in DDMS v3.0 or later.");
+		}
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	
@@ -189,7 +193,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
+	 * Accessor for the Security Attributes. Will be null in DDMS 2.0, and non-null in DDMS 3.0.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);

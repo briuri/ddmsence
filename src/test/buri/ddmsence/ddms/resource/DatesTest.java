@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
@@ -33,23 +33,24 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public class DatesTest extends AbstractComponentTestCase {
-	
+
 	private static final String TEST_CREATED = "2003";
 	private static final String TEST_POSTED = "2003-02";
 	private static final String TEST_VALID = "2003-02-15";
 	private static final String TEST_CUTOFF = "2001-10-31T17:00:00Z";
-		
+
 	/**
 	 * Constructor
 	 */
 	public DatesTest() {
-		super("3.0/dates.xml");
+		super("dates.xml");
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * @param expectFailure	true if this operation is expected to fail, false otherwise
-	 * @param element	the element to build from
+	 * 
+	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
@@ -58,35 +59,34 @@ public class DatesTest extends AbstractComponentTestCase {
 		try {
 			component = new Dates(element);
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure	true if this operation is expected to succeed, false otherwise
+	 * @param expectFailure true if this operation is expected to succeed, false otherwise
 	 * @param created the creation date (optional)
 	 * @param posted the posting date (optional)
 	 * @param validTil the expiration date (optional)
 	 * @param infoCutOff the info cutoff date (optional)
 	 * @return a valid object
 	 */
-	private Dates testConstructor(boolean expectFailure, String created, String posted, String validTil, String infoCutOff) {
+	private Dates testConstructor(boolean expectFailure, String created, String posted, String validTil,
+		String infoCutOff) {
 		Dates component = null;
 		try {
 			component = new Dates(created, posted, validTil, infoCutOff);
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Returns the expected HTML output for this unit test
 	 */
@@ -97,8 +97,8 @@ public class DatesTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"date.validtil\" content=\"").append(TEST_VALID).append("\" />\n");
 		html.append("<meta name=\"date.infocutoff\" content=\"").append(TEST_CUTOFF).append("\" />\n");
 		return (html.toString());
-	}				
-	
+	}
+
 	/**
 	 * Returns the expected Text output for this unit test
 	 */
@@ -110,7 +110,7 @@ public class DatesTest extends AbstractComponentTestCase {
 		text.append("Date Info Cut Off: ").append(TEST_CUTOFF).append("\n");
 		return (text.toString());
 	}
-		
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -121,112 +121,149 @@ public class DatesTest extends AbstractComponentTestCase {
 		xml.append("ddms:posted=\"").append(TEST_POSTED).append("\" ");
 		xml.append("ddms:validTil=\"").append(TEST_VALID).append("\" ");
 		xml.append("ddms:infoCutOff=\"").append(TEST_CUTOFF).append("\" />");
-		return (xml.toString());							
+		return (xml.toString());
 	}
-	
+
 	public void testNameAndNamespace() {
-		Dates component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(Dates.NAME, component.getName());
-		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
-		assertEquals(Util.DDMS_PREFIX + ":" + Dates.NAME, component.getQualifiedName());
-		
-		// Wrong name/namespace
-		Element element = Util.buildDDMSElement("wrongName", null);
-		testConstructor(WILL_FAIL, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Dates component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(Dates.NAME, component.getName());
+			assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+			assertEquals(Util.DDMS_PREFIX + ":" + Dates.NAME, component.getQualifiedName());
+
+			// Wrong name/namespace
+			Element element = Util.buildDDMSElement("wrongName", null);
+			testConstructor(WILL_FAIL, element);
+		}
 	}
-	
+
 	public void testElementConstructorValid() {
-		// All fields
-		testConstructor(WILL_SUCCEED, getValidElement());
-		
-		// No optional fields
-		Element element = Util.buildDDMSElement(Dates.NAME, null);
-		testConstructor(WILL_SUCCEED, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// All fields
+			testConstructor(WILL_SUCCEED, getValidElement(version));
+
+			// No optional fields
+			Element element = Util.buildDDMSElement(Dates.NAME, null);
+			testConstructor(WILL_SUCCEED, element);
+		}
 	}
-	
+
 	public void testDataConstructorValid() {
-		// All fields
-		testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF);
-		
-		// No optional fields
-		testConstructor(WILL_SUCCEED, "", "", "", "");
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// All fields
+			testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF);
+
+			// No optional fields
+			testConstructor(WILL_SUCCEED, "", "", "", "");
+		}
 	}
-	
+
 	public void testElementConstructorInvalid() {
-		// Wrong date format (using xs:gDay here)
-		Element element = Util.buildDDMSElement(Dates.NAME, null);
-		Util.addDDMSAttribute(element, "created", "---31");
-		testConstructor(WILL_FAIL, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Wrong date format (using xs:gDay here)
+			Element element = Util.buildDDMSElement(Dates.NAME, null);
+			Util.addDDMSAttribute(element, "created", "---31");
+			testConstructor(WILL_FAIL, element);
+		}
 	}
 
 	public void testDataConstructorInvalid() {
-		// Wrong date format (using xs:gDay here)
-		testConstructor(WILL_FAIL, "---31", TEST_POSTED, TEST_VALID, TEST_CUTOFF);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Wrong date format (using xs:gDay here)
+			testConstructor(WILL_FAIL, "---31", TEST_POSTED, TEST_VALID, TEST_CUTOFF);
+		}
 	}
 
 	public void testWarnings() {
-		// No warnings
-		Dates component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(0, component.getValidationWarnings().size());
-		
-		// Empty element
-		Element element = Util.buildDDMSElement(Dates.NAME, null);
-		component = testConstructor(WILL_SUCCEED, element);
-		assertEquals(1, component.getValidationWarnings().size());
-		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-		assertEquals("A completely empty ddms:dates element was found.", component.getValidationWarnings().get(0).getText());
-		assertEquals("/ddms:dates", component.getValidationWarnings().get(0).getLocator());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// No warnings
+			Dates component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(0, component.getValidationWarnings().size());
+
+			// Empty element
+			Element element = Util.buildDDMSElement(Dates.NAME, null);
+			component = testConstructor(WILL_SUCCEED, element);
+			assertEquals(1, component.getValidationWarnings().size());
+			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+			assertEquals("A completely empty ddms:dates element was found.", component.getValidationWarnings().get(0)
+				.getText());
+			assertEquals("/ddms:dates", component.getValidationWarnings().get(0).getLocator());
+		}
 	}
-	
+
 	public void testConstructorEquality() {
-		Dates elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Dates dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF);
-		assertEquals(elementComponent, dataComponent);
-		assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Dates elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Dates dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF);
+			assertEquals(elementComponent, dataComponent);
+			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		}
 	}
 
 	public void testConstructorInequalityDifferentValues() {
-		Dates elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Dates dataComponent = testConstructor(WILL_SUCCEED, "", TEST_POSTED, TEST_VALID, TEST_CUTOFF);
-		assertFalse(elementComponent.equals(dataComponent));
-		
-		dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, "", TEST_VALID, TEST_CUTOFF);
-		assertFalse(elementComponent.equals(dataComponent));
-		
-		dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, "", TEST_CUTOFF);
-		assertFalse(elementComponent.equals(dataComponent));
-		
-		dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, "");
-		assertFalse(elementComponent.equals(dataComponent));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Dates elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Dates dataComponent = testConstructor(WILL_SUCCEED, "", TEST_POSTED, TEST_VALID, TEST_CUTOFF);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, "", TEST_VALID, TEST_CUTOFF);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, "", TEST_CUTOFF);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, "");
+			assertFalse(elementComponent.equals(dataComponent));
+		}
 	}
-	
+
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		Dates elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Rights wrongComponent = new Rights(true, true, true);
-		assertFalse(elementComponent.equals(wrongComponent));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Dates elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementComponent.equals(wrongComponent));
+		}
 	}
-	
+
 	public void testHTMLOutput() {
-		Dates component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedHTMLOutput(), component.toHTML());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF);
-		assertEquals(getExpectedHTMLOutput(), component.toHTML());
-	}	
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Dates component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF);
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+		}
+	}
 
 	public void testTextOutput() {
-		Dates component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedTextOutput(), component.toText());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF);
-		assertEquals(getExpectedTextOutput(), component.toText());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Dates component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedTextOutput(), component.toText());
+
+			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF);
+			assertEquals(getExpectedTextOutput(), component.toText());
+		}
 	}
-	
+
 	public void testtXMLOutput() {
-		Dates component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedXMLOutput(), component.toXML());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF);
-		assertEquals(getExpectedXMLOutput(), component.toXML());
-	}	
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Dates component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedXMLOutput(), component.toXML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF);
+			assertEquals(getExpectedXMLOutput(), component.toXML());
+		}
+	}
 }

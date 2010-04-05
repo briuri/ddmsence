@@ -24,6 +24,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -52,7 +53,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * This class is decorated with ICISM {@link SecurityAttributes}. The classification and
+ * This class is decorated with ICISM {@link SecurityAttributes}, starting in DDMS v3.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 
@@ -169,7 +170,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * <li>At least 1 of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent must be used.</li>
 	 * <li>No more than 1 geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent can be used.</li>
 	 * <li>If a geographicIdentifer is used and contains a facilityIdentifier, no other subcomponents can be used.</li>
-	 * <li>The SecurityAttributes are valid.</li>
+	 * <li>The SecurityAttributes do not exist in DDMS v2.0.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -187,24 +188,33 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(extElement, PostalAddress.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(extElement, VerticalExtent.NAME, 0, 1);
 		
+		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes can only be applied to this component in DDMS v3.0 or later.");
+		}	
+		
 		int validComponents = 0;
 		if (getGeographicIdentifier() != null) {
+			Util.requireSameVersion(this, getGeographicIdentifier());
 			addWarnings(getGeographicIdentifier().getValidationWarnings(), false);
 			validComponents++;
 		}
 		if (getBoundingBox() != null) {
+			Util.requireSameVersion(this, getBoundingBox());
 			addWarnings(getBoundingBox().getValidationWarnings(), false);
 			validComponents++;
 		}
 		if (getBoundingGeometry() != null) {
+			Util.requireSameVersion(this, getBoundingGeometry());
 			addWarnings(getBoundingGeometry().getValidationWarnings(), false);
 			validComponents++;
 		}
 		if (getPostalAddress() != null) {
+			Util.requireSameVersion(this, getPostalAddress());
 			addWarnings(getPostalAddress().getValidationWarnings(), false);
 			validComponents++;
 		}
 		if (getVerticalExtent() != null) {
+			Util.requireSameVersion(this, getVerticalExtent());
 			addWarnings(getVerticalExtent().getValidationWarnings(), false);
 			validComponents++;
 		}
@@ -341,7 +351,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
+	 * Accessor for the Security Attributes. Will be null in DDMS 2.0, and non-null in DDMS 3.0.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);

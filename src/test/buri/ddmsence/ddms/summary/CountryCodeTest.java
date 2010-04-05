@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
@@ -33,23 +33,33 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public class CountryCodeTest extends AbstractComponentTestCase {
-	
+
 	private static final String TEST_PARENT_TYPE = PostalAddress.NAME;
 	private static final String TEST_QUALIFIER = "ISO-3166";
 	private static final String TEST_VALUE = "USA";
-	
+
 	/**
 	 * Constructor
 	 */
 	public CountryCodeTest() {
-		super("3.0/countryCode.xml");
+		super("countryCode.xml");
 	}
-	
+
+	/**
+	 * Returns a country code fixture
+	 * 
+	 * @param parentName either geographicIdentifier or postalAddress
+	 */
+	protected static CountryCode getFixture(String parentName) throws InvalidDDMSException {
+		return (new CountryCode(parentName, "ISO-3166", "USA"));
+	}
+
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * @param expectFailure	true if this operation is expected to fail, false otherwise
+	 * 
+	 * @param expectFailure true if this operation is expected to fail, false otherwise
 	 * @param parentType the enclosing parent type
-	 * @param element	the element to build from
+	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
@@ -58,20 +68,19 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		try {
 			component = new CountryCode(parentType, element);
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure	true if this operation is expected to succeed, false otherwise
+	 * @param expectFailure true if this operation is expected to succeed, false otherwise
 	 * @param parentType the enclosing parent type
 	 * @param qualifier the qualifier value
-	 * @param value		the value
+	 * @param value the value
 	 * @return a valid object
 	 */
 	private CountryCode testConstructor(boolean expectFailure, String parentType, String qualifier, String value) {
@@ -79,23 +88,25 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		try {
 			component = new CountryCode(parentType, qualifier, value);
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Returns the expected HTML output for this unit test
 	 * 
 	 * @param parentType the enclosing parent type
 	 */
 	private String getExpectedHTMLOutput(String parentType) {
-		String parentHtml = (parentType.equals(GeographicIdentifier.NAME) ? "geospatial.identifier" : "geospatial.address");
+		String parentHtml = (parentType.equals(GeographicIdentifier.NAME) ? "geospatial.identifier"
+			: "geospatial.address");
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"").append(parentHtml).append(".country.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"").append(parentHtml).append(".country\" content=\"").append(TEST_VALUE).append("\" />\n");
+		html.append("<meta name=\"").append(parentHtml).append(".country.qualifier\" content=\"")
+			.append(TEST_QUALIFIER).append("\" />\n");
+		html.append("<meta name=\"").append(parentHtml).append(".country\" content=\"").append(TEST_VALUE).append(
+			"\" />\n");
 		return (html.toString());
 	}
 
@@ -117,147 +128,184 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:countryCode xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE).append("\" />");
+		xml.append("<ddms:countryCode xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append(
+			"\" ");
+		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE).append(
+			"\" />");
 		return (xml.toString());
 	}
-	
+
 	public void testNameAndNamespace() {
-		CountryCode component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement());
-		assertEquals(CountryCode.NAME, component.getName());
-		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
-		assertEquals(Util.DDMS_PREFIX + ":" + CountryCode.NAME, component.getQualifiedName());
-		
-		// Wrong name/namespace
-		Element element = Util.buildDDMSElement("wrongName", null);
-		testConstructor(WILL_FAIL, TEST_PARENT_TYPE, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			CountryCode component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement(version));
+			assertEquals(CountryCode.NAME, component.getName());
+			assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+			assertEquals(Util.DDMS_PREFIX + ":" + CountryCode.NAME, component.getQualifiedName());
+
+			// Wrong name/namespace
+			Element element = Util.buildDDMSElement("wrongName", null);
+			testConstructor(WILL_FAIL, TEST_PARENT_TYPE, element);
+		}
 	}
-	
+
 	public void testElementConstructorValid() {
-		testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement(version));
+		}
 	}
-	
+
 	public void testDataConstructorValid() {
-		testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, TEST_QUALIFIER, TEST_VALUE);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, TEST_QUALIFIER, TEST_VALUE);
+		}
 	}
-	
+
 	public void testElementConstructorInvalid() {
-		// Missing qualifier
-		Element element = Util.buildDDMSElement(CountryCode.NAME, null);
-		Util.addDDMSAttribute(element, "value", TEST_VALUE);
-		testConstructor(WILL_FAIL, TEST_PARENT_TYPE, element);
-		
-		// Empty qualifier
-		element = Util.buildDDMSElement(CountryCode.NAME, null);
-		Util.addDDMSAttribute(element, "qualifier", "");
-		Util.addDDMSAttribute(element, "value", TEST_VALUE);
-		testConstructor(WILL_FAIL, TEST_PARENT_TYPE, element);
-		
-		// Missing value
-		element = Util.buildDDMSElement(CountryCode.NAME, null);
-		Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
-		testConstructor(WILL_FAIL, TEST_PARENT_TYPE, element);
-		
-		// Empty value
-		element = Util.buildDDMSElement(CountryCode.NAME, null);
-		Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
-		Util.addDDMSAttribute(element, "value", "");
-		testConstructor(WILL_FAIL, TEST_PARENT_TYPE, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+
+			// Missing qualifier
+			Element element = Util.buildDDMSElement(CountryCode.NAME, null);
+			Util.addDDMSAttribute(element, "value", TEST_VALUE);
+			testConstructor(WILL_FAIL, TEST_PARENT_TYPE, element);
+
+			// Empty qualifier
+			element = Util.buildDDMSElement(CountryCode.NAME, null);
+			Util.addDDMSAttribute(element, "qualifier", "");
+			Util.addDDMSAttribute(element, "value", TEST_VALUE);
+			testConstructor(WILL_FAIL, TEST_PARENT_TYPE, element);
+
+			// Missing value
+			element = Util.buildDDMSElement(CountryCode.NAME, null);
+			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
+			testConstructor(WILL_FAIL, TEST_PARENT_TYPE, element);
+
+			// Empty value
+			element = Util.buildDDMSElement(CountryCode.NAME, null);
+			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
+			Util.addDDMSAttribute(element, "value", "");
+			testConstructor(WILL_FAIL, TEST_PARENT_TYPE, element);
+		}
 	}
 
 	public void testDataConstructorInvalid() {
-		// Missing qualifier
-		testConstructor(WILL_FAIL, TEST_PARENT_TYPE, null, TEST_VALUE);
-		
-		// Empty qualifier
-		testConstructor(WILL_FAIL, TEST_PARENT_TYPE, "", TEST_VALUE);
-		
-		// Missing value
-		testConstructor(WILL_FAIL, TEST_PARENT_TYPE, TEST_QUALIFIER, null);
-		
-		// Empty value
-		testConstructor(WILL_FAIL, TEST_PARENT_TYPE, TEST_QUALIFIER, "");
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Missing qualifier
+			testConstructor(WILL_FAIL, TEST_PARENT_TYPE, null, TEST_VALUE);
+
+			// Empty qualifier
+			testConstructor(WILL_FAIL, TEST_PARENT_TYPE, "", TEST_VALUE);
+
+			// Missing value
+			testConstructor(WILL_FAIL, TEST_PARENT_TYPE, TEST_QUALIFIER, null);
+
+			// Empty value
+			testConstructor(WILL_FAIL, TEST_PARENT_TYPE, TEST_QUALIFIER, "");
+		}
 	}
-	
+
 	public void testWarnings() {
-		// No warnings
-		CountryCode component = testConstructor(WILL_SUCCEED, "postalAddress", getValidElement());
-		assertEquals(0, component.getValidationWarnings().size());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// No warnings
+			CountryCode component = testConstructor(WILL_SUCCEED, "postalAddress", getValidElement(version));
+			assertEquals(0, component.getValidationWarnings().size());
+		}
 	}
-	
+
 	public void testConstructorEquality() {
-		CountryCode elementComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement());
-		CountryCode dataComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, TEST_QUALIFIER, TEST_VALUE);
-		assertEquals(elementComponent, dataComponent);
-		assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			CountryCode elementComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement(version));
+			CountryCode dataComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, TEST_QUALIFIER, TEST_VALUE);
+			assertEquals(elementComponent, dataComponent);
+			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		}
 	}
-	
+
 	public void testConstructorInequalityDifferentValues() {
-		CountryCode elementComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement());
-		CountryCode dataComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, DIFFERENT_VALUE, TEST_VALUE);
-		assertFalse(elementComponent.equals(dataComponent));
-		
-		dataComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, TEST_QUALIFIER, DIFFERENT_VALUE);
-		assertFalse(elementComponent.equals(dataComponent));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			CountryCode elementComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement(version));
+			CountryCode dataComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, DIFFERENT_VALUE, TEST_VALUE);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, TEST_QUALIFIER, DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(dataComponent));
+		}
 	}
-	
+
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		CountryCode elementComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement());
-		Rights wrongComponent = new Rights(true, true, true);
-		assertFalse(elementComponent.equals(wrongComponent));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			CountryCode elementComponent = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement(version));
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementComponent.equals(wrongComponent));
+		}
 	}
 
 	public void testHTMLOutput() {
-		CountryCode component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement());
-		assertEquals(getExpectedHTMLOutput(component.getParentType()), component.toHTML());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			CountryCode component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement(version));
+			assertEquals(getExpectedHTMLOutput(component.getParentType()), component.toHTML());
 
-		component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, TEST_QUALIFIER, TEST_VALUE);
-		assertEquals(getExpectedHTMLOutput(component.getParentType()), component.toHTML());
-		
-		component = testConstructor(WILL_SUCCEED, GeographicIdentifier.NAME, getValidElement());
-		assertEquals(getExpectedHTMLOutput(component.getParentType()), component.toHTML());
+			component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, TEST_QUALIFIER, TEST_VALUE);
+			assertEquals(getExpectedHTMLOutput(component.getParentType()), component.toHTML());
 
-		component = testConstructor(WILL_SUCCEED, GeographicIdentifier.NAME, TEST_QUALIFIER, TEST_VALUE);
-		assertEquals(getExpectedHTMLOutput(component.getParentType()), component.toHTML());
-	}	
+			component = testConstructor(WILL_SUCCEED, GeographicIdentifier.NAME, getValidElement(version));
+			assertEquals(getExpectedHTMLOutput(component.getParentType()), component.toHTML());
+
+			component = testConstructor(WILL_SUCCEED, GeographicIdentifier.NAME, TEST_QUALIFIER, TEST_VALUE);
+			assertEquals(getExpectedHTMLOutput(component.getParentType()), component.toHTML());
+		}
+	}
 
 	public void testTextOutput() {
-		CountryCode component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement());
-		assertEquals(getExpectedTextOutput(component.getParentType()), component.toText());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			CountryCode component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement(version));
+			assertEquals(getExpectedTextOutput(component.getParentType()), component.toText());
 
-		component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, TEST_QUALIFIER, TEST_VALUE);
-		assertEquals(getExpectedTextOutput(component.getParentType()), component.toText());
-		
-		component = testConstructor(WILL_SUCCEED, GeographicIdentifier.NAME, getValidElement());
-		assertEquals(getExpectedTextOutput(component.getParentType()), component.toText());
+			component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, TEST_QUALIFIER, TEST_VALUE);
+			assertEquals(getExpectedTextOutput(component.getParentType()), component.toText());
 
-		component = testConstructor(WILL_SUCCEED, GeographicIdentifier.NAME, TEST_QUALIFIER, TEST_VALUE);
-		assertEquals(getExpectedTextOutput(component.getParentType()), component.toText());
+			component = testConstructor(WILL_SUCCEED, GeographicIdentifier.NAME, getValidElement(version));
+			assertEquals(getExpectedTextOutput(component.getParentType()), component.toText());
+
+			component = testConstructor(WILL_SUCCEED, GeographicIdentifier.NAME, TEST_QUALIFIER, TEST_VALUE);
+			assertEquals(getExpectedTextOutput(component.getParentType()), component.toText());
+		}
 	}
-	
+
 	public void testXMLOutput() {
-		CountryCode component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement());
-		assertEquals(getExpectedXMLOutput(), component.toXML());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			CountryCode component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement(version));
+			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-		component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, TEST_QUALIFIER, TEST_VALUE);
-		assertEquals(getExpectedXMLOutput(), component.toXML());
+			component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, TEST_QUALIFIER, TEST_VALUE);
+			assertEquals(getExpectedXMLOutput(), component.toXML());
+		}
 	}
-	
+
 	public void testValidateProducerTypeSuccess() {
 		try {
 			CountryCode.validateParentType(PostalAddress.NAME);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			fail("Did not allow valid data.");
 		}
 	}
-	
+
 	public void testValidateProducerTypeFailure() {
 		try {
 			CountryCode.validateParentType("notCorrect");
 			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			// Good
 		}
 	}

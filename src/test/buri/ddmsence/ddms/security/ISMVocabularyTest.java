@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.security;
 
 import buri.ddmsence.ddms.AbstractComponentTestCase;
@@ -28,79 +28,78 @@ import buri.ddmsence.ddms.AbstractComponentTestCase;
  * @since 0.9.d
  */
 public class ISMVocabularyTest extends AbstractComponentTestCase {
-	
+
 	/**
 	 * Constructor
 	 */
 	public ISMVocabularyTest() {
 		super(null);
 	}
-	
+
 	public void testBadKey() {
 		try {
 			ISMVocabulary.enumContains("unknownKey", "TEST");
 			fail("Allowed invalid key.");
-		}
-		catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
-	
+
 	public void testEnumerationTokens() {
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, "CTS"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, "unknown"));
-		
+
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_OWNER_PRODUCERS, "AUS"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_OWNER_PRODUCERS, "unknown"));
-		
+
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "HCS"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "unknown"));
-		
+
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, "FOUO"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, "unknown"));
-		
+
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_FGI_SOURCE_OPEN, "ABW"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_FGI_SOURCE_OPEN, "unknown"));
-		
+
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_FGI_SOURCE_PROTECTED, "ABW"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_FGI_SOURCE_PROTECTED, "unknown"));
-		
+
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_RELEASABLE_TO, "ABW"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_RELEASABLE_TO, "unknown"));
-		
+
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_NON_IC_MARKINGS, "SINFO"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_NON_IC_MARKINGS, "unknown"));
-		
+
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DECLASS_EXCEPTION, "25X1"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_DECLASS_EXCEPTION, "unknown"));
-		
+
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, "X1"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, "unknown"));
 	}
-	
-	public void testEnumerationPatterns() {	
+
+	public void testEnumerationPatterns() {
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "SI-G-ABCD"));
-        assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "SI-ECI-ABC"));
+		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "SI-ECI-ABC"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "SI-G-ABCDE"));
-		
+
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SAR_IDENTIFIER, "SAR-ABC"));
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SAR_IDENTIFIER, "SAR-AB"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_SAR_IDENTIFIER, "SAR-ABCD"));
-		
+
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, "RD-SG-1"));
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, "RD-SG-12"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, "RD-SG-100"));
-		
+
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, "FRD-SG-1"));
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, "FRD-SG-12"));
-		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, "FRD-SG-100"));		
+		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, "FRD-SG-100"));
 	}
-	
+
 	public void testIsUSMarking() {
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, "TS"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, "CTS"));
 	}
-	
+
 	public void testGetClassificationIndex() {
 		assertEquals(-1, ISMVocabulary.getClassificationIndex("SuperSecret"));
 		assertEquals(-1, ISMVocabulary.getClassificationIndex("R"));
@@ -109,14 +108,10 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 		assertTrue(ISMVocabulary.getClassificationIndex("TS") > ISMVocabulary.getClassificationIndex("C"));
 		assertTrue(ISMVocabulary.getClassificationIndex("CTS") > ISMVocabulary.getClassificationIndex("NU"));
 	}
-		
+
 	public void testNeedsReview() {
 		assertTrue(ISMVocabulary.classificationNeedsReview("CTS-B"));
 		assertTrue(ISMVocabulary.classificationNeedsReview("CTS-BALK"));
 		assertFalse(ISMVocabulary.classificationNeedsReview("CTS"));
 	}
 }
-
-
-
-

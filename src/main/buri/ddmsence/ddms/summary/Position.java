@@ -26,6 +26,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -160,15 +161,20 @@ public final class Position extends AbstractBaseComponent {
 		}
 	}
 		
+	/**
+	 * @see IDDMSComponent#getDDMSVersion()
+	 */
+	public String getDDMSVersion() {
+		return (DDMSVersion.getVersionForGmlNamespace(getXOMElement().getNamespaceURI()).getVersion());
+	}
 			
 	/**
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The srsAttributes are valid.</li>
-	 * <li>The position is represented by 2 or 3 coordinates.</li>
 	 * <li>Each coordinate is a valid Double value.</li>
+	 * <li>The position is represented by 2 or 3 coordinates.</li>
 	 * <li>The first coordinate is a valid latitude.</li>
 	 * <li>The second coordinate is a valid longitude.</li>
 	 * <li>Does not perform any special validation on the third coordinate (height above ellipsoid).</li>
@@ -179,12 +185,10 @@ public final class Position extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), GML_PREFIX, NAME);
-		getSRSAttributes().validate();
+		for (Double coordinate : getCoordinates())
+			Util.requireDDMSValue("coordinate", coordinate);
 		if (!Util.isBounded(getCoordinates().size(), 2, 3))
 			throw new InvalidDDMSException("A position must be represented by either 2 or 3 coordinates.");
-		for (Double coordinate : getCoordinates()) {
-			Util.requireDDMSValue("coordinate", coordinate);
-		}
 		Util.requireValidLatitude(getCoordinates().get(0));
 		Util.requireValidLongitude(getCoordinates().get(1));
 		

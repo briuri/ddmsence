@@ -132,10 +132,14 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 			throw new InvalidDDMSException("At least 1 of Polygon or Point must be used.");
 		}
 		
-		for (Polygon polygon : getPolygons())
+		for (Polygon polygon : getPolygons()) {
+			Util.requireSameVersion(this, polygon);
 			addWarnings(polygon.getValidationWarnings(), false);
-		for (Point point : getPoints())
-			addWarnings(point.getValidationWarnings(), false);		
+		}
+		for (Point point : getPoints()) {
+			Util.requireSameVersion(this, point);
+			addWarnings(point.getValidationWarnings(), false);
+		}
 	}
 	
 	/**

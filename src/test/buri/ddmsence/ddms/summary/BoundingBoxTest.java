@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
@@ -33,23 +33,31 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public class BoundingBoxTest extends AbstractComponentTestCase {
-	
+
 	private static final double TEST_WEST = 12.3;
 	private static final double TEST_EAST = 23.4;
 	private static final double TEST_SOUTH = 34.5;
 	private static final double TEST_NORTH = 45.6;
-	
+
 	/**
 	 * Constructor
 	 */
 	public BoundingBoxTest() {
-		super("3.0/boundingBox.xml");
+		super("boundingBox.xml");
+	}
+
+	/**
+	 * Returns a bounding box fixture
+	 */
+	protected static BoundingBox getFixture() throws InvalidDDMSException {
+		return (new BoundingBox(1.1, 2.2, 3.3, 4.4));
 	}
 	
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * @param expectFailure	true if this operation is expected to fail, false otherwise
-	 * @param element	the element to build from
+	 * 
+	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
@@ -58,35 +66,34 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		try {
 			component = new BoundingBox(element);
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure	true if this operation is expected to succeed, false otherwise
+	 * @param expectFailure true if this operation is expected to succeed, false otherwise
 	 * @param westBL the westbound longitude
 	 * @param eastBL the eastbound longitude
 	 * @param southBL the southbound latitude
 	 * @param northBL the northbound latitude
 	 * @return a valid object
 	 */
-	private BoundingBox testConstructor(boolean expectFailure, double westBL, double eastBL, double southBL, double northBL) {
+	private BoundingBox testConstructor(boolean expectFailure, double westBL, double eastBL, double southBL,
+		double northBL) {
 		BoundingBox component = null;
 		try {
 			component = new BoundingBox(westBL, eastBL, southBL, northBL);
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Returns the expected HTML output for this unit test
 	 */
@@ -110,7 +117,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		text.append("Bounding Box Northbound Latitude: ").append(TEST_NORTH).append("\n");
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -118,157 +125,197 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:boundingBox xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\">\n\t");
+		xml.append("<ddms:boundingBox xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append(
+			"\">\n\t");
 		xml.append("<ddms:WestBL>").append(TEST_WEST).append("</ddms:WestBL>\n\t");
 		xml.append("<ddms:EastBL>").append(TEST_EAST).append("</ddms:EastBL>\n\t");
 		xml.append("<ddms:SouthBL>").append(TEST_SOUTH).append("</ddms:SouthBL>\n\t");
 		xml.append("<ddms:NorthBL>").append(TEST_NORTH).append("</ddms:NorthBL>\n");
 		xml.append("</ddms:boundingBox>");
-		return (formatXml(xml.toString(), preserveFormatting));		
+		return (formatXml(xml.toString(), preserveFormatting));
 	}
-	
+
 	public void testNameAndNamespace() {
-		BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(BoundingBox.NAME, component.getName());
-		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
-		assertEquals(Util.DDMS_PREFIX + ":" + BoundingBox.NAME, component.getQualifiedName());
-		
-		// Wrong name/namespace
-		Element element = Util.buildDDMSElement("wrongName", null);
-		testConstructor(WILL_FAIL, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(BoundingBox.NAME, component.getName());
+			assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+			assertEquals(Util.DDMS_PREFIX + ":" + BoundingBox.NAME, component.getQualifiedName());
+
+			// Wrong name/namespace
+			Element element = Util.buildDDMSElement("wrongName", null);
+			testConstructor(WILL_FAIL, element);
+		}
 	}
-	
+
 	public void testElementConstructorValid() {
-		testConstructor(WILL_SUCCEED, getValidElement());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			testConstructor(WILL_SUCCEED, getValidElement(version));
+		}
 	}
-	
+
 	public void testDataConstructorValid() {
-		testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+		}
 	}
-	
+
 	public void testElementConstructorInvalid() {
-		// Missing values
-		Element element = Util.buildDDMSElement(BoundingBox.NAME, null);
-		testConstructor(WILL_FAIL, element);
-		
-		// Not Double
-		element = Util.buildDDMSElement(BoundingBox.NAME, null);
-		element.appendChild(Util.buildDDMSElement("WestBL", String.valueOf("west")));
-		element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
-		element.appendChild(Util.buildDDMSElement("SouthBL", String.valueOf(TEST_SOUTH)));
-		element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
-		testConstructor(WILL_FAIL, element);
-				
-		// Longitude too small
-		element = Util.buildDDMSElement(BoundingBox.NAME, null);
-		element.appendChild(Util.buildDDMSElement("WestBL", "-181"));
-		element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
-		element.appendChild(Util.buildDDMSElement("SouthBL", String.valueOf(TEST_SOUTH)));
-		element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
-		testConstructor(WILL_FAIL, element);
-		
-		// Longitude too big
-		element = Util.buildDDMSElement(BoundingBox.NAME, null);
-		element.appendChild(Util.buildDDMSElement("WestBL", "181"));
-		element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
-		element.appendChild(Util.buildDDMSElement("SouthBL", String.valueOf(TEST_SOUTH)));
-		element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
-		testConstructor(WILL_FAIL, element);
-		
-		// Latitude too small
-		element = Util.buildDDMSElement(BoundingBox.NAME, null);
-		element.appendChild(Util.buildDDMSElement("WestBL", String.valueOf(TEST_WEST)));
-		element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
-		element.appendChild(Util.buildDDMSElement("SouthBL", "-91"));
-		element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
-		testConstructor(WILL_FAIL, element);
-		
-		// Latitude too big
-		element = Util.buildDDMSElement(BoundingBox.NAME, null);
-		element.appendChild(Util.buildDDMSElement("WestBL", String.valueOf(TEST_WEST)));
-		element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
-		element.appendChild(Util.buildDDMSElement("SouthBL", "91"));
-		element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
-		testConstructor(WILL_FAIL, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Missing values
+			Element element = Util.buildDDMSElement(BoundingBox.NAME, null);
+			testConstructor(WILL_FAIL, element);
+
+			// Not Double
+			element = Util.buildDDMSElement(BoundingBox.NAME, null);
+			element.appendChild(Util.buildDDMSElement("WestBL", String.valueOf("west")));
+			element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
+			element.appendChild(Util.buildDDMSElement("SouthBL", String.valueOf(TEST_SOUTH)));
+			element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
+			testConstructor(WILL_FAIL, element);
+
+			// Longitude too small
+			element = Util.buildDDMSElement(BoundingBox.NAME, null);
+			element.appendChild(Util.buildDDMSElement("WestBL", "-181"));
+			element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
+			element.appendChild(Util.buildDDMSElement("SouthBL", String.valueOf(TEST_SOUTH)));
+			element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
+			testConstructor(WILL_FAIL, element);
+
+			// Longitude too big
+			element = Util.buildDDMSElement(BoundingBox.NAME, null);
+			element.appendChild(Util.buildDDMSElement("WestBL", "181"));
+			element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
+			element.appendChild(Util.buildDDMSElement("SouthBL", String.valueOf(TEST_SOUTH)));
+			element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
+			testConstructor(WILL_FAIL, element);
+
+			// Latitude too small
+			element = Util.buildDDMSElement(BoundingBox.NAME, null);
+			element.appendChild(Util.buildDDMSElement("WestBL", String.valueOf(TEST_WEST)));
+			element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
+			element.appendChild(Util.buildDDMSElement("SouthBL", "-91"));
+			element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
+			testConstructor(WILL_FAIL, element);
+
+			// Latitude too big
+			element = Util.buildDDMSElement(BoundingBox.NAME, null);
+			element.appendChild(Util.buildDDMSElement("WestBL", String.valueOf(TEST_WEST)));
+			element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
+			element.appendChild(Util.buildDDMSElement("SouthBL", "91"));
+			element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
+			testConstructor(WILL_FAIL, element);
+		}
 	}
-	
+
 	public void testDataConstructorInvalid() {
-		// Longitude too small
-		testConstructor(WILL_FAIL, -181, TEST_EAST, TEST_SOUTH, TEST_NORTH);
-		
-		// Longitude too big
-		testConstructor(WILL_FAIL, 181, TEST_EAST, TEST_SOUTH, TEST_NORTH);
-		
-		// Latitude too small
-		testConstructor(WILL_FAIL, TEST_WEST, TEST_EAST, -91, TEST_NORTH);
-		
-		// Latitude too big
-		testConstructor(WILL_FAIL, TEST_WEST, TEST_EAST, 91, TEST_NORTH);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Longitude too small
+			testConstructor(WILL_FAIL, -181, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+
+			// Longitude too big
+			testConstructor(WILL_FAIL, 181, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+
+			// Latitude too small
+			testConstructor(WILL_FAIL, TEST_WEST, TEST_EAST, -91, TEST_NORTH);
+
+			// Latitude too big
+			testConstructor(WILL_FAIL, TEST_WEST, TEST_EAST, 91, TEST_NORTH);
+		}
 	}
-		
+
 	public void testWarnings() {
-		// No warnings
-		BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(0, component.getValidationWarnings().size());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// No warnings
+			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(0, component.getValidationWarnings().size());
+		}
 	}
-	
+
 	public void testConstructorEquality() {
-		BoundingBox elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		BoundingBox dataComponent = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
-		assertEquals(elementComponent, dataComponent);
-		assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			BoundingBox elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			BoundingBox dataComponent = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			assertEquals(elementComponent, dataComponent);
+			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		}
 	}
-	
+
 	public void testConstructorInequalityDifferentValues() {
-		BoundingBox elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		BoundingBox dataComponent = testConstructor(WILL_SUCCEED, 10, TEST_EAST, TEST_SOUTH, TEST_NORTH);
-		assertFalse(elementComponent.equals(dataComponent));
-		
-		dataComponent = testConstructor(WILL_SUCCEED, TEST_WEST, 10, TEST_SOUTH, TEST_NORTH);
-		assertFalse(elementComponent.equals(dataComponent));
-		
-		dataComponent = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, 10, TEST_NORTH);
-		assertFalse(elementComponent.equals(dataComponent));
-		
-		dataComponent = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, 10);
-		assertFalse(elementComponent.equals(dataComponent));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			BoundingBox elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			BoundingBox dataComponent = testConstructor(WILL_SUCCEED, 10, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_WEST, 10, TEST_SOUTH, TEST_NORTH);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, 10, TEST_NORTH);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, 10);
+			assertFalse(elementComponent.equals(dataComponent));
+		}
 	}
-	
+
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		BoundingBox elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Rights wrongComponent = new Rights(true, true, true);
-		assertFalse(elementComponent.equals(wrongComponent));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			BoundingBox elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementComponent.equals(wrongComponent));
+		}
 	}
 
 	public void testHTMLOutput() {
-		BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedHTMLOutput(), component.toHTML());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
-		assertEquals(getExpectedHTMLOutput(), component.toHTML());
-	}	
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+		}
+	}
 
 	public void testTextOutput() {
-		BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedTextOutput(), component.toText());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
-		assertEquals(getExpectedTextOutput(), component.toText());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedTextOutput(), component.toText());
+
+			component = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			assertEquals(getExpectedTextOutput(), component.toText());
+		}
 	}
-	
+
 	public void testXMLOutput() {
-		BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedXMLOutput(true), component.toXML());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
-		assertEquals(getExpectedXMLOutput(false), component.toXML());
-	}	
-	
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedXMLOutput(true), component.toXML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			assertEquals(getExpectedXMLOutput(false), component.toXML());
+		}
+	}
+
 	public void testDoubleEquality() {
-		BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(component.getWestBL(), Double.valueOf(TEST_WEST));
-		assertEquals(component.getEastBL(), Double.valueOf(TEST_EAST));
-		assertEquals(component.getSouthBL(), Double.valueOf(TEST_SOUTH));
-		assertEquals(component.getNorthBL(), Double.valueOf(TEST_NORTH));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(component.getWestBL(), Double.valueOf(TEST_WEST));
+			assertEquals(component.getEastBL(), Double.valueOf(TEST_EAST));
+			assertEquals(component.getSouthBL(), Double.valueOf(TEST_SOUTH));
+			assertEquals(component.getNorthBL(), Double.valueOf(TEST_NORTH));
+		}
 	}
 }
