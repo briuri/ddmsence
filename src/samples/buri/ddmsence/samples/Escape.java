@@ -210,8 +210,9 @@ public class Escape extends AbstractSample {
 					distribution.incrementCount(String.valueOf(dates.getInfoCutOff().getYear()));
 			}
 			
-			// Resource createDate (required field)
-			distribution.incrementCount(String.valueOf(resource.getCreateDate().getYear()));
+			// Resource createDate (required field in 3.0, optional in 2.0)
+			if (resource.getCreateDate() != null)
+				distribution.incrementCount(String.valueOf(resource.getCreateDate().getYear()));
 			
 			// ddms:temporalCoverage (optional field)
 			// getStart() returns the date if present. getStartString() returns the XML format or
