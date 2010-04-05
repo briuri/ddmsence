@@ -31,7 +31,7 @@ command line parameters. A network connection is needed to connect to Google (wh
 <h3>Walkthrough</h3>
 
 <p>When the application first opens, it will search the <code>data/sample/</code> directory for any XML files and try to convert them all into Resource
-objects. You might see an error message appear in your console, because I have included an invalid resource file (aptly named <code>InvalidResource.xml</code>)
+objects (DDMSence can currently handle both DDMS 2.0 and DDMS 3.0 files). You might see an error message appear in your console, because I have included an invalid resource file (aptly named <code>InvalidResource.xml</code>)
 in the directory, which is used in the <u>Essentials</u> application. You can safely ignore this message, because <u>Escape</u> will ignore any files it could not convert.</p>
 
 <p>With a collection of Resources in hand, <u>Escape</u> examines the data in each Resource and builds frequency distribution charts based on various metrics. The
@@ -120,8 +120,9 @@ for (Resource resource : getResources()) {
          distribution.incrementCount(String.valueOf(dates.getInfoCutOff().getYear()));
    }
    
-   // Resource createDate (required field)
-   distribution.incrementCount(String.valueOf(resource.getCreateDate().getYear()));
+   // Resource createDate (required field in 3.0, optional in 2.0)
+   if (resource.getCreateDate() != null)
+      distribution.incrementCount(String.valueOf(resource.getCreateDate().getYear()));
    
    // ddms:temporalCoverage (optional field)
    // getStart() returns the date if present. getStartString() returns the XML format or
