@@ -199,7 +199,7 @@ Developer's Note:  The srsName attribute is required on the Polygon element.  Th
 				<xs:attributeGroup ref="gml:SRSReferenceGroup"/>
 				<xs:attribute name="count" type="xs:positiveInteger" use="optional">
 					<xs:annotation>
-						<xs:documentation>"count" allows to specify the number of direct positions in the list. If the attribute “count” is present then the attribute “srsDimension” shall be present, too.</xs:documentation>
+						<xs:documentation>"count" allows to specify the number of direct positions in the list. If the attribute "count" is present then the attribute "srsDimension" shall be present, too.</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
 			</xs:extension>

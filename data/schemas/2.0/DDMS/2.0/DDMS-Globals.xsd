@@ -370,7 +370,7 @@ The following lines have been commented out to reduce the complexity of the sche
 		<xs:attribute name="intellectualProperty" type="xs:boolean" default="false">
 			<xs:annotation>
 				<xs:appinfo>
-					<mdr:definition>An indicator identifying products under protection against reproduction and distribution without the express written permission of the intellectual property rights owner. A yes/no value used to specify applicability of the rights.  The default is “no”. {False = No}
+					<mdr:definition>An indicator identifying products under protection against reproduction and distribution without the express written permission of the intellectual property rights owner. A yes/no value used to specify applicability of the rights.  The default is "no". {False = No}
 				</mdr:definition>
 				</xs:appinfo>
 			</xs:annotation>
@@ -378,7 +378,7 @@ The following lines have been commented out to reduce the complexity of the sche
 		<xs:attribute name="copyright" type="xs:boolean" default="false">
 			<xs:annotation>
 				<xs:appinfo>
-					<mdr:definition>An indicator identifying products under protection against reproduction and distribution without the express written permission of the copyright owner.  A yes/no value used to specify applicability of the rights.  The default is “no”.  {False = No}  (TBD:CopyrightIndicator, 1.0) An indicator identifying documents under protection against reproduction and distribution without the express written   permission of the copyright owner   This prohibition is binding on individuals and corporations,  as well as the US Government.  Examples of applicability:  books (yes), newspaper photos (yes), US Federal Publications (no), magazine articles  (yes), vendor technical information (yes).
+					<mdr:definition>An indicator identifying products under protection against reproduction and distribution without the express written permission of the copyright owner.  A yes/no value used to specify applicability of the rights.  The default is "no".  {False = No}  (TBD:CopyrightIndicator, 1.0) An indicator identifying documents under protection against reproduction and distribution without the express written   permission of the copyright owner   This prohibition is binding on individuals and corporations,  as well as the US Government.  Examples of applicability:  books (yes), newspaper photos (yes), US Federal Publications (no), magazine articles  (yes), vendor technical information (yes).
 				</mdr:definition>
 				</xs:appinfo>
 			</xs:annotation>
@@ -432,7 +432,7 @@ The following lines have been commented out to reduce the complexity of the sche
 					<xs:element name="surname" type="xs:string">
 						<xs:annotation>
 							<xs:appinfo>
-								<mdr:definition>A name shared in common to identify members of a family; also called “last name.”</mdr:definition>
+								<mdr:definition>A name shared in common to identify members of a family; also called "last name."</mdr:definition>
 							</xs:appinfo>
 						</xs:annotation>
 					</xs:element>
