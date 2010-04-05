@@ -32,12 +32,10 @@ import buri.ddmsence.util.Util;
 /**
  * Top-level base class for all DDMS elements and attributes modeled as Java objects.
  * 
- * <p>
- * Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set before
- * the component is used. It is assumed that after the constructor on a component has been called, the component will be
- * well-formed and valid.
- * </p>
- *  
+ * <p>Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
+ * before the component is used. It is assumed that after the constructor on a component has been called, the component
+ * will be well-formed and valid.</p>
+ * 
  * @author Brian Uri!
  * @since 0.9.b
  */
@@ -180,7 +178,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @param content the content value of the text line
 	 * @param alwaysPrint if true, will print the tag even if the content is empty or null.
 	 * @return text output of a DDMS element
-	 */	
+	 */
 	public static String buildTextLine(String name, String content, boolean alwaysPrint) {
 		if (Util.isEmpty(content) && !alwaysPrint)
 			return ("");
@@ -213,8 +211,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 	
 	/**
-	 * Convenience method to get the first child element with a given name in the 
-	 * same namespace as the parent element
+	 * Convenience method to get the first child element with a given name in the same namespace as the parent element
 	 * 
 	 * @param name the local name to search for
 	 * @return the element, or null if it does not exist
@@ -225,8 +222,8 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 
 	/**
-	 * Convenience method to convert one of the lat/lon fields into a Double. Returns null
-	 * if the field does not exist or cannot be converted into a Double.
+	 * Convenience method to convert one of the lat/lon fields into a Double. Returns null if the field does not exist
+	 * or cannot be converted into a Double.
 	 * 
 	 * @param element the parent element
 	 * @param name the local name of the child
@@ -247,12 +244,10 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 	
 	/**
-	 * Test for logical equality. 
+	 * Test for logical equality.
 	 * 
-	 * <p>
-	 * The base case tests against the name value and namespaceURI. Extending classes may require additional 
-	 * rules for equality.
-	 * </p>
+	 * <p> The base case tests against the name value and namespaceURI. Extending classes may require additional rules
+	 * for equality. </p>
 	 * 
 	 * @see Object#equals(Object)
 	 */
@@ -262,7 +257,8 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		if (!(obj instanceof AbstractBaseComponent))
 			return (false);
 		AbstractBaseComponent test = (AbstractBaseComponent) obj;
-		return (getName().equals(test.getName()) && getXOMElement().getNamespaceURI().equals(test.getXOMElement().getNamespaceURI()));
+		return (getName().equals(test.getName())
+			&& getXOMElement().getNamespaceURI().equals(test.getXOMElement().getNamespaceURI()));
 	}
 	
 	/**
@@ -288,15 +284,11 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	/**
 	 * Can be overridden to change the locator string used in warnings and errors.
 	 * 
-	 * <p>
-	 * For components such as Format, there are wrapper elements that are not
-	 * implemented as Java objects. These elements should be included in the XPath
-	 * string used to identify the source of the error.
-	 * </p>
+	 * <p>For components such as Format, there are wrapper elements that are not implemented as Java objects. These
+	 * elements should be included in the XPath string used to identify the source of the error.</p>
 	 * 
-	 * <p>For example, if a ddms:extent element has a warning and the ddms:format
-	 * element reports it, the locator information should be "/ddms:format/ddms:Media/ddms:extent"
-	 * and not the default of "/ddms:format/ddms:extent"</p>
+	 * <p>For example, if a ddms:extent element has a warning and the ddms:format element reports it, the locator
+	 * information should be "/ddms:format/ddms:Media/ddms:extent" and not the default of "/ddms:format/ddms:extent"</p>
 	 * 
 	 * @return an empty string, unless overridden.
 	 */
@@ -316,8 +308,8 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	/**
 	 * Convenience method to add multiple warnings to the list of validation warnings.
 	 * 
-	 * <p>Child locator information will be prefixed with the parent (this) locator information. This does not
-	 * overwrite the original warning -- it creates a new copy.</p>
+	 * <p>Child locator information will be prefixed with the parent (this) locator information. This does not overwrite
+	 * the original warning -- it creates a new copy.</p>
 	 * 
 	 * @param warnings the list of validation messages to add
 	 * @param forAttributes if true, the locator suffix is not used, because the attributes will be for the topmost
@@ -330,14 +322,11 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 			getWarnings().add(ValidationMessage.newWarning(warning.getText(), newLocator));
 		}
 	}
-	
+
 	/**
 	 * Accessor for the list of validation warnings.
 	 * 
-	 * <p>
-	 * This is the private copy that should be manipulated during validation.
-	 * Lazy initialization.
-	 * </p>
+	 * <p>This is the private copy that should be manipulated during validation. Lazy initialization.</p>
 	 * 
 	 * @return an editable list of warnings
 	 */
@@ -362,8 +351,8 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	}
 	
 	/**
-	 * Accessor for the XOM element representing this component. When the element is set, 
-	 * the component is validated again with <code>validate</code>.
+	 * Accessor for the XOM element representing this component. When the element is set, the component is validated
+	 * again with <code>validate</code>.
 	 * 
 	 * @param element the XOM element to use
 	 * @param validateNow whether to validate the component immediately after setting

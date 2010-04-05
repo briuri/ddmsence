@@ -24,26 +24,17 @@ import buri.ddmsence.util.Util;
 /**
  * Simple class representing a validation message.
  * 
- * <p>
- * DDMS components are validated during instantiation, and a component
- * is either valid or does not exist. These messages are either
- * embedded in a thrown InvalidDDMSException (in which case they are errors),
- * or stored as informational messages on the component itself (warnings).
- * </p>
+ * <p> DDMS components are validated during instantiation, and a component is either valid or does not exist. These
+ * messages are either embedded in a thrown InvalidDDMSException (in which case they are errors), or stored as
+ * informational messages on the component itself (warnings). </p>
  * 
- * <p>
- * The locator string provides additional information about the context of the
- * error or warning. This string is implemented as an XPath string right now: if
- * the error was coming from a ddms:identifier component, the locator would be "/ddms:identifier".
- * Should a parent component choose to report the warnings/errors of a child component,
- * the locator string could be expanded with parent information, such as "/ddms:Resource/ddms:identifier".
- * </p>
+ * <p> The locator string provides additional information about the context of the error or warning. This string is
+ * implemented as an XPath string right now: if the error was coming from a ddms:identifier component, the locator would
+ * be "/ddms:identifier". Should a parent component choose to report the warnings/errors of a child component, the
+ * locator string could be expanded with parent information, such as "/ddms:Resource/ddms:identifier". </p>
  * 
- * <p>
- * Please note that the XPath string is not intended to drill all the way down to the offending
- * element or attribute. It should merely provide enough context so that the source of the
- * message can be discovered.
- * <p>
+ * <p> Please note that the XPath string is not intended to drill all the way down to the offending element or
+ * attribute. It should merely provide enough context so that the source of the message can be discovered. <p>
  * 
  * @author Brian Uri!
  * @since 0.9.c
@@ -77,7 +68,7 @@ public class ValidationMessage {
 		_text = text;
 		setLocator(locator);
 	}
-	
+
 	/**
 	 * Factory method to create a warning
 	 * 
@@ -119,7 +110,9 @@ public class ValidationMessage {
 		if (!(obj instanceof ValidationMessage))
 			return (false);
 		ValidationMessage test = (ValidationMessage) obj;
-		return (getType().equals(test.getType()) && getText().equals(test.getText()) && getLocator().equals(test.getLocator()));		
+		return (getType().equals(test.getType()) 
+			&& getText().equals(test.getText()) 
+			&& getLocator().equals(test.getLocator()));
 	}
 
 	/**
@@ -156,7 +149,8 @@ public class ValidationMessage {
 	/**
 	 * Accessor for the locator.
 	 * 
-	 * <p>If the locator is null, it will be set to an empty string. If not, it will be prefixed with a forward-slash.</p>
+	 * <p>If the locator is null, it will be set to an empty string. If not, it will be prefixed with a
+	 * forward-slash.</p>
 	 */
 	public void setLocator(String locator) {
 		_locator = (locator == null ? "" : ELEMENT_PREFIX + locator);

@@ -24,17 +24,14 @@ import java.net.URISyntaxException;
 /**
  * Exception class for attempts to generate invalid DDMS components.
  * 
- * <p>
- * The underlying data is stored as a ValidationMessage, which allows locator
- * information to be set on it. Because InvalidDDMSExceptions are singular (one is thrown)
- * while validation warnings are gathered from subcomponents and merged into a master list,
- * we modify the exception itself when adding parent locator information.
- * </p>
+ * <p> The underlying data is stored as a ValidationMessage, which allows locator information to be set on it. Because
+ * InvalidDDMSExceptions are singular (one is thrown) while validation warnings are gathered from subcomponents and
+ * merged into a master list, we modify the exception itself when adding parent locator information. </p>
  * 
- * <p>Since a component is not nested in another component at the time of instantiation,
- * it has no parent when a validation exception is thrown. Therefore, the locator info
- * will always consist of the single element whose constructor was called.
- *  
+ * <p>Since a component is not nested in another component at the time of instantiation, it has no parent when a
+ * validation exception is thrown. Therefore, the locator info will always consist of the single element whose
+ * constructor was called.
+ * 
  * @author Brian Uri!
  * @since 0.9.b
  */

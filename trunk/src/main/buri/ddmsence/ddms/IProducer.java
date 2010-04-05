@@ -21,8 +21,6 @@ package buri.ddmsence.ddms;
 
 import java.util.List;
 
-import buri.ddmsence.ddms.security.SecurityAttributes;
-
 /**
  * Identifying interface for a producer element (contributor, creator, pointOfContact, publisher)
  *  
@@ -30,10 +28,10 @@ import buri.ddmsence.ddms.security.SecurityAttributes;
  * @since 0.9.b
  */
 public interface IProducer extends IDDMSComponent {
- 
+
 	/**
-	 * Returns the name of the producer entity element, which is Organization, Person, Service, or Unknown. This is not the same
-	 * as the "names" child element of the entity.
+	 * Returns the name of the producer entity element, which is Organization, Person, Service, or Unknown. This is not
+	 * the same as the "names" child element of the entity.
 	 * 
 	 * @return the identifying name
 	 */
@@ -59,9 +57,4 @@ public interface IProducer extends IDDMSComponent {
 	 * @return unmodifiable List
 	 */
 	public List<String> getEmails();
-	
-	/**
-	 * Accessor for the Security Attributes. Should always be non-null even if the attributes are not set.
-	 */
-	public SecurityAttributes getSecurityAttributes();
 }

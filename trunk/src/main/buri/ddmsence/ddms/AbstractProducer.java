@@ -143,13 +143,13 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	 * Constructor which builds from raw data.
 	 * 
 	 * @param producerType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
-	 * @param entityType	the type of the entity (i.e. Organization, Person)
-	 * @param names			an ordered list of names
-	 * @param phones		an ordered list of phone numbers
-	 * @param emails		an ordered list of email addresses
+	 * @param entityType the type of the entity (i.e. Organization, Person)
+	 * @param names an ordered list of names
+	 * @param phones an ordered list of phone numbers
+	 * @param emails an ordered list of email addresses
 	 * @param securityAttributes any security attributes (optional)
-	 * @param validateNow	true to validate the component immediately. Because Person entities have additional fields
-	 * 		they should not be validated in the superconstructor.
+	 * @param validateNow true to validate the component immediately. Because Person entities have additional fields
+	 * they should not be validated in the superconstructor.
 	 */
 	protected AbstractProducer(String producerType, String entityType, List<String> names, List<String> phones,
 		List<String> emails, SecurityAttributes securityAttributes, boolean validateNow) throws InvalidDDMSException {
@@ -272,12 +272,12 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		if (!super.equals(obj) || !(obj instanceof AbstractProducer))
 			return (false);
 		AbstractProducer test = (AbstractProducer) obj;
-		return (getProducerType().equals(test.getProducerType()) &&
-			getEntityType().equals(test.getEntityType()) &&
-			Util.listEquals(getNames(), test.getNames()) &&
-			Util.listEquals(getPhones(), test.getPhones()) &&
-			Util.listEquals(getEmails(), test.getEmails()) &&
-			getSecurityAttributes().equals(test.getSecurityAttributes()));
+		return (getProducerType().equals(test.getProducerType())
+			&& getEntityType().equals(test.getEntityType())
+			&& Util.listEquals(getNames(), test.getNames())
+			&& Util.listEquals(getPhones(), test.getPhones())
+			&& Util.listEquals(getEmails(), test.getEmails())
+			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
 	}
 
 	/**
@@ -312,7 +312,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		html.append(getSecurityAttributes().toHTML(getProducerType()));
 		return (html.toString());
 	}
-	
+
 	/**
 	 * The DDMS website examples are not clear on what to do if there are multiple names, phone numbers, or emails. This
 	 * method merely creates a separate Text line for each value.
@@ -370,8 +370,8 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	}
 	
 	/**
-	 * Accessor for the element representing the producer entity. Will return null if not set, but this cannot
-	 * happen after instantiation.
+	 * Accessor for the element representing the producer entity. Will return null if not set, but this cannot happen
+	 * after instantiation.
 	 */
 	protected Element getEntityElement() {
 		return (getXOMElement().getChildElements().get(0));
