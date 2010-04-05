@@ -61,16 +61,19 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:Resource (the top-level element of a DDMS record).
  * 
  * <p>
- * DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However,
- * the 2.0 schema still allows "any" attributes on the Resource, so the 3.0 attribute values
- * will be loaded if present.
+ * DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 schema still allows 
+ * "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present.
  * </p>
  *  
- * <p>When generating HTML/Text output for a Resource, an additional tag is generated listing the version of DDMSence used to create the record
- * (to help identify formatting bugs). This line is not required (and may be removed). For example:</p>
+ * <p>When generating HTML/Text output for a Resource, additional tags are generated listing the version of DDMSence 
+ * used to create the record (to help identify formatting bugs), and the version of DDMS. These lines are not required 
+ * (and may be removed). For example:</p>
+ * 
  * <ul><code>
- * DDMS Generator: DDMSence 0.9.b<br />
- * &lt;meta name="ddms.generator" content="DDMSence 0.9.b" /&gt;<br />
+ * DDMS Generator: DDMSence 1.0.0<br />
+ * DDMS Version: 3.0<br /><br />
+ * &lt;meta name="ddms.generator" content="DDMSence 1.0.0" /&gt;<br />
+ * &lt;meta name="ddms.version" content="3.0" /&gt;<br />
  * </code></ul></p>
  * 
  * This implementation does yet do anything to the extensible attributes or elements (<code>&lt;xs:anyAttribute 
@@ -604,6 +607,7 @@ public final class Resource extends AbstractBaseComponent {
 		for (IDDMSComponent component : getTopLevelComponents())
 			html.append(component.toHTML());
 		html.append(buildHTMLMeta("ddms.generator", "DDMSence " + DDMSENCE_VERSION, true));
+		html.append(buildHTMLMeta("ddms.version", getDDMSVersion(), true));
 		return (html.toString());
 	}
 
@@ -621,6 +625,7 @@ public final class Resource extends AbstractBaseComponent {
 		for (IDDMSComponent component : getTopLevelComponents())
 			text.append(component.toText());
 		text.append(buildTextLine("DDMS Generator", "DDMSence " + DDMSENCE_VERSION, true));
+		text.append(buildTextLine("DDMS Version", getDDMSVersion(), true));
 		return (text.toString());
 	}
 

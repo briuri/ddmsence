@@ -326,6 +326,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"security.classification\" content=\"U\" />\n");
 		html.append("<meta name=\"security.ownerProducer\" content=\"USA\" />\n");
 		html.append("<meta name=\"ddms.generator\" content=\"DDMSence ").append(DDMSENCE_VERSION).append("\" />\n");
+		html.append("<meta name=\"ddms.version\" content=\"").append(DDMSVersion.getCurrentVersion().getVersion()).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -405,6 +406,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		text.append("Classification: U\n");
 		text.append("ownerProducer: USA\n");
 		text.append("DDMS Generator: DDMSence ").append(DDMSENCE_VERSION).append("\n");
+		text.append("DDMS Version: ").append(DDMSVersion.getCurrentVersion().getVersion()).append("\n");
 		return (text.toString());
 	}
 
