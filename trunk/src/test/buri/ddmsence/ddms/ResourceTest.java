@@ -909,21 +909,35 @@ public class ResourceTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			createComponents();
 			
-			// No warnings
+			// base warnings (1 for 2.0, 0 for 3.0)
+			int warnings = DDMSVersion.isCurrentVersion("2.0") ? 1 : 0;
 			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(0, component.getValidationWarnings().size());
+			assertEquals(warnings, component.getValidationWarnings().size());
 
 			// Nested warnings
 			List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.add(new Format("test", new MediaExtent("test", ""), "test"));
 			component = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
 				TEST_DES_VERSION);
-			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals("A qualifier has been set without an accompanying value attribute.", component
-				.getValidationWarnings().get(0).getText());
-			assertEquals("/ddms:Resource/ddms:format/ddms:Media/ddms:extent", component.getValidationWarnings().get(0)
-				.getLocator());
-
+			warnings = DDMSVersion.isCurrentVersion("2.0") ? 2 : 1;
+			assertEquals(warnings, component.getValidationWarnings().size());
+			
+			if (DDMSVersion.isCurrentVersion("2.0")) {
+				assertEquals(
+						"Security rollup validation is being skipped, because no classification exists on the ddms:Resource itself.",
+						component.getValidationWarnings().get(0).getText());
+				assertEquals("A qualifier has been set without an accompanying value attribute.", component
+						.getValidationWarnings().get(1).getText());
+				assertEquals("/ddms:Resource", component.getValidationWarnings().get(0).getLocator());
+				assertEquals("/ddms:Resource/ddms:format/ddms:Media/ddms:extent", component.getValidationWarnings()
+						.get(1).getLocator());
+			} else {
+				assertEquals("A qualifier has been set without an accompanying value attribute.", component
+						.getValidationWarnings().get(0).getText());
+				assertEquals("/ddms:Resource/ddms:format/ddms:Media/ddms:extent", component.getValidationWarnings()
+						.get(0).getLocator());
+			}
+			
 			// More nested warnings
 			Element element = Util.buildDDMSElement(PostalAddress.NAME, null);
 			PostalAddress address = new PostalAddress(element);
@@ -931,11 +945,23 @@ public class ResourceTest extends AbstractComponentTestCase {
 			components.add(new GeospatialCoverage(null, null, null, address, null, null));
 			component = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
 				TEST_DES_VERSION);
-			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals("A completely empty ddms:postalAddress element was found.", component.getValidationWarnings()
-				.get(0).getText());
-			assertEquals("/ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress", component
-				.getValidationWarnings().get(0).getLocator());
+			warnings = DDMSVersion.isCurrentVersion("2.0") ? 2 : 1;
+			assertEquals(warnings, component.getValidationWarnings().size());
+			if (DDMSVersion.isCurrentVersion("2.0")) {
+				assertEquals(
+						"Security rollup validation is being skipped, because no classification exists on the ddms:Resource itself.",
+						component.getValidationWarnings().get(0).getText());
+				assertEquals("A completely empty ddms:postalAddress element was found.", component
+						.getValidationWarnings().get(1).getText());
+				assertEquals("/ddms:Resource", component.getValidationWarnings().get(0).getLocator());
+				assertEquals("/ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress",
+						component.getValidationWarnings().get(1).getLocator());
+			} else {
+				assertEquals("A completely empty ddms:postalAddress element was found.", component
+						.getValidationWarnings().get(0).getText());
+				assertEquals("/ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress",
+						component.getValidationWarnings().get(0).getLocator());
+			}
 		}
 	}
 
@@ -1055,6 +1081,24 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 		}
 	}
+	
+	public void testSkipRollupIfNotAvailable() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		createComponents();
+		
+		List<String> ownerProducers = new ArrayList<String>();
+		ownerProducers.add("USA");
+		Organization org = new Organization("creator", getAsList("DISA"), null, null, new SecurityAttributes("TS",
+			ownerProducers, null));
+		
+		Element element = Util.buildDDMSElement(Resource.NAME, null);
+		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
+		element.appendChild(TEST_TITLE.getXOMElementCopy());
+		element.appendChild(org.getXOMElementCopy());
+		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+		element.appendChild(TEST_SECURITY.getXOMElementCopy());
+		testConstructor(WILL_SUCCEED, element);
+	}
 
 	public void testRollupWrongSystem() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
@@ -1117,5 +1161,15 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertEquals("/ddms:Resource", resource.getValidationWarnings().get(0).getLocator());
 
 		}
+	}
+	
+	public void test20Usage() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		createComponents();
+		// Security attributes do not exist in 2.0
+		new Resource(TEST_TOP_LEVEL_COMPONENTS);
+		
+		// But attributes can still be used.
+		new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION, SecurityAttributesTest.getFixture(false));
 	}
 }
