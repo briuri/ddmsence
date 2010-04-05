@@ -24,6 +24,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractQualifierValue;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -42,7 +43,7 @@ import buri.ddmsence.util.Util;
  * (optional)<br />
  * <u>ddms:schemaQualifier</u>: the schema type (optional)<br />
  * <u>ddms:schemaHref</u>: a resolvable reference to the schema (optional)<br />
- * This class is also decorated with ICISM {@link SecurityAttributes}. The classification and
+ * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS v3.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 
@@ -100,7 +101,7 @@ public final class Source extends AbstractQualifierValue {
 			Util.addDDMSAttribute(element, SCHEMA_HREF_NAME, schemaHref);
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_cachedSecurityAttributes.addTo(element);		
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -114,7 +115,7 @@ public final class Source extends AbstractQualifierValue {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If a schemaHref is present, it is a valid URI.</li>
-	 * <li>The SecurityAttributes are valid.</li>
+	 * <li>The SecurityAttributes do not exist in DDMS v2.0.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -125,12 +126,14 @@ public final class Source extends AbstractQualifierValue {
 		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		if (!Util.isEmpty(getSchemaHref())) {
 			Util.requireDDMSValidURI(getSchemaHref());
-		}
-		
+		}		
 		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()) && 
 			Util.isEmpty(getSchemaQualifier()) && Util.isEmpty(getSchemaHref())) {
 			addWarning("A completely empty ddms:source element was found.");
 		}
+		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes can only be applied to this component in DDMS v3.0 or later.");
+		}		
 	}
 	
 	/**
@@ -197,7 +200,7 @@ public final class Source extends AbstractQualifierValue {
 	}
 	
 	/**
-	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
+	 * Accessor for the Security Attributes. Will be null in DDMS 2.0, and non-null in DDMS 3.0.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);

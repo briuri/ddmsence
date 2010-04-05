@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nu.xom.Element;
+
 import buri.ddmsence.ddms.UnsupportedVersionException;
 
 /**
@@ -37,14 +39,15 @@ import buri.ddmsence.ddms.UnsupportedVersionException;
  * <code>buri.ddmsence.ddms.defaultVersion</code> in the properties file. This defaults to 3.0 right now.</p>
  * 
  * <p>
- * The ddmsence.properties file has five properties which can be a comma-separated list:
+ * The ddmsence.properties file has six properties which can be a comma-separated list:
  * </p>
  * 
  * <li>ddms.supportedVersions: i.e. "2.0,3.0"</li>
  * <li>ddms.xmlNamespaces: i.e. "http://metadata.dod.mil/mdr/ns/DDMS/2.0/,http://metadata.dod.mil/mdr/ns/DDMS/3.0/"</li>
  * <li>ddms.xsdLocations: i.e. "/schemas/2.0/DDMS/2.0/DDMS-v2_0.xsd,/schemas/3.0/DDMS/3.0/DDMS-v3_0.xsd"</li>
  * <li>gml.xmlNamespaces: i.e. "http://www.opengis.net/gml,http://www.opengis.net/gml/3.2"</li>
- * <li>gml.xsdLocations: i.e. "/schemas/2.0/DDMS/2.0/DDMS-GML-Profile.xsd,/schemas/3.0/DDMS/3.0/DDMS-GML-Profile.xsd"</li> 
+ * <li>gml.xsdLocations: i.e. "/schemas/2.0/DDMS/2.0/DDMS-GML-Profile.xsd,/schemas/3.0/DDMS/3.0/DDMS-GML-Profile.xsd"</li>
+ * <li>icism.xmlNamespaces: i.e. "urn:us:gov:ic:ism:v2,urn:us:gov:ic:ism"</li> 
  * 
  * <p>
  * The number of items in each property must match the number of supported DDMS versions. The format of an xsdLocation should
@@ -65,6 +68,7 @@ public class DDMSVersion {
 	private String _schema;
 	private String _gmlNamespace;
 	private String _gmlSchema;
+	private String _icismNamespace;
 	
 	private static DDMSVersion _currentVersion;
 	private static final String DEFAULT_VERSION_NUMBER = PropertyReader.getProperty("ddms.defaultVersion");
@@ -73,6 +77,7 @@ public class DDMSVersion {
 	private static final List<String> DDMS_SCHEMA_LOCATIONS = PropertyReader.getListProperty("ddms.xsdLocations");
 	private static final List<String> GML_NAMESPACES = PropertyReader.getListProperty("gml.xmlNamespaces");
 	private static final List<String> GML_SCHEMA_LOCATIONS = PropertyReader.getListProperty("gml.xsdLocations");
+	private static final List<String> ICISM_NAMESPACES = PropertyReader.getListProperty("icism.xmlNamespaces");
 	
 	/** Details concerning DDMS 2.0 */
 	public static final DDMSVersion DDMS_2_0 = new DDMSVersion("2.0");
@@ -101,6 +106,7 @@ public class DDMSVersion {
 		_schema = DDMS_SCHEMA_LOCATIONS.get(index);
 		_gmlNamespace = GML_NAMESPACES.get(index);
 		_gmlSchema = GML_SCHEMA_LOCATIONS.get(index);
+		_icismNamespace = ICISM_NAMESPACES.get(index);
 	}
 	
 	/**
@@ -110,6 +116,29 @@ public class DDMSVersion {
 	 */
 	public static List<String> getSupportedVersions() {
 		return Collections.unmodifiableList(SUPPORTED_DDMS_VERSIONS);
+	}
+	
+	/**
+	 * Checks if some DDMS element matches some DDMS version
+	 * 
+	 * @param ddmsVersion the version expected
+	 * @param ddmsElement the element containing the namespaceURI to test.
+	 * @return true if the element is in the correct version's namespace, false otherwise
+	 */
+	public static boolean isVersion(String ddmsVersion, Element ddmsElement) {
+		Util.requireValue("test version", ddmsVersion);
+		Util.requireValue("test element", ddmsElement);
+		return (ddmsVersion.equals(DDMSVersion.getVersionForNamespace(ddmsElement.getNamespaceURI()).getVersion()));
+	}
+	
+	/**
+	 * Checks if the string matches the current version.
+	 * 
+	 * @param ddmsVersion the version to test
+	 * @return true if the current version matches the test version, false otherwise
+	 */
+	public static boolean isCurrentVersion(String ddmsVersion) {
+		return (getCurrentVersion().getVersion().equals(ddmsVersion));
 	}
 	
 	/**
@@ -129,10 +158,23 @@ public class DDMSVersion {
 	 * Returns the DDMSVersion instance mapped to a DDMS namespace URI
 	 * 
 	 * @param ddmsNamespaceURI the namespace to check
-	 * @return a ddms version or null if it is not mapped to a version
+	 * @return a DDMS version or null if it is not mapped to a version
 	 */
 	public static DDMSVersion getVersionForNamespace(String ddmsNamespaceURI) {
 		int index = DDMS_NAMESPACES.indexOf(ddmsNamespaceURI);
+		if (index == -1)
+			return (null);
+		return (getVersionFor(SUPPORTED_DDMS_VERSIONS.get(index)));
+	}
+	
+	/**
+	 * Returns the DDMSVersion instance mapped to a GML namespace URI
+	 * 
+	 * @param gmlNamespaceURI the namespace to check
+	 * @return a DDMS version or null if it is not mapped to a version
+	 */
+	public static DDMSVersion getVersionForGmlNamespace(String gmlNamespaceURI) {
+		int index = GML_NAMESPACES.indexOf(gmlNamespaceURI);
 		if (index == -1)
 			return (null);
 		return (getVersionFor(SUPPORTED_DDMS_VERSIONS.get(index)));
@@ -199,5 +241,12 @@ public class DDMSVersion {
 	 */
 	public String getGmlSchema() {
 		return _gmlSchema;
+	}
+	
+	/**
+	 * Accessor for the ICISM namespace
+	 */
+	public String getIcismNamespace() {
+		return _icismNamespace;
 	}
 }

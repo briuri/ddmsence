@@ -46,7 +46,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	private List<ValidationMessage> _warnings;
 	private Element _element;
 
-	/** The DDMS prefix, as defined in the ddms.prefix property */
+	/** The DDMS prefix */
 	public static final String DDMS_PREFIX = PropertyReader.getProperty("ddms.prefix");
 	
 	/** The GML prefix */
@@ -54,9 +54,6 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	
 	/** The ICISM prefix */
 	public static final String ICISM_PREFIX = PropertyReader.getProperty("icism.prefix");
-	
-	/** The ICISM namespace */
-	public static final String ICISM_NAMESPACE = PropertyReader.getProperty("icism.xmlNamespace");
 	
 	/**
 	 * This implicit superconstructor does nothing.
@@ -253,7 +250,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * Test for logical equality. 
 	 * 
 	 * <p>
-	 * The base case tests against the name value. Extending classes may require additional 
+	 * The base case tests against the name value and namespaceURI. Extending classes may require additional 
 	 * rules for equality.
 	 * </p>
 	 * 
@@ -265,7 +262,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		if (!(obj instanceof AbstractBaseComponent))
 			return (false);
 		AbstractBaseComponent test = (AbstractBaseComponent) obj;
-		return (getName().equals(test.getName()));
+		return (getName().equals(test.getName()) && getXOMElement().getNamespaceURI().equals(test.getXOMElement().getNamespaceURI()));
 	}
 	
 	/**
@@ -275,6 +272,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 */
 	public int hashCode() {
 		int result = getName().hashCode();
+		result = 7 * result + getXOMElement().getNamespaceURI().hashCode();
 		return (result);
 	}
 	

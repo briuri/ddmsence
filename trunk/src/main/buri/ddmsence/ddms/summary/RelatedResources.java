@@ -38,6 +38,8 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p><ul>
  * <li>A non-empty relationship attribute is required.</li>
+ * <li>(v2.0) Although 0 RelatedResource elements can exist in v2.0, this is considered invalid data. DDMSence requires
+ * at least 1 RelatedResource.</li>
  * </ul>
  * </td></tr></table>
  * 
@@ -165,7 +167,6 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 * <li>The relationship is a valid URI.</li>
 	 * <li>If set, the direction has a valid value.</li>
 	 * <li>At least 1 RelatedResource exists.</li>
-	 * <li>The SecurityAttributes are valid.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -181,8 +182,10 @@ public final class RelatedResources extends AbstractBaseComponent {
 		if (getChild(RelatedResource.NAME) == null)
 			throw new InvalidDDMSException("At least 1 RelatedResource must exist.");
 		
-		for (RelatedResource related : getRelatedResources())
+		for (RelatedResource related : getRelatedResources()) {
+			Util.requireSameVersion(this, related);
 			addWarnings(related.getValidationWarnings(), false);
+		}
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	

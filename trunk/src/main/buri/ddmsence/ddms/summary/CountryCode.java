@@ -43,6 +43,8 @@ import buri.ddmsence.util.Util;
  * <ul>
  * <li>A non-empty qualifier value is required.</li>
  * <li>A non-empty value attribute is required.</li>
+ * <li>(v2.0) Although qualifier and value are optional in v2.0, this is considered invalid data. DDMSence requires
+ * a non-empty qualifier and value.</li>
  * </ul>
  * </td></tr></table>
  * 

@@ -21,6 +21,7 @@ package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -158,16 +159,22 @@ public final class Point extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-					
+	
+	/**
+	 * @see IDDMSComponent#getDDMSVersion()
+	 */
+	public String getDDMSVersion() {
+		return (DDMSVersion.getVersionForGmlNamespace(getXOMElement().getNamespaceURI()).getVersion());
+	}
+	
 	/**
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The SRS Attributes are valid.</li>
 	 * <li>The srsName is required.</li>
-	 * <li>If the position has an srsName, it matches the srsName of this Point.</li>
 	 * <li>The ID is required, and must be a valid NCName.</li>
+	 * <li>If the position has an srsName, it matches the srsName of this Point.</li>
 	 * <li>Does not perform any special validation on the third coordinate (height above ellipsoid).</li>
 	 * </td></tr></table>
 	 *
@@ -177,15 +184,14 @@ public final class Point extends AbstractBaseComponent {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), GML_PREFIX, NAME);
 		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
-		getSRSAttributes().validate();
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
+		Util.requireDDMSValue(ID_NAME, getId());
+		Util.requireValidNCName(getId());
 		Util.requireDDMSValue("position", getPosition());
-
+		Util.requireSameVersion(this, getPosition());
 		String srsName = getPosition().getSRSAttributes().getSrsName();
 		if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))
 			throw new InvalidDDMSException("The srsName of the position must match the srsName of the Point.");
-		Util.requireDDMSValue(ID_NAME, getId());
-		Util.requireValidNCName(getId());
 		
 		addWarnings(getPosition().getValidationWarnings(), false);
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);

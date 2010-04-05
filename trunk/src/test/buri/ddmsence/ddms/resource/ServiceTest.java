@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.resource;
 
 import java.util.ArrayList;
@@ -36,9 +36,9 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public class ServiceTest extends AbstractComponentTestCase {
-			
+
 	private static final String TEST_PRODUCER_TYPE = "creator";
-	
+
 	private static final List<String> TEST_NAMES = new ArrayList<String>();
 	private static final List<String> TEST_PHONES = new ArrayList<String>();
 	private static final List<String> TEST_EMAILS = new ArrayList<String>();
@@ -47,18 +47,19 @@ public class ServiceTest extends AbstractComponentTestCase {
 		TEST_PHONES.add("703-882-1000");
 		TEST_EMAILS.add("ddms@fgm.com");
 	}
-	
+
 	/**
 	 * Constructor
 	 */
 	public ServiceTest() {
-		super("3.0/service.xml");
+		super("service.xml");
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * @param expectFailure	true if this operation is expected to fail, false otherwise
-	 * @param element	the element to build from
+	 * 
+	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
@@ -70,67 +71,68 @@ public class ServiceTest extends AbstractComponentTestCase {
 			SecurityAttributesTest.getFixture(false).addTo(producerElement);
 			component = new Service(producerElement);
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure	true if this operation is expected to succeed, false otherwise
-	 * @param names			an ordered list of names
-	 * @param phones		an ordered list of phone numbers
-	 * @param emails		an ordered list of email addresses
+	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param names an ordered list of names
+	 * @param phones an ordered list of phone numbers
+	 * @param emails an ordered list of email addresses
 	 */
 	private Service testConstructor(boolean expectFailure, List<String> names, List<String> phones, List<String> emails) {
 		Service component = null;
 		try {
 			component = new Service(TEST_PRODUCER_TYPE, names, phones, emails, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".entityType\" content=\"Service\" />\n");
-		for (String name: TEST_NAMES)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".name\" content=\"").append(name).append("\" />\n");
-		for (String phone: TEST_PHONES)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".phone\" content=\"").append(phone).append("\" />\n");
-		for (String email: TEST_EMAILS)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".email\" content=\"").append(email).append("\" />\n");
+		for (String name : TEST_NAMES)
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".name\" content=\"").append(name).append(
+				"\" />\n");
+		for (String phone : TEST_PHONES)
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".phone\" content=\"").append(phone).append(
+				"\" />\n");
+		for (String email : TEST_EMAILS)
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".email\" content=\"").append(email).append(
+				"\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".classification\" content=\"U\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
-	
+
 	/**
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
 		text.append(Util.capitalize(TEST_PRODUCER_TYPE)).append(" EntityType: Web Service\n");
-		for (String name: TEST_NAMES)
+		for (String name : TEST_NAMES)
 			text.append("Name: ").append(name).append("\n");
-		for (String phone: TEST_PHONES)
+		for (String phone : TEST_PHONES)
 			text.append("Phone Number: ").append(phone).append("\n");
-		for (String email: TEST_EMAILS)
+		for (String email : TEST_EMAILS)
 			text.append("Email: ").append(email).append("\n");
 		text.append(Util.capitalize(TEST_PRODUCER_TYPE)).append(" Classification: U\n");
 		text.append(Util.capitalize(TEST_PRODUCER_TYPE)).append(" ownerProducer: USA\n");
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -138,128 +140,172 @@ public class ServiceTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		xml.append("xmlns:ICISM=\"urn:us:gov:ic:ism\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"><ddms:Service>\n");
-		for (String name: TEST_NAMES)
+		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(
+			DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
+		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append(
+			"\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"><ddms:Service>\n");
+		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
-		for (String phone: TEST_PHONES)
+		for (String phone : TEST_PHONES)
 			xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
-		for (String email: TEST_EMAILS)
+		for (String email : TEST_EMAILS)
 			xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
 		xml.append("</ddms:Service></ddms:").append(TEST_PRODUCER_TYPE).append(">");
-		return (formatXml(xml.toString(), preserveFormatting));		
+		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
-	
 	public void testNameAndNamespace() {
-		Service component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(TEST_PRODUCER_TYPE, component.getName());
-		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
-		assertEquals(Util.DDMS_PREFIX + ":" + TEST_PRODUCER_TYPE, component.getQualifiedName());
-		
-		// Wrong name/namespace
-		Element element = Util.buildDDMSElement("wrongName", null);
-		testConstructor(WILL_FAIL, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Service component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(TEST_PRODUCER_TYPE, component.getName());
+			assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+			assertEquals(Util.DDMS_PREFIX + ":" + TEST_PRODUCER_TYPE, component.getQualifiedName());
+
+			// Wrong name/namespace
+			Element element = Util.buildDDMSElement("wrongName", null);
+			testConstructor(WILL_FAIL, element);
+		}
 	}
-	
+
 	public void testElementConstructorValid() {
-		// All fields
-		testConstructor(WILL_SUCCEED, getValidElement());
-		
-		// No optional fields
-		Element element = Util.buildDDMSElement(Service.NAME, null);
-		element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
-		testConstructor(WILL_SUCCEED, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// All fields
+			testConstructor(WILL_SUCCEED, getValidElement(version));
+
+			// No optional fields
+			Element element = Util.buildDDMSElement(Service.NAME, null);
+			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
+			testConstructor(WILL_SUCCEED, element);
+		}
 	}
-	
+
 	public void testDataConstructorValid() {
-		// All fields
-		testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
-		
-		// No optional fields
-		testConstructor(WILL_SUCCEED, TEST_NAMES, null, null);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// All fields
+			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
+
+			// No optional fields
+			testConstructor(WILL_SUCCEED, TEST_NAMES, null, null);
+		}
 	}
-	
+
 	public void testElementConstructorInvalid() {
-		// Missing name
-		Element element = Util.buildDDMSElement(Service.NAME, null);
-		testConstructor(WILL_FAIL, element);
-		
-		// Empty name
-		element = Util.buildDDMSElement(Service.NAME, null);
-		element.appendChild(Util.buildDDMSElement("name", ""));
-		testConstructor(WILL_FAIL, element);
-	}	
-	
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Missing name
+			Element element = Util.buildDDMSElement(Service.NAME, null);
+			testConstructor(WILL_FAIL, element);
+
+			// Empty name
+			element = Util.buildDDMSElement(Service.NAME, null);
+			element.appendChild(Util.buildDDMSElement("name", ""));
+			testConstructor(WILL_FAIL, element);
+		}
+	}
+
 	public void testDataConstructorInvalid() {
-		// Missing name		
-		testConstructor(WILL_FAIL, null, TEST_PHONES, TEST_EMAILS);
-		
-		// Empty name
-		List<String> names = new ArrayList<String>();
-		names.add("");
-		testConstructor(WILL_FAIL, names, TEST_PHONES, TEST_EMAILS);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Missing name		
+			testConstructor(WILL_FAIL, null, TEST_PHONES, TEST_EMAILS);
+
+			// Empty name
+			List<String> names = new ArrayList<String>();
+			names.add("");
+			testConstructor(WILL_FAIL, names, TEST_PHONES, TEST_EMAILS);
+		}
 	}
-		
+
 	public void testWarnings() {
-		// No warnings
-		Service component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(0, component.getValidationWarnings().size());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// No warnings
+			Service component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(0, component.getValidationWarnings().size());
+		}
 	}
-	
+
 	public void testConstructorEquality() {
-		Service elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Service dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
-		assertEquals(elementComponent, dataComponent);
-		assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Service elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Service dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
+			assertEquals(elementComponent, dataComponent);
+			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		}
 	}
 
 	public void testConstructorInequalityDifferentValues() {
-		Service elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Service dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, null, TEST_EMAILS);
-		assertFalse(elementComponent.equals(dataComponent));
-		
-		dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, null);
-		assertFalse(elementComponent.equals(dataComponent));
-	}
-	
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		Service elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Rights wrongComponent = new Rights(true, true, true);
-		assertFalse(elementComponent.equals(wrongComponent));
-	}
-	
-	public void testHTMLOutput() {
-		Service component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedHTMLOutput(), component.toHTML());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Service elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Service dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, null, TEST_EMAILS);
+			assertFalse(elementComponent.equals(dataComponent));
 
-		component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
-		assertEquals(getExpectedHTMLOutput(), component.toHTML());
-	}	
-	
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, null);
+			assertFalse(elementComponent.equals(dataComponent));
+		}
+	}
+
+	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Service elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementComponent.equals(wrongComponent));
+		}
+	}
+
+	public void testHTMLOutput() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Service component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+		}
+	}
+
 	public void testTextOutput() {
-		Service component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedTextOutput(), component.toText());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
-		assertEquals(getExpectedTextOutput(), component.toText());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Service component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedTextOutput(), component.toText());
+
+			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
+			assertEquals(getExpectedTextOutput(), component.toText());
+		}
 	}
-	
+
 	public void testXMLOutput() {
-		Service component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedXMLOutput(true), component.toXML());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
-		assertEquals(getExpectedXMLOutput(false), component.toXML());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Service component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedXMLOutput(true), component.toXML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
+			assertEquals(getExpectedXMLOutput(false), component.toXML());
+		}
 	}
-		
+
 	public void testEntityType() {
-		Service component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(Service.NAME, component.getEntityType());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Service component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(Service.NAME, component.getEntityType());
+		}
 	}
-	
+
 	public void testSecurityAttributes() throws InvalidDDMSException {
-		Service component = new Service(TEST_PRODUCER_TYPE, TEST_NAMES, TEST_PHONES, TEST_EMAILS, SecurityAttributesTest.getFixture(false));
-		assertEquals(SecurityAttributesTest.getFixture(false), component.getSecurityAttributes());		
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Service component = new Service(TEST_PRODUCER_TYPE, TEST_NAMES, TEST_PHONES, TEST_EMAILS,
+				SecurityAttributesTest.getFixture(false));
+			assertEquals(SecurityAttributesTest.getFixture(false), component.getSecurityAttributes());
+		}
 	}
 }

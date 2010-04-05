@@ -16,17 +16,18 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.TestCase;
 import nu.xom.Element;
 import buri.ddmsence.util.DDMSReader;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
-import buri.ddmsence.util.Util;
 
 /**
  * Base class for test cases involving components.
@@ -35,57 +36,60 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public abstract class AbstractComponentTestCase extends TestCase {
-	
-	private Element _validElement;
+
+	private Map<String, Element> _elementMap;
 
 	protected static final String TEST_ID = "IDValue";
-	
+
 	protected static final boolean WILL_SUCCEED = false;
 	protected static final boolean WILL_FAIL = true;
 	protected static final String INVALID_URI = ":::::";
 	protected static final String DIFFERENT_VALUE = "Different";
-	
+
 	protected static final String GML_PREFIX = PropertyReader.getProperty("gml.prefix");
 	protected static final String ICISM_PREFIX = PropertyReader.getProperty("icism.prefix");
-	protected static final String ICISM_NAMESPACE = PropertyReader.getProperty("icism.xmlNamespace");
-	
+
 	private static final String TEST_DATA_DIR = PropertyReader.getProperty("test.unit.data");
-	
+
 	/**
 	 * Resets the in-use version of DDMS.
 	 */
 	protected void setUp() throws Exception {
 		DDMSVersion.clearCurrentVersion();
 	}
-	
+
 	/**
 	 * Resets the in-use version of DDMS.
 	 */
 	protected void tearDown() throws Exception {
 		DDMSVersion.clearCurrentVersion();
 	}
-		
+
 	/**
 	 * Constructor
 	 * 
-	 * @param validDocumentFile	the valid instance of some component to use as a correct base case.
+	 * @param validDocumentFile the filename to load. One of these will be loaded for each supporting version.
 	 */
 	public AbstractComponentTestCase(String validDocumentFile) {
-		if (Util.isEmpty(validDocumentFile))
+		_elementMap = new HashMap<String, Element>();
+		if (validDocumentFile == null)
 			return;
 		try {
 			DDMSReader reader = new DDMSReader();
-			File file = new File(TEST_DATA_DIR, validDocumentFile);
-			_validElement = reader.getElement(file);
-		}
-		catch (Exception e) {
+			for (String version : DDMSVersion.getSupportedVersions()) {
+				File file = new File(TEST_DATA_DIR + version, validDocumentFile);
+				if (file.exists())
+					_elementMap.put(version, reader.getElement(file));
+			}
+		} catch (Exception e) {
 			throw new RuntimeException("Cannot run tests without valid DDMSReader and valid unit test object.", e);
 		}
+
 	}
-	
+
 	/**
-	 * Should be called after a successful constructor execution. If the constructor was expected to fail, but
-	 * it succeeded, the test will fail.
+	 * Should be called after a successful constructor execution. If the constructor was expected to fail, but it
+	 * succeeded, the test will fail.
 	 * 
 	 * @param expectFailure true if the constructor was expected to fail.
 	 */
@@ -93,10 +97,10 @@ public abstract class AbstractComponentTestCase extends TestCase {
 		if (expectFailure)
 			fail("Constructor allowed invalid data.");
 	}
-	
+
 	/**
-	 * Should be called after a failed constructor execution. If the constructor was expected to succeed, but
-	 * it failed, the test will fail.
+	 * Should be called after a failed constructor execution. If the constructor was expected to succeed, but it failed,
+	 * the test will fail.
 	 * 
 	 * @param expectFailure true if the constructor was expected to fail.
 	 * @param exception the exception that occurred
@@ -105,12 +109,12 @@ public abstract class AbstractComponentTestCase extends TestCase {
 		if (!expectFailure)
 			fail("Constructor failed on valid data: " + exception.getMessage());
 	}
-	
+
 	/**
-	 * Strips tabs and new lines from XML output where appropriate. The unit test samples in the XML files
-	 * have tabs and new lines, but the default implementation of XOM toXML() returns XML on a single line.
+	 * Strips tabs and new lines from XML output where appropriate. The unit test samples in the XML files have tabs and
+	 * new lines, but the default implementation of XOM toXML() returns XML on a single line.
 	 * 
-	 * @param string	the original string
+	 * @param string the original string
 	 * @param preserveFormatting true to retain tabs and new lines, false to strip them.
 	 * @return the modified string
 	 */
@@ -121,12 +125,12 @@ public abstract class AbstractComponentTestCase extends TestCase {
 		}
 		return (string);
 	}
-		
+
 	/**
-	 * Accessor for a valid DDMS XOM Element constructed from the root element of an XML file, which can be used in testing as a
-	 * "correct base case".
+	 * Accessor for a valid DDMS XOM Element constructed from the root element of an XML file, which can be used in
+	 * testing as a "correct base case".
 	 */
-	public Element getValidElement() {
-		return (_validElement);
-	}	
+	public Element getValidElement(String version) {
+		return (_elementMap.get(version));
+	}
 }

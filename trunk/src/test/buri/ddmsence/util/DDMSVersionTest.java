@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.util;
 
+import nu.xom.Element;
 import junit.framework.TestCase;
 import buri.ddmsence.ddms.UnsupportedVersionException;
 
@@ -42,6 +43,12 @@ public class DDMSVersionTest extends TestCase {
 	 */
 	protected void tearDown() throws Exception {
 		DDMSVersion.clearCurrentVersion();
+	}
+	
+	public void testIsVersion() {
+		Element element = Util.buildDDMSElement("test", null);
+		assertTrue(DDMSVersion.isVersion("3.0", element));
+		assertFalse(DDMSVersion.isVersion("2.0", element));
 	}
 	
 	public void testGetVersionFor() {

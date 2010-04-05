@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
@@ -33,22 +33,23 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public class CategoryTest extends AbstractComponentTestCase {
-		
+
 	private static final String TEST_QUALIFIER = "http://metadata.dod.mil/mdr/artifiact/MET/severeWeatherCode_enum/xml";
 	private static final String TEST_CODE = "T";
 	private static final String TEST_LABEL = "TORNADO";
-	
+
 	/**
 	 * Constructor
 	 */
 	public CategoryTest() {
-		super("3.0/category.xml");
+		super("category.xml");
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * @param expectFailure	true if this operation is expected to fail, false otherwise
-	 * @param element	the element to build from
+	 * 
+	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
@@ -57,17 +58,16 @@ public class CategoryTest extends AbstractComponentTestCase {
 		try {
 			component = new Category(element);
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure	true if this operation is expected to succeed, false otherwise
+	 * @param expectFailure true if this operation is expected to succeed, false otherwise
 	 * @param qualifier the qualifier (optional)
 	 * @param code the code (optional)
 	 * @param label the label (required)
@@ -78,13 +78,12 @@ public class CategoryTest extends AbstractComponentTestCase {
 		try {
 			component = new Category(qualifier, code, label);
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Returns the expected HTML output for this unit test
 	 */
@@ -93,10 +92,10 @@ public class CategoryTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"subject.category.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
 		html.append("<meta name=\"subject.category.code\" content=\"").append(TEST_CODE).append("\" />\n");
 		html.append("<meta name=\"subject.category.label\" content=\"").append(TEST_LABEL).append("\" />\n");
-		
+
 		return (html.toString());
 	}
- 					
+
 	/**
 	 * Returns the expected Text output for this unit test
 	 */
@@ -107,7 +106,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 		text.append("Category Label: ").append(TEST_LABEL).append("\n");
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -119,102 +118,138 @@ public class CategoryTest extends AbstractComponentTestCase {
 		xml.append("ddms:label=\"").append(TEST_LABEL).append("\" />");
 		return (xml.toString());
 	}
-	
+
 	public void testNameAndNamespace() {
-		Category component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(Category.NAME, component.getName());
-		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
-		assertEquals(Util.DDMS_PREFIX + ":" + Category.NAME, component.getQualifiedName());
-		
-		// Wrong name/namespace
-		Element element = Util.buildDDMSElement("wrongName", null);
-		testConstructor(WILL_FAIL, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Category component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(Category.NAME, component.getName());
+			assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+			assertEquals(Util.DDMS_PREFIX + ":" + Category.NAME, component.getQualifiedName());
+
+			// Wrong name/namespace
+			Element element = Util.buildDDMSElement("wrongName", null);
+			testConstructor(WILL_FAIL, element);
+		}
 	}
-	
+
 	public void testElementConstructorValid() {
-		// All fields
-		testConstructor(WILL_SUCCEED, getValidElement());
-		
-		// No optional fields
-		Element element = Util.buildDDMSElement(Category.NAME, null);
-		Util.addDDMSAttribute(element, "label", TEST_LABEL);
-		testConstructor(WILL_SUCCEED, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// All fields
+			testConstructor(WILL_SUCCEED, getValidElement(version));
+
+			// No optional fields
+			Element element = Util.buildDDMSElement(Category.NAME, null);
+			Util.addDDMSAttribute(element, "label", TEST_LABEL);
+			testConstructor(WILL_SUCCEED, element);
+		}
 	}
 
 	public void testDataConstructorValid() {
-		// All fields
-		testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
-		
-		// No optional fields
-		testConstructor(WILL_SUCCEED, "", "", TEST_LABEL);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// All fields
+			testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
+
+			// No optional fields
+			testConstructor(WILL_SUCCEED, "", "", TEST_LABEL);
+		}
 	}
-	
+
 	public void testElementConstructorInvalid() {
-		// Missing label
-		Element element = Util.buildDDMSElement(Category.NAME, null);
-		testConstructor(WILL_FAIL, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Missing label
+			Element element = Util.buildDDMSElement(Category.NAME, null);
+			testConstructor(WILL_FAIL, element);
+		}
 	}
-			
+
 	public void testDataConstructorInvalid() {
-		// Missing label
-		testConstructor(WILL_FAIL, TEST_QUALIFIER, TEST_CODE, null);
-		
-		// Qualifier not URI
-		testConstructor(WILL_FAIL, INVALID_URI, TEST_CODE, TEST_LABEL);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Missing label
+			testConstructor(WILL_FAIL, TEST_QUALIFIER, TEST_CODE, null);
+
+			// Qualifier not URI
+			testConstructor(WILL_FAIL, INVALID_URI, TEST_CODE, TEST_LABEL);
+		}
 	}
-	
+
 	public void testWarnings() {
-		// No warnings
-		Category component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(0, component.getValidationWarnings().size());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// No warnings
+			Category component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(0, component.getValidationWarnings().size());
+		}
 	}
-	
+
 	public void testConstructorEquality() {
-		Category elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Category dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
-		assertEquals(elementComponent, dataComponent);
-		assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Category elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Category dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
+			assertEquals(elementComponent, dataComponent);
+			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		}
 	}
-	
+
 	public void testConstructorInequalityDifferentValues() {
-		Category elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Category dataComponent = testConstructor(WILL_SUCCEED, "", TEST_CODE, TEST_LABEL);
-		assertFalse(elementComponent.equals(dataComponent));
-		
-		dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, "", TEST_LABEL);
-		assertFalse(elementComponent.equals(dataComponent));
-		
-		dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, DIFFERENT_VALUE);
-		assertFalse(elementComponent.equals(dataComponent));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Category elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Category dataComponent = testConstructor(WILL_SUCCEED, "", TEST_CODE, TEST_LABEL);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, "", TEST_LABEL);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(dataComponent));
+		}
 	}
-	
+
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		Category elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Rights wrongComponent = new Rights(true, true, true);
-		assertFalse(elementComponent.equals(wrongComponent));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Category elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementComponent.equals(wrongComponent));
+		}
 	}
 
 	public void testHTMLOutput() {
-		Category component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedHTMLOutput(), component.toHTML());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
-		assertEquals(getExpectedHTMLOutput(), component.toHTML());
-	}	
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Category component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+		}
+	}
 
 	public void testTextOutput() {
-		Category component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedTextOutput(), component.toText());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
-		assertEquals(getExpectedTextOutput(), component.toText());
-	}
-	
-	public void testXMLOutput() {
-		Category component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedXMLOutput(), component.toXML());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Category component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedTextOutput(), component.toText());
 
-		component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
-		assertEquals(getExpectedXMLOutput(), component.toXML());
+			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
+			assertEquals(getExpectedTextOutput(), component.toText());
+		}
+	}
+
+	public void testXMLOutput() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Category component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedXMLOutput(), component.toXML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
+			assertEquals(getExpectedXMLOutput(), component.toXML());
+		}
 	}
 }

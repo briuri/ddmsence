@@ -102,7 +102,6 @@ public final class Description extends AbstractSimpleString {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>The SecurityAttributes are valid.</li>
 	 * </td></tr></table>
 	 *  
 	 * @see AbstractBaseComponent#validate()

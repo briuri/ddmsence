@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
@@ -33,20 +33,21 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public class KeywordTest extends AbstractComponentTestCase {
-		
+
 	private static final String TEST_VALUE = "Tornado";
-	
+
 	/**
 	 * Constructor
 	 */
 	public KeywordTest() {
-		super("3.0/keyword.xml");
+		super("keyword.xml");
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * @param expectFailure	true if this operation is expected to fail, false otherwise
-	 * @param element	the element to build from
+	 * 
+	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
@@ -55,17 +56,16 @@ public class KeywordTest extends AbstractComponentTestCase {
 		try {
 			component = new Keyword(element);
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure	true if this operation is expected to succeed, false otherwise
+	 * @param expectFailure true if this operation is expected to succeed, false otherwise
 	 * @param value the value child text
 	 * @return a valid object
 	 */
@@ -74,13 +74,12 @@ public class KeywordTest extends AbstractComponentTestCase {
 		try {
 			component = new Keyword(value);
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Returns the expected HTML output for this unit test
 	 */
@@ -98,7 +97,7 @@ public class KeywordTest extends AbstractComponentTestCase {
 		text.append("Keyword: ").append(TEST_VALUE).append("\n");
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -108,90 +107,126 @@ public class KeywordTest extends AbstractComponentTestCase {
 		xml.append("ddms:value=\"").append(TEST_VALUE).append("\" />");
 		return (xml.toString());
 	}
-	
+
 	public void testNameAndNamespace() {
-		Keyword component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(Keyword.NAME, component.getName());
-		assertEquals(Util.DDMS_PREFIX, component.getPrefix());
-		assertEquals(Util.DDMS_PREFIX + ":" + Keyword.NAME, component.getQualifiedName());
-		
-		// Wrong name/namespace
-		Element element = Util.buildDDMSElement("wrongName", null);
-		testConstructor(WILL_FAIL, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Keyword component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(Keyword.NAME, component.getName());
+			assertEquals(Util.DDMS_PREFIX, component.getPrefix());
+			assertEquals(Util.DDMS_PREFIX + ":" + Keyword.NAME, component.getQualifiedName());
+
+			// Wrong name/namespace
+			Element element = Util.buildDDMSElement("wrongName", null);
+			testConstructor(WILL_FAIL, element);
+		}
 	}
-	
+
 	public void testElementConstructorValid() {
-		testConstructor(WILL_SUCCEED, getValidElement());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			testConstructor(WILL_SUCCEED, getValidElement(version));
+		}
 	}
-	
+
 	public void testDataConstructorValid() {
-		testConstructor(WILL_SUCCEED, TEST_VALUE);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			testConstructor(WILL_SUCCEED, TEST_VALUE);
+		}
 	}
-	
+
 	public void testElementConstructorInvalid() {
-		// Missing value
-		Element element = Util.buildDDMSElement(Keyword.NAME, null);
-		testConstructor(WILL_FAIL, element);
-		
-		// Empty value
-		element = Util.buildDDMSElement(Keyword.NAME, "");
-		testConstructor(WILL_FAIL, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Missing value
+			Element element = Util.buildDDMSElement(Keyword.NAME, null);
+			testConstructor(WILL_FAIL, element);
+
+			// Empty value
+			element = Util.buildDDMSElement(Keyword.NAME, "");
+			testConstructor(WILL_FAIL, element);
+		}
 	}
-		
+
 	public void testDataConstructorInvalid() {
-		// Missing value
-		testConstructor(WILL_FAIL, (String) null);
-		
-		// Empty value
-		testConstructor(WILL_FAIL, "");
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Missing value
+			testConstructor(WILL_FAIL, (String) null);
+
+			// Empty value
+			testConstructor(WILL_FAIL, "");
+		}
 	}
-	
+
 	public void testWarnings() {
-		// No warnings
-		Keyword component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(0, component.getValidationWarnings().size());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// No warnings
+			Keyword component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(0, component.getValidationWarnings().size());
+		}
 	}
-	
+
 	public void testConstructorEquality() {
-		Keyword elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Keyword dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE);
-		assertEquals(elementComponent, dataComponent);
-		assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Keyword elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Keyword dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE);
+			assertEquals(elementComponent, dataComponent);
+			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		}
 	}
-	
+
 	public void testConstructorInequalityDifferentValues() {
-		Keyword elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Keyword dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE);
-		assertFalse(elementComponent.equals(dataComponent));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Keyword elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Keyword dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE);
+			assertFalse(elementComponent.equals(dataComponent));
+		}
 	}
-	
+
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		Keyword elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Rights wrongComponent = new Rights(true, true, true);
-		assertFalse(elementComponent.equals(wrongComponent));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Keyword elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementComponent.equals(wrongComponent));
+		}
 	}
 
 	public void testHTMLOutput() {
-		Keyword component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedHTMLOutput(), component.toHTML());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_VALUE);
-		assertEquals(getExpectedHTMLOutput(), component.toHTML());
-	}	
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Keyword component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+		}
+	}
 
 	public void testTextOutput() {
-		Keyword component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedTextOutput(), component.toText());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_VALUE);
-		assertEquals(getExpectedTextOutput(), component.toText());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Keyword component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedTextOutput(), component.toText());
+
+			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
+			assertEquals(getExpectedTextOutput(), component.toText());
+		}
 	}
-	
+
 	public void testXMLOutput() {
-		Keyword component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedXMLOutput(), component.toXML());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_VALUE);
-		assertEquals(getExpectedXMLOutput(), component.toXML());
-	}	
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Keyword component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedXMLOutput(), component.toXML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
+			assertEquals(getExpectedXMLOutput(), component.toXML());
+		}
+	}
 }

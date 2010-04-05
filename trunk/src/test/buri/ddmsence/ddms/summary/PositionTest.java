@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms.summary;
 
 import java.util.ArrayList;
@@ -44,19 +44,20 @@ public class PositionTest extends AbstractComponentTestCase {
 	}
 	protected static final String TEST_XS_LIST = "32.1 40.1";
 	private final SRSAttributes TEST_SRS_ATTRIBUTES;
-	
+
 	/**
 	 * Constructor
 	 */
 	public PositionTest() throws InvalidDDMSException {
-		super("3.0/position.xml");
+		super("position.xml");
 		TEST_SRS_ATTRIBUTES = SRSAttributesTest.getFixture();
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
-	 * @param expectFailure	true if this operation is expected to fail, false otherwise
-	 * @param element	the element to build from
+	 * 
+	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
@@ -65,19 +66,18 @@ public class PositionTest extends AbstractComponentTestCase {
 		try {
 			component = new Position(element);
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure	true if this operation is expected to succeed, false otherwise
+	 * @param expectFailure true if this operation is expected to succeed, false otherwise
 	 * @param coordinates the coordinates
-	 * @param srsAttributes	the srs attributes (optional)
+	 * @param srsAttributes the srs attributes (optional)
 	 * @return a valid object
 	 */
 	private Position testConstructor(boolean expectFailure, List<Double> coordinates, SRSAttributes srsAttributes) {
@@ -85,23 +85,27 @@ public class PositionTest extends AbstractComponentTestCase {
 		try {
 			component = new Position(coordinates, srsAttributes);
 			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatial.boundingGeometry.position\" content=\"").append(TEST_XS_LIST).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.position.srsName\" content=\"").append(SRSAttributesTest.TEST_SRS_NAME).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.position.srsDimension\" content=\"").append(SRSAttributesTest.TEST_SRS_DIMENSION).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.position.axisLabels\" content=\"").append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.position.uomLabels\" content=\"").append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\" />\n");
+		html.append("<meta name=\"geospatial.boundingGeometry.position\" content=\"").append(TEST_XS_LIST).append(
+			"\" />\n");
+		html.append("<meta name=\"geospatial.boundingGeometry.position.srsName\" content=\"").append(
+			SRSAttributesTest.TEST_SRS_NAME).append("\" />\n");
+		html.append("<meta name=\"geospatial.boundingGeometry.position.srsDimension\" content=\"").append(
+			SRSAttributesTest.TEST_SRS_DIMENSION).append("\" />\n");
+		html.append("<meta name=\"geospatial.boundingGeometry.position.axisLabels\" content=\"").append(
+			Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\" />\n");
+		html.append("<meta name=\"geospatial.boundingGeometry.position.uomLabels\" content=\"").append(
+			Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -112,12 +116,15 @@ public class PositionTest extends AbstractComponentTestCase {
 		StringBuffer text = new StringBuffer();
 		text.append("Geospatial Geometry Position: ").append(TEST_XS_LIST).append("\n");
 		text.append("Geospatial Geometry Position SRS Name: ").append(SRSAttributesTest.TEST_SRS_NAME).append("\n");
-		text.append("Geospatial Geometry Position SRS Dimension: ").append(SRSAttributesTest.TEST_SRS_DIMENSION).append("\n");
-		text.append("Geospatial Geometry Position Axis Labels: ").append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\n");
-		text.append("Geospatial Geometry Position Unit of Measure Labels: ").append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\n");
+		text.append("Geospatial Geometry Position SRS Dimension: ").append(SRSAttributesTest.TEST_SRS_DIMENSION)
+			.append("\n");
+		text.append("Geospatial Geometry Position Axis Labels: ").append(
+			Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\n");
+		text.append("Geospatial Geometry Position Unit of Measure Labels: ").append(
+			Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\n");
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -131,128 +138,165 @@ public class PositionTest extends AbstractComponentTestCase {
 		xml.append("axisLabels=\"").append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\" ");
 		xml.append("uomLabels=\"").append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\">");
 		xml.append(TEST_XS_LIST).append("</gml:pos>");
-		return (formatXml(xml.toString(), preserveFormatting));		
+		return (formatXml(xml.toString(), preserveFormatting));
 	}
-	
+
 	public void testNameAndNamespace() {
-		Position component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(Position.NAME, component.getName());
-		assertEquals(Position.GML_PREFIX, component.getPrefix());
-		assertEquals(Position.GML_PREFIX + ":" + Position.NAME, component.getQualifiedName());
-		
-		// Wrong name/namespace
-		Element element = Util.buildDDMSElement("wrongName", null);
-		testConstructor(WILL_FAIL, element);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Position component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(Position.NAME, component.getName());
+			assertEquals(Position.GML_PREFIX, component.getPrefix());
+			assertEquals(Position.GML_PREFIX + ":" + Position.NAME, component.getQualifiedName());
+
+			// Wrong name/namespace
+			Element element = Util.buildDDMSElement("wrongName", null);
+			testConstructor(WILL_FAIL, element);
+		}
 	}
-	
+
 	public void testElementConstructorValid() {
-		// All fields
-		testConstructor(WILL_SUCCEED, getValidElement());
-		
-		// No optional fields
-		Element element = Util.buildElement(GML_PREFIX, Position.NAME, DDMSVersion.getCurrentVersion().getGmlNamespace(), TEST_XS_LIST);		
-		testConstructor(WILL_SUCCEED, element);		
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// All fields
+			testConstructor(WILL_SUCCEED, getValidElement(version));
+
+			// No optional fields
+			Element element = Util.buildElement(GML_PREFIX, Position.NAME, DDMSVersion.getCurrentVersion()
+				.getGmlNamespace(), TEST_XS_LIST);
+			testConstructor(WILL_SUCCEED, element);
+		}
 	}
-	
+
 	public void testDataConstructorValid() {
-		// All fields
-		testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
-		
-		// No optional fields
-		testConstructor(WILL_SUCCEED, TEST_COORDS, null);
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// All fields
+			testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
+
+			// No optional fields
+			testConstructor(WILL_SUCCEED, TEST_COORDS, null);
+		}
 	}
 
 	public void testElementConstructorInvalid() {
-		// Missing coordinates
-		Element element = Util.buildDDMSElement(Position.NAME, null);
-		TEST_SRS_ATTRIBUTES.addTo(element);
-		testConstructor(WILL_FAIL, element);
-				
-		// At least 2 coordinates
-		element = Util.buildDDMSElement(Position.NAME, "25.0");
-		TEST_SRS_ATTRIBUTES.addTo(element);
-		testConstructor(WILL_FAIL, element);
-		
-		// No more than 3 coordinates
-		element = Util.buildDDMSElement(Position.NAME, TEST_XS_LIST + " 25.0 35.0");
-		TEST_SRS_ATTRIBUTES.addTo(element);
-		testConstructor(WILL_FAIL, element);
-		
-		// Each coordinate is a Double
-		element = Util.buildDDMSElement(Position.NAME, "25.0 Dog");
-		TEST_SRS_ATTRIBUTES.addTo(element);
-		testConstructor(WILL_FAIL, element);
-	}
-	
-	public void testDataConstructorInvalid() {
-		// Missing coordinates
-		testConstructor(WILL_FAIL, null, TEST_SRS_ATTRIBUTES);
-		
-		// At least 2 coordinates
-		List<Double> newCoords = new ArrayList<Double>();
-		newCoords.add(new Double(12.3));
-		testConstructor(WILL_FAIL, newCoords, TEST_SRS_ATTRIBUTES);
-		
-		// No more than 3 coordinates
-		newCoords = new ArrayList<Double>();
-		newCoords.add(new Double(12.3));
-		newCoords.add(new Double(12.3));
-		newCoords.add(new Double(12.3));
-		newCoords.add(new Double(12.3));
-		testConstructor(WILL_FAIL, newCoords, TEST_SRS_ATTRIBUTES);
-	}
-		
-	public void testWarnings() {
-		// No warnings
-		Position component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(0, component.getValidationWarnings().size());
-	}
-	
-	public void testConstructorEquality() {
-		Position elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Position dataComponent = testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
-		assertEquals(elementComponent, dataComponent);
-		assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-	}
-	
-	public void testConstructorInequalityDifferentValues() {
-		Position elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Position dataComponent = testConstructor(WILL_SUCCEED, TEST_COORDS, null);
-		assertFalse(elementComponent.equals(dataComponent));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Missing coordinates
+			Element element = Util.buildDDMSElement(Position.NAME, null);
+			TEST_SRS_ATTRIBUTES.addTo(element);
+			testConstructor(WILL_FAIL, element);
 
-		List<Double> newCoords = new ArrayList<Double>(TEST_COORDS);
-		newCoords.add(new Double(100.0));
-		dataComponent = testConstructor(WILL_SUCCEED, newCoords, TEST_SRS_ATTRIBUTES);
-		assertFalse(elementComponent.equals(dataComponent));
+			// At least 2 coordinates
+			element = Util.buildDDMSElement(Position.NAME, "25.0");
+			TEST_SRS_ATTRIBUTES.addTo(element);
+			testConstructor(WILL_FAIL, element);
+
+			// No more than 3 coordinates
+			element = Util.buildDDMSElement(Position.NAME, TEST_XS_LIST + " 25.0 35.0");
+			TEST_SRS_ATTRIBUTES.addTo(element);
+			testConstructor(WILL_FAIL, element);
+
+			// Each coordinate is a Double
+			element = Util.buildDDMSElement(Position.NAME, "25.0 Dog");
+			TEST_SRS_ATTRIBUTES.addTo(element);
+			testConstructor(WILL_FAIL, element);
+		}
 	}
-	
+
+	public void testDataConstructorInvalid() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Missing coordinates
+			testConstructor(WILL_FAIL, null, TEST_SRS_ATTRIBUTES);
+
+			// At least 2 coordinates
+			List<Double> newCoords = new ArrayList<Double>();
+			newCoords.add(new Double(12.3));
+			testConstructor(WILL_FAIL, newCoords, TEST_SRS_ATTRIBUTES);
+
+			// No more than 3 coordinates
+			newCoords = new ArrayList<Double>();
+			newCoords.add(new Double(12.3));
+			newCoords.add(new Double(12.3));
+			newCoords.add(new Double(12.3));
+			newCoords.add(new Double(12.3));
+			testConstructor(WILL_FAIL, newCoords, TEST_SRS_ATTRIBUTES);
+		}
+	}
+
+	public void testWarnings() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// No warnings
+			Position component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(0, component.getValidationWarnings().size());
+		}
+	}
+
+	public void testConstructorEquality() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Position elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Position dataComponent = testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
+			assertEquals(elementComponent, dataComponent);
+			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		}
+	}
+
+	public void testConstructorInequalityDifferentValues() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Position elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Position dataComponent = testConstructor(WILL_SUCCEED, TEST_COORDS, null);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			List<Double> newCoords = new ArrayList<Double>(TEST_COORDS);
+			newCoords.add(new Double(100.0));
+			dataComponent = testConstructor(WILL_SUCCEED, newCoords, TEST_SRS_ATTRIBUTES);
+			assertFalse(elementComponent.equals(dataComponent));
+		}
+	}
+
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		Position elementComponent = testConstructor(WILL_SUCCEED, getValidElement());
-		Rights wrongComponent = new Rights(true, true, true);
-		assertFalse(elementComponent.equals(wrongComponent));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Position elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementComponent.equals(wrongComponent));
+		}
 	}
 
 	public void testHTMLOutput() {
-		Position component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedHTMLOutput(), component.toHTML());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
-		assertEquals(getExpectedHTMLOutput(), component.toHTML());
-	}	
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Position component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+		}
+	}
 
 	public void testTextOutput() {
-		Position component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedTextOutput(), component.toText());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
-		assertEquals(getExpectedTextOutput(), component.toText());
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Position component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedTextOutput(), component.toText());
+
+			component = testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
+			assertEquals(getExpectedTextOutput(), component.toText());
+		}
 	}
-	
+
 	public void testXMLOutput() {
-		Position component = testConstructor(WILL_SUCCEED, getValidElement());
-		assertEquals(getExpectedXMLOutput(true), component.toXML());
-		
-		component = testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
-		assertEquals(getExpectedXMLOutput(false), component.toXML());
-	}	
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Position component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedXMLOutput(true), component.toXML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
+			assertEquals(getExpectedXMLOutput(false), component.toXML());
+		}
+	}
 }

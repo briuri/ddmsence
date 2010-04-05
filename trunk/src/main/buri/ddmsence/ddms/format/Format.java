@@ -138,6 +138,7 @@ public final class Format extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A mimeType exists, and is not empty.</li>
 	 * <li>Exactly 1 mimeType, 0-1 extents, and 0-1 mediums exist.</li>
+	 * <li>If an extent exists, it is using the same version of DDMS.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -155,8 +156,10 @@ public final class Format extends AbstractBaseComponent {
 		
 		if (Util.isEmpty(getMedium()) && mediaElement.getChildElements(MEDIUM_NAME, mediaElement.getNamespaceURI()).size() == 1)
 			addWarning("A ddms:medium element was found with no value.");
-		if (getExtent() != null)
+		if (getExtent() != null) {
+			Util.requireSameVersion(this, getExtent());
 			addWarnings(getExtent().getValidationWarnings(), false);
+		}
 	}
 	
 	/**

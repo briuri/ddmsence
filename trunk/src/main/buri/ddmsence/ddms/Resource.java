@@ -53,12 +53,19 @@ import buri.ddmsence.ddms.summary.RelatedResources;
 import buri.ddmsence.ddms.summary.SubjectCoverage;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
 import buri.ddmsence.ddms.summary.VirtualCoverage;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:Resource (the top-level element of a DDMS record).
  * 
+ * <p>
+ * DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However,
+ * the 2.0 schema still allows "any" attributes on the Resource, so the 3.0 attribute values
+ * will be loaded if present.
+ * </p>
+ *  
  * <p>When generating HTML/Text output for a Resource, an additional tag is generated listing the version of DDMSence used to create the record
  * (to help identify formatting bugs). This line is not required (and may be removed). For example:</p>
  * <ul><code>
@@ -99,11 +106,11 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ICISM:resourceElement</u>: Identifies whether this tag sets the classification for the xml file as a whole
- * (required)<br />
- * <u>ICISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required)<br />
+ * (required, starting in DDMS v3.0)<br />
+ * <u>ICISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in DDMS v3.0)<br />
  * <u>ICISM:DESVersion</u>: Specifies the version of the Digital Encrpytion Schema version used for the security
- * markings on this record. (required)<br />
- * This class is also decorated with ICISM {@link SecurityAttributes}. The classification and
+ * markings on this record. (required, starting in DDMS v3.0)<br />
+ * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS v3.0. The classification and
  * ownerProducer attributes are required.
  * </td></tr></table>
  * 
@@ -163,6 +170,12 @@ public final class Resource extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
+	 * <p>
+	 * DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However,
+	 * the 2.0 schema still allows "any" attributes on the Resource, so the 3.0 attribute values
+	 * will be loaded if present.
+	 * </p>
+	 * 
 	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
@@ -171,20 +184,19 @@ public final class Resource extends AbstractBaseComponent {
 			String namespace = element.getNamespaceURI();
 			setXOMElement(element, false);
 
-			// Attributes
-			String createDate = getAttributeValue(CREATE_DATE_NAME, ICISM_NAMESPACE);
+			String createDate = getAttributeValue(CREATE_DATE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
 			if (!Util.isEmpty(createDate))
 				_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
-			String desVersion = element.getAttributeValue(DES_VERSION_NAME, ICISM_NAMESPACE);
+			String desVersion = element.getAttributeValue(DES_VERSION_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
 			if (!Util.isEmpty(desVersion)) {
 				try {
 					_cachedDESVersion = Integer.valueOf(desVersion);
 				} catch (NumberFormatException e) {
-					// This will be thrown as an InvalidDDMSException during validation
+				// 	This will be thrown as an InvalidDDMSException during validation
 				}
 			}
 			_cachedSecurityAttributes = new SecurityAttributes(element);
-
+			
 			// Resource Layer
 			Elements components = element.getChildElements(Identifier.NAME, namespace);
 			for (int i = 0; i < components.size(); i++) {
@@ -276,20 +288,44 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Constructor for creating a component from raw data
+	 * Constructor for creating a DDMS v2.0 component from raw data
 	 * 
-	 * <p>
-	 * Passing the top-level components in as a list is a compromise between a constructor with over twenty parameters,
-	 * and the added complexity of a step-by-step factory/builder approach. If any component is not a top-level component, an
-	 * InvalidDDMSException will be thrown.
-	 * </p>
+	 * <p> Passing the top-level components in as a list is a compromise between a constructor with over twenty
+	 * parameters, and the added complexity of a step-by-step factory/builder approach. If any component is not a
+	 * top-level component, an InvalidDDMSException will be thrown. </p>
 	 * 
-	 * <p>
-	 * The order of different types of components does not matter here (a security component could be the first
+	 * <p> The order of different types of components does not matter here (a security component could be the first
 	 * component in the list). However, if multiple instances of the same component type exist in the list (such as
-	 * multiple identifier components), those components will be stored and output in the order of the list. If only 1 intance
-	 * can be supported, the last one in the list will be the one used.
-	 * </p>
+	 * multiple identifier components), those components will be stored and output in the order of the list. If only 1
+	 * intance can be supported, the last one in the list will be the one used. </p>
+	 * 
+	 * <p> DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 schema still
+	 * allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present. </p>
+	 * 
+	 * @param topLevelComponents a list of top level components
+	 * 
+	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
+	 * does not belong at the top-level of the Resource.
+	 */
+	public Resource(List<IDDMSComponent> topLevelComponents) throws InvalidDDMSException {
+		this(topLevelComponents, false, null, null, null);
+	}
+
+	/**
+	 * Constructor for creating a DDMS v3.0 component from raw data
+	 * 
+	 * <p> Passing the top-level components in as a list is a compromise between a constructor with over twenty
+	 * parameters, and the added complexity of a step-by-step factory/builder approach. If any component is not a
+	 * top-level component, an InvalidDDMSException will be thrown. </p>
+	 * 
+	 * <p> The order of different types of components does not matter here (a security component could be the first
+	 * component in the list). However, if multiple instances of the same component type exist in the list (such as
+	 * multiple identifier components), those components will be stored and output in the order of the list. If only 1
+	 * intance can be supported, the last one in the list will be the one used. </p>
+	 * 
+	 * <p> DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 schema still
+	 * allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present. </p>
+	 * 
 	 * @param topLevelComponents a list of top level components
 	 * @param resourceElement value of the resourceElement attribute (required)
 	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required)
@@ -297,7 +333,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
 	 * 
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
-	 *             does not belong at the top-level of the Resource.
+	 * does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, boolean resourceElement, String createDate,
 		Integer desVersion, SecurityAttributes securityAttributes) throws InvalidDDMSException {
@@ -307,20 +343,19 @@ public final class Resource extends AbstractBaseComponent {
 			Element element = Util.buildDDMSElement(Resource.NAME, null);
 
 			// Attributes
-			Util.addAttribute(element, ICISM_PREFIX, RESOURCE_ELEMENT_NAME, ICISM_NAMESPACE, String
+			Util.addAttribute(element, ICISM_PREFIX, RESOURCE_ELEMENT_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), String
 				.valueOf(resourceElement));
 			if (desVersion != null) {
 				_cachedDESVersion = desVersion;
-				Util.addAttribute(element, ICISM_PREFIX, DES_VERSION_NAME, ICISM_NAMESPACE, desVersion.toString());
+				Util.addAttribute(element, ICISM_PREFIX, DES_VERSION_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), desVersion.toString());
 			}
 			if (!Util.isEmpty(createDate)) {
 				_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
-				Util.addAttribute(element, ICISM_PREFIX, CREATE_DATE_NAME, ICISM_NAMESPACE, getCreateDate()
+				Util.addAttribute(element, ICISM_PREFIX, CREATE_DATE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), getCreateDate()
 					.toXMLFormat());
 			}
-			_cachedSecurityAttributes = securityAttributes;
-			if (securityAttributes != null)
-				securityAttributes.addTo(element);
+			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null) : securityAttributes);
+			_cachedSecurityAttributes.addTo(element);
 
 			for (IDDMSComponent component : topLevelComponents) {
 				// Resource Layer
@@ -443,13 +478,13 @@ public final class Resource extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>resourceElement attribute must exist.</li>
-	 * <li>createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD).</li>
-	 * <li>DESVersion must exist and be a valid Integer.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>The SecurityAttributes are valid.</li>
-	 * <li>The SecurityAttributes on any subcomponents are valid according to rollup rules.</li>
+	 * <li>(v3.0) resourceElement attribute must exist.</li>
+	 * <li>(v3.0) createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD).</li>
+	 * <li>(v3.0) DESVersion must exist and be a valid Integer.</li>
+	 * <li>(v3.0) A classification is required.</li>
+	 * <li>(v3.0) At least 1 ownerProducer exists and is non-empty.</li>
+	 * <li>If this resource has security attributes, the SecurityAttributes on any subcomponents are valid according 
+	 * to rollup rules (security attributes are not required in DDMS 2.0).</li>
 	 * <li>1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights, 0-1 formats, exactly 1
 	 * subjectCoverage, and exactly 1 security element must exist.</li>
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
@@ -462,17 +497,19 @@ public final class Resource extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
-		String testResourceElement = getAttributeValue(RESOURCE_ELEMENT_NAME, ICISM_NAMESPACE);
-		Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, testResourceElement);
-		Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
-		Util.requireDDMSValue(DES_VERSION_NAME, getDESVersion());
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
-		getSecurityAttributes().requireClassification();
+		if (!DDMSVersion.isCurrentVersion("2.0")) {
+			String testResourceElement = getAttributeValue(RESOURCE_ELEMENT_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, testResourceElement);
+			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
+			Util.requireDDMSValue(DES_VERSION_NAME, getDESVersion());
+			Util.requireDDMSValue("security attributes", getSecurityAttributes());
+			getSecurityAttributes().requireClassification();
+			if (!"true".equals(testResourceElement) && !"false".equals(testResourceElement))
+				throw new InvalidDDMSException("The resourceElement attribute must have a boolean value.");
+			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
+				throw new InvalidDDMSException("The createDate must be in the xs:date format (YYYY-MM-DD).");
+		}
 
-		if (!"true".equals(testResourceElement) && !"false".equals(testResourceElement))
-			throw new InvalidDDMSException("The resourceElement attribute must have a boolean value.");
-		if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
-			throw new InvalidDDMSException("The createDate must be in the xs:date format (YYYY-MM-DD).");
 		if (getIdentifiers().size() < 1)
 			throw new InvalidDDMSException("At least 1 identifier is required.");
 		if (getTitles().size() < 1)
@@ -486,14 +523,17 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), SubjectCoverage.NAME, 1, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.NAME, 1, 1);
 		
-		Set<SecurityAttributes> childAttributes = new HashSet<SecurityAttributes>();
-		for (IDDMSComponent component : getTopLevelComponents()) {
-			if (component.getSecurityAttributes() != null && !(component instanceof Security))
-				childAttributes.add(component.getSecurityAttributes());
+		if (!getSecurityAttributes().isEmpty()) {
+			Set<SecurityAttributes> childAttributes = new HashSet<SecurityAttributes>();
+			for (IDDMSComponent component : getTopLevelComponents()) {
+				if (component.getSecurityAttributes() != null && !(component instanceof Security))
+					childAttributes.add(component.getSecurityAttributes());
+			}
+			validateRollup(getSecurityAttributes(), childAttributes);
 		}
-		validateRollup(getSecurityAttributes(), childAttributes);
 		
 		for (IDDMSComponent component : getTopLevelComponents()) {
+			Util.requireSameVersion(this, component);
 			addWarnings(component.getValidationWarnings(), false);
 		}
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
@@ -556,8 +596,10 @@ public final class Resource extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		html.append(buildHTMLMeta("security.resourceElement", String.valueOf(isResourceElement()), true));
-		html.append(buildHTMLMeta("security.createDate", getCreateDate().toXMLFormat(), true));
-		html.append(buildHTMLMeta("security.DESVersion", String.valueOf(getDESVersion()), true));
+		if (getCreateDate() != null)
+			html.append(buildHTMLMeta("security.createDate", getCreateDate().toXMLFormat(), true));
+		if (getDESVersion() != null)
+			html.append(buildHTMLMeta("security.DESVersion", String.valueOf(getDESVersion()), true));
 		html.append(getSecurityAttributes().toHTML(Security.NAME));
 		for (IDDMSComponent component : getTopLevelComponents())
 			html.append(component.toHTML());
@@ -571,8 +613,10 @@ public final class Resource extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		text.append(buildTextLine("ResourceElement", String.valueOf(isResourceElement()), true));
-		text.append(buildTextLine("Create Date", getCreateDate().toXMLFormat(), true));
-		text.append(buildTextLine("DES Version", String.valueOf(getDESVersion()), true));
+		if (getCreateDate() != null)
+			text.append(buildTextLine("Create Date", getCreateDate().toXMLFormat(), true));
+		if (getDESVersion() != null)
+			text.append(buildTextLine("DES Version", String.valueOf(getDESVersion()), true));
 		text.append(getSecurityAttributes().toText(""));
 		for (IDDMSComponent component : getTopLevelComponents())
 			text.append(component.toText());
@@ -588,8 +632,8 @@ public final class Resource extends AbstractBaseComponent {
 			return (false);
 		Resource test = (Resource) obj;
 		return (isResourceElement() == test.isResourceElement() && 
-				getCreateDate().equals(test.getCreateDate()) &&
-				getDESVersion().equals(test.getDESVersion()) &&
+				Util.nullEquals(getCreateDate(), test.getCreateDate()) &&
+				Util.nullEquals(getDESVersion(), test.getDESVersion()) &&
 				getSecurityAttributes().equals(test.getSecurityAttributes()) &&
 				Util.listEquals(getTopLevelComponents(), test.getTopLevelComponents()));
 	}
@@ -600,8 +644,10 @@ public final class Resource extends AbstractBaseComponent {
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 7 * result + Util.booleanHashCode(isResourceElement());
-		result = 7 * result + getCreateDate().hashCode();
-		result = 7 * result + getDESVersion().hashCode();
+		if (getCreateDate() != null)
+			result = 7 * result + getCreateDate().hashCode();
+		if (getDESVersion() != null)
+			result = 7 * result + getDESVersion().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
 		for (IDDMSComponent component : getTopLevelComponents())
 			result = 7 * result + component.hashCode();
@@ -750,22 +796,24 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the resourceElement attribute.
+	 * Accessor for the resourceElement attribute. Because this attribute is not required on DDMS v2.0 Resource components,
+	 * the default value when unset is "false".
 	 */
 	public boolean isResourceElement() {
-		return (Boolean.valueOf(getAttributeValue(RESOURCE_ELEMENT_NAME, ICISM_NAMESPACE)));
+		return (Boolean.valueOf(getAttributeValue(RESOURCE_ELEMENT_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace())));
 	}
 
 	/**
-	 * Accessor for the createDate date (optional). Returns a copy. May return null, but this cannot happen after instantiation.
+	 * Accessor for the createDate date (optional). Returns a copy. This may be null for v2.0 Resource components.
 	 */
 	public XMLGregorianCalendar getCreateDate() {
 		return (_cachedCreateDate == null ? null : getFactory()
-				.newXMLGregorianCalendar(_cachedCreateDate.toXMLFormat()));
+			.newXMLGregorianCalendar(_cachedCreateDate.toXMLFormat()));
 	}
 
 	/**
-	 * Accessor for the DESVersion attribute. May return null, but this cannot happen after instantiation.
+	 * Accessor for the DESVersion attribute. Because this attribute does not exist in DDMS v2.0, the accessor
+	 * will return null for v2.0 Resource elements.
 	 */
 	public Integer getDESVersion() {
 		return (_cachedDESVersion);

@@ -32,6 +32,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import nu.xom.Element;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -104,9 +105,6 @@ public final class SecurityAttributes {
 	
 	/** The ICISM prefix */
 	public static final String ICISM_PREFIX = PropertyReader.getProperty("icism.prefix");
-	
-	/** The ICISM namespace */
-	public static final String ICISM_NAMESPACE = PropertyReader.getProperty("icism.xmlNamespace");
 
 	private static final String CLASSIFICATION_NAME = "classification";
 	private static final String OWNER_PRODUCER_NAME = "ownerProducer";
@@ -134,27 +132,27 @@ public final class SecurityAttributes {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public SecurityAttributes(Element element) throws InvalidDDMSException {
-		_cachedClassification = element.getAttributeValue(CLASSIFICATION_NAME, ICISM_NAMESPACE);
-		_cachedOwnerProducers = getAsList(element.getAttributeValue(OWNER_PRODUCER_NAME, ICISM_NAMESPACE));
-		_cachedSCIcontrols = getAsList(element.getAttributeValue(SCI_CONTROLS_NAME, ICISM_NAMESPACE));
-		_cachedSARIdentifier = getAsList(element.getAttributeValue(SAR_IDENTIFIER_NAME, ICISM_NAMESPACE));
-		_cachedDisseminationControls = getAsList(element.getAttributeValue(DISSEMINATION_CONTROLS_NAME, ICISM_NAMESPACE));
-		_cachedFGIsourceOpen = getAsList(element.getAttributeValue(FGI_SOURCE_OPEN_NAME, ICISM_NAMESPACE));
-		_cachedFGIsourceProtected = getAsList(element.getAttributeValue(FGI_SOURCE_PROTECTED_NAME, ICISM_NAMESPACE));
-		_cachedReleasableTo = getAsList(element.getAttributeValue(RELEASABLE_TO_NAME, ICISM_NAMESPACE));
-		_cachedNonICmarkings = getAsList(element.getAttributeValue(NON_IC_MARKINGS_NAME, ICISM_NAMESPACE));		
-		_cachedClassifiedBy = element.getAttributeValue(CLASSIFIED_BY_NAME, ICISM_NAMESPACE);
-		_cachedCompilationReason = element.getAttributeValue(COMPILATION_REASON_NAME, ICISM_NAMESPACE);
-		_cachedDerivativelyClassifiedBy = element.getAttributeValue(DERIVATIVELY_CLASSIFIED_BY_NAME, ICISM_NAMESPACE);
-		_cachedClassificationReason = element.getAttributeValue(CLASSIFICATION_REASON_NAME, ICISM_NAMESPACE);
-		_cachedDerivedFrom = element.getAttributeValue(DERIVED_FROM_NAME, ICISM_NAMESPACE);			
-		String declassDate = element.getAttributeValue(DECLASS_DATE_NAME, ICISM_NAMESPACE);
+		_cachedClassification = element.getAttributeValue(CLASSIFICATION_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		_cachedOwnerProducers = getAsList(element.getAttributeValue(OWNER_PRODUCER_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
+		_cachedSCIcontrols = getAsList(element.getAttributeValue(SCI_CONTROLS_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
+		_cachedSARIdentifier = getAsList(element.getAttributeValue(SAR_IDENTIFIER_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
+		_cachedDisseminationControls = getAsList(element.getAttributeValue(DISSEMINATION_CONTROLS_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
+		_cachedFGIsourceOpen = getAsList(element.getAttributeValue(FGI_SOURCE_OPEN_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
+		_cachedFGIsourceProtected = getAsList(element.getAttributeValue(FGI_SOURCE_PROTECTED_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
+		_cachedReleasableTo = getAsList(element.getAttributeValue(RELEASABLE_TO_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
+		_cachedNonICmarkings = getAsList(element.getAttributeValue(NON_IC_MARKINGS_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));		
+		_cachedClassifiedBy = element.getAttributeValue(CLASSIFIED_BY_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		_cachedCompilationReason = element.getAttributeValue(COMPILATION_REASON_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		_cachedDerivativelyClassifiedBy = element.getAttributeValue(DERIVATIVELY_CLASSIFIED_BY_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		_cachedClassificationReason = element.getAttributeValue(CLASSIFICATION_REASON_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		_cachedDerivedFrom = element.getAttributeValue(DERIVED_FROM_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());			
+		String declassDate = element.getAttributeValue(DECLASS_DATE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
 		if (!Util.isEmpty(declassDate))
 			_cachedDeclassDate = getFactory().newXMLGregorianCalendar(declassDate);		
-		_cachedDeclassEvent = element.getAttributeValue(DECLASS_EVENT_NAME, ICISM_NAMESPACE);
-		_cachedDeclassException = element.getAttributeValue(DECLASS_EXCEPTION_NAME, ICISM_NAMESPACE);	
-		_cachedTypeOfExemptedSource = element.getAttributeValue(TYPE_OF_EXEMPTED_SOURCE_NAME, ICISM_NAMESPACE);
-		String dateOfExemptedSource = element.getAttributeValue(DATE_OF_EXEMPTED_SOURCE_NAME, ICISM_NAMESPACE);
+		_cachedDeclassEvent = element.getAttributeValue(DECLASS_EVENT_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		_cachedDeclassException = element.getAttributeValue(DECLASS_EXCEPTION_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());	
+		_cachedTypeOfExemptedSource = element.getAttributeValue(TYPE_OF_EXEMPTED_SOURCE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		String dateOfExemptedSource = element.getAttributeValue(DATE_OF_EXEMPTED_SOURCE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
 		if (!Util.isEmpty(dateOfExemptedSource))
 			_cachedDateOfExemptedSource = getFactory().newXMLGregorianCalendar(dateOfExemptedSource);
 		validate();
@@ -230,27 +228,52 @@ public final class SecurityAttributes {
 	 * @param element the element to decorate
 	 */
 	public void addTo(Element element) {
-		Util.addAttribute(element, ICISM_PREFIX, CLASSIFICATION_NAME, ICISM_NAMESPACE, getClassification());
-		Util.addAttribute(element, ICISM_PREFIX, OWNER_PRODUCER_NAME, ICISM_NAMESPACE, Util.getXsList(getOwnerProducers()));
-		Util.addAttribute(element, ICISM_PREFIX, SCI_CONTROLS_NAME, ICISM_NAMESPACE, Util.getXsList(getSCIcontrols()));
-		Util.addAttribute(element, ICISM_PREFIX, SAR_IDENTIFIER_NAME, ICISM_NAMESPACE, Util.getXsList(getSARIdentifier()));
-		Util.addAttribute(element, ICISM_PREFIX, DISSEMINATION_CONTROLS_NAME, ICISM_NAMESPACE, Util.getXsList(getDisseminationControls()));
-		Util.addAttribute(element, ICISM_PREFIX, FGI_SOURCE_OPEN_NAME, ICISM_NAMESPACE, Util.getXsList(getFGIsourceOpen()));
-		Util.addAttribute(element, ICISM_PREFIX, FGI_SOURCE_PROTECTED_NAME, ICISM_NAMESPACE, Util.getXsList(getFGIsourceProtected()));
-		Util.addAttribute(element, ICISM_PREFIX, RELEASABLE_TO_NAME, ICISM_NAMESPACE, Util.getXsList(getReleasableTo()));
-		Util.addAttribute(element, ICISM_PREFIX, NON_IC_MARKINGS_NAME, ICISM_NAMESPACE, Util.getXsList(getNonICmarkings()));
-		Util.addAttribute(element, ICISM_PREFIX, CLASSIFIED_BY_NAME, ICISM_NAMESPACE, getClassifiedBy());
-		Util.addAttribute(element, ICISM_PREFIX, COMPILATION_REASON_NAME, ICISM_NAMESPACE, getCompilationReason());
-		Util.addAttribute(element, ICISM_PREFIX, DERIVATIVELY_CLASSIFIED_BY_NAME, ICISM_NAMESPACE, getDerivativelyClassifiedBy());
-		Util.addAttribute(element, ICISM_PREFIX, CLASSIFICATION_REASON_NAME, ICISM_NAMESPACE, getClassificationReason());
-		Util.addAttribute(element, ICISM_PREFIX, DERIVED_FROM_NAME, ICISM_NAMESPACE, getDerivedFrom());
+		Util.addAttribute(element, ICISM_PREFIX, CLASSIFICATION_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), getClassification());
+		Util.addAttribute(element, ICISM_PREFIX, OWNER_PRODUCER_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), Util.getXsList(getOwnerProducers()));
+		Util.addAttribute(element, ICISM_PREFIX, SCI_CONTROLS_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), Util.getXsList(getSCIcontrols()));
+		Util.addAttribute(element, ICISM_PREFIX, SAR_IDENTIFIER_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), Util.getXsList(getSARIdentifier()));
+		Util.addAttribute(element, ICISM_PREFIX, DISSEMINATION_CONTROLS_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), Util.getXsList(getDisseminationControls()));
+		Util.addAttribute(element, ICISM_PREFIX, FGI_SOURCE_OPEN_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), Util.getXsList(getFGIsourceOpen()));
+		Util.addAttribute(element, ICISM_PREFIX, FGI_SOURCE_PROTECTED_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), Util.getXsList(getFGIsourceProtected()));
+		Util.addAttribute(element, ICISM_PREFIX, RELEASABLE_TO_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), Util.getXsList(getReleasableTo()));
+		Util.addAttribute(element, ICISM_PREFIX, NON_IC_MARKINGS_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), Util.getXsList(getNonICmarkings()));
+		Util.addAttribute(element, ICISM_PREFIX, CLASSIFIED_BY_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), getClassifiedBy());
+		Util.addAttribute(element, ICISM_PREFIX, COMPILATION_REASON_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), getCompilationReason());
+		Util.addAttribute(element, ICISM_PREFIX, DERIVATIVELY_CLASSIFIED_BY_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), getDerivativelyClassifiedBy());
+		Util.addAttribute(element, ICISM_PREFIX, CLASSIFICATION_REASON_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), getClassificationReason());
+		Util.addAttribute(element, ICISM_PREFIX, DERIVED_FROM_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), getDerivedFrom());
 		if (getDeclassDate() != null)
-			Util.addAttribute(element, ICISM_PREFIX, DECLASS_DATE_NAME, ICISM_NAMESPACE, getDeclassDate().toXMLFormat());
-		Util.addAttribute(element, ICISM_PREFIX, DECLASS_EVENT_NAME, ICISM_NAMESPACE, getDeclassEvent());
-		Util.addAttribute(element, ICISM_PREFIX, DECLASS_EXCEPTION_NAME, ICISM_NAMESPACE, getDeclassException());
-		Util.addAttribute(element, ICISM_PREFIX, TYPE_OF_EXEMPTED_SOURCE_NAME, ICISM_NAMESPACE, getTypeOfExemptedSource());
+			Util.addAttribute(element, ICISM_PREFIX, DECLASS_DATE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), getDeclassDate().toXMLFormat());
+		Util.addAttribute(element, ICISM_PREFIX, DECLASS_EVENT_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), getDeclassEvent());
+		Util.addAttribute(element, ICISM_PREFIX, DECLASS_EXCEPTION_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), getDeclassException());
+		Util.addAttribute(element, ICISM_PREFIX, TYPE_OF_EXEMPTED_SOURCE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), getTypeOfExemptedSource());
 		if (getDateOfExemptedSource() != null)
-			Util.addAttribute(element, ICISM_PREFIX, DATE_OF_EXEMPTED_SOURCE_NAME, ICISM_NAMESPACE, getDateOfExemptedSource().toXMLFormat());
+			Util.addAttribute(element, ICISM_PREFIX, DATE_OF_EXEMPTED_SOURCE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), getDateOfExemptedSource().toXMLFormat());
+	}
+	
+	/**
+	 * Checks if any attributes have been set.
+	 * @return true if no attributes have values, false otherwise
+	 */
+	public boolean isEmpty() {
+		return (Util.isEmpty(getClassification()) &&
+			getOwnerProducers().isEmpty() &&
+			getSCIcontrols().isEmpty() &&
+			getSARIdentifier().isEmpty() &&
+			getDisseminationControls().isEmpty() &&
+			getFGIsourceOpen().isEmpty() &&
+			getFGIsourceProtected().isEmpty() &&
+			getReleasableTo().isEmpty() &&
+			getNonICmarkings().isEmpty() &&
+			Util.isEmpty(getClassifiedBy()) &&
+			Util.isEmpty(getCompilationReason()) &&
+			Util.isEmpty(getDerivativelyClassifiedBy()) &&
+			Util.isEmpty(getClassificationReason()) &&
+			Util.isEmpty(getDerivedFrom()) &&
+			getDeclassDate() == null &&
+			Util.isEmpty(getDeclassEvent()) &&
+			Util.isEmpty(getTypeOfExemptedSource()) &&
+			getDateOfExemptedSource() == null);
 	}
 
 	/**

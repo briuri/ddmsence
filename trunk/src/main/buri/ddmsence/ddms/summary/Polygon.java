@@ -26,6 +26,7 @@ import java.util.List;
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractBaseComponent;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
@@ -185,13 +186,19 @@ public final class Polygon extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-					
+	
+	/**
+	 * @see IDDMSComponent#getDDMSVersion()
+	 */
+	public String getDDMSVersion() {
+		return (DDMSVersion.getVersionForGmlNamespace(getXOMElement().getNamespaceURI()).getVersion());
+	}
+	
 	/**
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The SRS Attributes are valid.</li>
 	 * <li>The srsName is required.</li>
 	 * <li>If the position has an srsName, it matches the srsName of this Polygon.</li>
 	 * <li>The ID is required, and must be a valid NCName.</li>
@@ -205,8 +212,9 @@ public final class Polygon extends AbstractBaseComponent {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), GML_PREFIX, NAME);
 		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
-		getSRSAttributes().validate();
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
+		Util.requireDDMSValue(ID_NAME, getId());
+		Util.requireValidNCName(getId());
 		
 		Element extElement = getXOMElement().getFirstChildElement(EXTERIOR_NAME, getXOMElement().getNamespaceURI());
 		Util.requireDDMSValue("exterior element", extElement);
@@ -216,6 +224,7 @@ public final class Polygon extends AbstractBaseComponent {
 		}
 		List<Position> positions = getPositions();
 		for (Position pos : positions) {
+			Util.requireSameVersion(this, pos);
 			addWarnings(pos.getValidationWarnings(), false);
 			if (pos.getSRSAttributes() != null) {
 				String srsName = pos.getSRSAttributes().getSrsName();
@@ -225,11 +234,10 @@ public final class Polygon extends AbstractBaseComponent {
 		}
 		if (positions.size() < 4)
 			throw new InvalidDDMSException("At least 4 positions are required for a valid Polygon.");
-		Util.requireDDMSValue(ID_NAME, getId());
-		Util.requireValidNCName(getId());
 		if (!positions.isEmpty() && !positions.get(0).equals(positions.get(positions.size() - 1))) {
 			throw new InvalidDDMSException("The first and last position in the Polygon must be the same.");
 		}
+		
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);
 	}
 	

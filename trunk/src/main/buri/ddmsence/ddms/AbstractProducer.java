@@ -218,7 +218,6 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A producer entity exists.</li>
 	 * <li>The producer entity has at least 1 non-empty name.</li>
-	 * <li>The SecurityAttributes are valid.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()

@@ -153,6 +153,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * <li>At least 1 of name, region, countryCode, or facilityIdentifier must exist.</li>
 	 * <li>No more than 1 countryCode or facilityIdentifier can exist.</li>
 	 * <li>If facilityIdentifier is used, no other components can exist.</li>
+	 * <li>If a countryCode exists, it is using the same version of DDMS.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -167,13 +168,16 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), FacilityIdentifier.NAME, 0, 1);
 		if (hasFacilityIdentifier()) {
+			Util.requireSameVersion(this, getFacilityIdentifier());
 			addWarnings(getFacilityIdentifier().getValidationWarnings(), false);
 			if (!getNames().isEmpty() || !getRegions().isEmpty() || getCountryCode() != null)
 				throw new InvalidDDMSException("facilityIdentifier cannot be used in tandem with other components.");
 		}
 		
-		if (getCountryCode() != null)
-			addWarnings(getCountryCode().getValidationWarnings(), false);			
+		if (getCountryCode() != null) {
+			Util.requireSameVersion(this, getCountryCode());
+			addWarnings(getCountryCode().getValidationWarnings(), false);
+		}
 	}
 	
 	/**

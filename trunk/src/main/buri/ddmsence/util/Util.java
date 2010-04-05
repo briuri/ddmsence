@@ -42,6 +42,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.IllegalNameException;
 import nu.xom.NamespaceConflictException;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 
 /** 
@@ -295,6 +296,22 @@ public class Util {
 			names = Collections.emptyList();
 		for (String name : names) {
 			requireValidNCName(name);
+		}
+	}
+	
+	/**
+	 * Validates that a child component has the same DDMS version as the parent.
+	 * 
+	 * @param parent the parent component
+	 * @param child the child component
+	 * @throws InvalidDDMSException if 
+	 */
+	public static void requireSameVersion(IDDMSComponent parent, IDDMSComponent child) throws InvalidDDMSException {
+		Util.requireValue("parent", parent);
+		Util.requireValue("child", child);
+		if (!parent.getDDMSVersion().equals(child.getDDMSVersion())) {
+			throw new InvalidDDMSException("A child component, " + child.getQualifiedName()
+				+ ", is using a different version of DDMS from its parent.");
 		}
 	}
 	
