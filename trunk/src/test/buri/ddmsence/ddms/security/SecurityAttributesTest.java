@@ -454,7 +454,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	}
 	
 	public void testDeclassManualReview() throws InvalidDDMSException {
-		Map<String, String> map = new HashMap(TEST_OTHERS);
+		Map<String, String> map = new HashMap<String, String>(TEST_OTHERS);
 		map.put(SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, "true");
 		try {
 			DDMSVersion.setCurrentVersion("3.0");
@@ -472,14 +472,14 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	
 	public void testMultipleDeclassException() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		Map<String, String> map = new HashMap(TEST_OTHERS_20);
+		Map<String, String> map = new HashMap<String, String>(TEST_OTHERS_20);
 		map.put(SecurityAttributes.DECLASS_EXCEPTION_NAME, "25X1 25X2");
 		new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
 	}
 	
 	public void testMultipleTypeExempted() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		Map<String, String> map = new HashMap(TEST_OTHERS_20);
+		Map<String, String> map = new HashMap<String, String>(TEST_OTHERS_20);
 		map.put(SecurityAttributes.TYPE_OF_EXEMPTED_SOURCE_NAME, "X1 X2");
 		new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
 	}
