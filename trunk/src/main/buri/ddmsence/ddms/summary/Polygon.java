@@ -36,8 +36,8 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of gml:Polygon.
  * 
  * <p>
- * A Polygon element contains a nested gml:exterior element, which itself contains a nested gml:LinearRing element. Because
- * DDMS does not decorate these elements with any special attributes, they are not implemented as Java objects.
+ * A Polygon element contains a nested gml:exterior element, which itself contains a nested gml:LinearRing element. 
+ * Because DDMS does not decorate these elements with any special attributes, they are not implemented as Java objects.
  * </p>
  * 
  * <p>
@@ -157,7 +157,8 @@ public final class Polygon extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * @param positions the positions of the Polygon (required)
-	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels (srsName required)
+	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels (srsName 
+	 * required)
 	 * @param id the id value (required)
 	 *  
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -225,7 +226,6 @@ public final class Polygon extends AbstractBaseComponent {
 		List<Position> positions = getPositions();
 		for (Position pos : positions) {
 			Util.requireSameVersion(this, pos);
-			addWarnings(pos.getValidationWarnings(), false);
 			if (pos.getSRSAttributes() != null) {
 				String srsName = pos.getSRSAttributes().getSrsName();
 				if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))
@@ -237,7 +237,21 @@ public final class Polygon extends AbstractBaseComponent {
 		if (!positions.isEmpty() && !positions.get(0).equals(positions.get(positions.size() - 1))) {
 			throw new InvalidDDMSException("The first and last position in the Polygon must be the same.");
 		}
-		
+
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Include any validation warnings from the SRS attributes and the child position.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		for (Position pos : getPositions()) {
+			addWarnings(pos.getValidationWarnings(), false);
+		}
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);
 	}
 	
@@ -257,11 +271,15 @@ public final class Polygon extends AbstractBaseComponent {
 		html.append(buildHTMLMeta("geospatial.boundingGeometry.id", getId(), true));
 		html.append(buildHTMLMeta("geospatial.boundingGeometry.type", Polygon.NAME, true));
 		html.append(buildHTMLMeta("geospatial.boundingGeometry.srsName", getSRSAttributes().getSrsName(), true));
-		if (getSRSAttributes().getSrsDimension() != null)
-			html.append(buildHTMLMeta("geospatial.boundingGeometry.srsDimension", String.valueOf(getSRSAttributes().getSrsDimension()), false));
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.axisLabels", getSRSAttributes().getAxisLabelsAsXsList(), false));
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.uomLabels", getSRSAttributes().getUomLabelsAsXsList(), false));
-		for (Position pos: getPositions())
+		if (getSRSAttributes().getSrsDimension() != null) {
+			html.append(buildHTMLMeta("geospatial.boundingGeometry.srsDimension", 
+				String.valueOf(getSRSAttributes().getSrsDimension()), false));
+		}
+		html.append(buildHTMLMeta("geospatial.boundingGeometry.axisLabels", getSRSAttributes().getAxisLabelsAsXsList(),
+			false));
+		html.append(buildHTMLMeta("geospatial.boundingGeometry.uomLabels", getSRSAttributes().getUomLabelsAsXsList(),
+			false));
+		for (Position pos : getPositions())
 			html.append(pos.toHTML());
 		return (html.toString());
 	}
@@ -274,10 +292,13 @@ public final class Polygon extends AbstractBaseComponent {
 		text.append(buildTextLine("Geospatial Geometry ID", getId(), true));
 		text.append(buildTextLine("Geospatial Geometry Type", Polygon.NAME, true));		
 		text.append(buildTextLine("Geospatial Geometry SRS Name", getSRSAttributes().getSrsName(), true));
-		if (getSRSAttributes().getSrsDimension() != null)
-			text.append(buildTextLine("Geospatial Geometry SRS Dimension", String.valueOf(getSRSAttributes().getSrsDimension()), false));
+		if (getSRSAttributes().getSrsDimension() != null) {
+			text.append(buildTextLine("Geospatial Geometry SRS Dimension", 
+				String.valueOf(getSRSAttributes().getSrsDimension()), false));
+		}
 		text.append(buildTextLine("Geospatial Geometry Axis Labels", getSRSAttributes().getAxisLabelsAsXsList(), false));
-		text.append(buildTextLine("Geospatial Geometry Unit of Measure Labels", getSRSAttributes().getUomLabelsAsXsList(), false));
+		text.append(buildTextLine("Geospatial Geometry Unit of Measure Labels", 
+			getSRSAttributes().getUomLabelsAsXsList(), false));
 		for (Position pos: getPositions())
 			text.append(pos.toText());
 		return (text.toString());
@@ -290,9 +311,9 @@ public final class Polygon extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Polygon))
 			return (false);
 		Polygon test = (Polygon) obj;
-		return (getSRSAttributes().equals(test.getSRSAttributes()) &&
-			Util.listEquals(getPositions(), test.getPositions()) &&
-			getId().equals(test.getId()));
+		return (getSRSAttributes().equals(test.getSRSAttributes())
+			&& Util.listEquals(getPositions(), test.getPositions()) 
+			&& getId().equals(test.getId()));
 	}
 
 	/**

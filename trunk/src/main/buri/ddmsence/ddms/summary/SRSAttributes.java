@@ -20,7 +20,6 @@
 package buri.ddmsence.ddms.summary;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,8 +37,8 @@ import buri.ddmsence.util.Util;
  * </p>
  *
  * <p>When validating this attribute group, the required/optional nature of the srsName attribute is not checked. Because
- * that limitation depends on the parent element (for example, gml:Point and gml:Polygon require an srsName, but gml:pos does not), 
- * the parent element should be responsible for checking.</p>
+ * that limitation depends on the parent element (for example, gml:Point and gml:Polygon require an srsName, but gml:pos 
+ * does not), the parent element should be responsible for checking.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>srsName</u>: A URI-based name (optional on gml:pos, required everywhere else)<br />
@@ -87,12 +86,12 @@ public final class SRSAttributes {
 		String axisLabels = element.getAttributeValue(AXIS_LABELS_NAME, NO_NAMESPACE);
 		_cachedAxisLabels = new ArrayList<String>();
 		if (!Util.isEmpty(axisLabels)) {
-			_cachedAxisLabels.addAll(Arrays.asList(axisLabels.split(" ")));
+			_cachedAxisLabels.addAll(Util.getAsList(axisLabels));
 		}
 		String uomLabels = element.getAttributeValue(UOM_LABELS_NAME, NO_NAMESPACE);
 		_cachedUomLabels = new ArrayList<String>();
 		if (!Util.isEmpty(uomLabels)) {
-			_cachedUomLabels.addAll(Arrays.asList(uomLabels.split(" ")));
+			_cachedUomLabels.addAll(Util.getAsList(uomLabels));
 		}
 		validate();
 	}
@@ -106,7 +105,8 @@ public final class SRSAttributes {
 	 * @param uomLabels the labels for UOM (required when axisLabels is set)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public SRSAttributes(String srsName, Integer srsDimension, List<String> axisLabels, List<String> uomLabels) throws InvalidDDMSException {
+	public SRSAttributes(String srsName, Integer srsDimension, List<String> axisLabels, List<String> uomLabels)
+		throws InvalidDDMSException {
 		if (axisLabels == null)
 			axisLabels = Collections.emptyList();
 		if (uomLabels == null)
@@ -177,11 +177,11 @@ public final class SRSAttributes {
 		if (!(obj instanceof SRSAttributes))
 			return (false);
 		
-		SRSAttributes test = (SRSAttributes) obj;	
-		return (getSrsName().equals(test.getSrsName()) &&
-			Util.nullEquals(getSrsDimension(), test.getSrsDimension()) &&
-			Util.listEquals(getAxisLabels(), test.getAxisLabels()) &&
-			Util.listEquals(getUomLabels(), test.getUomLabels()));
+		SRSAttributes test = (SRSAttributes) obj;
+		return (getSrsName().equals(test.getSrsName()) 
+			&& Util.nullEquals(getSrsDimension(), test.getSrsDimension())
+			&& Util.listEquals(getAxisLabels(), test.getAxisLabels()) 
+			&& Util.listEquals(getUomLabels(), test.getUomLabels()));
 	}
 
 	/**

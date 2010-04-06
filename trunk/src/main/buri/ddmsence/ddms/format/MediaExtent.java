@@ -48,8 +48,8 @@ import buri.ddmsence.util.Util;
  *  
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#Extent<br />
- * <u>Description</u>: An extent provides further details about the format of a resource, such 
- * as sizes or dimensions.<br />
+ * <u>Description</u>: An extent provides further details about the format of a resource, such as sizes or 
+ * dimensions.<br />
  * <u>Obligation</u>: Optional<br />
  * <u>Schema Modification Date</u>: 2003-05-16 (parent ddms:Format element)<br />
  * </td></tr></table>
@@ -74,22 +74,22 @@ public final class MediaExtent extends AbstractQualifierValue {
 	
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
-	 * @param qualifier	the value of the qualifier attribute
-	 * @param value	the value of the value attribute 
+	 * 
+	 * @param qualifier the value of the qualifier attribute
+	 * @param value the value of the value attribute
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public MediaExtent(String qualifier, String value) throws InvalidDDMSException {
 		super(MediaExtent.NAME, qualifier, value, true);
 	}
-	
+
 	/**
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If set, the qualifier is a valid URI.</li>
-	 * <li>If the value is set, a qualifier is required. and is not empty</li>
+	 * <li>If the value is set, a non-empty qualifier is required.</li>
 	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
 	 * </td></tr></table>
 	 * 
@@ -105,6 +105,18 @@ public final class MediaExtent extends AbstractQualifierValue {
 			Util.requireDDMSValidURI(getQualifier());
 		}
 		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A qualifier has been set without an accompanying value attribute.</li>
+	 * <li>A completely empty ddms:extent element was found.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
 		if (!Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))
 			addWarning("A qualifier has been set without an accompanying value attribute.");
 		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))

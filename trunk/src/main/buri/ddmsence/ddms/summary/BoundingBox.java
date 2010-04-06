@@ -53,7 +53,8 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicBoundingBox<br />
- * <u>Description</u>: A wrapper for elements containing the bounding longitudes and latitudes for describing a geographic extent.<br />
+ * <u>Description</u>: A wrapper for elements containing the bounding longitudes and latitudes for describing a 
+ * geographic extent.<br />
  * <u>Obligation</u>: Optional in a geospatialCoverage element<br />
  * <u>Schema Modification Date</u>: 2010-01-25<br />
  * </td></tr></table>
@@ -183,10 +184,10 @@ public final class BoundingBox extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof BoundingBox))
 			return (false);
 		BoundingBox test = (BoundingBox) obj;
-		return (getWestBL().equals(test.getWestBL()) &&
-			getEastBL().equals(test.getEastBL()) &&
-			getSouthBL().equals(test.getSouthBL()) &&
-			getNorthBL().equals(test.getNorthBL()));
+		return (getWestBL().equals(test.getWestBL()) 
+			&& getEastBL().equals(test.getEastBL())
+			&& getSouthBL().equals(test.getSouthBL()) 
+			&& getNorthBL().equals(test.getNorthBL()));
 	}
 
 	/**

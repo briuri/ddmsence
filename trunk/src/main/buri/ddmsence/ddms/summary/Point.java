@@ -136,17 +136,19 @@ public final class Point extends AbstractBaseComponent {
 	
 	/**
 	 * Constructor for creating a component from raw data
+	 * 
 	 * @param position the position of the Point (required)
-	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels (srsName required)	
+	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels (srsName
+	 * required)
 	 * @param id the id value (required)
-	 *  
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Point(Position position, SRSAttributes srsAttributes, String id) throws InvalidDDMSException {
 		try {
 			_cachedPosition = position;
 			_cachedSrsAttributes = srsAttributes;
-			Element element = Util.buildElement(GML_PREFIX, Point.NAME, DDMSVersion.getCurrentVersion().getGmlNamespace(), null);
+			Element element = Util.buildElement(GML_PREFIX, Point.NAME, 
+				DDMSVersion.getCurrentVersion().getGmlNamespace(), null);
 			if (position != null) {
 				element.appendChild(position.getXOMElementCopy());
 			}
@@ -193,6 +195,17 @@ public final class Point extends AbstractBaseComponent {
 		if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))
 			throw new InvalidDDMSException("The srsName of the position must match the srsName of the Point.");
 		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Include any validation warnings from the SRS attributes and the child position.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
 		addWarnings(getPosition().getValidationWarnings(), false);
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);
 	}
@@ -205,10 +218,14 @@ public final class Point extends AbstractBaseComponent {
 		html.append(buildHTMLMeta("geospatial.boundingGeometry.id", getId(), true));
 		html.append(buildHTMLMeta("geospatial.boundingGeometry.type", Point.NAME, true));
 		html.append(buildHTMLMeta("geospatial.boundingGeometry.srsName", getSRSAttributes().getSrsName(), true));
-		if (getSRSAttributes().getSrsDimension() != null)
-			html.append(buildHTMLMeta("geospatial.boundingGeometry.srsDimension", String.valueOf(getSRSAttributes().getSrsDimension()), false));
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.axisLabels", getSRSAttributes().getAxisLabelsAsXsList(), false));
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.uomLabels", getSRSAttributes().getUomLabelsAsXsList(), false));
+		if (getSRSAttributes().getSrsDimension() != null) {
+			html.append(buildHTMLMeta("geospatial.boundingGeometry.srsDimension", 
+				String.valueOf(getSRSAttributes().getSrsDimension()), false));
+		}
+		html.append(buildHTMLMeta("geospatial.boundingGeometry.axisLabels", getSRSAttributes().getAxisLabelsAsXsList(),
+			false));
+		html.append(buildHTMLMeta("geospatial.boundingGeometry.uomLabels", getSRSAttributes().getUomLabelsAsXsList(),
+			false));
 		html.append(getPosition().toHTML());
 		return (html.toString());
 	}
@@ -221,14 +238,18 @@ public final class Point extends AbstractBaseComponent {
 		text.append(buildTextLine("Geospatial Geometry ID", getId(), true));
 		text.append(buildTextLine("Geospatial Geometry Type", Point.NAME, true));		
 		text.append(buildTextLine("Geospatial Geometry SRS Name", getSRSAttributes().getSrsName(), true));
-		if (getSRSAttributes().getSrsDimension() != null)
-			text.append(buildTextLine("Geospatial Geometry SRS Dimension", String.valueOf(getSRSAttributes().getSrsDimension()), false));
-		text.append(buildTextLine("Geospatial Geometry Axis Labels", getSRSAttributes().getAxisLabelsAsXsList(), false));
-		text.append(buildTextLine("Geospatial Geometry Unit of Measure Labels", getSRSAttributes().getUomLabelsAsXsList(), false));
+		if (getSRSAttributes().getSrsDimension() != null) {
+			text.append(buildTextLine("Geospatial Geometry SRS Dimension", 
+				String.valueOf(getSRSAttributes().getSrsDimension()), false));
+		}
+		text.append(buildTextLine("Geospatial Geometry Axis Labels", getSRSAttributes().getAxisLabelsAsXsList(), 
+			false));
+		text.append(buildTextLine("Geospatial Geometry Unit of Measure Labels", 
+			getSRSAttributes().getUomLabelsAsXsList(), false));
 		text.append(getPosition().toText());
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -236,9 +257,9 @@ public final class Point extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Point))
 			return (false);
 		Point test = (Point) obj;
-		return (getSRSAttributes().equals(test.getSRSAttributes()) &&
-			getPosition().equals(test.getPosition()) &&
-			getId().equals(test.getId()));
+		return (getSRSAttributes().equals(test.getSRSAttributes()) 
+			&& getPosition().equals(test.getPosition())
+			&& getId().equals(test.getId()));
 	}
 
 	/**

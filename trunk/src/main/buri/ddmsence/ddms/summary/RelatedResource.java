@@ -54,7 +54,8 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#RelatedResources<br />
- * <u>Description</u>: An identifier for the resource being related to the resource described by the containing DDMS record.<br />
+ * <u>Description</u>: An identifier for the resource being related to the resource described by the containing DDMS 
+ * record.<br />
  * <u>Obligation</u>: At least 1 RelatedResource is required in a RelatedResources element.<br />
  * <u>Schema Modification Date</u>: 2010-01-26<br />
  * </td></tr></table>
@@ -93,10 +94,10 @@ public final class RelatedResource extends AbstractQualifierValue {
 	
 	/**
 	 * Constructor for creating a component from raw data
+	 * 
 	 * @param links the xlinks
-	 * @param qualifier	the value of the qualifier attribute
-	 * @param value	the value of the value attribute 
-	 *  
+	 * @param qualifier the value of the qualifier attribute
+	 * @param value the value of the value attribute 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RelatedResource(List<Link> links, String qualifier, String value) throws InvalidDDMSException {
@@ -139,9 +140,22 @@ public final class RelatedResource extends AbstractQualifierValue {
 		Util.requireDDMSValidURI(getQualifier());
 		if (getChild(Link.NAME) == null)
 			throw new InvalidDDMSException("At least 1 link must exist.");
-		
 		for (Link link : getLinks()) {
 			Util.requireSameVersion(this, link);
+		}
+		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Include any validation warnings from the links.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		for (Link link : getLinks()) {
 			addWarnings(link.getValidationWarnings(), false);
 		}
 	}

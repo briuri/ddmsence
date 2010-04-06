@@ -100,6 +100,18 @@ public final class Language extends AbstractQualifierValue {
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
 		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A qualifier has been set without an accompanying value attribute.</li>
+	 * <li>Neither a qualifier nor a value was set on this language.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
 		if (!Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))
 			addWarning("A qualifier has been set without an accompanying value attribute.");
 		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))

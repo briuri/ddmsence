@@ -155,8 +155,9 @@ public abstract class AbstractSample implements ActionListener {
 		textArea.setEditable(false);
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 11));
 
-		JScrollPane scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
+		JScrollPane scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+			JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
 		JPanel outerPanel = new JPanel(new BorderLayout());
 		outerPanel.add(new JLabel(name, JLabel.LEFT), BorderLayout.NORTH);
 		outerPanel.add(scrollPane, BorderLayout.CENTER);
@@ -180,8 +181,9 @@ public abstract class AbstractSample implements ActionListener {
 		textArea.setEditable(false);
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 11));
 
-		JScrollPane scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
+		JScrollPane scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+			JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
 		JPanel resultPanel = new JPanel();		
 		resultPanel.add(scrollPane);
 		return (resultPanel);

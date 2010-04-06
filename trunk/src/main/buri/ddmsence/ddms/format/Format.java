@@ -85,15 +85,16 @@ public final class Format extends AbstractBaseComponent {
 	public Format(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("format element", element);
-			Element mediaElement = element.getFirstChildElement(MEDIA_NAME, element.getNamespaceURI());
+			String ddmsNamespace = element.getNamespaceURI();
+			Element mediaElement = element.getFirstChildElement(MEDIA_NAME, ddmsNamespace);
 			if (mediaElement != null) {
-				Element mimeTypeElement = mediaElement.getFirstChildElement(MIME_TYPE_NAME, element.getNamespaceURI());
+				Element mimeTypeElement = mediaElement.getFirstChildElement(MIME_TYPE_NAME, ddmsNamespace);
 				if (mimeTypeElement != null)
 					_cachedMimeType = mimeTypeElement.getValue();
-				Element extentElement = mediaElement.getFirstChildElement(MediaExtent.NAME, element.getNamespaceURI());
+				Element extentElement = mediaElement.getFirstChildElement(MediaExtent.NAME, ddmsNamespace);
 				if (extentElement != null)
 					_cachedExtent = new MediaExtent(extentElement);
-				Element mediumElement = mediaElement.getFirstChildElement(MEDIUM_NAME, element.getNamespaceURI());
+				Element mediumElement = mediaElement.getFirstChildElement(MEDIUM_NAME, ddmsNamespace);
 				if (mediumElement != null)
 					_cachedMedium = mediumElement.getValue();
 			}
@@ -153,11 +154,26 @@ public final class Format extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(mediaElement, MIME_TYPE_NAME, 1, 1);
 		Util.requireBoundedDDMSChildCount(mediaElement, MediaExtent.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(mediaElement, MEDIUM_NAME, 0, 1);
-		
-		if (Util.isEmpty(getMedium()) && mediaElement.getChildElements(MEDIUM_NAME, mediaElement.getNamespaceURI()).size() == 1)
+		if (getExtent() != null)
+			Util.requireSameVersion(this, getExtent());
+
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A ddms:medium element was found with no value.</li>
+	 * <li>Include any validation warnings from the MediaExtent child.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		Element mediaElement = getChild(MEDIA_NAME);
+		if (Util.isEmpty(getMedium())
+				&& mediaElement.getChildElements(MEDIUM_NAME, mediaElement.getNamespaceURI()).size() == 1)
 			addWarning("A ddms:medium element was found with no value.");
 		if (getExtent() != null) {
-			Util.requireSameVersion(this, getExtent());
 			addWarnings(getExtent().getValidationWarnings(), false);
 		}
 	}
@@ -200,9 +216,9 @@ public final class Format extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Format))
 			return (false);
 		Format test = (Format) obj;
-		boolean isEqual = getMimeType().equals(test.getMimeType()) &&
-			Util.nullEquals(getExtent(), test.getExtent()) && 
-			getMedium().equals(test.getMedium());
+		boolean isEqual = getMimeType().equals(test.getMimeType()) 
+			&& Util.nullEquals(getExtent(), test.getExtent())
+			&& getMedium().equals(test.getMedium());
 		return (isEqual);
 	}
 
@@ -217,10 +233,10 @@ public final class Format extends AbstractBaseComponent {
 		result = 7 * result + getMedium().hashCode();
 		return (result);
 	}
-	
+
 	/**
-	 * Accessor for the mimeType element child text. Will return an empty string if not set, 
-	 * but that cannot occur after instantiation.
+	 * Accessor for the mimeType element child text. Will return an empty string if not set, but that cannot occur after
+	 * instantiation.
 	 */
 	public String getMimeType() {
 		return (Util.getNonNullString(_cachedMimeType));
@@ -234,21 +250,19 @@ public final class Format extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Convenience accessor for the extent qualifier. Returns an empty string if there is not 
-	 * extent.
+	 * Convenience accessor for the extent qualifier. Returns an empty string if there is not extent.
 	 */
 	public String getExtentQualifier() {
 		return (getExtent() == null ? "" : getExtent().getQualifier());
 	}
-	
+
 	/**
-	 * Convenience accessor for the extent value. Returns an empty string if there is not 
-	 * extent.
+	 * Convenience accessor for the extent value. Returns an empty string if there is not extent.
 	 */
 	public String getExtentValue() {
 		return (getExtent() == null ? "" : getExtent().getValue());
 	}
-	
+
 	/**
 	 * Accessor for the medium element child text
 	 */

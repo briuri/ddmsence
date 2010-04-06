@@ -76,26 +76,27 @@ public final class Person extends AbstractProducer {
 	private static final String AFFILIATION_NAME = "affiliation";
 	private static final String USERID_NAME = "userID";
 	private static final String SURNAME_NAME = "surname";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Person(Element element) throws InvalidDDMSException {
 		super(element);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data.
+	 * 
 	 * @param producerType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
-	 * @param surname		the surname of the person
-	 * @param names			an ordered list of names
-	 * @param userID		optional unique identifier within an organization
-	 * @param affiliation	organizational affiliation of the person
-	 * @param phones		an ordered list of phone numbers
-	 * @param emails		an ordered list of email addresses
+	 * @param surname the surname of the person
+	 * @param names an ordered list of names
+	 * @param userID optional unique identifier within an organization
+	 * @param affiliation organizational affiliation of the person
+	 * @param phones an ordered list of phone numbers
+	 * @param emails an ordered list of email addresses
 	 * @param securityAttributes any security attributes (optional)
 	 */
 	public Person(String producerType, String surname, List<String> names, String userID, String affiliation,
@@ -111,19 +112,20 @@ public final class Person extends AbstractProducer {
 	}
 
 	/**
-	 * Inserts additional elements into the existing ProducerEntity.
-	 *  Because the personType contains a sequence, additional fields 
-	 *  must be inserted among the name, phone, and email elements.
-	 *
-	 * @param insertIndex	the index of the position after the last names element
-	 * @param surname		the surname of the person
-	 * @param userID		optional unique identifier within an organization
-	 * @param affiliation	organizational affiliation of the person
+	 * Inserts additional elements into the existing ProducerEntity. Because the personType contains a sequence,
+	 * additional fields must be inserted among the name, phone, and email elements.
+	 * 
+	 * @param insertIndex the index of the position after the last names element
+	 * @param surname the surname of the person
+	 * @param userID optional unique identifier within an organization
+	 * @param affiliation organizational affiliation of the person
 	 * @throws InvalidDDMSException if the result is an invalid component
 	 */
-	private void insertElements(int insertIndex, String surname, String userID, String affiliation) throws InvalidDDMSException {
+	private void insertElements(int insertIndex, String surname, String userID, String affiliation)
+		throws InvalidDDMSException {
 		Element element = getEntityElement();
-		// Inserting in reverse order allow the same index to be reused. Later inserts will "push" the early ones forward.
+		// Inserting in reverse order allow the same index to be reused. Later inserts will "push" the early ones
+		// forward.
 		if (!Util.isEmpty(affiliation))
 			element.insertChild(Util.buildDDMSElement(AFFILIATION_NAME, affiliation), insertIndex);
 		if (!Util.isEmpty(userID))
@@ -154,16 +156,29 @@ public final class Person extends AbstractProducer {
 		Util.requireBoundedDDMSChildCount(getEntityElement(), USERID_NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getEntityElement(), AFFILIATION_NAME, 0, 1);
 		
-		if (Util.isEmpty(getUserID()) && getEntityElement().getChildElements(USERID_NAME, getEntityElement().getNamespaceURI()).size() == 1)
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A ddms:userID element was found with no value.</li>
+	 * <li>A ddms:affiliation element was found with no value.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		String ddmsNamespace = getEntityElement().getNamespaceURI();
+		if (Util.isEmpty(getUserID()) && getEntityElement().getChildElements(USERID_NAME, ddmsNamespace).size() == 1)
 			addWarning("A ddms:userID element was found with no value.");
-		if (Util.isEmpty(getAffiliation()) && getEntityElement().getChildElements(AFFILIATION_NAME, getEntityElement().getNamespaceURI()).size() == 1)
+		if (Util.isEmpty(getAffiliation())
+			&& getEntityElement().getChildElements(AFFILIATION_NAME, ddmsNamespace).size() == 1)
 			addWarning("A ddms:affiliation element was found with no value.");
 	}
-		
+
 	/**
-	 * Because ordering is not important in HTML output, this method merely appends the additional Person fields
-	 * to the end of the AbstractProducer output. All fields will still be underneath a line identifying the
-	 * entity type.
+	 * Because ordering is not important in HTML output, this method merely appends the additional Person fields to the
+	 * end of the AbstractProducer output. All fields will still be underneath a line identifying the entity type.
 	 * 
 	 * @see AbstractProducer#toHTML()
 	 */
@@ -174,11 +189,10 @@ public final class Person extends AbstractProducer {
 		html.append(buildHTMLMeta(getProducerType() + ".affiliation", getAffiliation(), false));
 		return (html.toString());
 	}
-		
+
 	/**
-	 * Because ordering is not important in Text output, this method merely appends the additional Person fields
-	 * to the end of the AbstractProducer output. All fields will still be underneath a line identifying the
-	 * entity type.
+	 * Because ordering is not important in Text output, this method merely appends the additional Person fields to the
+	 * end of the AbstractProducer output. All fields will still be underneath a line identifying the entity type.
 	 * 
 	 * @see AbstractProducer#toText()
 	 */
@@ -197,9 +211,9 @@ public final class Person extends AbstractProducer {
 		if (!super.equals(obj) || !(obj instanceof Person))
 			return (false);
 		Person test = (Person) obj;
-		return (getSurname().equals(test.getSurname()) &&
-			getUserID().equals(test.getUserID()) &&
-			getAffiliation().equals(test.getAffiliation()));
+		return (getSurname().equals(test.getSurname()) 
+			&& getUserID().equals(test.getUserID()) 
+			&& getAffiliation().equals(test.getAffiliation()));
 	}
 	
 	/**

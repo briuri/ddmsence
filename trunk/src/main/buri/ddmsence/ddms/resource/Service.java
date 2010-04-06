@@ -69,24 +69,25 @@ public final class Service extends AbstractProducer {
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Service(Element element) throws InvalidDDMSException {
 		super(element);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data.
+	 * 
 	 * @param producerType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
-	 * @param names			an ordered list of names
-	 * @param phones		an ordered list of phone numbers
-	 * @param emails		an ordered list of email addresses
+	 * @param names an ordered list of names
+	 * @param phones an ordered list of phone numbers
+	 * @param emails an ordered list of email addresses
 	 * @param securityAttributes any security attributes (optional)
 	 */
-	public Service(String producerType, List<String> names, List<String> phones, List<String> emails, SecurityAttributes securityAttributes) 
-		throws InvalidDDMSException {
+	public Service(String producerType, List<String> names, List<String> phones, List<String> emails,
+		SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(producerType, Service.NAME, names, phones, emails, securityAttributes, true);
 	}
 	
@@ -115,6 +116,7 @@ public final class Service extends AbstractProducer {
 	
 	/**
 	 * Overridden, because Services are referred to as "Web Service" in Text output
+	 * 
 	 * @see AbstractProducer#getTextOutputName()
 	 */
 	protected String getTextOutputName() {

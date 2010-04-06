@@ -48,7 +48,8 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#PostalAddress<br />
- * <u>Description</u>: A wrapper for postal address elements including street, city, state or province, postal code and country code.<br />
+ * <u>Description</u>: A wrapper for postal address elements including street, city, state or province, postal code and 
+ * country code.<br />
  * <u>Obligation</u>: Optional in a geospatialCoverage element<br />
  * <u>Schema Modification Date</u>: 2010-01-25<br />
  * </td></tr></table>
@@ -116,10 +117,12 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * @param stateOrProvince the state or province (optional)
 	 * @param postalCode the postal code (optional)
 	 * @param countryCode the country code (optional)
-	 * @param hasState true if the stateOrProvince is a state, false if it is a province (only 1 of state or province can exist in a postalAddress)
+	 * @param hasState true if the stateOrProvince is a state, false if it is a province (only 1 of state or province 
+	 * can exist in a postalAddress)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public PostalAddress(List<String> streets, String city, String stateOrProvince, String postalCode, CountryCode countryCode, boolean hasState) throws InvalidDDMSException {
+	public PostalAddress(List<String> streets, String city, String stateOrProvince, String postalCode,
+		CountryCode countryCode, boolean hasState) throws InvalidDDMSException {
 		try {
 			if (streets == null)
 				streets = Collections.emptyList();
@@ -173,13 +176,26 @@ public final class PostalAddress extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), PROVINCE_NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), POSTAL_CODE_NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.NAME, 0, 1);
-		
 		if (getCountryCode() != null) {
 			Util.requireSameVersion(this, getCountryCode());
-			addWarnings(getCountryCode().getValidationWarnings(), false);
 		}
-		if (getStreets().isEmpty() && Util.isEmpty(getCity()) && Util.isEmpty(getState()) && Util.isEmpty(getProvince()) &&
-				Util.isEmpty(getPostalCode()) && getCountryCode() == null) {
+		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A completely empty ddms:postalAddress element was found.</li>
+	 * <li>Include any validation warnings from the country code.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		if (getCountryCode() != null)
+			addWarnings(getCountryCode().getValidationWarnings(), false);
+		if (getStreets().isEmpty() && Util.isEmpty(getCity()) && Util.isEmpty(getState())
+			&& Util.isEmpty(getProvince()) && Util.isEmpty(getPostalCode()) && getCountryCode() == null) {
 			addWarning("A completely empty ddms:postalAddress element was found.");
 		}
 	}
@@ -223,12 +239,12 @@ public final class PostalAddress extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof PostalAddress))
 			return (false);
 		PostalAddress test = (PostalAddress) obj;
-		boolean isEqual = Util.listEquals(getStreets(), test.getStreets()) &&
-			getCity().equals(test.getCity()) &&
-			getState().equals(test.getState()) &&
-			getProvince().equals(test.getProvince()) &&
-			getPostalCode().equals(test.getPostalCode()) &&
-			Util.nullEquals(getCountryCode(), test.getCountryCode());
+		boolean isEqual = Util.listEquals(getStreets(), test.getStreets()) 
+			&& getCity().equals(test.getCity())
+			&& getState().equals(test.getState()) 
+			&& getProvince().equals(test.getProvince())
+			&& getPostalCode().equals(test.getPostalCode()) 
+			&& Util.nullEquals(getCountryCode(), test.getCountryCode());
 		return (isEqual);
 	}
 

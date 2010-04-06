@@ -133,8 +133,8 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof FacilityIdentifier))
 			return (false);
 		FacilityIdentifier test = (FacilityIdentifier) obj;
-		return (getBeNumber().equals(test.getBeNumber()) &&
-			getOsuffix().equals(test.getOsuffix()));
+		return (getBeNumber().equals(test.getBeNumber()) 
+			&& getOsuffix().equals(test.getOsuffix()));
 	}
 
 	/**

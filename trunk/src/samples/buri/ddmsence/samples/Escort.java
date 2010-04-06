@@ -25,8 +25,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -314,7 +312,8 @@ public class Escort {
 				String start = readString("the start date [1950]");
 				String end = readString("the end date [1959]");
 				String classification = readString("the temporalCoverage classification [U]");
-				String ownerProducers = readString("the temporalCoverage's ownerProducers as a space-delimited string [USA]");
+				String ownerProducers = 
+					readString("the temporalCoverage's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);			
 				return (new TemporalCoverage(timePeriodName, start, end, attr));
 			}		
@@ -324,7 +323,8 @@ public class Escort {
 				String address = readString("the address [123.456.789.0]");
 				String protocol = readString("the protocol [IP]");
 				String classification = readString("the virtualCoverage classification [U]");
-				String ownerProducers = readString("the virtualCoverage's ownerProducers as a space-delimited string [USA]");
+				String ownerProducers = 
+					readString("the virtualCoverage's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				return (new VirtualCoverage(address, protocol, attr));
 			}		
@@ -363,14 +363,14 @@ public class Escort {
 				String east = readString("the eastbound longitude [15]");
 				String south = readString("the southbound latitude [0]");
 				String north = readString("the northbound latitude [15]");
-				return (new BoundingBox(Double.valueOf(west).doubleValue(), Double.valueOf(east).doubleValue(), Double
-						.valueOf(south).doubleValue(), Double.valueOf(north).doubleValue()));
+				return (new BoundingBox(Double.valueOf(west).doubleValue(), Double.valueOf(east).doubleValue(), 
+					Double.valueOf(south).doubleValue(), Double.valueOf(north).doubleValue()));
 			}
 		});
 		BUILDERS.put(Position.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String coordsString = readString("the coordinates as a space-delimited string [5.0 6.0 7.0]");
-				List<String> strings = Arrays.asList(coordsString.split(" "));
+				List<String> strings = Util.getAsList(coordsString);
 				List<Double> coords = new ArrayList<Double>();
 				for (String string : strings) {
 					coords.add(Double.valueOf(string));
@@ -400,7 +400,8 @@ public class Escort {
 				String uomLabels = readString("the Polygon's UOM Labels, as a space-delimited string [Meter Meter]");
 				String id = readString("the Polygon's gml:id [testId]");
 								
-				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), asList(axisLabels), asList(uomLabels));
+				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), Util.getAsList(axisLabels), 
+					Util.getAsList(uomLabels));
 				return (new Polygon(positions, attr, id));
 			}		
 		});
@@ -413,7 +414,8 @@ public class Escort {
 				String uomLabels = readString("the Point's UOM Labels, as a space-delimited string [Meter Meter]");
 				String id = readString("the Point's gml:id [testId]");
 				
-				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), asList(axisLabels), asList(uomLabels));
+				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), Util.getAsList(axisLabels), 
+					Util.getAsList(uomLabels));
 				return (new Point(position, attr, id));
 			}		
 		});
@@ -451,7 +453,8 @@ public class Escort {
 				}				
 				String city = readString("the city [testCity]");
 				boolean hasState = confirm("Does this postal address have a state (instead of a province)?");
-				String stateOrProvince = readString("the " + (hasState ? "state [testState]" : "province [testProvince]"));
+				String stateOrProvince = readString("the " + (hasState ? "state [testState]" 
+					: "province [testProvince]"));
 				String postalCode = readString("the postal code [testCode]");
 				CountryCode code = null;
 				if (confirm("Include a countryCode?")) {
@@ -468,7 +471,8 @@ public class Escort {
 				String max = readString("the maximum vertical extent [15]");
 				String uom = readString("the unit of measure [Meter]");
 				String datum = readString("the datum [MSL]");
-				return (new VerticalExtent(Double.valueOf(min).doubleValue(), Double.valueOf(max).doubleValue(), uom, datum)); 
+				return (new VerticalExtent(Double.valueOf(min).doubleValue(), Double.valueOf(max).doubleValue(), uom, 
+					datum)); 
 			}		
 		});
 		BUILDERS.put(GeospatialCoverage.class, new IComponentBuilder() {
@@ -484,7 +488,8 @@ public class Escort {
 				else {
 					String type = null;
 					while (!GEOSPATIAL_TYPES.contains(type)) {
-						type = readString("the coverage element type [geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent]");
+						type = readString("the coverage element type [geographicIdentifier, boundingBox, "
+							+ "boundingGeometry, postalAddress, or verticalExtent]");
 					}
 					if ("geographicIdentifier".equals(type)) {
 						geoId = (GeographicIdentifier) inputLoop(GeographicIdentifier.class);
@@ -503,7 +508,8 @@ public class Escort {
 					}
 				}
 				String classification = readString("the geospatialCoverage classification [U]");
-				String ownerProducers = readString("the geospatialCoverage's ownerProducers as a space-delimited string [USA]");	
+				String ownerProducers = 
+					readString("the geospatialCoverage's ownerProducers as a space-delimited string [USA]");	
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				return (new GeospatialCoverage(geoId, box, geo, address, extent, attr));
 			}		
@@ -549,7 +555,8 @@ public class Escort {
 				String relationship = readString("the relatedResources relationship [testQualifier]");
 				String direction = readString("the relatedResources direction [outbound]");
 				String classification = readString("the relatedResources classification [U]");
-				String ownerProducers = readString("the relatedResources ownerProducers as a space-delimited string [USA]");	
+				String ownerProducers = 
+					readString("the relatedResources ownerProducers as a space-delimited string [USA]");	
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				return (new RelatedResources(resources, relationship, direction, attr));
 			}		
@@ -570,7 +577,8 @@ public class Escort {
 				String classification = readString("the Resource classification [U]");
 				String ownerProducers = readString("the Resource's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new Resource(getTopLevelComponents(), resourceElement, createDate, new Integer(desVersion), attr));
+				return (new Resource(getTopLevelComponents(), resourceElement, createDate, new Integer(desVersion), 
+					attr));
 			}		
 		});
 	}
@@ -585,7 +593,8 @@ public class Escort {
 		println("If you do not know how to answer a question, a suggested valid answer is provided in square brackets.");
 		println("However, this is not a default value (hitting Enter will answer the question with an empty string).\n");
 
-		println("In FAST mode, Escort will only ask you to create top-level components which are required for a valid Resource.");
+		println("In FAST mode, Escort will only ask you to create top-level components which are required for a "
+			+ "valid Resource.");
 		println("In COMPLETE mode, Escort will let you create all of the top-level components.");
 		boolean onlyRequiredComponents = confirm("Would you like to run in FAST mode?");
 				
@@ -783,21 +792,9 @@ public class Escort {
 	 */
 	private SecurityAttributes buildSecurityAttributes(String classification, String ownerProducers)
 		throws InvalidDDMSException {
-		return (new SecurityAttributes(classification, asList(ownerProducers), null));
+		return (new SecurityAttributes(classification, Util.getAsList(ownerProducers), null));
 	}
-	
-	/**
-	 * Helper method to convert an XS List into a list of Strings.
-	 * 
-	 * @param string the space-delimited string
-	 * @return the List
-	 */
-	private List<String> asList(String string) {
-		if (Util.isEmpty(string))
-			return Collections.emptyList();
-		return (Arrays.asList(string.split(" ")));
-	}
-	
+
 	/**
 	 * Accepts Y/N from the user.
 	 * 

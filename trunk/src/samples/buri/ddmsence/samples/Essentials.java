@@ -47,10 +47,15 @@ import buri.ddmsence.util.Util;
  * <li>Java code</li>
  * </ol>
  * 
- * <p>The Java code is intended to be a cut-and-paste example that you can use as a template for building your own components
- * from scratch.</p>
+ * <p>
+ * The Java code is intended to be a cut-and-paste example that you can use as a template for building your own
+ * components from scratch.
+ * </p>
  * 
- * <p>For additional details about this application, please see the tutorial on the Documentation page of the DDMSence website.</p>
+ * <p>
+ * For additional details about this application, please see the tutorial on the Documentation page of the DDMSence
+ * website.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -59,7 +64,7 @@ public class Essentials extends AbstractSample {
 
 	private Resource _resource;
 	private static final String INSTRUCTIONS = "<html><center>To begin, select " + OPEN + " from the " + FILE
-	+ " menu,<br>and choose an XML file containing a DDMS Resource as the root element.</center></html>";
+		+ " menu,<br>and choose an XML file containing a DDMS Resource as the root element.</center></html>";
 
 	/**
 	 * Entry point

@@ -146,9 +146,9 @@ public final class Category extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Category))
 			return (false);
 		Category test = (Category) obj;
-		return (getQualifier().equals(test.getQualifier()) &&
-				getCode().equals(test.getCode()) &&
-				getLabel().equals(test.getLabel()));
+		return (getQualifier().equals(test.getQualifier()) 
+			&& getCode().equals(test.getCode()) 
+			&& getLabel().equals(test.getLabel()));
 	}
 
 	/**

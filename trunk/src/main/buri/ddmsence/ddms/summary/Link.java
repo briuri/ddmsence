@@ -163,11 +163,11 @@ public final class Link extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Link))
 			return (false);
 		Link test = (Link) obj;
-		return (getType().equals(test.getType()) &&
-			getHref().equals(test.getHref()) &&
-			getRole().equals(test.getRole()) &&
-			getTitle().equals(test.getTitle()) &&
-			getLabel().equals(test.getLabel()));
+		return (getType().equals(test.getType()) 
+			&& getHref().equals(test.getHref())
+			&& getRole().equals(test.getRole()) 
+			&& getTitle().equals(test.getTitle()) 
+			&& getLabel().equals(test.getLabel()));
 	}
 
 	/**

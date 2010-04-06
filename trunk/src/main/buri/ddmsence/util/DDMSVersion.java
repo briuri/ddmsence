@@ -33,9 +33,9 @@ import buri.ddmsence.ddms.UnsupportedVersionException;
  * 
  * <p>
  * This class is the extension point for supporting new DDMS versions in the future. DDMSVersion maintains a static 
- * currentVersion variable which can be set at runtime. All DDMS component constructors which build components from scratch
- * can then call <code>DDMSVersion.getCurrentVersion()</code> to access various details such as schema locations and namespace
- * URIs. If no currentVersion has been set, a default will be used, which maps to 
+ * currentVersion variable which can be set at runtime. All DDMS component constructors which build components from 
+ * scratch can then call <code>DDMSVersion.getCurrentVersion()</code> to access various details such as schema 
+ * locations and namespace URIs. If no currentVersion has been set, a default will be used, which maps to 
  * <code>buri.ddmsence.ddms.defaultVersion</code> in the properties file. This defaults to 3.0 right now.</p>
  * 
  * <p>
@@ -44,16 +44,19 @@ import buri.ddmsence.ddms.UnsupportedVersionException;
  * 
  * 
  * <li><code>ddms.supportedVersions</code>: i.e. "2.0,3.0"</li>
- * <li><code>ddms.xmlNamespaces</code>: i.e. "http://metadata.dod.mil/mdr/ns/DDMS/2.0/,http://metadata.dod.mil/mdr/ns/DDMS/3.0/"</li>
- * <li><code>ddms.xsdLocations</code>: i.e. "/schemas/2.0/DDMS/2.0/DDMS-v2_0.xsd,/schemas/3.0/DDMS/3.0/DDMS-v3_0.xsd"</li>
+ * <li><code>ddms.xmlNamespaces</code>: 
+ * i.e. "http://metadata.dod.mil/mdr/ns/DDMS/2.0/,http://metadata.dod.mil/mdr/ns/DDMS/3.0/"</li>
+ * <li><code>ddms.xsdLocations</code>: 
+ * i.e. "/schemas/2.0/DDMS/2.0/DDMS-v2_0.xsd,/schemas/3.0/DDMS/3.0/DDMS-v3_0.xsd"</li>
  * <li><code>gml.xmlNamespaces</code>: i.e. "http://www.opengis.net/gml,http://www.opengis.net/gml/3.2"</li>
- * <li><code>gml.xsdLocations</code>: i.e. "/schemas/2.0/DDMS/2.0/DDMS-GML-Profile.xsd,/schemas/3.0/DDMS/3.0/DDMS-GML-Profile.xsd"</li>
+ * <li><code>gml.xsdLocations</code>: 
+ * i.e. "/schemas/2.0/DDMS/2.0/DDMS-GML-Profile.xsd,/schemas/3.0/DDMS/3.0/DDMS-GML-Profile.xsd"</li>
  * <li><code>icism.xmlNamespaces</code>: i.e. "urn:us:gov:ic:ism:v2,urn:us:gov:ic:ism"</li>
  *  
  * 
  * <p>
- * The number of items in each property must match the number of supported DDMS versions. The format of an xsdLocation should
- * follow <code>/schemas/versionNumber/schemaLocationInDDMSDownloadablePackage</code>.
+ * The number of items in each property must match the number of supported DDMS versions. The format of an xsdLocation 
+ * should follow <code>/schemas/versionNumber/schemaLocationInDDMSDownloadablePackage</code>.
  * </p>
  * 
  * <p>
@@ -183,8 +186,8 @@ public class DDMSVersion {
 	}
 
 	/**
-	 * Sets the currentVersion which will be used for by DDMS component constructors to
-	 * determine the namespace and schema to use.
+	 * Sets the currentVersion which will be used for by DDMS component constructors to determine the namespace and
+	 * schema to use.
 	 * 
 	 * @param version the new version, which must be supported by DDMSence
 	 * @throws UnsupportedVersionException if the version is not supported

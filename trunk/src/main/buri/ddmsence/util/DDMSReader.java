@@ -119,7 +119,8 @@ public class DDMSReader {
 	 */
 	public Resource getDDMSResource(File file) throws IOException, InvalidDDMSException {
 		Element resourceElement = getElement(file);
-		DDMSVersion.setCurrentVersion(DDMSVersion.getVersionForNamespace(resourceElement.getNamespaceURI()).getVersion());
+		DDMSVersion.setCurrentVersion(DDMSVersion.getVersionForNamespace(resourceElement.getNamespaceURI())
+			.getVersion());
 		return (new Resource(getElement(file)));
 	}
 	

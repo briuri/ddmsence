@@ -112,16 +112,17 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param keywords list of keywords
 	 * @param categories list of categories
 	 * @param securityAttributes any security attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public SubjectCoverage(List<Keyword> keywords, List<Category> categories, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public SubjectCoverage(List<Keyword> keywords, List<Category> categories, SecurityAttributes securityAttributes)
+		throws InvalidDDMSException {
 		try {
 			if (keywords == null)
 				keywords = Collections.emptyList();
@@ -155,6 +156,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 of "Keyword" or "Category" must exist.</li>
+	 * <li>The DDMS Version of the Keywords and Categories is the same as the SubjectCoverage.</li>
 	 * <li>The SecurityAttributes do not exist in DDMS v2.0.</li>
 	 * </td></tr></table>
 	 * 
@@ -169,7 +171,27 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			+ subjectElement.getChildElements(Category.NAME, subjectElement.getNamespaceURI()).size();
 		if (count < 1)
 			throw new InvalidDDMSException("At least 1 keyword or category must exist.");
+		for (Keyword keyword : getKeywords())
+			Util.requireSameVersion(this, keyword);
+		for (Category category : getCategories())
+			Util.requireSameVersion(this, category);
+		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes can only be applied to this component in DDMS v3.0.");
+		}
 		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>1 or more keywords have the same value.</li>
+	 * <li>1 or more categories have the same value.</li>
+	 * <li>Include any validation warnings from the security attributes, keywords, or categories.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
 		Set<Keyword> uniqueKeywords = new HashSet<Keyword>(getKeywords());
 		if (uniqueKeywords.size() != getKeywords().size())
 			addWarning("1 or more keywords have the same value.");
@@ -177,17 +199,10 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		if (uniqueCategories.size() != getCategories().size())
 			addWarning("1 or more categories have the same value.");
 				
-		for (Keyword keyword : getKeywords()) {
-			Util.requireSameVersion(this, keyword);
+		for (Keyword keyword : getKeywords())
 			addWarnings(keyword.getValidationWarnings(), false);
-		}
-		for (Category category : getCategories()) {
-			Util.requireSameVersion(this, category);
+		for (Category category : getCategories())
 			addWarnings(category.getValidationWarnings(), false);
-		}
-		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes can only be applied to this component in DDMS v3.0 or later.");
-		}
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	
@@ -232,9 +247,9 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof SubjectCoverage))
 			return (false);
 		SubjectCoverage test = (SubjectCoverage) obj;
-		return (Util.listEquals(getKeywords(), test.getKeywords()) &&
-			Util.listEquals(getCategories(), test.getCategories()) &&
-			getSecurityAttributes().equals(test.getSecurityAttributes()));
+		return (Util.listEquals(getKeywords(), test.getKeywords())
+			&& Util.listEquals(getCategories(), test.getCategories()) 
+			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
 	}
 
 	/**
@@ -267,7 +282,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the Security Attributes. Will be null in DDMS 2.0, and non-null in DDMS 3.0.
+	 * Accessor for the Security Attributes.  Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);

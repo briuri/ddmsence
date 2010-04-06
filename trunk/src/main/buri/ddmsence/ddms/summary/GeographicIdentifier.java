@@ -35,8 +35,8 @@ import buri.ddmsence.util.Util;
  * <ul>
  * <li>No more than 1 countryCode or facilityIdentifier can be used. The schema seems to support this assertion with
  * explicit restrictions on those elements, but the enclosing xs:choice element allows multiples.</li>
- * <li>At least 1 of name, region, countryCode, or facilityIdentifier must be present. Once again, the xs:choice restrictions
- * create a loophole which could allow a completely empty geographicIdentifier to be valid.</li>
+ * <li>At least 1 of name, region, countryCode, or facilityIdentifier must be present. Once again, the xs:choice 
+ * restrictions create a loophole which could allow a completely empty geographicIdentifier to be valid.</li>
  * </ul>
  * </td></tr></table>
  * 				
@@ -44,12 +44,14 @@ import buri.ddmsence.util.Util;
  * <u>ddms:name</u>: geographic name (0-many optional)<br />
  * <u>ddms:region</u>: geographic region (0-many optional)<br />
  * <u>ddms:countryCode</u>: the country code (0-1 optional), implemented as a {@link CountryCode}<br />
- * <u>ddms:facilityIdentifier</u>: the facility identifier (0-1 optional), implemented as a {@link FacilityIdentifier}<br />
+ * <u>ddms:facilityIdentifier</u>: the facility identifier (0-1 optional), implemented as a 
+ * {@link FacilityIdentifier}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicIdentifier<br />
- * <u>Description</u>: A wrapper for an identifier or reference to an identifier that describes a geographic extent using a name or other identifier.<br />
+ * <u>Description</u>: A wrapper for an identifier or reference to an identifier that describes a geographic extent 
+ * using a name or other identifier.<br />
  * <u>Obligation</u>: Mandatory unless Not Applicable<br />
  * <u>Schema Modification Date</u>: 2010-01-25<br />
  * </td></tr></table>
@@ -97,15 +99,16 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Constructor for creating a component from raw data. Note that the facilityIdentifier component cannot be used with
-	 * the components in this constructor.
-	 *  
+	 * Constructor for creating a component from raw data. Note that the facilityIdentifier component cannot be used
+	 * with the components in this constructor.
+	 * 
 	 * @param names the names (optional)
 	 * @param regions the region names (optional)
 	 * @param countryCode the country code (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public GeographicIdentifier(List<String> names, List<String> regions, CountryCode countryCode) throws InvalidDDMSException {
+	public GeographicIdentifier(List<String> names, List<String> regions, CountryCode countryCode)
+		throws InvalidDDMSException {
 		try {
 			if (names == null)
 				names = Collections.emptyList();
@@ -153,7 +156,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * <li>At least 1 of name, region, countryCode, or facilityIdentifier must exist.</li>
 	 * <li>No more than 1 countryCode or facilityIdentifier can exist.</li>
 	 * <li>If facilityIdentifier is used, no other components can exist.</li>
-	 * <li>If a countryCode exists, it is using the same version of DDMS.</li>
+	 * <li>If a countryCode or facilityIdentifier exists, it is using the same version of DDMS.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -162,22 +165,35 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
-		if (getNames().isEmpty() && getRegions().isEmpty() && getCountryCode() == null && getFacilityIdentifier() == null) {
+		if (getNames().isEmpty() && getRegions().isEmpty() && getCountryCode() == null
+			&& getFacilityIdentifier() == null) {
 			throw new InvalidDDMSException("At least 1 of name, region, countryCode, or facilityIdentifier must exist.");
 		}
 		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), FacilityIdentifier.NAME, 0, 1);
 		if (hasFacilityIdentifier()) {
 			Util.requireSameVersion(this, getFacilityIdentifier());
-			addWarnings(getFacilityIdentifier().getValidationWarnings(), false);
 			if (!getNames().isEmpty() || !getRegions().isEmpty() || getCountryCode() != null)
 				throw new InvalidDDMSException("facilityIdentifier cannot be used in tandem with other components.");
-		}
-		
-		if (getCountryCode() != null) {
+		}		
+		if (getCountryCode() != null)
 			Util.requireSameVersion(this, getCountryCode());
+		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Include any validation warnings from the facility identifier or country code.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		if (hasFacilityIdentifier())
+			addWarnings(getFacilityIdentifier().getValidationWarnings(), false);
+		if (getCountryCode() != null)
 			addWarnings(getCountryCode().getValidationWarnings(), false);
-		}
 	}
 	
 	/**
@@ -219,10 +235,10 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof GeographicIdentifier))
 			return (false);
 		GeographicIdentifier test = (GeographicIdentifier) obj;
-		boolean isEqual = Util.listEquals(getNames(), test.getNames()) &&
-			Util.listEquals(getRegions(), test.getRegions()) &&
-			Util.nullEquals(getCountryCode(), test.getCountryCode()) &&
-			Util.nullEquals(getFacilityIdentifier(), test.getFacilityIdentifier());
+		boolean isEqual = Util.listEquals(getNames(), test.getNames())
+			&& Util.listEquals(getRegions(), test.getRegions())
+			&& Util.nullEquals(getCountryCode(), test.getCountryCode())
+			&& Util.nullEquals(getFacilityIdentifier(), test.getFacilityIdentifier());
 		return (isEqual);
 	}
 

@@ -93,7 +93,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * @param securityAttributes any security attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public VirtualCoverage(String address, String protocol, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public VirtualCoverage(String address, String protocol, SecurityAttributes securityAttributes)
+		throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(VirtualCoverage.NAME, null);
 			Util.addDDMSAttribute(element, ADDRESS_NAME, address);
@@ -124,12 +125,24 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
 		if (!Util.isEmpty(getAddress()))
 			Util.requireDDMSValue(PROTOCOL_NAME, getProtocol());
-		
+		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes can only be applied to this component in DDMS v3.0.");
+		}
+
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A completely empty ddms:virtualCoverage element was found.</li>
+	 * <li>Include any validation warnings from the security attributes.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
 		if (Util.isEmpty(getAddress()) && Util.isEmpty(getProtocol()))
 			addWarning("A completely empty ddms:virtualCoverage element was found.");
-		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes can only be applied to this component in DDMS v3.0 or later.");
-		}
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	
@@ -162,9 +175,9 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof VirtualCoverage))
 			return (false);
 		VirtualCoverage test = (VirtualCoverage) obj;
-		return (getAddress().equals(test.getAddress()) &&
-			getProtocol().equals(test.getProtocol()) &&
-			getSecurityAttributes().equals(test.getSecurityAttributes()));
+		return (getAddress().equals(test.getAddress()) 
+			&& getProtocol().equals(test.getProtocol()) 
+			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
 	}
 
 	/**
@@ -193,7 +206,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the Security Attributes. Will be null in DDMS 2.0, and non-null in DDMS 3.0.
+	 * Accessor for the Security Attributes.  Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);

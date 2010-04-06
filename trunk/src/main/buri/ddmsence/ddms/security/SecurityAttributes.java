@@ -20,7 +20,6 @@
 package buri.ddmsence.ddms.security;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -39,20 +38,26 @@ import buri.ddmsence.util.Util;
 /**
  * Attribute group for the ICISM markings used throughout DDMS.
  * 
- * <p>The DDMS documentation does not provide sample HTML/Text output for every attribute, so a best guess was taken. In general, 
- * the HTML/Text output of security attributes will be prefixed with the name of the element being marked. For example:</p>
+ * <p>The DDMS documentation does not provide sample HTML/Text output for every attribute, so a best guess was taken. 
+ * In general, the HTML/Text output of security attributes will be prefixed with the name of the element being marked.
+ * For example:</p>
  * <ul><code>
  * Title Owner Producer: US<br />
  * &lt;meta name="security.classification" content="U" /&gt;<br />
  * </code></ul></p>
+ * <p>
+ * When validating this attribute group, the required/optional nature of the classification and ownerProducer
+ * attributes are not checked. Because that limitation depends on the parent element (for example, ddms:title
+ * requires them, but ddms:creator does not), the parent element should be responsible for checking, via
+ * <code>requireClassification()</code>.
+ * </p>
  * 
- * <p>When validating this attribute group, the required/optional nature of the classification and ownerProducer attributes
- * are not checked. Because that limitation depends on the parent element (for example, ddms:title requires them, but ddms:creator does not),
- * the parent element should be responsible for checking, via <code>requireClassification()</code>.</p>
- * 
- * <p>At this time, logical validation is only done on the data types of the various attributes, and the controlled vocabulary enumerations
- * behind some of the attributes. I would like to add the complete constraints set from the "XML Data Encoding Specification
- * for Information Security Marking Metadata Version 2 (Pre-Release)" document in the future.</p>
+ * <p>
+ * At this time, logical validation is only done on the data types of the various attributes, and the controlled
+ * vocabulary enumerations behind some of the attributes. I would like to add the complete constraints set from the
+ * "XML Data Encoding Specification for Information Security Marking Metadata Version 2 (Pre-Release)" document in
+ * the future.
+ * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ICISM:classification</u>: (optional)<br />
@@ -81,8 +86,9 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class SecurityAttributes {
-	
+
 	private List<ValidationMessage> _warnings;
+	private String _ddmsVersion;
 	
 	private String _cachedClassification = null;
 	private List<String> _cachedOwnerProducers = null;
@@ -174,30 +180,33 @@ public final class SecurityAttributes {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public SecurityAttributes(Element element) throws InvalidDDMSException {
-		_cachedClassification = element.getAttributeValue(CLASSIFICATION_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
-		_cachedOwnerProducers = getAsList(element.getAttributeValue(OWNER_PRODUCER_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
-		_cachedSCIcontrols = getAsList(element.getAttributeValue(SCI_CONTROLS_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
-		_cachedSARIdentifier = getAsList(element.getAttributeValue(SAR_IDENTIFIER_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
-		_cachedDisseminationControls = getAsList(element.getAttributeValue(DISSEMINATION_CONTROLS_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
-		_cachedFGIsourceOpen = getAsList(element.getAttributeValue(FGI_SOURCE_OPEN_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
-		_cachedFGIsourceProtected = getAsList(element.getAttributeValue(FGI_SOURCE_PROTECTED_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
-		_cachedReleasableTo = getAsList(element.getAttributeValue(RELEASABLE_TO_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));
-		_cachedNonICmarkings = getAsList(element.getAttributeValue(NON_IC_MARKINGS_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace()));		
-		_cachedClassifiedBy = element.getAttributeValue(CLASSIFIED_BY_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
-		_cachedCompilationReason = element.getAttributeValue(COMPILATION_REASON_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
-		_cachedDerivativelyClassifiedBy = element.getAttributeValue(DERIVATIVELY_CLASSIFIED_BY_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
-		_cachedClassificationReason = element.getAttributeValue(CLASSIFICATION_REASON_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
-		_cachedDerivedFrom = element.getAttributeValue(DERIVED_FROM_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());			
-		String declassDate = element.getAttributeValue(DECLASS_DATE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
+		_ddmsVersion = version.getVersion();
+		String icNamespace = version.getIcismNamespace();
+		_cachedClassification = element.getAttributeValue(CLASSIFICATION_NAME, icNamespace);
+		_cachedOwnerProducers = Util.getAsList(element.getAttributeValue(OWNER_PRODUCER_NAME, icNamespace));
+		_cachedSCIcontrols = Util.getAsList(element.getAttributeValue(SCI_CONTROLS_NAME, icNamespace));
+		_cachedSARIdentifier = Util.getAsList(element.getAttributeValue(SAR_IDENTIFIER_NAME, icNamespace));
+		_cachedDisseminationControls = Util.getAsList(element.getAttributeValue(DISSEMINATION_CONTROLS_NAME, icNamespace));
+		_cachedFGIsourceOpen = Util.getAsList(element.getAttributeValue(FGI_SOURCE_OPEN_NAME, icNamespace));
+		_cachedFGIsourceProtected = Util.getAsList(element.getAttributeValue(FGI_SOURCE_PROTECTED_NAME, icNamespace));
+		_cachedReleasableTo = Util.getAsList(element.getAttributeValue(RELEASABLE_TO_NAME, icNamespace));
+		_cachedNonICmarkings = Util.getAsList(element.getAttributeValue(NON_IC_MARKINGS_NAME, icNamespace));		
+		_cachedClassifiedBy = element.getAttributeValue(CLASSIFIED_BY_NAME, icNamespace);
+		_cachedCompilationReason = element.getAttributeValue(COMPILATION_REASON_NAME, icNamespace);
+		_cachedDerivativelyClassifiedBy = element.getAttributeValue(DERIVATIVELY_CLASSIFIED_BY_NAME, icNamespace);
+		_cachedClassificationReason = element.getAttributeValue(CLASSIFICATION_REASON_NAME, icNamespace);
+		_cachedDerivedFrom = element.getAttributeValue(DERIVED_FROM_NAME, icNamespace);			
+		String declassDate = element.getAttributeValue(DECLASS_DATE_NAME, icNamespace);
 		if (!Util.isEmpty(declassDate))
 			_cachedDeclassDate = getFactory().newXMLGregorianCalendar(declassDate);		
-		_cachedDeclassEvent = element.getAttributeValue(DECLASS_EVENT_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
-		_cachedDeclassException = element.getAttributeValue(DECLASS_EXCEPTION_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());	
-		_cachedTypeOfExemptedSource = element.getAttributeValue(TYPE_OF_EXEMPTED_SOURCE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
-		String dateOfExemptedSource = element.getAttributeValue(DATE_OF_EXEMPTED_SOURCE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		_cachedDeclassEvent = element.getAttributeValue(DECLASS_EVENT_NAME, icNamespace);
+		_cachedDeclassException = element.getAttributeValue(DECLASS_EXCEPTION_NAME, icNamespace);	
+		_cachedTypeOfExemptedSource = element.getAttributeValue(TYPE_OF_EXEMPTED_SOURCE_NAME, icNamespace);
+		String dateOfExemptedSource = element.getAttributeValue(DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace);
 		if (!Util.isEmpty(dateOfExemptedSource))
 			_cachedDateOfExemptedSource = getFactory().newXMLGregorianCalendar(dateOfExemptedSource);
-		String manualReview = element.getAttributeValue(DECLASS_MANUAL_REVIEW_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		String manualReview = element.getAttributeValue(DECLASS_MANUAL_REVIEW_NAME, icNamespace);
 		if (!Util.isEmpty(manualReview))
 			_cachedDeclassManualReview = Boolean.valueOf(manualReview);
 		validate();
@@ -206,20 +215,22 @@ public final class SecurityAttributes {
 	/**
 	 * Constructor which builds from raw data.
 	 * 
-	 * <p>The classification and ownerProducer exist as parameters, and any other security markings are passed in as a mapping
-	 * of local attribute names to String values. This approach is a compromise between a constructor with over seventeen parameters,
-	 * and the added complexity of a step-by-step factory/builder approach. If any name-value pairing does not correlate with a
-	 * valid ICISM attribute, it will be ignored.
+	 * <p>
+	 * The classification and ownerProducer exist as parameters, and any other security markings are passed in as a
+	 * mapping of local attribute names to String values. This approach is a compromise between a constructor with over
+	 * seventeen parameters, and the added complexity of a step-by-step factory/builder approach. If any name-value
+	 * pairing does not correlate with a valid ICISM attribute, it will be ignored.
 	 * </p>
 	 * 
 	 * <p>
-	 * If an attribute mapping appears more than once, the last one in the list will be the one used. If classification and ownerProducer
-	 * are included in the Map of other attributes, they will be ignored.
+	 * If an attribute mapping appears more than once, the last one in the list will be the one used. If classification
+	 * and ownerProducer are included in the Map of other attributes, they will be ignored.
 	 * </p>
 	 * 
 	 * @param classification the classification level, which must be a legal classification type (optional)
 	 * @param ownerProducers a list of ownerProducers (optional)
-	 * @param otherAttributes a name/value mapping of other ICISM attributes. The value will be a String value, as it appears in XML.
+	 * @param otherAttributes a name/value mapping of other ICISM attributes. The value will be a String value, as it
+	 *            appears in XML.
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public SecurityAttributes(String classification, List<String> ownerProducers, Map<String, String> otherAttributes) throws InvalidDDMSException {
@@ -227,16 +238,16 @@ public final class SecurityAttributes {
 			ownerProducers = Collections.emptyList();
 		if (otherAttributes == null)
 			otherAttributes = Collections.emptyMap();
-				
+		_ddmsVersion = DDMSVersion.getCurrentVersion().getVersion();
 		_cachedClassification = classification;
 		_cachedOwnerProducers = ownerProducers;
-		_cachedSCIcontrols = getAsList(otherAttributes.get(SCI_CONTROLS_NAME));
-		_cachedSARIdentifier = getAsList(otherAttributes.get(SAR_IDENTIFIER_NAME));
-		_cachedDisseminationControls = getAsList(otherAttributes.get(DISSEMINATION_CONTROLS_NAME));
-		_cachedFGIsourceOpen = getAsList(otherAttributes.get(FGI_SOURCE_OPEN_NAME));
-		_cachedFGIsourceProtected = getAsList(otherAttributes.get(FGI_SOURCE_PROTECTED_NAME));
-		_cachedReleasableTo = getAsList(otherAttributes.get(RELEASABLE_TO_NAME));
-		_cachedNonICmarkings = getAsList(otherAttributes.get(NON_IC_MARKINGS_NAME));		
+		_cachedSCIcontrols = Util.getAsList(otherAttributes.get(SCI_CONTROLS_NAME));
+		_cachedSARIdentifier = Util.getAsList(otherAttributes.get(SAR_IDENTIFIER_NAME));
+		_cachedDisseminationControls = Util.getAsList(otherAttributes.get(DISSEMINATION_CONTROLS_NAME));
+		_cachedFGIsourceOpen = Util.getAsList(otherAttributes.get(FGI_SOURCE_OPEN_NAME));
+		_cachedFGIsourceProtected = Util.getAsList(otherAttributes.get(FGI_SOURCE_PROTECTED_NAME));
+		_cachedReleasableTo = Util.getAsList(otherAttributes.get(RELEASABLE_TO_NAME));
+		_cachedNonICmarkings = Util.getAsList(otherAttributes.get(NON_IC_MARKINGS_NAME));		
 		_cachedClassifiedBy = otherAttributes.get(CLASSIFIED_BY_NAME);
 		_cachedCompilationReason = otherAttributes.get(COMPILATION_REASON_NAME);
 		_cachedDerivativelyClassifiedBy = otherAttributes.get(DERIVATIVELY_CLASSIFIED_BY_NAME);
@@ -256,39 +267,30 @@ public final class SecurityAttributes {
 			_cachedDeclassManualReview = Boolean.valueOf(manualReview);
 		validate();
 	}
-	
-	/**
-	 * Helper method to convert an xs:NMTOKENS data type into a List of Strings.
-	 * 
-	 * @param element the element with the attribute
-	 * @param name the name of the attribute to parse
-	 * @return a List (never null)
-	 */
-	private List<String> getAsList(String value) {
-		if (Util.isEmpty(value))
-			return Collections.emptyList();
-		return (Arrays.asList(value.split(" ")));
-	}
-		
+			
 	/**
 	 * Convenience method to add these attributes onto an existing XOM Element
 	 * 
 	 * @param element the element to decorate
 	 */
 	public void addTo(Element element) {
-		String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
+		DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
+		String icNamespace = version.getIcismNamespace();
 		Util.addAttribute(element, ICISM_PREFIX, CLASSIFICATION_NAME, icNamespace, getClassification());
 		Util.addAttribute(element, ICISM_PREFIX, OWNER_PRODUCER_NAME, icNamespace, Util.getXsList(getOwnerProducers()));
 		Util.addAttribute(element, ICISM_PREFIX, SCI_CONTROLS_NAME, icNamespace, Util.getXsList(getSCIcontrols()));
 		Util.addAttribute(element, ICISM_PREFIX, SAR_IDENTIFIER_NAME, icNamespace, Util.getXsList(getSARIdentifier()));
-		Util.addAttribute(element, ICISM_PREFIX, DISSEMINATION_CONTROLS_NAME, icNamespace, Util.getXsList(getDisseminationControls()));
+		Util.addAttribute(element, ICISM_PREFIX, DISSEMINATION_CONTROLS_NAME, icNamespace, 
+			Util.getXsList(getDisseminationControls()));
 		Util.addAttribute(element, ICISM_PREFIX, FGI_SOURCE_OPEN_NAME, icNamespace, Util.getXsList(getFGIsourceOpen()));
-		Util.addAttribute(element, ICISM_PREFIX, FGI_SOURCE_PROTECTED_NAME, icNamespace, Util.getXsList(getFGIsourceProtected()));
+		Util.addAttribute(element, ICISM_PREFIX, FGI_SOURCE_PROTECTED_NAME, icNamespace, 
+			Util.getXsList(getFGIsourceProtected()));
 		Util.addAttribute(element, ICISM_PREFIX, RELEASABLE_TO_NAME, icNamespace, Util.getXsList(getReleasableTo()));
 		Util.addAttribute(element, ICISM_PREFIX, NON_IC_MARKINGS_NAME, icNamespace, Util.getXsList(getNonICmarkings()));
 		Util.addAttribute(element, ICISM_PREFIX, CLASSIFIED_BY_NAME, icNamespace, getClassifiedBy());
 		Util.addAttribute(element, ICISM_PREFIX, COMPILATION_REASON_NAME, icNamespace, getCompilationReason());
-		Util.addAttribute(element, ICISM_PREFIX, DERIVATIVELY_CLASSIFIED_BY_NAME, icNamespace, getDerivativelyClassifiedBy());
+		Util.addAttribute(element, ICISM_PREFIX, DERIVATIVELY_CLASSIFIED_BY_NAME, icNamespace,
+			getDerivativelyClassifiedBy());
 		Util.addAttribute(element, ICISM_PREFIX, CLASSIFICATION_REASON_NAME, icNamespace, getClassificationReason());
 		Util.addAttribute(element, ICISM_PREFIX, DERIVED_FROM_NAME, icNamespace, getDerivedFrom());
 		if (getDeclassDate() != null)
@@ -297,35 +299,38 @@ public final class SecurityAttributes {
 		Util.addAttribute(element, ICISM_PREFIX, DECLASS_EXCEPTION_NAME, icNamespace, getDeclassException());
 		Util.addAttribute(element, ICISM_PREFIX, TYPE_OF_EXEMPTED_SOURCE_NAME, icNamespace, getTypeOfExemptedSource());
 		if (getDateOfExemptedSource() != null)
-			Util.addAttribute(element, ICISM_PREFIX, DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace, getDateOfExemptedSource().toXMLFormat());
-		if (getDeclassManualReview() != null)
-			Util.addAttribute(element, ICISM_PREFIX, DECLASS_MANUAL_REVIEW_NAME, icNamespace, getDeclassManualReview().toString());
+			Util.addAttribute(element, ICISM_PREFIX, DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace,
+				getDateOfExemptedSource().toXMLFormat());
+		if (getDeclassManualReview() != null) {
+			Util.addAttribute(element, ICISM_PREFIX, DECLASS_MANUAL_REVIEW_NAME, icNamespace, 
+				getDeclassManualReview().toString());
+		}
 	}
-	
+
 	/**
 	 * Checks if any attributes have been set.
+	 * 
 	 * @return true if no attributes have values, false otherwise
 	 */
 	public boolean isEmpty() {
-		return (Util.isEmpty(getClassification()) &&
-			getOwnerProducers().isEmpty() &&
-			getSCIcontrols().isEmpty() &&
-			getSARIdentifier().isEmpty() &&
-			getDisseminationControls().isEmpty() &&
-			getFGIsourceOpen().isEmpty() &&
-			getFGIsourceProtected().isEmpty() &&
-			getReleasableTo().isEmpty() &&
-			getNonICmarkings().isEmpty() &&
-			Util.isEmpty(getClassifiedBy()) &&
-			Util.isEmpty(getCompilationReason()) &&
-			Util.isEmpty(getDerivativelyClassifiedBy()) &&
-			Util.isEmpty(getClassificationReason()) &&
-			Util.isEmpty(getDerivedFrom()) &&
-			getDeclassDate() == null &&
-			Util.isEmpty(getDeclassEvent()) &&
-			Util.isEmpty(getTypeOfExemptedSource()) &&
-			getDateOfExemptedSource() == null &&
-			getDeclassManualReview() == null);
+		return (Util.isEmpty(getClassification()) 
+			&& getOwnerProducers().isEmpty() 
+			&& getSCIcontrols().isEmpty()
+			&& getSARIdentifier().isEmpty() 
+			&& getDisseminationControls().isEmpty() 
+			&& getFGIsourceOpen().isEmpty()
+			&& getFGIsourceProtected().isEmpty() 
+			&& getReleasableTo().isEmpty() 
+			&& getNonICmarkings().isEmpty()
+			&& Util.isEmpty(getClassifiedBy()) 
+			&& Util.isEmpty(getCompilationReason())
+			&& Util.isEmpty(getDerivativelyClassifiedBy()) 
+			&& Util.isEmpty(getClassificationReason())
+			&& Util.isEmpty(getDerivedFrom()) 
+			&& getDeclassDate() == null && Util.isEmpty(getDeclassEvent())
+			&& Util.isEmpty(getTypeOfExemptedSource()) 
+			&& getDateOfExemptedSource() == null 
+			&& getDeclassManualReview() == null);
 	}
 
 	/**
@@ -359,7 +364,7 @@ public final class SecurityAttributes {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	private void validate() throws InvalidDDMSException {
-		boolean isDDDMS20 = DDMSVersion.isCurrentVersion("2.0");
+		boolean isDDDMS20 = "2.0".equals(getDDMSVersion());
 		if (!Util.isEmpty(getClassification())) {
 			if (!isDDDMS20 || !ISMVocabulary.usingOldClassification(getClassification()))
 				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, getClassification());
@@ -387,8 +392,7 @@ public final class SecurityAttributes {
 		if (!Util.isEmpty(getDeclassException())) {
 			if (isDDDMS20) {
 				// In DDMS 2.0, this can be a list of tokens.
-				List<String> values = Arrays.asList(getDeclassException().split(" "));
-				for (String value : values)
+				for (String value : Util.getAsList(getDeclassException()))
 					ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DECLASS_EXCEPTION, value);
 			}
 			else
@@ -397,8 +401,7 @@ public final class SecurityAttributes {
 		if (!Util.isEmpty(getTypeOfExemptedSource())) {
 			if (isDDDMS20) {
 				// In DDMS 2.0, this can be a list of tokens.
-				List<String> values = Arrays.asList(getTypeOfExemptedSource().split(" "));
-				for (String value : values)
+				for (String value : Util.getAsList(getTypeOfExemptedSource()))
 					ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, value);
 		
 			}
@@ -406,14 +409,15 @@ public final class SecurityAttributes {
 				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, getTypeOfExemptedSource());
 		}
 		if (!isDDDMS20 && getDeclassManualReview() != null)
-			throw new InvalidDDMSException("The declassManualReview attribute can only be used in DDMS 2.0.");
-		if (getDateOfExemptedSource() != null && !getDateOfExemptedSource().getXMLSchemaType().equals(DatatypeConstants.DATE))
-			throw new InvalidDDMSException("The dateOfExemptedSource must be in the xs:date format (YYYY-MM-DD).");		
+			throw new InvalidDDMSException("The declassManualReview attribute cannot be used in DDMS 3.0.");
+		if (getDateOfExemptedSource() != null
+			&& !getDateOfExemptedSource().getXMLSchemaType().equals(DatatypeConstants.DATE))
+			throw new InvalidDDMSException("The dateOfExemptedSource must be in the xs:date format (YYYY-MM-DD).");
 	}
 	
 	/**
-	 * Returns a list of any warning messages that occurred during validation. Warnings
-	 * do not prevent a valid component from being formed.
+	 * Returns a list of any warning messages that occurred during validation. Warnings do not prevent a valid component
+	 * from being formed.
 	 * 
 	 * @return a list of warnings
 	 */
@@ -427,8 +431,7 @@ public final class SecurityAttributes {
 	 * @throws InvalidDDMSException if there is no classification.
 	 */
 	public void requireClassification() throws InvalidDDMSException {
-		Util.requireDDMSValue(CLASSIFICATION_NAME, getClassification());			
-
+		Util.requireDDMSValue(CLASSIFICATION_NAME, getClassification());
 		if (getOwnerProducers().size() == 0)
 			throw new InvalidDDMSException("At least 1 ownerProducer must be set.");
 	}
@@ -447,14 +450,17 @@ public final class SecurityAttributes {
 		html.append(Security.buildHTMLMeta(prefix + OWNER_PRODUCER_NAME, Util.getXsList(getOwnerProducers()), false));
 		html.append(Security.buildHTMLMeta(prefix + SCI_CONTROLS_NAME, Util.getXsList(getSCIcontrols()), false));
 		html.append(Security.buildHTMLMeta(prefix + SAR_IDENTIFIER_NAME, Util.getXsList(getSARIdentifier()), false));
-		html.append(Security.buildHTMLMeta(prefix + DISSEMINATION_CONTROLS_NAME, Util.getXsList(getDisseminationControls()), false));
+		html.append(Security.buildHTMLMeta(prefix + DISSEMINATION_CONTROLS_NAME, 
+			Util.getXsList(getDisseminationControls()), false));
 		html.append(Security.buildHTMLMeta(prefix + FGI_SOURCE_OPEN_NAME, Util.getXsList(getFGIsourceOpen()), false));
-		html.append(Security.buildHTMLMeta(prefix + FGI_SOURCE_PROTECTED_NAME, Util.getXsList(getFGIsourceProtected()), false));
+		html.append(Security.buildHTMLMeta(prefix + FGI_SOURCE_PROTECTED_NAME, Util.getXsList(getFGIsourceProtected()),
+			false));
 		html.append(Security.buildHTMLMeta(prefix + RELEASABLE_TO_NAME, Util.getXsList(getReleasableTo()), false));
 		html.append(Security.buildHTMLMeta(prefix + NON_IC_MARKINGS_NAME, Util.getXsList(getNonICmarkings()), false));
 		html.append(Security.buildHTMLMeta(prefix + CLASSIFIED_BY_NAME, getClassifiedBy(), false));
 		html.append(Security.buildHTMLMeta(prefix + COMPILATION_REASON_NAME, getCompilationReason(), false));
-		html.append(Security.buildHTMLMeta(prefix + DERIVATIVELY_CLASSIFIED_BY_NAME, getDerivativelyClassifiedBy(), false));
+		html.append(Security.buildHTMLMeta(prefix + DERIVATIVELY_CLASSIFIED_BY_NAME, getDerivativelyClassifiedBy(),
+			false));
 		html.append(Security.buildHTMLMeta(prefix + CLASSIFICATION_REASON_NAME, getClassificationReason(), false));
 		html.append(Security.buildHTMLMeta(prefix + DERIVED_FROM_NAME, getDerivedFrom(), false));
 		if (getDeclassDate() != null)
@@ -462,13 +468,17 @@ public final class SecurityAttributes {
 		html.append(Security.buildHTMLMeta(prefix + DECLASS_EVENT_NAME, getDeclassEvent(), false));
 		html.append(Security.buildHTMLMeta(prefix + DECLASS_EXCEPTION_NAME, getDeclassException(), false));
 		html.append(Security.buildHTMLMeta(prefix + TYPE_OF_EXEMPTED_SOURCE_NAME, getTypeOfExemptedSource(), false));
-		if (getDateOfExemptedSource() != null)
-			html.append(Security.buildHTMLMeta(prefix + DATE_OF_EXEMPTED_SOURCE_NAME, getDateOfExemptedSource().toXMLFormat(), false));
-		if (getDeclassManualReview() != null)
-			html.append(Security.buildHTMLMeta(prefix + DECLASS_MANUAL_REVIEW_NAME, getDateOfExemptedSource().toXMLFormat(), false));
+		if (getDateOfExemptedSource() != null) {
+			html.append(Security.buildHTMLMeta(prefix + DATE_OF_EXEMPTED_SOURCE_NAME, 
+				getDateOfExemptedSource().toXMLFormat(), false));
+		}
+		if (getDeclassManualReview() != null) {
+			html.append(Security.buildHTMLMeta(prefix + DECLASS_MANUAL_REVIEW_NAME, 
+				getDateOfExemptedSource().toXMLFormat(), false));
+		}
 		return (html.toString());
 	}
-	
+
 	/**
 	 * Creates a Text representation of these attributes.
 	 * 
@@ -483,14 +493,17 @@ public final class SecurityAttributes {
 		text.append(Security.buildTextLine(prefix + "ownerProducer", Util.getXsList(getOwnerProducers()), false));
 		text.append(Security.buildTextLine(prefix + "SCI Controls", Util.getXsList(getSCIcontrols()), false));
 		text.append(Security.buildTextLine(prefix + "SAR Identifier", Util.getXsList(getSARIdentifier()), false));
-		text.append(Security.buildTextLine(prefix + "Dissemination Controls", Util.getXsList(getDisseminationControls()), false));
+		text.append(Security.buildTextLine(prefix + "Dissemination Controls", 
+			Util.getXsList(getDisseminationControls()), false));
 		text.append(Security.buildTextLine(prefix + "FGI Source Open", Util.getXsList(getFGIsourceOpen()), false));
-		text.append(Security.buildTextLine(prefix + "FGI Source Protected", Util.getXsList(getFGIsourceProtected()), false));
+		text.append(Security.buildTextLine(prefix + "FGI Source Protected", Util.getXsList(getFGIsourceProtected()),
+			false));
 		text.append(Security.buildTextLine(prefix + "Releasable To", Util.getXsList(getReleasableTo()), false));
 		text.append(Security.buildTextLine(prefix + "Non-IC Markings", Util.getXsList(getNonICmarkings()), false));
 		text.append(Security.buildTextLine(prefix + "Classified By", getClassifiedBy(), false));
 		text.append(Security.buildTextLine(prefix + "Compilation Reason", getCompilationReason(), false));
-		text.append(Security.buildTextLine(prefix + "Derivatively Classified By", getDerivativelyClassifiedBy(), false));
+		text.append(Security.buildTextLine(prefix + "Derivatively Classified By", getDerivativelyClassifiedBy(), 
+			false));
 		text.append(Security.buildTextLine(prefix + "Classification Reason", getClassificationReason(), false));
 		text.append(Security.buildTextLine(prefix + "Derived From", getDerivedFrom(), false));
 		if (getDeclassDate() != null)
@@ -498,10 +511,14 @@ public final class SecurityAttributes {
 		text.append(Security.buildTextLine(prefix + "Declass Event", getDeclassEvent(), false));
 		text.append(Security.buildTextLine(prefix + "Declass Exception", getDeclassException(), false));
 		text.append(Security.buildTextLine(prefix + "Type Of Exempted Source", getTypeOfExemptedSource(), false));
-		if (getDateOfExemptedSource() != null)
-			text.append(Security.buildTextLine(prefix + "Date Of Exempted Source", getDateOfExemptedSource().toXMLFormat(), false));
-		if (getDeclassManualReview() != null)
-			text.append(Security.buildTextLine(prefix + "Declass Manual Review", getDeclassManualReview().toString(), false));
+		if (getDateOfExemptedSource() != null) {
+			text.append(Security.buildTextLine(prefix + "Date Of Exempted Source", 
+				getDateOfExemptedSource().toXMLFormat(), false));
+		}
+		if (getDeclassManualReview() != null) {
+			text.append(Security.buildTextLine(prefix + "Declass Manual Review", getDeclassManualReview().toString(),
+				false));
+		}
 		return (text.toString());
 	}
 	
@@ -514,26 +531,26 @@ public final class SecurityAttributes {
 		if (!(obj instanceof SecurityAttributes))
 			return (false);		
 		SecurityAttributes test = (SecurityAttributes) obj;
-		return (getClassification().equals(test.getClassification()) &&
-			Util.listEquals(getOwnerProducers(), test.getOwnerProducers()) &&
-			Util.listEquals(getSCIcontrols(), test.getSCIcontrols()) &&
-			Util.listEquals(getSARIdentifier(), test.getSARIdentifier()) &&
-			Util.listEquals(getDisseminationControls(), test.getDisseminationControls()) &&
-			Util.listEquals(getFGIsourceOpen(), test.getFGIsourceOpen()) &&
-			Util.listEquals(getFGIsourceProtected(), test.getFGIsourceProtected()) &&
-			Util.listEquals(getReleasableTo(), test.getReleasableTo()) &&
-			Util.listEquals(getNonICmarkings(), test.getNonICmarkings()) &&
-			getClassifiedBy().equals(test.getClassifiedBy()) &&
-			getCompilationReason().equals(test.getCompilationReason()) &&
-			getDerivativelyClassifiedBy().equals(test.getDerivativelyClassifiedBy()) &&
-			getClassificationReason().equals(test.getClassificationReason()) &&
-			getDerivedFrom().equals(test.getDerivedFrom()) &&
-			Util.nullEquals(getDeclassDate(), test.getDeclassDate()) &&
-			getDeclassEvent().equals(test.getDeclassEvent()) &&
-			getDeclassException().equals(test.getDeclassException()) &&
-			getTypeOfExemptedSource().equals(test.getTypeOfExemptedSource()) &&
-			Util.nullEquals(getDateOfExemptedSource(), test.getDateOfExemptedSource()) &&
-			Util.nullEquals(getDeclassManualReview(), test.getDeclassManualReview()));
+		return (getClassification().equals(test.getClassification())
+			&& Util.listEquals(getOwnerProducers(), test.getOwnerProducers())
+			&& Util.listEquals(getSCIcontrols(), test.getSCIcontrols())
+			&& Util.listEquals(getSARIdentifier(), test.getSARIdentifier())
+			&& Util.listEquals(getDisseminationControls(), test.getDisseminationControls())
+			&& Util.listEquals(getFGIsourceOpen(), test.getFGIsourceOpen())
+			&& Util.listEquals(getFGIsourceProtected(), test.getFGIsourceProtected())
+			&& Util.listEquals(getReleasableTo(), test.getReleasableTo())
+			&& Util.listEquals(getNonICmarkings(), test.getNonICmarkings())
+			&& getClassifiedBy().equals(test.getClassifiedBy())
+			&& getCompilationReason().equals(test.getCompilationReason())
+			&& getDerivativelyClassifiedBy().equals(test.getDerivativelyClassifiedBy())
+			&& getClassificationReason().equals(test.getClassificationReason())
+			&& getDerivedFrom().equals(test.getDerivedFrom())
+			&& Util.nullEquals(getDeclassDate(), test.getDeclassDate())
+			&& getDeclassEvent().equals(test.getDeclassEvent())
+			&& getDeclassException().equals(test.getDeclassException())
+			&& getTypeOfExemptedSource().equals(test.getTypeOfExemptedSource())
+			&& Util.nullEquals(getDateOfExemptedSource(), test.getDateOfExemptedSource()) 
+			&& Util.nullEquals(getDeclassManualReview(), test.getDeclassManualReview()));
 	}
 
 	/**
@@ -570,8 +587,7 @@ public final class SecurityAttributes {
 	 * Accessor for the list of validation warnings.
 	 * 
 	 * <p>
-	 * This is the private copy that should be manipulated during validation.
-	 * Lazy initialization.
+	 * This is the private copy that should be manipulated during validation. Lazy initialization.
 	 * </p>
 	 * 
 	 * @return an editable list of warnings
@@ -580,6 +596,13 @@ public final class SecurityAttributes {
 		if (_warnings == null)
 			_warnings = new ArrayList<ValidationMessage>();
 		return (_warnings);
+	}
+	
+	/**
+	 * Accessor for the DDMS Version
+	 */
+	public String getDDMSVersion() {
+		return (_ddmsVersion);
 	}
 	
 	/**
@@ -684,7 +707,8 @@ public final class SecurityAttributes {
 	 * Accessor for the declassDate attribute. May return null if not set.
 	 */
 	public XMLGregorianCalendar getDeclassDate() {
-		return (_cachedDeclassDate == null ? null : getFactory().newXMLGregorianCalendar(_cachedDeclassDate.toXMLFormat()));
+		return (_cachedDeclassDate == null ? null 
+			: getFactory().newXMLGregorianCalendar(_cachedDeclassDate.toXMLFormat()));
 	}
 
 	/**
@@ -695,16 +719,16 @@ public final class SecurityAttributes {
 	}
 
 	/**
-	 * Accessor for the declassException attribute. In DDMS 2.0, this could be a list of tokens. This is represented here as a space-delimited
-	 * string.
+	 * Accessor for the declassException attribute. In DDMS 2.0, this could be a list of tokens. This is represented
+	 * here as a space-delimited string.
 	 */
 	public String getDeclassException() {
 		return (Util.getNonNullString(_cachedDeclassException));
 	}
 
 	/**
-	 * Accessor for the typeOfExemptedSource attribute. In DDMS 2.0, this could be a list of tokens. This is represented here as a space-delimited
-	 * string.
+	 * Accessor for the typeOfExemptedSource attribute. In DDMS 2.0, this could be a list of tokens. This is represented
+	 * here as a space-delimited string.
 	 */
 	public String getTypeOfExemptedSource() {
 		return (Util.getNonNullString(_cachedTypeOfExemptedSource));
@@ -714,9 +738,10 @@ public final class SecurityAttributes {
 	 * Accessor for the dateOfExemptedSource attribute. May return null if not set.
 	 */
 	public XMLGregorianCalendar getDateOfExemptedSource() {
-		return (_cachedDateOfExemptedSource == null ? null : getFactory().newXMLGregorianCalendar(_cachedDateOfExemptedSource.toXMLFormat()));
+		return (_cachedDateOfExemptedSource == null ? null 
+			: getFactory().newXMLGregorianCalendar(_cachedDateOfExemptedSource.toXMLFormat()));
 	}
-	
+
 	/**
 	 * Accessor for the declassManualReview attribute. Will be null in DDMS 3.0.
 	 */

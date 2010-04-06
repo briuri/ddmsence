@@ -24,6 +24,7 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -104,6 +105,19 @@ public class Util {
 	 */
 	public static String getNonNullString(String string) {
 		return (string == null ? "" : string);
+	}
+	
+	/**
+	 * Helper method to convert an xs:NMTOKENS data type into a List of Strings.
+	 * 
+	 * @param element the element with the attribute
+	 * @param name the name of the attribute to parse
+	 * @return a List (never null)
+	 */
+	public static List<String> getAsList(String value) {
+		if (Util.isEmpty(value))
+			return Collections.emptyList();
+		return (Arrays.asList(value.split(" ")));
 	}
 	
 	/**
@@ -463,7 +477,8 @@ public class Util {
 	 * @param attributeValue the value of the attribute
 	 */
 	public static void addDDMSAttribute(Element element, String attributeName, String attributeValue) {
-		addAttribute(element, DDMS_PREFIX, attributeName, DDMSVersion.getCurrentVersion().getNamespace(), attributeValue);
+		addAttribute(element, DDMS_PREFIX, attributeName, DDMSVersion.getCurrentVersion().getNamespace(), 
+			attributeValue);
 	}
 	
 	/**
@@ -526,8 +541,8 @@ public class Util {
 	}
 	
 	/**
-	 * Convenience method to create an attribute in the default DDMS namespace. The resultant attribute will use the DDMS prefix
-	 * and have the provided value.
+	 * Convenience method to create an attribute in the default DDMS namespace. The resultant attribute will use the
+	 * DDMS prefix and have the provided value.
 	 * 
 	 * @param name the local name of the attribute
 	 * @param value the value of the attribute
