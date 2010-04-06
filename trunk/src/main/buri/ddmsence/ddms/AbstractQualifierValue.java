@@ -76,7 +76,6 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-
 	
 	/**
 	 * @see Object#equals(Object)
