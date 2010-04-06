@@ -42,9 +42,9 @@ included in each release.</a></li>
 	<li>If the patch version is a letter, such as "<b>b</b>", the release may be unstable. Major/minor numbers will increment after an unstable release (so the beta/pre-release version of 1.2 is probably 1.1.b, and NOT 1.2.b).</li>
 </ul>
 
-<p><b>*</b>In initial 1.x releases, I will be more aggressive about creating a more robust baseline at the expense of backwards compatibility, at least
-until I am aware that there are serious users of the library. However, all changes which are not backwards compatible will be listed on this page, even
-if they do not trigger a change in major version.</p> 
+<p><b>*</b>In initial 1.x releases, I will be more aggressive about creating a robust baseline at the expense of backwards compatibility, at least
+until I am aware that there are serious users of the library. All changes which are not backwards compatible will be linked from this page, even
+if they do not trigger a change in major version number.</p> 
 
 <h3>Older Releases</h3>
 
