@@ -108,6 +108,7 @@ public final class Position extends AbstractBaseComponent {
 			setXOMElement(element, false);
 			List<String> tuple = Util.getAsList(getCoordinatesAsXsList());
 			_cachedCoordinates = new ArrayList<Double>();
+			System.out.println(tuple.size());
 			for (String coordinate : tuple) {
 				_cachedCoordinates.add(getStringAsDouble(coordinate));
 			}

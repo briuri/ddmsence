@@ -28,6 +28,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -147,21 +148,20 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
+			
 			// All fields
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), "true");
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			getFixture(true).addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 
 			// No optional fields
 			element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), "true");
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.CLASSIFICATION_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), TEST_CLASS);
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.OWNER_PRODUCER_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), Util.getXsList(TEST_OWNERS));
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace, 
+				Util.getXsList(TEST_OWNERS));
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -186,30 +186,27 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
+			
 			// invalid declassDate
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), "true");
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.CLASSIFICATION_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), TEST_CLASS);
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.OWNER_PRODUCER_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), Util.getXsList(TEST_OWNERS));
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace,
+				Util.getXsList(TEST_OWNERS));
 			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.DECLASS_DATE_NAME,
-				DDMSVersion.getCurrentVersion().getIcismNamespace(), "2001");
+				icNamespace, "2001");
 			testConstructor(WILL_FAIL, element);
 
 			// invalid dateOfExemptedSource
 			element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), "true");
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.CLASSIFICATION_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), TEST_CLASS);
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.OWNER_PRODUCER_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), Util.getXsList(TEST_OWNERS));
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.DECLASS_DATE_NAME,
-				DDMSVersion.getCurrentVersion().getIcismNamespace(), "2001");
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), "2001");
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace,
+				Util.getXsList(TEST_OWNERS));
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.DECLASS_DATE_NAME, icNamespace, "2001");
+			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace,
+				"2001");
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -232,10 +229,11 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testWarnings() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
+			
 			// No warnings
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), "true");
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes attr = testConstructor(WILL_SUCCEED, element);
 			assertEquals(0, attr.getValidationWarnings().size());
@@ -245,11 +243,12 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
+			
 			Map<String, String> others = (DDMSVersion.isCurrentVersion("2.0") ? TEST_OTHERS_20 : TEST_OTHERS);
 			
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), "true");
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
 			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, others);
@@ -263,10 +262,11 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
+			
 			Map<String, String> others = (DDMSVersion.isCurrentVersion("2.0") ? TEST_OTHERS_20 : TEST_OTHERS);
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), "true");
+			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
 			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, "C", TEST_OWNERS, others);
@@ -376,6 +376,18 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			assertFalse(elementAttributes.equals(wrongComponent));
 		}
 	}
+	
+	public void testWrongVersionAttributes() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("3.0");
+		SecurityAttributes attr = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, TEST_OTHERS);
+		DDMSVersion.setCurrentVersion("2.0");
+		try {
+			new Title("Wrong Version Title", attr);
+			fail("Allowed different versions.");
+		} catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
 
 	public void testClassificationValidation() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
@@ -426,9 +438,8 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			others.put(SecurityAttributes.DECLASS_DATE_NAME, "2005-10-10");
 			others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-10");
 			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
-			assertEquals(
-				"<meta name=\"declassDate\" content=\"2005-10-10\" />\n<meta name=\"dateOfExemptedSource\" content=\"2005-10-10\" />\n",
-				dataAttributes.toHTML(""));
+			assertEquals("<meta name=\"declassDate\" content=\"2005-10-10\" />\n"
+				+ "<meta name=\"dateOfExemptedSource\" content=\"2005-10-10\" />\n", dataAttributes.toHTML(""));
 			assertEquals("Declass Date: 2005-10-10\nDate Of Exempted Source: 2005-10-10\n", dataAttributes.toText(""));
 		}
 	}
@@ -467,7 +478,9 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		
 		DDMSVersion.setCurrentVersion("2.0");
 		map.remove(SecurityAttributes.COMPILATION_REASON_NAME);
-		new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
+		SecurityAttributes attr = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
+		assertTrue(attr.toHTML("").contains("<meta name=\"declassManualReview\" content=\"2005-10-11\" />"));
+		assertTrue(attr.toText("").contains("Declass Manual Review: true"));		
 	}
 	
 	public void testMultipleDeclassException() throws InvalidDDMSException {

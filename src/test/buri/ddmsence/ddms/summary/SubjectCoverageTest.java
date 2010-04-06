@@ -144,16 +144,17 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subjectCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\"");
+		xml.append("<ddms:subjectCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+			.append("\"");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			xml.append(" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append(
-				"\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
+			xml.append(" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace())
+				.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n\t<ddms:Subject>\n");
 		xml.append("\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
 		xml.append("\t\t<ddms:keyword ddms:value=\"Uri\" />\n");
-		xml
-			.append("\t\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ddms:label=\"DDMS\" />\n");
+		xml.append("\t\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ")
+			.append("ddms:label=\"DDMS\" />\n");
 		xml.append("\t</ddms:Subject>\n</ddms:subjectCoverage>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
@@ -245,8 +246,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("1 or more categories have the same value.", component.getValidationWarnings().get(0)
-				.getText());
+			assertEquals("1 or more categories have the same value.", 
+				component.getValidationWarnings().get(0).getText());
 			assertEquals("/ddms:subjectCoverage/ddms:Subject", component.getValidationWarnings().get(0).getLocator());
 		}
 	}
@@ -336,7 +337,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null : SecurityAttributesTest.getFixture(false));
+			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null 
+				: SecurityAttributesTest.getFixture(false));
 			SubjectCoverage component = new SubjectCoverage(getKeywords(), getCategories(), attr);
 			if (DDMSVersion.isCurrentVersion("2.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());

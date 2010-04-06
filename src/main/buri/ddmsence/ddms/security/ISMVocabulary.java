@@ -194,30 +194,25 @@ public class ISMVocabulary {
 	 * @param builder the XOM Builder to read the file with
 	 * @param enumerationKey the key for the enumeration, which doubles as the filename.
 	 */
-	private void loadEnumeration(Builder builder, String enumerationKey) throws IOException {
-		try {
-			InputStream stream = getClass().getResourceAsStream(CVE_LOCATION + enumerationKey);
-			Document doc = builder.build(stream);
-			Set<String> tokens = new TreeSet<String>();
-			Set<String> patterns = new HashSet<String>();
-			Element enumerationElement = doc.getRootElement().getFirstChildElement(ENUMERATION_NAME, CVE_NAMESPACE);
-			Elements terms = enumerationElement.getChildElements(TERM_NAME, CVE_NAMESPACE);
-			for (int i = 0; i < terms.size(); i++) {
-				Element value = terms.get(i).getFirstChildElement(VALUE_NAME, CVE_NAMESPACE);
-				boolean isPattern = Boolean.valueOf(value.getAttributeValue(REG_EXP_NAME)).booleanValue();
-				if (value != null) {
-					if (isPattern)
-						patterns.add(value.getValue());
-					else
-						tokens.add(value.getValue());
-				}
+	private void loadEnumeration(Builder builder, String enumerationKey) throws ParsingException, IOException {
+		InputStream stream = getClass().getResourceAsStream(CVE_LOCATION + enumerationKey);
+		Document doc = builder.build(stream);
+		Set<String> tokens = new TreeSet<String>();
+		Set<String> patterns = new HashSet<String>();
+		Element enumerationElement = doc.getRootElement().getFirstChildElement(ENUMERATION_NAME, CVE_NAMESPACE);
+		Elements terms = enumerationElement.getChildElements(TERM_NAME, CVE_NAMESPACE);
+		for (int i = 0; i < terms.size(); i++) {
+			Element value = terms.get(i).getFirstChildElement(VALUE_NAME, CVE_NAMESPACE);
+			boolean isPattern = Boolean.valueOf(value.getAttributeValue(REG_EXP_NAME)).booleanValue();
+			if (value != null) {
+				if (isPattern)
+					patterns.add(value.getValue());
+				else
+					tokens.add(value.getValue());
 			}
-			ENUM_TOKENS.put(enumerationKey, tokens);
-			ENUM_PATTERNS.put(enumerationKey, patterns);
 		}
-		catch (ParsingException e) {
-			throw new IOException(e.getMessage());
-		}
+		ENUM_TOKENS.put(enumerationKey, tokens);
+		ENUM_PATTERNS.put(enumerationKey, patterns);
 	}
 	
 	/**

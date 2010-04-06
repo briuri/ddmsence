@@ -118,8 +118,8 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"RelatedResources.relationship\" content=\"").append(TEST_RELATIONSHIP).append(
-			"\" />\n");
+		html.append("<meta name=\"RelatedResources.relationship\" content=\"").append(TEST_RELATIONSHIP)
+			.append("\" />\n");
 		html.append("<meta name=\"RelatedResources.direction\" content=\"").append(TEST_DIRECTION).append("\" />\n");
 		html.append("<meta name=\"RelatedResource.qualifier\" content=\"http://purl.org/dc/terms/URI\" />\n");
 		html.append("<meta name=\"RelatedResource.value\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
@@ -158,10 +158,10 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 			.append("\" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append("\" ");
 		xml.append("ddms:relationship=\"").append(TEST_RELATIONSHIP).append("\" ddms:direction=\"");
 		xml.append(TEST_DIRECTION).append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t");
-		xml
-			.append("<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n\t\t");
-		xml.append("<ddms:link xmlns:xlink=\"").append(XLINK_NAMESPACE).append(
-			"\" xlink:type=\"locator\" xlink:href=\"http://en.wikipedia.org/wiki/Tank\" />\n\t");
+		xml.append("<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ")
+			.append("ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n\t\t");
+		xml.append("<ddms:link xmlns:xlink=\"").append(XLINK_NAMESPACE)
+			.append("\" xlink:type=\"locator\" xlink:href=\"http://en.wikipedia.org/wiki/Tank\" />\n\t");
 		xml.append("</ddms:RelatedResource>\n");
 		xml.append("</ddms:relatedResources>");
 		return (formatXml(xml.toString(), preserveFormatting));

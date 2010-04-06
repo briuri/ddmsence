@@ -51,10 +51,11 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 	 */
 	protected static BoundingGeometry getFixture() throws InvalidDDMSException {
 		List<Point> points = new ArrayList<Point>();
-		points.add(new Point(new Position(PositionTest.TEST_COORDS, SRSAttributesTest.getFixture()), SRSAttributesTest.getFixture(), TEST_ID));
+		points.add(new Point(new Position(PositionTest.TEST_COORDS, SRSAttributesTest.getFixture()), 
+			SRSAttributesTest.getFixture(), TEST_ID));
 		return (new BoundingGeometry(null, points));
 	}
-	
+
 	/**
 	 * Gets a test instance of a list of polygons
 	 * 
@@ -147,8 +148,8 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		xml.append("<ddms:boundingGeometry xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
 			.append("\">\n\t");
 		xml.append("<gml:Point xmlns:gml=\"").append(DDMSVersion.getCurrentVersion().getGmlNamespace()).append("\" ");
-		xml
-			.append("srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\" gml:id=\"IDValue\">\n\t\t");
+		xml.append("srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ")
+			.append("axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\" gml:id=\"IDValue\">\n\t\t");
 		xml.append("<gml:pos>32.1 40.1</gml:pos>\n\t");
 		xml.append("</gml:Point>\n");
 		xml.append("</ddms:boundingGeometry>");

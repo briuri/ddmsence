@@ -509,8 +509,6 @@ public final class Resource extends AbstractBaseComponent {
 			Util.requireDDMSValue(DES_VERSION_NAME, getDESVersion());
 			Util.requireDDMSValue("security attributes", getSecurityAttributes());
 			getSecurityAttributes().requireClassification();
-			if (isResourceElement() == null)
-				throw new InvalidDDMSException("The resourceElement attribute must have a boolean value.");
 			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 				throw new InvalidDDMSException("The createDate must be in the xs:date format (YYYY-MM-DD).");
 		}

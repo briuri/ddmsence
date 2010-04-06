@@ -120,11 +120,13 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:virtualCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\"");
+		xml.append("<ddms:virtualCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+			.append("\"");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
 			xml.append(" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append("\"");
 		}
-		xml.append(" ddms:address=\"").append(TEST_ADDRESS).append("\" ddms:protocol=\"").append(TEST_PROTOCOL).append("\"");
+		xml.append(" ddms:address=\"").append(TEST_ADDRESS).append("\" ddms:protocol=\"").append(TEST_PROTOCOL)
+			.append("\"");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
 			xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
 		}
@@ -199,8 +201,8 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A completely empty ddms:virtualCoverage element was found.", component
-				.getValidationWarnings().get(0).getText());
+			assertEquals("A completely empty ddms:virtualCoverage element was found.", 
+				component.getValidationWarnings().get(0).getText());
 			assertEquals("/ddms:virtualCoverage", component.getValidationWarnings().get(0).getLocator());
 		}
 	}
@@ -272,7 +274,8 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);			
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null : SecurityAttributesTest.getFixture(false));
+			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null 
+				: SecurityAttributesTest.getFixture(false));
 			VirtualCoverage component = new VirtualCoverage(TEST_ADDRESS, TEST_PROTOCOL, attr);
 			if (DDMSVersion.isCurrentVersion("2.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());

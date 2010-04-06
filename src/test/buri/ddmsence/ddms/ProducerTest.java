@@ -91,8 +91,8 @@ public class ProducerTest extends TestCase {
 		Organization component = new Organization(producerElement);
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-		assertEquals("A ddms:phone element was found with no value.", component.getValidationWarnings().get(0)
-			.getText());
+		assertEquals("A ddms:phone element was found with no value.", 
+			component.getValidationWarnings().get(0).getText());
 
 		// Empty email
 		entityElement = Util.buildDDMSElement(Organization.NAME, null);
@@ -103,7 +103,7 @@ public class ProducerTest extends TestCase {
 		component = new Organization(producerElement);
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-		assertEquals("A ddms:email element was found with no value.", component.getValidationWarnings().get(0)
-			.getText());
+		assertEquals("A ddms:email element was found with no value.", 
+			component.getValidationWarnings().get(0).getText());
 	}
 }

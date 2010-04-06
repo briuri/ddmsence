@@ -83,17 +83,11 @@ public class DDMSVersion {
 	private static final List<String> GML_NAMESPACES = PropertyReader.getListProperty("gml.xmlNamespaces");
 	private static final List<String> GML_SCHEMA_LOCATIONS = PropertyReader.getListProperty("gml.xsdLocations");
 	private static final List<String> ICISM_NAMESPACES = PropertyReader.getListProperty("icism.xmlNamespaces");
-	
-	/** Details concerning DDMS 2.0 */
-	public static final DDMSVersion DDMS_2_0 = new DDMSVersion("2.0");
-	
-	/** Details concerning DDMS 3.0 */
-	public static final DDMSVersion DDMS_3_0 = new DDMSVersion("3.0");
-	
+
 	private static final Map<String, DDMSVersion> VERSIONS_TO_DETAILS = new HashMap<String, DDMSVersion>();
 	static {
-		VERSIONS_TO_DETAILS.put("2.0", DDMS_2_0);
-		VERSIONS_TO_DETAILS.put("3.0", DDMS_3_0);
+		VERSIONS_TO_DETAILS.put("2.0", new DDMSVersion("2.0"));
+		VERSIONS_TO_DETAILS.put("3.0", new DDMSVersion("3.0"));
 		_currentVersion = getVersionFor(DEFAULT_VERSION_NUMBER);
 	}
 			
@@ -103,8 +97,6 @@ public class DDMSVersion {
 	 * @param version the number as shown in ddms.supportedVersions.
 	 */
 	private DDMSVersion(String version) {
-		if (!SUPPORTED_DDMS_VERSIONS.contains(version))
-			throw new UnsupportedVersionException(version);
 		int index = SUPPORTED_DDMS_VERSIONS.indexOf(version);
 		_version = version;
 		_namespace = DDMS_NAMESPACES.get(index);

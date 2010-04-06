@@ -113,22 +113,22 @@ public class PersonTest extends AbstractComponentTestCase {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".entityType\" content=\"Person\" />\n");
 		for (String name : TEST_NAMES)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".name\" content=\"").append(name).append(
-				"\" />\n");
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".name\" content=\"").append(name)
+				.append("\" />\n");
 		for (String phone : TEST_PHONES)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".phone\" content=\"").append(phone).append(
-				"\" />\n");
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".phone\" content=\"").append(phone)
+				.append("\" />\n");
 		for (String email : TEST_EMAILS)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".email\" content=\"").append(email).append(
-				"\" />\n");
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".email\" content=\"").append(email)
+				.append("\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".classification\" content=\"U\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".ownerProducer\" content=\"USA\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".surname\" content=\"").append(TEST_SURNAME)
 			.append("\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".userid\" content=\"").append(TEST_USERID)
 			.append("\" />\n");
-		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".affiliation\" content=\"").append(
-			TEST_AFFILIATION).append("\" />\n");
+		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".affiliation\" content=\"")
+			.append(TEST_AFFILIATION).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -161,8 +161,8 @@ public class PersonTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(
 			DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append(
-			"\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"><ddms:Person>\n");
+		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace())
+			.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"><ddms:Person>\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
 		xml.append("\t<ddms:surname>").append(TEST_SURNAME).append("</ddms:surname>\n");
@@ -300,8 +300,8 @@ public class PersonTest extends AbstractComponentTestCase {
 			component = new Person(producerElement);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A ddms:userID element was found with no value.", component.getValidationWarnings().get(0)
-				.getText());
+			assertEquals("A ddms:userID element was found with no value.", 
+				component.getValidationWarnings().get(0).getText());
 			assertEquals("/ddms:creator/ddms:Person", component.getValidationWarnings().get(0).getLocator());
 
 			// Empty affiliation
@@ -314,8 +314,8 @@ public class PersonTest extends AbstractComponentTestCase {
 			component = new Person(producerElement);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A ddms:affiliation element was found with no value.", component.getValidationWarnings()
-				.get(0).getText());
+			assertEquals("A ddms:affiliation element was found with no value.", 
+				component.getValidationWarnings().get(0).getText());
 			assertEquals("/ddms:creator/ddms:Person", component.getValidationWarnings().get(0).getLocator());
 		}
 	}

@@ -103,14 +103,14 @@ public class UnknownTest extends AbstractComponentTestCase {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".entityType\" content=\"Unknown\" />\n");
 		for (String name : TEST_NAMES)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".name\" content=\"").append(name).append(
-				"\" />\n");
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".name\" content=\"").append(name)
+			.append("\" />\n");
 		for (String phone : TEST_PHONES)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".phone\" content=\"").append(phone).append(
-				"\" />\n");
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".phone\" content=\"").append(phone)
+			.append("\" />\n");
 		for (String email : TEST_EMAILS)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".email\" content=\"").append(email).append(
-				"\" />\n");
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".email\" content=\"").append(email)
+			.append("\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".classification\" content=\"U\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
@@ -142,8 +142,8 @@ public class UnknownTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(
 			DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append(
-			"\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"><ddms:Unknown>\n");
+		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace())
+			.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"><ddms:Unknown>\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
 		for (String phone : TEST_PHONES)
@@ -158,7 +158,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if (version.equals("2.0"))
+			if ("2.0".equals(version))
 				continue;
 
 			Unknown component = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -176,7 +176,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if (version.equals("2.0"))
+			if ("2.0".equals(version))
 				continue;
 
 			// All fields
@@ -193,7 +193,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if (version.equals("2.0"))
+			if ("2.0".equals(version))
 				continue;
 
 			// Missing name
@@ -211,7 +211,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if (version.equals("2.0"))
+			if ("2.0".equals(version))
 				continue;
 
 			// Missing name		
@@ -228,7 +228,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if (version.equals("2.0"))
+			if ("2.0".equals(version))
 				continue;
 
 			// No warnings
@@ -241,7 +241,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if (version.equals("2.0"))
+			if ("2.0".equals(version))
 				continue;
 
 			Unknown elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -255,7 +255,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if (version.equals("2.0"))
+			if ("2.0".equals(version))
 				continue;
 
 			Unknown elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -271,7 +271,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if (version.equals("2.0"))
+			if ("2.0".equals(version))
 				continue;
 
 			Unknown elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -284,7 +284,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if (version.equals("2.0"))
+			if ("2.0".equals(version))
 				continue;
 
 			Unknown component = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -299,7 +299,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if (version.equals("2.0"))
+			if ("2.0".equals(version))
 				continue;
 
 			Unknown component = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -314,7 +314,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if (version.equals("2.0"))
+			if ("2.0".equals(version))
 				continue;
 
 			Unknown component = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -329,7 +329,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if (version.equals("2.0"))
+			if ("2.0".equals(version))
 				continue;
 
 			Unknown component = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -341,7 +341,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if (version.equals("2.0"))
+			if ("2.0".equals(version))
 				continue;
 
 			Unknown component = new Unknown(TEST_PRODUCER_TYPE, TEST_NAMES, TEST_PHONES, TEST_EMAILS,

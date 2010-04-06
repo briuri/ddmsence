@@ -114,8 +114,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"geospatial.identifier.name\" content=\"").append(TEST_NAMES.get(0)).append("\" />\n");
-		html.append("<meta name=\"geospatial.identifier.region\" content=\"").append(TEST_REGIONS.get(0)).append(
-			"\" />\n");
+		html.append("<meta name=\"geospatial.identifier.region\" content=\"").append(TEST_REGIONS.get(0))
+			.append("\" />\n");
 		html.append(CountryCodeTest.getFixture(GeographicIdentifier.NAME).toHTML());
 		return (html.toString());
 	}

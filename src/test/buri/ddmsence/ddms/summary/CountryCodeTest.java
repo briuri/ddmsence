@@ -105,8 +105,8 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"").append(parentHtml).append(".country.qualifier\" content=\"")
 			.append(TEST_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"").append(parentHtml).append(".country\" content=\"").append(TEST_VALUE).append(
-			"\" />\n");
+		html.append("<meta name=\"").append(parentHtml).append(".country\" content=\"").append(TEST_VALUE)
+			.append("\" />\n");
 		return (html.toString());
 	}
 
@@ -128,10 +128,10 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:countryCode xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append(
-			"\" ");
-		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE).append(
-			"\" />");
+		xml.append("<ddms:countryCode xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+			.append("\" ");
+		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
+			.append("\" />");
 		return (xml.toString());
 	}
 
