@@ -180,7 +180,7 @@ public class PositionTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testElementConstructorInvalid() {
+	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
