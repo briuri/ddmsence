@@ -242,7 +242,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		if (!foundNonEmptyName)
 			throw new InvalidDDMSException("At least 1 name element must have a non-empty value.");
 
-		validateWarnings();
+		validateSharedWarnings();
 	}
 	
 	/**
@@ -254,7 +254,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	 * <li>Include any validation warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
-	protected void validateWarnings() {
+	protected void validateSharedWarnings() {
 		Element entityElement = getEntityElement();
 		Elements phoneElements = entityElement.getChildElements(PHONE_NAME, entityElement.getNamespaceURI());
 		for (int i = 0; i < phoneElements.size(); i++) {
