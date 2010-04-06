@@ -513,9 +513,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!(obj instanceof SecurityAttributes))
+		if (!super.equals(obj) || !(obj instanceof SecurityAttributes))
 			return (false);		
 		SecurityAttributes test = (SecurityAttributes) obj;
 		return (getClassification().equals(test.getClassification())
@@ -544,7 +542,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * @see Object#hashCode()
 	 */
 	public int hashCode() {
-		int result = getClassification().hashCode();
+		int result = super.hashCode();
+		result = 7 * result + getClassification().hashCode();
 		result = 7 * result + getOwnerProducers().hashCode();
 		result = 7 * result + getSCIcontrols().hashCode();
 		result = 7 * result + getSARIdentifier().hashCode();
