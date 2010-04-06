@@ -294,7 +294,8 @@ public class ISMVocabulary {
 	 * @return true if it is, false otherwise
 	 */
 	public static boolean classificationNeedsReview(String classification) {
-		Util.requireValue("classification", classification);
+		if (Util.isEmpty(classification))
+			return (false);
 		return ("CTS-B".equals(classification) || "CTS-BALK".equals(classification) || "R".equals(classification));
 	}
 	
