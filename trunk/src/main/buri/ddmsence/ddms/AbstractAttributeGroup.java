@@ -66,6 +66,25 @@ public abstract class AbstractAttributeGroup {
 	}
 		
 	/**
+	 * @see Object#equals(Object)
+	 */
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!(obj instanceof AbstractAttributeGroup))
+			return (false);		
+		AbstractAttributeGroup test = (AbstractAttributeGroup) obj;
+		return (getDDMSVersion().equals(test.getDDMSVersion()));
+	}
+
+	/**
+	 * @see Object#hashCode()
+	 */
+	public int hashCode() {
+		return (getDDMSVersion().hashCode());
+	}	
+	
+	/**
 	 * Returns a list of any warning messages that occurred during validation. Warnings do not prevent a valid component
 	 * from being formed.
 	 * 
