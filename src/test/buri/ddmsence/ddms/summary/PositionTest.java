@@ -43,14 +43,12 @@ public class PositionTest extends AbstractComponentTestCase {
 		TEST_COORDS.add(new Double(40.1));
 	}
 	protected static final String TEST_XS_LIST = "32.1 40.1";
-	private final SRSAttributes TEST_SRS_ATTRIBUTES;
 
 	/**
 	 * Constructor
 	 */
 	public PositionTest() throws InvalidDDMSException {
 		super("position.xml");
-		TEST_SRS_ATTRIBUTES = SRSAttributesTest.getFixture();
 	}
 
 	/**
@@ -169,11 +167,11 @@ public class PositionTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testDataConstructorValid() {
+	public void testDataConstructorValid() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
+			testConstructor(WILL_SUCCEED, TEST_COORDS, SRSAttributesTest.getFixture());
 
 			// No optional fields
 			testConstructor(WILL_SUCCEED, TEST_COORDS, null);
@@ -186,41 +184,41 @@ public class PositionTest extends AbstractComponentTestCase {
 			String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
 			// Missing coordinates
 			Element element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, null);
-			TEST_SRS_ATTRIBUTES.addTo(element);
+			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Empty coordinate
 			element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, "25.0  26.0");
-			TEST_SRS_ATTRIBUTES.addTo(element);
+			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// At least 2 coordinates
 			element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, "25.0");
-			TEST_SRS_ATTRIBUTES.addTo(element);
+			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 3 coordinates
 			element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, TEST_XS_LIST + " 25.0 35.0");
-			TEST_SRS_ATTRIBUTES.addTo(element);
+			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Each coordinate is a Double
 			element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, "25.0 Dog");
-			TEST_SRS_ATTRIBUTES.addTo(element);
+			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 		}
 	}
 
-	public void testDataConstructorInvalid() {
+	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing coordinates
-			testConstructor(WILL_FAIL, null, TEST_SRS_ATTRIBUTES);
+			testConstructor(WILL_FAIL, null, SRSAttributesTest.getFixture());
 
 			// At least 2 coordinates
 			List<Double> newCoords = new ArrayList<Double>();
 			newCoords.add(new Double(12.3));
-			testConstructor(WILL_FAIL, newCoords, TEST_SRS_ATTRIBUTES);
+			testConstructor(WILL_FAIL, newCoords, SRSAttributesTest.getFixture());
 
 			// No more than 3 coordinates
 			newCoords = new ArrayList<Double>();
@@ -228,7 +226,7 @@ public class PositionTest extends AbstractComponentTestCase {
 			newCoords.add(new Double(12.3));
 			newCoords.add(new Double(12.3));
 			newCoords.add(new Double(12.3));
-			testConstructor(WILL_FAIL, newCoords, TEST_SRS_ATTRIBUTES);
+			testConstructor(WILL_FAIL, newCoords, SRSAttributesTest.getFixture());
 		}
 	}
 
@@ -241,17 +239,17 @@ public class PositionTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Position elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			Position dataComponent = testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
+			Position dataComponent = testConstructor(WILL_SUCCEED, TEST_COORDS, SRSAttributesTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() {
+	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Position elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -260,7 +258,7 @@ public class PositionTest extends AbstractComponentTestCase {
 
 			List<Double> newCoords = new ArrayList<Double>(TEST_COORDS);
 			newCoords.add(new Double(100.0));
-			dataComponent = testConstructor(WILL_SUCCEED, newCoords, TEST_SRS_ATTRIBUTES);
+			dataComponent = testConstructor(WILL_SUCCEED, newCoords, SRSAttributesTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -274,35 +272,35 @@ public class PositionTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Position component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
+			component = testConstructor(WILL_SUCCEED, TEST_COORDS, SRSAttributesTest.getFixture());
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Position component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
+			component = testConstructor(WILL_SUCCEED, TEST_COORDS, SRSAttributesTest.getFixture());
 			assertEquals(getExpectedTextOutput(), component.toText());
 		}
 	}
 
-	public void testXMLOutput() {
+	public void testXMLOutput() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Position component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_COORDS, TEST_SRS_ATTRIBUTES);
+			component = testConstructor(WILL_SUCCEED, TEST_COORDS, SRSAttributesTest.getFixture());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
