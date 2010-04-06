@@ -72,16 +72,12 @@ public final class Rights extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Rights(boolean privacyAct, boolean intellectualProperty, boolean copyright) throws InvalidDDMSException {
-		try {
-			Element element = Util.buildDDMSElement(Rights.NAME, null);
-			Util.addDDMSAttribute(element, PRIVACY_ACT_NAME, Boolean.toString(privacyAct));
-			Util.addDDMSAttribute(element, INTELLECTUAL_PROPERY_NAME, Boolean.toString(intellectualProperty));
-			Util.addDDMSAttribute(element, COPYRIGHT_NAME, Boolean.toString(copyright));
-			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
-			e.setLocator(getQualifiedName());
-			throw (e);
-		}
+		Element element = Util.buildDDMSElement(Rights.NAME, null);
+		Util.addDDMSAttribute(element, PRIVACY_ACT_NAME, Boolean.toString(privacyAct));
+		Util.addDDMSAttribute(element, INTELLECTUAL_PROPERY_NAME, Boolean.toString(intellectualProperty));
+		Util.addDDMSAttribute(element, COPYRIGHT_NAME, Boolean.toString(copyright));
+		setXOMElement(element, true);
+		// This cannot actually throw an exception, so locator information is not inserted in a catch statement.
 	}
 		
 	/**
