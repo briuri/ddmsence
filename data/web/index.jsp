@@ -97,14 +97,22 @@ release.</p>
 
 <h1>On the Horizon</h1>
 
-<p>I am currently working on supporting DDMS 2.0 for the next release. Among the issues I'm also considering for the future:</p>
+<p><u>04/06/2010</u>: I have wrapped up development on DDMS 2.0 support and am starting development on the extensible 
+layer of DDMS, as outlined in <a href="http://code.google.com/p/ddmsence/issues/detail?id=4">Issue #4</a>.
+I expect to have a v1.1.0 release available sometime next week. Version 1.1.0 will add:</p>
+
 <ul>
-	<li>Adding support for the extensible portions of DDMS components (Person, Organization, Service, Unknown, keyword, category, and the Resource itself).</li>
-	<li>Implementing the security constraints found in the IC's "XML Data Encoding Specification for Information Security Marking Metadata" document.</li>
+	<li>Support for DDMS 2.0.</li>
+	<li>Basic support for the extensible attributes and elements in both DDMS 2.0 and DDMS 3.0.</li>
+	<li>Additional documentation and unit tests.</li>
 </ul>
 
+<p>The v1.1.0 release will break <a href="http://code.google.com/p/ddmsence/issues/detail?id=31">backwards compatibility</a> with v1.0.0. In initial 
+1.x releases, I will be more aggressive about creating a robust baseline at the expense of backwards compatibility, at least
+until I am aware that there are serious users of the library.</p> 
+
 <p>Please follow the "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list
- of enhancements under consideration.</p>
+ of enhancements under consideration for future releases.</p>
 			
 <h1>About the Author</h1>
 
