@@ -294,4 +294,16 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			assertFalse(attributes.equals(wrongComponent));
 		}
 	}
+	
+	public void testWrongVersionAttributes() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("3.0");
+		SRSAttributes attr = getFixture();
+		DDMSVersion.setCurrentVersion("2.0");
+		try {
+			new Position(PositionTest.TEST_COORDS, attr);
+			fail("Allowed different versions.");
+		} catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
 }
