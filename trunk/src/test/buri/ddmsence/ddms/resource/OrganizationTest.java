@@ -107,14 +107,14 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".entityType\" content=\"Organization\" />\n");
 		for (String name : TEST_NAMES)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".name\" content=\"").append(name).append(
-				"\" />\n");
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".name\" content=\"").append(name)
+				.append("\" />\n");
 		for (String phone : TEST_PHONES)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".phone\" content=\"").append(phone).append(
-				"\" />\n");
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".phone\" content=\"").append(phone)
+				.append("\" />\n");
 		for (String email : TEST_EMAILS)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".email\" content=\"").append(email).append(
-				"\" />\n");
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".email\" content=\"").append(email)
+				.append("\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".classification\" content=\"U\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());

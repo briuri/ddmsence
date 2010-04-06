@@ -631,7 +631,8 @@ public class UtilTest extends TestCase {
 			
 	public void testXmlEscape() {
 		String testString = "<test>\"Brian's DDMSense & DDMS\"</test>";
-		assertEquals("&lt;test&gt;&quot;Brian&apos;s DDMSense &amp; DDMS&quot;&lt;/test&gt;", Util.xmlEscape(testString));
+		assertEquals("&lt;test&gt;&quot;Brian&apos;s DDMSense &amp; DDMS&quot;&lt;/test&gt;", 
+			Util.xmlEscape(testString));
 	}
 	
 	public void testCapitalizeEmpty() {
@@ -697,7 +698,8 @@ public class UtilTest extends TestCase {
 	}
 	
 	public void testBuildAttribute() {
-		Attribute attribute = Util.buildAttribute("ddms", "test", DDMSVersion.getCurrentVersion().getNamespace(), "testValue");
+		Attribute attribute = Util.buildAttribute("ddms", "test", DDMSVersion.getCurrentVersion().getNamespace(),
+			"testValue");
 		assertNotNull(attribute);
 		assertEquals("test", attribute.getLocalName());
 		assertEquals("testValue", attribute.getValue());

@@ -190,8 +190,8 @@ public class SubtitleTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A ddms:subtitle element was found with no subtitle value.", component.getValidationWarnings()
-				.get(0).getText());
+			assertEquals("A ddms:subtitle element was found with no subtitle value.", 
+				component.getValidationWarnings().get(0).getText());
 			assertEquals("/ddms:subtitle", component.getValidationWarnings().get(0).getLocator());
 		}
 	}

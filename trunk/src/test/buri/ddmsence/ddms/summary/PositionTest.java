@@ -96,16 +96,16 @@ public class PositionTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatial.boundingGeometry.position\" content=\"").append(TEST_XS_LIST).append(
-			"\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.position.srsName\" content=\"").append(
-			SRSAttributesTest.TEST_SRS_NAME).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.position.srsDimension\" content=\"").append(
-			SRSAttributesTest.TEST_SRS_DIMENSION).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.position.axisLabels\" content=\"").append(
-			Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.position.uomLabels\" content=\"").append(
-			Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\" />\n");
+		html.append("<meta name=\"geospatial.boundingGeometry.position\" content=\"").append(TEST_XS_LIST)
+			.append("\" />\n");
+		html.append("<meta name=\"geospatial.boundingGeometry.position.srsName\" content=\"")
+			.append(SRSAttributesTest.TEST_SRS_NAME).append("\" />\n");
+		html.append("<meta name=\"geospatial.boundingGeometry.position.srsDimension\" content=\"")
+			.append(SRSAttributesTest.TEST_SRS_DIMENSION).append("\" />\n");
+		html.append("<meta name=\"geospatial.boundingGeometry.position.axisLabels\" content=\"")
+			.append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\" />\n");
+		html.append("<meta name=\"geospatial.boundingGeometry.position.uomLabels\" content=\"")
+			.append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -115,13 +115,14 @@ public class PositionTest extends AbstractComponentTestCase {
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
 		text.append("Geospatial Geometry Position: ").append(TEST_XS_LIST).append("\n");
-		text.append("Geospatial Geometry Position SRS Name: ").append(SRSAttributesTest.TEST_SRS_NAME).append("\n");
+		text.append("Geospatial Geometry Position SRS Name: ").append(SRSAttributesTest.TEST_SRS_NAME)
+			.append("\n");
 		text.append("Geospatial Geometry Position SRS Dimension: ").append(SRSAttributesTest.TEST_SRS_DIMENSION)
 			.append("\n");
-		text.append("Geospatial Geometry Position Axis Labels: ").append(
-			Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\n");
-		text.append("Geospatial Geometry Position Unit of Measure Labels: ").append(
-			Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\n");
+		text.append("Geospatial Geometry Position Axis Labels: ")
+			.append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\n");
+		text.append("Geospatial Geometry Position Unit of Measure Labels: ")
+			.append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\n");
 		return (text.toString());
 	}
 
@@ -182,23 +183,29 @@ public class PositionTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
 			// Missing coordinates
-			Element element = Util.buildDDMSElement(Position.NAME, null);
+			Element element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, null);
+			TEST_SRS_ATTRIBUTES.addTo(element);
+			testConstructor(WILL_FAIL, element);
+
+			// Empty coordinate
+			element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, "25.0  26.0");
 			TEST_SRS_ATTRIBUTES.addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// At least 2 coordinates
-			element = Util.buildDDMSElement(Position.NAME, "25.0");
+			element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, "25.0");
 			TEST_SRS_ATTRIBUTES.addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 3 coordinates
-			element = Util.buildDDMSElement(Position.NAME, TEST_XS_LIST + " 25.0 35.0");
+			element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, TEST_XS_LIST + " 25.0 35.0");
 			TEST_SRS_ATTRIBUTES.addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Each coordinate is a Double
-			element = Util.buildDDMSElement(Position.NAME, "25.0 Dog");
+			element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, "25.0 Dog");
 			TEST_SRS_ATTRIBUTES.addTo(element);
 			testConstructor(WILL_FAIL, element);
 		}

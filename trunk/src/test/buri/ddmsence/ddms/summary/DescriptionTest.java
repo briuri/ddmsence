@@ -109,10 +109,10 @@ public class DescriptionTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:description xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append(
-			"\" ");
-		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append(
-			"\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:description xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+			.append("\" ");
+		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace())
+			.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE).append("</ddms:description>");
 		return (xml.toString());
 	}

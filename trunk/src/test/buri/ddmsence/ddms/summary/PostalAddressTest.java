@@ -119,11 +119,12 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"geospatial.address.city\" content=\"").append(TEST_CITY).append("\" />\n");
 		if (hasState)
 			html.append("<meta name=\"geospatial.address.state\" content=\"").append(TEST_STATE).append("\" />\n");
-		else
+		else {
 			html.append("<meta name=\"geospatial.address.province\" content=\"").append(TEST_PROVINCE)
 				.append("\" />\n");
-		html.append("<meta name=\"geospatial.address.postalcode\" content=\"").append(TEST_POSTAL_CODE).append(
-			"\" />\n");
+		}
+		html.append("<meta name=\"geospatial.address.postalcode\" content=\"").append(TEST_POSTAL_CODE)
+			.append("\" />\n");
 		html.append("<meta name=\"geospatial.address.country.qualifier\" content=\"ISO-3166\" />\n");
 		html.append("<meta name=\"geospatial.address.country\" content=\"USA\" />\n");
 		return (html.toString());
@@ -156,8 +157,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting, boolean hasState) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:postalAddress xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append(
-			"\">\n\t");
+		xml.append("<ddms:postalAddress xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+			.append("\">\n\t");
 		xml.append("<ddms:street>1600 Pennsylvania Avenue, NW</ddms:street>\n\t");
 		xml.append("<ddms:city>Washington</ddms:city>\n\t");
 		if (hasState)
@@ -200,12 +201,12 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, CountryCodeTest
-				.getFixture(PostalAddress.NAME), true);
+			testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, 
+				CountryCodeTest.getFixture(PostalAddress.NAME), true);
 
 			// All fields with a province
-			testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, CountryCodeTest
-				.getFixture(PostalAddress.NAME), false);
+			testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, 
+				CountryCodeTest.getFixture(PostalAddress.NAME), false);
 
 			// No optional fields
 			testConstructor(WILL_SUCCEED, null, null, null, null, null, false);
@@ -266,8 +267,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			List<String> streets = new ArrayList<String>();
 			for (int i = 0; i < 7; i++)
 				streets.add("Street" + i);
-			testConstructor(WILL_FAIL, streets, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, CountryCodeTest
-				.getFixture(PostalAddress.NAME), true);
+			testConstructor(WILL_FAIL, streets, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, 
+				CountryCodeTest.getFixture(PostalAddress.NAME), true);
 		}
 	}
 
@@ -283,8 +284,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A completely empty ddms:postalAddress element was found.", component.getValidationWarnings()
-				.get(0).getText());
+			assertEquals("A completely empty ddms:postalAddress element was found.", 
+				component.getValidationWarnings().get(0).getText());
 			assertEquals("/ddms:postalAddress", component.getValidationWarnings().get(0).getLocator());
 		}
 	}
@@ -320,8 +321,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 				CountryCodeTest.getFixture(PostalAddress.NAME), false);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, null, CountryCodeTest
-				.getFixture(PostalAddress.NAME), true);
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, null, 
+				CountryCodeTest.getFixture(PostalAddress.NAME), true);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, null,

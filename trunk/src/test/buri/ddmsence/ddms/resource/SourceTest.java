@@ -134,8 +134,8 @@ public class SourceTest extends AbstractComponentTestCase {
 		xml.append("<ddms:source xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
 		if (!DDMSVersion.isCurrentVersion("2.0"))
 			xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append("\" ");
-		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE).append(
-			"\" ");
+		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
+			.append("\" ");
 		xml.append("ddms:schemaQualifier=\"").append(TEST_SCHEMA_QUALIFIER).append("\" ");
 		xml.append("ddms:schemaHref=\"").append(TEST_SCHEMA_HREF).append("\" ");
 		if (!DDMSVersion.isCurrentVersion("2.0"))
@@ -210,8 +210,8 @@ public class SourceTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A completely empty ddms:source element was found.", component.getValidationWarnings().get(0)
-				.getText());
+			assertEquals("A completely empty ddms:source element was found.", 
+				component.getValidationWarnings().get(0).getText());
 			assertEquals("/ddms:source", component.getValidationWarnings().get(0).getLocator());
 		}
 	}
@@ -300,7 +300,8 @@ public class SourceTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null : SecurityAttributesTest.getFixture(false));
+			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null 
+				: SecurityAttributesTest.getFixture(false));
 			Source component = new Source(TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF, attr);
 			if (DDMSVersion.isCurrentVersion("2.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());

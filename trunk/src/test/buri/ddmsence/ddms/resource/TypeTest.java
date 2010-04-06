@@ -108,8 +108,8 @@ public class TypeTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:type xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE).append(
-			"\" />");
+		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
+			.append("\" />");
 		return (xml.toString());
 	}
 
@@ -181,8 +181,8 @@ public class TypeTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A qualifier has been set without an accompanying value attribute.", component
-				.getValidationWarnings().get(0).getText());
+			assertEquals("A qualifier has been set without an accompanying value attribute.", 
+				component.getValidationWarnings().get(0).getText());
 			assertEquals("/ddms:type", component.getValidationWarnings().get(0).getLocator());
 
 			// Neither attribute
@@ -190,8 +190,8 @@ public class TypeTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("Neither a qualifier nor a value was set on this type.", component.getValidationWarnings()
-				.get(0).getText());
+			assertEquals("Neither a qualifier nor a value was set on this type.", 
+				component.getValidationWarnings().get(0).getText());
 			assertEquals("/ddms:type", component.getValidationWarnings().get(0).getLocator());
 		}
 	}

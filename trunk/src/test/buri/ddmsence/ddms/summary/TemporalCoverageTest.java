@@ -80,8 +80,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		String endString) {
 		TemporalCoverage component = null;
 		try {
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0")) ? null : SecurityAttributesTest
-				.getFixture(false);
+			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0")) ? null 
+				: SecurityAttributesTest.getFixture(false);
 			component = new TemporalCoverage(timePeriodName, startString, endString, attr);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
@@ -127,10 +127,11 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:temporalCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\"");
+		xml.append("<ddms:temporalCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+			.append("\"");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			xml.append(" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append(
-				"\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
+			xml.append(" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace())
+				.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n\t");
 		xml.append("<ddms:TimePeriod>\n\t\t");
@@ -266,10 +267,10 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A ddms:name element was found with no value. Defaulting to \"Unknown\".", component
-				.getValidationWarnings().get(0).getText());
-			assertEquals("/ddms:temporalCoverage/ddms:TimePeriod", component.getValidationWarnings().get(0)
-				.getLocator());
+			assertEquals("A ddms:name element was found with no value. Defaulting to \"Unknown\".", 
+				component.getValidationWarnings().get(0).getText());
+			assertEquals("/ddms:temporalCoverage/ddms:TimePeriod", 
+				component.getValidationWarnings().get(0).getLocator());
 		}
 	}
 
@@ -385,7 +386,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);			
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null : SecurityAttributesTest.getFixture(false));
+			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null 
+				: SecurityAttributesTest.getFixture(false));
 			TemporalCoverage component = new TemporalCoverage(TEST_NAME, TEST_START, TEST_END, attr);
 			if (DDMSVersion.isCurrentVersion("2.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());

@@ -273,8 +273,13 @@ public final class SecurityAttributes {
 	 * 
 	 * @param element the element to decorate
 	 */
-	public void addTo(Element element) {
-		DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
+	public void addTo(Element element) throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getVersionFor(getDDMSVersion());
+		DDMSVersion elementVersion = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
+		if (version != elementVersion) {
+			throw new InvalidDDMSException("These security attributes cannot decorate a DDMS component with"
+				+ " a different DDMS version.");
+		}			
 		String icNamespace = version.getIcismNamespace();
 		Util.addAttribute(element, ICISM_PREFIX, CLASSIFICATION_NAME, icNamespace, getClassification());
 		Util.addAttribute(element, ICISM_PREFIX, OWNER_PRODUCER_NAME, icNamespace, Util.getXsList(getOwnerProducers()));

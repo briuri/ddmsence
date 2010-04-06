@@ -119,8 +119,8 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:extent xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE).append(
-			"\" />");
+		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
+			.append("\" />");
 		return (xml.toString());
 	}
 
@@ -201,8 +201,8 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A qualifier has been set without an accompanying value attribute.", component
-				.getValidationWarnings().get(0).getText());
+			assertEquals("A qualifier has been set without an accompanying value attribute.", 
+				component.getValidationWarnings().get(0).getText());
 			assertEquals("/ddms:extent", component.getValidationWarnings().get(0).getLocator());
 
 			// Neither attribute
@@ -210,8 +210,8 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A completely empty ddms:extent element was found.", component.getValidationWarnings().get(0)
-				.getText());
+			assertEquals("A completely empty ddms:extent element was found.", 
+				component.getValidationWarnings().get(0).getText());
 			assertEquals("/ddms:extent", component.getValidationWarnings().get(0).getLocator());
 		}
 	}

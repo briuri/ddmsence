@@ -140,8 +140,8 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:link xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append(
-			"\" xmlns:xlink=\"").append(XLINK_NAMESPACE).append("\" ");
+		xml.append("<ddms:link xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+			.append("\" xmlns:xlink=\"").append(XLINK_NAMESPACE).append("\" ");
 		xml.append("xlink:type=\"").append(TEST_TYPE).append("\" ");
 		xml.append("xlink:href=\"").append(TEST_HREF).append("\" ");
 		xml.append("xlink:role=\"").append(TEST_ROLE).append("\" ");

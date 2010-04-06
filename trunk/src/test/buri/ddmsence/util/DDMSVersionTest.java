@@ -52,7 +52,8 @@ public class DDMSVersionTest extends TestCase {
 	}
 	
 	public void testGetVersionFor() {
-		assertEquals("2.0", DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/2.0/").getVersion());
+		assertEquals("2.0", 
+			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/2.0/").getVersion());
 		assertEquals(null, DDMSVersion.getVersionForNamespace("TEST"));
 	}
 	
@@ -97,5 +98,13 @@ public class DDMSVersionTest extends TestCase {
 	public void testGetSchemaForValid() {
 		DDMSVersion.setCurrentVersion("2.0");
 		assertEquals("/schemas/2.0/DDMS/2.0/DDMS-v2_0.xsd", DDMSVersion.getCurrentVersion().getSchema());
+	}
+	
+	public void testGmlNamespaceInvalid() {
+		assertNull(DDMSVersion.getVersionForGmlNamespace("unknown"));
+	}
+	
+	public void testToString() {
+		assertEquals(DDMSVersion.getCurrentVersion().getVersion(), DDMSVersion.getCurrentVersion().toString());
 	}
 }

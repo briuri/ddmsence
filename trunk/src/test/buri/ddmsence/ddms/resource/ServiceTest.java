@@ -85,10 +85,12 @@ public class ServiceTest extends AbstractComponentTestCase {
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 */
-	private Service testConstructor(boolean expectFailure, List<String> names, List<String> phones, List<String> emails) {
+	private Service testConstructor(boolean expectFailure, List<String> names, List<String> phones, 
+		List<String> emails) {
 		Service component = null;
 		try {
-			component = new Service(TEST_PRODUCER_TYPE, names, phones, emails, SecurityAttributesTest.getFixture(false));
+			component = new Service(TEST_PRODUCER_TYPE, names, phones, emails, 
+				SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -103,14 +105,14 @@ public class ServiceTest extends AbstractComponentTestCase {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".entityType\" content=\"Service\" />\n");
 		for (String name : TEST_NAMES)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".name\" content=\"").append(name).append(
-				"\" />\n");
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".name\" content=\"").append(name)
+			.append("\" />\n");
 		for (String phone : TEST_PHONES)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".phone\" content=\"").append(phone).append(
-				"\" />\n");
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".phone\" content=\"").append(phone)
+			.append("\" />\n");
 		for (String email : TEST_EMAILS)
-			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".email\" content=\"").append(email).append(
-				"\" />\n");
+			html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".email\" content=\"").append(email)
+			.append("\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".classification\" content=\"U\" />\n");
 		html.append("<meta name=\"").append(TEST_PRODUCER_TYPE).append(".ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
@@ -142,8 +144,8 @@ public class ServiceTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(
 			DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append(
-			"\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"><ddms:Service>\n");
+		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace())
+			.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"><ddms:Service>\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
 		for (String phone : TEST_PHONES)

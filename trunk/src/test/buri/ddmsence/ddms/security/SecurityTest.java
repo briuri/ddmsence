@@ -106,8 +106,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:security xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append(
-			"\" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append("\" ");
+		xml.append("<ddms:security xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+			.append("\" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append("\" ");
 		if (!DDMSVersion.isCurrentVersion("2.0"))
 			xml.append("ICISM:excludeFromRollup=\"true\" ");
 		xml.append("ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\" />");
@@ -151,6 +151,12 @@ public class SecurityTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(Security.NAME, null);
 			testConstructor(WILL_FAIL, element);
 
+			// Incorrect excludeFromRollup
+			element = Util.buildDDMSElement(Security.NAME, null);
+			Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", DDMSVersion.getCurrentVersion()
+				.getIcismNamespace(), "false");
+			testConstructor(WILL_FAIL, element);
+			
 			// Invalid excludeFromRollup
 			element = Util.buildDDMSElement(Security.NAME, null);
 			Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", DDMSVersion.getCurrentVersion()
@@ -242,10 +248,12 @@ public class SecurityTest extends AbstractComponentTestCase {
 	
 	public void test20Usage() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
+		String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
+		
 		Element element = Util.buildDDMSElement("security", null);
-		Util.addAttribute(element, ICISM_PREFIX, "classification", DDMSVersion.getCurrentVersion().getIcismNamespace(), "U");
-		Util.addAttribute(element, ICISM_PREFIX, "ownerProducer", DDMSVersion.getCurrentVersion().getIcismNamespace(), "USA");
-		Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", DDMSVersion.getCurrentVersion().getIcismNamespace(), "true");
+		Util.addAttribute(element, ICISM_PREFIX, "classification", icNamespace, "U");
+		Util.addAttribute(element, ICISM_PREFIX, "ownerProducer", icNamespace, "USA");
+		Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", icNamespace, "true");
 		try {
 			new Security(element);
 			fail("Allowed invalid data.");

@@ -99,8 +99,8 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatial.verticalExtent.unitOfMeasure\" content=\"").append(TEST_UOM).append(
-			"\" />\n");
+		html.append("<meta name=\"geospatial.verticalExtent.unitOfMeasure\" content=\"").append(TEST_UOM)
+			.append("\" />\n");
 		html.append("<meta name=\"geospatial.verticalExtent.datum\" content=\"").append(TEST_DATUM).append("\" />\n");
 		html.append("<meta name=\"geospatial.verticalExtent.minimum\" content=\"").append(TEST_MIN).append("\" />\n");
 		html.append("<meta name=\"geospatial.verticalExtent.maximum\" content=\"").append(TEST_MAX).append("\" />\n");
@@ -126,8 +126,8 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:verticalExtent xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append(
-			"\" ");
+		xml.append("<ddms:verticalExtent xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+			.append("\" ");
 		xml.append("ddms:unitOfMeasure=\"").append(TEST_UOM).append("\" ");
 		xml.append("ddms:datum=\"").append(TEST_DATUM).append("\">\n\t");
 		xml.append("<ddms:MinVerticalExtent>").append(TEST_MIN).append("</ddms:MinVerticalExtent>\n\t");

@@ -163,8 +163,8 @@ public final class Security extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Security))
 			return (false);
 		Security test = (Security) obj;
-		return (getSecurityAttributes().equals(test.getSecurityAttributes()) 
-			&& Util.nullEquals(getExcludeFromRollup(), test.getExcludeFromRollup()));
+		// ExcludeFromRollup is not included in equality, becuase it is fixed at TRUE.
+		return (getSecurityAttributes().equals(test.getSecurityAttributes()));
 	}
 
 	/**
@@ -172,8 +172,7 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		if (getExcludeFromRollup() != null)
-			result = 7 * result + Util.booleanHashCode(getExcludeFromRollup().booleanValue());
+		// ExcludeFromRollup is not included in hashCode, becuase it is fixed at TRUE.
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}

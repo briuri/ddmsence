@@ -93,10 +93,10 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatial.identifier.facility.BEnumber\" content=\"").append(TEST_BENUMBER).append(
-			"\" />\n");
-		html.append("<meta name=\"geospatial.identifier.facility.Osuffix\" content=\"").append(TEST_OSUFFIX).append(
-			"\" />\n");
+		html.append("<meta name=\"geospatial.identifier.facility.BEnumber\" content=\"").append(TEST_BENUMBER)
+			.append("\" />\n");
+		html.append("<meta name=\"geospatial.identifier.facility.Osuffix\" content=\"").append(TEST_OSUFFIX)
+			.append("\" />\n");
 		return (html.toString());
 	}
 
