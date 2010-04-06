@@ -19,7 +19,6 @@
 */
 package buri.ddmsence.ddms.security;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +28,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import nu.xom.Element;
+import buri.ddmsence.ddms.AbstractAttributeGroup;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -85,10 +84,7 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public final class SecurityAttributes {
-
-	private List<ValidationMessage> _warnings;
-	private String _ddmsVersion;
+public final class SecurityAttributes extends AbstractAttributeGroup {
 	
 	private String _cachedClassification = null;
 	private List<String> _cachedOwnerProducers = null;
@@ -180,9 +176,8 @@ public final class SecurityAttributes {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public SecurityAttributes(Element element) throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
-		_ddmsVersion = version.getVersion();
-		String icNamespace = version.getIcismNamespace();
+		super(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));
+		String icNamespace = DDMSVersion.getVersionFor(getDDMSVersion()).getIcismNamespace();
 		_cachedClassification = element.getAttributeValue(CLASSIFICATION_NAME, icNamespace);
 		_cachedOwnerProducers = Util.getAsList(element.getAttributeValue(OWNER_PRODUCER_NAME, icNamespace));
 		_cachedSCIcontrols = Util.getAsList(element.getAttributeValue(SCI_CONTROLS_NAME, icNamespace));
@@ -234,11 +229,11 @@ public final class SecurityAttributes {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public SecurityAttributes(String classification, List<String> ownerProducers, Map<String, String> otherAttributes) throws InvalidDDMSException {
+		super(DDMSVersion.getCurrentVersion());
 		if (ownerProducers == null)
 			ownerProducers = Collections.emptyList();
 		if (otherAttributes == null)
 			otherAttributes = Collections.emptyMap();
-		_ddmsVersion = DDMSVersion.getCurrentVersion().getVersion();
 		_cachedClassification = classification;
 		_cachedOwnerProducers = ownerProducers;
 		_cachedSCIcontrols = Util.getAsList(otherAttributes.get(SCI_CONTROLS_NAME));
@@ -341,12 +336,7 @@ public final class SecurityAttributes {
 	/**
 	 * Validates the attribute group. Where appropriate the {@link ISMVocabulary} enumerations are validated.
 	 * 
-	 * <table class="info">
-	 * <tr class="infoHeader">
-	 * <th>Rules</th>
-	 * </tr>
-	 * <tr>
-	 * <td class="infoBody">
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>If set, the classification must be a valid token.</li>
 	 * <li>If set, the ownerProducers must be valid tokens.</li>
 	 * <li>If set, the SCIcontrols must be valid tokens.</li>
@@ -362,13 +352,13 @@ public final class SecurityAttributes {
 	 * <li>If set, the typeOfExemptedSource must be a valid token.</li>
 	 * <li>If set, the dateOfExemptedSource is a valid xs:date value.</li>
 	 * <li>(v3.0) The declassManualReview cannot be used after DDMS 2.0.</li> 
-	 * <li>Does NOT do any validation on the constraints described in the DES ISM specification.</li></td>
-	 * </tr>
-	 * </table>
+	 * <li>Does NOT do any validation on the constraints described in the DES ISM specification.</li>
+	 * </td></tr></table>
 	 * 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	private void validate() throws InvalidDDMSException {
+	protected void validate() throws InvalidDDMSException {
+		super.validate();
 		boolean isDDDMS20 = "2.0".equals(getDDMSVersion());
 		if (!Util.isEmpty(getClassification())) {
 			if (!isDDDMS20 || !ISMVocabulary.usingOldClassification(getClassification()))
@@ -420,15 +410,7 @@ public final class SecurityAttributes {
 			throw new InvalidDDMSException("The dateOfExemptedSource must be in the xs:date format (YYYY-MM-DD).");
 	}
 	
-	/**
-	 * Returns a list of any warning messages that occurred during validation. Warnings do not prevent a valid component
-	 * from being formed.
-	 * 
-	 * @return a list of warnings
-	 */
-	public List<ValidationMessage> getValidationWarnings() {
-		return (Collections.unmodifiableList(getWarnings()));
-	}
+
 	
 	/**
 	 * Standalone validation method for components which require a classification and ownerProducer.
@@ -587,28 +569,6 @@ public final class SecurityAttributes {
 			result = 7 * result + getDeclassManualReview().hashCode();
 		return (result);
 	}	
-
-	/**
-	 * Accessor for the list of validation warnings.
-	 * 
-	 * <p>
-	 * This is the private copy that should be manipulated during validation. Lazy initialization.
-	 * </p>
-	 * 
-	 * @return an editable list of warnings
-	 */
-	protected List<ValidationMessage> getWarnings() {
-		if (_warnings == null)
-			_warnings = new ArrayList<ValidationMessage>();
-		return (_warnings);
-	}
-	
-	/**
-	 * Accessor for the DDMS Version
-	 */
-	public String getDDMSVersion() {
-		return (_ddmsVersion);
-	}
 	
 	/**
 	 * Accessor for the classification attribute.

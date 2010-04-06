@@ -24,8 +24,9 @@ import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
+import buri.ddmsence.ddms.AbstractAttributeGroup;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ValidationMessage;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -52,10 +53,8 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public final class SRSAttributes {
-	
-	private List<ValidationMessage> _warnings;
-	
+public final class SRSAttributes extends AbstractAttributeGroup {
+
 	private String _cachedSrsName;
 	private Integer _cachedSrsDimension;
 	private List<String> _cachedAxisLabels;
@@ -78,6 +77,7 @@ public final class SRSAttributes {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public SRSAttributes(Element element) throws InvalidDDMSException {
+		super(DDMSVersion.getVersionForGmlNamespace(element.getNamespaceURI()));
 		_cachedSrsName = element.getAttributeValue(SRS_NAME_NAME, NO_NAMESPACE);
 		String srsDimension = element.getAttributeValue(SRS_DIMENSION_NAME, NO_NAMESPACE);
 		if (!Util.isEmpty(srsDimension)) {
@@ -107,6 +107,7 @@ public final class SRSAttributes {
 	 */
 	public SRSAttributes(String srsName, Integer srsDimension, List<String> axisLabels, List<String> uomLabels)
 		throws InvalidDDMSException {
+		super(DDMSVersion.getCurrentVersion());
 		if (axisLabels == null)
 			axisLabels = Collections.emptyList();
 		if (uomLabels == null)
@@ -146,6 +147,7 @@ public final class SRSAttributes {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
+		super.validate();
 		if (!Util.isEmpty(getSrsName()))
 			Util.requireDDMSValidURI(getSrsName());
 		if (getSrsDimension() != null && getSrsDimension().intValue() < 0)
@@ -156,16 +158,6 @@ public final class SRSAttributes {
 			throw new InvalidDDMSException("The uomLabels attribute can only be used in tandem with axisLabels.");
 		Util.requireValidNCNames(getAxisLabels());
 		Util.requireValidNCNames(getUomLabels());
-	}
-	
-	/**
-	 * Returns a list of any warning messages that occurred during validation. Warnings
-	 * do not prevent a valid component from being formed.
-	 * 
-	 * @return a list of warnings
-	 */
-	public List<ValidationMessage> getValidationWarnings() {
-		return (Collections.unmodifiableList(getWarnings()));
 	}
 	
 	/**
@@ -195,23 +187,7 @@ public final class SRSAttributes {
 		result = 7 * result + getUomLabels().hashCode();
 		return (result);
 	}
-	
-	/**
-	 * Accessor for the list of validation warnings.
-	 * 
-	 * <p>
-	 * This is the private copy that should be manipulated during validation.
-	 * Lazy initialization.
-	 * </p>
-	 * 
-	 * @return an editable list of warnings
-	 */
-	protected List<ValidationMessage> getWarnings() {
-		if (_warnings == null)
-			_warnings = new ArrayList<ValidationMessage>();
-		return (_warnings);
-	}
-	
+		
 	/**
 	 * Accessor for the srsName.
 	 */
