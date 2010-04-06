@@ -139,17 +139,18 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
-	 * @param timePeriodName	the time period name (optional) (if empty, defaults to Unknown)
-	 * @param startString		a string representation of the date (required) (if empty, defaults to Unknown)
-	 * @param endString 		a string representation of the end date (required) (if empty, defaults to Unknown)
+	 * 
+	 * @param timePeriodName the time period name (optional) (if empty, defaults to Unknown)
+	 * @param startString a string representation of the date (required) (if empty, defaults to Unknown)
+	 * @param endString a string representation of the end date (required) (if empty, defaults to Unknown)
 	 * @param securityAttributes any security attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public TemporalCoverage(String timePeriodName, String startString, String endString, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public TemporalCoverage(String timePeriodName, String startString, String endString,
+		SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			Element periodElement = Util.buildDDMSElement(TIME_PERIOD_NAME, null);
 			if (!Util.isEmpty(timePeriodName))
@@ -240,15 +241,29 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		else
 			validateExtendedDateType(getEndString());
 		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes can only be applied to this component in DDMS v3.0 or later.");
+			throw new InvalidDDMSException("Security attributes can only be applied to this component in DDMS 3.0.");
 		}
 		if (getStart() != null && getEnd() != null) {
 			if (getStart().toGregorianCalendar().after(getEnd().toGregorianCalendar())) {
 				throw new InvalidDDMSException("The start date is after the end date.");
 			}
 		}
-
-		Element timePeriodName = periodElement.getFirstChildElement(TIME_PERIOD_NAME_NAME, periodElement.getNamespaceURI());
+		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A ddms:name element was found with no value.</li>
+	 * <li>Include any validation warnings from the security attributes.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		Element periodElement = getChild(TIME_PERIOD_NAME);
+		Element timePeriodName = periodElement.getFirstChildElement(TIME_PERIOD_NAME_NAME, 
+			periodElement.getNamespaceURI());
 		if (timePeriodName != null && Util.isEmpty(timePeriodName.getValue()))
 			addWarning("A ddms:name element was found with no value. Defaulting to \"" + DEFAULT_VALUE + "\".");
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
@@ -292,10 +307,10 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof TemporalCoverage))
 			return (false);
 		TemporalCoverage test = (TemporalCoverage) obj;
-		return (getTimePeriodName().equals(test.getTimePeriodName()) &&
-			getStartString().equals(test.getStartString()) &&
-			getEndString().equals(test.getEndString()) &&
-			getSecurityAttributes().equals(test.getSecurityAttributes()));
+		return (getTimePeriodName().equals(test.getTimePeriodName()) 
+			&& getStartString().equals(test.getStartString())
+			&& getEndString().equals(test.getEndString()) 
+			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
 	}
 
 	/**
@@ -323,12 +338,12 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * will return null. Use <code>getStartString</code> to retrieve the string representation.
 	 */
 	public XMLGregorianCalendar getStart() {
-		return (_cachedStart == null ? null : getFactory().newXMLGregorianCalendar(_cachedStart.toXMLFormat())); 
+		return (_cachedStart == null ? null : getFactory().newXMLGregorianCalendar(_cachedStart.toXMLFormat()));
 	}
 
 	/**
-	 * Accessor for the start date as a string. If the value of start cannot be represented by an XML calendar, this will
-	 * return "Not Applicable" or "Unknown". Use <code>getStart</code> to work with this value as a calendar date.
+	 * Accessor for the start date as a string. If the value of start cannot be represented by an XML calendar, this
+	 * will return "Not Applicable" or "Unknown". Use <code>getStart</code> to work with this value as a calendar date.
 	 */
 	public String getStartString() {
 		if (getStart() != null)
@@ -355,7 +370,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the Security Attributes. Will be null in DDMS 2.0, and non-null in DDMS 3.0.
+	 * Accessor for the Security Attributes.  Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);

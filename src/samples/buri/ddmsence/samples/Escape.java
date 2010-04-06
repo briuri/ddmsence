@@ -41,24 +41,29 @@ import buri.ddmsence.samples.util.AbstractSample;
 import buri.ddmsence.samples.util.Distribution;
 
 /**
- * DDMScape is a tool that loads multiple DDMS Resource files and then exposes various statistics about them through the Google Visualization API.
+ * DDMScape is a tool that loads multiple DDMS Resource files and then exposes various statistics about them through the
+ * Google Visualization API.
  * 
  * <p>
- * Because some Google Visualizations require Flash, or have interactive components, I limited the output of this application to the
- * static image-based visualizations like pie graphs. This allows the results to display in a Swing UI rather than requiring a browser with addons.
+ * Because some Google Visualizations require Flash, or have interactive components, I limited the output of this
+ * application to the static image-based visualizations like pie graphs. This allows the results to display in a Swing
+ * UI rather than requiring a browser with addons.
  * </p>
  * 
  * <p>
- * However, the same concepts displayed in this application could be done in a webapp to allow for more complex visualizations, like
- * Temporal Coverage on a timeline, or Geospatial Coverage on a map.
+ * However, the same concepts displayed in this application could be done in a webapp to allow for more complex
+ * visualizations, like Temporal Coverage on a timeline, or Geospatial Coverage on a map.
  * </p>
  * 
  * <p>
- * While the first two sample applications were designed to teach developers how DDMSence works,
- * the intent of this one is to provide brainstorming ideas for leveraging DDMS in other contexts.
+ * While the first two sample applications were designed to teach developers how DDMSence works, the intent of this one
+ * is to provide brainstorming ideas for leveraging DDMS in other contexts.
  * </p>
  * 
- * <p>For additional details about this application, please see the tutorial on the Documentation page of the DDMSence website.</p>
+ * <p>
+ * For additional details about this application, please see the tutorial on the Documentation page of the DDMSence
+ * website.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b

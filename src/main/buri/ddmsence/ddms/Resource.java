@@ -554,7 +554,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>Include all child component validation warnings, and any warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
-	private void validateWarnings() {
+	protected void validateWarnings() {
 		if (getSecurityAttributes().isEmpty()) {
 			addWarning("Security rollup validation is being skipped, because no classification exists "
 				+ "on the ddms:Resource itself.");
@@ -847,8 +847,8 @@ public final class Resource extends AbstractBaseComponent {
 	 * Accessor for the createDate date (optional). Returns a copy. This may be null for v2.0 Resource components.
 	 */
 	public XMLGregorianCalendar getCreateDate() {
-		return (_cachedCreateDate == null ? null : getFactory()
-			.newXMLGregorianCalendar(_cachedCreateDate.toXMLFormat()));
+		return (_cachedCreateDate == null ? null
+			: getFactory().newXMLGregorianCalendar(_cachedCreateDate.toXMLFormat()));
 	}
 
 	/**

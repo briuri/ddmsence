@@ -48,9 +48,9 @@ import buri.ddmsence.util.Util;
  * Representation of the Controlled Vocabulary enumerations used by ICISM attributes.
  * 
  * <p>
- * Token values are read from the CVEnumISM.xml files accompanying the "XML Data Encoding Specification
- * for Information Security Marking Metadata Version 2 (Pre-Release)". They can then be used to validate
- * the contents of the attributes in a {@link SecurityAttributes} instance.
+ * Token values are read from the CVEnumISM.xml files accompanying the "XML Data Encoding Specification for Information
+ * Security Marking Metadata Version 2 (Pre-Release)". They can then be used to validate the contents of the attributes
+ * in a {@link SecurityAttributes} instance.
  * </p>
  * 
  * <ul>
@@ -68,11 +68,13 @@ import buri.ddmsence.util.Util;
  * <li>CVEnumISMSourceMarked.xml: tokens allowed in the "typeOfExemptedSource" attribute</li>
  * </ul>
  * 
- * <p>Some of these vocabularies include regular expression patterns.</p>
+ * <p>
+ * Some of these vocabularies include regular expression patterns.
+ * </p>
  * 
  * <p>
- * Separate Java lists of Classification values are maintained to calculate the ordering of 
- * classifications from least to most restrictive.
+ * Separate Java lists of Classification values are maintained to calculate the ordering of classifications from least
+ * to most restrictive.
  * </p>
  * 
  * @author Brian Uri!
@@ -186,9 +188,8 @@ public class ISMVocabulary {
 	}
 
 	/**
-	 * Opens the enumeration file and extracts a Set of String token values
-	 * based on the Term elements in the file. Stores them in the ENUM_TOKENS
-	 * map with the key. If a pattern is discovered, it is stored in a separate mapping.
+	 * Opens the enumeration file and extracts a Set of String token values based on the Term elements in the file.
+	 * Stores them in the ENUM_TOKENS map with the key. If a pattern is discovered, it is stored in a separate mapping.
 	 * 
 	 * @param builder the XOM Builder to read the file with
 	 * @param enumerationKey the key for the enumeration, which doubles as the filename.
@@ -220,7 +221,7 @@ public class ISMVocabulary {
 	}
 	
 	/**
-	 * Checks if a value exists in the controlled vocabulary identified by the key. 
+	 * Checks if a value exists in the controlled vocabulary identified by the key.
 	 * 
 	 * @param enumerationKey the key of the enumeration
 	 * @param value the test value
@@ -228,12 +229,14 @@ public class ISMVocabulary {
 	 */
 	public static void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
 		if (!enumContains(enumerationKey, value))
-			throw new InvalidDDMSException(value + " is not a valid enumeration token for this attribute, as specified in " + enumerationKey + ".");
+			throw new InvalidDDMSException(value
+				+ " is not a valid enumeration token for this attribute, as specified in " + enumerationKey + ".");
 	}
 	
 	/**
-	 * Checks if a value exists in the controlled vocabulary identified by the key. If the value does not match the tokens, but the CVE also
-	 * contains patterns, the regular expression pattern is checked next. If neither tokens or patterns returns a match, return false.
+	 * Checks if a value exists in the controlled vocabulary identified by the key. If the value does not match the
+	 * tokens, but the CVE also contains patterns, the regular expression pattern is checked next. If neither tokens or
+	 * patterns returns a match, return false.
 	 * 
 	 * @param enumerationKey the key of the enumeration
 	 * @param value the test value
@@ -244,7 +247,8 @@ public class ISMVocabulary {
 		Util.requireValue("key", enumerationKey);
 		Set<String> vocabulary = ENUM_TOKENS.get(enumerationKey);
 		if (vocabulary == null) {
-			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: " + enumerationKey);
+			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: "
+				+ enumerationKey);
 		}
 		boolean isValidToken = vocabulary.contains(value);
 		if (!isValidToken) {
@@ -265,10 +269,14 @@ public class ISMVocabulary {
 	 * Returns an index which can be used to determine how restrictive a marking is (with lower numbers being less
 	 * restrictive).
 	 * 
-	 * <p> The ordering for US markings (from least to most restrictive) is [U, C, S, TS]. The ordering for NATO
-	 * markings (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTSA]. </p>
+	 * <p>
+	 * The ordering for US markings (from least to most restrictive) is [U, C, S, TS]. The ordering for NATO markings
+	 * (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTSA].
+	 * </p>
 	 * 
-	 * <p>CTS-B, CTS-BALK, and R are not included in the ordering, so they return -1. </p>
+	 * <p>
+	 * CTS-B, CTS-BALK, and R are not included in the ordering, so they return -1.
+	 * </p>
 	 * 
 	 * @param classification the classification to test
 	 * @return an index, or -1 if the marking does not belong to any known systems.

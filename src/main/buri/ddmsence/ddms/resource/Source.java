@@ -93,7 +93,8 @@ public final class Source extends AbstractQualifierValue {
 	 * @param securityAttributes any security attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Source(String qualifier, String value, String schemaQualifier, String schemaHref, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public Source(String qualifier, String value, String schemaQualifier, String schemaHref,
+		SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(Source.NAME, qualifier, value, false);
 		try {
 			Element element = getXOMElement();
@@ -101,7 +102,7 @@ public final class Source extends AbstractQualifierValue {
 			Util.addDDMSAttribute(element, SCHEMA_HREF_NAME, schemaHref);
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);		
+			_cachedSecurityAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -127,13 +128,28 @@ public final class Source extends AbstractQualifierValue {
 		if (!Util.isEmpty(getSchemaHref())) {
 			Util.requireDDMSValidURI(getSchemaHref());
 		}		
-		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()) && 
-			Util.isEmpty(getSchemaQualifier()) && Util.isEmpty(getSchemaHref())) {
+		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException(
+				"Security attributes can only be applied to this component in DDMS v3.0.");
+		}
+		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A completely empty ddms:source element was found.</li>
+	 * <li>Include any validation warnings from the security attributes.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()) && Util.isEmpty(getSchemaQualifier())
+			&& Util.isEmpty(getSchemaHref())) {
 			addWarning("A completely empty ddms:source element was found.");
 		}
-		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes can only be applied to this component in DDMS v3.0 or later.");
-		}		
+		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	
 	/**
@@ -169,9 +185,9 @@ public final class Source extends AbstractQualifierValue {
 		if (!super.equals(obj) || !(obj instanceof Source))
 			return (false);
 		Source test = (Source) obj;
-		return (getSchemaQualifier().equals(test.getSchemaQualifier()) &&
-			getSchemaHref().equals(test.getSchemaHref()) &&
-			getSecurityAttributes().equals(test.getSecurityAttributes()));
+		return (getSchemaQualifier().equals(test.getSchemaQualifier()) 
+			&& getSchemaHref().equals(test.getSchemaHref()) 
+			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
 	}
 	
 	/**
@@ -200,7 +216,7 @@ public final class Source extends AbstractQualifierValue {
 	}
 	
 	/**
-	 * Accessor for the Security Attributes. Will be null in DDMS 2.0, and non-null in DDMS 3.0.
+	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);

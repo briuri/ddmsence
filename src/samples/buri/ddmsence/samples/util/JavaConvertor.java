@@ -57,18 +57,19 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * Utility class which can convert a DDMS Resource into the Java source code that would be used to create it from scratch.
+ * Utility class which can convert a DDMS Resource into the Java source code that would be used to create it from
+ * scratch.
  * 
  * <p>
- * This utility is used in the Essentials sample application to show how a DDMS Resource built from an XML file could 
+ * This utility is used in the Essentials sample application to show how a DDMS Resource built from an XML file could
  * also be built in Java. It was not put into the IDDMSComponent interface, because it's a one-off and more related to
  * DDMSence than DDMS.
  * </p>
  * 
  * <p>
- * This utility was a late-game brainstorm that I thought might be useful. It is NOT well-tested, NOT well-covered, and 
- * NOT thread safe.
- * Should it ever become an official part of the library, I would want to redo this in a more maintainable form.
+ * This utility was a late-game brainstorm that I thought might be useful. It is NOT well-tested, NOT well-covered, and
+ * NOT thread safe. Should it ever become an official part of the library, I would want to redo this in a more
+ * maintainable form.
  * </p>
  * 
  * @author Brian Uri!
@@ -178,8 +179,8 @@ public class JavaConvertor {
 	public static void convert(StringBuffer java, Identifier identifier) {
 		int count = getVariableCount();
 		java.append("\n// ddms:identifier\n");
-		java.append("Identifier identifier").append(count).append(" = new Identifier(\"").append(identifier.getQualifier()).append("\", \"")
-			.append(identifier.getValue()).append("\");\n");
+		java.append("Identifier identifier").append(count).append(" = new Identifier(\"")
+			.append(identifier.getQualifier()).append("\", \"").append(identifier.getValue()).append("\");\n");
 		java.append("topLevelComponents.add(identifier").append(count).append(");\n");
 	}
 	
@@ -194,7 +195,8 @@ public class JavaConvertor {
 		int count = getVariableCount();
 		java.append("\n// ddms:title\n");
 		convert(java, title.getSecurityAttributes());
-		java.append("Title title").append(count).append(" = new Title(\"").append(title.getValue()).append("\", securityAttributes);\n");
+		java.append("Title title").append(count).append(" = new Title(\"").append(title.getValue())
+			.append("\", securityAttributes);\n");
 		java.append("topLevelComponents.add(title").append(count).append(");\n");
 	}
 	
@@ -209,7 +211,8 @@ public class JavaConvertor {
 		int count = getVariableCount();
 		java.append("\n// ddms:subtitle\n");
 		convert(java, subtitle.getSecurityAttributes());
-		java.append("Subtitle subtitle").append(count).append(" = new Subtitle(\"").append(subtitle.getValue()).append("\", securityAttributes);\n");
+		java.append("Subtitle subtitle").append(count).append(" = new Subtitle(\"").append(subtitle.getValue())
+			.append("\", securityAttributes);\n");
 		java.append("topLevelComponents.add(subtitle").append(count).append(");\n");
 	}
 	
@@ -238,8 +241,8 @@ public class JavaConvertor {
 	public static void convert(StringBuffer java, Language language) {
 		int count = getVariableCount();
 		java.append("\n// ddms:language\n");
-		java.append("Language language").append(count).append(" = new Language(\"").append(language.getQualifier()).append("\", \"")
-			.append(language.getValue()).append("\");\n");
+		java.append("Language language").append(count).append(" = new Language(\"").append(language.getQualifier())
+			.append("\", \"").append(language.getValue()).append("\");\n");
 		java.append("topLevelComponents.add(language").append(count).append(");\n");
 	}
 	
@@ -293,9 +296,9 @@ public class JavaConvertor {
 		int count = getVariableCount();
 		java.append("\n// ddms:source\n");
 		convert(java, source.getSecurityAttributes());	
-		java.append("Source source").append(count).append(" = new Source(\"").append(source.getQualifier()).append("\", \"")
-			.append(source.getValue()).append("\", \"").append(source.getSchemaQualifier()).append("\", \"").append(source.getSchemaHref())
-			.append("\", securityAttributes);\n");
+		java.append("Source source").append(count).append(" = new Source(\"").append(source.getQualifier())
+			.append("\", \"").append(source.getValue()).append("\", \"").append(source.getSchemaQualifier())
+			.append("\", \"").append(source.getSchemaHref()).append("\", securityAttributes);\n");
 		java.append("topLevelComponents.add(source").append(count).append(");\n");
 	}
 	
@@ -338,15 +341,16 @@ public class JavaConvertor {
 		java.append("List<String> emails").append(count).append(" = new ArrayList<String>();\n");
 		for (String email : producer.getEmails())
 			java.append("emails").append(count).append(".add(\"").append(email).append("\");\n");
-		java.append(entityClass).append(" ").append(entityType.toLowerCase()).append(count).append(" = new ").append(entityClass).append("(\"").append(producerType);
-		java.append("\", ");
+		java.append(entityClass).append(" ").append(entityType.toLowerCase()).append(count).append(" = new ")
+		.append(entityClass).append("(\"").append(producerType).append("\", ");
 		if (Person.NAME.equals(entityType))
 			java.append("\"").append(((Person) producer).getSurname()).append("\", ");
 		java.append(" names").append(count).append(", ");
-		if (Person.NAME.equals(entityType))
-			java.append("\"").append(((Person) producer).getUserID()).append("\", \"").append(((Person) producer).getAffiliation()).append("\", ");
-		java.append(" phones").append(count).append(", emails").append(count).append(", ");
-		java.append("securityAttributes);\n");
+		if (Person.NAME.equals(entityType)) {
+			java.append("\"").append(((Person) producer).getUserID()).append("\", \"")
+				.append(((Person) producer).getAffiliation()).append("\", ");
+		}
+		java.append(" phones").append(count).append(", emails").append(count).append(", securityAttributes);\n");
 		java.append("topLevelComponents.add(").append(entityType.toLowerCase()).append(count).append(");\n");
 	}
 	
@@ -360,9 +364,12 @@ public class JavaConvertor {
 	public static void convert(StringBuffer java, Format format) {
 		int count = getVariableCount();
 		java.append("\n// ddms:format\n");
-		java.append("Format format").append(count).append(" = new Format(\"").append(format.getMimeType()).append("\", ");
-		if (format.getExtent() != null)
-			java.append(" new MediaExtent(\"").append(format.getExtentQualifier()).append("\", \"").append(format.getExtentValue()).append("\"), ");
+		java.append("Format format").append(count).append(" = new Format(\"").append(format.getMimeType())
+			.append("\", ");
+		if (format.getExtent() != null) {
+			java.append(" new MediaExtent(\"").append(format.getExtentQualifier()).append("\", \"")
+				.append(format.getExtentValue()).append("\"), ");
+		}
 		else
 			java.append(" null, ");
 		java.append("\"").append(format.getMedium()).append("\");\n");
@@ -415,8 +422,9 @@ public class JavaConvertor {
 		int count = getVariableCount();
 		java.append("\n// ddms:virtualCoverage\n");
 		convert(java, virtualCoverage.getSecurityAttributes());
-		java.append("VirtualCoverage virtualCoverage").append(count).append(" = new VirtualCoverage(\"").append(virtualCoverage.getAddress())
-			.append("\", \"").append(virtualCoverage.getProtocol()).append("\", securityAttributes);\n");
+		java.append("VirtualCoverage virtualCoverage").append(count).append(" = new VirtualCoverage(\"")
+			.append(virtualCoverage.getAddress()).append("\", \"").append(virtualCoverage.getProtocol())
+			.append("\", securityAttributes);\n");
 		java.append("topLevelComponents.add(virtualCoverage").append(count).append(");\n");
 	}
 	
@@ -431,8 +439,9 @@ public class JavaConvertor {
 		int count = getVariableCount();
 		java.append("\n// ddms:temporalCoverage\n");
 		convert(java, temporalCoverage.getSecurityAttributes());
-		java.append("TemporalCoverage temporalCoverage").append(count).append(" = new TemporalCoverage(\"").append(temporalCoverage.getTimePeriodName())
-			.append("\", \"").append(temporalCoverage.getStartString()).append("\", \"").append(temporalCoverage.getEndString()).append("\", securityAttributes);\n");
+		java.append("TemporalCoverage temporalCoverage").append(count).append(" = new TemporalCoverage(\"")
+			.append(temporalCoverage.getTimePeriodName()).append("\", \"").append(temporalCoverage.getStartString())
+			.append("\", \"").append(temporalCoverage.getEndString()).append("\", securityAttributes);\n");
 		java.append("topLevelComponents.add(temporalCoverage").append(count).append(");\n");
 	}
 	
@@ -460,8 +469,8 @@ public class JavaConvertor {
 		if (coverage.getBoundingBox() != null) {
 			BoundingBox box = coverage.getBoundingBox();
 			java.append("boundingBox").append(count).append(" = new BoundingBox(").append(box.getWestBL().doubleValue())
-			.append(", ").append(box.getEastBL().doubleValue()).append(", ").append(box.getSouthBL().doubleValue())
-			.append(", ").append(box.getNorthBL().doubleValue()).append(");\n");
+				.append(", ").append(box.getEastBL().doubleValue()).append(", ").append(box.getSouthBL().doubleValue())
+				.append(", ").append(box.getNorthBL().doubleValue()).append(");\n");
 		}
 		if (coverage.getBoundingGeometry() != null) {
 			convert(java, count, coverage.getBoundingGeometry());
@@ -471,11 +480,15 @@ public class JavaConvertor {
 		}
 		if (coverage.getVerticalExtent() != null) {
 			VerticalExtent vert = coverage.getVerticalExtent();
-			java.append("vertExtent").append(count).append(" = new VerticalExtent(").append(vert.getMinVerticalExtent().doubleValue())
-				.append(", ").append(vert.getMaxVerticalExtent().doubleValue()).append(", \"").append(vert.getUnitOfMeasure())
+			java.append("vertExtent").append(count).append(" = new VerticalExtent(")
+				.append(vert.getMinVerticalExtent().doubleValue()).append(", ")
+				.append(vert.getMaxVerticalExtent().doubleValue()).append(", \"").append(vert.getUnitOfMeasure())
 				.append("\", \"").append(vert.getDatum()).append("\");\n");
 		}
-		java.append("GeospatialCoverage geospatialCoverage").append(count).append(" = new GeospatialCoverage(geoId").append(count).append(", boundingBox").append(count).append(", boundingGeo").append(count).append(", postalAddress").append(count).append(", vertExtent").append(count).append(", securityAttributes);\n");
+	java.append("GeospatialCoverage geospatialCoverage").append(count).append(" = new GeospatialCoverage(geoId")
+		.append(count).append(", boundingBox").append(count).append(", boundingGeo").append(count)
+		.append(", postalAddress").append(count).append(", vertExtent").append(count)
+		.append(", securityAttributes);\n");
 	java.append("topLevelComponents.add(geospatialCoverage").append(count).append(");\n");		
 	}
 	
@@ -489,8 +502,9 @@ public class JavaConvertor {
 	 */
 	public static void convert(StringBuffer java, int count, GeographicIdentifier geoId) {
 		if (geoId.hasFacilityIdentifier()) {
-			java.append("FacilityIdentifier facId").append(count).append(" = new FacilityIdentifier(\"").append(geoId.getFacilityIdentifier().getBeNumber())
-				.append("\", \"").append(geoId.getFacilityIdentifier().getOsuffix()).append("\");\n");
+			java.append("FacilityIdentifier facId").append(count).append(" = new FacilityIdentifier(\"")
+				.append(geoId.getFacilityIdentifier().getBeNumber()).append("\", \"")
+				.append(geoId.getFacilityIdentifier().getOsuffix()).append("\");\n");
 			java.append("geoId").append(count).append(" = new GeographicIdentifier(facId);\n");
 		}
 		else {
@@ -500,7 +514,8 @@ public class JavaConvertor {
 			java.append("List<String> regions").append(count).append(" = new ArrayList<String>();\n");
 			for (String region : geoId.getRegions())
 				java.append("regions").append(count).append(".add(\"").append(region).append("\");\n");
-			java.append("geoId").append(count).append(" = new GeographicIdentifier(names").append(count).append(", regions").append(count).append(", ");
+			java.append("geoId").append(count).append(" = new GeographicIdentifier(names").append(count)
+				.append(", regions").append(count).append(", ");
 			if (geoId.getCountryCode() != null)
 				java.append("new CountryCode(\"").append(geoId.getCountryCode().getQualifier()).append("\", \"")
 					.append(geoId.getCountryCode().getValue()).append("\"));\n");
@@ -530,7 +545,8 @@ public class JavaConvertor {
 				java.append("positions").append(count).append(".add(new Position(coords, srsAttributes));\n");
 			}			
 			convert(java, polygon.getSRSAttributes());
-			java.append("polygons").append(count).append(".add(new Polygon(positions").append(count).append(", srsAttributes, \"").append(polygon.getId()).append("\");\n");
+			java.append("polygons").append(count).append(".add(new Polygon(positions").append(count)
+				.append(", srsAttributes, \"").append(polygon.getId()).append("\");\n");
 		}
 		java.append("List<Point> points").append(count).append(" = new ArrayList<Point>();\n");
 		for (Point point : b.getPoints()) {
@@ -541,9 +557,11 @@ public class JavaConvertor {
 			}
 			java.append("position = new Position(coords, srsAttributes);\n");
 			convert(java, point.getSRSAttributes());
-			java.append("points").append(count).append(".add(new Point(position, srsAttributes, \"").append(point.getId()).append("\"));\n");
+			java.append("points").append(count).append(".add(new Point(position, srsAttributes, \"")
+				.append(point.getId()).append("\"));\n");
 		}
-		java.append("boundingGeo").append(count).append(" = new BoundingGeometry(polygons").append(count).append(", points").append(count).append(");\n");
+		java.append("boundingGeo").append(count).append(" = new BoundingGeometry(polygons").append(count)
+			.append(", points").append(count).append(");\n");
 	}
 	
 	/**
@@ -560,10 +578,12 @@ public class JavaConvertor {
 			java.append("streets").append(count).append(".add(\"").append(street).append("\");\n");
 		boolean hasState = !Util.isEmpty(address.getState());
 		java.append("postalAddress").append(count).append(" = new PostalAddress(streets, \"")
-			.append(address.getCity()).append("\", \"").append(hasState ? address.getState() : address.getProvince()).append("\", \"")
+			.append(address.getCity()).append("\", \"")
+			.append(hasState ? address.getState() : address.getProvince()).append("\", \"")
 			.append(address.getPostalCode()).append("\", ");
 		if (address.getCountryCode() != null)
-			java.append("new CountryCode(\"").append(address.getCountryCode().getQualifier()).append("\", \"").append(address.getCountryCode().getValue()).append("\"), ");
+			java.append("new CountryCode(\"").append(address.getCountryCode().getQualifier()).append("\", \"")
+				.append(address.getCountryCode().getValue()).append("\"), ");
 		else
 			java.append("null, ");
 		java.append(hasState).append(");\n");
@@ -587,13 +607,16 @@ public class JavaConvertor {
 			java.append("List<Link> links").append(resCount).append(" = new ArrayList<Link>();\n");
 			for (Link link : singleResource.getLinks()) {
 				java.append("links").append(resCount).append(".add(new Link(\"").append(link.getHref()).append("\", \"")
-					.append(link.getRole()).append("\", \"").append(link.getTitle()).append("\", \"").append(link.getLabel()).append("\"));\n");
+					.append(link.getRole()).append("\", \"").append(link.getTitle()).append("\", \"")
+					.append(link.getLabel()).append("\"));\n");
 			}
-			java.append("resources").append(count).append(".add(new RelatedResource(links").append(resCount).append(", \"")
-				.append(singleResource.getQualifier()).append("\", \"").append(singleResource.getValue()).append("\"));\n");
+			java.append("resources").append(count).append(".add(new RelatedResource(links").append(resCount)
+				.append(", \"").append(singleResource.getQualifier()).append("\", \"")
+				.append(singleResource.getValue()).append("\"));\n");
 		}		
-		java.append("RelatedResources relatedResources").append(count).append(" = new RelatedResources(resources").append(count).append(", \"")
-			.append(resources.getRelationship()).append("\", \"").append(resources.getDirection()).append("\", securityAttributes);\n");
+		java.append("RelatedResources relatedResources").append(count).append(" = new RelatedResources(resources")
+			.append(count).append(", \"").append(resources.getRelationship()).append("\", \"")
+			.append(resources.getDirection()).append("\", securityAttributes);\n");
 		java.append("topLevelComponents.add(relatedResources").append(count).append(");\n");
 	}
 		
@@ -657,9 +680,12 @@ public class JavaConvertor {
 		addSecurityAttribute(java, count, "typeOfExemptedSource", attributes.getTypeOfExemptedSource());
 		if (attributes.getDateOfExemptedSource() != null)
 			addSecurityAttribute(java, count, "dateOfExemptedSource", attributes.getDateOfExemptedSource().toXMLFormat());
+		if (attributes.getDeclassManualReview() != null)
+			addSecurityAttribute(java, count, "declassManualReview", attributes.getDeclassManualReview().toString());
 		
-		java.append("securityAttributes = new SecurityAttributes(\"").append(attributes.getClassification()).append("\", ")
-			.append("ownerProducers").append(count).append(", otherAttributes").append(count).append(");\n");		
+		java.append("securityAttributes = new SecurityAttributes(\"").append(attributes.getClassification())
+			.append("\", ").append("ownerProducers").append(count).append(", otherAttributes").append(count)
+			.append(");\n");		
 	}
 	
 	/**
@@ -671,8 +697,10 @@ public class JavaConvertor {
 	 * @param value the value of the attribute
 	 */
 	private static void addSecurityAttribute(StringBuffer java, int count, String name, String value) {
-		if (!Util.isEmpty(value))
-			java.append("otherAttributes").append(count).append(".put(\"").append(name).append("\", \"").append(value).append("\");\n");
+		if (!Util.isEmpty(value)) {
+			java.append("otherAttributes").append(count).append(".put(\"").append(name).append("\", \"")
+				.append(value).append("\");\n");
+		}
 	}
 	
 	/**

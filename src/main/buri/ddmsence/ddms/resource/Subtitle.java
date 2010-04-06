@@ -112,6 +112,18 @@ public final class Subtitle extends AbstractSimpleString {
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A ddms:subtitle element was found with no subtitle value.</li>
+	 * <li>Include any warnings from the security attributes.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))
 			addWarning("A ddms:subtitle element was found with no subtitle value.");
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);

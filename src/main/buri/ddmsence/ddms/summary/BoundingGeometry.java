@@ -33,8 +33,8 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:boundingGeometry.
  *
- * <p>The DDMS documentation has no Text/HTML examples for the output of this component. However, the component has no additional attributes or elements besides
- * the nested Polygon/Point components, so no additional output is needed.</p>
+ * <p>The DDMS documentation has no Text/HTML examples for the output of this component. However, the component has no 
+ * additional attributes or elements besides the nested Polygon/Point components, so no additional output is needed.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>gml:Polygon</u>: a polygon (0-many optional)<br />
@@ -131,13 +131,28 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 		if (getPolygons().size() + getPoints().size() == 0) {
 			throw new InvalidDDMSException("At least 1 of Polygon or Point must be used.");
 		}
-		
 		for (Polygon polygon : getPolygons()) {
 			Util.requireSameVersion(this, polygon);
-			addWarnings(polygon.getValidationWarnings(), false);
 		}
 		for (Point point : getPoints()) {
 			Util.requireSameVersion(this, point);
+		}
+		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Include any validation warnings from child polygons or points.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		for (Polygon polygon : getPolygons()) {
+			addWarnings(polygon.getValidationWarnings(), false);
+		}
+		for (Point point : getPoints()) {
 			addWarnings(point.getValidationWarnings(), false);
 		}
 	}
@@ -173,8 +188,8 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof BoundingGeometry))
 			return (false);
 		BoundingGeometry test = (BoundingGeometry) obj;
-		return (Util.listEquals(getPolygons(), test.getPolygons())) &&
-			Util.listEquals(getPoints(), test.getPoints());
+		return (Util.listEquals(getPolygons(), test.getPolygons())) 
+			&& Util.listEquals(getPoints(), test.getPoints());
 	}
 
 	/**

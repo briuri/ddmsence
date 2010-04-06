@@ -79,14 +79,15 @@ public final class Organization extends AbstractProducer {
 	
 	/**
 	 * Constructor for creating a component from raw data.
+	 * 
 	 * @param producerType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
-	 * @param names			an ordered list of names
-	 * @param phones		an ordered list of phone numbers
-	 * @param emails		an ordered list of email addresses
+	 * @param names an ordered list of names
+	 * @param phones an ordered list of phone numbers
+	 * @param emails an ordered list of email addresses
 	 * @param securityAttributes any security attributes (optional)
 	 */
-	public Organization(String producerType, List<String> names, List<String> phones, List<String> emails, SecurityAttributes securityAttributes) 
-		throws InvalidDDMSException {
+	public Organization(String producerType, List<String> names, List<String> phones, List<String> emails,
+		SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(producerType, Organization.NAME, names, phones, emails, securityAttributes, true);
 	}
 	
@@ -105,8 +106,7 @@ public final class Organization extends AbstractProducer {
 		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, getProducerType());
 		Util.requireDDMSQName(getEntityElement(), DDMS_PREFIX, NAME);
 	}
-	
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

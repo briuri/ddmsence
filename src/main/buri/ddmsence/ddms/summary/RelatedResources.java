@@ -58,7 +58,8 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#RelatedResources<br />
- * <u>Description</u>: A set of resources related by a specified relationship and direction to the resource being described.<br />
+ * <u>Description</u>: A set of resources related by a specified relationship and direction to the resource being 
+ * described.<br />
  * <u>Obligation</u>: Optional<br />
  * <u>Schema Modification Date</u>: 2010-01-26<br />
  * </td></tr></table>
@@ -115,17 +116,18 @@ public final class RelatedResources extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
+	 * 
 	 * @param resources the related resources (1 required)
 	 * @param relationship the relationship attribute (required)
 	 * @param direction the relationship direction (optional)
 	 * @param securityAttributes any security attributes (optional)
-	 *  
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public RelatedResources(List<RelatedResource> resources, String relationship, String direction, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public RelatedResources(List<RelatedResource> resources, String relationship, String direction,
+		SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(RelatedResources.NAME, null);
 			Util.addDDMSAttribute(element, RELATIONSHIP_NAME, relationship);
@@ -181,11 +183,22 @@ public final class RelatedResources extends AbstractBaseComponent {
 			validateRelationshipDirection(getDirection());
 		if (getChild(RelatedResource.NAME) == null)
 			throw new InvalidDDMSException("At least 1 RelatedResource must exist.");
-		
-		for (RelatedResource related : getRelatedResources()) {
+		for (RelatedResource related : getRelatedResources())
 			Util.requireSameVersion(this, related);
+
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Include any validation warnings from the related resources or the security attributes.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		for (RelatedResource related : getRelatedResources())
 			addWarnings(related.getValidationWarnings(), false);
-		}
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	
@@ -224,10 +237,10 @@ public final class RelatedResources extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof RelatedResources))
 			return (false);
 		RelatedResources test = (RelatedResources) obj;
-		return (getRelationship().equals(test.getRelationship()) &&
-			getDirection().equals(test.getDirection()) &&
-			Util.listEquals(getRelatedResources(), test.getRelatedResources()) &&
-			getSecurityAttributes().equals(test.getSecurityAttributes()));
+		return (getRelationship().equals(test.getRelationship()) 
+			&& getDirection().equals(test.getDirection())
+			&& Util.listEquals(getRelatedResources(), test.getRelatedResources()) 
+			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
 	}
 	
 	/**

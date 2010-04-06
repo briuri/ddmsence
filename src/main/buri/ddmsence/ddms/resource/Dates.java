@@ -104,8 +104,8 @@ public final class Dates extends AbstractBaseComponent {
 	}
 		
 	/**
-	 * Constructor for creating a component from raw data. The string-based inputs must conform to one of
-	 * the XML date types: xs:dateTime, xs:date, xs:gYearMonth, or xs:gYear. 
+	 * Constructor for creating a component from raw data. The string-based inputs must conform to one of the XML date
+	 * types: xs:dateTime, xs:date, xs:gYearMonth, or xs:gYear.
 	 * 
 	 * @param created the creation date (optional)
 	 * @param posted the posting date (optional)
@@ -161,6 +161,17 @@ public final class Dates extends AbstractBaseComponent {
 		if (getInfoCutOff() != null)
 			Util.requireDDMSDateFormat(getInfoCutOff().getXMLSchemaType());
 		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A completely empty ddms:dates element was found.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
 		if (getCreated() == null && getPosted() == null && getValidTil() == null && getInfoCutOff() == null) {
 			addWarning("A completely empty ddms:dates element was found.");
 		}
@@ -205,16 +216,10 @@ public final class Dates extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Dates))
 			return (false);
 		Dates test = (Dates) obj;
-		boolean isEqual = true;
-		if (getCreated() != null)
-			isEqual = isEqual && getCreated().equals(test.getCreated());
-		if (getPosted() != null)
-			isEqual = isEqual && getPosted().equals(test.getPosted());
-		if (getValidTil() != null)
-			isEqual = isEqual && getValidTil().equals(test.getValidTil());
-		if (getInfoCutOff() != null)
-			isEqual = isEqual && getInfoCutOff().equals(test.getInfoCutOff());
-		return (isEqual);
+		return (Util.nullEquals(getCreated(), test.getCreated())
+			&& Util.nullEquals(getPosted(), test.getPosted())
+			&& Util.nullEquals(getValidTil(), test.getValidTil())
+			&& Util.nullEquals(getInfoCutOff(), test.getInfoCutOff()));
 	}
 
 	/**
@@ -237,34 +242,35 @@ public final class Dates extends AbstractBaseComponent {
 	 * Accessor for the created date (optional). Returns a copy.
 	 */
 	public XMLGregorianCalendar getCreated() {
-		return (_cachedCreated == null ? null : getFactory().newXMLGregorianCalendar(_cachedCreated.toXMLFormat())); 
+		return (_cachedCreated == null ? null : getFactory().newXMLGregorianCalendar(_cachedCreated.toXMLFormat()));
 	}
-	
+
 	/**
 	 * Accessor for the posted date (optional). Returns a copy.
 	 */
 	public XMLGregorianCalendar getPosted() {
-		return (_cachedPosted == null ? null : getFactory().newXMLGregorianCalendar(_cachedPosted.toXMLFormat())); 
+		return (_cachedPosted == null ? null : getFactory().newXMLGregorianCalendar(_cachedPosted.toXMLFormat()));
 	}
-	
+
 	/**
 	 * Accessor for the expiration date (optional). Returns a copy.
 	 */
 	public XMLGregorianCalendar getValidTil() {
-		return (_cachedValidTil == null ? null : getFactory().newXMLGregorianCalendar(_cachedValidTil.toXMLFormat()));  
+		return (_cachedValidTil == null ? null : getFactory().newXMLGregorianCalendar(_cachedValidTil.toXMLFormat()));
 	}
-	
+
 	/**
 	 * Accessor for the cutoff date (optional). Returns a copy.
 	 */
 	public XMLGregorianCalendar getInfoCutOff() {
-		return (_cachedInfoCutOff == null ? null : getFactory().newXMLGregorianCalendar(_cachedInfoCutOff.toXMLFormat())); 
+		return (_cachedInfoCutOff == null ? null
+			: getFactory().newXMLGregorianCalendar(_cachedInfoCutOff.toXMLFormat()));
 	}
-	
+
 	/**
 	 * Accesor for the datatype factory
 	 */
 	private static DatatypeFactory getFactory() {
 		return (Util.getDataTypeFactory());
 	}
-} 
+}

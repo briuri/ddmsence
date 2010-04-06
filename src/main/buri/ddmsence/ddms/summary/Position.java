@@ -20,7 +20,6 @@
 package buri.ddmsence.ddms.summary;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -107,7 +106,7 @@ public final class Position extends AbstractBaseComponent {
 	public Position(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			List<String> tuple = Arrays.asList(getCoordinatesAsXsList().split(" "));
+			List<String> tuple = Util.getAsList(getCoordinatesAsXsList());
 			_cachedCoordinates = new ArrayList<Double>();
 			for (String coordinate : tuple) {
 				_cachedCoordinates.add(getStringAsDouble(coordinate));
@@ -134,7 +133,8 @@ public final class Position extends AbstractBaseComponent {
 				coordinates = Collections.emptyList();
 			_cachedSrsAttributes = (srsAttributes == null ? new SRSAttributes(null, null, null, null) : srsAttributes);
 			_cachedCoordinates = coordinates;
-			Element element = Util.buildElement(GML_PREFIX, Position.NAME, DDMSVersion.getCurrentVersion().getGmlNamespace(), Util.getXsList(coordinates));
+			Element element = Util.buildElement(GML_PREFIX, Position.NAME, 
+				DDMSVersion.getCurrentVersion().getGmlNamespace(), Util.getXsList(coordinates));
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);
 			setXOMElement(element, true);
@@ -192,6 +192,17 @@ public final class Position extends AbstractBaseComponent {
 		Util.requireValidLatitude(getCoordinates().get(0));
 		Util.requireValidLongitude(getCoordinates().get(1));
 		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Include any validation warnings from the SRS attributes.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);
 	}
 	
@@ -201,11 +212,16 @@ public final class Position extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		html.append(buildHTMLMeta("geospatial.boundingGeometry.position", getCoordinatesAsXsList(), true));
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.position.srsName", getSRSAttributes().getSrsName(), false));
-		if (getSRSAttributes().getSrsDimension() != null)
-			html.append(buildHTMLMeta("geospatial.boundingGeometry.position.srsDimension", String.valueOf(getSRSAttributes().getSrsDimension()), false));
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.position.axisLabels", getSRSAttributes().getAxisLabelsAsXsList(), false));
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.position.uomLabels", getSRSAttributes().getUomLabelsAsXsList(), false));
+		html.append(buildHTMLMeta("geospatial.boundingGeometry.position.srsName", getSRSAttributes().getSrsName(),
+			false));
+		if (getSRSAttributes().getSrsDimension() != null) {
+			html.append(buildHTMLMeta("geospatial.boundingGeometry.position.srsDimension", 
+				String.valueOf(getSRSAttributes().getSrsDimension()), false));
+		}
+		html.append(buildHTMLMeta("geospatial.boundingGeometry.position.axisLabels", 
+			getSRSAttributes().getAxisLabelsAsXsList(), false));
+		html.append(buildHTMLMeta("geospatial.boundingGeometry.position.uomLabels", 
+			getSRSAttributes().getUomLabelsAsXsList(), false));
 		return (html.toString());
 	}
 
@@ -215,11 +231,16 @@ public final class Position extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		text.append(buildTextLine("Geospatial Geometry Position", getCoordinatesAsXsList(), true));
-		text.append(buildTextLine("Geospatial Geometry Position SRS Name", getSRSAttributes().getSrsName(), false));
-		if (getSRSAttributes().getSrsDimension() != null)
-			text.append(buildTextLine("Geospatial Geometry Position SRS Dimension", String.valueOf(getSRSAttributes().getSrsDimension()), false));
-		text.append(buildTextLine("Geospatial Geometry Position Axis Labels", getSRSAttributes().getAxisLabelsAsXsList(), false));
-		text.append(buildTextLine("Geospatial Geometry Position Unit of Measure Labels", getSRSAttributes().getUomLabelsAsXsList(), false));
+		text.append(buildTextLine("Geospatial Geometry Position SRS Name", 
+			getSRSAttributes().getSrsName(), false));
+		if (getSRSAttributes().getSrsDimension() != null) {
+			text.append(buildTextLine("Geospatial Geometry Position SRS Dimension", 
+				String.valueOf(getSRSAttributes().getSrsDimension()), false));
+		}
+		text.append(buildTextLine("Geospatial Geometry Position Axis Labels", 
+			getSRSAttributes().getAxisLabelsAsXsList(), false));
+		text.append(buildTextLine("Geospatial Geometry Position Unit of Measure Labels", 
+			getSRSAttributes().getUomLabelsAsXsList(), false));
 		return (text.toString());
 	}
 	
@@ -230,8 +251,8 @@ public final class Position extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Position))
 			return (false);
 		Position test = (Position) obj;
-		return (getSRSAttributes().equals(test.getSRSAttributes()) &&
-			getCoordinatesAsXsList().equals(test.getCoordinatesAsXsList()));
+		return (getSRSAttributes().equals(test.getSRSAttributes()) 
+			&& getCoordinatesAsXsList().equals(test.getCoordinatesAsXsList()));
 	}
 
 	/**

@@ -151,7 +151,8 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
-		String parentHtml = (getParentType().equals(GeographicIdentifier.NAME) ? "geospatial.identifier" : "geospatial.address");
+		String parentHtml = (getParentType().equals(GeographicIdentifier.NAME)
+			? "geospatial.identifier" : "geospatial.address");
 		StringBuffer html = new StringBuffer();
 		html.append(buildHTMLMeta(parentHtml + ".country.qualifier", getQualifier(), true));
 		html.append(buildHTMLMeta(parentHtml + ".country", getValue(), true));
@@ -162,7 +163,8 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
-		String parentText = (getParentType().equals(GeographicIdentifier.NAME) ? "Geographic Identifier" : "Postal Address");
+		String parentText = (getParentType().equals(GeographicIdentifier.NAME) 
+			? "Geographic Identifier" : "Postal Address");
 		StringBuffer text = new StringBuffer();
 		text.append(buildTextLine(parentText + " Country Qualifier", getQualifier(), true));
 		text.append(buildTextLine(parentText + " Country", getValue(), true));

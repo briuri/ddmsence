@@ -46,8 +46,8 @@ import buri.ddmsence.util.Util;
  * </ul>
  * </td></tr></table>
  * 
- * <p>The ddms:Unknown element is new in v3.0. Attempts to use it with DDMS v2.0 will result in an UnsupportedVersionException.
- * </p>
+ * <p>The ddms:Unknown element is new in v3.0. Attempts to use it with DDMS v2.0 will result in an 
+ * UnsupportedVersionException.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:name</u>: names of the producer (1-many, at least 1 required)<br />
@@ -82,14 +82,15 @@ public final class Unknown extends AbstractProducer {
 	
 	/**
 	 * Constructor for creating a component from raw data.
+	 * 
 	 * @param producerType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
-	 * @param names			an ordered list of names
-	 * @param phones		an ordered list of phone numbers
-	 * @param emails		an ordered list of email addresses
+	 * @param names an ordered list of names
+	 * @param phones an ordered list of phone numbers
+	 * @param emails an ordered list of email addresses
 	 * @param securityAttributes any security attributes (optional)
 	 */
-	public Unknown(String producerType, List<String> names, List<String> phones, List<String> emails, SecurityAttributes securityAttributes) 
-		throws InvalidDDMSException {
+	public Unknown(String producerType, List<String> names, List<String> phones, List<String> emails,
+		SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(producerType, Unknown.NAME, names, phones, emails, securityAttributes, true);
 	}
 	
@@ -111,8 +112,7 @@ public final class Unknown extends AbstractProducer {
 		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, getProducerType());
 		Util.requireDDMSQName(getEntityElement(), DDMS_PREFIX, NAME);
 	}
-	
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

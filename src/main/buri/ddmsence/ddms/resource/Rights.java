@@ -55,17 +55,17 @@ public final class Rights extends AbstractBaseComponent {
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Rights(Element element) throws InvalidDDMSException {
 		super(element);
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param privacyAct the value for the privacyAct attribute
 	 * @param intellectualProperty the value for the intellectualProperty attribute
 	 * @param copyright the value for the copyright attribute
@@ -128,11 +128,11 @@ public final class Rights extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Rights))
 			return (false);
 		Rights test = (Rights) obj;
-		return (getPrivacyAct() == test.getPrivacyAct() && 
-			getIntellectualProperty() == test.getIntellectualProperty() &&
-			getCopyright() == test.getCopyright());
+		return (getPrivacyAct() == test.getPrivacyAct() 
+			&& getIntellectualProperty() == test.getIntellectualProperty() 
+			&& getCopyright() == test.getCopyright());
 	}
-
+		
 	/**
 	 * @see Object#hashCode()
 	 */

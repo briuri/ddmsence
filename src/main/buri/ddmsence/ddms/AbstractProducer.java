@@ -216,7 +216,8 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A producer entity exists.</li>
+	 * <li>The producer type is valid.</li>
+	 * <li>A producer entity exists and has a valid element name.</li>
 	 * <li>The producer entity has at least 1 non-empty name.</li>
 	 * </td></tr></table>
 	 * 
@@ -240,7 +241,21 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		}
 		if (!foundNonEmptyName)
 			throw new InvalidDDMSException("At least 1 name element must have a non-empty value.");
-		
+
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A ddms:phone element was found with no value.</li>
+	 * <li>A ddms:email element was found with no value.</li>
+	 * <li>Include any validation warnings from the security attributes.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		Element entityElement = getEntityElement();
 		Elements phoneElements = entityElement.getChildElements(PHONE_NAME, entityElement.getNamespaceURI());
 		for (int i = 0; i < phoneElements.size(); i++) {
 			if (Util.isEmpty(phoneElements.get(i).getValue())) {

@@ -112,6 +112,18 @@ public final class Description extends AbstractSimpleString {
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 				
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A ddms:description element was found with no description value.</li>
+	 * <li>Include any validation warnings from the security attributes.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))
 			addWarning("A ddms:description element was found with no description value.");
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);

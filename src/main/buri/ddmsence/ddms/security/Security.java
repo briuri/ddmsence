@@ -82,7 +82,8 @@ public final class Security extends AbstractBaseComponent {
 		try {
 			Element element = Util.buildDDMSElement(Security.NAME, null);
 			if (!DDMSVersion.isCurrentVersion("2.0"))
-				Util.addAttribute(element, ICISM_PREFIX, EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace(), FIXED_ROLLUP);
+				Util.addAttribute(element, ICISM_PREFIX, EXCLUDE_FROM_ROLLUP_NAME, 
+					DDMSVersion.getCurrentVersion().getIcismNamespace(), FIXED_ROLLUP);
 			_cachedSecurityAttributes = securityAttributes;
 			if (securityAttributes != null)
 				securityAttributes.addTo(element);
@@ -112,15 +113,24 @@ public final class Security extends AbstractBaseComponent {
 			if (getExcludeFromRollup() == null)
 				throw new InvalidDDMSException("The excludeFromRollup attribute is required.");
 			if (!FIXED_ROLLUP.equals(String.valueOf(getExcludeFromRollup())))
-				throw new InvalidDDMSException("The excludeFromRollup attribute must have a fixed value of \"" + FIXED_ROLLUP + "\".");
-		}
-		else {
-			if (getExcludeFromRollup() != null)
-				throw new InvalidDDMSException("The excludeFromRollup attribute cannot be used before DDMS v3.0.");
-		}
+				throw new InvalidDDMSException("The excludeFromRollup attribute must have a fixed value of \""
+					+ FIXED_ROLLUP + "\".");
+		} else if (getExcludeFromRollup() != null)
+			throw new InvalidDDMSException("The excludeFromRollup attribute cannot be used in DDMS 2.0.");
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
-		getSecurityAttributes().requireClassification();	
-		
+		getSecurityAttributes().requireClassification();
+
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Include any validation warnings from the security attributes.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 		
@@ -153,8 +163,8 @@ public final class Security extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Security))
 			return (false);
 		Security test = (Security) obj;
-		return (getSecurityAttributes().equals(test.getSecurityAttributes()) &&
-				Util.nullEquals(getExcludeFromRollup(), test.getExcludeFromRollup()));
+		return (getSecurityAttributes().equals(test.getSecurityAttributes()) 
+			&& Util.nullEquals(getExcludeFromRollup(), test.getExcludeFromRollup()));
 	}
 
 	/**

@@ -32,15 +32,16 @@ import buri.ddmsence.util.Util;
  *
  * <p>
  * DDMSence is stricter than the specification in the following ways:</p><ul>
- * <li>The optional unitOfMeasure and datum on the MinVerticalExtent/MaxVerticalExtent child elements MUST match the values
- * on the required attributes of the same name on this element. It does not seem logical to specify these attributes on the 
- * parent element and then express the actual values with a different measure. Note that because DDMSence is giving precedence 
- * to the top-level unitOfMeasure and datum attributes, those attributes on the children are not displayed in HTML/Text. However, 
- * they are still rendered in XML, if present in an existing document.</li>
+ * <li>The optional unitOfMeasure and datum on the MinVerticalExtent/MaxVerticalExtent child elements MUST match the 
+ * values on the required attributes of the same name on this element. It does not seem logical to specify these 
+ * attributes on the parent element and then express the actual values with a different measure. Note that because 
+ * DDMSence is giving precedence to the top-level unitOfMeasure and datum attributes, those attributes on the 
+ * children are not displayed in HTML/Text. However, they are still rendered in XML, if present in an existing 
+ * document.</li>
  * </ul></p>
  * 
- * <p>The above design decision dictates that VerticalDistance (the type behind MinVerticalExtent and MaxVerticalExtent) does
- * not need to be implemented as a Java class.</p>
+ * <p>The above design decision dictates that VerticalDistance (the type behind MinVerticalExtent and MaxVerticalExtent) 
+ * does not need to be implemented as a Java class.</p>
  * 
  * <p>The DDMS documentation has no Text/HTML examples for the output of this component, so a best guess was taken:</p>
  * <ul>
@@ -66,13 +67,15 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ddms:unitOfMeasure</u>: unit of measure (Meter, Kilometer, Foot, StatuteMile, NauticalMile, Fathom, Inch) (required) <br />
+ * <u>ddms:unitOfMeasure</u>: unit of measure (Meter, Kilometer, Foot, StatuteMile, NauticalMile, Fathom, Inch) 
+ * (required) <br />
  * <u>ddms:datum</u>: vertical datum (MSL, AGL, HAE) (required)<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#VerticalExtent<br />
- * <u>Description</u>: A wrapper for child elements used to describe the vertical extent applicable to the resource.<br />
+ * <u>Description</u>: A wrapper for child elements used to describe the vertical extent applicable to the 
+ * resource.<br />
  * <u>Obligation</u>: Optional in a geospatialCoverage element<br />
  * <u>Schema Modification Date</u>: 2010-01-25<br />
  * </td></tr></table>
@@ -132,14 +135,15 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	
 	/**
 	 * Constructor for creating a component from raw data
+	 * 
 	 * @param minVerticalExtent the minimum (required)
 	 * @param maxVerticalExtent the maximum (required)
 	 * @param unitOfMeasure the unit of measure (required)
 	 * @param datum the datum (required)
-	 *  
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public VerticalExtent(double minVerticalExtent, double maxVerticalExtent, String unitOfMeasure, String datum) throws InvalidDDMSException {
+	public VerticalExtent(double minVerticalExtent, double maxVerticalExtent, String unitOfMeasure, String datum)
+		throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(VerticalExtent.NAME, null);
 			Util.addDDMSAttribute(element, UOM_NAME, unitOfMeasure);
@@ -211,8 +215,8 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Confirms that the unitOfMeasure and datum on minimum and maximum extent elements matches the
-	 * parent attribute values. This is an additional level of logic added by DDMSence.
+	 * Confirms that the unitOfMeasure and datum on minimum and maximum extent elements matches the parent attribute
+	 * values. This is an additional level of logic added by DDMSence.
 	 * 
 	 * @param extentElement
 	 * @throws InvalidDDMSException
@@ -260,10 +264,10 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof VerticalExtent))
 			return (false);
 		VerticalExtent test = (VerticalExtent) obj;
-		return (getUnitOfMeasure().equals(test.getUnitOfMeasure()) &&
-			getDatum().equals(test.getDatum()) &&
-			getMinVerticalExtent().equals(test.getMinVerticalExtent()) &&
-			getMaxVerticalExtent().equals(test.getMaxVerticalExtent()));
+		return (getUnitOfMeasure().equals(test.getUnitOfMeasure()) 
+			&& getDatum().equals(test.getDatum())
+			&& getMinVerticalExtent().equals(test.getMinVerticalExtent()) 
+			&& getMaxVerticalExtent().equals(test.getMaxVerticalExtent()));
 	}
 
 	/**
