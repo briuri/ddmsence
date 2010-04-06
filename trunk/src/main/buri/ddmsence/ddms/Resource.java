@@ -548,8 +548,10 @@ public final class Resource extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>(v2.0) If ddms:Resource has no classification, warn about ignoring rollup validation.</li>
+	 * <li>If the markings [R, CTS-B, or CTS-BALK are used, a validation warning will be generated, asking
+	 * the user to review the markings manually. I'm not sure how these compare to other markings in the
+	 * NATO scheme.</li>
 	 * <li>Include all child component validation warnings, and any warnings from the security attributes.</li>
-	 * <li>(v3.0) validateRollup() warns about usage of R, CTS-B, or CTS-BALK.</li>
 	 * </td></tr></table>
 	 */
 	private void validateWarnings() {
@@ -557,6 +559,18 @@ public final class Resource extends AbstractBaseComponent {
 			addWarning("Security rollup validation is being skipped, because no classification exists "
 				+ "on the ddms:Resource itself.");
 		}
+		
+		boolean needsManualReview = ISMVocabulary.classificationNeedsReview(getSecurityAttributes().getClassification());
+		for (IDDMSComponent component : getTopLevelComponents()) {
+			if (component.getSecurityAttributes() != null)
+				needsManualReview = needsManualReview
+					|| ISMVocabulary.classificationNeedsReview(component.getSecurityAttributes().getClassification());
+		}
+		if (needsManualReview) {
+			addWarning("A security classification from the set [R, CTS-B, or CTS-BALK] is being used. "
+				+ "Please review your ddms:Resource and confirm that security rollup is being handled correctly.");
+		}
+		
 		for (IDDMSComponent component : getTopLevelComponents()) {
 			addWarnings(component.getValidationWarnings(), false);
 		}
@@ -576,9 +590,6 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>The classification cannot be more restrictive than the parent classification. The ordering
 	 * for US markings (from least to most restrictive) is [U, C, S, TS]. The ordering for NATO
 	 * markings (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTSA].</li>
-	 * <li>If the markings [R, CTS-B, or CTS-BALK are used, a validation warning will be generated, asking
-	 * the user to review the markings manually. I'm not sure how these compare to other markings in the
-	 * NATO scheme.</li>
 	 * </ul>
 	 * </td></tr></table>
 	 * 	
@@ -593,14 +604,12 @@ public final class Resource extends AbstractBaseComponent {
 		boolean isParentUS = ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, parentClass);
 		int parentIndex = ISMVocabulary.getClassificationIndex(parentClass);
 		
-		boolean needsManualReview = ISMVocabulary.classificationNeedsReview(parentClass);
 		for (SecurityAttributes childAttr : childAttributes) {
 			String childClass = childAttr.getClassification();
 			if (Util.isEmpty(childClass))
 				continue;
 			boolean isChildUS = ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, childClass);
 			int childIndex = ISMVocabulary.getClassificationIndex(childClass);
-			needsManualReview = needsManualReview || ISMVocabulary.classificationNeedsReview(childClass);
 			if (isParentUS != isChildUS) {
 				throw new InvalidDDMSException("The security classification of a nested component is using a "
 					+ "different marking system than the ddms:Resource itself.");
@@ -609,10 +618,6 @@ public final class Resource extends AbstractBaseComponent {
 				throw new InvalidDDMSException("The security classification of a nested component is more "
 					+ "restrictive than the ddms:Resource itself.");
 			}			
-		}
-		if (needsManualReview) {
-			addWarning("A security classification from the set [R, CTS-B, or CTS-BALK] is being used. "
-				+ "Please review your ddms:Resource and confirm that security rollup is being handled correctly.");
 		}
 	}
 	
