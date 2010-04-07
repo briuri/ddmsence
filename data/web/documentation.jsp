@@ -116,7 +116,8 @@ in the "src"-flavored download. You should be aware of the following sections, w
 	<li>The class description describes cases where DDMSence is stricter than the DDMS specification, and allowed cases which are legal, but nonsensical. If this varies
 	for different versions of DDMS, the version number will be indicated. If no version number is listed, the constraint applies to all versions.</li>
 	<li>The class description describes any nested elements or attributes for the implemented component and a link to the DDMS website for the complete specification.</li>
-	<li>The <code>validate</code> method description lists the specific rules used to validate a component. This section may be useful when building your own components.</li>
+	<li>The <code>validate</code> method description lists the specific rules used to validate a component. This section may be useful when building your own components from scratch.</li>
+	<li>If a component has any conditions that result in warnings, the <code>validateWarnings</code> method description lists the specific conditions that trigger a warning.</li>
 </ul>
 <div class="clear"></div>
 
