@@ -19,8 +19,14 @@
  */
 package buri.ddmsence.ddms.summary;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
+import buri.ddmsence.ddms.ExtensibleAttributes;
+import buri.ddmsence.ddms.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
@@ -250,6 +256,64 @@ public class CategoryTest extends AbstractComponentTestCase {
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
+		}
+	}
+	
+	public void testExtensibleSuccess() throws InvalidDDMSException {
+		// Extensible attribute added
+		DDMSVersion.setCurrentVersion("3.0");
+		ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
+		new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, attr);		
+	}
+	
+	public void testExtensibleFailure() throws InvalidDDMSException {
+		// Wrong DDMS Version
+		DDMSVersion.setCurrentVersion("2.0");
+		ExtensibleAttributes attributes = ExtensibleAttributesTest.getFixture();
+		try {
+			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, attributes);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		DDMSVersion.setCurrentVersion("3.0");
+
+		// Using ddms:qualifier as the extension (data)
+		List<Attribute> extAttributes = new ArrayList<Attribute>();
+		extAttributes.add(new Attribute("ddms:qualifier", DDMSVersion.getCurrentVersion().getNamespace(), "dog"));
+		attributes = new ExtensibleAttributes(extAttributes);
+		try {
+			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, attributes);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		// Using ddms:code as the extension (data)
+		extAttributes = new ArrayList<Attribute>();
+		extAttributes.add(new Attribute("ddms:code", DDMSVersion.getCurrentVersion().getNamespace(), "dog"));
+		attributes = new ExtensibleAttributes(extAttributes);
+		try {
+			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, attributes);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		// Using ddms:label as the extension (data)
+		extAttributes = new ArrayList<Attribute>();
+		extAttributes.add(new Attribute("ddms:label", DDMSVersion.getCurrentVersion().getNamespace(), "dog"));
+		attributes = new ExtensibleAttributes(extAttributes);
+		try {
+			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, attributes);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
 		}
 	}
 }

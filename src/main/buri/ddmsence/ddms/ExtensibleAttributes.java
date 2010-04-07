@@ -186,7 +186,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		for (Attribute attribute : getAttributes()) {
 			if (element.getAttribute(attribute.getLocalName(), attribute.getNamespaceURI()) != null)
 				throw new InvalidDDMSException("This element already has an attribute with the name, "
-					+ attribute.getQualifiedName());
+					+ attribute.getQualifiedName() + ".");
 			element.addAttribute(attribute);
 		}
 	}

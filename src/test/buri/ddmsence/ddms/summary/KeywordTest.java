@@ -19,8 +19,14 @@
  */
 package buri.ddmsence.ddms.summary;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
+import buri.ddmsence.ddms.ExtensibleAttributes;
+import buri.ddmsence.ddms.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
@@ -227,6 +233,41 @@ public class KeywordTest extends AbstractComponentTestCase {
 
 			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
+		}
+	}
+	
+	public void testExtensibleSuccess() throws InvalidDDMSException {
+		// Extensible attribute added
+		DDMSVersion.setCurrentVersion("3.0");
+		ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
+		new Keyword("xml", attr);		
+	}
+	
+	public void testExtensibleFailure() throws InvalidDDMSException {
+		// Wrong DDMS Version
+		DDMSVersion.setCurrentVersion("2.0");
+		ExtensibleAttributes attributes = ExtensibleAttributesTest.getFixture();
+		try {
+			new Keyword(TEST_VALUE, attributes);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		DDMSVersion.setCurrentVersion("3.0");
+		Attribute attr = new Attribute("ddms:value", DDMSVersion.getCurrentVersion().getNamespace(), "dog");
+		
+		// Using ddms:value as the extension (data)
+		List<Attribute> extAttributes = new ArrayList<Attribute>();
+		extAttributes.add(attr);
+		attributes = new ExtensibleAttributes(extAttributes);
+		try {
+			new Keyword(TEST_VALUE, attributes);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
 		}
 	}
 }
