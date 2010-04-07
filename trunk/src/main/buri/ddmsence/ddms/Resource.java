@@ -32,6 +32,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
+import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.resource.Identifier;
@@ -171,13 +172,13 @@ public final class Resource extends AbstractBaseComponent {
 	public static final String NAME = "Resource";
 	
 	/** The attribute name for resource element flag */
-	protected static final String RESOURCE_ELEMENT_NAME = "resourceElement";
+	public static final String RESOURCE_ELEMENT_NAME = "resourceElement";
 		
 	/** The attribute name for create date */
-	protected static final String CREATE_DATE_NAME = "createDate";
+	public static final String CREATE_DATE_NAME = "createDate";
 	
 	/** The attribute name for DES version */
-	protected static final String DES_VERSION_NAME = "DESVersion";
+	public static final String DES_VERSION_NAME = "DESVersion";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element

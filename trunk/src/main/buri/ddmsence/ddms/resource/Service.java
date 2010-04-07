@@ -23,8 +23,8 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractProducer;
-import buri.ddmsence.ddms.ExtensibleAttributes;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.util.Util;
 

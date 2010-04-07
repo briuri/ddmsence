@@ -24,6 +24,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import nu.xom.Element;
+import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
+import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;

@@ -27,6 +27,7 @@ import java.util.Set;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
+import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.Service;
@@ -97,12 +98,12 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	/** The element name for email addresses */
 	protected static final String EMAIL_NAME = "email";	
 	
-	protected static Set<String> PRODUCER_TYPES = new HashSet<String>();
+	private static Set<String> PRIVATE_PRODUCER_TYPES = new HashSet<String>();
 	static {
-		PRODUCER_TYPES.add(CONTRIBUTOR_NAME);
-		PRODUCER_TYPES.add(CREATOR_NAME);
-		PRODUCER_TYPES.add(POC_NAME);
-		PRODUCER_TYPES.add(PUBLISHER_NAME);
+		PRIVATE_PRODUCER_TYPES.add(CONTRIBUTOR_NAME);
+		PRIVATE_PRODUCER_TYPES.add(CREATOR_NAME);
+		PRIVATE_PRODUCER_TYPES.add(POC_NAME);
+		PRIVATE_PRODUCER_TYPES.add(PUBLISHER_NAME);
 	}
 	private static Set<String> PRODUCER_ENTITY_TYPES = new HashSet<String>();
 	static {
@@ -111,6 +112,9 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		PRODUCER_ENTITY_TYPES.add(Service.NAME);
 		PRODUCER_ENTITY_TYPES.add(Unknown.NAME);
 	}
+	
+	/** Set of all valid producer types */
+	public static Set<String> PRODUCER_TYPES = Collections.unmodifiableSet(PRIVATE_PRODUCER_TYPES);
 
 	/**
 	 * Base constructor
