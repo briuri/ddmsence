@@ -29,6 +29,7 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.format.Format;
@@ -115,7 +116,13 @@ import buri.ddmsence.util.Util;
  * <u>ICISM:DESVersion</u>: Specifies the version of the Digital Encryption Schema version used for the security
  * markings on this record. (required, starting in DDMS v3.0)<br />
  * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS v3.0. The classification and
- * ownerProducer attributes are required.
+ * ownerProducer attributes are required. Optional {@link ExtensibleAttributes} can also be applied.<br /><br />
+ * In DDMS 3.0, the ICISM attributes explicitly defined in the schema should appear in the SecurityAttributes, not
+ * the ExtensibleAttributes. Attempts to load them as ExtensibleAttributes will throw an InvalidDDMSException.
+ * <br /><br />
+ * In DDMS 2.0, there are no ICISM attributes explicitly defined in the schema, so you can load them in any way you 
+ * want. It is recommended that you load them as SecurityAttributes anyhow, for consistency with DDMS 3.0 resources. 
+ * Please see the "Advanced Tips" on the Extensible Layer (on the DDMSence home page) for details. 
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
@@ -156,6 +163,7 @@ public final class Resource extends AbstractBaseComponent {
 	private XMLGregorianCalendar _cachedCreateDate = null;
 	private Integer _cachedDESVersion = null;
 	private SecurityAttributes _cachedSecurityAttributes = null;
+	private ExtensibleAttributes _cachedExtensibleAttributes = null;
 
 	private static final String DDMSENCE_VERSION = PropertyReader.getProperty("version");
 	
@@ -174,7 +182,7 @@ public final class Resource extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
-	 * <p> DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 schema still
+	 * <p>DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 schema still
 	 * allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present. </p>
 	 * 
 	 * @param element the XOM element representing this
@@ -198,6 +206,7 @@ public final class Resource extends AbstractBaseComponent {
 				}
 			}
 			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
 			
 			// Resource Layer
 			Elements components = element.getChildElements(Identifier.NAME, namespace);
@@ -290,31 +299,50 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Constructor for creating a DDMS v2.0 component from raw data
+	 * Constructor for creating a DDMS 2.0 Resource from raw data.
 	 * 
-	 * <p> Passing the top-level components in as a list is a compromise between a constructor with over twenty
-	 * parameters, and the added complexity of a step-by-step factory/builder approach. If any component is not a
-	 * top-level component, an InvalidDDMSException will be thrown. </p>
-	 * 
-	 * <p> The order of different types of components does not matter here (a security component could be the first
-	 * component in the list). However, if multiple instances of the same component type exist in the list (such as
-	 * multiple identifier components), those components will be stored and output in the order of the list. If only 1
-	 * intance can be supported, the last one in the list will be the one used. </p>
-	 * 
-	 * <p> DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 schema still
-	 * allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present. </p>
+	 * <p>This helper constructor merely calls the fully-parameterized version. Attempts to use it with DDMS 3.0
+	 * components will fail, because some required attributes are missing.</p>
 	 * 
 	 * @param topLevelComponents a list of top level components
-	 * 
-	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
-	 * does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents) throws InvalidDDMSException {
-		this(topLevelComponents, null, null, null, null);
+		this(topLevelComponents, null, null, null, null, null);
+	}
+	
+	/**
+	 * Constructor for creating a DDMS 2.0 Resource from raw data.
+	 * 
+	 * <p>This helper constructor merely calls the fully-parameterized version. Attempts to use it with DDMS 3.0
+	 * components will fail, because some required attributes are missing.</p>
+	 * 
+	 * @param topLevelComponents a list of top level components
+	 * @param extensions any extensible attributes (optional)
+	 */
+	public Resource(List<IDDMSComponent> topLevelComponents, ExtensibleAttributes extensions) throws InvalidDDMSException {
+		this(topLevelComponents, null, null, null, null, extensions);
 	}
 
 	/**
-	 * Constructor for creating a DDMS v3.0 component from raw data
+	 * Constructor for creating a DDMS 2.0 or 3.0 Resource from raw data.
+	 * 
+	 * <p>This helper constructor merely calls the fully-parameterized version.</p>
+	 * 
+	 * @param topLevelComponents a list of top level components
+	 * @param resourceElement value of the resourceElement attribute (required in v3.0)
+	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required in v3.0)
+	 * @param desVersion the DES Version as an Integer (required in v3.0)
+	 * @param securityAttributes any security attributes (classification and ownerProducer are required in v3.0)
+	 */
+	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
+		Integer desVersion, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		this(topLevelComponents, resourceElement, createDate, desVersion, securityAttributes, null);
+	}
+	
+	/**
+	 * Constructor for creating a DDMS 2.0 or 3.0 Resource from raw data.
+	 * 
+	 * <p>The other two data-driven constructors call this one.</p>
 	 * 
 	 * <p> Passing the top-level components in as a list is a compromise between a constructor with over twenty
 	 * parameters, and the added complexity of a step-by-step factory/builder approach. If any component is not a
@@ -333,12 +361,13 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required in v3.0)
 	 * @param desVersion the DES Version as an Integer (required in v3.0)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required in v3.0)
-	 * 
+	 * @param extensions any extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
 	 * does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
-		Integer desVersion, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		Integer desVersion, SecurityAttributes securityAttributes, ExtensibleAttributes extensions)
+		throws InvalidDDMSException {
 		try {
 			if (topLevelComponents == null)
 				topLevelComponents = Collections.emptyList();
@@ -362,6 +391,9 @@ public final class Resource extends AbstractBaseComponent {
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
 			_cachedSecurityAttributes.addTo(element);
+			_cachedExtensibleAttributes = (extensions == null ? new ExtensibleAttributes((List<Attribute>) null)
+				: extensions);
+			_cachedExtensibleAttributes.addTo(element);
 
 			for (IDDMSComponent component : topLevelComponents) {
 				// Resource Layer
@@ -631,6 +663,7 @@ public final class Resource extends AbstractBaseComponent {
 		if (getDESVersion() != null)
 			html.append(buildHTMLMeta("security.DESVersion", String.valueOf(getDESVersion()), true));
 		html.append(getSecurityAttributes().toHTML(Security.NAME));
+		html.append(getExtensibleAttributes().toHTML(""));
 		for (IDDMSComponent component : getTopLevelComponents())
 			html.append(component.toHTML());
 		html.append(buildHTMLMeta("ddms.generator", "DDMSence " + DDMSENCE_VERSION, true));
@@ -650,6 +683,7 @@ public final class Resource extends AbstractBaseComponent {
 		if (getDESVersion() != null)
 			text.append(buildTextLine("DES Version", String.valueOf(getDESVersion()), true));
 		text.append(getSecurityAttributes().toText(""));
+		text.append(getExtensibleAttributes().toText(""));
 		for (IDDMSComponent component : getTopLevelComponents())
 			text.append(component.toText());
 		text.append(buildTextLine("DDMS Generator", "DDMSence " + DDMSENCE_VERSION, true));
@@ -668,6 +702,7 @@ public final class Resource extends AbstractBaseComponent {
 			&& Util.nullEquals(getCreateDate(), test.getCreateDate())
 			&& Util.nullEquals(getDESVersion(), test.getDESVersion())
 			&& getSecurityAttributes().equals(test.getSecurityAttributes())
+			&& getExtensibleAttributes().equals(test.getExtensibleAttributes())
 			&& Util.listEquals(getTopLevelComponents(),	test.getTopLevelComponents()));
 	}
 
@@ -683,6 +718,7 @@ public final class Resource extends AbstractBaseComponent {
 		if (getDESVersion() != null)
 			result = 7 * result + getDESVersion().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
+		result = 7 * result + getExtensibleAttributes().hashCode();
 		for (IDDMSComponent component : getTopLevelComponents())
 			result = 7 * result + component.hashCode();
 		return (result);
@@ -870,6 +906,13 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);
+	}
+	
+	/**
+	 * Accessor for the extensible attributes. Will always be non-null, even if not set.
+	 */
+	public ExtensibleAttributes getExtensibleAttributes() {
+		return (_cachedExtensibleAttributes);
 	}
 	
 	/**
