@@ -22,6 +22,7 @@ package buri.ddmsence.ddms;
 import java.util.ArrayList;
 import java.util.List;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.format.MediaExtent;
@@ -1164,5 +1165,193 @@ public class ResourceTest extends AbstractComponentTestCase {
 		// But attributes can still be used.
 		new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION, 
 			SecurityAttributesTest.getFixture(false));
+	}
+	
+	public void testExtensibleSuccess() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			createComponents();
+			
+			// Extensible attribute added
+			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
+			if ("2.0".equals(version))
+				new Resource(TEST_TOP_LEVEL_COMPONENTS, attr);
+			else
+				new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION,
+					SecurityAttributesTest.getFixture(false), attr);
+		}		
+	}
+	
+	public void test20ExtensibleElementSize() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		createComponents();
+		
+		// ICISM:DESVersion in element
+		Element element = Util.buildDDMSElement(Resource.NAME, null);
+		Util.addAttribute(element, ICISM_PREFIX, Resource.DES_VERSION_NAME, 
+			DDMSVersion.getCurrentVersion().getIcismNamespace(), String.valueOf(TEST_DES_VERSION));
+		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
+		element.appendChild(TEST_TITLE.getXOMElementCopy());
+		element.appendChild(TEST_CREATOR.getXOMElementCopy());
+		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+		element.appendChild(TEST_SECURITY.getXOMElementCopy());
+		Resource component = new Resource(element);
+		assertEquals(TEST_DES_VERSION, component.getDESVersion());
+		assertTrue(component.getSecurityAttributes().isEmpty());
+		assertEquals(0, component.getExtensibleAttributes().getAttributes().size());
+		
+		// ICISM:classification in element
+		element = Util.buildDDMSElement(Resource.NAME, null);
+		Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.CLASSIFICATION_NAME, 
+			DDMSVersion.getCurrentVersion().getIcismNamespace(), "U");
+		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
+		element.appendChild(TEST_TITLE.getXOMElementCopy());
+		element.appendChild(TEST_CREATOR.getXOMElementCopy());
+		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+		element.appendChild(TEST_SECURITY.getXOMElementCopy());
+		component = new Resource(element);
+		assertFalse(component.getSecurityAttributes().isEmpty());
+		assertEquals(0, component.getExtensibleAttributes().getAttributes().size());
+		
+		// ddmsence:confidence in element
+		element = Util.buildDDMSElement(Resource.NAME, null);
+		Util.addAttribute(element, "ddmsence", "confidence", "http://ddmsence.urizone.net/", "95");
+		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
+		element.appendChild(TEST_TITLE.getXOMElementCopy());
+		element.appendChild(TEST_CREATOR.getXOMElementCopy());
+		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+		element.appendChild(TEST_SECURITY.getXOMElementCopy());
+		component = new Resource(element);
+		assertTrue(component.getSecurityAttributes().isEmpty());
+		assertEquals(1, component.getExtensibleAttributes().getAttributes().size());
+	}
+	
+	public void test20ExtensibleDataSizes() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		createComponents();
+		
+		// This can be a parameter or an extensible.
+		Attribute icAttribute = new Attribute("ICISM:DESVersion", DDMSVersion.getCurrentVersion().getIcismNamespace(),
+			"2");
+		// This can be a securityAttribute or an extensible.
+		Attribute secAttribute = new Attribute("ICISM:classification", 
+			DDMSVersion.getCurrentVersion().getIcismNamespace(), "U");
+		// This can be an extensible.
+		Attribute uniqueAttribute = new Attribute("ddmsence:confidence", "http://ddmsence.urizone.net/", "95");
+		List<Attribute> exAttr = new ArrayList<Attribute>();
+		
+		// Base Case
+		Resource component = new Resource(TEST_TOP_LEVEL_COMPONENTS);
+		assertNull(component.getDESVersion());
+		assertTrue(component.getSecurityAttributes().isEmpty());
+		assertEquals(0, component.getExtensibleAttributes().getAttributes().size());
+		
+		// icAttribute as parameter, uniqueAttribute as extensibleAttribute
+		exAttr.clear();
+		exAttr.add(new Attribute(uniqueAttribute));		
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION, null, 
+			new ExtensibleAttributes(exAttr));
+		assertEquals(TEST_DES_VERSION, component.getDESVersion());
+		assertTrue(component.getSecurityAttributes().isEmpty());
+		assertEquals(1, component.getExtensibleAttributes().getAttributes().size());
+		
+		// icAttribute and uniqueAttribute as extensibleAttributes
+		exAttr.clear();
+		exAttr.add(new Attribute(icAttribute));
+		exAttr.add(new Attribute(uniqueAttribute));		
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, new ExtensibleAttributes(exAttr));
+		assertNull(component.getDESVersion());
+		assertTrue(component.getSecurityAttributes().isEmpty());
+		assertEquals(2, component.getExtensibleAttributes().getAttributes().size());
+		
+		// secAttribute as securityAttribute, uniqueAttribute as extensibleAttribute
+		exAttr.clear();
+		exAttr.add(new Attribute(uniqueAttribute));		
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, SecurityAttributesTest.getFixture(false),
+			new ExtensibleAttributes(exAttr));
+		assertNull(component.getDESVersion());
+		assertFalse(component.getSecurityAttributes().isEmpty());
+		assertEquals(1, component.getExtensibleAttributes().getAttributes().size());
+		
+		// secAttribute and uniqueAttribute as extensibleAttribute
+		exAttr.clear();
+		exAttr.add(new Attribute(secAttribute));
+		exAttr.add(new Attribute(uniqueAttribute));		
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, new ExtensibleAttributes(exAttr));
+		assertNull(component.getDESVersion());
+		assertTrue(component.getSecurityAttributes().isEmpty());
+		assertEquals(2, component.getExtensibleAttributes().getAttributes().size());
+		
+		// icAttribute as parameter, secAttribute as securityAttribute, uniqueAttribute as extensibleAttribute
+		exAttr.clear();
+		exAttr.add(new Attribute(uniqueAttribute));		
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION, 
+			SecurityAttributesTest.getFixture(false), new ExtensibleAttributes(exAttr));
+		assertEquals(TEST_DES_VERSION, component.getDESVersion());
+		assertFalse(component.getSecurityAttributes().isEmpty());
+		assertEquals(1, component.getExtensibleAttributes().getAttributes().size());
+		
+		// icAttribute as parameter, secAttribute and uniqueAttribute as extensibleAttributes
+		exAttr.clear();
+		exAttr.add(new Attribute(secAttribute));
+		exAttr.add(new Attribute(uniqueAttribute));		
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION, null, 
+			new ExtensibleAttributes(exAttr));
+		assertEquals(TEST_DES_VERSION, component.getDESVersion());
+		assertTrue(component.getSecurityAttributes().isEmpty());
+		assertEquals(2, component.getExtensibleAttributes().getAttributes().size());
+		
+		// secAttribute as securityAttribute, icAttribute and uniqueAttribute as extensibleAttributes
+		exAttr.clear();
+		exAttr.add(new Attribute(icAttribute));	
+		exAttr.add(new Attribute(uniqueAttribute));		
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, 
+			SecurityAttributesTest.getFixture(false), new ExtensibleAttributes(exAttr));
+		assertNull(component.getDESVersion());
+		assertFalse(component.getSecurityAttributes().isEmpty());
+		assertEquals(2, component.getExtensibleAttributes().getAttributes().size());
+		
+		// all three as extensibleAttributes
+		exAttr.clear();
+		exAttr.add(new Attribute(icAttribute));
+		exAttr.add(new Attribute(secAttribute));
+		exAttr.add(new Attribute(uniqueAttribute));		
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, new ExtensibleAttributes(exAttr));
+		assertNull(component.getDESVersion());
+		assertTrue(component.getSecurityAttributes().isEmpty());
+		assertEquals(3, component.getExtensibleAttributes().getAttributes().size());
+	}
+	
+	public void testExtensibleDataDuplicates() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			createComponents();
+			
+			// DESVersion in parameter AND extensible.
+			try {
+				List<Attribute> exAttr = new ArrayList<Attribute>();
+				exAttr.add(new Attribute("ICISM:DESVersion", DDMSVersion.getCurrentVersion().getIcismNamespace(), 
+					"2"));
+				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION, 
+					SecurityAttributesTest.getFixture(false), new ExtensibleAttributes(exAttr));
+				fail("Allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+			
+			// classification in securityAttributes AND extensible.
+			try {
+				List<Attribute> exAttr = new ArrayList<Attribute>();
+				exAttr.add(new Attribute("ICISM:classification", 
+					DDMSVersion.getCurrentVersion().getIcismNamespace(), "U"));
+				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, 
+					SecurityAttributesTest.getFixture(false), new ExtensibleAttributes(exAttr));
+				fail("Allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
 	}
 }

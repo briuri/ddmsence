@@ -150,36 +150,31 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		DDMSVersion version = DDMSVersion.getVersionFor(getDDMSVersion());
 		String namespace = version.getIcismNamespace();
 		RESERVED_RESOURCE_NAMES.clear();
-		if ("3.0".equals(getDDMSVersion())) {
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, Resource.RESOURCE_ELEMENT_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, Resource.CREATE_DATE_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, Resource.DES_VERSION_NAME, ICISM_PREFIX));			
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.CLASSIFICATION_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.OWNER_PRODUCER_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.SCI_CONTROLS_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.SAR_IDENTIFIER_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DISSEMINATION_CONTROLS_NAME, 
-				ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.FGI_SOURCE_OPEN_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.FGI_SOURCE_PROTECTED_NAME, 
-				ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.RELEASABLE_TO_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.NON_IC_MARKINGS_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.CLASSIFIED_BY_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.COMPILATION_REASON_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DERIVATIVELY_CLASSIFIED_BY_NAME, 
-				ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.CLASSIFICATION_REASON_NAME, 
-				ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DERIVED_FROM_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DECLASS_DATE_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DECLASS_EVENT_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DECLASS_EXCEPTION_NAME, ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.TYPE_OF_EXEMPTED_SOURCE_NAME, 
-				ICISM_PREFIX));
-			RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, 
-				ICISM_PREFIX));
-		}		
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, Resource.RESOURCE_ELEMENT_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, Resource.CREATE_DATE_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, Resource.DES_VERSION_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.CLASSIFICATION_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.OWNER_PRODUCER_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.SCI_CONTROLS_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.SAR_IDENTIFIER_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DISSEMINATION_CONTROLS_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.FGI_SOURCE_OPEN_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.FGI_SOURCE_PROTECTED_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.RELEASABLE_TO_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.NON_IC_MARKINGS_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.CLASSIFIED_BY_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.COMPILATION_REASON_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DERIVATIVELY_CLASSIFIED_BY_NAME,
+			ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.CLASSIFICATION_REASON_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DERIVED_FROM_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DECLASS_DATE_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DECLASS_EVENT_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DECLASS_EXCEPTION_NAME, ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.TYPE_OF_EXEMPTED_SOURCE_NAME, 
+			ICISM_PREFIX));
+		RESERVED_RESOURCE_NAMES.add(new QName(namespace, SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, 
+			ICISM_PREFIX));
 	}
 	
 	/**
@@ -198,8 +193,8 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		
 		for (Attribute attribute : getAttributes()) {
 			if (element.getAttribute(attribute.getLocalName(), attribute.getNamespaceURI()) != null)
-				throw new InvalidDDMSException("This element already has an attribute with the name, "
-					+ attribute.getQualifiedName() + ".");
+				throw new InvalidDDMSException("The extensible attribute with the name, "
+					+ attribute.getQualifiedName() + " conflicts with a pre-existing attribute on the element.");
 			element.addAttribute(attribute);
 		}
 	}
