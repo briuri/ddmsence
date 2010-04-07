@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.resource.Organization;
@@ -55,11 +56,6 @@ import buri.ddmsence.util.Util;
  * the component is used.
  * </p>
  * 
- * <p>
- * This implementation does yet do anything to the extensible attributes on the entities (<code>&lt;xs:anyAttribute 
- * namespace="##other"/&gt;</code> on the ProducerBaseType complex type).
- * </p>
- * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * This class is decorated with ICISM {@link SecurityAttributes}. The classification and
  * ownerProducer attributes are optional.
@@ -72,6 +68,7 @@ import buri.ddmsence.util.Util;
 public abstract class AbstractProducer extends AbstractBaseComponent implements IProducer {
 	
 	private String _producerType;
+	private ExtensibleAttributes _cachedExtensibleAttributes = null;
 	
 	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
 	private List<String> _cachedNames;
@@ -100,7 +97,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	/** The element name for email addresses */
 	protected static final String EMAIL_NAME = "email";	
 	
-	private static Set<String> PRODUCER_TYPES = new HashSet<String>();
+	protected static Set<String> PRODUCER_TYPES = new HashSet<String>();
 	static {
 		PRODUCER_TYPES.add(CONTRIBUTOR_NAME);
 		PRODUCER_TYPES.add(CREATOR_NAME);
@@ -131,6 +128,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 			}
 			_producerType = element.getLocalName();
 			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -148,11 +146,13 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 * @param securityAttributes any security attributes (optional)
+	 * @param extensions extensible attributes (optional)
 	 * @param validateNow true to validate the component immediately. Because Person entities have additional fields
 	 * they should not be validated in the superconstructor.
 	 */
 	protected AbstractProducer(String producerType, String entityType, List<String> names, List<String> phones,
-		List<String> emails, SecurityAttributes securityAttributes, boolean validateNow) throws InvalidDDMSException {
+		List<String> emails, SecurityAttributes securityAttributes, ExtensibleAttributes extensions, boolean validateNow)
+		throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("entity type", entityType);
 			if (names == null)
@@ -181,6 +181,9 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
 			_cachedSecurityAttributes.addTo(element);
+			_cachedExtensibleAttributes = (extensions == null ? new ExtensibleAttributes((List<Attribute>) null)
+				: extensions);
+			_cachedExtensibleAttributes.addTo(entityElement);
 			setXOMElement(element, validateNow);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -292,7 +295,8 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 			&& Util.listEquals(getNames(), test.getNames())
 			&& Util.listEquals(getPhones(), test.getPhones())
 			&& Util.listEquals(getEmails(), test.getEmails())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
+			&& getSecurityAttributes().equals(test.getSecurityAttributes())
+			&& getExtensibleAttributes().equals(test.getExtensibleAttributes()));
 	}
 
 	/**
@@ -306,6 +310,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		result = 7 * result + getPhones().hashCode();
 		result = 7 * result + getEmails().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
+		result = 7 * result + getExtensibleAttributes().hashCode();
 		return (result);
 	}
 	
@@ -325,6 +330,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		for (String email : getEmails())
 			html.append(buildHTMLMeta(getProducerType() + ".email", email, true));
 		html.append(getSecurityAttributes().toHTML(getProducerType()));
+		html.append(getExtensibleAttributes().toHTML(getProducerType()));
 		return (html.toString());
 	}
 
@@ -344,6 +350,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		for (String email : getEmails())
 			text.append(buildTextLine("Email", email, true));
 		text.append(getSecurityAttributes().toText(Util.capitalize(getProducerType())));
+		text.append(getExtensibleAttributes().toText(Util.capitalize(getProducerType())));
 		return (text.toString());		
 	}
 	
@@ -411,5 +418,12 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);
+	}
+	
+	/**
+	 * Accessor for the extensible attributes. Will always be non-null, even if not set.
+	 */
+	public ExtensibleAttributes getExtensibleAttributes() {
+		return (_cachedExtensibleAttributes);
 	}
 }

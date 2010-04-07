@@ -23,6 +23,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractProducer;
+import buri.ddmsence.ddms.ExtensibleAttributes;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.util.Util;
@@ -50,6 +51,10 @@ import buri.ddmsence.util.Util;
  * <u>ddms:name</u>: names of the producer (1-many, at least 1 required)<br />
  * <u>ddms:phone</u>: phone numbers of the producer (0-many optional)<br />
  * <u>ddms:email</u>: email addresses of the producer (0-many optional)<br />
+ * </td></tr></table>
+ * 
+ * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * In both DDMS 2.0 and DDMS 3.0, this component can be decorated with optional {@link ExtensibleAttributes}.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
@@ -88,7 +93,22 @@ public final class Service extends AbstractProducer {
 	 */
 	public Service(String producerType, List<String> names, List<String> phones, List<String> emails,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(producerType, Service.NAME, names, phones, emails, securityAttributes, true);
+		this(producerType, names, phones, emails, securityAttributes, null);
+	}
+	
+	/**
+	 * Constructor for creating a component from raw data.
+	 * 
+	 * @param producerType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
+	 * @param names an ordered list of names
+	 * @param phones an ordered list of phone numbers
+	 * @param emails an ordered list of email addresses
+	 * @param securityAttributes any security attributes (optional)
+	 * @param extensions extensible attributes (optional)
+	 */
+	public Service(String producerType, List<String> names, List<String> phones, List<String> emails,
+		SecurityAttributes securityAttributes, ExtensibleAttributes extensions) throws InvalidDDMSException {
+		super(producerType, Service.NAME, names, phones, emails, securityAttributes, extensions, true);
 	}
 	
 	/**
