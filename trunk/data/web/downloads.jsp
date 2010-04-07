@@ -25,7 +25,7 @@ included in each release.</a></li>
 
 <h3>Latest Release</h3>
 
-<p>Version <b>1.0.0</b> (4/1/2010) is the first official stable release of DDMSence.</p>
+<p>Version <b>1.0.0</b> (4/1/2010) is the first official stable release of DDMSence. It is backwards compatible with v0.9.d and v0.9.c.</p>
 
 <ul>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.0.0.zip"><code>ddmsence-bin-1.0.0.zip</code></a></b> (1.7 MB, compiled with JDK1.5.0_22)</li>
@@ -37,37 +37,35 @@ included in each release.</a></li>
 <p>DDMSence will adopt a "major.minor.patch" versioning system for as long as it makes sense to do so:</p>
 <ul>
 	<li>A change in major version will include major architecture changes or break backwards compatibility.</li>
-	<li>A change in minor version will include new features or minor bug fixes. Some minor releases may break backwards compatibility.<b>*</b></li>
+	<li>A change in minor version will include new features or minor bug fixes. Some minor releases early on may break backwards compatibility.</li>
 	<li>A change in patch version will be limited to minor bug fixes.</li>
 	<li>If the patch version is a letter, such as "<b>b</b>", the release may be unstable. Major/minor numbers will increment after an unstable release (so the beta/pre-release version of 1.2 is probably 1.1.b, and NOT 1.2.b).</li>
 </ul>
 
-<p><b>*</b>In initial 1.x releases, I will be more aggressive about creating a robust baseline at the expense of backwards compatibility, at least
+<p>If a new version is listed as "backwards compatible", it means that you can update to the new version without changing any of your code that worked with the old version.  
+In initial 1.x releases, I will be more aggressive about creating a robust baseline at the expense of backwards compatibility, at least
 until I am aware that there are serious users of the library. All changes which are not backwards compatible will be linked from this page, even
 if they do not trigger a change in major version number.</p> 
 
 <h3>Older Releases</h3>
 
-<p>Version <b>0.9.d</b> (3/29/2010) includes further improvements to the validation system, controlled vocabulary validation for ICISM security
-attributes, and minor improvements to the sample applications. This version is believed to be stable, and is intended to be the test candidate
-for v1.0.0.</p>
+<p>Version <b>0.9.d</b> (3/29/2010) includes further validation improvements. This version is believed to be stable, and is intended to be the test candidate
+for v1.0.0. It is backwards compatible with v0.9.c.</p>
 
 <ul>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.d.zip"><code>ddmsence-bin-0.9.d.zip</code></a></b> (1.9 MB, compiled with JDK1.6.0_16)</li>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.d.zip"><code>ddmsence-src-0.9.d.zip</code></a></b> (2.3 MB)</li>
 </ul>
 
-<p>Version <b>0.9.c</b> (3/25/2010) improves the validation system to support warnings in addition to errors, as outlined in <a href="http://code.google.com/p/ddmsence/issues/detail?id=7">Issue #7</a>.
-One method of the <code>IDDMSComponent</code> interface was removed, which breaks compatibility with 0.9.b. This version is believed to be stable, and is intended to be a limited audience release
-for early feedback.</p>
+<p>Version <b>0.9.c</b> (3/25/2010) adds warning support to the validation system. This version is believed to be stable, and is intended to be a limited audience release
+for early feedback. It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=32">backwards compatible</a> with earlier versions.</p>
 
 <ul>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.c.zip"><code>ddmsence-bin-0.9.c.zip</code></a></b> (1.8 MB, compiled with JDK1.6.0_16)</li>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.c.zip"><code>ddmsence-src-0.9.c.zip</code></a></b> (2.5 MB)</li>
 </ul>
 
-<p>Version <b>0.9.b</b> (3/24/2010) is the initial beta release. It provides a full implementation of the core layers of DDMS 3.0, in addition to a few
-sample applications. This version is believed to be stable, and is intended to be a limited audience release for early feedback.</p>
+<p>Version <b>0.9.b</b> (3/24/2010) is the initial beta release. This version is believed to be stable, and is intended to be a limited audience release for early feedback.</p>
 
 <ul>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.b.zip"><code>ddmsence-bin-0.9.b.zip</code></a></b> (1.8 MB, compiled with JDK1.6.0_16)</li>
