@@ -64,10 +64,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<h1>DDMSence</h1>
-
 <p>
-<img src="./images/splashImage.png" width="302" height="210" title="DDMSence" align="right" />
 DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
 <a href="http://metadata.dod.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
 Using <a href="http://xom.nu/" target="_new">XOM</a> and the <a href="http://xerces.apache.org/" target="_new">Xerces</a> Java parser, 
@@ -85,7 +82,7 @@ and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is
 
 <h1>Current Release</h1>
 
-<p><u>04/01/2010</u>: <a href="downloads.jsp">Version 1.0.0</a> is now available for download. This stable version is the first official public 
+<p><img src="./images/splashImage.png" width="302" height="210" title="DDMSence" align="right" /><u>04/01/2010</u>: <a href="downloads.jsp">Version 1.0.0</a> is now available for download. This stable version is the first official public 
 release.</p>
 
 <ul>
