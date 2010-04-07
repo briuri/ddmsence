@@ -22,4 +22,5 @@
 		</ddms:Subject>
 	</ddms:subjectCoverage>
 	<ddms:security ICISM:ownerProducer="USA" ICISM:classification="U" ICISM:excludeFromRollup="true"/>
+	<ddmsence:extension>This is an extensible element.</ddmsence:extension>
 </ddms:Resource>

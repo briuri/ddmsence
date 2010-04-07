@@ -47,38 +47,30 @@ import buri.ddmsence.util.Util;
 /**
  * Attribute group representing the xs:anyAttribute tag which appears on various DDMS components.
  * 
- * <p>In DDMS 3.0, this attribute group can decorate {@link Organization}, {@link Person}, {@link Service}, 
- * {@link Unknown}, {@link Keyword}, {@link Category}, or the {@link Resource} itself. In DDMS 2.0,
- * this attribute group can only decorate {@link Organization}, {@link Person}, {@link Service}, or
- * the {@link Resource}.</p>
+ * <p>In DDMS 3.0, this attribute group can decorate {@link Organization}, {@link Person}, {@link Service},
+ * {@link Unknown}, {@link Keyword}, {@link Category}, or the {@link Resource} itself. In DDMS 2.0, this attribute group
+ * can only decorate {@link Organization}, {@link Person}, {@link Service}, or the {@link Resource}.</p>
  * 
  * <p>No validation or processing of any kind is performed by DDMSence on extensible attributes, other than the base
- * validation used when loading attributes from an XML file. This class merely exposes a <code>getAttributes()</code> 
- * method which returns a read-only List of XOM Attributes that can be manipulated in business-specific ways.</p>
+ * validation used when loading attributes from an XML file, and a check to confirm that extensible attributes do not
+ * collide with existing attributes. This class merely exposes a <code>getAttributes()</code> method which returns a
+ * read-only List of XOM Attributes that can be manipulated in business-specific ways.</p>
  * 
- * <p>For example, this ddms:Keyword would have an ExtensibleAttributes instance containing 2 attributes (assuming
- * that the "opensearch" namespace was defined earlier in the file):</p>
+ * <p>For example, this ddms:Keyword would have an ExtensibleAttributes instance containing 2 attributes (assuming that
+ * the "opensearch" namespace was defined earlier in the file):</p>
  * 
- * <ul><code>
- * &lt;ddms:Keyword ddms:value="xml" opensearch:relevance="95" opensearch:confidence="82" /&gt;
- * </code></ul>
+ * <ul><code> &lt;ddms:Keyword ddms:value="xml" opensearch:relevance="95" opensearch:confidence="82" /&gt; </code></ul>
  * 
  * <p>XOM attributes can be created as follows:</p>
  * 
- * <ul><code>
- * Attribute attribute = new Attribute("opensearch:relevance", "http://opensearch.namespace/", "95");
- * Attribute attribute = new Attribute("opensearch:confidence", "http://opensearch.namespace/", "82");
- * </code></ul>
+ * <ul><code> Attribute attribute = new Attribute("opensearch:relevance", "http://opensearch.namespace/", "95");
+ * Attribute attribute = new Attribute("opensearch:confidence", "http://opensearch.namespace/", "82"); </code></ul>
  * 
  * <p>The DDMS documentation does not provide sample HTML/Text output for extensible attributes, so the following
- * approach is used. In general, the HTML/Text output of extensible attributes will be prefixed with the name of the 
- * element being marked. For example:</p>
- * <ul><code>
- * Keyword Opensearch Relevance: 95<br />
- * Keyword Opensearch Confidence: 82<br />
- * &lt;meta name="subject.keyword.opensearch.relevance" content="95" /&gt;<br />
- * &lt;meta name="subject.keyword.opensearch.confidence" content="82" /&gt;<br />
- * </code></ul></p>
+ * approach is used. In general, the HTML/Text output of extensible attributes will be prefixed with the name of the
+ * element being marked. For example:</p> <ul><code> Keyword Opensearch Relevance: 95<br /> Keyword Opensearch
+ * Confidence: 82<br /> &lt;meta name="subject.keyword.opensearch.relevance" content="95" /&gt;<br /> &lt;meta
+ * name="subject.keyword.opensearch.confidence" content="82" /&gt;<br /> </code></ul></p>
  * 
  * <p>Details about the XOM Attribute class can be found at:
  * <i>http://www.xom.nu/apidocs/index.html?nu/xom/Attribute.html</i></p>

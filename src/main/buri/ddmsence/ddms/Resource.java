@@ -33,6 +33,7 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
+import buri.ddmsence.ddms.extensible.ExtensibleElement;
 import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.resource.Identifier;
@@ -78,10 +79,6 @@ import buri.ddmsence.util.Util;
  * &lt;meta name="ddms.version" content="3.0" /&gt;<br />
  * </code></ul></p>
  * 
- * This implementation does yet do anything to the extensible attributes or elements (<code>&lt;xs:anyAttribute 
- * namespace="##other"/&gt;</code> on the ResourceType complex type).
- * </p>
- * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:identifier</u>: (1-many required), implemented as an {@link Identifier}<br />
  * <u>ddms:title</u>: (1-many required), implemented as a {@link Title}<br />
@@ -107,6 +104,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:geospatialCoverage</u>: (0-many optional), implemented as a {@link GeospatialCoverage}<br />
  * <u>ddms:relatedResources</u>: (0-many optional), implemented as a {@link RelatedResources}<br />
  * <u>ddms:security</u>: (exactly 1 required), implemented as a {@link Security}<br />
+ * <u>Extensible Layer</u>: (0-many optional), implemented as a {@link ExtensibleElement}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -159,6 +157,7 @@ public final class Resource extends AbstractBaseComponent {
 	private List<GeospatialCoverage> _cachedGeospatialCoverages = new ArrayList<GeospatialCoverage>();
 	private List<RelatedResources> _cachedRelatedResources = new ArrayList<RelatedResources>();
 	private Security _cachedSecurity = null;
+	private List<ExtensibleElement> _cachedExtensibleElements = new ArrayList<ExtensibleElement>();
 	private List<IDDMSComponent> _orderedList = new ArrayList<IDDMSComponent>();
 
 	private XMLGregorianCalendar _cachedCreateDate = null;
@@ -260,12 +259,12 @@ public final class Resource extends AbstractBaseComponent {
 				_cachedPointOfContacts.add(getEntityFor(components.get(i)));
 			}
 
-			// Format layer
+			// Format Layer
 			component = getChild(Format.NAME);
 			if (component != null)
 				_cachedFormat = new Format(component);
 
-			// Summary layer
+			// Summary Layer
 			component = getChild(SubjectCoverage.NAME);
 			if (component != null)
 				_cachedSubjectCoverage = new SubjectCoverage(component);
@@ -286,11 +285,23 @@ public final class Resource extends AbstractBaseComponent {
 				_cachedRelatedResources.add(new RelatedResources(components.get(i)));
 			}
 
-			// Security layer
+			// Security Layer
 			component = getChild(Security.NAME);
-			if (component != null)
+			if (component != null) {
 				_cachedSecurity = new Security(component);
 
+				// Extensible Layer
+				
+				// We use the security component to locate the extensible layer. If it is null, this resource is going
+				// to fail validation anyhow, so we skip the extensible layer.
+				int index = 0;
+				Elements allElements = element.getChildElements();
+				while (allElements.get(index) != component)
+					index++;
+				for (int i = index + 1; i < allElements.size(); i++) {
+					_cachedExtensibleElements.add(new ExtensibleElement(allElements.get(i)));
+				}	
+			}
 			populatedOrderedList();
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
@@ -428,10 +439,10 @@ public final class Resource extends AbstractBaseComponent {
 						_cachedPointOfContacts.add(producer);
 					}
 				}
-				// Format layer
+				// Format Layer
 				else if (component instanceof Format)
 					_cachedFormat = (Format) component;
-				// Summary layer
+				// Summary Layer
 				else if (component instanceof SubjectCoverage)
 					_cachedSubjectCoverage = (SubjectCoverage) component;
 				else if (component instanceof VirtualCoverage)
@@ -445,6 +456,9 @@ public final class Resource extends AbstractBaseComponent {
 				// Security Layer
 				else if (component instanceof Security)
 					_cachedSecurity = (Security) component;
+				// Extensible Layer
+				else if (component instanceof ExtensibleElement)
+					_cachedExtensibleElements.add((ExtensibleElement) component);
 				else
 					throw new InvalidDDMSException(component.getName()
 						+ " is not a valid top-level component in a ddms:Resource.");
@@ -509,6 +523,7 @@ public final class Resource extends AbstractBaseComponent {
 		_orderedList.addAll(getRelatedResources());
 		if (getSecurity() != null)
 			_orderedList.add(getSecurity());
+		_orderedList.addAll(getExtensibleElements());
 	}
 
 	/**
@@ -526,6 +541,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
 	 * <li>If this resource has security attributes, the SecurityAttributes on any subcomponents are valid according 
 	 * to rollup rules (security attributes are not required in DDMS 2.0).</li>
+	 * <li>(v2.0) Only 1 extensible element can exist.</li>
 	 * <li>All child components are using the same version of DDMS.</li>
 	 * </td></tr></table>
 	 * 
@@ -567,7 +583,12 @@ public final class Resource extends AbstractBaseComponent {
 			}
 			validateRollup(getSecurityAttributes(), childAttributes);
 		}
+		if ("2.0".equals(getDDMSVersion()) && getExtensibleElements().size() > 1) {
+			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
+		}
 		for (IDDMSComponent component : getTopLevelComponents()) {
+			if (component instanceof ExtensibleElement)
+				continue;
 			Util.requireSameVersion(this, component);
 		}
 		
@@ -667,6 +688,7 @@ public final class Resource extends AbstractBaseComponent {
 		html.append(getExtensibleAttributes().toHTML(""));
 		for (IDDMSComponent component : getTopLevelComponents())
 			html.append(component.toHTML());
+		html.append(buildHTMLMeta("extensible.layer", String.valueOf(!getExtensibleElements().isEmpty()), true));
 		html.append(buildHTMLMeta("ddms.generator", "DDMSence " + DDMSENCE_VERSION, true));
 		html.append(buildHTMLMeta("ddms.version", getDDMSVersion(), true));
 		return (html.toString());
@@ -687,6 +709,7 @@ public final class Resource extends AbstractBaseComponent {
 		text.append(getExtensibleAttributes().toText(""));
 		for (IDDMSComponent component : getTopLevelComponents())
 			text.append(component.toText());
+		text.append(buildTextLine("Extensible Layer", String.valueOf(!getExtensibleElements().isEmpty()), true));
 		text.append(buildTextLine("DDMS Generator", "DDMSence " + DDMSENCE_VERSION, true));
 		text.append(buildTextLine("DDMS Version", getDDMSVersion(), true));
 		return (text.toString());
@@ -864,6 +887,13 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public Security getSecurity() {
 		return (_cachedSecurity);
+	}
+	
+	/**
+	 * Accessor for the extensible layer elements (0-many in 3.0, 0-1 in 2.0).
+	 */
+	public List<ExtensibleElement> getExtensibleElements() {
+		return (Collections.unmodifiableList(_cachedExtensibleElements));
 	}
 
 	/**
