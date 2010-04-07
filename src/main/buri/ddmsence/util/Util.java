@@ -110,8 +110,7 @@ public class Util {
 	/**
 	 * Helper method to convert an xs:NMTOKENS data type into a List of Strings.
 	 * 
-	 * @param element the element with the attribute
-	 * @param name the name of the attribute to parse
+	 * @param value the xs:list style String to parse
 	 * @return a List (never null)
 	 */
 	public static List<String> getAsList(String value) {
