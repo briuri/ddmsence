@@ -26,6 +26,8 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
+import buri.ddmsence.ddms.extensible.ExtensibleElement;
+import buri.ddmsence.ddms.extensible.ExtensibleElementTest;
 import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.format.MediaExtent;
 import buri.ddmsence.ddms.resource.Dates;
@@ -313,6 +315,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			html.append("<meta name=\"security.excludeFromRollup\" content=\"true\" />\n");
 		html.append("<meta name=\"security.classification\" content=\"U\" />\n");
 		html.append("<meta name=\"security.ownerProducer\" content=\"USA\" />\n");
+		html.append("<meta name=\"extensible.layer\" content=\"false\" />\n");
 		html.append("<meta name=\"ddms.generator\" content=\"DDMSence ").append(DDMSENCE_VERSION).append("\" />\n");
 		html.append("<meta name=\"ddms.version\" content=\"").append(DDMSVersion.getCurrentVersion().getVersion())
 			.append("\" />\n");
@@ -396,6 +399,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		}
 		text.append("Classification: U\n");
 		text.append("ownerProducer: USA\n");
+		text.append("Extensible Layer: false\n");
 		text.append("DDMS Generator: DDMSence ").append(DDMSENCE_VERSION).append("\n");
 		text.append("DDMS Version: ").append(DDMSVersion.getCurrentVersion().getVersion()).append("\n");
 		return (text.toString());
@@ -1356,4 +1360,74 @@ public class ResourceTest extends AbstractComponentTestCase {
 			}
 		}
 	}
+	
+	public void testExtensibleElementElementConstructor() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			createComponents();
+			String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
+			ExtensibleElement component = new ExtensibleElement(ExtensibleElementTest.getElementFixture());
+		
+			Element element = Util.buildDDMSElement(Resource.NAME, null);
+			Util.addAttribute(element, ICISM_PREFIX, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
+				String.valueOf(TEST_RESOURCE_ELEMENT));
+			Util.addAttribute(element, ICISM_PREFIX, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
+			Util.addAttribute(element, ICISM_PREFIX, Resource.DES_VERSION_NAME, icNamespace,
+				String.valueOf(TEST_DES_VERSION));
+			SecurityAttributesTest.getFixture(false).addTo(element);
+			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
+			element.appendChild(TEST_TITLE.getXOMElementCopy());
+			element.appendChild(TEST_CREATOR.getXOMElementCopy());
+			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(component.getXOMElementCopy());
+			testConstructor(WILL_SUCCEED, element);
+		}
+	}
+	
+	public void testExtensibleElementOutput() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("3.0");
+		createComponents();
+		ExtensibleElement component = new ExtensibleElement(ExtensibleElementTest.getElementFixture());
+		
+		List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
+		components.add(component);
+		Resource resource = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
+			TEST_DES_VERSION);
+		assertTrue(resource.toHTML().indexOf("<meta name=\"extensible.layer\" content=\"true\" />") != -1);
+		assertTrue(resource.toText().indexOf("Extensible Layer: true\n") != -1);
+	}
+	public void testWrongVersionExtensibleElementAllowed() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		ExtensibleElement component = new ExtensibleElement(ExtensibleElementTest.getElementFixture());
+		DDMSVersion.setCurrentVersion("3.0");
+		createComponents();
+		
+		List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
+		components.add(component);
+		testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+	}
+	
+	public void test20TooManyExtensibleElements() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		createComponents();
+		
+		List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
+		components.add(new ExtensibleElement(ExtensibleElementTest.getElementFixture()));
+		components.add(new ExtensibleElement(ExtensibleElementTest.getElementFixture()));
+		
+		testConstructor(WILL_FAIL, components, null, null, null);
+	}
+	
+	public void test30TooManyExtensibleElements() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("3.0");
+		createComponents();
+		
+		List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
+		components.add(new ExtensibleElement(ExtensibleElementTest.getElementFixture()));
+		components.add(new ExtensibleElement(ExtensibleElementTest.getElementFixture()));
+		
+		testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+	}
+	
 }
