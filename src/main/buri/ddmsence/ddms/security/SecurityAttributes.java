@@ -267,6 +267,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * Convenience method to add these attributes onto an existing XOM Element
 	 * 
 	 * @param element the element to decorate
+	 * @throws InvalidDDMSException if the DDMS version of the element is different
 	 */
 	public void addTo(Element element) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getVersionFor(getDDMSVersion());
