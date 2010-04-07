@@ -23,6 +23,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractProducer;
+import buri.ddmsence.ddms.ExtensibleAttributes;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.util.Util;
@@ -56,6 +57,10 @@ import buri.ddmsence.util.Util;
  * <u>ddms:affiliation</u>: organizational affiliation (0-1 optional)<br />
  * <u>ddms:phone</u>: phone numbers of the producer (0-many optional)<br />
  * <u>ddms:email</u>: email addresses of the producer (0-many optional)<br />
+ * </td></tr></table>
+ * 
+ * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * In both DDMS 2.0 and DDMS 3.0, this component can be decorated with optional {@link ExtensibleAttributes}.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
@@ -101,7 +106,26 @@ public final class Person extends AbstractProducer {
 	 */
 	public Person(String producerType, String surname, List<String> names, String userID, String affiliation,
 		List<String> phones, List<String> emails, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(producerType, Person.NAME, names, phones, emails, securityAttributes, false);
+		this(producerType, surname, names, userID, affiliation, phones, emails, securityAttributes, null);
+	}
+
+	/**
+	 * Constructor for creating a component from raw data.
+	 * 
+	 * @param producerType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
+	 * @param surname the surname of the person
+	 * @param names an ordered list of names
+	 * @param userID optional unique identifier within an organization
+	 * @param affiliation organizational affiliation of the person
+	 * @param phones an ordered list of phone numbers
+	 * @param emails an ordered list of email addresses
+	 * @param securityAttributes any security attributes (optional)
+	 * @param extensions extensible attributes (optional)
+	 */
+	public Person(String producerType, String surname, List<String> names, String userID, String affiliation,
+		List<String> phones, List<String> emails, SecurityAttributes securityAttributes, ExtensibleAttributes extensions)
+		throws InvalidDDMSException {
+		super(producerType, Person.NAME, names, phones, emails, securityAttributes, extensions, false);
 		try {
 			int insertIndex = (names == null ? 0 : names.size());
 			insertElements(insertIndex, surname, userID, affiliation);

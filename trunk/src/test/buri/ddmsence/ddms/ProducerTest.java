@@ -19,9 +19,13 @@
  */
 package buri.ddmsence.ddms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.TestCase;
 import nu.xom.Element;
 import buri.ddmsence.ddms.resource.Organization;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -105,5 +109,22 @@ public class ProducerTest extends TestCase {
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A ddms:email element was found with no value.", 
 			component.getValidationWarnings().get(0).getText());
+	}
+	
+	public void testExtensibleSuccess() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			
+			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
+			List<String> names = new ArrayList<String>();
+			names.add("DISA");
+			new Organization("creator", names, null, null, null, attr);
+		}
+	}
+	
+	public void testExtensibleFailure() throws InvalidDDMSException {
+		// No failure cases to test right now.
+		// ICISM attributes are at creator/contributor level, so they never clash with extensibles on the Organization
+		// Person level.
 	}
 }

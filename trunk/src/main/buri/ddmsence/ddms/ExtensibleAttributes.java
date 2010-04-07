@@ -99,16 +99,21 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public ExtensibleAttributes(Element element) throws InvalidDDMSException {
-		super(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));
+		super(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));	
 		buildReservedNames();
+		
+		// For producers, the extensible attributes will be one child deep.
+		if (AbstractProducer.PRODUCER_TYPES.contains(element.getLocalName()))
+			element = element.getChildElements().get(0);
+		
 		_cachedAttributes = new ArrayList<Attribute>();
 		for (int i = 0; i < element.getAttributeCount(); i++) {
 			Attribute attribute = element.getAttribute(i);
 			// Skip ddms: attributes.
 			if (element.getNamespaceURI().equals(attribute.getNamespaceURI()))
 				continue;
-			// Skip reserved ICISM attributes
-			if (element.getLocalName().equals(Resource.NAME)) {
+			// Skip reserved ICISM attributes on Resource
+			if (Resource.NAME.equals(element.getLocalName())) {
 				QName testName = new QName(attribute.getNamespaceURI(), attribute.getLocalName(), 
 					attribute.getNamespacePrefix());
 				if (RESERVED_RESOURCE_NAMES.contains(testName))
@@ -137,9 +142,9 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		
 	/**
 	 * Compiles lists of attribute names which should be ignored when creating extensible attributes. In most cases,
-	 * this is easy to determine, because namespace="##other" forces all extensible attributes to be in a non-DDMS 
-	 * namespace, so the Resource is the only element that might encounter collisions (it has ICISM attributes
-	 * that should be ignored). The ICISM attributes are counted as extensible attributes in DDMS 2.0.
+	 * this is easy to determine, because namespace="##other" forces all extensible attributes to be in a non-DDMS
+	 * namespace, so the Resource is the only element that might encounter collisions (it has ICISM attributes that
+	 * should be ignored).
 	 */
 	private void buildReservedNames() {
 		DDMSVersion version = DDMSVersion.getVersionFor(getDDMSVersion());

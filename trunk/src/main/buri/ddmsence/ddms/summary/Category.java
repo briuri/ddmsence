@@ -140,7 +140,6 @@ public final class Category extends AbstractBaseComponent {
 		}			
 		if ("2.0".equals(getDDMSVersion()) && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("xs:anyAttribute can only be applied to ddms:category in DDMS 3.0.");
-
 	}
 	
 	/**
