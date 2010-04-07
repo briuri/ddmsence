@@ -59,6 +59,13 @@ import buri.ddmsence.util.Util;
  * &lt;ddms:Keyword ddms:value="xml" opensearch:relevance="95" opensearch:confidence="82" /&gt;
  * </code></ul>
  * 
+ * <p>XOM attributes can be created as follows:</p>
+ * 
+ * <ul><code>
+ * Attribute attribute = new Attribute("opensearch:relevance", "http://opensearch.namespace/", "95");
+ * Attribute attribute = new Attribute("opensearch:confidence", "http://opensearch.namespace/", "82");
+ * </code></ul>
+ * 
  * <p>The DDMS documentation does not provide sample HTML/Text output for extensible attributes, so the following
  * approach is used. In general, the HTML/Text output of extensible attributes will be prefixed with the name of the 
  * element being marked. For example:</p>
