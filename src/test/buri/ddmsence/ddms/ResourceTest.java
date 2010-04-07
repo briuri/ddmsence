@@ -24,6 +24,8 @@ import java.util.List;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
+import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
+import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.format.MediaExtent;
 import buri.ddmsence.ddms.resource.Dates;
