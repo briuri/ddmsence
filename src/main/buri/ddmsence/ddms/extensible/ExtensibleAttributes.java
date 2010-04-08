@@ -284,7 +284,11 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * Accessor for the attributes. Returns a copy.
 	 */
 	public List<Attribute> getAttributes() {
-		return (Collections.unmodifiableList(_cachedAttributes));
+		List<Attribute> attributes = new ArrayList<Attribute>();
+		for (Attribute attribute : _cachedAttributes) {
+			attributes.add(new Attribute(attribute));
+		}
+		return (Collections.unmodifiableList(attributes));
 	}
 
 }
