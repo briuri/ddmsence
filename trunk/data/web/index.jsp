@@ -82,33 +82,24 @@ and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is
 
 <h1>Current Release</h1>
 
-<p><img src="./images/splashImage.png" width="302" height="210" title="DDMSence" align="right" /><u>04/01/2010</u>: <a href="downloads.jsp">Version 1.0.0</a> is now available for download. This stable version is the first official public 
-release.</p>
+<p><img src="./images/splashImage.png" width="302" height="210" title="DDMSence" align="right" />
+<u>04/08/2010</u>: <a href="downloads.jsp">Version 1.1.0</a> is now available for download. This stable version is the second official public 
+release, and adds support for DDMS 2.0 and the Extensible Layer.</p>
 
 <ul>
-	<li>The core layers of the DDMS 3.0 Pre-Release specification are fully implemented.</li>
-	<li>Validation of DDMS components supports both warnings and errors.</li>
+	<li>All layers of the DDMS specification are fully implemented, including the Extensible Layer.</li>
+	<li>Full support is provided for both DDMS 2.0 and DDMS 3.0 Pre-Release components.</li>
 	<li>ICISM security attributes are validated against their Controlled Vocabulary Enumerations, as defined by the Intelligence Community.</li>
-	<li>Three sample applications and accompanying <a href="documentation.jsp#samples">tutorials</a> provide an introduction to the library.</li>
+	<li>Three sample applications and accompanying <a href="documentation.jsp#samples">tutorials</a> provide an introduction to the library,
+		and <a href="documentation.jsp#tips">Advanced Tips</a> are available for power users.</li>
 </ul>
 
 <h1>On the Horizon</h1>
 
-<p><u>04/08/2010</u>: I have wrapped up development on v1.1.0 and am currently doing additional testing and writing documentation.
-Unless something major comes up, I anticipate having this release available for download sometime on Friday, 4/9. Version 1.1.0 will add:</p>
-
-<ul>
-	<li>Support for DDMS 2.0.</li>
-	<li>Basic support for the extensible attributes and elements in both DDMS 2.0 and DDMS 3.0.</li>
-	<li>Additional documentation and unit tests.</li>
-</ul>
-
-<p>The v1.1.0 release will break <a href="http://code.google.com/p/ddmsence/issues/detail?id=31">backwards compatibility</a> with v1.0.0. In initial 
-1.x releases, I will be more aggressive about creating a robust baseline at the expense of backwards compatibility, at least
-until I am aware that there are serious users of the library.</p> 
-
-<p>Please follow the "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list
- of enhancements under consideration for future releases.</p>
+<p><u>04/08/2010</u>: Now that v1.1.0 is complete, I will take some time off from new development and focus on improving the unit tests and documentation.
+I would like this release to evoke some feedback before I decide what enhancements to pursue in the next release. Please follow the 
+"<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list of enhancements under 
+consideration for future releases, or to add your own suggestions.</p>
 			
 <h1>About the Author</h1>
 

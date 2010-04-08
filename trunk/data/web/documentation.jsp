@@ -44,17 +44,17 @@ with the "bin"-flavored download, which comes with the DDMSence JAR files pre-co
 into a batch/shell script and run that script):</p>
 
 <div class="example"><pre>REM Windows Commands
-cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;\ddmsence-bin-1.0.0
+cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;\ddmsence-bin-1.1.0
 set DDMSENCE_CLASSPATH=lib/xercesImpl-2.9.1.jar;lib/xml-apis-1.3.04.jar;lib/xom-1.2.4.jar
-set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-1.0.0.jar;lib/ddmsence-samples-1.0.0.jar
+set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-1.1.0.jar;lib/ddmsence-samples-1.1.0.jar
 java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre></div>
 <p class="figure">Figure 1. Running from a Windows/DOS Command Line</p>
 
 <div class="example"><pre>#!/bin/sh
 # Linux Commands
-cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;/ddmsence-bin-1.0.0
+cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;/ddmsence-bin-1.1.0
 ddmsence_classpath=lib/xercesImpl-2.9.1.jar:lib/xml-apis-1.3.04.jar:lib/xom-1.2.4.jar
-ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-1.0.0.jar:lib/ddmsence-samples-1.0.0.jar
+ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-1.1.0.jar:lib/ddmsence-samples-1.1.0.jar
 java -cp $ddmsence_classpath buri.ddmsence.samples.Essentials</pre></div>
 <p class="figure">Figure 2. Running in Linux</p>
 
@@ -116,8 +116,8 @@ in the "src"-flavored download. You should be aware of the following sections, w
 	<li>The class description describes cases where DDMSence is stricter than the DDMS specification, and allowed cases which are legal, but nonsensical. If this varies
 	for different versions of DDMS, the version number will be indicated. If no version number is listed, the constraint applies to all versions.</li>
 	<li>The class description describes any nested elements or attributes for the implemented component and a link to the DDMS website for the complete specification.</li>
-	<li>The <code>validate</code> method description lists the specific rules used to validate a component. This section may be useful when building your own components from scratch.</li>
-	<li>If a component has any conditions that result in warnings, the <code>validateWarnings</code> method description lists the specific conditions that trigger a warning.</li>
+	<li>The <code>validate()</code> method description lists the specific rules used to validate a component. This section may be useful when building your own components from scratch.</li>
+	<li>If a component has any conditions that result in warnings, the <code>validateWarnings()</code> method description lists the specific conditions that trigger a warning.</li>
 </ul>
 <div class="clear"></div>
 
@@ -184,8 +184,8 @@ The following convention is used to provide some consistency:</p>
 
 <h4>New Attributes in DDMS v3.0</h4>
 
-<p>Some attributes, such as ICISM:excludeFromRollup and ICISM:resouceElement are new in DDMS v3.0. When the accessors for these attributes are
-caleld on a DDMS 2.0 component, a null value will be returned instead of an UnsupportedVersionException. This decision allows DDMS records of varying versions to be
+<p>Some attributes, such as <code>ICISM:excludeFromRollup</code> and <code>ICISM:resouceElement</code> are new in DDMS v3.0. When the accessors for these attributes are
+called on a DDMS 2.0 component, a null value will be returned. This decision allows DDMS records of varying versions to be
 traversed and queried in the same manner, without requiring too much knowledge of when specific attributes were introduced.</p>
 
 <h4>Thread Safety</h4>
@@ -197,9 +197,9 @@ traversed and queried in the same manner, without requiring too much knowledge o
 <a name="tips-version"></a><h4>Working with DDMS 2.0</h4>
 
 <p>Starting with DDMSence v1.1, two versions of DDMS are supported: 2.0 and 3.0. When building DDMS components from XML files, the 
-<code>DDMSReader</code> class can automatically use the correct version of DDMS based on the XML namespace defined in the file.
-When building DDMS components from scratch, the <code><a href="/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">DDMSVersion</a></code>
-class controls the version being used. There is an instance of <code>DDMSVersion</code> for each supported version, and this 
+DDMSReader class can automatically use the correct version of DDMS based on the XML namespace defined in the file.
+When building DDMS components from scratch, the <a href="/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">DDMSVersion</a>
+class controls the version being used. There is an instance of DDMSVersion for each supported version, and this 
 instance contains the specific XML namespaces used for DDMS, GML, and ICISM components.</p>
 
 <div class="example"><pre>DDMSVersion.setCurrentVersion("2.0");
@@ -237,7 +237,7 @@ validation rules. The default version if you never call this method is "3.0". Th
 is not a thread-safe approach, but I believe that the most common use cases will deal with DDMS components of a single version at a time,
 and I wanted the versioning mechanism to be as unobstrusive as possible.</p>
 
-<p>The validation rules between DDMS 2.0 and 3.0 are very similar, but there are a few major differences. For example, the <code>Unknown</code>
+<p>The validation rules between DDMS 2.0 and 3.0 are very similar, but there are a few major differences. For example, the Unknown
 entity for producers was not introduced until DDMS 3.0, so attempts to create one in DDMS 2.0 will fail.</p>
 
 <div class="example"><pre>DDMSVersion.setCurrentVersion("2.0");
@@ -262,7 +262,7 @@ the attributes from a XOM element will simply load these attributes from the ele
 <div class="example"><pre>public SecurityAttributes(String classification, List&lt;String&gt; ownerProducers, Map&lt;String,String&gt; otherAttributes)</pre></div>
 <p class="figure">Figure 6. SecurityAttributes constructor</p>
 
-<p>Because the <code>classification</code> and <code>ownerProducers</code> are the most commonly referenced attributes (especially for Unclassified metadata) they are explicit parameters. Any other
+<p>Because the <code>classification</code> and <code>ownerProducers</code> are the most commonly referenced attributes, they are explicit parameters. Any other
 attribute can be added in a String-based map called <code>otherAttributes</code>. If an attribute is repeated, the last one in the list is used, and if an attribute does not match an
 expected attribute name, it is ignored. Here is an example which creates Confidential markings and puts them on a <code>ddms:title</code> element:</p>
 
@@ -273,7 +273,8 @@ Map&lt;String, String&gt; otherAttributes = new HashMap&lt;String, String&gt;();
 otherAttributes.put("SCIcontrols", "HCS"); // This will be ignored, because there is a later duplicate.
 otherAttributes.put("SCIcontrols", "SI");
 otherAttributes.put("SARIdentifier", "SAR-USA");
-otherAttributes.put("classification", "U"); // This will be ignored, because the "classification" parameter takes precedence.
+// The next line will be ignored, because the "classification" parameter takes precedence.
+otherAttributes.put("classification", "U"); 
 SecurityAttributes security = new SecurityAttributes("C", ownerProducers, otherAttributes);
 Title title = new Title("My Confidential Notes", security);
 System.out.println(title.toXML());</pre></div>
@@ -307,7 +308,8 @@ axisLabels.add("Y");
 List&lt;String&gt; uomLabels = new ArrayList&lt;String&gt;();
 uomLabels.add("Meter");
 uomLabels.add("Meter");
-SRSAttributes srsAttributes = new SRSAttributes("http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D", new Integer(10), axisLabels, uomLabels);
+SRSAttributes srsAttributes = new SRSAttributes("http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D",
+   new Integer(10), axisLabels, uomLabels);
 List&lt;Double&gt; coordinates = new ArrayList&lt;Double&gt;();
 coordinates.add(new Double(32.1));
 coordinates.add(new Double(40.1));

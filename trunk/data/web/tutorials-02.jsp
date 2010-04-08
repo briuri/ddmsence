@@ -85,7 +85,7 @@ while (!onlyRequiredComponents && confirm("Add another ddms:identifier?")) {
 }</pre></div>
 <p class="figure">Figure 4. Source code to continuously loop until a valid component is created</p>
 
-<p>An anonymous implementation of <code>IComponentBuilder</code> is created (in the <u>Escort</u> constructor) for each DDMS Component class, and each Builder
+<p>An anonymous implementation of IComponentBuilder is created (in the <u>Escort</u> constructor) for each DDMS Component class, and each Builder
 is responsible for one top-level component. For example, here is the definition of the Builder that builds Identifiers:</p>
 
 <div class="example"><pre>BUILDERS.put(Identifier.class, new IComponentBuilder() {
@@ -158,7 +158,7 @@ the messages of that component and any subcomponents. In this run-through, no wa
 Would you like to save this file? [Y/N]: y
 This Resource will be saved as XML in the data/sample/ directory.
 Please enter a filename: myResource.xml
-File saved at "C:\ddmsence-bin-1.0.0\data\sample\myResource.xml".
+File saved at "C:\ddmsence-bin-1.1.0\data\sample\myResource.xml".
 
 You can now open your saved file with the Essentials application.
 The Escort wizard is now finished.</pre></div>
