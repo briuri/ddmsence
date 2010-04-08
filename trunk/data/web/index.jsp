@@ -69,12 +69,12 @@ DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API whi
 <a href="http://metadata.dod.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
 Using <a href="http://xom.nu/" target="_new">XOM</a> and the <a href="http://xerces.apache.org/" target="_new">Xerces</a> Java parser, 
 DDMSence can convert an XML DDMS Resource record into a Java object model, or transform existing Java data into valid, well-formed XML, 
-HTML, and Text records. DDMSence also performs logical validation of rules which are listed in the DDMS documentation but not coded into 
-the DDMS schema (such as the validation of latitude/longitude values).</p>
+HTML, and Text records. DDMSence also performs logical validation of rules which are not coded into the DDMS schema (such as the 
+Controlled Vocabulary Enumerations for Intelligence Community attributes).</p>
 
 <p>DDMS components created with this library maintain an underlying XOM element structure, which provides latent avenues for future 
-improvement, based on XOM's built-in support of XPath, XInclude, and XSLT. However, you do not need to have any experience with XOM to use
-this library.</p>
+improvement, based on XOM's built-in support of XPath, XInclude, and XSLT. However, you do not need to have any experience with XOM to get started
+with this library.</p>
 
 <p>DDMSence comes with a full set of JUnit tests, and code management was aided by <a href="http://www.eclemma.org/" target="_new">EclEmma</a> 
 and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is being released under the GNU Lesser General Public License 
