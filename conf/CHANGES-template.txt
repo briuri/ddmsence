@@ -8,6 +8,9 @@ Copyright 2010 by Brian Uri!
 ===========================================================================
 Release History
 ===========================================================================
+v 1.1.0 (4/08/2010):
+This stable release adds support for DDMS 2.0 and the Extensible Layer.
+ 
 v 1.0.0 (4/01/2010):
 First official stable release. JARs in "bin" release are compiled under Java 1.5.
 

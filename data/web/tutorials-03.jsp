@@ -56,7 +56,7 @@ for (Resource resource : getResources()) {
 return (buildPieGraphURL("DDMS%20MimeType%20Distribution", distribution, PIE_GRAPH_3D));</pre></div>
 <p class="figure">Figure 2. MIME Type source code</p>
 
-<p>The code traverses all of the Format components to maintain a count of each MIME Type. (A simple data class, called <code>Distribution</code>, is
+<p>The code traverses all of the Format components to maintain a count of each MIME Type. (A simple data class, called Distribution, is
 used to encapsulate the counts). Once the counts are generated, the data is sent to the <code>buildPieGraphURL()</code> method to render as a
 Pie Chart in Google-specific terms.</p>
 

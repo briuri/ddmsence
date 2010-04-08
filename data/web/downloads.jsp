@@ -25,11 +25,12 @@ included in each release.</a></li>
 
 <h3>Latest Release</h3>
 
-<p>Version <b>1.0.0</b> (4/1/2010) is the first official stable release of DDMSence. It is backwards compatible with v0.9.d and v0.9.c.</p>
+<p>Version <b>1.1.0</b> (4/8/2010) is a stable release, and adds support for DDMS 2.0 and the Extensible Layer. 
+It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=31">backwards compatible</a> with earlier versions.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.0.0.zip"><code>ddmsence-bin-1.0.0.zip</code></a></b> (1.7 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.0.0.zip"><code>ddmsence-src-1.0.0.zip</code></a></b> (2.3 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.1.0.zip"><code>ddmsence-bin-1.1.0.zip</code></a></b> (1.7 MB, compiled with JDK1.5.0_22)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.1.0.zip"><code>ddmsence-src-1.1.0.zip</code></a></b> (2.4 MB)</li>
 </ul>
 
 <h3>Versioning</h3>
@@ -48,6 +49,13 @@ until I am aware that there are serious users of the library. All changes which 
 if they do not trigger a change in major version number.</p> 
 
 <h3>Older Releases</h3>
+
+<p>Version <b>1.0.0</b> (4/1/2010) is the first official stable release of DDMSence. It is backwards compatible with v0.9.d and v0.9.c.</p>
+
+<ul>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.0.0.zip"><code>ddmsence-bin-1.0.0.zip</code></a></b> (1.7 MB, compiled with JDK1.5.0_22)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.0.0.zip"><code>ddmsence-src-1.0.0.zip</code></a></b> (2.3 MB)</li>
+</ul>
 
 <p>Version <b>0.9.d</b> (3/29/2010) includes further validation improvements. This version is believed to be stable, and is intended to be the test candidate
 for v1.0.0. It is backwards compatible with v0.9.c.</p>
