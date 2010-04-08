@@ -20,6 +20,7 @@
 		<li><a href="#tips-version">Working with DDMS 2.0</a></li>
 		<li><a href="#tips-securityAttributes">ICISM Security Attributes</a></li>
 		<li><a href="#tips-srsAttributes">SRS Attributes</a></li>
+		<li><a href="#tips-extensible">The Extensible Layer</a></li>
 	</ul>
 	<li><a href="#contributors">Contributors</a></li>
 </ul>
@@ -133,8 +134,8 @@ followed these rules to determine which components are important enough to deser
 	<li>Elements which merely enclose important data AND which have no special attributes are never implemented (<code>ddms:Media</code>).</li>
 	<li>Data which can be represented as a simple Java type AND which has no special attributes is represented as a simple Java type (<code>ddms:email</code>).</li>
 	<li>Attributes are generally implemented as properties on an Object. The exceptions to this are the 
-		<a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/security/SecurityAttributes.html">ICISM Attribute Group</a>, 
-		which decorates many DDMS components, and the <a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">SRS Attribute Group</a>,
+		<a href="/docs/index.html?buri/ddmsence/ddms/security/SecurityAttributes.html">ICISM Attribute Group</a>, 
+		which decorates many DDMS components, and the <a href="/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">SRS Attribute Group</a>,
 		which decorates components in the GML profile.</li>
 </ul>
 
@@ -173,10 +174,10 @@ The following convention is used to provide some consistency:</p>
 <ul>
 	<li>On constructors which build components from raw data:</li>
 		<ul>
-			<li>Information about the enclosing component that may affect this new component comes first (such as the producerType of an <a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/resource/Organization.html">Organization</a>).</li>
-			<li>The data or components needed to construct any nested elements comes next (such as the list of Keywords in a <a href="http://ddmsence.urizone.net/docs/buri/ddmsence/ddms/summary/SubjectCoverage.html">SubjectCoverage</a> component).</li>
-			<li>The data needed to construct any attributes comes next (such as the <a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/security/SecurityAttributes.html">ICISM SecurityAttributes</a>).</li>
-			<li>Any remaining information that DDMSence needs comes last (such as the boolean flag on a <a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/summary/PostalAddress.html">PostalAddress</a> which toggles between states and provinces).</li>
+			<li>Information about the enclosing component that may affect this new component comes first (such as the producerType of an <a href="/docs/index.html?buri/ddmsence/ddms/resource/Organization.html">Organization</a>).</li>
+			<li>The data or components needed to construct any nested elements comes next (such as the list of Keywords in a <a href="/docs/buri/ddmsence/ddms/summary/SubjectCoverage.html">SubjectCoverage</a> component).</li>
+			<li>The data needed to construct any attributes comes next (such as the <a href="/docs/index.html?buri/ddmsence/ddms/security/SecurityAttributes.html">ICISM SecurityAttributes</a>).</li>
+			<li>Any remaining information that DDMSence needs comes last (such as the boolean flag on a <a href="/docs/index.html?buri/ddmsence/ddms/summary/PostalAddress.html">PostalAddress</a> which toggles between states and provinces).</li>
 		</ul>
 	<li>On constructors which build components from XML files, a XOM element is generally the only parameter. Additional information is implicitly
 	loaded from the XOM element. </li>
@@ -198,7 +199,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 
 <p>Starting with DDMSence v1.1, two versions of DDMS are supported: 2.0 and 3.0. When building DDMS components from XML files, the 
 <code>DDMSReader</code> class can automatically use the correct version of DDMS based on the XML namespace defined in the file.
-When building DDMS components from scratch, the <code><a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">DDMSVersion</a></code>
+When building DDMS components from scratch, the <code><a href="/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">DDMSVersion</a></code>
 class controls the version being used. There is an instance of <code>DDMSVersion</code> for each supported version, and this 
 instance contains the specific XML namespaces used for DDMS, GML, and ICISM components.</p>
 
@@ -253,7 +254,7 @@ that you cannot mix multiple DDMS versions within the same Resource.</p>
 
 <p>
 ICISM security attributes are defined in the Intelligence Community's "XML Data Encoding Specification for Information Security Marking Metadata" document (DES) and
-implemented in the <a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/security/SecurityAttributes.html">SecurityAttributes</a> class. This class encapsulates
+implemented in the <a href="/docs/index.html?buri/ddmsence/ddms/security/SecurityAttributes.html">SecurityAttributes</a> class. This class encapsulates
 the ICISM attributes which can decorate various DDMS components, such as <code>ddms:Resource</code> or <code>ddms:security</code>. The constructor which builds
 the attributes from a XOM element will simply load these attributes from the element itself. The constructor which builds the attributes from raw data is defined as:
 
@@ -291,7 +292,7 @@ I would like to add this level of validation after the IC has finalized version 
 
 <a name="tips-srsAttributes"></a><h4>SRS Attributes</h4>
 
-<p>Spatial Reference System (SRS) attributes are defined in the DDMS' GML Profile and implemented as an <a href="http://ddmsence.urizone.net/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">SRSAttributes</a> class.
+<p>Spatial Reference System (SRS) attributes are defined in the DDMS' GML Profile and implemented as an <a href="/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">SRSAttributes</a> class.
 They can be applied to <code>gml:Point</code>, <code>gml:Polygon</code>, and <code>gml:pos</code>.</p>
 
 <div class="example"><pre>SRSAttributes(String srsName, Integer srsDimension, List&lt;String&gt; axisLabels, List&lt;String&gt; uomLabels)</pre></div>
@@ -318,6 +319,64 @@ System.out.println(position.toXML());</pre></div>
 <p class="figure">Figure 12. The resultant XML element with SRS attributes</p>
   
 <p>Please note that the SRSAttributes do not belong in any XML namespace -- this is correct according to the DDMS GML Profile.</p>
+
+<a name="tips-extensible"></a><h4>The Extensible Layer</h4>
+
+<p>DDMS is composed of four Core Layers (Security, Resource, Summary Content, and Format) and the Extensible Layer. This layer supports extensibility
+by providing space for custom attributes and elements within a <code>ddms:Resource</code>. Specifically, custom attributes can be added to any producer
+(Organization, Person, Service, and Unknown), a Keyword, a Category, and the Resource itself. A Resource can also have an unlimited number of custom
+elements after the <code>ddms:security</code> element. These extensions are identified by the <code>xs:any</code> and <code>xs:anyAttribute</code>
+definitions in the schema. The main restriction on content is that custom elements and attributes must belong to an XML namespace other than the
+DDMS namespace.</p>
+
+<p>Because any manner of content could appear in the Extensible Layer, DDMSence merely provides a consistent interface to access to the underlying 
+XOM Elements and Attributes. Any business logic to be performed on this Layer is left up to the implementation, so some knowledge of 
+<a href="http://xom.nu/">XOM</a> will be useful. </p>
+
+<p>The relevant code can be found in the <code>buri.ddmsence.ddms.extensible</code> package. It may also be useful to load the sample file,  
+<code>Extensible_Layer_Example.xml</code> into the <u>Essentials</u> application, because it has an example of each extension.</p>
+
+<h5>ExtensibleAttributes</h5>
+
+<p>The <a href="/docs/index.html?buri/ddmsence/ddms/extensible/ExtensibleAttributes.html">ExtensibleAttributes</a> class follows the same implementation
+pattern as SecurityAttributes and SRSAttributes. The accessor, <code>getAttributes()</code> will return a read-only list of all the underlying XOM Attributes.
+Below is an example of an extensible attribute as it might appear in an XML file, and how it could be created from scratch:</p>
+
+<div class="example"><pre>&lt;ddms:keyword xmlns:ddmsence="http://ddmsence.urizone.net/" ddms:value="XML" ddmsence:relevance="99" /&gt;</pre></div>
+<p class="figure">Figure 13. An XML element with extensible attributes</p>
+
+<div class="example"><pre>List<Attribute> extAttributes = new ArrayList<Attribute>();
+extAttributes.add(new Attribute("ddmsence:relevance", "http://ddmsence.urizone.net/", "99"));
+ExtensibleAttributes extensions = new ExtensibleAttributes(extAttributes);
+Keyword keyword = new Keyword("XML", extensions);</pre></div>
+<p class="figure">Figure 14. Creating the extensible attribute from scratch</p>
+
+<p>Note: Currently, all of the <code>xs:anyAttribute</code> definitions use lax processing <i>except</i> for the definition on the producer elements. This means
+that any extensible attributes you add to a producer will be strictly validated when loaded by a schema parser. I am in contact with the DDMS Team to determine
+whether this is an <a href="http://code.google.com/p/ddmsence/issues/detail?id=12">intentional design decision</a> or an oversight.</p>
+
+<h5>ExtensibleAttributes on a Resource</h5>
+
+<p>The <code>ddms:Resource</code> element is the only extensible element which has additional (ICISM) attributes that might conflict with your extensible
+attributes. The situation gets trickier in DDMS 2.0, where the ICISM attributes are not explicitly defined in the schema, but can exist nonetheless.</p>
+
+<p>When creating an ExtensibleAttributes instance based upon a XOM Element (in both DDMS 2.0 and DDMS 3.0):</p>
+<ul>
+	<li>First, ICISM resource attributes such as <code>ICISM:DESVersion</code> will be "claimed", if present.</li>
+	<li>Next, the ICISM attributes such as <code>ICISM:classification</code> will be converted into a SecurityAttributes instance.</li>
+	<li>Any remaining attributes are considered to be ExtensibleAttributes.</li>
+</ul>
+
+<i>Under Construction</i>
+<p>When building an ExtensibleAttributes instance from scratch and then adding it to a Resource (in DDMS 3.0):</p>
+<p>When building an ExtensibleAttributes instance from scratch and then adding it to a Resource (in DDMS 2.0):</p>
+
+<pre>
+- best practices for ICISM attributes in DDMS 2.0
+- ExtensibleElements
+	- General info
+	- XOM topics (XML file example?)
+</pre>
 
 <a name="contributors"></a><h3>Contributors</h3>
 
