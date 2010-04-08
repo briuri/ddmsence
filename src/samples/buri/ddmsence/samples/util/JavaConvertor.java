@@ -19,9 +19,13 @@
 */
 package buri.ddmsence.samples.util;
 
+import nu.xom.Attribute;
+import nu.xom.Element;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.IProducer;
 import buri.ddmsence.ddms.Resource;
+import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
+import buri.ddmsence.ddms.extensible.ExtensibleElement;
 import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.resource.Identifier;
@@ -100,6 +104,7 @@ public class JavaConvertor {
 		java.append("DDMSVersion.setCurrentVersion(\"").append(r.getDDMSVersion()).append("\");\n");
 		java.append("SRSAttributes srsAttributes = null;\n");
 		java.append("SecurityAttributes securityAttributes = null;\n");
+		java.append("ExtensibleAttributes extensions = null;\n");
 		java.append("Position position = null;\n");
 		java.append("List<Double> coords = new ArrayList<Double>();\n");
 		java.append("List<IDDMSComponent> topLevelComponents = new ArrayList<IDDMSComponent>();\n");		
@@ -126,11 +131,11 @@ public class JavaConvertor {
 			else if (component instanceof IProducer)
 				convert(java, (IProducer) component);
 			
-			// Format layer
+			// Format Layer
 			else if (component instanceof Format)
 				convert(java, (Format) component);
 			
-			// Summary layer
+			// Summary Layer
 			else if (component instanceof SubjectCoverage)
 				convert(java, (SubjectCoverage) component);
 			else if (component instanceof VirtualCoverage)
@@ -145,11 +150,16 @@ public class JavaConvertor {
 			// Security Layer
 			else if (component instanceof Security)
 				convert(java, (Security) component);
+			
+			// Extensible Layer
+			else if (component instanceof ExtensibleElement)
+				convert(java, (ExtensibleElement) component);
 		}
 				
 		
 		java.append("\n// ddms:Resource\n");
 		convert(java, r.getSecurityAttributes());
+		convert(java, r.getExtensibleAttributes());
 		java.append("Resource resource = new Resource(topLevelComponents, ");
 		if (r.isResourceElement() != null)
 			java.append("Boolean.").append(r.isResourceElement().booleanValue() ? "TRUE" : "FALSE").append(", ");
@@ -165,7 +175,7 @@ public class JavaConvertor {
 		}
 		else
 			java.append("null, ");
-		java.append("securityAttributes);\n");
+		java.append("securityAttributes, extensions);\n");
 		return (java.toString());
 	}
 		
@@ -332,6 +342,7 @@ public class JavaConvertor {
 				
 		java.append("\n// ddms:").append(producerType).append("\n");
 		convert(java, producer.getSecurityAttributes());
+		convert(java, producer.getExtensibleAttributes());
 		java.append("List<String> names").append(count).append(" = new ArrayList<String>();\n");
 		for (String name : producer.getNames())
 			java.append("names").append(count).append(".add(\"").append(name).append("\");\n");
@@ -350,7 +361,8 @@ public class JavaConvertor {
 			java.append("\"").append(((Person) producer).getUserID()).append("\", \"")
 				.append(((Person) producer).getAffiliation()).append("\", ");
 		}
-		java.append(" phones").append(count).append(", emails").append(count).append(", securityAttributes);\n");
+		java.append(" phones").append(count).append(", emails").append(count)
+			.append(", securityAttributes, extensions);\n");
 		java.append("topLevelComponents.add(").append(entityType.toLowerCase()).append(count).append(");\n");
 	}
 	
@@ -391,6 +403,24 @@ public class JavaConvertor {
 	}
 	
 	/**
+	 * Helper method to convert an extensible layer element into Java code
+	 * 
+	 * @param java the buffer to add to
+	 * @param extension the element
+	 * @return String of Java code
+	 */
+	public static void convert(StringBuffer java, ExtensibleElement extension) {
+		java.append("\n// Extensible Layer element\n");
+		java.append("// For example's sake, this code just generates the bare bones top-level extensible element.\n");
+		
+		Element element = extension.getXOMElementCopy();
+		java.append("Element element = new Element(\"").append(element.getQualifiedName()).append("\", \"")
+			.append(element.getNamespaceURI()).append("\");\n");
+		java.append("ExtensibleElement extElement = new ExtensibleElement(element);\n");
+		java.append("topLevelComponents.add(extElement);\n");
+	}
+	
+	/**
 	 * Helper method to convert a subjectCoverage into Java code
 	 * 
 	 * @param java the buffer to add to
@@ -401,12 +431,16 @@ public class JavaConvertor {
 		java.append("\n// ddms:subjectCoverage\n");
 		convert(java, subjectCoverage.getSecurityAttributes());
 		java.append("List<Keyword> keywords = new ArrayList<Keyword>();\n");
-		for (Keyword keyword : subjectCoverage.getKeywords())
-			java.append("keywords.add(new Keyword(\"").append(keyword.getValue()).append("\"));\n");
+		for (Keyword keyword : subjectCoverage.getKeywords()) {
+			convert(java, keyword.getExtensibleAttributes());
+			java.append("keywords.add(new Keyword(\"").append(keyword.getValue()).append("\", extensions));\n");
+		}
 		java.append("List<Category> categories = new ArrayList<Category>();\n");
-		for (Category category : subjectCoverage.getCategories())
+		for (Category category : subjectCoverage.getCategories()) {
+			convert(java, category.getExtensibleAttributes());
 			java.append("categories.add(new Category(\"").append(category.getQualifier()).append("\", \"")
-				.append(category.getCode()).append("\", \"").append(category.getLabel()).append("\"));\n");
+				.append(category.getCode()).append("\", \"").append(category.getLabel()).append("\", extensions));\n");
+		}
 		java.append("SubjectCoverage subjectCoverage = new SubjectCoverage(keywords, categories, securityAttributes);\n");
 		java.append("topLevelComponents.add(subjectCoverage);\n");
 	}
@@ -687,7 +721,7 @@ public class JavaConvertor {
 			.append("\", ").append("ownerProducers").append(count).append(", otherAttributes").append(count)
 			.append(");\n");		
 	}
-	
+		
 	/**
 	 * Helper method to add one of the OtherAttributes to the java code.
 	 * 
@@ -703,6 +737,27 @@ public class JavaConvertor {
 		}
 	}
 	
+	/**
+	 * Helper method to convert ExtensibleAttributes into Java code
+	 * 
+	 * @param java the buffer to add to
+	 * @param attributes the attributes
+	 * @return String of Java code
+	 */
+	private static void convert(StringBuffer java, ExtensibleAttributes attributes) {
+		int count = getVariableCount();
+		if (attributes == null || attributes.isEmpty()) {
+			java.append("extensions = null;\n");
+			return;
+		}
+		java.append("List<Attribute> attributes").append(count).append(" = new ArrayList<Attribute>();\n");
+		for (Attribute attr : attributes.getAttributes()) {
+			java.append("attributes").append(count).append(".add(new Attribute(\"").append(attr.getQualifiedName())
+				.append("\", \"").append(attr.getNamespaceURI()).append("\", \"").append(attr.getValue())
+				.append("\"));\n");
+		}
+		java.append("extensions = new ExtensibleAttributes(attributes").append(count).append(");\n");
+	}
 	/**
 	 * Maintains a count for variable names.
 	 * 

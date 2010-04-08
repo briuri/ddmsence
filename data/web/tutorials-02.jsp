@@ -16,8 +16,8 @@ shows an example of how the Java object model can be built with basic data types
 requiring a server to run). It is not as flashy, but this should make it easier to focus on the important sections of the source code.</p>
 
 <p>The only limitations on this application are that it will not ask you for the "Additional" ICISM security attributes, 
-such as "SCIcontrols" or "SARIdentifier", or SRS Attributes on individual gml:pos elements. There is no good reason for these limitations, other than to make the 
-wizard a little shorter.</p>
+such as "SCIcontrols" or "SARIdentifier", the SRS Attributes on individual gml:pos elements, or any custom components in the Extensible Layer. 
+There is no good reason for these limitations, other than to make the wizard a little shorter.</p>
 
 <h3>Getting Started</h3>
 

@@ -90,7 +90,8 @@ import buri.ddmsence.util.Util;
  * </p>
  * 
  * <p>Currently, the wizard does not ask for the "Additional" ICISM security attributes, such as SCI controls or 
- * SAR Identifiers, or SRS Attributes on individual gml:pos elements.</p>
+ * SAR Identifiers, or SRS Attributes on individual gml:pos elements. It also does not ask for anything from the 
+ * Extensible Layer.</p>
  * 
  * <p>For additional details about this application, please see the tutorial on the Documentation page of the DDMSence
  * website.

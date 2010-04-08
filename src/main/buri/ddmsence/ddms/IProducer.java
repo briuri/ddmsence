@@ -21,6 +21,8 @@ package buri.ddmsence.ddms;
 
 import java.util.List;
 
+import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
+
 /**
  * Identifying interface for a producer element (contributor, creator, pointOfContact, publisher)
  *  
@@ -57,4 +59,11 @@ public interface IProducer extends IDDMSComponent {
 	 * @return unmodifiable List
 	 */
 	public List<String> getEmails();
+	
+	/**
+	 * Accessor for any extensible attributes on the producer
+	 * 
+	 * @return the attributes
+	 */
+	public ExtensibleAttributes getExtensibleAttributes();
 }
