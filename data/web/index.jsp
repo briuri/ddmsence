@@ -80,7 +80,7 @@ with this library.</p>
 and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is being released under the GNU Lesser General Public License 
 (<a href="license.jsp">LGPL</a>).</p>
 
-<h1>Current Release</h1>
+<h1>Current Release: v1.1.0</h1>
 
 <p><img src="./images/splashImage.png" width="302" height="210" title="DDMSence" align="right" />
 <u>04/08/2010</u>: <a href="downloads.jsp">Version 1.1.0</a> is now available for download. This stable version is the second official public 
