@@ -94,9 +94,8 @@ release.</p>
 
 <h1>On the Horizon</h1>
 
-<p><u>04/07/2010</u>: I have wrapped up development on DDMS 2.0 support and am halfway through development on the extensible 
-layer of DDMS, as outlined in <a href="http://code.google.com/p/ddmsence/issues/detail?id=4">Issue #4</a>.
-I expect to have a v1.1.0 release available sometime next week. Version 1.1.0 will add:</p>
+<p><u>04/08/2010</u>: I have wrapped up development on v1.1.0 and am currently doing additional testing and writing documentation.
+Unless something major comes up, I anticipate having this release available for download sometime on Friday, 4/9. Version 1.1.0 will add:</p>
 
 <ul>
 	<li>Support for DDMS 2.0.</li>
