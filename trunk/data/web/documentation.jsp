@@ -18,8 +18,7 @@
 	<li><a href="#design">Design Decisions</a></li>
 	<li><a href="#tips">Advanced Tips</a></li><ul>
 		<li><a href="#tips-version">Working with DDMS 2.0</a></li>
-		<li><a href="#tips-securityAttributes">ICISM Security Attributes</a></li>
-		<li><a href="#tips-srsAttributes">SRS Attributes</a></li>
+		<li><a href="#tips-attributes">Attribute Groups</a></li>
 		<li><a href="#tips-extensible">The Extensible Layer</a></li>
 	</ul>
 	<li><a href="#contributors">Contributors</a></li>
@@ -221,7 +220,7 @@ DDMSVersion.setCurrentVersion("3.0");
 Identifier identifier2 = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
    "http://www.whitehouse.gov/news/releases/2005/06/20050621.html");
 System.out.println("This identifier was created with DDMS v" + identifier2.getDDMSVersion());</pre></div>
-<p class="figure">Figure 4. Using a different version of DDMS</p>
+<p class="figure">Figure 3. Using a different version of DDMS</p>
 
 <div class="example"><pre>In DDMS v2.0, the following namespaces are used: 
 ddms: http://metadata.dod.mil/mdr/ns/DDMS/2.0/
@@ -231,7 +230,7 @@ Are we using DDMS 2.0? true
 If I see the namespace, http://metadata.dod.mil/mdr/ns/DDMS/3.0/, I know we are using DDMS v3.0
 This identifier was created with DDMS v2.0
 This identifier was created with DDMS v3.0</pre></div>
-<p class="figure">Figure 5. Output of the code in Figure 4</p>
+<p class="figure">Figure 4. Output of the code in Figure 3</p>
 
 <p>Calling <code>DDMSVersion.setCurrentVersion("2.0")</code> will make any components you create from that point on obey DDMS 2.0 
 validation rules. The default version if you never call this method is "3.0". The version is maintained as a static variable, so this 
@@ -245,12 +244,14 @@ entity for producers was not introduced until DDMS 3.0, so attempts to create on
 List&lt;String&gt; names = new ArrayList&lt;String&gt;();
 names.add("Unknown Entity");
 Unknown unknown = new Unknown("creator", names, null, null, null);</pre></div>
-<p class="figure">Figure 6. This code will throw an InvalidDDMSException</p>
+<p class="figure">Figure 5. This code will throw an InvalidDDMSException</p>
 
 <p>Please read the DDMS 3.0 release notes, bundled in the DDMS 3.0 package, for a complete list of the differences between 2.0 and 3.0. Also note
 that you cannot mix multiple DDMS versions within the same Resource.</p>
 
-<a name="tips-securityAttributes"></a><h4>ICISM Security Attributes</h4>
+<a name="tips-attributes"></a><h4>Attribute Groups</h4>
+
+<h5>ICISM Security Attributes</h5>
 
 <p>
 ICISM security attributes are defined in the Intelligence Community's "XML Data Encoding Specification for Information Security Marking Metadata" document (DES) and
@@ -259,7 +260,7 @@ the ICISM attributes which can decorate various DDMS components, such as <code>d
 the attributes from a XOM element will simply load these attributes from the element itself. The constructor which builds the attributes from raw data is defined as:
 
 <div class="example"><pre>public SecurityAttributes(String classification, List&lt;String&gt; ownerProducers, Map&lt;String,String&gt; otherAttributes)</pre></div>
-<p class="figure">Figure 7. SecurityAttributes constructor</p>
+<p class="figure">Figure 6. SecurityAttributes constructor</p>
 
 <p>Because the <code>classification</code> and <code>ownerProducers</code> are the most commonly referenced attributes (especially for Unclassified metadata) they are explicit parameters. Any other
 attribute can be added in a String-based map called <code>otherAttributes</code>. If an attribute is repeated, the last one in the list is used, and if an attribute does not match an
@@ -276,27 +277,27 @@ otherAttributes.put("classification", "U"); // This will be ignored, because the
 SecurityAttributes security = new SecurityAttributes("C", ownerProducers, otherAttributes);
 Title title = new Title("My Confidential Notes", security);
 System.out.println(title.toXML());</pre></div>
-<p class="figure">Figure 8. Code to generate SecurityAttributes</p>
+<p class="figure">Figure 7. Code to generate SecurityAttributes</p>
 
-<p>Note: The actual values assigned to each attribute in Figure 8 are for example's sake only, and might be illogical in real-world metadata.</p>
+<p>Note: The actual values assigned to each attribute in Figure 7 are for example's sake only, and might be illogical in real-world metadata.</p>
 
 <div class="example"><pre>&lt;ddms:title xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ICISM="urn:us:gov:ic:ism" 
    ICISM:classification="C" ICISM:ownerProducer="USA AUS" ICISM:SCIcontrols="SI" ICISM:SARIdentifier="SAR-USA"&gt;
    My Confidential Notes
 &lt;/ddms:title&gt;</pre></div>
-<p class="figure">Figure 9. The resultant XML element with security attributes</p>
+<p class="figure">Figure 8. The resultant XML element with security attributes</p>
 
 <p>The values assigned to some attributes must come from the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/">Controlled Vocabulary Enumerations</a>
 defined by the Intelligence Community. The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today.
 I would like to add this level of validation after the IC has finalized version 2 of the DES.</p>
 
-<a name="tips-srsAttributes"></a><h4>SRS Attributes</h4>
+<h5>SRS Attributes</h5>
 
 <p>Spatial Reference System (SRS) attributes are defined in the DDMS' GML Profile and implemented as an <a href="/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">SRSAttributes</a> class.
 They can be applied to <code>gml:Point</code>, <code>gml:Polygon</code>, and <code>gml:pos</code>.</p>
 
 <div class="example"><pre>SRSAttributes(String srsName, Integer srsDimension, List&lt;String&gt; axisLabels, List&lt;String&gt; uomLabels)</pre></div>
-<p class="figure">Figure 10. SRSAttributes constructor</p>
+<p class="figure">Figure 9. SRSAttributes constructor</p>
 
 <p>Here is an example which creates SRS attributes on a <code>gml:pos</code> element:</p>
 
@@ -312,11 +313,11 @@ coordinates.add(new Double(32.1));
 coordinates.add(new Double(40.1));
 Position position = new Position(coordinates, srsAttributes);
 System.out.println(position.toXML());</pre></div>
-<p class="figure">Figure 11. Code to generate SRSAttributes</p>
+<p class="figure">Figure 10. Code to generate SRSAttributes</p>
 
 <div class="example"><pre>&lt;gml:pos srsName="http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D" srsDimension="10" 
    axisLabels="X Y" uomLabels="Meter Meter"&gt;32.1 40.1&lt;/gml:pos&gt;</pre></div>
-<p class="figure">Figure 12. The resultant XML element with SRS attributes</p>
+<p class="figure">Figure 11. The resultant XML element with SRS attributes</p>
   
 <p>Please note that the SRSAttributes do not belong in any XML namespace -- this is correct according to the DDMS GML Profile.</p>
 
@@ -336,6 +337,32 @@ XOM Elements and Attributes. Any business logic to be performed on this Layer is
 <p>The relevant code can be found in the <code>buri.ddmsence.ddms.extensible</code> package. It may also be useful to load the sample file,  
 <code>Extensible_Layer_Example.xml</code> into the <u>Essentials</u> application, because it has an example of each extension.</p>
 
+<h5>ExtensibleElements</h5>
+
+<p>An unlimited number of elements from any XML namespace other than the DDMS namespace can appear at the end of a <code>ddms:Resource</code>. (In DDMS 2.0,
+only 1 can appear). These elements are implemented with the <a href="/docs/index.html?buri/ddmsence/ddms/extensible/ExtensibleElement.html">ExtensibleElement</a> class,
+which acts like any other IDDMSComponent and exposes <code>getXOMElementCopy()</code> to return a copy of the underlying XOM Element. Below is an
+example of an extensible element as it might appear in an XML file.</p> 
+
+<div class="example"><pre>   <i>[...]</i>
+   &lt;/ddms:subjectCoverage&gt;
+   &lt;ddms:security ICISM:ownerProducer="USA" ICISM:classification="U" ICISM:excludeFromRollup="true"/&gt;
+   &lt;ddmsence:extension xmlns:ddmsence="http://ddmsence.urizone.net/"&gt;This is an extensible element.&lt;/ddmsence:extension&gt;
+&lt;/ddms:Resource&gt;</pre></div>
+<p class="figure">Figure 12. An extensible element as it would appear in a ddms:Resource</p>
+
+<p>Unlike most DDMS components, which have a constructor for XOM elements and a constructor for raw data, ExtensibleElement only has one constructor
+(since the raw data is, itself, a XOM element). If you are using a DDMSReader instance to load data from an XML file, the ExtensibleElements will be created automatically,
+and can be accessed with <code>Resource.getExtensibleElements()</code>. Here is an example of how you might build a simple one from scratch:</p>
+
+<div class="example"><pre>Element element = new Element("ddmsence:extension", "http://ddmsence.urizone.net/");
+element.appendChild("This is an extensible element.");
+ExtensibleElement component = new ExtensibleElement(element);</pre></div>
+<p class="figure">Figure 13. Creating a simple ExtensibleElement from scratch</p>
+
+<p>Once you have an ExtensibleElement, you can add it to a list of top-level components (like any other IDDMSComponent), and pass it into a Resource constrcutor.
+Creating more complex Elements from scratch requires XOM knowledge, and is outside the scope of this documentation.</p>
+
 <h5>ExtensibleAttributes</h5>
 
 <p>The <a href="/docs/index.html?buri/ddmsence/ddms/extensible/ExtensibleAttributes.html">ExtensibleAttributes</a> class follows the same implementation
@@ -343,13 +370,13 @@ pattern as SecurityAttributes and SRSAttributes. The accessor, <code>getAttribut
 Below is an example of an extensible attribute as it might appear in an XML file, and how it could be created from scratch:</p>
 
 <div class="example"><pre>&lt;ddms:keyword xmlns:ddmsence="http://ddmsence.urizone.net/" ddms:value="XML" ddmsence:relevance="99" /&gt;</pre></div>
-<p class="figure">Figure 13. An XML element with extensible attributes</p>
+<p class="figure">Figure 14. An XML element with extensible attributes</p>
 
 <div class="example"><pre>List<Attribute> extAttributes = new ArrayList<Attribute>();
 extAttributes.add(new Attribute("ddmsence:relevance", "http://ddmsence.urizone.net/", "99"));
 ExtensibleAttributes extensions = new ExtensibleAttributes(extAttributes);
 Keyword keyword = new Keyword("XML", extensions);</pre></div>
-<p class="figure">Figure 14. Creating the extensible attribute from scratch</p>
+<p class="figure">Figure 15. Creating the extensible attribute from scratch</p>
 
 <p>Note: Currently, all of the <code>xs:anyAttribute</code> definitions use lax processing <i>except</i> for the definition on the producer elements. This means
 that any extensible attributes you add to a producer will be strictly validated when loaded by a schema parser. I am in contact with the DDMS Team to determine
@@ -360,23 +387,53 @@ whether this is an <a href="http://code.google.com/p/ddmsence/issues/detail?id=1
 <p>The <code>ddms:Resource</code> element is the only extensible element which has additional (ICISM) attributes that might conflict with your extensible
 attributes. The situation gets trickier in DDMS 2.0, where the ICISM attributes are not explicitly defined in the schema, but can exist nonetheless.</p>
 
-<p>When creating an ExtensibleAttributes instance based upon a XOM Element (in both DDMS 2.0 and DDMS 3.0):</p>
+<p>When creating an ExtensibleAttributes instance based upon a <code>ddms:Resource</code> XOM Element:</p>
 <ul>
 	<li>First, ICISM resource attributes such as <code>ICISM:DESVersion</code> will be "claimed", if present.</li>
 	<li>Next, the ICISM attributes such as <code>ICISM:classification</code> will be converted into a SecurityAttributes instance.</li>
 	<li>Any remaining attributes are considered to be ExtensibleAttributes.</li>
 </ul>
 
-<i>Under Construction</i>
-<p>When building an ExtensibleAttributes instance from scratch and then adding it to a Resource (in DDMS 3.0):</p>
-<p>When building an ExtensibleAttributes instance from scratch and then adding it to a Resource (in DDMS 2.0):</p>
+<p>When building an ExtensibleAttributes instance from scratch and placing it on a Resource:</p>
+<ul>
+	<li>ICISM resource attributes which exist as constructor parameters, such as <code>ICISM:DESVersion</code> are processed first, if present.</li>
+	<li>Next, the SecurityAttributes, such as <code>ICISM:classification</code> are processed.</li>
+	<li>Finally, the ExtensibleAttributes are processed. This means that these attributes cannot conflict with any attributes from the first two steps.</li>
+</ul>
+<p>In DDMS 2.0, it is perfectly legal to implement one of the resource attributes or security attributes as an extensible attribute:</p>
 
-<pre>
-- best practices for ICISM attributes in DDMS 2.0
-- ExtensibleElements
-	- General info
-	- XOM topics (XML file example?)
-</pre>
+<div class="example"><pre>DDMSVersion.setCurrentVersion("2.0");
+
+// DESVersion as a resource attribute
+Resource resource1 = new Resource(myComponents, null, null, new Integer(2), null);
+
+// DESVersion as an extensible attribute
+String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
+List&lt;Attribute&gt; attributes = new ArrayList&lt;Attribute&gt;();
+attributes.add(new Attribute("ICISM:DESVersion", icNamespace, "2"));
+ExtensibleAttributes extensions = new ExtensibleAttributes(attributes);
+Resource resource2 = new Resource(myComponents, null, null, null, null, extensions);</pre></div>
+<p class="figure">Figure 16. These two approaches for a resource attribute are both legal in DDMS 2.0</p>
+
+<div class="example"><pre>DDMSVersion.setCurrentVersion("2.0");
+
+// classification and ownerProducer as security attributes
+List&lt;String&gt; ownerProducers = new ArrayList&lt;String&gt;();
+ownerProducers.add("USA");
+SecurityAttributes secAttributes = new SecurityAttributes("U", ownerProducers, null);
+Resource resource = new Resource(myComponents, null, null, null, secAttributes);
+
+// classification and ownerProducer as extensible attributes
+String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
+List&lt;Attribute&gt; attributes = new ArrayList&lt;Attribute&gt;();
+attributes.add(new Attribute("ICISM:classification", icNamespace, "U"));
+attributes.add(new Attribute("ICISM:ownerProducer", icNamespace, "USA"));
+ExtensibleAttributes extensions = new ExtensibleAttributes(attributes);
+Resource resource = new Resource(myComponents, null, null, null, null, extensions);</pre></div>
+<p class="figure">Figure 17. These two approaches for security attributes are both legal in DDMS 2.0</p>
+
+<p>As a best practice, it is recommended that you create these attributes as explicitly as possible: if an attribute can be defined with constructor parameters or inside
+of a SecurityAttributes instance, it should. This will make DDMS 2.0 resources more consistent with their DDMS 3.0 counterparts.</p>
 
 <a name="contributors"></a><h3>Contributors</h3>
 
