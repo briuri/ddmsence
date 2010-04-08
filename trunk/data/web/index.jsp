@@ -96,7 +96,7 @@ release, and adds support for DDMS 2.0 and the Extensible Layer.</p>
 
 <h1>On the Horizon</h1>
 
-<p><u>04/08/2010</u>: Now that v1.1.0 is complete, I will take some time off from new development and focus on improving the unit tests and documentation.
+<p>Now that v1.1.0 is complete, I will take some time off from new development and focus on improving the unit tests and documentation.
 I would like this release to evoke some feedback before I decide what enhancements to pursue in the next release. Please follow the 
 "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list of enhancements under 
 consideration for future releases, or to add your own suggestions.</p>
