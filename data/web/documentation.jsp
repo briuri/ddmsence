@@ -233,9 +233,10 @@ This identifier was created with DDMS v3.0</pre></div>
 <p class="figure">Figure 4. Output of the code in Figure 3</p>
 
 <p>Calling <code>DDMSVersion.setCurrentVersion("2.0")</code> will make any components you create from that point on obey DDMS 2.0 
-validation rules. The default version if you never call this method is "3.0". The version is maintained as a static variable, so this 
+validation rules. The default version if you never call this method is "3.0" (but as a best practice, you should always explicitly set the current version yourself,
+in case this default changes in the future). The version is maintained as a static variable, so this 
 is not a thread-safe approach, but I believe that the most common use cases will deal with DDMS components of a single version at a time,
-and I wanted the versioning mechanism to be as unobstrusive as possible.</p>
+and I wanted the versioning mechanism to be as unobtrusive as possible.</p>
 
 <p>The validation rules between DDMS 2.0 and 3.0 are very similar, but there are a few major differences. For example, the Unknown
 entity for producers was not introduced until DDMS 3.0, so attempts to create one in DDMS 2.0 will fail.</p>
