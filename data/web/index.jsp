@@ -91,7 +91,7 @@ release, and adds support for DDMS 2.0 and the Extensible Layer.</p>
 	<li>Full support is provided for both DDMS 2.0 and DDMS 3.0 Pre-Release components.</li>
 	<li>ICISM security attributes are validated against their Controlled Vocabulary Enumerations, as defined by the Intelligence Community.</li>
 	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
-		and <a href="documentation.jsp#tips">Advanced Tips</a> are available for power users.</li>
+		and <a href="documentation.jsp#tips">Power Tips</a> are available for more experienced users.</li>
 </ul>
 
 <h1>On the Horizon</h1>

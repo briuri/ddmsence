@@ -91,7 +91,7 @@ at any given time.</p>
 </ul>
 
 <p>Finally, a DDMS 2.0 resource can also be opened with <u>Essentials</u>. An example is provided in the file, <code>DDMS-v2_0_EarlierVersion_Example.xml</code>. Working with
-a version of DDMS other than 3.0 is covered in the <a href="documentation.jsp#tips">Advanced Tips</a> section.</p>
+a version of DDMS other than 3.0 is covered in the <a href="documentation.jsp#tips">Power Tips</a> section.</p>
 
 <h3>Conclusion</h3>
 
