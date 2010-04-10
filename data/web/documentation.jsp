@@ -16,15 +16,7 @@
 		<li><a href="#samples">Sample Applications</a></li>
 		<li><a href="#javadoc">JavaDoc API Documentation</a></li>
 		</ul>	
-	<li><a href="#design">Design Decisions</a></li><ul>
-		<li><a href="#design-producer">Producers and Producer Entities</a></li>
-		<li><a href="#design-components">Components Deserving an Object</a></li>
-		<li><a href="#design-empty">Empty String vs. No Value</a></li>
-		<li><a href="#design-immutability">Immutability</a></li>
-		<li><a href="#design-constructor">Constructor Parameter Order</a></li>
-		<li><a href="#design-accessors">Accessor Consistency Across Versions</a></li>
-		<li><a href="#design-thread">Thread Safety</a></li>
-		</ul>
+	<li><a href="#design">Design Decisions</a></li>
 	<li><a href="#tips">Power Tips</a></li><ul>
 		<li><a href="#tips-version">Working with DDMS 2.0</a></li>
 		<li><a href="#tips-attributes">Attribute Groups</a></li>
@@ -122,27 +114,7 @@ in the "src"-flavored download. You should be aware of the following sections, w
 
 <a name="design"></a><h3>Design Decisions</h3>
 
-<div class="toc">
-	<b><u>Table of Contents</u></b>
-	<li><a href="#design-producer">Producers and Producer Entities</a></li>
-	<li><a href="#design-components">Components Deserving an Object</a></li>
-	<li><a href="#design-empty">Empty String vs. No Value</a></li>
-	<li><a href="#design-immutability">Immutability</a></li>
-	<li><a href="#design-constructor">Constructor Parameter Order</a></li>
-	<li><a href="#design-accessors">Accessor Consistency Across Versions</a></li>
-	<li><a href="#design-thread">Thread Safety</a></li>
-</div>
-
-<a name="design-producer"></a><h4>Producers and Producer Entities</h4>
-
-<p>In DDMS terms, there are producer roles (like "creator") and producer entities (like "Organization"). The DDMS schema models the relationship between
-the two as "a producer role which is filled by some entity". In the Java object model, this hierarchy is simplified as "a producer entity which fills 
-some role". The producer entity is modelled as an Object, and the producer role it is filling is a property on that Object. This design decision does not 
-affect any output -- it is only intended to make the producer hierarchy easier to understand on the Java side. I tried modeling producers both ways,
-and the approach I chose seemed more understandable from an object-oriented perspective.</p> 
-
-
-<a name="design-components"></a><h4>Components Deserving an Object</h4>
+<h4>Components Deserving an Object</h4>
 
 <p>Not all of the elements defined in the DDMS schema are implemented as Java Objects. Many elements are defined globally but only used once, or exist merely as wrappers for other components. I have
 followed these rules to determine which components are important enough to deserve a full-fledged Object:</p>
@@ -157,7 +129,15 @@ followed these rules to determine which components are important enough to deser
 		which decorates components in the GML profile.</li>
 </ul>
 
-<a name="design-empty"></a><h4>Empty String vs. No Value</h4>
+<h4>Producers and Producer Entities</h4>
+
+<p>In DDMS terms, there are producer roles (like "creator") and producer entities (like "Organization"). The DDMS schema models the relationship between
+the two as "a producer role which is filled by some entity". In the Java object model, this hierarchy is simplified as "a producer entity which fills 
+some role". The producer entity is modelled as an Object, and the producer role it is filling is a property on that Object. This design decision does not 
+affect any output -- it is only intended to make the producer hierarchy easier to understand on the Java side. I tried modeling producers both ways,
+and the approach I chose seemed more understandable from an object-oriented perspective.</p> 
+
+<h4>Empty String vs. No Value</h4>
 
 <p>When analyzing <code>xs:string</code>-based components, DDMSence treats the absence of some element/attribute in the same manner as it would treat that element/attribute if it were
 present but had an empty string as a value. The DDMS schema generally uses <code>xs:string</code> without length restrictions, so an empty string is syntactically correct, even if the
@@ -171,12 +151,12 @@ resulting data is not logical. To provide some consistency in this library, I ha
 	that are legal according to the schema, but I wanted to minimize the cases where this library might interfere with existing records.</li>
 </ul>
 
-<a name="design-immutability"></a><h4>Immutability</h4>
+<h4>Immutability</h4>
 
 <p>All DDMS components are implemented as immutable objects, which means that their values cannot be changed after instantiation. Because the components are
 validated during instantiation, this also means that it is impossible to have an invalid component at any given time: a component is either confirmed to be valid or does not exist.</p>
 
-<a name="design-constructor"></a><h4>Constructor Parameter Order</h4>
+<h4>Constructor Parameter Order</h4>
 
 <p>Because DDMS components are built in single-step constructors to support immutability, parameter lists can sometimes exceed more than a handful of information. 
 The following convention is used to provide some consistency:</p>
@@ -193,17 +173,15 @@ The following convention is used to provide some consistency:</p>
 	loaded from the XOM element. </li>
 </ul>
 
-<a name="design-accessors"></a><h4>Accessor Consistency Across Versions</h4>
+<h4>Thread Safety</h4>
+
+<p>Other than the immutability of objects, no special effort went into making DDMSence thread-safe, and no testing was done on its behavior in multithreaded environments.</p>
+
+<h4>Accessor Consistency Across Versions</h4>
 
 <p>Some attributes, such as <code>ICISM:excludeFromRollup</code> and <code>ICISM:resouceElement</code> are new in DDMS v3.0. When the accessors for these attributes are
 called on a DDMS 2.0 component, a null value will be returned. This decision allows DDMS records of varying versions to be
 traversed and queried in the same manner, without requiring too much knowledge of when specific attributes were introduced.</p>
-
-<a name="design-thread"></a><h4>Thread Safety</h4>
-
-<p>Other than the immutability of objects, no special effort went into making DDMSence thread-safe, and no testing was done on its behavior in multithreaded environments.</p>
-
-
 
 <a name="tips"></a><h3>Power Tips</h3>
 
