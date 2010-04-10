@@ -20,6 +20,8 @@
 package buri.ddmsence.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.datatype.DatatypeConstants;
@@ -28,6 +30,7 @@ import junit.framework.TestCase;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.resource.Identifier;
 
 /**
  * A collection of Util tests.
@@ -744,4 +747,83 @@ public class UtilTest extends TestCase {
 			// Good
 		}
 	}
+	
+	public void testRequireSameVersionSuccess() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		Identifier identifier = new Identifier("Test", "Value");
+		Identifier identifier2 = new Identifier("Test", "Value");
+		Util.requireSameVersion(identifier, identifier2);
+	}
+	
+	public void testRequireSameVersionFailure() {
+		try {
+			DDMSVersion.setCurrentVersion("2.0");
+			Identifier identifier = new Identifier("Test", "Value");
+			DDMSVersion.setCurrentVersion("3.0");
+			Identifier identifier2 = new Identifier("Test", "Value");
+			Util.requireSameVersion(identifier, identifier2);
+			fail("Allowed different versions.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
+	public void testAddDdmsAttributeEmptyValue() {
+		Element element = new Element("test", "http://test.com");
+		Util.addDDMSAttribute(element, "testAttribute", null);
+		assertNull(element.getAttribute("testAttribute", DDMSVersion.getCurrentVersion().getNamespace()));
+	}
+	
+	public void testAddDdmsAttributeValue() {
+		Element element = new Element("test", "http://test.com");
+		Util.addDDMSAttribute(element, "testAttribute", "dog");
+		Attribute attr = element.getAttribute("testAttribute", DDMSVersion.getCurrentVersion().getNamespace());
+		assertEquals("ddms", attr.getNamespacePrefix());
+		assertEquals(DDMSVersion.getCurrentVersion().getNamespace(), attr.getNamespaceURI());
+		assertEquals("testAttribute", attr.getLocalName());
+		assertEquals("dog", element.getAttributeValue("testAttribute", DDMSVersion.getCurrentVersion().getNamespace()));
+	}
+	
+	public void testAddDdmsChildElementEmptyValue() {
+		Element element = new Element("test", "http://test.com");
+		Util.addDDMSChildElement(element, "child", null);
+		assertEquals(0, element.getChildElements().size());
+	}
+	
+	public void testAddDdmsChildElementValue() {
+		Element element = new Element("test", "http://test.com");
+		Util.addDDMSChildElement(element, "child", "dog");
+		assertEquals(1, element.getChildElements().size());
+		Element child = element.getFirstChildElement("child", DDMSVersion.getCurrentVersion().getNamespace());
+		assertEquals("ddms", child.getNamespacePrefix());
+		assertEquals(DDMSVersion.getCurrentVersion().getNamespace(), child.getNamespaceURI());
+		assertEquals("child", child.getLocalName());
+		assertEquals("dog", child.getValue());
+	}
+	
+	public void testGetDatatypeFactory() {
+		assertNotNull(Util.getDataTypeFactory());
+	}
+	
+	public void testGetAsList() {
+		assertTrue(Util.getAsList(null).isEmpty());
+		assertTrue(Util.getAsList("").isEmpty());
+		List<String> list = Util.getAsList("a b");
+		assertEquals(2, list.size());
+		assertEquals("a", list.get(0));
+		assertEquals("b", list.get(1));
+		list = Util.getAsList("a  b");
+		assertEquals(3, list.size());
+		assertEquals("a", list.get(0));
+		assertEquals("", list.get(1));
+		assertEquals("b", list.get(2));
+	}
+	
+	public static List<String> getAsList(String value) {
+		if (Util.isEmpty(value))
+			return Collections.emptyList();
+		return (Arrays.asList(value.split(" ")));
+	}
+	
 }
