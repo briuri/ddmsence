@@ -77,6 +77,7 @@ import buri.ddmsence.ddms.summary.TemporalCoverage;
 import buri.ddmsence.ddms.summary.VerticalExtent;
 import buri.ddmsence.ddms.summary.VirtualCoverage;
 import buri.ddmsence.samples.util.IComponentBuilder;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -599,6 +600,8 @@ public class Escort {
 		println("In COMPLETE mode, Escort will let you create all of the top-level components.");
 		boolean onlyRequiredComponents = confirm("Would you like to run in FAST mode?");
 				
+		DDMSVersion.setCurrentVersion("3.0");
+		
 		printHead("ddms:identifier (at least 1 required)");
 		getTopLevelComponents().add(inputLoop(Identifier.class));
 		while (!onlyRequiredComponents && confirm("Add another ddms:identifier?")) {
