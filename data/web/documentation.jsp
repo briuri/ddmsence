@@ -31,8 +31,8 @@
 <p>Begin by visiting the <a href="downloads.jsp">Downloads</a> page and downloading a copy of DDMSence. The tutorials below will assume that you are working
 with the "bin"-flavored download, which comes with the DDMSence JAR files pre-compiled, and contains source code for the sample applications.</p>
 
-<p>Unzip the downloaded archive in a directory of your choice. You can then run the samples from the command line by entering the lines below (or paste them
-into a batch/shell script and run that script):</p>
+<p>Unzip the downloaded archive in a directory of your choice. You can then run the samples from the command line by entering the commands below (or by pasting them
+into a batch/shell script and running that script):</p>
 
 <div class="example"><pre>REM Windows Commands
 cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;\ddmsence-bin-1.1.0
@@ -262,7 +262,7 @@ the attributes from a XOM element will simply load these attributes from the ele
 <p class="figure">Figure 6. SecurityAttributes constructor</p>
 
 <p>Because the <code>classification</code> and <code>ownerProducers</code> are the most commonly referenced attributes, they are explicit parameters. Any other
-attribute can be added in a String-based map called <code>otherAttributes</code>. If an attribute is repeated, the last one in the list is used, and if an attribute does not match an
+attribute can be added in the String-based map called <code>otherAttributes</code>. If an attribute is repeated, the last one in the list is used, and if an attribute does not match an
 expected attribute name, it is ignored. Here is an example which creates Confidential markings and puts them on a <code>ddms:title</code> element:</p>
 
 <div class="example"><pre>List&lt;String&gt; ownerProducers = new ArrayList&lt;String&gt;();
