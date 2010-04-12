@@ -19,8 +19,12 @@
  */
 package buri.ddmsence.ddms.summary;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.SecurityAttributes;
@@ -155,6 +159,36 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
+	/**
+	 * Helper method to create a XOM element that can be used to test element constructors
+	 * 
+	 * @param component the child of the GeospatialExtent
+	 * @return Element
+	 */
+	private Element buildComponentElement(IDDMSComponent component) {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		if (component != null)
+			list.add(component);
+		return (buildComponentElement(list));
+	}
+	
+	/**
+	 * Helper method to create a XOM element that can be used to test element constructors
+	 * 
+	 * @param components the children of the GeospatialExtent
+	 * @return Element
+	 */
+	private Element buildComponentElement(List<IDDMSComponent> components) {
+		Element extElement = Util.buildDDMSElement("GeospatialExtent", null);
+		for (IDDMSComponent component : components) {
+			if (component != null)
+				extElement.appendChild(component.getXOMElementCopy());
+		}
+		Element element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
+		element.appendChild(extElement);
+		return (element);
+	}
+
 	public void testNameAndNamespace() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
@@ -168,7 +202,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 		}
 	}
-
+	
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
@@ -176,41 +210,28 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// boundingBox
-			Element extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(BoundingBoxTest.getFixture().getXOMElementCopy());
-			Element element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			Element element = buildComponentElement(BoundingBoxTest.getFixture());
 			testConstructor(WILL_SUCCEED, element);
 
 			// boundingGeometry
-			extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(BoundingGeometryTest.getFixture().getXOMElementCopy());
-			element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			element = buildComponentElement(BoundingGeometryTest.getFixture());
 			testConstructor(WILL_SUCCEED, element);
 
 			// postalAddress
-			extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(PostalAddressTest.getFixture().getXOMElementCopy());
-			element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			element = buildComponentElement(PostalAddressTest.getFixture());
 			testConstructor(WILL_SUCCEED, element);
 
 			// verticalExtent
-			extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(VerticalExtentTest.getFixture().getXOMElementCopy());
-			element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			element = buildComponentElement(VerticalExtentTest.getFixture());
 			testConstructor(WILL_SUCCEED, element);
 
 			// everything
-			extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(BoundingBoxTest.getFixture().getXOMElementCopy());
-			extElement.appendChild(BoundingGeometryTest.getFixture().getXOMElementCopy());
-			extElement.appendChild(PostalAddressTest.getFixture().getXOMElementCopy());
-			extElement.appendChild(VerticalExtentTest.getFixture().getXOMElementCopy());
-			element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+			list.add(BoundingBoxTest.getFixture());
+			list.add(BoundingGeometryTest.getFixture());
+			list.add(PostalAddressTest.getFixture());
+			list.add(VerticalExtentTest.getFixture());
+			element = buildComponentElement(list);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -239,62 +260,56 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		}
 	}
 
+
+	
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// At least 1 of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent 
 			// must be used.
-			Element extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(BoundingGeometryTest.getFixture().getXOMElementCopy());
-			Element element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
+			Element element = buildComponentElement((IDDMSComponent) null);
 			testConstructor(WILL_FAIL, element);
 
 			// Too many geographicIdentifier
-			extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(GeographicIdentifierTest.getFixture().getXOMElementCopy());
-			extElement.appendChild(GeographicIdentifierTest.getFixture().getXOMElementCopy());
-			element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+			list.add(GeographicIdentifierTest.getFixture());
+			list.add(GeographicIdentifierTest.getFixture());
+			element = buildComponentElement(list);
 			testConstructor(WILL_FAIL, element);
 
 			// Too many boundingBox
-			extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(BoundingBoxTest.getFixture().getXOMElementCopy());
-			extElement.appendChild(BoundingBoxTest.getFixture().getXOMElementCopy());
-			element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			list = new ArrayList<IDDMSComponent>();
+			list.add(BoundingBoxTest.getFixture());
+			list.add(BoundingBoxTest.getFixture());
+			element = buildComponentElement(list);
 			testConstructor(WILL_FAIL, element);
 
 			// Too many boundingGeometry
-			extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(BoundingGeometryTest.getFixture().getXOMElementCopy());
-			extElement.appendChild(BoundingGeometryTest.getFixture().getXOMElementCopy());
-			element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			list = new ArrayList<IDDMSComponent>();
+			list.add(BoundingGeometryTest.getFixture());
+			list.add(BoundingGeometryTest.getFixture());
+			element = buildComponentElement(list);
 			testConstructor(WILL_FAIL, element);
 
 			// Too many postalAddress
-			extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(PostalAddressTest.getFixture().getXOMElementCopy());
-			extElement.appendChild(PostalAddressTest.getFixture().getXOMElementCopy());
-			element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			list = new ArrayList<IDDMSComponent>();
+			list.add(PostalAddressTest.getFixture());
+			list.add(PostalAddressTest.getFixture());
+			element = buildComponentElement(list);
 			testConstructor(WILL_FAIL, element);
 
 			// Too many verticalExtent
-			extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(VerticalExtentTest.getFixture().getXOMElementCopy());
-			extElement.appendChild(VerticalExtentTest.getFixture().getXOMElementCopy());
-			element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			list = new ArrayList<IDDMSComponent>();
+			list.add(VerticalExtentTest.getFixture());
+			list.add(VerticalExtentTest.getFixture());
+			element = buildComponentElement(list);
 			testConstructor(WILL_FAIL, element);
 
 			// If facilityIdentifier is used, nothing else can.
-			extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(GeographicIdentifierTest.getFixture().getXOMElementCopy());
-			extElement.appendChild(VerticalExtentTest.getFixture().getXOMElementCopy());
-			element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			list = new ArrayList<IDDMSComponent>();
+			list.add(GeographicIdentifierTest.getFixture());
+			list.add(VerticalExtentTest.getFixture());
+			element = buildComponentElement(list);
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -331,40 +346,28 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 
 			// boundingBox
-			Element extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(BoundingBoxTest.getFixture().getXOMElementCopy());
-			Element element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			Element element = buildComponentElement(BoundingBoxTest.getFixture());
 			elementComponent = testConstructor(WILL_SUCCEED, element);
 			dataComponent = testConstructor(WILL_SUCCEED, null, BoundingBoxTest.getFixture(), null, null, null);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 
 			// boundingGeometry
-			extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(BoundingGeometryTest.getFixture().getXOMElementCopy());
-			element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			element = buildComponentElement(BoundingGeometryTest.getFixture());
 			elementComponent = testConstructor(WILL_SUCCEED, element);
 			dataComponent = testConstructor(WILL_SUCCEED, null, null, BoundingGeometryTest.getFixture(), null, null);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 
 			// postalAddress
-			extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(PostalAddressTest.getFixture().getXOMElementCopy());
-			element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			element = buildComponentElement(PostalAddressTest.getFixture());
 			elementComponent = testConstructor(WILL_SUCCEED, element);
 			dataComponent = testConstructor(WILL_SUCCEED, null, null, null, PostalAddressTest.getFixture(), null);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 
 			// verticalExtent
-			extElement = Util.buildDDMSElement("GeospatialExtent", null);
-			extElement.appendChild(VerticalExtentTest.getFixture().getXOMElementCopy());
-			element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-			element.appendChild(extElement);
+			element = buildComponentElement(VerticalExtentTest.getFixture());
 			elementComponent = testConstructor(WILL_SUCCEED, element);
 			dataComponent = testConstructor(WILL_SUCCEED, null, null, null, null, VerticalExtentTest.getFixture());
 			assertEquals(elementComponent, dataComponent);

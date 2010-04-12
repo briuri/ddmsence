@@ -149,6 +149,22 @@ public class LinkTest extends AbstractComponentTestCase {
 		xml.append("xlink:label=\"").append(TEST_LABEL).append("\" />");
 		return (xml.toString());
 	}
+	
+	/**
+	 * Helper method to create a XOM element that can be used to test element constructors
+	 * 
+	 * @param type the type
+	 * @param href the  href
+	 * @return Element
+	 */
+	private Element buildComponentElement(String type, String href) {
+		Element element = Util.buildDDMSElement(Link.NAME, null);
+		if (type != null)
+			element.addAttribute(Util.buildAttribute(XLINK_PREFIX, "type", XLINK_NAMESPACE, type));
+		if (href != null)
+			element.addAttribute(Util.buildAttribute(XLINK_PREFIX, "href", XLINK_NAMESPACE, href));
+		return (element);
+	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
@@ -164,6 +180,7 @@ public class LinkTest extends AbstractComponentTestCase {
 		}
 	}
 
+	
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
@@ -171,11 +188,7 @@ public class LinkTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getFixtureElement());
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Link.NAME, null);
-			element.addNamespaceDeclaration(Util.DDMS_PREFIX, DDMSVersion.getCurrentVersion().getNamespace());
-			element.addNamespaceDeclaration(XLINK_PREFIX, XLINK_NAMESPACE);
-			element.addAttribute(Util.buildAttribute(XLINK_PREFIX, "type", XLINK_NAMESPACE, TEST_TYPE));
-			element.addAttribute(Util.buildAttribute(XLINK_PREFIX, "href", XLINK_NAMESPACE, TEST_HREF));
+			Element element = buildComponentElement(TEST_TYPE, TEST_HREF);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -195,20 +208,15 @@ public class LinkTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing href
-			Element element = Util.buildDDMSElement(Link.NAME, null);
-			element.addAttribute(Util.buildAttribute(XLINK_PREFIX, "type", XLINK_NAMESPACE, TEST_TYPE));
+			Element element = buildComponentElement(TEST_TYPE, null);
 			testConstructor(WILL_FAIL, element);
 
 			// href not URI
-			element = Util.buildDDMSElement(Link.NAME, null);
-			element.addAttribute(Util.buildAttribute(XLINK_PREFIX, "type", XLINK_NAMESPACE, TEST_TYPE));
-			element.addAttribute(Util.buildAttribute(XLINK_PREFIX, "href", XLINK_NAMESPACE, INVALID_URI));
+			element = buildComponentElement(TEST_TYPE, INVALID_URI);
 			testConstructor(WILL_FAIL, element);
 
 			// invalid type
-			element = Util.buildDDMSElement(Link.NAME, null);
-			element.addAttribute(Util.buildAttribute(XLINK_PREFIX, "type", XLINK_NAMESPACE, "type"));
-			element.addAttribute(Util.buildAttribute(XLINK_PREFIX, "href", XLINK_NAMESPACE, TEST_HREF));
+			element = buildComponentElement("type", TEST_HREF);
 			testConstructor(WILL_FAIL, element);
 		}
 	}

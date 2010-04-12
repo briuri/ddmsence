@@ -135,6 +135,24 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
+	/**
+	 * Helper method to create a XOM element that can be used to test element constructors
+	 * 
+	 * @param west		westBL
+	 * @param east		eastBL
+	 * @param south		southBL
+	 * @param north		northBL
+	 * @return Element
+	 */
+	private Element buildComponentElement(String west, String east, String south, String north) {
+		Element element = Util.buildDDMSElement(BoundingBox.NAME, null);
+		element.appendChild(Util.buildDDMSElement("WestBL", String.valueOf("west")));
+		element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
+		element.appendChild(Util.buildDDMSElement("SouthBL", String.valueOf(TEST_SOUTH)));
+		element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
+		return (element);
+	}
+	
 	public void testNameAndNamespace() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
@@ -162,7 +180,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
 		}
 	}
-
+	
 	public void testElementConstructorInvalid() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
@@ -171,43 +189,28 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// Not Double
-			element = Util.buildDDMSElement(BoundingBox.NAME, null);
-			element.appendChild(Util.buildDDMSElement("WestBL", String.valueOf("west")));
-			element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
-			element.appendChild(Util.buildDDMSElement("SouthBL", String.valueOf(TEST_SOUTH)));
-			element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
+			element = buildComponentElement("west", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), 
+				String.valueOf(TEST_NORTH));
 			testConstructor(WILL_FAIL, element);
 
 			// Longitude too small
-			element = Util.buildDDMSElement(BoundingBox.NAME, null);
-			element.appendChild(Util.buildDDMSElement("WestBL", "-181"));
-			element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
-			element.appendChild(Util.buildDDMSElement("SouthBL", String.valueOf(TEST_SOUTH)));
-			element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
+			element = buildComponentElement("-181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), 
+				String.valueOf(TEST_NORTH));
 			testConstructor(WILL_FAIL, element);
 
 			// Longitude too big
-			element = Util.buildDDMSElement(BoundingBox.NAME, null);
-			element.appendChild(Util.buildDDMSElement("WestBL", "181"));
-			element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
-			element.appendChild(Util.buildDDMSElement("SouthBL", String.valueOf(TEST_SOUTH)));
-			element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
+			element = buildComponentElement("181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), 
+				String.valueOf(TEST_NORTH));
 			testConstructor(WILL_FAIL, element);
 
 			// Latitude too small
-			element = Util.buildDDMSElement(BoundingBox.NAME, null);
-			element.appendChild(Util.buildDDMSElement("WestBL", String.valueOf(TEST_WEST)));
-			element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
-			element.appendChild(Util.buildDDMSElement("SouthBL", "-91"));
-			element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
+			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "-91", 
+				String.valueOf(TEST_NORTH));
 			testConstructor(WILL_FAIL, element);
 
 			// Latitude too big
-			element = Util.buildDDMSElement(BoundingBox.NAME, null);
-			element.appendChild(Util.buildDDMSElement("WestBL", String.valueOf(TEST_WEST)));
-			element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
-			element.appendChild(Util.buildDDMSElement("SouthBL", "91"));
-			element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
+			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "91", 
+				String.valueOf(TEST_NORTH));
 			testConstructor(WILL_FAIL, element);
 		}
 	}
