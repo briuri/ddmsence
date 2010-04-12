@@ -104,7 +104,27 @@ public class DDMSVersionTest extends TestCase {
 		assertNull(DDMSVersion.getVersionForGmlNamespace("unknown"));
 	}
 	
+	public void testGmlNamespaceValid() {
+		assertEquals("2.0", DDMSVersion.getVersionForGmlNamespace("http://www.opengis.net/gml").getVersion());
+	}
+	
+	public void testIsCurrentVersion() {
+		DDMSVersion.setCurrentVersion("2.0");
+		assertTrue(DDMSVersion.isCurrentVersion("2.0"));
+		assertFalse(DDMSVersion.isCurrentVersion("3.0"));
+	}
 	public void testToString() {
 		assertEquals(DDMSVersion.getCurrentVersion().getVersion(), DDMSVersion.getCurrentVersion().toString());
+	}
+	
+	public void testAccessors() {
+		DDMSVersion.setCurrentVersion("3.0");
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		assertEquals("3.0", version.getVersion());
+		assertEquals("http://metadata.dod.mil/mdr/ns/DDMS/3.0/", version.getNamespace());
+		assertEquals("/schemas/3.0/DDMS/3.0/DDMS-v3_0.xsd", version.getSchema());
+		assertEquals("http://www.opengis.net/gml/3.2", version.getGmlNamespace());
+		assertEquals("/schemas/3.0/DDMS/3.0/DDMS-GML-Profile.xsd", version.getGmlSchema());
+		assertEquals("urn:us:gov:ic:ism", version.getIcismNamespace());
 	}
 }
