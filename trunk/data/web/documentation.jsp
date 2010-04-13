@@ -245,8 +245,37 @@ names.add("Unknown Entity");
 Unknown unknown = new Unknown("creator", names, null, null, null);</pre></div>
 <p class="figure">Figure 5. This code will throw an InvalidDDMSException</p>
 
-<p>Please read the DDMS 3.0 release notes, bundled in the DDMS 3.0 package, for a complete list of the differences between 2.0 and 3.0. Also note
-that you cannot mix multiple DDMS versions within the same Resource.</p>
+<p>The table below identifies the differences between the DDMS 2.0 and DDMS 3.0 implementations of components in DDMSence. Also note that you cannot mix multiple DDMS versions within the same Resource.</p>
+
+<table>
+<tr><th>Element or Attribute</th><th>DDMS 2.0 Notes</th><th>DDMS 3.0 Notes</td></tr>
+<tr><td><code>ddms:Resource@ICISM:createDate<br />ddms:Resource@ICISM:DESVersion<br />ddms:Resource@ICISM:resourceElement</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be passed in as a constructor parameter.</td><td>New and required in this version.</td></tr>
+<tr><td><code>ddms:Resource@ICISM:classification<br />ddms:Resource@ICISM:ownerProducer</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New and required in this version.</td></tr>
+<tr><td><code>ddms:Resource@ICISM (additional security)</td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New but optional in this version.</td></tr>
+<tr><td><code>ddms:Resource (xs:any)</code></td><td>Zero or one extensible element can appear after the <code>ddms:security</code> element.</td><td>Zero to many extensible elements can appear after the <code>ddms:security</code> element.</td></tr>
+<tr><td><code>ddms:Unknown</code></td><td>Cannot exist in this version.</td><td>Can be used to fill a producer role in this version.</td></tr>
+<tr><td><code>ddms:category</code></td><td>No extensible attributes can be used.</td><td>Zero to many attributes can live in the <code>xs:anyAttribute</code> extensible area.</td></tr>
+<tr><td><code>ddms:countryCode@ddms:qualifier<br />ddms:countryCode@ddms:value</code></td><td>Follows 3.0 rules: both attributes are required.</td><td>Both attributes are required.</td></tr>
+<tr><td><code>ddms:geospatialCoverage@ICISM:classification<br />ddms:geospatialCoverage@ICISM:ownerProducer<br />ddms:geospatialCoverage@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr>
+<tr><td><code>ddms:keyword</code></td><td>No extensible attributes can be used.</td><td>Zero to many attributes can live in the <code>xs:anyAttribute</code> extensible area.</td></tr>
+<tr><td><code>ddms:relatedResources</code></td><td>Follows 3.0 rules: at least 1 ddms:RelatedResource must exist.</td><td>At least 1 ddms:RelatedResource must exist.</td></tr>
+<tr><td><code>ddms:security@ICISM:excludeFromRollup</code></td><td>Cannot exist in this version.</td><td>New and required in this version. Value must be "true".</td></tr>
+<tr><td><code>ddms:source@ICISM:classification<br />ddms:source@ICISM:ownerProducer<br />ddms:source@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr>
+<tr><td><code>ddms:subjectCoverage@ICISM:classification<br />ddms:subjectCoverage@ICISM:ownerProducer<br />ddms:subjectCoverage@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr>
+<tr><td><code>ddms:temporalCoverage@ICISM:classification<br />ddms:temporalCoverage@ICISM:ownerProducer<br />ddms:temporalCoverage@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr>
+<tr><td><code>ddms:virtualCoverage@ICISM:classification<br />ddms:virtualCoverage@ICISM:ownerProducer<br />ddms:virtualCoverage@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr></table>
+<p class="figure">Table 1. Component changes between DDMS 2.0 and DDMS 3.0</p>
+
+<p>The table below identifies changes made to the ICISM security attributes. These changes apply on any DDMS component that can be decorated with security attributes.</p>
+
+<table>
+<tr><th>Element or Attribute</th><th>DDMS 2.0 Notes</th><th>DDMS 3.0 Notes</td></tr>
+<tr><td><code>@ICISM:classification</code></td><td>NS-S and NS-A are allowed values.</td><td>NS-S and NS-A cannot be used.</td></tr>
+<tr><td><code>@ICISM:declassManualReview</code></td><td>This Boolean attribute is optional.</td><td>Cannot exist in this version.</td></tr>
+<tr><td><code>@ICISM:declassException</code></td><td>This attribute is modeled as a space-delimited string of multiple values (TOKENS)</td><td>This attribute is a single value (TOKEN)</td></tr>
+<tr><td><code>@ICISM:typeOfExemptedSource</code></td><td>This attribute is modeled as a space-delimited string of multiple values (TOKENS)</td><td>This attribute is a single value (TOKEN)</td></tr>
+<tr><td><code>@ICISM:compilationReason</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr></table>
+<p class="figure">Table 2. Security Attribute changes between DDMS 2.0 and DDMS 3.0</p>
 
 <a name="tips-attributes"></a><h4>Attribute Groups</h4>
 
