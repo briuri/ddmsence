@@ -239,7 +239,7 @@ is not a thread-safe approach, but I believe that the most common use cases will
 and I wanted the versioning mechanism to be as unobtrusive as possible.</p>
 
 <p>The validation rules between DDMS 2.0 and 3.0 are very similar, but there are a few major differences. For example, the Unknown
-entity for producers was not introduced until DDMS 3.0, so attempts to create one in DDMS 2.0 will fail.</p>
+entity for producers was not introduced until DDMS 3.0, so attempts to create one in DDMS 2.0 will fail. Also note that you cannot mix multiple DDMS versions within the same Resource.</p>
 
 <div class="example"><pre>DDMSVersion.setCurrentVersion("2.0");
 List&lt;String&gt; names = new ArrayList&lt;String&gt;();
@@ -247,7 +247,7 @@ names.add("Unknown Entity");
 Unknown unknown = new Unknown("creator", names, null, null, null);</pre></div>
 <p class="figure">Figure 5. This code will throw an InvalidDDMSException</p>
 
-<p>The table below identifies the differences between the DDMS 2.0 and DDMS 3.0 implementations of components in DDMSence. Also note that you cannot mix multiple DDMS versions within the same Resource.</p>
+<p>The table below identifies the differences between the DDMS 2.0 and DDMS 3.0 implementations of components in DDMSence.</p>
 
 <table>
 <tr><th>Element or Attribute</th><th>DDMS 2.0 Notes</th><th>DDMS 3.0 Notes</td></tr>
