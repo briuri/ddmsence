@@ -8,7 +8,7 @@
 <%@ include file="../shared/header.jspf" %>
 
 <h1>Documentation</h1>
-<img src="./images/splashImage.png" width="302" height="210" title="DDMSence" align="right" />
+<img src="./images/splashImage.jpg" width="302" height="210" title="DDMSence" align="right" />
 
 <h2>Table of Contents</h2>
 
