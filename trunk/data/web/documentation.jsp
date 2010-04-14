@@ -8,9 +8,10 @@
 <%@ include file="../shared/header.jspf" %>
 
 <h1>Documentation</h1>
-
+<img src="./images/splashImage.png" width="302" height="210" title="DDMSence" align="right" />
 
 <h2>Table of Contents</h2>
+
 <ul>
 	<li><a href="#started">Getting Started</a></li><ul>
 		<li><a href="#samples">Sample Applications</a></li>
@@ -25,6 +26,7 @@
 	<li><a href="#contributors">Contributors</a></li>
 	<li><a href="#feedback">Feedback</a></li>
 </ul>
+<div class="clear"></div>
 
 <a name="started"></a><h3>Getting Started</h3>
 
