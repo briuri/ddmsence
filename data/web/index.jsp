@@ -64,6 +64,17 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
+<div class="newsFeed">
+	<p><b><u>Recent News</u></b></p>
+	<p><u>04/08/2010</u>: v1.1.0 available for <a href="downloads.jsp">download</a>.</p>
+	<p><u>04/01/2010</u>: v1.0.0 available for <a href="downloads.jsp">download</a>. DDMSence information posted on
+		<a href="https://metadata.dod.mil/mdr/topic.htm?topicId=4662" target="_new">DoD MDR Community Forum</a> and on 
+		<a href="http://freshmeat.net/projects/ddmsence" target="_new">freshmeat</a>.</p>
+	<p><u>03/29/2010</u>: v0.9.d available for <a href="downloads.jsp">download</a>.</p>
+	<p><u>03/25/2010</u>: v0.9.c available for <a href="downloads.jsp">download</a>.</p>
+	<p><u>03/24/2010</u>: v0.9.b available for <a href="downloads.jsp">download</a>.</p>
+</div>
+
 <p>
 DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
 <a href="http://metadata.dod.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
@@ -82,8 +93,7 @@ and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is
 
 <h1>Current Release: v1.1.0</h1>
 
-<p><img src="./images/splashImage.png" width="302" height="210" title="DDMSence" align="right" />
-<u>04/08/2010</u>: <a href="downloads.jsp">Version 1.1.0</a> is now available for download. This stable version is the second official public 
+<p><a href="downloads.jsp">Version 1.1.0</a> is now available for download. This stable version is the second official public 
 release, and adds support for DDMS 2.0 and the Extensible Layer.</p>
 
 <ul>
