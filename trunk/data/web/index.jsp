@@ -81,6 +81,8 @@
 	
 </div>
 
+<h1>DDMSence v1.1.0</h1>
+
 <p>
 DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
 <a href="http://metadata.dod.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
@@ -106,10 +108,7 @@ with this library.</p>
 <p>DDMSence comes with a complete set of JUnit tests, and code coverage was aided by <a href="http://www.eclemma.org/" target="_new">EclEmma</a>.
 It is being released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
 
-<h1>Current Release: v1.1.0</h1>
-
-<p><a href="downloads.jsp">Version 1.1.0</a> is available for download. This stable version is the second official public 
-release.</p>
+<img src="./images/chart.png" width="725" height="325" title="DDMSence Flow Chart"  />
 
 <h1>On the Horizon</h1>
 
