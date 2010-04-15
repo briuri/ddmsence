@@ -38,7 +38,7 @@ import buri.ddmsence.util.DDMSVersion;
  * <p>XOM elements can be created as follows:</p>
  * 
  * <ul><code>
- * Element element = new Element("ddmsence:extension", "http://ddmsence.urizone.net/");
+ * Element element = new Element("ddmsence:extension", "http://ddmsence.urizone.net/");<br />
  * element.appendChild("This will be the child text.");
  * </code></ul>
  * 
