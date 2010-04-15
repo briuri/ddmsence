@@ -3,7 +3,8 @@
 	<title>DDMSence: An open source Java library for DDMS</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="An open source Java library for the DoD Discovery Metadata Specification (DDMS)">
-	
+	<meta name="keywords" content="DDMSence,DDMS,Metadata,Discovery,Java,DoD,XML" />
+		
 	<!-- DDMS Resource Record --> 
 	<meta name="security.resourceElement" content="true" />
 	<meta name="security.createDate" content="2010-03-21" />
@@ -50,6 +51,7 @@
 	<meta name="subject.keyword" content="Discovery" />
 	<meta name="subject.keyword" content="Java" />
 	<meta name="subject.keyword" content="DoD" />
+	<meta name="subject.keyword" content="XML" />
 	<meta name="virtual.address" content="http://ddmsence.urizone.net/" />
 	<meta name="virtual.networkProtocol" content="URL" />
 	<meta name="temporal.TimePeriod" content="Unknown" />
@@ -58,21 +60,25 @@
 	<meta name="security.excludeFromRollup" content="true" />
 	<meta name="security.classification" content="U" />
 	<meta name="security.ownerProducer" content="USA" />
-	<meta name="ddms.generator" content="DDMSence 0.9.c" />
+	<meta name="extensible.layer" content="false" />
+	<meta name="ddms.generator" content="DDMSence 1.1.0" />
 	
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
-
 <div class="newsFeed">
-	<p><b><u>Recent News</u></b></p>
-	<p><u>04/08/2010</u>: v1.1.0 available for <a href="downloads.jsp">download</a>.</p>
-	<p><u>04/01/2010</u>: v1.0.0 available for <a href="downloads.jsp">download</a>. DDMSence information posted on
-		<a href="https://metadata.dod.mil/mdr/topic.htm?topicId=4662" target="_new">DoD MDR Community Forum</a> and on 
-		<a href="http://freshmeat.net/projects/ddmsence" target="_new">freshmeat</a>.</p>
-	<p><u>03/29/2010</u>: v0.9.d available for <a href="downloads.jsp">download</a>.</p>
-	<p><u>03/25/2010</u>: v0.9.c available for <a href="downloads.jsp">download</a>.</p>
-	<p><u>03/24/2010</u>: v0.9.b available for <a href="downloads.jsp">download</a>.</p>
+	<b><u>Recent News</u></b><br />
+	<div class="newsUpdate"><u>04/08/2010</u>: <a href="downloads.jsp">v1.1.0</a> released.</div>
+	<div class="newsUpdate"><u>04/01/2010</u>: <a href="downloads.jsp">v1.0.0</a> released. DDMSence information posted on the
+		<a href="https://metadata.dod.mil/mdr/topic.htm?topicId=4662" target="_new">DoD Metadata Registry Community Forum</a> and on 
+		<a href="http://freshmeat.net/projects/ddmsence" target="_new">freshmeat</a>.</div>
+	<div class="newsUpdate"><u>03/29/2010</u>: <a href="downloads.jsp">v0.9.d</a> released.</div>
+	<div class="newsUpdate"><u>03/25/2010</u>: <a href="downloads.jsp">v0.9.c</a> released.</div>
+	<div class="newsUpdate"><u>03/24/2010</u>: <a href="downloads.jsp">v0.9.b</a> released.</div><br />
+	<div class="feed">New Release Feed: <a href="http://code.google.com/feeds/p/ddmsence/downloads/basic"><img border="0" src="./images/atom.jpg" width="14" height="14" title="Atom Feed" /></a></div>	
+	<div class="feed">SVN Code Feed: <a href="http://code.google.com/feeds/p/ddmsence/svnchanges/basic"><img border="0" src="./images/atom.jpg" width="14" height="14" title="Atom Feed" /></a></div>
+	<div class="feed">Issue Tracker Feed: <a href="http://code.google.com/feeds/p/ddmsence/issueupdates/basic"><img border="0" src="./images/atom.jpg" width="14" height="14" title="Atom Feed" /></a></div>
+	
 </div>
 
 <p>
@@ -83,8 +89,17 @@ DDMSence can convert an XML DDMS Resource record into a Java object model, or tr
 HTML, and Text records. DDMSence also performs logical validation of rules which are not coded into the DDMS schema (such as the 
 Controlled Vocabulary Enumerations for Intelligence Community attributes).</p>
 
-<p>DDMS components created with this library maintain an underlying XOM element structure, which provides latent avenues for future 
-improvement, based on XOM's built-in support of XPath, XInclude, and XSLT. However, you do not need to have any experience with XOM to get started
+<ul>
+	<li>Provides a complete implementation of all five Layers in the DDMS specification, including the Extensible Layer.</li>
+	<li>Supports the creation and validation of both DDMS 2.0 and DDMS 3.0 Pre-Release components.</li>
+	<li>Records can be created from existing XML files, or built up from scratch with basic Java datatypes.</li>
+	<li>ICISM security attributes are validated against their Controlled Vocabulary Enumerations, as defined by the Intelligence Community.</li>
+	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
+		and <a href="documentation.jsp#tips">Power Tips</a> are available for more experienced users.</li>
+</ul>
+
+<p>Components created with this library maintain an underlying XOM element structure, which provides latent avenues for future 
+improvement, based on XOM's support of XPath, XInclude, and XSLT. However, you do not need to have any experience with XOM to get started
 with this library.</p>
 
 <p>DDMSence comes with a full set of JUnit tests, and code management was aided by <a href="http://www.eclemma.org/" target="_new">EclEmma</a> 
@@ -93,20 +108,12 @@ and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is
 
 <h1>Current Release: v1.1.0</h1>
 
-<p><a href="downloads.jsp">Version 1.1.0</a> is now available for download. This stable version is the second official public 
-release, and adds support for DDMS 2.0 and the Extensible Layer.</p>
-
-<ul>
-	<li>All layers of the DDMS specification are fully implemented, including the Extensible Layer.</li>
-	<li>Full support is provided for both DDMS 2.0 and DDMS 3.0 Pre-Release components.</li>
-	<li>ICISM security attributes are validated against their Controlled Vocabulary Enumerations, as defined by the Intelligence Community.</li>
-	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
-		and <a href="documentation.jsp#tips">Power Tips</a> are available for more experienced users.</li>
-</ul>
+<p><a href="downloads.jsp">Version 1.1.0</a> is available for download. This stable version is the second official public 
+release.</p>
 
 <h1>On the Horizon</h1>
 
-<p>Now that v1.1.0 is complete, I will take some time off from new development and focus on improving the unit tests and documentation.
+<p>Now that v1.1.0 is complete, I will take a couple weeks to focus on improving the unit tests and documentation.
 I would like this release to evoke some feedback before I decide what enhancements to pursue in the next release. Please follow the 
 "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list of enhancements under 
 consideration for future releases, or to add your own suggestions.</p>
