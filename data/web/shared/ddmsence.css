@@ -49,6 +49,7 @@ div.newsFeed {
 	float: right;
 	font-size: 9pt;
 	padding: 5px;
+	margin: 5px 0px 5px 5px;
 	width: 200px;
 }
 div.newsUpdate {
