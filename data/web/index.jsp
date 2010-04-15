@@ -67,17 +67,17 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
-	<b><u>Recent News</u></b><br />
+	<b><u>Recent News</u></b><br /><br />
 	<div class="newsUpdate"><u>04/08/2010</u>: <a href="downloads.jsp">v1.1.0</a> released.</div>
-	<div class="newsUpdate"><u>04/01/2010</u>: <a href="downloads.jsp">v1.0.0</a> released. DDMSence information posted on the
+	<div class="newsUpdate"><u>04/01/2010</u>: v1.0.0 released. DDMSence information posted on the
 		<a href="https://metadata.dod.mil/mdr/topic.htm?topicId=4662" target="_new">DoD Metadata Registry Community Forum</a> and on 
 		<a href="http://freshmeat.net/projects/ddmsence" target="_new">freshmeat</a>.</div>
-	<div class="newsUpdate"><u>03/29/2010</u>: <a href="downloads.jsp">v0.9.d</a> released.</div>
-	<div class="newsUpdate"><u>03/25/2010</u>: <a href="downloads.jsp">v0.9.c</a> released.</div>
-	<div class="newsUpdate"><u>03/24/2010</u>: <a href="downloads.jsp">v0.9.b</a> released.</div><br />
-	<div class="feed">New Release Feed: <a href="http://code.google.com/feeds/p/ddmsence/downloads/basic"><img border="0" src="./images/atom.jpg" width="14" height="14" title="Atom Feed" /></a></div>	
-	<div class="feed">SVN Code Feed: <a href="http://code.google.com/feeds/p/ddmsence/svnchanges/basic"><img border="0" src="./images/atom.jpg" width="14" height="14" title="Atom Feed" /></a></div>
-	<div class="feed">Issue Tracker Feed: <a href="http://code.google.com/feeds/p/ddmsence/issueupdates/basic"><img border="0" src="./images/atom.jpg" width="14" height="14" title="Atom Feed" /></a></div>
+	<div class="newsUpdate"><u>03/29/2010</u>: v0.9.d released.</div>
+	<div class="newsUpdate"><u>03/25/2010</u>: v0.9.c released.</div>
+	<div class="newsUpdate"><u>03/24/2010</u>: v0.9.b released.</div><br />
+	<div class="feed">New Release Feed: <a href="http://code.google.com/feeds/p/ddmsence/downloads/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>	
+	<div class="feed">SVN Code Feed: <a href="http://code.google.com/feeds/p/ddmsence/svnchanges/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>
+	<div class="feed">Issue Tracker Feed: <a href="http://code.google.com/feeds/p/ddmsence/issueupdates/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>
 	
 </div>
 
@@ -85,15 +85,16 @@
 DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
 <a href="http://metadata.dod.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
 Using <a href="http://xom.nu/" target="_new">XOM</a> and the <a href="http://xerces.apache.org/" target="_new">Xerces</a> Java parser, 
-DDMSence can convert an XML DDMS Resource record into a Java object model, or transform existing Java data into valid, well-formed XML, 
-HTML, and Text records. DDMSence also performs logical validation of rules which are not coded into the DDMS schema (such as the 
-Controlled Vocabulary Enumerations for Intelligence Community attributes).</p>
+DDMSence can transform XML DDMS Resource records into a Java object model, allowing them to be manipulated or traversed within the context of a Java environment. 
+DDMSence also performs logical validation of rules which are not coded into the DDMS schema (such as the 
+the validation of longitude/latitude values).</p>
 
 <ul>
 	<li>Provides a complete implementation of all five Layers in the DDMS specification, including the Extensible Layer.</li>
 	<li>Supports the creation and validation of both DDMS 2.0 and DDMS 3.0 Pre-Release components.</li>
-	<li>Records can be created from existing XML files, or built up from scratch with basic Java datatypes.</li>
-	<li>ICISM security attributes are validated against their Controlled Vocabulary Enumerations, as defined by the Intelligence Community.</li>
+	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types.</li>
+	<li>Java object model can automatically transform into valid, well-formed XML, HTML, and Text records, according to the DDMS specification.</li>
+	<li>Adds an additional layer of validation to all components, including the Controlled Vocabulary Enumerations for ICISM security attributes, as defined by the Intelligence Community.</li>
 	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
 		and <a href="documentation.jsp#tips">Power Tips</a> are available for more experienced users.</li>
 </ul>
@@ -102,9 +103,8 @@ Controlled Vocabulary Enumerations for Intelligence Community attributes).</p>
 improvement, based on XOM's support of XPath, XInclude, and XSLT. However, you do not need to have any experience with XOM to get started
 with this library.</p>
 
-<p>DDMSence comes with a full set of JUnit tests, and code management was aided by <a href="http://www.eclemma.org/" target="_new">EclEmma</a> 
-and <a href="http://findbugs.sourceforge.net/" target="_new">FindBugs</a>. It is being released under the GNU Lesser General Public License 
-(<a href="license.jsp">LGPL</a>).</p>
+<p>DDMSence comes with a complete set of JUnit tests, and code coverage was aided by <a href="http://www.eclemma.org/" target="_new">EclEmma</a>.
+It is being released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
 
 <h1>Current Release: v1.1.0</h1>
 
