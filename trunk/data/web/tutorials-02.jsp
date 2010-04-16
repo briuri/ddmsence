@@ -9,7 +9,9 @@
 
 <h1>Tutorial #2: <u>Escort</u></h1>
 
-<p><u>Escort</u> is a step-by-step wizard for building a DDMS Resource from scratch, and then saving it to a file. The source code for this application
+<p>
+<img src="./images/escort-flow.png" width="400" height="150" title="Escort Workflow" align="right" />
+<u>Escort</u> is a step-by-step wizard for building a DDMS Resource from scratch, and then saving it to a file. The source code for this application
 shows an example of how the Java object model can be built with basic data types (possibly mapped from a database table or some other pre-existing entity).</p>
 
 <p>I have implemented this wizard as a series of textual prompts, to avoid the overhead of having a full-fledged MVC Swing application (or implementing it as a web application and
@@ -19,7 +21,7 @@ requiring a server to run). It is not as flashy, but this should make it easier 
 such as "SCIcontrols" or "SARIdentifier", the SRS Attributes on individual gml:pos elements, or any custom components in the Extensible Layer. 
 There is no good reason for these limitations, other than to make the wizard a little shorter.</p>
 
-<h3>Getting Started</h3>
+<h2>Getting Started</h2>
 
 <p><u>Escort</u> can be run from the command line with the class, <code>buri.ddmsence.samples.Escort</code>. The application does not accept any
 command line parameters.</p>

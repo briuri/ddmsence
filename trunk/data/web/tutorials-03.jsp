@@ -9,16 +9,20 @@
 
 <h1>Tutorial #3: <u>Escape</u></h1>
 
-<p><u>Escape</u> is a tool that traverses multiple DDMS Resource files and then exposes various statistics about them through the 
+<p>
+<img src="./images/escape-flow.png" width="400" height="150" title="Escape Workflow" align="right" />
+<u>Escape</u> is a tool that traverses multiple DDMS Resource files and then exposes various statistics about them through the 
 <a href="http://code.google.com/apis/visualization/documentation/gallery.html" target="_new">Google Visualization API</a>. Charts in this sample
 application are non-interactive, but provide the foundation for more complex cases: for example, it would
-be possible to plot Temporal Coverage on an Annotated Timeline, or Geospatial Coverage on Google Maps. While the first two sample applications were 
+be possible to plot Temporal Coverage on an 
+<a href="http://code.google.com/apis/visualization/documentation/gallery/annotatedtimeline.html" target="_new">Annotated Timeline</a>, or Geospatial Coverage on 
+<a href="http://code.google.com/apis/visualization/documentation/gallery/map.html" target="_new">Google Maps</a>. While the first two sample applications were 
 designed to teach developers how DDMSence works, the intent of this one is to provide brainstorming ideas for leveraging DDMS in other contexts.</p>
 	
 <p>This application would be better suited as a web application, but I have implemented it with Swing, to minimize the amount of overhead required
 to run it.</p>
 
-<h3>Getting Started</h3>
+<h2>Getting Started</h2>
 
 <p>You do not need to have any experience with Google Visualization to use this application -- just be aware that it is a web-based tool which accepts 
 a formatted URL and renders some sort of chart.</p>	
@@ -32,12 +36,12 @@ command line parameters. A network connection is needed to connect to Google (wh
 
 <p>When the application first opens, it will search the <code>data/sample/</code> directory for any XML files and try to convert them all into Resource
 objects (DDMSence can currently handle both DDMS 2.0 and DDMS 3.0 files). You might see an error message appear in your console, because I have included an invalid resource file (aptly named <code>InvalidResource.xml</code>)
-in the directory, which is used in the <u>Essentials</u> application. You can safely ignore this message, because <u>Escape</u> will ignore any files it could not convert.</p>
+in the directory, which is used in the <u>Essentials</u> application. <u>Escape</u> will ignore any files it could not convert, so you can safely ignore this message.</p>
 
 <p>With a collection of Resources in hand, <u>Escape</u> examines the data in each Resource and builds frequency distribution charts based on various metrics. The
 chart that appears initially shows the distribution of MIME Types in the resources (the <code>ddms:mimeType</code> element nested inside of <code>ddms:Media</code>).</p>
 
-<img src="../images/escape-01.png" width="400" height="264" title="First Screen" />
+<img src="./images/escape-01.png" width="400" height="264" title="First Screen" />
 <p class="figure">Figure 1. The MIME Types Distribution</p>
 
 <p>The text field below the chart contains the URL used to generate it. You can paste this URL into your web browser to view the same graph.</p>
@@ -67,7 +71,7 @@ a List of DDMS components. The name of the getter will be a capitalized version 
 
 <p>Next, let's click on the "Keyword" tab to see a pie graph of keyword usage.</p>
 
-<img src="../images/escape-02.png" width="400" height="268" title="Second Screen" />
+<img src="./images/escape-02.png" width="400" height="268" title="Second Screen" />
 <p class="figure">Figure 3. The Keyword Distribution</p>
  
 <div class="example"><pre>Distribution distribution = new Distribution();
@@ -94,7 +98,7 @@ up into single words (to make the visualization more exciting).</p>
 
 <p>The last visualization can be seen in the "Dates" tab.</p>
 
-<img src="../images/escape-03.png" width="400" height="266" title="Third Screen" />
+<img src="./images/escape-03.png" width="400" height="266" title="Third Screen" />
 <p class="figure">Figure 5. The Dates Distribution</p>
 
 <p>The source code for this visualization can be found in the <code>buildDateGraph()</code> method. Dates can appear in a DDMS Resource in multiple locations:</p>
@@ -102,7 +106,7 @@ up into single words (to make the visualization more exciting).</p>
 <ul>
 	<li>There are four date attributes in the <code>ddms:dates</code> element, which apply to the resource being described.</li>
 	<li>If any <code>ddms:temporalCoverage</code> elements are defined, each one may have a start date and an end date.</li>
-	<li>The resource record itself has a createDate attribute.</li>
+	<li>The resource record itself has a createDate attribute in DDMS 3.0.</li>
 </ul>
 
 <div class="example"><pre>Distribution distribution = new Distribution();
@@ -138,7 +142,7 @@ for (Resource resource : getResources()) {
 return (buildPieGraphURL("DDMS%20Date%20Distribution", distribution, PIE_GRAPH));</pre></div>
 <p class="figure">Figure 6. Date source code</p>
 
-<p>For this visualization, all date locations are checked, and then transformed into <code>xs:year</code> values (the Java pattern "YYYY"). The distribution
+<p>For this visualization, all date locations are checked, and then transformed into <code>xs:year</code> values (the Java pattern "<code>YYYY</code>"). The distribution
 is then tracked as it was in the previous two examples. A more useful graph might show just expiration dates or time periods -- I added the additional
 dates to provide more examples of traversing a Resource, and to make the visualization more exciting.</p>
 

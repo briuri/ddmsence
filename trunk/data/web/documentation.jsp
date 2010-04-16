@@ -51,13 +51,14 @@ ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-1.1.0.jar:lib/ddmsence-sampl
 java -cp $ddmsence_classpath buri.ddmsence.samples.Essentials</pre></div>
 <p class="figure">Figure 2. Running in Linux</p>
 
-<p>Note: The syntax for setting a classpath in Linux may vary, depending on the shell you are using.</p>
+<p>Note: The syntax for setting a classpath in Linux may vary, depending on the shell you are using. If you are using an older version of DDMSence, make sure
+to change the version numbers in the classpath examples.</p>
 
 <a name="samples"></a><h4>Sample Applications</h4>
 <!-- DDMScargo(t), DDMScrow, DDMSophagus, DDMStrogen, DDMStuary, DDMSquire, DDMSteem, DDMStablishment, DDMStimator, DDMScalator, DDMState -->
 
 <p>
-<img src="../images/essentials-thumb.png" width="300" height="199" title="Essentials Screenshot" align="right" />
+<img src="./images/essentials-thumb.png" width="300" height="199" title="Essentials Screenshot" align="right" />
 DDMSence comes with three sample applications. The intention of these applications is to highlight notable aspects of DDMSence, not to create
 real-world solutions.</p>
 
@@ -80,14 +81,16 @@ shows an example of how the Java object model can be built with simple data type
 	<li><a href="tutorials-02.jsp">Tutorial #2: Escort</a></li>
 </ul>
 
-<img src="../images/escape-thumb.png" width="300" height="198" title="Escape Screenshot" align="right" />
+<img src="./images/escape-thumb.png" width="300" height="198" title="Escape Screenshot" align="right" />
 
 <h5>Escape</h5>
 
 <p><u>Escape</u> is a tool that traverses multiple DDMS Resource files and then exposes various statistics about them through the 
 <a href="http://code.google.com/apis/visualization/documentation/gallery.html" target="_new">Google Visualization API</a>. Charts in this sample
 application are non-interactive, but provide the foundation for more complex cases: for example, it would
-be possible to plot Temporal Coverage on an Annotated Timeline, or Geospatial Coverage on Google Maps. While the first two sample applications were 
+be possible to plot Temporal Coverage on an 
+<a href="http://code.google.com/apis/visualization/documentation/gallery/annotatedtimeline.html" target="_new">Annotated Timeline</a>, or Geospatial Coverage on 
+<a href="http://code.google.com/apis/visualization/documentation/gallery/map.html" target="_new">Google Maps</a>. While the first two sample applications were 
 designed to teach developers how DDMSence works, the intent of this one is to provide brainstorming ideas for leveraging DDMS in other contexts.</p>
 	
 <ul>
@@ -98,7 +101,7 @@ designed to teach developers how DDMSence works, the intent of this one is to pr
 	
 <a name="javadoc"></a><h4>JavaDoc API Documentation</h4>
 
-<img src="../images/docSample.png" width="310" height="231" title="JavaDoc sample" align="right" />
+<img src="./images/docSample.png" width="310" height="231" title="JavaDoc sample" align="right" />
 
 <ul>
 	<li><a href="/docs/">Online API Documentation</a></li>
@@ -198,7 +201,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 
 <p>Starting with DDMSence v1.1, two versions of DDMS are supported: 2.0 and 3.0. When building DDMS components from XML files, the 
 DDMSReader class can automatically use the correct version of DDMS based on the XML namespace defined in the file.
-When building DDMS components from scratch, the <a href="/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">DDMSVersion</a>
+When building DDMS components from scratch, the <a href="/docs/index.html?buri/ddmsence/util/DDMSVersion.html">DDMSVersion</a>
 class controls the version being used. There is an instance of DDMSVersion for each supported version, and this 
 instance contains the specific XML namespaces used for DDMS, GML, and ICISM components.</p>
 
