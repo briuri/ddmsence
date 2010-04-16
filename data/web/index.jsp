@@ -108,18 +108,18 @@ with this library.</p>
 <p>DDMSence comes with a complete set of JUnit tests, and code coverage was aided by <a href="http://www.eclemma.org/" target="_new">EclEmma</a>.
 It is being released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
 
-<img src="./images/chart.png" width="725" height="325" title="DDMSence Flow Chart"  />
+<img src="./images/chart.png" width="800" height="300" title="DDMSence Flow Chart"  />
 
 <h1>On the Horizon</h1>
 
 <p>Now that v1.1.0 is complete, I will take a couple weeks to focus on improving the unit tests and documentation.
-I would like this release to evoke some feedback before I decide what enhancements to pursue in the next release. Please follow the 
+I would like this release to evoke some feedback before I decide which enhancements to pursue in the next release. Please follow the 
 "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list of enhancements under 
 consideration for future releases, or to add your own suggestions.</p>
 			
 <h1>About the Author</h1>
 
-<p><img src="./images/BU.jpg" width="73" height="100" title="BU" align="left" />
+<p><img src="./images/BU.jpg" width="73" height="100" title="BU" class="bordered" align="left" />
 <b>Brian Uri!</b> is a software engineer at <a href="http://www.fgm.com/" target="_new">FGM, Inc.</a> in Reston, Virginia. He has been a member
 of the <a href="http://metadata.dod.mil/" target="_new">DoD Metadata Registry</a> team since 2004, and is currently a
 technical lead on that project. DDMSence grew out of the author's desire to gain more practical XML Schema experience, to write something useful

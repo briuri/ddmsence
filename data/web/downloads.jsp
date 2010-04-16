@@ -20,10 +20,7 @@ code for the main library, unit tests, and the sample applications, as well as s
 file which will allow you to compile source code, run unit tests, generate API documentation, or even generate the "bin"-flavored archive with <a href="http://ant.apache.org/">Apache Ant</a>. 
 I have include the <code>.project</code> file if you wish to import the project into Eclipse.</p>
 
-<p>Please see the "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracker</a>" for a comprehensive list of fixes and enhancements
-included in each release.</a></li>
-
-<h3>Latest Release</h3>
+<h1>Latest Release: v1.1.0</h1>
 
 <p>Version <b>1.1.0</b> (4/8/2010) is a stable release, and adds support for DDMS 2.0 and the Extensible Layer. 
 It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=31">backwards compatible</a> with earlier versions.</p>
@@ -35,7 +32,7 @@ It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=31">backwa
 
 <h3>Versioning</h3>
 
-<p>DDMSence will adopt a "major.minor.patch" versioning system for as long as it makes sense to do so:</p>
+<p>DDMSence will follow a "major.minor.patch" versioning system for as long as it makes sense to do so:</p>
 <ul>
 	<li>A change in major version will include major architecture changes or break backwards compatibility.</li>
 	<li>A change in minor version will include new features or minor bug fixes. Some minor releases early on may break backwards compatibility.</li>

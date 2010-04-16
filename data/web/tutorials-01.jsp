@@ -9,11 +9,13 @@
 
 <h1>Tutorial #1: <u>Essentials</u></h1>
 
-<p><u>Essentials</u> is a simple reader application which loads an XML file containing a DDMS Resource and displays it in four different formats: the
+<p>
+<img src="./images/essentials-flow.png" width="400" height="150" title="Essentials Workflow" align="right" />
+<u>Essentials</u> is a simple reader application which loads an XML file containing a DDMS Resource and displays it in four different formats: the
 original XML, HTML, Text, and Java code (which you can reuse to build your own components from scratch). The source code for this application provides
 an example of how to create DDMS components from an XML file.</p>
 
-<h3>Getting Started</h3>
+<h2>Getting Started</h2>
 
 <p><u>Essentials</u> can be run from the command line with the class, <code>buri.ddmsence.samples.Essentials</code>. The application accepts a single 
 optional parameter: the name of a file to load upon startup.</p>
@@ -26,12 +28,12 @@ optional parameter: the name of a file to load upon startup.</p>
 a <code>ddms:Resource</code>. The four sample files that are bundled with DDMS v3.0 can be found in the <code>data/sample/</code> directory. Let's start by
 selecting the sample file, <code>DDMS-v3_0_Identifier_Postal_Address_Example.xml</code> and clicking on the <i>Open</i> button.</p>
 
-<img src="../images/essentials-02.png" width="300" height="206" title="Essentials File Chooser" />
+<img src="./images/essentials-02.png" width="300" height="206" title="Essentials File Chooser" />
 <p class="figure">Figure 1. Selecting an existing DDMS Record from an XML file</p>
 
 <p>The application will convert the XML file into a Java object model and then display the results in four separate panes.</p>
 
-<img src="../images/essentials-01.png" width="800" height="531" title="Essentials Screenshot" />
+<img src="./images/essentials-01.png" width="800" height="531" title="Essentials Screenshot" />
 <p class="figure">Figure 1. The four output formats</p>
 
 <p>The top pane contains the result of calling <code>toXML()</code> on the Resource object. It should be identical to the data from the file.</p>
