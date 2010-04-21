@@ -81,10 +81,10 @@
 		5) Update classpath on documentation.jsp.
 		6) Update CHANGES.txt.
 		7) Run "dist" target and review archives.
-		8) Delete and reupload javadoc.
-		9) Upload archives and deprecate last release.
+		8) Upload archives and deprecate last release.
+		9) Delete and reupload javadoc.
 		10) Upload web files.
-		11) Commit changes and tag as new release. 
+		11) Commit any remaining changes and tag as new release. 
 		12) Announcements (Google Groups / freshmeat / MDR)
 		-->
 	</target>
