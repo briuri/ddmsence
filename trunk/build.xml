@@ -45,7 +45,7 @@
 		<delete quiet="true" dir="${dist.dir}/ddmsence-src-${version}" />
 		
 		<!-- Build the bin-flavored download archive -->
-		<jar destfile="${jars.dir}/ddmsence-${version}.jar" basedir="${compile.main.dir}" />
+		<jar destfile="${jars.dir}/ddmsence-${version}.jar" basedir="${compile.main.dir}"/>
 		<jar destfile="${jars.dir}/ddmsence-samples-${version}.jar" basedir="${compile.samples.dir}" />
 		<copy todir="${dist.dir}/ddmsence-bin-${version}" includeEmptyDirs="false">
 			<fileset dir=".">
@@ -69,6 +69,7 @@
 		<copy todir="${dist.dir}/ddmsence-bin-${version}/lib">
 			<fileset dir="${jars.dir}" />
 		</copy>
+		<copy tofile="${dist.dir}/ddmsence-bin-${version}/classes/ddmsence-config.properties" file="${conf.dir}/ddmsence-config-template.properties" />
 		<zip destfile="${dist.dir}/ddmsence-bin-${version}.zip" basedir="${dist.dir}" includes="ddmsence-bin-${version}/**" />
 		<delete quiet="true" dir="${dist.dir}/ddmsence-bin-${version}" />
 		
@@ -167,6 +168,7 @@
 		<fileset dir="${conf.dir}" id="files.properties">
 			<include name="*.properties" />
 			<include name="log4j.*" />
+			<exclude name="ddmsence-config-template.properties" />
 		</fileset>				
 		<fileset dir="${data.dir}" id="files.schemas">
 			<include name="schemas/**" />	
