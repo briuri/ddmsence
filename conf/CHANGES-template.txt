@@ -8,11 +8,16 @@ Copyright 2010 by Brian Uri!
 ===========================================================================
 Release History
 ===========================================================================
+v 1.2.0 (4/21/2010):
+This stable release improves unit tests and documentation, and adds support for 
+configurable properties.
+
 v 1.1.0 (4/08/2010):
 This stable release adds support for DDMS 2.0 and the Extensible Layer.
  
 v 1.0.0 (4/01/2010):
-First official stable release. JARs in "bin" release are compiled under Java 1.5.
+First official stable release. JARs in "bin" release are compiled under Java 
+1.5.
 
 v 0.9.d (3/29/2010):
 Includes further improvements to the validation system, controlled vocabulary 
@@ -22,8 +27,8 @@ sample applications.
 v 0.9.c (3/25/2010):
 Adds support for validation warnings in addition to errors. This release
 removes the validate() method from the IDDMSComponent interface, because
-validating a valid component was overkill. In its place, getValidationWarnings()
-has been added.
+validating a valid component was overkill. In its place, 
+getValidationWarnings() has been added.
 
 v 0.9.b (3/24/2010):
 Initial beta release. Contains full support for DDMS 3.0 Pre-Release and

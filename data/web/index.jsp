@@ -68,7 +68,8 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
-	<div class="newsUpdate"><u>04/08/2010</u>: <a href="downloads.jsp">v1.1.0</a> released.</div>
+	<div class="newsUpdate"><u>04/21/2010</u>: <a href="downloads.jsp">v1.2.0</a> released.</div>
+	<div class="newsUpdate"><u>04/08/2010</u>: v1.1.0 released.</div>
 	<div class="newsUpdate"><u>04/01/2010</u>: v1.0.0 released. DDMSence information posted on the
 		<a href="https://metadata.dod.mil/mdr/topic.htm?topicId=4662" target="_new">DoD Metadata Registry Community Forum</a> and on 
 		<a href="http://freshmeat.net/projects/ddmsence" target="_new">freshmeat</a>.</div>
@@ -81,7 +82,7 @@
 	
 </div>
 
-<h1>DDMSence v1.1.0</h1>
+<h1>DDMSence v1.2.0</h1>
 
 <p>
 DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
@@ -112,8 +113,7 @@ It is being released under the GNU Lesser General Public License (<a href="licen
 
 <h1>On the Horizon</h1>
 
-<p>Now that v1.1.0 is complete, I will take a couple weeks to focus on improving the unit tests and documentation.
-I would like this release to evoke some feedback before I decide which enhancements to pursue in the next release. Please follow the 
+<p>I would like this release to evoke some feedback before I decide which enhancements to pursue in the next release. Please follow the 
 "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list of enhancements under 
 consideration for future releases, or to add your own suggestions.</p>
 			
