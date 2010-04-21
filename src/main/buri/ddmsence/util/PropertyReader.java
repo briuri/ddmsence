@@ -23,8 +23,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * Utility class for dealing with the property file.
@@ -32,6 +34,25 @@ import java.util.Properties;
  * <p>
  * Properties in DDMSence are found in the <code>ddmsence.properties</code> file. All properties are prefixed with
  * "buri.ddmsence.", so <code>getProperty</code> calls should be performed with just the property suffix.
+ * </p>
+ * 
+ * <p>
+ * The Property Reader supports several custom properties, which can be specified at runtime in a 
+ * <code>ddmsence-config.properties</code> file. If the file exists in the classpath, the values from that file will
+ * be used. Only a subset of the DDMSence properties are allowed to be configured:
+ * </p>
+ * 
+ * <ul>
+ * <li><code>buri.ddmsence.ddms.prefix</code>: The namespace prefix for components in the DDMS namespace.</li>
+ * <li><code>buri.ddmsence.gml.prefix</code>: The namespace prefix for components in the GML namespace.</li>
+ * <li><code>buri.ddmsence.icism.prefix</code>: The namespace prefix for components in the ICISM namespace.</li>
+ * <li><code>buri.ddmsence.xlink.prefix</code>: The namespace prefix for components in the xlink namespace.</li>
+ * <li><code>buri.ddmsence.sample.data</code>: The default location for Sample Application data.</li>
+ * </ul> 
+ * 
+ * <p>
+ * Changing a namespace prefix will affect both components created from scratch and components loaded from XML files.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -40,9 +61,19 @@ public class PropertyReader {
 	private Properties _properties = new Properties();
 	
 	private static final String PROPERTIES_FILE = "ddmsence.properties";
+	private static final String CUSTOM_PROPERTIES_FILE = "ddmsence-config.properties";
 	private static final String PROPERTIES_PREFIX = "buri.ddmsence.";
 	private static final String UNDEFINED_PROPERTY = "Undefined Property: ";
 	private static final String NOT_NUMBER_PROPERTY = "Not a Number: ";
+	
+	private static final Set<String> CUSTOM_PROPERTIES = new HashSet<String>();
+	static {
+		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "ddms.prefix");
+		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "gml.prefix");
+		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "icism.prefix");
+		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "xlink.prefix");
+		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "sample.data");
+	};
 	
 	private static final PropertyReader INSTANCE = new PropertyReader();
     
@@ -57,10 +88,32 @@ public class PropertyReader {
 				aProperties.load(is);
 				is.close();
 				_properties.putAll(aProperties);
+				loadCustomProperties();
 			}
 		}
 		catch (IOException e) {
 			throw new RuntimeException("Could not load the properties file: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * Searches for the ddmsence-config.properties file and loads specifically
+	 * defined custom properties, if available.
+	 * 
+	 * @throws IOException
+	 */
+	private void loadCustomProperties() throws IOException {
+		InputStream is = getLoader().getResourceAsStream(CUSTOM_PROPERTIES_FILE);
+		if (is == null)
+			return;
+		Properties aProperties = new Properties();
+		aProperties.load(is);
+		is.close();
+		for (String customKey : CUSTOM_PROPERTIES) {
+			String customProperty = aProperties.getProperty(customKey);
+			if (customProperty != null) {
+				_properties.put(customKey, customProperty);
+			}
 		}
 	}
 		

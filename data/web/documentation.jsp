@@ -22,6 +22,7 @@
 		<li><a href="#tips-version">Working with DDMS 2.0</a></li>
 		<li><a href="#tips-attributes">Attribute Groups</a></li>
 		<li><a href="#tips-extensible">The Extensible Layer</a></li>
+		<li><a href="#tips-configuration">Configurable Properties</a></li>
 		</ul>
 	<li><a href="#contributors">Contributors</a></li>
 	<li><a href="#feedback">Feedback</a></li>
@@ -39,7 +40,7 @@ into a batch/shell script and running that script):</p>
 <div class="example"><pre>REM Windows Commands
 cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;\ddmsence-bin-1.1.0
 set DDMSENCE_CLASSPATH=lib/xercesImpl-2.9.1.jar;lib/xml-apis-1.3.04.jar;lib/xom-1.2.4.jar
-set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-1.1.0.jar;lib/ddmsence-samples-1.1.0.jar
+set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-1.1.0.jar;lib/ddmsence-samples-1.1.0.jar;classes/
 java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre></div>
 <p class="figure">Figure 1. Running from a Windows/DOS Command Line</p>
 
@@ -47,7 +48,7 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre></div>
 # Linux Commands
 cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;/ddmsence-bin-1.1.0
 ddmsence_classpath=lib/xercesImpl-2.9.1.jar:lib/xml-apis-1.3.04.jar:lib/xom-1.2.4.jar
-ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-1.1.0.jar:lib/ddmsence-samples-1.1.0.jar
+ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-1.1.0.jar:lib/ddmsence-samples-1.1.0.jar:classes/
 java -cp $ddmsence_classpath buri.ddmsence.samples.Essentials</pre></div>
 <p class="figure">Figure 2. Running in Linux</p>
 
@@ -469,6 +470,15 @@ Resource resource = new Resource(myComponents, null, null, null, null, extension
 
 <p>As a best practice, it is recommended that you create these attributes as explicitly as possible: if an attribute can be defined with constructor parameters or inside
 of a SecurityAttributes instance, it should. This will make DDMS 2.0 resources more consistent with their DDMS 3.0 counterparts.</p>
+
+<a name="tips-configuration"></a><h4>Configurable Properties</h4>
+
+<p>DDMSence exposes some properties, such as the namespace prefixes used for each XML namespace, so they can be configured by the end user. These properties can be found
+in the <code>ddmsence-config.properties</code> file (which can be found in <code>/classes/</code> in the "bin"-flavored download). At startup, DDMSence searches for this
+file in the classpath, and if it exists, DDMSence will use the values defined in the file.</p>
+
+<p>For example, if you needed to use DDMSence to load a DDMS resource from a file, but the file uses "ic" instead of "ICISM" as the Intelligence Community namespace, you
+would uncomment the <code>buri.ddmsence.icism.prefix</code> property and set a custom value of <code>ic</code>.</p>
 
 <a name="contributors"></a><h3>Contributors</h3>
 
