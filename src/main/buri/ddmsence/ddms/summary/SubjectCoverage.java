@@ -164,7 +164,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
+		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
 		Element subjectElement = getChild(SUBJECT_NAME);
 		Util.requireDDMSValue("Subject element", subjectElement);
 		int count = subjectElement.getChildElements(Keyword.NAME, subjectElement.getNamespaceURI()).size()
@@ -210,7 +210,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		return (ValidationMessage.ELEMENT_PREFIX + DDMS_PREFIX + ":" + SUBJECT_NAME);
+		return (ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix() + ":" + SUBJECT_NAME);
 	}
 	
 	/**

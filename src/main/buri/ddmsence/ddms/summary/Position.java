@@ -184,7 +184,7 @@ public final class Position extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), GML_PREFIX, NAME);
+		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getGmlNamespace(), NAME);
 		for (Double coordinate : getCoordinates())
 			Util.requireDDMSValue("coordinate", coordinate);
 		if (!Util.isBounded(getCoordinates().size(), 2, 3))

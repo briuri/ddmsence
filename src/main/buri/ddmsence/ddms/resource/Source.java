@@ -124,7 +124,7 @@ public final class Source extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
+		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
 		if (!Util.isEmpty(getSchemaHref())) {
 			Util.requireDDMSValidURI(getSchemaHref());
 		}		

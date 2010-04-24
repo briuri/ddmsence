@@ -25,6 +25,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -151,7 +152,7 @@ public final class Dates extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
+		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
 		if (getCreated() != null)
 			Util.requireDDMSDateFormat(getCreated().getXMLSchemaType());
 		if (getPosted() != null)

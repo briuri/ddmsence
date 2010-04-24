@@ -108,7 +108,7 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
+		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
 		if (!"2.0".equals(getDDMSVersion())) {
 			if (getExcludeFromRollup() == null)
 				throw new InvalidDDMSException("The excludeFromRollup attribute is required.");

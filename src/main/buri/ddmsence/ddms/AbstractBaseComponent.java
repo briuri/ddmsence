@@ -44,13 +44,13 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	private List<ValidationMessage> _warnings;
 	private Element _element;
 
-	/** The DDMS prefix */
+	/** The default DDMS prefix used to create components from scratch */
 	public static final String DDMS_PREFIX = PropertyReader.getProperty("ddms.prefix");
 	
-	/** The GML prefix */
+	/** The GML prefix used to create components from scratch */
 	public static final String GML_PREFIX = PropertyReader.getProperty("gml.prefix");
 	
-	/** The ICISM prefix */
+	/** The ICISM prefix used to create components from scratch */
 	public static final String ICISM_PREFIX = PropertyReader.getProperty("icism.prefix");
 	
 	/**

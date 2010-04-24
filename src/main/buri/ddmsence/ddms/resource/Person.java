@@ -26,6 +26,7 @@ import buri.ddmsence.ddms.AbstractProducer;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -173,8 +174,9 @@ public final class Person extends AbstractProducer {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, getProducerType());
-		Util.requireDDMSQName(getEntityElement(), DDMS_PREFIX, NAME);
+		String ddmsNamespace = DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace();
+		Util.requireDDMSQName(getXOMElement(), ddmsNamespace, getProducerType());
+		Util.requireDDMSQName(getEntityElement(), ddmsNamespace, NAME);
 		Util.requireDDMSValue(SURNAME_NAME, getSurname());
 		Util.requireBoundedDDMSChildCount(getEntityElement(), SURNAME_NAME, 1, 1);
 		Util.requireBoundedDDMSChildCount(getEntityElement(), USERID_NAME, 0, 1);

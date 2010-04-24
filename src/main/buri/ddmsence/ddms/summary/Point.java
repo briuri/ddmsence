@@ -184,7 +184,7 @@ public final class Point extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), GML_PREFIX, NAME);
+		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getGmlNamespace(), NAME);
 		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
 		Util.requireDDMSValue(ID_NAME, getId());

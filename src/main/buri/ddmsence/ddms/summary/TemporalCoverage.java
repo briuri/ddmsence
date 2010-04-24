@@ -226,7 +226,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
+		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
 		Element periodElement = getChild(TIME_PERIOD_NAME);
 		Util.requireDDMSValue("TimePeriod element", periodElement);
 		Util.requireBoundedDDMSChildCount(periodElement, TIME_PERIOD_NAME_NAME, 0, 1);
@@ -273,7 +273,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		return (ValidationMessage.ELEMENT_PREFIX + DDMS_PREFIX + ":" + TIME_PERIOD_NAME);
+		return (ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix() + ":" + TIME_PERIOD_NAME);
 	}
 	
 	/**

@@ -25,6 +25,7 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -164,7 +165,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
+		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
 		if (getNames().isEmpty() && getRegions().isEmpty() && getCountryCode() == null
 			&& getFacilityIdentifier() == null) {
 			throw new InvalidDDMSException("At least 1 of name, region, countryCode, or facilityIdentifier must exist.");

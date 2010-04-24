@@ -284,7 +284,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		return (ValidationMessage.ELEMENT_PREFIX + DDMS_PREFIX + ":" + getEntityType());
+		return (ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix() + ":" + getEntityType());
 	}
 	
 	/**
