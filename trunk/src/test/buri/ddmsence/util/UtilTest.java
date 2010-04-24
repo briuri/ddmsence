@@ -237,7 +237,7 @@ public class UtilTest extends TestCase {
 	public void testRequireDDMSQNameSuccess() {
 		try {
 			Element element = Util.buildDDMSElement("name", null);
-			Util.requireDDMSQName(element, Util.DDMS_PREFIX, "name");
+			Util.requireDDMSQName(element, DDMSVersion.getCurrentVersion().getNamespace(), "name");
 		}
 		catch (InvalidDDMSException e) {
 			fail("Did not allow valid data.");
@@ -245,7 +245,7 @@ public class UtilTest extends TestCase {
 	}
 	
 	public void testRequireDDMSQNameFailure() {
-		// Null Prefix = ""
+		// Null NamespaceURI = ""
 		try {
 			Element element = Util.buildDDMSElement("name", null);
 			Util.requireDDMSQName(element, null, "name");
@@ -255,10 +255,10 @@ public class UtilTest extends TestCase {
 			// Good
 		}
 		
-		// Bad Prefix
+		// Bad URI
 		try {
 			Element element = Util.buildDDMSElement("name", null);
-			Util.requireDDMSQName(element, "prefix", "name");
+			Util.requireDDMSQName(element, DDMSVersion.getCurrentVersion().getGmlNamespace(), "name");
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -268,7 +268,7 @@ public class UtilTest extends TestCase {
 		// Bad Name
 		try {
 			Element element = Util.buildDDMSElement("name", null);
-			Util.requireDDMSQName(element, Util.DDMS_PREFIX, "newName");
+			Util.requireDDMSQName(element, DDMSVersion.getCurrentVersion().getNamespace(), "newName");
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

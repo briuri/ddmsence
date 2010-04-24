@@ -26,6 +26,7 @@ import buri.ddmsence.ddms.AbstractProducer;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -129,8 +130,9 @@ public final class Unknown extends AbstractProducer {
 		super.validate();
 		if (this.getDDMSVersion().equals("2.0"))
 			throw new InvalidDDMSException("The ddms:Unknown element cannot be used in DDMS 2.0.");
-		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, getProducerType());
-		Util.requireDDMSQName(getEntityElement(), DDMS_PREFIX, NAME);
+		String ddmsNamespace = DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace();
+		Util.requireDDMSQName(getXOMElement(), ddmsNamespace, getProducerType());
+		Util.requireDDMSQName(getEntityElement(), ddmsNamespace, NAME);
 	}
 		
 	/**

@@ -26,6 +26,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -120,7 +121,7 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
+		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
 		Util.requireDDMSValue("value attribute", getValue());
 		if ("2.0".equals(getDDMSVersion()) && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("xs:anyAttribute can only be applied to ddms:keyword in DDMS 3.0.");

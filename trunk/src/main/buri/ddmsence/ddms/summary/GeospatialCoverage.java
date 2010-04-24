@@ -181,7 +181,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
+		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
 		Element extElement = getChild(GEOSPATIAL_EXTENT_NAME);
 		Util.requireDDMSValue("GeospatialExtent element", extElement);
 		
@@ -254,7 +254,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		return (ValidationMessage.ELEMENT_PREFIX + DDMS_PREFIX + ":" + GEOSPATIAL_EXTENT_NAME);
+		return (ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix() + ":" + GEOSPATIAL_EXTENT_NAME);
 	}
 	
 	/**

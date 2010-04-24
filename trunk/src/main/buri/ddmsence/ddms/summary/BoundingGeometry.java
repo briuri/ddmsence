@@ -127,7 +127,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 */	
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMS_PREFIX, NAME);
+		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
 		if (getPolygons().size() + getPoints().size() == 0) {
 			throw new InvalidDDMSException("At least 1 of Polygon or Point must be used.");
 		}
