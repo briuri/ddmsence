@@ -74,9 +74,11 @@
 	<div class="newsUpdate"><u>04/01/2010</u>: v1.0.0 released. DDMSence information posted on the
 		<a href="https://metadata.dod.mil/mdr/topic.htm?topicId=4662" target="_new">DoD Metadata Registry Community Forum</a> and on 
 		<a href="http://freshmeat.net/projects/ddmsence" target="_new">freshmeat</a>.</div>
-	<div class="newsUpdate"><u>03/29/2010</u>: v0.9.d released.</div>
-	<div class="newsUpdate"><u>03/25/2010</u>: v0.9.c released.</div>
-	<div class="newsUpdate"><u>03/24/2010</u>: v0.9.b released.</div><br />
+	<!--
+		<div class="newsUpdate"><u>03/29/2010</u>: v0.9.d released.</div>
+		<div class="newsUpdate"><u>03/25/2010</u>: v0.9.c released.</div>
+		<div class="newsUpdate"><u>03/24/2010</u>: v0.9.b released.</div><br />
+	-->
 	<div class="feed">New Release Feed: <a href="http://code.google.com/feeds/p/ddmsence/downloads/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>	
 	<div class="feed">SVN Code Feed: <a href="http://code.google.com/feeds/p/ddmsence/svnchanges/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>
 	<div class="feed">Issue Tracker Feed: <a href="http://code.google.com/feeds/p/ddmsence/issueupdates/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>
