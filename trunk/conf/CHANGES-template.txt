@@ -8,6 +8,10 @@ Copyright 2010 by Brian Uri!
 ===========================================================================
 Release History
 ===========================================================================
+
+v 1.2.1 (4/24/2010):
+This stable patch release fixes a bug related to QName validation (Issue #37).
+
 v 1.2.0 (4/21/2010):
 This stable release improves unit tests and documentation, and adds support for 
 configurable properties.
