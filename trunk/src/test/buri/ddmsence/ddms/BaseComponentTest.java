@@ -19,8 +19,12 @@
 */
 package buri.ddmsence.ddms;
 
+import nu.xom.Element;
 import junit.framework.TestCase;
+import buri.ddmsence.ddms.resource.Language;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.Util;
 
 /**
  * <p>Tests related to underlying methods in the base class for DDMS components</p>
@@ -43,5 +47,13 @@ public class BaseComponentTest extends TestCase {
 	public void testVersion() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		assertEquals("3.0", rights.getDDMSVersion());
+	}
+	
+	public void testCustomPrefix() throws InvalidDDMSException {
+		String namespace = DDMSVersion.getCurrentVersion().getNamespace();
+		Element element = Util.buildElement("customPrefix", Language.NAME, namespace, null);
+		Util.addAttribute(element, "customPrefix", "qualifier", namespace, "testQualifier");
+		Util.addAttribute(element, "customPrefix", "value", namespace, "en");
+		new Language(element);
 	}
 }
