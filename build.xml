@@ -135,7 +135,7 @@
 	</target>
 			
 	<target name="__config">
-	    <property name="version" value="1.2.0" />
+	    <property name="version" value="1.2.1" />
 		<property name="conf.dir" value="conf" />
 		<property name="data.dir" value="data" />
 		<property name="src.main.dir" value="src/main" />
