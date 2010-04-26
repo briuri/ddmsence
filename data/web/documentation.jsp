@@ -196,6 +196,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 	<li><a href="#tips-version">Working with DDMS 2.0</a></li>
 	<li><a href="#tips-attributes">Attribute Groups</a></li>
 	<li><a href="#tips-extensible">The Extensible Layer</a></li>
+	<li><a href="#tips-configuration">Configurable Properties</a></li>
 </div>
 		
 <a name="tips-version"></a><h4>Working with DDMS 2.0</h4>
