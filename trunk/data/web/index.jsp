@@ -124,9 +124,9 @@ consideration for future releases, or to add your own suggestions.</p>
 
 <p><img src="./images/BU.jpg" width="73" height="100" title="BU" class="bordered" align="left" />
 <b>Brian Uri!</b> is a software engineer at <a href="http://www.fgm.com/" target="_new">FGM, Inc.</a> in Reston, Virginia. He has been a member
-of the <a href="http://metadata.dod.mil/" target="_new">DoD Metadata Registry</a> team since 2004, and is currently a
-technical lead on that project. DDMSence grew out of the author's desire to gain more practical XML Schema experience, to write something useful
-which had never been done before, and an unusually large amount of free time.</p>
+of the <a href="http://metadata.dod.mil/" target="_new">DoD Metadata Registry</a> development team since 2004, and a technical lead on the project since 2006. 
+DDMSence grew out of the author's desire to gain more practical XML Schema experience, to write something useful which had never been done before, and an 
+unusually large amount of free time.</p>
 
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>
