@@ -34,16 +34,14 @@ It is backwards compatible with v1.2.0 and v1.1.0.</p>
 
 <p>DDMSence will follow a "major.minor.patch" versioning system for as long as it makes sense to do so:</p>
 <ul>
-	<li>A change in major version will include major architecture changes or break backwards compatibility.</li>
-	<li>A change in minor version will include new features or minor bug fixes. Some minor releases early on may break backwards compatibility.</li>
-	<li>A change in patch version will be limited to minor bug fixes.</li>
+	<li>A change in major version will generally include major architecture changes and will likely break backwards compatibility.</li>
+	<li>A change in minor version can include new features and bug fixes. On rare occasions, minor releases may break backwards compatibility.</li>
+	<li>A change in patch version will be limited to bug fixes.</li>
 	<li>If the patch version is a letter, such as "<b>b</b>", the release may be unstable. Major/minor numbers will increment after an unstable release (so the beta/pre-release version of 1.2 is probably 1.1.b, and NOT 1.2.b).</li>
 </ul>
 
 <p>If a new version is listed as "backwards compatible", it means that you can update to the new version without changing any of your code that worked with the old version.  
-In initial 1.x releases, I will be more aggressive about creating a robust baseline at the expense of backwards compatibility, at least
-until I am aware that there are serious users of the library. All changes which are not backwards compatible will be linked from this page, even
-if they do not trigger a change in major version number.</p> 
+All changes which are not backwards compatible will be linked from this page.</p> 
 
 <h3>Older Releases</h3>
 
