@@ -116,8 +116,11 @@ It is being released under the GNU Lesser General Public License (<a href="licen
 
 <h1>On the Horizon</h1>
 
-<p>I would like this release to evoke some feedback before I decide which enhancements to pursue in the next release. Please follow the 
-"<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list of enhancements under 
+<p>The next minor release of DDMSence will include support for validation against user-specified ISO Schematron files. I will not be releasing a 
+Schematron file encapsulating the DDMS specification yet, but I may work with the DDMS Team in the future to create one. An official Schematron file
+for DDMS does not exist today.</p> 
+
+<p>Please follow the "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list of enhancements under 
 consideration for future releases, or to add your own suggestions.</p>
 			
 <h1>About the Author</h1>
