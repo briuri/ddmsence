@@ -14,15 +14,13 @@
 		<javac srcdir="${src.main.dir}" destdir="${compile.main.dir}" classpathref="classpath.compile" source="1.5" />
 		<copy todir="${compile.main.dir}" filtering="true">
 			<fileset refid="files.properties" />
-			<fileset refid="files.schemas" />
-			<fileset refid="files.cve" />
+			<fileset refid="files.requiredData" />
 		</copy>
 		<javac srcdir="${src.samples.dir}" destdir="${compile.samples.dir}" classpathref="classpath.samples" source="1.5" />
 		<javac srcdir="${src.test.dir}" destdir="${compile.test.dir}" classpathref="classpath.test" source="1.5" />
 		<copy todir="${compile.test.dir}" filtering="true">
 			<fileset refid="files.properties" />
-			<fileset refid="files.schemas" />
-			<fileset refid="files.cve" />
+			<fileset refid="files.requiredData" />
 		</copy>
 	</target>
 	
@@ -59,6 +57,7 @@
 				<exclude name="${output.dir}/**"/>
 				<exclude name="${data.dir}/CVEnumISM/**"/>
 				<exclude name="${data.dir}/schemas/**"/>
+				<exclude name="${data.dir}/schematron/**"/>
 				<exclude name="${data.dir}/test/**"/>
 				<exclude name="${data.dir}/web/**"/>	
 				<exclude name="lib/test/**"/>
@@ -119,8 +118,8 @@
 	</target>	
 
 	<target name="localWeb" depends="__config" description="Deploys the website pages locally for testing">
-		<mkdir dir="E:\\urizone\\output\\tomcat\\webapps\\ddmsence" />
-		<copy todir="E:\\urizone\\output\\tomcat\\webapps\\ddmsence" includeEmptyDirs="false">
+		<mkdir dir="${local.web.dir}" />
+		<copy todir="${local.web.dir}" includeEmptyDirs="false">
 			<fileset dir="${data.dir}/web">
 				<include name="**/**" />
 		    </fileset>
@@ -138,6 +137,7 @@
 	    <property name="version" value="1.2.1" />
 		<property name="conf.dir" value="conf" />
 		<property name="data.dir" value="data" />
+		<property name="local.web.dir" value="E:\\urizone\\output\\tomcat\\webapps\\ddmsence" />
 		<property name="src.main.dir" value="src/main" />
 		<property name="src.samples.dir" value="src/samples" />
 		<property name="src.test.dir" value="src/test" />
@@ -166,14 +166,12 @@
 		
 		<fileset dir="${conf.dir}" id="files.properties">
 			<include name="*.properties" />
-			<include name="log4j.*" />
 			<exclude name="ddmsence-config-template.properties" />
 		</fileset>				
-		<fileset dir="${data.dir}" id="files.schemas">
-			<include name="schemas/**" />	
-		</fileset>
-		<fileset dir="${data.dir}" id="files.cve">
-			<include name="CVEnumISM/**" />	
+		<fileset dir="${data.dir}" id="files.requiredData">
+			<include name="CVEnumISM/**" />
+			<include name="schemas/**" />
+			<include name="schematron/**" />
 		</fileset>	
 	</target>	
 	
