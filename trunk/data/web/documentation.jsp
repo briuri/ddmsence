@@ -22,6 +22,7 @@
 		<li><a href="#tips-version">Working with DDMS 2.0</a></li>
 		<li><a href="#tips-attributes">Attribute Groups</a></li>
 		<li><a href="#tips-extensible">The Extensible Layer</a></li>
+		<li><a href="#tips-schematron">Schematron Validation</a></li>
 		<li><a href="#tips-configuration">Configurable Properties</a></li>
 		</ul>
 	<li><a href="#contributors">Contributors</a></li>
@@ -196,6 +197,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 	<li><a href="#tips-version">Working with DDMS 2.0</a></li>
 	<li><a href="#tips-attributes">Attribute Groups</a></li>
 	<li><a href="#tips-extensible">The Extensible Layer</a></li>
+	<li><a href="#tips-schematron">Schematron Validation</a></li>
 	<li><a href="#tips-configuration">Configurable Properties</a></li>
 </div>
 		
@@ -206,6 +208,8 @@ DDMSReader class can automatically use the correct version of DDMS based on the 
 When building DDMS components from scratch, the <a href="/docs/index.html?buri/ddmsence/util/DDMSVersion.html">DDMSVersion</a>
 class controls the version being used. There is an instance of DDMSVersion for each supported version, and this 
 instance contains the specific XML namespaces used for DDMS, GML, and ICISM components.</p>
+
+<div class="clear"></div>
 
 <div class="example"><pre>DDMSVersion.setCurrentVersion("2.0");
 DDMSVersion version = DDMSVersion.getCurrentVersion();
@@ -472,6 +476,59 @@ Resource resource = new Resource(myComponents, null, null, null, null, extension
 <p>As a best practice, it is recommended that you create these attributes as explicitly as possible: if an attribute can be defined with constructor parameters or inside
 of a SecurityAttributes instance, it should. This will make DDMS 2.0 resources more consistent with their DDMS 3.0 counterparts.</p>
 
+<a name="tips-schematron"></a><h4>Schematron Validation</h4>
+
+<p>It is expected that organizations and communities of interest may have additional constraints on the data in their DDMS Resources, besides the rules in the DDMS specification.
+DDMSence provides support for these rules through the <a href="http://www.schematron.com/">ISO Schematron</a> standard. Using a combination of the <a href="http://xml.apache.org/xalan-j/">Xalan</a> interpretive XSLT processor
+and <a href="http://xom.nu/">XOM</a>, DDMSence can validate a Resource against a custom Schematron file (<code>.sch</code>) and return the results of validation as
+a list of <a href="/docs/index.html?buri/ddmsence/ddms/ValidationMessage.html">ValidationMessage</a>s. The XSLT transformation makes use of Rick Jelliffe's <a href="http://www.schematron.com/implementation.html">mature implementation</a>
+of ISO Schematron.</p> 
+
+<p>Creating a custom Schematron file is outside the scope of this documentation, but there are plenty of Schematron tutorials available online, and I hope to provide additional samples
+in the future. For now, a very simple example, <code>testPublisherValue.sch</code>, can be found in <code>/data/sample/schematron/</code>. This file examines the surname of person designated as a publisher and fails if the surname is "<b>Uri</b>".</p>
+
+<div class="example"><pre>&lt;iso:pattern name="Fixed Surname Value"&gt;
+   &lt;iso:rule context="/ddms:Resource/ddms:publisher/ddms:Person/ddms:surname"&gt;
+      &lt;iso:report test="normalize-space(.) = 'Uri'"&gt;Members of the Uri family cannot be publishers.&lt;/iso:report&gt;
+   &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre></div>
+<p class="figure">Figure 18. The test from testPublisherValue.sch</p>
+
+<p>The following code sample will build a DDMS Resource from one of the sample XML files, and then validates it through Schematron:</p>
+
+<div class="example"><pre>File resourceFile = new File("data/sample/DDMSence_Example.xml");
+File schFile = new File("data/sample/schematron/testPublisherValue.sch");
+
+DDMSReader reader = new DDMSReader();
+Resource resource = reader.getDDMSResource(resourceFile);
+List&lt;ValidationMessage&gt; schematronMessages = resource.validateWithSchematron(schFile);
+for (ValidationMessage message : schematronMessages) {
+   System.out.println("Location: " + message.getLocator());
+   System.out.println("Message: " + message.getText());
+}</pre></div>
+<p class="figure">Figure 19. Sample code to validate DDMSence_Example.xml with testPublisherValue.sch</p>
+
+<div class="example"><pre>Location: //*[local-name()='Resource' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
+   /*[local-name()='publisher' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
+   /*[local-name()='Person' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
+   /*[local-name()='surname' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
+Message: Members of the Uri family cannot be publishers.</pre></div>
+<p class="figure">Figure 20. Ouput of the code from Figure 19</p>
+
+<p>Schematron files are made up of a series of patterns and rules which assert rules and report information. The raw output of Schematron validation
+is a series of <code>failed-assert</code> and <code>successful-report</code> elements in Schematron Validation Report Language (SVRL). DDMSence converts
+this output into warning-level ValidationMessages with a locator value taken from the <code>location</code> attribute in SVRL. 
+It is important to notice that 1) Schematron validation can only be performed on Resources which are already valid according to the DDMS specification and 
+2) the results of Schematron validation will <b>never</b> invalidate the DDMSence object model. It is the responsibility of the Schematron user to react 
+to any ValidationMessages.</p>
+
+<p>Today, Schematron validation is not part of the base validation that automatically happens to every DDMS component, but the DDMS
+team has begun exploratory work to create a reference implementation of a DDMS Schematron file. Based on their work, I may choose to integrate an official
+DDMS Schematron file in a future version.</p>
+
+<p>Schematron files contain the XML namespaces of any elements you might traverse -- please make sure you use the correct namespaces for the version
+of DDMS you are employing. The sample file, <code>testPublisherValue.sch</code>, is written only for DDMS 3.0.</p>
+
 <a name="tips-configuration"></a><h4>Configurable Properties</h4>
 
 <p>DDMSence exposes some properties, such as the namespace prefixes used for each XML namespace, so they can be configured by the end user. These properties can be found
@@ -480,6 +537,9 @@ file in the classpath, and if it exists, DDMSence will use the values defined in
 
 <p>For example, if you are building components from scratch, and you wish to use "ic" as a namespace prefix for the Intelligence Community namespace
 instead of "ICISM", you would uncomment the <code>buri.ddmsence.icism.prefix</code> property and set a custom value of <code>ic</code>.</p>
+
+<p>Support for Schematron validation through alternative XSLT processors (other than the default Xalan processor) is provided through the <code>buri.ddmsence.xml.transform.TransformerFactory</code>
+property, but please note that I have not tested any other processors.</p>
 
 <a name="contributors"></a><h3>Contributors</h3>
 
