@@ -68,7 +68,8 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
-	<div class="newsUpdate"><u>04/24/2010</u>: <a href="downloads.jsp">v1.2.1</a> released.</div>
+	<div class="newsUpdate"><u>05/07/2010</u>: <a href="downloads.jsp">v1.3.0</a> released.</div>
+	<div class="newsUpdate"><u>04/24/2010</u>: v1.2.1 released.</div>
 	<div class="newsUpdate"><u>04/21/2010</u>: v1.2.0 released.</div>
 	<div class="newsUpdate"><u>04/08/2010</u>: v1.1.0 released.</div>
 	<div class="newsUpdate"><u>04/01/2010</u>: v1.0.0 released. DDMSence information posted on the
@@ -85,7 +86,7 @@
 	
 </div>
 
-<h1>DDMSence v1.2.1</h1>
+<h1>DDMSence v1.3.0</h1>
 
 <p>
 DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
@@ -112,10 +113,6 @@ It is being released under the GNU Lesser General Public License (<a href="licen
 <img src="./images/chart.png" width="800" height="300" title="DDMSence Flow Chart"  />
 
 <h1>On the Horizon</h1>
-
-<p>The next minor release of DDMSence will include support for validation against user-specified ISO Schematron files. I will not be releasing a 
-Schematron file encapsulating the DDMS specification yet, but I may work with the DDMS Team in the future to create one. An official Schematron file
-for DDMS does not exist today.</p> 
 
 <p>Please follow the "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list of enhancements under 
 consideration for future releases, or to add your own suggestions.</p>
