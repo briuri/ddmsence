@@ -662,11 +662,14 @@ public class Util {
 	private synchronized static XSLTransform getSchematronSvrlTransform() throws IOException, XSLException {
 		if (_schematronSvrlTransform == null) {
 			try {
-				URI svrlUri = getLoader().getResource("schematron/iso_svrl_for_xslt1.xsl").toURI();
-				InputStream schematronStylesheet = new FileInputStream(new File(svrlUri));
+				String resourceName = "schematron/iso_svrl_for_xslt1.xsl";
+				InputStream schematronStylesheet = getLoader().getResourceAsStream(resourceName);
 				Document svrlStylesheet = Util.buildXmlDocument(schematronStylesheet);
+
 				// XOM passes the Base URI to Xalan as the SystemId, which cannot be empty.
+				URI svrlUri = getLoader().getResource(resourceName).toURI();
 				svrlStylesheet.setBaseURI(svrlUri.toString());
+				
 				_schematronSvrlTransform = new XSLTransform(svrlStylesheet);
 			} catch (URISyntaxException e) {
 				throw new IOException(e.getMessage());
