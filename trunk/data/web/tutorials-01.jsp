@@ -88,7 +88,7 @@ at any given time.</p>
 	<li>As the objects are built in Java, the schema rules are revalidated in Java. This is not essential for file-based resources, but
 	becomes more important when we are building from scratch.</li>
 	<li>Next, any rules mandated in the DDMS Specification but not implemented in the schema are validated (such as constraints on latitude/longitude values). Today,
-	this is done with custom Java code, although it could be handled with Schematron in the future.</li>
+	this is done with custom Java code, although it could be handled with <a href="documentation.jsp#tips-schematron">Schematron</a> in the future.</li>
 	<li>Any warnings which do not actually result in an invalid component are stored on the component, and can be retrieved via <code>getValidationWarnings()</code>.</li>
 </ul>
 

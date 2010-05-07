@@ -607,7 +607,7 @@ public class Util {
 	 * <li>The schema is preprocessed with iso_dsdl_include.xsl.</li>
 	 * <li>The schema is preprocessed with iso_abstract_expand.xsl.</li>
 	 * <li>The schema is compiled with iso_svrl_for_xslt1.xsl.</li>
-	 * <ol>
+	 * </ol>
 	 * 
 	 * <p>The XSLTransform instance using the result of the processing is returned. This XSLTransform can then be used
 	 * to validate DDMS components.</p>
