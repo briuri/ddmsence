@@ -612,7 +612,7 @@ public class Util {
 	 * <p>The XSLTransform instance using the result of the processing is returned. This XSLTransform can then be used
 	 * to validate DDMS components.</p>
 	 * 
-	 * @param schematronDoc the Schematron file
+	 * @param schematronFile the Schematron file
 	 * @return the XSLTransform instance
 	 * @throws IOException if there are file-related problems with preparing the stylesheets
 	 * @throws XSLException if stylesheet transformation fails

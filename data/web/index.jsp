@@ -90,17 +90,14 @@
 <p>
 DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
 <a href="http://metadata.dod.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
-Using <a href="http://xom.nu/" target="_new">XOM</a> and the <a href="http://xerces.apache.org/" target="_new">Xerces</a> Java parser, 
-DDMSence can transform XML DDMS Resource records into a Java object model, allowing them to be manipulated or traversed within the context of a Java environment. 
+Using XOM and the Xerces Java parser, DDMSence can transform XML DDMS Resource records into a Java object model, allowing them to be manipulated or traversed within the context of a Java environment. 
 DDMSence also performs logical validation of rules which are not coded into the DDMS schema (such as the 
 the validation of longitude/latitude values).</p>
 
 <ul>
-	<li>Provides a complete implementation of all five Layers in the DDMS specification, including the Extensible Layer.</li>
-	<li>Supports the creation and validation of both DDMS 2.0 and DDMS 3.0 Pre-Release components.</li>
-	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types.</li>
-	<li>Java object model can automatically transform into valid, well-formed XML, HTML, and Text records, according to the DDMS specification.</li>
-	<li>Adds an additional layer of validation to all components, including the Controlled Vocabulary Enumerations for ICISM security attributes, as defined by the Intelligence Community.</li>
+	<li>Provides a complete implementation of all five Layers in the DDMS specification (including the Extensible Layer) using either DDMS 2.0 or DDMS 3.0 Pre-Release.</li>
+	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types. Components can automatically transform into valid, well-formed XML, HTML, and Text records, according to the DDMS specification.</li>
+	<li>Adds an additional layer of validation to all components, including the Controlled Vocabulary Enumerations for ICISM security attributes, as defined by the Intelligence Community. Custom validation rules can also be defined with <a href="documentation.jsp#tips-schematron">ISO Schematron</a>.</li>
 	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
 		and <a href="documentation.jsp#tips">Power Tips</a> are available for more experienced users.</li>
 </ul>
