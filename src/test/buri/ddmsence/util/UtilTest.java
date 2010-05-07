@@ -19,6 +19,10 @@
 */
 package buri.ddmsence.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,6 +45,7 @@ import buri.ddmsence.ddms.resource.Identifier;
 public class UtilTest extends TestCase {
 		
 	protected static final String TEST_NAMESPACE = DDMSVersion.getCurrentVersion().getNamespace();
+	private static final String TEST_DATA_DIR = PropertyReader.getProperty("test.unit.data");
 	
 	public void testGetNonNullStringNull() {
 		assertEquals("", Util.getNonNullString(null));
@@ -825,5 +830,28 @@ public class UtilTest extends TestCase {
 			return Collections.emptyList();
 		return (Arrays.asList(value.split(" ")));
 	}
+
+	public void testBuildXmlDocument() throws Exception {
+		File testFile = new File(TEST_DATA_DIR + "3.0/", "resource.xml");
+		String expectedXmlOutput = new DDMSReader().getDDMSResource(testFile).toXML();
+		assertEquals(expectedXmlOutput, Util.buildXmlDocument(new FileInputStream(testFile)).getRootElement().toXML());
+	}
 	
+	public void testBuildXmlDocumentBadFile() throws Exception {
+		try {
+			Util.buildXmlDocument(null);
+			fail("Allowed invalid data.");
+		}
+		catch (IllegalArgumentException e) {
+			// Good
+		}
+		
+		try {
+			Util.buildXmlDocument(new ByteArrayInputStream("Not an XML File".getBytes()));
+			fail("Allowed invalid data.");
+		}
+		catch (IOException e) {
+			// Good
+		}
+	}
 }

@@ -15,10 +15,12 @@ complete text of this license can be found below.</p>
 <p>DDMSence also comes bundled with several third-party libraries -- their licenses are linked below.</p>
 
 <ul>
-	<li>XOM (<a href="http://xom.nu/license.xhtml">GNU Lesser General Public License v2.1</a>)</li>
+	<li>JUnit (<a href="http://junit.sourceforge.net/cpl-v10.html">Common Public License v1.0</a>)</li>
+	<li>Rick Jelliffe's ISO Schematron implementation (<a href="http://www.opensource.org/licenses/zlib-license.php">zlib/libpng License</a>)</li>
+	<li>Xalan (<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>)</li>
 	<li>Xerces (<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>)</li>
 	<li>XML-Commons (<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>)</li>
-	<li>JUnit (<a href="http://junit.sourceforge.net/cpl-v10.html">Common Public License v1.0</a>)</li>
+	<li>XOM (<a href="http://xom.nu/license.xhtml">GNU Lesser General Public License v2.1</a>)</li>
 </ul>
 
 <h3>GNU LESSER GENERAL PUBLIC LICENSE</h3>

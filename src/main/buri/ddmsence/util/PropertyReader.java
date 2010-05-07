@@ -73,6 +73,7 @@ public class PropertyReader {
 		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "icism.prefix");
 		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "xlink.prefix");
 		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "sample.data");
+		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "xml.transform.TransformerFactory");
 	};
 	
 	private static final PropertyReader INSTANCE = new PropertyReader();

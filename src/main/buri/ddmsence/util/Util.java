@@ -19,6 +19,10 @@
 */
 package buri.ddmsence.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URI;
@@ -39,10 +43,16 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.namespace.QName;
 
 import nu.xom.Attribute;
+import nu.xom.Builder;
+import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.IllegalNameException;
 import nu.xom.NamespaceConflictException;
+import nu.xom.Nodes;
+import nu.xom.ParsingException;
+import nu.xom.xslt.XSLException;
+import nu.xom.xslt.XSLTransform;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 
@@ -54,9 +64,15 @@ import buri.ddmsence.ddms.InvalidDDMSException;
  */
 public class Util {
 	
+	private static XSLTransform _schematronIncludeTransform;
+	private static XSLTransform _schematronAbstractTransform;
+	private static XSLTransform _schematronSvrlTransform;
+	
 	/** The DDMS prefix, as defined in the ddms.prefix property */
 	public static final String DDMS_PREFIX = PropertyReader.getProperty("ddms.prefix");
 	
+	private static final String PROP_TRANSFORM_FACTORY = "javax.xml.transform.TransformerFactory";
+	private static final String TRANSFORM_FACTORY = PropertyReader.getProperty("xml.transform.TransformerFactory");
     private static final int DISPLAY_TRACE_DEPTH = PropertyReader.getIntProperty("stackTrace.depth");
 	private static final LinkedHashMap<String, String> XML_SPECIAL_CHARS = new LinkedHashMap<String, String>();
 	static {
@@ -568,6 +584,98 @@ public class Util {
 	}   
 
 	/**
+	 * Loads a XOM object tree from an input stream. This method does no schema validation.
+	 * 
+	 * @param inputStream the input stream containing the XML document
+	 * @return a XOM Document
+	 * @throws IOException if there are problems loading or parsing the input stream
+	 */
+	public static Document buildXmlDocument(InputStream inputStream) throws IOException {
+		Util.requireValue("input stream", inputStream);
+		try {
+			return (new Builder().build(inputStream));
+		}
+		catch (ParsingException e) {
+			throw new IOException(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Takes a Schematron file and transforms it with the ISO Schematron skeleton files.
+	 * 
+	 * <ol>
+	 * <li>The schema is preprocessed with iso_dsdl_include.xsl.</li>
+	 * <li>The schema is preprocessed with iso_abstract_expand.xsl.</li>
+	 * <li>The schema is compiled with iso_svrl_for_xslt1.xsl.</li>
+	 * <ol>
+	 * 
+	 * <p>The XSLTransform instance using the result of the processing is returned. This XSLTransform can then be used
+	 * to validate DDMS components.</p>
+	 * 
+	 * @param schematronDoc the Schematron file
+	 * @return the XSLTransform instance
+	 * @throws IOException if there are file-related problems with preparing the stylesheets
+	 * @throws XSLException if stylesheet transformation fails
+	 */
+	public static XSLTransform buildSchematronTransform(File schematronFile) throws IOException, XSLException {
+		System.setProperty(PROP_TRANSFORM_FACTORY, TRANSFORM_FACTORY);
+		Document schDocument = Util.buildXmlDocument(new FileInputStream(schematronFile));
+		XSLTransform phase1 = getSchematronIncludeTransform();
+		XSLTransform phase2 = getSchematronAbstractTransform();
+		XSLTransform phase3 = getSchematronSvrlTransform();
+		Nodes nodes = phase3.transform(phase2.transform(phase1.transform(schDocument)));
+		XSLTransform finalTransform = new XSLTransform(XSLTransform.toDocument(nodes));
+		return (finalTransform);
+	}
+
+	/**
+	 * Lazy instantiation / cached accessor for the first step of Schematron validation.
+	 * 
+	 * @return the phase one transform
+	 */
+	private synchronized static XSLTransform getSchematronIncludeTransform() throws IOException, XSLException {
+		if (_schematronIncludeTransform == null) {
+			InputStream includeStylesheet = getLoader().getResourceAsStream("schematron/iso_dsdl_include.xsl");
+			_schematronIncludeTransform = new XSLTransform(Util.buildXmlDocument(includeStylesheet));
+		}
+		return (_schematronIncludeTransform);
+	}
+
+	/**
+	 * Lazy instantiation / cached accessor for the second step of Schematron validation.
+	 * 
+	 * @return the phase two transform
+	 */
+	private synchronized static XSLTransform getSchematronAbstractTransform() throws IOException, XSLException {
+		if (_schematronAbstractTransform == null) {
+			InputStream abstractStylesheet = getLoader().getResourceAsStream("schematron/iso_abstract_expand.xsl");
+			_schematronAbstractTransform = new XSLTransform(Util.buildXmlDocument(abstractStylesheet));
+		}
+		return (_schematronAbstractTransform);
+	}
+	
+	/**
+	 * Lazy instantiation / cached accessor for the third step of Schematron validation.
+	 * 
+	 * @return the phase three transform
+	 */
+	private synchronized static XSLTransform getSchematronSvrlTransform() throws IOException, XSLException {
+		if (_schematronSvrlTransform == null) {
+			try {
+				URI svrlUri = getLoader().getResource("schematron/iso_svrl_for_xslt1.xsl").toURI();
+				InputStream schematronStylesheet = new FileInputStream(new File(svrlUri));
+				Document svrlStylesheet = Util.buildXmlDocument(schematronStylesheet);
+				// XOM passes the Base URI to Xalan as the SystemId, which cannot be empty.
+				svrlStylesheet.setBaseURI(svrlUri.toString());
+				_schematronSvrlTransform = new XSLTransform(svrlStylesheet);
+			} catch (URISyntaxException e) {
+				throw new IOException(e.getMessage());
+			}			
+		}
+		return (_schematronSvrlTransform);
+	}
+	
+	/**
      * Gets a stack trace as a string. Does not look into nested causes.
      * 
      * @param throwable		the exception to parse
@@ -589,4 +697,19 @@ public class Util {
 		return buffer.toString();
 	}
  
+	/**
+	 * Generate a ClassLoader to be used to load resources
+	 * 
+	 * @return a ClassLoader
+	 */
+	private static ClassLoader getLoader() {
+		return new FindClassLoader().getClass().getClassLoader();
+	}
+
+	/**
+	 * Stub to load classes.
+	 */
+	private static class FindClassLoader {
+		public FindClassLoader() {}
+	} 
 }

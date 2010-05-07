@@ -19,6 +19,8 @@
  */
 package buri.ddmsence.ddms;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -30,8 +32,13 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import nu.xom.Attribute;
+import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
+import nu.xom.Nodes;
+import nu.xom.XPathContext;
+import nu.xom.xslt.XSLException;
+import nu.xom.xslt.XSLTransform;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleElement;
 import buri.ddmsence.ddms.format.Format;
@@ -526,6 +533,43 @@ public final class Resource extends AbstractBaseComponent {
 		_orderedList.addAll(getExtensibleElements());
 	}
 
+	/**
+	 * Performs a Schematron validation of the DDMS Resource, via the ISO Schematron skeleton stylesheets for XSLT1
+	 * processors. This action can only be performed on a DDMS Resource which is already valid according to the DDMS
+	 * specification.
+	 * 
+	 * <p>The informational results of this validation are returned to the caller in a list of ValidationMessages of
+	 * type "Warning", and do not affect the validity of the underlying object model. The locator on the 
+	 * ValidationMessage will be the location attribute from the successful-report or failed-assert element.</p>
+	 * 
+	 * <p>Details about ISO Schematron can be found at: http://www.schematron.com/ </p>
+	 * 
+	 * @param schematronFile the file containing the ISO Schematron constraints. This file is transformed with the ISO
+	 * Schematron skeleton files. 
+	 * @return a list of ValidationMessages
+	 * @throws XSLException if there are XSL problems transforming with stylesheets
+	 * @throws IOException if there are problems reading or parsing the Schematron file
+	 */
+	public List<ValidationMessage> validateWithSchematron(File schematronFile) throws XSLException, IOException {
+		List<ValidationMessage> messages = new ArrayList<ValidationMessage>();
+		XSLTransform schematronTransform = Util.buildSchematronTransform(schematronFile);
+		Nodes nodes = schematronTransform.transform(new Document(getXOMElementCopy()));
+		Document doc = XSLTransform.toDocument(nodes);
+		
+		XPathContext context = XPathContext.makeNamespaceContext(doc.getRootElement());
+		String svrlNamespace = context.lookup("svrl");
+		Nodes outputNodes = doc.query("//svrl:failed-assert | //svrl:successful-report", context);
+		for (int i = 0; i < outputNodes.size(); i++) {
+			if (outputNodes.get(i) instanceof Element) {
+				Element assertElement = (Element) outputNodes.get(i);
+				String text = assertElement.getFirstChildElement("text", svrlNamespace).getValue();
+				String locator = assertElement.getAttributeValue("location");
+				messages.add(ValidationMessage.newWarning(text, locator));	
+			}
+		}		
+		return (messages);
+	}
+	
 	/**
 	 * Validates the component.
 	 * 
