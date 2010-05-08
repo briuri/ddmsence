@@ -23,7 +23,7 @@ I have include the <code>.project</code> file if you wish to import the project 
 <h1>Latest Release: v1.3.0</h1>
 
 <p>Version <b>1.3.0</b> (5/7/2010) is a stable release, and adds support for custom validation through the 
-<a href="documentation.jsp#tips-schematron">ISO Schematron</a> standard. It is backwards compatible with all versions after v1.1.0.</p>
+<a href="documentation.jsp#tips-schematron">ISO Schematron</a> standard. It is backwards compatible with all versions since v1.1.0.</p>
 
 <ul>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.3.0.zip"><code>ddmsence-bin-1.3.0.zip</code></a></b> (3.6 MB, compiled with JDK1.5.0_22)</li>
