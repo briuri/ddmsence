@@ -22,7 +22,7 @@ I have include the <code>.project</code> file if you wish to import the project 
 
 <h1>Latest Release: v1.3.1</h1>
 
-<p>Version <b>1.3.1</b> (5/9/2010) is a stable patch release, which fixes bug related to namespace resolution when working with more than one version
+<p>Version <b>1.3.1</b> (5/9/2010) is a stable patch release, which fixes a bug related to namespace resolution when working with more than one version
 of DDMS at a time. It is backwards compatible with all versions since v1.1.0.</p>
 
 <ul>
