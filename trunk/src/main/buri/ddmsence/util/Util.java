@@ -191,7 +191,7 @@ public class Util {
 	}	
 	
     /**
-     * Gets the child text of the first child element matching the name in the default DDMS namespace.
+     * Gets the child text of the first child element matching the name in the DDMS namespace.
      * 
      * @param parent the parent element
      * @param name the name of the child element
@@ -200,12 +200,14 @@ public class Util {
     public static String getFirstDDMSChildValue(Element parent, String name) {
     	Util.requireValue("parent element", parent);
     	Util.requireValue("child name", name);
-    	Element child = parent.getFirstChildElement(name, DDMSVersion.getCurrentVersion().getNamespace());
+    	if (DDMSVersion.getVersionForNamespace(parent.getNamespaceURI()) == null)
+    		throw new IllegalArgumentException("This method should only be called on an element in the DDMS namespace.");
+    	Element child = parent.getFirstChildElement(name, parent.getNamespaceURI());
     	return (child == null ? "" : child.getValue());
     }
     
     /**
-     * Gets the child text of any child elements in the default DDMS namespace and returns them as a list.
+     * Gets the child text of any child elements in the DDMS namespace and returns them as a list.
      * 
      * @param parent the parent element
      * @param name the name of the child element
@@ -214,8 +216,10 @@ public class Util {
     public static List<String> getDDMSChildValues(Element parent, String name) {
     	Util.requireValue("parent element", parent);
     	Util.requireValue("child name", name);
+    	if (DDMSVersion.getVersionForNamespace(parent.getNamespaceURI()) == null)
+    		throw new IllegalArgumentException("This method should only be called on an element in the DDMS namespace.");
      	List<String> childTexts = new ArrayList<String>();
-		Elements childElements = parent.getChildElements(name, DDMSVersion.getCurrentVersion().getNamespace());
+		Elements childElements = parent.getChildElements(name, parent.getNamespaceURI());
 		for (int i = 0; i < childElements.size(); i++) {
 			childTexts.add(childElements.get(i).getValue());
 		}
@@ -278,7 +282,7 @@ public class Util {
 	}
 	
 	/**
-	 * Checks that the number of child elements with the given name in the default DDMS namespace are bounded.
+	 * Checks that the number of child elements with the given name in the DDMS namespace are bounded.
 	 * 
 	 * @param parent		the parent element
 	 * @param childName		the local name of the DDMS child
@@ -290,7 +294,9 @@ public class Util {
 		throws InvalidDDMSException {
 		Util.requireValue("parent element", parent);
 		Util.requireValue("child name", childName);
-		int childCount = parent.getChildElements(childName, DDMSVersion.getCurrentVersion().getNamespace()).size();
+    	if (DDMSVersion.getVersionForNamespace(parent.getNamespaceURI()) == null)
+    		throw new IllegalArgumentException("This method should only be called on an element in the DDMS namespace.");
+		int childCount = parent.getChildElements(childName, parent.getNamespaceURI()).size();
 		if (!isBounded(childCount, lowBound, highBound)) {
 			StringBuffer error = new StringBuffer();
 			if (lowBound == highBound) {
@@ -485,7 +491,7 @@ public class Util {
 	
 	/**
 	 * Helper method to add a ddms attribute to an element. Will not add the attribute if the value
-	 * is empty or null.
+	 * is empty or null. This method uses the DDMS namespace defined with DDMSVersion.getCurrentVersion().
 	 * 
 	 * @param element the element to decorate
 	 * @param attributeName the name of the attribute (will be within the DDMS namespace)
@@ -527,8 +533,7 @@ public class Util {
 	
 	/**
 	 * Convenience method to create an element in the default DDMS namespace with some child text. 
-	 * The resultant element will use the DDMS prefix and
-	 * have no attributes or children (yet).
+	 * The resultant element will use the DDMS prefix and have no attributes or children (yet).
 	 * 
 	 * @param name the local name of the element
 	 * @param childText the text of the element (optional)
