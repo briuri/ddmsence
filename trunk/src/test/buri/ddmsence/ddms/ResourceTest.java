@@ -69,7 +69,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:Format elements</p>
+ * <p>Tests related to ddms:Resource elements</p>
  * 
  * <p>Assumes that unit testing on individual components is done separately.
  * 
