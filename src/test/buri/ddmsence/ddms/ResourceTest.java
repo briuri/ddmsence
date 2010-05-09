@@ -19,11 +19,14 @@
  */
 package buri.ddmsence.ddms;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
+import nu.xom.xslt.XSLException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.extensible.ExtensibleElement;
@@ -66,7 +69,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:Resource elements</p>
+ * <p>Tests related to ddms:Format elements</p>
  * 
  * <p>Assumes that unit testing on individual components is done separately.
  * 
@@ -1428,5 +1431,18 @@ public class ResourceTest extends AbstractComponentTestCase {
 		components.add(new ExtensibleElement(ExtensibleElementTest.getElementFixture()));
 		
 		testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+	}
+	
+	public void testSchematronValidation() throws InvalidDDMSException, IOException, XSLException {
+		Resource resource = new Resource(getValidElement("3.0"));
+		List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/3.0/testSchematron.sch"));
+		assertEquals(2, messages.size());
+		
+		DDMSVersion.setCurrentVersion("2.0");
+		resource = new Resource(getValidElement("2.0"));
+		messages = resource.validateWithSchematron(new File("data/test/2.0/testSchematron.sch"));
+		assertEquals(2, messages.size());
+		
+		
 	}
 }

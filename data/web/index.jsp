@@ -2,6 +2,7 @@
 <head>
 	<title>DDMSence: An open source Java library for DDMS</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="description" content="An open source Java library for the DoD Discovery Metadata Specification (DDMS)">
 	<meta name="keywords" content="DDMSence,DDMS,Metadata,Discovery,Java,DoD,XML" />
 		
 	<!-- DDMS Resource Record --> 
@@ -18,7 +19,7 @@
 	<meta name="subtitle" content="Multiple Versions" />
 	<meta name="subtitle.classification" content="U" />
 	<meta name="subtitle.ownerProducer" content="USA" />
-	<meta name="description" content="An open source Java library for the DoD Discovery Metadata Specification (DDMS)" />
+	<meta name="description" content="An open source Java library for DDMS." />
 	<meta name="description.classification" content="U" />
 	<meta name="description.ownerProducer" content="USA" />
 	<meta name="language.qualifier" content="http://purl.org/dc/elements/1.1/language" />

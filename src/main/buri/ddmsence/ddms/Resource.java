@@ -644,7 +644,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>(v2.0) If ddms:Resource has no classification, warn about ignoring rollup validation.</li>
-	 * <li>If the markings [R, CTS-B, or CTS-BALK] are used, a validation warning will be generated, asking
+	 * <li>If the markings [R, CTS-B, or CTS-BALK are used, a validation warning will be generated, asking
 	 * the user to review the markings manually. I'm not sure how these compare to other markings in the
 	 * NATO scheme.</li>
 	 * <li>Include all child component validation warnings, and any warnings from the security attributes.</li>

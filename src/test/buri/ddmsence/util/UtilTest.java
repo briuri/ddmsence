@@ -47,20 +47,6 @@ public class UtilTest extends TestCase {
 	protected static final String TEST_NAMESPACE = DDMSVersion.getCurrentVersion().getNamespace();
 	private static final String TEST_DATA_DIR = PropertyReader.getProperty("test.unit.data");
 	
-	/**
-	 * Resets the in-use version of DDMS.
-	 */
-	protected void setUp() throws Exception {
-		DDMSVersion.clearCurrentVersion();
-	}
-
-	/**
-	 * Resets the in-use version of DDMS.
-	 */
-	protected void tearDown() throws Exception {
-		DDMSVersion.clearCurrentVersion();
-	}
-	
 	public void testGetNonNullStringNull() {
 		assertEquals("", Util.getNonNullString(null));
 	}
@@ -144,27 +130,6 @@ public class UtilTest extends TestCase {
 		}
 	}
 	
-	public void testGetFirstDDMSChildValueWrongNamespace() {
-		Element element = Util.buildElement("ddmsence", "test", "http://ddmsence.urizone.net/", null);
-		try {
-			Util.getFirstDDMSChildValue(element, "child");
-			fail("Allowed invalid data.");
-		}
-		catch (IllegalArgumentException e) {
-			// Good
-		}
-	}
-	
-	public void testGetFirstDDMSChildValueIndependentOfCurrentVersion() {
-		DDMSVersion.setCurrentVersion("3.0");
-		Element element = Util.buildDDMSElement("test", null);
-		element.appendChild(Util.buildDDMSElement("child", "childText1"));
-		element.appendChild(Util.buildDDMSElement("child", "childText2"));
-		DDMSVersion.setCurrentVersion("2.0");
-		String value = Util.getFirstDDMSChildValue(element, "child");
-		assertEquals("childText1", value);
-	}
-	
 	public void testGetFirstDDMSChildValueNoValue() {
 		String value = Util.getFirstDDMSChildValue(Util.buildDDMSElement("test", null), "unknown");
 		assertEquals("", value);
@@ -197,32 +162,6 @@ public class UtilTest extends TestCase {
 			// Good
 		}
 	}
-
-	public void testGetDDMSChildValuesWrongNamespace() {
-		Element element = Util.buildElement("ddmsence", "test", "http://ddmsence.urizone.net/", null);
-		element.appendChild(Util.buildDDMSElement("child", "child1"));
-		element.appendChild(Util.buildDDMSElement("child", "child2"));
-		try {
-			Util.getDDMSChildValues(element, "child");
-			fail("Allowed invalid data.");
-		}
-		catch (IllegalArgumentException e) {
-			// Good
-		}
-	}
-	
-	public void testGetDDMSChildValuesIndependentOfCurrentVersion() {
-		DDMSVersion.setCurrentVersion("3.0");
-		Element element = Util.buildDDMSElement("test", null);
-		element.appendChild(Util.buildDDMSElement("child", "child1"));
-		element.appendChild(Util.buildDDMSElement("child", "child2"));
-		DDMSVersion.setCurrentVersion("2.0");
-		List<String> values = Util.getDDMSChildValues(element, "child");
-		assertNotNull(values);
-		assertEquals(2, values.size());
-		assertEquals("child1", values.get(0));
-		assertEquals("child2", values.get(1));
-	}
 	
 	public void testGetDDMSChildValuesNoValues() {
 		Element element = Util.buildDDMSElement("test", null);
@@ -250,6 +189,7 @@ public class UtilTest extends TestCase {
 		assertEquals("child1", values.get(0));
 		assertEquals("child2", values.get(1));
 	}
+
     
 	public void testRequireDDMSValueNull() {
 		try {
@@ -467,28 +407,6 @@ public class UtilTest extends TestCase {
 		catch (InvalidDDMSException e) {
 			assertEquals("The number of phone elements must be between 1 and 5.", e.getMessage());
 		}
-	}
-	
-	public void testRequireBoundedDDMSChildCountWrongNamespace() {
-		Element element = Util.buildElement("ddmsence", "test", "http://ddmsence.urizone.net/", null);
-		try {
-			Util.requireBoundedDDMSChildCount(element, "child", 0, 0);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			fail("Allowed processing of invalid data.");
-		}
-		catch (IllegalArgumentException e) {
-			// Good
-		}
-	}
-	
-	public void testRequireBoundedDDMSChildCountIndependentOfCurrentVersion() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("3.0");
-		Element element = Util.buildDDMSElement("test", null);
-		element.appendChild(Util.buildDDMSElement("phone", "phoneValue"));
-		DDMSVersion.setCurrentVersion("2.0");
-		Util.requireBoundedDDMSChildCount(element, "phone", 1, 1);
 	}
 	
 	public void testRequireValidNCNamesNull() throws InvalidDDMSException {
