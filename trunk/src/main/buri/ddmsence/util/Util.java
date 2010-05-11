@@ -625,11 +625,27 @@ public class Util {
 	public static XSLTransform buildSchematronTransform(File schematronFile) throws IOException, XSLException {
 		System.setProperty(PROP_TRANSFORM_FACTORY, TRANSFORM_FACTORY);
 		Document schDocument = Util.buildXmlDocument(new FileInputStream(schematronFile));
+
+//		long time = new Date().getTime();
 		XSLTransform phase1 = getSchematronIncludeTransform();
+//		System.out.println((new Date().getTime() - time) + "ms (Include)");
+
+//		time = new Date().getTime();
 		XSLTransform phase2 = getSchematronAbstractTransform();
+//		System.out.println((new Date().getTime() - time) + "ms (Abstract)");
+		
+//		time = new Date().getTime();
 		XSLTransform phase3 = getSchematronSvrlTransform();
+//		System.out.println((new Date().getTime() - time) + "ms (SVRL)");
+		
+//		time = new Date().getTime();
 		Nodes nodes = phase3.transform(phase2.transform(phase1.transform(schDocument)));
+//		System.out.println((new Date().getTime() - time) + "ms (Base transformation 1, 2, 3)");
+		
+//		time = new Date().getTime();
 		XSLTransform finalTransform = new XSLTransform(XSLTransform.toDocument(nodes));
+//		System.out.println((new Date().getTime() - time) + "ms (Schematron Validation)");
+		
 		return (finalTransform);
 	}
 
