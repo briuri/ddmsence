@@ -16,7 +16,7 @@
 	</iso:pattern>
 
 	<iso:pattern name="Fixed Surname Value">
-		<iso:rule context="/ddms:Resource/ddms:publisher/ddms:Person/ddms:surname">
+		<iso:rule context="//ddms:publisher/ddms:Person/ddms:surname">
 			<iso:report test="normalize-space(.) = 'Uri'">Members of the Uri family cannot be publishers.</iso:report>
 		</iso:rule>
 	</iso:pattern>
