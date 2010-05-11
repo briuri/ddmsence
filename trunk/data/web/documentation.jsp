@@ -541,6 +541,7 @@ of other engines and the (unscientific) results are shown below.</p>
 <tr><td>Saxon-B 9.1.0.8</td><td><code>net.sf.saxon.TransformerFactoryImpl</code></td><td>1.266s</td></tr>
 <tr><td>jd.xslt 1.5.5</td><td><code>jd.xml.xslt.trax.TransformerFactoryImpl</code></td><td>Fails, cannot process Schematron skeleton, "include" error</td></tr>
 </table>
+<p class="figure">Table 3. XSLT Engines for Schematron Validation</p>
 
 <a name="tips-configuration"></a><h4>Configurable Properties</h4>
 
