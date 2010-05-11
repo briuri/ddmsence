@@ -488,7 +488,7 @@ of ISO Schematron.</p>
 in the future. For now, a very simple example, <code>testPublisherValue.sch</code>, can be found in <code>/data/sample/schematron/</code>. This file examines the surname of person designated as a publisher and fails if the surname is "<b>Uri</b>".</p>
 
 <div class="example"><pre>&lt;iso:pattern name="Fixed Surname Value"&gt;
-   &lt;iso:rule context="/ddms:Resource/ddms:publisher/ddms:Person/ddms:surname"&gt;
+   &lt;iso:rule context="//ddms:publisher/ddms:Person/ddms:surname"&gt;
       &lt;iso:report test="normalize-space(.) = 'Uri'"&gt;Members of the Uri family cannot be publishers.&lt;/iso:report&gt;
    &lt;/iso:rule&gt;
 &lt;/iso:pattern&gt;</pre></div>
@@ -529,6 +529,19 @@ DDMS Schematron file in a future version.</p>
 <p>Schematron files contain the XML namespaces of any elements you might traverse -- please make sure you use the correct namespaces for the version
 of DDMS you are employing. The sample file, <code>testPublisherValue.sch</code>, is written only for DDMS 3.0.</p>
 
+<p>DDMSence comes bundled with the the Xalan interpretive XSLT engine (v2.7.1) for stylesheet transformations. I have performed cursory tests
+of other engines and the (unscientific) results are shown below.</p>
+
+<table>
+<tr><th>Name and Version</th><th>Class Name</th><th>Benchmark</th></tr>
+<tr><td>Xalan interpretive, v2.7.1</td><td><code>org.apache.xalan.processor.TransformerFactoryImpl</code></td><td>(default engine) 0.891s</td></tr>
+<tr><td>Xalan XSLTC, v2.7.1</td><td><code>org.apache.xalan.xsltc.trax.TransformerFactoryImpl</code></td><td>Fails, cannot process Schematron skeleton, "version" error</td></tr>
+<tr><td>Xalan XSLTC, bundled with Java 1.5</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>Fails, cannot process Schematron skeleton, "version" error</td></tr>
+<tr><td>Saxon HE 9.2</td><td><code>net.sf.saxon.TransformerFactoryImpl</code></td><td>1.469s</td></tr>
+<tr><td>Saxon-B 9.1.0.8</td><td><code>net.sf.saxon.TransformerFactoryImpl</code></td><td>1.266s</td></tr>
+<tr><td>jd.xslt 1.5.5</td><td><code>jd.xml.xslt.trax.TransformerFactoryImpl</code></td><td>Fails, cannot process Schematron skeleton, "include" error</td></tr>
+</table>
+
 <a name="tips-configuration"></a><h4>Configurable Properties</h4>
 
 <p>DDMSence exposes some properties, such as the namespace prefixes used for each XML namespace, so they can be configured by the end user. These properties can be found
@@ -538,8 +551,8 @@ file in the classpath, and if it exists, DDMSence will use the values defined in
 <p>For example, if you are building components from scratch, and you wish to use "ic" as a namespace prefix for the Intelligence Community namespace
 instead of "ICISM", you would uncomment the <code>buri.ddmsence.icism.prefix</code> property and set a custom value of <code>ic</code>.</p>
 
-<p>Support for Schematron validation through alternative XSLT processors (other than the default Xalan processor) is provided through the <code>buri.ddmsence.xml.transform.TransformerFactory</code>
-property, but please note that I have not tested any other processors.</p>
+<p>Support for Schematron validation through alternative XSLT engines (other than the default Xalan engine) is provided through the <code>buri.ddmsence.xml.transform.TransformerFactory</code>
+property, which can be set to the class name of another processor. Please see the previous Power Tip on "Schematron Validation" for a table of tested and untested engines.</p>
 
 <a name="contributors"></a><h3>Contributors</h3>
 
