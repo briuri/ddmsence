@@ -517,7 +517,7 @@ Message: Members of the Uri family cannot be publishers.</pre></div>
 
 <p>Schematron files are made up of a series of patterns and rules which assert rules and report information. The raw output of Schematron validation
 is a series of <code>failed-assert</code> and <code>successful-report</code> elements in Schematron Validation Report Language (SVRL). DDMSence converts
-this output into warning-level ValidationMessages with a locator value taken from the <code>location</code> attribute in SVRL. 
+this output into ValidationMessages with a locator value taken from the <code>location</code> attribute in SVRL. The type returned is "warning" for "successful-report" messages and "error" for "failed-assert" messages. 
 It is important to notice that 1) Schematron validation can only be performed on Resources which are already valid according to the DDMS specification and 
 2) the results of Schematron validation will <b>never</b> invalidate the DDMSence object model. It is the responsibility of the Schematron user to react 
 to any ValidationMessages.</p>

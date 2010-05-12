@@ -549,13 +549,14 @@ public final class Resource extends AbstractBaseComponent {
 	 * specification.
 	 * 
 	 * <p>The informational results of this validation are returned to the caller in a list of ValidationMessages of
-	 * type "Warning", and do not affect the validity of the underlying object model. The locator on the 
-	 * ValidationMessage will be the location attribute from the successful-report or failed-assert element.</p>
+	 * type "Warning" for reports and "Error" for failed asserts. These messages do NOT affect the validity of the
+	 * underlying object model. The locator on the ValidationMessage will be the location attribute from the
+	 * successful-report or failed-assert element.</p>
 	 * 
 	 * <p>Details about ISO Schematron can be found at: http://www.schematron.com/ </p>
 	 * 
 	 * @param schematronFile the file containing the ISO Schematron constraints. This file is transformed with the ISO
-	 * Schematron skeleton files. 
+	 * Schematron skeleton files.
 	 * @return a list of ValidationMessages
 	 * @throws XSLException if there are XSL problems transforming with stylesheets
 	 * @throws IOException if there are problems reading or parsing the Schematron file
