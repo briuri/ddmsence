@@ -186,6 +186,16 @@ public final class Resource extends AbstractBaseComponent {
 	/** The attribute name for DES version */
 	public static final String DES_VERSION_NAME = "DESVersion";
 	
+	private static final Set<String> ALL_IC_ATTRIBUTES = new HashSet<String>();
+	static {
+		ALL_IC_ATTRIBUTES.add(RESOURCE_ELEMENT_NAME);
+		ALL_IC_ATTRIBUTES.add(CREATE_DATE_NAME);
+		ALL_IC_ATTRIBUTES.add(DES_VERSION_NAME);
+	}
+	
+	/** A set of all Resource attribute names which should not be converted into ExtensibleAttributes */
+	public static final Set<String> NON_EXTENSIBLE_NAMES = Collections.unmodifiableSet(ALL_IC_ATTRIBUTES);
+	
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 

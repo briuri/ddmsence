@@ -1429,4 +1429,23 @@ public class ResourceTest extends AbstractComponentTestCase {
 		
 		testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
 	}
+	
+	public void test20DeclassManualReviewAttribute() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		createComponents();
+		String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
+	
+		Element element = Util.buildDDMSElement(Resource.NAME, null);
+		Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, icNamespace, "true");
+		SecurityAttributesTest.getFixture(false).addTo(element);
+		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
+		element.appendChild(TEST_TITLE.getXOMElementCopy());
+		element.appendChild(TEST_CREATOR.getXOMElementCopy());
+		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+		element.appendChild(TEST_SECURITY.getXOMElementCopy());
+		Resource resource = testConstructor(WILL_SUCCEED, element);
+
+		// ICISM:declassManualReview should not get picked up as an extensible attribute
+		assertEquals(0, resource.getExtensibleAttributes().getAttributes().size());
+	}
 }
