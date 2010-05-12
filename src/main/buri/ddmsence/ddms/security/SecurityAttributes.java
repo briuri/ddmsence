@@ -20,8 +20,10 @@
 package buri.ddmsence.ddms.security;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
@@ -169,6 +171,33 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	
 	/** Attribute name */
 	public static final String DECLASS_MANUAL_REVIEW_NAME = "declassManualReview";
+	
+	private static final Set<String> ALL_NAMES = new HashSet<String>();
+	static {
+		ALL_NAMES.add(CLASSIFICATION_NAME);
+		ALL_NAMES.add(OWNER_PRODUCER_NAME);
+		ALL_NAMES.add(SCI_CONTROLS_NAME);
+		ALL_NAMES.add(SAR_IDENTIFIER_NAME);
+		ALL_NAMES.add(DISSEMINATION_CONTROLS_NAME);
+		ALL_NAMES.add(FGI_SOURCE_OPEN_NAME);
+		ALL_NAMES.add(FGI_SOURCE_PROTECTED_NAME);
+		ALL_NAMES.add(RELEASABLE_TO_NAME);
+		ALL_NAMES.add(NON_IC_MARKINGS_NAME);
+		ALL_NAMES.add(CLASSIFIED_BY_NAME);
+		ALL_NAMES.add(COMPILATION_REASON_NAME);
+		ALL_NAMES.add(DERIVATIVELY_CLASSIFIED_BY_NAME);
+		ALL_NAMES.add(CLASSIFICATION_REASON_NAME);
+		ALL_NAMES.add(DERIVED_FROM_NAME);
+		ALL_NAMES.add(DECLASS_DATE_NAME);
+		ALL_NAMES.add(DECLASS_EVENT_NAME);
+		ALL_NAMES.add(DECLASS_EXCEPTION_NAME);
+		ALL_NAMES.add(TYPE_OF_EXEMPTED_SOURCE_NAME);
+		ALL_NAMES.add(DATE_OF_EXEMPTED_SOURCE_NAME);
+		ALL_NAMES.add(DECLASS_MANUAL_REVIEW_NAME);
+	}
+	
+	/** A set of all SecurityAttribute names which should not be converted into ExtensibleAttributes */
+	public static final Set<String> NON_EXTENSIBLE_NAMES = Collections.unmodifiableSet(ALL_NAMES);
 	
 	/**
 	 * Base constructor
