@@ -479,7 +479,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		DDMSVersion.setCurrentVersion("2.0");
 		map.remove(SecurityAttributes.COMPILATION_REASON_NAME);
 		SecurityAttributes attr = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
-		assertTrue(attr.toHTML("").contains("<meta name=\"declassManualReview\" content=\"2005-10-11\" />"));
+		assertTrue(attr.toHTML("").contains("<meta name=\"declassManualReview\" content=\"true\" />"));
 		assertTrue(attr.toText("").contains("Declass Manual Review: true"));		
 	}
 	
