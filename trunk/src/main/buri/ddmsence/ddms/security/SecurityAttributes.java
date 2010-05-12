@@ -491,7 +491,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		}
 		if (getDeclassManualReview() != null) {
 			html.append(Security.buildHTMLMeta(prefix + DECLASS_MANUAL_REVIEW_NAME, 
-				getDateOfExemptedSource().toXMLFormat(), false));
+				getDeclassManualReview().toString(), false));
 		}
 		return (html.toString());
 	}

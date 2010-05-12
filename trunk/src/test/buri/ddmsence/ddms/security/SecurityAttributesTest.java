@@ -496,4 +496,14 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		map.put(SecurityAttributes.TYPE_OF_EXEMPTED_SOURCE_NAME, "X1 X2");
 		new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
 	}
+	
+	public void testDeclassManualReviewHtmlOutput() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("2.0");
+		Map<String, String> map = new HashMap<String, String>();
+		map.put(SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, "true");
+		SecurityAttributes attributes = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
+		assertEquals("<meta name=\"classification\" content=\"U\" />\n"
+			+ "<meta name=\"ownerProducer\" content=\"USA\" />\n"
+			+ "<meta name=\"declassManualReview\" content=\"true\" />\n", attributes.toHTML(""));
+	}
 }
