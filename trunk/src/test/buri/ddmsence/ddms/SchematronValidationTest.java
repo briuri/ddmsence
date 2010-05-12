@@ -68,12 +68,14 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 			assertEquals("//*[local-name()='Resource' and namespace-uri()='" + ddmsNamespace + "']", 
 				messages.get(0).getLocator());
 			assertEquals("A DDMS Resource must have an unknownElement child. This will always fail.", messages.get(0).getText());
+			assertEquals(ValidationMessage.ERROR_TYPE, messages.get(0).getType());
 			assertEquals("//*[local-name()='Resource' and namespace-uri()='" + ddmsNamespace + "']"
 				+ "/*[local-name()='publisher' and namespace-uri()='" + ddmsNamespace + "']"
 				+ "/*[local-name()='Person' and namespace-uri()='" + ddmsNamespace + "']"
 				+ "/*[local-name()='surname' and namespace-uri()='" + ddmsNamespace + "']", 
 				messages.get(1).getLocator());
 			assertEquals("Members of the Uri family cannot be publishers.", messages.get(1).getText());
+			assertEquals(ValidationMessage.WARNING_TYPE, messages.get(1).getType());
 		}
 	}
 }
