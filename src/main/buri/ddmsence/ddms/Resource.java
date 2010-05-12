@@ -561,10 +561,12 @@ public final class Resource extends AbstractBaseComponent {
 		Nodes outputNodes = doc.query("//svrl:failed-assert | //svrl:successful-report", context);
 		for (int i = 0; i < outputNodes.size(); i++) {
 			if (outputNodes.get(i) instanceof Element) {
-				Element assertElement = (Element) outputNodes.get(i);
-				String text = assertElement.getFirstChildElement("text", svrlNamespace).getValue();
-				String locator = assertElement.getAttributeValue("location");
-				messages.add(ValidationMessage.newWarning(text, locator));	
+				Element outputElement = (Element) outputNodes.get(i);
+				boolean isAssert = "failed-assert".equals(outputElement.getLocalName());
+				String text = outputElement.getFirstChildElement("text", svrlNamespace).getValue();
+				String locator = outputElement.getAttributeValue("location");
+				messages.add(isAssert ? ValidationMessage.newError(text, locator) : ValidationMessage.newWarning(text,
+					locator));
 			}
 		}		
 		return (messages);
