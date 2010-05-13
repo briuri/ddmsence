@@ -43,8 +43,26 @@
 		<delete quiet="true" dir="${dist.dir}/ddmsence-src-${version}" />
 		
 		<!-- Build the bin-flavored download archive -->
-		<jar destfile="${jars.dir}/ddmsence-${version}.jar" basedir="${compile.main.dir}"/>
-		<jar destfile="${jars.dir}/ddmsence-samples-${version}.jar" basedir="${compile.samples.dir}" />
+		<jar destfile="${jars.dir}/ddmsence-${version}.jar" basedir="${compile.main.dir}">
+			<manifest>
+				<attribute name="Specification-Title" value="DDMSence"/>
+				<attribute name="Specification-Version" value="${version}"/>
+				<attribute name="Specification-Vendor" value="Brian Uri!"/>
+				<attribute name="Implementation-Title" value="DDMSence"/>
+				<attribute name="Implementation-Version" value="${version}"/>
+				<attribute name="Implementation-Vendor" value="Brian Uri!"/>				
+			</manifest>
+		</jar>
+		<jar destfile="${jars.dir}/ddmsence-samples-${version}.jar" basedir="${compile.samples.dir}">
+			<manifest>
+				<attribute name="Specification-Title" value="DDMSence"/>
+				<attribute name="Specification-Version" value="${version}"/>
+				<attribute name="Specification-Vendor" value="Brian Uri!"/>
+				<attribute name="Implementation-Title" value="DDMSence"/>
+				<attribute name="Implementation-Version" value="${version}"/>
+				<attribute name="Implementation-Vendor" value="Brian Uri!"/>				
+			</manifest>			
+		</jar>
 		<copy todir="${dist.dir}/ddmsence-bin-${version}" includeEmptyDirs="false">
 			<fileset dir=".">
 				<exclude name=".classpath"/>
