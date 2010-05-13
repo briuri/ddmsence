@@ -535,7 +535,7 @@ of other engines and the (unscientific) results are shown below.</p>
 <table>
 <tr><th>Name and Version</th><th>Class Name</th><th>Benchmark</th></tr>
 <tr><td>Xalan interpretive, v2.7.1</td><td><code>org.apache.xalan.processor.TransformerFactoryImpl</code></td><td>(default engine) 0.891s</td></tr>
-<tr><td>Xalan XSLTC, v2.7.1</td><td><code>org.apache.xalan.xsltc.trax.TransformerFactoryImpl</code></td><td>Fails, NCName issue during transformation</td></tr>
+<tr><td>Xalan XSLTC, v2.7.1</td><td><code>org.apache.xalan.xsltc.trax.TransformerFactoryImpl</code></td><td>Fails, SVRL transformation doesn't seem to occur properly</td></tr>
 <tr><td>Xalan XSLTC, bundled with Java 1.5</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>Fails, Xalan bug treats XSLT warning as an error</td></tr>
 <tr><td>Xalan XSLTC, bundled with Java 1.6</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>0.703s</td></tr>
 <tr><td>Saxon HE 9.2</td><td><code>net.sf.saxon.TransformerFactoryImpl</code></td><td>1.469s</td></tr>
