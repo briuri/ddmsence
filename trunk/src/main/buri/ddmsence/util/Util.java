@@ -23,8 +23,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -73,7 +71,6 @@ public class Util {
 	
 	private static final String PROP_TRANSFORM_FACTORY = "javax.xml.transform.TransformerFactory";
 	private static final String TRANSFORM_FACTORY = PropertyReader.getProperty("xml.transform.TransformerFactory");
-    private static final int DISPLAY_TRACE_DEPTH = PropertyReader.getIntProperty("stackTrace.depth");
 	private static final LinkedHashMap<String, String> XML_SPECIAL_CHARS = new LinkedHashMap<String, String>();
 	static {
 		XML_SPECIAL_CHARS.put("&", "&amp;");
@@ -171,25 +168,7 @@ public class Util {
 	public static boolean isEmpty(String value) {
 		return (value == null || value.trim().length() == 0);
 	}
-		
-    /**
-     * Extracts an Exception's stack trace for string manipulation.
-     * 
-     * @param throwable		the exception to get the trace of
-     * @return the stack trace as a String 
-     */
-    public static String getStackTrace(Throwable throwable) {
-    	if (throwable == null)
-    		return ("");
-    	StringBuffer buffer = new StringBuffer(getStackTraceHelper(throwable));
-    	Throwable cause = throwable.getCause();
-		while (cause != null) {
-			buffer.append("Caused by ").append(getStackTraceHelper(cause));
-			cause = cause.getCause();
-		}
-		return buffer.toString();
-	}	
-	
+
     /**
      * Gets the child text of the first child element matching the name in the DDMS namespace.
      * 
@@ -698,29 +677,7 @@ public class Util {
 		}
 		return (_schematronSvrlTransform);
 	}
-	
-	/**
-     * Gets a stack trace as a string. Does not look into nested causes.
-     * 
-     * @param throwable		the exception to parse
-     * @return String 		the stack trace as a string
-     */
-    private static String getStackTraceHelper(Throwable throwable) {
-    	String lineSeparator = System.getProperty("line.separator");
-		final StringWriter sw = new StringWriter();
-		throwable.printStackTrace(new PrintWriter(sw, true));
-		String[] lines = sw.toString().split(lineSeparator);
-		int depth = Math.min(lines.length, DISPLAY_TRACE_DEPTH);
-		final StringBuffer buffer = new StringBuffer();
-		for (int i = 0; i < depth; i++) {
-			buffer.append(lines[i]).append(lineSeparator);
-		}
-		if (depth < lines.length) {
-			buffer.append("\t... ").append(lines.length - depth).append(" more").append(lineSeparator);
-		}
-		return buffer.toString();
-	}
- 
+
 	/**
 	 * Generate a ClassLoader to be used to load resources
 	 * 
