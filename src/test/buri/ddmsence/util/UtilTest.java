@@ -103,26 +103,6 @@ public class UtilTest extends TestCase {
 	public void testIsEmptyNot() {
 		assertFalse(Util.isEmpty("DDMSence"));
 	}
-
-	public void testGetStackTraceEmpty() {
-		String message = Util.getStackTrace(null);
-		assertEquals("", message);
-	}
-	
-	public void testGetStackTrace() {
-		String message = Util.getStackTrace(new Exception("Test"));
-		// Cannot accurately test output, since the line numbers may change.
-		assertTrue(message.startsWith("java.lang.Exception: Test"));
-		assertEquals(7, message.split("\n").length);
-	}
-	
-	public void testGetStackTraceWithCause() {
-		String message = Util.getStackTrace(new Exception(new Exception()));
-		// Cannot accurately test output, since the line numbers may change.
-		assertTrue(message.startsWith("java.lang.Exception: java.lang.Exception"));
-		assertEquals(14, message.split("\n").length);
-		assertTrue(message.indexOf("Caused by java.lang.Exception") != -1);
-	}
 	
 	public void testGetFirstDDMSChildValueNullParent() {
 		try {
