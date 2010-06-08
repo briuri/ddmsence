@@ -27,6 +27,7 @@ import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -133,14 +134,14 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// All fields
-			Element element = Util.buildElement(GML_PREFIX, Position.NAME, 
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME, 
 				DDMSVersion.getCurrentVersion().getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), 
 				Util.getXsList(TEST_UOM_LABELS));
 			testConstructor(WILL_SUCCEED, element);
 
 			// No optional fields
-			element = Util.buildElement(GML_PREFIX, Position.NAME, DDMSVersion.getCurrentVersion().getGmlNamespace(),
+			element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME, DDMSVersion.getCurrentVersion().getGmlNamespace(),
 				null);
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -231,7 +232,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// No warnings
-			Element element = Util.buildElement(GML_PREFIX, Position.NAME, 
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME, 
 				DDMSVersion.getCurrentVersion().getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), 
 				Util.getXsList(TEST_UOM_LABELS));
@@ -243,7 +244,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			Element element = Util.buildElement(GML_PREFIX, Position.NAME, 
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME, 
 				DDMSVersion.getCurrentVersion().getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), 
 				Util.getXsList(TEST_UOM_LABELS));
@@ -259,7 +260,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			Element element = Util.buildElement(GML_PREFIX, Position.NAME, 
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME, 
 				DDMSVersion.getCurrentVersion().getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), 
 				Util.getXsList(TEST_UOM_LABELS));
@@ -285,7 +286,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			Element element = Util.buildElement(GML_PREFIX, Position.NAME, 
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME, 
 				DDMSVersion.getCurrentVersion().getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), 
 				Util.getXsList(TEST_UOM_LABELS));

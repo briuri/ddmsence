@@ -44,7 +44,6 @@ import javax.swing.JTextField;
 import org.xml.sax.SAXException;
 
 import buri.ddmsence.util.DDMSReader;
-import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -65,8 +64,6 @@ public abstract class AbstractSample implements ActionListener {
 	protected static final String FILE = "File";
 	protected static final String OPEN = "Open...";
 	protected static final String EXIT = "Exit";
-	
-	protected static final String SAMPLE_DIR = PropertyReader.getProperty("sample.data");
 	
 	/**
 	 * Initializes shared components

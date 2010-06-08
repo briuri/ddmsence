@@ -45,7 +45,6 @@ import buri.ddmsence.ddms.resource.Identifier;
 public class UtilTest extends TestCase {
 		
 	protected static final String TEST_NAMESPACE = DDMSVersion.getCurrentVersion().getNamespace();
-	private static final String TEST_DATA_DIR = PropertyReader.getProperty("test.unit.data");
 	
 	/**
 	 * Resets the in-use version of DDMS.
@@ -736,7 +735,7 @@ public class UtilTest extends TestCase {
 		assertNotNull(element);
 		assertEquals("test", element.getLocalName());
 		assertEquals(TEST_NAMESPACE, element.getNamespaceURI());
-		assertEquals(Util.DDMS_PREFIX, element.getNamespacePrefix());
+		assertEquals(PropertyReader.getProperty("ddms.prefix"), element.getNamespacePrefix());
 	}
 	
 	public void testBuildDDMSElementNullName() {
@@ -755,7 +754,7 @@ public class UtilTest extends TestCase {
 		assertEquals("test", element.getLocalName());
 		assertEquals("testValue", element.getValue());
 		assertEquals(TEST_NAMESPACE, element.getNamespaceURI());
-		assertEquals(Util.DDMS_PREFIX, element.getNamespacePrefix());
+		assertEquals(PropertyReader.getProperty("ddms.prefix"), element.getNamespacePrefix());
 	}
 	
 	public void testBuildDDMSElementNoChildText() {
@@ -764,7 +763,7 @@ public class UtilTest extends TestCase {
 		assertEquals("test", element.getLocalName());
 		assertEquals("", element.getValue());
 		assertEquals(TEST_NAMESPACE, element.getNamespaceURI());
-		assertEquals(Util.DDMS_PREFIX, element.getNamespacePrefix());
+		assertEquals(PropertyReader.getProperty("ddms.prefix"), element.getNamespacePrefix());
 	}
 	
 	public void testBuildAttribute() {
@@ -774,7 +773,7 @@ public class UtilTest extends TestCase {
 		assertEquals("test", attribute.getLocalName());
 		assertEquals("testValue", attribute.getValue());
 		assertEquals(TEST_NAMESPACE, attribute.getNamespaceURI());
-		assertEquals(Util.DDMS_PREFIX, attribute.getNamespacePrefix());
+		assertEquals(PropertyReader.getProperty("ddms.prefix"), attribute.getNamespacePrefix());
 	}
 	
 	public void testBuildAttributeEmptyValues() {
@@ -792,7 +791,7 @@ public class UtilTest extends TestCase {
 		assertEquals("test", attribute.getLocalName());
 		assertEquals("testValue", attribute.getValue());
 		assertEquals(TEST_NAMESPACE, attribute.getNamespaceURI());
-		assertEquals(Util.DDMS_PREFIX, attribute.getNamespacePrefix());
+		assertEquals(PropertyReader.getProperty("ddms.prefix"), attribute.getNamespacePrefix());
 	}
 	
 	public void testBuildDDMSAttributeNullName() {
@@ -894,7 +893,7 @@ public class UtilTest extends TestCase {
 	}
 
 	public void testBuildXmlDocument() throws Exception {
-		File testFile = new File(TEST_DATA_DIR + "3.0/", "resource.xml");
+		File testFile = new File(PropertyReader.getProperty("test.unit.data") + "3.0/", "resource.xml");
 		String expectedXmlOutput = new DDMSReader().getDDMSResource(testFile).toXML();
 		assertEquals(expectedXmlOutput, Util.buildXmlDocument(new FileInputStream(testFile)).getRootElement().toXML());
 	}

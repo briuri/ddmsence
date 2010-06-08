@@ -38,8 +38,6 @@ public class DDMSReaderTest extends TestCase {
 	
 	private DDMSReader _reader;
 	
-	private static final String TEST_DATA_DIR = PropertyReader.getProperty("test.unit.data");
-	
 	public DDMSReaderTest() throws SAXException {
 		_reader = new DDMSReader();
 	}
@@ -78,12 +76,12 @@ public class DDMSReaderTest extends TestCase {
 	}
 	
 	public void testGetElementSuccess() throws InvalidDDMSException, IOException {
-		getReader().getElement(new File(TEST_DATA_DIR, "3.0/rights.xml"));
+		getReader().getElement(new File(PropertyReader.getProperty("test.unit.data"), "3.0/rights.xml"));
 	}
 	
 	public void testGetResourceFailure() throws IOException {
 		try {
-			getReader().getDDMSResource(new File(TEST_DATA_DIR, "3.0/rights.xml"));
+			getReader().getDDMSResource(new File(PropertyReader.getProperty("test.unit.data"), "3.0/rights.xml"));
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -92,7 +90,7 @@ public class DDMSReaderTest extends TestCase {
 	}
 	
 	public void testGetResourceSuccess() throws InvalidDDMSException, IOException {
-		getReader().getDDMSResource(new File(TEST_DATA_DIR, "3.0/resource.xml"));
+		getReader().getDDMSResource(new File(PropertyReader.getProperty("test.unit.data"), "3.0/resource.xml"));
 	}
 	
 	/**

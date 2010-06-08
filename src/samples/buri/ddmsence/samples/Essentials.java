@@ -35,6 +35,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.samples.util.AbstractSample;
 import buri.ddmsence.samples.util.JavaConvertor;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -157,7 +158,7 @@ public class Essentials extends AbstractSample {
 				}
 			};
 		    chooser.setFileFilter(filter);
-		    chooser.setCurrentDirectory(new File(SAMPLE_DIR));
+		    chooser.setCurrentDirectory(new File(PropertyReader.getProperty("sample.data")));
 		    int returnVal = chooser.showOpenDialog(getFrame());
 		    if (returnVal == JFileChooser.APPROVE_OPTION) {
 		    	loadFile(chooser.getSelectedFile());

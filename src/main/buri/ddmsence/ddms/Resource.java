@@ -171,8 +171,6 @@ public final class Resource extends AbstractBaseComponent {
 	private Integer _cachedDESVersion = null;
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	private ExtensibleAttributes _cachedExtensibleAttributes = null;
-
-	private static final String DDMSENCE_VERSION = PropertyReader.getProperty("version");
 	
 	/** The element name of this component */
 	public static final String NAME = "Resource";
@@ -401,20 +399,20 @@ public final class Resource extends AbstractBaseComponent {
 			if (topLevelComponents == null)
 				topLevelComponents = Collections.emptyList();
 			Element element = Util.buildDDMSElement(Resource.NAME, null);
-
+			String icPrefix = PropertyReader.getProperty("icism.prefix");
 			// Attributes
 			if (resourceElement != null) {
-				Util.addAttribute(element, ICISM_PREFIX, RESOURCE_ELEMENT_NAME, 
+				Util.addAttribute(element, icPrefix, RESOURCE_ELEMENT_NAME, 
 					DDMSVersion.getCurrentVersion().getIcismNamespace(), String.valueOf(resourceElement));
 			}
 			if (desVersion != null) {
 				_cachedDESVersion = desVersion;
-				Util.addAttribute(element, ICISM_PREFIX, DES_VERSION_NAME, 
+				Util.addAttribute(element, icPrefix, DES_VERSION_NAME, 
 					DDMSVersion.getCurrentVersion().getIcismNamespace(), desVersion.toString());
 			}
 			if (!Util.isEmpty(createDate)) {
 				_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
-				Util.addAttribute(element, ICISM_PREFIX, CREATE_DATE_NAME, 
+				Util.addAttribute(element, icPrefix, CREATE_DATE_NAME, 
 					DDMSVersion.getCurrentVersion().getIcismNamespace(), getCreateDate().toXMLFormat());
 			}
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
@@ -746,7 +744,7 @@ public final class Resource extends AbstractBaseComponent {
 		for (IDDMSComponent component : getTopLevelComponents())
 			html.append(component.toHTML());
 		html.append(buildHTMLMeta("extensible.layer", String.valueOf(!getExtensibleElements().isEmpty()), true));
-		html.append(buildHTMLMeta("ddms.generator", "DDMSence " + DDMSENCE_VERSION, true));
+		html.append(buildHTMLMeta("ddms.generator", "DDMSence " + PropertyReader.getProperty("version"), true));
 		html.append(buildHTMLMeta("ddms.version", getDDMSVersion(), true));
 		return (html.toString());
 	}
@@ -767,7 +765,7 @@ public final class Resource extends AbstractBaseComponent {
 		for (IDDMSComponent component : getTopLevelComponents())
 			text.append(component.toText());
 		text.append(buildTextLine("Extensible Layer", String.valueOf(!getExtensibleElements().isEmpty()), true));
-		text.append(buildTextLine("DDMS Generator", "DDMSence " + DDMSENCE_VERSION, true));
+		text.append(buildTextLine("DDMS Generator", "DDMSence " + PropertyReader.getProperty("version"), true));
 		text.append(buildTextLine("DDMS Version", getDDMSVersion(), true));
 		return (text.toString());
 	}

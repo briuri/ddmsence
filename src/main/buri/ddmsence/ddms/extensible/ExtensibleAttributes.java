@@ -81,8 +81,6 @@ import buri.ddmsence.util.Util;
 public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	
 	private List<Attribute> _cachedAttributes = null;
-
-	private static final String ICISM_PREFIX = PropertyReader.getProperty("icism.prefix");
 	
 	private final Set<QName> RESERVED_RESOURCE_NAMES = new HashSet<QName>();
 	
@@ -145,11 +143,12 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	private void buildReservedNames() {
 		DDMSVersion version = DDMSVersion.getVersionFor(getDDMSVersion());
 		RESERVED_RESOURCE_NAMES.clear();
+		String icismPrefix = PropertyReader.getProperty("icism.prefix");
 		for (String reservedName : Resource.NON_EXTENSIBLE_NAMES) {
-			RESERVED_RESOURCE_NAMES.add(new QName(version.getIcismNamespace(), reservedName, ICISM_PREFIX));
+			RESERVED_RESOURCE_NAMES.add(new QName(version.getIcismNamespace(), reservedName, icismPrefix));
 		}
 		for (String reservedName : SecurityAttributes.NON_EXTENSIBLE_NAMES) {
-			RESERVED_RESOURCE_NAMES.add(new QName(version.getIcismNamespace(), reservedName, ICISM_PREFIX));
+			RESERVED_RESOURCE_NAMES.add(new QName(version.getIcismNamespace(), reservedName, icismPrefix));
 		}
 	}
 	

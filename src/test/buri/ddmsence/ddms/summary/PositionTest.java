@@ -27,6 +27,7 @@ import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -145,8 +146,8 @@ public class PositionTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			Position component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(Position.NAME, component.getName());
-			assertEquals(Position.GML_PREFIX, component.getPrefix());
-			assertEquals(Position.GML_PREFIX + ":" + Position.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("gml.prefix"), component.getPrefix());
+			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Position.NAME, component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -161,7 +162,7 @@ public class PositionTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildElement(GML_PREFIX, Position.NAME, DDMSVersion.getCurrentVersion()
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME, DDMSVersion.getCurrentVersion()
 				.getGmlNamespace(), TEST_XS_LIST);
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -181,29 +182,30 @@ public class PositionTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
 			String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
 			// Missing coordinates
-			Element element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, null);
+			Element element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Empty coordinate
-			element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, "25.0  26.0");
+			element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, "25.0  26.0");
 			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// At least 2 coordinates
-			element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, "25.0");
+			element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, "25.0");
 			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 3 coordinates
-			element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, TEST_XS_LIST + " 25.0 35.0");
+			element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST + " 25.0 35.0");
 			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Each coordinate is a Double
-			element = Util.buildElement(GML_PREFIX, Position.NAME, gmlNamespace, "25.0 Dog");
+			element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, "25.0 Dog");
 			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 		}

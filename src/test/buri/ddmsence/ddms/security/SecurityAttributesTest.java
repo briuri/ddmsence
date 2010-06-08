@@ -30,6 +30,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -148,19 +149,20 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String icPrefix = PropertyReader.getProperty("icism.prefix");
 			String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
 			
 			// All fields
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
+			Util.addAttribute(element, icPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			getFixture(true).addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 
 			// No optional fields
 			element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace, 
+			Util.addAttribute(element, icPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
+			Util.addAttribute(element, icPrefix, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
+			Util.addAttribute(element, icPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace, 
 				Util.getXsList(TEST_OWNERS));
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -186,26 +188,27 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String icPrefix = PropertyReader.getProperty("icism.prefix");
 			String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
 			
 			// invalid declassDate
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace,
+			Util.addAttribute(element, icPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
+			Util.addAttribute(element, icPrefix, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
+			Util.addAttribute(element, icPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace,
 				Util.getXsList(TEST_OWNERS));
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.DECLASS_DATE_NAME,
+			Util.addAttribute(element, icPrefix, SecurityAttributes.DECLASS_DATE_NAME,
 				icNamespace, "2001");
 			testConstructor(WILL_FAIL, element);
 
 			// invalid dateOfExemptedSource
 			element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace,
+			Util.addAttribute(element, icPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
+			Util.addAttribute(element, icPrefix, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
+			Util.addAttribute(element, icPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace,
 				Util.getXsList(TEST_OWNERS));
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.DECLASS_DATE_NAME, icNamespace, "2001");
-			Util.addAttribute(element, ICISM_PREFIX, SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace,
+			Util.addAttribute(element, icPrefix, SecurityAttributes.DECLASS_DATE_NAME, icNamespace, "2001");
+			Util.addAttribute(element, icPrefix, SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace,
 				"2001");
 			testConstructor(WILL_FAIL, element);
 		}
@@ -233,7 +236,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			
 			// No warnings
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
+			Util.addAttribute(element, PropertyReader.getProperty("icism.prefix"), Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes attr = testConstructor(WILL_SUCCEED, element);
 			assertEquals(0, attr.getValidationWarnings().size());
@@ -248,7 +251,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Map<String, String> others = (DDMSVersion.isCurrentVersion("2.0") ? TEST_OTHERS_20 : TEST_OTHERS);
 			
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
+			Util.addAttribute(element, PropertyReader.getProperty("icism.prefix"), Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
 			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, others);
@@ -266,7 +269,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			
 			Map<String, String> others = (DDMSVersion.isCurrentVersion("2.0") ? TEST_OTHERS_20 : TEST_OTHERS);
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
+			Util.addAttribute(element, PropertyReader.getProperty("icism.prefix"), Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
 			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, "C", TEST_OWNERS, others);

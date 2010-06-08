@@ -154,9 +154,6 @@ public class ISMVocabulary {
 	private static final String TERM_NAME = "Term";
 	private static final String VALUE_NAME = "Value";
 	private static final String REG_EXP_NAME = "regularExpression";
-	private static final String XML_READER_CLASS = PropertyReader.getProperty("xmlReader.class");
-	private static final String CVE_NAMESPACE = PropertyReader.getProperty("icism.cve.xmlNamespace");
-	private static final String CVE_LOCATION = PropertyReader.getProperty("icism.cve.enumLocation");
 	
 	static {
 		new ISMVocabulary();
@@ -167,7 +164,7 @@ public class ISMVocabulary {
 	 */
 	private ISMVocabulary() {
 		try {
-			XMLReader reader = XMLReaderFactory.createXMLReader(XML_READER_CLASS);
+			XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xmlReader.class"));
 			Builder builder = new Builder(reader, false);
 			loadEnumeration(builder, CVE_DECLASS_EXCEPTION);
 			loadEnumeration(builder, CVE_ALL_CLASSIFICATIONS);
@@ -195,14 +192,15 @@ public class ISMVocabulary {
 	 * @param enumerationKey the key for the enumeration, which doubles as the filename.
 	 */
 	private void loadEnumeration(Builder builder, String enumerationKey) throws ParsingException, IOException {
-		InputStream stream = getClass().getResourceAsStream(CVE_LOCATION + enumerationKey);
+		InputStream stream = getClass().getResourceAsStream(PropertyReader.getProperty("icism.cve.enumLocation") + enumerationKey);
 		Document doc = builder.build(stream);
 		Set<String> tokens = new TreeSet<String>();
 		Set<String> patterns = new HashSet<String>();
-		Element enumerationElement = doc.getRootElement().getFirstChildElement(ENUMERATION_NAME, CVE_NAMESPACE);
-		Elements terms = enumerationElement.getChildElements(TERM_NAME, CVE_NAMESPACE);
+		String cveNamespace = PropertyReader.getProperty("icism.cve.xmlNamespace");
+		Element enumerationElement = doc.getRootElement().getFirstChildElement(ENUMERATION_NAME, cveNamespace);
+		Elements terms = enumerationElement.getChildElements(TERM_NAME, cveNamespace);
 		for (int i = 0; i < terms.size(); i++) {
-			Element value = terms.get(i).getFirstChildElement(VALUE_NAME, CVE_NAMESPACE);
+			Element value = terms.get(i).getFirstChildElement(VALUE_NAME, cveNamespace);
 			boolean isPattern = Boolean.valueOf(value.getAttributeValue(REG_EXP_NAME)).booleanValue();
 			if (value != null) {
 				if (isPattern)

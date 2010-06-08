@@ -28,6 +28,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -133,7 +134,7 @@ public final class Position extends AbstractBaseComponent {
 				coordinates = Collections.emptyList();
 			_cachedSrsAttributes = (srsAttributes == null ? new SRSAttributes(null, null, null, null) : srsAttributes);
 			_cachedCoordinates = coordinates;
-			Element element = Util.buildElement(GML_PREFIX, Position.NAME, 
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME, 
 				DDMSVersion.getCurrentVersion().getGmlNamespace(), Util.getXsList(coordinates));
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);

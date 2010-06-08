@@ -65,12 +65,8 @@ public class Util {
 	private static XSLTransform _schematronIncludeTransform;
 	private static XSLTransform _schematronAbstractTransform;
 	private static XSLTransform _schematronSvrlTransform;
-	
-	/** The DDMS prefix, as defined in the ddms.prefix property */
-	public static final String DDMS_PREFIX = PropertyReader.getProperty("ddms.prefix");
-	
+		
 	private static final String PROP_TRANSFORM_FACTORY = "javax.xml.transform.TransformerFactory";
-	private static final String TRANSFORM_FACTORY = PropertyReader.getProperty("xml.transform.TransformerFactory");
 	private static final LinkedHashMap<String, String> XML_SPECIAL_CHARS = new LinkedHashMap<String, String>();
 	static {
 		XML_SPECIAL_CHARS.put("&", "&amp;");
@@ -477,7 +473,7 @@ public class Util {
 	 * @param attributeValue the value of the attribute
 	 */
 	public static void addDDMSAttribute(Element element, String attributeName, String attributeValue) {
-		addAttribute(element, DDMS_PREFIX, attributeName, DDMSVersion.getCurrentVersion().getNamespace(), 
+		addAttribute(element, PropertyReader.getProperty("ddms.prefix"), attributeName, DDMSVersion.getCurrentVersion().getNamespace(), 
 			attributeValue);
 	}
 	
@@ -518,7 +514,7 @@ public class Util {
 	 * @param childText the text of the element (optional)
 	 */
 	public static Element buildDDMSElement(String name, String childText) {
-		return (buildElement(DDMS_PREFIX, name, DDMSVersion.getCurrentVersion().getNamespace(), childText));
+		return (buildElement(PropertyReader.getProperty("ddms.prefix"), name, DDMSVersion.getCurrentVersion().getNamespace(), childText));
 	}
 	
 	/**
@@ -547,7 +543,7 @@ public class Util {
 	 * @param value the value of the attribute
 	 */
 	public static Attribute buildDDMSAttribute(String name, String value) {
-		return (buildAttribute(DDMS_PREFIX, name, DDMSVersion.getCurrentVersion().getNamespace(), value));
+		return (buildAttribute(PropertyReader.getProperty("ddms.prefix"), name, DDMSVersion.getCurrentVersion().getNamespace(), value));
 	} 
 	
 	/**
@@ -602,7 +598,7 @@ public class Util {
 	 * @throws XSLException if stylesheet transformation fails
 	 */
 	public static XSLTransform buildSchematronTransform(File schematronFile) throws IOException, XSLException {
-		System.setProperty(PROP_TRANSFORM_FACTORY, TRANSFORM_FACTORY);
+		System.setProperty(PROP_TRANSFORM_FACTORY, PropertyReader.getProperty("xml.transform.TransformerFactory"));
 		Document schDocument = Util.buildXmlDocument(new FileInputStream(schematronFile));
 
 //		long time = new Date().getTime();

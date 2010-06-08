@@ -31,20 +31,6 @@ import junit.framework.TestCase;
  */
 public class PropertyReaderTest extends TestCase {
 
-	public void testGetIntPropertyValid() {
-		PropertyReader.getIntProperty("stackTrace.depth");
-	}
-	
-	public void testGetIntPropertyNaN() {
-		try {
-			PropertyReader.getIntProperty("test.unit.data");
-			fail("Did not prevent bad number data.");
-		}
-		catch (IllegalArgumentException e) {
-			// Good
-		}
-	}
-	
 	public void testGetPropertyInvalid() {
 		try {
 			PropertyReader.getProperty("unknown.property");

@@ -49,7 +49,6 @@ public class DDMSReader {
 
 	private XMLReader _reader;
 	
-	private static final String XML_READER_CLASS = PropertyReader.getProperty("xmlReader.class");
 	private static final String PROP_XERCES_VALIDATION = "http://xml.org/sax/features/validation";
 	private static final String PROP_XERCES_SCHEMA_VALIDATION = "http://apache.org/xml/features/validation/schema";
 	private static final String PROP_XERCES_EXTERNAL_LOCATION =
@@ -61,7 +60,7 @@ public class DDMSReader {
 	 * Creates a DDMSReader which can process various versions of DDMS and GML
 	 */
 	public DDMSReader() throws SAXException {
-		_reader = XMLReaderFactory.createXMLReader(XML_READER_CLASS);
+		_reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xmlReader.class"));
 		StringBuffer schemas = new StringBuffer();
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion ddmsVersion = DDMSVersion.getVersionFor(version);

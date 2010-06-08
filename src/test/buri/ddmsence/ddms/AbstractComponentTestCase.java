@@ -46,11 +46,6 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	protected static final String INVALID_URI = ":::::";
 	protected static final String DIFFERENT_VALUE = "Different";
 
-	protected static final String GML_PREFIX = PropertyReader.getProperty("gml.prefix");
-	protected static final String ICISM_PREFIX = PropertyReader.getProperty("icism.prefix");
-
-	private static final String TEST_DATA_DIR = PropertyReader.getProperty("test.unit.data");
-
 	/**
 	 * Resets the in-use version of DDMS.
 	 */
@@ -77,7 +72,7 @@ public abstract class AbstractComponentTestCase extends TestCase {
 		try {
 			DDMSReader reader = new DDMSReader();
 			for (String version : DDMSVersion.getSupportedVersions()) {
-				File file = new File(TEST_DATA_DIR + version, validDocumentFile);
+				File file = new File(PropertyReader.getProperty("test.unit.data") + version, validDocumentFile);
 				if (file.exists())
 					_elementMap.put(version, reader.getElement(file));
 			}

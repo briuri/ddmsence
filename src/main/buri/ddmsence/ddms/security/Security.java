@@ -23,6 +23,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -82,7 +83,7 @@ public final class Security extends AbstractBaseComponent {
 		try {
 			Element element = Util.buildDDMSElement(Security.NAME, null);
 			if (!DDMSVersion.isCurrentVersion("2.0"))
-				Util.addAttribute(element, ICISM_PREFIX, EXCLUDE_FROM_ROLLUP_NAME, 
+				Util.addAttribute(element, PropertyReader.getProperty("icism.prefix"), EXCLUDE_FROM_ROLLUP_NAME, 
 					DDMSVersion.getCurrentVersion().getIcismNamespace(), FIXED_ROLLUP);
 			_cachedSecurityAttributes = securityAttributes;
 			if (securityAttributes != null)

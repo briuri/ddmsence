@@ -109,9 +109,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	private XMLGregorianCalendar _cachedDateOfExemptedSource = null;
 	private Boolean _cachedDeclassManualReview = null;
 	
-	/** The ICISM prefix */
-	public static final String ICISM_PREFIX = PropertyReader.getProperty("icism.prefix");
-
 	/** Attribute name */
 	public static final String CLASSIFICATION_NAME = "classification";
 	
@@ -306,33 +303,34 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 				+ " a different DDMS version.");
 		}			
 		String icNamespace = version.getIcismNamespace();
-		Util.addAttribute(element, ICISM_PREFIX, CLASSIFICATION_NAME, icNamespace, getClassification());
-		Util.addAttribute(element, ICISM_PREFIX, OWNER_PRODUCER_NAME, icNamespace, Util.getXsList(getOwnerProducers()));
-		Util.addAttribute(element, ICISM_PREFIX, SCI_CONTROLS_NAME, icNamespace, Util.getXsList(getSCIcontrols()));
-		Util.addAttribute(element, ICISM_PREFIX, SAR_IDENTIFIER_NAME, icNamespace, Util.getXsList(getSARIdentifier()));
-		Util.addAttribute(element, ICISM_PREFIX, DISSEMINATION_CONTROLS_NAME, icNamespace, 
+		String icPrefix = PropertyReader.getProperty("icism.prefix");
+		Util.addAttribute(element, icPrefix, CLASSIFICATION_NAME, icNamespace, getClassification());
+		Util.addAttribute(element, icPrefix, OWNER_PRODUCER_NAME, icNamespace, Util.getXsList(getOwnerProducers()));
+		Util.addAttribute(element, icPrefix, SCI_CONTROLS_NAME, icNamespace, Util.getXsList(getSCIcontrols()));
+		Util.addAttribute(element, icPrefix, SAR_IDENTIFIER_NAME, icNamespace, Util.getXsList(getSARIdentifier()));
+		Util.addAttribute(element, icPrefix, DISSEMINATION_CONTROLS_NAME, icNamespace, 
 			Util.getXsList(getDisseminationControls()));
-		Util.addAttribute(element, ICISM_PREFIX, FGI_SOURCE_OPEN_NAME, icNamespace, Util.getXsList(getFGIsourceOpen()));
-		Util.addAttribute(element, ICISM_PREFIX, FGI_SOURCE_PROTECTED_NAME, icNamespace, 
+		Util.addAttribute(element, icPrefix, FGI_SOURCE_OPEN_NAME, icNamespace, Util.getXsList(getFGIsourceOpen()));
+		Util.addAttribute(element, icPrefix, FGI_SOURCE_PROTECTED_NAME, icNamespace, 
 			Util.getXsList(getFGIsourceProtected()));
-		Util.addAttribute(element, ICISM_PREFIX, RELEASABLE_TO_NAME, icNamespace, Util.getXsList(getReleasableTo()));
-		Util.addAttribute(element, ICISM_PREFIX, NON_IC_MARKINGS_NAME, icNamespace, Util.getXsList(getNonICmarkings()));
-		Util.addAttribute(element, ICISM_PREFIX, CLASSIFIED_BY_NAME, icNamespace, getClassifiedBy());
-		Util.addAttribute(element, ICISM_PREFIX, COMPILATION_REASON_NAME, icNamespace, getCompilationReason());
-		Util.addAttribute(element, ICISM_PREFIX, DERIVATIVELY_CLASSIFIED_BY_NAME, icNamespace,
+		Util.addAttribute(element, icPrefix, RELEASABLE_TO_NAME, icNamespace, Util.getXsList(getReleasableTo()));
+		Util.addAttribute(element, icPrefix, NON_IC_MARKINGS_NAME, icNamespace, Util.getXsList(getNonICmarkings()));
+		Util.addAttribute(element, icPrefix, CLASSIFIED_BY_NAME, icNamespace, getClassifiedBy());
+		Util.addAttribute(element, icPrefix, COMPILATION_REASON_NAME, icNamespace, getCompilationReason());
+		Util.addAttribute(element, icPrefix, DERIVATIVELY_CLASSIFIED_BY_NAME, icNamespace,
 			getDerivativelyClassifiedBy());
-		Util.addAttribute(element, ICISM_PREFIX, CLASSIFICATION_REASON_NAME, icNamespace, getClassificationReason());
-		Util.addAttribute(element, ICISM_PREFIX, DERIVED_FROM_NAME, icNamespace, getDerivedFrom());
+		Util.addAttribute(element, icPrefix, CLASSIFICATION_REASON_NAME, icNamespace, getClassificationReason());
+		Util.addAttribute(element, icPrefix, DERIVED_FROM_NAME, icNamespace, getDerivedFrom());
 		if (getDeclassDate() != null)
-			Util.addAttribute(element, ICISM_PREFIX, DECLASS_DATE_NAME, icNamespace, getDeclassDate().toXMLFormat());
-		Util.addAttribute(element, ICISM_PREFIX, DECLASS_EVENT_NAME, icNamespace, getDeclassEvent());
-		Util.addAttribute(element, ICISM_PREFIX, DECLASS_EXCEPTION_NAME, icNamespace, getDeclassException());
-		Util.addAttribute(element, ICISM_PREFIX, TYPE_OF_EXEMPTED_SOURCE_NAME, icNamespace, getTypeOfExemptedSource());
+			Util.addAttribute(element, icPrefix, DECLASS_DATE_NAME, icNamespace, getDeclassDate().toXMLFormat());
+		Util.addAttribute(element, icPrefix, DECLASS_EVENT_NAME, icNamespace, getDeclassEvent());
+		Util.addAttribute(element, icPrefix, DECLASS_EXCEPTION_NAME, icNamespace, getDeclassException());
+		Util.addAttribute(element, icPrefix, TYPE_OF_EXEMPTED_SOURCE_NAME, icNamespace, getTypeOfExemptedSource());
 		if (getDateOfExemptedSource() != null)
-			Util.addAttribute(element, ICISM_PREFIX, DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace,
+			Util.addAttribute(element, icPrefix, DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace,
 				getDateOfExemptedSource().toXMLFormat());
 		if (getDeclassManualReview() != null) {
-			Util.addAttribute(element, ICISM_PREFIX, DECLASS_MANUAL_REVIEW_NAME, icNamespace, 
+			Util.addAttribute(element, icPrefix, DECLASS_MANUAL_REVIEW_NAME, icNamespace, 
 				getDeclassManualReview().toString());
 		}
 	}

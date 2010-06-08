@@ -39,6 +39,7 @@ import buri.ddmsence.ddms.summary.Keyword;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
 import buri.ddmsence.samples.util.AbstractSample;
 import buri.ddmsence.samples.util.Distribution;
+import buri.ddmsence.util.PropertyReader;
 
 /**
  * DDMScape is a tool that loads multiple DDMS Resource files and then exposes various statistics about them through the
@@ -139,7 +140,7 @@ public class Escape extends AbstractSample {
 				return (pathname.getName().endsWith(".xml"));
 			}
 		};
-		File[] fileList = new File(SAMPLE_DIR).listFiles(filter);
+		File[] fileList = new File(PropertyReader.getProperty("sample.data")).listFiles(filter);
 		for (int i = 0; i < fileList.length; i++) {
 			try {
 				// Try to parse each file.

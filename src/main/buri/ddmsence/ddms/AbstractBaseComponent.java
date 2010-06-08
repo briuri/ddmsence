@@ -26,7 +26,6 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
-import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -43,15 +42,6 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 
 	private List<ValidationMessage> _warnings;
 	private Element _element;
-
-	/** The default DDMS prefix used to create components from scratch */
-	public static final String DDMS_PREFIX = PropertyReader.getProperty("ddms.prefix");
-	
-	/** The GML prefix used to create components from scratch */
-	public static final String GML_PREFIX = PropertyReader.getProperty("gml.prefix");
-	
-	/** The ICISM prefix used to create components from scratch */
-	public static final String ICISM_PREFIX = PropertyReader.getProperty("icism.prefix");
 	
 	/**
 	 * This implicit superconstructor does nothing.

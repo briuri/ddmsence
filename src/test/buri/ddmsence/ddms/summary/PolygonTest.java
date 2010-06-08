@@ -27,6 +27,7 @@ import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -123,11 +124,11 @@ public class PolygonTest extends AbstractComponentTestCase {
 	 */
 	private Element wrapPositions(List<Position> positions) {
 		String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
-		Element ringElement = Util.buildElement(GML_PREFIX, "LinearRing", gmlNamespace, null);
+		Element ringElement = Util.buildElement(PropertyReader.getProperty("gml.prefix"), "LinearRing", gmlNamespace, null);
 		for (Position pos : positions) {
 			ringElement.appendChild(pos.getXOMElementCopy());
 		}
-		Element extElement = Util.buildElement(GML_PREFIX, "exterior", gmlNamespace, null);
+		Element extElement = Util.buildElement(PropertyReader.getProperty("gml.prefix"), "exterior", gmlNamespace, null);
 		extElement.appendChild(ringElement);
 		return (extElement);
 	}
@@ -225,8 +226,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(Polygon.NAME, component.getName());
-			assertEquals(Polygon.GML_PREFIX, component.getPrefix());
-			assertEquals(Polygon.GML_PREFIX + ":" + Polygon.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("gml.prefix"), component.getPrefix());
+			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Polygon.NAME, component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -241,11 +242,11 @@ public class PolygonTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildElement(GML_PREFIX, Polygon.NAME, DDMSVersion.getCurrentVersion()
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Polygon.NAME, DDMSVersion.getCurrentVersion()
 				.getGmlNamespace(), null);
 			Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE,
 				SRSAttributesTest.getFixture().getSrsName());
-			Util.addAttribute(element, GML_PREFIX, "id", DDMSVersion.getCurrentVersion().getGmlNamespace(), TEST_ID);
+			Util.addAttribute(element, PropertyReader.getProperty("gml.prefix"), "id", DDMSVersion.getCurrentVersion().getGmlNamespace(), TEST_ID);
 			element.appendChild(wrapPositions(getPositions()));
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -262,72 +263,73 @@ public class PolygonTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
 			String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
 			// Missing SRS Name
-			Element element = Util.buildElement(GML_PREFIX, Polygon.NAME, gmlNamespace, null);
+			Element element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
 			SRSAttributes attr = new SRSAttributes(null, SRSAttributesTest.getFixture().getSrsDimension(), null, null);
 			attr.addTo(element);
-			Util.addAttribute(element, GML_PREFIX, "id", gmlNamespace, TEST_ID);
+			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			element.appendChild(wrapPositions(getPositions()));
 			testConstructor(WILL_FAIL, element);
 
 			// Empty SRS Name
-			element = Util.buildElement(GML_PREFIX, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
 			attr = new SRSAttributes("", SRSAttributesTest.getFixture().getSrsDimension(), null, null);
 			attr.addTo(element);
-			Util.addAttribute(element, GML_PREFIX, "id", gmlNamespace, TEST_ID);
+			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			element.appendChild(wrapPositions(getPositions()));
 			testConstructor(WILL_FAIL, element);
 
 			// Polygon SRS Name doesn't match pos SRS Name
-			element = Util.buildElement(GML_PREFIX, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
 			attr = new SRSAttributes(DIFFERENT_VALUE, SRSAttributesTest.getFixture().getSrsDimension(), 
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
 			attr.addTo(element);
-			Util.addAttribute(element, GML_PREFIX, "id", gmlNamespace, TEST_ID);
+			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			element.appendChild(wrapPositions(getPositions()));
 			testConstructor(WILL_FAIL, element);
 
 			// Missing ID
-			element = Util.buildElement(GML_PREFIX, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			element.appendChild(wrapPositions(getPositions()));
 			testConstructor(WILL_FAIL, element);
 
 			// Empty ID
-			element = Util.buildElement(GML_PREFIX, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
-			Util.addAttribute(element, GML_PREFIX, "id", gmlNamespace, "");
+			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, "");
 			element.appendChild(wrapPositions(getPositions()));
 			testConstructor(WILL_FAIL, element);
 
 			// ID not NCName
-			element = Util.buildElement(GML_PREFIX, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
-			Util.addAttribute(element, GML_PREFIX, "id", gmlNamespace, "1TEST");
+			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, "1TEST");
 			element.appendChild(wrapPositions(getPositions()));
 			testConstructor(WILL_FAIL, element);
 
 			// Missing Positions
-			element = Util.buildElement(GML_PREFIX, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
-			Util.addAttribute(element, GML_PREFIX, "id", gmlNamespace, TEST_ID);
+			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			element.appendChild(wrapPositions(new ArrayList<Position>()));
 			testConstructor(WILL_FAIL, element);
 
 			// First position doesn't match last position.
-			element = Util.buildElement(GML_PREFIX, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
-			Util.addAttribute(element, GML_PREFIX, "id", gmlNamespace, TEST_ID);
+			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			List<Position> newPositions = new ArrayList<Position>(getPositions());
 			newPositions.add(getPositions().get(1));
 			element.appendChild(wrapPositions(newPositions));
 			testConstructor(WILL_FAIL, element);
 
 			// Not enough positions
-			element = Util.buildElement(GML_PREFIX, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
-			Util.addAttribute(element, GML_PREFIX, "id", gmlNamespace, TEST_ID);
+			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			newPositions = new ArrayList<Position>();
 			newPositions.add(getPositions().get(0));
 			element.appendChild(wrapPositions(newPositions));
