@@ -24,6 +24,7 @@ import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -119,8 +120,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			Security component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(Security.NAME, component.getName());
-			assertEquals(Util.DDMS_PREFIX, component.getPrefix());
-			assertEquals(Util.DDMS_PREFIX + ":" + Security.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Security.NAME, component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -153,13 +154,13 @@ public class SecurityTest extends AbstractComponentTestCase {
 
 			// Incorrect excludeFromRollup
 			element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, PropertyReader.getProperty("icism.prefix"), "excludeFromRollup", DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), "false");
 			testConstructor(WILL_FAIL, element);
 			
 			// Invalid excludeFromRollup
 			element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", DDMSVersion.getCurrentVersion()
+			Util.addAttribute(element, PropertyReader.getProperty("icism.prefix"), "excludeFromRollup", DDMSVersion.getCurrentVersion()
 				.getIcismNamespace(), "aardvark");
 			testConstructor(WILL_FAIL, element);
 		}
@@ -248,12 +249,13 @@ public class SecurityTest extends AbstractComponentTestCase {
 	
 	public void test20Usage() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
+		String icPrefix = PropertyReader.getProperty("icism.prefix");
 		String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
 		
 		Element element = Util.buildDDMSElement("security", null);
-		Util.addAttribute(element, ICISM_PREFIX, "classification", icNamespace, "U");
-		Util.addAttribute(element, ICISM_PREFIX, "ownerProducer", icNamespace, "USA");
-		Util.addAttribute(element, ICISM_PREFIX, "excludeFromRollup", icNamespace, "true");
+		Util.addAttribute(element, icPrefix, "classification", icNamespace, "U");
+		Util.addAttribute(element, icPrefix, "ownerProducer", icNamespace, "USA");
+		Util.addAttribute(element, icPrefix, "excludeFromRollup", icNamespace, "true");
 		try {
 			new Security(element);
 			fail("Allowed invalid data.");

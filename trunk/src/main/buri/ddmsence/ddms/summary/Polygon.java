@@ -30,6 +30,7 @@ import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -169,17 +170,18 @@ public final class Polygon extends AbstractBaseComponent {
 				positions = Collections.emptyList();
 			_cachedPositions = positions;
 			_cachedSrsAttributes = srsAttributes;
+			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
 			String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
-			Element ringElement = Util.buildElement(GML_PREFIX, LINEAR_RING_NAME, gmlNamespace, null);
+			Element ringElement = Util.buildElement(gmlPrefix, LINEAR_RING_NAME, gmlNamespace, null);
 			for (Position pos : positions) {
 				ringElement.appendChild(pos.getXOMElementCopy());
 			}
-			Element extElement = Util.buildElement(GML_PREFIX, EXTERIOR_NAME, gmlNamespace, null);
+			Element extElement = Util.buildElement(gmlPrefix, EXTERIOR_NAME, gmlNamespace, null);
 			extElement.appendChild(ringElement);
-			Element element = Util.buildElement(GML_PREFIX, Polygon.NAME, gmlNamespace, null);
+			Element element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);
-			Util.addAttribute(element, GML_PREFIX, ID_NAME, gmlNamespace, id);
+			Util.addAttribute(element, gmlPrefix, ID_NAME, gmlNamespace, id);
 			element.appendChild(extElement);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
@@ -259,8 +261,9 @@ public final class Polygon extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		return (ValidationMessage.ELEMENT_PREFIX + GML_PREFIX + ":" + EXTERIOR_NAME
-			+ ValidationMessage.ELEMENT_PREFIX + GML_PREFIX + ":" + LINEAR_RING_NAME);
+		String gmlPrefix = PropertyReader.getProperty("gml.prefix");
+		return (ValidationMessage.ELEMENT_PREFIX + gmlPrefix + ":" + EXTERIOR_NAME
+			+ ValidationMessage.ELEMENT_PREFIX + gmlPrefix + ":" + LINEAR_RING_NAME);
 	}
 		
 	/**

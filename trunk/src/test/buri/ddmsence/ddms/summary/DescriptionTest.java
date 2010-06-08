@@ -26,6 +26,7 @@ import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -122,8 +123,8 @@ public class DescriptionTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			Description component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(Description.NAME, component.getName());
-			assertEquals(Util.DDMS_PREFIX, component.getPrefix());
-			assertEquals(Util.DDMS_PREFIX + ":" + Description.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Description.NAME, component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);

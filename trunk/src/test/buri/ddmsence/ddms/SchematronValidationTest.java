@@ -25,9 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import buri.ddmsence.util.DDMSVersion;
-
 import nu.xom.xslt.XSLException;
+import buri.ddmsence.util.DDMSVersion;
 
 /**
  * <p>Tests related to Schematron validation of Resources</p>

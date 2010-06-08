@@ -44,8 +44,6 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	private static final String TEST_RELATIONSHIP = "http://purl.org/dc/terms/references";
 	private static final String TEST_DIRECTION = "outbound";
 
-	private static final String XLINK_NAMESPACE = PropertyReader.getProperty("xlink.xmlNamespace");
-
 	/**
 	 * Constructor
 	 */
@@ -160,7 +158,7 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 		xml.append(TEST_DIRECTION).append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t");
 		xml.append("<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ")
 			.append("ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n\t\t");
-		xml.append("<ddms:link xmlns:xlink=\"").append(XLINK_NAMESPACE)
+		xml.append("<ddms:link xmlns:xlink=\"").append(PropertyReader.getProperty("xlink.xmlNamespace"))
 			.append("\" xlink:type=\"locator\" xlink:href=\"http://en.wikipedia.org/wiki/Tank\" />\n\t");
 		xml.append("</ddms:RelatedResource>\n");
 		xml.append("</ddms:relatedResources>");
@@ -172,8 +170,8 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			RelatedResources component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(RelatedResources.NAME, component.getName());
-			assertEquals(Util.DDMS_PREFIX, component.getPrefix());
-			assertEquals(Util.DDMS_PREFIX + ":" + RelatedResources.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + RelatedResources.NAME, component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);

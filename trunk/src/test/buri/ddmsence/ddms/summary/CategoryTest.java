@@ -30,6 +30,7 @@ import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -130,8 +131,8 @@ public class CategoryTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			Category component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(Category.NAME, component.getName());
-			assertEquals(Util.DDMS_PREFIX, component.getPrefix());
-			assertEquals(Util.DDMS_PREFIX + ":" + Category.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Category.NAME, component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);

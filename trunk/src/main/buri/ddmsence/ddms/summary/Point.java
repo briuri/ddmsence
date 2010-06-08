@@ -24,6 +24,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -147,14 +148,15 @@ public final class Point extends AbstractBaseComponent {
 		try {
 			_cachedPosition = position;
 			_cachedSrsAttributes = srsAttributes;
-			Element element = Util.buildElement(GML_PREFIX, Point.NAME, 
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Point.NAME, 
 				DDMSVersion.getCurrentVersion().getGmlNamespace(), null);
 			if (position != null) {
 				element.appendChild(position.getXOMElementCopy());
 			}
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);
-			Util.addAttribute(element, GML_PREFIX, ID_NAME, DDMSVersion.getCurrentVersion().getGmlNamespace(), id);
+			Util.addAttribute(element, PropertyReader.getProperty("gml.prefix"), ID_NAME, 
+				DDMSVersion.getCurrentVersion().getGmlNamespace(), id);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());

@@ -62,8 +62,6 @@ import buri.ddmsence.util.Util;
 public final class Link extends AbstractBaseComponent {
 
 	private static final String FIXED_TYPE = "locator";
-	private static final String XLINK_PREFIX = PropertyReader.getProperty("xlink.prefix");
-	private static final String XLINK_NAMESPACE = PropertyReader.getProperty("xlink.xmlNamespace");
 	
 	/** The element name of this component */
 	public static final String NAME = "link";
@@ -96,11 +94,13 @@ public final class Link extends AbstractBaseComponent {
 	public Link(String href, String role, String title, String label) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Link.NAME, null);
-			Util.addAttribute(element, XLINK_PREFIX, TYPE_NAME, XLINK_NAMESPACE, FIXED_TYPE);
-			Util.addAttribute(element, XLINK_PREFIX, HREF_NAME, XLINK_NAMESPACE, href);
-			Util.addAttribute(element, XLINK_PREFIX, ROLE_NAME, XLINK_NAMESPACE, role);
-			Util.addAttribute(element, XLINK_PREFIX, TITLE_NAME, XLINK_NAMESPACE, title);
-			Util.addAttribute(element, XLINK_PREFIX, LABEL_NAME, XLINK_NAMESPACE, label);
+			String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
+			String xlinkNamespace = PropertyReader.getProperty("xlink.xmlNamespace");
+			Util.addAttribute(element, xlinkPrefix, TYPE_NAME, xlinkNamespace, FIXED_TYPE);
+			Util.addAttribute(element, xlinkPrefix, HREF_NAME, xlinkNamespace, href);
+			Util.addAttribute(element, xlinkPrefix, ROLE_NAME, xlinkNamespace, role);
+			Util.addAttribute(element, xlinkPrefix, TITLE_NAME, xlinkNamespace, title);
+			Util.addAttribute(element, xlinkPrefix, LABEL_NAME, xlinkNamespace, label);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -188,34 +188,34 @@ public final class Link extends AbstractBaseComponent {
 	 * Accessor for the type attribute.
 	 */
 	public String getType() {
-		return (getAttributeValue(TYPE_NAME, XLINK_NAMESPACE));
+		return (getAttributeValue(TYPE_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
 	}
 	
 	/**
 	 * Accessor for the href attribute.
 	 */
 	public String getHref() {
-		return (getAttributeValue(HREF_NAME, XLINK_NAMESPACE));
+		return (getAttributeValue(HREF_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
 	}
 	
 	/**
 	 * Accessor for the role attribute.
 	 */
 	public String getRole() {
-		return (getAttributeValue(ROLE_NAME, XLINK_NAMESPACE));
+		return (getAttributeValue(ROLE_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
 	}
 	
 	/**
 	 * Accessor for the title attribute.
 	 */
 	public String getTitle() {
-		return (getAttributeValue(TITLE_NAME, XLINK_NAMESPACE));
+		return (getAttributeValue(TITLE_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
 	}
 	
 	/**
 	 * Accessor for the label attribute.
 	 */
 	public String getLabel() {
-		return (getAttributeValue(LABEL_NAME, XLINK_NAMESPACE));
+		return (getAttributeValue(LABEL_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
 	}
 } 

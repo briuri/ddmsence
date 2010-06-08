@@ -131,24 +131,6 @@ public class PropertyReader {
 			throw new IllegalArgumentException(UNDEFINED_PROPERTY + PROPERTIES_PREFIX + name);
 		return (value);
 	}
-
-	/**
-	 * Locates a property and returns it as an int
-	 * 
-	 * @param name		the simple name of the property, without "buri.ddmsence."
-	 * @return the property specified
-	 * @throws IllegalArgumentException if the property does not exist or is not a number.
-	 */
-	public static int getIntProperty(String name) {
-		String value = getProperty(name);
-		try {
-			int intValue = Integer.valueOf(value);
-			return (intValue);
-		}
-		catch (NumberFormatException e) {
-			throw new IllegalArgumentException(NOT_NUMBER_PROPERTY + value);
-		}
-	}
 	
 	/**
 	 * Locates a list property and returns it as a List

@@ -43,7 +43,6 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 	private static final String TEST_QUALIFIER = "http://purl.org/dc/terms/URI";
 	private static final String TEST_VALUE = "http://en.wikipedia.org/wiki/Tank";
-	private static final String XLINK_NAMESPACE = PropertyReader.getProperty("xlink.xmlNamespace");
 
 	/**
 	 * Constructor
@@ -68,7 +67,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	 */
 	private static Element getFixtureElement() throws InvalidDDMSException {
 		Element resourceElement = Util.buildDDMSElement(RelatedResource.NAME, null);
-		resourceElement.addNamespaceDeclaration(Util.DDMS_PREFIX, DDMSVersion.getCurrentVersion().getNamespace());
+		resourceElement.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), DDMSVersion.getCurrentVersion().getNamespace());
 		resourceElement.addAttribute(Util.buildDDMSAttribute("qualifier", TEST_QUALIFIER));
 		resourceElement.addAttribute(Util.buildDDMSAttribute("value", TEST_VALUE));
 		resourceElement.appendChild(new Element(LinkTest.getFixtureElement()));
@@ -154,7 +153,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			.append("\" ");
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
 			.append("\">\n\t");
-		xml.append("<ddms:link xmlns:xlink=\"").append(XLINK_NAMESPACE).append("\" xlink:type=\"locator\" ");
+		xml.append("<ddms:link xmlns:xlink=\"").append(PropertyReader.getProperty("xlink.xmlNamespace")).append("\" xlink:type=\"locator\" ");
 		xml.append("xlink:href=\"").append(TEST_VALUE).append("\" ");
 		xml.append("xlink:role=\"tank\" ");
 		xml.append("xlink:title=\"Tank Page\" ");
@@ -168,8 +167,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			RelatedResource component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(RelatedResource.NAME, component.getName());
-			assertEquals(Util.DDMS_PREFIX, component.getPrefix());
-			assertEquals(Util.DDMS_PREFIX + ":" + RelatedResource.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + RelatedResource.NAME, component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);

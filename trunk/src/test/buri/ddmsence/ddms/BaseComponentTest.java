@@ -19,8 +19,8 @@
 */
 package buri.ddmsence.ddms;
 
-import nu.xom.Element;
 import junit.framework.TestCase;
+import nu.xom.Element;
 import buri.ddmsence.ddms.resource.Language;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;

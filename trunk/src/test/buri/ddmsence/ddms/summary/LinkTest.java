@@ -44,9 +44,6 @@ public class LinkTest extends AbstractComponentTestCase {
 	private static final String TEST_TITLE = "Tank Page";
 	private static final String TEST_LABEL = "tank";
 
-	private static final String XLINK_PREFIX = PropertyReader.getProperty("xlink.prefix");
-	private static final String XLINK_NAMESPACE = PropertyReader.getProperty("xlink.xmlNamespace");
-
 	/**
 	 * Constructor
 	 */
@@ -60,14 +57,16 @@ public class LinkTest extends AbstractComponentTestCase {
 	 * @return a XOM element representing a valid link
 	 */
 	protected static Element getFixtureElement() throws InvalidDDMSException {
+		String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
+		String xlinkNamespace = PropertyReader.getProperty("xlink.xmlNamespace");
 		Element linkElement = Util.buildDDMSElement(Link.NAME, null);
-		linkElement.addNamespaceDeclaration(Util.DDMS_PREFIX, DDMSVersion.getCurrentVersion().getNamespace());
-		linkElement.addNamespaceDeclaration(XLINK_PREFIX, XLINK_NAMESPACE);
-		linkElement.addAttribute(Util.buildAttribute(XLINK_PREFIX, "type", XLINK_NAMESPACE, TEST_TYPE));
-		linkElement.addAttribute(Util.buildAttribute(XLINK_PREFIX, "href", XLINK_NAMESPACE, TEST_HREF));
-		linkElement.addAttribute(Util.buildAttribute(XLINK_PREFIX, "role", XLINK_NAMESPACE, TEST_ROLE));
-		linkElement.addAttribute(Util.buildAttribute(XLINK_PREFIX, "title", XLINK_NAMESPACE, TEST_TITLE));
-		linkElement.addAttribute(Util.buildAttribute(XLINK_PREFIX, "label", XLINK_NAMESPACE, TEST_LABEL));
+		linkElement.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), DDMSVersion.getCurrentVersion().getNamespace());
+		linkElement.addNamespaceDeclaration(xlinkPrefix, xlinkNamespace);
+		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "type", xlinkNamespace, TEST_TYPE));
+		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "href", xlinkNamespace, TEST_HREF));
+		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "role", xlinkNamespace, TEST_ROLE));
+		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "title", xlinkNamespace, TEST_TITLE));
+		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "label", xlinkNamespace, TEST_LABEL));
 		return (linkElement);
 	}
 
@@ -141,7 +140,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:link xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
-			.append("\" xmlns:xlink=\"").append(XLINK_NAMESPACE).append("\" ");
+			.append("\" xmlns:xlink=\"").append(PropertyReader.getProperty("xlink.xmlNamespace")).append("\" ");
 		xml.append("xlink:type=\"").append(TEST_TYPE).append("\" ");
 		xml.append("xlink:href=\"").append(TEST_HREF).append("\" ");
 		xml.append("xlink:role=\"").append(TEST_ROLE).append("\" ");
@@ -159,10 +158,12 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	private Element buildComponentElement(String type, String href) {
 		Element element = Util.buildDDMSElement(Link.NAME, null);
+		String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
+		String xlinkNamespace = PropertyReader.getProperty("xlink.xmlNamespace");
 		if (type != null)
-			element.addAttribute(Util.buildAttribute(XLINK_PREFIX, "type", XLINK_NAMESPACE, type));
+			element.addAttribute(Util.buildAttribute(xlinkPrefix, "type", xlinkNamespace, type));
 		if (href != null)
-			element.addAttribute(Util.buildAttribute(XLINK_PREFIX, "href", XLINK_NAMESPACE, href));
+			element.addAttribute(Util.buildAttribute(xlinkPrefix, "href", xlinkNamespace, href));
 		return (element);
 	}
 
@@ -171,8 +172,8 @@ public class LinkTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(Link.NAME, component.getName());
-			assertEquals(Util.DDMS_PREFIX, component.getPrefix());
-			assertEquals(Util.DDMS_PREFIX + ":" + Link.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Link.NAME, component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);

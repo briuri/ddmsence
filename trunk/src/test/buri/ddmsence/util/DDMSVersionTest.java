@@ -19,8 +19,8 @@
 */
 package buri.ddmsence.util;
 
-import nu.xom.Element;
 import junit.framework.TestCase;
+import nu.xom.Element;
 import buri.ddmsence.ddms.UnsupportedVersionException;
 
 /**
