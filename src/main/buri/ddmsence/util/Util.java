@@ -598,7 +598,12 @@ public class Util {
 	 * @throws XSLException if stylesheet transformation fails
 	 */
 	public static XSLTransform buildSchematronTransform(File schematronFile) throws IOException, XSLException {
-		System.setProperty(PROP_TRANSFORM_FACTORY, PropertyReader.getProperty("xml.transform.TransformerFactory"));
+		String oldFactory = System.getProperty(PROP_TRANSFORM_FACTORY);
+		String newFactory = PropertyReader.getProperty("xml.transform.TransformerFactory");
+		if (Util.isEmpty(oldFactory) || !newFactory.equals(oldFactory)) {
+			clearTransformCaches();
+			System.setProperty(PROP_TRANSFORM_FACTORY, newFactory);
+		}		
 		Document schDocument = Util.buildXmlDocument(new FileInputStream(schematronFile));
 
 //		long time = new Date().getTime();
@@ -624,6 +629,15 @@ public class Util {
 		return (finalTransform);
 	}
 
+	/**
+	 * Clears any previous instantiated transforms.
+	 */
+	private synchronized static void clearTransformCaches() {
+		_schematronIncludeTransform = null;
+		_schematronAbstractTransform = null;
+		_schematronSvrlTransform = null;
+	}
+	
 	/**
 	 * Lazy instantiation / cached accessor for the first step of Schematron validation.
 	 * 

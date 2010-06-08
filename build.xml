@@ -86,7 +86,6 @@
 		<copy todir="${dist.dir}/ddmsence-bin-${version}/lib">
 			<fileset dir="${jars.dir}" />
 		</copy>
-		<copy tofile="${dist.dir}/ddmsence-bin-${version}/classes/ddmsence-config.properties" file="${conf.dir}/ddmsence-config-template.properties" />
 		<zip destfile="${dist.dir}/ddmsence-bin-${version}.zip" basedir="${dist.dir}" includes="ddmsence-bin-${version}/**" />
 		<delete quiet="true" dir="${dist.dir}/ddmsence-bin-${version}" />
 		
@@ -184,7 +183,6 @@
 		
 		<fileset dir="${conf.dir}" id="files.properties">
 			<include name="*.properties" />
-			<exclude name="ddmsence-config-template.properties" />
 		</fileset>				
 		<fileset dir="${data.dir}" id="files.requiredData">
 			<include name="CVEnumISM/**" />
