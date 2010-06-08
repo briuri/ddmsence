@@ -4,7 +4,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="keywords" content="DDMSence,DDMS,Metadata,Discovery,Java,DoD,XML" />
 		
-	<!-- DDMS Resource Record --> 
+	<!-- DDMS Resource Record --> 	
 	<meta name="security.resourceElement" content="true" />
 	<meta name="security.createDate" content="2010-03-21" />
 	<meta name="security.DESVersion" content="2" />
@@ -15,9 +15,6 @@
 	<meta name="title" content="DDMSence Home Page" />
 	<meta name="title.classification" content="U" />
 	<meta name="title.ownerProducer" content="USA" />
-	<meta name="subtitle" content="Multiple Versions" />
-	<meta name="subtitle.classification" content="U" />
-	<meta name="subtitle.ownerProducer" content="USA" />
 	<meta name="description" content="An open source Java library for the DoD Discovery Metadata Specification (DDMS)" />
 	<meta name="description.classification" content="U" />
 	<meta name="description.ownerProducer" content="USA" />
@@ -60,8 +57,8 @@
 	<meta name="security.classification" content="U" />
 	<meta name="security.ownerProducer" content="USA" />
 	<meta name="extensible.layer" content="false" />
-	<meta name="ddms.generator" content="DDMSence 1.1.0" />
-	
+	<meta name="ddms.generator" content="DDMSence 1.4.0" />
+	<meta name="ddms.version" content="3.0" />
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
