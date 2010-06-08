@@ -26,7 +26,7 @@ I have include the <code>.project</code> file if you wish to import the project 
 It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=46">backwards compatible</a> with earlier versions.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.4.0.zip"><code>ddmsence-bin-1.4.0.zip</code></a></b> (3.6 MB, compiled with JDK1.5.0_22)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.4.0.zip"><code>ddmsence-bin-1.4.0.zip</code></a></b> (4.1 MB, compiled with JDK1.5.0_22)</li>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.4.0.zip"><code>ddmsence-src-1.4.0.zip</code></a></b> (4.3 MB)</li>
 </ul>
 

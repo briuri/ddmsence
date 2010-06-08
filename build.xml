@@ -25,7 +25,7 @@
 	</target>
 	
 	
-	<target name="dist" depends="clean, compile, docs, tests" description="Performs a full build of the project and creates the bin/src downloads">
+	<target name="dist" depends="clean, compile, docs, test" description="Performs a full build of the project and creates the bin/src downloads">
 		<mkdir dir="${jars.dir}" />
 		<mkdir dir="${dist.dir}/ddmsence-src-${version}" />
 		<mkdir dir="${dist.dir}/ddmsence-bin-${version}" />
@@ -80,6 +80,9 @@
 				<exclude name="${data.dir}/web/**"/>	
 				<exclude name="lib/test/**"/>
 		    </fileset>
+			<fileset dir="${output.dir}">
+				<include name="docs/**" />
+			</fileset>
 		</copy>
 		<copy tofile="${dist.dir}/ddmsence-bin-${version}/CHANGES.txt" file="${conf.dir}/CHANGES-template.txt" />
 		<copy tofile="${dist.dir}/ddmsence-bin-${version}/LICENSE.txt" file="${conf.dir}/LICENSE-template.txt" />
