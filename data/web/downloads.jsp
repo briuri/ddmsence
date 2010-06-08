@@ -20,13 +20,14 @@ code for the main library, unit tests, and the sample applications, as well as s
 file which will allow you to compile source code, run unit tests, generate API documentation, or even generate the "bin"-flavored archive with <a href="http://ant.apache.org/">Apache Ant</a>. 
 I have include the <code>.project</code> file if you wish to import the project into Eclipse.</p>
 
-<h1>Latest Release: v1.3.2</h1>
+<h1>Latest Release: v1.4.0</h1>
 
-<p>Version <b>1.3.2</b> (5/14/2010) is a stable patch release, which fixes <a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.3.2">four minor bugs</a>. It is backwards compatible with all versions since v1.1.0.</p>
+<p>Version <b>1.4.0</b> (6/08/2010) is a stable release, add changes configurable property support to be code-driven rather than property-file driven.
+It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=46">backwards compatible</a> with earlier versions.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.3.2.zip"><code>ddmsence-bin-1.3.2.zip</code></a></b> (3.6 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.3.2.zip"><code>ddmsence-src-1.3.2.zip</code></a></b> (4.3 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.4.0.zip"><code>ddmsence-bin-1.4.0.zip</code></a></b> (3.6 MB, compiled with JDK1.5.0_22)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.4.0.zip"><code>ddmsence-src-1.4.0.zip</code></a></b> (4.3 MB)</li>
 </ul>
 
 <h3>Versioning</h3>
@@ -43,6 +44,13 @@ I have include the <code>.project</code> file if you wish to import the project 
 All changes which are not backwards compatible will be linked from this page.</p> 
 
 <h3>Older Releases</h3>
+
+<p>Version <b>1.3.2</b> (5/14/2010) is a stable patch release, which fixes <a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.3.2">four minor bugs</a>. It is backwards compatible with all versions since v1.1.0.</p>
+
+<ul>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.3.2.zip"><code>ddmsence-bin-1.3.2.zip</code></a></b> (3.6 MB, compiled with JDK1.5.0_22)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.3.2.zip"><code>ddmsence-src-1.3.2.zip</code></a></b> (4.3 MB)</li>
+</ul>
 
 <p>Version <b>1.3.1</b> (5/9/2010) is a stable patch release, which fixes a bug related to namespace resolution when working with more than one version
 of DDMS at a time. It is backwards compatible with all versions since v1.1.0.</p>

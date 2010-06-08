@@ -151,7 +151,7 @@
 	</target>
 			
 	<target name="__config">
-	    <property name="version" value="1.3.2" />
+	    <property name="version" value="1.4.0" />
 		<property name="conf.dir" value="conf" />
 		<property name="data.dir" value="data" />
 		<property name="local.web.dir" value="E:\\urizone\\output\\tomcat\\webapps\\ddmsence" />
