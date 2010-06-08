@@ -25,7 +25,7 @@
 	</target>
 	
 	
-	<target name="dist" depends="clean, compile, docs, test" description="Performs a full build of the project and creates the bin/src downloads">
+	<target name="dist" depends="clean, compile, docs, tests" description="Performs a full build of the project and creates the bin/src downloads">
 		<mkdir dir="${jars.dir}" />
 		<mkdir dir="${dist.dir}/ddmsence-src-${version}" />
 		<mkdir dir="${dist.dir}/ddmsence-bin-${version}" />
