@@ -61,19 +61,17 @@ public class PropertyReader {
 	private Properties _properties = new Properties();
 	
 	private static final String PROPERTIES_FILE = "ddmsence.properties";
-	private static final String CUSTOM_PROPERTIES_FILE = "ddmsence-config.properties";
 	private static final String PROPERTIES_PREFIX = "buri.ddmsence.";
 	private static final String UNDEFINED_PROPERTY = "Undefined Property: ";
-	private static final String NOT_NUMBER_PROPERTY = "Not a Number: ";
 	
 	private static final Set<String> CUSTOM_PROPERTIES = new HashSet<String>();
 	static {
-		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "ddms.prefix");
-		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "gml.prefix");
-		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "icism.prefix");
-		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "xlink.prefix");
-		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "sample.data");
-		CUSTOM_PROPERTIES.add(PROPERTIES_PREFIX + "xml.transform.TransformerFactory");
+		CUSTOM_PROPERTIES.add("ddms.prefix");
+		CUSTOM_PROPERTIES.add("gml.prefix");
+		CUSTOM_PROPERTIES.add("icism.prefix");
+		CUSTOM_PROPERTIES.add("xlink.prefix");
+		CUSTOM_PROPERTIES.add("sample.data");
+		CUSTOM_PROPERTIES.add("xml.transform.TransformerFactory");
 	};
 	
 	private static final PropertyReader INSTANCE = new PropertyReader();
@@ -89,32 +87,10 @@ public class PropertyReader {
 				aProperties.load(is);
 				is.close();
 				_properties.putAll(aProperties);
-				loadCustomProperties();
 			}
 		}
 		catch (IOException e) {
 			throw new RuntimeException("Could not load the properties file: " + e.getMessage());
-		}
-	}
-	
-	/**
-	 * Searches for the ddmsence-config.properties file and loads specifically
-	 * defined custom properties, if available.
-	 * 
-	 * @throws IOException
-	 */
-	private void loadCustomProperties() throws IOException {
-		InputStream is = getLoader().getResourceAsStream(CUSTOM_PROPERTIES_FILE);
-		if (is == null)
-			return;
-		Properties aProperties = new Properties();
-		aProperties.load(is);
-		is.close();
-		for (String customKey : CUSTOM_PROPERTIES) {
-			String customProperty = aProperties.getProperty(customKey);
-			if (customProperty != null) {
-				_properties.put(customKey, customProperty);
-			}
 		}
 	}
 		
@@ -130,6 +106,21 @@ public class PropertyReader {
 		if (value == null)
 			throw new IllegalArgumentException(UNDEFINED_PROPERTY + PROPERTIES_PREFIX + name);
 		return (value);
+	}
+	
+	/**
+	 * Attempts to set one of the properties defined as a configurable property.
+	 * 
+	 * @param name the key of the property, without the "buri.ddmsence." prefix
+	 * @param value the new value of the property
+	 * @throws IllegalArgumentException if the property is not a valid configurable property, or if the value is empty.
+	 */
+	public static void setProperty(String name, String value) {
+		if (!CUSTOM_PROPERTIES.contains(name))
+			throw new IllegalArgumentException(name + " is not a configurable property.");
+		if (Util.isEmpty(value))
+			throw new IllegalArgumentException("The " + name + " property cannot be set to an empty value.");
+		INSTANCE.getProperties().setProperty(PROPERTIES_PREFIX + name, value);
 	}
 	
 	/**

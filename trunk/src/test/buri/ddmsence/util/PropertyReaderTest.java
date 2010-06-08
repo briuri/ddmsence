@@ -31,6 +31,20 @@ import junit.framework.TestCase;
  */
 public class PropertyReaderTest extends TestCase {
 
+	/**
+	 * Resets the in-use prefix for DDMS.
+	 */
+	protected void setUp() throws Exception {
+		PropertyReader.setProperty("ddms.prefix", "ddms");
+	}
+
+	/**
+	 * Resets the in-use prefix for DDMS.
+	 */
+	protected void tearDown() throws Exception {
+		PropertyReader.setProperty("ddms.prefix", "ddms");
+	}
+	
 	public void testGetPropertyInvalid() {
 		try {
 			PropertyReader.getProperty("unknown.property");
@@ -44,5 +58,30 @@ public class PropertyReaderTest extends TestCase {
 	public void testGetListPropertyValid() {
 		List<String> properties = PropertyReader.getListProperty("ddms.supportedVersions");
 		assertEquals(2, properties.size());
+	}
+	
+	public void testSetPropertyInvalidName() {
+		try {
+			PropertyReader.setProperty("unknown.property", "value");
+			fail("Did not prevent invalid property name.");
+		}
+		catch (IllegalArgumentException e) {
+			// Good
+		}
+	}
+	
+	public void testSetPropertyInvalidValue() {
+		try {
+			PropertyReader.setProperty("ddms.prefix", "");
+			fail("Did not prevent invalid property value.");
+		}
+		catch (IllegalArgumentException e) {
+			// Good
+		}
+	}
+	
+	public void testSetPropertyValid() {
+		PropertyReader.setProperty("ddms.prefix", "DDMS");
+		assertEquals("DDMS", PropertyReader.getProperty("ddms.prefix"));
 	}
 }
