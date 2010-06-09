@@ -95,7 +95,7 @@ DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API whi
 <a href="http://metadata.dod.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
 Using XOM and the Xerces Java parser, DDMSence can transform XML DDMS Resource records into a Java object model, allowing them to be manipulated or traversed within the context of a Java environment. 
 DDMSence also performs logical validation of rules which are not coded into the DDMS schema (such as the 
-the validation of longitude/latitude values).</p>
+validation of longitude/latitude values).</p>
 
 <ul>
 	<li>Provides a complete implementation of all five Layers in the DDMS specification (including the Extensible Layer) using either DDMS 2.0 or DDMS 3.0 Pre-Release.</li>
