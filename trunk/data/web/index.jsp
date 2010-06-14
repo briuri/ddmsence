@@ -93,17 +93,19 @@
 <p>
 DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
 <a href="http://metadata.dod.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
-Using XOM and the Xerces Java parser, DDMSence can transform XML DDMS Resource records into a Java object model, allowing them to be manipulated or traversed within the context of a Java environment. 
-DDMSence also performs logical validation of rules which are not coded into the DDMS schema (such as the 
-validation of longitude/latitude values).</p>
+It can transform XML DDMS Resource records into a Java object model (using XOM and Xerces), allowing them to be manipulated or traversed within the context of a Java environment. 
+DDMSence also performs logical validation of rules which are not coded into the DDMS schema (such as the validation of longitude/latitude values).</p>
 
 <ul>
 	<li>Provides a complete implementation of all five Layers in the DDMS specification (including the Extensible Layer) using either DDMS 2.0 or DDMS 3.0 Pre-Release.</li>
 	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types. Components can automatically transform into valid, well-formed XML, HTML, and Text records, according to the DDMS specification.</li>
-	<li>Adds an additional layer of validation to all components, including the Controlled Vocabulary Enumerations for ICISM security attributes, as defined by the Intelligence Community. Custom validation rules can also be defined with <a href="documentation.jsp#tips-schematron">ISO Schematron</a>.</li>
+	<li>Adds an additional level of validation to all components, including the Controlled Vocabulary Enumerations for ICISM security attributes, as defined by the Intelligence Community. Custom validation rules can also be defined with <a href="documentation.jsp#tips-schematron">ISO Schematron</a>.</li>
 	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
 		and <a href="documentation.jsp#tips">Power Tips</a> are available for more experienced users.</li>
 </ul>
+
+<img src="./images/chart.png" width="800" height="300" title="DDMSence Flow Chart"  />
+
 
 <p>Components created with this library maintain an underlying XOM element structure, which provides latent avenues for future 
 improvement, based on XOM's support of XPath, XInclude, and XSLT. However, you do not need to have any experience with XOM to get started
@@ -111,13 +113,6 @@ with this library.</p>
 
 <p>DDMSence comes with a complete set of JUnit tests, and code coverage was aided by <a href="http://www.eclemma.org/" target="_new">EclEmma</a>.
 It is being released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
-
-<img src="./images/chart.png" width="800" height="300" title="DDMSence Flow Chart"  />
-
-<h1>On the Horizon</h1>
-
-<p>Please follow the "<a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a>" link in the menu above to see a complete list of enhancements under 
-consideration for future releases, or to add your own suggestions.</p>
 			
 <h1>About the Author</h1>
 
