@@ -22,7 +22,7 @@ I have include the <code>.project</code> file if you wish to import the project 
 
 <h1>Latest Release: v1.4.0</h1>
 
-<p>Version <b>1.4.0</b> (6/08/2010) is a stable release, add changes configurable property support to be code-driven rather than property-file driven.
+<p>Version <b>1.4.0</b> (6/08/2010) is a stable release, and changes configurable property support to be code-driven rather than property-file driven.
 It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=46">backwards compatible</a> with earlier versions.</p>
 
 <ul>
