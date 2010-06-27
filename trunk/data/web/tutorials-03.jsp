@@ -155,7 +155,7 @@ application to generate Resources. When you open up <u>Escape</u> again, your ne
 DDMS concepts in unexpected contexts.</p>
 
 <p>This is the final tutorial. If you have any suggestions for additional tutorials or sample applications, please contact me in one of the ways mentioned
-under <a href="documentation.jsp#feedback">Feedback</a>!</p> 
+under <a href="index.jsp#feedback">Feedback</a>!</p> 
 
 <p>
 	<a href="tutorials-01.jsp">Tutorial #1: Essentials</a><br />
