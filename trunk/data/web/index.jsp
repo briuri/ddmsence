@@ -112,17 +112,6 @@ with this library.</p>
 
 <p>DDMSence comes with a complete set of JUnit tests, and code coverage was aided by <a href="http://www.eclemma.org/" target="_new">EclEmma</a>.
 It is being released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
-
-<a name="feedback"></a><h1>Feedback</h1>
-
-<p>I would love to hear about your experiences working with DDMSence, or suggestions for future functionality. 
-You can officially report a bug or enhancement suggestion on the <a href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a> page,
-or use the <a href="http://groups.google.com/group/ddmsence">Discussion</a> area as a less formal method of discussion. Finally, you can also
-contact me directly by email at
-	<script type="text/javascript">
-		document.write("<a href=\"mailto:" + eMail + "\">" + eMail + "</a>.");
-	</script>
-</p>
 			
 <h1>About the Author</h1>
 
