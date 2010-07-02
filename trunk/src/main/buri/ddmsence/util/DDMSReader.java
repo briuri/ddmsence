@@ -20,7 +20,12 @@
 package buri.ddmsence.util;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.net.URL;
 
 import nu.xom.Builder;
@@ -89,18 +94,55 @@ public class DDMSReader {
 	}
 
 	/**
-	 * Accepts a file name and returns the root element in that file.
+	 * Creates a XOM element representing the root XML element in the file.
 	 * 
-	 * @param file the file containing the DDMS elements.
-	 * @return a XOM element representing the DDMS component read from the root node of the file. 
+	 * <p>The implementation of this method delegates to the Reader-based overloaded method.</p>
+	 * 
+	 * @param file the file containing the XML document
+	 * @return a XOM element representing the root node in the document
 	 */
 	public Element getElement(File file) throws IOException, InvalidDDMSException {
 		Util.requireValue("file", file);
-		if (!file.exists())
-			throw new IOException("Could not load file: " + file.getAbsolutePath());
-		Builder builder = new Builder(getReader(), true);
+		return (getElement(new FileReader(file)));
+	}
+	
+	/**
+	 * Creates a XOM element representing the root XML element in a string representation of an XML document.
+	 * 
+	 * <p>The implementation of this method delegates to the Reader-based overloaded method.</p>
+	 * 
+	 * @param xml a string containing the XML document
+	 * @return a XOM element representing the root node in the document 
+	 */
+	public Element getElement(String xml) throws IOException, InvalidDDMSException {
+		Util.requireValue("XML string", xml);
+		return (getElement(new StringReader(xml)));
+	}
+	
+	/**
+	 * Creates a XOM element representing the root XML element in an input stream.
+	 * 
+	 * <p>The implementation of this method delegates to the Reader-based overloaded method.</p>
+	 * 
+	 * @param inputStream a stream mapping to an XML document
+	 * @return a XOM element representing the root node in the document 
+	 */
+	public Element getElement(InputStream inputStream) throws IOException, InvalidDDMSException {
+		Util.requireValue("input stream", inputStream);
+		return (getElement(new InputStreamReader(inputStream)));
+	}
+		
+	/**
+	 * Creates a XOM element representing the root XML element in a reader.
+	 * 
+	 * @param reader a reader mapping to an XML document
+	 * @return a XOM element representing the root node in the document
+	 */
+	public Element getElement(Reader reader) throws IOException, InvalidDDMSException {
+		Util.requireValue("reader", reader);
 		try {
-			Document doc = builder.build(file);
+			Builder builder = new Builder(getReader(), true);
+			Document doc = builder.build(reader);
 			return (doc.getRootElement());
 		}
 		catch (ParsingException e) {
@@ -109,20 +151,66 @@ public class DDMSReader {
 	}
 	
 	/**
-	 * Accepts a file name and returns the DDMS Resource identified by the root element in that file (also
-	 * sets the DDMSVersion based on the data in the file).
+	 * Creates a DDMS resource based on the contents of a file, and also sets the DDMSVersion based on the namespace
+	 * URIs in the file).
 	 * 
 	 * @param file the file containing the DDMS Resource.
-	 * @return a XOM element representing the DDMS component read from the root node of the file.
-	 * @throws InvalidDDMSException if the component could not be built 
+	 * @return a DDMS Resource
+	 * @throws InvalidDDMSException if the component could not be built
 	 */
 	public Resource getDDMSResource(File file) throws IOException, InvalidDDMSException {
-		Element resourceElement = getElement(file);
-		DDMSVersion.setCurrentVersion(DDMSVersion.getVersionForNamespace(resourceElement.getNamespaceURI())
-			.getVersion());
-		return (new Resource(resourceElement));
+		return (buildResource(getElement(file)));
 	}
 	
+	/**
+	 * Creates a DDMS resource based on the contents of a string representation of an XML document, and also sets the
+	 * DDMSVersion based on the namespace URIs in the document).
+	 * 
+	 * @param xml the string representation of the XML DDMS Resource
+	 * @return a DDMS Resource
+	 * @throws InvalidDDMSException if the component could not be built
+	 */
+	public Resource getDDMSResource(String xml) throws IOException, InvalidDDMSException {
+		return (buildResource(getElement(xml)));
+	}
+	
+	/**
+	 * Creates a DDMS resource based on the contents of an input stream, and also sets the DDMSVersion based on the
+	 * namespace URIs in the document).
+	 * 
+	 * @param inputStream the input stream wrapped around an XML DDMS Resource
+	 * @return a DDMS Resource
+	 * @throws InvalidDDMSException if the component could not be built
+	 */
+	public Resource getDDMSResource(InputStream inputStream) throws IOException, InvalidDDMSException {
+		return (buildResource(getElement(inputStream)));
+	}
+	
+	/**
+	 * Creates a DDMS resource based on the contents of a reader, and also sets the DDMSVersion based on the namespace
+	 * URIs in the document).
+	 * 
+	 * @param reader the reader wrapped around an XML DDMS Resource
+	 * @return a DDMS Resource
+	 * @throws InvalidDDMSException if the component could not be built
+	 */
+	public Resource getDDMSResource(Reader reader) throws IOException, InvalidDDMSException {
+		return (buildResource(getElement(reader)));
+	}
+	
+	/**
+	 * Shared helper method to build a DDMS Resource from a XOM Element
+	 * 
+	 * @param xomElement
+	 * @return a DDMS Resource
+	 * @throws InvalidDDMSException if the component could not be built
+	 */
+	protected Resource buildResource(Element xomElement) throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion(DDMSVersion.getVersionForNamespace(xomElement.getNamespaceURI())
+			.getVersion());
+		return (new Resource(xomElement));
+	}
+		
 	/**
 	 * Accessor for the reader
 	 */
