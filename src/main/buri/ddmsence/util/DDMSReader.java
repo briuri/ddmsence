@@ -120,7 +120,7 @@ public class DDMSReader {
 		Element resourceElement = getElement(file);
 		DDMSVersion.setCurrentVersion(DDMSVersion.getVersionForNamespace(resourceElement.getNamespaceURI())
 			.getVersion());
-		return (new Resource(getElement(file)));
+		return (new Resource(resourceElement));
 	}
 	
 	/**
