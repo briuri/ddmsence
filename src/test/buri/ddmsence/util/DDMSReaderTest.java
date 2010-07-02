@@ -20,7 +20,12 @@
 package buri.ddmsence.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.LineNumberReader;
+import java.io.Reader;
 
 import junit.framework.TestCase;
 
@@ -42,9 +47,9 @@ public class DDMSReaderTest extends TestCase {
 		_reader = new DDMSReader();
 	}
 	
-	public void testGetElementNull() throws InvalidDDMSException {
+	public void testGetElementNullFile() throws InvalidDDMSException {
 		try {
-			getReader().getElement(null);
+			getReader().getElement((File) null);
 			fail("Allowed invalid data.");
 		}
 		catch (IOException e) {
@@ -55,9 +60,81 @@ public class DDMSReaderTest extends TestCase {
 		}
 	}
 	
-	public void testGetElementDoesNotExist() throws InvalidDDMSException {
+	public void testGetElementNullString() throws InvalidDDMSException {
+		try {
+			getReader().getElement((String) null);
+			fail("Allowed invalid data.");
+		}
+		catch (IOException e) {
+			fail("Allowed invalid data.");
+		}
+		catch (IllegalArgumentException e) {
+			// Good
+		}
+	}
+	
+	public void testGetElementNullInputStream() throws InvalidDDMSException {
+		try {
+			getReader().getElement((InputStream) null);
+			fail("Allowed invalid data.");
+		}
+		catch (IOException e) {
+			fail("Allowed invalid data.");
+		}
+		catch (IllegalArgumentException e) {
+			// Good
+		}
+	}
+	
+	public void testGetElementNullReader() throws InvalidDDMSException {
+		try {
+			getReader().getElement((Reader) null);
+			fail("Allowed invalid data.");
+		}
+		catch (IOException e) {
+			fail("Allowed invalid data.");
+		}
+		catch (IllegalArgumentException e) {
+			// Good
+		}
+	}
+	
+	public void testGetElementDoesNotExistFile() throws InvalidDDMSException {
 		try {
 			getReader().getElement(new File("doesnotexist"));
+			fail("Allowed invalid data.");
+		}
+		catch (IOException e) {
+			// Good
+		}
+	}
+	
+	public void testGetElementDoesNotExistString() throws InvalidDDMSException {
+		try {
+			getReader().getElement("<wrong></wrong>");
+			fail("Allowed invalid data.");
+		}
+		catch (IOException e) {
+			fail("Should have thrown an InvalidDDMSException");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
+	public void testGetElementDoesNotExistInputStream() throws InvalidDDMSException {
+		try {
+			getReader().getElement(new FileInputStream(new File("doesnotexist")));
+			fail("Allowed invalid data.");
+		}
+		catch (IOException e) {
+			// Good
+		}
+	}
+	
+	public void testGetElementDoesNotExistReader() throws InvalidDDMSException {
+		try {
+			getReader().getElement(new FileReader(new File("doesnotexist")));
 			fail("Allowed invalid data.");
 		}
 		catch (IOException e) {
@@ -75,8 +152,24 @@ public class DDMSReaderTest extends TestCase {
 		}
 	}
 	
-	public void testGetElementSuccess() throws InvalidDDMSException, IOException {
+	public void testGetElementFileSuccess() throws InvalidDDMSException, IOException {
 		getReader().getElement(new File(PropertyReader.getProperty("test.unit.data"), "3.0/rights.xml"));
+	}
+	
+	public void testGetElementStringSuccess() throws InvalidDDMSException, IOException {
+		getReader().getElement("<?xml version=\"1.0\" encoding=\"UTF-8\"?><ddms:language "
+			+ " xmlns:ddms=\"http://metadata.dod.mil/mdr/ns/DDMS/3.0/\" "
+			+ " ddms:qualifier=\"http://purl.org/dc/elements/1.1/language\" ddms:value=\"en\" />");
+	}
+
+	public void testGetElementInputStreamSuccess() throws InvalidDDMSException, IOException {
+		getReader().getElement(new FileInputStream(new File(
+			PropertyReader.getProperty("test.unit.data"), "3.0/rights.xml")));
+	}
+	
+	public void testGetElementReaderSuccess() throws InvalidDDMSException, IOException {
+		getReader().getElement(new FileReader(new File(
+			PropertyReader.getProperty("test.unit.data"), "3.0/rights.xml")));
 	}
 	
 	public void testGetResourceFailure() throws IOException {
@@ -89,8 +182,30 @@ public class DDMSReaderTest extends TestCase {
 		}
 	}
 	
-	public void testGetResourceSuccess() throws InvalidDDMSException, IOException {
+	public void testGetResourceSuccessFile() throws InvalidDDMSException, IOException {
 		getReader().getDDMSResource(new File(PropertyReader.getProperty("test.unit.data"), "3.0/resource.xml"));
+	}
+	
+	public void testGetResourceSuccessString() throws InvalidDDMSException, IOException {
+		LineNumberReader reader = new LineNumberReader(new FileReader(new File(
+			PropertyReader.getProperty("test.unit.data"), "3.0/resource.xml")));
+		StringBuffer xmlString = new StringBuffer();
+		String nextLine = reader.readLine();
+		while (nextLine != null) {
+			xmlString.append(nextLine);
+			nextLine = reader.readLine();
+		}
+		getReader().getDDMSResource(xmlString.toString());
+	}
+	
+	public void testGetResourceSuccessInputStream() throws InvalidDDMSException, IOException {
+		getReader().getDDMSResource(new FileInputStream(new File(
+			PropertyReader.getProperty("test.unit.data"), "3.0/resource.xml")));
+	}
+	
+	public void testGetResourceSuccessReader() throws InvalidDDMSException, IOException {
+		getReader().getDDMSResource(new FileReader(new File(
+			PropertyReader.getProperty("test.unit.data"), "3.0/resource.xml")));
 	}
 	
 	/**
