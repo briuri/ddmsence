@@ -9,6 +9,10 @@ Copyright 2010 by Brian Uri!
 Release History
 ===========================================================================
 
+v 1.5.0 (7/05/2010):
+This stable release adds DDMSReader support for Strings, Readers, and 
+InputStreams, and also updates the bundled copy of XOM to 1.2.6.
+
 v 1.4.0 (6/08/2010):
 This stable release alters configurable properties to be code-driven, instead
 of using properties files (Issue #45, 47). It also adds API documentation to
