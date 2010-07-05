@@ -40,7 +40,7 @@ into a batch/shell script and running that script):</p>
 <div class="example"><pre>REM Windows Commands
 cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;\ddmsence-bin-1.4.0
 set DDMSENCE_CLASSPATH=lib/serializer-2.7.1.jar;lib/xalan-2.7.1.jar;lib/xercesImpl-2.9.1.jar;lib/xml-apis-1.3.04.jar;lib/xom-1.2.6.jar
-set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-1.4.0.jar;lib/ddmsence-samples-1.4.0.jar;classes/
+set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-1.4.0.jar;lib/ddmsence-samples-1.4.0.jar
 java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre></div>
 <p class="figure">Figure 1. Running from a Windows/DOS Command Line</p>
 
@@ -48,7 +48,7 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre></div>
 # Linux Commands
 cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;/ddmsence-bin-1.4.0
 ddmsence_classpath=lib/serializer-2.7.1.jar:lib/xalan-2.7.1.jar:lib/xercesImpl-2.9.1.jar:lib/xml-apis-1.3.04.jar:lib/xom-1.2.6.jar
-ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-1.4.0.jar:lib/ddmsence-samples-1.4.0.jar:classes/
+ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-1.4.0.jar:lib/ddmsence-samples-1.4.0.jar
 java -cp $ddmsence_classpath buri.ddmsence.samples.Essentials</pre></div>
 <p class="figure">Figure 2. Running in Linux</p>
 
