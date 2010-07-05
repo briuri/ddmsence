@@ -212,6 +212,22 @@ public class DDMSReader {
 	}
 		
 	/**
+	 * Returns the external schema locations for debugging. The returned string will contain a space-delimited set
+	 * of XMLNamespace/SchemaLocation pairs.
+	 * 
+	 * @return the string containing all schema locations
+	 */
+	public String getExternalSchemaLocations() {
+		try {
+			return ((String) getReader().getProperty(PROP_XERCES_EXTERNAL_LOCATION));
+		}
+		catch (SAXException e) {
+			throw new IllegalStateException(PROP_XERCES_EXTERNAL_LOCATION
+				+ " is not supported or recognized for this XMLReader.");
+		}
+	}
+	
+	/**
 	 * Accessor for the reader
 	 */
 	private XMLReader getReader() {
