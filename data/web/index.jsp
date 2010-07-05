@@ -57,19 +57,20 @@
 	<meta name="security.classification" content="U" />
 	<meta name="security.ownerProducer" content="USA" />
 	<meta name="extensible.layer" content="false" />
-	<meta name="ddms.generator" content="DDMSence 1.4.0" />
+	<meta name="ddms.generator" content="DDMSence 1.5.0" />
 	<meta name="ddms.version" content="3.0" />
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
-	<div class="newsUpdate"><u>06/08/2010</u>: <a href="downloads.jsp">v1.4.0</a> released.</div>
+	<div class="newsUpdate"><u>07/05/2010</u>: <a href="downloads.jsp">v1.5.0</a> released.</div>
+	<div class="newsUpdate"><u>06/08/2010</u>: v1.4.0 released.</div>
 	<div class="newsUpdate"><u>05/14/2010</u>: v1.3.2 released.</div>
 	<div class="newsUpdate"><u>05/11/2010</u>: Added table of supported XSLT Engines to <a href="documentation.jsp#tips-schematron">Schematron Validation</a> Power Tip.</div>
 	<div class="newsUpdate"><u>05/09/2010</u>: v1.3.1 released.</div>
-	<div class="newsUpdate"><u>05/07/2010</u>: v1.3.0 released.</div>
 	<!-- Older News
+		<div class="newsUpdate"><u>05/07/2010</u>: v1.3.0 released.</div>
 		<div class="newsUpdate"><u>04/24/2010</u>: v1.2.1 released.</div>
 		<div class="newsUpdate"><u>04/21/2010</u>: v1.2.0 released.</div>
 		<div class="newsUpdate"><u>04/08/2010</u>: v1.1.0 released.</div>
@@ -87,7 +88,7 @@
 	
 </div>
 
-<h1>DDMSence v1.4.0</h1>
+<h1>DDMSence v1.5.0</h1>
 
 <p>
 DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
