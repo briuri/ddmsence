@@ -20,7 +20,7 @@ complete text of this license can be found below.</p>
 	<li>Xalan 2.7.1 (<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>)</li>
 	<li>Xerces 2.9.1 (<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>)</li>
 	<li>XML-Commons 1.3.04 (<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>)</li>
-	<li>XOM 1.2.4 (<a href="http://xom.nu/license.xhtml">GNU Lesser General Public License v2.1</a>)</li>
+	<li>XOM 1.2.6 (<a href="http://xom.nu/license.xhtml">GNU Lesser General Public License v2.1</a>)</li>
 </ul>
 
 <h3>GNU LESSER GENERAL PUBLIC LICENSE</h3>
