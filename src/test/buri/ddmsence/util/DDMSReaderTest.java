@@ -208,6 +208,15 @@ public class DDMSReaderTest extends TestCase {
 			PropertyReader.getProperty("test.unit.data"), "3.0/resource.xml")));
 	}
 	
+	public void testGetExternalSchemaLocation() {
+		String externalLocations = getReader().getExternalSchemaLocations();
+		assertEquals(8, externalLocations.split(" ").length);
+		assertTrue(externalLocations.contains("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
+		assertTrue(externalLocations.contains("http://metadata.dod.mil/mdr/ns/DDMS/3.0/"));
+		assertTrue(externalLocations.contains("http://www.opengis.net/gml"));
+		assertTrue(externalLocations.contains("http://www.opengis.net/gml/3.2"));
+	}
+	
 	/**
 	 * Accessor for the reader
 	 */
