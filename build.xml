@@ -95,16 +95,14 @@
 		<!-- Release Process (need to automate parts of this)
 		1) Update version in build.xml.
 		2) Double-check @since tags on new classes.
-		3) Update index.jsp to describe new release.
-		4) Update downloads.jsp to describe new release.
-		5) Update classpath on documentation.jsp.
-		6) Update CHANGES.txt.
-		7) Run "dist" target and review archives.
-		8) Upload archives and deprecate last release.
-		9) Delete and reupload javadoc.
-		10) Upload web files.
-		11) Commit any remaining changes and tag as new release. 
-		12) Announcements (Google Groups / freshmeat / MDR)
+		3) Text search for the old version number in /data/web/ to update website references.
+		4) Update CHANGES-template.txt.
+		5) Run "dist" target and review archives.
+		6) Upload archives and deprecate last release.
+		7) Delete and reupload javadoc.
+		8) Upload web files.
+		9) Commit any remaining changes and tag as new release. 
+		10) Announcements (Google Groups / freshmeat / MDR)
 		-->
 	</target>
 	
@@ -154,7 +152,7 @@
 	</target>
 			
 	<target name="__config">
-	    <property name="version" value="1.5.0" />
+	    <property name="version" value="1.5.1" />
 		<property name="conf.dir" value="conf" />
 		<property name="data.dir" value="data" />
 		<property name="local.web.dir" value="E:\\urizone\\output\\tomcat\\webapps\\ddmsence" />
