@@ -69,10 +69,10 @@ public class DDMSReader {
 		StringBuffer schemas = new StringBuffer();
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion ddmsVersion = DDMSVersion.getVersionFor(version);
-			URL xsd = getUrlForSchema(ddmsVersion.getSchema());
-			schemas.append(ddmsVersion.getNamespace()).append(" ").append(xsd.toExternalForm()).append(" ");
-			xsd = getUrlForSchema(ddmsVersion.getGmlSchema());
-			schemas.append(ddmsVersion.getGmlNamespace()).append(" ").append(xsd.toExternalForm()).append(" ");
+			String xsd = getLocalSchemaLocation(ddmsVersion.getSchema());
+			schemas.append(ddmsVersion.getNamespace()).append(" ").append(xsd).append(" ");
+			xsd = getLocalSchemaLocation(ddmsVersion.getGmlSchema());
+			schemas.append(ddmsVersion.getGmlNamespace()).append(" ").append(xsd).append(" ");
 		}
 		getReader().setFeature(PROP_XERCES_VALIDATION, true);
 		getReader().setFeature(PROP_XERCES_SCHEMA_VALIDATION, true);
@@ -80,17 +80,20 @@ public class DDMSReader {
 	}
 	
 	/**
-	 * Returns the URL location of a schema file
+	 * Returns the full path to a local schema copy, based on the relative location from the
+	 * properties file. The full path will have spaces escaped as %20, to resolve Issue 50
+	 * in the DDMSence Issue Tracker.
 	 * 
-	 * @param schemaLocation the schema location
-	 * @return a URL
+	 * @param schemaLocation the relative schema location as specified in the properties file
+	 * @return the full path to the schema (generally this is in the JAR file)
 	 * @throws IllegalArgumentException if the schema could not be found.
 	 */
-	private URL getUrlForSchema(String schemaLocation) {
+	private String getLocalSchemaLocation(String schemaLocation) {
 		URL xsd = getClass().getResource(schemaLocation);
 		if (xsd == null)
 			throw new IllegalArgumentException("Unable to load a local copy of the schema for validation.");
-		return (xsd);
+		String fullPath = xsd.toExternalForm().replaceAll(" ", "%20");		
+		return (fullPath);
 	}
 
 	/**
