@@ -9,6 +9,10 @@ Copyright 2010 by Brian Uri!
 Release History
 ===========================================================================
 
+v 1.5.1 (7/07/2010):
+This stable patch release fixes a schema resolution issue when deploying
+in Glassfish (Issue #50).
+
 v 1.5.0 (7/05/2010):
 This stable release adds DDMSReader support for Strings, Readers, and 
 InputStreams, and also updates the bundled copy of XOM to 1.2.6.
