@@ -160,7 +160,7 @@ the messages of that component and any subcomponents. In this run-through, no wa
 Would you like to save this file? [Y/N]: y
 This Resource will be saved as XML in the data/sample/ directory.
 Please enter a filename: myResource.xml
-File saved at "C:\ddmsence-bin-1.5.1\data\sample\myResource.xml".
+File saved at "C:\ddmsence-bin-@ddmsence.version@\data\sample\myResource.xml".
 
 You can now open your saved file with the Essentials application.
 The Escort wizard is now finished.</pre></div>
