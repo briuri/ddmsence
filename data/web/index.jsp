@@ -57,7 +57,7 @@
 	<meta name="security.classification" content="U" />
 	<meta name="security.ownerProducer" content="USA" />
 	<meta name="extensible.layer" content="false" />
-	<meta name="ddms.generator" content="DDMSence 1.5.1" />
+	<meta name="ddms.generator" content="DDMSence @ddmsence.version@" />
 	<meta name="ddms.version" content="3.0" />
 </head>
 <body>
@@ -89,7 +89,7 @@
 	
 </div>
 
-<h1>DDMSence v1.5.1</h1>
+<h1>DDMSence v@ddmsence.version@</h1>
 
 <p>
 DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 

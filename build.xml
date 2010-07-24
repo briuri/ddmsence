@@ -1,11 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="DDMSence" default="compile" basedir=".">
 		
-	<target name="clean" depends="__config" description="Removes the temporary build directories">
+	<!-- Release Process (need to automate parts of this)
+		1) Update version in build.xml.
+		2) Double-check @since tags on new classes.
+		3) Update web downloads page with latest release.
+		4) Update CHANGES-template.txt.
+		5) Run "dist" target and review archives.
+		6) Upload archives and deprecate last release.
+		7) Delete and reupload javadoc.
+		8) Upload web files.
+		9) Commit any remaining changes and tag as new release. 
+		10) Announcements (Google Groups / freshmeat / MDR)
+	-->
+	
+    <property name="version" value="1.5.1" />
+	<property name="conf.dir" value="conf" />
+	<property name="data.dir" value="data" />
+	<property name="local.web.dir" value="E:\\urizone\\output\\tomcat\\webapps\\ddmsence" />
+	<property name="src.main.dir" value="src/main" />
+	<property name="src.samples.dir" value="src/samples" />
+	<property name="src.test.dir" value="src/test" />
+	<property name="output.dir" value="output" />
+	<property name="compile.main.dir" value="${output.dir}/classes/main/" />
+	<property name="compile.samples.dir" value="${output.dir}/classes/samples/" />
+	<property name="compile.test.dir" value="${output.dir}/classes/test/" />
+	<property name="docs.dir" value="${output.dir}/docs" />
+	<property name="jars.dir" value="${output.dir}/jars" />
+	<property name="dist.dir" value="${output.dir}/dist" />
+	<property name="reports.dir" value="${output.dir}/reports" />
+	
+	<path id="classpath.compile">
+		<fileset dir="lib/" includes="*.jar" />
+	</path>
+	<path id="classpath.samples">
+		<path refid="classpath.compile" />
+		<pathelement location="${compile.main.dir}" />
+	</path>
+	<path id="classpath.test">
+		<path refid="classpath.compile" />
+		<pathelement location="${compile.main.dir}" />
+		<pathelement location="${compile.test.dir}" />
+		<fileset dir="lib/test/" includes="*.jar" />
+	</path>
+	
+	<fileset dir="${conf.dir}" id="files.properties">
+		<include name="*.properties" />
+	</fileset>				
+	<fileset dir="${data.dir}" id="files.requiredData">
+		<include name="CVEnumISM/**" />
+		<include name="schemas/**" />
+		<include name="schematron/**" />
+	</fileset>	
+	<fileset dir="${data.dir}" id="files.website">
+		<include name="web/**" />
+	</fileset>
+	
+	
+	
+	<target name="clean" description="Removes the temporary build directories">
 		<delete quiet="true" dir="${output.dir}" />	
 	</target>
 	
-	<target name="compile" depends="__config" description="Compiles the Java classes and copies property files">
+	<target name="compile" description="Compiles the Java classes and copies property files">
 		<mkdir dir="${compile.main.dir}" />
 		<mkdir dir="${compile.samples.dir}" />
 		<mkdir dir="${compile.test.dir}" />
@@ -21,6 +78,10 @@
 		<copy todir="${compile.test.dir}" filtering="true">
 			<fileset refid="files.properties" />
 			<fileset refid="files.requiredData" />
+		</copy>
+		
+		<copy todir="${output.dir}" filtering="true">
+			<fileset refid="files.website" />
 		</copy>
 	</target>
 	
@@ -91,22 +152,9 @@
 		</copy>
 		<zip destfile="${dist.dir}/ddmsence-bin-${version}.zip" basedir="${dist.dir}" includes="ddmsence-bin-${version}/**" />
 		<delete quiet="true" dir="${dist.dir}/ddmsence-bin-${version}" />
-		
-		<!-- Release Process (need to automate parts of this)
-		1) Update version in build.xml.
-		2) Double-check @since tags on new classes.
-		3) Text search for the old version number in /data/web/ to update website references.
-		4) Update CHANGES-template.txt.
-		5) Run "dist" target and review archives.
-		6) Upload archives and deprecate last release.
-		7) Delete and reupload javadoc.
-		8) Upload web files.
-		9) Commit any remaining changes and tag as new release. 
-		10) Announcements (Google Groups / freshmeat / MDR)
-		-->
 	</target>
 	
-	<target name="docs" depends="__config" description="Generates API Documentation">
+	<target name="docs" description="Generates API Documentation">
 		<tstamp>
 			<format property="javadoc.time" pattern="MM/dd/yyyy hh:mm aa" />
 		</tstamp>
@@ -122,7 +170,7 @@
 		/>
 	</target>
 	
-	<target name="tests" depends="__config" description="Runs unit tests">
+	<target name="tests" description="Runs unit tests">
 		<delete quiet="true" dir="${reports.dir}" />
 		<mkdir dir="${reports.dir}" />
 		<junit printsummary="false" haltonfailure="true" fork="yes">
@@ -135,61 +183,19 @@
 	    </junit>
 	</target>	
 
-	<target name="localWeb" depends="__config" description="Deploys the website pages locally for testing">
+	<target name="localWeb" depends="compile" description="Deploys the website pages locally for testing">
 		<mkdir dir="${local.web.dir}" />
 		<copy todir="${local.web.dir}" includeEmptyDirs="false">
-			<fileset dir="${data.dir}/web">
+			<fileset dir="${output.dir}/web">
 				<include name="**/**" />
 		    </fileset>
 		</copy>
 	</target>
 	
-	<target name="localZip" depends="__config" description="Creates a ZIP of the entire project">
+	<target name="localZip" description="Creates a ZIP of the entire project">
 		<tstamp>
 			<format property="backupStamp" pattern="yyMMdd-HHmm"/>
 		</tstamp>		
 		<zip destfile="../${backupStamp}-DDMSence-${version}.zip" basedir=".." includes="DDMSence/**" excludes="DDMSence/output/**" />
-	</target>
-			
-	<target name="__config">
-	    <property name="version" value="1.5.1" />
-		<property name="conf.dir" value="conf" />
-		<property name="data.dir" value="data" />
-		<property name="local.web.dir" value="E:\\urizone\\output\\tomcat\\webapps\\ddmsence" />
-		<property name="src.main.dir" value="src/main" />
-		<property name="src.samples.dir" value="src/samples" />
-		<property name="src.test.dir" value="src/test" />
-		<property name="output.dir" value="output" />
-		<property name="compile.main.dir" value="${output.dir}/classes/main/" />
-		<property name="compile.samples.dir" value="${output.dir}/classes/samples/" />
-		<property name="compile.test.dir" value="${output.dir}/classes/test/" />
-		<property name="docs.dir" value="${output.dir}/docs" />
-		<property name="jars.dir" value="${output.dir}/jars" />
-		<property name="dist.dir" value="${output.dir}/dist" />
-		<property name="reports.dir" value="${output.dir}/reports" />
-		
-		<path id="classpath.compile">
-			<fileset dir="lib/" includes="*.jar" />
-		</path>
-		<path id="classpath.samples">
-			<path refid="classpath.compile" />
-			<pathelement location="${compile.main.dir}" />
-		</path>
-		<path id="classpath.test">
-			<path refid="classpath.compile" />
-			<pathelement location="${compile.main.dir}" />
-			<pathelement location="${compile.test.dir}" />
-			<fileset dir="lib/test/" includes="*.jar" />
-		</path>
-		
-		<fileset dir="${conf.dir}" id="files.properties">
-			<include name="*.properties" />
-		</fileset>				
-		<fileset dir="${data.dir}" id="files.requiredData">
-			<include name="CVEnumISM/**" />
-			<include name="schemas/**" />
-			<include name="schematron/**" />
-		</fileset>	
 	</target>	
-	
 </project>
