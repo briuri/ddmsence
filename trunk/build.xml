@@ -12,6 +12,7 @@
 		8) Upload web files.
 		9) Commit any remaining changes and tag as new release. 
 		10) Announcements (Google Groups / freshmeat / MDR)
+		11) Upload new DDMSence JAR to webserver.
 	-->
 	
     <property name="version" value="1.5.1" />

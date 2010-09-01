@@ -75,7 +75,15 @@ div.newsUpdate {
 	padding: 10px 0px 0px 0px;
 	text-align: center;
 }
-
+form {
+	margin: 0px;
+	padding: 0px;
+} 
+.formElement {
+	display: block;
+	margin-left: 120px;
+	margin-bottom: 3px;
+}
 h1 {
 	font-size: 14pt;
 }
@@ -102,6 +110,31 @@ img.bordered {
 	border-color: #bdc3c5;
 	border-style: solid;
 	border-width: 1px;
+}
+input.button {
+	background-color: #000047;
+	border-style: outset; 
+	border-width: 1px;
+	color: #dfb546;
+	font-size: 9pt;
+}
+input[type=text], select, input[type=password], textarea {
+	background: url('/images/formInputStyle.png') repeat-x #ffffff;
+	border: 1px solid #606060;
+} 
+label {
+	display: block;
+	float: left;
+	font-weight: bold;
+	width: 120px; 	
+	margin-bottom: 3px;
+}
+label.error {
+	color: #ea5200;
+	float: none;
+	font-size: 8pt;
+	margin-left: 120px;	
+	width: auto;
 }
 #menu {
 	height: 22px;
