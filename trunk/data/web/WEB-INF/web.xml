@@ -21,4 +21,9 @@
 
 	<display-name>DDMSence</display-name>
 	<description>Project page for an open source DDMS library, written in Java</description>
+	
+	<error-page> 
+    	<error-code>404</error-code> 
+    	<location>/404.jsp</location> 
+	</error-page>
 </web-app>
