@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:flow="http://www.springframework.org/schema/webflow-config"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/webflow-config
+           http://www.springframework.org/schema/webflow-config/spring-webflow-config-1.0.xsd">
+	
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".jsp" />
+    </bean>    
+			
+	<!-- 
+		DDMSence Controls: 
+			This code is not checked into the DDMSence project, because
+			it has dependencies on Spring and other libraries which are ancillary
+			to the main purpose of the library. I did not want to bloat up the main
+			distribution with these files, but will be glad to provide the source code
+			upon request.
+
+			The DDMSence web application is deployed in an environment which already has
+			Spring JARs deployed.
+	-->
+	<bean id="validatorControl" class="buri.web.ddmsence.ValidatorControl" />
+			
+	<!-- Mappings from URLs to Controls -->							
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="urlMap">
+			<map>
+				<entry key="validator.uri" value-ref="validatorControl" />
+			</map>
+		</property>
+	</bean>   
+</beans>
