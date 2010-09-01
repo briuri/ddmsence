@@ -54,10 +54,12 @@
 	</fileset>	
 	<fileset dir="${data.dir}" id="files.website">
 		<include name="web/**" />
+		<exclude name="web/images/**" />
 	</fileset>
-	
-	
-	
+	<fileset dir="${data.dir}" id="files.website.images">
+		<include name="web/images/**" />
+	</fileset>
+		
 	<target name="clean" description="Removes the temporary build directories">
 		<delete quiet="true" dir="${output.dir}" />	
 	</target>
@@ -83,6 +85,9 @@
 		<copy todir="${output.dir}" filtering="true">
 			<fileset refid="files.website" />
 		</copy>
+		<copy todir="${output.dir}">
+			<fileset refid="files.website.images" />
+		</copy>		
 	</target>
 	
 	
