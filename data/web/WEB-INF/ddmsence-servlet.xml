@@ -12,8 +12,11 @@
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
 		<property name="prefix" value="/" />
 		<property name="suffix" value=".jsp" />
-    </bean>    
-			
+    </bean>
+        
+	<bean id="multipartResolver" class="org.springframework.web.multipart.cos.CosMultipartResolver">
+		<property name="maxUploadSize" value="50000" />
+	</bean>
 	<!-- 
 		DDMSence Controls: 
 			This code is not checked into the DDMSence project, because
