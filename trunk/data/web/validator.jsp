@@ -151,7 +151,7 @@
 
 <h1>Online DDMS Validator</h1>
 
-<p>This experimental tool uses the DDMSence library to validate <b>Unclassified</b> DDMS 2.0 and 3.0 Pre-Release records. Records 
+<p>This experimental tool uses the DDMSence library to validate <b>Unclassified</b> DDMS 2.0 and 3.0 records. Records 
 can be submitted by pasting XML text, uploading a file, or referencing a URL. Information submitted through this tool is not retained
 on the server.</p>
 
