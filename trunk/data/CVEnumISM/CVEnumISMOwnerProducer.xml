@@ -7,9 +7,9 @@
          xsi:schemaLocation="urn:us:gov:ic:cve:v1 ../Schema/CVEXml.xsd"
          ism:ownerProducer="USA"
          ism:classification="U"
-         ism:DESVersion="2"
+         ism:DESVersion="3"
          ism:resourceElement="true"
-		 ism:createDate="2009-11-19">
+		 ism:createDate="2010-03-12">
 
                 <cve:IRM>
                     <ddms:identifier ddms:qualifier="name"
@@ -18,7 +18,7 @@
                     <ddms:description ism:ownerProducer="USA" ism:classification="U">FGI followed by all currently valid ISO Trigraphs in alphabetical order by Trigraph, 
             followed by all currently valid CAPCO Coalition tetragraphs in alphabetical order by tetragraph.</ddms:description>
 
-                    <cve:Created>2009-11-12T12:00:00-04:00</cve:Created>
+                    <cve:Created>2010-03-12T11:29:00-04:00</cve:Created>
                     
                     <ddms:source ddms:value="CAPCO Register Appendix A"/>
       <ddms:source ddms:value="ISO 3166"/>
