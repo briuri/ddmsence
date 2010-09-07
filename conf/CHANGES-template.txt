@@ -9,6 +9,10 @@ Copyright 2010 by Brian Uri!
 Release History
 ===========================================================================
 
+v 1.6.0 (9/07/2010):
+This stable release updates bundled schemas and files for DDMS 3.0 (Issue #55). An
+online DDMS validator is also available on the DDMSence website.
+
 v 1.5.1 (7/07/2010):
 This stable patch release fixes a schema resolution issue when deploying
 in Glassfish (Issue #50).
