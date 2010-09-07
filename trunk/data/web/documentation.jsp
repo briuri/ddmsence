@@ -327,7 +327,7 @@ System.out.println(title.toXML());</pre></div>
 <p class="figure">Figure 8. The resultant XML element with security attributes</p>
 
 <p>The values assigned to some attributes must come from the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/">Controlled Vocabulary Enumerations</a>
-defined by the Intelligence Community. The version used by DDMSence is intended for Public Release, so it will not be able to validate enumeration values from higher classification levels. 
+defined by the Intelligence Community. The enumerations used by DDMSence are intended for Public Release, so DDMSence will not be able to validate enumeration values from higher classification levels. 
 The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. I believe that the IC will be releasing Schematron files to support these rules in the future.</p>
 
 <h5>SRS Attributes</h5>
