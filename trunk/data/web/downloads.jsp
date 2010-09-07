@@ -20,13 +20,14 @@ code for the main library, unit tests, and the sample applications, as well as s
 file which will allow you to compile source code, run unit tests, generate API documentation, or even generate the "bin"-flavored archive with <a href="http://ant.apache.org/">Apache Ant</a>. 
 I have include the <code>.project</code> file if you wish to import the project into Eclipse.</p>
 
-<h1>Latest Release: v1.5.1</h1>
+<h1>Latest Release: v1.6.0</h1>
 
-<p>Version <b>1.5.1</b> (7/07/2010) is a stable patch release, which fixes a <a href="http://code.google.com/p/ddmsence/issues/detail?id=50">Glassfish deployment issue</a>. It is backwards compatible with all versions since v1.4.0.</p>
+<p>Version <b>1.6.0</b> (9/07/2010) is a stable release, which updates bundled schemas and enumeration files for DDMS 3.0. Because the changes
+mainly affected the IC-ISM enumeration files, this release is still backwards compatible with all versions since v1.4.0.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.5.1.zip"><code>ddmsence-bin-1.5.1.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.5.1.zip"><code>ddmsence-src-1.5.1.zip</code></a></b> (4.3 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.6.0.zip"><code>ddmsence-bin-1.6.0.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.6.0.zip"><code>ddmsence-src-1.6.0.zip</code></a></b> (4.3 MB)</li>
 </ul>
 
 <h3>Versioning</h3>
@@ -44,7 +45,14 @@ All changes which are not backwards compatible will be linked from this page.</p
 
 <h3>Older Releases</h3>
 
-<p>Version <b>1.5.0</b> (7/05/2010) is a stable release, adds DDMSReader support for Strings, Readers, and InputStreams. It also updates the bundled version of XOM
+<p>Version <b>1.5.1</b> (7/07/2010) is a stable patch release, which fixes a <a href="http://code.google.com/p/ddmsence/issues/detail?id=50">Glassfish deployment issue</a>. It is backwards compatible with all versions since v1.4.0.</p>
+
+<ul>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.5.1.zip"><code>ddmsence-bin-1.5.1.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.5.1.zip"><code>ddmsence-src-1.5.1.zip</code></a></b> (4.3 MB)</li>
+</ul>
+
+<p>Version <b>1.5.0</b> (7/05/2010) is a stable release, and adds DDMSReader support for Strings, Readers, and InputStreams. It also updates the bundled version of XOM
 to 1.2.6. This release is backwards compatible with v1.4.0.</p>
 
 <ul>

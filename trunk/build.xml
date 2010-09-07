@@ -15,7 +15,7 @@
 		11) Upload new DDMSence JAR to webserver.
 	-->
 	
-    <property name="version" value="1.5.1" />
+    <property name="version" value="1.6.0" />
 	<property name="conf.dir" value="conf" />
 	<property name="data.dir" value="data" />
 	<property name="local.web.dir" value="E:\\urizone\\output\\tomcat\\webapps\\ddmsence" />
