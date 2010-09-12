@@ -1,5 +1,14 @@
-<link href="./shared/ddmsence.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="./shared/ddmsence.js"></script>
+<script type="text/javascript" src="./shared/shCore.js"></script>
+<script type="text/javascript" src="./shared/shBrushJava.js"></script>
+<script type="text/javascript" src="./shared/shBrushXml.js"></script>
+<link type="text/css" rel="stylesheet" href="./shared/ddmsence.css"   />
+<link type="text/css" rel="stylesheet" href="./shared/shCoreDDMSence.css"/>
+
+<script type="text/javascript">
+     SyntaxHighlighter.all()
+</script>
+
 <div id="outerPosition">
 	<div id="header">
 		<div id="logo">
