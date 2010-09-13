@@ -13,6 +13,8 @@
  *
  * @license
  * Dual licensed under the MIT and GPL licenses.
+ *
+ * This is a modified version of shCore.css for the DDMSence website.
  */
 .syntaxhighlighter a,
 .syntaxhighlighter div,
@@ -227,6 +229,7 @@
 
 .syntaxhighlighter {
   background-color: white !important;
+  border: 1px solid #BDC3C5;
 }
 .syntaxhighlighter .line.alt1 {
   background-color: white !important;
@@ -247,10 +250,10 @@
   color: #afafaf !important;
 }
 .syntaxhighlighter .gutter .line {
-  border-right: 3px solid #6ce26c !important;
+  border-right: 3px solid #BDC3C5 !important;
 }
 .syntaxhighlighter .gutter .line.highlighted {
-  background-color: #6ce26c !important;
+  background-color: #BDC3C5 !important;
   color: white !important;
 }
 .syntaxhighlighter.printing .line .content {
@@ -262,7 +265,7 @@
 .syntaxhighlighter.collapsed .toolbar {
   color: blue !important;
   background: white !important;
-  border: 1px solid #6ce26c !important;
+  border: 1px solid #BDC3C5 !important;
 }
 .syntaxhighlighter.collapsed .toolbar a {
   color: blue !important;
@@ -272,7 +275,7 @@
 }
 .syntaxhighlighter .toolbar {
   color: white !important;
-  background: #6ce26c !important;
+  background: #BDC3C5 !important;
   border: none !important;
 }
 .syntaxhighlighter .toolbar a {

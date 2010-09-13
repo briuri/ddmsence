@@ -72,8 +72,9 @@ samples directory. This XML file is invalid, because it tries to use an incorrec
 <p>Opening this file should display the following error message:</p>
 
 <pre class="brush: xml">Could not create the DDMS Resource: nu.xom.ValidityException: cvc-enumeration-valid: 
-Value 'SuperSecret' is not facet-valid with respect to enumeration '[U, C, S, TS, R, CTS, CTS-B, CTS-BALK, NU, 
-NR, NC, NS, CTSA, NSAT, NCA]'. It must be a value from the enumeration. at line 18, column 110 in file:///DDMSence/data/sample/InvalidResource.xml
+Value 'SuperSecret' is not facet-valid with respect to enumeration '[U, C, S, TS, R, CTS, 
+CTS-B, CTS-BALK, NU, NR, NC, NS, CTSA, NSAT, NCA]'. It must be a value from the enumeration. 
+at line 18, column 110 in file:///DDMSence/data/sample/InvalidResource.xml
 </pre>
 <p class="figure">Figure 4. A sample error message</p>
 
