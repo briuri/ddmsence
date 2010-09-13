@@ -38,7 +38,8 @@ This program allows you to build a DDMS 3.0 resource from scratch.
 If you do not know how to answer a question, a suggested valid answer is provided in square brackets.
 However, this is not a default value (hitting Enter will answer the question with an empty string).
 
-In FAST mode, Escort will only ask you to create top-level components which are required for a valid Resource.
+In FAST mode, Escort will only ask you to create top-level components which are required for a valid 
+Resource.
 In COMPLETE mode, Escort will let you create all of the top-level components.
 Would you like to run in FAST mode? [Y/N]:</pre>
 <p class="figure">Figure 1. Starting the Wizard</p>

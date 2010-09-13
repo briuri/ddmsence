@@ -38,17 +38,21 @@ with the "bin"-flavored download, which comes with the DDMSence JAR files pre-co
 into a batch/shell script and running that script):</p>
 
 <pre class="brush: xml">REM Windows Commands
-cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;\ddmsence-bin-@ddmsence.version@
-set DDMSENCE_CLASSPATH=lib/serializer-2.7.1.jar;lib/xalan-2.7.1.jar;lib/xercesImpl-2.9.1.jar;lib/xml-apis-1.3.04.jar;lib/xom-1.2.6.jar
-set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-@ddmsence.version@.jar;lib/ddmsence-samples-@ddmsence.version@.jar
+cd &lt;folderWhereDDMSenceIsUnzipped&gt;\ddmsence-bin-@ddmsence.version@
+set DDMSENCE_CLASSPATH=lib/serializer-2.7.1.jar;lib/xalan-2.7.1.jar;lib/xercesImpl-2.9.1.jar
+set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/xml-apis-1.3.04.jar;lib/xom-1.2.6.jar
+set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-@ddmsence.version@.jar
+set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-samples-@ddmsence.version@.jar
 java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
 <p class="figure">Figure 1. Running from a Windows/DOS Command Line</p>
 
 <pre class="brush: xml">#!/bin/sh
 # Linux Commands
-cd &lt;<i>folderWhereDDMSenceIsUnzipped</i>&gt;/ddmsence-bin-@ddmsence.version@
-ddmsence_classpath=lib/serializer-2.7.1.jar:lib/xalan-2.7.1.jar:lib/xercesImpl-2.9.1.jar:lib/xml-apis-1.3.04.jar:lib/xom-1.2.6.jar
-ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-@ddmsence.version@.jar:lib/ddmsence-samples-@ddmsence.version@.jar
+cd &lt;folderWhereDDMSenceIsUnzipped&gt;/ddmsence-bin-@ddmsence.version@
+ddmsence_classpath=lib/serializer-2.7.1.jar:lib/xalan-2.7.1.jar:lib/xercesImpl-2.9.1.jar
+ddmsence_classpath=$ddmsence_classpath:lib/xml-apis-1.3.04.jar:lib/xom-1.2.6.jar
+ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-@ddmsence.version@.jar
+ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-samples-@ddmsence.version@.jar
 java -cp $ddmsence_classpath buri.ddmsence.samples.Essentials</pre>
 <p class="figure">Figure 2. Running in Linux</p>
 
@@ -217,8 +221,9 @@ System.out.println("ddms: " + version.getNamespace());
 System.out.println("gml: " + version.getGmlNamespace());
 System.out.println("ICISM: " + version.getIcismNamespace());
 System.out.println("Are we using DDMS 2.0? " + DDMSVersion.isCurrentVersion("2.0"));
-System.out.println("If I see the namespace, http://metadata.dod.mil/mdr/ns/DDMS/3.0/, I know we are using DDMS v"
-	+ DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/").getVersion());
+System.out.println("If I see the namespace, http://metadata.dod.mil/mdr/ns/DDMS/3.0/, "
+   + "I know we are using DDMS v"
+   + DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/").getVersion());
 
 Identifier identifier = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
    "http://www.whitehouse.gov/news/releases/2005/06/20050621.html");
@@ -308,7 +313,7 @@ expected attribute name, it is ignored. Here is an example which creates Confide
 ownerProducers.add("USA");
 ownerProducers.add("AUS");
 Map&lt;String, String&gt; otherAttributes = new HashMap&lt;String, String&gt;();
-otherAttributes.put("SCIcontrols", "HCS"); // This will be ignored, because there is a later duplicate.
+otherAttributes.put("SCIcontrols", "HCS"); // This will be overwritten by "SI"
 otherAttributes.put("SCIcontrols", "SI");
 otherAttributes.put("SARIdentifier", "SAR-USA");
 // The next line will be ignored, because the "classification" parameter takes precedence.
@@ -321,7 +326,8 @@ System.out.println(title.toXML());</pre>
 <p>Note: The actual values assigned to each attribute in Figure 7 are for example's sake only, and might be illogical in real-world metadata.</p>
 
 <pre class="brush: xml">&lt;ddms:title xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ICISM="urn:us:gov:ic:ism" 
-   ICISM:classification="C" ICISM:ownerProducer="USA AUS" ICISM:SCIcontrols="SI" ICISM:SARIdentifier="SAR-USA"&gt;
+   ICISM:classification="C" ICISM:ownerProducer="USA AUS" ICISM:SCIcontrols="SI"
+   ICISM:SARIdentifier="SAR-USA"&gt;
    My Confidential Notes
 &lt;/ddms:title&gt;</pre>
 <p class="figure">Figure 8. The resultant XML element with security attributes</p>
@@ -335,7 +341,8 @@ The DES also defines many logical constraints on these attributes, but DDMSence 
 <p>Spatial Reference System (SRS) attributes are defined in the DDMS' GML Profile and implemented as an <a href="/docs/index.html?buri/ddmsence/ddms/summary/SRSAttributes.html">SRSAttributes</a> class.
 They can be applied to <code>gml:Point</code>, <code>gml:Polygon</code>, and <code>gml:pos</code>.</p>
 
-<pre class="brush: java">SRSAttributes(String srsName, Integer srsDimension, List&lt;String&gt; axisLabels, List&lt;String&gt; uomLabels)</pre>
+<pre class="brush: java">SRSAttributes(String srsName, Integer srsDimension, List&lt;String&gt; axisLabels,
+   List&lt;String&gt; uomLabels)</pre>
 <p class="figure">Figure 9. SRSAttributes constructor</p>
 
 <p>Here is an example which creates SRS attributes on a <code>gml:pos</code> element:</p>
@@ -387,7 +394,9 @@ example of an extensible element as it might appear in an XML file.</p>
 <pre class="brush: xml">   [...]
    &lt;/ddms:subjectCoverage&gt;
    &lt;ddms:security ICISM:ownerProducer="USA" ICISM:classification="U" ICISM:excludeFromRollup="true"/&gt;
-   &lt;ddmsence:extension xmlns:ddmsence="http://ddmsence.urizone.net/"&gt;This is an extensible element.&lt;/ddmsence:extension&gt;
+   &lt;ddmsence:extension xmlns:ddmsence="http://ddmsence.urizone.net/"&gt;
+      This is an extensible element.
+   &lt;/ddmsence:extension&gt;
 &lt;/ddms:Resource&gt;</pre>
 <p class="figure">Figure 12. An extensible element as it would appear in a ddms:Resource</p>
 
