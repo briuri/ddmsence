@@ -421,7 +421,7 @@ Below is an example of an extensible attribute as it might appear in an XML file
 <pre class="brush: xml">&lt;ddms:keyword xmlns:ddmsence="http://ddmsence.urizone.net/" ddms:value="XML" ddmsence:relevance="99" /&gt;</pre>
 <p class="figure">Figure 14. An XML element with extensible attributes</p>
 
-<pre class="brush: java">List<Attribute> extAttributes = new ArrayList<Attribute>();
+<pre class="brush: java">List&lt;Attribute&gt; extAttributes = new ArrayList&lt;Attribute&gt;();
 extAttributes.add(new Attribute("ddmsence:relevance", "http://ddmsence.urizone.net/", "99"));
 ExtensibleAttributes extensions = new ExtensibleAttributes(extAttributes);
 Keyword keyword = new Keyword("XML", extensions);</pre>
@@ -502,7 +502,7 @@ in the future. For now, a very simple example, <code>testPublisherValue.sch</cod
 &lt;/iso:pattern&gt;</pre>
 <p class="figure">Figure 18. The test from testPublisherValue.sch</p>
 
-<p>The following code sample will build a DDMS Resource from one of the sample XML files, and then validates it through Schematron:</p>
+<p>The following code sample will build a DDMS Resource from one of the sample XML files, and then validate it through Schematron:</p>
 
 <pre class="brush: java">File resourceFile = new File("data/sample/DDMSence_Example.xml");
 File schFile = new File("data/sample/schematron/testPublisherValue.sch");
