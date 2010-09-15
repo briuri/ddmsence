@@ -16,48 +16,28 @@
 		// validate form on keyup and submit
 		$("#record").validate({
 			rules: {
-				<c:if test="${type eq 'text'}">
-					stringRecord: {
-						required: true,
-						maxlength: 50000
-					}
-				</c:if>
-				<c:if test="${type eq 'file'}">
-					upload: {
-						required: true
-					}
-				</c:if>
-				<c:if test="${type eq 'url'}">
-					url: {
-						required: true,
-						maxlength: 2000
-					}
-				</c:if>
+				stringRecord: {
+					required: true,
+					maxlength: 50000
+				},
+				url: {
+					required: true
+				}
 			},
 			messages: {
-				<c:if test="${type eq 'text'}">
-					stringRecord: {
-						required: "A DDMS record is required.",
-						maxlength: "The DDMS record cannot exceed 50,000 characters."
-					}
-				</c:if>
-				<c:if test="${type eq 'file'}">
-					upload: {
-						required: "A DDMS file is required."
-					}
-				</c:if>
-				<c:if test="${type eq 'url'}">				
-					url: {
-						required: "A URL is required.",
-						maxlength: "The URL cannot exceed 2000 characters."
-					}
-				</c:if>
+				stringRecord: {
+					required: "A DDMS record is required.",
+					maxlength: "The DDMS record cannot exceed 50,000 characters."
+				},
+				url: {
+					required: "A URL is required."
+				}
 			}		
 		});
 	});
 	
 	function showExample(form) {
-		<c:if test="${type eq 'text'}">
+		if (form.type.value == "text") {
 			exampleRecord = ""
 				+ "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 				+ "<ddms:Resource \n"
@@ -127,20 +107,46 @@
 				+ "    ICISM:excludeFromRollup=\"true\"/>\n"
 				+ "</ddms:Resource>"
 			form.stringRecord.value = exampleRecord;
-		</c:if>
-		<c:if test="${type eq 'url'}">
+		}
+		else if (form.type.value == "url")
 			form.url.value = "ddmsence.googlecode.com/svn/trunk/data/sample/DDMSence_Example.xml";
-		</c:if>
 	}
 	
-	function changeType(newType) {
-		if ('${type}' != newType) 
-			parent.location.href = "validator.uri?type=" + newType
+	function changeType(form, newType) {
+		form.type.value = newType;
+		if (newType == "text") {
+			document.getElementById("textOptions").style.display = "block";
+			document.getElementById("fileOptions").style.display = "none";
+			document.getElementById("urlOptions").style.display = "none";
+			document.getElementById("exampleOptions").style.display = "block";
+			document.getElementById("noExampleOptions").style.display = "none";
+			form.stringRecord.value = ""
+			form.url.value = "unused"
+		}
+		if (newType == "file") {
+			document.getElementById("textOptions").style.display = "none";
+			document.getElementById("fileOptions").style.display = "block";
+			document.getElementById("urlOptions").style.display = "none";
+			document.getElementById("exampleOptions").style.display = "none";
+			document.getElementById("noExampleOptions").style.display = "block";
+			form.upload.value = ""
+			form.stringRecord.value = "unused"
+			form.url.value = "unused"
+		}
+		if (newType == "url") {
+			document.getElementById("textOptions").style.display = "none";
+			document.getElementById("fileOptions").style.display = "none";
+			document.getElementById("urlOptions").style.display = "block";
+			document.getElementById("exampleOptions").style.display = "block";
+			document.getElementById("noExampleOptions").style.display = "none";
+			form.stringRecord.value = "unused"
+			form.url.value = ""
+		}		
 	}
 	
 	</script>
 </head>
-<body>
+<body onload="changeType(document.forms[0], 'text')">
 <%@ include file="../shared/header.jspf" %>
 
 <h1>Online DDMS Validator</h1>
@@ -150,42 +156,43 @@ can be submitted by pasting XML text, uploading a file, or referencing a URL. In
 on the server.</p>
 
 <form:form id="record" commandName="record" method="post" enctype="multipart/form-data">
-	<form:hidden path="type" />
+	<input type="hidden" name="type" id="type" value="text" />
 	
 	<label id="ltype" for="selectType">Record Location:</label>
 	<span class="formElement">
-		<select name="selectType" id="selectType" onchange="changeType(this.options[this.selectedIndex].value)">
-			<option value="text"
-				<c:if test="${type eq 'text'}"> selected="true" </c:if>
-			>Text</option>
-			<option value="file"
-				<c:if test="${type eq 'file'}"> selected="true" </c:if>
-			>File Upload</option>
-			<option value="url"
-				<c:if test="${type eq 'url'}"> selected="true" </c:if>		
-			>URL</option>
+		<select name="selectType" id="selectType" onchange="changeType(this.form, this.options[this.selectedIndex].value)">
+			<option value="text" selected="true">Text</option>
+			<option value="file">File Upload</option>
+			<option value="url">URL</option>
 		</select>
-	</span><br />
-	
-	<c:if test="${type eq 'text'}">
+	</span><br />	
+
+	<div id="textOptions">
 		<label id="lstringRecord" for="stringRecord">DDMS Record:</label>
 		<form:textarea path="stringRecord" rows="16" cols="80" />
-	</c:if>
-	<c:if test="${type eq 'file'}">
+	</div>
+	
+	<div id="fileOptions" style="display: none">
 		<label id="lfile" for="file">File:</label>
 		<input size="50" type="file" name="upload" />
-	</c:if>
-	<c:if test="${type eq 'url'}">
+	</div>
+	
+	<div id="urlOptions" style="display: none">
 		<label id="lurl" for="url">DDMS URL:</label>
-		http://<form:input path="url" size="50" maxlength="2000" />
-	</c:if>
+		http://<form:input path="url" size="50" maxlength="512" />
+	</div>
+	
 	<br />
 	<span class="formElement">
-		<input type="submit" class="button" name="submit" value="Submit">
-		<input type="reset" class="button" name="reset" value="Reset">
-		<c:if test="${type eq 'text' or type eq 'url'}">
+		<div id="exampleOptions">
+			<input type="submit" class="button" name="submit" value="Submit">
+			<input type="reset" class="button" name="reset" value="Reset">
 			<input type="button" class="button" name="example" value="Example" onclick="showExample(this.form)">
-		</c:if>
+		</div>
+		<div id="noExampleOptions" style="display: none">
+			<input type="submit" class="button" name="submit" value="Submit">
+			<input type="reset" class="button" name="reset" value="Reset">
+		</div>		
 	</span>
 </form:form>
 

@@ -49,7 +49,7 @@ chart that appears initially shows the distribution of MIME Types in the resourc
 <p>Now, let's take a look at the source code in <code>/src/samples/buri/ddmsence/samples/Escape.java</code> to see how this was accomplished. 
 The important lines are found in the <code>buildMimeTypeGraph()</code> method:</p>
 
-<pre class="brush: java">Distribution distribution = new Distribution();
+<div class="example"><pre>Distribution distribution = new Distribution();
 for (Resource resource : getResources()) {
    // Check any records that have a format (mimeType is required if format is present)
    if (resource.getFormat() != null) {
@@ -57,7 +57,7 @@ for (Resource resource : getResources()) {
       distribution.incrementCount(mimeType);
    }			
 }
-return (buildPieGraphURL("DDMS%20MimeType%20Distribution", distribution, PIE_GRAPH_3D));</pre>
+return (buildPieGraphURL("DDMS%20MimeType%20Distribution", distribution, PIE_GRAPH_3D));</pre></div>
 <p class="figure">Figure 2. MIME Type source code</p>
 
 <p>The code traverses all of the Format components to maintain a count of each MIME Type. (A simple data class, called Distribution, is
@@ -74,7 +74,7 @@ a List of DDMS components. The name of the getter will be a capitalized version 
 <img src="./images/escape-02.png" width="400" height="268" title="Second Screen" />
 <p class="figure">Figure 3. The Keyword Distribution</p>
  
-<pre class="brush: java">Distribution distribution = new Distribution();
+<div class="example"><pre>Distribution distribution = new Distribution();
 for (Resource resource : getResources()) {
    // Check any records that have a keyword (subjectCoverage is required)
    if (!resource.getSubjectCoverage().getKeywords().isEmpty()) {
@@ -89,7 +89,7 @@ for (Resource resource : getResources()) {
       }
    }
 }
-return (buildPieGraphURL("DDMS%20Keyword%20Distribution", distribution, PIE_GRAPH));</pre>
+return (buildPieGraphURL("DDMS%20Keyword%20Distribution", distribution, PIE_GRAPH));</pre></div>
 <p class="figure">Figure 4. Keyword source code</p>
 
 <p>The source code for this statistic is functionally identical to the source code for MIME Types. We are locating the Subject Coverage component
@@ -109,7 +109,7 @@ up into single words (to make the visualization more exciting).</p>
 	<li>The resource record itself has a createDate attribute in DDMS 3.0.</li>
 </ul>
 
-<pre class="brush: java">Distribution distribution = new Distribution();
+<div class="example"><pre>Distribution distribution = new Distribution();
 for (Resource resource : getResources()) {
    // Examine the ddms:dates element (optional field with optional attributes)
    Dates dates = resource.getDates();
@@ -139,7 +139,7 @@ for (Resource resource : getResources()) {
          distribution.incrementCount(String.valueOf(timePeriod.getEnd().getYear()));
    }   
 }
-return (buildPieGraphURL("DDMS%20Date%20Distribution", distribution, PIE_GRAPH));</pre>
+return (buildPieGraphURL("DDMS%20Date%20Distribution", distribution, PIE_GRAPH));</pre></div>
 <p class="figure">Figure 6. Date source code</p>
 
 <p>For this visualization, all date locations are checked, and then transformed into <code>xs:year</code> values (the Java pattern "<code>YYYY</code>"). The distribution

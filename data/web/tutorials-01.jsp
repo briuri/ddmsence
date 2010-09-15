@@ -50,14 +50,14 @@ created by this code and the Resource created from the XML file will be logicall
 <p>Now, let's take a look at the source code in <code>/src/samples/buri/ddmsence/samples/Essentials.java</code> to see how this was accomplished. The important lines are found in the
 <code>loadFile()</code> method:</p>
 
-<pre class="brush: java">// The DDMS reader builds a Resource object from the XML in the file.
+<div class="example"><pre>// The DDMS reader builds a Resource object from the XML in the file.
 _resource = getReader().getDDMSResource(file);
 			
 // The four output formats
 String xmlFormat = getResource().toXML();
 String htmlFormat = getResource().toHTML();
 String textFormat = getResource().toText();
-String javaFormat = JavaConvertor.toJavaCode(getResource());</pre>
+String javaFormat = JavaConvertor.toJavaCode(getResource());</pre></div>
 <p class="figure">Figure 3. The main Essentials code</p>
 
 <p>The remaining code in this method merely renders the data on the screen.</p>
@@ -71,11 +71,10 @@ samples directory. This XML file is invalid, because it tries to use an incorrec
 
 <p>Opening this file should display the following error message:</p>
 
-<pre class="brush: xml">Could not create the DDMS Resource: nu.xom.ValidityException: cvc-enumeration-valid: 
-Value 'SuperSecret' is not facet-valid with respect to enumeration '[U, C, S, TS, R, CTS, 
-CTS-B, CTS-BALK, NU, NR, NC, NS, CTSA, NSAT, NCA]'. It must be a value from the enumeration. 
-at line 18, column 110 in file:///DDMSence/data/sample/InvalidResource.xml
-</pre>
+<div class="example">Could not create the DDMS Resource: nu.xom.ValidityException: cvc-enumeration-valid: 
+Value 'SuperSecret' is not facet-valid with respect to enumeration '[U, C, S, TS, R, CTS, CTS-B, CTS-BALK, NU, 
+NR, NC, NS, CTSA, NSAT, NCA]'. It must be a value from the enumeration. at line 18, column 110 in file:///DDMSence/data/sample/InvalidResource.xml
+</div>
 <p class="figure">Figure 4. A sample error message</p>
 
 <p>This error comes from the underlying XML-parsing libraries which are attempting to validate the XML file against the DDMS schema
@@ -103,14 +102,14 @@ have also had a small taste of the validation that occurs when a Resource is bui
 
 <p>The next tutorial, covering the <u>Escort</u> application, will show how a DDMS Resource can be constructed from scratch, building on the Java output you saw in the bottom pane of the <u>Essentials</u> application.</p>
 
-<pre class="brush: xml">&lt;ddms:identifier
+<div class="example"><pre>&lt;ddms:identifier
    ddms:qualifier="http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI"
-   ddms:value="http://www.whitehouse.gov/news/releases/2005/06/20050621.html" /&gt;</pre>
+   ddms:value="http://www.whitehouse.gov/news/releases/2005/06/20050621.html" /&gt;</pre></div>
 <p class="figure">Figure 5. A DDMS Identifier element in XML</p>
    
-<pre class="brush: java">Identifier identifier1 = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
+<div class="example"><pre>Identifier identifier1 = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
    "http://www.whitehouse.gov/news/releases/2005/06/20050621.html");
-</pre>
+</pre></div>   
 <p class="figure">Figure 6. Building a DDMS Identifier from scratch</p>   
 
 <p>

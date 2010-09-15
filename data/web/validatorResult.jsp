@@ -32,9 +32,9 @@
 </c:if>
 
 <c:if test="${not empty model.record}">
-	<pre class="brush: xml">
+	<div class="example"><pre>
 <c:out value="${model.record}" escapeXml="true" />
-	</pre>
+	</pre></div>
 </c:if>	
 
 <div class="clear"></div>
