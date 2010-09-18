@@ -85,6 +85,15 @@
 			<fileset refid="files.requiredData" />
 		</copy>
 		
+		<!-- Set up test files for custom CVE testing -->
+		<copy todir="${compile.test.dir}/customCVEnumISM" filtering="true">
+			<fileset dir="${data.dir}/CVEnumISM">
+				<include name="**" />
+			</fileset>
+		</copy>
+		<copy tofile="${compile.test.dir}/customCVEnumISM/CVEnumISM25X.xml" file="${data.dir}/test/customCVEnumISM/CVEnumISM25X.xml" 
+			overwrite="true" />
+		
 		<copy todir="${output.dir}" filtering="true">
 			<fileset refid="files.website" />
 		</copy>
