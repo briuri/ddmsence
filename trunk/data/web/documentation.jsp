@@ -332,13 +332,24 @@ System.out.println(title.toXML());</pre>
 &lt;/ddms:title&gt;</pre>
 <p class="figure">Figure 8. The resultant XML element with security attributes</p>
 
-<p>The values assigned to some attributes must come from the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/">Controlled Vocabulary Enumerations</a> (CVEs)
-defined by the Intelligence Community. The enumerations used by DDMSence are taken from the DES Version 3 Public Release, so DDMSence will not be able to 
-recognize enumeration values from higher classification levels. To accept enumeration values which are not listed in the Public Release files, you will
-need to explicitly toggle DDMSence to return warnings instead of errors when validating CVEs, via <a href="#tips-configuration">Configurable Properties</a>.</p>
- 
 <p>The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. I believe that the IC will be 
 releasing Schematron files to support these rules in the future.</p>
+
+<p>The values assigned to some attributes must come from the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/">Controlled 
+Vocabulary Enumerations</a> (CVEs) defined by the Intelligence Community. The enumerations used by DDMSence are taken from the DES Version 3 
+Public Release, so DDMSence will not be able to recognize enumeration values from higher classification levels. There are two approaches 
+you can use to eliminate this restriction:</p>
+
+<ol>
+<li>If you have access to enumeration files from more restricted distributions of ISM (or wish to use enumeration files from previous DESVersions), 
+you can create a classpath-accessible directory containing your files, and then use the <code>icism.cve.enumLocation</code> configurable property 
+to point to your files. DDMSence will expect this directory to contain the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/">same 
+set of files</a> that come natively bundled in its JAR file, and will use your files to compare enumeration values.</li>
+<li>If you do not have access to any other enumeration files, you can set the <code>icism.cve.validationAsErrors</code> configurable 
+property to <b>false</b>, which will force DDMSence to return warnings on enumerations, rather than errors.</li>
+</ol>
+
+<p>Please see the Power Tip on <a href="#tips-configuration">Configurable Properties</a> for details on how to set these properties.</p>
 
 <h5>SRS Attributes</h5>
 
@@ -573,6 +584,7 @@ instead of "ICISM", you would set the "icism.prefix" property with a custom valu
 <tr><th>Property Name</th><th>Description</th><th>Default Value</th></tr>
 <tr><td>ddms.prefix</td><td>Default DDMS prefix used when generating components from scratch</td><td><code>ddms</code></td></tr>
 <tr><td>gml.prefix</td><td>Default GML prefix used when generating components from scratch</td><td><code>gml</code></td></tr>
+<tr><td>icism.cve.enumLocation</td><td>Classpath resource location for the ICISM Controlled Vocabulary files</td><td><code>/CVEnumISM/</code></td></tr>
 <tr><td>icism.cve.validationAsErrors</td><td>When validating SecurityAttributes, ICISM Controlled Vocabulary checks should return errors, instead of warnings</td><td><code>true</code></td></tr>
 <tr><td>icism.prefix</td><td>Default ICISM prefix used when generating components from scratch</td><td><code>ICISM</code></td></tr>
 <tr><td>sample.data</td><td>Default data directory used by sample applications</td><td><code>data/sample/</code></td></tr>

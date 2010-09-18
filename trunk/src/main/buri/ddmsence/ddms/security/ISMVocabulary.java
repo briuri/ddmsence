@@ -48,8 +48,13 @@ import buri.ddmsence.util.Util;
  * Representation of the Controlled Vocabulary enumerations used by ICISM attributes.
  * 
  * <p>
+ * The set of CVEs used can be configured with the configurable property, <code>icism.cve.enumLocation</code>,
+ * which points to a classpath resource location where the XML files can be found. Enumeration files are reloaded
+ * on each <code>enumContains()</code> call, if this property has changed.</p>
+ * 
+ * <p>
  * Token values are read from the CVEnumISM.xml files accompanying the "XML Data Encoding Specification for Information
- * Security Marking Metadata Version 2 (Pre-Release)". They can then be used to validate the contents of the attributes
+ * Security Marking Metadata". They can then be used to validate the contents of the attributes
  * in a {@link SecurityAttributes} instance.
  * </p>
  * 
@@ -159,45 +164,55 @@ public class ISMVocabulary {
 	private static final String VALUE_NAME = "Value";
 	private static final String REG_EXP_NAME = "regularExpression";
 	
-	static {
-		new ISMVocabulary();
-	}
+	private static String _lastEnumLocation = null;
 	
 	/**
 	 * Private to prevent instantiation
 	 */
-	private ISMVocabulary() {
-		try {
-			XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xmlReader.class"));
-			Builder builder = new Builder(reader, false);
-			loadEnumeration(builder, CVE_DECLASS_EXCEPTION);
-			loadEnumeration(builder, CVE_ALL_CLASSIFICATIONS);
-			loadEnumeration(builder, CVE_US_CLASSIFICATIONS);
-			loadEnumeration(builder, CVE_DISSEMINATION_CONTROLS);
-			loadEnumeration(builder, CVE_FGI_SOURCE_OPEN);
-			loadEnumeration(builder, CVE_FGI_SOURCE_PROTECTED);
-			loadEnumeration(builder, CVE_NON_IC_MARKINGS);
-			loadEnumeration(builder, CVE_NOTICE);
-			loadEnumeration(builder, CVE_OWNER_PRODUCERS);
-			loadEnumeration(builder, CVE_RELEASABLE_TO);
-			loadEnumeration(builder, CVE_SAR_IDENTIFIER);
-			loadEnumeration(builder, CVE_SCI_CONTROLS);
-			loadEnumeration(builder, CVE_TYPE_EXEMPTED_SOURCE);
-		}
-		catch (Exception e) {
-			throw new RuntimeException("Could not load controlled vocabularies: " + e.getMessage());
+	private ISMVocabulary() {}
+
+	/**
+	 * Examines the configurable property for the CVEnum location, and reloads the files if necessary.
+	 */
+	private static synchronized void updateEnumLocation() {
+		String enumLocation = PropertyReader.getProperty("icism.cve.enumLocation");
+		if (getLastEnumLocation() == null || !getLastEnumLocation().equals(enumLocation)) {
+			_lastEnumLocation = enumLocation;
+			try {
+				ENUM_TOKENS.clear();
+				ENUM_PATTERNS.clear();
+				XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xmlReader.class"));
+				Builder builder = new Builder(reader, false);
+				loadEnumeration(enumLocation, builder, CVE_DECLASS_EXCEPTION);
+				loadEnumeration(enumLocation, builder, CVE_ALL_CLASSIFICATIONS);
+				loadEnumeration(enumLocation, builder, CVE_US_CLASSIFICATIONS);
+				loadEnumeration(enumLocation, builder, CVE_DISSEMINATION_CONTROLS);
+				loadEnumeration(enumLocation, builder, CVE_FGI_SOURCE_OPEN);
+				loadEnumeration(enumLocation, builder, CVE_FGI_SOURCE_PROTECTED);
+				loadEnumeration(enumLocation, builder, CVE_NON_IC_MARKINGS);
+				loadEnumeration(enumLocation, builder, CVE_NOTICE);
+				loadEnumeration(enumLocation, builder, CVE_OWNER_PRODUCERS);
+				loadEnumeration(enumLocation, builder, CVE_RELEASABLE_TO);
+				loadEnumeration(enumLocation, builder, CVE_SAR_IDENTIFIER);
+				loadEnumeration(enumLocation, builder, CVE_SCI_CONTROLS);
+				loadEnumeration(enumLocation, builder, CVE_TYPE_EXEMPTED_SOURCE);
+			} catch (Exception e) {
+				throw new RuntimeException("Could not load controlled vocabularies: " + e.getMessage());
+			}
 		}
 	}
-
+	
 	/**
 	 * Opens the enumeration file and extracts a Set of String token values based on the Term elements in the file.
 	 * Stores them in the ENUM_TOKENS map with the key. If a pattern is discovered, it is stored in a separate mapping.
 	 * 
+	 * @param enumLocation the classpath resource location for the enumeration files
 	 * @param builder the XOM Builder to read the file with
 	 * @param enumerationKey the key for the enumeration, which doubles as the filename.
 	 */
-	private void loadEnumeration(Builder builder, String enumerationKey) throws ParsingException, IOException {
-		InputStream stream = getClass().getResourceAsStream(PropertyReader.getProperty("icism.cve.enumLocation") + enumerationKey);
+	private static void loadEnumeration(String enumLocation, Builder builder, String enumerationKey)
+		throws ParsingException, IOException {
+		InputStream stream = new ISMVocabulary().getClass().getResourceAsStream(enumLocation + enumerationKey);
 		Document doc = builder.build(stream);
 		Set<String> tokens = new TreeSet<String>();
 		Set<String> patterns = new HashSet<String>();
@@ -231,17 +246,6 @@ public class ISMVocabulary {
 	}
 	
 	/**
-	 * Generates a message for an invalid value.
-	 * 
-	 * @param enumerationKey the key of the enumeration
-	 * @param value the test value which was invalid
-	 * @return a String
-	 */
-	public static String getInvalidMessage(String enumerationKey, String value) {
-		return (value + " is not a valid enumeration token for this attribute, as specified in " + enumerationKey + ".");
-	}
-	
-	/**
 	 * Checks if a value exists in the controlled vocabulary identified by the key. If the value does not match the
 	 * tokens, but the CVE also contains patterns, the regular expression pattern is checked next. If neither tokens or
 	 * patterns returns a match, return false.
@@ -253,6 +257,7 @@ public class ISMVocabulary {
 	 */
 	public static boolean enumContains(String enumerationKey, String value) {
 		Util.requireValue("key", enumerationKey);
+		updateEnumLocation();
 		Set<String> vocabulary = ENUM_TOKENS.get(enumerationKey);
 		if (vocabulary == null) {
 			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: "
@@ -323,5 +328,23 @@ public class ISMVocabulary {
 	 */
 	public static boolean usingOldClassification(String classification) {
 		return ("NS-S".equals(classification) || "NS-A".equals(classification));
+	}
+	
+	/**
+	 * Generates a message for an invalid value.
+	 * 
+	 * @param enumerationKey the key of the enumeration
+	 * @param value the test value which was invalid
+	 * @return a String
+	 */
+	public static String getInvalidMessage(String enumerationKey, String value) {
+		return (value + " is not a valid enumeration token for this attribute, as specified in " + enumerationKey + ".");
+	}
+
+	/**
+	 * Accessor for the last enum location.
+	 */
+	private static String getLastEnumLocation() {
+		return (_lastEnumLocation);
 	}
 }

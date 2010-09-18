@@ -20,6 +20,7 @@
 package buri.ddmsence.ddms.security;
 
 import buri.ddmsence.ddms.AbstractComponentTestCase;
+import buri.ddmsence.util.PropertyReader;
 
 /**
  * <p>Tests related to the ICISM Controlled Vocabularies</p>
@@ -36,6 +37,14 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 		super(null);
 	}
 
+	/**
+	 * Resets the enumLocation property.
+	 */
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		PropertyReader.setProperty("icism.cve.enumLocation", "/CVEnumISM/");
+	}
+	
 	public void testBadKey() {
 		try {
 			ISMVocabulary.enumContains("unknownKey", "TEST");
@@ -118,5 +127,11 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 	public void testInvalidMessage() {
 		assertEquals("Dog is not a valid enumeration token for this attribute, as specified in Cat.",
 			ISMVocabulary.getInvalidMessage("Cat", "Dog"));
+	}
+	
+	public void testChangedCVELocation() {
+		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_DECLASS_EXCEPTION, "25X0"));
+		PropertyReader.setProperty("icism.cve.enumLocation", "/customCVEnumISM/");
+		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DECLASS_EXCEPTION, "25X0"));
 	}
 }

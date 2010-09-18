@@ -57,9 +57,12 @@ import buri.ddmsence.util.Util;
  * <p>
  * At this time, logical validation is only done on the data types of the various attributes, and the controlled
  * vocabulary enumerations behind some of the attributes. Comparisons against the CVEs can be toggled between
- * warnings and errors with the configurable property, icism.cve.validationAsErrors. I would like to add the 
- * complete constraints set from the "XML Data Encoding Specification for Information Security Marking Metadata 
- * Version 2 (Pre-Release)" document in the future.
+ * warnings and errors with the configurable property, <code>icism.cve.validationAsErrors</code>, and a different
+ * set of CVEs can be laoded with the configurable property, <code>icism.cve.enumLocation</code>, which should
+ * point to a classpath accessible directory containing your enumeration XML files.</p>
+ * 
+ * <p>I would like to add the complete constraints set from the "XML Data Encoding Specification for Information 
+ * Security Marking Metadata" document in the future.
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">

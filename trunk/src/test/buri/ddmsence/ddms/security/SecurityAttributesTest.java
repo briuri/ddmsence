@@ -96,6 +96,14 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Resets the validation property.
+	 */
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		PropertyReader.setProperty("icism.cve.validationAsErrors", "true");
+	}
+	
+	/**
 	 * Returns a canned fixed value attributes object for testing higher-level components.
 	 * 
 	 * @param includeAll true if all attributes should be included.
