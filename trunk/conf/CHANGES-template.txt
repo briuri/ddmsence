@@ -9,6 +9,10 @@ Copyright 2010 by Brian Uri!
 Release History
 ===========================================================================
 
+v 1.7.0 (9/18/2010):
+This stable release adds enhancements to the handling of Intelligence Community
+Controlled Vocabulary Enumerations (Issue #36 and Issue #59).
+
 v 1.6.0 (9/07/2010):
 This stable release updates bundled schemas and files for DDMS 3.0 (Issue #55). An
 online DDMS validator is also available on the DDMSence website.
