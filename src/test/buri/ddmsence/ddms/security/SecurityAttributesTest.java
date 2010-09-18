@@ -27,6 +27,7 @@ import java.util.Map;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.util.DDMSVersion;
@@ -508,5 +509,33 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		assertEquals("<meta name=\"classification\" content=\"U\" />\n"
 			+ "<meta name=\"ownerProducer\" content=\"USA\" />\n"
 			+ "<meta name=\"declassManualReview\" content=\"true\" />\n", attributes.toHTML(""));
+	}
+	
+	public void testCVEErrorsByDefault() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put(SecurityAttributes.DECLASS_EXCEPTION_NAME, "UnknownValue");
+		try {
+			new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
+			fail("Allowed invalid CVE value without throwing an Exception.");
+		}
+		catch (InvalidDDMSException e) {
+			assertEquals("UnknownValue is not a valid enumeration token for this attribute, as specified in CVEnumISM25X.xml.", e.getMessage());
+		}
+	}
+	
+	public void testCVEWarnings() {
+		PropertyReader.setProperty("icism.cve.validationAsErrors", "false");
+		Map<String, String> map = new HashMap<String, String>();
+		map.put(SecurityAttributes.DECLASS_EXCEPTION_NAME, "UnknownValue");
+		try {
+			SecurityAttributes attr = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
+			List<ValidationMessage> warnings = attr.getValidationWarnings();
+			assertEquals(1, warnings.size());
+			assertEquals("UnknownValue is not a valid enumeration token for this attribute, as specified in CVEnumISM25X.xml.",
+				warnings.get(0).getText());
+		}
+		catch (InvalidDDMSException e) {
+			fail("An exception was thrown when a warning was expected.");
+		}
 	}
 }

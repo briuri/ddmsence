@@ -61,6 +61,7 @@ public class PropertyReaderTest extends TestCase {
 	}
 	
 	public void testSetPropertyInvalidName() {
+		// This also handles unconfigurable properties.
 		try {
 			PropertyReader.setProperty("unknown.property", "value");
 			fail("Did not prevent invalid property name.");

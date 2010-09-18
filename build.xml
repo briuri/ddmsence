@@ -18,7 +18,7 @@
     <property name="version" value="1.6.0" />
 	<property name="conf.dir" value="conf" />
 	<property name="data.dir" value="data" />
-	<property name="local.web.dir" value="/apache-tomcat-5.5.30/webapps/ddmsence" />
+	<property name="local.web.dir" value="E:\\urizone\\output\\tomcat\\webapps\\ddmsence" />
 	<property name="src.main.dir" value="src/main" />
 	<property name="src.samples.dir" value="src/samples" />
 	<property name="src.test.dir" value="src/test" />

@@ -114,4 +114,9 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 		assertTrue(ISMVocabulary.classificationNeedsReview("CTS-BALK"));
 		assertFalse(ISMVocabulary.classificationNeedsReview("CTS"));
 	}
+	
+	public void testInvalidMessage() {
+		assertEquals("Dog is not a valid enumeration token for this attribute, as specified in Cat.",
+			ISMVocabulary.getInvalidMessage("Cat", "Dog"));
+	}
 }

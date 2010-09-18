@@ -222,8 +222,18 @@ public class ISMVocabulary {
 	 */
 	public static void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
 		if (!enumContains(enumerationKey, value))
-			throw new InvalidDDMSException(value
-				+ " is not a valid enumeration token for this attribute, as specified in " + enumerationKey + ".");
+			throw new InvalidDDMSException(getInvalidMessage(enumerationKey, value));
+	}
+	
+	/**
+	 * Generates a message for an invalid value.
+	 * 
+	 * @param enumerationKey the key of the enumeration
+	 * @param value the test value which was invalid
+	 * @return a String
+	 */
+	public static String getInvalidMessage(String enumerationKey, String value) {
+		return (value + " is not a valid enumeration token for this attribute, as specified in " + enumerationKey + ".");
 	}
 	
 	/**

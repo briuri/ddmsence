@@ -32,6 +32,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractAttributeGroup;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -55,9 +56,10 @@ import buri.ddmsence.util.Util;
  * 
  * <p>
  * At this time, logical validation is only done on the data types of the various attributes, and the controlled
- * vocabulary enumerations behind some of the attributes. I would like to add the complete constraints set from the
- * "XML Data Encoding Specification for Information Security Marking Metadata Version 2 (Pre-Release)" document in
- * the future.
+ * vocabulary enumerations behind some of the attributes. Comparisons against the CVEs can be toggled between
+ * warnings and errors with the configurable property, icism.cve.validationAsErrors. I would like to add the 
+ * complete constraints set from the "XML Data Encoding Specification for Information Security Marking Metadata 
+ * Version 2 (Pre-Release)" document in the future.
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -363,6 +365,11 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 
 	/**
 	 * Validates the attribute group. Where appropriate the {@link ISMVocabulary} enumerations are validated.
+	 * For any validation rule in which the value "must be a valid token", the configurable property,
+	 * <code>icism.cve.validationAsErrors</code> determines whether the results of these checks are returned
+	 * as errors or warnings. The default behavior is to return errors when a value is not found in a controlled
+	 * vocabulary. Note that this property does not affect other types of rules -- for example, using 
+	 * "compliationReason" on a DDMS 2.0 component will always result in an error.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>If set, the classification must be a valid token.</li>
@@ -390,24 +397,24 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		boolean isDDDMS20 = "2.0".equals(getDDMSVersion());
 		if (!Util.isEmpty(getClassification())) {
 			if (!isDDDMS20 || !ISMVocabulary.usingOldClassification(getClassification()))
-				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, getClassification());
+				validateEnumeration(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, getClassification());
 		}
 		for (String op : getOwnerProducers())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_OWNER_PRODUCERS, op);
+			validateEnumeration(ISMVocabulary.CVE_OWNER_PRODUCERS, op);
 		for (String sciControls : getSCIcontrols())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_SCI_CONTROLS, sciControls);
+			validateEnumeration(ISMVocabulary.CVE_SCI_CONTROLS, sciControls);
 		for (String sarId : getSARIdentifier())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_SAR_IDENTIFIER, sarId);
+			validateEnumeration(ISMVocabulary.CVE_SAR_IDENTIFIER, sarId);
 		for (String dissemination : getDisseminationControls())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, dissemination);
+			validateEnumeration(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, dissemination);
 		for (String fgiSourceOpen : getFGIsourceOpen())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_FGI_SOURCE_OPEN, fgiSourceOpen);
+			validateEnumeration(ISMVocabulary.CVE_FGI_SOURCE_OPEN, fgiSourceOpen);
 		for (String fgiSourceProtected : getFGIsourceProtected())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_FGI_SOURCE_PROTECTED, fgiSourceProtected);
+			validateEnumeration(ISMVocabulary.CVE_FGI_SOURCE_PROTECTED, fgiSourceProtected);
 		for (String releasableTo : getReleasableTo())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_RELEASABLE_TO, releasableTo);
+			validateEnumeration(ISMVocabulary.CVE_RELEASABLE_TO, releasableTo);
 		for (String nonIC : getNonICmarkings())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_NON_IC_MARKINGS, nonIC);
+			validateEnumeration(ISMVocabulary.CVE_NON_IC_MARKINGS, nonIC);
 		if (isDDDMS20 && !Util.isEmpty(getCompilationReason()))
 			throw new InvalidDDMSException("The compilationReason attribute cannot be used in DDMS 2.0.");		
 		if (getDeclassDate() != null && !getDeclassDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
@@ -416,20 +423,19 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			if (isDDDMS20) {
 				// In DDMS 2.0, this can be a list of tokens.
 				for (String value : Util.getAsList(getDeclassException()))
-					ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DECLASS_EXCEPTION, value);
+					validateEnumeration(ISMVocabulary.CVE_DECLASS_EXCEPTION, value);
 			}
 			else
-				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DECLASS_EXCEPTION, getDeclassException());
+				validateEnumeration(ISMVocabulary.CVE_DECLASS_EXCEPTION, getDeclassException());
 		}
 		if (!Util.isEmpty(getTypeOfExemptedSource())) {
 			if (isDDDMS20) {
 				// In DDMS 2.0, this can be a list of tokens.
 				for (String value : Util.getAsList(getTypeOfExemptedSource()))
-					ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, value);
-		
+					validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, value);
 			}
 			else
-				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, getTypeOfExemptedSource());
+				validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, getTypeOfExemptedSource());
 		}
 		if (!isDDDMS20 && getDeclassManualReview() != null)
 			throw new InvalidDDMSException("The declassManualReview attribute cannot be used in DDMS 3.0.");
@@ -438,8 +444,24 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			throw new InvalidDDMSException("The dateOfExemptedSource must be in the xs:date format (YYYY-MM-DD).");
 	}
 	
+	/**
+	 * Helper method to validate a value from a controlled vocabulary. This is the delegate that handles whether a
+	 * bad validation should result in a warning or error, based on the configurable property, "icism.cve.validationAsErrors".
+	 * 
+	 * @param enumerationKey the key of the enumeration
+	 * @param value the test value
+	 * @throws InvalidDDMSException if the value is not and validation should result in errors
+	 */
+	private void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
+		boolean validationAsErrors = Boolean.valueOf(PropertyReader.getProperty("icism.cve.validationAsErrors")).booleanValue();
+		if (validationAsErrors)
+			ISMVocabulary.validateEnumeration(enumerationKey, value);
+		else {
+			if (!ISMVocabulary.enumContains(enumerationKey, value))
+				getWarnings().add(ValidationMessage.newWarning(ISMVocabulary.getInvalidMessage(enumerationKey, value), null));
+		}
+	}
 
-	
 	/**
 	 * Standalone validation method for components which require a classification and ownerProducer.
 	 * 
