@@ -332,9 +332,13 @@ System.out.println(title.toXML());</pre>
 &lt;/ddms:title&gt;</pre>
 <p class="figure">Figure 8. The resultant XML element with security attributes</p>
 
-<p>The values assigned to some attributes must come from the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/">Controlled Vocabulary Enumerations</a>
-defined by the Intelligence Community. The enumerations used by DDMSence are intended for Public Release, so DDMSence will not be able to validate enumeration values from higher classification levels. 
-The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. I believe that the IC will be releasing Schematron files to support these rules in the future.</p>
+<p>The values assigned to some attributes must come from the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/">Controlled Vocabulary Enumerations</a> (CVEs)
+defined by the Intelligence Community. The enumerations used by DDMSence are taken from the DES Version 3 Public Release, so DDMSence will not be able to 
+recognize enumeration values from higher classification levels. To accept enumeration values which are not listed in the Public Release files, you will
+need to explicitly toggle DDMSence to return warnings instead of errors when validating CVEs, via <a href="#tips-configuration">Configurable Properties</a>.</p>
+ 
+<p>The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. I believe that the IC will be 
+releasing Schematron files to support these rules in the future.</p>
 
 <h5>SRS Attributes</h5>
 
@@ -551,6 +555,9 @@ of other engines and the (unscientific) results are shown below.</p>
 </table>
 <p class="figure">Table 3. XSLT Engines for Schematron Validation</p>
 
+<p>Support for Schematron validation through alternative XSLT engines (other than the default Xalan engine) is provided through the 
+<code>xml.transform.TransformerFactory</code> configurable property, which can be set to the class name of another processor.</p>
+
 <a name="tips-configuration"></a><h4>Configurable Properties</h4>
 
 <p>DDMSence exposes some properties, such as the namespace prefixes used for each XML namespace, so they can be configured by the end user. For example, if you are 
@@ -566,15 +573,13 @@ instead of "ICISM", you would set the "icism.prefix" property with a custom valu
 <tr><th>Property Name</th><th>Description</th><th>Default Value</th></tr>
 <tr><td>ddms.prefix</td><td>Default DDMS prefix used when generating components from scratch</td><td><code>ddms</code></td></tr>
 <tr><td>gml.prefix</td><td>Default GML prefix used when generating components from scratch</td><td><code>gml</code></td></tr>
+<tr><td>icism.cve.validationAsErrors</td><td>When validating SecurityAttributes, ICISM Controlled Vocabulary checks should return errors, instead of warnings</td><td><code>true</code></td></tr>
 <tr><td>icism.prefix</td><td>Default ICISM prefix used when generating components from scratch</td><td><code>ICISM</code></td></tr>
+<tr><td>sample.data</td><td>Default data directory used by sample applications</td><td><code>data/sample/</code></td></tr>
 <tr><td>xlink.prefix</td><td>Default XLink prefix used when generating components from scratch</td><td><code>xlink</code></td></tr>
-<tr><td>sample.data</td><td>Sample data directory used by sample applications</td><td><code>data/sample/</code></td></tr>
-<tr><td>xml.transform.TransformerFactory</td><td>XSLT Engine class name<td><code>org.apache.xalan.processor.TransformerFactoryImpl</code></td></tr>
+<tr><td>xml.transform.TransformerFactory</td><td>XSLT Engine class name, for Schematron validation<td><code>org.apache.xalan.processor.TransformerFactoryImpl</code></td></tr>
 </table>
 <p class="figure">Table 4. Configurable Properties</p>
-
-<p>Support for Schematron validation through alternative XSLT engines (other than the default Xalan engine) is provided through the <code>xml.transform.TransformerFactory</code>
-property, which can be set to the class name of another processor. Please see the previous Power Tip on "Schematron Validation" for a table of tested and untested engines.</p>
 
 <a name="contributors"></a><h3>Contributors</h3>
 
