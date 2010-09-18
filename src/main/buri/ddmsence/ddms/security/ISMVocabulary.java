@@ -61,6 +61,7 @@ import buri.ddmsence.util.Util;
  * <li>CVEnumISMFGIOpen.xml: tokens allowed in the "FGIsourceOpen" attribute</li>
  * <li>CVEnumISMFGIProtected.xml: tokens allowed in the "FGIsourceProtected" attribute</li>
  * <li>CVEnumISMNonIC.xml: tokens allowed in the "nonICmarkings" attribute</li>
+ * <li>CVEnumISMNotice.xml: tokens allowed in the "notice" attribute. This is included for completeness only -- DDMS does not make use of this attribute.</li>
  * <li>CVEnumISMOwnerProducer.xml: tokens allowed in the "ownerProducer" attribute</li>
  * <li>CVEnumISMRelTo.xml: tokens allowed in the "releasableTo" attribute</li>
  * <li>CVEnumISMSAR.xml: tokens allowed in the "SARIdentifier" attribute</li>
@@ -102,6 +103,9 @@ public class ISMVocabulary {
 	
 	/** Filename for the enumerations allowed in a nonICmarkings attribute */
 	public static final String CVE_NON_IC_MARKINGS = "CVEnumISMNonIC.xml";
+	
+	/** Filename for the enumerations allowed in a notice attribute */
+	public static final String CVE_NOTICE = "CVEnumISMNotice.xml";
 	
 	/** Filename for the enumerations allowed in an ownerProducer attribute */
 	public static final String CVE_OWNER_PRODUCERS = "CVEnumISMOwnerProducer.xml";
@@ -173,6 +177,7 @@ public class ISMVocabulary {
 			loadEnumeration(builder, CVE_FGI_SOURCE_OPEN);
 			loadEnumeration(builder, CVE_FGI_SOURCE_PROTECTED);
 			loadEnumeration(builder, CVE_NON_IC_MARKINGS);
+			loadEnumeration(builder, CVE_NOTICE);
 			loadEnumeration(builder, CVE_OWNER_PRODUCERS);
 			loadEnumeration(builder, CVE_RELEASABLE_TO);
 			loadEnumeration(builder, CVE_SAR_IDENTIFIER);
