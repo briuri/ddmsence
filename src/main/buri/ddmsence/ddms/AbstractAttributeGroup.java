@@ -63,7 +63,7 @@ public abstract class AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		Util.requireDDMSValue("vresion", getDDMSVersion());
+		Util.requireDDMSValue("version", getDDMSVersion());
 	}
 		
 	/**
