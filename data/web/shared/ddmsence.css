@@ -191,3 +191,25 @@ th {
 	margin: 4px 20px 10px 10px;
 }
 
+/**
+ * Relational Tables Styles
+ */
+table.rel {
+	margin: 0 0 10px 0;
+	width: 750px;
+}
+tr.relRow {
+}
+th.relName {
+	font-family: monospace;
+}
+td.relField {
+	font-family: monospace;
+	font-weight: bold;
+	width: 100px;
+}
+td.relInfo {
+}
+td.relRules {
+	width: 200px;
+}
