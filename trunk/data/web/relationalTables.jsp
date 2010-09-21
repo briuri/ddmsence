@@ -25,8 +25,9 @@ lists of values as a delimited string value.</p>
 <h4>Notes So Far</h4> 
 <ul>
 <li>Each top-level component has a foreign key reference back to the parent DDMS resource. This key may be null, in case components are being generated from scratch and the parent resource is not created until the end.</li>
-<li>In general nested child elements do not have links back to their parents. It is assumed that queries will never need to retrieve ancestors.</li>
+<li>In general, nested child elements do not have links back to their parents. It is assumed that queries will never need to retrieve ancestors.</li>
 <li>If a table column is a character string and a value is not provided, an empty string should be favoured instead of <code>&lt;NULL&gt;</code>.</li>
+<li>The intent of the tables is to model the resource data, not schema data. XML namespaces and other schema constructs are not necessarily modelled.</li>
 </ul>
 
 <a name="tables-primary"></a><h4>Primary and Shared Components</h4>
@@ -35,51 +36,51 @@ lists of values as a delimited string value.</p>
 
 <a name="tables-format"></a><h4>The Format Layer</h4>
 
-<table>
+<table class="rel">
 	<tr>
-		<th class="tableName" colspan="3">ddmsFormat</th>
+		<th class="relName" colspan="3">ddmsFormat</th>
 	</tr>
 	<tr>
-		<td class="tableInfo" colspan="3">
+		<td class="relInfo" colspan="3">
 			This table maps to the ddms:format element, which is a top-level component.
 			It has an optional reference to the ddmsMediaExtent table.
 		</td>
 	</tr>
-	<tr class="tableRow">
-		<td>id</td><td>number, not null, sequenced</td><td>primary key of this row</td>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
-	<tr class="tableRow">
-		<td>resourceId</td><td>number</td><td>foreign key to the parent DDMS resource</td>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
 	</tr>
-	<tr class="tableRow">
-		<td>mimeType</td><td>char(256), not null</td><td>the mime type, exactly 1 required</td>
+	<tr class="relRow">
+		<td class="relField">mimeType</td><td class="relRules">char(256), not null</td><td>the mime type, exactly 1 required</td>
 	</tr>
-	<tr class="tableRow">
-		<td>extentId</td><td>number</td><td>foreign key to the ddmsMediaExtent table, 0-1 optional</td>
+	<tr class="relRow">
+		<td class="relField">extentId</td><td class="relRules">number</td><td>foreign key to the ddmsMediaExtent table, 0-1 optional</td>
 	</tr>
-	<tr class="tableRow">
-		<td>medium</td><td>char(256)</td><td>the medium, 0-1 optional</td>
+	<tr class="relRow">
+		<td class="relField">medium</td><td class="relRules">char(256)</td><td>the medium, 0-1 optional</td>
 	</tr>
 </table>
 
-<table>
+<table class="rel">
 	<tr>
-		<th class="tableName" colspan="3">ddmsMediaExtent</th>
+		<th class="relName" colspan="3">ddmsMediaExtent</th>
 	</tr>
 	<tr>
-		<td class="tableInfo" colspan="3">
+		<td class="relInfo" colspan="3">
 			This table maps to the ddms:extent element nested in ddms:format. A qualifier is required when a value is present, but this constraint
 			is not enforced here.
 		</td>
 	</tr>
-	<tr class="tableRow">
-		<td>id</td><td>number, not null, sequenced</td><td>primary key of this row</td>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
-	<tr class="tableRow">
-		<td>qualifier</td><td>char(2048)</td><td>the qualifier URI</td>
+	<tr class="relRow">
+		<td class="relField">qualifier</td><td class="relRules">char(2048)</td><td>the qualifier URI</td>
 	</tr>
-	<tr class="tableRow">
-		<td>value</td><td>char(256)</td><td>the value</td>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(256)</td><td>the value</td>
 	</tr>
 </table>
 
@@ -97,20 +98,40 @@ lists of values as a delimited string value.</p>
 
 <a name="tables-extensible"></a><h4>The Extensible Layer</h4>
 
-<p>Not completed yet.</p>
-
-<!--
-<table>
+<table class="rel">
 	<tr>
-		<th class="tableName" colspan="3">TABLENAME</th>
+		<th class="relName" colspan="3">ddmsExtensible</th>
 	</tr>
 	<tr>
-		<td class="tableInfo" colspan="3">
+		<td class="relInfo" colspan="3">
+			This table maps to the custom elements which can appear at the top-level of the DDMS resource. The table merely stores the XML of the element (DDMSence does not dig into these elements either).
+			In DDMS 3.0, 0 to many of these might appear on a DDMS resource. Each row in this table should map to 1 top-level extensible element.
+			Also note that the XML namespaces may have been defined higher up, so the XML fragment may not be correct on its own.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">xml</td><td class="relRules">blob</td><td>the raw XML text of the extensible element</td>
+	</tr>
+</table>
+
+<!--
+<table class="rel">
+	<tr>
+		<th class="relName" colspan="3">TABLENAME</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
 			DETAILS
 		</td>
 	</tr>
-	<tr class="tableRow">
-		<td></td><td></td><td></td>
+	<tr class="relRow">
+		<td class="relField"></td><td class="relRules"></td><td></td>
 	</tr>
 </table>
 -->
