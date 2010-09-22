@@ -606,7 +606,7 @@ in progress, and may be horribly incorrect or incomplete.</p>
 
 <a name="contributors"></a><h3>Contributors</h3>
 
-<p>DDMSence is a <a href="http://en.wikipedia.org/wiki/Benevolent_dictatorship#Open_Source_Usage" target="_new">benevolent dictatorship</a> -- I
+<p>DDMSence is a <a href="http://www.oss-watch.ac.uk/resources/benevolentdictatorgovernancemodel.xml" target="_new">benevolent dictatorship</a> -- I
 am the sole committer on the project for the forseeable future. However, I welcome any suggestions you might have on ways to improve the project
 or correct deficiencies!</p>
 
