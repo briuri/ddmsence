@@ -10,6 +10,8 @@
 <h1>DDMS Table Model</h1>
 
 <div class="toc">
+	<b><u>Table of Contents</u></b>
+	<li><a href="#tables-notes">General Notes</a></li>
 	<li><a href="#tables-primary">Primary and Shared Components</a></li>
 	<li><a href="#tables-format">The Format Layer</a></li>
 	<li><a href="#tables-resource">The Resource Layer</a></li>
@@ -22,7 +24,7 @@
 mapping is to be comprehensive first and pragmatic second -- the full scope of DDMS will be modelled, but some design decisions may be made for simplicity, such as modelling
 lists of values as a delimited string value.</p>
 
-<h4>Notes So Far</h4> 
+<a name="tables-notes"></a><h4>General Notes</h4> 
 <ul>
 <li>Each top-level component has a foreign key reference back to the parent DDMS resource. This key may be null, in case components are being generated from scratch and the parent resource is not created until the end.</li>
 <li>In general, nested child elements do not have links back to their parents. It is assumed that queries will never need to retrieve ancestors.</li>
