@@ -12,29 +12,32 @@
 <p>DDMSence is Copyright &copy; 2010 by Brian Uri!. The DDMSence source code is published under the GNU Lesser General Public License (LGPL). The
 complete text of this license can be found below.</p>
 
-<p>DDMSence comes bundled with several third-party libraries required for core functionality -- their licenses are linked below.</p>
+<p>DDMSence makes use of several third-party libraries, whose licenses are linked below. Required libraries are already bundled with DDMSence, so you
+should not need to download them separately.</p>
 
 <ul>
-	<li>JUnit 4.8.1 (<a href="http://junit.sourceforge.net/cpl-v10.html">Common Public License v1.0</a>)</li>
-	<li>Rick Jelliffe's ISO Schematron implementation 4-21-2010 (<a href="http://www.opensource.org/licenses/zlib-license.php">zlib/libpng License</a>)</li>
-	<li>Xalan 2.7.1 (<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>)</li>
-	<li>Xerces 2.9.1 (<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>)</li>
-	<li>XML-Commons 1.3.04 (<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>)</li>
-	<li>XOM 1.2.6 (<a href="http://xom.nu/license.xhtml">GNU Lesser General Public License v2.1</a>)</li>
-</ul>
-
-<p>The DDMSence website uses the following libraries which are included in the "src"-flavored archive:</p>
-
-<ul>
-	<li>jQuery 1.3.2 (<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>)</li>
-	<li>SyntaxHighlighter 3.0.83 (<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>)</li>
-</ul>
-
-<p>The DDMSence website also uses the following libraries which are not distributed:</p>
-
-<ul>
-	<li>Spring MVC 2.0 (<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>)</li>
-	<li>com.oreilly.servlets 26Dec2008 (<a href="http://www.servlets.com/cos/license.html">Custom License</a>)</li>
+	<li><a href="http://www.schematron.com/">Rick Jelliffe's ISO Schematron implementation 4-21-2010</a> 
+		(<a href="http://www.opensource.org/licenses/zlib-license.php">zlib/libpng License</a>): Core library needed for Schematron validation.</li>
+	<li><a href="http://xml.apache.org/xalan-j/">Xalan 2.7.1</a>
+		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for Schematron validation.</li>
+	<li><a href="http://xerces.apache.org/xerces2-j/">Xerces 2.9.1</a>
+		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for XML parsing.</li>
+	<li><a href="http://xml.apache.org/commons/">XML-Commons 1.3.04</a>
+		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for XML parsing.</li>
+	<li><a href="http://www.xom.nu/">XOM 1.2.6</a>
+		(<a href="http://xom.nu/license.xhtml">GNU Lesser General Public License v2.1</a>): Core library needed for XML parsing.</li>
+	<br />	
+	<li><a href="http://www.servlets.com/cos/">com.oreilly.servlets 26Dec2008</a>
+		(<a href="http://www.servlets.com/cos/license.html">Custom License</a>): Used on the DDMSence website (not bundled).</li>
+	<li><a href="http://jquery.com/">jQuery 1.3.2</a>
+		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website.</li>
+	<li><a href="http://junit.sourceforge.net/">JUnit 4.8.1</a> 
+		(<a href="http://junit.sourceforge.net/cpl-v10.html">Common Public License v1.0</a>): Needed to run unit tests against DDMSence.</li>
+	<li><a href="http://www.springsource.org/">Spring MVC 2.0</a>
+		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Used on the DDMSence website (not bundled).</li>
+	<li><a href="http://alexgorbatchev.com/SyntaxHighlighter/">SyntaxHighlighter 3.0.83</a>
+		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website.</li>
+	
 </ul>
 
 <h3>GNU LESSER GENERAL PUBLIC LICENSE</h3>
