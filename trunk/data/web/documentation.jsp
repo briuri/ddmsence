@@ -208,7 +208,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 		
 <a name="tips-version"></a><h4>Working with DDMS 2.0</h4>
 
-<p>Starting with DDMSence v1.1, two versions of DDMS are supported: 2.0 and 3.0. When building DDMS components from XML files, the 
+<p>DDMSence currently supports two versions of DDMS: 2.0 and 3.0. When building DDMS components from XML files, the 
 DDMSReader class can automatically use the correct version of DDMS based on the XML namespace defined in the file.
 When building DDMS components from scratch, the <a href="/docs/index.html?buri/ddmsence/util/DDMSVersion.html">DDMSVersion</a>
 class controls the version being used. There is an instance of DDMSVersion for each supported version, and this 
