@@ -20,7 +20,7 @@
 	<li><a href="#design">Design Decisions</a></li>
 	<li><a href="#tips">Power Tips</a></li><ul>
 		<li><a href="#tips-version">Working with DDMS 2.0</a></li>
-		<li><a href="#tips-attributes">Attribute Groups</a></li>
+		<li><a href="#tips-attributes">IC and GML Attribute Groups</a></li>
 		<li><a href="#tips-extensible">The Extensible Layer</a></li>
 		<li><a href="#tips-schematron">Schematron Validation</a></li>
 		<li><a href="#tips-configuration">Configurable Properties</a></li>
@@ -199,7 +199,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 <div class="toc">
 	<b><u>Table of Contents</u></b>
 	<li><a href="#tips-version">Working with DDMS 2.0</a></li>
-	<li><a href="#tips-attributes">Attribute Groups</a></li>
+	<li><a href="#tips-attributes">IC and GML Attribute Groups</a></li>
 	<li><a href="#tips-extensible">The Extensible Layer</a></li>
 	<li><a href="#tips-schematron">Schematron Validation</a></li>
 	<li><a href="#tips-configuration">Configurable Properties</a></li>
@@ -293,7 +293,7 @@ Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 <tr><td><code>@ICISM:compilationReason</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr></table>
 <p class="figure">Table 2. Security Attribute changes between DDMS 2.0 and DDMS 3.0</p>
 
-<a name="tips-attributes"></a><h4>Attribute Groups</h4>
+<a name="tips-attributes"></a><h4>IC and GML Attribute Groups</h4>
 
 <h5>ICISM Security Attributes</h5>
 
@@ -307,14 +307,13 @@ the attributes from a XOM element will simply load these attributes from the ele
 <p class="figure">Figure 6. SecurityAttributes constructor</p>
 
 <p>Because the <code>classification</code> and <code>ownerProducers</code> are the most commonly referenced attributes, they are explicit parameters. Any other
-attribute can be added in the String-based map called <code>otherAttributes</code>. If an attribute is repeated, the last one in the list is used, and if an attribute does not match an
+attribute can be added in the String-based map called <code>otherAttributes</code>. If an attribute does not match an
 expected attribute name, it is ignored. Here is an example which creates Confidential markings and puts them on a <code>ddms:title</code> element:</p>
 
 <pre class="brush: java">List&lt;String&gt; ownerProducers = new ArrayList&lt;String&gt;();
 ownerProducers.add("USA");
 ownerProducers.add("AUS");
 Map&lt;String, String&gt; otherAttributes = new HashMap&lt;String, String&gt;();
-otherAttributes.put("SCIcontrols", "HCS"); // This will be overwritten by "SI"
 otherAttributes.put("SCIcontrols", "SI");
 otherAttributes.put("SARIdentifier", "SAR-USA");
 // The next line will be ignored, because the "classification" parameter takes precedence.
@@ -601,7 +600,7 @@ in progress, and may be horribly incorrect or incomplete.</p>
 
 <ul>
 	<li><b>DDMS Schematron Implementation</b>: An attempt to implement some of the more complex rules in the DDMS specification in ISO Schematron.</li>
-	<li><b><a href="relationalTables.jsp">DDMS Table Model</a></b>: An experimental mapping of the DDMS specification to relational database tables (database-agnostic).</li>
+	<li><a href="relationalTables.jsp">DDMS Table Model</a>: An experimental mapping of the DDMS specification to relational database tables (database-agnostic).</li>
 </ul> 
 
 <a name="contributors"></a><h3>Contributors</h3>
