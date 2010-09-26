@@ -20,32 +20,103 @@
 	<li><a href="#tables-extensible">The Extensible Layer</a></li>
 </div>
 
-<p>This page is an attempt to map the DDMS specification to a relational database model. It is very incomplete, and I will work on it when I have time. The intent of this
-mapping is to be comprehensive first and pragmatic second -- the full scope of DDMS will be modelled, but some design decisions may be made for simplicity, such as modelling
-lists of values as a delimited string value.</p>
+<p>This document is an attempt to map the DDMS specification to a relational database model. At the moment, it is very incomplete and I am working on it as time permits. 
+The intent of this mapping is to be comprehensive first and pragmatic second -- the full scope of DDMS will be modeled, but some design decisions may be 
+made for simplicity, such as modeling lists of values as a delimited string value.</p>
 
 <a name="tables-notes"></a><h4>General Notes</h4> 
 <ul>
-<li>Each top-level component has a foreign key reference back to the parent DDMS resource. This key may be null, in case components are being generated from scratch and the parent resource is not created until the end.</li>
-<li>In general, nested child elements do not have links back to their parents. It is assumed that queries will never need to retrieve ancestors.</li>
-<li>If a table column is a character string and a value is not provided, an empty string should be favoured instead of <code>&lt;NULL&gt;</code>.</li>
-<li>The intent of the tables is to model the resource data, not schema data. XML namespaces and other schema constructs are not necessarily modelled.</li>
+<li>Child elements and attributes will have links back to their parents, but not in the reverse direction. This key is allowed to have an initial <code>&lt;NULL&gt;</code> value, to support a bottom-up approach to building DDMS resources from scratch.</li>
+<li>If a table column is a character string and a value is not provided, an empty string should be favored instead of <code>&lt;NULL&gt;</code>.</li>
+<li>The intent of the tables is to model the resource data, not schema data. XML namespaces and other schema constructs are not necessarily modeled.</li>
+<li>Reference tables (i.e. the four types of producers, or the valid names of ICISM security attributes) are not included here. Columns which have string values for these constants could just as easily have foreign keys to a reference table.</li>
 </ul>
 
 <a name="tables-primary"></a><h4>Primary and Shared Components</h4>
 
-<p>Not completed yet.</p>
+<pre>
+TODO:
+	Resource
+</pre>
+
+<a name="ddmsSecurityAttributes"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsSecurityAttributes</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table contains any <a href="/docs/buri/ddmsence/ddms/security/SecurityAttributes.html">ICISM security attributes</a> affixed to a
+			DDMS element. Each table row represents one attribute, and an element may link to 0-to-many rows in this table, via the <code>parentId</code> 
+			column. Because only certain elements require a <code>classification</code> and <code>ownerProducers</code>, no constraints enforce this 
+			condition here. In DDMS 3.0, acceptable parents	would include
+			<a href="#ddmsDescription">Description</a>,	<a href="#ddms">GeospatialCoverage</a>, <a href="#ddmsOrganization">Organization</a>,
+			<a href="#ddmsPerson">Person</a>, <a href="#ddmsRelatedResources">RelatedResources</a>, <a href="#ddmsResource">Resource</a>,
+			<a href="#ddmsSecurity">Security</a>, <a href="#ddmsService">Service</a>, <a href="#ddmsSource">Source</a>,
+			<a href="#ddmsSubjectCoverage">SubjectCoverage</a>, <a href="#ddmsSubtitle">Subtitle</a>, <a href="#ddmsTemporalCoverage">TemporalCoverage</a>,
+			<a href="#ddmsTitle">Title</a>, <a href="#ddmsUnknown">Unknown</a>, or <a href="#ddmsVirtualCoverage">VirtualCoverage</a>. In DDMS 2.0,
+			acceptable parents would include
+			<a href="#ddmsDescription">Description</a>,	<a href="#ddmsOrganization">Organization</a>, <a href="#ddmsPerson">Person</a>, 
+			<a href="#ddmsRelatedResources">RelatedResources</a>, <a href="#ddmsResource">Resource</a>, <a href="#ddmsSecurity">Security</a>, 
+			<a href="#ddmsService">Service</a>, <a href="#ddmsSubtitle">Subtitle</a>, <a href="#ddmsTitle">Title</a>, or <a href="#ddmsUnknown">Unknown</a>.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent component of this attribute</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">name</td><td class="relRules">char(256), not null</td><td>the unique attribute name, i.e. "classification" or "SCIcontrols"</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the attribute value as a string</td>
+	</tr>
+</table>
+
+<a name="ddmsSrsAttributes"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsSrsAttributes</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table contains the <a href="/docs/buri/ddmsence/ddms/summary/SRSAttributes.html">SRS attributes</a> affixed to GML elements, including
+			<a href="#ddmsGmlPoint">Point</a>, <a href="#ddmsGmlPolygon">Polygon</a>, or <a href="#ddmsGmlPosition">Position</a>. Unlike the ICISM Security
+			Attributes table, where each row is an attribute, the rows in this table represent a complete set of SRS information for a single element. 
+			An element may link to 0-or-1 rows in this table, via the <code>parentId</code> column. Because the required/optional status of each attribute
+			varies based on the parent, no constraints enforce any rules here. 
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent component of this attribute</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">srsName</td><td class="relRules">char(2048)</td><td>the URI-based SRS name, optional on Positions, but required on Points and Polygons</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">srsDimension</td><td class="relRules">number</td><td>a positive integer dimension</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">axisLabels</td><td class="relRules">char(2048)</td><td>an ordered list of axes labels, as a space-delimited list of NCNames</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">uomLabels</td><td class="relRules">char(2048)</td><td>an ordered list of unit-of-measure labels for the axes, as a space-delimited list of NCNames</td>
+	</tr>		
+</table>
 
 <a name="tables-format"></a><h4>The Format Layer</h4>
 
-<table class="rel">
+<a name="ddmsFormat"></a><table class="rel">
 	<tr>
 		<th class="relName" colspan="3">ddmsFormat</th>
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			This table maps to the ddms:format element, which is a top-level component.
-			It has an optional reference to the ddmsMediaExtent table.
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/format/Format.html">ddms:format</a>
+			element, which is a top-level component. This element contains 0-1 references to the <a href="#ddmsMediaExtent">ddmsMediaExtent</a> table. 
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -58,20 +129,18 @@ lists of values as a delimited string value.</p>
 		<td class="relField">mimeType</td><td class="relRules">char(256), not null</td><td>the mime type, exactly 1 required</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">extentId</td><td class="relRules">number</td><td>foreign key to the ddmsMediaExtent table, 0-1 optional</td>
-	</tr>
-	<tr class="relRow">
 		<td class="relField">medium</td><td class="relRules">char(256)</td><td>the medium, 0-1 optional</td>
 	</tr>
 </table>
 
-<table class="rel">
+<ul><a name="ddmsMediaExtent"></a><table class="rel">
 	<tr>
 		<th class="relName" colspan="3">ddmsMediaExtent</th>
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			This table maps to the ddms:extent element nested in ddms:format. A qualifier is required when a value is present, but this constraint
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/format/MediaExtent.html">ddms:extent</a>
+			element nested in ddms:format. A qualifier is required when a value is present, but this constraint
 			is not enforced here.
 		</td>
 	</tr>
@@ -79,36 +148,99 @@ lists of values as a delimited string value.</p>
 		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
+		<td class="relField">formatId</td><td class="relRules">number</td><td>foreign key to the parent ddms:format element</td>
+	</tr>	
+	<tr class="relRow">
 		<td class="relField">qualifier</td><td class="relRules">char(2048)</td><td>the qualifier URI</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">value</td><td class="relRules">char(256)</td><td>the value</td>
 	</tr>
-</table>
+</table></ul>
 
 <a name="tables-resource"></a><h4>The Resource Layer</h4>
 
-<p>Not completed yet.</p>
+<pre>
+TODO:
+	Dates
+	Identifier
+	Language
+	Organization
+	Person
+	Rights
+	Service
+	Source
+	Subtitle
+	Title
+	Type
+	Unknown
+</pre>
 
 <a name="tables-security"></a><h4>The Security Layer</h4>
 
-<p>Not completed yet.</p>
+<a name="ddmsSecurity"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsSecurity</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/security/Security.html">ddms:security</a>
+			element, which is a top-level component. It will be associated with rows in the <a href="#ddmsSecurityAttributes">ddmsSecurityAttributes</a>
+			table.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">excludeFromRollup</td><td class="relRules">boolean</td><td>has a fixed value of "" in DDMS 2.0, and "true" in DDMS 3.0.</td>
+	</tr>
+</table>
 
 <a name="tables-summary"></a><h4>The Summary Layer</h4>
 
-<p>Not completed yet.</p>
+<pre>
+TODO:
+	Description
+	GeospatialCoverage
+		GeographicIdentifier
+			CountryCode
+			FacilityIdentifier
+		BoundingBox
+		BoundingGeometry
+			GmlPoint
+				GmlPosition
+			GmlPolygon
+				GmlPosition
+		PostalAddress
+			CountryCode
+		VerticalExtent
+	RelatedResources
+		RelatedResource
+			Link
+	SubjectCoverage
+		Category
+		Keyword
+	TemporalCoverage
+	VirtualCoverage
+</pre>
 
 <a name="tables-extensible"></a><h4>The Extensible Layer</h4>
 
-<table class="rel">
+<a name="ddmsExtensible"></a><table class="rel">
 	<tr>
 		<th class="relName" colspan="3">ddmsExtensible</th>
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			This table maps to the custom elements which can appear at the top-level of the DDMS resource. The table merely stores the XML of the element (DDMSence does not dig into these elements either).
-			In DDMS 3.0, 0 to many of these might appear on a DDMS resource. Each row in this table should map to 1 top-level extensible element.
-			Also note that the XML namespaces may have been defined higher up, so the XML fragment may not be correct on its own.
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/extensible/ExtensibleElement.html">custom elements</a> 
+			which can appear at the top-level of the DDMS resource. The table merely stores the XML of the element (DDMSence does 
+			not dig into these elements either). In DDMS 3.0, 0-to-many of these might appear on a DDMS resource. Each row in this table 
+			should map to one top-level extensible element.	Also note that the XML namespaces may have been defined higher up, so the XML 
+			fragment may not be correct on its own.
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -123,7 +255,7 @@ lists of values as a delimited string value.</p>
 </table>
 
 <!--
-<table class="rel">
+<a name=""></a><table class="rel">
 	<tr>
 		<th class="relName" colspan="3">TABLENAME</th>
 	</tr>
