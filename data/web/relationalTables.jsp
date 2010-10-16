@@ -166,9 +166,6 @@ TODO:
 
 <pre>
 TODO:
-	Dates
-	Identifier
-	Language
 	Organization
 	Person
 	Rights
@@ -179,6 +176,85 @@ TODO:
 	Type
 	Unknown
 </pre>
+
+<a name="ddmsDates"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsDates</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/Dates.html">ddms:dates</a>
+			element, which is a top-level component. Dates are stored in string format, to ensure that a date value is
+			retrieved in the same XML date format that it was entered in.			
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">created</td><td class="relRules">char(64)</td><td>the creation date</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">posted</td><td class="relRules">char(64)</td><td>the posting date</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">validTil</td><td class="relRules">char(64)</td><td>the expiration date</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">infoCutOff</td><td class="relRules">char(64)</td><td>the info cutoff date</td>
+	</tr>
+</table>
+
+<a name="ddmsIdentifier"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsIdentifier</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/Identifier.html">ddms:identifier</a>
+			element, which is a top-level component. Every DDMS resource will have at least 1 row in this table.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">qualifier</td><td class="relRules">char(2048), not null</td><td>the qualifier URI</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(256), not null</td><td>the value</td>
+	</tr>	
+</table>
+
+<a name="ddmsLanguage"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsLanguage</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/Language.html">ddms:language</a>
+			element, which is a top-level component. A qualifier is required when a value is present, but this constraint is not enforced here. 
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">qualifier</td><td class="relRules">char(2048)</td><td>the qualifier URI</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(256)</td><td>the value</td>
+	</tr>
+</table>
 
 <a name="tables-security"></a><h4>The Security Layer</h4>
 
