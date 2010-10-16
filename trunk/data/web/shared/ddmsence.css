@@ -197,7 +197,7 @@ th {
  */
 table.rel {
 	margin: 0 0 10px 0;
-	width: 750px;
+	width: 780px;
 }
 tr.relRow {
 }
@@ -207,7 +207,7 @@ th.relName {
 td.relField {
 	font-family: monospace;
 	font-weight: bold;
-	width: 100px;
+	width: 150px;
 }
 td.relInfo {
 }
