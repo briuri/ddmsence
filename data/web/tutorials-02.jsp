@@ -180,7 +180,7 @@ Please enter the posted date [2010]:
 Please enter the validTil date [2010]: 
 Please enter the infoCutOff date [2010]:
 
-<i>[...]</i>
+[...]
 
 The DDMS Resource is valid!
 [WARNING] /ddms:Resource/ddms:dates: A completely empty ddms:dates element was found.
