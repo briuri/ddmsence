@@ -79,7 +79,7 @@
 		<div class="newsUpdate"><u>04/21/2010</u>: v1.2.0 released.</div>
 		<div class="newsUpdate"><u>04/08/2010</u>: v1.1.0 released.</div>
 		<div class="newsUpdate"><u>04/01/2010</u>: v1.0.0 released. DDMSence information posted on the
-			<a href="https://metadata.dod.mil/mdr/topic.htm?topicId=4662" target="_new">DoD Metadata Registry Community Forum</a> and on 
+			<a href="https://metadata.ces.mil/mdr/topic.htm?topicId=4662" target="_new">DoD Metadata Registry Community Forum</a> and on 
 			<a href="http://freshmeat.net/projects/ddmsence" target="_new">freshmeat</a>.</div>
 		<div class="newsUpdate"><u>03/29/2010</u>: v0.9.d released.</div>
 		<div class="newsUpdate"><u>03/25/2010</u>: v0.9.c released.</div>
@@ -96,7 +96,7 @@
 
 <p>
 DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
-<a href="http://metadata.dod.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
+<a href="http://metadata.ces.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
 It can transform XML DDMS Resource records into a Java object model (using XOM and Xerces), allowing them to be manipulated or traversed within the context of a Java environment. 
 DDMSence also performs logical validation of rules which are not coded into the DDMS schema (such as the validation of longitude/latitude values).</p>
 
@@ -122,7 +122,7 @@ It is being released under the GNU Lesser General Public License (<a href="licen
 
 <p><img src="./images/BU.jpg" width="73" height="100" title="BU" class="bordered" align="left" />
 <b>Brian Uri!</b> is a software engineer at <a href="http://www.fgm.com/" target="_new">FGM, Inc.</a> in Reston, Virginia. He has been a member
-of the <a href="http://metadata.dod.mil/" target="_new">DoD Metadata Registry</a> development team since 2004, and a technical lead on the project since 2006. 
+of the <a href="http://metadata.ces.mil/" target="_new">DoD Metadata Registry</a> development team since 2004, and a technical lead on the project since 2006. 
 DDMSence grew out of the author's desire to gain more practical XML Schema experience, to write something useful which had never been done before, and an 
 unusually large amount of free time.</p>
 
