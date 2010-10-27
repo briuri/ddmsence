@@ -80,7 +80,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#Point<br />
+ * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Point<br />
  * <u>Description</u>: This component is used to build gml:Polygon or gml:Point.<br />
  * <u>Obligation</u>: Optional<br />
  * <u>Schema Modification Date</u>: 2010-01-25<br />

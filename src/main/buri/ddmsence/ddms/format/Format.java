@@ -54,7 +54,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#Format <br />
+ * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Format <br />
  * <u>Description</u>: A format is the physical or digital manifestation of the resource.<br />
  * <u>Obligation</u>: Optional<br />
  * <u>Schema Modification Date</u>: 2003-05-16<br />

@@ -58,7 +58,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#RelatedResources<br />
+ * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#RelatedResources<br />
  * <u>Description</u>: A set of resources related by a specified relationship and direction to the resource being 
  * described.<br />
  * <u>Obligation</u>: Optional<br />
