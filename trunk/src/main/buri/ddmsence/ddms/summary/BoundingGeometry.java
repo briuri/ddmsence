@@ -43,7 +43,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicBoundingGeometry<br />
+ * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicBoundingGeometry<br />
  * <u>Description</u>: A wrapper for child elements used to express a geographic location as a point or polygon.<br />
  * <u>Obligation</u>: Optional in a geospatialCoverage element<br />
  * <u>Schema Modification Date</u>: 2010-01-25<br />

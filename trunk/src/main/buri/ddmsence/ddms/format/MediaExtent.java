@@ -48,7 +48,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  *  
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#Extent<br />
+ * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Extent<br />
  * <u>Description</u>: An extent provides further details about the format of a resource, such as sizes or 
  * dimensions.<br />
  * <u>Obligation</u>: Optional<br />

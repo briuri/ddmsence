@@ -62,7 +62,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#Unknown<br />
+ * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Unknown<br />
  * <u>Description</u>: Information about an unknown producer entity fulfilling some producer role.<br />
  * <u>Obligation</u>: At least one of the four producerTypes is required.<br />
  * <u>Schema Modification Date</u>: 2010-01-26<br />

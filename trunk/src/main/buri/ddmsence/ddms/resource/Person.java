@@ -65,7 +65,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#Person<br />
+ * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Person<br />
  * <u>Description</u>: Information about a person fulfilling some producer role.<br />
  * <u>Obligation</u>: At least one of the four producerTypes is required.<br />
  * <u>Schema Modification Date</u>: 2004-08-26<br />

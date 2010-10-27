@@ -55,7 +55,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: https://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#CountryCodeQualifier<br />
+ * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#CountryCodeQualifier<br />
  * <u>Description</u>: A standards-based abbreviation of a country name.<br />
  * <u>Obligation</u>: Mandatory in postalAddresses, Optional in geographicIdentifiers<br />
  * <u>Schema Modification Date</u>: 2010-01-25<br />
