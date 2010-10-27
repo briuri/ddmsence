@@ -27,6 +27,39 @@ made for simplicity, such as modeling lists of values as a delimited string valu
 <p>Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model may be useful when integrating DDMSence
 with an existing persistence framework like Hibernate or the Oracle XML SQL Utility (XSU).</p> 
 
+<p>The last time I worked on this document (and remembered to update the date) was on <b>10/26/2010 at 21:13</b>.</p>
+<div class="clear"></div>
+<pre>
+TODO:
+	Primary and Shared Components:
+		Resource
+	Resource Layer:	
+		Producers (Organization / Person / Service / Unknown)
+	Summary Layer:
+		Description
+		GeospatialCoverage
+			GeographicIdentifier
+				CountryCode
+				FacilityIdentifier
+			BoundingBox
+			BoundingGeometry
+				GmlPoint
+					GmlPosition
+				GmlPolygon
+					GmlPosition
+			PostalAddress
+				CountryCode
+			VerticalExtent
+		RelatedResources
+			RelatedResource
+				Link
+		SubjectCoverage
+			Category
+			Keyword
+		TemporalCoverage
+		VirtualCoverage
+</pre>
+
 <a name="tables-notes"></a><h4>General Notes</h4> 
 <ul>
 <li>Child elements and attributes will have links back to their parents, but not in the reverse direction. This key is allowed to have an initial <code>&lt;NULL&gt;</code> value, to support a bottom-up approach to building DDMS resources from scratch.</li>
@@ -34,14 +67,10 @@ with an existing persistence framework like Hibernate or the Oracle XML SQL Util
 <li>The intent of the tables is to model the resource data, not schema data. XML namespaces and other schema constructs are not necessarily modeled.</li>
 <li>Reference tables (i.e. the four types of producers, or the valid names of ICISM security attributes) are not included here. Columns which have string values for these constants could just as easily have foreign keys to a reference table.</li>
 <li>Most validation constraints are omitted from this model, since it is assumed that a validating library like DDMSence would be placed in front of the tables.</li>
+<li>Character string lengths are fairly arbitrary, although the numbers I chose are relatively reasonable for the types of data the fields contain. URI fields are set at 2048 characters to match Internet Explorer URL restrictions.</li> 
 </ul>
 
 <a name="tables-primary"></a><h4>Primary and Shared Components</h4>
-
-<pre>
-TODO:
-	Resource
-</pre>
 
 <a name="ddmsSecurityAttributes"></a><table class="rel">
 	<tr>
@@ -164,19 +193,6 @@ TODO:
 
 <a name="tables-resource"></a><h4>The Resource Layer</h4>
 
-<pre>
-TODO:
-	Organization
-	Person
-	Rights
-	Service
-	Source
-	Subtitle
-	Title
-	Type
-	Unknown
-</pre>
-
 <a name="ddmsDates"></a><table class="rel">
 	<tr>
 		<th class="relName" colspan="3">ddmsDates</th>
@@ -256,6 +272,133 @@ TODO:
 	</tr>
 </table>
 
+<a name="ddmsRights"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsRights</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/Rights.html">ddms:rights</a>
+			element, which is a top-level component. All attributes have a default value of "false". 
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">privacyAct</td><td class="relRules">boolean, default to "false"</td><td>whether protected by the Privacy Act</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">intellectualProperty</td><td class="relRules">boolean, default to "false"</td><td>whether the resource has an intellectual property rights owner</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">copyright</td><td class="relRules">boolean, default to "false"</td><td>whether the resource has a copyright owner</td>
+	</tr>	
+</table>
+
+<a name="ddmsSource"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsSource</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/Source.html">ddms:source</a>
+			element, which is a top-level component.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">qualifier</td><td class="relRules">char(2048), not null</td><td>the qualifier URI</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(256), not null</td><td>the value</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">schemaQualifier</td><td class="relRules">char(64), not null</td><td>the value</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">schemaHref</td><td class="relRules">char(2048), not null</td><td>the value</td>
+	</tr>	
+
+</table>
+
+<a name="ddmsSubtitle"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsSubtitle</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/Subtitle.html">ddms:subtitle</a>
+			element, which is an optional top-level component. It will be associated with rows in the <a href="#ddmsSecurityAttributes">ddmsSecurityAttributes</a>
+			table.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the subtitle of the resource</td>
+	</tr>
+</table>
+
+<a name="ddmsTitle"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsTitle</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/Title.html">ddms:title</a>
+			element, which is a top-level component. Every DDMS resource will have at least 1 row in this table.
+			It will be associated with rows in the <a href="#ddmsSecurityAttributes">ddmsSecurityAttributes</a>
+			table. 
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the title of the resource</td>
+	</tr>
+</table>
+
+<a name="ddmsType"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsType</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/Type.html">ddms:type</a>
+			element, which is a top-level component. A qualifier is required when a value is present, but this constraint is not enforced here. 
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">qualifier</td><td class="relRules">char(2048)</td><td>the qualifier URI</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(256)</td><td>the value</td>
+	</tr>
+</table>
+
 <a name="tables-security"></a><h4>The Security Layer</h4>
 
 <a name="ddmsSecurity"></a><table class="rel">
@@ -276,37 +419,11 @@ TODO:
 		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">excludeFromRollup</td><td class="relRules">boolean</td><td>has a fixed value of "" in DDMS 2.0, and "true" in DDMS 3.0.</td>
+		<td class="relField">excludeFromRollup</td><td class="relRules">boolean</td><td>has a fixed value of "true" in DDMS 3.0. This attribute does not exist in DDMS 2.0, so its value there is irrelevant (a DDMS 2.0 Security object will return a <code>null</code> value for this attribute).</td>
 	</tr>
 </table>
 
 <a name="tables-summary"></a><h4>The Summary Layer</h4>
-
-<pre>
-TODO:
-	Description
-	GeospatialCoverage
-		GeographicIdentifier
-			CountryCode
-			FacilityIdentifier
-		BoundingBox
-		BoundingGeometry
-			GmlPoint
-				GmlPosition
-			GmlPolygon
-				GmlPosition
-		PostalAddress
-			CountryCode
-		VerticalExtent
-	RelatedResources
-		RelatedResource
-			Link
-	SubjectCoverage
-		Category
-		Keyword
-	TemporalCoverage
-	VirtualCoverage
-</pre>
 
 <a name="tables-extensible"></a><h4>The Extensible Layer</h4>
 
