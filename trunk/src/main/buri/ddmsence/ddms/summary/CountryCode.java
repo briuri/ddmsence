@@ -36,7 +36,7 @@ import buri.ddmsence.util.Util;
  * The Text/HTML output of this class depends on the enclosing element of this country code. For example,
  * if the country code is used in a GeographicIdentifier.NAME, the HTML meta tags will prefix each field
  * with "geospatial.identifier.". See the DDMS category descriptions for other examples:
- * http://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#CountryCodeQualifier
+ * http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#CountryCodeQualifier
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
