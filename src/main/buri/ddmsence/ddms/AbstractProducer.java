@@ -49,7 +49,7 @@ import buri.ddmsence.util.Util;
  * The HTML output of this class depends on the producer type which the producer entity is associated with. For example,
  * if the producer entity represented by this class is a "pointOfContact", the HTML meta tags will prefix each field
  * with "pointOfContact.". See the DDMS category descriptions for other examples:
- * http://metadata.dod.mil/mdr/irs/DDMS/ddms_categories.htm#Person
+ * http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Person
  * </p>
  * 
  * <p>
