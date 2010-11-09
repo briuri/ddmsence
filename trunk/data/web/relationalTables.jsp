@@ -27,37 +27,34 @@ made for simplicity, such as modeling lists of values as a delimited string valu
 <p>Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model may be useful when integrating DDMSence
 with an existing persistence framework like Hibernate or the Oracle XML SQL Utility (XSU).</p> 
 
-<p>The last time I worked on this document (and remembered to update the date) was on <b>10/26/2010 at 21:13</b>.</p>
+<p>The last time I worked on this document (and remembered to update the date) was on <b>11/09/2010 at 18:51</b>.</p>
 <div class="clear"></div>
 <pre>
 TODO:
-	Primary and Shared Components:
-		Resource
-	Resource Layer:	
-		Producers (Organization / Person / Service / Unknown)
-	Summary Layer:
-		Description
-		GeospatialCoverage
-			GeographicIdentifier
-				CountryCode
-				FacilityIdentifier
-			BoundingBox
-			BoundingGeometry
-				GmlPoint
-					GmlPosition
-				GmlPolygon
-					GmlPosition
-			PostalAddress
-				CountryCode
-			VerticalExtent
-		RelatedResources
-			RelatedResource
-				Link
-		SubjectCoverage
-			Category
-			Keyword
-		TemporalCoverage
-		VirtualCoverage
+   Primary and Shared Components:
+      Resource
+   Summary Layer:
+      GeospatialCoverage
+         GeographicIdentifier
+            CountryCode
+            FacilityIdentifier
+         BoundingBox
+         BoundingGeometry
+            GmlPoint
+               GmlPosition
+            GmlPolygon
+               GmlPosition
+         PostalAddress
+            CountryCode
+         VerticalExtent
+      RelatedResources
+         RelatedResource
+            Link
+      SubjectCoverage
+         Category
+         Keyword
+      TemporalCoverage
+      VirtualCoverage
 </pre>
 
 <a name="tables-notes"></a><h4>General Notes</h4> 
@@ -67,7 +64,8 @@ TODO:
 <li>The intent of the tables is to model the resource data, not schema data. XML namespaces and other schema constructs are not necessarily modeled.</li>
 <li>Reference tables (i.e. the four types of producers, or the valid names of ICISM security attributes) are not included here. Columns which have string values for these constants could just as easily have foreign keys to a reference table.</li>
 <li>Most validation constraints are omitted from this model, since it is assumed that a validating library like DDMSence would be placed in front of the tables.</li>
-<li>Character string lengths are fairly arbitrary, although the numbers I chose are relatively reasonable for the types of data the fields contain. URI fields are set at 2048 characters to match Internet Explorer URL restrictions.</li> 
+<li>Character string lengths are fairly arbitrary, although the numbers I chose are relatively reasonable for the types of data the fields contain. URI fields are set at 2048 characters to match Internet Explorer URL restrictions.</li>
+<li>The pipe character, <b>|</b>, is suggested as a delimiter for columns containing lists in string form.</li> 
 </ul>
 
 <a name="tables-primary"></a><h4>Primary and Shared Components</h4>
@@ -82,11 +80,11 @@ TODO:
 			DDMS element. Each table row represents one attribute, and an element may link to 0-to-many rows in this table, via the <code>parentId</code> 
 			column. Because only certain elements require a <code>classification</code> and <code>ownerProducers</code>, no constraints enforce this 
 			condition here. In DDMS 3.0, acceptable parents	would include
-			<a href="#ddmsDescription">Description</a>,	<a href="#ddms">GeospatialCoverage</a>, <a href="#ddmsOrganization">Organization</a>,
-			<a href="#ddmsPerson">Person</a>, <a href="#ddmsRelatedResources">RelatedResources</a>, <a href="#ddmsResource">Resource</a>,
-			<a href="#ddmsSecurity">Security</a>, <a href="#ddmsService">Service</a>, <a href="#ddmsSource">Source</a>,
+			<a href="#ddmsDescription">Description</a>,	<a href="#ddms">GeospatialCoverage</a>, <a href="#ddmsProducer">Organization</a>,
+			<a href="#ddmsProducer">Person</a>, <a href="#ddmsRelatedResources">RelatedResources</a>, <a href="#ddmsResource">Resource</a>,
+			<a href="#ddmsSecurity">Security</a>, <a href="#ddmsProducer">Service</a>, <a href="#ddmsSource">Source</a>,
 			<a href="#ddmsSubjectCoverage">SubjectCoverage</a>, <a href="#ddmsSubtitle">Subtitle</a>, <a href="#ddmsTemporalCoverage">TemporalCoverage</a>,
-			<a href="#ddmsTitle">Title</a>, <a href="#ddmsUnknown">Unknown</a>, or <a href="#ddmsVirtualCoverage">VirtualCoverage</a>. In DDMS 2.0,
+			<a href="#ddmsTitle">Title</a>, <a href="#ddmsProducer">Unknown</a>, or <a href="#ddmsVirtualCoverage">VirtualCoverage</a>. In DDMS 2.0,
 			acceptable parents would include
 			<a href="#ddmsDescription">Description</a>,	<a href="#ddmsOrganization">Organization</a>, <a href="#ddmsPerson">Person</a>, 
 			<a href="#ddmsRelatedResources">RelatedResources</a>, <a href="#ddmsResource">Resource</a>, <a href="#ddmsSecurity">Security</a>, 
@@ -272,6 +270,57 @@ TODO:
 	</tr>
 </table>
 
+<a name="ddmsProducer"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsProducer</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/Organization.html">ddms:Organization</a>,
+			<a href="/docs/buri/ddmsence/ddms/resource/Person.html">ddms:Person</a>,
+			<a href="/docs/buri/ddmsence/ddms/resource/Service.html">ddms:Service</a>, and
+			<a href="/docs/buri/ddmsence/ddms/resource/Unknown.html">ddms:Unknown</a> elements. It is consistent with the DDMSence
+			approach of <a href="documentation.jsp#design">flattening the producer hierarchy</a>, and each row in this table is a "producer entity that fulfills
+			some role". In the DDMS schema, the hierarchy is modelled as "a producer role that is filled by some entity". Rows in this table may be associated with
+			rows in the <a href="#ddmsSecurityAttributes">ddmsSecurityAttributes</a> table.<br /><br />
+			All four producer entities share similar characteristics (at least one name, and optional phone numbers and email addresses), so I have modelled them
+			in a single producer table, rather than a separate table for each producer entity type. The latter approach is equally viable.<br /><br />
+			This modeling also assumes that there is no reuse of producers between various roles. So, while the person named "Brian Uri" might have a creator role and a contributor role,
+			and while Brian's details might be identical in each XML element, each set of details would have a separate row in this table.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">producerType</td><td class="relRules">char(24)</td><td>the role being filled by this producer, i.e. "creator", "contributor", "pointOfContact", or "publisher"</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">entityType</td><td class="relRules">char(24)</td><td>the type of this producer, i.e. "Organization", "Person", "Service" or "Unknown"</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">name</td><td class="relRules">char(256), not null</td><td>a delimited string-list of names for this producer. At least one is required.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">phone</td><td class="relRules">char(256)</td><td>a delimited string-list of phone numbers for this producer. Optional.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">email</td><td class="relRules">char(2048)</td><td>a delimited string-list of email addresses for this producer. Optional.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">surname</td><td class="relRules">char(256)</td><td>This is a Person-specific column, containing a surname. Exactly one surname is required for Person records.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">userId</td><td class="relRules">char(64)</td><td>This is a Person-specific column, containing an ID for a user.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">affiliation</td><td class="relRules">char(256)</td><td>This is a Person-specific column, containing an organizational affiliation for a user. Optional.</td>
+	</tr>	
+</table>
+
 <a name="ddmsRights"></a><table class="rel">
 	<tr>
 		<th class="relName" colspan="3">ddmsRights</th>
@@ -424,6 +473,29 @@ TODO:
 </table>
 
 <a name="tables-summary"></a><h4>The Summary Layer</h4>
+
+<a name="ddmsDescription"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsDescription</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/Description.html">ddms:description</a>
+			element, which is a top-level component. Every DDMS resource will have at least 1 row in this table.
+			It will be associated with rows in the <a href="#ddmsSecurityAttributes">ddmsSecurityAttributes</a>
+			table. 
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the description of the resource</td>
+	</tr>
+</table>
 
 <a name="tables-extensible"></a><h4>The Extensible Layer</h4>
 
