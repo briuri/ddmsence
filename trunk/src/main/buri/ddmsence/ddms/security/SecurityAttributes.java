@@ -45,11 +45,16 @@ import buri.ddmsence.util.Util;
 /**
  * Attribute group for the ICISM markings used throughout DDMS.
  * 
- * <p>In DDMS 3.0, this attribute group can decorate {@link Description}, {@link GeospatialCoverage}, {@link Organization},
- * {@link Person}, {@link RelatedResources}, {@link Security}, {@link Service}, {@link Source}, {@link SubjectCoverage}, {@link Subtitle},
- * {@link TemporalCoverage}, {@link Title}, {@link Unknown}, {@link VirtualCoverage}, or the {@link Resource} itself. In DDMS 2.0, this 
- * attribute group can only decorate {@link Description}, {@link Organization}, {@link Person}, {@link RelatedResources}, 
- * {@link Security}, {@link Service}, {@link Subtitle}, {@link Title}, {@link Unknown}, or the {@link Resource} itself.</p>		
+ * <p>In DDMS 3.0, this attribute group can decorate {@link buri.ddmsence.ddms.summary.Description}, 
+ * {@link buri.ddmsence.ddms.summary.GeospatialCoverage}, {@link Organization},
+ * {@link Person}, {@link buri.ddmsence.ddms.summary.RelatedResources}, {@link Security}, {@link Service}, 
+ * {@link buri.ddmsence.ddms.resource.Source}, {@link buri.ddmsence.ddms.summary.SubjectCoverage}, {@link buri.ddmsence.ddms.resource.Subtitle},
+ * {@link buri.ddmsence.ddms.summary.TemporalCoverage}, {@link buri.ddmsence.ddms.resource.Title}, {@link Unknown}, 
+ * {@link buri.ddmsence.ddms.summary.VirtualCoverage}, or the {@link Resource} itself. In DDMS 2.0, this 
+ * attribute group can only decorate {@link buri.ddmsence.ddms.summary.Description}, {@link Organization}, 
+ * {@link Person}, {@link buri.ddmsence.ddms.summary.RelatedResources}, 
+ * {@link Security}, {@link Service}, {@link buri.ddmsence.ddms.resource.Subtitle}, 
+ * {@link buri.ddmsence.ddms.resource.Title}, {@link Unknown}, or the {@link Resource} itself.</p>		
  * 				
  * <p>The DDMS documentation does not provide sample HTML/Text output for every attribute, so a best guess was taken. 
  * In general, the HTML/Text output of security attributes will be prefixed with the name of the element being marked.
