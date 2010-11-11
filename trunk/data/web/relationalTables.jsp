@@ -27,7 +27,7 @@ made for simplicity, such as modeling lists of values as a delimited string valu
 <p>Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model may be useful when integrating DDMSence
 with an existing persistence framework like Hibernate or the Oracle XML SQL Utility (XSU).</p> 
 
-<p>The last time I worked on this document (and remembered to update the date) was on <b>11/11/2010 at 07:09</b>.</p>
+<p>The last time I worked on this document (and remembered to update the date) was on <b>11/11/2010 at 07:40</b>.</p>
 <div class="clear"></div>
 <pre>
 TODO:
@@ -53,7 +53,6 @@ TODO:
       SubjectCoverage
          Category
          Keyword
-      TemporalCoverage
 </pre>
 
 <a name="tables-notes"></a><h4>General Notes</h4> 
@@ -146,7 +145,7 @@ TODO:
 	<tr>
 		<td class="relInfo" colspan="3">
 			This table maps to the <a href="/docs/buri/ddmsence/ddms/format/Format.html">ddms:format</a>
-			element, which is a top-level component. This element contains 0-1 references to the <a href="#ddmsMediaExtent">ddmsMediaExtent</a> table. 
+			element, which is a top-level component. 
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -355,6 +354,7 @@ TODO:
 		<td class="relInfo" colspan="3">
 			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/Source.html">ddms:source</a>
 			element, which is a top-level component.
+			It may be associated with rows in the <a href="#ddmsSecurityAttributes">ddmsSecurityAttributes</a> table in DDMS 3.0.
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -496,16 +496,43 @@ TODO:
 	</tr>
 </table>
 
-<a name="ddmsvirtualCoverage"></a><table class="rel">
+<a name="ddmsTemporalCoverage"></a><table class="rel">
 	<tr>
-		<th class="relName" colspan="3">ddmsvirtualCoverage</th>
+		<th class="relName" colspan="3">ddmsTemporalCoverage</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/TemporalCoverage.html">ddms:temporalCoverage</a>
+			element, which is an optional top-level component. 
+			It may be associated with rows in the <a href="#ddmsSecurityAttributes">ddmsSecurityAttributes</a> table in DDMS 3.0. 
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">timePeriodName</td><td class="relRules">char(64)</td><td>the name of the time period</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">start</td><td class="relRules">char(64)</td><td>the start date string in a valid XML date format, or one of the strings, "Not Applicable" or "Unknown".</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">end</td><td class="relRules">char(64)</td><td>the end date string in a valid XML date format, or one of the strings, "Not Applicable" or "Unknown".</td>
+	</tr>	
+</table>
+
+<a name="ddmsVirtualCoverage"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsVirtualCoverage</th>
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
 			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/VirtualCoverage.html">ddms:virtualCoverage</a>
 			element, which is an optional top-level component. 
-			It may be associated with rows in the <a href="#ddmsSecurityAttributes">ddmsSecurityAttributes</a>
-			table. 
+			It may be associated with rows in the <a href="#ddmsSecurityAttributes">ddmsSecurityAttributes</a> table in DDMS 3.0. 
 		</td>
 	</tr>
 	<tr class="relRow">
