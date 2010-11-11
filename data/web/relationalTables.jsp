@@ -27,7 +27,7 @@ made for simplicity, such as modeling lists of values as a delimited string valu
 <p>Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model may be useful when integrating DDMSence
 with an existing persistence framework like Hibernate or the Oracle XML SQL Utility (XSU).</p> 
 
-<p>The last time I worked on this document (and remembered to update the date) was on <b>11/09/2010 at 18:51</b>.</p>
+<p>The last time I worked on this document (and remembered to update the date) was on <b>11/11/2010 at 07:09</b>.</p>
 <div class="clear"></div>
 <pre>
 TODO:
@@ -54,7 +54,6 @@ TODO:
          Category
          Keyword
       TemporalCoverage
-      VirtualCoverage
 </pre>
 
 <a name="tables-notes"></a><h4>General Notes</h4> 
@@ -494,6 +493,32 @@ TODO:
 	</tr>
 	<tr class="relRow">
 		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the description of the resource</td>
+	</tr>
+</table>
+
+<a name="ddmsvirtualCoverage"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsvirtualCoverage</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/VirtualCoverage.html">ddms:virtualCoverage</a>
+			element, which is an optional top-level component. 
+			It may be associated with rows in the <a href="#ddmsSecurityAttributes">ddmsSecurityAttributes</a>
+			table. 
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">address</td><td class="relRules">char(2048)</td><td>a network address</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">protocol</td><td class="relRules">char(64)</td><td>a network protocol for data transfer</td>
 	</tr>
 </table>
 
