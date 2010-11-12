@@ -119,7 +119,7 @@ import buri.ddmsence.util.Util;
  * (required, starting in DDMS v3.0)<br />
  * <u>ICISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in 
  * DDMS v3.0)<br />
- * <u>ICISM:DESVersion</u>: Specifies the version of the Digital Encryption Schema version used for the security
+ * <u>ICISM:DESVersion</u>: Specifies the version of the Digital Encryption Schema used for the security
  * markings on this record. (required, starting in DDMS v3.0)<br />
  * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS v3.0. The classification and
  * ownerProducer attributes are required. Optional {@link ExtensibleAttributes} can also be applied.<br /><br />
