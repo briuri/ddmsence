@@ -27,7 +27,7 @@ made for simplicity, such as modeling lists of values as a delimited string valu
 <p>Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model may be useful when integrating DDMSence
 with an existing persistence framework like Hibernate or the Oracle XML SQL Utility (XSU).</p> 
 
-<p>The last time I worked on this document (and remembered to update the date) was on <b>11/11/2010 at 20:26</b>.</p>
+<p>The last time I worked on this document (and remembered to update the date) was on <b>11/12/2010 at 20:46</b>.</p>
 <div class="clear"></div>
 <pre>
 TODO:
@@ -45,9 +45,6 @@ TODO:
          PostalAddress
             CountryCode
          VerticalExtent
-      RelatedResources
-         RelatedResource
-            Link
 </pre>
 
 <a name="tables-notes"></a><h4>General Notes</h4> 
@@ -541,6 +538,95 @@ TODO:
 	</tr>
 </table>
 
+<a name="ddmsRelatedResources"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsRelatedResources</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/RelatedResources.html">ddms:relatedResources</a>
+			element, which is a top-level component. There must be at least one reference to a <a href="#ddmsRelatedResource">RelatedResource</a>.
+			Rows in this table may be associated with rows in the <a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> table.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">relationship</td><td class="relRules">char(2048), not null</td><td>a URI representing the relationship between the
+			resource being described and these related resources</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">direction</td><td class="relRules">char(64)</td><td>the direction of the relationship, which must have a value of 
+			"inbound", "outbound", or "bidirectional"</td>
+	</tr>	
+</table>
+
+<ul><a name="ddmsRelatedResource"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsRelatedResource</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/RelatedResource.html">ddms:RelatedResource</a>
+			element, which is nested in ddms:RelatedResources elements. The parent element must have at least one RelatedResource,
+			and the RelatedResource must have at least one defined <a href="#ddmsLink">Link</a>.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent RelatedResources element</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">qualifier</td><td class="relRules">char(2048), not null</td><td>the qualifier URI</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(256), not null</td><td>the value which describes the RelatedResource</td>
+	</tr>	
+</table>
+<ul><a name="ddmsLink"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsLink</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/Link.html">ddms:link</a>
+			element, which is contained inside of a RelatedResource. 
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField"></td><td class="relRules"></td><td></td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent RelatedResource element</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">type</td><td class="relRules">char(64), not null</td><td>the link type has a fixed value of "locator". It is being modelled in case
+			this changes in the future.</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">href</td><td class="relRules">char(2048), not null</td><td>the URL to the target resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">role</td><td class="relRules">char(2048)</td><td>a URI reference describing the role of the link</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">title</td><td class="relRules">char(2048)</td><td>a human-readable title</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">label</td><td class="relRules">char(2048)</td><td>a name for the link, for use by an XLink arc-type element</td>
+	</tr>
+</table></ul>
+</ul>
+
 <a name="ddmsSubjectCoverage"></a><table class="rel">
 	<tr>
 		<th class="relName" colspan="3">ddmsSubjectCoverage</th>
@@ -735,6 +821,9 @@ TODO:
 			DETAILS
 		</td>
 	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
 	<tr class="relRow">
 		<td class="relField"></td><td class="relRules"></td><td></td>
 	</tr>
