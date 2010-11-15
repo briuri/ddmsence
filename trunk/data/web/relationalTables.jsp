@@ -20,32 +20,13 @@
 	<li><a href="#tables-extensible">The Extensible Layer</a></li>
 </div>
 
-<p>This document is an attempt to map the DDMS specification to a relational database model. At the moment, it is very incomplete and I am working on it as time permits. 
-The intent of this mapping is to be comprehensive first and pragmatic second -- the full scope of DDMS will be modeled, but some design decisions may be 
-made for simplicity, such as modeling lists of values as a delimited string value.</p>
+<p align="right"><b>Last Update:</b> 11/15/2010 at 16:01</p>
 
-<p>Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model may be useful when integrating DDMSence
+<p>This document is an attempt to map the DDMS specification to a relational database model. The intent of this mapping is to be comprehensive first and pragmatic second -- the full scope of DDMS will be modeled, but some design decisions may be 
+made for simplicity, such as modeling lists of values as a delimited string value. Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model may be useful when integrating DDMSence
 with an existing persistence framework like Hibernate or the Oracle XML SQL Utility (XSU).</p> 
 
-<p>The last time I worked on this document (and remembered to update the date) was on <b>11/12/2010 at 20:46</b>.</p>
-<div class="clear"></div>
-<pre>
-TODO:
-   Summary Layer:
-      GeospatialCoverage
-         GeographicIdentifier
-            CountryCode
-            FacilityIdentifier
-         BoundingBox
-         BoundingGeometry
-            GmlPoint
-               GmlPosition
-            GmlPolygon
-               GmlPosition
-         PostalAddress
-            CountryCode
-         VerticalExtent
-</pre>
+<p>The initial draft of this document is almost complete -- I just need to finish the section on Geospatial Coverage, and refine/standardize the way each table is described.</p>
 
 <a name="tables-notes"></a><h4>General Notes</h4> 
 <ul>
@@ -538,13 +519,170 @@ TODO:
 	</tr>
 </table>
 
+<a name="ddmsGeospatialCoverage"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsGeospatialCoverage</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/GeospatialCoverage.html">ddms:geospatialCoverage</a>
+			element, which is a top-level component. This element will have a reference to one row from 
+			<a href="#ddmsGeographicIdentifier">GeographicIdentifier</a>,
+			<a href="#ddmsBoundingBox">BoundingBox</a>,
+			<a href="#ddmsBoundingGeometry">BoundingGeometry</a>,
+			<a href="#ddmsPostalAddress">PostalAddress</a>, or
+			<a href="#ddmsVerticalExtent">VerticalExtent</a>.			 
+			There must be at least one reference to a <a href="#ddmsRelatedResource">RelatedResource</a>.
+			Rows in this table may be associated with rows in the <a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> table in DDMS 3.0.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+</table>
+
+<ul><a name="ddmsGeographicIdentifier"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsGeographicIdentifier</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/GeographicIdentifier.html">ddms:geographicIdentifier</a>
+			element, which is nested in a ddms:geospatialCoverage element. A GeographicIdentifier consists of a list of names and regions,
+			and a reference to either a <a href="#ddmsCountryCode">CountryCode</a> or a <a href="#ddmsFacilityIdentifier">FacilityIdentifier</a>. 
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent geospatialCoverage element</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">name</td><td class="relRules">char(256), not null</td><td>a delimited string-list of names for this identifier</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">region</td><td class="relRules">char(256), not null</td><td>a delimited string-list of region names for this identifier</td>
+	</tr>			
+</table>
+
+<ul><a name="ddmsCountryCode"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsCountryCode</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			TBD 
+		</td>
+	</tr>		
+</table>
+
+<a name="ddmsFacilityIdentifier"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsFacilityIdentifier</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			TBD 
+		</td>
+	</tr>		
+</table>
+</ul>
+
+<a name="ddmsBoundingBox"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsBoundingBox</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			TBD 
+		</td>
+	</tr>		
+</table>
+
+<a name="ddmsBoundingGeometry"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsBoundingGeometry</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			TBD 
+		</td>
+	</tr>		
+</table>
+
+<ul><a name="ddmsGmlPoint"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsGmlPoint</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			TBD 
+		</td>
+	</tr>		
+</table>
+
+<ul><a name="ddmsGmlPosition"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsGmlPosition</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			TBD 
+		</td>
+	</tr>		
+</table>
+</ul>
+
+<a name="ddmsGmlPolygon"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsGmlPolygon</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			TBD 
+		</td>
+	</tr>		
+</table>
+</ul>
+
+<a name="ddmsPostalAddress"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsPostalAddress</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			TBD 
+		</td>
+	</tr>		
+</table>
+
+<a name="ddmsVerticalExtent"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsVerticalExtent</th>
+	</tr>
+	<tr>
+		<td class="relInfo" colspan="3">
+			TBD 
+		</td>
+	</tr>		
+</table>
+
+</ul>
+
+
+
+
 <a name="ddmsRelatedResources"></a><table class="rel">
 	<tr>
 		<th class="relName" colspan="3">ddmsRelatedResources</th>
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/RelatedResources.html">ddms:relatedResources</a>
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/RelatedResources.html">ddms:relatedResources</a>
 			element, which is a top-level component. There must be at least one reference to a <a href="#ddmsRelatedResource">RelatedResource</a>.
 			Rows in this table may be associated with rows in the <a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> table.
 		</td>
@@ -571,7 +709,7 @@ TODO:
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/resource/RelatedResource.html">ddms:RelatedResource</a>
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/RelatedResource.html">ddms:RelatedResource</a>
 			element, which is nested in ddms:RelatedResources elements. The parent element must have at least one RelatedResource,
 			and the RelatedResource must have at least one defined <a href="#ddmsLink">Link</a>.
 		</td>
