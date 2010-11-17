@@ -20,7 +20,7 @@
 	<li><a href="#tables-extensible">The Extensible Layer</a></li>
 </div>
 
-<p align="right"><b>Last Update:</b> 11/15/2010 at 16:01</p>
+<p align="right"><b>Last Update:</b> 11/16/2010 at 19:47</p>
 
 <p>This document is an attempt to map the DDMS specification to a relational database model. The intent of this mapping is to be comprehensive first and pragmatic second -- the full scope of DDMS will be modeled, but some design decisions may be 
 made for simplicity, such as modeling lists of values as a delimited string value. Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model may be useful when integrating DDMSence
@@ -39,7 +39,9 @@ with an existing persistence framework like Hibernate or the Oracle XML SQL Util
 <li>Most validation constraints are omitted from this model, since it is assumed that a validating library like DDMSence would be placed in front of the tables.</li>
 <li>Character string lengths are fairly arbitrary, although the numbers I chose are relatively reasonable for the types of data the fields contain. URI fields are set at 
 	2048 characters to match Internet Explorer URL restrictions.</li>
-<li>The pipe character, <b>|</b>, is suggested as a delimiter for columns containing lists in string form.</li> 
+<li>The pipe character, <b>|</b>, is suggested as a delimiter for columns containing lists in string form.</li>
+<li>In cases where a child table might have multiple types of parents, a pairing of <code>parentId</code> and <code>parentName</code> are used to reference the parent. It may be simpler
+to merely have multiple <code>parentId</code> columns in the child table (i.e. a <code>parentPostalAddressId</code> and <code>parentGeographicIdentifierId</code> column for country codes).  
 </ul>
 
 <a name="tables-primary"></a><h4>Primary and Shared Components</h4>
@@ -575,9 +577,26 @@ with an existing persistence framework like Hibernate or the Oracle XML SQL Util
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			TBD 
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/CountryCode.html">ddms:countryCode</a>
+			element, which is nested in a ddms:geographicIdentifier or ddms:postalAddress element.
 		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent component of this attribute</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentName</td><td class="relRules">char(64)</td><td>the DDMS element name of the parent component for this attribute, i.e. "geographicIdentifier" or 
+			"postalAddress". This value determines which table the parent can be found in.</td>
 	</tr>		
+	<tr class="relRow">
+		<td class="relField">qualifier</td><td class="relRules">char(2048), not null</td><td>the qualifier URI</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(256), not null</td><td>the value</td>
+	</tr>
 </table>
 
 <a name="ddmsFacilityIdentifier"></a><table class="rel">
@@ -586,9 +605,22 @@ with an existing persistence framework like Hibernate or the Oracle XML SQL Util
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			TBD 
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/FacilityIdentifier.html">ddms:facilityIdentifier</a>
+			element, which is nested in a ddms:geographicIdentifier element.
 		</td>
-	</tr>		
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent component of this attribute</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">beNumber</td><td class="relRules">char(64), not null</td><td>unique identifier for a facility</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">osuffix</td><td class="relRules">char(64), not null</td><td>used in conjunction with the beNumber to identify a facility</td>
+	</tr>	
 </table>
 </ul>
 
@@ -598,9 +630,29 @@ with an existing persistence framework like Hibernate or the Oracle XML SQL Util
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			TBD 
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/BoundingBox.html">ddms:boundingBox</a>
+			element, which is nested in a ddms:geospatialCoverage element. The longitude and latitude values may be negative, 
+			and will fall in a range of -180 to 180 for longitudes and -90 and 90 for latitudes.
 		</td>
 	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent geospatialCoverage element</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">WestBL</td><td class="relRules">number</td><td>westbound longitude</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">EastBL</td><td class="relRules">number</td><td>eastbound longitude</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">SouthBL</td><td class="relRules">number</td><td>northbound latitude</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">NorthBL</td><td class="relRules">number</td><td>southbound latitude</td>
+	</tr>
 </table>
 
 <a name="ddmsBoundingGeometry"></a><table class="rel">
@@ -948,25 +1000,6 @@ with an existing persistence framework like Hibernate or the Oracle XML SQL Util
 		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the attribute value as a string</td>
 	</tr>
 </table>
-
-<!--
-<a name=""></a><table class="rel">
-	<tr>
-		<th class="relName" colspan="3">TABLENAME</th>
-	</tr>
-	<tr>
-		<td class="relInfo" colspan="3">
-			DETAILS
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField"></td><td class="relRules"></td><td></td>
-	</tr>
-</table>
--->
 
 <p>
 	<a href="documentation.jsp#explorations">Back to Documentation</a>
