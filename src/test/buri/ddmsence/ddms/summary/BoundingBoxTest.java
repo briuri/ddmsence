@@ -215,6 +215,12 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 		}
 	}
+	
+	public void testNorthboundLatitudeValiation() {
+		// Issue #65
+		testConstructor(WILL_FAIL, TEST_WEST, TEST_EAST, TEST_SOUTH, -91);
+		testConstructor(WILL_FAIL, TEST_WEST, TEST_EAST, TEST_SOUTH, 91);
+	}
 
 	public void testDataConstructorInvalid() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
