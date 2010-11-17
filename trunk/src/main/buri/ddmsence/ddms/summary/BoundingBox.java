@@ -151,7 +151,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 		Util.requireValidLongitude(getWestBL());
 		Util.requireValidLongitude(getEastBL());
 		Util.requireValidLatitude(getSouthBL());
-		Util.requireValidLongitude(getNorthBL());
+		Util.requireValidLatitude(getNorthBL());
 	}
 	
 	/**
