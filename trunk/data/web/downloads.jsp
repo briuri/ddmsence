@@ -20,17 +20,15 @@ code for the main library, unit tests, and the sample applications, as well as s
 file which will allow you to compile source code, run unit tests, generate API documentation, or even generate the "bin"-flavored archive with <a href="http://ant.apache.org/">Apache Ant</a>. 
 I have included the <code>.project</code> file if you wish to import the project into Eclipse.</p>
 
-<h1>Latest Release: v1.7.0</h1>
+<h1>Latest Release: v1.7.1</h1>
 
-<p>Version <b>1.7.0</b> (9/18/2010) is a stable release, which allows toggling between errors and warnings on
-Intelligence Community Controlled Vocabulary validation (<a href="http://code.google.com/p/ddmsence/issues/detail?id=36">Issue #36</a>)
-and adds support for swappable Controlled Vocabulary files
-(<a href="http://code.google.com/p/ddmsence/issues/detail?id=59">Issue #59</a>). It is backwards compatible 
+<p>Version <b>1.7.1</b> (11/16/2010) is a stable patch release, which corrects a very minor issue where northbound latitude values were validated as longitudes 
+ (<a href="http://code.google.com/p/ddmsence/issues/detail?id=65">Issue #65</a>). It is backwards compatible 
 with all versions since v1.4.0.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.7.0.zip"><code>ddmsence-bin-1.7.0.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.7.0.zip"><code>ddmsence-src-1.7.0.zip</code></a></b> (4.3 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.7.1.zip"><code>ddmsence-bin-1.7.1.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.7.1.zip"><code>ddmsence-src-1.7.1.zip</code></a></b> (4.3 MB)</li>
 </ul>
 
 <h3>Versioning</h3>
@@ -47,6 +45,17 @@ with all versions since v1.4.0.</p>
 All changes which are not backwards compatible will be linked from this page.</p> 
 
 <h3>Older Releases</h3>
+
+<p>Version <b>1.7.0</b> (9/18/2010) is a stable release, which allows toggling between errors and warnings on
+Intelligence Community Controlled Vocabulary validation (<a href="http://code.google.com/p/ddmsence/issues/detail?id=36">Issue #36</a>)
+and adds support for swappable Controlled Vocabulary files
+(<a href="http://code.google.com/p/ddmsence/issues/detail?id=59">Issue #59</a>). It is backwards compatible 
+with all versions since v1.4.0.</p>
+
+<ul>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.7.0.zip"><code>ddmsence-bin-1.7.0.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.7.0.zip"><code>ddmsence-src-1.7.0.zip</code></a></b> (4.3 MB)</li>
+</ul>
 
 <p>Version <b>1.6.0</b> (9/07/2010) is a stable release, which updates bundled schemas and files for DDMS 3.0. Because the changes
 mainly affected the ICISM Controlled Vocabulary files, this release is still backwards compatible with all versions since v1.4.0.</p>
