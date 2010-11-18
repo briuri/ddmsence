@@ -20,7 +20,7 @@
 	<li><a href="#tables-extensible">The Extensible Layer</a></li>
 </div>
 
-<p align="right"><b>Last Update:</b> 11/16/2010 at 19:47</p>
+<p align="right"><b>Last Update:</b> 11/17/2010 at 21:35</p>
 
 <p>This document is an attempt to map the DDMS specification to a relational database model. The intent of this mapping is to be comprehensive first and pragmatic second -- the full scope of DDMS will be modeled, but some design decisions may be 
 made for simplicity, such as modeling lists of values as a delimited string value. Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model may be useful when integrating DDMSence
@@ -77,6 +77,9 @@ to merely have multiple <code>parentId</code> columns in the child table (i.e. a
 	</tr>
 	<tr class="relRow">
 		<td class="relField">desVersion</td><td class="relRules">char(64)</td><td>the version of the Digital Encryption Schema used.</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">ddmsVersion</td><td class="relRules">char(64)</td><td>the version of DDMS used.</td>
 	</tr>
 </table>
 
@@ -661,9 +664,19 @@ to merely have multiple <code>parentId</code> columns in the child table (i.e. a
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			TBD 
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/BoundingGeometry.html">ddms:boundingGeometry</a>
+			element, which is nested in a ddms:geospatialCoverage element.
+			
+			On its own, this table is not very interesting -- it is merely a cross-reference table between a ddms:geospatialCoverage element
+			and any nested <a href="#ddmsGmlPoint">Point</a> or <a href="ddmsGmlPosition">Position</a> rows.
 		</td>
 	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent geospatialCoverage row of this attribute</td>
+	</tr>	
 </table>
 
 <ul><a name="ddmsGmlPoint"></a><table class="rel">
@@ -672,9 +685,21 @@ to merely have multiple <code>parentId</code> columns in the child table (i.e. a
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			TBD 
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/Point.html">gml:Point</a>
+			element, which is nested in a ddms:boundingGeometry element. 
+			Rows in this table will be associated with a row in the <a href="#ddmsSrsAttributes">ddmsSrsAttributes</a> table
+			and a row in the <a href="#ddmsGmlPosition">ddmsGmlPosition</a> table.
 		</td>
-	</tr>		
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent boundingGeometry element of this attribute</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">gmlId</td><td class="relRules">char(64), not null</td><td>a unique ID for the point</td>
+	</tr>	
 </table>
 
 <ul><a name="ddmsGmlPosition"></a><table class="rel">
@@ -683,9 +708,30 @@ to merely have multiple <code>parentId</code> columns in the child table (i.e. a
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			TBD 
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/Position.html">gml:pos</a>
+			element, which is nested in a gml:Point or gml:Polygon element. 
+			Rows in this table may be associated with a row in the <a href="#ddmsSrsAttributes">ddmsSrsAttributes</a> table.
 		</td>
-	</tr>		
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent component of this attribute</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentName</td><td class="relRules">char(64)</td><td>the DDMS element name of the parent component for this attribute, i.e. "Point" or 
+			"Polygon". This value determines which table the parent can be found in.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">latitude</td><td class="relRules">number, not null</td><td>first coordinate</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">longitude</td><td class="relRules">number, not null</td><td>second coordinate</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">heightAboveEllipsoid</td><td class="relRules">number</td><td>optional third coordinate</td>
+	</tr>
 </table>
 </ul>
 
@@ -695,8 +741,23 @@ to merely have multiple <code>parentId</code> columns in the child table (i.e. a
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			TBD 
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/Polygon.html">gml:Polygon</a>
+			element, which is nested in a ddms:boundingGeometry element. 
+			Rows in this table will be associated with a row in the <a href="#ddmsSrsAttributes">ddmsSrsAttributes</a> table
+			and multiple rows in the <a href="#ddmsGmlPosition">ddmsGmlPosition</a> table. Because a polygon is comprised of ordered
+			positions that create an enclosed area, it is assumed that positions are ordered according to their sequenced <code>id</code> value. As
+			a closed shape, the first and last positions should be identical, but no validation is done on this constraint here. The last position
+			should definitely be a separate row in the ddmsGmlPosition table.
 		</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent boundingGeometry element of this attribute</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">gmlId</td><td class="relRules">char(64), not null</td><td>a unique ID for the polygon</td>
 	</tr>		
 </table>
 </ul>
