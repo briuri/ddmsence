@@ -36,7 +36,7 @@ import buri.ddmsence.util.Util;
  * 
  * <p>
  * The DDMS documentation has no Text/HTML examples for the output of this component, so a best guess was taken
- * (suggestions are welcome, as this is probably not an optimal solution).:
+ * (suggestions are welcome, as this is probably not an optimal solution):
  * </p>
  * <ul>
  * <p>
