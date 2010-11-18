@@ -68,7 +68,7 @@ import buri.ddmsence.util.Util;
  * <b>Suggested HTML Output</b><br />
  * <code>
  * &lt;meta name="geospatial.boundingGeometry.id" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.type" content=Polygon.NAME /&gt;<br />
+ * &lt;meta name="geospatial.boundingGeometry.type" content="Polygon" /&gt;<br />
  * &lt;meta name="geospatial.boundingGeometry.srsName" content="value" /&gt;<br />
  * &lt;meta name="geospatial.boundingGeometry.srsDimension" content="value" /&gt;<br />
  * &lt;meta name="geospatial.boundingGeometry.axisLabels" content="value" /&gt;<br />
