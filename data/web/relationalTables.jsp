@@ -20,18 +20,30 @@
 	<li><a href="#tables-extensible">The Extensible Layer</a></li>
 </div>
 
-<p align="right"><b>Last Update:</b> 11/17/2010 at 21:35</p>
+<p align="right"><b>Last Update:</b> 11/21/2010 at 08:35</p>
 
 <p>This document is an attempt to map the DDMS specification to a relational database model. The intent of this mapping is to be comprehensive first and pragmatic second -- the full scope of DDMS will be modeled, but some design decisions may be 
 made for simplicity, such as modeling lists of values as a delimited string value. Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model may be useful when integrating DDMSence
 with an existing persistence framework like Hibernate or the Oracle XML SQL Utility (XSU).</p> 
+<br><br>
+<p>At this point, all of the DDMS components have been modelled in table form. I plan to review and revise before publicizing this document, especially in the following areas:</p>
+<ul>
+<li>Standardizing hyperlinks and labels so readers can immediately tell whether a link will take them to the DDMS specification, the DDMSence API documentation, or another table in this document.</li>
+<li>Converting the textual descriptions of foreign keys between tables into an explicit row or column below the details.</li>
+<li>Reviewing column sizes.</li>
+<li>Standardizing the format of the details for each column.</li>
+<li>Consistency of using char or number for double values (especially lat/lon).</li>
+<li>A better way to map to multiple parent types than id + name.</li>
+<li>A graphical chart to give a broad overview of all the components in a hierarchical form.</li>
+</ul>
 
-<p>The initial draft of this document is almost complete -- I just need to finish the section on Geospatial Coverage, and refine/standardize the way each table is described.</p>
+</p>
 
 <a name="tables-notes"></a><h4>General Notes</h4> 
 <ul>
 <li>Child elements and attributes will have links back to their parents, but not in the reverse direction. This key is allowed to have an initial <code>&lt;NULL&gt;</code> 
 	value, to support a bottom-up approach to building DDMS resources from scratch.</li>
+<li>Column names generally match the XML element name, which is consistent with DDMSence's object model. There are a few minor differences (such as using "timePeriodName" in a temporalCoverage element to avoid confusing with the plain XML element name).</li>
 <li>If a table column is a character string and a value is not provided, an empty string should be favored instead of <code>&lt;NULL&gt;</code>.</li>
 <li>The intent of the tables is to model the resource data, not schema data. XML namespaces and other schema constructs are not necessarily modeled.</li>
 <li>Reference tables (i.e. the four types of producers, or the valid names of ICISM security attributes) are not included here. Columns which have string values for these 
@@ -768,9 +780,32 @@ to merely have multiple <code>parentId</code> columns in the child table (i.e. a
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			TBD 
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/PostalAddress.html">ddms:postalAddress</a>
+			element, which is nested in a ddms:geospatialCoverage element. It will have either a state or a province, and may reference
+			a <a href="ddmsCountryCode">countryCode</a>.
 		</td>
 	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent geospatialCoverage row of this attribute</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">street</td><td class="relRules">char(2048)</td><td>a delimited string-list of street addresses.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">city</td><td class="relRules">char(64)</td><td>a city</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">state</td><td class="relRules">char(64)</td><td>the state code, if within a country with states</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">province</td><td class="relRules">char(64)</td><td>the province code, if within a country with provinces</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">postalCode</td><td class="relRules">char(64)</td><td>the postal code of the address</td>
+	</tr> 	
 </table>
 
 <a name="ddmsVerticalExtent"></a><table class="rel">
@@ -779,15 +814,32 @@ to merely have multiple <code>parentId</code> columns in the child table (i.e. a
 	</tr>
 	<tr>
 		<td class="relInfo" colspan="3">
-			TBD 
+			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/VerticalExtent.html">ddms:verticalExtent</a>
+			element, which is nested in a ddms:geospatialCoverage element. As described in the class description, DDMSence requires
+			the top-level unitOfMeasure and datum attributes to be consistent on both the parent component and the two extents, so this
+			information need only be stored once for a table row.
 		</td>
-	</tr>		
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent geospatialCoverage row of this attribute</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">unitOfMeasure</td><td class="relRules">char(64), not null</td><td>should be one of Meter, Kilometer, Foot, StatuteMile, NauticalMile, Fathom, Inch</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">datum</td><td class="relRules">char(64), not null</td><td>should be one of MSL, AGL, or HAE</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">minVerticalExtent</td><td class="relRules">char(64), not null</td><td>a decimal number (modelled as a string) representing the minimum extent</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">maxVerticalExtent</td><td class="relRules">char(64), not null</td><td>a decimal number (modelled as a string) representing the maximum extent</td>
+	</tr>	
 </table>
-
 </ul>
-
-
-
 
 <a name="ddmsRelatedResources"></a><table class="rel">
 	<tr>
