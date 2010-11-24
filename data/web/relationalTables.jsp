@@ -20,7 +20,7 @@
 	<li><a href="#tables-extensible">The Extensible Layer</a></li>
 </div>
 
-<p align="right"><b>Last Update:</b> 11/21/2010 at 08:35</p>
+<p align="right"><b>Last Update:</b> 11/23/2010 at 20:50</p>
 
 <p>This document is an attempt to map the DDMS specification to a relational database model. The intent of this mapping is to be comprehensive first and pragmatic second -- the full scope of DDMS will be modeled, but some design decisions may be 
 made for simplicity, such as modeling lists of values as a delimited string value. Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model may be useful when integrating DDMSence
@@ -34,6 +34,7 @@ with an existing persistence framework like Hibernate or the Oracle XML SQL Util
 <li>Standardizing the format of the details for each column.</li>
 <li>Consistency of using char or number for double values (especially lat/lon).</li>
 <li>A better way to map to multiple parent types than id + name.</li>
+<li>Consistent use of <code>code</code> tags to identify column names vs. element names?</li>
 <li>A graphical chart to give a broad overview of all the components in a hierarchical form.</li>
 </ul>
 
