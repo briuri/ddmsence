@@ -12,7 +12,7 @@
 <div class="toc">
 	<b><u>Table of Contents</u></b>
 	<li><a href="#tables-notes">General Notes</a></li>
-	<li><a href="#tables-primary">Primary and Shared Components</a></li>
+	<li><a href="#tables-primary">Primary DDMS Record</a></li>
 	<li><a href="#tables-format">The Format Layer</a></li>
 	<li><a href="#tables-resource">The Resource Layer</a></li>
 	<li><a href="#tables-security">The Security Layer</a></li>
@@ -20,31 +20,36 @@
 	<li><a href="#tables-extensible">The Extensible Layer</a></li>
 </div>
 
-<p align="right"><b>Last Update:</b> 11/24/2010 at 20:09</p>
+<p align="right"><b>Last Update:</b> 11/25/2010 at 10:32</p>
 
-<p>This document is an attempt to map the DDMS specification to a relational database model. The intent of this mapping is to be comprehensive first and pragmatic second -- the full scope of DDMS will be modeled, but some design decisions may be 
-made for simplicity, such as modeling lists of values as a delimited string value. Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model may be useful when integrating DDMSence
-with an existing persistence framework like Hibernate or the Oracle XML SQL Utility (XSU).</p> 
-<p>At this point, all of the DDMS components have been modelled in table form. I plan to review and revise before publicizing this document.</p>
+<p>This document is an attempt to map the DDMS specification to a relational database model. The intent of this mapping is to be comprehensive first 
+and pragmatic second -- the full scope of DDMS will be modeled, but some design decisions may be made for simplicity, such as modeling lists of values 
+as a delimited string value. Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model 
+may be useful when integrating DDMSence with an existing persistence framework like Hibernate or the Oracle XML SQL Utility (XSU).</p> 
+<p>At this point, all of the DDMS components have been modelled in table form. I am in the process of reviewing and revising the tables before I publicize this document.</p>
+
+<div class="clear"></div>
 
 <a name="tables-notes"></a><h4>General Notes</h4> 
 <ul>
-<li>Child elements will have links back to their parents, but not in the reverse direction. This key is allowed to have an initial <code>&lt;NULL&gt;</code> 
-	value, to support a bottom-up approach to building DDMS resources from scratch.</li>
-<li>Column names generally match the XML element name, which is consistent with DDMSence's object model. There are a few minor differences (such as using "timePeriodName" in a temporalCoverage element to avoid confusing with the plain XML element name).</li>
+<li>Column names generally match the XML element name, which is consistent with DDMSence's object model. There are a few minor differences 
+	(such as using "timePeriodName" in a temporalCoverage element to avoid confusing it with the plain XML element name).</li>
+<li>The unique sequenced <code>id</code> value which is the primary key in each table should be unique across <i>all</i> tables. This will allow foreign key
+	references in child components without requiring the child table to know what kind of parent it has. All <code>id</code> columns could also contain 
+	generated UUID values instead of sequenced numbers.</li>
+<li>Child elements will have links back to their parents, but not in the reverse direction. This key is allowed to have an initial 
+	<code>&lt;NULL&gt;</code> value, to support a bottom-up approach to building DDMS resources from scratch.</li>
 <li>If a table column is a character string and a value is not provided, an empty string should be favored instead of <code>&lt;NULL&gt;</code>.</li>
 <li>The intent of the tables is to model the resource data, not schema data. XML namespaces and other schema constructs are not necessarily modeled.</li>
-<li>Reference tables (i.e. the four types of producers, or the valid names of ICISM security attributes) are not included here. Columns which have string values for these 
-	constants could just as easily have foreign keys to a reference table.</li>
+<li>Reference tables (i.e. the four types of producers, or the valid names of ICISM security attributes) are not included here. Columns which have string 
+	values for these constants could just as easily have foreign keys to a reference table.</li>
 <li>Most validation constraints are omitted from this model, since it is assumed that a validating library like DDMSence would be placed in front of the tables.</li>
-<li>Character string lengths are fairly arbitrary, although the numbers I chose are relatively reasonable for the types of data the fields contain. URI fields are set at 
-	2048 characters to match Internet Explorer URL restrictions.</li>
+<li>Character string lengths are fairly arbitrary, although the numbers I chose are relatively reasonable for the types of data the fields contain. 
+	URI fields are set at 2048 characters to match Internet Explorer URL restrictions.</li>
 <li>The pipe character, <b>|</b>, is suggested as a delimiter for columns containing lists in string form.</li>
-<li>In cases where a child table might have multiple types of parents, a pairing of <code>parentId</code> and <code>parentName</code> are used to reference the parent. It may be simpler
-to merely have multiple <code>parentId</code> columns in the child table (i.e. a <code>parentPostalAddressId</code> and <code>parentGeographicIdentifierId</code> column for country codes).  
 </ul>
 
-<a name="tables-primary"></a><h4>Primary and Shared Components</h4>
+<a name="tables-primary"></a><h4>Primary DDMS Record</h4>
 
 <a name="ddmsResource"></a><table class="rel">
 	<tr>
@@ -52,51 +57,50 @@ to merely have multiple <code>parentId</code> columns in the child table (i.e. a
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
-		<td class="relField" colspan="2">
+		<td class="relName" colspan="2">
 			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#ResourceHeader"><code>ddms:Resource</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
-		<td class="relField" colspan="2">	
+		<td class="relName" colspan="2">	
 			<a href="/docs/buri/ddmsence/ddms/Resource.html">Resource</a>
 		</a>
 	</tr>
 	<tr class="relRow">
-		<td class="relHeader">Is Foreign Key In:</td>
+		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsFormat">ddmsFormat</a>, 
 			<a href="#ddmsDates">ddmsDates</a>, 
+			<a href="#ddmsDescription">ddmsDescription</a>, 
+			<a href="#ddmsExtensibleElement">ddmsExtensibleElement</a>, 
+			<a href="#ddmsFormat">ddmsFormat</a>, 
+			<a href="#ddmsGeospatialCoverage">ddmsGeospatialCoverage</a>, 
 			<a href="#ddmsIdentifier">ddmsIdentifier</a>, 
 			<a href="#ddmsLanguage">ddmsLanguage</a>, 
 			<a href="#ddmsProducer">ddmsProducer</a>, 
-			<a href="#ddmsRights">ddmsRights</a>, 
-			<a href="#ddmsSource">ddmsSource</a>, 
-			<a href="#ddmsSubtitle">ddmsSubtitle</a>, 
-			<a href="#ddmsTitle">ddmsTitle</a>, 
-			<a href="#ddmsType">ddmsType</a>, 
-			<a href="#ddmsSecurity">ddmsSecurity</a>, 
-			<a href="#ddmsDescription">ddmsDescription</a>, 
-			<a href="#ddmsGeospatialCoverage">ddmsGeospatialCoverage</a>, 
 			<a href="#ddmsRelatedResources">ddmsRelatedResources</a>, 
+			<a href="#ddmsRights">ddmsRights</a>, 
+			<a href="#ddmsSecurity">ddmsSecurity</a>, 
+			<a href="#ddmsSource">ddmsSource</a>, 
 			<a href="#ddmsSubjectCoverage">ddmsSubjectCoverage</a>, 
+			<a href="#ddmsSubtitle">ddmsSubtitle</a>, 
 			<a href="#ddmsTemporalCoverage">ddmsTemporalCoverage</a>, 
-			<a href="#ddmsVirtualCoverage">ddmsVirtualCoverage</a>, and 
-			<a href="#ddmsExtensibleElement">ddmsExtensibleElement</a> 
+			<a href="#ddmsTitle">ddmsTitle</a>, 
+			<a href="#ddmsType">ddmsType</a>, and
+			<a href="#ddmsVirtualCoverage">ddmsVirtualCoverage</a> 
 		</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relHeader">Has Additional Data In:</td>
+		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a> (DDMS 3.0, optional)
+			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a> (DDMS 3.0, optional), and
+			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 3.0, optional)
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
-			Because DDMSence is a bottom-up model rather than a top-down model, top-level components will have a link back to a 
-			row in this table, but the resource does not have links down to child elements. Please see the 
-			<a href="documentation.jsp#tips-extensible">Extensible Attributes on a Resource</a> documentation to 
+			Please see the documentation on <a href="documentation.jsp#tips-extensible">Extensible Attributes on a Resource</a> to 
 			understand the ambiguity problem associated with modelling security attributes as extensible attributes.	
 		</td>
 	</tr>
@@ -112,7 +116,7 @@ to merely have multiple <code>parentId</code> columns in the child table (i.e. a
 	</tr>
 	<tr class="relRow">
 		<td class="relField">createDate</td><td class="relRules">char(32)</td><td>the creation date (dates are stored in string format to ensure
-		that the date value is retrieved in the same XML Date format that it was entered in).</td>
+		that the date value is retrieved in the same <code>xsd:date</code> that it was entered in).</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">desVersion</td><td class="relRules">char(8)</td><td>the version of the Digital Encryption Schema used.</td>
@@ -121,41 +125,55 @@ to merely have multiple <code>parentId</code> columns in the child table (i.e. a
 		<td class="relField">ddmsVersion</td><td class="relRules">char(8)</td><td>the version of DDMS used.</td>
 	</tr>
 </table>
-
-<div style="background-color: #aaaaaa"><i>The information below this point has not yet been reviewed.</i>
-<ul>
-	<li>Standardizing hyperlinks and labels so readers can immediately tell whether a link will take them to the DDMS specification, the DDMSence API documentation, or another table in this document.</li>
-	<li>Converting the textual descriptions of foreign keys between tables into an explicit row or column below the details.</li>
-	<li>Reviewing column sizes.</li>
-	<li>Standardizing the format of the details for each column.</li>
-	<li>Consistency of using char or number for double values (especially lat/lon).</li>
-	<li>A better way to map to multiple parent types than id + name.</li>
-	<li>Consistent use of <code>code</code> tags to identify column names vs. element names?</li>
-	<li>A graphical chart to give a broad overview of all the components in a hierarchical form.</li>
-</ul>
-</div>
  
 <a name="ddmsSecurityAttribute"></a><table class="rel">
 	<tr>
 		<th class="relName" colspan="3">ddmsSecurityAttribute</th>
 	</tr>
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table contains any <a href="/docs/buri/ddmsence/ddms/security/SecurityAttributes.html">ICISM security attributes</a> affixed to a
-			DDMS element. Each table row represents one attribute, and an element may link to 0-to-many rows in this table, via the <code>parentId</code> 
-			and <code>parentName</code> columns. Because only certain elements require a <code>classification</code> and <code>ownerProducers</code>, no constraints enforce 
-			this condition here. In DDMS 3.0, acceptable parents	would include
-			<a href="#ddmsDescription">Description</a>,	<a href="#ddms">GeospatialCoverage</a>, <a href="#ddmsProducer">Organization</a>,
-			<a href="#ddmsProducer">Person</a>, <a href="#ddmsRelatedResources">RelatedResources</a>, <a href="#ddmsResource">Resource</a>,
-			<a href="#ddmsSecurity">Security</a>, <a href="#ddmsProducer">Service</a>, <a href="#ddmsSource">Source</a>,
-			<a href="#ddmsSubjectCoverage">SubjectCoverage</a>, <a href="#ddmsSubtitle">Subtitle</a>, <a href="#ddmsTemporalCoverage">TemporalCoverage</a>,
-			<a href="#ddmsTitle">Title</a>, <a href="#ddmsProducer">Unknown</a>, or <a href="#ddmsVirtualCoverage">VirtualCoverage</a>. In DDMS 2.0,
-			acceptable parents would include
-			<a href="#ddmsDescription">Description</a>,	<a href="#ddmsOrganization">Organization</a>, <a href="#ddmsPerson">Person</a>, 
-			<a href="#ddmsRelatedResources">RelatedResources</a>, <a href="#ddmsResource">Resource</a>, <a href="#ddmsSecurity">Security</a>, 
-			<a href="#ddmsService">Service</a>, <a href="#ddmsSubtitle">Subtitle</a>, <a href="#ddmsTitle">Title</a>, or <a href="#ddmsUnknown">Unknown</a>.
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			ICISM Security Attributes
 		</td>
 	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/security/SecurityAttributes.html">SecurityAttributes</a>
+		</a>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augments:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsDescription">ddmsDescription</a>,
+			<a href="#ddmsGeospatialCoverage">ddmsGeospatialCoverage</a> (DDMS 3.0 only),
+			<a href="#ddmsProducer">ddmsProducer</a>,
+			<a href="#ddmsRelatedResources">ddmsRelatedResources</a>,
+			<a href="#ddmsResource">ddmsResource</a>,
+			<a href="#ddmsSecurity">ddmsSecurity</a>, 
+			<a href="#ddmsSource">ddmsSource</a> (DDMS 3.0 only),
+			<a href="#ddmsSubjectCoverage">ddmsSubjectCoverage</a> (DDMS 3.0 only), 
+			<a href="#ddmsSubtitle">ddmsSubtitle</a>, 
+			<a href="#ddmsTemporalCoverage">ddmsTemporalCoverage</a> (DDMS 3.0 only),
+			<a href="#ddmsTitle">ddmsTitle</a>, and
+			<a href="#ddmsVirtualCoverage">ddmsVirtualCoverage</a> (DDMS 3.0 only)
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			Each row in this table represents a single ICISM attribute, because the "complete" set of attributes is subject to change, and most values are optional.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>	
 	<tr class="relRow">
 		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
@@ -163,11 +181,7 @@ to merely have multiple <code>parentId</code> columns in the child table (i.e. a
 		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent component of this attribute</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">parentName</td><td class="relRules">char(64)</td><td>the DDMS element name of the parent component for this attribute, i.e. "person" or 
-			"geospatialCoverage". This value determines which table the parent can be found in.</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">name</td><td class="relRules">char(256), not null</td><td>the unique attribute name, i.e. "classification" or "SCIcontrols"</td>
+		<td class="relField">name</td><td class="relRules">char(64), not null</td><td>the unique attribute name, i.e. "classification" or "SCIcontrols"</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the attribute value as a string</td>
@@ -178,14 +192,42 @@ to merely have multiple <code>parentId</code> columns in the child table (i.e. a
 	<tr>
 		<th class="relName" colspan="3">ddmsSrsAttributes</th>
 	</tr>
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table contains the <a href="/docs/buri/ddmsence/ddms/summary/SRSAttributes.html">SRS attributes</a> affixed to GML elements, including
-			<a href="#ddmsGmlPoint">Point</a>, <a href="#ddmsGmlPolygon">Polygon</a>, or <a href="#ddmsGmlPosition">Position</a>. Unlike the ICISM Security
-			Attributes table, where each row is an attribute, the rows in this table represent a complete set of SRS information for a single element. 
-			An element may link to 0-or-1 rows in this table, via the <code>parentId</code> and <code>parentName</code> columns. Because the required/optional status of 
-			each attribute varies based on the parent, no constraints enforce any rules here. 
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			GML SRS Attributes
 		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/summary/SRSAttributes.html">SRSAttributes</a>
+		</a>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augments:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsGmlPoint">ddmsGmlPoint</a>,
+			<a href="#ddmsGmlPolygon">ddmsGmlPolygon</a>, and
+			<a href="#ddmsGmlPosition">ddmsGmlPosition</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			Unlike the ICISM Security Attributes table, where each row is an attribute, the rows in this table represent a complete set of 
+			SRS information for a single element. Because the required/optional status of each attribute varies based on the parent, 
+			no constraints enforce any rules here. 
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
@@ -194,23 +236,73 @@ to merely have multiple <code>parentId</code> columns in the child table (i.e. a
 		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent component of this attribute</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">parentName</td><td class="relRules">char(64)</td><td>the DDMS element name of the parent component for this attribute, i.e. "person" or 
-			"geospatialCoverage".  This value determines which table the parent can be found in.</td>
-	</tr>		
-	<tr class="relRow">
-		<td class="relField">srsName</td><td class="relRules">char(2048)</td><td>the URI-based SRS name, optional on Positions, but required on Points and Polygons</td>
+		<td class="relField">srsName</td><td class="relRules">char(2048)</td><td>the URI-based SRS name, optional on Positions, 
+			but required on Points and Polygons</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">srsDimension</td><td class="relRules">number</td><td>a positive integer dimension</td>
 	</tr>	
 	<tr class="relRow">
-		<td class="relField">axisLabels</td><td class="relRules">char(2048)</td><td>an ordered list of axes labels, as a space-delimited list of NCNames</td>
+		<td class="relField">axisLabels</td><td class="relRules">char(2048)</td><td>an ordered list of axes labels, as a 
+			space-delimited list of NCNames</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">uomLabels</td><td class="relRules">char(2048)</td><td>an ordered list of unit-of-measure labels for the axes, as a space-delimited list of 
-			NCNames</td>
+		<td class="relField">uomLabels</td><td class="relRules">char(2048)</td><td>an ordered list of unit-of-measure labels for 
+			the axes, as a space-delimited list of NCNames</td>
 	</tr>		
 </table>
+
+
+<div style="background-color: #cdd3e5"><i>The information below this point has not yet been reviewed.</i>
+<ul>
+	<li>Standardizing hyperlinks and labels so readers can immediately tell whether a link will take them to the DDMS specification, the DDMSence API documentation, or another table in this document.</li>
+	<li>Converting the textual descriptions of foreign keys between tables into an explicit row or column below the details.</li>
+	<li>Reviewing column sizes.</li>
+	<li>Standardizing the format of the details for each column.</li>
+	<li>Consistency of using char or number for double values (especially lat/lon).</li>
+	<li>A better way to map to multiple parent types than id + name (will now be based on an id which is unique across all components).</li>
+	<li>Consistent use of <code>code</code> tags to identify column names vs. element names?</li>
+	<li>A graphical chart to give a broad overview of all the components in a hierarchical form.</li>
+	<li>Reintegrate attribute tables into appropriate layers as I review those layers.</li>
+	<li>Happy Thanksgiving!</li>
+</ul>
+</div>
+<!--
+
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/"></a>
+		</a>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#"></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augments / Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#"></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>
+	
+-->	
 
 <a name="tables-format"></a><h4>The Format Layer</h4>
 
