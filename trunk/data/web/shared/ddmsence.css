@@ -197,11 +197,11 @@ th {
  */
 table.rel {
 	margin: 0 0 10px 0;
-	width: 780px;
+	width: 800px;
 }
 tr.relRow {
 }
-th.relName {
+.relName {
 	font-family: monospace;
 }
 td.relHeader {
