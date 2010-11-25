@@ -204,10 +204,14 @@ tr.relRow {
 th.relName {
 	font-family: monospace;
 }
+td.relHeader {
+	font-weight: bold;
+}
 td.relField {
 	font-family: monospace;
 	font-weight: bold;
 	width: 150px;
+	padding-left: 20px;
 }
 td.relInfo {
 }
