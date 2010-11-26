@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 11/26/2010 at 13:11</p>
+<p align="right"><b>Last Update:</b> 11/26/2010 at 13:48</p>
 
 <a name="top"></a><h1>Relational Database Model for DDMS</h1>
 
@@ -356,7 +356,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<td class="relName" colspan="2">
 			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Organization"><code>ddms:Organization</code></a>,
 			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Person"><code>ddms:Person</code></a>,
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Service"><code>ddms:Service</code></a>, and
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#WebService"><code>ddms:Service</code></a>, and
 			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Unknown"><code>ddms:Unknown</code></a>
 		</td>
 	</tr>
@@ -753,7 +753,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#ddms:extent"><code>ddms:extent</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Extent"><code>ddms:extent</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
