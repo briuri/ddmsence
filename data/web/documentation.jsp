@@ -596,12 +596,11 @@ instead of "ICISM", you would set the "icism.prefix" property with a custom valu
 
 <a name="explorations"></a><h3>Explorations</h3>
 
-<p>This section contains links to DDMS-related research and personal experimentation which may be useful to DDMSence in the future. This information should be treated as a work
-in progress, and may be horribly incorrect or incomplete.</p>
+<p>This section contains links to DDMS-related research and personal experimentation which may be useful to DDMSence in the future.</p>
 
 <ul>
 	<li><b>DDMS Schematron Implementation</b>: An attempt to implement some of the more complex rules in the DDMS specification in ISO Schematron.</li>
-	<li><a href="relationalTables.jsp">DDMS Table Model</a>: An experimental mapping of the DDMS specification to relational database tables (database-agnostic).</li>
+	<li><a href="relationalTables.jsp">DDMS Table Model</a>: A mapping of the DDMS specification to relational database tables (database-agnostic).</li>
 </ul> 
 
 <a name="contributors"></a><h3>Contributors</h3>

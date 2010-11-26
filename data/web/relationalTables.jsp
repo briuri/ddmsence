@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 11/26/2010 at 12:21</p>
+<p align="right"><b>Last Update:</b> 11/26/2010 at 13:11</p>
 
 <h1>DDMS Table Model</h1>
 
@@ -15,9 +15,9 @@
 and pragmatic second -- the full scope of DDMS will be modeled, but some design decisions may be made for simplicity, such as modeling lists of values 
 as a delimited string value. Although direct-to-table persistence mapping will probably not be a feature in any version of DDMSence, this table model 
 may be useful when integrating DDMSence with an existing persistence framework like Hibernate or the Oracle XML SQL Utility (XSU).</p> 
-<p>At this point, all of the DDMS components have been modelled. I am in the process of reviewing and revising the tables before I publicize 
-this document.</p>
 
+<p><a href="documentation.jsp#feedback">Feedback</a> on this document is appreciated!</p>
+ 
 <a name="tables-notes"></a><h4>General Notes</h4> 
 <ul>
 <li>Column names generally match the XML element name, which is consistent with DDMSence's object model. There are a few minor differences 
@@ -378,6 +378,7 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
+			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a> and 
 			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
 		</td>
 	</tr>
@@ -911,7 +912,7 @@ this document.</p>
 		<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Subject"><code>ddms:category</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#CategoryQualifier"><code>ddms:category</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1009,20 +1010,6 @@ this document.</p>
 	</tr>
 </table>
 
-<!-- ############################################################################################################################################# -->
-<!-- ############################################################################################################################################# -->
-<!-- ############################################################################################################################################# -->
-<div style="background-color: #cdd3e5"><i>The information below this point has not yet been reviewed.</i><ul>
-	<li>Standardizing hyperlinks and labels so readers can immediately tell whether a link will take them to the DDMS specification, the DDMSence API documentation, or another table in this document.</li>
-	<li>Converting the textual descriptions of foreign keys between tables into an explicit row or column below the details.</li>
-	<li>Reviewing column sizes and standardizing the format of the details for each column.</li>
-	<li>Consistency of using char or number for double values (especially lat/lon).</li>
-	<li>Consistent use of <code>code</code> tags to identify column names vs. element names</li>
-</ul></div>
-<!-- ############################################################################################################################################# -->
-<!-- ############################################################################################################################################# -->
-<!-- ############################################################################################################################################# -->
-
 <a name="ddmsDescription"></a><table class="rel">
 	<tr>
 		<th class="relName" colspan="3">ddmsDescription</th>
@@ -1030,43 +1017,36 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Description"><code>ddms:description</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/Description.html">Description</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			No other notes.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>		
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/Description.html">ddms:description</a>
-			element, which is a top-level component. Every DDMS resource will have at least 1 row in this table.
-			It will be associated with rows in the <a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
-			table. 
-		</td>
-	</tr>
 	<tr class="relRow">
 		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
@@ -1085,41 +1065,36 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#FacilityBENumber"><code>ddms:facilityIdentifier</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/FacilityIdentifier.html">FacilityIdentifier</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			No other notes.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>		
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/FacilityIdentifier.html">ddms:facilityIdentifier</a>
-			element, which is nested in a ddms:geographicIdentifier element.
-		</td>
-	</tr>	
 	<tr class="relRow">
 		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>	
@@ -1141,42 +1116,37 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicIdentifier"><code>ddms:geographicIdentifier</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/GeographicIdentifier.html">GeographicIdentifier</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsCountryCode">ddmsCountryCode</a> or
+			<a href="#ddmsFacilityIdentifier">ddmsFacilityIdentifier</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			No other notes.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>		
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/GeographicIdentifier.html">ddms:geographicIdentifier</a>
-			element, which is nested in a ddms:geospatialCoverage element. A GeographicIdentifier consists of a list of names and regions,
-			and a reference to either a <a href="#ddmsCountryCode">CountryCode</a> or a <a href="#ddmsFacilityIdentifier">FacilityIdentifier</a>. 
-		</td>
-	</tr>
 	<tr class="relRow">
 		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
@@ -1184,10 +1154,10 @@ this document.</p>
 		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent geospatialCoverage element</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">name</td><td class="relRules">char(256), not null</td><td>a delimited string-list of names for this identifier</td>
+		<td class="relField">name</td><td class="relRules">char(256)</td><td>a delimited string-list of names for this identifier</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">region</td><td class="relRules">char(256), not null</td><td>a delimited string-list of region names for this identifier</td>
+		<td class="relField">region</td><td class="relRules">char(256)</td><td>a delimited string-list of region names for this identifier</td>
 	</tr>			
 </table>
 
@@ -1198,48 +1168,40 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeospatialCoverage"><code>ddms:geospatialCoverage</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/GeospatialCoverage.html">GeospatialCoverage</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsBoundingBox">ddmsBoundingBox</a>,
+			<a href="#ddmsBoundingGeometry">ddmsBoundingGeometry</a>,
+			<a href="#ddmsGeographicIdentifier">ddmsGeographicIdentifier</a>,
+			<a href="#ddmsPostalAddress">ddmsPostalAddress</a>, or
+			<a href="#ddmsVerticalExtent">ddmsVerticalExtent</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			No other notes.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>		
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/GeospatialCoverage.html">ddms:geospatialCoverage</a>
-			element, which is a top-level component. This element will have a reference to one row from 
-			<a href="#ddmsGeographicIdentifier">GeographicIdentifier</a>,
-			<a href="#ddmsBoundingBox">BoundingBox</a>,
-			<a href="#ddmsBoundingGeometry">BoundingGeometry</a>,
-			<a href="#ddmsPostalAddress">PostalAddress</a>, or
-			<a href="#ddmsVerticalExtent">VerticalExtent</a>.			 
-			There must be at least one reference to a <a href="#ddmsRelatedResource">RelatedResource</a>.
-			Rows in this table may be associated with rows in the <a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> table in DDMS 3.0.
-		</td>
-	</tr>
 	<tr class="relRow">
 		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
@@ -1255,43 +1217,36 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicBoundingGeometry"><code>gml:Point</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/Point.html">Point</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsGmlPosition">ddmsGmlPosition</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsSrsAttributes">ddmsSrsAttributes</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			No other notes.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>		
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/Point.html">gml:Point</a>
-			element, which is nested in a ddms:boundingGeometry element. 
-			Rows in this table will be associated with a row in the <a href="#ddmsSrsAttributes">ddmsSrsAttributes</a> table
-			and a row in the <a href="#ddmsGmlPosition">ddmsGmlPosition</a> table.
-		</td>
-	</tr>
 	<tr class="relRow">
 		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>	
@@ -1310,46 +1265,38 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicBoundingGeometry"><code>gml:Polygon</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/Polygon.html">Polygon</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsGmlPosition">ddmsGmlPosition</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsSrsAttributes">ddmsSrsAttributes</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			Because a polygon is comprised of ordered positions that create an enclosed area, it is assumed that positions are ordered 
+			according to their <code>index</code> value. As a closed shape, the first and last positions should be identical, but no 
+			validation is done on this constraint here. The last position should definitely be a separate row in the ddmsGmlPosition table.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
-	</tr>		
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/Polygon.html">gml:Polygon</a>
-			element, which is nested in a ddms:boundingGeometry element. 
-			Rows in this table will be associated with a row in the <a href="#ddmsSrsAttributes">ddmsSrsAttributes</a> table
-			and multiple rows in the <a href="#ddmsGmlPosition">ddmsGmlPosition</a> table. Because a polygon is comprised of ordered
-			positions that create an enclosed area, it is assumed that positions are ordered according to their sequenced <code>id</code> value. As
-			a closed shape, the first and last positions should be identical, but no validation is done on this constraint here. The last position
-			should definitely be a separate row in the ddmsGmlPosition table.
-		</td>
-	</tr>		
+	</tr>
 	<tr class="relRow">
 		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>	
@@ -1368,47 +1315,44 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicBoundingGeometry"><code>gml:pos</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/Position.html">Position</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsSrsAttributes">ddmsSrsAttributes</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			The <code>index</code> column is intended for positions that are part of a polygon, and should be 0-based.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>		
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/Position.html">gml:pos</a>
-			element, which is nested in a gml:Point or gml:Polygon element. 
-			Rows in this table may be associated with a row in the <a href="#ddmsSrsAttributes">ddmsSrsAttributes</a> table.
-		</td>
-	</tr>	
 	<tr class="relRow">
 		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>	
 	<tr class="relRow">
 		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent component of this attribute</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">index</td><td class="relRules">integer</td><td>a 0-based index for an ordered set of positions</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">latitude</td><td class="relRules">double, not null</td><td>first coordinate</td>
@@ -1428,47 +1372,41 @@ this document.</p>
 		<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Keyword"><code>ddms:keyword</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/Keyword.html">Keyword</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			No other notes.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>	
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/Keyword.html">ddms:keyword</a>
-			element, which is nested in ddms:subjectCoverage. It may be associated with rows in the 
-			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a> table in DDMS 3.0.			
-		</td>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent subjectCoverage element</td>
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent subjectCoverage element</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">value</td><td class="relRules">char(256)</td><td>the keyword itself</td>
@@ -1482,53 +1420,45 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#RelatedResourcesRelatedResourceLink"><code>ddms:link</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/Link.html">Link</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			No other notes.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>		
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/Link.html">ddms:link</a>
-			element, which is contained inside of a RelatedResource. 
-		</td>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField"></td><td class="relRules"></td><td></td>
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent RelatedResource element</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent RelatedResource element</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">type</td><td class="relRules">char(64), not null</td><td>the link type has a fixed value of "locator". It is being modelled in case
-			this changes in the future.</td>
+		<td class="relField">type</td><td class="relRules">char(64), not null</td><td>the link type has a fixed value of "locator". It is 
+			being modelled in case this changes in the future.</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">href</td><td class="relRules">char(2048), not null</td><td>the URL to the target resource</td>
@@ -1551,47 +1481,41 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#PostalAddress"><code>ddms:postalAddress</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/PostalAddress.html">PostalAddress</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsCountryCode">ddmsCountryCode</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			A postal address has either a state or a province, but not both.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>		
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/PostalAddress.html">ddms:postalAddress</a>
-			element, which is nested in a ddms:geospatialCoverage element. It will have either a state or a province, and may reference
-			a <a href="ddmsCountryCode">countryCode</a>.
-		</td>
-	</tr>		
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>	
 	<tr class="relRow">
-		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent geospatialCoverage row of this attribute</td>
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent geospatialCoverage row of this attribute</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">street</td><td class="relRules">char(2048)</td><td>a delimited string-list of street addresses.</td>
@@ -1617,47 +1541,41 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#RelatedResourcesRelatedResource"><code>ddms:RelatedResource</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/RelatedResource.html">RelatedResource</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsLink">ddmsLink</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			No other notes.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>		
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/RelatedResource.html">ddms:RelatedResource</a>
-			element, which is nested in ddms:RelatedResources elements. The parent element must have at least one RelatedResource,
-			and the RelatedResource must have at least one defined <a href="#ddmsLink">Link</a>.
-		</td>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent RelatedResources element</td>
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent RelatedResources element</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">qualifier</td><td class="relRules">char(2048), not null</td><td>the qualifier URI</td>
@@ -1674,47 +1592,41 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#RelatedResources"><code>ddms:relatedResources</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/RelatedResources.html">RelatedResources</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsRelatedResource">ddmsRelatedResource</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			No other notes.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>		
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/RelatedResources.html">ddms:relatedResources</a>
-			element, which is a top-level component. There must be at least one reference to a <a href="#ddmsRelatedResource">RelatedResource</a>.
-			Rows in this table may be associated with rows in the <a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> table.
-		</td>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">relationship</td><td class="relRules">char(2048), not null</td><td>a URI representing the relationship between the
@@ -1768,17 +1680,17 @@ this document.</p>
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent component of this attribute</td>
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent component of this attribute</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">srsName</td><td class="relRules">char(2048)</td><td>the URI-based SRS name, optional on Positions, 
 			but required on Points and Polygons</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">srsDimension</td><td class="relRules">number</td><td>a positive integer dimension</td>
+		<td class="relField">srsDimension</td><td class="relRules">integer</td><td>a positive integer dimension</td>
 	</tr>	
 	<tr class="relRow">
 		<td class="relField">axisLabels</td><td class="relRules">char(2048)</td><td>an ordered list of axes labels, as a 
@@ -1797,49 +1709,42 @@ this document.</p>
 		<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Subject"><code>ddms:subjectCoverage</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/SubjectCoverage.html">SubjectCoverage</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsCategory">ddmsCategory</a> or
+			<a href="#ddmsKeyword">ddmsKeyword</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			No other notes.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>	
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/SubjectCoverage.html">ddms:subjectCoverage</a>
-			element, which is a required top-level component. 
-			It may be associated with rows in the <a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> table in DDMS 3.0.<br><br>
-			On its own, this table is not very interesting -- it is merely a cross-reference table between a DDMS Resource and any nested
-			<a href="#ddmsCategory">categories</a> or <a href="ddmsKeyword">keywords</a>.
-		</td>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
 	</tr>
 </table>
 
@@ -1850,57 +1755,51 @@ this document.</p>
 		<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#TemporalCoverage"><code>ddms:temporalCoverage</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/TemporalCoverage.html">TemporalCoverage</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			No other notes.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>	
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/TemporalCoverage.html">ddms:temporalCoverage</a>
-			element, which is an optional top-level component. 
-			It may be associated with rows in the <a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> table in DDMS 3.0. 
-		</td>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">timePeriodName</td><td class="relRules">char(64)</td><td>the name of the time period</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">start</td><td class="relRules">char(64)</td><td>the start date string in a valid XML date format, or one of the strings, "Not Applicable" or 
+		<td class="relField">start</td><td class="relRules">char(32)</td><td>the start date string in a valid XML date format, or one of the strings, "Not Applicable" or 
 			"Unknown".</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">end</td><td class="relRules">char(64)</td><td>the end date string in a valid XML date format, or one of the strings, "Not Applicable" or 
+		<td class="relField">end</td><td class="relRules">char(32)</td><td>the end date string in a valid XML date format, or one of the strings, "Not Applicable" or 
 			"Unknown".</td>
 	</tr>	
 </table>
@@ -1912,48 +1811,43 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#VerticalExtent"><code>ddms:verticalExtent</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/VerticalExtent.html">VerticalExtent</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			As described in the <a href="/docs/buri/ddmsence/ddms/summary/VerticalExtent.html">class description</a>,
+			DDMSence requires the top-level unitOfMeasure and datum attributes to be consistent on both 
+			the parent component and the two extents, so this information need only be stored once for a table row.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>		
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/VerticalExtent.html">ddms:verticalExtent</a>
-			element, which is nested in a ddms:geospatialCoverage element. As described in the class description, DDMSence requires
-			the top-level unitOfMeasure and datum attributes to be consistent on both the parent component and the two extents, so this
-			information need only be stored once for a table row.
-		</td>
-	</tr>
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>	
 	<tr class="relRow">
-		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent geospatialCoverage row of this attribute</td>
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent geospatialCoverage row of this attribute</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">unitOfMeasure</td><td class="relRules">char(64), not null</td><td>should be one of Meter, Kilometer, Foot, StatuteMile, NauticalMile, Fathom, Inch</td>
@@ -1962,10 +1856,10 @@ this document.</p>
 		<td class="relField">datum</td><td class="relRules">char(64), not null</td><td>should be one of MSL, AGL, or HAE</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">minVerticalExtent</td><td class="relRules">char(64), not null</td><td>a decimal number (modelled as a string) representing the minimum extent</td>
+		<td class="relField">minVerticalExtent</td><td class="relRules">double, not null</td><td>a decimal number representing the minimum extent</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">maxVerticalExtent</td><td class="relRules">char(64), not null</td><td>a decimal number (modelled as a string) representing the maximum extent</td>
+		<td class="relField">maxVerticalExtent</td><td class="relRules">double, not null</td><td>a decimal number representing the maximum extent</td>
 	</tr>	
 </table>
 
@@ -1976,47 +1870,41 @@ this document.</p>
 		<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#VirtualCoverage"><code>ddms:virtualCoverage</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/summary/VirtualCoverage.html">VirtualCoverage</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			No other notes.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>	
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/summary/VirtualCoverage.html">ddms:virtualCoverage</a>
-			element, which is an optional top-level component. 
-			It may be associated with rows in the <a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> table in DDMS 3.0. 
-		</td>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">address</td><td class="relRules">char(2048)</td><td>a network address</td>
@@ -2038,47 +1926,41 @@ this document.</p>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Security"><code>ddms:security</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/security/.html"></a>
+			<a href="/docs/buri/ddmsence/ddms/security/Security.html">Security</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			No other notes.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>		
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/security/Security.html">ddms:security</a>
-			element, which is a top-level component. It will be associated with rows in the <a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
-			table.
-		</td>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">excludeFromRollup</td><td class="relRules">boolean</td><td>has a fixed value of "true" in DDMS 3.0. This attribute does not exist in DDMS 2.0, 
@@ -2135,10 +2017,10 @@ this document.</p>
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>	
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent component of this attribute</td>
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent component of this attribute</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">name</td><td class="relRules">char(64), not null</td><td>the unique attribute name, i.e. "classification" or "SCIcontrols"</td>
@@ -2160,52 +2042,44 @@ this document.</p>
 		<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			Custom Attributes
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/"></a>
+			<a href="/docs/buri/ddmsence/ddms/extensible/ExtensibleAttributes.html">ExtensibleAttributes</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relHeader">Augmented By:</td>
+		<td class="relHeader">Augments:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			<a href="#ddmsCategory">ddmsCategory</a>,
+			<a href="#ddmsKeyword">ddmsKeyword</a>,
+			<a href="#ddmsProducer">ddmsProducer</a>, and
+			<a href="#ddmsResource">ddmsResource</a>			
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			Each table row represents a single custom attribute.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>	
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table contains any <a href="/docs/buri/ddmsence/ddms/extensible/ExtensibleAttributes.html">custom attributes</a> affixed to a
-			DDMS element. Each table row represents one attribute, and an element may link to 0-to-many rows in this table, via the <code>parentId</code> 
-			column. In DDMS 3.0, acceptable parents would include
-			<a href="#ddmsProducer">Organization</a>, <a href="#ddmsProducer">Person</a>, <a href="#ddmsProducer">Service</a>, <a href="#ddmsProducer">Unknown</a>, 
-			<a href="#ddmsCategory">Category</a>, <a href="#ddmsKeyword">Keyword</a>, or the <a href="#ddmsResource">Resource</a> itself.
-			
-			In DDMS 2.0, extensible attributes can only decorate <a href="#ddmsProducer">Organization</a>, <a href="#ddmsProducer">Person</a>, 
-			<a href="#ddmsProducer">Service</a>, or the <a href="#ddmsResource">Resource</a> itself.
-		</td>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">parentId</td><td class="relRules">number</td><td>foreign key to the parent component of this attribute</td>
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent component of this attribute</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">qname</td><td class="relRules">char(256), not null</td><td>the qualified name of the attribute, i.e. "opensearch:relevance"</td>
@@ -2222,49 +2096,44 @@ this document.</p>
 		<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code></code></a>
+			Custom Elements
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/"></a>
+			<a href="/docs/buri/ddmsence/ddms/extensible/ExtensibleElement.html">ExtensibleElement</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#"></a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
+			This table contains the custom elements which can appear at the top-level of the DDMS resource. The table merely stores the 
+			XML of the element (DDMSence does not dig into these elements either). In DDMS 3.0, 0-to-many of these might appear on a 
+			DDMS resource. Each row in this table should map to one top-level extensible element. Also note that the XML namespaces may 
+			have been defined higher up, so the XML fragment may not be correct on its own.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
 	</tr>	
-	<tr>
-		<td class="relInfo" colspan="3">
-			This table maps to the <a href="/docs/buri/ddmsence/ddms/extensible/ExtensibleElement.html">custom elements</a> 
-			which can appear at the top-level of the DDMS resource. The table merely stores the XML of the element (DDMSence does 
-			not dig into these elements either). In DDMS 3.0, 0-to-many of these might appear on a DDMS resource. Each row in this table 
-			should map to one top-level extensible element.	Also note that the XML namespaces may have been defined higher up, so the XML 
-			fragment may not be correct on its own.
-		</td>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">number, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">resourceId</td><td class="relRules">number</td><td>foreign key to the parent DDMS resource</td>
+		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relField">xml</td><td class="relRules">blob</td><td>the raw XML text of the extensible element</td>
