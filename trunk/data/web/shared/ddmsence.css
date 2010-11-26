@@ -197,7 +197,7 @@ th {
  */
 table.rel {
 	margin: 0 0 10px 0;
-	width: 800px;
+	width: 900px;
 }
 tr.relRow {
 }
@@ -214,6 +214,9 @@ td.relField {
 	padding-left: 20px;
 }
 td.relInfo {
+}
+td.relOverviewLayer {
+	width: 180px;
 }
 td.relRules {
 	width: 200px;
