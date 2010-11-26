@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>DDMSence: DDMS Table Model</title>
+	<title>DDMSence: Relational Database Model for DDMS</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="An open source Java library for the DoD Discovery Metadata Specification (DDMS)">
 </head>
@@ -9,7 +9,7 @@
 
 <p align="right"><b>Last Update:</b> 11/26/2010 at 13:11</p>
 
-<h1>DDMS Table Model</h1>
+<a name="top"></a><h1>Relational Database Model for DDMS</h1>
 
 <p>This document is an attempt to map the DDMS specification to a relational database model. The intent of this mapping is to be comprehensive first 
 and pragmatic second -- the full scope of DDMS will be modeled, but some design decisions may be made for simplicity, such as modeling lists of values 
@@ -2141,6 +2141,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 </table>
 
 <p>
+	<a href="#top">Back to Top</a><br>
 	<a href="documentation.jsp#explorations">Back to Documentation</a>
 </p>
 
