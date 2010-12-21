@@ -511,7 +511,7 @@ of ISO Schematron.</p>
 <p>Creating a custom Schematron file is outside the scope of this documentation, but there are plenty of Schematron tutorials available online, and I hope to provide additional samples
 in the future. For now, a very simple example, <code>testPublisherValue.sch</code>, can be found in <code>/data/sample/schematron/</code>. This file examines the surname of person designated as a publisher and fails if the surname is "<b>Uri</b>".</p>
 
-<pre class="brush: xml">&lt;iso:pattern name="Fixed Surname Value"&gt;
+<pre class="brush: xml">&lt;iso:pattern title="Fixed Surname Value"&gt;
    &lt;iso:rule context="//ddms:publisher/ddms:Person/ddms:surname"&gt;
       &lt;iso:report test="normalize-space(.) = 'Uri'"&gt;Members of the Uri family cannot be publishers.&lt;/iso:report&gt;
    &lt;/iso:rule&gt;

@@ -9,13 +9,13 @@
 	<iso:ns prefix='gml' uri='http://www.opengis.net/gml' />
 	<iso:ns prefix='xlink' uri='http://www.w3.org/1999/xlink' />
 	
-	<iso:pattern name="Sample Failure">
+	<iso:pattern title="Sample Failure">
 		<iso:rule context="ddms:Resource">
 			<iso:assert test="unknownElement">A DDMS Resource must have an unknownElement child. This will always fail.</iso:assert>
 		</iso:rule>
 	</iso:pattern>
 
-	<iso:pattern name="Fixed Surname Value">
+	<iso:pattern title="Fixed Surname Value">
 		<iso:rule context="//ddms:publisher/ddms:Person/ddms:surname">
 			<iso:report test="normalize-space(.) = 'Uri'">Members of the Uri family cannot be publishers.</iso:report>
 		</iso:rule>
