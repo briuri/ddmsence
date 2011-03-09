@@ -19,7 +19,8 @@
 		</ul>	
 	<li><a href="#design">Design Decisions</a></li>
 	<li><a href="#tips">Power Tips</a></li><ul>
-		<li><a href="#tips-version">Working with DDMS 2.0</a></li>
+		<li><a href="#tips-version20">Working with DDMS 2.0</a></li>
+		<li><a href="#tips-version301">Working with DDMS 3.0.1</a></li>
 		<li><a href="#tips-attributes">IC and GML Attribute Groups</a></li>
 		<li><a href="#tips-extensible">The Extensible Layer</a></li>
 		<li><a href="#tips-schematron">Schematron Validation</a></li>
@@ -199,16 +200,17 @@ traversed and queried in the same manner, without requiring too much knowledge o
 
 <div class="toc">
 	<b><u>Table of Contents</u></b>
-	<li><a href="#tips-version">Working with DDMS 2.0</a></li>
+	<li><a href="#tips-version20">Working with DDMS 2.0</a></li>
+	<li><a href="#tips-version301">Working with DDMS 3.0.1</a></li>
 	<li><a href="#tips-attributes">IC and GML Attribute Groups</a></li>
 	<li><a href="#tips-extensible">The Extensible Layer</a></li>
 	<li><a href="#tips-schematron">Schematron Validation</a></li>
 	<li><a href="#tips-configuration">Configurable Properties</a></li>
 </div>
 		
-<a name="tips-version"></a><h4>Working with DDMS 2.0</h4>
+<a name="tips-version20"></a><h4>Working with DDMS 2.0</h4>
 
-<p>DDMSence currently supports two versions of DDMS: 2.0 and 3.0. When building DDMS components from XML files, the 
+<p>DDMSence currently supports two major versions of DDMS: 2.0 and 3.0. When building DDMS components from XML files, the 
 DDMSReader class can automatically use the correct version of DDMS based on the XML namespace defined in the file.
 When building DDMS components from scratch, the <a href="/docs/index.html?buri/ddmsence/util/DDMSVersion.html">DDMSVersion</a>
 class controls the version being used. There is an instance of DDMSVersion for each supported version, and this 
@@ -294,6 +296,16 @@ Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 <tr><td><code>@ICISM:compilationReason</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr></table>
 <p class="figure">Table 2. Security Attribute changes between DDMS 2.0 and DDMS 3.0</p>
 
+<a name="tips-version301"></a><h4>Working with DDMS 3.0.1</h4>
+
+<p>DDMS release 3.0.1 is merely a documentation release which clarifies some of the supporting documentation on geospatial elements. Because none of the schemas
+or components themselves were updated, 3.0.1 reuses the all of the same technical information from 3.0 (ncluding XML namespaces). DDMSence treats 3.0.1 as an alias for DDMS 3.0 --
+you can set your DDMS version to 3.0.1, but DDMSence will continue to use DDMS 3.0 artifacts.</p>
+
+<pre class="brush: java">DDMSVersion.setCurrentVersion("3.0.1");
+System.out.println(DDMSVersion.getCurrentVersion().getVersion());
+<p class="figure">Figure 6. This code will print out "3.0".</p>
+
 <a name="tips-attributes"></a><h4>IC and GML Attribute Groups</h4>
 
 <h5>ICISM Security Attributes</h5>
@@ -305,7 +317,7 @@ the ICISM attributes which can decorate various DDMS components, such as <code>d
 the attributes from a XOM element will simply load these attributes from the element itself. The constructor which builds the attributes from raw data is defined as:
 
 <pre class="brush: java">public SecurityAttributes(String classification, List&lt;String&gt; ownerProducers, Map&lt;String,String&gt; otherAttributes)</pre>
-<p class="figure">Figure 6. SecurityAttributes constructor</p>
+<p class="figure">Figure 7. SecurityAttributes constructor</p>
 
 <p>Because the <code>classification</code> and <code>ownerProducers</code> are the most commonly referenced attributes, they are explicit parameters. Any other
 attribute can be added in the String-based map called <code>otherAttributes</code>. If an attribute does not match an
@@ -322,16 +334,16 @@ otherAttributes.put("classification", "U");
 SecurityAttributes security = new SecurityAttributes("C", ownerProducers, otherAttributes);
 Title title = new Title("My Confidential Notes", security);
 System.out.println(title.toXML());</pre>
-<p class="figure">Figure 7. Code to generate SecurityAttributes</p>
+<p class="figure">Figure 8. Code to generate SecurityAttributes</p>
 
-<p>Note: The actual values assigned to each attribute in Figure 7 are for example's sake only, and might be illogical in real-world metadata.</p>
+<p>Note: The actual values assigned to each attribute in Figure 8 are for example's sake only, and might be illogical in real-world metadata.</p>
 
 <pre class="brush: xml">&lt;ddms:title xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ICISM="urn:us:gov:ic:ism" 
    ICISM:classification="C" ICISM:ownerProducer="USA AUS" ICISM:SCIcontrols="SI"
    ICISM:SARIdentifier="SAR-USA"&gt;
    My Confidential Notes
 &lt;/ddms:title&gt;</pre>
-<p class="figure">Figure 8. The resultant XML element with security attributes</p>
+<p class="figure">Figure 9. The resultant XML element with security attributes</p>
 
 <p>The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. I believe that the IC will be 
 releasing Schematron files to support these rules in the future.</p>
@@ -359,7 +371,7 @@ They can be applied to <code>gml:Point</code>, <code>gml:Polygon</code>, and <co
 
 <pre class="brush: java">SRSAttributes(String srsName, Integer srsDimension, List&lt;String&gt; axisLabels,
    List&lt;String&gt; uomLabels)</pre>
-<p class="figure">Figure 9. SRSAttributes constructor</p>
+<p class="figure">Figure 10. SRSAttributes constructor</p>
 
 <p>Here is an example which creates SRS attributes on a <code>gml:pos</code> element:</p>
 
@@ -376,11 +388,11 @@ coordinates.add(new Double(32.1));
 coordinates.add(new Double(40.1));
 Position position = new Position(coordinates, srsAttributes);
 System.out.println(position.toXML());</pre>
-<p class="figure">Figure 10. Code to generate SRSAttributes</p>
+<p class="figure">Figure 11. Code to generate SRSAttributes</p>
 
 <pre class="brush: xml">&lt;gml:pos srsName="http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D" srsDimension="10" 
    axisLabels="X Y" uomLabels="Meter Meter"&gt;32.1 40.1&lt;/gml:pos&gt;</pre>
-<p class="figure">Figure 11. The resultant XML element with SRS attributes</p>
+<p class="figure">Figure 12. The resultant XML element with SRS attributes</p>
   
 <p>Please note that the SRSAttributes do not belong in any XML namespace -- this is correct according to the DDMS GML Profile.</p>
 
@@ -414,7 +426,7 @@ example of an extensible element as it might appear in an XML file.</p>
       This is an extensible element.
    &lt;/ddmsence:extension&gt;
 &lt;/ddms:Resource&gt;</pre>
-<p class="figure">Figure 12. An extensible element as it would appear in a ddms:Resource</p>
+<p class="figure">Figure 13. An extensible element as it would appear in a ddms:Resource</p>
 
 <p>Unlike most DDMS components, which have a constructor for XOM elements and a constructor for raw data, ExtensibleElement only has one constructor
 (since the raw data is, itself, a XOM element). If you are using a DDMSReader instance to load data from an XML file, the ExtensibleElements will be created automatically,
@@ -423,7 +435,7 @@ and can be accessed with <code>Resource.getExtensibleElements()</code>. Here is 
 <pre class="brush: java">Element element = new Element("ddmsence:extension", "http://ddmsence.urizone.net/");
 element.appendChild("This is an extensible element.");
 ExtensibleElement component = new ExtensibleElement(element);</pre>
-<p class="figure">Figure 13. Creating a simple ExtensibleElement from scratch</p>
+<p class="figure">Figure 14. Creating a simple ExtensibleElement from scratch</p>
 
 <p>Once you have an ExtensibleElement, you can add it to a list of top-level components (like any other IDDMSComponent), and pass it into a Resource constrcutor.
 Creating more complex Elements from scratch requires XOM knowledge, and is outside the scope of this documentation.</p>
@@ -435,13 +447,13 @@ pattern as SecurityAttributes and SRSAttributes. The accessor, <code>getAttribut
 Below is an example of an extensible attribute as it might appear in an XML file, and how it could be created from scratch:</p>
 
 <pre class="brush: xml">&lt;ddms:keyword xmlns:ddmsence="http://ddmsence.urizone.net/" ddms:value="XML" ddmsence:relevance="99" /&gt;</pre>
-<p class="figure">Figure 14. An XML element with extensible attributes</p>
+<p class="figure">Figure 15. An XML element with extensible attributes</p>
 
 <pre class="brush: java">List&lt;Attribute&gt; extAttributes = new ArrayList&lt;Attribute&gt;();
 extAttributes.add(new Attribute("ddmsence:relevance", "http://ddmsence.urizone.net/", "99"));
 ExtensibleAttributes extensions = new ExtensibleAttributes(extAttributes);
 Keyword keyword = new Keyword("XML", extensions);</pre>
-<p class="figure">Figure 15. Creating the extensible attribute from scratch</p>
+<p class="figure">Figure 16. Creating the extensible attribute from scratch</p>
 
 <p>Note: Currently, all of the <code>xs:anyAttribute</code> definitions use lax processing <i>except</i> for the definition on the producer elements. This means
 that any extensible attributes you add to a producer will be strictly validated when loaded by a schema parser. I am in contact with the DDMS Team to determine
@@ -478,7 +490,7 @@ List&lt;Attribute&gt; attributes = new ArrayList&lt;Attribute&gt;();
 attributes.add(new Attribute("ICISM:DESVersion", icNamespace, "2"));
 ExtensibleAttributes extensions = new ExtensibleAttributes(attributes);
 Resource resource2 = new Resource(myComponents, null, null, null, null, extensions);</pre>
-<p class="figure">Figure 16. These two approaches for a resource attribute are both legal in DDMS 2.0</p>
+<p class="figure">Figure 17. These two approaches for a resource attribute are both legal in DDMS 2.0</p>
 
 <pre class="brush: java">DDMSVersion.setCurrentVersion("2.0");
 
@@ -495,7 +507,7 @@ attributes.add(new Attribute("ICISM:classification", icNamespace, "U"));
 attributes.add(new Attribute("ICISM:ownerProducer", icNamespace, "USA"));
 ExtensibleAttributes extensions = new ExtensibleAttributes(attributes);
 Resource resource = new Resource(myComponents, null, null, null, null, extensions);</pre>
-<p class="figure">Figure 17. These two approaches for security attributes are both legal in DDMS 2.0</p>
+<p class="figure">Figure 18. These two approaches for security attributes are both legal in DDMS 2.0</p>
 
 <p>As a best practice, it is recommended that you create these attributes as explicitly as possible: if an attribute can be defined with constructor parameters or inside
 of a SecurityAttributes instance, it should. This will make DDMS 2.0 resources more consistent with their DDMS 3.0 counterparts.</p>
@@ -516,7 +528,7 @@ in the future. For now, a very simple example, <code>testPublisherValue.sch</cod
       &lt;iso:report test="normalize-space(.) = 'Uri'"&gt;Members of the Uri family cannot be publishers.&lt;/iso:report&gt;
    &lt;/iso:rule&gt;
 &lt;/iso:pattern&gt;</pre>
-<p class="figure">Figure 18. The test from testPublisherValue.sch</p>
+<p class="figure">Figure 19. The test from testPublisherValue.sch</p>
 
 <p>The following code sample will build a DDMS Resource from one of the sample XML files, and then validate it through Schematron:</p>
 
@@ -530,14 +542,14 @@ for (ValidationMessage message : schematronMessages) {
    System.out.println("Location: " + message.getLocator());
    System.out.println("Message: " + message.getText());
 }</pre>
-<p class="figure">Figure 19. Sample code to validate DDMSence_Example.xml with testPublisherValue.sch</p>
+<p class="figure">Figure 20. Sample code to validate DDMSence_Example.xml with testPublisherValue.sch</p>
 
 <pre class="brush: xml">Location: //*[local-name()='Resource' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
    /*[local-name()='publisher' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
    /*[local-name()='Person' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
    /*[local-name()='surname' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
 Message: Members of the Uri family cannot be publishers.</pre>
-<p class="figure">Figure 20. Ouput of the code from Figure 19</p>
+<p class="figure">Figure 21. Ouput of the code from Figure 20</p>
 
 <p>Schematron files are made up of a series of patterns and rules which assert rules and report information. The raw output of Schematron validation
 is a series of <code>failed-assert</code> and <code>successful-report</code> elements in Schematron Validation Report Language (SVRL). DDMSence converts
@@ -577,7 +589,7 @@ building components from scratch, and you wish to use "ic" as a namespace prefix
 instead of "ICISM", you would set the "icism.prefix" property with a custom value of <code>ic</code>.</p>
 
 <pre class="brush: java">PropertyReader.setProperty("icism.prefix", "ic");</pre>
-<p class="figure">Figure 21. Command to change a configurable property.</p>
+<p class="figure">Figure 22. Command to change a configurable property.</p>
 
 <p>Only the subset of properties listed below can be set programmatically. Attempts to change other DDMSence properties will result in an exception.</p>
 

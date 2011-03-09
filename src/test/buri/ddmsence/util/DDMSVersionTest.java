@@ -127,4 +127,15 @@ public class DDMSVersionTest extends TestCase {
 		assertEquals("/schemas/3.0/DDMS/3.0/DDMS-GML-Profile.xsd", version.getGmlSchema());
 		assertEquals("urn:us:gov:ic:ism", version.getIcismNamespace());
 	}
+	
+	public void testAliasVersion() {
+		DDMSVersion.setCurrentVersion("3.0.1");
+		assertEquals("3.0", DDMSVersion.getCurrentVersion().getVersion());		
+		assertEquals("3.0", DDMSVersion.getVersionFor("3.0.1").getVersion());
+		assertTrue(DDMSVersion.isCurrentVersion("3.0.1"));
+		Element element = Util.buildDDMSElement("test", null);
+		assertTrue(DDMSVersion.isVersion("3.0", element));
+		assertTrue(DDMSVersion.isVersion("3.0.1", element));
+		
+	}
 }

@@ -60,6 +60,12 @@ import buri.ddmsence.ddms.UnsupportedVersionException;
  * </p>
  * 
  * <p>
+ * Because DDMS 3.0.1 is syntactically identical to DDMS 3.0, requests for version 3.0.1
+ * will simply alias to DDMS 3.0. DDMS 3.0.1 is not set up as a separate batch of schemas and namespaces,
+ * since none of the technical artifacts changed (3.0.1 was a documentation release).
+ * </p>
+ * 
+ * <p>
  * This class is intended for use in a single-threaded environment.
  * </p>
  * 
@@ -127,7 +133,7 @@ public class DDMSVersion {
 	public static boolean isVersion(String ddmsVersion, Element ddmsElement) {
 		Util.requireValue("test version", ddmsVersion);
 		Util.requireValue("test element", ddmsElement);
-		return (ddmsVersion.equals(DDMSVersion.getVersionForNamespace(ddmsElement.getNamespaceURI()).getVersion()));
+		return (aliasVersion(ddmsVersion).equals(DDMSVersion.getVersionForNamespace(ddmsElement.getNamespaceURI()).getVersion()));
 	}
 	
 	/**
@@ -137,7 +143,7 @@ public class DDMSVersion {
 	 * @return true if the current version matches the test version, false otherwise
 	 */
 	public static boolean isCurrentVersion(String ddmsVersion) {
-		return (getCurrentVersion().getVersion().equals(ddmsVersion));
+		return (getCurrentVersion().getVersion().equals(aliasVersion(ddmsVersion)));
 	}
 	
 	/**
@@ -148,6 +154,7 @@ public class DDMSVersion {
 	 * @throws UnsupportedVersionException if the version number is not supported
 	 */
 	public static DDMSVersion getVersionFor(String version) {
+		version = aliasVersion(version);
 		if (!getSupportVersionsProperty().contains(version))
 			throw new UnsupportedVersionException(version);
 		return (VERSIONS_TO_DETAILS.get(version));
@@ -187,9 +194,23 @@ public class DDMSVersion {
 	 * @throws UnsupportedVersionException if the version is not supported
 	 */
 	public static synchronized void setCurrentVersion(String version) {
+		version = aliasVersion(version);
 		if (!getSupportVersionsProperty().contains(version))
 			throw new UnsupportedVersionException(version);
 		_currentVersion = getVersionFor(version);
+	}
+	
+	/**
+	 * Treats version 3.0.1 of DDMS as an alias for DDMS 3.0. 3.0.1 is syntactically identical,
+	 * and has the same namespaces and schemas.
+	 * 
+	 * @param version the raw version
+	 * @return 3.0, if the raw version is 3.0.1. Otherwise, the version.
+	 */
+	private static String aliasVersion(String version) {
+		if ("3.0.1".equals(version))
+			return ("3.0");
+		return (version);
 	}
 	
 	/**
