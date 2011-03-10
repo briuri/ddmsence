@@ -64,9 +64,10 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
+	<div class="newsUpdate"><u>03/10/2011</u>: <a href="downloads.jsp">v1.7.2</a> released.</div>
 	<div class="newsUpdate"><u>11/26/2010</u>: <a href="relationalTables.jsp">Relational Database Model for DDMS</a> published.</div>
-	<div class="newsUpdate"><u>11/16/2010</u>: <a href="downloads.jsp">v1.7.1</a> released.</div>
-	<div class="newsUpdate"><u>09/18/2010</u>: <a href="downloads.jsp">v1.7.0</a> released.</div>
+	<div class="newsUpdate"><u>11/16/2010</u>: v1.7.1 released.</div>
+	<div class="newsUpdate"><u>09/18/2010</u>: v1.7.0 released.</div>
 	<div class="newsUpdate"><u>09/07/2010</u>: v1.6.0 released.</div>
 	<div class="newsUpdate"><u>09/01/2010</u>: <a href="validator.uri">DDMS validator</a> released.</div>
 	<div class="newsUpdate"><u>07/07/2010</u>: v1.5.1 released.</div>
