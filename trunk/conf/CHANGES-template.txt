@@ -4,10 +4,14 @@ supports the DoD Discovery Metadata Specification (DDMS).
 You can contact the author at ddmsence@urizone.net. The DDMSence
 home page is located at http://ddmsence.urizone.net/ .
 
-Copyright 2010 by Brian Uri!
+Copyright 2010 - 2011 by Brian Uri!
 ===========================================================================
 Release History
 ===========================================================================
+
+v 1.7.2 (03/10/2011):
+This stable patch release fixes errors in the sample Schematron files (Issue #67)
+and adds 3.0.1 as an alias for DDMS 3.0 (Issue #69).
 
 v 1.7.1 (11/16/2010):
 This stable patch release fixes an issue with validation of northbound latitude
