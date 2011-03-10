@@ -299,11 +299,12 @@ Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 <a name="tips-version301"></a><h4>Working with DDMS 3.0.1</h4>
 
 <p>DDMS release 3.0.1 is merely a documentation release which clarifies some of the supporting documentation on geospatial elements. Because none of the schemas
-or components themselves were updated, 3.0.1 reuses the all of the same technical information from 3.0 (ncluding XML namespaces). DDMSence treats 3.0.1 as an alias for DDMS 3.0 --
+or components themselves were updated, 3.0.1 reuses all of the same technical information from 3.0 (ncluding XML namespaces). DDMSence treats 3.0.1 as an alias for DDMS 3.0 --
 you can set your DDMS version to 3.0.1, but DDMSence will continue to use DDMS 3.0 artifacts.</p>
 
 <pre class="brush: java">DDMSVersion.setCurrentVersion("3.0.1");
 System.out.println(DDMSVersion.getCurrentVersion().getVersion());
+</pre>
 <p class="figure">Figure 6. This code will print out "3.0".</p>
 
 <a name="tips-attributes"></a><h4>IC and GML Attribute Groups</h4>
