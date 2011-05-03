@@ -37,18 +37,9 @@ import java.util.Set;
  * </p>
  * 
  * <p>
- * The Property Reader supports several custom properties, which can be specified at runtime in a 
- * <code>ddmsence-config.properties</code> file. If the file exists in the classpath, the values from that file will
- * be used. Only a subset of the DDMSence properties are allowed to be configured:
- * </p>
- * 
- * <ul>
- * <li><code>buri.ddmsence.ddms.prefix</code>: The namespace prefix for components in the DDMS namespace.</li>
- * <li><code>buri.ddmsence.gml.prefix</code>: The namespace prefix for components in the GML namespace.</li>
- * <li><code>buri.ddmsence.icism.prefix</code>: The namespace prefix for components in the ICISM namespace.</li>
- * <li><code>buri.ddmsence.xlink.prefix</code>: The namespace prefix for components in the xlink namespace.</li>
- * <li><code>buri.ddmsence.sample.data</code>: The default location for Sample Application data.</li>
- * </ul> 
+ * The Property Reader supports several custom properties, which can be specified at runtime. The complete list of configurable
+ * properties can be found on the DDMSence website at: http://ddmsence.urizone.net/documentation.jsp#tips-configuration.
+ * </p> 
  * 
  * <p>
  * Changing a namespace prefix will affect both components created from scratch and components loaded from XML files.
