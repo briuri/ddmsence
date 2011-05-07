@@ -161,4 +161,67 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	public String getOsuffix() {
 		return (getAttributeValue(OSUFFIX_NAME)); 
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private String _beNumber;
+		private String _osuffix;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(FacilityIdentifier facilityIdentifier) {
+			setBeNumber(facilityIdentifier.getBeNumber());
+			setOsuffix(facilityIdentifier.getOsuffix());
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public FacilityIdentifier commit() throws InvalidDDMSException {
+			return (new FacilityIdentifier(getBeNumber(), getOsuffix()));
+		}
+
+		/**
+		 * Builder accessor for the beNumber
+		 */
+		public String getBeNumber() {
+			return _beNumber;
+		}
+
+		/**
+		 * Builder accessor for the beNumber
+		 */
+		public void setBeNumber(String beNumber) {
+			_beNumber = beNumber;
+		}
+
+		/**
+		 * Builder accessor for the osuffix
+		 */
+		public String getOsuffix() {
+			return _osuffix;
+		}
+
+		/**
+		 * Builder accessor for the osuffix
+		 */
+		public void setOsuffix(String osuffix) {
+			_osuffix = osuffix;
+		}
+	}
 } 

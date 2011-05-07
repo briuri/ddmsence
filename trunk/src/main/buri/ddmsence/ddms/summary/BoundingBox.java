@@ -230,4 +230,102 @@ public final class BoundingBox extends AbstractBaseComponent {
 	public Double getNorthBL() {
 		return (_cachedNorthBL); 
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private Double _westBL;
+		private Double _eastBL;
+		private Double _southBL;
+		private Double _northBL;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(BoundingBox box) {
+			setWestBL(box.getWestBL());
+			setEastBL(box.getEastBL());
+			setSouthBL(box.getSouthBL());
+			setNorthBL(box.getNorthBL());
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public BoundingBox commit() throws InvalidDDMSException {
+			if (getWestBL() == null || getEastBL() == null || getSouthBL() == null || getNorthBL() == null)
+				throw new InvalidDDMSException("A ddms:boundingBox requires a complete set of longitude and latitude values.");
+			return (new BoundingBox(getWestBL().doubleValue(), getEastBL().doubleValue(), getSouthBL().doubleValue(),
+				getNorthBL().doubleValue()));
+		}
+
+		/**
+		 * Builder accessor for the westBL
+		 */
+		public Double getWestBL() {
+			return _westBL;
+		}
+
+		/**
+		 * Builder accessor for the westBL
+		 */
+		public void setWestBL(Double westBL) {
+			_westBL = westBL;
+		}
+
+		/**
+		 * Builder accessor for the eastBL
+		 */
+		public Double getEastBL() {
+			return _eastBL;
+		}
+
+		/**
+		 * Builder accessor for the eastBL
+		 */
+		public void setEastBL(Double eastBL) {
+			_eastBL = eastBL;
+		}
+
+		/**
+		 * Builder accessor for the southBL
+		 */
+		public Double getSouthBL() {
+			return _southBL;
+		}
+
+		/**
+		 * Builder accessor for the southBL
+		 */
+		public void setSouthBL(Double southBL) {
+			_southBL = southBL;
+		}
+
+		/**
+		 * Builder accessor for the northBL
+		 */
+		public Double getNorthBL() {
+			return _northBL;
+		}
+
+		/**
+		 * Builder accessor for the northBL
+		 */
+		public void setNorthBL(Double northBL) {
+			_northBL = northBL;
+		}
+	}
 } 

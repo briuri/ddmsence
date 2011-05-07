@@ -185,37 +185,132 @@ public final class Link extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the type attribute.
+	 * Builder accessor for the type attribute.
 	 */
 	public String getType() {
 		return (getAttributeValue(TYPE_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
 	}
 	
 	/**
-	 * Accessor for the href attribute.
+	 * Builder accessor for the href attribute.
 	 */
 	public String getHref() {
 		return (getAttributeValue(HREF_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
 	}
 	
 	/**
-	 * Accessor for the role attribute.
+	 * Builder accessor for the role attribute.
 	 */
 	public String getRole() {
 		return (getAttributeValue(ROLE_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
 	}
 	
 	/**
-	 * Accessor for the title attribute.
+	 * Builder accessor for the title attribute.
 	 */
 	public String getTitle() {
 		return (getAttributeValue(TITLE_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
 	}
 	
 	/**
-	 * Accessor for the label attribute.
+	 * Builder accessor for the label attribute.
 	 */
 	public String getLabel() {
 		return (getAttributeValue(LABEL_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
+	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private String _href;
+		private String _role;
+		private String _title;
+		private String _label;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(Link link) {
+			setHref(link.getHref());
+			setRole(link.getRole());
+			setTitle(link.getTitle());
+			setLabel(link.getLabel());
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public Link commit() throws InvalidDDMSException {
+			return (new Link(getHref(), getRole(), getTitle(), getLabel()));
+		}
+
+		/**
+		 * Builder accessor for the href
+		 */
+		public String getHref() {
+			return _href;
+		}
+
+		/**
+		 * Builder accessor for the href
+		 */
+		public void setHref(String href) {
+			_href = href;
+		}
+
+		/**
+		 * Builder accessor for the role
+		 */
+		public String getRole() {
+			return _role;
+		}
+
+		/**
+		 * Builder accessor for the role
+		 */
+		public void setRole(String role) {
+			_role = role;
+		}
+
+		/**
+		 * Builder accessor for the title
+		 */
+		public String getTitle() {
+			return _title;
+		}
+
+		/**
+		 * Builder accessor for the title
+		 */
+		public void setTitle(String title) {
+			_title = title;
+		}
+
+		/**
+		 * Builder accessor for the label
+		 */
+		public String getLabel() {
+			return _label;
+		}
+
+		/**
+		 * Builder accessor for the label
+		 */
+		public void setLabel(String label) {
+			_label = label;
+		}
 	}
 } 
