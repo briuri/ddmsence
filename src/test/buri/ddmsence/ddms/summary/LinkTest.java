@@ -311,4 +311,25 @@ public class LinkTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			
+			// Equality after Building
+			Link.Builder builder = new Link.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new Link.Builder();
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

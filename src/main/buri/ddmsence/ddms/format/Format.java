@@ -236,7 +236,7 @@ public final class Format extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the mimeType element child text. Will return an empty string if not set, but that cannot occur after
+	 * Builder accessor for the mimeType element child text. Will return an empty string if not set, but that cannot occur after
 	 * instantiation.
 	 */
 	public String getMimeType() {
@@ -244,7 +244,7 @@ public final class Format extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the extent
+	 * Builder accessor for the extent
 	 */
 	public MediaExtent getExtent() {
 		return (_cachedExtent);
@@ -265,10 +265,91 @@ public final class Format extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the medium element child text
+	 * Builder accessor for the medium element child text
 	 */
 	public String getMedium() {
 		return (Util.getNonNullString(_cachedMedium));
 	}
 	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private String _mimeType;
+		private MediaExtent.Builder _extent;
+		private String _medium;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(Format format) {
+			setMimeType(format.getMimeType());
+			if (format.getExtent() != null)
+				setExtent(new MediaExtent.Builder(format.getExtent()));
+			setMedium(format.getMedium());			
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public Format commit() throws InvalidDDMSException {
+			return (new Format(getMimeType(), getExtent().commit(), getMedium()));
+		}
+
+		/**
+		 * Builder accessor for the mimeType
+		 */
+		public String getMimeType() {
+			return _mimeType;
+		}
+
+		/**
+		 * Builder accessor for the mimeType
+		 */
+		public void setMimeType(String mimeType) {
+			_mimeType = mimeType;
+		}
+
+		/**
+		 * Builder accessor for the mediaExtent
+		 */
+		public MediaExtent.Builder getExtent() {
+			if (_extent == null)
+				_extent = new MediaExtent.Builder();
+			return _extent;
+		}
+
+		/**
+		 * Builder accessor for the mediaExtent
+		 */
+		public void setExtent(MediaExtent.Builder extent) {
+			_extent = extent;
+		}
+
+		/**
+		 * Builder accessor for the medium
+		 */
+		public String getMedium() {
+			return _medium;
+		}
+
+		/**
+		 * Builder accessor for the medium
+		 */
+		public void setMedium(String medium) {
+			_medium = medium;
+		}
+	}	
 } 

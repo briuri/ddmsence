@@ -328,4 +328,25 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 			assertEquals(component.getNorthBL(), Double.valueOf(TEST_NORTH));
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			BoundingBox.Builder builder = new BoundingBox.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new BoundingBox.Builder();
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

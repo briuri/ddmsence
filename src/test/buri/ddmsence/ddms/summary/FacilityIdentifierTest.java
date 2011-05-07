@@ -269,4 +269,25 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			FacilityIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			FacilityIdentifier.Builder builder = new FacilityIdentifier.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new FacilityIdentifier.Builder();
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

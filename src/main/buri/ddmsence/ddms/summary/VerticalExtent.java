@@ -310,4 +310,102 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	public Double getMaxVerticalExtent() {
 		return (_cachedMax); 
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private Double _minVerticalExtent;
+		private Double _maxVerticalExtent;
+		private String _unitOfMeasure;
+		private String _datum;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(VerticalExtent extent) {
+			setMinVerticalExtent(extent.getMinVerticalExtent());
+			setMaxVerticalExtent(extent.getMaxVerticalExtent());
+			setUnitOfMeasure(extent.getUnitOfMeasure());
+			setDatum(extent.getDatum());
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public VerticalExtent commit() throws InvalidDDMSException {
+			if (getMinVerticalExtent() == null || getMaxVerticalExtent() == null)
+				throw new InvalidDDMSException("A ddms:verticalExtent requires a minimum and maximum extent value.");
+			return (new VerticalExtent(getMinVerticalExtent().doubleValue(), getMaxVerticalExtent().doubleValue(),
+				getUnitOfMeasure(), getDatum()));
+		}
+
+		/**
+		 * Builder accessor for the minVerticalExtent
+		 */
+		public Double getMinVerticalExtent() {
+			return _minVerticalExtent;
+		}
+
+		/**
+		 * Builder accessor for the minVerticalExtent
+		 */
+		public void setMinVerticalExtent(Double minVerticalExtent) {
+			_minVerticalExtent = minVerticalExtent;
+		}
+
+		/**
+		 * Builder accessor for the maxVerticalExtent
+		 */
+		public Double getMaxVerticalExtent() {
+			return _maxVerticalExtent;
+		}
+
+		/**
+		 * Builder accessor for the maxVerticalExtent
+		 */
+		public void setMaxVerticalExtent(Double maxVerticalExtent) {
+			_maxVerticalExtent = maxVerticalExtent;
+		}
+
+		/**
+		 * Builder accessor for the unitOfMeasure
+		 */
+		public String getUnitOfMeasure() {
+			return _unitOfMeasure;
+		}
+
+		/**
+		 * Builder accessor for the unitOfMeasure
+		 */
+		public void setUnitOfMeasure(String unitOfMeasure) {
+			_unitOfMeasure = unitOfMeasure;
+		}
+
+		/**
+		 * Builder accessor for the datum
+		 */
+		public String getDatum() {
+			return _datum;
+		}
+
+		/**
+		 * Builder accessor for the datum
+		 */
+		public void setDatum(String datum) {
+			_datum = datum;
+		}
+	}
 } 
