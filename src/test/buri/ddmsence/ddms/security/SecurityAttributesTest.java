@@ -231,9 +231,19 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			more.put(SecurityAttributes.DECLASS_DATE_NAME, "2004");
 			testConstructor(WILL_FAIL, TEST_CLASS, TEST_OWNERS, more);
 
+			// nonsensical declassDate
+			more = new HashMap<String, String>(TEST_OTHERS);
+			more.put(SecurityAttributes.DECLASS_DATE_NAME, "notAnXmlDate");
+			testConstructor(WILL_FAIL, TEST_CLASS, TEST_OWNERS, more);
+			
 			// invalid dateOfExemptedSource
 			more = new HashMap<String, String>(TEST_OTHERS);
 			more.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2004");
+			testConstructor(WILL_FAIL, TEST_CLASS, TEST_OWNERS, more);
+			
+			// nonsensical dateOfExemptedSource
+			more = new HashMap<String, String>(TEST_OTHERS);
+			more.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "notAnXmlDate");
 			testConstructor(WILL_FAIL, TEST_CLASS, TEST_OWNERS, more);
 		}
 	}

@@ -133,5 +133,15 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_DECLASS_EXCEPTION, "25X0"));
 		PropertyReader.setProperty("icism.cve.enumLocation", "/customCVEnumISM/");
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DECLASS_EXCEPTION, "25X0"));
+		
+		// Unknown Location
+		PropertyReader.setProperty("icism.cve.enumLocation", "/doesNotExist/");
+		try {
+			ISMVocabulary.enumContains(ISMVocabulary.CVE_DECLASS_EXCEPTION, "25X0");
+			fail("Evaluated an enumeration with no enumeration files.");
+		}
+		catch (RuntimeException e) {
+			// Good
+		}
 	}
 }

@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import nu.xom.Element;
-
 import buri.ddmsence.ddms.UnsupportedVersionException;
 
 /**

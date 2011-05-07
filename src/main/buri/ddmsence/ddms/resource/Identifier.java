@@ -126,4 +126,38 @@ public final class Identifier extends AbstractQualifierValue {
 	public boolean equals(Object obj) {
 		return (super.equals(obj) && (obj instanceof Identifier));
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder extends AbstractQualifierValue.Builder {
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {
+			super();
+		}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(Identifier identifier) {
+			super(identifier);
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public Identifier commit() throws InvalidDDMSException {
+			return (new Identifier(getQualifier(), getValue()));
+		}
+	}
 } 

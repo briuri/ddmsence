@@ -187,14 +187,16 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			_cachedStart = getFactory().newXMLGregorianCalendar(_cachedStartString);
 		}
 		catch (IllegalArgumentException e) {
-			// Was not a valid date. validate() will catch this later.
+			// Was not a valid date. validate() will catch this later. If we throw an InvalidDDMSException,
+			// we will prevent the use of the extended date types like Unknown.
 		}
 		_cachedEndString = endString;
 		try {
 			_cachedEnd = getFactory().newXMLGregorianCalendar(_cachedEndString);
 		}
 		catch (IllegalArgumentException e) {
-			// Was not a valid date. validate() will catch this later.
+			// Was not a valid date. validate() will catch this later. If we throw an InvalidDDMSException,
+			// we will prevent the use of the extended date types like Unknown.
 		}
 	}
 	
