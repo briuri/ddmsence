@@ -267,4 +267,26 @@ public class IdentifierTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Identifier component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			Identifier.Builder builder = new Identifier.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new Identifier.Builder();
+			builder.setValue(TEST_VALUE);
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

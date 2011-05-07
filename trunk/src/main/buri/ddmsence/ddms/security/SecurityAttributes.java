@@ -296,14 +296,26 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		_cachedClassificationReason = otherAttributes.get(CLASSIFICATION_REASON_NAME);
 		_cachedDerivedFrom = otherAttributes.get(DERIVED_FROM_NAME);			
 		String declassDate = otherAttributes.get(DECLASS_DATE_NAME);
-		if (!Util.isEmpty(declassDate))
-			_cachedDeclassDate = getFactory().newXMLGregorianCalendar(declassDate);		
+		if (!Util.isEmpty(declassDate)) {
+			try {
+				_cachedDeclassDate = getFactory().newXMLGregorianCalendar(declassDate);
+			}
+			catch (IllegalArgumentException e) {
+				throw new InvalidDDMSException("The ICISM:declassDate attribute is not in a valid date format.");
+			}
+		}
 		_cachedDeclassEvent = otherAttributes.get(DECLASS_EVENT_NAME);
 		_cachedDeclassException = otherAttributes.get(DECLASS_EXCEPTION_NAME);	
 		_cachedTypeOfExemptedSource = otherAttributes.get(TYPE_OF_EXEMPTED_SOURCE_NAME);
 		String dateOfExemptedSource = otherAttributes.get(DATE_OF_EXEMPTED_SOURCE_NAME);
-		if (!Util.isEmpty(dateOfExemptedSource))
-			_cachedDateOfExemptedSource = getFactory().newXMLGregorianCalendar(dateOfExemptedSource);
+		if (!Util.isEmpty(dateOfExemptedSource)) {
+			try {
+				_cachedDateOfExemptedSource = getFactory().newXMLGregorianCalendar(dateOfExemptedSource);
+			}
+			catch (IllegalArgumentException e) {
+				throw new InvalidDDMSException("The ICISM:dateOfExemptedSource attribute is not in a valid date format.");
+			}
+		}
 		String manualReview = otherAttributes.get(DECLASS_MANUAL_REVIEW_NAME);
 		if (!Util.isEmpty(manualReview))
 			_cachedDeclassManualReview = Boolean.valueOf(manualReview);

@@ -117,24 +117,30 @@ public final class Dates extends AbstractBaseComponent {
 	public Dates(String created, String posted, String validTil, String infoCutOff) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Dates.NAME, null);
-			if (!Util.isEmpty(created)) {
-				_cachedCreated = getFactory().newXMLGregorianCalendar(created);
-				Util.addDDMSAttribute(element, CREATED_NAME, getCreated().toXMLFormat());
+			try {
+				if (!Util.isEmpty(created)) {
+						_cachedCreated = getFactory().newXMLGregorianCalendar(created);
+					Util.addDDMSAttribute(element, CREATED_NAME, getCreated().toXMLFormat());
+				}
+				if (!Util.isEmpty(posted)) {
+					_cachedPosted = getFactory().newXMLGregorianCalendar(posted);
+					Util.addDDMSAttribute(element, POSTED_NAME, getPosted().toXMLFormat());
+				}
+				if (!Util.isEmpty(validTil)) {
+					_cachedValidTil = getFactory().newXMLGregorianCalendar(validTil);
+					Util.addDDMSAttribute(element, VALID_TIL_NAME, getValidTil().toXMLFormat());
+				}
+				if (!Util.isEmpty(infoCutOff)) {
+					_cachedInfoCutOff = getFactory().newXMLGregorianCalendar(infoCutOff);
+					Util.addDDMSAttribute(element, INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat());
+				}
 			}
-			if (!Util.isEmpty(posted)) {
-				_cachedPosted = getFactory().newXMLGregorianCalendar(posted);
-				Util.addDDMSAttribute(element, POSTED_NAME, getPosted().toXMLFormat());
-			}
-			if (!Util.isEmpty(validTil)) {
-				_cachedValidTil = getFactory().newXMLGregorianCalendar(validTil);
-				Util.addDDMSAttribute(element, VALID_TIL_NAME, getValidTil().toXMLFormat());
-			}
-			if (!Util.isEmpty(infoCutOff)) {
-				_cachedInfoCutOff = getFactory().newXMLGregorianCalendar(infoCutOff);
-				Util.addDDMSAttribute(element, INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat());
+			catch (IllegalArgumentException e) {
+				throw new InvalidDDMSException("One or more ddms:dates attributes are not in a valid date format.");
 			}
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -273,5 +279,100 @@ public final class Dates extends AbstractBaseComponent {
 	 */
 	private static DatatypeFactory getFactory() {
 		return (Util.getDataTypeFactory());
+	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private String _created;
+		private String _posted;
+		private String _validTil;
+		private String _infoCutOff;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(Dates dates) {
+			setCreated(dates.getCreated().toXMLFormat());
+			setPosted(dates.getPosted().toXMLFormat());
+			setValidTil(dates.getValidTil().toXMLFormat());
+			setInfoCutOff(dates.getInfoCutOff().toXMLFormat());
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public Dates commit() throws InvalidDDMSException {
+			return (new Dates(getCreated(), getPosted(), getValidTil(), getInfoCutOff()));
+		}
+
+		/**
+		 * Builder accessor for the created date.
+		 */
+		public String getCreated() {
+			return _created;
+		}
+
+		/**
+		 * Builder accessor for the created date.
+		 */
+		public void setCreated(String created) {
+			_created = created;
+		}
+
+		/**
+		 * Builder accessor for the posted date.
+		 */
+		public String getPosted() {
+			return _posted;
+		}
+
+		/**
+		 * Builder accessor for the posted date.
+		 */
+		public void setPosted(String posted) {
+			_posted = posted;
+		}
+
+		/**
+		 * Builder accessor for the validTil date.
+		 */
+		public String getValidTil() {
+			return _validTil;
+		}
+
+		/**
+		 * Builder accessor for the validTil date.
+		 */
+		public void setValidTil(String validTil) {
+			_validTil = validTil;
+		}
+
+		/**
+		 * Builder accessor for the infoCutOff date.
+		 */
+		public String getInfoCutOff() {
+			return _infoCutOff;
+		}
+
+		/**
+		 * Builder accessor for the infoCutOff date.
+		 */
+		public void setInfoCutOff(String infoCutOff) {
+			_infoCutOff = infoCutOff;
+		}
 	}
 }

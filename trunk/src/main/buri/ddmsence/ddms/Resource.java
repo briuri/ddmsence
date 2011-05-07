@@ -411,7 +411,12 @@ public final class Resource extends AbstractBaseComponent {
 					DDMSVersion.getCurrentVersion().getIcismNamespace(), desVersion.toString());
 			}
 			if (!Util.isEmpty(createDate)) {
-				_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
+				try {
+					_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
+				}
+				catch (IllegalArgumentException e) {
+					throw new InvalidDDMSException("The ICISM:createDate attribute is not in a valid date format.");
+				}
 				Util.addAttribute(element, icPrefix, CREATE_DATE_NAME, 
 					DDMSVersion.getCurrentVersion().getIcismNamespace(), getCreateDate().toXMLFormat());
 			}

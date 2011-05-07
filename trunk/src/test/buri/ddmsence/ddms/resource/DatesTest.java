@@ -257,7 +257,7 @@ public class DatesTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testtXMLOutput() {
+	public void testXMLOutput() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Dates component = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -265,6 +265,28 @@ public class DatesTest extends AbstractComponentTestCase {
 
 			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
+		}
+	}
+
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Dates component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			Dates.Builder builder = new Dates.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new Dates.Builder();
+			builder.setCreated("notAnXmlDate");
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
 		}
 	}
 }

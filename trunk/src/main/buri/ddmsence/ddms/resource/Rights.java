@@ -161,4 +161,83 @@ public final class Rights extends AbstractBaseComponent {
 	public boolean getCopyright() {
 		return (Boolean.valueOf(getAttributeValue(COPYRIGHT_NAME))); 
 	}
+
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private boolean _privacyAct;
+		private boolean _intellectualProperty;
+		private boolean _copyright;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(Rights rights) {
+			setPrivacyAct(rights.getPrivacyAct());
+			setIntellectualProperty(rights.getIntellectualProperty());
+			setCopyright(rights.getCopyright());
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public Rights commit() throws InvalidDDMSException {
+			return (new Rights(getPrivacyAct(), getIntellectualProperty(), getCopyright()));
+		}
+		
+		/**
+		 * Builder accessor for the privacyAct attribute.
+		 */
+		public boolean getPrivacyAct() {
+			return _privacyAct;
+		}
+		
+		/**
+		 * Builder accessor for the privacyAct attribute.
+		 */
+		public void setPrivacyAct(boolean privacyAct) {
+			_privacyAct = privacyAct;
+		}
+		
+		/**
+		 * Builder accessor for the intellectualProperty attribute.
+		 */
+		public boolean getIntellectualProperty() {
+			return _intellectualProperty;
+		}
+		
+		/**
+		 * Builder accessor for the intellectualProperty attribute.
+		 */
+		public void setIntellectualProperty(boolean intellectualProperty) {
+			_intellectualProperty = intellectualProperty;
+		}
+		
+		/**
+		 * Builder accessor for the copyright attribute.
+		 */
+		public boolean getCopyright() {
+			return _copyright;
+		}
+		
+		/**
+		 * Builder accessor for the copyright attribute.
+		 */
+		public void setCopyright(boolean copyright) {
+			_copyright = copyright;
+		}		
+	}
 } 

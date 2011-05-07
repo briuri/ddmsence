@@ -233,4 +233,21 @@ public class RightsTest extends AbstractComponentTestCase {
 			assertFalse(component.getCopyright());
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Rights component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Default Values
+			Rights.Builder builder = new Rights.Builder();
+			assertFalse(builder.getPrivacyAct());
+			assertFalse(builder.getIntellectualProperty());
+			assertFalse(builder.getCopyright());
+			
+			// Equality after Building
+			builder = new Rights.Builder(component);
+			assertEquals(builder.commit(), component);
+		}
+	}
 }

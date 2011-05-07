@@ -863,6 +863,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 				// Invalid createDate
 				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, "2001", TEST_DES_VERSION);
 
+				// Nonsensical createDate
+				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, "notAnXmlDate", TEST_DES_VERSION);
+
 				// Missing desVersion
 				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null);
 			}
