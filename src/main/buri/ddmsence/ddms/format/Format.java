@@ -236,7 +236,7 @@ public final class Format extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Builder accessor for the mimeType element child text. Will return an empty string if not set, but that cannot occur after
+	 * Accessor for the mimeType element child text. Will return an empty string if not set, but that cannot occur after
 	 * instantiation.
 	 */
 	public String getMimeType() {
@@ -244,7 +244,7 @@ public final class Format extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Builder accessor for the extent
+	 * Accessor for the extent
 	 */
 	public MediaExtent getExtent() {
 		return (_cachedExtent);
@@ -265,7 +265,7 @@ public final class Format extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Builder accessor for the medium element child text
+	 * Accessor for the medium element child text
 	 */
 	public String getMedium() {
 		return (Util.getNonNullString(_cachedMedium));
@@ -309,21 +309,21 @@ public final class Format extends AbstractBaseComponent {
 		}
 
 		/**
-		 * Builder accessor for the mimeType
+		 * Builder accessor for the mimeType element child text.
 		 */
 		public String getMimeType() {
 			return _mimeType;
 		}
 
 		/**
-		 * Builder accessor for the mimeType
+		 * Builder accessor for the mimeType element child text.
 		 */
 		public void setMimeType(String mimeType) {
 			_mimeType = mimeType;
 		}
 
 		/**
-		 * Builder accessor for the mediaExtent
+		 * Builder accessor for the mediaExtent element.
 		 */
 		public MediaExtent.Builder getExtent() {
 			if (_extent == null)
@@ -332,21 +332,21 @@ public final class Format extends AbstractBaseComponent {
 		}
 
 		/**
-		 * Builder accessor for the mediaExtent
+		 * Builder accessor for the mediaExtent element.
 		 */
 		public void setExtent(MediaExtent.Builder extent) {
 			_extent = extent;
 		}
 
 		/**
-		 * Builder accessor for the medium
+		 * Builder accessor for the medium element child text.
 		 */
 		public String getMedium() {
 			return _medium;
 		}
 
 		/**
-		 * Builder accessor for the medium
+		 * Builder accessor for the medium element child text.
 		 */
 		public void setMedium(String medium) {
 			_medium = medium;

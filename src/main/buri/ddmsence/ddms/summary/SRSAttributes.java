@@ -194,44 +194,143 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	}
 		
 	/**
-	 * Accessor for the srsName.
+	 * Builder accessor for the srsName.
 	 */
 	public String getSrsName() {
 		return (Util.getNonNullString(_cachedSrsName));
 	}
 	
 	/**
-	 * Accessor for the srsDimension. May return null if not set.
+	 * Builder accessor for the srsDimension. May return null if not set.
 	 */
 	public Integer getSrsDimension() {
 		return (_cachedSrsDimension);
 	}
 	
 	/**
-	 * Accessor for the axisLabels. Will return an empty list if not set.
+	 * Builder accessor for the axisLabels. Will return an empty list if not set.
 	 */
 	public List<String> getAxisLabels() {
 		return (Collections.unmodifiableList(_cachedAxisLabels));
 	}
 	
 	/**
-	 * Accessor for the String representation of the axisLabels
+	 * Builder accessor for the String representation of the axisLabels
 	 */
 	public String getAxisLabelsAsXsList() {
 		return (Util.getXsList(getAxisLabels()));
 	}
 	
 	/**
-	 * Accessor for the uomLabels. Will return an empty list if not set.
+	 * Builder accessor for the uomLabels. Will return an empty list if not set.
 	 */
 	public List<String> getUomLabels() {
 		return (Collections.unmodifiableList(_cachedUomLabels));
 	}
 	
 	/**
-	 * Accessor for the String representation of the uomLabels
+	 * Builder accessor for the String representation of the uomLabels
 	 */
 	public String getUomLabelsAsXsList() {
 		return (Util.getXsList(getUomLabels()));
+	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private String _srsName;
+		private Integer _srsDimension;
+		private List<String> _axisLabels;
+		private List<String> _uomLabels;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(SRSAttributes attributes) {
+			setSrsName(attributes.getSrsName());
+			setSrsDimension(attributes.getSrsDimension());
+			setAxisLabels(attributes.getAxisLabels());
+			setUomLabels(attributes.getUomLabels());
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public SRSAttributes commit() throws InvalidDDMSException {
+			return (new SRSAttributes(getSrsName(), getSrsDimension(), getAxisLabels(), getUomLabels()));
+		}
+		
+		/**
+		 * Builder accessor for the srsName
+		 */
+		public String getSrsName() {
+			return _srsName;
+		}
+		
+		/**
+		 * Builder accessor for the srsName
+		 */
+		public void setSrsName(String srsName) {
+			_srsName = srsName;
+		}
+		
+		/**
+		 * Builder accessor for the srsDimension
+		 */
+		public Integer getSrsDimension() {
+			return _srsDimension;
+		}
+		
+		/**
+		 * Builder accessor for the srsDimension
+		 */
+		public void setSrsDimension(Integer srsDimension) {
+			_srsDimension = srsDimension;
+		}
+		
+		/**
+		 * Builder accessor for the axisLabels
+		 */
+		public List<String> getAxisLabels() {
+			if (_axisLabels == null)
+				_axisLabels = new ArrayList<String>();
+			return _axisLabels;
+		}
+		
+		/**
+		 * Builder accessor for the axisLabels
+		 */
+		public void setAxisLabels(List<String> axisLabels) {
+			_axisLabels = axisLabels;
+		}
+		
+		/**
+		 * Builder accessor for the uomLabels
+		 */
+		public List<String> getUomLabels() {
+			if (_uomLabels == null)
+				_uomLabels = new ArrayList<String>();
+			return _uomLabels;
+		}
+		
+		/**
+		 * Builder accessor for the uomLabels
+		 */
+		public void setUomLabels(List<String> uomLabels) {
+			_uomLabels = uomLabels;
+		}
 	}
 }

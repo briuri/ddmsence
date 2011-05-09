@@ -353,56 +353,56 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		}
 
 		/**
-		 * Builder accessor for the minVerticalExtent
+		 * Builder accessor for the minimum extent
 		 */
 		public Double getMinVerticalExtent() {
 			return _minVerticalExtent;
 		}
 
 		/**
-		 * Builder accessor for the minVerticalExtent
+		 * Builder accessor for the minimum extent
 		 */
 		public void setMinVerticalExtent(Double minVerticalExtent) {
 			_minVerticalExtent = minVerticalExtent;
 		}
 
 		/**
-		 * Builder accessor for the maxVerticalExtent
+		 * Builder accessor for the maximum extent
 		 */
 		public Double getMaxVerticalExtent() {
 			return _maxVerticalExtent;
 		}
 
 		/**
-		 * Builder accessor for the maxVerticalExtent
+		 * Builder accessor for the maximum extent
 		 */
 		public void setMaxVerticalExtent(Double maxVerticalExtent) {
 			_maxVerticalExtent = maxVerticalExtent;
 		}
 
 		/**
-		 * Builder accessor for the unitOfMeasure
+		 * Builder accessor for the unitOfMeasure attribute
 		 */
 		public String getUnitOfMeasure() {
 			return _unitOfMeasure;
 		}
 
 		/**
-		 * Builder accessor for the unitOfMeasure
+		 * Builder accessor for the unitOfMeasure attribute
 		 */
 		public void setUnitOfMeasure(String unitOfMeasure) {
 			_unitOfMeasure = unitOfMeasure;
 		}
 
 		/**
-		 * Builder accessor for the datum
+		 * Builder accessor for the vertical datum attribute
 		 */
 		public String getDatum() {
 			return _datum;
 		}
 
 		/**
-		 * Builder accessor for the datum
+		 * Builder accessor for the vertical datum attribute
 		 */
 		public void setDatum(String datum) {
 			_datum = datum;

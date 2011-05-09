@@ -492,4 +492,25 @@ public class PolygonTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			Polygon.Builder builder = new Polygon.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new Polygon.Builder();
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

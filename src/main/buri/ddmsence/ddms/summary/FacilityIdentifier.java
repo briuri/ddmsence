@@ -197,28 +197,28 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 		}
 
 		/**
-		 * Builder accessor for the beNumber
+		 * Builder accessor for the beNumber attribute.
 		 */
 		public String getBeNumber() {
 			return _beNumber;
 		}
 
 		/**
-		 * Builder accessor for the beNumber
+		 * Builder accessor for the beNumber attribute.
 		 */
 		public void setBeNumber(String beNumber) {
 			_beNumber = beNumber;
 		}
 
 		/**
-		 * Builder accessor for the osuffix
+		 * Builder accessor for the osuffix attribute.
 		 */
 		public String getOsuffix() {
 			return _osuffix;
 		}
 
 		/**
-		 * Builder accessor for the osuffix
+		 * Builder accessor for the osuffix attribute.
 		 */
 		public void setOsuffix(String osuffix) {
 			_osuffix = osuffix;
