@@ -124,10 +124,10 @@ It is being released under the GNU Lesser General Public License (<a href="licen
 <h1>About the Author</h1>
 
 <p><img src="./images/BU.jpg" width="73" height="100" title="BU" class="bordered" align="left" />
-<b>Brian Uri!</b> is a software engineer at <a href="http://www.fgm.com/" target="_new">FGM, Inc.</a> in Reston, Virginia. He has been a member
-of the <a href="http://metadata.ces.mil/" target="_new">DoD Metadata Registry</a> development team since 2004, and a technical lead on the project since 2006. 
-DDMSence grew out of the author's desire to gain more practical XML Schema experience, to write something useful which had never been done before, and an 
-unusually large amount of free time.</p>
+<b>Brian Uri!</b> is a software engineer at <a href="http://www.fgm.com/" target="_new">FGM, Inc.</a> in Reston, Virginia. He was a member
+of the <a href="http://metadata.ces.mil/" target="_new">DoD Metadata Registry</a> development team for seven years, and spent five of those years as a Technical Lead.
+In May 2011, Brian took on the role of an XML Information Engineer, working on interoperability between DDMS, UCORE, IC-IRM, IC-ISM, and NIEM. 
+DDMSence was conceived in January 2010 and first released to the public on April 1, 2010.</p>
 
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>
