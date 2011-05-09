@@ -350,4 +350,93 @@ public final class Polygon extends AbstractBaseComponent {
 	public List<Position> getPositions() {
 		return (Collections.unmodifiableList(_cachedPositions));
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private SRSAttributes.Builder _srsAttributes;
+		private List<Position.Builder> _positions;
+		private String _id;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(Polygon polygon) {
+			setSrsAttributes(new SRSAttributes.Builder(polygon.getSRSAttributes()));
+			for (Position position : polygon.getPositions()) {
+				getPositions().add(new Position.Builder(position));
+			}
+			setId(polygon.getId());
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public Polygon commit() throws InvalidDDMSException {
+			List<Position> positions = new ArrayList<Position>();
+			for (Position.Builder builder : getPositions()) {
+				positions.add(builder.commit());
+			}
+			return (new Polygon(positions, getSrsAttributes().commit(), getId()));
+		}
+		
+		/**
+		 * Builder accessor for the SRS Attributes
+		 */
+		public SRSAttributes.Builder getSrsAttributes() {
+			if (_srsAttributes == null)
+				_srsAttributes = new SRSAttributes.Builder();
+			return _srsAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the SRS Attributes
+		 */
+		public void setSrsAttributes(SRSAttributes.Builder srsAttributes) {
+			_srsAttributes = srsAttributes;
+		}
+
+		/**
+		 * Builder accessor for the coordinates
+		 */
+		public List<Position.Builder> getPositions() {
+			if (_positions == null)
+				_positions = new ArrayList<Position.Builder>();
+			return _positions;
+		}
+
+		/**
+		 * Builder accessor for the coordinates
+		 */
+		public void setPositions(List<Position.Builder> positions) {
+			_positions = positions;
+		}
+
+		/**
+		 * Accessor for the ID
+		 */
+		public String getId() {
+			return _id;
+		}
+
+		/**
+		 * Accessor for the ID
+		 */
+		public void setId(String id) {
+			_id = id;
+		}			
+	}
 } 

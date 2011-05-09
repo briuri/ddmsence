@@ -112,9 +112,12 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Abstract Builder for a qualifier-based DDMS component. The builder should be used when a DDMS record needs to be built up over time,
-	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
-	 * based on the values gathered.
+	 * Abstract Builder for a qualifier-based DDMS component. The builder should be used when a DDMS record needs to be
+	 * built up over time, but validation should not occur until the end. The commit() method attempts to finalize the
+	 * immutable object based on the values gathered.
+	 * 
+	 * <p>Builders which are based upon this abstract class should implement the commit() method, returning the appropriate
+	 * concrete object type.</p>
 	 * 
 	 * @author Brian Uri!
 	 * @since 1.8.0
@@ -135,30 +138,30 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 			setQualifier(qualifierValue.getQualifier());
 			setValue(qualifierValue.getValue());
 		}
-
+		
 		/**
-		 * Builder accessor for the qualifier.
+		 * Builder accessor for the qualifier attribute.
 		 */
 		public String getQualifier() {
 			return _qualifier;
 		}
 
 		/**
-		 * Builder accessor for the qualifier.
+		 * Builder accessor for the qualifier attribute.
 		 */
 		public void setQualifier(String qualifier) {
 			_qualifier = qualifier;
 		}
 
 		/**
-		 * Builder accessor for the value.
+		 * Builder accessor for the value attribute.
 		 */
 		public String getValue() {
 			return _value;
 		}
 
 		/**
-		 * Builder accessor for the value.
+		 * Builder accessor for the value attribute.
 		 */
 		public void setValue(String value) {
 			_value = value;

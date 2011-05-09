@@ -273,56 +273,56 @@ public final class BoundingBox extends AbstractBaseComponent {
 		}
 
 		/**
-		 * Builder accessor for the westBL
+		 * Builder accessor for the westbound longitude
 		 */
 		public Double getWestBL() {
 			return _westBL;
 		}
 
 		/**
-		 * Builder accessor for the westBL
+		 * Builder accessor for the westbound longitude
 		 */
 		public void setWestBL(Double westBL) {
 			_westBL = westBL;
 		}
 
 		/**
-		 * Builder accessor for the eastBL
+		 * Builder accessor for the eastbound longitude
 		 */
 		public Double getEastBL() {
 			return _eastBL;
 		}
 
 		/**
-		 * Builder accessor for the eastBL
+		 * Builder accessor for the eastbound longitude
 		 */
 		public void setEastBL(Double eastBL) {
 			_eastBL = eastBL;
 		}
 
 		/**
-		 * Builder accessor for the southBL
+		 * Builder accessor for the southbound latitude
 		 */
 		public Double getSouthBL() {
 			return _southBL;
 		}
 
 		/**
-		 * Builder accessor for the southBL
+		 * Builder accessor for the southbound latitude
 		 */
 		public void setSouthBL(Double southBL) {
 			_southBL = southBL;
 		}
 
 		/**
-		 * Builder accessor for the northBL
+		 * Builder accessor for the northbound latitude
 		 */
 		public Double getNorthBL() {
 			return _northBL;
 		}
 
 		/**
-		 * Builder accessor for the northBL
+		 * Builder accessor for the northbound latitude
 		 */
 		public void setNorthBL(Double northBL) {
 			_northBL = northBL;

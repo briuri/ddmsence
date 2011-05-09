@@ -307,4 +307,26 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			SRSAttributes component = getFixture();
+			
+			// Equality after Building
+			SRSAttributes.Builder builder = new SRSAttributes.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new SRSAttributes.Builder();
+			builder.setSrsDimension(new Integer(-1));
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

@@ -286,4 +286,71 @@ public final class Position extends AbstractBaseComponent {
 	public String getCoordinatesAsXsList() {
 		return (getXOMElement().getValue());
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private SRSAttributes.Builder _srsAttributes;
+		private List<Double> _coordinates;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(Position position) {
+			setSrsAttributes(new SRSAttributes.Builder(position.getSRSAttributes()));
+			setCoordinates(position.getCoordinates());
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public Position commit() throws InvalidDDMSException {
+			return (new Position(getCoordinates(), getSrsAttributes().commit()));
+		}
+		
+		/**
+		 * Builder accessor for the SRS Attributes
+		 */
+		public SRSAttributes.Builder getSrsAttributes() {
+			if (_srsAttributes == null)
+				_srsAttributes = new SRSAttributes.Builder();
+			return _srsAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the SRS Attributes
+		 */
+		public void setSrsAttributes(SRSAttributes.Builder srsAttributes) {
+			_srsAttributes = srsAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the coordinates of the position
+		 */
+		public List<Double> getCoordinates() {
+			if (_coordinates == null)
+				_coordinates = new ArrayList<Double>();
+			return _coordinates;
+		}
+		
+		/**
+		 * Builder accessor for the coordinates of the position
+		 */
+		public void setCoordinates(List<Double> coordinates) {
+			_coordinates = coordinates;
+		}			
+	}
 } 
