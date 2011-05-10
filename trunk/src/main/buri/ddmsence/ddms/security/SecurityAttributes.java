@@ -19,7 +19,9 @@
 */
 package buri.ddmsence.ddms.security;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +76,7 @@ import buri.ddmsence.util.Util;
  * At this time, logical validation is only done on the data types of the various attributes, and the controlled
  * vocabulary enumerations behind some of the attributes. Comparisons against the CVEs can be toggled between
  * warnings and errors with the configurable property, <code>icism.cve.validationAsErrors</code>, and a different
- * set of CVEs can be laoded with the configurable property, <code>icism.cve.enumLocation</code>, which should
+ * set of CVEs can be loaded with the configurable property, <code>icism.cve.enumLocation</code>, which should
  * point to a classpath accessible directory containing your enumeration XML files.</p>
  * 
  * <p>I would like to add the complete constraints set from the "XML Data Encoding Specification for Information 
@@ -799,5 +801,395 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 */
 	private static DatatypeFactory getFactory() {
 		return (Util.getDataTypeFactory());
+	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private String _classification = null;
+		private List<String> _ownerProducers = null;
+		private List<String> _SCIcontrols = null;
+		private List<String> _SARIdentifier = null;
+		private List<String> _disseminationControls = null;
+		private List<String> _FGIsourceOpen = null;
+		private List<String> _FGIsourceProtected = null;
+		private List<String> _releasableTo = null;
+		private List<String> _nonICmarkings = null;
+		private String _classifiedBy = null;
+		private String _compilationReason = null;
+		private String _derivativelyClassifiedBy = null;
+		private String _classificationReason = null;
+		private String _derivedFrom = null;	
+		private String _declassDate = null;
+		private String _declassEvent = null;
+		private String _declassException = null;
+		private String _typeOfExemptedSource = null;
+		private String _dateOfExemptedSource = null;
+		private Boolean _declassManualReview = null;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(SecurityAttributes attributes) {
+			setClassification(attributes.getClassification());
+			setOwnerProducers(attributes.getOwnerProducers());
+			setSCIcontrols(attributes.getSCIcontrols());
+			setSARIdentifier(attributes.getSARIdentifier());
+			setDisseminationControls(attributes.getDisseminationControls());
+			setFGIsourceOpen(attributes.getFGIsourceOpen());
+			setFGIsourceProtected(attributes.getFGIsourceProtected());
+			setReleasableTo(attributes.getReleasableTo());
+			setNonICmarkings(attributes.getNonICmarkings());
+			setClassifiedBy(attributes.getClassifiedBy());
+			setCompilationReason(attributes.getCompilationReason());
+			setDerivativelyClassifiedBy(attributes.getDerivativelyClassifiedBy());
+			setClassificationReason(attributes.getClassificationReason());
+			setDerivedFrom(attributes.getDerivedFrom());
+			if (attributes.getDeclassDate() != null)
+				setDeclassDate(attributes.getDeclassDate().toXMLFormat());
+			setDeclassEvent(attributes.getDeclassEvent());
+			setDeclassException(attributes.getDeclassException());
+			setTypeOfExemptedSource(attributes.getTypeOfExemptedSource());
+			if (attributes.getDateOfExemptedSource() != null)
+				setDateOfExemptedSource(attributes.getDateOfExemptedSource().toXMLFormat());
+			if (attributes.getDeclassManualReview() != null)
+				setDeclassManualReview(attributes.getDeclassManualReview());
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public SecurityAttributes commit() throws InvalidDDMSException {
+			Map<String, String> otherAttributes = new HashMap<String, String>();
+			otherAttributes.put(SCI_CONTROLS_NAME, Util.getXsList(getSCIcontrols()));
+			otherAttributes.put(SAR_IDENTIFIER_NAME, Util.getXsList(getSARIdentifier()));
+			otherAttributes.put(DISSEMINATION_CONTROLS_NAME, Util.getXsList(getDisseminationControls()));
+			otherAttributes.put(FGI_SOURCE_OPEN_NAME, Util.getXsList(getFGIsourceOpen()));
+			otherAttributes.put(FGI_SOURCE_PROTECTED_NAME, Util.getXsList(getFGIsourceProtected()));
+			otherAttributes.put(RELEASABLE_TO_NAME, Util.getXsList(getReleasableTo()));
+			otherAttributes.put(NON_IC_MARKINGS_NAME, Util.getXsList(getNonICmarkings()));
+			otherAttributes.put(CLASSIFIED_BY_NAME, getClassifiedBy());
+			otherAttributes.put(COMPILATION_REASON_NAME, getCompilationReason());
+			otherAttributes.put(DERIVATIVELY_CLASSIFIED_BY_NAME, getDerivativelyClassifiedBy());
+			otherAttributes.put(CLASSIFICATION_REASON_NAME, getClassificationReason());
+			otherAttributes.put(DERIVED_FROM_NAME, getDerivedFrom());
+			otherAttributes.put(DECLASS_DATE_NAME, getDeclassDate());
+			otherAttributes.put(DECLASS_EVENT_NAME, getDeclassEvent());
+			otherAttributes.put(DECLASS_EXCEPTION_NAME, getDeclassException());
+			otherAttributes.put(TYPE_OF_EXEMPTED_SOURCE_NAME, getTypeOfExemptedSource());
+			otherAttributes.put(DATE_OF_EXEMPTED_SOURCE_NAME, getDateOfExemptedSource());
+			if (getDeclassManualReview() != null)
+				otherAttributes.put(DECLASS_MANUAL_REVIEW_NAME, getDeclassManualReview().toString());
+			return (new SecurityAttributes(getClassification(), getOwnerProducers(), otherAttributes));
+		}
+		
+		/**
+		 * Builder accessor for the classification attribute
+		 */
+		public String getClassification() {
+			return _classification;
+		}
+		
+		/**
+		 * Builder accessor for the classification attribute
+		 */
+		public void setClassification(String classification) {
+			_classification = classification;
+		}
+		
+		/**
+		 * Builder accessor for the ownerProducers attribute
+		 */
+		public List<String> getOwnerProducers() {
+			if (_ownerProducers == null)
+				_ownerProducers = new ArrayList<String>();
+			return _ownerProducers;
+		}
+		
+		/**
+		 * Builder accessor for the ownerProducers attribute
+		 */
+		public void setOwnerProducers(List<String> ownerProducers) {
+			_ownerProducers = ownerProducers;
+		}
+		
+		/**
+		 * Builder accessor for the SCIcontrols attribute
+		 */
+		public List<String> getSCIcontrols() {
+			if (_SCIcontrols == null)
+				_SCIcontrols = new ArrayList<String>();
+			return _SCIcontrols;
+		}
+		
+		/**
+		 * Builder accessor for the SCIcontrols attribute
+		 */
+		public void setSCIcontrols(List<String> SCIcontrols) {
+			_SCIcontrols = SCIcontrols;
+		}
+		
+		/**
+		 * Builder accessor for the SARIdentifier attribute
+		 */
+		public List<String> getSARIdentifier() {
+			if (_SARIdentifier == null)
+				_SARIdentifier = new ArrayList<String>();
+			return _SARIdentifier;
+		}
+		
+		/**
+		 * Builder accessor for the SARIdentifier attribute
+		 */
+		public void setSARIdentifier(List<String> SARIdentifier) {
+			_SARIdentifier = SARIdentifier;
+		}
+		
+		/**
+		 * Builder accessor for the disseminationControls attribute
+		 */
+		public List<String> getDisseminationControls() {
+			if (_disseminationControls == null)
+				_disseminationControls = new ArrayList<String>();
+			return _disseminationControls;
+		}
+		
+		/**
+		 * Builder accessor for the disseminationControls attribute
+		 */
+		public void setDisseminationControls(List<String> disseminationControls) {
+			_disseminationControls = disseminationControls;
+		}
+		
+		/**
+		 * Builder accessor for the FGIsourceOpen attribute
+		 */
+		public List<String> getFGIsourceOpen() {
+			if (_FGIsourceOpen == null)
+				_FGIsourceOpen = new ArrayList<String>();
+			return _FGIsourceOpen;
+		}
+		
+		/**
+		 * Builder accessor for the FGIsourceOpen attribute
+		 */
+		public void setFGIsourceOpen(List<String> FGIsourceOpen) {
+			_FGIsourceOpen = FGIsourceOpen;
+		}
+		
+		/**
+		 * Builder accessor for the FGIsourceProtected attribute
+		 */
+		public List<String> getFGIsourceProtected() {
+			if (_FGIsourceProtected == null)
+				_FGIsourceProtected = new ArrayList<String>();			
+			return _FGIsourceProtected;
+		}
+		
+		/**
+		 * Builder accessor for the FGIsourceProtected attribute
+		 */
+		public void setFGIsourceProtected(List<String> FGIsourceProtected) {
+			_FGIsourceProtected = FGIsourceProtected;
+		}
+		
+		/**
+		 * Builder accessor for the releasableTo attribute
+		 */
+		public List<String> getReleasableTo() {
+			if (_releasableTo == null)
+				_releasableTo = new ArrayList<String>();
+			return _releasableTo;
+		}
+		
+		/**
+		 * Builder accessor for the releasableTo attribute
+		 */
+		public void setReleasableTo(List<String> releasableTo) {
+			_releasableTo = releasableTo;
+		}
+		
+		/**
+		 * Builder accessor for the nonICmarkings attribute
+		 */
+		public List<String> getNonICmarkings() {
+			if (_nonICmarkings == null)
+				_nonICmarkings = new ArrayList<String>();
+			return _nonICmarkings;
+		}
+		
+		/**
+		 * Builder accessor for the nonICmarkings attribute
+		 */
+		public void setNonICmarkings(List<String> nonICmarkings) {
+			_nonICmarkings = nonICmarkings;
+		}
+		
+		/**
+		 * Builder accessor for the classifiedBy attribute
+		 */
+		public String getClassifiedBy() {
+			return _classifiedBy;
+		}
+		
+		/**
+		 * Builder accessor for the classifiedBy attribute
+		 */
+		public void setClassifiedBy(String classifiedBy) {
+			_classifiedBy = classifiedBy;
+		}
+		
+		/**
+		 * Builder accessor for the compilationReason attribute
+		 */
+		public String getCompilationReason() {
+			return _compilationReason;
+		}
+		
+		/**
+		 * Builder accessor for the compilationReason attribute
+		 */
+		public void setCompilationReason(String compilationReason) {
+			_compilationReason = compilationReason;
+		}
+		
+		/**
+		 * Builder accessor for the derivativelyClassifiedBy attribute
+		 */
+		public String getDerivativelyClassifiedBy() {
+			return _derivativelyClassifiedBy;
+		}
+		
+		/**
+		 * Builder accessor for the derivativelyClassifiedBy attribute
+		 */
+		public void setDerivativelyClassifiedBy(String derivativelyClassifiedBy) {
+			_derivativelyClassifiedBy = derivativelyClassifiedBy;
+		}
+		
+		/**
+		 * Builder accessor for the classificationReason attribute
+		 */
+		public String getClassificationReason() {
+			return _classificationReason;
+		}
+		
+		/**
+		 * Builder accessor for the classificationReason attribute
+		 */
+		public void setClassificationReason(String classificationReason) {
+			_classificationReason = classificationReason;
+		}
+		
+		/**
+		 * Builder accessor for the derivedFrom attribute
+		 */
+		public String getDerivedFrom() {
+			return _derivedFrom;
+		}
+		
+		/**
+		 * Builder accessor for the derivedFrom attribute
+		 */
+		public void setDerivedFrom(String derivedFrom) {
+			_derivedFrom = derivedFrom;
+		}
+		
+		/**
+		 * Builder accessor for the declassDate attribute
+		 */
+		public String getDeclassDate() {
+			return _declassDate;
+		}
+		
+		/**
+		 * Builder accessor for the declassDate attribute
+		 */
+		public void setDeclassDate(String declassDate) {
+			_declassDate = declassDate;
+		}
+		
+		/**
+		 * Builder accessor for the declassEvent attribute
+		 */
+		public String getDeclassEvent() {
+			return _declassEvent;
+		}
+		
+		/**
+		 * Builder accessor for the declassEvent attribute
+		 */
+		public void setDeclassEvent(String declassEvent) {
+			_declassEvent = declassEvent;
+		}
+		
+		/**
+		 * Builder accessor for the declassException attribute
+		 */
+		public String getDeclassException() {
+			return _declassException;
+		}
+		
+		/**
+		 * Builder accessor for the declassException attribute
+		 */
+		public void setDeclassException(String declassException) {
+			_declassException = declassException;
+		}
+		
+		/**
+		 * Builder accessor for the typeOfExemptedSource attribute
+		 */
+		public String getTypeOfExemptedSource() {
+			return _typeOfExemptedSource;
+		}
+		
+		/**
+		 * Builder accessor for the typeOfExemptedSource attribute
+		 */
+		public void setTypeOfExemptedSource(String typeOfExemptedSource) {
+			_typeOfExemptedSource = typeOfExemptedSource;
+		}
+		
+		/**
+		 * Builder accessor for the dateOfExemptedSource attribute
+		 */
+		public String getDateOfExemptedSource() {
+			return _dateOfExemptedSource;
+		}
+		
+		/**
+		 * Builder accessor for the dateOfExemptedSource attribute
+		 */
+		public void setDateOfExemptedSource(String dateOfExemptedSource) {
+			_dateOfExemptedSource = dateOfExemptedSource;
+		}
+		
+		/**
+		 * Builder accessor for the declassManualReview attribute
+		 */
+		public Boolean getDeclassManualReview() {
+			return _declassManualReview;
+		}
+		
+		/**
+		 * Builder accessor for the declassManualReview attribute
+		 */
+		public void setDeclassManualReview(Boolean declassManualReview) {
+			_declassManualReview = declassManualReview;
+		}
 	}
 }

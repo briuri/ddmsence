@@ -304,10 +304,14 @@ public final class Dates extends AbstractBaseComponent {
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Dates dates) {
-			setCreated(dates.getCreated().toXMLFormat());
-			setPosted(dates.getPosted().toXMLFormat());
-			setValidTil(dates.getValidTil().toXMLFormat());
-			setInfoCutOff(dates.getInfoCutOff().toXMLFormat());
+			if (dates.getCreated() != null)
+				setCreated(dates.getCreated().toXMLFormat());
+			if (dates.getPosted() != null)
+				setPosted(dates.getPosted().toXMLFormat());
+			if (dates.getValidTil() != null)
+				setValidTil(dates.getValidTil().toXMLFormat());
+			if (dates.getInfoCutOff() != null)
+				setInfoCutOff(dates.getInfoCutOff().toXMLFormat());
 		}
 		
 		/**

@@ -328,4 +328,34 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building (Point-based)
+			BoundingGeometry.Builder builder = new BoundingGeometry.Builder(component);
+			assertEquals(builder.commit(), component);
+
+			// Equality after Building (Polygon-based)
+			component = new BoundingGeometry(getPolygons(), null);
+			builder = new BoundingGeometry.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new BoundingGeometry.Builder();
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+			for (Polygon polygon : getPolygons()) {
+				builder.getPolygons().add(new Polygon.Builder(polygon));
+			}
+			builder.commit();
+		}
+	}
 }

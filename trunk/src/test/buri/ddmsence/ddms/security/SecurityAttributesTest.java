@@ -556,4 +556,26 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("An exception was thrown when a warning was expected.");
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			SecurityAttributes component = getFixture(true);
+			
+			// Equality after Building
+			SecurityAttributes.Builder builder = new SecurityAttributes.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new SecurityAttributes.Builder();
+			builder.setClassification("SuperSecret");
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

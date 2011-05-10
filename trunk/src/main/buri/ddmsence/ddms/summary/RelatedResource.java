@@ -214,4 +214,55 @@ public final class RelatedResource extends AbstractQualifierValue {
 	public List<Link> getLinks() {
 		return (Collections.unmodifiableList(_cachedLinks));
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder extends AbstractQualifierValue.Builder {
+		private List<Link.Builder> _links;
+
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {
+			super();
+		}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(RelatedResource resource) {
+			super(resource);
+			for (Link link : resource.getLinks()) {
+				getLinks().add(new Link.Builder(link));
+			}
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public RelatedResource commit() throws InvalidDDMSException {
+			List<Link> links = new ArrayList<Link>();
+			for (Link.Builder builder : getLinks()) {
+				links.add(builder.commit());
+			}
+			return (new RelatedResource(links, getQualifier(), getValue()));
+		}
+		
+		/**
+		 * Builder accessor for the links
+		 */
+		public List<Link.Builder> getLinks() {
+			if (_links == null)
+				_links = new ArrayList<Link.Builder>();
+			return _links;
+		}
+	}
 } 

@@ -215,4 +215,67 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	public List<Point> getPoints() {
 		return (Collections.unmodifiableList(_cachedPoints)); 
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private List<Polygon.Builder> _polygons;
+		private List<Point.Builder> _points;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(BoundingGeometry geometry) {
+			for (Polygon polygon : geometry.getPolygons())
+				getPolygons().add(new Polygon.Builder(polygon));
+			for (Point point : geometry.getPoints())
+				getPoints().add(new Point.Builder(point));
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public BoundingGeometry commit() throws InvalidDDMSException {
+			List<Polygon> polygons = new ArrayList<Polygon>();
+			for (Polygon.Builder builder : getPolygons()) {
+				polygons.add(builder.commit());
+			}
+			List<Point> points = new ArrayList<Point>();
+			for (Point.Builder builder : getPoints()) {
+				points.add(builder.commit());
+			}
+			return (new BoundingGeometry(polygons, points));
+		}
+		
+		/**
+		 * Builder accessor for the polygons in this geometry.
+		 */
+		public List<Polygon.Builder> getPolygons() {
+			if (_polygons == null)
+				_polygons = new ArrayList<Polygon.Builder>();			
+			return _polygons;
+		}
+		
+		/**
+		 * Builder accessor for the points in this geometry.
+		 */
+		public List<Point.Builder> getPoints() {
+			if (_points == null)
+				_points = new ArrayList<Point.Builder>();					
+			return _points;
+		}
+	}	
 } 

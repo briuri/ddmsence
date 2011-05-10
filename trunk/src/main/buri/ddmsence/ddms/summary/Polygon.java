@@ -419,13 +419,6 @@ public final class Polygon extends AbstractBaseComponent {
 		}
 
 		/**
-		 * Builder accessor for the coordinates
-		 */
-		public void setPositions(List<Position.Builder> positions) {
-			_positions = positions;
-		}
-
-		/**
 		 * Accessor for the ID
 		 */
 		public String getId() {
