@@ -399,6 +399,16 @@ public class FormatTest extends AbstractComponentTestCase {
 			catch (InvalidDDMSException e) {
 				// Good
 			}
+			
+			// No extent vs. empty extent
+			builder = new Format.Builder();
+			builder.setMimeType(TEST_MIME_TYPE);
+			builder.setMedium(TEST_MEDIUM);
+			assertNotNull(builder.getExtent());
+			assertNull(builder.commit().getExtent());
+			builder.getExtent().setQualifier("sizeBytes");
+			builder.getExtent().setValue("75000");
+			assertNotNull(builder.commit().getExtent());
 		}
 	}
 }

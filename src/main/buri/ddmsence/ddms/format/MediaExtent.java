@@ -176,12 +176,14 @@ public final class MediaExtent extends AbstractQualifierValue {
 		}
 		
 		/**
-		 * Finalizes the data gathered for this builder instance.
+		 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
+		 * instance will be returned instead of an empty one.
 		 * 
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
 		public MediaExtent commit() throws InvalidDDMSException {
-			return (new MediaExtent(getQualifier(), getValue()));
+			boolean isEmpty = (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()));
+			return (isEmpty ? null : new MediaExtent(getQualifier(), getValue()));
 		}
 	}
 } 
