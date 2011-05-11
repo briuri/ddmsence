@@ -406,4 +406,26 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			TemporalCoverage component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			TemporalCoverage.Builder builder = new TemporalCoverage.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new TemporalCoverage.Builder();
+			builder.setStartString("Invalid");
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

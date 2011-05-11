@@ -263,5 +263,25 @@ public class SecurityTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
-
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Security component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			Security.Builder builder = new Security.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new Security.Builder();
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

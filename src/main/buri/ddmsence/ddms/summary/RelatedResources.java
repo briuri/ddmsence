@@ -285,4 +285,104 @@ public final class RelatedResources extends AbstractBaseComponent {
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private String _relationship;
+		private String _direction;
+		private List<RelatedResource.Builder> _relatedResources;
+		private SecurityAttributes.Builder _securityAttributes;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {
+			super();
+		}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(RelatedResources resources) {
+			setRelationship(resources.getRelationship());
+			setDirection(resources.getDirection());
+			for (RelatedResource resource : resources.getRelatedResources()) {
+				getRelatedResources().add(new RelatedResource.Builder(resource));
+			}
+			setSecurityAttributes(new SecurityAttributes.Builder(resources.getSecurityAttributes()));
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public RelatedResources commit() throws InvalidDDMSException {
+			List<RelatedResource> resources = new ArrayList<RelatedResource>();
+			for (RelatedResource.Builder builder : getRelatedResources()) {
+				resources.add(builder.commit());
+			}
+			return (new RelatedResources(resources, getRelationship(), getDirection(), getSecurityAttributes().commit()));
+		}
+		
+		/**
+		 * Builder accessor for the relationship attribute
+		 */
+		public String getRelationship() {
+			return _relationship;
+		}
+		
+		/**
+		 * Builder accessor for the relationship attribute
+		 */
+		public void setRelationship(String relationship) {
+			_relationship = relationship;
+		}
+		
+		/**
+		 * Builder accessor for the direction attribute
+		 */
+		public String getDirection() {
+			return _direction;
+		}
+		
+		/**
+		 * Builder accessor for the direction attribute
+		 */
+		public void setDirection(String direction) {
+			_direction = direction;
+		}
+		
+		/**
+		 * Builder accessor for the related resources
+		 */
+		public List<RelatedResource.Builder> getRelatedResources() {
+			if (_relatedResources == null)
+				_relatedResources = new ArrayList<RelatedResource.Builder>();
+			return _relatedResources;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public SecurityAttributes.Builder getSecurityAttributes() {
+			if (_securityAttributes == null)
+				_securityAttributes = new SecurityAttributes.Builder();
+			return _securityAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
+			_securityAttributes = securityAttributes;
+		}
+	}
 } 

@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms.summary;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -290,5 +291,115 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 */
 	public boolean hasFacilityIdentifier() {
 		return (getFacilityIdentifier() != null);
+	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private List<String> _names = null;
+		private List<String> _regions = null;
+		private CountryCode.Builder _countryCode = null;
+		private FacilityIdentifier.Builder _facilityIdentifier = null;
+				
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(GeographicIdentifier identifier) {
+			if (identifier.hasFacilityIdentifier())
+				setFacilityIdentifier(new FacilityIdentifier.Builder(identifier.getFacilityIdentifier()));
+			else {
+				setNames(identifier.getNames());
+				setRegions(identifier.getRegions());
+				setCountryCode(new CountryCode.Builder(identifier.getCountryCode()));
+			}
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance. A GeographicIdentifier with a FacilityIdentifier
+		 * takes precedence over other fields.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public GeographicIdentifier commit() throws InvalidDDMSException {
+			FacilityIdentifier identifier = getFacilityIdentifier().commit();
+			if (identifier != null)
+				return (new GeographicIdentifier(identifier));
+			return (new GeographicIdentifier(getNames(), getRegions(), getCountryCode().commit()));
+		}
+
+		/**
+		 * Builder accessor for the names
+		 */
+		public List<String> getNames() {
+			if (_names == null)
+				_names = new ArrayList<String>();
+			return _names;
+		}
+
+		/**
+		 * Builder accessor for the names
+		 */
+		public void setNames(List<String> names) {
+			_names = names;
+		}
+
+		/**
+		 * Builder accessor for the regions
+		 */
+		public List<String> getRegions() {
+			if (_regions == null)
+				_regions = new ArrayList<String>();
+			return _regions;
+		}
+
+		/**
+		 * Builder accessor for the regions
+		 */
+		public void setRegions(List<String> regions) {
+			_regions = regions;
+		}
+
+		/**
+		 * Builder accessor for the country code
+		 */
+		public CountryCode.Builder getCountryCode() {
+			if (_countryCode == null)
+				_countryCode = new CountryCode.Builder();
+			return _countryCode;
+		}
+
+		/**
+		 * Builder accessor for the country code
+		 */
+		public void setCountryCode(CountryCode.Builder countryCode) {
+			_countryCode = countryCode;
+		}
+
+		/**
+		 * Builder accessor for the facility identifier
+		 */
+		public FacilityIdentifier.Builder getFacilityIdentifier() {
+			if (_facilityIdentifier == null)
+				_facilityIdentifier = new FacilityIdentifier.Builder();
+			return _facilityIdentifier;
+		}
+
+		/**
+		 * Builder accessor for the facility identifier
+		 */
+		public void setFacilityIdentifier(FacilityIdentifier.Builder facilityIdentifier) {
+			_facilityIdentifier = facilityIdentifier;
+		}
 	}
 } 

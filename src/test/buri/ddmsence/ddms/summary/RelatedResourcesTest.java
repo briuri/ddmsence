@@ -358,4 +358,25 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			RelatedResources component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			RelatedResources.Builder builder = new RelatedResources.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new RelatedResources.Builder();
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

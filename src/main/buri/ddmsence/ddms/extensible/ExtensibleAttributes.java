@@ -270,4 +270,49 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		return (Collections.unmodifiableList(attributes));
 	}
 
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * <p>No special Builder code is required for XOM Attributes, because they are already mutable.</p>
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private List<Attribute> _attributes;
+
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(ExtensibleAttributes attributes) {
+			for (Attribute attribute : attributes.getAttributes()) {
+				getAttributes().add(attribute);
+			}
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public ExtensibleAttributes commit() throws InvalidDDMSException {
+			return (new ExtensibleAttributes(getAttributes()));
+		}
+
+		/**
+		 * Builder accessor for the attributes
+		 */
+		public List<Attribute> getAttributes() {
+			if (_attributes == null)
+				_attributes = new ArrayList<Attribute>();
+			return _attributes;
+		}
+	}
 }

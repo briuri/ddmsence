@@ -211,4 +211,85 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private String _address;
+		private String _protocol;
+		private SecurityAttributes.Builder _securityAttributes;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(VirtualCoverage coverage) {
+			setAddress(coverage.getAddress());
+			setProtocol(coverage.getProtocol());
+			setSecurityAttributes(new SecurityAttributes.Builder(coverage.getSecurityAttributes()));
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public VirtualCoverage commit() throws InvalidDDMSException {
+			return (new VirtualCoverage(getAddress(), getProtocol(), getSecurityAttributes().commit()));
+		}
+		
+		/**
+		 * Builder accessor for the address attribute
+		 */
+		public String getAddress() {
+			return _address;
+		}
+		
+		/**
+		 * Builder accessor for the address attribute
+		 */
+		public void setAddress(String address) {
+			_address = address;
+		}
+		
+		/**
+		 * Builder accessor for the protocol attribute
+		 */
+		public String getProtocol() {
+			return _protocol;
+		}
+		
+		/**
+		 * Builder accessor for the protocol attribute
+		 */
+		public void setProtocol(String protocol) {
+			_protocol = protocol;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public SecurityAttributes.Builder getSecurityAttributes() {
+			if (_securityAttributes == null)
+				_securityAttributes = new SecurityAttributes.Builder();
+			return _securityAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
+			_securityAttributes = securityAttributes;
+		}
+	}
 } 

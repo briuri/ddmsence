@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms.summary;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -304,5 +305,142 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 */
 	public CountryCode getCountryCode() {
 		return (_cachedCountryCode);
+	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private List<String> _streets;
+		private String _city;
+		private String _state;
+		private String _province;
+		private String _postalCode;
+		private CountryCode.Builder _countryCode;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(PostalAddress address) {
+			setStreets(address.getStreets());
+			setCity(address.getCity());
+			setState(address.getState());
+			setProvince(address.getProvince());
+			setPostalCode(address.getPostalCode());
+			if (address.getCountryCode() != null)
+				setCountryCode(new CountryCode.Builder(address.getCountryCode()));
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance. If 
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public PostalAddress commit() throws InvalidDDMSException {
+			boolean hasStateAndProvince = (!Util.isEmpty(getState()) && !Util.isEmpty(getProvince()));
+			if (hasStateAndProvince)
+				throw new InvalidDDMSException("Only 1 of state or province can be used.");
+			boolean hasState = !Util.isEmpty(getState());
+			String stateOrProvince = hasState ? getState() : getProvince();
+			return (new PostalAddress(getStreets(), getCity(), stateOrProvince, getPostalCode(), getCountryCode().commit(), hasState));
+		}
+		
+		/**
+		 * Builder accessor for the streets
+		 */
+		public List<String> getStreets() {
+			if (_streets == null)
+				_streets = new ArrayList<String>();
+			return _streets;
+		}
+		
+		/**
+		 * Builder accessor for the streets
+		 */
+		public void setStreets(List<String> streets) {
+			_streets = streets;
+		}
+		
+		/**
+		 * Builder accessor for the city
+		 */
+		public String getCity() {
+			return _city;
+		}
+		
+		/**
+		 * Builder accessor for the city
+		 */
+		public void setCity(String city) {
+			_city = city;
+		}
+		
+		/**
+		 * Builder accessor for the state
+		 */
+		public String getState() {
+			return _state;
+		}
+		
+		/**
+		 * Builder accessor for the state
+		 */
+		public void setState(String state) {
+			_state = state;
+		}
+		
+		/**
+		 * Builder accessor for the province
+		 */
+		public String getProvince() {
+			return _province;
+		}
+		
+		/**
+		 * Builder accessor for the province
+		 */
+		public void setProvince(String province) {
+			_province = province;
+		}
+		
+		/**
+		 * Builder accessor for the postalCode
+		 */
+		public String getPostalCode() {
+			return _postalCode;
+		}
+		
+		/**
+		 * Builder accessor for the postalCode
+		 */
+		public void setPostalCode(String postalCode) {
+			_postalCode = postalCode;
+		}
+		
+		/**
+		 * Builder accessor for the countryCode
+		 */
+		public CountryCode.Builder getCountryCode() {
+			if (_countryCode == null)
+				_countryCode = new CountryCode.Builder();
+			return _countryCode;
+		}
+		
+		/**
+		 * Builder accessor for the countryCode
+		 */
+		public void setCountryCode(CountryCode.Builder countryCode) {
+			_countryCode = countryCode;
+		}		
 	}
 } 

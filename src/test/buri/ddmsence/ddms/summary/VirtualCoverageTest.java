@@ -294,4 +294,26 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			VirtualCoverage component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			VirtualCoverage.Builder builder = new VirtualCoverage.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new VirtualCoverage.Builder();
+			builder.setAddress(TEST_ADDRESS);
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

@@ -193,7 +193,8 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
 		public FacilityIdentifier commit() throws InvalidDDMSException {
-			return (new FacilityIdentifier(getBeNumber(), getOsuffix()));
+			boolean isEmpty = (Util.isEmpty(getBeNumber()) && Util .isEmpty(getOsuffix()));
+			return (isEmpty ? null : new FacilityIdentifier(getBeNumber(), getOsuffix()));
 		}
 
 		/**

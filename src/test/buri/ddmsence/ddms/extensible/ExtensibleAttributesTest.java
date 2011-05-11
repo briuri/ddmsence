@@ -270,4 +270,21 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Element element = new Keyword("testValue").getXOMElementCopy();
+			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
+			ExtensibleAttributes component = testConstructor(WILL_SUCCEED, element);
+			
+			// Equality after Building
+			ExtensibleAttributes.Builder builder = new ExtensibleAttributes.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Empty Case
+			builder = new ExtensibleAttributes.Builder();
+			assertTrue(builder.commit().getAttributes().isEmpty());
+		}
+	}
 }

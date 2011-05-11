@@ -371,4 +371,41 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building (CountryCode-based)
+			GeographicIdentifier.Builder builder = new GeographicIdentifier.Builder(component);
+			assertEquals(builder.commit(), component);
+
+			// Equality after Building (FacID-based)
+			FacilityIdentifier facId = FacilityIdentifierTest.getFixture();
+			component = new GeographicIdentifier(facId);
+			builder = new GeographicIdentifier.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new GeographicIdentifier.Builder();
+			builder.getFacilityIdentifier().setBeNumber("1234DD56789");
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+			// Non-FacID-based
+			builder = new GeographicIdentifier.Builder();
+			builder.getNames().add("Name");
+			builder.getRegions().add("Region");
+			CountryCode countryCode = CountryCodeTest.getFixture(GeographicIdentifier.NAME);
+			builder.getCountryCode().setParentType(countryCode.getParentType());
+			builder.getCountryCode().setQualifier(countryCode.getQualifier());
+			builder.getCountryCode().setValue(countryCode.getValue());
+			builder.commit();
+		}
+	}
 }

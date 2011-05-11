@@ -281,6 +281,7 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 			
 			// Validation
 			builder = new FacilityIdentifier.Builder();
+			builder.setBeNumber(TEST_BENUMBER);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
