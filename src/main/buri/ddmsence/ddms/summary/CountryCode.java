@@ -225,7 +225,8 @@ public final class CountryCode extends AbstractQualifierValue {
 		}
 		
 		/**
-		 * Finalizes the data gathered for this builder instance.
+		 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
+		 * instance will be returned instead of an empty one.
 		 * 
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
