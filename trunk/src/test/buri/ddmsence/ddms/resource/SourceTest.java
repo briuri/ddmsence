@@ -321,4 +321,26 @@ public class SourceTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Source component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			Source.Builder builder = new Source.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new Source.Builder();
+			builder.getSecurityAttributes().setClassification("SuperSecret");
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

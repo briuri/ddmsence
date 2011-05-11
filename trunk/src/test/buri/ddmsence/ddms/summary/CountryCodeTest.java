@@ -310,4 +310,26 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			CountryCode component = testConstructor(WILL_SUCCEED, TEST_PARENT_TYPE, getValidElement(version));
+			
+			// Equality after Building
+			CountryCode.Builder builder = new CountryCode.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new CountryCode.Builder();
+			builder.setValue(TEST_VALUE);
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

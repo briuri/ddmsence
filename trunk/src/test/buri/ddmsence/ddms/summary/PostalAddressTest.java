@@ -409,4 +409,43 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			PostalAddress.Builder builder = new PostalAddress.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// No country code
+			builder = new PostalAddress.Builder(component);
+			builder.setCountryCode(new CountryCode.Builder());
+			PostalAddress address = builder.commit();
+			assertNull(address.getCountryCode());
+		
+			// Country code
+			CountryCode countryCode = CountryCodeTest.getFixture(PostalAddress.NAME);
+			builder = new PostalAddress.Builder();
+			builder.getCountryCode().setParentType(countryCode.getParentType());
+			builder.getCountryCode().setQualifier(countryCode.getQualifier());
+			builder.getCountryCode().setValue(countryCode.getValue());
+			builder.getStreets().add("1600 Pennsylvania Avenue, NW");
+			address = builder.commit();
+			assertEquals(countryCode, address.getCountryCode());
+			
+			// Validation
+			builder = new PostalAddress.Builder();
+			builder.setState(TEST_STATE);
+			builder.setProvince(TEST_PROVINCE);
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

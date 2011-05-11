@@ -221,4 +221,89 @@ public final class Source extends AbstractQualifierValue {
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder extends AbstractQualifierValue.Builder {
+		private String _schemaQualifier;
+		private String _schemaHref;
+		private SecurityAttributes.Builder _securityAttributes;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {
+			super();
+		}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(Source source) {
+			super(source);
+			setSchemaQualifier(source.getSchemaQualifier());
+			setSchemaHref(source.getSchemaHref());
+			setSecurityAttributes(new SecurityAttributes.Builder(source.getSecurityAttributes()));
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public Source commit() throws InvalidDDMSException {
+			return (new Source(getQualifier(), getValue(), getSchemaQualifier(), getSchemaHref(),
+				getSecurityAttributes().commit()));
+		}
+		
+		/**
+		 * Builder accessor for the schema qualifier
+		 */
+		public String getSchemaQualifier() {
+			return _schemaQualifier;
+		}
+
+		/**
+		 * Builder accessor for the schema qualifier
+		 */
+		public void setSchemaQualifier(String schemaQualifier) {
+			_schemaQualifier = schemaQualifier;
+		}
+
+		/**
+		 * Builder accessor for the schema href
+		 */
+		public String getSchemaHref() {
+			return _schemaHref;
+		}
+
+		/**
+		 * Builder accessor for the schemah ref
+		 */
+		public void setSchemaHref(String schemaHref) {
+			_schemaHref = schemaHref;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public SecurityAttributes.Builder getSecurityAttributes() {
+			if (_securityAttributes == null)
+				_securityAttributes = new SecurityAttributes.Builder();
+			return _securityAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
+			_securityAttributes = securityAttributes;
+		}
+	}
 } 

@@ -384,4 +384,102 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	private static DatatypeFactory getFactory() {
 		return (Util.getDataTypeFactory());
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private String _timePeriodName;
+		private String _startString;
+		private String _endString;
+		private SecurityAttributes.Builder _securityAttributes;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(TemporalCoverage coverage) {
+			setTimePeriodName(coverage.getTimePeriodName());
+			setStartString(coverage.getStartString());
+			setEndString(coverage.getEndString());
+			setSecurityAttributes(new SecurityAttributes.Builder(coverage.getSecurityAttributes()));
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public TemporalCoverage commit() throws InvalidDDMSException {
+			return (new TemporalCoverage(getTimePeriodName(), getStartString(), getEndString(), 
+				getSecurityAttributes().commit()));
+		}
+		
+		/**
+		 * Builder accessor for the TimePeriod name element child text.
+		 */
+		public String getTimePeriodName() {
+			return _timePeriodName;
+		}
+
+		/**
+		 * Builder accessor for the TimePeriod name element child text.
+		 */
+		public void setTimePeriodName(String timePeriodName) {
+			_timePeriodName = timePeriodName;
+		}
+
+		/**
+		 * Builder accessor for the start date as a string.
+		 */
+		public String getStartString() {
+			return _startString;
+		}
+
+		/**
+		 * Builder accessor for the start date as a string.
+		 */
+		public void setStartString(String startString) {
+			_startString = startString;
+		}
+
+		/**
+		 * Builder accessor for the end date as a string.
+		 */
+		public String getEndString() {
+			return _endString;
+		}
+
+		/**
+		 * Builder accessor for the end date as a string.
+		 */
+		public void setEndString(String endString) {
+			_endString = endString;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public SecurityAttributes.Builder getSecurityAttributes() {
+			if (_securityAttributes == null)
+				_securityAttributes = new SecurityAttributes.Builder();
+			return _securityAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
+			_securityAttributes = securityAttributes;
+		}
+	}
 } 

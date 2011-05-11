@@ -76,4 +76,45 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	public String getValue() {
 		return (getXOMElement().getValue()); 
 	}
+	
+	/**
+	 * Abstract Builder for a qualifier-based DDMS component. The builder should be used when a DDMS record needs to be
+	 * built up over time, but validation should not occur until the end. The commit() method attempts to finalize the
+	 * immutable object based on the values gathered.
+	 * 
+	 * <p>Builders which are based upon this abstract class should implement the commit() method, returning the appropriate
+	 * concrete object type.</p>
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static abstract class Builder {
+		private String _value;
+		
+		/**
+		 * Empty constructor
+		 */
+		protected Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		protected Builder(AbstractSimpleString simpleString) {
+			setValue(simpleString.getValue());
+		}
+		
+		/**
+		 * Builder accessor for the child text.
+		 */
+		public String getValue() {
+			return _value;
+		}
+
+		/**
+		 * Builder accessor for the child text.
+		 */
+		public void setValue(String value) {
+			_value = value;
+		}
+	}
 }

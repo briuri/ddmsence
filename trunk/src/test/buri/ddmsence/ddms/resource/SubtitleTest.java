@@ -257,4 +257,25 @@ public class SubtitleTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Subtitle component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			Subtitle.Builder builder = new Subtitle.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new Subtitle.Builder();
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

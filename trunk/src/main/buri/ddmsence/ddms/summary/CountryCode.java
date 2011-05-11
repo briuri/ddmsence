@@ -197,4 +197,55 @@ public final class CountryCode extends AbstractQualifierValue {
 	public String getParentType() {
 		return (Util.getNonNullString(_parentType));
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder extends AbstractQualifierValue.Builder {
+		private String _parentType;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {
+			super();
+		}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(CountryCode code) {
+			super(code);
+			setParentType(code.getParentType());
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public CountryCode commit() throws InvalidDDMSException {
+			boolean isEmpty = (Util.isEmpty(getQualifier()) && Util .isEmpty(getValue()));
+			return (isEmpty ? null : new CountryCode(getParentType(), getQualifier(), getValue()));
+		}
+
+		/**
+		 * Builder accessor for the parentType
+		 */
+		public String getParentType() {
+			return _parentType;
+		}
+
+		/**
+		 * Builder accessor for the parentType
+		 */
+		public void setParentType(String parentType) {
+			_parentType = parentType;
+		}
+	}
 } 
