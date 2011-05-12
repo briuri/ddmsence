@@ -19,6 +19,10 @@
  */
 package buri.ddmsence.ddms.extensible;
 
+import java.io.IOException;
+
+import org.xml.sax.SAXException;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -177,5 +181,30 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	public void testVersion() {
 		ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
 		assertEquals("?", component.getDDMSVersion());
+	}
+	
+	public void testBuilder() throws SAXException, IOException, InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
+			
+			// Equality after Building
+			ExtensibleElement.Builder builder = new ExtensibleElement.Builder(component);
+			assertEquals(builder.commit(), component);			
+			builder = new ExtensibleElement.Builder();
+			builder.setXml(getElementFixture().toXML());
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new ExtensibleElement.Builder();
+			builder.setXml("InvalidXml");
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}			
+		}
 	}
 }
