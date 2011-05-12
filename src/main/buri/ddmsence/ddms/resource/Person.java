@@ -273,4 +273,87 @@ public final class Person extends AbstractProducer {
 	public String getAffiliation() {
 		return (Util.getFirstDDMSChildValue(getEntityElement(), AFFILIATION_NAME));
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder extends AbstractProducer.Builder {
+		private String _surname;
+		private String _userID;
+		private String _affliation;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {
+			super();
+		}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(Person person) {
+			super(person);
+			setSurname(person.getSurname());
+			setUserID(person.getUserID());
+			setAffliation(person.getAffiliation());
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public Person commit() throws InvalidDDMSException {
+			return (new Person(getProducerType(), getSurname(), getNames(), getUserID(), getAffliation(), getPhones(),
+				getEmails(), getSecurityAttributes().commit(), getExtensibleAttributes().commit()));
+		}
+
+		/**
+		 * Builder accessor for the surname
+		 */
+		public String getSurname() {
+			return _surname;
+		}
+
+		/**
+		 * Builder accessor for the surname
+		 */
+		public void setSurname(String surname) {
+			_surname = surname;
+		}
+
+		/**
+		 * Builder accessor for the userID
+		 */
+		public String getUserID() {
+			return _userID;
+		}
+
+		/**
+		 * Builder accessor for the userID
+		 */
+		public void setUserID(String userID) {
+			_userID = userID;
+		}
+
+		/**
+		 * Builder accessor for the affliation
+		 */
+		public String getAffliation() {
+			return _affliation;
+		}
+
+		/**
+		 * Builder accessor for the affliation
+		 */
+		public void setAffliation(String affliation) {
+			_affliation = affliation;
+		}
+	}
 } 

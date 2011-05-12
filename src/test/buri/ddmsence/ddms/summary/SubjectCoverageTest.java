@@ -379,4 +379,25 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			SubjectCoverage.Builder builder = new SubjectCoverage.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new SubjectCoverage.Builder();
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

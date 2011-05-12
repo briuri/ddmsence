@@ -361,4 +361,30 @@ public class UnknownTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			
+			if ("2.0".equals(version))
+				continue;
+			
+			Unknown component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			Unknown.Builder builder = new Unknown.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new Unknown.Builder();
+			builder.setProducerType(TEST_PRODUCER_TYPE);
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }
