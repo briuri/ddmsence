@@ -39,6 +39,9 @@ import nu.xom.Nodes;
 import nu.xom.XPathContext;
 import nu.xom.xslt.XSLException;
 import nu.xom.xslt.XSLTransform;
+
+import org.xml.sax.SAXException;
+
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleElement;
 import buri.ddmsence.ddms.format.Format;
@@ -378,7 +381,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * <p> The order of different types of components does not matter here (a security component could be the first
 	 * component in the list). However, if multiple instances of the same component type exist in the list (such as
 	 * multiple identifier components), those components will be stored and output in the order of the list. If only 1
-	 * intance can be supported, the last one in the list will be the one used. </p>
+	 * instance can be supported, the last one in the list will be the one used. </p>
 	 * 
 	 * <p> DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 schema still
 	 * allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present. </p>
@@ -1011,5 +1014,660 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	private static DatatypeFactory getFactory() {
 		return (Util.getDataTypeFactory());
+	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * <p>The builder approach differs from calling the immutable constructor directly because it treats a Builder
+	 * instance with no values provided as "no component" instead of "a component with missing values". For example,
+	 * calling a constructor directly with an empty string for a required parameter might throw an InvalidDDMSException,
+	 * while calling commit() on a Builder without setting any values would just return null.</p>
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private List<Identifier.Builder> _identifiers;
+		private List<Title.Builder> _titles;
+		private List<Subtitle.Builder> _subtitles;
+		private Description.Builder _description;
+		private List<Language.Builder> _languages;
+		private Dates.Builder _dates;
+		private Rights.Builder _rights;
+		private List<Source.Builder> _sources;
+		private List<Type.Builder> _types;
+		private List<AbstractProducer.Builder> _producers;
+		private Format.Builder _format;
+		private SubjectCoverage.Builder _subjectCoverage;
+		private List<VirtualCoverage.Builder> _virtualCoverages;
+		private List<TemporalCoverage.Builder> _temporalCoverages;
+		private List<GeospatialCoverage.Builder> _geospatialCoverages;
+		private List<RelatedResources.Builder> _relatedResources;
+		private Security.Builder _security;
+		private List<ExtensibleElement.Builder> _extensibleElements;
+
+		private String _createDate;
+		private Boolean _resourceElement;
+		private Integer _DESVersion;
+		private SecurityAttributes.Builder _securityAttributes;
+		private ExtensibleAttributes.Builder _extensibleAttributes;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(Resource resource) {
+			for (Identifier component : resource.getIdentifiers()) {
+				getIdentifiers().add(new Identifier.Builder(component));
+			}
+			for (Title component : resource.getTitles()) {
+				getTitles().add(new Title.Builder(component));
+			}
+			for (Subtitle component : resource.getSubtitles()) {
+				getSubtitles().add(new Subtitle.Builder(component));
+			}
+			if (resource.getDescription() != null)
+				setDescription(new Description.Builder(resource.getDescription()));
+			for (Language component : resource.getLanguages()) {
+				getLanguages().add(new Language.Builder(component));
+			}
+			if (resource.getDates() != null)
+				setDates(new Dates.Builder(resource.getDates()));
+			if (resource.getRights() != null)
+				setRights(new Rights.Builder(resource.getRights()));
+			for (Source component : resource.getSources()) {
+				getSources().add(new Source.Builder(component));
+			}
+			for (Type component : resource.getTypes()) {
+				getTypes().add(new Type.Builder(component));
+			}
+					
+			List<IProducer> producers = new ArrayList<IProducer>();
+			producers.addAll(resource.getCreators());
+			producers.addAll(resource.getPublishers());
+			producers.addAll(resource.getContributors());
+			producers.addAll(resource.getPointOfContacts());			
+			for (IProducer component : producers) {
+				if (Organization.NAME.equals(component.getEntityType())) {
+					getProducers().add(new Organization.Builder((Organization) component));
+				}
+				if (Person.NAME.equals(component.getEntityType())) {
+					getProducers().add(new Person.Builder((Person) component));
+				}
+				if (Service.NAME.equals(component.getEntityType())) {
+					getProducers().add(new Service.Builder((Service) component));
+				}
+				if (Unknown.NAME.equals(component.getEntityType())) {
+					getProducers().add(new Unknown.Builder((Unknown) component));
+				}
+			}
+
+			if (resource.getFormat() != null)
+				setFormat(new Format.Builder(resource.getFormat()));
+			setSubjectCoverage(new SubjectCoverage.Builder(resource.getSubjectCoverage()));
+			for (VirtualCoverage component : resource.getVirtualCoverages()) {
+				getVirtualCoverages().add(new VirtualCoverage.Builder(component));
+			}	
+			for (TemporalCoverage component : resource.getTemporalCoverages()) {
+				getTemporalCoverages().add(new TemporalCoverage.Builder(component));
+			}	
+			for (GeospatialCoverage component : resource.getGeospatialCoverages()) {
+				getGeospatialCoverages().add(new GeospatialCoverage.Builder(component));
+			}	
+			for (RelatedResources component : resource.getRelatedResources()) {
+				getRelatedResources().add(new RelatedResources.Builder(component));
+			}	
+			setSecurity(new Security.Builder(resource.getSecurity()));
+			for (ExtensibleElement component : resource.getExtensibleElements()) {
+				getExtensibleElements().add(new ExtensibleElement.Builder(component));
+			}			
+			
+			if (resource.getCreateDate() != null)
+				setCreateDate(resource.getCreateDate().toXMLFormat());
+			setResourceElement(resource.isResourceElement());
+			setDESVersion(resource.getDESVersion());
+			setSecurityAttributes(new SecurityAttributes.Builder(resource.getSecurityAttributes()));
+			setExtensibleAttributes(new ExtensibleAttributes.Builder(resource.getExtensibleAttributes()));
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
+		 * instance will be returned instead of a possibly invalid one.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public Resource commit() throws InvalidDDMSException {
+			if (isEmpty())
+				return (null);
+			List<IDDMSComponent> topLevelComponents = new ArrayList<IDDMSComponent>();	
+			for (Identifier.Builder builder : getIdentifiers()) {
+				Identifier component = builder.commit();
+				if (component != null)
+					topLevelComponents.add(component);
+			}
+			for (Title.Builder builder : getTitles()) {
+				Title component = builder.commit();
+				if (component != null)
+					topLevelComponents.add(component);
+			}
+			for (Subtitle.Builder builder : getSubtitles()) {
+				Subtitle component = builder.commit();
+				if (component != null)
+					topLevelComponents.add(component);
+			}
+			topLevelComponents.add(getDescription().commit());
+			for (Language.Builder builder : getLanguages()) {
+				Language component = builder.commit();
+				if (component != null)
+					topLevelComponents.add(component);
+			}
+			topLevelComponents.add(getDates().commit());
+			topLevelComponents.add(getRights().commit());
+			for (Source.Builder builder : getSources()) {
+				Source component = builder.commit();
+				if (component != null)
+					topLevelComponents.add(component);
+			}
+			for (Type.Builder builder : getTypes()) {
+				Type component = builder.commit();
+				if (component != null)
+					topLevelComponents.add(component);
+			}			
+			for (AbstractProducer.Builder builder : getProducers()) {
+				IProducer component = null;
+				if (builder instanceof Organization.Builder) {
+					component = ((Organization.Builder) builder).commit();
+				}
+				else if (builder instanceof Person.Builder) {
+					component = ((Person.Builder) builder).commit();
+				}
+				else if (builder instanceof Service.Builder) {
+					component = ((Service.Builder) builder).commit();
+				}
+				else if (builder instanceof Unknown.Builder) {
+					component = ((Unknown.Builder) builder).commit();
+				}
+				if (component != null)
+					topLevelComponents.add(component);
+			}			
+			topLevelComponents.add(getFormat().commit());
+			topLevelComponents.add(getSubjectCoverage().commit());			
+			for (VirtualCoverage.Builder builder : getVirtualCoverages()) {
+				VirtualCoverage component = builder.commit();
+				if (component != null)
+					topLevelComponents.add(component);
+			}	
+			for (TemporalCoverage.Builder builder : getTemporalCoverages()) {
+				TemporalCoverage component = builder.commit();
+				if (component != null)
+					topLevelComponents.add(component);
+			}	
+			for (GeospatialCoverage.Builder builder : getGeospatialCoverages()) {
+				GeospatialCoverage component = builder.commit();
+				if (component != null)
+					topLevelComponents.add(component);
+			}	
+			for (RelatedResources.Builder builder : getRelatedResources()) {
+				RelatedResources component = builder.commit();
+				if (component != null)
+					topLevelComponents.add(component);
+			}	
+			topLevelComponents.add(getSecurity().commit());
+			for (ExtensibleElement.Builder builder : getExtensibleElements()) {
+				try {
+					ExtensibleElement component = builder.commit();
+					if (component != null)
+						topLevelComponents.add(component);
+				}
+				catch (SAXException e) {
+					throw new InvalidDDMSException("Could not commit ExtensibleElement: " + e.getMessage());
+				}
+				catch (IOException e) {
+					throw new InvalidDDMSException("Could not commit ExtensibleElement: " + e.getMessage());
+				}
+			}	
+
+			return (isEmpty() ? null : new Resource(topLevelComponents, getResourceElement(), getCreateDate(), getDESVersion(), getSecurityAttributes().commit(), getExtensibleAttributes().commit()));
+		}
+
+		/**
+		 * Checks if any values have been provided for this Builder.
+		 * 
+		 * @return true if every field is empty
+		 */
+		public boolean isEmpty() {
+			boolean hasIdentifier = false;
+			for (Identifier.Builder builder : getIdentifiers()) {
+				hasIdentifier = hasIdentifier || !builder.isEmpty();
+			}
+			boolean hasTitle = false;
+			for (Title.Builder builder : getTitles()) {
+				hasTitle = hasTitle || !builder.isEmpty();
+			}
+			boolean hasSubtitle = false;
+			for (Subtitle.Builder builder : getSubtitles()) {
+				hasSubtitle = hasSubtitle || !builder.isEmpty();
+			}
+			boolean hasLanguage = false;
+			for (Language.Builder builder : getLanguages()) {
+				hasLanguage = hasLanguage || !builder.isEmpty();
+			}
+			boolean hasSource = false;
+			for (Source.Builder builder : getSources()) {
+				hasSource = hasSource || !builder.isEmpty();
+			}
+			boolean hasType = false;
+			for (Type.Builder builder : getTypes()) {
+				hasType = hasType || !builder.isEmpty();
+			}
+			boolean hasProducer = false;
+			for (AbstractProducer.Builder builder : getProducers()) {
+				hasProducer = hasProducer || !builder.isEmpty();
+			}
+			boolean hasVirtualCoverage = false;
+			for (VirtualCoverage.Builder builder : getVirtualCoverages()) {
+				hasVirtualCoverage = hasVirtualCoverage || !builder.isEmpty();
+			}
+			boolean hasTemporalCoverage = false;
+			for (TemporalCoverage.Builder builder : getTemporalCoverages()) {
+				hasTemporalCoverage = hasTemporalCoverage || !builder.isEmpty();
+			}
+			boolean hasGeospatialCoverage = false;
+			for (GeospatialCoverage.Builder builder : getGeospatialCoverages()) {
+				hasGeospatialCoverage = hasGeospatialCoverage || !builder.isEmpty();
+			}
+			boolean hasRelatedResources = false;
+			for (RelatedResources.Builder builder : getRelatedResources()) {
+				hasRelatedResources = hasRelatedResources || !builder.isEmpty();
+			}
+			boolean hasExtensibleElement = false;
+			for (ExtensibleElement.Builder builder : getExtensibleElements()) {
+				hasExtensibleElement = hasExtensibleElement || !builder.isEmpty();
+			}
+			
+			return (!hasIdentifier && !hasTitle && !hasSubtitle && !hasLanguage && !hasSource && !hasType
+				&& !hasProducer && !hasVirtualCoverage && !hasTemporalCoverage && !hasGeospatialCoverage
+				&& !hasRelatedResources && !hasExtensibleElement
+				&& getDescription().isEmpty()
+				&& getDates().isEmpty()
+				&& getRights().isEmpty()
+				&& getFormat().isEmpty()
+				&& getSubjectCoverage().isEmpty()
+				&& getSecurity().isEmpty()
+				&& Util.isEmpty(getCreateDate())
+				&& getResourceElement() == null
+				&& getDESVersion() == null
+				&& getSecurityAttributes().isEmpty()
+				&& getExtensibleAttributes().isEmpty());
+		}
+		
+		/**
+		 * Builder accessor for the identifiers
+		 */
+		public List<Identifier.Builder> getIdentifiers() {
+			if (_identifiers == null)
+				_identifiers = new ArrayList<Identifier.Builder>();
+			return _identifiers;
+		}
+		
+		/**
+		 * Builder accessor for the identifiers
+		 */
+		public void setIdentifiers(List<Identifier.Builder> identifiers) {
+			_identifiers = identifiers;
+		}
+		
+		/**
+		 * Builder accessor for the titles
+		 */
+		public List<Title.Builder> getTitles() {
+			return _titles;
+		}
+		
+		/**
+		 * Builder accessor for the titles
+		 */
+		public void setTitles(List<Title.Builder> titles) {
+			if (_titles == null)
+				_titles = new ArrayList<Title.Builder>();
+			_titles = titles;
+		}
+		
+		/**
+		 * Builder accessor for the subtitles
+		 */
+		public List<Subtitle.Builder> getSubtitles() {
+			if (_subtitles == null)
+				_subtitles = new ArrayList<Subtitle.Builder>();
+			return _subtitles;
+		}
+		
+		/**
+		 * Builder accessor for the subtitles
+		 */
+		public void setSubtitles(List<Subtitle.Builder> subtitles) {
+			_subtitles = subtitles;
+		}
+		
+		/**
+		 * Builder accessor for the description
+		 */
+		public Description.Builder getDescription() {
+			if (_description == null)
+				_description = new Description.Builder();
+			return _description;
+		}
+		
+		/**
+		 * Builder accessor for the description
+		 */
+		public void setDescription(Description.Builder description) {
+			_description = description;
+		}
+		
+		/**
+		 * Builder accessor for the languages
+		 */
+		public List<Language.Builder> getLanguages() {
+			if (_languages == null)
+				_languages = new ArrayList<Language.Builder>();
+			return _languages;
+		}
+		
+		/**
+		 * Builder accessor for the languages
+		 */
+		public void setLanguages(List<Language.Builder> languages) {
+			_languages = languages;
+		}
+		
+		/**
+		 * Builder accessor for the dates
+		 */
+		public Dates.Builder getDates() {
+			if (_dates == null)
+				_dates = new Dates.Builder();
+			return _dates;
+		}
+		
+		/**
+		 * Builder accessor for the dates
+		 */
+		public void setDates(Dates.Builder dates) {
+			_dates = dates;
+		}
+		
+		/**
+		 * Builder accessor for the rights
+		 */
+		public Rights.Builder getRights() {
+			if (_rights == null)
+				_rights = new Rights.Builder();
+			return _rights;
+		}
+		
+		/**
+		 * Builder accessor for the rights
+		 */
+		public void setRights(Rights.Builder rights) {
+			_rights = rights;
+		}
+		
+		/**
+		 * Builder accessor for the sources
+		 */
+		public List<Source.Builder> getSources() {
+			if (_sources == null)
+				_sources = new ArrayList<Source.Builder>();
+			return _sources;
+		}
+		
+		/**
+		 * Builder accessor for the sources
+		 */
+		public void setSources(List<Source.Builder> sources) {
+			_sources = sources;
+		}
+		
+		/**
+		 * Builder accessor for the types
+		 */
+		public List<Type.Builder> getTypes() {
+			if (_types == null)
+				_types = new ArrayList<Type.Builder>();
+			return _types;
+		}
+		
+		/**
+		 * Builder accessor for the types
+		 */
+		public void setTypes(List<Type.Builder> types) {
+			_types = types;
+		}
+		
+		/**
+		 * Builder accessor for the four producer roles
+		 */
+		public List<AbstractProducer.Builder> getProducers() {
+			if (_producers == null)
+				_producers = new ArrayList<AbstractProducer.Builder>();
+			return _producers;
+		}
+		
+		/**
+		 * Builder accessor for the four producer roles
+		 */
+		public void setProducers(List<AbstractProducer.Builder> producers) {
+			_producers = producers;
+		}
+				
+		/**
+		 * Builder accessor for the format
+		 */
+		public Format.Builder getFormat() {
+			if (_format == null)
+				_format = new Format.Builder();
+			return _format;
+		}
+		
+		/**
+		 * Builder accessor for the format
+		 */
+		public void setFormat(Format.Builder format) {
+			_format = format;
+		}
+		
+		/**
+		 * Builder accessor for the subjectCoverage
+		 */
+		public SubjectCoverage.Builder getSubjectCoverage() {
+			if (_subjectCoverage == null)
+				_subjectCoverage = new SubjectCoverage.Builder();
+			return _subjectCoverage;
+		}
+		
+		/**
+		 * Builder accessor for the subjectCoverage
+		 */
+		public void setSubjectCoverage(SubjectCoverage.Builder subjectCoverage) {
+			_subjectCoverage = subjectCoverage;
+		}
+		
+		/**
+		 * Builder accessor for the virtualCoverages
+		 */
+		public List<VirtualCoverage.Builder> getVirtualCoverages() {
+			if (_virtualCoverages == null)
+				_virtualCoverages = new ArrayList<VirtualCoverage.Builder>();
+			return _virtualCoverages;
+		}
+		
+		/**
+		 * Builder accessor for the virtualCoverages
+		 */
+		public void setVirtualCoverages(List<VirtualCoverage.Builder> virtualCoverages) {
+			_virtualCoverages = virtualCoverages;
+		}
+		
+		/**
+		 * Builder accessor for the temporalCoverages
+		 */
+		public List<TemporalCoverage.Builder> getTemporalCoverages() {
+			if (_temporalCoverages == null)
+				_temporalCoverages = new ArrayList<TemporalCoverage.Builder>();
+			return _temporalCoverages;
+		}
+		
+		/**
+		 * Builder accessor for the temporalCoverages
+		 */
+		public void setTemporalCoverages(List<TemporalCoverage.Builder> temporalCoverages) {
+			_temporalCoverages = temporalCoverages;
+		}
+		
+		/**
+		 * Builder accessor for the geospatialCoverages
+		 */
+		public List<GeospatialCoverage.Builder> getGeospatialCoverages() {
+			if (_geospatialCoverages == null)
+				_geospatialCoverages = new ArrayList<GeospatialCoverage.Builder>();
+			return _geospatialCoverages;
+		}
+		
+		/**
+		 * Builder accessor for the geospatialCoverages
+		 */
+		public void setGeospatialCoverages(List<GeospatialCoverage.Builder> geospatialCoverages) {
+			_geospatialCoverages = geospatialCoverages;
+		}
+		
+		/**
+		 * Builder accessor for the relatedResources
+		 */
+		public List<RelatedResources.Builder> getRelatedResources() {
+			if (_relatedResources == null)
+				_relatedResources = new ArrayList<RelatedResources.Builder>();
+			return _relatedResources;
+		}
+		
+		/**
+		 * Builder accessor for the relatedResources
+		 */
+		public void setRelatedResources(List<RelatedResources.Builder> relatedResources) {
+			_relatedResources = relatedResources;
+		}
+		
+		/**
+		 * Builder accessor for the security
+		 */
+		public Security.Builder getSecurity() {
+			if (_security == null)
+				_security = new Security.Builder();
+			return _security;
+		}
+		
+		/**
+		 * Builder accessor for the security
+		 */
+		public void setSecurity(Security.Builder security) {
+			_security = security;
+		}
+		
+		/**
+		 * Builder accessor for the extensibleElements
+		 */
+		public List<ExtensibleElement.Builder> getExtensibleElements() {
+			if (_extensibleElements == null)
+				_extensibleElements = new ArrayList<ExtensibleElement.Builder>();
+			return _extensibleElements;
+		}
+		
+		/**
+		 * Builder accessor for the extensibleElements
+		 */
+		public void setExtensibleElements(List<ExtensibleElement.Builder> extensibleElements) {
+			_extensibleElements = extensibleElements;
+		}
+		
+		/**
+		 * Builder accessor for the createDate attribute
+		 */
+		public String getCreateDate() {
+			return _createDate;
+		}
+		
+		/**
+		 * Builder accessor for the createDate attribute
+		 */
+		public void setCreateDate(String createDate) {
+			_createDate = createDate;
+		}
+
+		/**
+		 * Accessor for the resourceElement attribute
+		 */
+		public Boolean getResourceElement() {
+			return _resourceElement;
+		}
+
+		/**
+		 * Accessor for the resourceElement attribute
+		 */
+		public void setResourceElement(Boolean resourceElement) {
+			_resourceElement = resourceElement;
+		}
+		
+		/**
+		 * Builder accessor for the DESVersion
+		 */
+		public Integer getDESVersion() {
+			return _DESVersion;
+		}
+		
+		/**
+		 * Builder accessor for the DESVersion
+		 */
+		public void setDESVersion(Integer dESVersion) {
+			_DESVersion = dESVersion;
+		}
+		
+		/**
+		 * Builder accessor for the securityAttributes
+		 */
+		public SecurityAttributes.Builder getSecurityAttributes() {
+			if (_securityAttributes == null)
+				_securityAttributes = new SecurityAttributes.Builder();
+			return _securityAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the securityAttributes
+		 */
+		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
+			_securityAttributes = securityAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the extensibleAttributes
+		 */
+		public ExtensibleAttributes.Builder getExtensibleAttributes() {
+			if (_extensibleAttributes == null)
+				_extensibleAttributes = new ExtensibleAttributes.Builder();
+			return _extensibleAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the extensibleAttributes
+		 */
+		public void setExtensibleAttributes(ExtensibleAttributes.Builder extensibleAttributes) {
+			_extensibleAttributes = extensibleAttributes;
+		}		
 	}
 }
