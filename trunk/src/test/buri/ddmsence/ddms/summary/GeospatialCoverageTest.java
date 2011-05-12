@@ -582,4 +582,45 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			
+			// Equality after Building
+			GeospatialCoverage component = testConstructor(WILL_SUCCEED, GeographicIdentifierTest.getFixture(), null, null, null, null);
+			GeospatialCoverage.Builder builder = new GeospatialCoverage.Builder(component);
+			assertEquals(builder.commit(), component);
+
+			component = testConstructor(WILL_SUCCEED, null, BoundingBoxTest.getFixture(), null, null, null);
+			builder = new GeospatialCoverage.Builder(component);
+			assertEquals(builder.commit(), component);
+
+			component = testConstructor(WILL_SUCCEED, null, null, BoundingGeometryTest.getFixture(), null, null);
+			builder = new GeospatialCoverage.Builder(component);
+			assertEquals(builder.commit(), component);
+
+			component = testConstructor(WILL_SUCCEED, null, null, null, PostalAddressTest.getFixture(), null);
+			builder = new GeospatialCoverage.Builder(component);
+			assertEquals(builder.commit(), component);
+
+			component = testConstructor(WILL_SUCCEED, null, null, null, null, VerticalExtentTest.getFixture());
+			builder = new GeospatialCoverage.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Empty case
+			builder = new GeospatialCoverage.Builder();
+			assertNull(builder.commit());
+			// Validation
+			builder = new GeospatialCoverage.Builder();
+			builder.getVerticalExtent().setDatum("datum");
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

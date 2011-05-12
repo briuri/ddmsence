@@ -321,6 +321,10 @@ public class ServiceTest extends AbstractComponentTestCase {
 			Service.Builder builder = new Service.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Service.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Service.Builder();
 			builder.setProducerType(TEST_PRODUCER_TYPE);

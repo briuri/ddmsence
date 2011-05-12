@@ -21,9 +21,10 @@ package buri.ddmsence.ddms.extensible;
 
 import java.io.IOException;
 
+import nu.xom.Element;
+
 import org.xml.sax.SAXException;
 
-import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
@@ -195,6 +196,10 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 			builder.setXml(getElementFixture().toXML());
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new ExtensibleElement.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new ExtensibleElement.Builder();
 			builder.setXml("InvalidXml");
@@ -205,6 +210,8 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 			catch (InvalidDDMSException e) {
 				// Good
 			}			
+			builder.setXml(getExpectedXMLOutput());
+			builder.commit();
 		}
 	}
 }

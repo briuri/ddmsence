@@ -368,8 +368,13 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 			RelatedResources.Builder builder = new RelatedResources.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new RelatedResources.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new RelatedResources.Builder();
+			builder.setDirection(TEST_DIRECTION);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
@@ -377,6 +382,21 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 			catch (InvalidDDMSException e) {
 				// Good
 			}
+			
+			// Skip empty Resources
+			builder = new RelatedResources.Builder();
+			builder.setDirection(TEST_DIRECTION);
+			builder.setRelationship(TEST_RELATIONSHIP);
+			RelatedResource.Builder emptyBuilder = new RelatedResource.Builder();
+			RelatedResource.Builder fullBuilder = new RelatedResource.Builder();
+			fullBuilder.setQualifier("http://purl.org/dc/terms/URI");
+			fullBuilder.setValue("http://en.wikipedia.org/wiki/Tank");
+			Link.Builder fullLinkBuilder = new Link.Builder();
+			fullLinkBuilder.setHref("http://ddmsence.urizone.net/");
+			fullBuilder.getLinks().add(fullLinkBuilder);
+			builder.getRelatedResources().add(emptyBuilder);
+			builder.getRelatedResources().add(fullBuilder);
+			assertEquals(1, builder.commit().getRelatedResources().size());
 		}
 	}
 }

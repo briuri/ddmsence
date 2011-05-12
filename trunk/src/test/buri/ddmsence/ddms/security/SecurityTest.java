@@ -273,8 +273,13 @@ public class SecurityTest extends AbstractComponentTestCase {
 			Security.Builder builder = new Security.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Security.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Security.Builder();
+			builder.getSecurityAttributes().setClassification("SuperSecret");
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");

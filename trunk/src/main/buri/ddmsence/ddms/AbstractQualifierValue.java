@@ -166,5 +166,14 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 		public void setValue(String value) {
 			_value = value;
 		}
+		
+		/**
+		 * Checks if any values have been provided for this Builder.
+		 * 
+		 * @return true if every field is empty
+		 */
+		public boolean isEmpty() {
+			return (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()));
+		}
 	}
 }

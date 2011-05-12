@@ -151,6 +151,11 @@ public final class Type extends AbstractQualifierValue {
 	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
 	 * based on the values gathered.
 	 * 
+	 * <p>The builder approach differs from calling the immutable constructor directly because it treats a Builder
+	 * instance with no values provided as "no component" instead of "a component with missing values". For example,
+	 * calling a constructor directly with an empty string for a required parameter might throw an InvalidDDMSException,
+	 * while calling commit() on a Builder without setting any values would just return null.</p>
+	 *  
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
@@ -171,12 +176,13 @@ public final class Type extends AbstractQualifierValue {
 		}
 		
 		/**
-		 * Finalizes the data gathered for this builder instance.
+		 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
+		 * instance will be returned instead of a possibly invalid one.
 		 * 
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
 		public Type commit() throws InvalidDDMSException {
-			return (new Type(getQualifier(), getValue()));
+			return (isEmpty() ? null : new Type(getQualifier(), getValue()));
 		}
 	}
 } 

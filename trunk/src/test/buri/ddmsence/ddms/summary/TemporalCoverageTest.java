@@ -416,6 +416,10 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 			TemporalCoverage.Builder builder = new TemporalCoverage.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new TemporalCoverage.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new TemporalCoverage.Builder();
 			builder.setStartString("Invalid");

@@ -338,8 +338,13 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 			BoundingBox.Builder builder = new BoundingBox.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new BoundingBox.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new BoundingBox.Builder();
+			builder.setEastBL(Double.valueOf(TEST_EAST));
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");

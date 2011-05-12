@@ -35,6 +35,7 @@ import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
+import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of an element which might fulfill the xs:any space in the Extensible Layer.
@@ -164,13 +165,16 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 		}
 		
 		/**
-		 * Finalizes the data gathered for this builder instance.
+		 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
+		 * instance will be returned instead of an empty one.
 		 *
 		 * @throws SAXException if the XML reader could not be initialized
 		 * @throws IOException if there were problems reading the XML string
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
 		public ExtensibleElement commit() throws SAXException, IOException, InvalidDDMSException {
+			if (isEmpty())
+				return (null);
 			try {
 				XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xmlReader.class"));
 				nu.xom.Builder builder = new nu.xom.Builder(reader, false);
@@ -182,6 +186,15 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 			}
 		}
 
+		/**
+		 * Checks if any values have been provided for this Builder.
+		 * 
+		 * @return true if every field is empty
+		 */
+		public boolean isEmpty() {
+			return (Util.isEmpty(getXml()));
+		}
+		
 		/**
 		 * Builder accessor for the XML string representing the element.
 		 */

@@ -435,6 +435,10 @@ public class PersonTest extends AbstractComponentTestCase {
 			Person.Builder builder = new Person.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Person.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Person.Builder();
 			builder.setProducerType(TEST_PRODUCER_TYPE);

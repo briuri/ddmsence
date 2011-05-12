@@ -387,6 +387,10 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			builder = new GeographicIdentifier.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new GeographicIdentifier.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new GeographicIdentifier.Builder();
 			builder.getFacilityIdentifier().setBeNumber("1234DD56789");

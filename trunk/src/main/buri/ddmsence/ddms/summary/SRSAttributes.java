@@ -240,6 +240,9 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
 	 * based on the values gathered.
 	 * 
+	 * <p>Because attributes decorate other components, the commit() method will never return a null instance for
+	 * SRSAttributes.</p>
+	 * 
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
@@ -265,12 +268,24 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		}
 		
 		/**
-		 * Finalizes the data gathered for this builder instance.
+		 * Finalizes the data gathered for this builder instance. Will always return an empty instance instead of
+		 * a null one.
 		 * 
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
 		public SRSAttributes commit() throws InvalidDDMSException {
 			return (new SRSAttributes(getSrsName(), getSrsDimension(), getAxisLabels(), getUomLabels()));
+		}
+		
+		/**
+		 * Checks if any values have been provided for this Builder.
+		 * 
+		 * @return true if every field is empty
+		 */
+		public boolean isEmpty() {
+			return (Util.isEmpty(getSrsName()) && getSrsDimension() == null
+				&& Util.containsOnlyEmptyValues(getAxisLabels())
+				&& Util.containsOnlyEmptyValues(getUomLabels()));				
 		}
 		
 		/**

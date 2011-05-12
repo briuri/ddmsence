@@ -316,8 +316,13 @@ public class PositionTest extends AbstractComponentTestCase {
 			Position.Builder builder = new Position.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Position.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Position.Builder();
+			builder.getCoordinates().add(Double.valueOf(0));
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
@@ -325,6 +330,14 @@ public class PositionTest extends AbstractComponentTestCase {
 			catch (InvalidDDMSException e) {
 				// Good
 			}
+			
+			// Skip empty Coordinates
+			builder = new Position.Builder();
+			builder.setSrsAttributes(new SRSAttributes.Builder(SRSAttributesTest.getFixture()));
+			builder.getCoordinates().add(null);
+			builder.getCoordinates().add(Double.valueOf(0));
+			builder.getCoordinates().add(Double.valueOf(1));
+			assertEquals(2, builder.commit().getCoordinates().size());
 		}
 	}
 }

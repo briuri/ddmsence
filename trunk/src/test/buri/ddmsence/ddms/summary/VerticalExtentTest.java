@@ -387,8 +387,13 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 			VerticalExtent.Builder builder = new VerticalExtent.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new VerticalExtent.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new VerticalExtent.Builder();
+			builder.setUnitOfMeasure(TEST_UOM);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");

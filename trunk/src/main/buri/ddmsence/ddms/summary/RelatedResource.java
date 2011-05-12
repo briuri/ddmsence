@@ -220,6 +220,11 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
 	 * based on the values gathered.
 	 * 
+	 * <p>The builder approach differs from calling the immutable constructor directly because it treats a Builder
+	 * instance with no values provided as "no component" instead of "a component with missing values". For example,
+	 * calling a constructor directly with an empty string for a required parameter might throw an InvalidDDMSException,
+	 * while calling commit() on a Builder without setting any values would just return null.</p>
+	 * 
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
@@ -244,16 +249,36 @@ public final class RelatedResource extends AbstractQualifierValue {
 		}
 		
 		/**
-		 * Finalizes the data gathered for this builder instance.
+		 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
+		 * instance will be returned instead of a possibly invalid one.
+		 * 
+		 * <p>If there are empty links in the list of builders, they will be skipped.</p>
 		 * 
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
 		public RelatedResource commit() throws InvalidDDMSException {
+			if (isEmpty())
+				return (null);
 			List<Link> links = new ArrayList<Link>();
 			for (Link.Builder builder : getLinks()) {
-				links.add(builder.commit());
+				Link link = builder.commit();
+				if (link != null)
+					links.add(link);
 			}
 			return (new RelatedResource(links, getQualifier(), getValue()));
+		}
+		
+		/**
+		 * Checks if any values have been provided for this Builder.
+		 * 
+		 * @return true if every field is empty
+		 */
+		public boolean isEmpty() {
+			boolean hasLink = false;
+			for (Link.Builder link : getLinks()) {
+				hasLink = hasLink || !link.isEmpty();
+			}
+			return (super.isEmpty() && !hasLink);
 		}
 		
 		/**

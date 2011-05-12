@@ -290,6 +290,10 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 			MediaExtent.Builder builder = new MediaExtent.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new MediaExtent.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new MediaExtent.Builder();
 			builder.setValue(TEST_VALUE);
@@ -300,6 +304,8 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 			catch (InvalidDDMSException e) {
 				// Good
 			}
+			builder.setQualifier(TEST_QUALIFIER);
+			builder.commit();
 		}
 	}
 }

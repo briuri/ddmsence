@@ -304,6 +304,10 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 			VirtualCoverage.Builder builder = new VirtualCoverage.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new VirtualCoverage.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new VirtualCoverage.Builder();
 			builder.setAddress(TEST_ADDRESS);

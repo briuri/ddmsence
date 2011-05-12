@@ -375,6 +375,10 @@ public class UnknownTest extends AbstractComponentTestCase {
 			Unknown.Builder builder = new Unknown.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Unknown.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Unknown.Builder();
 			builder.setProducerType(TEST_PRODUCER_TYPE);

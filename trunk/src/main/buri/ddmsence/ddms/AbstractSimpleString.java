@@ -104,6 +104,15 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		}
 		
 		/**
+		 * Helper method to determine if any values have been entered for this producer.
+		 * 
+		 * @return true if all values are empty
+		 */
+		public boolean isEmpty() {
+			return (Util.isEmpty(getValue()));
+		}
+		
+		/**
 		 * Builder accessor for the child text.
 		 */
 		public String getValue() {

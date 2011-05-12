@@ -156,6 +156,11 @@ public final class MediaExtent extends AbstractQualifierValue {
 	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
 	 * based on the values gathered.
 	 * 
+	 * <p>The builder approach differs from calling the immutable constructor directly because it treats a Builder
+	 * instance with no values provided as "no component" instead of "a component with missing values". For example,
+	 * calling a constructor directly with an empty string for a required parameter might throw an InvalidDDMSException,
+	 * while calling commit() on a Builder without setting any values would just return null.</p>
+	 * 
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
@@ -182,8 +187,16 @@ public final class MediaExtent extends AbstractQualifierValue {
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
 		public MediaExtent commit() throws InvalidDDMSException {
-			boolean isEmpty = (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()));
-			return (isEmpty ? null : new MediaExtent(getQualifier(), getValue()));
+			return (isEmpty() ? null : new MediaExtent(getQualifier(), getValue()));
+		}
+		
+		/**
+		 * Checks if any values have been provided for this Builder.
+		 * 
+		 * @return true if every field is empty
+		 */
+		public boolean isEmpty() {
+			return (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()));
 		}
 	}
 } 

@@ -292,6 +292,11 @@ public final class Position extends AbstractBaseComponent {
 	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
 	 * based on the values gathered.
 	 * 
+	 * <p>The builder approach differs from calling the immutable constructor directly because it treats a Builder
+	 * instance with no values provided as "no component" instead of "a component with missing values". For example,
+	 * calling a constructor directly with an empty string for a required parameter might throw an InvalidDDMSException,
+	 * while calling commit() on a Builder without setting any values would just return null.</p>
+	 * 
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
@@ -313,12 +318,33 @@ public final class Position extends AbstractBaseComponent {
 		}
 		
 		/**
-		 * Finalizes the data gathered for this builder instance.
+		 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
+		 * instance will be returned instead of a possibly invalid one.
 		 * 
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
 		public Position commit() throws InvalidDDMSException {
-			return (new Position(getCoordinates(), getSrsAttributes().commit()));
+			if (isEmpty())
+				return (null);
+			List<Double> coordinates = new ArrayList<Double>();
+			for (Double coord : getCoordinates()) {
+				if (coord != null)
+					coordinates.add(coord);
+			}	
+			return (new Position(coordinates, getSrsAttributes().commit()));
+		}
+		
+		/**
+		 * Checks if any values have been provided for this Builder.
+		 * 
+		 * @return true if every field is empty
+		 */
+		public boolean isEmpty() {
+			boolean hasCoordinate = false;
+			for (Double coord : getCoordinates()) {
+				hasCoordinate = hasCoordinate || (coord != null);
+			}
+			return (!hasCoordinate && getSrsAttributes().isEmpty());
 		}
 		
 		/**

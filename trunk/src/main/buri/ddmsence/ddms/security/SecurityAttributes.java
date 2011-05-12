@@ -808,6 +808,9 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
 	 * based on the values gathered.
 	 * 
+	 * <p>Because attributes decorate other components, the commit() method will never return a null instance for
+	 * SecurityAttributes.</p>
+	 * 
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
@@ -868,7 +871,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		}
 		
 		/**
-		 * Finalizes the data gathered for this builder instance.
+		 * Finalizes the data gathered for this builder instance. Will always return an empty instance instead of
+		 * a null one.
 		 * 
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
@@ -894,6 +898,34 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			if (getDeclassManualReview() != null)
 				otherAttributes.put(DECLASS_MANUAL_REVIEW_NAME, getDeclassManualReview().toString());
 			return (new SecurityAttributes(getClassification(), getOwnerProducers(), otherAttributes));
+		}
+		
+		/**
+		 * Checks if any values have been provided for this Builder.
+		 * 
+		 * @return true if every field is empty
+		 */
+		public boolean isEmpty() {
+			return (Util.isEmpty(getClassification())
+				&& Util.containsOnlyEmptyValues(getOwnerProducers())
+				&& Util.containsOnlyEmptyValues(getSCIcontrols())
+				&& Util.containsOnlyEmptyValues(getSARIdentifier())
+				&& Util.containsOnlyEmptyValues(getDisseminationControls())
+				&& Util.containsOnlyEmptyValues(getFGIsourceOpen())
+				&& Util.containsOnlyEmptyValues(getFGIsourceProtected())
+				&& Util.containsOnlyEmptyValues(getReleasableTo())
+				&& Util.containsOnlyEmptyValues(getNonICmarkings())
+				&& Util.isEmpty(getClassifiedBy())
+				&& Util.isEmpty(getCompilationReason())
+				&& Util.isEmpty(getDerivativelyClassifiedBy())
+				&& Util.isEmpty(getClassificationReason())
+				&& Util.isEmpty(getDerivedFrom())
+				&& Util.isEmpty(getDeclassDate())
+				&& Util.isEmpty(getDeclassEvent())
+				&& Util.isEmpty(getDeclassException())
+				&& Util.isEmpty(getTypeOfExemptedSource())
+				&& Util.isEmpty(getDateOfExemptedSource())
+				&& getDeclassManualReview() == null);				
 		}
 		
 		/**

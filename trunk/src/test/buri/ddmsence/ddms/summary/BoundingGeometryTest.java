@@ -343,8 +343,17 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			builder = new BoundingGeometry.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new BoundingGeometry.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new BoundingGeometry.Builder();
+			for (Point point : getPoints()) {
+				Point.Builder pointBuilder = new Point.Builder(point);
+				pointBuilder.setId("");
+				builder.getPoints().add(pointBuilder);
+			}			
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
@@ -352,10 +361,41 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			catch (InvalidDDMSException e) {
 				// Good
 			}
+			builder = new BoundingGeometry.Builder();
 			for (Polygon polygon : getPolygons()) {
 				builder.getPolygons().add(new Polygon.Builder(polygon));
 			}
 			builder.commit();
+			
+			// Skip empty Points
+			builder = new BoundingGeometry.Builder();
+			Point.Builder emptyBuilder = new Point.Builder();
+			Point.Builder fullBuilder = new Point.Builder();
+			fullBuilder.setSrsAttributes(new SRSAttributes.Builder(SRSAttributesTest.getFixture()));
+			fullBuilder.setId(TEST_ID);
+			fullBuilder.getPosition().getCoordinates().add(Double.valueOf(0));
+			fullBuilder.getPosition().getCoordinates().add(Double.valueOf(0));
+			builder.getPoints().add(emptyBuilder);
+			builder.getPoints().add(fullBuilder);
+			assertEquals(1, builder.commit().getPoints().size());
+			
+			// Skip empty Polygons
+			builder = new BoundingGeometry.Builder();
+			Polygon.Builder emptyPolygonBuilder = new Polygon.Builder();
+			Polygon.Builder fullPolygonBuilder = new Polygon.Builder();
+			fullPolygonBuilder.setSrsAttributes(new SRSAttributes.Builder(SRSAttributesTest.getFixture()));
+			fullPolygonBuilder.setId(TEST_ID);
+			fullPolygonBuilder.getPositions().add(new Position.Builder());
+			fullPolygonBuilder.getPositions().add(new Position.Builder());
+			fullPolygonBuilder.getPositions().add(new Position.Builder());
+			fullPolygonBuilder.getPositions().add(new Position.Builder());
+			fullPolygonBuilder.getPositions().get(0).setCoordinates(PolygonTest.TEST_COORDS_1);
+			fullPolygonBuilder.getPositions().get(1).setCoordinates(PolygonTest.TEST_COORDS_2);
+			fullPolygonBuilder.getPositions().get(2).setCoordinates(PolygonTest.TEST_COORDS_3);
+			fullPolygonBuilder.getPositions().get(3).setCoordinates(PolygonTest.TEST_COORDS_1);
+			builder.getPolygons().add(emptyPolygonBuilder);
+			builder.getPolygons().add(fullPolygonBuilder);
+			assertEquals(1, builder.commit().getPolygons().size());
 		}
 	}
 }

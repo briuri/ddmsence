@@ -402,8 +402,13 @@ public class PointTest extends AbstractComponentTestCase {
 			Point.Builder builder = new Point.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Point.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Point.Builder();
+			builder.setId(TEST_ID);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");

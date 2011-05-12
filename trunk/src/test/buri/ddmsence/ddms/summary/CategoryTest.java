@@ -327,8 +327,13 @@ public class CategoryTest extends AbstractComponentTestCase {
 			Category.Builder builder = new Category.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Category.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Category.Builder();
+			builder.setQualifier(TEST_QUALIFIER);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");

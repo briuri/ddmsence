@@ -164,6 +164,24 @@ public class Util {
 	public static boolean isEmpty(String value) {
 		return (value == null || value.trim().length() == 0);
 	}
+	
+	/**
+	 * Checks if all of the entries in a list of Strings is empty or null.
+	 * 
+	 * @param list the list containing strings
+	 * @return true if the list only has null or empty values
+	 */
+	public static boolean containsOnlyEmptyValues(List<String> list) {
+		if (list != null) {
+			int emptyCount = 0;
+			for (String value : list) {
+				if (isEmpty(value))
+					emptyCount++;
+			}
+			return (list.size() == emptyCount);
+		}
+		return (false);
+	}
 
     /**
      * Gets the child text of the first child element matching the name in the DDMS namespace.

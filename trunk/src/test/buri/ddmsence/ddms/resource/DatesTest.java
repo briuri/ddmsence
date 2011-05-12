@@ -277,6 +277,10 @@ public class DatesTest extends AbstractComponentTestCase {
 			Dates.Builder builder = new Dates.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Dates.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Dates.Builder();
 			builder.setCreated("notAnXmlDate");
@@ -287,6 +291,8 @@ public class DatesTest extends AbstractComponentTestCase {
 			catch (InvalidDDMSException e) {
 				// Good
 			}
+			builder.setCreated(TEST_CREATED);
+			builder.commit();
 		}
 	}
 }

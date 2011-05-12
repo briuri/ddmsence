@@ -419,6 +419,10 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			PostalAddress.Builder builder = new PostalAddress.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new PostalAddress.Builder();
+			assertNull(builder.commit());
+			
 			// No country code
 			builder = new PostalAddress.Builder(component);
 			builder.setCountryCode(new CountryCode.Builder());

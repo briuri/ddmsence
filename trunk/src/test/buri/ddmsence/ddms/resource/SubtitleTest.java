@@ -267,8 +267,13 @@ public class SubtitleTest extends AbstractComponentTestCase {
 			Subtitle.Builder builder = new Subtitle.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Subtitle.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Subtitle.Builder();
+			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");

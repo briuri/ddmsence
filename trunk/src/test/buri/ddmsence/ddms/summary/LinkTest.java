@@ -321,8 +321,13 @@ public class LinkTest extends AbstractComponentTestCase {
 			Link.Builder builder = new Link.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Link.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Link.Builder();
+			builder.setRole(TEST_ROLE);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
