@@ -270,6 +270,10 @@ public class LanguageTest extends AbstractComponentTestCase {
 			Language.Builder builder = new Language.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Language.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Language.Builder();
 			builder.setValue(TEST_VALUE);
@@ -280,6 +284,8 @@ public class LanguageTest extends AbstractComponentTestCase {
 			catch (InvalidDDMSException e) {
 				// Good
 			}
+			builder.setQualifier(TEST_QUALIFIER);
+			builder.commit();
 		}
 	}
 }

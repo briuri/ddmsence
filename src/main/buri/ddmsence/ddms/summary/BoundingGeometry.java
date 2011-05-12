@@ -221,6 +221,11 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
 	 * based on the values gathered.
 	 * 
+	 * <p>The builder approach differs from calling the immutable constructor directly because it treats a Builder
+	 * instance with no values provided as "no component" instead of "a component with missing values". For example,
+	 * calling a constructor directly with an empty string for a required parameter might throw an InvalidDDMSException,
+	 * while calling commit() on a Builder without setting any values would just return null.</p>
+	 * 
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
@@ -244,20 +249,46 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 		}
 		
 		/**
-		 * Finalizes the data gathered for this builder instance.
+		 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
+		 * instance will be returned instead of a possibly invalid one.
+		 * 
+		 * <p>If there are empty polygons or points in the list of builders, they will be skipped.</p>
 		 * 
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
 		public BoundingGeometry commit() throws InvalidDDMSException {
+			if (isEmpty())
+				return (null);
 			List<Polygon> polygons = new ArrayList<Polygon>();
 			for (Polygon.Builder builder : getPolygons()) {
-				polygons.add(builder.commit());
+				Polygon polygon = builder.commit();
+				if (polygon != null)
+					polygons.add(polygon);
 			}
 			List<Point> points = new ArrayList<Point>();
 			for (Point.Builder builder : getPoints()) {
-				points.add(builder.commit());
+				Point point = builder.commit();
+				if (point != null)
+					points.add(point);
 			}
 			return (new BoundingGeometry(polygons, points));
+		}
+		
+		/**
+		 * Checks if any values have been provided for this Builder.
+		 * 
+		 * @return true if every field is empty
+		 */
+		public boolean isEmpty() {
+			boolean hasPolygon = false;
+			for (Polygon.Builder polygon : getPolygons()) {
+				hasPolygon = hasPolygon || !polygon.isEmpty();
+			}
+			boolean hasPoint = false;
+			for (Point.Builder point : getPoints()) {
+				hasPoint = hasPoint || !point.isEmpty();
+			}
+			return (!hasPolygon && !hasPoint);
 		}
 		
 		/**

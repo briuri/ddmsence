@@ -502,8 +502,13 @@ public class PolygonTest extends AbstractComponentTestCase {
 			Polygon.Builder builder = new Polygon.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Polygon.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Polygon.Builder();
+			builder.setId(TEST_ID);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
@@ -511,6 +516,27 @@ public class PolygonTest extends AbstractComponentTestCase {
 			catch (InvalidDDMSException e) {
 				// Good
 			}
+			
+			// Skip empty Positions
+			builder = new Polygon.Builder();
+			builder.setId(TEST_ID);
+			Position.Builder emptyBuilder = new Position.Builder();
+			Position.Builder fullBuilder1 = new Position.Builder();
+			fullBuilder1.getCoordinates().add(Double.valueOf(0));
+			fullBuilder1.getCoordinates().add(Double.valueOf(0));
+			Position.Builder fullBuilder2 = new Position.Builder();
+			fullBuilder2.getCoordinates().add(Double.valueOf(0));
+			fullBuilder2.getCoordinates().add(Double.valueOf(1));
+			Position.Builder fullBuilder3 = new Position.Builder();
+			fullBuilder3.getCoordinates().add(Double.valueOf(1));
+			fullBuilder3.getCoordinates().add(Double.valueOf(1));
+			builder.getPositions().add(emptyBuilder);
+			builder.getPositions().add(fullBuilder1);
+			builder.getPositions().add(fullBuilder2);
+			builder.getPositions().add(fullBuilder3);
+			builder.getPositions().add(fullBuilder1);
+			builder.setSrsAttributes(new SRSAttributes.Builder(SRSAttributesTest.getFixture()));
+			assertEquals(4, builder.commit().getPositions().size());
 		}
 	}
 }

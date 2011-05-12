@@ -247,8 +247,13 @@ public class TitleTest extends AbstractComponentTestCase {
 			Title.Builder builder = new Title.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Title.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Title.Builder();
+			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");

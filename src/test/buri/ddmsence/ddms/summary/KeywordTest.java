@@ -280,16 +280,10 @@ public class KeywordTest extends AbstractComponentTestCase {
 			// Equality after Building
 			Keyword.Builder builder = new Keyword.Builder(component);
 			assertEquals(builder.commit(), component);
-			
-			// Validation
+
+			// Empty case
 			builder = new Keyword.Builder();
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				// Good
-			}
+			assertNull(builder.commit());
 		}
 	}
 }

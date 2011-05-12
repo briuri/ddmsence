@@ -320,6 +320,10 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 			CountryCode.Builder builder = new CountryCode.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new CountryCode.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new CountryCode.Builder();
 			builder.setValue(TEST_VALUE);

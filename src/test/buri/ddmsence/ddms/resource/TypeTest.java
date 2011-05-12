@@ -267,6 +267,10 @@ public class TypeTest extends AbstractComponentTestCase {
 			Type.Builder builder = new Type.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Type.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Type.Builder();
 			builder.setValue(TEST_VALUE);

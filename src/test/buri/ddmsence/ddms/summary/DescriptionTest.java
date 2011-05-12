@@ -258,8 +258,13 @@ public class DescriptionTest extends AbstractComponentTestCase {
 			Description.Builder builder = new Description.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Description.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Description.Builder();
+			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");

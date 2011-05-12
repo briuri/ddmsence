@@ -279,6 +279,9 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 			FacilityIdentifier.Builder builder = new FacilityIdentifier.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new FacilityIdentifier.Builder();
+			assertNull(builder.commit());
 			// Validation
 			builder = new FacilityIdentifier.Builder();
 			builder.setBeNumber(TEST_BENUMBER);

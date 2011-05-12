@@ -323,6 +323,10 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			Organization.Builder builder = new Organization.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Organization.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Organization.Builder();
 			builder.setProducerType(TEST_PRODUCER_TYPE);

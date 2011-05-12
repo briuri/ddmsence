@@ -469,14 +469,28 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		}
 		
 		/**
-		 * Builder Accessor for the producerType
+		 * Helper method to determine if any values have been entered for this producer.
+		 * 
+		 * @return true if all values are empty
+		 */
+		public boolean isEmpty() {
+			return (Util.isEmpty(getProducerType())
+				&& Util.containsOnlyEmptyValues(getNames())
+				&& Util.containsOnlyEmptyValues(getPhones())
+				&& Util.containsOnlyEmptyValues(getEmails())
+				&& getSecurityAttributes().isEmpty()
+				&& getExtensibleAttributes().isEmpty());
+		}
+		
+		/**
+		 * Builder accessor for the producerType
 		 */
 		public String getProducerType() {
 			return _producerType;
 		}
 
 		/**
-		 * Builder Accessor for the producerType
+		 * Builder accessor for the producerType
 		 */
 		public void setProducerType(String producerType) {
 			_producerType = producerType;

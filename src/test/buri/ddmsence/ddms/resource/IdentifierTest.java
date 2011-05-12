@@ -277,6 +277,10 @@ public class IdentifierTest extends AbstractComponentTestCase {
 			Identifier.Builder builder = new Identifier.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Identifier.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Identifier.Builder();
 			builder.setValue(TEST_VALUE);
@@ -287,6 +291,8 @@ public class IdentifierTest extends AbstractComponentTestCase {
 			catch (InvalidDDMSException e) {
 				// Good
 			}
+			builder.setQualifier(TEST_QUALIFIER);
+			builder.commit();
 		}
 	}
 }

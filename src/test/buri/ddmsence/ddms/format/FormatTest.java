@@ -390,8 +390,13 @@ public class FormatTest extends AbstractComponentTestCase {
 			Format.Builder builder = new Format.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Format.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Format.Builder();
+			builder.setMedium(TEST_MEDIUM);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");

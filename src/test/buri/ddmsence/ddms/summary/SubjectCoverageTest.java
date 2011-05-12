@@ -389,15 +389,28 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			SubjectCoverage.Builder builder = new SubjectCoverage.Builder(component);
 			assertEquals(builder.commit(), component);
 			
-			// Validation
+			// Empty case
 			builder = new SubjectCoverage.Builder();
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				// Good
-			}
+			assertNull(builder.commit());
+			
+			
+			// Skip empty Keywords
+			builder = new SubjectCoverage.Builder();
+			Keyword.Builder emptyBuilder = new Keyword.Builder();
+			Keyword.Builder fullBuilder = new Keyword.Builder();
+			fullBuilder.setValue("keyword");
+			builder.getKeywords().add(emptyBuilder);
+			builder.getKeywords().add(fullBuilder);
+			assertEquals(1, builder.commit().getKeywords().size());
+
+			// Skip empty Categories
+			builder = new SubjectCoverage.Builder();
+			Category.Builder emptyCategoryBuilder = new Category.Builder();
+			Category.Builder fullCategoryBuilder = new Category.Builder();
+			fullCategoryBuilder.setLabel("label");
+			builder.getCategories().add(emptyCategoryBuilder);
+			builder.getCategories().add(fullCategoryBuilder);
+			assertEquals(1, builder.commit().getCategories().size());
 		}
 	}
 }

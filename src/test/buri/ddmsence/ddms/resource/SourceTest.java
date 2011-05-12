@@ -331,6 +331,10 @@ public class SourceTest extends AbstractComponentTestCase {
 			Source.Builder builder = new Source.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new Source.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new Source.Builder();
 			builder.getSecurityAttributes().setClassification("SuperSecret");

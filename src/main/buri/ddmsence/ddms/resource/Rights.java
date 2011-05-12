@@ -166,14 +166,19 @@ public final class Rights extends AbstractBaseComponent {
 	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
 	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
 	 * based on the values gathered.
+	 *  
+	 * <p>The builder approach differs from calling the immutable constructor directly because it treats a Builder
+	 * instance with no values provided as "no component" instead of "a component with missing values". For example,
+	 * calling a constructor directly with an empty string for a required parameter might throw an InvalidDDMSException,
+	 * while calling commit() on a Builder without setting any values would just return null.</p>
 	 * 
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
 	public static class Builder {
-		private boolean _privacyAct;
-		private boolean _intellectualProperty;
-		private boolean _copyright;
+		private Boolean _privacyAct = null;
+		private Boolean _intellectualProperty = null;
+		private Boolean _copyright = null;
 		
 		/**
 		 * Empty constructor
@@ -184,59 +189,76 @@ public final class Rights extends AbstractBaseComponent {
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Rights rights) {
-			setPrivacyAct(rights.getPrivacyAct());
-			setIntellectualProperty(rights.getIntellectualProperty());
-			setCopyright(rights.getCopyright());
+			setPrivacyAct(Boolean.valueOf(rights.getPrivacyAct()));
+			setIntellectualProperty(Boolean.valueOf(rights.getIntellectualProperty()));
+			setCopyright(Boolean.valueOf(rights.getCopyright()));
 		}
-		
+				
 		/**
-		 * Finalizes the data gathered for this builder instance.
+		 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
+		 * instance will be returned instead of a possibly invalid one.
 		 * 
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
 		public Rights commit() throws InvalidDDMSException {
-			return (new Rights(getPrivacyAct(), getIntellectualProperty(), getCopyright()));
+			if (isEmpty())
+				return (null);
+			
+			// Handle default values.
+			boolean privacyAct = (getPrivacyAct() == null) ? false : getPrivacyAct().booleanValue();
+			boolean intellectualProperty = (getIntellectualProperty() == null) ? false : getIntellectualProperty().booleanValue();
+			boolean copyright = (getCopyright() == null) ? false : getCopyright().booleanValue();
+			return (new Rights(privacyAct, intellectualProperty, copyright));
+		}
+		
+		/**
+		 * Checks if any values have been provided for this Builder.
+		 * 
+		 * @return true if every field is empty
+		 */
+		public boolean isEmpty() {
+			return (getPrivacyAct() == null && getIntellectualProperty() == null && getCopyright() == null);
 		}
 		
 		/**
 		 * Builder accessor for the privacyAct attribute.
 		 */
-		public boolean getPrivacyAct() {
+		public Boolean getPrivacyAct() {
 			return _privacyAct;
 		}
 		
 		/**
 		 * Builder accessor for the privacyAct attribute.
 		 */
-		public void setPrivacyAct(boolean privacyAct) {
+		public void setPrivacyAct(Boolean privacyAct) {
 			_privacyAct = privacyAct;
 		}
 		
 		/**
 		 * Builder accessor for the intellectualProperty attribute.
 		 */
-		public boolean getIntellectualProperty() {
+		public Boolean getIntellectualProperty() {
 			return _intellectualProperty;
 		}
 		
 		/**
 		 * Builder accessor for the intellectualProperty attribute.
 		 */
-		public void setIntellectualProperty(boolean intellectualProperty) {
+		public void setIntellectualProperty(Boolean intellectualProperty) {
 			_intellectualProperty = intellectualProperty;
 		}
 		
 		/**
 		 * Builder accessor for the copyright attribute.
 		 */
-		public boolean getCopyright() {
+		public Boolean getCopyright() {
 			return _copyright;
 		}
 		
 		/**
 		 * Builder accessor for the copyright attribute.
 		 */
-		public void setCopyright(boolean copyright) {
+		public void setCopyright(Boolean copyright) {
 			_copyright = copyright;
 		}		
 	}

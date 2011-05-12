@@ -344,8 +344,13 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			RelatedResource.Builder builder = new RelatedResource.Builder(component);
 			assertEquals(builder.commit(), component);
 			
+			// Empty case
+			builder = new RelatedResource.Builder();
+			assertNull(builder.commit());
+			
 			// Validation
 			builder = new RelatedResource.Builder();
+			builder.setQualifier(TEST_QUALIFIER);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
@@ -353,6 +358,17 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			catch (InvalidDDMSException e) {
 				// Good
 			}
+			
+			// Skip empty Links
+			builder = new RelatedResource.Builder();
+			builder.setQualifier(TEST_QUALIFIER);
+			builder.setValue(TEST_VALUE);
+			Link.Builder emptyBuilder = new Link.Builder();
+			Link.Builder fullBuilder = new Link.Builder();
+			fullBuilder.setHref("http://ddmsence.urizone.net/");
+			builder.getLinks().add(emptyBuilder);
+			builder.getLinks().add(fullBuilder);
+			assertEquals(1, builder.commit().getLinks().size());
 		}
 	}
 }

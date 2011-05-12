@@ -275,6 +275,9 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
 	 * based on the values gathered.
 	 * 
+	 * <p>Because attributes decorate other components, the commit() method will never return a null instance for
+	 * SRSAttributes.</p>
+	 * 
 	 * <p>No special Builder code is required for XOM Attributes, because they are already mutable.</p>
 	 * 
 	 * @author Brian Uri!
@@ -298,7 +301,8 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		}
 		
 		/**
-		 * Finalizes the data gathered for this builder instance.
+		 * Finalizes the data gathered for this builder instance. Will always return an empty instance instead of
+		 * a null one.
 		 * 
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
@@ -306,6 +310,15 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			return (new ExtensibleAttributes(getAttributes()));
 		}
 
+		/**
+		 * Checks if any values have been provided for this Builder.
+		 * 
+		 * @return true if every field is empty
+		 */
+		public boolean isEmpty() {
+			return (getAttributes().isEmpty());				
+		}
+		
 		/**
 		 * Builder accessor for the attributes
 		 */

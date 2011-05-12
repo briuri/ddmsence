@@ -378,4 +378,170 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * <p>The builder approach differs from calling the immutable constructor directly because it treats a Builder
+	 * instance with no values provided as "no component" instead of "a component with missing values". For example,
+	 * calling a constructor directly with an empty string for a required parameter might throw an InvalidDDMSException,
+	 * while calling commit() on a Builder without setting any values would just return null.</p>
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private BoundingBox.Builder _boundingBox;
+		private BoundingGeometry.Builder _boundingGeometry;
+		private GeographicIdentifier.Builder _geographicIdentifier;
+		private PostalAddress.Builder _postalAddress;
+		private VerticalExtent.Builder _verticalExtent;
+		private SecurityAttributes.Builder _securityAttributes;	
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(GeospatialCoverage coverage) {
+			if (coverage.getBoundingBox() != null)
+				setBoundingBox(new BoundingBox.Builder(coverage.getBoundingBox()));
+			if (coverage.getBoundingGeometry() != null)
+				setBoundingGeometry(new BoundingGeometry.Builder(coverage.getBoundingGeometry()));
+			if (coverage.getGeographicIdentifier() != null)
+				setGeographicIdentifier(new GeographicIdentifier.Builder(coverage.getGeographicIdentifier()));
+			if (coverage.getPostalAddress() != null)
+				setPostalAddress(new PostalAddress.Builder(coverage.getPostalAddress()));
+			if (coverage.getVerticalExtent() != null)
+				setVerticalExtent(new VerticalExtent.Builder(coverage.getVerticalExtent()));
+			setSecurityAttributes(new SecurityAttributes.Builder(coverage.getSecurityAttributes()));
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
+		 * instance will be returned instead of a possibly invalid one.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public GeospatialCoverage commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new GeospatialCoverage(getGeographicIdentifier().commit(), 
+				getBoundingBox().commit(), getBoundingGeometry().commit(), getPostalAddress().commit(), getVerticalExtent().commit(),
+				getSecurityAttributes().commit()));
+		}
+
+		/**
+		 * Checks if any values have been provided for this Builder.
+		 * 
+		 * @return true if every field is empty
+		 */
+		public boolean isEmpty() {
+			return (getGeographicIdentifier().isEmpty()
+				&& getBoundingBox().isEmpty()
+				&& getBoundingGeometry().isEmpty()
+				&& getPostalAddress().isEmpty()
+				&& getVerticalExtent().isEmpty()
+				&& getSecurityAttributes().isEmpty());
+		}
+		
+		/**
+		 * Builder accessor for the boundingBox
+		 */
+		public BoundingBox.Builder getBoundingBox() {
+			if (_boundingBox == null)
+				_boundingBox = new BoundingBox.Builder();
+			return _boundingBox;
+		}
+
+		/**
+		 * Builder accessor for the boundingBox
+		 */
+		public void setBoundingBox(BoundingBox.Builder boundingBox) {
+			_boundingBox = boundingBox;
+		}
+
+		/**
+		 * Builder accessor for the boundingGeometry
+		 */
+		public BoundingGeometry.Builder getBoundingGeometry() {
+			if (_boundingGeometry == null)
+				_boundingGeometry = new BoundingGeometry.Builder();
+			return _boundingGeometry;
+		}
+
+		/**
+		 * Builder accessor for the boundingGeometry
+		 */
+		public void setBoundingGeometry(BoundingGeometry.Builder boundingGeometry) {
+			_boundingGeometry = boundingGeometry;
+		}
+
+		/**
+		 * Builder accessor for the geographicIdentifier
+		 */
+		public GeographicIdentifier.Builder getGeographicIdentifier() {
+			if (_geographicIdentifier == null)
+				_geographicIdentifier = new GeographicIdentifier.Builder();
+			return _geographicIdentifier;
+		}
+
+		/**
+		 * Builder accessor for the geographicIdentifier
+		 */
+		public void setGeographicIdentifier(GeographicIdentifier.Builder geographicIdentifier) {
+			_geographicIdentifier = geographicIdentifier;
+		}
+
+		/**
+		 * Builder accessor for the postalAddress
+		 */
+		public PostalAddress.Builder getPostalAddress() {
+			if (_postalAddress == null)
+				_postalAddress = new PostalAddress.Builder();
+			return _postalAddress;
+		}
+
+		/**
+		 * Builder accessor for the postalAddress
+		 */
+		public void setPostalAddress(PostalAddress.Builder postalAddress) {
+			_postalAddress = postalAddress;
+		}
+
+		/**
+		 * Builder accessor for the verticalExtent
+		 */
+		public VerticalExtent.Builder getVerticalExtent() {
+			if (_verticalExtent == null)
+				_verticalExtent = new VerticalExtent.Builder();
+			return _verticalExtent;
+		}
+
+		/**
+		 * Builder accessor for the verticalExtent
+		 */
+		public void setVerticalExtent(VerticalExtent.Builder verticalExtent) {
+			_verticalExtent = verticalExtent;
+		}
+
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public SecurityAttributes.Builder getSecurityAttributes() {
+			if (_securityAttributes == null)
+				_securityAttributes = new SecurityAttributes.Builder();
+			return _securityAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
+			_securityAttributes = securityAttributes;
+		}
+	}
 } 

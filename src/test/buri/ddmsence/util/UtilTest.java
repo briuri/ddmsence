@@ -103,6 +103,25 @@ public class UtilTest extends TestCase {
 		assertFalse(Util.isEmpty("DDMSence"));
 	}
 	
+	public void testContainsEmptyStringFalse() {
+		assertFalse(Util.containsOnlyEmptyValues(null));
+		List<String> list = new ArrayList<String>();
+		list.add("dog");
+		list.add("");
+		list.add(null);		
+		assertFalse(Util.containsOnlyEmptyValues(list));
+	}
+	
+	public void testContainsEmptyStringTrue() {
+		List<String> list = new ArrayList<String>();
+		assertTrue(Util.containsOnlyEmptyValues(list));
+		list.add("");
+		assertTrue(Util.containsOnlyEmptyValues(list));
+		list.clear();
+		list.add(null);
+		assertTrue(Util.containsOnlyEmptyValues(list));
+	}
+	
 	public void testGetFirstDDMSChildValueNullParent() {
 		try {
 			Util.getFirstDDMSChildValue(null, "test");

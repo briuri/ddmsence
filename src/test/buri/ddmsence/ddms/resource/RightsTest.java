@@ -239,15 +239,22 @@ public class RightsTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			Rights component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			
-			// Default Values
-			Rights.Builder builder = new Rights.Builder();
-			assertFalse(builder.getPrivacyAct());
-			assertFalse(builder.getIntellectualProperty());
-			assertFalse(builder.getCopyright());
-			
 			// Equality after Building
-			builder = new Rights.Builder(component);
+			Rights.Builder builder = new Rights.Builder(component);
 			assertEquals(builder.commit(), component);
+			
+			// Empty case
+			builder = new Rights.Builder();
+			assertNull(builder.commit());
+			
+			// Default values (at least 1 value must be explicit to prevent a null commit)
+			builder = new Rights.Builder();
+			builder.setPrivacyAct(true);
+			assertFalse(builder.commit().getIntellectualProperty());
+			assertFalse(builder.commit().getCopyright());
+			builder = new Rights.Builder();
+			builder.setIntellectualProperty(true);
+			assertFalse(builder.commit().getPrivacyAct());
 		}
 	}
 }

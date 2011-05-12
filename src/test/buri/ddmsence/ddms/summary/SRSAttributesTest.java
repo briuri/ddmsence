@@ -327,6 +327,23 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			catch (InvalidDDMSException e) {
 				// Good
 			}
+			
+			// Empty Tests
+			builder = new SRSAttributes.Builder();
+			builder.setSrsName(TEST_SRS_NAME);
+			assertFalse(builder.isEmpty());
+			builder = new SRSAttributes.Builder();
+			builder.setSrsDimension(TEST_SRS_DIMENSION);
+			assertFalse(builder.isEmpty());
+			builder = new SRSAttributes.Builder();
+			builder.getUomLabels().add(null);
+			builder.getUomLabels().add("label");
+			assertFalse(builder.isEmpty());
+			builder = new SRSAttributes.Builder();
+			builder.getAxisLabels().add(null);
+			builder.getAxisLabels().add("label");
+			assertFalse(builder.isEmpty());
+			
 		}
 	}
 }
