@@ -182,4 +182,69 @@ public final class Keyword extends AbstractBaseComponent {
 	public ExtensibleAttributes getExtensibleAttributes() {
 		return (_cachedExtensibleAttributes);
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private String _value;
+		private ExtensibleAttributes.Builder _extensibleAttributes;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(Keyword keyword) {
+			setValue(keyword.getValue());
+			setExtensibleAttributes(new ExtensibleAttributes.Builder(keyword.getExtensibleAttributes()));
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public Keyword commit() throws InvalidDDMSException {
+			return (new Keyword(getValue(), getExtensibleAttributes().commit()));
+		}
+
+		/**
+		 * Builder accessor for the value attribute
+		 */
+		public String getValue() {
+			return _value;
+		}
+
+		/**
+		 * Builder accessor for the value attribute
+		 */
+		public void setValue(String value) {
+			_value = value;
+		}
+				
+		/**
+		 * Builder accessor for the Extensible Attributes
+		 */
+		public ExtensibleAttributes.Builder getExtensibleAttributes() {
+			if (_extensibleAttributes == null)
+				_extensibleAttributes = new ExtensibleAttributes.Builder();
+			return _extensibleAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the Extensible Attributes
+		 */
+		public void setExtensibleAttributes(ExtensibleAttributes.Builder extensibleAttributes) {
+			_extensibleAttributes = extensibleAttributes;
+		}
+	}
 } 

@@ -425,4 +425,26 @@ public class PersonTest extends AbstractComponentTestCase {
 			assertEquals(SecurityAttributesTest.getFixture(false), component.getSecurityAttributes());
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Person component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			Person.Builder builder = new Person.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new Person.Builder();
+			builder.setProducerType(TEST_PRODUCER_TYPE);
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

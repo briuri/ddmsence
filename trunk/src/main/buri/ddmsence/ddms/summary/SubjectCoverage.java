@@ -287,4 +287,85 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private List<Keyword.Builder> _keywords;
+		private List<Category.Builder> _categories;
+		private SecurityAttributes.Builder _securityAttributes;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(SubjectCoverage coverage) {
+			for (Keyword keyword : coverage.getKeywords())
+				getKeywords().add(new Keyword.Builder(keyword));
+			for (Category category : coverage.getCategories())
+				getCategories().add(new Category.Builder(category));
+			setSecurityAttributes(new SecurityAttributes.Builder(coverage.getSecurityAttributes()));
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public SubjectCoverage commit() throws InvalidDDMSException {
+			List<Category> categories = new ArrayList<Category>();
+			for (Category.Builder builder : getCategories()) {
+				categories.add(builder.commit());
+			}
+			List<Keyword> keywords = new ArrayList<Keyword>();
+			for (Keyword.Builder builder : getKeywords()) {
+				keywords.add(builder.commit());
+			}
+			return (new SubjectCoverage(keywords, categories, getSecurityAttributes().commit()));
+		}
+		
+		/**
+		 * Builder accessor for the keywords in this coverage.
+		 */
+		public List<Keyword.Builder> getKeywords() {
+			if (_keywords == null)
+				_keywords = new ArrayList<Keyword.Builder>();					
+			return _keywords;
+		}
+		
+		/**
+		 * Builder accessor for the categories in this coverage.
+		 */
+		public List<Category.Builder> getCategories() {
+			if (_categories == null)
+				_categories = new ArrayList<Category.Builder>();			
+			return _categories;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public SecurityAttributes.Builder getSecurityAttributes() {
+			if (_securityAttributes == null)
+				_securityAttributes = new SecurityAttributes.Builder();
+			return _securityAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
+			_securityAttributes = securityAttributes;
+		}
+	}	
 } 

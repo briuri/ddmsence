@@ -219,4 +219,101 @@ public final class Category extends AbstractBaseComponent {
 	public ExtensibleAttributes getExtensibleAttributes() {
 		return (_cachedExtensibleAttributes);
 	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private String _qualifier;
+		private String _code;
+		private String _label;
+		private ExtensibleAttributes.Builder _extensibleAttributes;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(Category category) {
+			setQualifier(category.getQualifier());
+			setCode(category.getCode());
+			setLabel(category.getLabel());
+			setExtensibleAttributes(new ExtensibleAttributes.Builder(category.getExtensibleAttributes()));
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 * 
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public Category commit() throws InvalidDDMSException {
+			return (new Category(getQualifier(), getCode(), getLabel(), getExtensibleAttributes().commit()));
+		}
+
+		/**
+		 * Builder accessor for the qualifier attribute
+		 */
+		public String getQualifier() {
+			return _qualifier;
+		}
+
+		/**
+		 * Builder accessor for the qualifier attribute
+		 */
+		public void setQualifier(String qualifier) {
+			_qualifier = qualifier;
+		}
+
+		/**
+		 * Builder accessor for the code attribute
+		 */
+		public String getCode() {
+			return _code;
+		}
+
+		/**
+		 * Builder accessor for the code attribute
+		 */
+		public void setCode(String code) {
+			_code = code;
+		}
+
+		/**
+		 * Builder accessor for the label attribute
+		 */
+		public String getLabel() {
+			return _label;
+		}
+
+		/**
+		 * Builder accessor for the label attribute
+		 */
+		public void setLabel(String label) {
+			_label = label;
+		}
+				
+		/**
+		 * Builder accessor for the Extensible Attributes
+		 */
+		public ExtensibleAttributes.Builder getExtensibleAttributes() {
+			if (_extensibleAttributes == null)
+				_extensibleAttributes = new ExtensibleAttributes.Builder();
+			return _extensibleAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the Extensible Attributes
+		 */
+		public void setExtensibleAttributes(ExtensibleAttributes.Builder extensibleAttributes) {
+			_extensibleAttributes = extensibleAttributes;
+		}
+	}
 } 

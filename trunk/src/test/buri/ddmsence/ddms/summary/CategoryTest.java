@@ -317,4 +317,25 @@ public class CategoryTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Category component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			Category.Builder builder = new Category.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new Category.Builder();
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
 }

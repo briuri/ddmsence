@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -429,5 +430,136 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	 */
 	public ExtensibleAttributes getExtensibleAttributes() {
 		return (_cachedExtensibleAttributes);
+	}
+	
+	/**
+	 * Abstract Builder for a qualifier-based DDMS component. The builder should be used when a DDMS record needs to be
+	 * built up over time, but validation should not occur until the end. The commit() method attempts to finalize the
+	 * immutable object based on the values gathered.
+	 * 
+	 * <p>Builders which are based upon this abstract class should implement the commit() method, returning the appropriate
+	 * concrete object type.</p>
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static abstract class Builder {
+		private String _producerType;
+		private List<String> _names;
+		private List<String> _phones;
+		private List<String> _emails;
+		private SecurityAttributes.Builder _securityAttributes;
+		private ExtensibleAttributes.Builder _extensibleAttributes;
+		
+		/**
+		 * Empty constructor
+		 */
+		protected Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		protected Builder(AbstractProducer producer) {
+			setProducerType(producer.getProducerType());
+			setNames(producer.getNames());
+			setPhones(producer.getPhones());
+			setEmails(producer.getEmails());
+			setSecurityAttributes(new SecurityAttributes.Builder(producer.getSecurityAttributes()));
+			setExtensibleAttributes(new ExtensibleAttributes.Builder(producer.getExtensibleAttributes()));
+		}
+		
+		/**
+		 * Builder Accessor for the producerType
+		 */
+		public String getProducerType() {
+			return _producerType;
+		}
+
+		/**
+		 * Builder Accessor for the producerType
+		 */
+		public void setProducerType(String producerType) {
+			_producerType = producerType;
+		}
+
+		/**
+		 * Builder accessor for the names
+		 */
+		public List<String> getNames() {
+			if (_names == null)
+				_names = new ArrayList<String>();
+			return _names;
+		}
+
+		/**
+		 * Builder accessor for the names
+		 */
+		public void setNames(List<String> names) {
+			_names = names;
+		}
+
+		/**
+		 * Builder accessor for the phones
+		 */
+		public List<String> getPhones() {
+			if (_phones == null)
+				_phones = new ArrayList<String>();
+			return _phones;
+		}
+
+		/**
+		 * Builder accessor for the phones
+		 */
+		public void setPhones(List<String> phones) {
+			_phones = phones;
+		}
+
+		/**
+		 * Builder accessor for the emails
+		 */
+		public List<String> getEmails() {
+			if (_emails == null)
+				_emails = new ArrayList<String>();
+			return _emails;
+		}
+
+		/**
+		 * Builder accessor for the emails
+		 */
+		public void setEmails(List<String> emails) {
+			_emails = emails;
+		}
+		
+		/**
+		 * Builder accessor for the Extensible Attributes
+		 */
+		public ExtensibleAttributes.Builder getExtensibleAttributes() {
+			if (_extensibleAttributes == null)
+				_extensibleAttributes = new ExtensibleAttributes.Builder();
+			return _extensibleAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the Extensible Attributes
+		 */
+		public void setExtensibleAttributes(ExtensibleAttributes.Builder extensibleAttributes) {
+			_extensibleAttributes = extensibleAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public SecurityAttributes.Builder getSecurityAttributes() {
+			if (_securityAttributes == null)
+				_securityAttributes = new SecurityAttributes.Builder();
+			return _securityAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
+			_securityAttributes = securityAttributes;
+		}
 	}
 }
