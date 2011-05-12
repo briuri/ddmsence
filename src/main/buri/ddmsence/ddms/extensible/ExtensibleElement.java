@@ -19,11 +19,22 @@
 */
 package buri.ddmsence.ddms.extensible;
 
+import java.io.IOException;
+import java.io.StringReader;
+
+import nu.xom.Document;
 import nu.xom.Element;
+import nu.xom.ParsingException;
+
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
+
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 
 /**
  * An immutable implementation of an element which might fulfill the xs:any space in the Extensible Layer.
@@ -125,5 +136,64 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 		int result = super.hashCode();
 		result = 7 * result + getXOMElement().toXML().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
+	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
+	 * based on the values gathered.
+	 * 
+	 * <p>No special Builder code is required for XOM Attributes, because they are already mutable.</p>
+	 * 
+	 * @author Brian Uri!
+	 * @since 1.8.0
+	 */
+	public static class Builder {
+		private String _xml;
+
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(ExtensibleElement element) {
+			setXml(element.toXML());
+		}
+		
+		/**
+		 * Finalizes the data gathered for this builder instance.
+		 *
+		 * @throws SAXException if the XML reader could not be initialized
+		 * @throws IOException if there were problems reading the XML string
+		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 */
+		public ExtensibleElement commit() throws SAXException, IOException, InvalidDDMSException {
+			try {
+				XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xmlReader.class"));
+				nu.xom.Builder builder = new nu.xom.Builder(reader, false);
+				Document doc = builder.build(new StringReader(getXml()));
+				return (new ExtensibleElement(doc.getRootElement()));
+			}
+			catch (ParsingException e) {
+				throw new InvalidDDMSException("Could not create a valid element from XML string: " + e.getMessage());
+			}
+		}
+
+		/**
+		 * Builder accessor for the XML string representing the element.
+		 */
+		public String getXml() {
+			return _xml;
+		}
+
+		/**
+		 * Builder accessor for the XML string representing the element.
+		 */
+		public void setXml(String xml) {
+			_xml = xml;
+		}
 	}
 } 
