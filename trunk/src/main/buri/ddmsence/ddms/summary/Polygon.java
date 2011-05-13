@@ -26,6 +26,7 @@ import java.util.List;
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractBaseComponent;
+import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
@@ -352,19 +353,13 @@ public final class Polygon extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
-	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
-	 * based on the values gathered.
+	 * Builder for this DDMS component.
 	 * 
-	 * <p>The builder approach differs from calling the immutable constructor directly because it treats a Builder
-	 * instance with no values provided as "no component" instead of "a component with missing values". For example,
-	 * calling a constructor directly with an empty string for a required parameter might throw an InvalidDDMSException,
-	 * while calling commit() on a Builder without setting any values would just return null.</p>
-	 * 
+	 * @see IBuilder
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder {
+	public static class Builder implements IBuilder {
 		private SRSAttributes.Builder _srsAttributes;
 		private List<Position.Builder> _positions;
 		private String _id;
@@ -386,12 +381,7 @@ public final class Polygon extends AbstractBaseComponent {
 		}
 		
 		/**
-		 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
-		 * instance will be returned instead of a possibly invalid one.
-		 * 
-		 * <p>If there are empty positions in the list of builders, they will be skipped.</p>
-		 * 
-		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 * @see IBuilder#commit()
 		 */
 		public Polygon commit() throws InvalidDDMSException {
 			if (isEmpty())
@@ -406,16 +396,14 @@ public final class Polygon extends AbstractBaseComponent {
 		}
 		
 		/**
-		 * Checks if any values have been provided for this Builder.
-		 * 
-		 * @return true if every field is empty
+		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			boolean hasPosition = false;
-			for (Position.Builder position : getPositions()) {
-				hasPosition = hasPosition || !position.isEmpty();
+			boolean hasValueInList = false;
+			for (IBuilder builder : getPositions()) {
+				hasValueInList = hasValueInList || !builder.isEmpty();
 			}
-			return (Util.isEmpty(getId()) && !hasPosition && getSrsAttributes().isEmpty());
+			return (Util.isEmpty(getId()) && !hasValueInList && getSrsAttributes().isEmpty());
 		}
 		
 		/**

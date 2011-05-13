@@ -25,6 +25,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractAttributeGroup;
+import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -236,13 +237,12 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
-	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
-	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
-	 * based on the values gathered.
+	 * Builder for these attributes.
 	 * 
-	 * <p>Because attributes decorate other components, the commit() method will never return a null instance for
-	 * SRSAttributes.</p>
+	 * <p>This class does not implement the IBuilder interface, because the behavior of commit() is at odds with the standard
+	 * commit() method. As an attribute group, an empty attribute group will always be returned instead of null.
 	 * 
+	 * @see IBuilder
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */

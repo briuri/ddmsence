@@ -27,6 +27,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
+import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.SecurityAttributes;
@@ -386,19 +387,13 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
-	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
-	 * based on the values gathered.
+	 * Builder for this DDMS component.
 	 * 
-	 * <p>The builder approach differs from calling the immutable constructor directly because it treats a Builder
-	 * instance with no values provided as "no component" instead of "a component with missing values". For example,
-	 * calling a constructor directly with an empty string for a required parameter might throw an InvalidDDMSException,
-	 * while calling commit() on a Builder without setting any values would just return null.</p>
-	 * 
+	 * @see IBuilder
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder {
+	public static class Builder implements IBuilder {
 		private String _timePeriodName;
 		private String _startString;
 		private String _endString;
@@ -420,10 +415,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		}
 		
 		/**
-		 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
-		 * instance will be returned instead of a possibly invalid one.
-		 * 
-		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 * @see IBuilder#commit()
 		 */
 		public TemporalCoverage commit() throws InvalidDDMSException {
 			return (isEmpty() ? null : new TemporalCoverage(getTimePeriodName(), getStartString(), getEndString(), 
@@ -431,9 +423,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		}
 		
 		/**
-		 * Checks if any values have been provided for this Builder.
-		 * 
-		 * @return true if every field is empty
+		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
 			return (Util.isEmpty(getTimePeriodName())
