@@ -528,7 +528,7 @@ you are ready to <code>commit()</code> the changes.</p>
 from the approach described in <a href="tutorials-02.jsp">Tutorial #2: Escort</a>, where all child components must be complete and valid before proceeding up the hierarchy.
 The following three figures provide an example of this difference, using SubjectCoverage as a representative component.</p>
 
-<pre class="brush: xml">&lt;ddms:subjectCoverage ICISM:classification="U" ICISM:ownerProducer="USA"&gt;
+<pre class="brush: xml">&lt;ddms:subjectCoverage ICISM:classification="U"&gt;
    &lt;ddms:Subject&gt;
       &lt;ddms:keyword ddms:value="DDMSence" /&gt;
    &lt;/ddms:Subject&gt;
@@ -538,28 +538,23 @@ The following three figures provide an example of this difference, using Subject
 
 <pre class="brush: java">List&lt;Keyword&gt; keywords = new ArrayList&lt;Keyword&gt;();
 keywords.add(new Keyword("DDMSence", null)); // Keyword validated here
-List&lt;String&gt; ownerProducers = new ArrayList&lt;String&gt;();
-ownerProducers.add("USA");
-SecurityAttributes securityAttributes = new SecurityAttributes("U", ownerProducers, null); // SecurityAttributes validated here
+SecurityAttributes securityAttributes = new SecurityAttributes("U", null, null); // SecurityAttributes validated here
 SubjectCoverage subjectCoverage = new SubjectCoverage(keywords, null, securityAttributes); // SubjectCoverage validated here</pre>
 
 <p class="figure">Figure 20. The "bottoms-up" approach for building a SubjectCoverage component</p>
 
 <pre class="brush: java">SubjectCoverage.Builder builder = new SubjectCoverage.Builder();
-List&lt;String&gt; ownerProducers = new ArrayList&lt;String&gt;();
-ownerProducers.add("USA");
 builder.getKeywords().add(new Keyword.Builder());
 builder.getKeywords().get(0).setValue("DDMSence");
 builder.getSecurityAttributes().setClassification("U");
-builder.getSecurityAttributes().setOwnerProducers(ownerProducers);
 SubjectCoverage subjectCoverage = builder.commit(); // All validation occurs here</pre>
 
 <p class="figure">Figure 21. The Builder approach for building a SubjectCoverage component</p>
 
-<p>As you can see, the Builder approach is more verbose, and treats the building process from a "top-down" perspective. By using 
+<p>As you can see, the Builder approach treats the building process from a "top-down" perspective. By using 
 a <a href="http://ddmsence.urizone.net/docs/buri/ddmsence/ddms/Resource.Builder.html">Resource.Builder</a> instance, you can edit and traverse
 a complete DDMS Resource, without necessarily needing to understand the intricacies of the components you aren't worried about. The code sample
-below takes a List of pre-existing DDMS Resources, uses the Builder framework to edit a <code>ddms:dates</code> attribute on each one, and saves the results.</p>
+below takes a List of pre-existing DDMS Resources, uses the Builder framework to edit a <code>ddms:dates</code> attribute on each one, and saves the results in a new List.</p>
  
 <pre class="brush: java">
 List&lt;Resource&gt; updatedResources = new ArrayList&lt;Resource&gt;();
@@ -578,7 +573,7 @@ one does not already exist.</li>
 <li>Calling a <code>get()</code> method that returns a List of child Builders will never return <code>null</code> either. However, you will need to 
 explicitly add child Builders to the returned list before you started editing with them (as seen with Keywords in Figure 21).</li>
 <li>The <code>commit()</code> method on any given Builder will only return a component if the Builder was actually used, according its
-mplementation of <code>IBuilder.isEmpty()</code>. This decision was made to handle form beans more flexibly: if a user has not filled 
+implementation of <code>IBuilder.isEmpty()</code>. This decision was made to handle form beans more flexibly: if a user has not filled 
 in any of the fields on <code>ddms:dates</code> form, I presume that their intent is NO <code>ddms:dates</code> element, and not an empty, useless one.</li>
 </ol>
 

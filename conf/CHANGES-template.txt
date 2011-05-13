@@ -9,6 +9,9 @@ Copyright 2010 - 2011 by Brian Uri!
 Release History
 ===========================================================================
 
+v 1.8.0 (05/13/2011):
+This stable release adds mutable Builders to all DDMS components (Issue #68).
+
 v 1.7.2 (03/10/2011):
 This stable patch release fixes errors in the sample Schematron files (Issue #67)
 and adds 3.0.1 as an alias for DDMS 3.0 (Issue #69).

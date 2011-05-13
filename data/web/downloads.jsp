@@ -20,15 +20,14 @@ code for the main library, unit tests, and the sample applications, as well as s
 file which will allow you to compile source code, run unit tests, generate API documentation, or even generate the "bin"-flavored archive with <a href="http://ant.apache.org/">Apache Ant</a>. 
 I have included the <code>.project</code> file if you wish to import the project into Eclipse.</p>
 
-<h1>Latest Release: v1.7.2</h1>
+<h1>Latest Release: v1.8.0</h1>
 
-<p>Version <b>1.7.2</b> (03/10/2011) is a stable patch release, which corrects syntax errors in the sample Schematron files 
-(<a href="http://code.google.com/p/ddmsence/issues/detail?id=67">Issue #67</a>), and adds "3.0.1" as an alias for DDMS 3.0
-(<a href="http://code.google.com/p/ddmsence/issues/detail?id=69">Issue #69</a>). It is backwards compatible with all versions since v1.4.0.</p>
+<p>Version <b>1.8.0</b> (05/13/2011) is a stable release, which adds <a href="documentation.jsp#tips-builders">mutable Builders</a> for all DDMS components 
+(<a href="http://code.google.com/p/ddmsence/issues/detail?id=68">Issue #68</a>). It is backwards compatible with all versions since v1.4.0.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.7.2.zip"><code>ddmsence-bin-1.7.2.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.7.2.zip"><code>ddmsence-src-1.7.2.zip</code></a></b> (4.4 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.8.0.zip"><code>ddmsence-bin-1.8.0.zip</code></a></b> (4.4 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.8.0.zip"><code>ddmsence-src-1.8.0.zip</code></a></b> (4.4 MB)</li>
 </ul>
 
 <h3>Versioning</h3>
@@ -45,6 +44,15 @@ I have included the <code>.project</code> file if you wish to import the project
 All changes which are not backwards compatible will be linked from this page.</p> 
 
 <h3>Older Releases</h3>
+
+<p>Version <b>1.7.2</b> (03/10/2011) is a stable patch release, which corrects syntax errors in the sample Schematron files 
+(<a href="http://code.google.com/p/ddmsence/issues/detail?id=67">Issue #67</a>), and adds "3.0.1" as an alias for DDMS 3.0
+(<a href="http://code.google.com/p/ddmsence/issues/detail?id=69">Issue #69</a>). It is backwards compatible with all versions since v1.4.0.</p>
+
+<ul>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.7.2.zip"><code>ddmsence-bin-1.7.2.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.7.2.zip"><code>ddmsence-src-1.7.2.zip</code></a></b> (4.4 MB)</li>
+</ul>
 
 <p>Version <b>1.7.1</b> (11/16/2010) is a stable patch release, which corrects a very minor issue where northbound latitude values were validated as longitudes 
  (<a href="http://code.google.com/p/ddmsence/issues/detail?id=65">Issue #65</a>). It is backwards compatible 
