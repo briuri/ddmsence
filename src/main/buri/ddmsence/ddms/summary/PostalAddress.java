@@ -443,8 +443,10 @@ public final class PostalAddress extends AbstractBaseComponent {
 		 * Builder accessor for the countryCode
 		 */
 		public CountryCode.Builder getCountryCode() {
-			if (_countryCode == null)
+			if (_countryCode == null) {
 				_countryCode = new CountryCode.Builder();
+				_countryCode.setParentType(PostalAddress.NAME);
+			}
 			return _countryCode;
 		}
 		
@@ -452,6 +454,9 @@ public final class PostalAddress extends AbstractBaseComponent {
 		 * Builder accessor for the countryCode
 		 */
 		public void setCountryCode(CountryCode.Builder countryCode) {
+			if (countryCode != null) {
+				countryCode.setParentType(PostalAddress.NAME);
+			}
 			_countryCode = countryCode;
 		}		
 	}

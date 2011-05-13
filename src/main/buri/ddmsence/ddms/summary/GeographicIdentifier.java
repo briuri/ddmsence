@@ -383,8 +383,10 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		 * Builder accessor for the country code
 		 */
 		public CountryCode.Builder getCountryCode() {
-			if (_countryCode == null)
+			if (_countryCode == null) {
 				_countryCode = new CountryCode.Builder();
+				_countryCode.setParentType(GeographicIdentifier.NAME);
+			}
 			return _countryCode;
 		}
 
@@ -392,6 +394,8 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		 * Builder accessor for the country code
 		 */
 		public void setCountryCode(CountryCode.Builder countryCode) {
+			if (countryCode != null)
+				countryCode.setParentType(GeographicIdentifier.NAME);
 			_countryCode = countryCode;
 		}
 
