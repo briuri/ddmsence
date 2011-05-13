@@ -1405,6 +1405,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		assertTrue(resource.toHTML().indexOf("<meta name=\"extensible.layer\" content=\"true\" />") != -1);
 		assertTrue(resource.toText().indexOf("Extensible Layer: true\n") != -1);
 	}
+	
 	public void testWrongVersionExtensibleElementAllowed() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		ExtensibleElement component = new ExtensibleElement(ExtensibleElementTest.getElementFixture());
@@ -1455,5 +1456,73 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 		// ICISM:declassManualReview should not get picked up as an extensible attribute
 		assertEquals(0, resource.getExtensibleAttributes().getAttributes().size());
+	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			Resource.Builder builder = new Resource.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Equality with ExtensibleElement
+			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
+			builder.getExtensibleElements().get(0).setXml("<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">This is an extensible element.</ddmsence:extension>");
+			component = builder.commit();
+			builder = new Resource.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Empty case
+			builder = new Resource.Builder();
+			assertNull(builder.commit());
+			
+			// Validation
+			builder = new Resource.Builder();
+			builder.setCreateDate(TEST_CREATE_DATE);
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
+	
+	public void testBuilderEmptiness() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			
+			Resource.Builder builder = new Resource.Builder();
+			assertTrue(builder.isEmpty());
+			builder.getIdentifiers().add(new Identifier.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getTitles().add(new Title.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getSubtitles().add(new Subtitle.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getLanguages().add(new Language.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getSources().add(new Source.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getTypes().add(new Type.Builder());
+			assertTrue(builder.isEmpty());			
+			builder.getProducers().add(new Organization.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getVirtualCoverages().add(new VirtualCoverage.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getTemporalCoverages().add(new TemporalCoverage.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getGeospatialCoverages().add(new GeospatialCoverage.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getRelatedResources().add(new RelatedResources.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getExtensibleElements().get(0).setXml("InvalidXml");
+			assertFalse(builder.isEmpty());
+		}
 	}
 }

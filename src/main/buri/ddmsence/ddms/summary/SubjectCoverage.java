@@ -28,6 +28,7 @@ import java.util.Set;
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractBaseComponent;
+import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.SecurityAttributes;
@@ -289,19 +290,13 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Builder for this DDMS component. The builder should be used when a DDMS record needs to be built up over time,
-	 * but validation should not occur until the end. The commit() method attempts to finalize the immutable object
-	 * based on the values gathered.
+	 * Builder for this DDMS component.
 	 * 
-	 * <p>The builder approach differs from calling the immutable constructor directly because it treats a Builder
-	 * instance with no values provided as "no component" instead of "a component with missing values". For example,
-	 * calling a constructor directly with an empty string for a required parameter might throw an InvalidDDMSException,
-	 * while calling commit() on a Builder without setting any values would just return null.</p>
-	 * 
+	 * @see IBuilder
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder {
+	public static class Builder implements IBuilder {
 		private List<Keyword.Builder> _keywords;
 		private List<Category.Builder> _categories;
 		private SecurityAttributes.Builder _securityAttributes;
@@ -323,12 +318,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		}
 		
 		/**
-		 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
-		 * instance will be returned instead of a possibly invalid one.
-		 * 
-		 * <p>If there are empty keywords or categories in either list of builders, they will be skipped.</p>
-		 * 
-		 * @throws InvalidDDMSException if any required information is missing or malformed
+		 * @see IBuilder#commit()
 		 */
 		public SubjectCoverage commit() throws InvalidDDMSException {
 			if (isEmpty())
@@ -349,22 +339,28 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		}
 		
 		/**
-		 * Checks if any values have been provided for this Builder.
-		 * 
-		 * @return true if every field is empty
+		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			boolean hasKeyword = false;
-			for (Keyword.Builder keyword : getKeywords()) {
-				hasKeyword = hasKeyword || !keyword.isEmpty();
-			}
-			boolean hasCategory = false;
-			for (Category.Builder category : getCategories()) {
-				hasCategory = hasCategory || !category.isEmpty(); 
-			}			
-			return (!hasKeyword && !hasCategory && getSecurityAttributes().isEmpty());
+			boolean hasValueInList = false;
+			for (IBuilder builder : getChildBuilders()) {
+				hasValueInList = hasValueInList || !builder.isEmpty();
+			}		
+			return (!hasValueInList && getSecurityAttributes().isEmpty());
 		}
 			
+		/**
+		 * Convenience method to get every child Builder in this Builder.
+		 * 
+		 * @return a list of IBuilders
+		 */
+		private List<IBuilder> getChildBuilders() {
+			List<IBuilder> list = new ArrayList<IBuilder>();
+			list.addAll(getKeywords());
+			list.addAll(getCategories());
+			return (list);
+		}
+		
 		/**
 		 * Builder accessor for the keywords in this coverage.
 		 */

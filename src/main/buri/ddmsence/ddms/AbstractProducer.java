@@ -433,17 +433,16 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	}
 	
 	/**
-	 * Abstract Builder for a qualifier-based DDMS component. The builder should be used when a DDMS record needs to be
-	 * built up over time, but validation should not occur until the end. The commit() method attempts to finalize the
-	 * immutable object based on the values gathered.
+	 * Abstract Builder for this DDMS component.
 	 * 
 	 * <p>Builders which are based upon this abstract class should implement the commit() method, returning the appropriate
 	 * concrete object type.</p>
 	 * 
+	 * @see IBuilder
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static abstract class Builder {
+	public static abstract class Builder implements IBuilder {
 		private String _producerType;
 		private List<String> _names;
 		private List<String> _phones;
