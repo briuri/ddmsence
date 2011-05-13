@@ -199,7 +199,7 @@ even though <code>ddms:Media</code> is not an implemented component (the medium 
 
 <p>In this tutorial, you have seen how DDMS Resources can be built from scratch. You have also seen further examples of component validation. This tutorial did not
 cover the fully-implemented Builder framework, which offers more flexibility in the building process, and can also be used to edit existing DDMS Resources. Please
-see the Power Tip on <a href="#tips-builders">Using Component Builders</a> for details on using the Builder framework.</p>
+see the Power Tip on <a href="documentation.jsp#tips-builders">Using Component Builders</a> for details on using the Builder framework.</p>
 
 <p>The next tutorial, covering the Escape application, will show how a DDMS Resource can be traversed and used in other contexts.</p>
 
