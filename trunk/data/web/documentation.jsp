@@ -23,6 +23,7 @@
 		<li><a href="#tips-version301">Working with DDMS 3.0.1</a></li>
 		<li><a href="#tips-attributes">IC and GML Attribute Groups</a></li>
 		<li><a href="#tips-extensible">The Extensible Layer</a></li>
+		<li><a href="#tips-builders">Using Component Builders</a></li>
 		<li><a href="#tips-schematron">Schematron Validation</a></li>
 		<li><a href="#tips-configuration">Configurable Properties</a></li>
 		</ul>
@@ -167,7 +168,9 @@ resulting data is not logical. To provide some consistency in this library, I ha
 <h4>Immutability</h4>
 
 <p>All DDMS components are implemented as immutable objects, which means that their values cannot be changed after instantiation. Because the components are
-validated during instantiation, this also means that it is impossible to have an invalid component at any given time: a component is either confirmed to be valid or does not exist.</p>
+validated during instantiation, this also means that it is impossible to have an invalid component at any given time: a component is either confirmed to be 
+valid or does not exist. The <a href="#tips-builders">Component Builder</a> framework can be used to build DDMS Resources piece by piece, saving validation until the end.</li>
+</p>
 
 <h4>Constructor Parameter Order</h4>
 
@@ -204,6 +207,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 	<li><a href="#tips-version301">Working with DDMS 3.0.1</a></li>
 	<li><a href="#tips-attributes">IC and GML Attribute Groups</a></li>
 	<li><a href="#tips-extensible">The Extensible Layer</a></li>
+	<li><a href="#tips-builders">Using Component Builders</a></li>
 	<li><a href="#tips-schematron">Schematron Validation</a></li>
 	<li><a href="#tips-configuration">Configurable Properties</a></li>
 </div>
@@ -513,6 +517,74 @@ Resource resource = new Resource(myComponents, null, null, null, null, extension
 <p>As a best practice, it is recommended that you create these attributes as explicitly as possible: if an attribute can be defined with constructor parameters or inside
 of a SecurityAttributes instance, it should. This will make DDMS 2.0 resources more consistent with their DDMS 3.0 counterparts.</p>
 
+<a name="tips-builders"></a><h4>Using Component Builders</h4>
+
+<p>Beginning with DDMSence 1.8.0, every DDMS component has an associated <a href="/docs/buri/ddmsence/ddms/IBuilder.html">Builder</a> class
+which offers a mutable way to build components. A Builder class can be the form bean behind an HTML form on a website, and can be initialized with an 
+existing component to allow further editing. Properties on a Builder class can be set or re-set, and the strict DDMSence validation does not occur until
+you are ready to <code>commit()</code> the changes.</p>
+
+<p>Builder classes for components that have child components flexibly handle any nested Builders, so you do not have to make your edits from the lowest level component. This differs
+from the approach described in <a href="tutorials-02.jsp">Tutorial #2: Escort</a>, where all child components must be complete and valid before proceeding up the hierarchy.
+The following three figures provide an example of this difference, using SubjectCoverage as a representative component.</p>
+
+<pre class="brush: xml">&lt;ddms:subjectCoverage ICISM:classification="U" ICISM:ownerProducer="USA"&gt;
+   &lt;ddms:Subject&gt;
+      &lt;ddms:keyword ddms:value="DDMSence" /&gt;
+   &lt;/ddms:Subject&gt;
+&lt;/ddms:subjectCoverage&gt;</pre>
+
+<p class="figure">Figure 19. An XML fragment containg Subject Coverage information</p>
+
+<pre class="brush: java">List&lt;Keyword&gt; keywords = new ArrayList&lt;Keyword&gt;();
+keywords.add(new Keyword("DDMSence", null)); // Keyword validated here
+List&lt;String&gt; ownerProducers = new ArrayList&lt;String&gt;();
+ownerProducers.add("USA");
+SecurityAttributes securityAttributes = new SecurityAttributes("U", ownerProducers, null); // SecurityAttributes validated here
+SubjectCoverage subjectCoverage = new SubjectCoverage(keywords, null, securityAttributes); // SubjectCoverage validated here</pre>
+
+<p class="figure">Figure 20. The "bottoms-up" approach for building a SubjectCoverage component</p>
+
+<pre class="brush: java">SubjectCoverage.Builder builder = new SubjectCoverage.Builder();
+List&lt;String&gt; ownerProducers = new ArrayList&lt;String&gt;();
+ownerProducers.add("USA");
+builder.getKeywords().add(new Keyword.Builder());
+builder.getKeywords().get(0).setValue("DDMSence");
+builder.getSecurityAttributes().setClassification("U");
+builder.getSecurityAttributes().setOwnerProducers(ownerProducers);
+SubjectCoverage subjectCoverage = builder.commit(); // All validation occurs here</pre>
+
+<p class="figure">Figure 21. The Builder approach for building a SubjectCoverage component</p>
+
+<p>As you can see, the Builder approach is more verbose, and treats the building process from a "top-down" perspective. By using 
+a <a href="http://ddmsence.urizone.net/docs/buri/ddmsence/ddms/Resource.Builder.html">Resource.Builder</a> instance, you can edit and traverse
+a complete DDMS Resource, without necessarily needing to understand the intricacies of the components you aren't worried about. The code sample
+below takes a List of pre-existing DDMS Resources, uses the Builder framework to edit a <code>ddms:dates</code> attribute on each one, and saves the results.</p>
+ 
+<pre class="brush: java">
+List&lt;Resource&gt; updatedResources = new ArrayList&lt;Resource&gt;();
+for (Resource resource : myExistingResources) {
+   Resource.Builder builder = new Resource.Builder(resource);
+   builder.getDates().setPosted("2011-05-13");
+   updatedResources.add(builder.commit());
+}</pre>
+
+<p class="figure">Figure 22. Programatically editing a batch of Resources</p>
+
+<p>There are a few implementation details to keep in mind when working with Builders:</p>
+<ol>
+<li>Calling a <code>get()</code> method that returns a child Builder instance will never return <code>null</code>. A new Builder will be created if 
+one does not already exist.</li>
+<li>Calling a <code>get()</code> method that returns a List of child Builders will never return <code>null</code> either. However, you will need to 
+explicitly add child Builders to the returned list before you started editing with them (as seen with Keywords in Figure 21).</li>
+<li>The <code>commit()</code> method on any given Builder will only return a component if the Builder was actually used, according its
+mplementation of <code>IBuilder.isEmpty()</code>. This decision was made to handle form beans more flexibly: if a user has not filled 
+in any of the fields on <code>ddms:dates</code> form, I presume that their intent is NO <code>ddms:dates</code> element, and not an empty, useless one.</li>
+</ol>
+
+<p>The Component Builder framework is a very recent addition to DDMSence, and I would love to hear your <a href="#feedback">feedback</a> on ways
+the framework or documentation could be improved to better support your Resource editing needs.</p> 
+
 <a name="tips-schematron"></a><h4>Schematron Validation</h4>
 
 <p>It is expected that organizations and communities of interest may have additional constraints on the data in their DDMS Resources, besides the rules in the DDMS specification.
@@ -529,7 +601,7 @@ in the future. For now, a very simple example, <code>testPublisherValue.sch</cod
       &lt;iso:report test="normalize-space(.) = 'Uri'"&gt;Members of the Uri family cannot be publishers.&lt;/iso:report&gt;
    &lt;/iso:rule&gt;
 &lt;/iso:pattern&gt;</pre>
-<p class="figure">Figure 19. The test from testPublisherValue.sch</p>
+<p class="figure">Figure 23. The test from testPublisherValue.sch</p>
 
 <p>The following code sample will build a DDMS Resource from one of the sample XML files, and then validate it through Schematron:</p>
 
@@ -543,14 +615,14 @@ for (ValidationMessage message : schematronMessages) {
    System.out.println("Location: " + message.getLocator());
    System.out.println("Message: " + message.getText());
 }</pre>
-<p class="figure">Figure 20. Sample code to validate DDMSence_Example.xml with testPublisherValue.sch</p>
+<p class="figure">Figure 24. Sample code to validate DDMSence_Example.xml with testPublisherValue.sch</p>
 
 <pre class="brush: xml">Location: //*[local-name()='Resource' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
    /*[local-name()='publisher' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
    /*[local-name()='Person' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
    /*[local-name()='surname' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
 Message: Members of the Uri family cannot be publishers.</pre>
-<p class="figure">Figure 21. Ouput of the code from Figure 20</p>
+<p class="figure">Figure 25. Ouput of the code from Figure 24</p>
 
 <p>Schematron files are made up of a series of patterns and rules which assert rules and report information. The raw output of Schematron validation
 is a series of <code>failed-assert</code> and <code>successful-report</code> elements in Schematron Validation Report Language (SVRL). DDMSence converts
@@ -590,7 +662,7 @@ building components from scratch, and you wish to use "ic" as a namespace prefix
 instead of "ICISM", you would set the "icism.prefix" property with a custom value of <code>ic</code>.</p>
 
 <pre class="brush: java">PropertyReader.setProperty("icism.prefix", "ic");</pre>
-<p class="figure">Figure 22. Command to change a configurable property.</p>
+<p class="figure">Figure 26. Command to change a configurable property.</p>
 
 <p>Only the subset of properties listed below can be set programmatically. Attempts to change other DDMSence properties will result in an exception.</p>
 
