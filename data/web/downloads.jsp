@@ -26,7 +26,7 @@ I have included the <code>.project</code> file if you wish to import the project
 (<a href="http://code.google.com/p/ddmsence/issues/detail?id=68">Issue #68</a>). It is backwards compatible with all versions since v1.4.0.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.8.0.zip"><code>ddmsence-bin-1.8.0.zip</code></a></b> (4.4 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.8.0.zip"><code>ddmsence-bin-1.8.0.zip</code></a></b> (4.3 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.8.0.zip"><code>ddmsence-src-1.8.0.zip</code></a></b> (4.4 MB)</li>
 </ul>
 
