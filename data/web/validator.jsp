@@ -198,8 +198,7 @@ on the server.</p>
 	Files and URLs are loaded and converted into text.</li>
 	<li>The Resource is now stored in a String containing the raw XML, <code>stringRepresentation</code>, and the following Java code is run:</li>
 	
-<pre class="brush: java">
-Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
+<pre class="brush: java">Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
 try {
    Resource resource = new DDMSReader().getDDMSResource(stringRepresentation);
    model.put("warnings", resource.getValidationWarnings());
