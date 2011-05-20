@@ -143,7 +143,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<h1>Online DDMS Validator</h1>
+<h1>DDMS Validator</h1>
 
 <p>This experimental tool uses the DDMSence library to validate <b>Unclassified</b> DDMS 2.0 and 3.0 records. Records 
 can be submitted by pasting XML text, uploading a file, or referencing a URL. Information submitted through this tool is not retained
@@ -188,6 +188,32 @@ on the server.</p>
 		</c:if>
 	</span>
 </form:form>
+
+<h1>How This Works</h1>
+
+<p>The source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework. However, the basic concepts are very simple:</p>
+
+<ul>
+	<li>After submitting this form, a Spring MVC controller checks to see whether the DDMS Resource is coming in as text, an uploaded file, or a URL.
+	Files and URLs are loaded and converted into text.</li>
+	<li>The Resource is now stored in a String containing the raw XML, <code>stringRepresentation</code>, and the following Java code is run:</li>
+	
+<pre class="brush: java">
+Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
+try {
+   Resource resource = new DDMSReader().getDDMSResource(stringRepresentation);
+   model.put("warnings", resource.getValidationWarnings());
+}
+catch (InvalidDDMSException e) {
+   ValidationMessage message = ValidationMessage.newError(e.getMessage(), e.getLocator());
+   model.put("error", message);
+}</pre>
+
+	<li>The DDMSReader method, <a href="/docs/buri/ddmsence/util/DDMSReader.html"><code>getDDMSResource()</code></a> attempts to build the entire DDMS Resource. It will fail immediately with an <code>InvalidDDMSException</code> if the Resource is invalid.</li>
+	<li>If the constructor succeeds, the Resource is proven to be valid, although there may still be warnings.</li>
+	<li>The Map containing errors or warnings, <code>model</code>, is then used to render the Validation Results page.</li>
+</ul>	
+
 
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>
