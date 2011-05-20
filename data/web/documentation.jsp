@@ -520,8 +520,9 @@ of a SecurityAttributes instance, it should. This will make DDMS 2.0 resources m
 <a name="tips-builders"></a><h4>Using Component Builders</h4>
 
 <p>Beginning with DDMSence 1.8.0, every DDMS component has an associated <a href="/docs/buri/ddmsence/ddms/IBuilder.html">Builder</a> class
-which offers a mutable way to build components. A Builder class can be the form bean behind an HTML form on a website, and can be initialized with an 
-existing component to allow further editing. Properties on a Builder class can be set or re-set, and the strict DDMSence validation does not occur until
+which offers a mutable way to build components. A Builder class can be the form bean behind an HTML form on a website, allowing someone to fill in the details page
+by page. A Builder class can also be initialized with an existing component to allow for editing after it has already been saved. 
+Properties on a Builder class can be set or re-set, and the strict DDMSence validation does not occur until
 you are ready to <code>commit()</code> the changes.</p>
 
 <p>Builder classes for components that have child components flexibly handle any nested Builders, so you do not have to make your edits from the lowest level component. This differs
@@ -534,7 +535,7 @@ The following three figures provide an example of this difference, using Subject
    &lt;/ddms:Subject&gt;
 &lt;/ddms:subjectCoverage&gt;</pre>
 
-<p class="figure">Figure 19. An XML fragment containg Subject Coverage information</p>
+<p class="figure">Figure 19. An XML fragment containing Subject Coverage information</p>
 
 <pre class="brush: java">List&lt;Keyword&gt; keywords = new ArrayList&lt;Keyword&gt;();
 keywords.add(new Keyword("DDMSence", null)); // Keyword validated here
@@ -568,13 +569,13 @@ for (Resource resource : myExistingResources) {
 
 <p>There are a few implementation details to keep in mind when working with Builders:</p>
 <ol>
-<li>Calling a <code>get()</code> method that returns a child Builder instance will never return <code>null</code>. A new Builder will be created if 
+<li>Calling a <code>get()</code> method that returns a child Builder instance will never return <code>null</code>. A new Builder will be lazily instantiated if 
 one does not already exist.</li>
-<li>Calling a <code>get()</code> method that returns a List of child Builders will never return <code>null</code> either. However, you will need to 
-explicitly add child Builders to the returned list before you started editing with them (as seen with Keywords in Figure 21).</li>
+<li>Calling a <code>get()</code> method that returns a List of child Builders will never return <code>null</code> either (you'll get an empty List back). 
+However, you will need to explicitly add child Builders to the returned list before you started editing with them (as seen with Keywords in Figure 21).</li>
 <li>The <code>commit()</code> method on any given Builder will only return a component if the Builder was actually used, according its
 implementation of <code>IBuilder.isEmpty()</code>. This decision was made to handle form beans more flexibly: if a user has not filled 
-in any of the fields on <code>ddms:dates</code> form, I presume that their intent is NO <code>ddms:dates</code> element, and not an empty, useless one.</li>
+in any of the fields on a <code>ddms:dates</code> form, it is presumed that their intent is NO <code>ddms:dates</code> element, and not an empty, useless one.</li>
 </ol>
 
 <p>The Component Builder framework is a very recent addition to DDMSence, and I would love to hear your <a href="#feedback">feedback</a> on ways
