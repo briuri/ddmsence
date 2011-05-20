@@ -189,7 +189,7 @@ on the server.</p>
 	</span>
 </form:form>
 
-<h1>How This Works</h1>
+<h3>How This Works</h3>
 
 <p>The source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework. However, the basic concepts are very simple:</p>
 
