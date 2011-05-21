@@ -28,12 +28,14 @@
 			The DDMSence web application is deployed in an environment which already has
 			Spring JARs deployed.
 	-->
+	<bean id="builderControl" class="buri.web.ddmsence.BuilderControl" />
 	<bean id="validatorControl" class="buri.web.ddmsence.ValidatorControl" />
 			
 	<!-- Mappings from URLs to Controls -->							
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="urlMap">
 			<map>
+				<entry key="builder.uri" value-ref="builderControl" />
 				<entry key="validator.uri" value-ref="validatorControl" />
 			</map>
 		</property>
