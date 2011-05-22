@@ -127,9 +127,17 @@ label {
 	display: block;
 	float: left;
 	font-weight: bold;
-	width: 120px; 	
 	margin-bottom: 3px;
+	width: 120px; 	
 }
+label.ddmsComponent {
+	display: block;
+	float: left;
+	font-size: 11pt;
+	font-weight: bold;	
+	margin-bottom: 3px;
+	width: 200px;
+}	
 label.error {
 	color: #ea5200;
 	float: none;
