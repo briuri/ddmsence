@@ -20,11 +20,70 @@
 <h1>DDMS Builder</h1>
 
 <p>This experimental tool uses the DDMSence library to create an XML DDMS Resource based on form input. It uses
-the <a href="documentation.jsp#tips-builders">Component Builder</a> framework, which was introduced in DDMSence 1.8.0. Information submitted through this tool is not retained
-on the server.</p>
+the <a href="documentation.jsp#tips-builders">Component Builder</a> framework, which was introduced in DDMSence 1.8.0. 
+Information submitted through this tool is not retained on the server.</p>
 
 <form:form id="resource" commandName="resource" method="post">
 
+	<label class="ddmsComponent">Identifier <img src="./images/info.png" width="18" height="17" title="ddms:identifier (at least 1 required)" /></label>
+	<div class="clear"></div>
+	
+	<label>test</label>
+	<span class="formElement">value</span><br />
+
+	<label class="ddmsComponent">Title <img src="./images/info.png" width="18" height="17" title="ddms:title (at least 1 required)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">Subtitle <img src="./images/info.png" width="18" height="17" title="ddms:subtitle (any number allowed)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">Description <img src="./images/info.png" width="18" height="17" title="ddms:description (only 1 allowed)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">Language <img src="./images/info.png" width="18" height="17" title="ddms:language (any number allowed)" /></label>
+	<div class="clear"></div>			
+
+	<label class="ddmsComponent">Dates <img src="./images/info.png" width="18" height="17" title="ddms:dates (only 1 allowed)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">Rights <img src="./images/info.png" width="18" height="17" title="ddms:rights (only 1 allowed)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">Source <img src="./images/info.png" width="18" height="17" title="ddms:source (any number allowed)" /></label>
+	<div class="clear"></div>			
+
+	<label class="ddmsComponent">Type <img src="./images/info.png" width="18" height="17" title="ddms:type (any number allowed)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">Producer <img src="./images/info.png" width="18" height="17" title="Producers: creator, publisher, contributor, and pointOfContact (at least 1 required)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">Format <img src="./images/info.png" width="18" height="17" title="ddms:format (only 1 allowed)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">SubjectCoverage <img src="./images/info.png" width="18" height="17" title="ddms:subjectCoverage (exactly 1 required)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">VirtualCoverage <img src="./images/info.png" width="18" height="17" title="ddms:virtualCoverage (any number allowed)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">TemporalCoverage <img src="./images/info.png" width="18" height="17" title="ddms:temporalCoverage (any number allowed)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">GeospatialCoverage <img src="./images/info.png" width="18" height="17" title="ddms:geospatialCoverage (any number allowed)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">RelatedResources <img src="./images/info.png" width="18" height="17" title="ddms:relatedResources (any number allowed)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">Security <img src="./images/info.png" width="18" height="17" title="ddms:security (exactly 1 required)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">ExtensibleElement <img src="./images/info.png" width="18" height="17" title="Extensible Elements (any number required)" /></label>
+	<div class="clear"></div>
+
+	<label class="ddmsComponent">Resource Attributes <img src="./images/info.png" width="18" height="17" title="ddms:Resource Attributes (all required)" /></label>
+	<div class="clear"></div>
 
 	<br />
 	<span class="formElement">
