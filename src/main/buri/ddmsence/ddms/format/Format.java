@@ -19,6 +19,8 @@
 */
 package buri.ddmsence.ddms.format;
 
+import java.io.Serializable;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
@@ -279,7 +281,8 @@ public final class Format extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = 7851044806424206976L;
 		private String _mimeType;
 		private MediaExtent.Builder _extent;
 		private String _medium;

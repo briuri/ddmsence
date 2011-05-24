@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms.summary;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -359,7 +360,8 @@ public final class Polygon extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = -4324741146353401634L;
 		private SRSAttributes.Builder _srsAttributes;
 		private List<Position.Builder> _positions;
 		private String _id;

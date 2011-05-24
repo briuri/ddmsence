@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms.summary;
 
+import java.io.Serializable;
 import java.util.List;
 
 import nu.xom.Attribute;
@@ -191,7 +192,8 @@ public final class Keyword extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = 5165722850252388155L;
 		private String _value;
 		private ExtensibleAttributes.Builder _extensibleAttributes;
 		

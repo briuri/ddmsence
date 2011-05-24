@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms.extensible;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -283,7 +284,8 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder {
+	public static class Builder implements Serializable {
+		private static final long serialVersionUID = 1257270526054778197L;
 		private List<Attribute> _attributes;
 
 		/**

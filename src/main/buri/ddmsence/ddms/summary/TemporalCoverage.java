@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms.summary;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -393,7 +394,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = -3187482277963663663L;
 		private String _timePeriodName;
 		private String _startString;
 		private String _endString;

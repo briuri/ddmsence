@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms.summary;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -296,7 +297,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = -1550204187042536412L;
 		private List<Keyword.Builder> _keywords;
 		private List<Category.Builder> _categories;
 		private SecurityAttributes.Builder _securityAttributes;

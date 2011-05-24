@@ -19,6 +19,8 @@
 */
 package buri.ddmsence.ddms.summary;
 
+import java.io.Serializable;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
@@ -170,7 +172,8 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = 4781523669271343048L;
 		private String _beNumber;
 		private String _osuffix;
 		

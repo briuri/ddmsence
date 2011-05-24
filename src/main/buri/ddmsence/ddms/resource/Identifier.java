@@ -136,7 +136,8 @@ public final class Identifier extends AbstractQualifierValue {
 	 * @since 1.8.0
 	 */
 	public static class Builder extends AbstractQualifierValue.Builder {
-		
+		private static final long serialVersionUID = -1105410940799401080L;
+
 		/**
 		 * Empty constructor
 		 */

@@ -19,6 +19,8 @@
 */
 package buri.ddmsence.ddms;
 
+import java.io.Serializable;
+
 import buri.ddmsence.util.Util;
 
 /**
@@ -87,7 +89,8 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static abstract class Builder implements IBuilder {
+	public static abstract class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = 7824644958681123708L;
 		private String _value;
 		
 		/**

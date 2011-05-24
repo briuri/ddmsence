@@ -186,6 +186,7 @@ public final class Subtitle extends AbstractSimpleString {
 	 * @since 1.8.0
 	 */
 	public static class Builder extends AbstractSimpleString.Builder {
+		private static final long serialVersionUID = -4292523556431396882L;
 		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**

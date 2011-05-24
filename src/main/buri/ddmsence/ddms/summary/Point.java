@@ -19,6 +19,8 @@
 */
 package buri.ddmsence.ddms.summary;
 
+import java.io.Serializable;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
@@ -304,7 +306,8 @@ public final class Point extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = 4003805386998809149L;
 		private SRSAttributes.Builder _srsAttributes;
 		private Position.Builder _position;
 		private String _id;

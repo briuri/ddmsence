@@ -19,6 +19,8 @@
 */
 package buri.ddmsence.ddms;
 
+import java.io.Serializable;
+
 import nu.xom.Element;
 import buri.ddmsence.util.Util;
 
@@ -121,7 +123,8 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static abstract class Builder implements IBuilder {
+	public static abstract class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = 5630463057657652800L;
 		private String _qualifier;
 		private String _value;
 		

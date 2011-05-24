@@ -145,7 +145,8 @@ public final class Organization extends AbstractProducer {
 	 * @since 1.8.0
 	 */
 	public static class Builder extends AbstractProducer.Builder {
-		
+		private static final long serialVersionUID = 4565840434345629470L;
+
 		/**
 		 * Empty constructor
 		 */

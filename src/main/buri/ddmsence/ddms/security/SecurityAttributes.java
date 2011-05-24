@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms.security;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -814,7 +815,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder {
+	public static class Builder implements Serializable {
+		private static final long serialVersionUID = 279072341662308051L;
 		private String _classification = null;
 		private List<String> _ownerProducers = null;
 		private List<String> _SCIcontrols = null;

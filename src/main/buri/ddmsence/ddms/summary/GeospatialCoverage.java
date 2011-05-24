@@ -19,6 +19,8 @@
 */
 package buri.ddmsence.ddms.summary;
 
+import java.io.Serializable;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
@@ -387,7 +389,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = 2895705456552847432L;
 		private BoundingBox.Builder _boundingBox;
 		private BoundingGeometry.Builder _boundingGeometry;
 		private GeographicIdentifier.Builder _geographicIdentifier;

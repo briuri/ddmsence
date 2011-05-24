@@ -21,6 +21,7 @@ package buri.ddmsence.ddms;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -1020,7 +1021,8 @@ public final class Resource extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = -8581492714895157280L;
 		private List<Identifier.Builder> _identifiers;
 		private List<Title.Builder> _titles;
 		private List<Subtitle.Builder> _subtitles;

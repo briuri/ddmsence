@@ -19,6 +19,8 @@
 */
 package buri.ddmsence.ddms.security;
 
+import java.io.Serializable;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
@@ -205,7 +207,8 @@ public final class Security extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = -7744353774641616270L;
 		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**

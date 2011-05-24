@@ -151,7 +151,8 @@ public final class Unknown extends AbstractProducer {
 	 * @since 1.8.0
 	 */
 	public static class Builder extends AbstractProducer.Builder {
-		
+		private static final long serialVersionUID = -2278534009019179572L;
+
 		/**
 		 * Empty constructor
 		 */

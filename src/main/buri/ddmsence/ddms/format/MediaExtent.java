@@ -160,7 +160,8 @@ public final class MediaExtent extends AbstractQualifierValue {
 	 * @since 1.8.0
 	 */
 	public static class Builder extends AbstractQualifierValue.Builder {
-		
+		private static final long serialVersionUID = -5658005476173591056L;
+
 		/**
 		 * Empty constructor
 		 */

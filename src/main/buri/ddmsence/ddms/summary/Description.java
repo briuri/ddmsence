@@ -186,6 +186,7 @@ public final class Description extends AbstractSimpleString {
 	 * @since 1.8.0
 	 */
 	public static class Builder extends AbstractSimpleString.Builder {
+		private static final long serialVersionUID = 7750664735441105296L;
 		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**

@@ -19,6 +19,8 @@
 */
 package buri.ddmsence.ddms.summary;
 
+import java.io.Serializable;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
@@ -227,7 +229,8 @@ public final class Link extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = 4325950371570699184L;
 		private String _href;
 		private String _role;
 		private String _title;

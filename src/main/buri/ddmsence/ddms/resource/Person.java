@@ -283,6 +283,7 @@ public final class Person extends AbstractProducer {
 	 * @since 1.8.0
 	 */
 	public static class Builder extends AbstractProducer.Builder {
+		private static final long serialVersionUID = -2933889158864177338L;
 		private String _surname;
 		private String _userID;
 		private String _affliation;

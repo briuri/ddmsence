@@ -224,6 +224,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * @since 1.8.0
 	 */
 	public static class Builder extends AbstractQualifierValue.Builder {
+		private static final long serialVersionUID = 5430464017408842022L;
 		private List<Link.Builder> _links;
 
 		/**

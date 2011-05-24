@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms.summary;
 
+import java.io.Serializable;
 import java.util.List;
 
 import nu.xom.Attribute;
@@ -228,7 +229,8 @@ public final class Category extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = -9012648230977148516L;
 		private String _qualifier;
 		private String _code;
 		private String _label;

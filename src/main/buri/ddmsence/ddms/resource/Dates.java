@@ -19,6 +19,8 @@
 */
 package buri.ddmsence.ddms.resource;
 
+import java.io.Serializable;
+
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -289,7 +291,8 @@ public final class Dates extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = -2857638896738260719L;
 		private String _created;
 		private String _posted;
 		private String _validTil;

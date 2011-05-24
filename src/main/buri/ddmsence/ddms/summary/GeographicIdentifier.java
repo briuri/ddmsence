@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms.summary;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -301,7 +302,8 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = -6626896938484051916L;
 		private List<String> _names = null;
 		private List<String> _regions = null;
 		private CountryCode.Builder _countryCode = null;
