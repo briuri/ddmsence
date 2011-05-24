@@ -545,7 +545,6 @@ SubjectCoverage subjectCoverage = new SubjectCoverage(keywords, null, securityAt
 <p class="figure">Figure 20. The "bottoms-up" approach for building a SubjectCoverage component</p>
 
 <pre class="brush: java">SubjectCoverage.Builder builder = new SubjectCoverage.Builder();
-builder.getKeywords().add(new Keyword.Builder());
 builder.getKeywords().get(0).setValue("DDMSence");
 builder.getSecurityAttributes().setClassification("U");
 SubjectCoverage subjectCoverage = builder.commit(); // All validation occurs here</pre>
@@ -569,10 +568,10 @@ for (Resource resource : myExistingResources) {
 
 <p>There are a few implementation details to keep in mind when working with Builders:</p>
 <ol>
-<li>Calling a <code>get()</code> method that returns a child Builder instance will never return <code>null</code>. A new Builder will be lazily instantiated if 
-one does not already exist.</li>
-<li>Calling a <code>get()</code> method that returns a List of child Builders will never return <code>null</code> either (you'll get an empty List back). 
-However, you will need to explicitly add child Builders to the returned list before you started editing with them (as seen with Keywords in Figure 21).</li>
+<li>Calling a <code>get()</code> method that returns a child Builder instance (or a List of them) will never return <code>null</code>. A new Builder will be lazily instantiated if 
+one does not already exist. An example of this can be seen on line 2 of Figure 21: When the value of the Keyword is set to "DDMSence", the List of Keyword.Builders
+returned by <code>getKeywords()</code>, and the first Keyword.Builder returned by <code>get(0)</code> are both instantiated upon request.
+This should make it easier for Component Builders to be used in a web-based form, where the number of child components might grow dynamically with JavaScript.</li>
 <li>The <code>commit()</code> method on any given Builder will only return a component if the Builder was actually used, according its
 implementation of <code>IBuilder.isEmpty()</code>. This decision was made to handle form beans more flexibly: if a user has not filled 
 in any of the fields on a <code>ddms:dates</code> form, it is presumed that their intent is NO <code>ddms:dates</code> element, and not an empty, useless one.</li>
