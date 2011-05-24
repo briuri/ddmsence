@@ -220,7 +220,7 @@ public class LazyList implements List, Serializable {
 	}
 
 	/**
-	 * @see java.util.List#toArray(T[])
+	 * @see java.util.List#toArray(Object[])
 	 */
 	public Object[] toArray(Object[] a) {
 		return (getList().toArray(a));
