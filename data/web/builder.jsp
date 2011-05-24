@@ -27,9 +27,6 @@ Information submitted through this tool is not retained on the server.</p>
 
 	<label class="ddmsComponent">Identifier <img src="./images/info.png" width="18" height="17" title="ddms:identifier (at least 1 required)" /></label>
 	<div class="clear"></div>
-	
-	<label>test</label>
-	<span class="formElement">value</span><br />
 
 	<label class="ddmsComponent">Title <img src="./images/info.png" width="18" height="17" title="ddms:title (at least 1 required)" /></label>
 	<div class="clear"></div>
@@ -43,11 +40,23 @@ Information submitted through this tool is not retained on the server.</p>
 	<label class="ddmsComponent">Language <img src="./images/info.png" width="18" height="17" title="ddms:language (any number allowed)" /></label>
 	<div class="clear"></div>			
 
-	<label class="ddmsComponent">Dates <img src="./images/info.png" width="18" height="17" title="ddms:dates (only 1 allowed)" /></label>
+	<label class="ddmsComponent">Dates</label>
 	<div class="clear"></div>
-
+	<label id="ldates.created" for="dates.created">created:</label>
+	<span class="formElement"><form:input path="dates.created" size="10" maxlength="22" /></span>
+	<label id="ldates.posted" for="dates.posted">posted:</label>
+	<span class="formElement"><form:input path="dates.posted" size="10" maxlength="22" /></span>
+	<label id="ldates.validTil" for="dates.validTil">validTil:</label>
+	<span class="formElement"><form:input path="dates.validTil" size="10" maxlength="22" /></span>
+	<label id="ldates.infoCutOff" for="dates.infoCutOff">infoCutOff:</label>
+	<span class="formElement"><form:input path="dates.infoCutOff" size="10" maxlength="22" /></span>
+	
+	<br />
 	<label class="ddmsComponent">Rights <img src="./images/info.png" width="18" height="17" title="ddms:rights (only 1 allowed)" /></label>
 	<div class="clear"></div>
+	<label id="lrights.copyright" for="rights.copyright">copyright:</label>
+	<span class="formElement"><form:input path="rights.copyright" size="10" maxlength="22" /></span>
+	
 
 	<label class="ddmsComponent">Source <img src="./images/info.png" width="18" height="17" title="ddms:source (any number allowed)" /></label>
 	<div class="clear"></div>			
