@@ -20,6 +20,7 @@
 package buri.ddmsence.ddms.extensible;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringReader;
 
 import nu.xom.Document;
@@ -147,7 +148,8 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = 7276942157278555643L;
 		private String _xml;
 
 		/**

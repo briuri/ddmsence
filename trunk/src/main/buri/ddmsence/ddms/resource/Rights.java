@@ -19,6 +19,8 @@
 */
 package buri.ddmsence.ddms.resource;
 
+import java.io.Serializable;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractProducer;
@@ -170,7 +172,8 @@ public final class Rights extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder implements IBuilder {
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = -2290965863004046496L;
 		private Boolean _privacyAct = null;
 		private Boolean _intellectualProperty = null;
 		private Boolean _copyright = null;

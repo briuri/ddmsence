@@ -154,7 +154,8 @@ public final class Service extends AbstractProducer {
 	 * @since 1.8.0
 	 */
 	public static class Builder extends AbstractProducer.Builder {
-		
+		private static final long serialVersionUID = 7653534173085296283L;
+
 		/**
 		 * Empty constructor
 		 */

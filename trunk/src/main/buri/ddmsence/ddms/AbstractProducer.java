@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -442,7 +443,8 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static abstract class Builder implements IBuilder {
+	public static abstract class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = -1694935853087559491L;
 		private String _producerType;
 		private List<String> _names;
 		private List<String> _phones;

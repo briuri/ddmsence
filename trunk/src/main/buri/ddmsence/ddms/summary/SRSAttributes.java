@@ -19,6 +19,7 @@
 */
 package buri.ddmsence.ddms.summary;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -246,7 +247,8 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder {
+	public static class Builder implements Serializable {
+		private static final long serialVersionUID = 6071979027185230870L;
 		private String _srsName;
 		private Integer _srsDimension;
 		private List<String> _axisLabels;

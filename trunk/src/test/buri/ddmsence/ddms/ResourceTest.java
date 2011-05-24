@@ -19,6 +19,10 @@
  */
 package buri.ddmsence.ddms;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1523,6 +1527,25 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertTrue(builder.isEmpty());
 			builder.getExtensibleElements().get(0).setXml("InvalidXml");
 			assertFalse(builder.isEmpty());
+		}
+	}
+	
+	public void testSerializableBuilders() throws Exception {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			Resource.Builder builder = new Resource.Builder(component);
+		    ByteArrayOutputStream out = new ByteArrayOutputStream();
+		    ObjectOutputStream oos = new ObjectOutputStream(out);
+		    oos.writeObject(builder);
+		    oos.close();
+		    byte[] serialized = out.toByteArray();
+		    assertTrue(serialized.length > 0);
+
+		    ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(serialized));
+		    Resource.Builder unserializedBuilder = (Resource.Builder) ois.readObject();
+		    assertEquals(component, unserializedBuilder.commit());
 		}
 	}
 }

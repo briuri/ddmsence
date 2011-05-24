@@ -207,6 +207,7 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @since 1.8.0
 	 */
 	public static class Builder extends AbstractQualifierValue.Builder {
+		private static final long serialVersionUID = 2136329013144660166L;
 		private String _parentType;
 		
 		/**

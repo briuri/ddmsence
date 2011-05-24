@@ -231,6 +231,7 @@ public final class Source extends AbstractQualifierValue {
 	 * @since 1.8.0
 	 */
 	public static class Builder extends AbstractQualifierValue.Builder {
+		private static final long serialVersionUID = -514632949760329348L;
 		private String _schemaQualifier;
 		private String _schemaHref;
 		private SecurityAttributes.Builder _securityAttributes;
