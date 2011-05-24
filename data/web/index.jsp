@@ -64,14 +64,15 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
-	<div class="newsUpdate"><u>05/13/2011</u>: <a href="downloads.jsp">v1.8.0</a> released, introducing the <a href="documentation.jsp#tips-builders">Component Builder</a> framework.</div>
+	<div class="newsUpdate"><u>05/24/2011</u>: <a href="downloads.jsp">v1.9.0</a> released.</div>
+	<div class="newsUpdate"><u>05/13/2011</u>: v1.8.0 released, introducing the <a href="documentation.jsp#tips-builders">Component Builder</a> framework.</div>
 	<div class="newsUpdate"><u>03/10/2011</u>: v1.7.2 released.</div>
 	<div class="newsUpdate"><u>11/26/2010</u>: <a href="relationalTables.jsp">Relational Database Model for DDMS</a> published.</div>
 	<div class="newsUpdate"><u>11/16/2010</u>: v1.7.1 released.</div>
-	<div class="newsUpdate"><u>09/18/2010</u>: v1.7.0 released.</div>
-	<div class="newsUpdate"><u>09/07/2010</u>: v1.6.0 released.</div>
-	<div class="newsUpdate"><u>09/01/2010</u>: <a href="validator.uri">DDMS validator</a> released.</div>
-	<!-- Older News	
+	<!-- Older News		
+		<div class="newsUpdate"><u>09/18/2010</u>: v1.7.0 released.</div>	
+		<div class="newsUpdate"><u>09/07/2010</u>: v1.6.0 released.</div>
+		<div class="newsUpdate"><u>09/01/2010</u>: <a href="validator.uri">DDMS validator</a> released.</div>
 		<div class="newsUpdate"><u>07/07/2010</u>: v1.5.1 released.</div>
 		<div class="newsUpdate"><u>07/05/2010</u>: v1.5.0 released.</div>
 		<div class="newsUpdate"><u>06/08/2010</u>: v1.4.0 released.</div>
