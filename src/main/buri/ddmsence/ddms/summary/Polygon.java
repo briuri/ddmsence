@@ -32,6 +32,7 @@ import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -429,7 +430,7 @@ public final class Polygon extends AbstractBaseComponent {
 		 */
 		public List<Position.Builder> getPositions() {
 			if (_positions == null)
-				_positions = new ArrayList<Position.Builder>();
+				_positions = new LazyList(Position.Builder.class);
 			return _positions;
 		}
 

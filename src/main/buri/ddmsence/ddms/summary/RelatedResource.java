@@ -30,6 +30,7 @@ import buri.ddmsence.ddms.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
@@ -275,7 +276,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 		 */
 		public List<Link.Builder> getLinks() {
 			if (_links == null)
-				_links = new ArrayList<Link.Builder>();
+				_links = new LazyList(Link.Builder.class);
 			return _links;
 		}
 	}

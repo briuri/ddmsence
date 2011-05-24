@@ -416,10 +416,8 @@ public class PointTest extends AbstractComponentTestCase {
 			catch (InvalidDDMSException e) {
 				// Good
 			}
-			List<Double> coords = new ArrayList<Double>();
-			coords.add(new Double(32.1));
-			coords.add(new Double(42.1));			
-			builder.getPosition().setCoordinates(coords);
+			builder.getPosition().getCoordinates().get(0).setValue(new Double(32.1));
+			builder.getPosition().getCoordinates().get(1).setValue(new Double(42.1));
 			builder.setId("IDValue");
 			builder.getSrsAttributes().setSrsName("http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D");
 			builder.commit();

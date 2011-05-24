@@ -20,7 +20,6 @@
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,6 +28,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
@@ -354,7 +354,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		 */
 		public List<String> getNames() {
 			if (_names == null)
-				_names = new ArrayList<String>();
+				_names = new LazyList(String.class);
 			return _names;
 		}
 
@@ -362,7 +362,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		 * Builder accessor for the names
 		 */
 		public void setNames(List<String> names) {
-			_names = names;
+			_names = new LazyList(names, String.class);
 		}
 
 		/**
@@ -370,7 +370,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		 */
 		public List<String> getRegions() {
 			if (_regions == null)
-				_regions = new ArrayList<String>();
+				_regions = new LazyList(String.class);
 			return _regions;
 		}
 
@@ -378,7 +378,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		 * Builder accessor for the regions
 		 */
 		public void setRegions(List<String> regions) {
-			_regions = regions;
+			_regions = new LazyList(regions, String.class);
 		}
 
 		/**

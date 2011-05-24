@@ -30,6 +30,7 @@ import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -299,7 +300,7 @@ public final class Position extends AbstractBaseComponent {
 	public static class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = 33638279863455987L;
 		private SRSAttributes.Builder _srsAttributes;
-		private List<Double> _coordinates;
+		private List<Position.DoubleBuilder> _coordinates;
 		
 		/**
 		 * Empty constructor
@@ -311,7 +312,8 @@ public final class Position extends AbstractBaseComponent {
 		 */
 		public Builder(Position position) {
 			setSrsAttributes(new SRSAttributes.Builder(position.getSRSAttributes()));
-			setCoordinates(position.getCoordinates());
+			for (Double coord : position.getCoordinates())
+				getCoordinates().add(new DoubleBuilder(coord));
 		}
 		
 		/**
@@ -321,7 +323,8 @@ public final class Position extends AbstractBaseComponent {
 			if (isEmpty())
 				return (null);
 			List<Double> coordinates = new ArrayList<Double>();
-			for (Double coord : getCoordinates()) {
+			for (Position.DoubleBuilder builder : getCoordinates()) {
+				Double coord = builder.commit();
 				if (coord != null)
 					coordinates.add(coord);
 			}	
@@ -332,11 +335,11 @@ public final class Position extends AbstractBaseComponent {
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			boolean hasCoordinate = false;
-			for (Double coord : getCoordinates()) {
-				hasCoordinate = hasCoordinate || (coord != null);
+			boolean hasValueInList = false;
+			for (Position.DoubleBuilder builder : getCoordinates()) {
+				hasValueInList = hasValueInList || !builder.isEmpty();
 			}
-			return (!hasCoordinate && getSrsAttributes().isEmpty());
+			return (!hasValueInList && getSrsAttributes().isEmpty());
 		}
 		
 		/**
@@ -358,17 +361,66 @@ public final class Position extends AbstractBaseComponent {
 		/**
 		 * Builder accessor for the coordinates of the position
 		 */
-		public List<Double> getCoordinates() {
+		public List<Position.DoubleBuilder> getCoordinates() {
 			if (_coordinates == null)
-				_coordinates = new ArrayList<Double>();
+				_coordinates = new LazyList(Position.DoubleBuilder.class);
 			return _coordinates;
+		}		
+	}
+	
+	/**
+	 * Builder for a Double
+	 * 
+	 * <p>This builder is implemented because the Java Double class does not have a no-arg constructor which can be hooked into
+	 * a LazyList. Because the Builder returns a Double instead of an IDDMSComponent, it does not officially implement
+	 * the IBuilder interface.</p>
+	 * 
+	 * @see IBuilder
+	 * @author Brian Uri!
+	 * @since 1.9.0
+	 */
+	public static class DoubleBuilder implements Serializable {
+		private static final long serialVersionUID = -5102193614065692204L;
+		private Double _value;
+		
+		/**
+		 * Empty constructor
+		 */
+		public DoubleBuilder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public DoubleBuilder(Double value) {
+			setValue(value);
 		}
 		
 		/**
-		 * Builder accessor for the coordinates of the position
+		 * @see IBuilder#commit()
 		 */
-		public void setCoordinates(List<Double> coordinates) {
-			_coordinates = coordinates;
-		}			
+		public Double commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : getValue());
+		}
+
+		/**
+		 * @see IBuilder#isEmpty()
+		 */
+		public boolean isEmpty() {
+			return (getValue() == null);
+		}
+
+		/**
+		 * Builder accessor for the value
+		 */
+		public Double getValue() {
+			return _value;
+		}
+
+		/**
+		 * Builder accessor for the value
+		 */
+		public void setValue(Double value) {
+			_value = value;
+		}
 	}
 } 

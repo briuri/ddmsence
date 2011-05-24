@@ -30,6 +30,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
@@ -294,7 +295,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 		 */
 		public List<Polygon.Builder> getPolygons() {
 			if (_polygons == null)
-				_polygons = new ArrayList<Polygon.Builder>();			
+				_polygons = new LazyList(Polygon.Builder.class);			
 			return _polygons;
 		}
 		
@@ -303,7 +304,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 		 */
 		public List<Point.Builder> getPoints() {
 			if (_points == null)
-				_points = new ArrayList<Point.Builder>();					
+				_points = new LazyList(Point.Builder.class);					
 			return _points;
 		}
 	}	

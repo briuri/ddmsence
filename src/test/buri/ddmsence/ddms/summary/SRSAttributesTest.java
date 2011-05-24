@@ -346,4 +346,13 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			
 		}
 	}
+	
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			SRSAttributes.Builder builder = new SRSAttributes.Builder();
+			assertNotNull(builder.getUomLabels().get(1));
+			assertNotNull(builder.getAxisLabels().get(1));
+		}
+	}
 }

@@ -29,6 +29,7 @@ import buri.ddmsence.ddms.AbstractAttributeGroup;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
@@ -323,7 +324,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		 */
 		public List<String> getAxisLabels() {
 			if (_axisLabels == null)
-				_axisLabels = new ArrayList<String>();
+				_axisLabels = new LazyList(String.class);
 			return _axisLabels;
 		}
 		
@@ -331,7 +332,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		 * Builder accessor for the axisLabels
 		 */
 		public void setAxisLabels(List<String> axisLabels) {
-			_axisLabels = axisLabels;
+			_axisLabels = new LazyList(axisLabels, String.class);
 		}
 		
 		/**
@@ -339,7 +340,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		 */
 		public List<String> getUomLabels() {
 			if (_uomLabels == null)
-				_uomLabels = new ArrayList<String>();
+				_uomLabels = new LazyList(String.class);
 			return _uomLabels;
 		}
 		
@@ -347,7 +348,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		 * Builder accessor for the uomLabels
 		 */
 		public void setUomLabels(List<String> uomLabels) {
-			_uomLabels = uomLabels;
+			_uomLabels = new LazyList(uomLabels, String.class);
 		}
 	}
 }

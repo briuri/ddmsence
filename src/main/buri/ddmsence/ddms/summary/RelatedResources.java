@@ -33,6 +33,7 @@ import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
@@ -382,7 +383,7 @@ public final class RelatedResources extends AbstractBaseComponent {
 		 */
 		public List<RelatedResource.Builder> getRelatedResources() {
 			if (_relatedResources == null)
-				_relatedResources = new ArrayList<RelatedResource.Builder>();
+				_relatedResources = new LazyList(RelatedResource.Builder.class);
 			return _relatedResources;
 		}
 		

@@ -65,6 +65,7 @@ import buri.ddmsence.ddms.summary.SubjectCoverage;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
 import buri.ddmsence.ddms.summary.VirtualCoverage;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -1032,7 +1033,10 @@ public final class Resource extends AbstractBaseComponent {
 		private Rights.Builder _rights;
 		private List<Source.Builder> _sources;
 		private List<Type.Builder> _types;
-		private List<AbstractProducer.Builder> _producers;
+		private List<Organization.Builder> _organizations;
+		private List<Person.Builder> _persons;
+		private List<Service.Builder> _services;
+		private List<Unknown.Builder> _unknowns;
 		private Format.Builder _format;
 		private SubjectCoverage.Builder _subjectCoverage;
 		private List<VirtualCoverage.Builder> _virtualCoverages;
@@ -1082,13 +1086,13 @@ public final class Resource extends AbstractBaseComponent {
 				else if (component instanceof IProducer) {
 					IProducer producer = (IProducer) component;
 					if (Organization.NAME.equals(producer.getEntityType()))
-						getProducers().add(new Organization.Builder((Organization) component));
+						getOrganizations().add(new Organization.Builder((Organization) component));
 					if (Person.NAME.equals(producer.getEntityType()))
-						getProducers().add(new Person.Builder((Person) component));
+						getPersons().add(new Person.Builder((Person) component));
 					if (Service.NAME.equals(producer.getEntityType()))
-						getProducers().add(new Service.Builder((Service) component));
+						getServices().add(new Service.Builder((Service) component));
 					if (Unknown.NAME.equals(producer.getEntityType()))
-						getProducers().add(new Unknown.Builder((Unknown) component));
+						getUnknowns().add(new Unknown.Builder((Unknown) component));
 				}
 				// Format Layer
 				else if (component instanceof Format)
@@ -1163,7 +1167,10 @@ public final class Resource extends AbstractBaseComponent {
 			list.addAll(getLanguages());
 			list.addAll(getSources());
 			list.addAll(getTypes());
-			list.addAll(getProducers());
+			list.addAll(getOrganizations());
+			list.addAll(getPersons());
+			list.addAll(getServices());
+			list.addAll(getUnknowns());
 			list.addAll(getVirtualCoverages());
 			list.addAll(getTemporalCoverages());
 			list.addAll(getGeospatialCoverages());
@@ -1183,7 +1190,7 @@ public final class Resource extends AbstractBaseComponent {
 		 */
 		public List<Identifier.Builder> getIdentifiers() {
 			if (_identifiers == null)
-				_identifiers = new ArrayList<Identifier.Builder>();
+				_identifiers = new LazyList(Identifier.Builder.class);
 			return _identifiers;
 		}
 		
@@ -1192,7 +1199,7 @@ public final class Resource extends AbstractBaseComponent {
 		 */
 		public List<Title.Builder> getTitles() {
 			if (_titles == null)
-				_titles = new ArrayList<Title.Builder>();
+				_titles = new LazyList(Title.Builder.class);
 			return _titles;
 		}
 		
@@ -1201,7 +1208,7 @@ public final class Resource extends AbstractBaseComponent {
 		 */
 		public List<Subtitle.Builder> getSubtitles() {
 			if (_subtitles == null)
-				_subtitles = new ArrayList<Subtitle.Builder>();
+				_subtitles = new LazyList(Subtitle.Builder.class);
 			return _subtitles;
 		}
 		
@@ -1226,7 +1233,7 @@ public final class Resource extends AbstractBaseComponent {
 		 */
 		public List<Language.Builder> getLanguages() {
 			if (_languages == null)
-				_languages = new ArrayList<Language.Builder>();
+				_languages = new LazyList(Language.Builder.class);
 			return _languages;
 		}
 		
@@ -1267,7 +1274,7 @@ public final class Resource extends AbstractBaseComponent {
 		 */
 		public List<Source.Builder> getSources() {
 			if (_sources == null)
-				_sources = new ArrayList<Source.Builder>();
+				_sources = new LazyList(Source.Builder.class);
 			return _sources;
 		}
 		
@@ -1276,17 +1283,55 @@ public final class Resource extends AbstractBaseComponent {
 		 */
 		public List<Type.Builder> getTypes() {
 			if (_types == null)
-				_types = new ArrayList<Type.Builder>();
+				_types = new LazyList(Type.Builder.class);
 			return _types;
 		}
 		
 		/**
-		 * Builder accessor for the four producer roles
+		 * Convenience Builder accessor for all of the producers. This list does not grow dynamically.
 		 */
-		public List<AbstractProducer.Builder> getProducers() {
-			if (_producers == null)
-				_producers = new ArrayList<AbstractProducer.Builder>();
-			return _producers;
+		public List<IBuilder> getProducers() {
+			List<IBuilder> producers = new ArrayList<IBuilder>();
+			producers.addAll(getOrganizations());
+			producers.addAll(getPersons());
+			producers.addAll(getServices());
+			producers.addAll(getUnknowns());
+			return (producers);
+		}
+		/**
+		 * Builder accessor for organizations in producer roles
+		 */
+		public List<Organization.Builder> getOrganizations() {
+			if (_organizations == null)
+				_organizations = new LazyList(Organization.Builder.class);
+			return _organizations;
+		}
+		
+		/**
+		 * Builder accessor for persons in producer roles
+		 */
+		public List<Person.Builder> getPersons() {
+			if (_persons == null)
+				_persons = new LazyList(Person.Builder.class);
+			return _persons;
+		}
+		
+		/**
+		 * Builder accessor for services in producer roles
+		 */
+		public List<Service.Builder> getServices() {
+			if (_services == null)
+				_services = new LazyList(Service.Builder.class);
+			return _services;
+		}
+		
+		/**
+		 * Builder accessor for unknown entities in producer roles
+		 */
+		public List<Unknown.Builder> getUnknowns() {
+			if (_unknowns == null)
+				_unknowns = new LazyList(Unknown.Builder.class);
+			return _unknowns;
 		}
 				
 		/**
@@ -1326,7 +1371,7 @@ public final class Resource extends AbstractBaseComponent {
 		 */
 		public List<VirtualCoverage.Builder> getVirtualCoverages() {
 			if (_virtualCoverages == null)
-				_virtualCoverages = new ArrayList<VirtualCoverage.Builder>();
+				_virtualCoverages = new LazyList(VirtualCoverage.Builder.class);
 			return _virtualCoverages;
 		}
 		
@@ -1335,7 +1380,7 @@ public final class Resource extends AbstractBaseComponent {
 		 */
 		public List<TemporalCoverage.Builder> getTemporalCoverages() {
 			if (_temporalCoverages == null)
-				_temporalCoverages = new ArrayList<TemporalCoverage.Builder>();
+				_temporalCoverages = new LazyList(TemporalCoverage.Builder.class);
 			return _temporalCoverages;
 		}
 		
@@ -1344,7 +1389,7 @@ public final class Resource extends AbstractBaseComponent {
 		 */
 		public List<GeospatialCoverage.Builder> getGeospatialCoverages() {
 			if (_geospatialCoverages == null)
-				_geospatialCoverages = new ArrayList<GeospatialCoverage.Builder>();
+				_geospatialCoverages = new LazyList(GeospatialCoverage.Builder.class);
 			return _geospatialCoverages;
 		}
 		
@@ -1353,7 +1398,7 @@ public final class Resource extends AbstractBaseComponent {
 		 */
 		public List<RelatedResources.Builder> getRelatedResources() {
 			if (_relatedResources == null)
-				_relatedResources = new ArrayList<RelatedResources.Builder>();
+				_relatedResources = new LazyList(RelatedResources.Builder.class);
 			return _relatedResources;
 		}
 		
@@ -1378,7 +1423,7 @@ public final class Resource extends AbstractBaseComponent {
 		 */
 		public List<ExtensibleElement.Builder> getExtensibleElements() {
 			if (_extensibleElements == null)
-				_extensibleElements = new ArrayList<ExtensibleElement.Builder>();
+				_extensibleElements = new LazyList(ExtensibleElement.Builder.class);
 			return _extensibleElements;
 		}
 		

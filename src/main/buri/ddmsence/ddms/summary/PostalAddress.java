@@ -20,7 +20,6 @@
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,6 +28,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
@@ -374,7 +374,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		 */
 		public List<String> getStreets() {
 			if (_streets == null)
-				_streets = new ArrayList<String>();
+				_streets = new LazyList(String.class);
 			return _streets;
 		}
 		
@@ -382,7 +382,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		 * Builder accessor for the streets
 		 */
 		public void setStreets(List<String> streets) {
-			_streets = streets;
+			_streets = new LazyList(streets, String.class);
 		}
 		
 		/**

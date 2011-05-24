@@ -1513,8 +1513,15 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertTrue(builder.isEmpty());
 			builder.getTypes().add(new Type.Builder());
 			assertTrue(builder.isEmpty());			
-			builder.getProducers().add(new Organization.Builder());
+			builder.getOrganizations().add(new Organization.Builder());
 			assertTrue(builder.isEmpty());
+			builder.getPersons().add(new Person.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getServices().add(new Service.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getUnknowns().add(new Unknown.Builder());
+			assertTrue(builder.isEmpty());
+			assertEquals(4, builder.getProducers().size());
 			builder.getVirtualCoverages().add(new VirtualCoverage.Builder());
 			assertTrue(builder.isEmpty());
 			builder.getTemporalCoverages().add(new TemporalCoverage.Builder());
@@ -1546,6 +1553,28 @@ public class ResourceTest extends AbstractComponentTestCase {
 		    ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(serialized));
 		    Resource.Builder unserializedBuilder = (Resource.Builder) ois.readObject();
 		    assertEquals(component, unserializedBuilder.commit());
+		}
+	}
+	
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Resource.Builder builder = new Resource.Builder();
+			assertNotNull(builder.getIdentifiers().get(1));
+			assertNotNull(builder.getTitles().get(1));
+			assertNotNull(builder.getSubtitles().get(1));
+			assertNotNull(builder.getLanguages().get(1));
+			assertNotNull(builder.getSources().get(1));
+			assertNotNull(builder.getTypes().get(1));
+			assertNotNull(builder.getOrganizations().get(1));
+			assertNotNull(builder.getPersons().get(1));
+			assertNotNull(builder.getServices().get(1));
+			assertNotNull(builder.getUnknowns().get(1));
+			assertNotNull(builder.getVirtualCoverages().get(1));
+			assertNotNull(builder.getTemporalCoverages().get(1));
+			assertNotNull(builder.getGeospatialCoverages().get(1));
+			assertNotNull(builder.getRelatedResources().get(1));
+			assertNotNull(builder.getExtensibleElements().get(1));
 		}
 	}
 }

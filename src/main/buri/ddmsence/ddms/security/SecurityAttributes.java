@@ -20,7 +20,6 @@
 package buri.ddmsence.ddms.security;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,6 +42,7 @@ import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -949,7 +949,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 */
 		public List<String> getOwnerProducers() {
 			if (_ownerProducers == null)
-				_ownerProducers = new ArrayList<String>();
+				_ownerProducers = new LazyList(String.class);
 			return _ownerProducers;
 		}
 		
@@ -957,7 +957,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 * Builder accessor for the ownerProducers attribute
 		 */
 		public void setOwnerProducers(List<String> ownerProducers) {
-			_ownerProducers = ownerProducers;
+			_ownerProducers = new LazyList(ownerProducers, String.class);
 		}
 		
 		/**
@@ -965,7 +965,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 */
 		public List<String> getSCIcontrols() {
 			if (_SCIcontrols == null)
-				_SCIcontrols = new ArrayList<String>();
+				_SCIcontrols = new LazyList(String.class);
 			return _SCIcontrols;
 		}
 		
@@ -973,7 +973,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 * Builder accessor for the SCIcontrols attribute
 		 */
 		public void setSCIcontrols(List<String> SCIcontrols) {
-			_SCIcontrols = SCIcontrols;
+			_SCIcontrols = new LazyList(SCIcontrols, String.class);
 		}
 		
 		/**
@@ -981,7 +981,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 */
 		public List<String> getSARIdentifier() {
 			if (_SARIdentifier == null)
-				_SARIdentifier = new ArrayList<String>();
+				_SARIdentifier = new LazyList(String.class);
 			return _SARIdentifier;
 		}
 		
@@ -989,7 +989,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 * Builder accessor for the SARIdentifier attribute
 		 */
 		public void setSARIdentifier(List<String> SARIdentifier) {
-			_SARIdentifier = SARIdentifier;
+			_SARIdentifier = new LazyList(SARIdentifier, String.class);
 		}
 		
 		/**
@@ -997,7 +997,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 */
 		public List<String> getDisseminationControls() {
 			if (_disseminationControls == null)
-				_disseminationControls = new ArrayList<String>();
+				_disseminationControls = new LazyList(String.class);
 			return _disseminationControls;
 		}
 		
@@ -1005,7 +1005,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 * Builder accessor for the disseminationControls attribute
 		 */
 		public void setDisseminationControls(List<String> disseminationControls) {
-			_disseminationControls = disseminationControls;
+			_disseminationControls = new LazyList(disseminationControls, String.class);
 		}
 		
 		/**
@@ -1013,7 +1013,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 */
 		public List<String> getFGIsourceOpen() {
 			if (_FGIsourceOpen == null)
-				_FGIsourceOpen = new ArrayList<String>();
+				_FGIsourceOpen = new LazyList(String.class);
 			return _FGIsourceOpen;
 		}
 		
@@ -1021,7 +1021,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 * Builder accessor for the FGIsourceOpen attribute
 		 */
 		public void setFGIsourceOpen(List<String> FGIsourceOpen) {
-			_FGIsourceOpen = FGIsourceOpen;
+			_FGIsourceOpen = new LazyList(FGIsourceOpen, String.class);
 		}
 		
 		/**
@@ -1029,7 +1029,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 */
 		public List<String> getFGIsourceProtected() {
 			if (_FGIsourceProtected == null)
-				_FGIsourceProtected = new ArrayList<String>();			
+				_FGIsourceProtected = new LazyList(String.class);			
 			return _FGIsourceProtected;
 		}
 		
@@ -1037,7 +1037,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 * Builder accessor for the FGIsourceProtected attribute
 		 */
 		public void setFGIsourceProtected(List<String> FGIsourceProtected) {
-			_FGIsourceProtected = FGIsourceProtected;
+			_FGIsourceProtected = new LazyList(FGIsourceProtected, String.class);
 		}
 		
 		/**
@@ -1045,7 +1045,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 */
 		public List<String> getReleasableTo() {
 			if (_releasableTo == null)
-				_releasableTo = new ArrayList<String>();
+				_releasableTo = new LazyList(String.class);
 			return _releasableTo;
 		}
 		
@@ -1053,7 +1053,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 * Builder accessor for the releasableTo attribute
 		 */
 		public void setReleasableTo(List<String> releasableTo) {
-			_releasableTo = releasableTo;
+			_releasableTo = new LazyList(releasableTo, String.class);
 		}
 		
 		/**
@@ -1061,7 +1061,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 */
 		public List<String> getNonICmarkings() {
 			if (_nonICmarkings == null)
-				_nonICmarkings = new ArrayList<String>();
+				_nonICmarkings = new LazyList(String.class);
 			return _nonICmarkings;
 		}
 		
@@ -1069,7 +1069,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 * Builder accessor for the nonICmarkings attribute
 		 */
 		public void setNonICmarkings(List<String> nonICmarkings) {
-			_nonICmarkings = nonICmarkings;
+			_nonICmarkings = new LazyList(nonICmarkings, String.class);
 		}
 		
 		/**

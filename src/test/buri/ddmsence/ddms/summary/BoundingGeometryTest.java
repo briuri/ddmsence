@@ -373,8 +373,8 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			Point.Builder fullBuilder = new Point.Builder();
 			fullBuilder.setSrsAttributes(new SRSAttributes.Builder(SRSAttributesTest.getFixture()));
 			fullBuilder.setId(TEST_ID);
-			fullBuilder.getPosition().getCoordinates().add(Double.valueOf(0));
-			fullBuilder.getPosition().getCoordinates().add(Double.valueOf(0));
+			fullBuilder.getPosition().getCoordinates().get(0).setValue(Double.valueOf(0));
+			fullBuilder.getPosition().getCoordinates().get(1).setValue(Double.valueOf(0));
 			builder.getPoints().add(emptyBuilder);
 			builder.getPoints().add(fullBuilder);
 			assertEquals(1, builder.commit().getPoints().size());
@@ -389,13 +389,30 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			fullPolygonBuilder.getPositions().add(new Position.Builder());
 			fullPolygonBuilder.getPositions().add(new Position.Builder());
 			fullPolygonBuilder.getPositions().add(new Position.Builder());
-			fullPolygonBuilder.getPositions().get(0).setCoordinates(PolygonTest.TEST_COORDS_1);
-			fullPolygonBuilder.getPositions().get(1).setCoordinates(PolygonTest.TEST_COORDS_2);
-			fullPolygonBuilder.getPositions().get(2).setCoordinates(PolygonTest.TEST_COORDS_3);
-			fullPolygonBuilder.getPositions().get(3).setCoordinates(PolygonTest.TEST_COORDS_1);
+			fullPolygonBuilder.getPositions().get(0).getCoordinates().get(0).setValue(PolygonTest.TEST_COORDS_1.get(0));
+			fullPolygonBuilder.getPositions().get(0).getCoordinates().get(1).setValue(PolygonTest.TEST_COORDS_1.get(1));
+			
+			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(0).setValue(PolygonTest.TEST_COORDS_2.get(0));
+			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(1).setValue(PolygonTest.TEST_COORDS_2.get(1));
+			
+			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(0).setValue(PolygonTest.TEST_COORDS_3.get(0));
+			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(1).setValue(PolygonTest.TEST_COORDS_3.get(1));
+			
+			fullPolygonBuilder.getPositions().get(3).getCoordinates().get(0).setValue(PolygonTest.TEST_COORDS_1.get(0));
+			fullPolygonBuilder.getPositions().get(3).getCoordinates().get(1).setValue(PolygonTest.TEST_COORDS_1.get(1));
+
 			builder.getPolygons().add(emptyPolygonBuilder);
 			builder.getPolygons().add(fullPolygonBuilder);
 			assertEquals(1, builder.commit().getPolygons().size());
+		}
+	}
+	
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			BoundingGeometry.Builder builder = new BoundingGeometry.Builder();
+			assertNotNull(builder.getPoints().get(1));
+			assertNotNull(builder.getPolygons().get(1));
 		}
 	}
 }
