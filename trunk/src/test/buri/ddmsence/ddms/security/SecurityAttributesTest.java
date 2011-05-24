@@ -578,4 +578,20 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			}
 		}
 	}
+	
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			SecurityAttributes.Builder builder = new SecurityAttributes.Builder();
+			assertNotNull(builder.getOwnerProducers().get(1));
+			assertNotNull(builder.getSCIcontrols().get(1));
+			assertNotNull(builder.getSARIdentifier().get(1));
+			assertNotNull(builder.getDisseminationControls().get(1));
+			assertNotNull(builder.getFGIsourceOpen().get(1));
+			assertNotNull(builder.getFGIsourceProtected().get(1));
+			assertNotNull(builder.getReleasableTo().get(1));
+			assertNotNull(builder.getNonICmarkings().get(1));
+			
+		}
+	}
 }

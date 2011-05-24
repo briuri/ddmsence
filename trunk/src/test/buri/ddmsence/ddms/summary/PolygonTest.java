@@ -522,14 +522,14 @@ public class PolygonTest extends AbstractComponentTestCase {
 			builder.setId(TEST_ID);
 			Position.Builder emptyBuilder = new Position.Builder();
 			Position.Builder fullBuilder1 = new Position.Builder();
-			fullBuilder1.getCoordinates().add(Double.valueOf(0));
-			fullBuilder1.getCoordinates().add(Double.valueOf(0));
+			fullBuilder1.getCoordinates().get(0).setValue(Double.valueOf(0));
+			fullBuilder1.getCoordinates().get(1).setValue(Double.valueOf(0));
 			Position.Builder fullBuilder2 = new Position.Builder();
-			fullBuilder2.getCoordinates().add(Double.valueOf(0));
-			fullBuilder2.getCoordinates().add(Double.valueOf(1));
+			fullBuilder2.getCoordinates().get(0).setValue(Double.valueOf(0));
+			fullBuilder2.getCoordinates().get(1).setValue(Double.valueOf(1));
 			Position.Builder fullBuilder3 = new Position.Builder();
-			fullBuilder3.getCoordinates().add(Double.valueOf(1));
-			fullBuilder3.getCoordinates().add(Double.valueOf(1));
+			fullBuilder3.getCoordinates().get(0).setValue(Double.valueOf(1));
+			fullBuilder3.getCoordinates().get(1).setValue(Double.valueOf(1));
 			builder.getPositions().add(emptyBuilder);
 			builder.getPositions().add(fullBuilder1);
 			builder.getPositions().add(fullBuilder2);
@@ -537,6 +537,14 @@ public class PolygonTest extends AbstractComponentTestCase {
 			builder.getPositions().add(fullBuilder1);
 			builder.setSrsAttributes(new SRSAttributes.Builder(SRSAttributesTest.getFixture()));
 			assertEquals(4, builder.commit().getPositions().size());
+		}
+	}
+		
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Polygon.Builder builder = new Polygon.Builder();
+			assertNotNull(builder.getPositions().get(1));
 		}
 	}
 }

@@ -371,4 +371,12 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			assertEquals(1, builder.commit().getLinks().size());
 		}
 	}
+	
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			RelatedResource.Builder builder = new RelatedResource.Builder();
+			assertNotNull(builder.getLinks().get(1));
+		}
+	}
 }

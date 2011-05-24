@@ -322,7 +322,7 @@ public class PositionTest extends AbstractComponentTestCase {
 			
 			// Validation
 			builder = new Position.Builder();
-			builder.getCoordinates().add(Double.valueOf(0));
+			builder.getCoordinates().get(0).setValue(Double.valueOf(0));
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
@@ -334,10 +334,18 @@ public class PositionTest extends AbstractComponentTestCase {
 			// Skip empty Coordinates
 			builder = new Position.Builder();
 			builder.setSrsAttributes(new SRSAttributes.Builder(SRSAttributesTest.getFixture()));
-			builder.getCoordinates().add(null);
-			builder.getCoordinates().add(Double.valueOf(0));
-			builder.getCoordinates().add(Double.valueOf(1));
+			builder.getCoordinates().get(0).setValue(null);
+			builder.getCoordinates().get(1).setValue(Double.valueOf(0));
+			builder.getCoordinates().get(2).setValue(Double.valueOf(1));
 			assertEquals(2, builder.commit().getCoordinates().size());
+		}
+	}
+	
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Position.Builder builder = new Position.Builder();
+			assertNotNull(builder.getCoordinates().get(1));
 		}
 	}
 }

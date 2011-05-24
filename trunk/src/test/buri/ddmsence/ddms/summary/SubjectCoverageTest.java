@@ -413,4 +413,13 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			assertEquals(1, builder.commit().getCategories().size());
 		}
 	}
+	
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			SubjectCoverage.Builder builder = new SubjectCoverage.Builder();
+			assertNotNull(builder.getKeywords().get(1));
+			assertNotNull(builder.getCategories().get(1));
+		}
+	}
 }

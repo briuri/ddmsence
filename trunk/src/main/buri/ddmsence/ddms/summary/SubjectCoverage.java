@@ -34,6 +34,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
@@ -368,7 +369,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		 */
 		public List<Keyword.Builder> getKeywords() {
 			if (_keywords == null)
-				_keywords = new ArrayList<Keyword.Builder>();					
+				_keywords = new LazyList(Keyword.Builder.class);					
 			return _keywords;
 		}
 		
@@ -377,7 +378,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		 */
 		public List<Category.Builder> getCategories() {
 			if (_categories == null)
-				_categories = new ArrayList<Category.Builder>();			
+				_categories = new LazyList(Category.Builder.class);			
 			return _categories;
 		}
 		

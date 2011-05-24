@@ -452,4 +452,12 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			}
 		}
 	}
+	
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			PostalAddress.Builder builder = new PostalAddress.Builder();
+			assertNotNull(builder.getStreets().get(1));
+		}
+	}
 }

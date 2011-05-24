@@ -20,7 +20,6 @@
 package buri.ddmsence.ddms;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -35,6 +34,7 @@ import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
@@ -502,7 +502,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		 */
 		public List<String> getNames() {
 			if (_names == null)
-				_names = new ArrayList<String>();
+				_names = new LazyList(String.class);
 			return _names;
 		}
 
@@ -510,7 +510,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		 * Builder accessor for the names
 		 */
 		public void setNames(List<String> names) {
-			_names = names;
+			_names = new LazyList(names, String.class);
 		}
 
 		/**
@@ -518,7 +518,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		 */
 		public List<String> getPhones() {
 			if (_phones == null)
-				_phones = new ArrayList<String>();
+				_phones = new LazyList(String.class);
 			return _phones;
 		}
 
@@ -526,7 +526,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		 * Builder accessor for the phones
 		 */
 		public void setPhones(List<String> phones) {
-			_phones = phones;
+			_phones = new LazyList(phones, String.class);
 		}
 
 		/**
@@ -534,7 +534,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		 */
 		public List<String> getEmails() {
 			if (_emails == null)
-				_emails = new ArrayList<String>();
+				_emails = new LazyList(String.class);
 			return _emails;
 		}
 
@@ -542,7 +542,7 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 		 * Builder accessor for the emails
 		 */
 		public void setEmails(List<String> emails) {
-			_emails = emails;
+			_emails = new LazyList(emails, String.class);
 		}
 		
 		/**

@@ -412,4 +412,13 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			builder.commit();
 		}
 	}
+	
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			GeographicIdentifier.Builder builder = new GeographicIdentifier.Builder();
+			assertNotNull(builder.getNames().get(1));
+			assertNotNull(builder.getRegions().get(1));
+		}
+	}
 }

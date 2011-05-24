@@ -337,4 +337,14 @@ public class ServiceTest extends AbstractComponentTestCase {
 			}
 		}
 	}
+	
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			Service.Builder builder = new Service.Builder();
+			assertNotNull(builder.getNames().get(1));
+			assertNotNull(builder.getPhones().get(1));
+			assertNotNull(builder.getEmails().get(1));			
+		}
+	}
 }

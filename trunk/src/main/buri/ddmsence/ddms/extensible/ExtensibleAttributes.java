@@ -43,6 +43,7 @@ import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.ddms.summary.Category;
 import buri.ddmsence.ddms.summary.Keyword;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -278,15 +279,13 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * <p>This class does not implement the IBuilder interface, because the behavior of commit() is at odds with the standard
 	 * commit() method. As an attribute group, an empty attribute group will always be returned instead of null.
 	 * 
-	 * <p>No special Builder code is required for XOM Attributes, because they are already mutable.</p>
-	 * 
 	 * @see IBuilder
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
 	public static class Builder implements Serializable {
 		private static final long serialVersionUID = 1257270526054778197L;
-		private List<Attribute> _attributes;
+		private List<ExtensibleAttributes.AttributeBuilder> _attributes;
 
 		/**
 		 * Empty constructor
@@ -298,7 +297,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		 */
 		public Builder(ExtensibleAttributes attributes) {
 			for (Attribute attribute : attributes.getAttributes()) {
-				getAttributes().add(attribute);
+				getAttributes().add(new ExtensibleAttributes.AttributeBuilder(attribute));
 			}
 		}
 		
@@ -309,7 +308,13 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		 * @throws InvalidDDMSException if any required information is missing or malformed
 		 */
 		public ExtensibleAttributes commit() throws InvalidDDMSException {
-			return (new ExtensibleAttributes(getAttributes()));
+			List<Attribute> attributes = new ArrayList<Attribute>();
+			for (ExtensibleAttributes.AttributeBuilder builder : getAttributes()) {
+				Attribute attr = builder.commit();
+				if (attr != null)
+					attributes.add(attr);
+			}
+			return (new ExtensibleAttributes(attributes));
 		}
 
 		/**
@@ -324,10 +329,114 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		/**
 		 * Builder accessor for the attributes
 		 */
-		public List<Attribute> getAttributes() {
+		public List<ExtensibleAttributes.AttributeBuilder> getAttributes() {
 			if (_attributes == null)
-				_attributes = new ArrayList<Attribute>();
+				_attributes = new LazyList(ExtensibleAttributes.AttributeBuilder.class);
 			return _attributes;
 		}
+	}
+	
+	/**
+	 * Builder for a XOM attribute.
+	 * 
+	 * <p>This builder is implemented because the XOM attribute does not have a no-arg constructor which can be hooked into
+	 * a LazyList. Because the Builder returns a XOM attribute instead of an IDDMSComponent, it does not officially implement
+	 * the IBuilder interface.</p>
+	 * 
+	 * @see IBuilder
+	 * @author Brian Uri!
+	 * @since 1.9.0
+	 */
+	public static class AttributeBuilder implements Serializable {
+		private static final long serialVersionUID = -5102193614065692204L;
+		private String _name;
+		private String _uri;
+		private String _value;
+		private Attribute.Type _type;
+		
+		/**
+		 * Empty constructor
+		 */
+		public AttributeBuilder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public AttributeBuilder(Attribute attribute) {
+			setName(attribute.getQualifiedName());
+			setUri(attribute.getNamespaceURI());
+			setValue(attribute.getValue());
+			setType(attribute.getType());
+		}
+		
+		/**
+		 * @see IBuilder#commit()
+		 */
+		public Attribute commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new Attribute(getName(), getUri(), getValue(), getType()));
+		}
+
+		/**
+		 * @see IBuilder#isEmpty()
+		 */
+		public boolean isEmpty() {
+			return (Util.isEmpty(getName()) && Util.isEmpty(getUri()) && Util.isEmpty(getValue()) && getType() == null);
+		}
+
+		/**
+		 * Builder accessor for the name
+		 */
+		public String getName() {
+			return _name;
+		}
+
+		/**
+		 * Builder accessor for the name
+		 */
+		public void setName(String name) {
+			_name = name;
+		}
+
+		/**
+		 * Builder accessor for the uri
+		 */
+		public String getUri() {
+			return _uri;
+		}
+
+		/**
+		 * Builder accessor for the uri
+		 */
+		public void setUri(String uri) {
+			_uri = uri;
+		}
+
+		/**
+		 * Builder accessor for the value
+		 */
+		public String getValue() {
+			return _value;
+		}
+
+		/**
+		 * Builder accessor for the value
+		 */
+		public void setValue(String value) {
+			_value = value;
+		}
+
+		/**
+		 * Builder accessor for the type
+		 */
+		public Attribute.Type getType() {
+			return _type;
+		}
+
+		/**
+		 * Builder accessor for the type
+		 */
+		public void setType(Attribute.Type type) {
+			_type = type;
+		}		
 	}
 }

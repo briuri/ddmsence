@@ -287,4 +287,13 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			assertTrue(builder.commit().getAttributes().isEmpty());
 		}
 	}
+	
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			ExtensibleAttributes.Builder builder = new ExtensibleAttributes.Builder();
+			assertNotNull(builder.getAttributes().get(1));
+			assertTrue(builder.commit().getAttributes().isEmpty());
+		}
+	}
 }

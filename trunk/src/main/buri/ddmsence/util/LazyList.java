@@ -33,8 +33,7 @@ import java.util.ListIterator;
  * Utility class for a list with dynamically added contents.
  * 
  * <p> LazyList wraps around a standard ArrayList and ensures that any get() activity which returns a <code>null</code>
- * value will return a freshly instantiated item instead. <code>null</code> can still be added or set within the list,
- * but they will be overwritten the next time a get() is called. </p>
+ * value will return a freshly instantiated item instead.</p>
  * 
  * <p> This class should allow the Component Builder framework to function well within a form-based UI, where child
  * components are added / removed at the web page level. </p>
@@ -45,6 +44,7 @@ import java.util.ListIterator;
  * <li>Simplified layers of abstraction.</li> 
  * <li>Eliminated overhead of Factory boilerplate to instantiate new items. Classes can just be instantiated through 
  * the basic no-arg constructor.</li> 
+ * <li>Interim positions are also instantiated when an index beyond the size of the list is requested.</li>
  * </ul>
  * 
  * @author Brian Uri!
@@ -138,31 +138,26 @@ public class LazyList implements List, Serializable {
 	 * determined by the instantiatingClass of the LazyList, and will be instantiated with the no-args constructor via
 	 * newInstance().
 	 * 
-	 * <p> If an index is requested beyond the bounds of the list size, the list will extend to that position (with null
-	 * values in the interim positions). </p>
+	 * <p> If an index is requested beyond the bounds of the list size, the list will extend to that position and
+	 * interim positions will also be instantiated. </p>
 	 * 
 	 * @param index the index to retrieve
 	 */
 	public Object get(int index) {
-		int size = getList().size();
-		// Expand list size, if necessary
-		for (int i = size; i <= index; i++) {
-			add(null);
+		try {
+			int size = getList().size();
+			// Expand list size, if necessary
+			for (int i = size; i <= index; i++) {
+				add(getInstantiatingClass().newInstance());
+			}
+			return (getList().get(index));
 		}
-		Object object = getList().get(index);
-		if (object == null) {
-			try {
-				object = getInstantiatingClass().newInstance();
-				set(index, object);
-			}
-			catch (IllegalAccessException e) {
-				throw new IllegalArgumentException("Cannot instantiate list item because instantiatingClass is invalid: " + e.getMessage());
-			}
-			catch (InstantiationException e) {
-				throw new IllegalArgumentException("Cannot instantiate list item because instantiatingClass is invalid: " + e.getMessage());
-			}
+		catch (IllegalAccessException e) {
+			throw new IllegalArgumentException("Cannot instantiate list item because instantiatingClass is invalid: " + e.getMessage());
 		}
-		return (object);
+		catch (InstantiationException e) {
+			throw new IllegalArgumentException("Cannot instantiate list item because instantiatingClass is invalid: " + e.getMessage());
+		}
 	}
     
 	/**
