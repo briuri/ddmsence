@@ -148,6 +148,7 @@
 <p>This experimental tool uses the DDMSence library to validate <b>Unclassified</b> DDMS 2.0 and 3.0 records. Records 
 can be submitted by pasting XML text, uploading a file, or referencing a URL. Information submitted through this tool is not retained
 on the server.</p>
+<p>Starred fields (<b>*</b>) are required.</p>
 
 <form:form id="record" commandName="record" method="post" enctype="multipart/form-data">
 	<form:hidden path="type" />
@@ -168,15 +169,15 @@ on the server.</p>
 	</span><br />
 	
 	<c:if test="${type eq 'text'}">
-		<label id="lstringRecord" for="stringRecord">DDMS Record:</label>
+		<label id="lstringRecord" for="stringRecord">DDMS Record: *</label>
 		<form:textarea path="stringRecord" rows="16" cols="80" />
 	</c:if>
 	<c:if test="${type eq 'file'}">
-		<label id="lfile" for="file">File:</label>
+		<label id="lfile" for="file">File: *</label>
 		<input size="50" type="file" name="upload" />
 	</c:if>
 	<c:if test="${type eq 'url'}">
-		<label id="lurl" for="url">DDMS URL:</label>
+		<label id="lurl" for="url">DDMS URL: *</label>
 		http://<form:input path="url" size="50" maxlength="2000" />
 	</c:if>
 	<br />
