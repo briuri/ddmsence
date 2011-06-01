@@ -80,8 +80,9 @@ public class LazyList implements List, Serializable {
      * @throws IllegalArgumentException if either the list or class are null
      */
     public LazyList(List<?> list, Class instantiatingClass) {
-    	Util.requireValue("list", list);
     	Util.requireValue("instantiatingClass", instantiatingClass);
+    	if (list == null)
+    		list = new ArrayList();
     	_list = list;
     	_class = instantiatingClass;
     }
