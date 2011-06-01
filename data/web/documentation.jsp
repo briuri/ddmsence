@@ -679,9 +679,16 @@ instead of "ICISM", you would set the "icism.prefix" property with a custom valu
 <p>This section contains links to DDMS-related research and personal experimentation which may be useful to DDMSence in the future.</p>
 
 <ul>
+	<li><a href="validator.uri">DDMS Validator</a>: An experimental tool to validate DDMS resources.</li>
 	<li><a href="relationalTables.jsp">Relational Database Model for DDMS</a>: A mapping of the DDMS specification to relational database tables (database-agnostic).</li>
-	<li><a href="schematron.jsp">Schematron Implementation for DDMS</a>: An attempt to implement some of the more complex rules in the DDMS specification with ISO Schematron.</li>
 </ul> 
+
+<h4>Works in Progress</h4>
+
+<ul>
+	<li><b>DDMS Builder</b></a>: An experimental tool to build DDMS resources with a form-based UI.</li>
+	<li><a href="schematron.jsp">Schematron Implementation for DDMS</a>: An attempt to implement some of the more complex rules in the DDMS specification with ISO Schematron.</li>
+</ul>
 
 <a name="contributors"></a><h3>Contributors</h3>
 

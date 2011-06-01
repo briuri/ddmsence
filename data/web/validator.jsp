@@ -192,28 +192,274 @@ on the server.</p>
 
 <h3>How This Works</h3>
 
-<p>The source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework. However, the basic concepts are very simple:</p>
+<p>Compilable source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework. However, all of the pieces you need create 
+a similar web application are shown below. A basic understanding of <a href="http://en.wikipedia.org/wiki/Spring_Framework#Model-view-controller_framework">Spring MVC</a> 
+will be necessary to understand the code.</p>
 
-<ul>
-	<li>After submitting this form, a Spring MVC controller checks to see whether the DDMS Resource is coming in as text, an uploaded file, or a URL.
-	Files and URLs are loaded and converted into text.</li>
-	<li>The Resource is now stored in a String containing the raw XML, <code>stringRepresentation</code>, and the following Java code is run:</li>
-	
-<pre class="brush: java">Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
-try {
-   Resource resource = new DDMSReader().getDDMSResource(stringRepresentation);
-   model.put("warnings", resource.getValidationWarnings());
-}
-catch (InvalidDDMSException e) {
-   ValidationMessage message = ValidationMessage.newError(e.getMessage(), e.getLocator());
-   model.put("error", message);
+<ol>
+	<li>A Spring configuration file maps the URI, <code>validator.uri</code> to the appropriate Spring controller. A <code>multipartResolver</code> bean
+	is used to handle file uploads. Here is the relevant excerpt from this server's configuration file:</li>
+<pre class="brush: xml; collapse: true">
+&lt;bean id="multipartResolver" class="org.springframework.web.multipart.cos.CosMultipartResolver"&gt;
+   &lt;property name="maxUploadSize" value="50000" /&gt;
+&lt;/bean&gt;
+&lt;bean id="validatorControl" class="buri.web.ddmsence.ValidatorControl" /&gt;
+&lt;bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"&gt;
+   &lt;property name="urlMap"&gt;
+      &lt;map&gt;
+         &lt;entry key="validator.uri" value-ref="validatorControl" /&gt;
+      &lt;/map&gt;
+   &lt;/property&gt;
+&lt;/bean&gt;</pre>
+
+	<li>A Spring controller, ValidatorControl, handles incoming requests. The <code>type</code> parameter is used to determine what sort of form should be displayed -- changing
+	the "Record Location" drop-down selection redraws the form.</li>
+<pre class="brush: java; collapse: true">package buri.web.ddmsence;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.io.Reader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.validation.BindException;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import buri.app.util.Util;
+import buri.ddmsence.ddms.IDDMSComponent;
+import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.Resource;
+import buri.ddmsence.ddms.ValidationMessage;
+import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.util.DDMSReader;
+
+/**
+ * Controller class for validating DDMS Records
+ *
+ * @author	Brian Uri!
+ */
+public class ValidatorControl extends SimpleFormController {
+
+   protected final Log logger = LogFactory.getLog(getClass());
+               
+    /**
+     * Constructor
+     */
+    public ValidatorControl() {
+       setCommandName("record");
+       setCommandClass(ValidatorRecord.class);
+       setFormView("validator");
+    }
+    
+    /**
+     * @see SimpleFormController#formBackingObject(HttpServletRequest)
+     */
+    protected Object formBackingObject(HttpServletRequest request) throws Exception {
+       String type = request.getParameter("type");
+       return (new ValidatorRecord(type));
+    }    
+    
+    /**
+     * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest)
+     */
+    public Map&lt;String, Object&gt; referenceData(HttpServletRequest request) throws Exception {
+       String type = request.getParameter("type");
+       if (Util.isEmpty(type))
+          type = ValidatorRecord.DEFAULT_TYPE;
+       Map&lt;String, Object&gt; data = new HashMap&lt;String, Object&gt;();
+       data.put("type", type);
+       return (data);
+    }  
+    
+    /**
+     * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object, org.springframework.validation.BindException)
+     */
+   protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
+       ValidatorRecord record = (ValidatorRecord) command;
+       Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
+       String stringRepresentation = null;
+      try {
+         if (ValidatorRecord.TYPE_TEXT.equals(record.getType())) {
+            stringRepresentation = record.getStringRecord();
+         }
+         else if (ValidatorRecord.TYPE_FILE.equals(record.getType())) {
+            stringRepresentation = readStream(getFile(request));
+         }
+         else if (ValidatorRecord.TYPE_URL.equals(record.getType())) {
+            String fullUrl = "http://" + record.getUrl();
+            try {
+               URL url = new URL(fullUrl);
+               URLConnection uc = url.openConnection();
+               stringRepresentation = readStream(new BufferedReader(new InputStreamReader(uc.getInputStream())));
+            }
+            catch (IOException e) {
+               throw new IOException("Could not connect to URL: " + fullUrl);
+            }
+         }         
+         model.put("record", stringRepresentation);
+         Resource resource = new DDMSReader().getDDMSResource(stringRepresentation);
+         if (isUnclassified(resource)) {
+            model.put("warnings", resource.getValidationWarnings());
+         } else {
+            model.remove("record");
+            throw new InvalidDDMSException("This tool can only be used on Unclassified data.");
+         }
+      }
+        catch (InvalidDDMSException e) {
+           ValidationMessage message = ValidationMessage.newError(e.getMessage(), e.getLocator());
+            model.put("error", message);
+         }
+         catch (Exception e) {
+            ValidationMessage message = ValidationMessage.newError(e.getMessage(), null);
+            model.put("error", message);
+         }
+       return (new ModelAndView("validatorResult", "model", model));
+    }
+    
+   /**
+    * Converts the contents of a stream into a String
+    * 
+    * @param streamReader the reader around the original input stream
+    * @return a String
+    * @throws IOException
+    */
+   private String readStream(Reader streamReader) throws IOException {
+      LineNumberReader reader = new LineNumberReader(streamReader);
+      StringBuffer buffer = new StringBuffer();
+      String currentLine = reader.readLine();
+      while (currentLine != null) {
+         buffer.append(currentLine).append("\n");
+         currentLine = reader.readLine();
+      }
+      return (buffer.toString());
+   }
+    /**
+     * Gets the uploaded file from the request if it exists and wraps a reader around it.
+     * 
+     * @param request 
+     * @throws IOException
+     */
+    private Reader getFile(HttpServletRequest request) throws IOException {
+       if (request instanceof MultipartHttpServletRequest) {
+          MultipartHttpServletRequest fileRequest = (MultipartHttpServletRequest) request;
+          MultipartFile file = fileRequest.getFile("upload");
+          if (!file.isEmpty()) {
+             return (new InputStreamReader(new BufferedInputStream(file.getInputStream())));
+          }
+       }       
+       return (null);
+    }
+    
+    /**
+     * Prevents classified data from being validated here.
+     * 
+     * @param resource the DDMS Resource
+     */
+    private boolean isUnclassified(Resource resource) throws InvalidDDMSException {
+       Set&lt;SecurityAttributes&gt; allAttributes = new HashSet&lt;SecurityAttributes&gt;();
+       allAttributes.add(resource.getSecurityAttributes());
+      for (IDDMSComponent component : resource.getTopLevelComponents()) {
+         if (component.getSecurityAttributes() != null)
+            allAttributes.add(component.getSecurityAttributes());
+      }
+      for (SecurityAttributes attr : allAttributes) {
+         if (!"U".equals(attr.getClassification()) && !"".equals(attr.getClassification()))
+            return (false);
+      }
+      return (true);
+    }
 }</pre>
+	<li>The ValidatorControl starts by creating a new form bean, ValidatorRecord, in the <code>formBackingObject()</code> method. 
+	This is a simple data class which supports the form you see on this page.</li>
+<pre class="brush: java; collapse: true">package buri.web.ddmsence;
 
-	<li>The DDMSReader method, <a href="/docs/buri/ddmsence/util/DDMSReader.html"><code>getDDMSResource()</code></a> attempts to build the entire DDMS Resource. It will fail immediately with an <code>InvalidDDMSException</code> if the Resource is invalid.</li>
-	<li>If the constructor succeeds, the Resource is proven to be valid, although there may still be warnings.</li>
-	<li>The Map containing errors or warnings, <code>model</code>, is then used to render the Validation Results page.</li>
-</ul>	
+import buri.app.util.Util;
 
+/**
+ * Form bean for online DDMS validation
+ *
+ * @author	Brian Uri!
+ */
+public class ValidatorRecord {
+	
+   public static final String TYPE_TEXT = "text";
+   public static final String TYPE_FILE = "file";
+   public static final String TYPE_URL = "url";   
+   public static final String DEFAULT_TYPE = TYPE_TEXT;
+   
+
+   private String _type;
+   private String _stringRecord;
+   private String _url;
+
+   /**
+    * Constructor
+    * @param type the type of record being submitted.
+    */
+   public ValidatorRecord(String type) {
+      if (Util.isEmpty(type))
+         type = DEFAULT_TYPE;
+      _type = type;
+   }
+   
+   /**
+    * Accessor for the string version of the record.
+    */
+   public String getStringRecord() {
+      return _stringRecord;
+   }
+
+   /**
+    * Accessor for the string version of the record.
+    */
+   public void setStringRecord(String stringRecord) {
+      _stringRecord = stringRecord;
+   }
+
+   /**
+    * Accessor for the type (file, url, text)
+    */
+   public String getType() {
+      return _type;
+   }
+
+   /**
+    * Accessor for the url
+    */
+   public String getUrl() {
+      return _url;
+   }
+
+   /**
+    * Accessor for the url
+    */
+   public void setUrl(String url) {
+      _url = url;
+   }
+}</pre>
+	<li>The <a href="http://ddmsence.googlecode.com/svn/trunk/data/web/validator.jsp">initial form view</a> is rendered. This is the page you are currently viewing. The JSP file also contains the JavaScript code used for client-side validation (with jQuery).</li>
+	<li>Once the form has been filled in and submitted, the <code>onSubmit()</code> method of the ValidatorControl is called. This method checks to see whether the DDMS 
+	Resource is coming in as text, an uploaded file, or a URL. Files and URLs are loaded and converted into text.</li>
+	<li>The DDMSReader method, <a href="/docs/buri/ddmsence/util/DDMSReader.html"><code>getDDMSResource()</code></a> attempts to build the entire DDMS Resource. 
+	It will fail immediately with an <code>InvalidDDMSException</code> if the Resource is invalid.</li>
+	<li>If the constructor succeeds, the Resource is proven to be valid, although there may still be warnings. The Map containing errors or warnings, <code>model</code>, 
+	is then used to render the <a href="http://ddmsence.googlecode.com/svn/trunk/data/web/validatorResult.jsp">Validation Results page</a>.</li>
+</ol>	
 
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>
