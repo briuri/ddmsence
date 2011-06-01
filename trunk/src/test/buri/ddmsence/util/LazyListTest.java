@@ -160,7 +160,14 @@ public class LazyListTest extends TestCase {
 		Dates.Builder builder = (Dates.Builder) list.get(3);
 		assertNotNull(builder);
 		assertEquals(4, list.size());
-		
-		
 	}		
+	
+	public void testNullList() {
+		try {
+			new LazyList(null, String.class);
+		}
+		catch (NullPointerException e) {
+			fail("Should not have thrown NPE.");
+		}
+	}
 }
