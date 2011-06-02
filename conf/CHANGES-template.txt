@@ -9,8 +9,13 @@ Copyright 2010 - 2011 by Brian Uri!
 Release History
 ===========================================================================
 
+v 1.9.1 (06/02/2011):
+This stable patch release corrects a few minor bugs in the Component Builder 
+framework (Issue #76 through #78).
+
 v 1.9.0 (05/24/2011):
-This stable release adds improvements to the Component Builder framework (Issue #74 and #75).
+This stable release adds improvements to the Component Builder framework (Issue 
+#74 and #75).
 
 v 1.8.0 (05/13/2011):
 This stable release adds mutable Builders to all DDMS components (Issue #68).
