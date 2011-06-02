@@ -199,8 +199,7 @@ will be necessary to understand the code.</p>
 <ol>
 	<li>A Spring configuration file maps the URI, <code>validator.uri</code> to the appropriate Spring controller. A <code>multipartResolver</code> bean
 	is used to handle file uploads. Here is the relevant excerpt from this server's configuration file:</li>
-<pre class="brush: xml; collapse: true">
-&lt;bean id="multipartResolver" class="org.springframework.web.multipart.cos.CosMultipartResolver"&gt;
+<pre class="brush: xml; collapse: true">&lt;bean id="multipartResolver" class="org.springframework.web.multipart.cos.CosMultipartResolver"&gt;
    &lt;property name="maxUploadSize" value="50000" /&gt;
 &lt;/bean&gt;
 &lt;bean id="validatorControl" class="buri.web.ddmsence.ValidatorControl" /&gt;

@@ -81,7 +81,7 @@ form {
 } 
 .formElement {
 	display: block;
-	margin-left: 120px;
+	margin-left: 200px;
 	margin-bottom: 3px;
 }
 h1 {
@@ -128,13 +128,22 @@ label {
 	float: left;
 	font-weight: bold;
 	margin-bottom: 3px;
-	width: 120px; 	
-}	
+	width: 200px; 	
+}
+label.builderComponent {
+	background-color: #ccd3d5;
+	font-size: 10pt;
+	padding: 2px;
+	width: 100%;
+}
+label.builderField {
+	margin-left: 6px;	
+}
 label.error {
 	color: #ea5200;
 	float: none;
 	font-size: 8pt;
-	margin-left: 120px;	
+	margin-left: 206px;	
 	width: auto;
 }
 #menu {
