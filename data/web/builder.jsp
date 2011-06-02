@@ -344,6 +344,7 @@ public class BuilderControl extends SimpleFormController {
           ByteArrayOutputStream os = new ByteArrayOutputStream();
          Serializer serializer = new Serializer(os, "ISO-8859-1");
          serializer.setIndent(3);
+         serializer.setMaxLength(120);
          serializer.write(document);          
           model.put("xml", os.toString());
          model.put("warnings", resource.getValidationWarnings());
