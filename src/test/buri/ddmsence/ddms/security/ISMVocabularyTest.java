@@ -47,7 +47,13 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 	
 	public void testBadKey() {
 		try {
-			ISMVocabulary.enumContains("unknownKey", "TEST");
+			ISMVocabulary.getEnumerationTokens("unknownKey");
+			fail("Allowed invalid key.");
+		} catch (IllegalArgumentException e) {
+			// Good
+		}
+		try {
+			ISMVocabulary.getEnumerationPatterns("unknownKey");
 			fail("Allowed invalid key.");
 		} catch (IllegalArgumentException e) {
 			// Good
