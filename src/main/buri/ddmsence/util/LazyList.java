@@ -81,9 +81,7 @@ public class LazyList implements List, Serializable {
      */
     public LazyList(List<?> list, Class instantiatingClass) {
     	Util.requireValue("instantiatingClass", instantiatingClass);
-    	if (list == null)
-    		list = new ArrayList();
-    	_list = list;
+    	_list = (list == null) ? new ArrayList() : new ArrayList(list);
     	_class = instantiatingClass;
     }
     
