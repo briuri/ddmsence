@@ -24,6 +24,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -56,6 +57,18 @@ public class LazyListTest extends TestCase {
 	    LazyList unserializedList = (LazyList) ois.readObject();
 	    assertEquals(list.size(), unserializedList.size());
 	    assertEquals(((Dates.Builder) (list.get(0))).getCreated(), ((Dates.Builder) (unserializedList.get(0))).getCreated());
+	}
+	
+	public void testUnmodifiableList() {
+		List<String> list = new ArrayList<String>();
+		list.add("Test");
+		LazyList lazyList = new LazyList(Collections.unmodifiableList(list), String.class);
+		try {
+			lazyList.set(0, "Test2");
+		}
+		catch (UnsupportedOperationException e) {
+			fail("Should have unwrapped the unmodifiable list.");
+		}
 	}
 	
 	public void testObjectMethods() {
