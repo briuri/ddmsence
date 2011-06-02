@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.security;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -246,6 +247,38 @@ public class ISMVocabulary {
 	}
 	
 	/**
+	 * Returns an unmodifiable set of controlled vocabulary tokens.
+	 * 
+	 * @param enumerationKey the key of the enumeration
+	 * @return an unmodifiable set of Strings
+	 * @throws IllegalArgumentException if the key does not match a controlled vocabulary
+	 */
+	public static Set<String> getEnumerationTokens(String enumerationKey) {
+		Set<String> vocabulary = ENUM_TOKENS.get(enumerationKey);
+		if (vocabulary == null) {
+			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: "
+				+ enumerationKey);
+		}
+		return (Collections.unmodifiableSet(vocabulary));
+	}
+	
+	/**
+	 * Returns an unmodifiable set of controlled vocabulary regular expression patterns.
+	 * 
+	 * @param enumerationKey the key of the enumeration
+	 * @return an unmodifiable set of Strings
+	 * @throws IllegalArgumentException if the key does not match a controlled vocabulary
+	 */
+	public static Set<String> getEnumerationPatterns(String enumerationKey) {
+		Set<String> vocabulary = ENUM_PATTERNS.get(enumerationKey);
+		if (vocabulary == null) {
+			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: "
+				+ enumerationKey);
+		}
+		return (Collections.unmodifiableSet(vocabulary));
+	}
+	
+	/**
 	 * Checks if a value exists in the controlled vocabulary identified by the key. If the value does not match the
 	 * tokens, but the CVE also contains patterns, the regular expression pattern is checked next. If neither tokens or
 	 * patterns returns a match, return false.
@@ -258,15 +291,9 @@ public class ISMVocabulary {
 	public static boolean enumContains(String enumerationKey, String value) {
 		Util.requireValue("key", enumerationKey);
 		updateEnumLocation();
-		Set<String> vocabulary = ENUM_TOKENS.get(enumerationKey);
-		if (vocabulary == null) {
-			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: "
-				+ enumerationKey);
-		}
-		boolean isValidToken = vocabulary.contains(value);
+		boolean isValidToken = getEnumerationTokens(enumerationKey).contains(value);
 		if (!isValidToken) {
-			Set<String> patterns = ENUM_PATTERNS.get(enumerationKey);
-			for (String patternString : patterns) {
+			for (String patternString : getEnumerationPatterns(enumerationKey)) {
 	            Pattern pattern = Pattern.compile(patternString);
                 Matcher matcher = pattern.matcher(value);
                 if (matcher.matches()) {
