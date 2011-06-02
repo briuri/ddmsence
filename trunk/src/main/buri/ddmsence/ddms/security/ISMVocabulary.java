@@ -254,6 +254,7 @@ public class ISMVocabulary {
 	 * @throws IllegalArgumentException if the key does not match a controlled vocabulary
 	 */
 	public static Set<String> getEnumerationTokens(String enumerationKey) {
+		updateEnumLocation();
 		Set<String> vocabulary = ENUM_TOKENS.get(enumerationKey);
 		if (vocabulary == null) {
 			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: "
@@ -270,6 +271,7 @@ public class ISMVocabulary {
 	 * @throws IllegalArgumentException if the key does not match a controlled vocabulary
 	 */
 	public static Set<String> getEnumerationPatterns(String enumerationKey) {
+		updateEnumLocation();
 		Set<String> vocabulary = ENUM_PATTERNS.get(enumerationKey);
 		if (vocabulary == null) {
 			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: "
@@ -290,7 +292,6 @@ public class ISMVocabulary {
 	 */
 	public static boolean enumContains(String enumerationKey, String value) {
 		Util.requireValue("key", enumerationKey);
-		updateEnumLocation();
 		boolean isValidToken = getEnumerationTokens(enumerationKey).contains(value);
 		if (!isValidToken) {
 			for (String patternString : getEnumerationPatterns(enumerationKey)) {
