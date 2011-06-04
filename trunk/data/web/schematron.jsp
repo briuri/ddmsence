@@ -68,13 +68,13 @@ of these rules are always appreciated.</p>
 
 <pre class="brush: xml">&lt;iso:pattern id="Extent Constraints"&gt;
     &lt;iso:rule context="/ddms:format/ddms:Media/ddms:extent"&gt;
-       &lt;iso:assert test="(count(@ddms:value) = 1 and count(@ddms:qualifier) = 1) or count(@ddms:value) = 0)"&gt;
+       &lt;iso:assert test="not(@ddms:value) or (@ddms:qualifier and @ddms:value)"&gt;
           If a ddms:extent element has a value, it must also have a qualifier.
        &lt;/iso:assert&gt;
        &lt;iso:report test="count(@*) = 0"&gt;
           The ddms:extent element does not have any attributes.
        &lt;/iso:report&gt;
-       &lt;iso:report test="count(@ddms:value) = 0 and count(@ddms:qualifier) = 1"&gt;
+       &lt;iso:report test="not(@ddms:value) and @ddms:qualifier"&gt;
           The ddms:extent element has a qualifier but no value.
        &lt;/iso:report&gt;
     &lt;/iso:rule&gt;
@@ -84,7 +84,7 @@ of these rules are always appreciated.</p>
 
 <pre class="brush: xml">&lt;iso:pattern id="GeographicIdentifier Constraints"&gt;
     &lt;iso:rule context="//ddms:geographicIdentifier"&gt;
-       &lt;iso:assert test="(count(ddms:facilityIdentifier) = 1 and count(*) = 1) or (count(ddms:facilityIdentifier) = 0)"&gt;
+       &lt;iso:assert test="(ddms:facilityIdentifier and count(*) = 1) or not(ddms:facilityIdentifier)"&gt;
           A ddms:facilityIdentifier element cannot be used with any sibling elements.
        &lt;/iso:assert&gt;
     &lt;/iso:rule&gt;
@@ -94,7 +94,7 @@ of these rules are always appreciated.</p>
 
 <pre class="brush: xml">&lt;iso:pattern id="GeospatialCoverage Constraints"&gt;
     &lt;iso:rule context="/ddms:geospatialCoverage/ddms:GeospatialExtent"&gt;
-       &lt;iso:assert test="(count(ddms:geographicIdentifier/ddms:facilityIdentifier) = 1 and count(*) = 1) or (count(ddms:geographicIdentifier/ddms:facilityIdentifier) = 0)"&gt;
+       &lt;iso:assert test="(ddms:geographicIdentifier/ddms:facilityIdentifier and count(*) = 1) or not(ddms:geographicIdentifier/ddms:facilityIdentifier)"&gt;
           A ddms:geospatialCoverage element which contains a facilityIdentifier-based geographicIdentifier cannot contain any other child elements.
        &lt;/iso:assert&gt;
     &lt;/iso:rule&gt;
@@ -104,13 +104,13 @@ of these rules are always appreciated.</p>
 
 <pre class="brush: xml">&lt;iso:pattern id="Language Constraints"&gt;
     &lt;iso:rule context="/ddms:language"&gt;
-       &lt;iso:assert test="(count(@ddms:value) = 1 and count(@ddms:qualifier) = 1) or count(@ddms:value) = 0)"&gt;
+       &lt;iso:assert test="not(@ddms:value) or (@ddms:qualifier and @ddms:value)"&gt;
           If a ddms:language element has a value, it must also have a qualifier.
        &lt;/iso:assert&gt;
        &lt;iso:report test="count(@*) = 0"&gt;
           A ddms:language element does not have any attributes.
        &lt;/iso:report&gt;
-       &lt;iso:report test="count(@ddms:value) = 0 and count(@ddms:qualifier) = 1"&gt;
+       &lt;iso:report test="not(@ddms:value) and @ddms:qualifier"&gt;
           A ddms:language element has a qualifier but no value.
        &lt;/iso:report&gt;
     &lt;/iso:rule&gt;
@@ -131,7 +131,7 @@ Assert: The second coordinate is a valid longitude.</pre>
 
 <pre class="brush: xml">&lt;iso:pattern id="PostalAddress Constraints"&gt;
     &lt;iso:rule context="//ddms:postalAddress"&gt;
-      &lt;iso:assert test="(count(ddms:state) = 1 and count(ddms:province) = 0) or (count(ddms:state) = 0 and count(ddms:province) = 1)"&gt;
+      &lt;iso:assert test="(ddms:state and not(ddms:province)) or (not(ddms:state) and ddms:province)"&gt;
           A ddms:postalAddress can have either a state or a province, but not both.
        &lt;/iso:assert&gt;   
        &lt;iso:report test="count(*) = 0"&gt;
@@ -163,13 +163,13 @@ Report: 1 or more categories have the same value.</pre>
 
 <pre class="brush: xml">&lt;iso:pattern id="Type Constraints"&gt;
     &lt;iso:rule context="/ddms:type"&gt;
-       &lt;iso:assert test="(count(@ddms:value) = 1 and count(@ddms:qualifier) = 1) or count(@ddms:value) = 0)"&gt;
+       &lt;iso:assert test="not(@ddms:value) or (@ddms:qualifier and @ddms:value)"&gt;
           If a ddms:type element has a value, it must also have a qualifier.
        &lt;/iso:assert&gt;
        &lt;iso:report test="count(@*) = 0"&gt;
           A ddms:type element does not have any attributes.
        &lt;/iso:report&gt;
-       &lt;iso:report test="count(@ddms:value) = 0 and count(@ddms:qualifier) = 1"&gt;
+       &lt;iso:report test="not(@ddms:value) and @ddms:qualifier"&gt;
           A ddms:type element has a qualifier but no value.
        &lt;/iso:report&gt;
     &lt;/iso:rule&gt;
@@ -187,7 +187,7 @@ Assert: If a MaxVerticalExtent has unitOfMeasure or datum set, its values match 
        &lt;iso:report test="count(@*) = 0"&gt;
           A ddms:virtualCoverage element does not have any attributes.
        &lt;/iso:report&gt;
-       &lt;iso:report test="count(@ddms:address) = 1 and count(@ddms:protocol) = 0"&gt;
+       &lt;iso:report test="@ddms:address and not(@ddms:protocol)"&gt;
           A ddms:virtualCoverage element has an address but no protocol.
        &lt;/iso:report&gt;
     &lt;/iso:rule&gt;
