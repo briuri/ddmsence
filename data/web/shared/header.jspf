@@ -23,8 +23,7 @@
 		<a class="menu" href="license.jsp">License</a> |
 		<a class="menu" href="http://code.google.com/p/ddmsence/issues/list">Issue Tracking</a> <img src="./images/external.png" width="10" height="10" title="Google Project Hosting" /> |
 		<a class="menu" href="http://groups.google.com/group/ddmsence">Discussion</a> <img src="./images/external.png" width="10" height="10" title="Google Group" /> |
-		<a class="menu" href="validator.uri">DDMS Validator</a> |
-		<a class="menu" href="builder.uri">DDMS Builder</a>
+		<a class="menu" href="validator.uri">DDMS Validator</a>
 	</div>
 	<div id="page">
 		<div class="contentPane">
