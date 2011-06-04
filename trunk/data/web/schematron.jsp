@@ -7,78 +7,191 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 2/2/2011 at 11:26</p>
+<p align="right"><b>Last Update:</b> 6/4/2011 at 13:02</p>
 
 <a name="top"></a><h1>Schematron Implementation for DDMS</h1>
 
-<p>This document is an attempt to map some of the more complex DDMS conditions to a Schematron file. Where an XML Schema can be used to validate correctness and syntax,
-a Schematron file can more easily address rules related to content and dependencies between various elements and attributes. The rules I identify here
-may duplicate some of the checks that DDMSence already does.</p> 
+<p>This document is an attempt to map some of the more complex DDMS conditions to a Schematron file. Where an XML Schema can be used 
+to validate correctness and syntax, a Schematron file can more easily address rules related to content and dependencies between 
+various elements and attributes. The rules I identify here may duplicate some of the checks that DDMSence already does.</p> 
 
-<p>This document is heavily under construction, and I will work on it as I have time. When it is "finalized", I'll post a notification on the front page,
-as well as the discussion area.</p>
+<p>Schematron rules must be placed in a valid schema template which identifies any XML namespaces that the XML instance might employ.</p>
 
-<pre>
-<b>Cases to consider:</b>
-ddms:boundingBox
-Assert: westBL and eastBL must be between -180 and 180 degrees.
-Assert: southBL and northBL must be between -90 and 90 degrees.
+<pre class="brush: xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;iso:schema   
+   xmlns="http://purl.oclc.org/dsdl/schematron"
+   xmlns:iso="http://purl.oclc.org/dsdl/schematron"&gt;
+   
+   &lt;iso:title&gt;Test ISO Schematron File for DDMSence (DDMS 3.0)&lt;/iso:title&gt;
+   &lt;iso:ns prefix='ddms' uri='http://metadata.dod.mil/mdr/ns/DDMS/3.0/' /&gt;
+   &lt;iso:ns prefix='ICISM' uri='urn:us:gov:ic:ism' /&gt;
+   &lt;iso:ns prefix='gml' uri='http://www.opengis.net/gml/3.2' /&gt;
+   &lt;iso:ns prefix='xlink' uri='http://www.w3.org/1999/xlink' /&gt;
 
-ddms:dates
-Report: A completely empty ddms:dates element was found.
+   &lt;!-- Patterns go here. --&gt;
+&lt;/iso:schema&gt;</pre>   
 
-ddms:extent
-Report: A qualifier has been set without an accompanying value attribute.
-Report: A completely empty ddms:extent element was found.
+<p>This document is heavily under construction, and I will work on it as I have time. When it is "finalized", I'll post a notification 
+on the front page, as well as the discussion area. I am just getting started with XPath, so suggestions on simplifying the syntax
+of these rules are always appreciated.</p>
 
-ddms:geographicIdentifier
-Assert: If facilityIdentifier is used, no other components can exist.
+<h4>Bounding Box Constraints</h4>
 
-ddms:geospatialCoverage
-Assert: If a geographicIdentifer is used and contains a facilityIdentifier, no other subcomponents can be used.
+<pre class="brush: xml">&lt;iso:pattern id="Bounding Box Constraints"&gt;
+    &lt;iso:rule context="/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:boundingBox"&gt;
+       &lt;iso:assert test="ddms:WestBL &amp;gt;= -180 and ddms:WestBL &amp;lt;= 180"&gt;
+          WestBL must be between -180 and 180 degrees.
+       &lt;/iso:assert&gt;
+       &lt;iso:assert test="ddms:EastBL &amp;gt;= -180 and ddms:EastBL &amp;lt;= 180"&gt;
+          EastBL must be between -180 and 180 degrees.
+       &lt;/iso:assert&gt;
+       &lt;iso:assert test="ddms:SouthBL &amp;gt;= -90 and ddms:SouthBL &amp;lt;= 90"&gt;
+          SouthBL must be between -90 and 90 degrees.
+       &lt;/iso:assert&gt;
+       &lt;iso:assert test="ddms:NorthBL &amp;gt;= -90 and ddms:EastBL &amp;lt;= 90"&gt;
+          NorthBL must be between -90 and 90 degrees.
+       &lt;/iso:assert&gt;
+    &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
 
-ddms:language
-Report: A qualifier has been set without an accompanying value attribute.
-Report: Neither a qualifier nor a value was set on this language.
+<h4>Dates Constraints</h4>
 
-ddms:postalAddress
-Assert: Either a state or a province can exist, but not both.
-Report: A completely empty postalAddress element was used.
+<pre class="brush: xml">&lt;iso:pattern id="Dates Constraints"&gt;
+    &lt;iso:rule context="/ddms:dates"&gt;
+       &lt;iso:report test="count(@*) = 0"&gt;
+          The ddms:dates element does not have any date attributes.
+       &lt;/iso:report&gt;
+    &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
 
-ddms:source
-Report: A completely empty ddms:source element was found.
+<h4>Extent Constraints</h4>
 
-ddms:subjectCoverage
-Report: 1 or more keywords have the same value.
-Report: 1 or more categories have the same value.
+<pre class="brush: xml">&lt;iso:pattern id="Extent Constraints"&gt;
+    &lt;iso:rule context="/ddms:format/ddms:Media/ddms:extent"&gt;
+       &lt;iso:assert test="(count(@ddms:value) = 1 and count(@ddms:qualifier) = 1) or count(@ddms:value) = 0)"&gt;
+          If a ddms:extent element has a value, it must also have a qualifier.
+       &lt;/iso:assert&gt;
+       &lt;iso:report test="count(@*) = 0"&gt;
+          The ddms:extent element does not have any attributes.
+       &lt;/iso:report&gt;
+       &lt;iso:report test="count(@ddms:value) = 0 and count(@ddms:qualifier) = 1"&gt;
+          The ddms:extent element has a qualifier but no value.
+       &lt;/iso:report&gt;
+    &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
 
-ddms:type
-Report: A qualifier has been set without an accompanying value attribute.
-Report: Neither a qualifier nor a value was set on this type.
+<h4>GeographicIdentifier Constraints</h4>
 
-ddms:verticalExtent
-Assert: If a MinVerticalExtent has unitOfMeasure or datum set, its values match the parent (verticalExtent) attribute values of the same name.
-Assert: If a MaxVerticalExtent has unitOfMeasure or datum set, its values match the parent (verticalExtent) attribute values of the same name.
+<pre class="brush: xml">&lt;iso:pattern id="GeographicIdentifier Constraints"&gt;
+    &lt;iso:rule context="//ddms:geographicIdentifier"&gt;
+       &lt;iso:assert test="(count(ddms:facilityIdentifier) = 1 and count(*) = 1) or (count(ddms:facilityIdentifier) = 0)"&gt;
+          A ddms:facilityIdentifier element cannot be used with any sibling elements.
+       &lt;/iso:assert&gt;
+    &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
 
-ddms:virtualCoverage?
-Assert: If an address is provided, the protocol is required.
-Report: A completely empty ddms:virtualCoverage element was found.
+<h4>GeospatialCoverage Constraints</h4>
 
-gml:Point
-Assert: If the nested gml:pos has an srsName, it matches the srsName of this Point.
+<pre class="brush: xml">&lt;iso:pattern id="GeospatialCoverage Constraints"&gt;
+    &lt;iso:rule context="/ddms:geospatialCoverage/ddms:GeospatialExtent"&gt;
+       &lt;iso:assert test="(count(ddms:geographicIdentifier/ddms:facilityIdentifier) = 1 and count(*) = 1) or (count(ddms:geographicIdentifier/ddms:facilityIdentifier) = 0)"&gt;
+          A ddms:geospatialCoverage element which contains a facilityIdentifier-based geographicIdentifier cannot contain any other child elements.
+       &lt;/iso:assert&gt;
+    &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
 
-gml:Polygon
-Assert: If the nested gml:pos elements have srsNames, they match the srsName of this Polygon.
-Assert: The first and last gml:pos coordinates must be identical (a closed polygon).
+<h4>Language Constraints</h4>
 
-gml:pos
-Assert: The first coordinate is a valid latitude.
-Assert: The second coordinate is a valid longitude.
+<pre class="brush: xml">&lt;iso:pattern id="Language Constraints"&gt;
+    &lt;iso:rule context="/ddms:language"&gt;
+       &lt;iso:assert test="(count(@ddms:value) = 1 and count(@ddms:qualifier) = 1) or count(@ddms:value) = 0)"&gt;
+          If a ddms:language element has a value, it must also have a qualifier.
+       &lt;/iso:assert&gt;
+       &lt;iso:report test="count(@*) = 0"&gt;
+          A ddms:language element does not have any attributes.
+       &lt;/iso:report&gt;
+       &lt;iso:report test="count(@ddms:value) = 0 and count(@ddms:qualifier) = 1"&gt;
+          A ddms:language element has a qualifier but no value.
+       &lt;/iso:report&gt;
+    &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
 
-SRS attributes on gml elements:
-Assert: If the srsName is omitted, the axisLabels must be omitted.
-Assert: If the axisLabels are omitted, the uomLabels must be omitted.
-</pre>
+<h4>Point Constraints</h4>
+<pre>Assert: If the nested gml:pos has an srsName, it matches the srsName of this Point.</pre>
+
+<h4>Polygon Constraints</h4>
+<pre>Assert: If the nested gml:pos elements have srsNames, they match the srsName of this Polygon.
+Assert: The first and last gml:pos coordinates must be identical (a closed polygon).</pre>
+
+<h4>Position Constraints</h4>
+<pre>Assert: The first coordinate is a valid latitude.
+Assert: The second coordinate is a valid longitude.</pre>
+
+<h4>PostalAddress Constraints</h4>
+
+<pre class="brush: xml">&lt;iso:pattern id="PostalAddress Constraints"&gt;
+    &lt;iso:rule context="//ddms:postalAddress"&gt;
+      &lt;iso:assert test="(count(ddms:state) = 1 and count(ddms:province) = 0) or (count(ddms:state) = 0 and count(ddms:province) = 1)"&gt;
+          A ddms:postalAddress can have either a state or a province, but not both.
+       &lt;/iso:assert&gt;   
+       &lt;iso:report test="count(*) = 0"&gt;
+          A ddms:postalAddress element does not have any child elements.
+       &lt;/iso:report&gt;
+    &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
+
+<h4>Source Constraints</h4>
+
+<pre class="brush: xml">&lt;iso:pattern id="Source Constraints"&gt;
+    &lt;iso:rule context="/ddms:source"&gt;
+       &lt;iso:report test="count(@*) = 0"&gt;
+          A ddms:source element does not have any attributes.
+       &lt;/iso:report&gt;
+    &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
+
+<h4>SRSAttributes Constraints</h4>
+<pre>Assert: If the srsName is omitted, the axisLabels must be omitted.
+Assert: If the axisLabels are omitted, the uomLabels must be omitted.</pre>
+
+<h4>SubjectCoverage Constraints</h4>
+
+<pre>Report: 1 or more keywords have the same value.
+Report: 1 or more categories have the same value.</pre>
+
+<h4>Type Constraints</h4>
+
+<pre class="brush: xml">&lt;iso:pattern id="Type Constraints"&gt;
+    &lt;iso:rule context="/ddms:type"&gt;
+       &lt;iso:assert test="(count(@ddms:value) = 1 and count(@ddms:qualifier) = 1) or count(@ddms:value) = 0)"&gt;
+          If a ddms:type element has a value, it must also have a qualifier.
+       &lt;/iso:assert&gt;
+       &lt;iso:report test="count(@*) = 0"&gt;
+          A ddms:type element does not have any attributes.
+       &lt;/iso:report&gt;
+       &lt;iso:report test="count(@ddms:value) = 0 and count(@ddms:qualifier) = 1"&gt;
+          A ddms:type element has a qualifier but no value.
+       &lt;/iso:report&gt;
+    &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
+
+<h4>Vertical Extent Constraints</h4>
+
+<pre>Assert: If a MinVerticalExtent has unitOfMeasure or datum set, its values match the parent (verticalExtent) attribute values of the same name.
+Assert: If a MaxVerticalExtent has unitOfMeasure or datum set, its values match the parent (verticalExtent) attribute values of the same name.</pre>
+
+<h4>VirtualCoverage Constraints</h4>
+
+<pre class="brush: xml">&lt;iso:pattern id="Empty VirtualCoverage Element or Missing Attributes"&gt;
+    &lt;iso:rule context="/ddms:virtualCoverage"&gt;
+       &lt;iso:report test="count(@*) = 0"&gt;
+          A ddms:virtualCoverage element does not have any attributes.
+       &lt;/iso:report&gt;
+       &lt;iso:report test="count(@ddms:address) = 1 and count(@ddms:protocol) = 0"&gt;
+          A ddms:virtualCoverage element has an address but no protocol.
+       &lt;/iso:report&gt;
+    &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
 
 <p>
 	<a href="#top">Back to Top</a><br>
