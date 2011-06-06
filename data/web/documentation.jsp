@@ -588,8 +588,10 @@ and <a href="http://xom.nu/">XOM</a>, DDMSence can validate a Resource against a
 a list of <a href="/docs/index.html?buri/ddmsence/ddms/ValidationMessage.html">ValidationMessage</a>s. The XSLT transformation makes use of Rick Jelliffe's <a href="http://www.schematron.com/implementation.html">mature implementation</a>
 of ISO Schematron.</p> 
 
-<p>Creating a custom Schematron file is outside the scope of this documentation, but there are plenty of Schematron tutorials available online, and I hope to provide additional samples
-in the future. For now, a very simple example, <code>testPublisherValue.sch</code>, can be found in <code>/data/sample/schematron/</code>. This file examines the surname of person designated as a publisher and fails if the surname is "<b>Uri</b>".</p>
+<p>Creating a custom Schematron file is outside the scope of this documentation, but there are plenty of Schematron tutorials available online, and I have also codified several
+complex rules from the DDMS Specification for example's sake in the <a href="#explorations">Explorations</a> section. A very simple 
+example, <code>testPublisherValue.sch</code>, can be found in <code>/data/sample/schematron/</code>. This file examines the surname of person designated as a publisher and 
+fails if the surname is "<b>Uri</b>".</p>
 
 <pre class="brush: xml">&lt;iso:pattern title="Fixed Surname Value"&gt;
    &lt;iso:rule context="//ddms:publisher/ddms:Person/ddms:surname"&gt;
@@ -626,10 +628,6 @@ this output into ValidationMessages with a locator value taken from the <code>lo
 It is important to notice that 1) Schematron validation can only be performed on Resources which are already valid according to the DDMS specification and 
 2) the results of Schematron validation will <b>never</b> invalidate the DDMSence object model. It is the responsibility of the Schematron user to react 
 to any ValidationMessages.</p>
-
-<p>There are several rules identified in the DDMS Specification which cannot easily be modeled with the official XML Schema. For example's sake,
-I have codified these rules with Schematron in the <a href="#explorations">Explorations</a> section. Please note that DDMSence currently validates these
-rules with Java for slightly increased performance.</p>
 
 <p>Schematron files contain the XML namespaces of any elements you might traverse -- please make sure you use the correct namespaces for the version
 of DDMS you are employing. The sample file, <code>testPublisherValue.sch</code>, is written only for DDMS 3.0.</p>

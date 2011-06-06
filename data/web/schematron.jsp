@@ -13,7 +13,7 @@
 
 <p>This document is an attempt to map some of the more complex DDMS conditions to a Schematron file. Where an XML Schema can be used 
 to validate correctness and syntax, a Schematron file can more easily address rules related to content and dependencies between 
-various elements and attributes. The rules I identify here may duplicate some of the checks that DDMSence already does.</p> 
+various elements and attributes. Please note that DDMSence currently validates these rules with Java instead of Schematron, for slightly increased performance.</p>
 
 <p>Schematron rules must be placed in a valid schema template which identifies any XML namespaces that the XML instance might employ.</p>
 
@@ -201,7 +201,7 @@ various elements and attributes. The rules I identify here may duplicate some of
       &lt;iso:report test="ddms:keyword[./@ddms:value = preceding-sibling::ddms:keyword/@ddms:value]"&gt;
          The ddms:subjectCoverage element contains duplicate keywords.
       &lt;/iso:report&gt;
-      &lt;iso:report   test="ddms:category[./@ddms:qualifier = preceding-sibling::ddms:category/@ddms:qualifier and ./@ddms:code = preceding-sibling::ddms:category/@ddms:code]"&gt;
+      &lt;iso:report test="ddms:category[./@ddms:qualifier = preceding-sibling::ddms:category/@ddms:qualifier and ./@ddms:code = preceding-sibling::ddms:category/@ddms:code]"&gt;
          The ddms:subjectCoverage element contains duplicate categories.
       &lt;/iso:report&gt;
    &lt;/iso:rule&gt;
