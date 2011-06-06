@@ -37,7 +37,7 @@ of these rules are always appreciated.</p>
 
 <h4>Bounding Box Constraints</h4>
 
-<pre class="brush: xml">&lt;iso:pattern id="Bounding Box Constraints"&gt;
+<pre class="brush: xml">&lt;iso:pattern id="BoundingBox_Constraints"&gt;
     &lt;iso:rule context="/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:boundingBox"&gt;
        &lt;iso:assert test="ddms:WestBL &amp;gt;= -180 and ddms:WestBL &amp;lt;= 180"&gt;
           WestBL must be between -180 and 180 degrees.
@@ -56,7 +56,7 @@ of these rules are always appreciated.</p>
 
 <h4>Dates Constraints</h4>
 
-<pre class="brush: xml">&lt;iso:pattern id="Dates Constraints"&gt;
+<pre class="brush: xml">&lt;iso:pattern id="Dates_Constraints"&gt;
     &lt;iso:rule context="/ddms:dates"&gt;
        &lt;iso:report test="count(@*) = 0"&gt;
           The ddms:dates element does not have any date attributes.
@@ -66,7 +66,7 @@ of these rules are always appreciated.</p>
 
 <h4>Extent Constraints</h4>
 
-<pre class="brush: xml">&lt;iso:pattern id="Extent Constraints"&gt;
+<pre class="brush: xml">&lt;iso:pattern id="Extent_Constraints"&gt;
     &lt;iso:rule context="/ddms:format/ddms:Media/ddms:extent"&gt;
        &lt;iso:assert test="not(@ddms:value) or (@ddms:qualifier and @ddms:value)"&gt;
           If a ddms:extent element has a value, it must also have a qualifier.
@@ -82,7 +82,7 @@ of these rules are always appreciated.</p>
 
 <h4>GeographicIdentifier Constraints</h4>
 
-<pre class="brush: xml">&lt;iso:pattern id="GeographicIdentifier Constraints"&gt;
+<pre class="brush: xml">&lt;iso:pattern id="GeographicIdentifier_Constraints"&gt;
     &lt;iso:rule context="//ddms:geographicIdentifier"&gt;
        &lt;iso:assert test="(ddms:facilityIdentifier and count(*) = 1) or not(ddms:facilityIdentifier)"&gt;
           A ddms:facilityIdentifier element cannot be used with any sibling elements.
@@ -92,7 +92,7 @@ of these rules are always appreciated.</p>
 
 <h4>GeospatialCoverage Constraints</h4>
 
-<pre class="brush: xml">&lt;iso:pattern id="GeospatialCoverage Constraints"&gt;
+<pre class="brush: xml">&lt;iso:pattern id="GeospatialCoverage_Constraints"&gt;
     &lt;iso:rule context="/ddms:geospatialCoverage/ddms:GeospatialExtent"&gt;
        &lt;iso:assert test="(ddms:geographicIdentifier/ddms:facilityIdentifier and count(*) = 1) or not(ddms:geographicIdentifier/ddms:facilityIdentifier)"&gt;
           A ddms:geospatialCoverage element which contains a facilityIdentifier-based geographicIdentifier cannot contain any other child elements.
@@ -102,7 +102,7 @@ of these rules are always appreciated.</p>
 
 <h4>Language Constraints</h4>
 
-<pre class="brush: xml">&lt;iso:pattern id="Language Constraints"&gt;
+<pre class="brush: xml">&lt;iso:pattern id="Language_Constraints"&gt;
     &lt;iso:rule context="/ddms:language"&gt;
        &lt;iso:assert test="not(@ddms:value) or (@ddms:qualifier and @ddms:value)"&gt;
           If a ddms:language element has a value, it must also have a qualifier.
@@ -129,7 +129,7 @@ Assert: The second coordinate is a valid longitude.</pre>
 
 <h4>PostalAddress Constraints</h4>
 
-<pre class="brush: xml">&lt;iso:pattern id="PostalAddress Constraints"&gt;
+<pre class="brush: xml">&lt;iso:pattern id="PostalAddress_Constraints"&gt;
     &lt;iso:rule context="//ddms:postalAddress"&gt;
       &lt;iso:assert test="(ddms:state and not(ddms:province)) or (not(ddms:state) and ddms:province)"&gt;
           A ddms:postalAddress can have either a state or a province, but not both.
@@ -142,7 +142,7 @@ Assert: The second coordinate is a valid longitude.</pre>
 
 <h4>Source Constraints</h4>
 
-<pre class="brush: xml">&lt;iso:pattern id="Source Constraints"&gt;
+<pre class="brush: xml">&lt;iso:pattern id="Source_Constraints"&gt;
     &lt;iso:rule context="/ddms:source"&gt;
        &lt;iso:report test="count(@*) = 0"&gt;
           A ddms:source element does not have any attributes.
@@ -161,7 +161,7 @@ Report: 1 or more categories have the same value.</pre>
 
 <h4>Type Constraints</h4>
 
-<pre class="brush: xml">&lt;iso:pattern id="Type Constraints"&gt;
+<pre class="brush: xml">&lt;iso:pattern id="Type_Constraints"&gt;
     &lt;iso:rule context="/ddms:type"&gt;
        &lt;iso:assert test="not(@ddms:value) or (@ddms:qualifier and @ddms:value)"&gt;
           If a ddms:type element has a value, it must also have a qualifier.
@@ -182,7 +182,7 @@ Assert: If a MaxVerticalExtent has unitOfMeasure or datum set, its values match 
 
 <h4>VirtualCoverage Constraints</h4>
 
-<pre class="brush: xml">&lt;iso:pattern id="Empty VirtualCoverage Element or Missing Attributes"&gt;
+<pre class="brush: xml">&lt;iso:pattern id="VirtualCoverage_Constraints"&gt;
     &lt;iso:rule context="/ddms:virtualCoverage"&gt;
        &lt;iso:report test="count(@*) = 0"&gt;
           A ddms:virtualCoverage element does not have any attributes.
