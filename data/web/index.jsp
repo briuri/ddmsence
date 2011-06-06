@@ -64,6 +64,7 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
+	<div class="newsUpdate"><u>06/06/2011</u>: <a href="schematron.jsp">Schematron Implementation for DDMS</a> published.</div>
 	<div class="newsUpdate"><u>06/02/2011</u>: <a href="downloads.jsp">v1.9.1</a> released. Example code for <a href="validator.uri">DDMS Validator</a> and <a href="builder.uri">DDMS Builder</a> posted.</div>
 	<div class="newsUpdate"><u>05/24/2011</u>: v1.9.0 released.</div>
 	<div class="newsUpdate"><u>05/13/2011</u>: v1.8.0 released, introducing the <a href="documentation.jsp#tips-builders">Component Builder</a> framework.</div>

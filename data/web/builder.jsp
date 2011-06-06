@@ -371,6 +371,11 @@ public class BuilderControl extends SimpleFormController {
 	<code>model</code>,	which is then used to render the <a href="http://ddmsence.googlecode.com/svn/trunk/data/web/builderResult.jsp">Builder Results page</a>.</li>
 </ol>
 
+<p>
+	<a href="#top">Back to Top</a><br>
+	<a href="documentation.jsp#explorations">Back to Documentation</a>
+</p>
+
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>
 </body>
