@@ -28,8 +28,8 @@ in the Component Builder framework (<a href="http://code.google.com/p/ddmsence/i
 and <a href="http://code.google.com/p/ddmsence/issues/detail?id=78">Issue #78</a>). It is backwards compatible with all versions since v1.4.0.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.9.1.zip"><code>ddmsence-bin-1.9.0.zip</code></a></b> (4.3 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.9.1.zip"><code>ddmsence-src-1.9.0.zip</code></a></b> (4.4 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.9.1.zip"><code>ddmsence-bin-1.9.1.zip</code></a></b> (4.3 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.9.1.zip"><code>ddmsence-src-1.9.1.zip</code></a></b> (4.4 MB)</li>
 </ul>
 
 <h3>Versioning</h3>
