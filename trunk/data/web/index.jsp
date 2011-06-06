@@ -90,8 +90,8 @@
 			<a href="http://freshmeat.net/projects/ddmsence" target="_new">freshmeat</a>.</div>
 		<div class="newsUpdate"><u>03/29/2010</u>: v0.9.d released.</div>
 		<div class="newsUpdate"><u>03/25/2010</u>: v0.9.c released.</div>
-		<div class="newsUpdate"><u>03/24/2010</u>: v0.9.b released.</div><br />
-	-->
+		<div class="newsUpdate"><u>03/24/2010</u>: v0.9.b released.</div>
+	--><br />
 	
 	<div class="feed">New Release Feed: <a href="http://code.google.com/feeds/p/ddmsence/downloads/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>	
 	<div class="feed">SVN Code Feed: <a href="http://code.google.com/feeds/p/ddmsence/svnchanges/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>
