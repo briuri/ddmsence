@@ -621,14 +621,15 @@ Message: Members of the Uri family cannot be publishers.</pre>
 
 <p>Schematron files are made up of a series of patterns and rules which assert rules and report information. The raw output of Schematron validation
 is a series of <code>failed-assert</code> and <code>successful-report</code> elements in Schematron Validation Report Language (SVRL). DDMSence converts
-this output into ValidationMessages with a locator value taken from the <code>location</code> attribute in SVRL. The type returned is "warning" for "successful-report" messages and "error" for "failed-assert" messages. 
+this output into ValidationMessages with a locator value taken from the <code>location</code> attribute in SVRL. The type returned is "warning" for 
+"successful-report" messages and "error" for "failed-assert" messages. 
 It is important to notice that 1) Schematron validation can only be performed on Resources which are already valid according to the DDMS specification and 
 2) the results of Schematron validation will <b>never</b> invalidate the DDMSence object model. It is the responsibility of the Schematron user to react 
 to any ValidationMessages.</p>
 
-<p>Today, Schematron validation is not part of the base validation that automatically happens to every DDMS component, but the DDMS
-team has begun exploratory work to create a reference implementation of a DDMS Schematron file. Based on their work, I may choose to integrate an official
-DDMS Schematron file in a future version.</p>
+<p>There are several rules identified in the DDMS Specification which cannot easily be modeled with the official XML Schema. For example's sake,
+I have codified these rules with Schematron in the <a href="#explorations">Explorations</a> section. Please note that DDMSence currently validates these
+rules with Java for slightly increased performance.</p>
 
 <p>Schematron files contain the XML namespaces of any elements you might traverse -- please make sure you use the correct namespaces for the version
 of DDMS you are employing. The sample file, <code>testPublisherValue.sch</code>, is written only for DDMS 3.0.</p>
@@ -682,12 +683,7 @@ instead of "ICISM", you would set the "icism.prefix" property with a custom valu
 	<li><a href="builder.uri">DDMS Builder</a>: An experimental tool to build DDMS resources with a form-based UI.</li>
 	<li><a href="validator.uri">DDMS Validator</a>: An experimental tool to validate DDMS resources.</li>
 	<li><a href="relationalTables.jsp">Relational Database Model for DDMS</a>: A mapping of the DDMS specification to relational database tables (database-agnostic).</li>
-</ul> 
-
-<h4>Works in Progress</h4>
-
-<ul>
-	<li><a href="schematron.jsp">Schematron Implementation for DDMS</a>: An attempt to implement some of the more complex rules in the DDMS specification with ISO Schematron.</li>
+	<li><a href="schematron.jsp">Schematron Implementation for DDMS</a>: An attempt to model some of the more complex rules in the DDMS specification with ISO Schematron.</li>
 </ul>
 
 <a name="contributors"></a><h3>Contributors</h3>

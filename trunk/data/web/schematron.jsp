@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 6/4/2011 at 13:02</p>
+<p align="right"><b>Last Update:</b> 6/6/2011 at 17:30</p>
 
 <a name="top"></a><h1>Schematron Implementation for DDMS</h1>
 
@@ -31,14 +31,12 @@ various elements and attributes. The rules I identify here may duplicate some of
    &lt;!-- Patterns go here. --&gt;
 &lt;/iso:schema&gt;</pre>   
 
-<p>This document is heavily under construction, and I will work on it as I have time. When it is "finalized", I'll post a notification 
-on the front page, as well as the discussion area. I am just getting started with XPath, so suggestions on simplifying the syntax
-of these rules are always appreciated.</p>
+<p><a href="documentation.jsp#feedback">Feedback</a> on this document is appreciated!</p>
 
 <h4>Bounding Box Constraints</h4>
 
 <pre class="brush: xml">&lt;iso:pattern id="BoundingBox_Constraints"&gt;
-    &lt;iso:rule context="/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:boundingBox"&gt;
+    &lt;iso:rule context="//ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:boundingBox"&gt;
        &lt;iso:assert test="ddms:WestBL &amp;gt;= -180 and ddms:WestBL &amp;lt;= 180"&gt;
           WestBL must be between -180 and 180 degrees.
        &lt;/iso:assert&gt;
@@ -57,7 +55,7 @@ of these rules are always appreciated.</p>
 <h4>Dates Constraints</h4>
 
 <pre class="brush: xml">&lt;iso:pattern id="Dates_Constraints"&gt;
-    &lt;iso:rule context="/ddms:dates"&gt;
+    &lt;iso:rule context="//ddms:Resource/ddms:dates"&gt;
        &lt;iso:report test="count(@*) = 0"&gt;
           The ddms:dates element does not have any date attributes.
        &lt;/iso:report&gt;
@@ -67,7 +65,7 @@ of these rules are always appreciated.</p>
 <h4>Extent Constraints</h4>
 
 <pre class="brush: xml">&lt;iso:pattern id="Extent_Constraints"&gt;
-    &lt;iso:rule context="/ddms:format/ddms:Media/ddms:extent"&gt;
+    &lt;iso:rule context="//ddms:Resource/ddms:format/ddms:Media/ddms:extent"&gt;
        &lt;iso:assert test="not(@ddms:value) or (@ddms:qualifier and @ddms:value)"&gt;
           If a ddms:extent element has a value, it must also have a qualifier.
        &lt;/iso:assert&gt;
@@ -83,7 +81,7 @@ of these rules are always appreciated.</p>
 <h4>GeographicIdentifier Constraints</h4>
 
 <pre class="brush: xml">&lt;iso:pattern id="GeographicIdentifier_Constraints"&gt;
-    &lt;iso:rule context="//ddms:geographicIdentifier"&gt;
+    &lt;iso:rule context="//ddms:Resource//ddms:geographicIdentifier"&gt;
        &lt;iso:assert test="(ddms:facilityIdentifier and count(*) = 1) or not(ddms:facilityIdentifier)"&gt;
           A ddms:facilityIdentifier element cannot be used with any sibling elements.
        &lt;/iso:assert&gt;
@@ -93,7 +91,7 @@ of these rules are always appreciated.</p>
 <h4>GeospatialCoverage Constraints</h4>
 
 <pre class="brush: xml">&lt;iso:pattern id="GeospatialCoverage_Constraints"&gt;
-    &lt;iso:rule context="/ddms:geospatialCoverage/ddms:GeospatialExtent"&gt;
+    &lt;iso:rule context="//ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent"&gt;
        &lt;iso:assert test="(ddms:geographicIdentifier/ddms:facilityIdentifier and count(*) = 1) or not(ddms:geographicIdentifier/ddms:facilityIdentifier)"&gt;
           A ddms:geospatialCoverage element which contains a facilityIdentifier-based geographicIdentifier cannot contain any other child elements.
        &lt;/iso:assert&gt;
@@ -103,7 +101,7 @@ of these rules are always appreciated.</p>
 <h4>Language Constraints</h4>
 
 <pre class="brush: xml">&lt;iso:pattern id="Language_Constraints"&gt;
-    &lt;iso:rule context="/ddms:language"&gt;
+    &lt;iso:rule context="//ddms:Resource/ddms:language"&gt;
        &lt;iso:assert test="not(@ddms:value) or (@ddms:qualifier and @ddms:value)"&gt;
           If a ddms:language element has a value, it must also have a qualifier.
        &lt;/iso:assert&gt;
@@ -117,20 +115,66 @@ of these rules are always appreciated.</p>
 &lt;/iso:pattern&gt;</pre>
 
 <h4>Point Constraints</h4>
-<pre>Assert: If the nested gml:pos has an srsName, it matches the srsName of this Point.</pre>
+
+<pre class="brush: xml">&lt;iso:pattern id="Point_Constraints"&gt;
+   &lt;iso:rule context="//gml:Point"&gt;
+      &lt;iso:assert test="not(gml:pos/@srsName) or (@srsName = gml:pos/@srsName)"&gt;
+         If a srsName attribute appears on a gml:pos element, it should have the same value as the srsName attribute on the enclosing gml:Point element.
+      &lt;/iso:assert&gt;
+      &lt;iso:assert test="@srsName or not(@axisLabels)"&gt;
+         If the srsName attribute on a gml:Point element is omitted, the axisLabels attribute must be omitted as well. 
+      &lt;/iso:assert&gt;
+      &lt;iso:assert test="@axisLabels or not(@uomLabels)"&gt;
+         If the axisLabels attribute on a gml:Point element is omitted, the uomLabels attribute must be omitted as well. 
+      &lt;/iso:assert&gt;
+   &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
 
 <h4>Polygon Constraints</h4>
-<pre>Assert: If the nested gml:pos elements have srsNames, they match the srsName of this Polygon.
-Assert: The first and last gml:pos coordinates must be identical (a closed polygon).</pre>
+
+<pre class="brush: xml">&lt;iso:pattern id="Polygon_Constraints"&gt;
+   &lt;iso:rule context="//gml:Polygon/gml:exterior/gml:LinearRing"&gt;
+      &lt;iso:assert test="not(gml:pos/@srsName) or (gml:pos/@srsName = ../../@srsName)"&gt;
+         If a srsName attribute appears on a gml:pos element, it should have the same value as the srsName attribute on the enclosing gml:Polygon element.
+      &lt;/iso:assert&gt;
+      &lt;iso:assert test="gml:pos[1] = gml:pos[last()]"&gt;
+         The first and last gml:pos elements in a gml:Polygon must be identical, to outline an enclosed shape.
+      &lt;/iso:assert&gt;
+      &lt;iso:assert test="@srsName or not(@axisLabels)"&gt;
+         If the srsName attribute on a gml:Point element is omitted, the axisLabels attribute must be omitted as well. 
+      &lt;/iso:assert&gt;
+      &lt;iso:assert test="@axisLabels or not(@uomLabels)"&gt;
+         If the axisLabels attribute on a gml:Point element is omitted, the uomLabels attribute must be omitted as well. 
+      &lt;/iso:assert&gt;
+   &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
 
 <h4>Position Constraints</h4>
-<pre>Assert: The first coordinate is a valid latitude.
-Assert: The second coordinate is a valid longitude.</pre>
+
+<pre class="brush: xml">&lt;!-- This rule employs the XPath 2.0 function, tokenize(). DDMSence currently does Schematron validation with XSLT 1.0 --&gt;
+&lt;iso:pattern id="Position_Constraints"&gt;
+   &lt;iso:rule context="//gml:pos"&gt;
+      &lt;iso:let name="firstCoord" value="number(tokenize(text(), ' ')[1])"/&gt;
+      &lt;iso:let name="secondCoord" value="number(tokenize(text(), ' ')[2])"/&gt;
+      &lt;iso:assert test="$firstCoord &amp;gt;= -90 and $firstCoord &amp;lt;= 90"&gt;
+         The first coordinate in a gml:pos element must be between -90 and 90 degrees.
+      &lt;/iso:assert&gt;
+      &lt;iso:assert test="$secondCoord &amp;gt;= -180 and $secondCoord &amp;lt;= 180"&gt;
+         The second coordinate in a gml:pos element must be between -180 and 180 degrees.
+      &lt;/iso:assert&gt;
+      &lt;iso:assert test="@srsName or not(@axisLabels)"&gt;
+         If the srsName attribute on a gml:Point element is omitted, the axisLabels attribute must be omitted as well. 
+      &lt;/iso:assert&gt;
+      &lt;iso:assert test="@axisLabels or not(@uomLabels)"&gt;
+         If the axisLabels attribute on a gml:Point element is omitted, the uomLabels attribute must be omitted as well. 
+      &lt;/iso:assert&gt;
+   &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
 
 <h4>PostalAddress Constraints</h4>
 
 <pre class="brush: xml">&lt;iso:pattern id="PostalAddress_Constraints"&gt;
-    &lt;iso:rule context="//ddms:postalAddress"&gt;
+    &lt;iso:rule context="//ddms:Resource//ddms:postalAddress"&gt;
       &lt;iso:assert test="(ddms:state and not(ddms:province)) or (not(ddms:state) and ddms:province)"&gt;
           A ddms:postalAddress can have either a state or a province, but not both.
        &lt;/iso:assert&gt;   
@@ -143,26 +187,30 @@ Assert: The second coordinate is a valid longitude.</pre>
 <h4>Source Constraints</h4>
 
 <pre class="brush: xml">&lt;iso:pattern id="Source_Constraints"&gt;
-    &lt;iso:rule context="/ddms:source"&gt;
+    &lt;iso:rule context="//ddms:Resource/ddms:source"&gt;
        &lt;iso:report test="count(@*) = 0"&gt;
           A ddms:source element does not have any attributes.
        &lt;/iso:report&gt;
     &lt;/iso:rule&gt;
 &lt;/iso:pattern&gt;</pre>
 
-<h4>SRSAttributes Constraints</h4>
-<pre>Assert: If the srsName is omitted, the axisLabels must be omitted.
-Assert: If the axisLabels are omitted, the uomLabels must be omitted.</pre>
-
 <h4>SubjectCoverage Constraints</h4>
 
-<pre>Report: 1 or more keywords have the same value.
-Report: 1 or more categories have the same value.</pre>
+<pre class="brush: xml">&lt;iso:pattern id="SubjectCoverage_Constraints"&gt;
+   &lt;iso:rule context="//ddms:Resource/ddms:subjectCoverage/ddms:Subject"&gt;
+      &lt;iso:report test="ddms:keyword[./@ddms:value = preceding-sibling::ddms:keyword/@ddms:value]"&gt;
+         The ddms:subjectCoverage element contains duplicate keywords.
+      &lt;/iso:report&gt;
+      &lt;iso:report   test="ddms:category[./@ddms:qualifier = preceding-sibling::ddms:category/@ddms:qualifier and ./@ddms:code = preceding-sibling::ddms:category/@ddms:code]"&gt;
+         The ddms:subjectCoverage element contains duplicate categories.
+      &lt;/iso:report&gt;
+   &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
 
 <h4>Type Constraints</h4>
 
 <pre class="brush: xml">&lt;iso:pattern id="Type_Constraints"&gt;
-    &lt;iso:rule context="/ddms:type"&gt;
+    &lt;iso:rule context="//ddms:Resource/ddms:type"&gt;
        &lt;iso:assert test="not(@ddms:value) or (@ddms:qualifier and @ddms:value)"&gt;
           If a ddms:type element has a value, it must also have a qualifier.
        &lt;/iso:assert&gt;
@@ -177,13 +225,33 @@ Report: 1 or more categories have the same value.</pre>
 
 <h4>Vertical Extent Constraints</h4>
 
-<pre>Assert: If a MinVerticalExtent has unitOfMeasure or datum set, its values match the parent (verticalExtent) attribute values of the same name.
-Assert: If a MaxVerticalExtent has unitOfMeasure or datum set, its values match the parent (verticalExtent) attribute values of the same name.</pre>
+<pre class="brush: xml">&lt;iso:pattern id="VerticalExtent_Constraints"&gt;
+   &lt;iso:rule context="//ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:verticalExtent"&gt;
+      &lt;iso:let name="parentUOM" value="@ddms:unitOfMeasure"/&gt;
+      &lt;iso:let name="minUOM" value="ddms:MinVerticalExtent/@ddms:unitOfMeasure"/&gt;
+      &lt;iso:let name="maxUOM" value="ddms:MaxVerticalExtent/@ddms:unitOfMeasure"/&gt;
+      &lt;iso:let name="parentDatum" value="@ddms:datum"/&gt;
+      &lt;iso:let name="minDatum" value="ddms:MinVerticalExtent/@ddms:datum"/&gt;
+      &lt;iso:let name="maxDatum" value="ddms:MaxVerticalExtent/@ddms:datum"/&gt;         
+      &lt;iso:assert test="not($parentUOM) or not($minUOM) or ($parentUOM = $minUOM)"&gt;
+         If a ddms:unitOfMeasure attribute appears on both the ddms:verticalExtent and ddms:MinVerticalExtent elements, it should have the same value in both locations. 
+      &lt;/iso:assert&gt;
+      &lt;iso:assert test="not($parentUOM) or not($maxUOM) or ($parentUOM = $maxUOM)"&gt;
+         If a ddms:unitOfMeasure attribute appears on both the ddms:verticalExtent and ddms:MaxVerticalExtent elements, it should have the same value in both locations. 
+      &lt;/iso:assert&gt;         
+      &lt;iso:assert test="not($parentDatum) or not($minDatum) or ($parentDatum = $minDatum)"&gt;
+         If a ddms:datum attribute appears on both the ddms:verticalExtent and ddms:MinVerticalExtent elements, it should have the same value in both locations. 
+      &lt;/iso:assert&gt;
+      &lt;iso:assert test="not($parentDatum) or not($maxDatum) or ($parentDatum = $maxDatum)"&gt;
+         If a ddms:datum attribute appears on both the ddms:verticalExtent and ddms:MaxVerticalExtent elements, it should have the same value in both locations. 
+      &lt;/iso:assert&gt;
+   &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
 
 <h4>VirtualCoverage Constraints</h4>
 
 <pre class="brush: xml">&lt;iso:pattern id="VirtualCoverage_Constraints"&gt;
-    &lt;iso:rule context="/ddms:virtualCoverage"&gt;
+    &lt;iso:rule context="//ddms:Resource/ddms:virtualCoverage"&gt;
        &lt;iso:report test="count(@*) = 0"&gt;
           A ddms:virtualCoverage element does not have any attributes.
        &lt;/iso:report&gt;
