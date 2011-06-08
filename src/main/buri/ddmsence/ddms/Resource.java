@@ -225,7 +225,7 @@ public final class Resource extends AbstractBaseComponent {
 			_cachedSecurityAttributes = new SecurityAttributes(element);
 			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
 			
-			// Resource Layer
+			// Resource Set
 			Elements components = element.getChildElements(Identifier.NAME, namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedIdentifiers.add(new Identifier(components.get(i)));
@@ -276,12 +276,12 @@ public final class Resource extends AbstractBaseComponent {
 				_cachedPointOfContacts.add(getEntityFor(components.get(i)));
 			}
 
-			// Format Layer
+			// Format Set
 			component = getChild(Format.NAME);
 			if (component != null)
 				_cachedFormat = new Format(component);
 
-			// Summary Layer
+			// Summary Set
 			component = getChild(SubjectCoverage.NAME);
 			if (component != null)
 				_cachedSubjectCoverage = new SubjectCoverage(component);
@@ -302,7 +302,7 @@ public final class Resource extends AbstractBaseComponent {
 				_cachedRelatedResources.add(new RelatedResources(components.get(i)));
 			}
 
-			// Security Layer
+			// Security Set
 			component = getChild(Security.NAME);
 			if (component != null) {
 				_cachedSecurity = new Security(component);
@@ -430,7 +430,7 @@ public final class Resource extends AbstractBaseComponent {
 			_cachedExtensibleAttributes.addTo(element);
 
 			for (IDDMSComponent component : topLevelComponents) {
-				// Resource Layer
+				// Resource Set
 				if (component instanceof Identifier)
 					_cachedIdentifiers.add((Identifier) component);
 				else if (component instanceof Title)
@@ -461,10 +461,10 @@ public final class Resource extends AbstractBaseComponent {
 						_cachedPointOfContacts.add(producer);
 					}
 				}
-				// Format Layer
+				// Format Set
 				else if (component instanceof Format)
 					_cachedFormat = (Format) component;
-				// Summary Layer
+				// Summary Set
 				else if (component instanceof SubjectCoverage)
 					_cachedSubjectCoverage = (SubjectCoverage) component;
 				else if (component instanceof VirtualCoverage)
@@ -475,7 +475,7 @@ public final class Resource extends AbstractBaseComponent {
 					_cachedGeospatialCoverages.add((GeospatialCoverage) component);
 				else if (component instanceof RelatedResources)
 					_cachedRelatedResources.add((RelatedResources) component);
-				// Security Layer
+				// Security Set
 				else if (component instanceof Security)
 					_cachedSecurity = (Security) component;
 				// Extensible Layer
@@ -1064,7 +1064,7 @@ public final class Resource extends AbstractBaseComponent {
 			for (IDDMSComponent component : resource.getTopLevelComponents()) {
 				if (component == null)
 					continue;
-				// Resource Layer
+				// Resource Set
 				if (component instanceof Identifier)
 					getIdentifiers().add(new Identifier.Builder((Identifier) component));
 				else if (component instanceof Title)
@@ -1094,10 +1094,10 @@ public final class Resource extends AbstractBaseComponent {
 					if (Unknown.NAME.equals(producer.getEntityType()))
 						getUnknowns().add(new Unknown.Builder((Unknown) component));
 				}
-				// Format Layer
+				// Format Set
 				else if (component instanceof Format)
 					setFormat(new Format.Builder((Format) component));
-				// Summary Layer
+				// Summary Set
 				else if (component instanceof SubjectCoverage)
 					setSubjectCoverage(new SubjectCoverage.Builder((SubjectCoverage) component));
 				else if (component instanceof VirtualCoverage)
@@ -1108,7 +1108,7 @@ public final class Resource extends AbstractBaseComponent {
 					getGeospatialCoverages().add(new GeospatialCoverage.Builder((GeospatialCoverage) component));
 				else if (component instanceof RelatedResources)
 					getRelatedResources().add(new RelatedResources.Builder((RelatedResources) component));
-				// Security Layer
+				// Security Set
 				else if (component instanceof Security)
 					setSecurity(new Security.Builder((Security) component));
 				// Extensible Layer

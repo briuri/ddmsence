@@ -107,7 +107,7 @@ public class JavaConvertor {
 		java.append("List<Double> coords = new ArrayList<Double>();\n");
 		java.append("List<IDDMSComponent> topLevelComponents = new ArrayList<IDDMSComponent>();\n");		
 		for (IDDMSComponent component : r.getTopLevelComponents()) {
-			// Resource Layer
+			// Resource Set
 			if (component instanceof Identifier)
 				convert(java, (Identifier) component);
 			else if (component instanceof Title)
@@ -129,11 +129,11 @@ public class JavaConvertor {
 			else if (component instanceof IProducer)
 				convert(java, (IProducer) component);
 			
-			// Format Layer
+			// Format Set
 			else if (component instanceof Format)
 				convert(java, (Format) component);
 			
-			// Summary Layer
+			// Summary Set
 			else if (component instanceof SubjectCoverage)
 				convert(java, (SubjectCoverage) component);
 			else if (component instanceof VirtualCoverage)
@@ -145,7 +145,7 @@ public class JavaConvertor {
 			else if (component instanceof RelatedResources)
 				convert(java, (RelatedResources) component);
 			
-			// Security Layer
+			// Security Set
 			else if (component instanceof Security)
 				convert(java, (Security) component);
 			

@@ -48,7 +48,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		</td>
 	</tr><tr>
 		<td class="relOverviewLayer">
-			<a href="#tables-resource">Resource Layer</a>
+			<a href="#tables-resource">Resource Set</a>
 			<ul>
 				<li><a href="#ddmsDates">ddmsDates</a></li>
 				<li><a href="#ddmsIdentifier">ddmsIdentifier</a></li>
@@ -61,13 +61,13 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsType">ddmsType</a></li>				
 			</ul>
 					
-			<a href="#tables-format">Format Layer</a>
+			<a href="#tables-format">Format Set</a>
 			<ul>
 				<li><a href="#ddmsFormat">ddmsFormat</a></li>
 				<li><a href="#ddmsMediaExtent">ddmsMediaExtent</a></li>
 			</ul>
 		</td><td class="relOverviewLayer">
-			<a href="#tables-summary">Summary Layer</a>
+			<a href="#tables-summary">Summary Set</a>
 			<ul>
 				<li><a href="#ddmsBoundingBox">ddmsBoundingBox</a></li>
 				<li><a href="#ddmsBoundingGeometry">ddmsBoundingGeometry</a></li>
@@ -91,7 +91,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsVerticalExtent">ddmsVerticalExtent</a></li>
 				<li><a href="#ddmsVirtualCoverage">ddmsVirtualCoverage</a></li>
 			</ul>		
-			<a href="#tables-security">Security Layer</a>
+			<a href="#tables-security">Security Set</a>
 			<ul>
 				<li><a href="#ddmsSecurity">ddmsSecurity</a></li>
 				<li><a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a></li>
@@ -186,7 +186,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>
 </table>
 
-<a name="tables-resource"></a><h4>The Resource Layer</h4>
+<a name="tables-resource"></a><h4>The Resource Set</h4>
 
 <a name="ddmsDates"></a><table class="rel">
 	<tr>
@@ -693,7 +693,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 
 
 
-<a name="tables-format"></a><h4>The Format Layer</h4>
+<a name="tables-format"></a><h4>The Format Set</h4>
 
 <a name="ddmsFormat"></a><table class="rel">
 	<tr>
@@ -800,7 +800,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 
 
 
-<a name="tables-summary"></a><h4>The Summary Layer</h4>
+<a name="tables-summary"></a><h4>The Summary Set</h4>
 
 <a name="ddmsBoundingBox"></a><table class="rel">
 	<tr>
@@ -1917,7 +1917,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 
 
 
-<a name="tables-security"></a><h4>The Security Layer</h4>
+<a name="tables-security"></a><h4>The Security Set</h4>
 
 <a name="ddmsSecurity"></a><table class="rel">
 	<tr>
