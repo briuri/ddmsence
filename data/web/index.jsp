@@ -3,7 +3,7 @@
 	<title>DDMSence: An open source Java library for DDMS</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="keywords" content="DDMSence,DDMS,Metadata,Discovery,Java,DoD,XML" />
-		
+
 	<!-- DDMS Resource Record --> 	
 	<meta name="security.resourceElement" content="true" />
 	<meta name="security.createDate" content="2010-03-21" />
@@ -59,6 +59,19 @@
 	<meta name="extensible.layer" content="false" />
 	<meta name="ddms.generator" content="DDMSence @ddmsence.version@" />
 	<meta name="ddms.version" content="3.0" />
+	
+	<script type="text/javascript" src="./shared/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript">
+
+	// Collapsible subsection code
+	$(document).ready(function() {
+		$("div.divExpand").click(
+			function() {
+				$(this).hide("fast");
+				$(this).next().show("fast");
+			});
+		});
+	</script>
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
@@ -70,7 +83,8 @@
 	<div class="newsUpdate"><u>05/13/2011</u>: v1.8.0 released, introducing the <a href="documentation.jsp#tips-builders">Component Builder</a> framework.</div>
 	<div class="newsUpdate"><u>03/10/2011</u>: v1.7.2 released.</div>
 	<div class="newsUpdate"><u>11/26/2010</u>: <a href="relationalTables.jsp">Relational Database Model for DDMS</a> published.</div>
-	<!-- Older News		
+	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
+	<div id="oldNews" class="divHidden">
 		<div class="newsUpdate"><u>11/16/2010</u>: v1.7.1 released.</div>
 		<div class="newsUpdate"><u>09/18/2010</u>: v1.7.0 released.</div>	
 		<div class="newsUpdate"><u>09/07/2010</u>: v1.6.0 released.</div>
@@ -91,7 +105,7 @@
 		<div class="newsUpdate"><u>03/29/2010</u>: v0.9.d released.</div>
 		<div class="newsUpdate"><u>03/25/2010</u>: v0.9.c released.</div>
 		<div class="newsUpdate"><u>03/24/2010</u>: v0.9.b released.</div>
-	--><br />
+	</div><br /><br />
 	
 	<div class="feed">New Release Feed: <a href="http://code.google.com/feeds/p/ddmsence/downloads/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>	
 	<div class="feed">SVN Code Feed: <a href="http://code.google.com/feeds/p/ddmsence/svnchanges/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>
