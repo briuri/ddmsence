@@ -29,13 +29,17 @@ body {
 	padding: 0px;
 }
 .clear {
-	display: block;
 	clear: both;
+	display: block;
 }
 .contentPane {
 	background-color: #fafafa;
 	color: #000000;
 	padding: 7px 10px 10px 10px;
+}
+div.divExpand {}
+div.divHidden {
+	display: none;
 }
 div.feed {
 	float: right;
