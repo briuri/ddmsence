@@ -403,7 +403,7 @@ System.out.println(position.toXML());</pre>
 
 <a name="tips-extensible"></a><h4>The Extensible Layer</h4>
 
-<p>DDMS is composed of four Core Layers (Security, Resource, Summary Content, and Format) and the Extensible Layer. This layer supports extensibility
+<p>DDMS is composed of four Core Sets (Security, Resource, Summary Content, and Format) and the Extensible Layer. This layer supports extensibility
 by providing space for custom attributes and elements within a <code>ddms:Resource</code>. Specifically, custom attributes can be added to any producer
 (Organization, Person, Service, and Unknown), a Keyword, a Category, and the Resource itself. A Resource can also have an unlimited number of custom
 elements after the <code>ddms:security</code> element. These extensions are identified by the <code>xs:any</code> and <code>xs:anyAttribute</code>
