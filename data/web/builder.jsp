@@ -362,7 +362,7 @@ public class BuilderControl extends SimpleFormController {
     }
 }</pre>
 	<li>The BuilderControl starts by creating a new form bean, Resource.Builder, in the <code>formBackingObject()</code> method. 
-	This is a Component Builder which supports the form you see on this page.</li>
+	This is a Component Builder which supports the form you see on this page. If you wanted your form to edit an existing Resource, you could initialize the builder by passing in a Resource instance.</li>
 	<li>The <a href="http://ddmsence.googlecode.com/svn/trunk/data/web/builder.jsp">initial form view</a> is rendered. This is the page you are currently viewing. The JSP file also contains the JavaScript code used for client-side validation (with jQuery).</li>
 	<li>Once the form has been filled in and submitted, the <code>onSubmit()</code> method of the BuilderControl is called. This method commits the Resource.Builder.
 	It will fail immediately with an <code>InvalidDDMSException</code> if the Resource is invalid.</li>
