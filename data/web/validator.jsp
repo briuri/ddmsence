@@ -61,7 +61,7 @@
 			exampleRecord = ""
 				+ "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 				+ "<ddms:Resource \n"
-				+ "  xsi:schemaLocation=\"http://metadata.dod.mil/mdr/ns/DDMS/3.0/\" \n"
+				+ "  xsi:schemaLocation=\"http://metadata.dod.mil/mdr/ns/DDMS/3.0/ DDMS-v3_0.xsd\" \n"
 				+ "  xmlns:ddms=\"http://metadata.dod.mil/mdr/ns/DDMS/3.0/\" \n"
 				+ "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" \n"
 				+ "  xmlns:ICISM=\"urn:us:gov:ic:ism\" \n"
