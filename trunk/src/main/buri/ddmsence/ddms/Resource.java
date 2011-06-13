@@ -130,7 +130,7 @@ import buri.ddmsence.util.Util;
  * <br /><br />
  * In DDMS 2.0, there are no ICISM attributes explicitly defined in the schema, so you can load them in any way you 
  * want. It is recommended that you load them as SecurityAttributes anyhow, for consistency with DDMS 3.0 resources. 
- * Please see the "Advanced Tips" on the Extensible Layer (on the DDMSence home page) for details. 
+ * Please see the "Power Tips" on the Extensible Layer (on the DDMSence home page) for details. 
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
