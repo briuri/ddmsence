@@ -110,7 +110,7 @@ public final class Position extends AbstractBaseComponent {
 	public Position(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			List<String> tuple = Util.getAsList(getCoordinatesAsXsList());
+			List<String> tuple = Util.getXsListAsList(getCoordinatesAsXsList());
 			_cachedCoordinates = new ArrayList<Double>();
 			for (String coordinate : tuple) {
 				_cachedCoordinates.add(getStringAsDouble(coordinate));

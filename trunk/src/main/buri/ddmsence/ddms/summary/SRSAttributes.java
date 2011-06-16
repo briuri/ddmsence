@@ -89,12 +89,12 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		String axisLabels = element.getAttributeValue(AXIS_LABELS_NAME, NO_NAMESPACE);
 		_cachedAxisLabels = new ArrayList<String>();
 		if (!Util.isEmpty(axisLabels)) {
-			_cachedAxisLabels.addAll(Util.getAsList(axisLabels));
+			_cachedAxisLabels.addAll(Util.getXsListAsList(axisLabels));
 		}
 		String uomLabels = element.getAttributeValue(UOM_LABELS_NAME, NO_NAMESPACE);
 		_cachedUomLabels = new ArrayList<String>();
 		if (!Util.isEmpty(uomLabels)) {
-			_cachedUomLabels.addAll(Util.getAsList(uomLabels));
+			_cachedUomLabels.addAll(Util.getXsListAsList(uomLabels));
 		}
 		validate();
 	}

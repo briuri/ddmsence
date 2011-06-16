@@ -370,7 +370,7 @@ public class Escort {
 		BUILDERS.put(Position.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String coordsString = readString("the coordinates as a space-delimited string [5.0 6.0 7.0]");
-				List<String> strings = Util.getAsList(coordsString);
+				List<String> strings = Util.getXsListAsList(coordsString);
 				List<Double> coords = new ArrayList<Double>();
 				for (String string : strings) {
 					coords.add(Double.valueOf(string));
@@ -400,8 +400,8 @@ public class Escort {
 				String uomLabels = readString("the Polygon's UOM Labels, as a space-delimited string [Meter Meter]");
 				String id = readString("the Polygon's gml:id [testId]");
 								
-				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), Util.getAsList(axisLabels), 
-					Util.getAsList(uomLabels));
+				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), Util.getXsListAsList(axisLabels), 
+					Util.getXsListAsList(uomLabels));
 				return (new Polygon(positions, attr, id));
 			}		
 		});
@@ -414,8 +414,8 @@ public class Escort {
 				String uomLabels = readString("the Point's UOM Labels, as a space-delimited string [Meter Meter]");
 				String id = readString("the Point's gml:id [testId]");
 				
-				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), Util.getAsList(axisLabels), 
-					Util.getAsList(uomLabels));
+				SRSAttributes attr = new SRSAttributes(srsName, new Integer(srsDimension), Util.getXsListAsList(axisLabels), 
+					Util.getXsListAsList(uomLabels));
 				return (new Point(position, attr, id));
 			}		
 		});
@@ -794,7 +794,7 @@ public class Escort {
 	 */
 	private SecurityAttributes buildSecurityAttributes(String classification, String ownerProducers)
 		throws InvalidDDMSException {
-		return (new SecurityAttributes(classification, Util.getAsList(ownerProducers), null));
+		return (new SecurityAttributes(classification, Util.getXsListAsList(ownerProducers), null));
 	}
 
 	/**
