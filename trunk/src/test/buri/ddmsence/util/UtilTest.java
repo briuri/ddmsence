@@ -24,8 +24,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.datatype.DatatypeConstants;
@@ -898,17 +896,10 @@ public class UtilTest extends TestCase {
 		assertEquals(2, list.size());
 		assertEquals("a", list.get(0));
 		assertEquals("b", list.get(1));
-		list = Util.getAsList("a  b");
-		assertEquals(3, list.size());
+		list = Util.getAsList("a      b");
+		assertEquals(2, list.size());
 		assertEquals("a", list.get(0));
-		assertEquals("", list.get(1));
-		assertEquals("b", list.get(2));
-	}
-	
-	public static List<String> getAsList(String value) {
-		if (Util.isEmpty(value))
-			return Collections.emptyList();
-		return (Arrays.asList(value.split(" ")));
+		assertEquals("b", list.get(1));
 	}
 
 	public void testBuildXmlDocument() throws Exception {

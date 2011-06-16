@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -117,7 +116,7 @@ public class Util {
 	}
 	
 	/**
-	 * Helper method to convert an xs:NMTOKENS data type into a List of Strings.
+	 * Helper method to convert an xs:NMTOKENS data type into a List of Strings. Skips over completely empty tokens (i.e. "a   b" will return 2 tokens, not 4).
 	 * 
 	 * @param value the xs:list style String to parse
 	 * @return a List (never null)
@@ -125,7 +124,13 @@ public class Util {
 	public static List<String> getAsList(String value) {
 		if (Util.isEmpty(value))
 			return Collections.emptyList();
-		return (Arrays.asList(value.split(" ")));
+		String[] tokens = value.split(" ");
+		List<String> list = new ArrayList<String>();
+		for (int i = 0; i < tokens.length; i++) {
+			if (!isEmpty(tokens[i]))
+				list.add(tokens[i]);
+		}		
+		return (list);
 	}
 	
 	/**
