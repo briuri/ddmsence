@@ -890,13 +890,13 @@ public class UtilTest extends TestCase {
 	}
 	
 	public void testGetAsList() {
-		assertTrue(Util.getAsList(null).isEmpty());
-		assertTrue(Util.getAsList("").isEmpty());
-		List<String> list = Util.getAsList("a b");
+		assertTrue(Util.getXsListAsList(null).isEmpty());
+		assertTrue(Util.getXsListAsList("").isEmpty());
+		List<String> list = Util.getXsListAsList("a b");
 		assertEquals(2, list.size());
 		assertEquals("a", list.get(0));
 		assertEquals("b", list.get(1));
-		list = Util.getAsList("a      b");
+		list = Util.getXsListAsList("a      b");
 		assertEquals(2, list.size());
 		assertEquals("a", list.get(0));
 		assertEquals("b", list.get(1));

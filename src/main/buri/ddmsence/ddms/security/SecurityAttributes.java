@@ -230,14 +230,14 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		super(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));
 		String icNamespace = DDMSVersion.getVersionFor(getDDMSVersion()).getIcismNamespace();
 		_cachedClassification = element.getAttributeValue(CLASSIFICATION_NAME, icNamespace);
-		_cachedOwnerProducers = Util.getAsList(element.getAttributeValue(OWNER_PRODUCER_NAME, icNamespace));
-		_cachedSCIcontrols = Util.getAsList(element.getAttributeValue(SCI_CONTROLS_NAME, icNamespace));
-		_cachedSARIdentifier = Util.getAsList(element.getAttributeValue(SAR_IDENTIFIER_NAME, icNamespace));
-		_cachedDisseminationControls = Util.getAsList(element.getAttributeValue(DISSEMINATION_CONTROLS_NAME, icNamespace));
-		_cachedFGIsourceOpen = Util.getAsList(element.getAttributeValue(FGI_SOURCE_OPEN_NAME, icNamespace));
-		_cachedFGIsourceProtected = Util.getAsList(element.getAttributeValue(FGI_SOURCE_PROTECTED_NAME, icNamespace));
-		_cachedReleasableTo = Util.getAsList(element.getAttributeValue(RELEASABLE_TO_NAME, icNamespace));
-		_cachedNonICmarkings = Util.getAsList(element.getAttributeValue(NON_IC_MARKINGS_NAME, icNamespace));		
+		_cachedOwnerProducers = Util.getXsListAsList(element.getAttributeValue(OWNER_PRODUCER_NAME, icNamespace));
+		_cachedSCIcontrols = Util.getXsListAsList(element.getAttributeValue(SCI_CONTROLS_NAME, icNamespace));
+		_cachedSARIdentifier = Util.getXsListAsList(element.getAttributeValue(SAR_IDENTIFIER_NAME, icNamespace));
+		_cachedDisseminationControls = Util.getXsListAsList(element.getAttributeValue(DISSEMINATION_CONTROLS_NAME, icNamespace));
+		_cachedFGIsourceOpen = Util.getXsListAsList(element.getAttributeValue(FGI_SOURCE_OPEN_NAME, icNamespace));
+		_cachedFGIsourceProtected = Util.getXsListAsList(element.getAttributeValue(FGI_SOURCE_PROTECTED_NAME, icNamespace));
+		_cachedReleasableTo = Util.getXsListAsList(element.getAttributeValue(RELEASABLE_TO_NAME, icNamespace));
+		_cachedNonICmarkings = Util.getXsListAsList(element.getAttributeValue(NON_IC_MARKINGS_NAME, icNamespace));		
 		_cachedClassifiedBy = element.getAttributeValue(CLASSIFIED_BY_NAME, icNamespace);
 		_cachedCompilationReason = element.getAttributeValue(COMPILATION_REASON_NAME, icNamespace);
 		_cachedDerivativelyClassifiedBy = element.getAttributeValue(DERIVATIVELY_CLASSIFIED_BY_NAME, icNamespace);
@@ -287,13 +287,13 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			otherAttributes = Collections.emptyMap();
 		_cachedClassification = classification;
 		_cachedOwnerProducers = ownerProducers;
-		_cachedSCIcontrols = Util.getAsList(otherAttributes.get(SCI_CONTROLS_NAME));
-		_cachedSARIdentifier = Util.getAsList(otherAttributes.get(SAR_IDENTIFIER_NAME));
-		_cachedDisseminationControls = Util.getAsList(otherAttributes.get(DISSEMINATION_CONTROLS_NAME));
-		_cachedFGIsourceOpen = Util.getAsList(otherAttributes.get(FGI_SOURCE_OPEN_NAME));
-		_cachedFGIsourceProtected = Util.getAsList(otherAttributes.get(FGI_SOURCE_PROTECTED_NAME));
-		_cachedReleasableTo = Util.getAsList(otherAttributes.get(RELEASABLE_TO_NAME));
-		_cachedNonICmarkings = Util.getAsList(otherAttributes.get(NON_IC_MARKINGS_NAME));		
+		_cachedSCIcontrols = Util.getXsListAsList(otherAttributes.get(SCI_CONTROLS_NAME));
+		_cachedSARIdentifier = Util.getXsListAsList(otherAttributes.get(SAR_IDENTIFIER_NAME));
+		_cachedDisseminationControls = Util.getXsListAsList(otherAttributes.get(DISSEMINATION_CONTROLS_NAME));
+		_cachedFGIsourceOpen = Util.getXsListAsList(otherAttributes.get(FGI_SOURCE_OPEN_NAME));
+		_cachedFGIsourceProtected = Util.getXsListAsList(otherAttributes.get(FGI_SOURCE_PROTECTED_NAME));
+		_cachedReleasableTo = Util.getXsListAsList(otherAttributes.get(RELEASABLE_TO_NAME));
+		_cachedNonICmarkings = Util.getXsListAsList(otherAttributes.get(NON_IC_MARKINGS_NAME));		
 		_cachedClassifiedBy = otherAttributes.get(CLASSIFIED_BY_NAME);
 		_cachedCompilationReason = otherAttributes.get(COMPILATION_REASON_NAME);
 		_cachedDerivativelyClassifiedBy = otherAttributes.get(DERIVATIVELY_CLASSIFIED_BY_NAME);
@@ -457,7 +457,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		if (!Util.isEmpty(getDeclassException())) {
 			if (isDDDMS20) {
 				// In DDMS 2.0, this can be a list of tokens.
-				for (String value : Util.getAsList(getDeclassException()))
+				for (String value : Util.getXsListAsList(getDeclassException()))
 					validateEnumeration(ISMVocabulary.CVE_DECLASS_EXCEPTION, value);
 			}
 			else
@@ -466,7 +466,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		if (!Util.isEmpty(getTypeOfExemptedSource())) {
 			if (isDDDMS20) {
 				// In DDMS 2.0, this can be a list of tokens.
-				for (String value : Util.getAsList(getTypeOfExemptedSource()))
+				for (String value : Util.getXsListAsList(getTypeOfExemptedSource()))
 					validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, value);
 			}
 			else

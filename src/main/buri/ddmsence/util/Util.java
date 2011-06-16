@@ -116,12 +116,17 @@ public class Util {
 	}
 	
 	/**
-	 * Helper method to convert an xs:NMTOKENS data type into a List of Strings. Skips over completely empty tokens (i.e. "a   b" will return 2 tokens, not 4).
+	 * Helper method to convert an xs:NMTOKENS data type into a List of Strings.
+	 * 
+	 * <p>
+	 * The number of items returned is based on the normalization of the whitespace first. So, an xs:list defined as
+	 * "a   b" will return a List of 2 Strings ("a", "b"), and not a List of 4 String ("a", "", "", "b")
+	 * </p>
 	 * 
 	 * @param value the xs:list style String to parse
 	 * @return a List (never null)
 	 */
-	public static List<String> getAsList(String value) {
+	public static List<String> getXsListAsList(String value) {
 		if (Util.isEmpty(value))
 			return Collections.emptyList();
 		String[] tokens = value.split(" ");
