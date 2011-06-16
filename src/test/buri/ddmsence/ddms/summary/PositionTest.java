@@ -155,16 +155,23 @@ public class PositionTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testElementConstructorValid() {
+	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
+			String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
+			
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME, DDMSVersion.getCurrentVersion()
-				.getGmlNamespace(), TEST_XS_LIST);
+			Element element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST);
 			testConstructor(WILL_SUCCEED, element);
+			
+			// Empty coordinate
+			element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, "25.0    26.0");
+			testConstructor(WILL_SUCCEED, element);
+
 		}
 	}
 
@@ -186,11 +193,6 @@ public class PositionTest extends AbstractComponentTestCase {
 			String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
 			// Missing coordinates
 			Element element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, null);
-			SRSAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
-
-			// Empty coordinate
-			element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, "25.0  26.0");
 			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
@@ -251,6 +253,23 @@ public class PositionTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testEqualityWhitespace() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {	
+			DDMSVersion.setCurrentVersion(version);
+			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
+			String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
+			Position position = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST));
+			Position positionEqual = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST));
+			Position positionEqualWhitespace = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST + "   "));
+			Position positionUnequal2d = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, "32.1 40.0"));
+			Position positionUnequal3d = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST + " 40.0"));
+			assertEquals(position, positionEqual);
+			assertEquals(position, positionEqualWhitespace);
+			assertFalse(position.equals(positionUnequal2d));
+			assertFalse(position.equals(positionUnequal3d));
+		}
+	}
+	
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);

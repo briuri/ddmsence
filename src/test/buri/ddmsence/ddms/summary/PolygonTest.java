@@ -238,16 +238,31 @@ public class PolygonTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
+			String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
+			
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Polygon.NAME, DDMSVersion.getCurrentVersion()
-				.getGmlNamespace(), null);
+			Element element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
 			Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE,
 				SRSAttributesTest.getFixture().getSrsName());
-			Util.addAttribute(element, PropertyReader.getProperty("gml.prefix"), "id", DDMSVersion.getCurrentVersion().getGmlNamespace(), TEST_ID);
+			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			element.appendChild(wrapPositions(getPositions()));
+			testConstructor(WILL_SUCCEED, element);
+			
+			// First position matches last position but has extra whitespace.
+			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
+			SRSAttributesTest.getFixture().addTo(element);
+			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
+			List<Position> newPositions = new ArrayList<Position>(getPositions());
+			newPositions.add(getPositions().get(1));
+			Element posElement = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, "32.1         40.1");
+			SRSAttributesTest.getFixture().addTo(posElement);
+			Position positionWhitespace = new Position(posElement);
+			newPositions.add(positionWhitespace);			
+			element.appendChild(wrapPositions(newPositions));
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -325,7 +340,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			newPositions.add(getPositions().get(1));
 			element.appendChild(wrapPositions(newPositions));
 			testConstructor(WILL_FAIL, element);
-
+			
 			// Not enough positions
 			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);

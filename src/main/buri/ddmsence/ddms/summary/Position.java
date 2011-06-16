@@ -256,7 +256,8 @@ public final class Position extends AbstractBaseComponent {
 			return (false);
 		Position test = (Position) obj;
 		return (getSRSAttributes().equals(test.getSRSAttributes()) 
-			&& getCoordinatesAsXsList().equals(test.getCoordinatesAsXsList()));
+			&& getCoordinates().size() == test.getCoordinates().size()
+			&& Util.listEquals(getCoordinates(), test.getCoordinates()));
 	}
 
 	/**
