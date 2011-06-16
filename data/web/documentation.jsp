@@ -578,7 +578,8 @@ in any of the fields on a <code>ddms:dates</code> form, it is presumed that thei
 </ol>
 
 <p>The Component Builder framework is a very recent addition to DDMSence, and I would love to hear your <a href="#feedback">feedback</a> on ways
-the framework or documentation could be improved to better support your Resource editing needs.</p> 
+the framework or documentation could be improved to better support your Resource editing needs. I have also created a sample <a href="builder.uri">DDMS Builder</a> 
+web application which puts these features to work.</li></p> 
 
 <a name="tips-schematron"></a><h4>Schematron Validation</h4>
 
