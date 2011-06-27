@@ -81,6 +81,7 @@ public class DDMSVersion {
 		VERSIONS_TO_DETAILS.put("2.0", new DDMSVersion("2.0"));
 		VERSIONS_TO_DETAILS.put("3.0", new DDMSVersion("3.0"));
 		VERSIONS_TO_DETAILS.put("3.0.1", new DDMSVersion("3.0.1"));
+		VERSIONS_TO_DETAILS.put("3.1", new DDMSVersion("3.1"));
 		_currentVersion = getVersionFor(PropertyReader.getProperty("ddms.defaultVersion"));
 	}
 			

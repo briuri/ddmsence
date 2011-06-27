@@ -47,7 +47,8 @@ public class DDMSVersionTest extends TestCase {
 	
 	public void testIsVersion() {
 		Element element = Util.buildDDMSElement("test", null);
-		assertTrue(DDMSVersion.isVersion("3.0.1", element));
+		assertTrue(DDMSVersion.isVersion("3.1", element));
+		assertFalse(DDMSVersion.isVersion("3.0.1", element));
 		assertFalse(DDMSVersion.isVersion("3.0", element));
 		assertFalse(DDMSVersion.isVersion("2.0", element));
 	}
@@ -55,10 +56,12 @@ public class DDMSVersionTest extends TestCase {
 	public void testGetVersionFor() {
 		assertEquals("2.0", 
 			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/2.0/").getVersion());
-		assertEquals("3.0.1", 
-			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/").getVersion());
 		assertFalse("3.0".equals( 
 			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/").getVersion()));
+		assertFalse("3.0.1".equals( 
+			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/").getVersion()));
+		assertEquals("3.1", 
+			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/").getVersion());
 		assertEquals(null, DDMSVersion.getVersionForNamespace("TEST"));
 	}
 	
@@ -78,7 +81,7 @@ public class DDMSVersionTest extends TestCase {
 	}
 	
 	public void testGetCurrentSchema() {
-		assertEquals("/schemas/3.0.1/DDMS-v3_0.xsd", DDMSVersion.getCurrentVersion().getSchema());
+		assertEquals("/schemas/3.1/DDMS-v3_1.xsd", DDMSVersion.getCurrentVersion().getSchema());
 	}
 	
 	public void testGetCurrentNamespace() {
