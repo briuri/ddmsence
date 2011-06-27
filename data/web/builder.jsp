@@ -133,7 +133,7 @@
 		form.elements['security.securityAttributes.ownerProducers'].value = 'USA';
 		form.elements['resourceElement'].checked = true;
 		form.elements['createDate'].value = '2010-01-21';
-		form.elements['DESVersion'].value = '2';
+		form.elements['DESVersion'].value = '5';
 		form.elements['securityAttributes.classification'].value = 'U';
 		form.elements['securityAttributes.ownerProducers'].value = 'USA';
 	}	
@@ -145,7 +145,7 @@
 
 <h1>DDMS Builder</h1>
 
-<p>This experimental tool uses the DDMSence library to create a DDMS 3.0 Resource from form input. It uses
+<p>This experimental tool uses the DDMSence library to create a DDMS 3.1 Resource from form input. It uses
 the <a href="documentation.jsp#tips-builders">Component Builder</a> framework, which was introduced in DDMSence 
 1.8.0. To simplify the example source code, the form only asks for the minimal subset of elements and attributes required for a valid Resource
  (this is similar to running the <u>Escort</u> <a href="tutorials-02.jsp">tutorial</a> in FAST mode). 

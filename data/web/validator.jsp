@@ -61,7 +61,7 @@
 			exampleRecord = ""
 				+ "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
 				+ "<ddms:Resource \n"
-				+ "  xsi:schemaLocation=\"http://metadata.dod.mil/mdr/ns/DDMS/3.0/ DDMS-v3_0.xsd\" \n"
+				+ "  xsi:schemaLocation=\"http://metadata.dod.mil/mdr/ns/DDMS/3.0/ DDMS-v3_1.xsd\" \n"
 				+ "  xmlns:ddms=\"http://metadata.dod.mil/mdr/ns/DDMS/3.0/\" \n"
 				+ "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" \n"
 				+ "  xmlns:ICISM=\"urn:us:gov:ic:ism\" \n"
@@ -145,7 +145,7 @@
 
 <h1>DDMS Validator</h1>
 
-<p>This experimental tool uses the DDMSence library to validate <b>Unclassified</b> DDMS 2.0 and 3.0 records. Records 
+<p>This experimental tool uses the DDMSence library to validate <b>Unclassified</b> DDMS 2.0, 3.0, and 3.1 records. Records 
 can be submitted by pasting XML text, uploading a file, or referencing a URL. Information submitted through this tool is not retained
 on the server.</p>
 <p>Starred fields (<b>*</b>) are required.</p>
