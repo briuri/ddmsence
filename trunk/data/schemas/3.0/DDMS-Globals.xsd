@@ -14,7 +14,7 @@
 		</xs:documentation>
 	</xs:annotation>
 	<!-- This copy of IC-ISM.xsd has been made available for Public Release -->
-	<xs:import namespace="urn:us:gov:ic:ism" schemaLocation="../../INT/schemas/2010-06-06/IC-ISM.xsd"/>
+	<xs:import namespace="urn:us:gov:ic:ism" schemaLocation="IC-ISM.xsd"/>
 	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="DDMS-XLink-Profile.xsd"/>
 	<!-- Start Global Elements -->
 	<xs:element name="identifier" type="CompoundResourceIdentifierType">
