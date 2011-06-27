@@ -319,8 +319,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"security.ownerProducer\" content=\"USA\" />\n");
 		html.append("<meta name=\"extensible.layer\" content=\"false\" />\n");
 		html.append("<meta name=\"ddms.generator\" content=\"DDMSence ").append(PropertyReader.getProperty("version")).append("\" />\n");
-		html.append("<meta name=\"ddms.version\" content=\"").append(DDMSVersion.getCurrentVersion().getVersion())
-			.append("\" />\n");
+		// Display the most recent compatible version of DDMS		
+		String xmlNamespace = DDMSVersion.getCurrentVersion().getNamespace();
+		html.append("<meta name=\"ddms.version\" content=\"").append(DDMSVersion.getVersionForNamespace(xmlNamespace)).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -403,7 +404,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		text.append("ownerProducer: USA\n");
 		text.append("Extensible Layer: false\n");
 		text.append("DDMS Generator: DDMSence ").append(PropertyReader.getProperty("version")).append("\n");
-		text.append("DDMS Version: ").append(DDMSVersion.getCurrentVersion().getVersion()).append("\n");
+		// Display the most recent compatible version of DDMS		
+		String xmlNamespace = DDMSVersion.getCurrentVersion().getNamespace();
+		text.append("DDMS Version: ").append(DDMSVersion.getVersionForNamespace(xmlNamespace)).append("\n");
 		return (text.toString());
 	}
 
@@ -1018,7 +1021,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+			DDMSVersion.setCurrentVersion(version);		
 			createComponents();
 			
 			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));

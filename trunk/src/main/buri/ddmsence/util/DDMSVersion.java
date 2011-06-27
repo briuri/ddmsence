@@ -46,22 +46,16 @@ import buri.ddmsence.ddms.UnsupportedVersionException;
  * <li><code>ddms.xmlNamespaces</code>: 
  * i.e. "http://metadata.dod.mil/mdr/ns/DDMS/2.0/,http://metadata.dod.mil/mdr/ns/DDMS/3.0/"</li>
  * <li><code>ddms.xsdLocations</code>: 
- * i.e. "/schemas/2.0/DDMS/2.0/DDMS-v2_0.xsd,/schemas/3.0/DDMS/3.0/DDMS-v3_0.xsd"</li>
+ * i.e. "/schemas/2.0/DDMS-v2_0.xsd,/schemas/3.0/DDMS-v3_0.xsd"</li>
  * <li><code>gml.xmlNamespaces</code>: i.e. "http://www.opengis.net/gml,http://www.opengis.net/gml/3.2"</li>
  * <li><code>gml.xsdLocations</code>: 
- * i.e. "/schemas/2.0/DDMS/2.0/DDMS-GML-Profile.xsd,/schemas/3.0/DDMS/3.0/DDMS-GML-Profile.xsd"</li>
+ * i.e. "/schemas/2.0/DDMS-GML-Profile.xsd,/schemas/3.0/DDMS-GML-Profile.xsd"</li>
  * <li><code>icism.xmlNamespaces</code>: i.e. "urn:us:gov:ic:ism:v2,urn:us:gov:ic:ism"</li>
  *  
  * 
  * <p>
  * The number of items in each property must match the number of supported DDMS versions. The format of an xsdLocation 
- * should follow <code>/schemas/versionNumber/schemaLocationInDDMSDownloadablePackage</code>.
- * </p>
- * 
- * <p>
- * Because DDMS 3.0.1 is syntactically identical to DDMS 3.0, requests for version 3.0.1
- * will simply alias to DDMS 3.0. DDMS 3.0.1 is not set up as a separate batch of schemas and namespaces,
- * since none of the technical artifacts changed (3.0.1 was a documentation release).
+ * should follow <code>/schemas/versionNumber/schemaLocationInDataDirectory</code>.
  * </p>
  * 
  * <p>
@@ -86,6 +80,7 @@ public class DDMSVersion {
 	static {
 		VERSIONS_TO_DETAILS.put("2.0", new DDMSVersion("2.0"));
 		VERSIONS_TO_DETAILS.put("3.0", new DDMSVersion("3.0"));
+		VERSIONS_TO_DETAILS.put("3.0.1", new DDMSVersion("3.0.1"));
 		_currentVersion = getVersionFor(PropertyReader.getProperty("ddms.defaultVersion"));
 	}
 			
@@ -132,7 +127,7 @@ public class DDMSVersion {
 	public static boolean isVersion(String ddmsVersion, Element ddmsElement) {
 		Util.requireValue("test version", ddmsVersion);
 		Util.requireValue("test element", ddmsElement);
-		return (aliasVersion(ddmsVersion).equals(DDMSVersion.getVersionForNamespace(ddmsElement.getNamespaceURI()).getVersion()));
+		return (ddmsVersion.equals(DDMSVersion.getVersionForNamespace(ddmsElement.getNamespaceURI()).getVersion()));
 	}
 	
 	/**
@@ -142,7 +137,7 @@ public class DDMSVersion {
 	 * @return true if the current version matches the test version, false otherwise
 	 */
 	public static boolean isCurrentVersion(String ddmsVersion) {
-		return (getCurrentVersion().getVersion().equals(aliasVersion(ddmsVersion)));
+		return (getCurrentVersion().getVersion().equals(ddmsVersion));
 	}
 	
 	/**
@@ -153,33 +148,38 @@ public class DDMSVersion {
 	 * @throws UnsupportedVersionException if the version number is not supported
 	 */
 	public static DDMSVersion getVersionFor(String version) {
-		version = aliasVersion(version);
 		if (!getSupportVersionsProperty().contains(version))
 			throw new UnsupportedVersionException(version);
 		return (VERSIONS_TO_DETAILS.get(version));
 	}
 		
 	/**
-	 * Returns the DDMSVersion instance mapped to a DDMS namespace URI
+	 * Returns the most recent compatible DDMSVersion instance mapped to a DDMS namespace URI
+	 * 
+	 * <li>For the DDMS 2.0 namespace, 2.0 is returned.</li>
+	 * <li>For the DDMS 3.0, 3.0.1, and 3.1 namespace, 3.1 is returned.</li>
 	 * 
 	 * @param ddmsNamespaceURI the namespace to check
 	 * @return a DDMS version or null if it is not mapped to a version
 	 */
 	public static DDMSVersion getVersionForNamespace(String ddmsNamespaceURI) {
-		int index = PropertyReader.getListProperty("ddms.xmlNamespaces").indexOf(ddmsNamespaceURI);
+		int index = PropertyReader.getListProperty("ddms.xmlNamespaces").lastIndexOf(ddmsNamespaceURI);
 		if (index == -1)
 			return (null);
 		return (getVersionFor(getSupportVersionsProperty().get(index)));
 	}
 	
 	/**
-	 * Returns the DDMSVersion instance mapped to a GML namespace URI
+	 * Returns the msot recent compatible DDMSVersion instance mapped to a GML namespace URI
+	 * 
+	 * <li>For the DDMS 2.0 GML namespace, 2.0 is returned.</li>
+	 * <li>For the DDMS 3.0, 3.0.1, and 3.1 GML namespace, 3.1 is returned.</li>
 	 * 
 	 * @param gmlNamespaceURI the namespace to check
 	 * @return a DDMS version or null if it is not mapped to a version
 	 */
 	public static DDMSVersion getVersionForGmlNamespace(String gmlNamespaceURI) {
-		int index = PropertyReader.getListProperty("gml.xmlNamespaces").indexOf(gmlNamespaceURI);
+		int index = PropertyReader.getListProperty("gml.xmlNamespaces").lastIndexOf(gmlNamespaceURI);
 		if (index == -1)
 			return (null);
 		return (getVersionFor(getSupportVersionsProperty().get(index)));
@@ -193,23 +193,9 @@ public class DDMSVersion {
 	 * @throws UnsupportedVersionException if the version is not supported
 	 */
 	public static synchronized void setCurrentVersion(String version) {
-		version = aliasVersion(version);
 		if (!getSupportVersionsProperty().contains(version))
 			throw new UnsupportedVersionException(version);
 		_currentVersion = getVersionFor(version);
-	}
-	
-	/**
-	 * Treats version 3.0.1 of DDMS as an alias for DDMS 3.0. 3.0.1 is syntactically identical,
-	 * and has the same namespaces and schemas.
-	 * 
-	 * @param version the raw version
-	 * @return 3.0, if the raw version is 3.0.1. Otherwise, the version.
-	 */
-	private static String aliasVersion(String version) {
-		if ("3.0.1".equals(version))
-			return ("3.0");
-		return (version);
 	}
 	
 	/**

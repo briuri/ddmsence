@@ -164,7 +164,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	public void addTo(Element element) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getVersionFor(getDDMSVersion());
 		DDMSVersion elementVersion = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
-		if (version != elementVersion) {
+		if (!version.getNamespace().equals(elementVersion.getNamespace())) {
 			throw new InvalidDDMSException("These extensible attributes cannot decorate a DDMS component with"
 				+ " a different DDMS version.");
 		}			

@@ -335,7 +335,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	public void addTo(Element element) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getVersionFor(getDDMSVersion());
 		DDMSVersion elementVersion = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
-		if (version != elementVersion) {
+		if (!version.getNamespace().equals(elementVersion.getNamespace())) {
 			throw new InvalidDDMSException("These security attributes cannot decorate a DDMS component with"
 				+ " a different DDMS version.");
 		}			

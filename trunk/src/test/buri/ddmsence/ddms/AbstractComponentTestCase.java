@@ -73,8 +73,9 @@ public abstract class AbstractComponentTestCase extends TestCase {
 			DDMSReader reader = new DDMSReader();
 			for (String version : DDMSVersion.getSupportedVersions()) {
 				File file = new File(PropertyReader.getProperty("test.unit.data") + version, validDocumentFile);
-				if (file.exists())
+				if (file.exists()) {
 					_elementMap.put(version, reader.getElement(file));
+				}
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("Cannot run tests without valid DDMSReader and valid unit test object.", e);
