@@ -75,14 +75,15 @@ public abstract class AbstractAttributeGroup {
 		if (!(obj instanceof AbstractAttributeGroup))
 			return (false);		
 		AbstractAttributeGroup test = (AbstractAttributeGroup) obj;
-		return (getDDMSVersion().equals(test.getDDMSVersion()));
+		return (DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace().equals(
+			DDMSVersion.getVersionFor(test.getDDMSVersion()).getNamespace()));
 	}
 
 	/**
 	 * @see Object#hashCode()
 	 */
 	public int hashCode() {
-		return (getDDMSVersion().hashCode());
+		return (DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace().hashCode());
 	}	
 	
 	/**

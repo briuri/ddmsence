@@ -131,7 +131,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	protected void addTo(Element element) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getVersionFor(getDDMSVersion());
 		DDMSVersion elementVersion = DDMSVersion.getVersionForGmlNamespace(element.getNamespaceURI());
-		if (version != elementVersion) {
+		if (!version.getNamespace().equals(elementVersion.getNamespace())) {
 			throw new InvalidDDMSException("These SRS attributes cannot decorate a DDMS component with"
 				+ " a different DDMS version.");
 		}	

@@ -47,13 +47,18 @@ public class DDMSVersionTest extends TestCase {
 	
 	public void testIsVersion() {
 		Element element = Util.buildDDMSElement("test", null);
-		assertTrue(DDMSVersion.isVersion("3.0", element));
+		assertTrue(DDMSVersion.isVersion("3.0.1", element));
+		assertFalse(DDMSVersion.isVersion("3.0", element));
 		assertFalse(DDMSVersion.isVersion("2.0", element));
 	}
 	
 	public void testGetVersionFor() {
 		assertEquals("2.0", 
 			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/2.0/").getVersion());
+		assertEquals("3.0.1", 
+			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/").getVersion());
+		assertFalse("3.0".equals( 
+			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/").getVersion()));
 		assertEquals(null, DDMSVersion.getVersionForNamespace("TEST"));
 	}
 	
@@ -73,7 +78,7 @@ public class DDMSVersionTest extends TestCase {
 	}
 	
 	public void testGetCurrentSchema() {
-		assertEquals("/schemas/3.0/DDMS-v3_0.xsd", DDMSVersion.getCurrentVersion().getSchema());
+		assertEquals("/schemas/3.0.1/DDMS-v3_0.xsd", DDMSVersion.getCurrentVersion().getSchema());
 	}
 	
 	public void testGetCurrentNamespace() {
@@ -126,16 +131,5 @@ public class DDMSVersionTest extends TestCase {
 		assertEquals("http://www.opengis.net/gml/3.2", version.getGmlNamespace());
 		assertEquals("/schemas/3.0/DDMS-GML-Profile.xsd", version.getGmlSchema());
 		assertEquals("urn:us:gov:ic:ism", version.getIcismNamespace());
-	}
-	
-	public void testAliasVersion() {
-		DDMSVersion.setCurrentVersion("3.0.1");
-		assertEquals("3.0", DDMSVersion.getCurrentVersion().getVersion());		
-		assertEquals("3.0", DDMSVersion.getVersionFor("3.0.1").getVersion());
-		assertTrue(DDMSVersion.isCurrentVersion("3.0.1"));
-		Element element = Util.buildDDMSElement("test", null);
-		assertTrue(DDMSVersion.isVersion("3.0", element));
-		assertTrue(DDMSVersion.isVersion("3.0.1", element));
-		
 	}
 }
