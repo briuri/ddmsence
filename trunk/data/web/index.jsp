@@ -58,7 +58,7 @@
 	<meta name="security.ownerProducer" content="USA" />
 	<meta name="extensible.layer" content="false" />
 	<meta name="ddms.generator" content="DDMSence @ddmsence.version@" />
-	<meta name="ddms.version" content="3.0" />
+	<meta name="ddms.version" content="3.1" />
 	
 	<script type="text/javascript" src="./shared/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript">
@@ -122,7 +122,7 @@ It can transform XML DDMS Resource records into a Java object model (using XOM a
 DDMSence also performs logical validation of rules which are not coded into the DDMS schema (such as the validation of longitude/latitude values).</p>
 
 <ul>
-	<li>Provides a complete implementation of the DDMS specification (including the Extensible Layer) using either DDMS 2.0 or 3.0.</li>
+	<li>Provides a complete implementation of the DDMS specification (including the Extensible Layer) using DDMS 2.0, 3.0, or 3.1.</li>
 	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types. Components can automatically transform into valid, well-formed XML, HTML, and Text records, according to the DDMS specification.</li>
 	<li>Adds an additional level of validation to all components, including the Controlled Vocabulary Enumerations for ICISM security attributes, as defined by the Intelligence Community. Custom validation rules can also be defined with <a href="documentation.jsp#tips-schematron">ISO Schematron</a>.</li>
 	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
