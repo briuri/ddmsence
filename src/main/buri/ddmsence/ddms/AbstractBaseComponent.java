@@ -42,11 +42,14 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 
 	private List<ValidationMessage> _warnings;
 	private Element _element;
+	private String _ddmsVersion;
 	
 	/**
-	 * This implicit superconstructor does nothing.
+	 * This implicit superconstructor merely sets the current version.
 	 */
-	protected AbstractBaseComponent() throws InvalidDDMSException {}
+	protected AbstractBaseComponent() throws InvalidDDMSException {
+		_ddmsVersion = DDMSVersion.getCurrentVersion().getVersion();
+	}
 	
 	/**
 	 * Base constructor
@@ -94,7 +97,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @see IDDMSComponent#getDDMSVersion()
 	 */
 	public String getDDMSVersion() {
-		return (DDMSVersion.getVersionForNamespace(getXOMElement().getNamespaceURI()).getVersion());
+		return (_ddmsVersion);
 	}
 	
 	/**
@@ -350,6 +353,10 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	protected void setXOMElement(Element element, boolean validateNow) throws InvalidDDMSException {
 		Util.requireDDMSValue("XOM Element", element);
 		_element = element;
+		DDMSVersion ddmsVersion = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
+		if (ddmsVersion == null)
+			ddmsVersion = DDMSVersion.getVersionForGmlNamespace(element.getNamespaceURI());
+		_ddmsVersion = (ddmsVersion == null) ? null : ddmsVersion.getVersion();
 		if (validateNow)
 			validate();
 	}
