@@ -41,6 +41,7 @@ import buri.ddmsence.util.Util;
  * 
  * <p>
  * A Polygon element contains a nested gml:exterior element, which itself contains a nested gml:LinearRing element. 
+ * The points which mark the boundaries of the polygon should be provided in counter-clockwise order.
  * Because DDMS does not decorate these elements with any special attributes, they are not implemented as Java objects.
  * </p>
  * 
