@@ -34,8 +34,8 @@
 				do not have declassification instructions, the derivatively classified 
 				document shall not contain a declassification date or event on the 
 				Declassify On line.  The following shall be annotated on the Declassify On 
-				line:  “Not Applicable or (N/A) to RD/FRD portions” and 
-				“See source list for NSI portions” separated by a period.  
+				line:  "Not Applicable or (N/A) to RD/FRD portions" and 
+				"See source list for NSI portions" separated by a period.  
 				The source list must include the declassification instruction 
 				for each of the source documents classified under E.O. 13526 and 
 				shall not appear in the classification authority block
@@ -69,7 +69,7 @@
          <!--(U) The value "25X1-EO-12951" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="25X1-EO-12951">
             <xsd:annotation>
                <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
-				“25X1, EO 12951” (prescribed by the DNI for use on information described in E.O. 12951, 
+				"25X1, EO 12951" (prescribed by the DNI for use on information described in E.O. 12951, 
 				Release of Imagery Acquired by Space-Based National Intelligence Reconnaissance Systems)
 			</xsd:documentation>
             </xsd:annotation>
