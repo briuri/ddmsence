@@ -104,7 +104,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 	private List<IDDMSComponent> TEST_NO_OPTIONAL_COMPONENTS;
 
 	private static final Boolean TEST_RESOURCE_ELEMENT = Boolean.TRUE;
-	private static final Integer TEST_DES_VERSION = new Integer(2);
+	private static final Integer TEST_DES_VERSION_V2 = new Integer(2);
+	private static final Integer TEST_DES_VERSION_V5 = new Integer(5);
 	private static final String TEST_CREATE_DATE = "2010-01-21";
 
 	/**
@@ -123,7 +124,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		TEST_SUBTITLE = new Subtitle("Version 0.1", SecurityAttributesTest.getFixture(false));
 		TEST_DESCRIPTION = new Description("A transformation service.", SecurityAttributesTest.getFixture(false));
 		TEST_LANGUAGE = new Language("http://purl.org/dc/elements/1.1/language", "en");
-		TEST_DATES = new Dates("2003", null, null, null);
+		TEST_DATES = new Dates("2003", null, null, null, null);
 		TEST_RIGHTS = new Rights(true, true, true);
 		TEST_SOURCE = new Source(null, "http://www.xmethods.com", null, null, null);
 		TEST_TYPE = new Type("DCMITYPE", "http://purl.org/dc/dcmitype/Text");
@@ -247,7 +248,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
 			html.append("<meta name=\"security.resourceElement\" content=\"true\" />\n");
 			html.append("<meta name=\"security.createDate\" content=\"2010-01-21\" />\n");
-			html.append("<meta name=\"security.DESVersion\" content=\"2\" />\n");
+			html.append("<meta name=\"security.DESVersion\" content=\"5\" />\n");
 			html.append("<meta name=\"security.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"security.ownerProducer\" content=\"USA\" />\n");
 		}
@@ -333,7 +334,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
 			text.append("ResourceElement: true\n");
 			text.append("Create Date: 2010-01-21\n");
-			text.append("DES Version: 2\n");
+			text.append("DES Version: 5\n");
 			text.append("Classification: U\n");
 			text.append("ownerProducer: USA\n");
 		}
@@ -421,7 +422,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			.append("\" xmlns:ICISM=\"");
 		xml.append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append("\"");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			xml.append(" ICISM:resourceElement=\"true\" ICISM:DESVersion=\"2\" ICISM:createDate=\"2010-01-21\" ")
+			xml.append(" ICISM:resourceElement=\"true\" ICISM:DESVersion=\"5\" ICISM:createDate=\"2010-01-21\" ")
 				.append("ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
 		}
 		else {
@@ -542,7 +543,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -560,11 +561,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 			
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
-				TEST_DES_VERSION);
+				TEST_DES_VERSION_V2);
 
 			// No optional fields
 			testConstructor(WILL_SUCCEED, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
-				TEST_DES_VERSION);
+				TEST_DES_VERSION_V2);
 		}
 	}
 
@@ -580,7 +581,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				Element element = Util.buildDDMSElement(Resource.NAME, null);
 				Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 				Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-					String.valueOf(TEST_DES_VERSION));
+					String.valueOf(TEST_DES_VERSION_V2));
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 				element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -594,7 +595,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				Util.addAttribute(element, icPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, "");
 				Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 				Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-					String.valueOf(TEST_DES_VERSION));
+					String.valueOf(TEST_DES_VERSION_V2));
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 				element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -608,7 +609,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				Util.addAttribute(element, icPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, "aardvark");
 				Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 				Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-					String.valueOf(TEST_DES_VERSION));
+					String.valueOf(TEST_DES_VERSION_V2));
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 				element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -622,7 +623,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				Util.addAttribute(element, icPrefix, Resource.RESOURCE_ELEMENT_NAME, DDMSVersion
 					.getCurrentVersion().getIcismNamespace(), String.valueOf(TEST_RESOURCE_ELEMENT));
 				Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, 
-					icNamespace, String.valueOf(TEST_DES_VERSION));
+					icNamespace, String.valueOf(TEST_DES_VERSION_V2));
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 				element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -638,7 +639,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, 
 					icNamespace, "2004");
 				Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, 
-					icNamespace, String.valueOf(TEST_DES_VERSION));
+					icNamespace, String.valueOf(TEST_DES_VERSION_V2));
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 				element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -682,7 +683,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -696,7 +697,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(TEST_CREATOR.getXOMElementCopy());
@@ -710,7 +711,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_CREATOR.getXOMElementCopy());
@@ -724,7 +725,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -741,7 +742,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -758,7 +759,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -775,7 +776,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -792,7 +793,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -806,7 +807,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -822,7 +823,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -836,7 +837,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -852,7 +853,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace, 
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
 		}
@@ -865,13 +866,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 			
 			if (!DDMSVersion.isCurrentVersion("2.0")) {
 				// Missing createDate
-				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, null, TEST_DES_VERSION);
+				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, null, TEST_DES_VERSION_V2);
 
 				// Invalid createDate
-				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, "2001", TEST_DES_VERSION);
+				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, "2001", TEST_DES_VERSION_V2);
 
 				// Nonsensical createDate
-				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, "notAnXmlDate", TEST_DES_VERSION);
+				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, "notAnXmlDate", TEST_DES_VERSION_V2);
 
 				// Missing desVersion
 				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null);
@@ -879,35 +880,35 @@ public class ResourceTest extends AbstractComponentTestCase {
 			// At least 1 producer
 			List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.remove(TEST_CREATOR);
-			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION_V2);
 
 			// At least 1 identifier
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.remove(TEST_IDENTIFIER);
-			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION_V2);
 
 			// At least 1 title
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.remove(TEST_TITLE);
-			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION_V2);
 
 			// At least 1 subjectCoverage
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.remove(TEST_SUBJECT);
-			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION_V2);
 
 			// At least 1 security
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.remove(TEST_SECURITY);
-			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION_V2);
 
 			// No top level components
-			testConstructor(WILL_FAIL, null, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+			testConstructor(WILL_FAIL, null, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION_V2);
 
 			// Non-top-level component
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.add(new Keyword("test"));
-			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION_V2);
 		}
 	}
 
@@ -925,7 +926,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.add(new Format("test", new MediaExtent("test", ""), "test"));
 			component = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
-				TEST_DES_VERSION);
+				TEST_DES_VERSION_V2);
 			warnings = DDMSVersion.isCurrentVersion("2.0") ? 2 : 1;
 			assertEquals(warnings, component.getValidationWarnings().size());
 
@@ -950,7 +951,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.add(new GeospatialCoverage(null, null, null, address, null, null));
 			component = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
-				TEST_DES_VERSION);
+				TEST_DES_VERSION_V2);
 			warnings = DDMSVersion.isCurrentVersion("2.0") ? 2 : 1;
 			assertEquals(warnings, component.getValidationWarnings().size());
 			if (DDMSVersion.isCurrentVersion("2.0")) {
@@ -977,8 +978,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 			
 			Resource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
 			Resource dataComponent = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS,
-				null, null, TEST_DES_VERSION) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS,
-				TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION));
+				null, null, TEST_DES_VERSION_V2) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS,
+				TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION_V5));
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -987,15 +988,16 @@ public class ResourceTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			Integer desVersion = ("2.0".equals(version) ? TEST_DES_VERSION_V2 : TEST_DES_VERSION_V5);
 			createComponents();
 
 			Resource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
 			Resource dataComponent = testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, false, TEST_CREATE_DATE,
-				TEST_DES_VERSION);
+				desVersion);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
-				"1999-10-10", TEST_DES_VERSION);
+				"1999-10-10", desVersion);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
@@ -1003,7 +1005,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT,
-				TEST_CREATE_DATE, TEST_DES_VERSION);
+				TEST_CREATE_DATE, desVersion);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -1028,8 +1030,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
 			component = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
-				TEST_DES_VERSION) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
-				TEST_CREATE_DATE, TEST_DES_VERSION));
+				TEST_DES_VERSION_V2) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
+				TEST_CREATE_DATE, TEST_DES_VERSION_V5));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		}
 	}
@@ -1043,8 +1045,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedTextOutput(), component.toText());
 
 			component = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
-				TEST_DES_VERSION) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
-				TEST_CREATE_DATE, TEST_DES_VERSION));
+				TEST_DES_VERSION_V2) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
+				TEST_CREATE_DATE, TEST_DES_VERSION_V5));
 			assertEquals(getExpectedTextOutput(), component.toText());
 		}
 	}
@@ -1058,8 +1060,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
 			component = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
-				TEST_DES_VERSION) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
-				TEST_CREATE_DATE, TEST_DES_VERSION));
+				TEST_DES_VERSION_V2) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
+				TEST_CREATE_DATE, TEST_DES_VERSION_V5));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -1081,7 +1083,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -1127,7 +1129,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -1155,7 +1157,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 
 			SecurityAttributes parentAttr = new SecurityAttributes("CTS-BALK", ownerProducers, null);
 			parentAttr.addTo(element);
@@ -1182,7 +1184,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		new Resource(TEST_TOP_LEVEL_COMPONENTS);
 		
 		// But attributes can still be used.
-		new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION, 
+		new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION_V2, 
 			SecurityAttributesTest.getFixture(false));
 	}
 	
@@ -1196,7 +1198,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			if ("2.0".equals(version))
 				new Resource(TEST_TOP_LEVEL_COMPONENTS, attr);
 			else
-				new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION,
+				new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION_V2,
 					SecurityAttributesTest.getFixture(false), attr);
 		}		
 	}
@@ -1209,14 +1211,14 @@ public class ResourceTest extends AbstractComponentTestCase {
 		// ICISM:DESVersion in element
 		Element element = Util.buildDDMSElement(Resource.NAME, null);
 		Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, 
-			DDMSVersion.getCurrentVersion().getIcismNamespace(), String.valueOf(TEST_DES_VERSION));
+			DDMSVersion.getCurrentVersion().getIcismNamespace(), String.valueOf(TEST_DES_VERSION_V2));
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 		element.appendChild(TEST_TITLE.getXOMElementCopy());
 		element.appendChild(TEST_CREATOR.getXOMElementCopy());
 		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
 		element.appendChild(TEST_SECURITY.getXOMElementCopy());
 		Resource component = new Resource(element);
-		assertEquals(TEST_DES_VERSION, component.getDESVersion());
+		assertEquals(TEST_DES_VERSION_V2, component.getDESVersion());
 		assertTrue(component.getSecurityAttributes().isEmpty());
 		assertEquals(0, component.getExtensibleAttributes().getAttributes().size());
 		
@@ -1269,9 +1271,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		// icAttribute as parameter, uniqueAttribute as extensibleAttribute
 		exAttr.clear();
 		exAttr.add(new Attribute(uniqueAttribute));		
-		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION, null, 
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION_V2, null, 
 			new ExtensibleAttributes(exAttr));
-		assertEquals(TEST_DES_VERSION, component.getDESVersion());
+		assertEquals(TEST_DES_VERSION_V2, component.getDESVersion());
 		assertTrue(component.getSecurityAttributes().isEmpty());
 		assertEquals(1, component.getExtensibleAttributes().getAttributes().size());
 		
@@ -1305,9 +1307,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		// icAttribute as parameter, secAttribute as securityAttribute, uniqueAttribute as extensibleAttribute
 		exAttr.clear();
 		exAttr.add(new Attribute(uniqueAttribute));		
-		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION, 
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION_V2, 
 			SecurityAttributesTest.getFixture(false), new ExtensibleAttributes(exAttr));
-		assertEquals(TEST_DES_VERSION, component.getDESVersion());
+		assertEquals(TEST_DES_VERSION_V2, component.getDESVersion());
 		assertFalse(component.getSecurityAttributes().isEmpty());
 		assertEquals(1, component.getExtensibleAttributes().getAttributes().size());
 		
@@ -1315,9 +1317,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		exAttr.clear();
 		exAttr.add(new Attribute(secAttribute));
 		exAttr.add(new Attribute(uniqueAttribute));		
-		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION, null, 
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION_V2, null, 
 			new ExtensibleAttributes(exAttr));
-		assertEquals(TEST_DES_VERSION, component.getDESVersion());
+		assertEquals(TEST_DES_VERSION_V2, component.getDESVersion());
 		assertTrue(component.getSecurityAttributes().isEmpty());
 		assertEquals(2, component.getExtensibleAttributes().getAttributes().size());
 		
@@ -1352,7 +1354,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				List<Attribute> exAttr = new ArrayList<Attribute>();
 				exAttr.add(new Attribute("ICISM:DESVersion", DDMSVersion.getCurrentVersion().getIcismNamespace(), 
 					"2"));
-				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION, 
+				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, TEST_DES_VERSION_V2, 
 					SecurityAttributesTest.getFixture(false), new ExtensibleAttributes(exAttr));
 				fail("Allowed invalid data.");
 			}
@@ -1388,7 +1390,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(TEST_DES_VERSION));
+				String.valueOf(TEST_DES_VERSION_V2));
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -1408,7 +1410,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 		components.add(component);
 		Resource resource = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
-			TEST_DES_VERSION);
+			TEST_DES_VERSION_V2);
 		assertTrue(resource.toHTML().indexOf("<meta name=\"extensible.layer\" content=\"true\" />") != -1);
 		assertTrue(resource.toText().indexOf("Extensible Layer: true\n") != -1);
 	}
@@ -1421,7 +1423,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		
 		List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 		components.add(component);
-		testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+		testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION_V2);
 	}
 	
 	public void test20TooManyExtensibleElements() throws InvalidDDMSException {
@@ -1443,7 +1445,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		components.add(new ExtensibleElement(ExtensibleElementTest.getElementFixture()));
 		components.add(new ExtensibleElement(ExtensibleElementTest.getElementFixture()));
 		
-		testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION);
+		testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_DES_VERSION_V2);
 	}
 	
 	public void test20DeclassManualReviewAttribute() throws InvalidDDMSException {
