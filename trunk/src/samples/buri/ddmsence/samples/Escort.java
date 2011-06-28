@@ -183,7 +183,8 @@ public class Escort {
 				String posted = readString("the posted date [2010]");
 				String validTil = readString("the validTil date [2010]");
 				String infoCutOff = readString("the infoCutOff date [2010]");
-				return (new Dates(created, posted, validTil, infoCutOff));
+				String approvedOn = readString("the approvedOn date [2010]");
+				return (new Dates(created, posted, validTil, infoCutOff, approvedOn));
 			}		
 		});
 		BUILDERS.put(Rights.class, new IComponentBuilder() {
