@@ -27,6 +27,9 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -62,12 +65,16 @@ public class DDMSReader {
 	/**
 	 * Constructor
 	 * 
+	 * <p>Schemas are loaded in reverse order, so the latest, greatest copy is always first to be looked for.</p>
+	 * 
 	 * Creates a DDMSReader which can process various versions of DDMS and GML
 	 */
 	public DDMSReader() throws SAXException {
 		_reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xmlReader.class"));
 		StringBuffer schemas = new StringBuffer();
-		for (String version : DDMSVersion.getSupportedVersions()) {
+		List<String> versions = new ArrayList<String>(DDMSVersion.getSupportedVersions());
+		Collections.reverse(versions);
+		for (String version : versions) {
 			DDMSVersion ddmsVersion = DDMSVersion.getVersionFor(version);
 			String xsd = getLocalSchemaLocation(ddmsVersion.getSchema());
 			schemas.append(ddmsVersion.getNamespace()).append(" ").append(xsd).append(" ");
