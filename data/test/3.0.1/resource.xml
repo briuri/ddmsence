@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ddms:Resource xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ICISM="urn:us:gov:ic:ism"
-	ICISM:resourceElement="true" ICISM:DESVersion="2" ICISM:createDate="2010-01-21" ICISM:classification="U" ICISM:ownerProducer="USA">
+	ICISM:resourceElement="true" ICISM:DESVersion="5" ICISM:createDate="2010-01-21" ICISM:classification="U" ICISM:ownerProducer="USA">
 	<ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence:testIdentifier" />
 	<ddms:title ICISM:classification="U" ICISM:ownerProducer="USA">DDMSence</ddms:title>
 	<ddms:subtitle ICISM:classification="U" ICISM:ownerProducer="USA">Version 0.1</ddms:subtitle>
