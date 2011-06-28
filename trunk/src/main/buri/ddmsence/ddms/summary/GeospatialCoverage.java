@@ -43,7 +43,10 @@ import buri.ddmsence.util.Util;
  * <ul>
  * <li>No more than 1 each of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent can 
  * be used. The schema seems to support this assertion with explicit restrictions on those elements, but the enclosing 
- * xs:choice element allows multiples.</li>
+ * xs:choice element allows multiples. From the specification, "The intent of Geospatial Coverage is to provide 
+ * logically and semantically consistent information.  Flexibility in the specification does not absolve end users 
+ * using Geospatial Coverage from expressing information in a meaningful manner.  Users should ensure that combinations 
+ * of elements are appropriately relatable, consistent, meaningful, and useful for enterprise discovery."</li>
  * </ul>
  * </td></tr></table>
  * 
