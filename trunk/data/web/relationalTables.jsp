@@ -243,6 +243,9 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relField">infoCutOff</td><td class="relRules">char(32)</td><td>the info cutoff date</td>
 	</tr>
+	<tr class="relRow">
+		<td class="relField">approvedOn</td><td class="relRules">char(32)</td><td>the approval date (DDMS 3.1)</td>
+	</tr>
 </table>
 
 <a name="ddmsIdentifier"></a><table class="rel">
