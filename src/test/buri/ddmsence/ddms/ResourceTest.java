@@ -1500,6 +1500,123 @@ public class ResourceTest extends AbstractComponentTestCase {
 		}
 	}
 	
+	public void testBuild20Commit30() throws InvalidDDMSException {
+		// Version during building should be 100% irrelevant
+		DDMSVersion.setCurrentVersion("2.0");
+		Resource.Builder builder = new Resource.Builder();
+		builder.setResourceElement(TEST_RESOURCE_ELEMENT);
+		builder.setCreateDate(TEST_CREATE_DATE);
+		builder.setDESVersion(TEST_DES_VERSION_V5);
+		builder.getSecurityAttributes().setClassification("U");
+		builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+		
+		builder.getIdentifiers().get(0).setQualifier("testQualifier");
+		builder.getIdentifiers().get(0).setValue("testValue");
+		builder.getTitles().get(0).setValue("testTitle");
+		builder.getTitles().get(0).getSecurityAttributes().setClassification("U");
+		builder.getTitles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+		builder.getOrganizations().get(0).setNames(Util.getXsListAsList("testName"));
+		builder.getOrganizations().get(0).setProducerType("creator");
+		builder.getSubjectCoverage().getKeywords().get(0).setValue("keyword");
+		builder.getSecurity().getSecurityAttributes().setClassification("U");
+		builder.getSecurity().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+		DDMSVersion.setCurrentVersion("3.0");
+		builder.commit();
+		
+		// Using a 2.0-specific value
+		builder.getSecurity().getSecurityAttributes().setClassification("NS-S");
+		try {
+			builder.commit();
+			fail("Builder allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+
+	public void testBuild30Commit20() throws InvalidDDMSException {
+		// Version during building should be 100% irrelevant
+		DDMSVersion.setCurrentVersion("3.0");
+		Resource.Builder builder = new Resource.Builder();
+		builder.setResourceElement(TEST_RESOURCE_ELEMENT);
+		builder.setDESVersion(TEST_DES_VERSION_V2);
+		builder.getSecurityAttributes().setClassification("U");
+		builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+		
+		builder.getIdentifiers().get(0).setQualifier("testQualifier");
+		builder.getIdentifiers().get(0).setValue("testValue");
+		builder.getTitles().get(0).setValue("testTitle");
+		builder.getTitles().get(0).getSecurityAttributes().setClassification("U");
+		builder.getTitles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+		builder.getOrganizations().get(0).setNames(Util.getXsListAsList("testName"));
+		builder.getOrganizations().get(0).setProducerType("creator");
+		builder.getSubjectCoverage().getKeywords().get(0).setValue("keyword");
+		builder.getSecurity().getSecurityAttributes().setClassification("U");
+		builder.getSecurity().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+		
+		DDMSVersion.setCurrentVersion("2.0");
+		builder.commit();
+				
+		// Using a 3.0-specific value
+		builder.getSubjectCoverage().getSecurityAttributes().setClassification("U");
+		builder.getSubjectCoverage().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+		try {
+			builder.commit();
+			fail("Builder allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
+	public void testLoad30Commit20() throws InvalidDDMSException {
+		Resource.Builder builder = new Resource.Builder(new Resource(getValidElement("3.0")));
+		
+		// Direct mapping works
+		DDMSVersion.setCurrentVersion("3.0");
+		builder.commit();
+		
+		// Transform back to 2.0 fails on 3.0-specific fields
+		DDMSVersion.setCurrentVersion("2.0");
+		try {
+			builder.commit();
+			fail("Builder allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		// Wiping of 3.0-specific fields works
+		builder.getUnknowns().set(0, new Unknown.Builder());
+		builder.commit();
+	}
+		
+	public void testLoad20Commit30() throws InvalidDDMSException {
+		Resource.Builder builder = new Resource.Builder(new Resource(getValidElement("2.0")));
+		
+		// Direct mapping works
+		DDMSVersion.setCurrentVersion("2.0");
+		builder.commit();
+		
+		// Transform up to 3.0 fails on 3.0-specific fields
+		DDMSVersion.setCurrentVersion("3.0");
+		try {
+			builder.commit();
+			fail("Builder allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		// Adding 3.0-specific fields works
+		builder.setResourceElement(TEST_RESOURCE_ELEMENT);
+		builder.setCreateDate(TEST_CREATE_DATE);
+		builder.setDESVersion(TEST_DES_VERSION_V5);
+		builder.getSecurityAttributes().setClassification("U");
+		builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+		builder.commit();
+	}
+
 	public void testBuilderEmptiness() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
