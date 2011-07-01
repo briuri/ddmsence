@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-		xmlns="http://metadata.dod.mil/mdr/ns/DDMS/3.0/"
-		xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/"
+		xmlns="http://metadata.dod.mil/mdr/ns/DDMS/3.1/"
+		xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.1/"
 		xmlns:gml="http://www.opengis.net/gml/3.2"
 		xmlns:mdr="http://metadata.dod.mil/"
 		xmlns:xlink="http://www.w3.org/1999/xlink"
-		targetNamespace="http://metadata.dod.mil/mdr/ns/DDMS/3.0/"
+		targetNamespace="http://metadata.dod.mil/mdr/ns/DDMS/3.1/"
 		elementFormDefault="qualified" attributeFormDefault="qualified" version="3.1">
 	<xs:annotation>
 		<xs:documentation>

@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:mdr="http://metadata.dod.mil/" targetNamespace="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" elementFormDefault="qualified" attributeFormDefault="qualified" version="3.1">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://metadata.dod.mil/mdr/ns/DDMS/3.1/"
+	xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.1/"
+	xmlns:gml="http://www.opengis.net/gml/3.2"
+	xmlns:mdr="http://metadata.dod.mil/"
+	targetNamespace="http://metadata.dod.mil/mdr/ns/DDMS/3.1/" elementFormDefault="qualified" attributeFormDefault="qualified" version="3.1">
   <xs:annotation>
     <xs:documentation>
 			This XML Schema implements elements and attribute groups of the Department of Defense Discovery Metadata Specification (DDMS Spec), with a version number the same as that in the above 'version' attribute of the 'xs:schema' element.  Unless otherwise stated, all references to the DDMS Spec refer to that version of the document.
