@@ -1,5 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ICISM="urn:us:gov:ic:ism" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:mdr="http://metadata.dod.mil/" targetNamespace="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" elementFormDefault="qualified" attributeFormDefault="qualified" version="3.1">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns="http://metadata.dod.mil/mdr/ns/DDMS/3.1/"
+	xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.1/"
+	xmlns:ICISM="urn:us:gov:ic:ism"
+	xmlns:gml="http://www.opengis.net/gml/3.2"
+	xmlns:mdr="http://metadata.dod.mil/"
+	targetNamespace="http://metadata.dod.mil/mdr/ns/DDMS/3.1/" elementFormDefault="qualified" attributeFormDefault="qualified" version="3.1">
 	<xs:annotation>
 		<xs:documentation>
 This schema file is intended to simplify importation of IC-ISM Schema files.  The supported version of ISM is version 5 public, which is included for ease of evaluation.
@@ -35,7 +41,7 @@ This schema file is intended to simplify importation of IC-ISM Schema files.  Th
   </xs:attributeGroup>
 -->
   <!--The following section of code supports  IC-ISM 5-->
-  <xs:import namespace="urn:us:gov:ic:ism" schemaLocation="IC-ISM.xsd" />
+  <xs:import namespace="urn:us:gov:ic:ism" schemaLocation=IC-ISM.xsd" />
   <xs:attributeGroup name="RootSecurityAttributesGroup">
     <xs:attributeGroup ref="ICISM:SecurityAttributesGroup" />
     <xs:attributeGroup ref="ICISM:ISMRootNodeAttributeGroup" />
