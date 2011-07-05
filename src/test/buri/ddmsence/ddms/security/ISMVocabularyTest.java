@@ -20,6 +20,7 @@
 package buri.ddmsence.ddms.security;
 
 import buri.ddmsence.ddms.AbstractComponentTestCase;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 
 /**
@@ -42,7 +43,7 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 	 */
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		PropertyReader.setProperty("icism.cve.enumLocation", "/CVEnumISM/V2/");
+		PropertyReader.setProperty("icism.cve.customEnumLocation", "");
 	}
 	
 	public void testBadKey() {
@@ -61,6 +62,7 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 	}
 
 	public void testEnumerationTokens() {
+		ISMVocabulary.setIsmVersion(DDMSVersion.getVersionFor("2.0"));
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, "CTS"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, "unknown"));
 
@@ -93,6 +95,7 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 	}
 
 	public void testEnumerationPatterns() {
+		ISMVocabulary.setIsmVersion(DDMSVersion.getVersionFor("2.0"));
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "SI-G-ABCD"));
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "SI-ECI-ABC"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "SI-G-ABCDE"));
@@ -111,6 +114,7 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 	}
 
 	public void testIsUSMarking() {
+		ISMVocabulary.setIsmVersion(DDMSVersion.getVersionFor("2.0"));
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, "TS"));
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, "CTS"));
 	}
@@ -137,11 +141,11 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 	
 	public void testChangedCVELocation() {
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_DECLASS_EXCEPTION, "25X0"));
-		PropertyReader.setProperty("icism.cve.enumLocation", "/customCVEnumISM/");
+		PropertyReader.setProperty("icism.cve.customEnumLocation", "/customCVEnumISM/");
 		assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DECLASS_EXCEPTION, "25X0"));
 		
 		// Unknown Location
-		PropertyReader.setProperty("icism.cve.enumLocation", "/doesNotExist/");
+		PropertyReader.setProperty("icism.cve.customEnumLocation", "/doesNotExist/");
 		try {
 			ISMVocabulary.enumContains(ISMVocabulary.CVE_DECLASS_EXCEPTION, "25X0");
 			fail("Evaluated an enumeration with no enumeration files.");

@@ -385,9 +385,9 @@ you can use to eliminate this restriction:</p>
 
 <ol>
 <li>If you have access to enumeration files from more restricted distributions of ISM (or wish to use enumeration files from previous DESVersions), 
-you can create a classpath-accessible directory containing your files, and then use the <code>icism.cve.enumLocation</code> configurable property 
-to point to your files. DDMSence will expect this directory to contain the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/V2/">same 
-set of files</a> that come natively bundled in its JAR file, and will use your files to compare enumeration values.</li>
+you can create a classpath-accessible directory containing your files, and then use the <code>icism.cve.customEnumLocation</code> configurable property 
+to point to your files. Normally, DDMSence will toggle between the V2 and V5 enumeration files, based on the resource being validated. If this configurable property
+is set, for example to <code>/CVEnumISM/V4/</code>, any XML files in that directory will be used all of the time.</li>
 <li>If you do not have access to any other enumeration files, you can set the <code>icism.cve.validationAsErrors</code> configurable 
 property to <b>false</b>, which will force DDMSence to return warnings on enumerations, rather than errors.</li>
 </ol>
@@ -706,7 +706,7 @@ instead of "ICISM", you would set the "icism.prefix" property with a custom valu
 <tr><th>Property Name</th><th>Description</th><th>Default Value</th></tr>
 <tr><td>ddms.prefix</td><td>Default DDMS prefix used when generating components from scratch</td><td><code>ddms</code></td></tr>
 <tr><td>gml.prefix</td><td>Default GML prefix used when generating components from scratch</td><td><code>gml</code></td></tr>
-<tr><td>icism.cve.enumLocation</td><td>Classpath resource location for the ICISM Controlled Vocabulary files</td><td><code>/CVEnumISM/V2/</code></td></tr>
+<tr><td>icism.cve.customEnumLocation</td><td>Classpath resource location for the ICISM Controlled Vocabulary files</td><td>empty by default</td></tr>
 <tr><td>icism.cve.validationAsErrors</td><td>When validating SecurityAttributes, ICISM Controlled Vocabulary checks should return errors, instead of warnings</td><td><code>true</code></td></tr>
 <tr><td>icism.prefix</td><td>Default ICISM prefix used when generating components from scratch</td><td><code>ICISM</code></td></tr>
 <tr><td>sample.data</td><td>Default data directory used by sample applications</td><td><code>data/sample/</code></td></tr>
