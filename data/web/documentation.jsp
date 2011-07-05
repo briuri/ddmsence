@@ -19,8 +19,7 @@
 		</ul>	
 	<li><a href="#design">Design Decisions</a></li>
 	<li><a href="#tips">Power Tips</a></li><ul>
-		<li><a href="#tips-version20">Working with DDMS 2.0</a></li>
-		<li><a href="#tips-version301">Working with DDMS 3.0.1</a></li>
+		<li><a href="#tips-version">Working with Different DDMS Versions</a></li>
 		<li><a href="#tips-attributes">IC and GML Attribute Groups</a></li>
 		<li><a href="#tips-extensible">The Extensible Layer</a></li>
 		<li><a href="#tips-builders">Using Component Builders</a></li>
@@ -203,8 +202,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 
 <div class="toc">
 	<b><u>Table of Contents</u></b>
-	<li><a href="#tips-version20">Working with DDMS 2.0</a></li>
-	<li><a href="#tips-version301">Working with DDMS 3.0.1</a></li>
+	<li><a href="#tips-version">Working with Different DDMS Versions</a></li>
 	<li><a href="#tips-attributes">IC and GML Attribute Groups</a></li>
 	<li><a href="#tips-extensible">The Extensible Layer</a></li>
 	<li><a href="#tips-builders">Using Component Builders</a></li>
@@ -212,9 +210,11 @@ traversed and queried in the same manner, without requiring too much knowledge o
 	<li><a href="#tips-configuration">Configurable Properties</a></li>
 </div>
 		
-<a name="tips-version20"></a><h4>Working with DDMS 2.0</h4>
+<a name="tips-version"></a><h4>Working with Different DDMS Versions</h4>
 
-<p>DDMSence currently supports two major versions of DDMS: 2.0 and 3.0. When building DDMS components from XML files, the 
+ <h5>Using Alternate Versions</h5>
+ 
+<p>DDMSence currently supports three versions of DDMS: 2.0, 3.0, and 3.1. When building DDMS components from XML files, the 
 DDMSReader class can automatically use the correct version of DDMS based on the XML namespace defined in the file.
 When building DDMS components from scratch, the <a href="/docs/index.html?buri/ddmsence/util/DDMSVersion.html">DDMSVersion</a>
 class controls the version being used. There is an instance of DDMSVersion for each supported version, and this 
@@ -231,16 +231,18 @@ System.out.println("ICISM: " + version.getIcismNamespace());
 System.out.println("Are we using DDMS 2.0? " + DDMSVersion.isCurrentVersion("2.0"));
 System.out.println("If I see the namespace, http://metadata.dod.mil/mdr/ns/DDMS/3.0/, "
    + "I know we are using DDMS v"
-   + DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/").getVersion());
+   + DDMSVersion.getVersionForDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/").getVersion());
 
 Identifier identifier = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
    "http://www.whitehouse.gov/news/releases/2005/06/20050621.html");
-System.out.println("This identifier was created with DDMS v" + identifier.getDDMSVersion());
+System.out.println("This identifier was created with DDMS v"
+   + DDMSVersion.getVersionForDDMSNamespace(identifier.getNamespace()));
 
 DDMSVersion.setCurrentVersion("3.0");
 Identifier identifier2 = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
    "http://www.whitehouse.gov/news/releases/2005/06/20050621.html");
-System.out.println("This identifier was created with DDMS v" + identifier2.getDDMSVersion());</pre>
+System.out.println("This identifier was created with DDMS v"
+   + DDMSVersion.getVersionForDDMSNamespace(identifier.getNamespace()));</pre>
 <p class="figure">Figure 3. Using a different version of DDMS</p>
 
 <pre class="brush: xml">In DDMS v2.0, the following namespaces are used: 
@@ -254,62 +256,64 @@ This identifier was created with DDMS v3.0</pre>
 <p class="figure">Figure 4. Output of the code in Figure 3</p>
 
 <p>Calling <code>DDMSVersion.setCurrentVersion("2.0")</code> will make any components you create from that point on obey DDMS 2.0 
-validation rules. The default version if you never call this method is "3.0" (but as a best practice, you should always explicitly set the current version yourself,
+validation rules. The default version if you never call this method is "3.1" (but as a best practice, you should always explicitly set the current version yourself,
 in case this default changes in the future). The version is maintained as a static variable, so this 
 is not a thread-safe approach, but I believe that the most common use cases will deal with DDMS components of a single version at a time,
 and I wanted the versioning mechanism to be as unobtrusive as possible.</p>
 
-<p>The validation rules between DDMS 2.0 and 3.0 are very similar, but there are a few major differences. For example, the Unknown
-entity for producers was not introduced until DDMS 3.0, so attempts to create one in DDMS 2.0 will fail. Also note that you cannot mix multiple DDMS versions within the same Resource.</p>
-
-<pre class="brush: java">DDMSVersion.setCurrentVersion("2.0");
-List&lt;String&gt; names = new ArrayList&lt;String&gt;();
-names.add("Unknown Entity");
-Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
-<p class="figure">Figure 5. This code will throw an InvalidDDMSException</p>
-
-<p>The table below identifies the differences between the DDMS 2.0 and DDMS 3.0 implementations of components in DDMSence.</p>
-
-<table>
-<tr><th>Element or Attribute</th><th>DDMS 2.0 Notes</th><th>DDMS 3.0 Notes</td></tr>
-<tr><td><code>ddms:Resource@ICISM:createDate<br />ddms:Resource@ICISM:DESVersion<br />ddms:Resource@ICISM:resourceElement</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be passed in as a constructor parameter.</td><td>New and required in this version.</td></tr>
-<tr><td><code>ddms:Resource@ICISM:classification<br />ddms:Resource@ICISM:ownerProducer</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New and required in this version.</td></tr>
-<tr><td><code>ddms:Resource@ICISM (additional security)</td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New but optional in this version.</td></tr>
-<tr><td><code>ddms:Resource (xs:any)</code></td><td>Zero or one extensible element can appear after the <code>ddms:security</code> element.</td><td>Zero to many extensible elements can appear after the <code>ddms:security</code> element.</td></tr>
-<tr><td><code>ddms:Unknown</code></td><td>Cannot exist in this version.</td><td>Can be used to fill a producer role in this version.</td></tr>
-<tr><td><code>ddms:category</code></td><td>No extensible attributes can be used.</td><td>Zero to many attributes can live in the <code>xs:anyAttribute</code> extensible area.</td></tr>
-<tr><td><code>ddms:countryCode@ddms:qualifier<br />ddms:countryCode@ddms:value</code></td><td>Follows 3.0 rules: both attributes are required.</td><td>Both attributes are required.</td></tr>
-<tr><td><code>ddms:geospatialCoverage@ICISM:classification<br />ddms:geospatialCoverage@ICISM:ownerProducer<br />ddms:geospatialCoverage@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr>
-<tr><td><code>ddms:keyword</code></td><td>No extensible attributes can be used.</td><td>Zero to many attributes can live in the <code>xs:anyAttribute</code> extensible area.</td></tr>
-<tr><td><code>ddms:relatedResources</code></td><td>Follows 3.0 rules: at least 1 ddms:RelatedResource must exist.</td><td>At least 1 ddms:RelatedResource must exist.</td></tr>
-<tr><td><code>ddms:security@ICISM:excludeFromRollup</code></td><td>Cannot exist in this version.</td><td>New and required in this version. Value must be "true".</td></tr>
-<tr><td><code>ddms:source@ICISM:classification<br />ddms:source@ICISM:ownerProducer<br />ddms:source@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr>
-<tr><td><code>ddms:subjectCoverage@ICISM:classification<br />ddms:subjectCoverage@ICISM:ownerProducer<br />ddms:subjectCoverage@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr>
-<tr><td><code>ddms:temporalCoverage@ICISM:classification<br />ddms:temporalCoverage@ICISM:ownerProducer<br />ddms:temporalCoverage@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr>
-<tr><td><code>ddms:virtualCoverage@ICISM:classification<br />ddms:virtualCoverage@ICISM:ownerProducer<br />ddms:virtualCoverage@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr></table>
-<p class="figure">Table 1. Component changes between DDMS 2.0 and DDMS 3.0</p>
-
-<p>The table below identifies changes made to the ICISM security attributes. These changes apply on any DDMS component that can be decorated with security attributes.</p>
-
-<table>
-<tr><th>Element or Attribute</th><th>DDMS 2.0 Notes</th><th>DDMS 3.0 Notes</td></tr>
-<tr><td><code>@ICISM:classification</code></td><td>NS-S and NS-A are allowed values.</td><td>NS-S and NS-A cannot be used.</td></tr>
-<tr><td><code>@ICISM:declassManualReview</code></td><td>This Boolean attribute is optional.</td><td>Cannot exist in this version.</td></tr>
-<tr><td><code>@ICISM:declassException</code></td><td>This attribute is modeled as a space-delimited string of multiple values (TOKENS)</td><td>This attribute is a single value (TOKEN)</td></tr>
-<tr><td><code>@ICISM:typeOfExemptedSource</code></td><td>This attribute is modeled as a space-delimited string of multiple values (TOKENS)</td><td>This attribute is a single value (TOKEN)</td></tr>
-<tr><td><code>@ICISM:compilationReason</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr></table>
-<p class="figure">Table 2. Security Attribute changes between DDMS 2.0 and DDMS 3.0</p>
-
-<a name="tips-version301"></a><h4>Working with DDMS 3.0.1</h4>
-
-<p>DDMS release 3.0.1 is merely a documentation release which clarifies some of the supporting documentation on geospatial elements. Because none of the schemas
-or components themselves were updated, 3.0.1 reuses all of the same technical information from 3.0 (ncluding XML namespaces). DDMSence treats 3.0.1 as an alias for DDMS 3.0 --
+<p>DDMS release 3.0.1 was merely a documentation release which clarified some of the supporting documentation on geospatial elements. Because none of the 
+schemas or components themselves were updated, 3.0.1 reuses all of the same technical information from 3.0 (ncluding XML namespaces). DDMSence treats 3.0.1 as an alias for DDMS 3.0 --
 you can set your DDMS version to 3.0.1, but DDMSence will continue to use DDMS 3.0 artifacts.</p>
 
 <pre class="brush: java">DDMSVersion.setCurrentVersion("3.0.1");
 System.out.println(DDMSVersion.getCurrentVersion().getVersion());
 </pre>
-<p class="figure">Figure 6. This code will print out "3.0".</p>
+<p class="figure">Figure 5. This code will print out "3.0".</p>
+
+<h5>Differences Between Versions</h5>
+
+<p>The validation rules between DDMS 2.0 and 3.0 are very similar, but there are a few major differences. For example, the Unknown
+entity for producers was not introduced until DDMS 3.0, so attempts to create one in DDMS 2.0 will fail.</p>
+
+<pre class="brush: java">DDMSVersion.setCurrentVersion("2.0");
+List&lt;String&gt; names = new ArrayList&lt;String&gt;();
+names.add("Unknown Entity");
+Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
+<p class="figure">Figure 6. This code will throw an InvalidDDMSException</p>
+
+<p>The table below identifies the key differences between supported versions of DDMS components in DDMSence.</p>
+
+<table>
+<tr><th>Element or Attribute</th><th>DDMS 2.0 Notes</th><th>DDMS 3.0 Notes</th><th>DDMS 3.1 Notes</th></tr>
+<tr><td><code>ddms:Resource@ICISM:createDate<br />ddms:Resource@ICISM:DESVersion<br />ddms:Resource@ICISM:resourceElement</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be passed in as a constructor parameter.</td><td>New and required in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:Resource@ICISM:classification<br />ddms:Resource@ICISM:ownerProducer</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New and required in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:Resource@ICISM (additional security)</td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:Resource (xs:any)</code></td><td>Zero or one extensible element can appear after the <code>ddms:security</code> element.</td><td>Zero to many extensible elements can appear after the <code>ddms:security</code> element.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:Unknown</code></td><td>Cannot exist in this version.</td><td>Can be used to fill a producer role in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:category</code></td><td>No extensible attributes can be used.</td><td>Zero to many attributes can live in the <code>xs:anyAttribute</code> extensible area.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:dates@ddms:approvedOn</code></td><td>Cannot exist in this version.</td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr>
+<tr><td><code>ddms:countryCode@ddms:qualifier<br />ddms:countryCode@ddms:value</code></td><td>Follows 3.0 rules: both attributes are required.</td><td>Both attributes are required.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:geospatialCoverage@ICISM:classification<br />ddms:geospatialCoverage@ICISM:ownerProducer<br />ddms:geospatialCoverage@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:keyword</code></td><td>No extensible attributes can be used.</td><td>Zero to many attributes can live in the <code>xs:anyAttribute</code> extensible area.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:relatedResources</code></td><td>Follows 3.0 rules: at least 1 ddms:RelatedResource must exist.</td><td>At least 1 ddms:RelatedResource must exist.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:security@ICISM:excludeFromRollup</code></td><td>Cannot exist in this version.</td><td>New and required in this version. Value must be "true".</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:source@ICISM:classification<br />ddms:source@ICISM:ownerProducer<br />ddms:source@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:subjectCoverage@ICISM:classification<br />ddms:subjectCoverage@ICISM:ownerProducer<br />ddms:subjectCoverage@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:temporalCoverage@ICISM:classification<br />ddms:temporalCoverage@ICISM:ownerProducer<br />ddms:temporalCoverage@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:virtualCoverage@ICISM:classification<br />ddms:virtualCoverage@ICISM:ownerProducer<br />ddms:virtualCoverage@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr></table>
+<p class="figure">Table 1. Component changes from DDMS 2.0 to DDMS 3.1</p>
+
+<p>The table below identifies changes made to the ICISM security attributes. These changes apply on any DDMS component that can be decorated with security attributes.</p>
+
+<table>
+<tr><th>Element or Attribute</th><th>DDMS 2.0 Notes</th><th>DDMS 3.0 Notes</th><th>DDMS 3.1 Notes</th></tr>
+<tr><td><code>@ICISM:classification</code></td><td>NS-S and NS-A are allowed values.</td><td>NS-S and NS-A cannot be used.</td><td></td></tr>
+<tr><td><code>@ICISM:DESVersion</code></td><td>Can be any value, but expected to be 2.</td><td>Same as DDMS 2.0.</td><td>Must have a fixed value of 5.</td></tr>
+<tr><td><code>@ICISM:declassManualReview</code></td><td>This Boolean attribute is optional.</td><td>Cannot exist in this version.</td><td></td></tr>
+<tr><td><code>@ICISM:declassException</code></td><td>This attribute is modeled as a space-delimited string of multiple values (TOKENS)</td><td>This attribute is a single value (TOKEN)</td><td></td></tr>
+<tr><td><code>@ICISM:typeOfExemptedSource</code></td><td>This attribute is modeled as a space-delimited string of multiple values (TOKENS)</td><td>This attribute is a single value (TOKEN)</td><td></td></tr>
+<tr><td><code>@ICISM:compilationReason</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td></td></tr></table>
+<p class="figure">Table 2. Security Attribute changes from DDMS 2.0 to DDMS 3.1</p>
 
 <a name="tips-attributes"></a><h4>IC and GML Attribute Groups</h4>
 
@@ -350,11 +354,11 @@ System.out.println(title.toXML());</pre>
 &lt;/ddms:title&gt;</pre>
 <p class="figure">Figure 9. The resultant XML element with security attributes</p>
 
-<p>The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. I believe that the IC will be 
-releasing Schematron files to support these rules in the future.</p>
+<p>The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. A set of Schematron files is bundled with IC-ISM V5 (which is used by DDMS 3.1), 
+but they have not been incorporated into DDMSence yet.</p>
 
 <p>The values assigned to some attributes must come from the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/">Controlled 
-Vocabulary Enumerations</a> (CVEs) defined by the Intelligence Community. The enumerations used by DDMSence are taken from the DES Version 3 
+Vocabulary Enumerations</a> (CVEs) defined by the Intelligence Community. The enumerations used by DDMSence are taken from the DES Version 5 
 Public Release, so DDMSence will not be able to recognize enumeration values from higher classification levels. There are two approaches 
 you can use to eliminate this restriction:</p>
 
@@ -415,7 +419,7 @@ XOM Elements and Attributes. Any business logic to be performed on this Layer is
 <a href="http://xom.nu/">XOM</a> will be useful. </p>
 
 <p>The relevant code can be found in the <code>buri.ddmsence.ddms.extensible</code> package. It may also be useful to load the sample file,  
-<code>Extensible_Layer_Example.xml</code> into the <u>Essentials</u> application, because it has an example of each extension.</p>
+<code>Extensible_Layer_Example_v3_0.xml</code> into the <u>Essentials</u> application, because it has an example of each extension.</p>
 
 <h5>ExtensibleElements</h5>
 
@@ -467,7 +471,7 @@ whether this is an <a href="http://code.google.com/p/ddmsence/issues/detail?id=1
 <h5>ExtensibleAttributes on a Resource</h5>
 
 <p>The <code>ddms:Resource</code> element is the only extensible element which has additional (ICISM) attributes that might conflict with your extensible
-attributes. The situation gets trickier in DDMS 2.0, where the ICISM attributes are not explicitly defined in the schema, but can exist nonetheless.</p>
+attributes. The situation is trickier in DDMS 2.0, where the ICISM attributes are not explicitly defined in the schema, but can exist nonetheless.</p>
 
 <p>When creating an ExtensibleAttributes instance based upon a <code>ddms:Resource</code> XOM Element:</p>
 <ul>
@@ -515,7 +519,7 @@ Resource resource = new Resource(myComponents, null, null, null, null, extension
 <p class="figure">Figure 18. These two approaches for security attributes are both legal in DDMS 2.0</p>
 
 <p>As a best practice, it is recommended that you create these attributes as explicitly as possible: if an attribute can be defined with constructor parameters or inside
-of a SecurityAttributes instance, it should. This will make DDMS 2.0 resources more consistent with their DDMS 3.0 counterparts.</p>
+of a SecurityAttributes instance, it should. This will make DDMS 2.0 resources more consistent with their DDMS 3.x counterparts.</p>
 
 <a name="tips-builders"></a><h4>Using Component Builders</h4>
 
@@ -556,8 +560,7 @@ a <a href="http://ddmsence.urizone.net/docs/buri/ddmsence/ddms/Resource.Builder.
 a complete DDMS Resource, without necessarily needing to understand the intricacies of the components you aren't worried about. The code sample
 below takes a List of pre-existing DDMS Resources, uses the Builder framework to edit a <code>ddms:dates</code> attribute on each one, and saves the results in a new List.</p>
  
-<pre class="brush: java">
-List&lt;Resource&gt; updatedResources = new ArrayList&lt;Resource&gt;();
+<pre class="brush: java">List&lt;Resource&gt; updatedResources = new ArrayList&lt;Resource&gt;();
 for (Resource resource : myExistingResources) {
    Resource.Builder builder = new Resource.Builder(resource);
    builder.getDates().setPosted("2011-05-13");
@@ -575,7 +578,24 @@ This should make it easier for Component Builders to be used in a web-based form
 <li>The <code>commit()</code> method on any given Builder will only return a component if the Builder was actually used, according its
 implementation of <code>IBuilder.isEmpty()</code>. This decision was made to handle form beans more flexibly: if a user has not filled 
 in any of the fields on a <code>ddms:dates</code> form, it is presumed that their intent is NO <code>ddms:dates</code> element, and not an empty, useless one.</li>
+<li>The <code>commit()</code> method will use the version of DDMS defined in <code>DDMSVersion.getCurrentVersion()</code> for validation and XML namespaces. Changing the current version during
+the building process has no effect up until the moment that <code>commit()</code> is called. In addition, initializing a Builder with an existing resource will not change the current DDMSVersion value.</li>
 </ol>
+
+<p>The last detail is important, because it allows you to load a resource from an old version of DDMS and transform it into a newer version. The code sample
+below takes a DDMS 2.0 resource, adds the new fields required in DDMS 3.0, and commits it. The resulting Resource will use the DDMS 3.0 XML namespace.</p>
+
+<pre class="brush: java">Resource.Builder builder = new Resource.Builder(myDdms20Resource);
+builder.setResourceElement(Boolean.TRUE);
+builder.setCreateDate("2011-07-05");
+builder.setDESVersion(new Integer(5));
+builder.getSecurityAttributes().setClassification("U");
+builder.getSecurityAttributes().getOwnerProducers().add("USA");
+
+DDMSVersion.setCurrentVersion("3.0");
+Resource myDdms30Resource = builder.commit();</pre>
+
+<p class="figure">Figure 23. Transforming an old resource with the Builder Framework</p>
 
 <p>The Component Builder framework is a very recent addition to DDMSence, and I would love to hear your <a href="#feedback">feedback</a> on ways
 the framework or documentation could be improved to better support your Resource editing needs. I have also created a sample <a href="builder.uri">DDMS Builder</a> 
@@ -599,7 +619,7 @@ fails if the surname is "<b>Uri</b>".</p>
       &lt;iso:report test="normalize-space(.) = 'Uri'"&gt;Members of the Uri family cannot be publishers.&lt;/iso:report&gt;
    &lt;/iso:rule&gt;
 &lt;/iso:pattern&gt;</pre>
-<p class="figure">Figure 23. The test from testPublisherValue.sch</p>
+<p class="figure">Figure 24. The test from testPublisherValue.sch</p>
 
 <p>The following code sample will build a DDMS Resource from one of the sample XML files, and then validate it through Schematron:</p>
 
@@ -613,14 +633,14 @@ for (ValidationMessage message : schematronMessages) {
    System.out.println("Location: " + message.getLocator());
    System.out.println("Message: " + message.getText());
 }</pre>
-<p class="figure">Figure 24. Sample code to validate DDMSence_Example.xml with testPublisherValue.sch</p>
+<p class="figure">Figure 25. Sample code to validate DDMSence_Example.xml with testPublisherValue.sch</p>
 
 <pre class="brush: xml">Location: //*[local-name()='Resource' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
    /*[local-name()='publisher' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
    /*[local-name()='Person' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
    /*[local-name()='surname' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
 Message: Members of the Uri family cannot be publishers.</pre>
-<p class="figure">Figure 25. Ouput of the code from Figure 24</p>
+<p class="figure">Figure 26. Ouput of the code from Figure 24</p>
 
 <p>Schematron files are made up of a series of patterns and rules which assert rules and report information. The raw output of Schematron validation
 is a series of <code>failed-assert</code> and <code>successful-report</code> elements in Schematron Validation Report Language (SVRL). DDMSence converts
@@ -657,7 +677,7 @@ building components from scratch, and you wish to use "ic" as a namespace prefix
 instead of "ICISM", you would set the "icism.prefix" property with a custom value of <code>ic</code>.</p>
 
 <pre class="brush: java">PropertyReader.setProperty("icism.prefix", "ic");</pre>
-<p class="figure">Figure 26. Command to change a configurable property.</p>
+<p class="figure">Figure 27. Command to change a configurable property.</p>
 
 <p>Only the subset of properties listed below can be set programmatically. Attempts to change other DDMSence properties will result in an exception.</p>
 

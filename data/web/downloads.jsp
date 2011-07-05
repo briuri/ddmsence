@@ -20,16 +20,14 @@ code for the main library, unit tests, and the sample applications, as well as s
 file which will allow you to compile source code, run unit tests, generate API documentation, or even generate the "bin"-flavored archive with <a href="http://ant.apache.org/">Apache Ant</a>. 
 I have included the <code>.project</code> file if you wish to import the project into Eclipse.</p>
 
-<h1>Latest Release: v1.9.1</h1>
+<h1>Latest Release: v1.10.0</h1>
 
-<p>Version <b>1.9.1</b> (06/02/2011) is a stable patch release, which corrects a few minor bugs related to the lazily instantiated lists
-in the Component Builder framework (<a href="http://code.google.com/p/ddmsence/issues/detail?id=76">Issue #76</a>,
-<a href="http://code.google.com/p/ddmsence/issues/detail?id=77">Issue #77</a>
-and <a href="http://code.google.com/p/ddmsence/issues/detail?id=78">Issue #78</a>). It is backwards compatible with all versions since v1.4.0.</p>
+<p>Version <b>1.10.0</b> (07/05/2011) is a stable release, which adds support for DDMS 3.1 (<a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.10.0">Issue #82 - 85</a>).
+It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=88">backwards compatible</a> with earlier versions.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.9.1.zip"><code>ddmsence-bin-1.9.1.zip</code></a></b> (4.3 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.9.1.zip"><code>ddmsence-src-1.9.1.zip</code></a></b> (4.4 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.10.0.zip"><code>ddmsence-bin-1.10.0.zip</code></a></b> (4.4 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.10.0.zip"><code>ddmsence-src-1.10.0.zip</code></a></b> (4.5 MB)</li>
 </ul>
 
 <h3>Versioning</h3>
@@ -46,6 +44,16 @@ and <a href="http://code.google.com/p/ddmsence/issues/detail?id=78">Issue #78</a
 All changes which are not backwards compatible will be linked from this page.</p> 
 
 <h3>Older Releases</h3>
+
+<p>Version <b>1.9.1</b> (06/02/2011) is a stable patch release, which corrects a few minor bugs related to the lazily instantiated lists
+in the Component Builder framework (<a href="http://code.google.com/p/ddmsence/issues/detail?id=76">Issue #76</a>,
+<a href="http://code.google.com/p/ddmsence/issues/detail?id=77">Issue #77</a>
+and <a href="http://code.google.com/p/ddmsence/issues/detail?id=78">Issue #78</a>). It is backwards compatible with all versions since v1.4.0.</p>
+
+<ul>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.9.1.zip"><code>ddmsence-bin-1.9.1.zip</code></a></b> (4.3 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.9.1.zip"><code>ddmsence-src-1.9.1.zip</code></a></b> (4.4 MB)</li>
+</ul>
 
 <p>Version <b>1.9.0</b> (05/24/2011) is a stable release, which makes the Component Builder framework more amenable to web-based forms
 by implementing the Serializable interface and using lazily instantiated lists for child components (<a href="http://code.google.com/p/ddmsence/issues/detail?id=74">Issue #74</a>

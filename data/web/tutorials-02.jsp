@@ -34,7 +34,7 @@ command line parameters.</p>
 
 <pre class="brush: xml">Escort: a DDMSence Sample
 
-This program allows you to build a DDMS 3.0 resource from scratch.
+This program allows you to build a DDMS 3.1 resource from scratch.
 If you do not know how to answer a question, a suggested valid answer is provided in square brackets.
 However, this is not a default value (hitting Enter will answer the question with an empty string).
 
@@ -179,6 +179,7 @@ Please enter the created date [2010]:
 Please enter the posted date [2010]: 
 Please enter the validTil date [2010]: 
 Please enter the infoCutOff date [2010]:
+Please enter the approvedOn date [2010]:
 
 [...]
 

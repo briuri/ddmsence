@@ -77,14 +77,15 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
+	<div class="newsUpdate"><u>07/05/2011</u>: <a href="downloads.jsp">v1.10.0</a> released, adding support for DDMS 3.1.</div>
 	<div class="newsUpdate"><u>06/06/2011</u>: <a href="schematron.jsp">Schematron Implementation for DDMS</a> published.</div>
-	<div class="newsUpdate"><u>06/02/2011</u>: <a href="downloads.jsp">v1.9.1</a> released. Example code for <a href="validator.uri">DDMS Validator</a> and <a href="builder.uri">DDMS Builder</a> posted.</div>
+	<div class="newsUpdate"><u>06/02/2011</u>: v1.9.1 released. Example code for <a href="validator.uri">DDMS Validator</a> and <a href="builder.uri">DDMS Builder</a> posted.</div>
 	<div class="newsUpdate"><u>05/24/2011</u>: v1.9.0 released.</div>
 	<div class="newsUpdate"><u>05/13/2011</u>: v1.8.0 released, introducing the <a href="documentation.jsp#tips-builders">Component Builder</a> framework.</div>
 	<div class="newsUpdate"><u>03/10/2011</u>: v1.7.2 released.</div>
-	<div class="newsUpdate"><u>11/26/2010</u>: <a href="relationalTables.jsp">Relational Database Model for DDMS</a> published.</div>
 	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
 	<div id="oldNews" class="divHidden">
+		<div class="newsUpdate"><u>11/26/2010</u>: <a href="relationalTables.jsp">Relational Database Model for DDMS</a> published.</div>
 		<div class="newsUpdate"><u>11/16/2010</u>: v1.7.1 released.</div>
 		<div class="newsUpdate"><u>09/18/2010</u>: v1.7.0 released.</div>	
 		<div class="newsUpdate"><u>09/07/2010</u>: v1.6.0 released.</div>
@@ -148,7 +149,7 @@ and other enterprise services since the inception of the Net-Centric Enterprise 
 DDMSence grew out of his desire to gain more practical XML Schema experience, to write something useful which had never been done before, and an 
 unusually large amount of free time.</p>
 
-<p>In May 2011, Brian assumed a new role as an XML Information Engineer, promoting interoperability between UCORE and other standards, such as NIEM, 
+<p>In June 2011, Brian assumed a new role as an XML Information Engineer, promoting interoperability between UCORE and other standards, such as NIEM, 
 DDMS, IC-ISM, and various common cores. He foolishly expects that this will give him more spare time to work on DDMSence.</p>
 
 <div class="clear"></div>

@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 6/6/2011 at 17:30</p>
+<p align="right"><b>Last Update:</b> 07/05/2011 at 11:50</p>
 
 <a name="top"></a><h1>Schematron Implementation for DDMS</h1>
 
@@ -22,8 +22,8 @@ various elements and attributes. Please note that DDMSence currently validates t
    xmlns="http://purl.oclc.org/dsdl/schematron"
    xmlns:iso="http://purl.oclc.org/dsdl/schematron"&gt;
    
-   &lt;iso:title&gt;Test ISO Schematron File for DDMSence (DDMS 3.0)&lt;/iso:title&gt;
-   &lt;iso:ns prefix='ddms' uri='http://metadata.dod.mil/mdr/ns/DDMS/3.0/' /&gt;
+   &lt;iso:title&gt;Test ISO Schematron File for DDMSence (DDMS 3.1)&lt;/iso:title&gt;
+   &lt;iso:ns prefix='ddms' uri='http://metadata.dod.mil/mdr/ns/DDMS/3.1/' /&gt;
    &lt;iso:ns prefix='ICISM' uri='urn:us:gov:ic:ism' /&gt;
    &lt;iso:ns prefix='gml' uri='http://www.opengis.net/gml/3.2' /&gt;
    &lt;iso:ns prefix='xlink' uri='http://www.w3.org/1999/xlink' /&gt;
