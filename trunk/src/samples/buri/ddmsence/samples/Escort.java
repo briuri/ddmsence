@@ -590,7 +590,7 @@ public class Escort {
 	private void run() throws IOException {
 		println("Escort: a DDMSence Sample\n");
 		
-		println("This program allows you to build a DDMS 3.0 resource from scratch.");
+		println("This program allows you to build a DDMS 3.1 resource from scratch.");
 		println("If you do not know how to answer a question, a suggested valid answer is provided in square brackets.");
 		println("However, this is not a default value (hitting Enter will answer the question with an empty string).\n");
 
@@ -599,7 +599,7 @@ public class Escort {
 		println("In COMPLETE mode, Escort will let you create all of the top-level components.");
 		boolean onlyRequiredComponents = confirm("Would you like to run in FAST mode?");
 				
-		DDMSVersion.setCurrentVersion("3.0");
+		DDMSVersion.setCurrentVersion("3.1");
 		
 		printHead("ddms:identifier (at least 1 required)");
 		getTopLevelComponents().add(inputLoop(Identifier.class));
