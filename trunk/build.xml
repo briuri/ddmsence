@@ -87,7 +87,7 @@
 		
 		<!-- Set up test files for custom CVE testing -->
 		<copy todir="${compile.test.dir}/customCVEnumISM" filtering="true">
-			<fileset dir="${data.dir}/CVEnumISM">
+			<fileset dir="${data.dir}/CVEnumISM/V2">
 				<include name="**" />
 			</fileset>
 		</copy>

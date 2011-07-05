@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-       <cve:CVE xmlns:cve="urn:us:gov:ic:cve:v1"
+            <cve:CVE xmlns:cve="urn:us:gov:ic:cve:v1"
          xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/2.0/"
          xmlns="urn:us:gov:ic:cve:v1"
          xmlns:ism="urn:us:gov:ic:ism"
@@ -7,18 +7,17 @@
          xsi:schemaLocation="urn:us:gov:ic:cve:v1 ../Schema/CVEXml.xsd"
          ism:ownerProducer="USA"
          ism:classification="U"
-         ism:DESVersion="3"
+         ism:DESVersion="2"
          ism:resourceElement="true"
-		 ism:createDate="2010-03-12">
+		 ism:createDate="2009-11-19">
 
                 <cve:IRM>
-                    <ddms:identifier ddms:qualifier="name"
-                       ddms:value="urn:us:gov:ic:cvenum:ism:fgiprotected:v1"/>
-                    <ddms:title ism:ownerProducer="USA" ism:classification="U">CVEnumISMFGIProtected</ddms:title>
-                    <ddms:description ism:ownerProducer="USA" ism:classification="U">FGI followed by all currently valid ISO Trigraphs except USA in alphabetical order by Trigraph, 
+                    <ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:ism:fgiopen:v1"/>
+                    <ddms:title ism:ownerProducer="USA" ism:classification="U">CVEnumISMFGIOpen</ddms:title>
+                    <ddms:description ism:ownerProducer="USA" ism:classification="U">UNKNOWN followed by all currently valid ISO Trigraphs except USA in alphabetical order by Trigraph, 
             followed by all currently valid CAPCO Coalition tetragraphs in alphabetical order by tetragraph.</ddms:description>
 
-                    <cve:Created>2010-03-12T11:29:00-04:00</cve:Created>
+                    <cve:Created>2009-11-12T12:00:00-04:00</cve:Created>
                     
                     <ddms:source ddms:value="CAPCO Register Appendix A"/>
       <ddms:source ddms:value="ISO 3166"/>
@@ -33,8 +32,8 @@
                 <cve:Enumeration ism:ownerProducer="USA" ism:classification="U">
 
 		<Term ism:classification="U" ism:ownerProducer="USA" deprecated="false">
-			<Value ism:classification="U" ism:ownerProducer="USA">FGI</Value>
-			<ddms:description ism:classification="U" ism:ownerProducer="USA">Foreign Government Information</ddms:description>
+			<Value ism:classification="U" ism:ownerProducer="USA">UNKNOWN</Value>
+			<ddms:description ism:classification="U" ism:ownerProducer="USA">Unknown</ddms:description>
 		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" deprecated="false">
 			<Value ism:classification="U" ism:ownerProducer="USA">ABW</Value>
