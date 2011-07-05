@@ -36,14 +36,14 @@ This schema file is intended to simplify importation of IC-ISM Schema files.  Th
   <!-- The following section of code would support IC-ISM V4-->
   <!-- <xs:import namespace="urn:us:gov:ic:ism" schemaLocation="../../ISM4/Schema/IC-ISM.xsd" />
   <xs:attributeGroup name="RootSecurityAttributesGroup">
-    <xs:attributeGroup ref="ICISM:SecurityAttributesGroup" />
+    <xs:attributeGroup ref="ICISM:ResourceNodeAttributeGroup" />
     <xs:attributeGroup ref="ICISM:ISMRootNodeAttributeGroup" />
   </xs:attributeGroup>
 -->
   <!--The following section of code supports  IC-ISM 5-->
   <xs:import namespace="urn:us:gov:ic:ism" schemaLocation="IC-ISM.xsd" />
   <xs:attributeGroup name="RootSecurityAttributesGroup">
-    <xs:attributeGroup ref="ICISM:SecurityAttributesGroup" />
+    <xs:attributeGroup ref="ICISM:ResourceNodeAttributeGroup" />
     <xs:attributeGroup ref="ICISM:ISMRootNodeAttributeGroup" />
   </xs:attributeGroup>
   <!-- Currently (to v6) compatible with all versions of ISM: -->
