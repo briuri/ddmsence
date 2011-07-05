@@ -2,7 +2,7 @@
 <head>
 	<title>DDMSence: An open source Java library for DDMS</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="keywords" content="DDMSence,DDMS,Metadata,Discovery,Java,DoD,XML" />
+	<meta name="keywords" content="DDMSence,DDMS,Metadata,Discovery,Java,DoD,XML,DDMEssence,DDMSense,Essence" />
 
 	<!-- DDMS Resource Record --> 	
 	<meta name="security.resourceElement" content="true" />
@@ -48,6 +48,9 @@
 	<meta name="subject.keyword" content="Java" />
 	<meta name="subject.keyword" content="DoD" />
 	<meta name="subject.keyword" content="XML" />
+	<meta name="subject.keyword" content="DDMEssence" />
+	<meta name="subject.keyword" content="DDMSense" />
+	<meta name="subject.keyword" content="Essence" />
 	<meta name="virtual.address" content="http://ddmsence.urizone.net/" />
 	<meta name="virtual.networkProtocol" content="URL" />
 	<meta name="temporal.TimePeriod" content="Unknown" />
