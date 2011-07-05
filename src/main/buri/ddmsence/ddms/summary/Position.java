@@ -27,7 +27,6 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
-import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
@@ -164,13 +163,6 @@ public final class Position extends AbstractBaseComponent {
 			return (null);
 		}
 	}
-		
-	/**
-	 * @see IDDMSComponent#getDDMSVersion()
-	 */
-	public String getDDMSVersion() {
-		return (DDMSVersion.getVersionForGmlNamespace(getXOMElement().getNamespaceURI()).getVersion());
-	}
 			
 	/**
 	 * Validates the component.
@@ -188,7 +180,7 @@ public final class Position extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getGmlNamespace(), NAME);
+		Util.requireQName(getXOMElement(), getNamespace(), NAME);
 		for (Double coordinate : getCoordinates())
 			Util.requireDDMSValue("coordinate", coordinate);
 		if (!Util.isBounded(getCoordinates().size(), 2, 3))

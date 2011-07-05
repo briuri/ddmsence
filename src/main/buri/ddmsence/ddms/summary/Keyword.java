@@ -123,9 +123,9 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		Util.requireDDMSValue("value attribute", getValue());
-		if ("2.0".equals(getDDMSVersion()) && !getExtensibleAttributes().isEmpty())
+		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("xs:anyAttribute can only be applied to ddms:keyword in DDMS 3.0.");
 	}
 	

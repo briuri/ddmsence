@@ -129,11 +129,11 @@ public final class Unknown extends AbstractProducer {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		if (this.getDDMSVersion().equals("2.0"))
+		boolean isDDMS20 = DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement());
+		if (isDDMS20)
 			throw new InvalidDDMSException("The ddms:Unknown element cannot be used in DDMS 2.0.");
-		String ddmsNamespace = DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace();
-		Util.requireDDMSQName(getXOMElement(), ddmsNamespace, getProducerType());
-		Util.requireDDMSQName(getEntityElement(), ddmsNamespace, NAME);
+		Util.requireDDMSQName(getXOMElement(), getProducerType());
+		Util.requireDDMSQName(getEntityElement(), NAME);
 	}
 		
 	/**

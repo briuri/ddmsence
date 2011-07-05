@@ -298,28 +298,18 @@ public class UtilTest extends TestCase {
 	public void testRequireDDMSQNameSuccess() {
 		try {
 			Element element = Util.buildDDMSElement("name", null);
-			Util.requireDDMSQName(element, DDMSVersion.getCurrentVersion().getNamespace(), "name");
+			Util.requireDDMSQName(element, "name");
 		}
 		catch (InvalidDDMSException e) {
 			fail("Did not allow valid data.");
 		}
 	}
 	
-	public void testRequireDDMSQNameFailure() {
-		// Null NamespaceURI = ""
-		try {
-			Element element = Util.buildDDMSElement("name", null);
-			Util.requireDDMSQName(element, null, "name");
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			// Good
-		}
-		
+	public void testRequireDDMSQNameFailure() {		
 		// Bad URI
 		try {
-			Element element = Util.buildDDMSElement("name", null);
-			Util.requireDDMSQName(element, DDMSVersion.getCurrentVersion().getGmlNamespace(), "name");
+			Element element = Util.buildElement("ic", "name", "urn:us:gov:ic:ism", null);
+			Util.requireDDMSQName(element, "name");
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -329,7 +319,48 @@ public class UtilTest extends TestCase {
 		// Bad Name
 		try {
 			Element element = Util.buildDDMSElement("name", null);
-			Util.requireDDMSQName(element, DDMSVersion.getCurrentVersion().getNamespace(), "newName");
+			Util.requireDDMSQName(element, "newName");
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
+	public void testRequireQNameSuccess() {
+		try {
+			Element element = Util.buildDDMSElement("name", null);
+			Util.requireQName(element, DDMSVersion.getCurrentVersion().getNamespace(), "name");
+		}
+		catch (InvalidDDMSException e) {
+			fail("Did not allow valid data.");
+		}
+		
+		// Empty URI
+		try {
+			Element element = Util.buildElement("", "name", "", null);
+			Util.requireQName(element, null, "name");
+		}
+		catch (InvalidDDMSException e) {
+			fail("Did not allow valid data.");
+		}
+	}
+	
+	public void testRequireQNameFailure() {				
+		// Bad URI
+		try {
+			Element element = Util.buildElement("ic", "name", "urn:us:gov:ic:ism", null);
+			Util.requireQName(element, "", "name");
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		// Bad Name
+		try {
+			Element element = Util.buildDDMSElement("name", null);
+			Util.requireQName(element, DDMSVersion.getCurrentVersion().getNamespace(), "newName");
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -835,7 +866,7 @@ public class UtilTest extends TestCase {
 		DDMSVersion.setCurrentVersion("2.0");
 		Identifier identifier = new Identifier("Test", "Value");
 		Identifier identifier2 = new Identifier("Test", "Value");
-		Util.requireSameVersion(identifier, identifier2);
+		Util.requireCompatibleVersion(identifier, identifier2);
 	}
 	
 	public void testRequireSameVersionFailure() {
@@ -844,7 +875,7 @@ public class UtilTest extends TestCase {
 			Identifier identifier = new Identifier("Test", "Value");
 			DDMSVersion.setCurrentVersion("3.0");
 			Identifier identifier2 = new Identifier("Test", "Value");
-			Util.requireSameVersion(identifier, identifier2);
+			Util.requireCompatibleVersion(identifier, identifier2);
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {

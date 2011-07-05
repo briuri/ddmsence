@@ -73,7 +73,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	public BoundingGeometry(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("boundingGeometry element", element);
-			String gmlNamespace = DDMSVersion.getVersionForNamespace(element.getNamespaceURI()).getGmlNamespace();
+			String gmlNamespace = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI()).getGmlNamespace();
 			_cachedPolygons = new ArrayList<Polygon>();
 			_cachedPoints = new ArrayList<Point>();
 			Elements polygons = element.getChildElements(Polygon.NAME, gmlNamespace);
@@ -130,15 +130,15 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 */	
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		if (getPolygons().size() + getPoints().size() == 0) {
 			throw new InvalidDDMSException("At least 1 of Polygon or Point must be used.");
 		}
 		for (Polygon polygon : getPolygons()) {
-			Util.requireSameVersion(this, polygon);
+			Util.requireCompatibleVersion(this, polygon);
 		}
 		for (Point point : getPoints()) {
-			Util.requireSameVersion(this, point);
+			Util.requireCompatibleVersion(this, point);
 		}
 		
 		validateWarnings();

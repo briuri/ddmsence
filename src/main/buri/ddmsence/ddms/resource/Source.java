@@ -125,13 +125,12 @@ public final class Source extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		if (!Util.isEmpty(getSchemaHref())) {
 			Util.requireDDMSValidURI(getSchemaHref());
 		}		
-		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException(
-				"Security attributes can only be applied to this component in DDMS v3.0.");
+		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS v2.0.");
 		}
 		
 		validateWarnings();

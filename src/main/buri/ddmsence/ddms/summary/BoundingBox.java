@@ -25,7 +25,6 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -146,7 +145,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 */	
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		Util.requireDDMSValue("westbound longitude", getWestBL());
 		Util.requireDDMSValue("eastbound longitude", getEastBL());
 		Util.requireDDMSValue("southbound latitude", getSouthBL());

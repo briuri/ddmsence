@@ -25,7 +25,6 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.security.SecurityAttributes;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -42,14 +41,11 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 
 	private List<ValidationMessage> _warnings;
 	private Element _element;
-	private String _ddmsVersion;
 	
 	/**
-	 * This implicit superconstructor merely sets the current version.
+	 * Empty constructor
 	 */
-	protected AbstractBaseComponent() throws InvalidDDMSException {
-		_ddmsVersion = DDMSVersion.getCurrentVersion().getVersion();
-	}
+	protected AbstractBaseComponent() throws InvalidDDMSException {}
 	
 	/**
 	 * Base constructor
@@ -87,17 +83,19 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	/**
 	 * Will return an empty string if the element is not set, but this cannot occur after instantiation.
 	 * 
+	 * @see IDDMSComponent#getNamespace()
+	 */
+	public String getNamespace() {
+		return (getXOMElement() == null ? "" : getXOMElement().getNamespaceURI());
+	}
+	
+	/**
+	 * Will return an empty string if the element is not set, but this cannot occur after instantiation.
+	 * 
 	 * @see IDDMSComponent#getQualifiedName()
 	 */
 	public String getQualifiedName() {
 		return (getXOMElement() == null ? "" : getXOMElement().getQualifiedName());
-	}
-	
-	/**
-	 * @see IDDMSComponent#getDDMSVersion()
-	 */
-	public String getDDMSVersion() {
-		return (_ddmsVersion);
 	}
 	
 	/**
@@ -353,10 +351,6 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	protected void setXOMElement(Element element, boolean validateNow) throws InvalidDDMSException {
 		Util.requireDDMSValue("XOM Element", element);
 		_element = element;
-		DDMSVersion ddmsVersion = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
-		if (ddmsVersion == null)
-			ddmsVersion = DDMSVersion.getVersionForGmlNamespace(element.getNamespaceURI());
-		_ddmsVersion = (ddmsVersion == null) ? null : ddmsVersion.getVersion();
 		if (validateNow)
 			validate();
 	}

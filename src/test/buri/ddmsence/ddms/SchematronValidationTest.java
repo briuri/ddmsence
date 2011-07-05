@@ -46,7 +46,6 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 		versionToResourceMap = new HashMap<String, Resource>();
 		versionToResourceMap.put("2.0", new Resource(getValidElement("2.0")));
 		versionToResourceMap.put("3.0", new Resource(getValidElement("3.0")));
-		versionToResourceMap.put("3.0.1", new Resource(getValidElement("3.0.1")));
 		versionToResourceMap.put("3.1", new Resource(getValidElement("3.1")));
 	}
 

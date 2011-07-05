@@ -125,11 +125,11 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		if (!Util.isEmpty(getAddress()))
 			Util.requireDDMSValue(PROTOCOL_NAME, getProtocol());
-		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes can only be applied to this component in DDMS v3.0.");
+		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS v2.0.");
 		}
 
 		validateWarnings();

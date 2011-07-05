@@ -27,7 +27,6 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
@@ -168,7 +167,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		if (getNames().isEmpty() && getRegions().isEmpty() && getCountryCode() == null
 			&& getFacilityIdentifier() == null) {
 			throw new InvalidDDMSException("At least 1 of name, region, countryCode, or facilityIdentifier must exist.");
@@ -176,12 +175,12 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), FacilityIdentifier.NAME, 0, 1);
 		if (hasFacilityIdentifier()) {
-			Util.requireSameVersion(this, getFacilityIdentifier());
+			Util.requireCompatibleVersion(this, getFacilityIdentifier());
 			if (!getNames().isEmpty() || !getRegions().isEmpty() || getCountryCode() != null)
 				throw new InvalidDDMSException("facilityIdentifier cannot be used in tandem with other components.");
 		}		
 		if (getCountryCode() != null)
-			Util.requireSameVersion(this, getCountryCode());
+			Util.requireCompatibleVersion(this, getCountryCode());
 		
 		validateWarnings();
 	}

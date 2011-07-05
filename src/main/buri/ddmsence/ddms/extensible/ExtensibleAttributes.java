@@ -96,8 +96,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public ExtensibleAttributes(Element element) throws InvalidDDMSException {
-		super(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));	
-		buildReservedNames();
+		buildReservedNames(element.getNamespaceURI());
 		
 		// For producers, the extensible attributes will be one child deep.
 		if (AbstractProducer.PRODUCER_TYPES.contains(element.getLocalName()))
@@ -130,7 +129,6 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ExtensibleAttributes(List<Attribute> attributes) throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion());
 		if (attributes == null)
 			attributes = Collections.emptyList();
 		_cachedAttributes = new ArrayList<Attribute>(attributes);
@@ -142,9 +140,11 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * this is easy to determine, because namespace="##other" forces all extensible attributes to be in a non-DDMS
 	 * namespace, so the Resource is the only element that might encounter collisions (it has ICISM attributes that
 	 * should be ignored).
+	 * 
+	 * @param parentNamespace the namespace of the element which owns these attributes
 	 */
-	private void buildReservedNames() {
-		DDMSVersion version = DDMSVersion.getVersionFor(getDDMSVersion());
+	private void buildReservedNames(String parentNamespace) {
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(parentNamespace);
 		RESERVED_RESOURCE_NAMES.clear();
 		String icismPrefix = PropertyReader.getProperty("icism.prefix");
 		for (String reservedName : Resource.NON_EXTENSIBLE_NAMES) {
@@ -159,16 +159,9 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * Convenience method to add these attributes onto an existing XOM Element
 	 * 
 	 * @param element the element to decorate
-	 * @throws InvalidDDMSException if the DDMS version of the element is different, or an attribute already exists
+	 * @throws InvalidDDMSException if the attribute already exists
 	 */
 	public void addTo(Element element) throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getVersionFor(getDDMSVersion());
-		DDMSVersion elementVersion = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
-		if (!version.getNamespace().equals(elementVersion.getNamespace())) {
-			throw new InvalidDDMSException("These extensible attributes cannot decorate a DDMS component with"
-				+ " a different DDMS version.");
-		}			
-		
 		for (Attribute attribute : getAttributes()) {
 			if (element.getAttribute(attribute.getLocalName(), attribute.getNamespaceURI()) != null)
 				throw new InvalidDDMSException("The extensible attribute with the name, "
@@ -233,7 +226,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof ExtensibleAttributes))
+		if (!(obj instanceof ExtensibleAttributes))
 			return (false);		
 		ExtensibleAttributes test = (ExtensibleAttributes) obj;
 		// XOM Attribute has no logical equality. Must compare by hand.
@@ -253,7 +246,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @see Object#hashCode()
 	 */
 	public int hashCode() {
-		int result = super.hashCode();
+		int result = 0;
 		// XOM Attribute has no logical equality. Must calculate by hand.		
 		for (Attribute attribute : getAttributes()) {
 			result = 7 * result + attribute.getLocalName().hashCode();

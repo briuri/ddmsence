@@ -167,7 +167,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		Element subjectElement = getChild(SUBJECT_NAME);
 		Util.requireDDMSValue("Subject element", subjectElement);
 		int count = subjectElement.getChildElements(Keyword.NAME, subjectElement.getNamespaceURI()).size()
@@ -175,11 +175,11 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		if (count < 1)
 			throw new InvalidDDMSException("At least 1 keyword or category must exist.");
 		for (Keyword keyword : getKeywords())
-			Util.requireSameVersion(this, keyword);
+			Util.requireCompatibleVersion(this, keyword);
 		for (Category category : getCategories())
-			Util.requireSameVersion(this, category);
-		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes can only be applied to this component in DDMS v3.0.");
+			Util.requireCompatibleVersion(this, category);
+		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS v2.0.");
 		}
 		
 		validateWarnings();
