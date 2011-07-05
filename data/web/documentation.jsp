@@ -314,6 +314,7 @@ can be compared to see which values have been added or removed.</p>
 <tr><td><code>@ICISM:classificationReason</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ICISM:classifiedBy</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ICISM:compilationReason</code></td><td>No</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ICISM:compliesWith</code></td><td>No</td><td>No</td><td>Yes</td></tr>
 <tr><td><code>@ICISM:dateOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td></tr>
 <tr><td><code>@ICISM:declassDate</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ICISM:declassEvent</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
