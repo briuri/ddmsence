@@ -28,7 +28,6 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
-import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
@@ -195,13 +194,6 @@ public final class Polygon extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see IDDMSComponent#getDDMSVersion()
-	 */
-	public String getDDMSVersion() {
-		return (DDMSVersion.getVersionForGmlNamespace(getXOMElement().getNamespaceURI()).getVersion());
-	}
-	
-	/**
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
@@ -217,7 +209,7 @@ public final class Polygon extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getGmlNamespace(), NAME);
+		Util.requireQName(getXOMElement(), getNamespace(), NAME);
 		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
 		Util.requireDDMSValue(ID_NAME, getId());
@@ -231,7 +223,7 @@ public final class Polygon extends AbstractBaseComponent {
 		}
 		List<Position> positions = getPositions();
 		for (Position pos : positions) {
-			Util.requireSameVersion(this, pos);
+			Util.requireCompatibleVersion(this, pos);
 			if (pos.getSRSAttributes() != null) {
 				String srsName = pos.getSRSAttributes().getSrsName();
 				if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))

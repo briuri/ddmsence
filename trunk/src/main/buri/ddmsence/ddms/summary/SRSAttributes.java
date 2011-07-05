@@ -58,6 +58,8 @@ import buri.ddmsence.util.Util;
  */
 public final class SRSAttributes extends AbstractAttributeGroup {
 
+	private String _gmlNamespace = null;
+	
 	private String _cachedSrsName;
 	private Integer _cachedSrsDimension;
 	private List<String> _cachedAxisLabels;
@@ -80,7 +82,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public SRSAttributes(Element element) throws InvalidDDMSException {
-		super(DDMSVersion.getVersionForGmlNamespace(element.getNamespaceURI()));
+		_gmlNamespace = element.getNamespaceURI();
 		_cachedSrsName = element.getAttributeValue(SRS_NAME_NAME, NO_NAMESPACE);
 		String srsDimension = element.getAttributeValue(SRS_DIMENSION_NAME, NO_NAMESPACE);
 		if (!Util.isEmpty(srsDimension)) {
@@ -110,7 +112,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 */
 	public SRSAttributes(String srsName, Integer srsDimension, List<String> axisLabels, List<String> uomLabels)
 		throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion());
+		_gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
 		if (axisLabels == null)
 			axisLabels = Collections.emptyList();
 		if (uomLabels == null)
@@ -129,9 +131,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if the DDMS version of the element is different
 	 */
 	protected void addTo(Element element) throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getVersionFor(getDDMSVersion());
-		DDMSVersion elementVersion = DDMSVersion.getVersionForGmlNamespace(element.getNamespaceURI());
-		if (!version.getNamespace().equals(elementVersion.getNamespace())) {
+		if (!getGmlNamespace().equals(element.getNamespaceURI())) {
 			throw new InvalidDDMSException("These SRS attributes cannot decorate a DDMS component with"
 				+ " a different DDMS version.");
 		}	
@@ -174,7 +174,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof SRSAttributes))
+		if (!(obj instanceof SRSAttributes))
 			return (false);
 		SRSAttributes test = (SRSAttributes) obj;
 		return (getSrsName().equals(test.getSrsName()) 
@@ -187,7 +187,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * @see Object#hashCode()
 	 */
 	public int hashCode() {
-		int result = super.hashCode(); 
+		int result = 0; 
 		result = 7 * result + getSrsName().hashCode();
 		if (getSrsDimension() != null)
 			result = 7 * result + getSrsDimension().hashCode();
@@ -197,42 +197,49 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	}
 		
 	/**
-	 * Builder accessor for the srsName.
+	 * Accessor for the GML namespace on the enclosing element.
+	 */
+	public String getGmlNamespace() {
+		return (Util.getNonNullString(_gmlNamespace));
+	}
+	
+	/**
+	 * Accessor for the srsName.
 	 */
 	public String getSrsName() {
 		return (Util.getNonNullString(_cachedSrsName));
 	}
 	
 	/**
-	 * Builder accessor for the srsDimension. May return null if not set.
+	 * Accessor for the srsDimension. May return null if not set.
 	 */
 	public Integer getSrsDimension() {
 		return (_cachedSrsDimension);
 	}
 	
 	/**
-	 * Builder accessor for the axisLabels. Will return an empty list if not set.
+	 * Accessor for the axisLabels. Will return an empty list if not set.
 	 */
 	public List<String> getAxisLabels() {
 		return (Collections.unmodifiableList(_cachedAxisLabels));
 	}
 	
 	/**
-	 * Builder accessor for the String representation of the axisLabels
+	 * Accessor for the String representation of the axisLabels
 	 */
 	public String getAxisLabelsAsXsList() {
 		return (Util.getXsList(getAxisLabels()));
 	}
 	
 	/**
-	 * Builder accessor for the uomLabels. Will return an empty list if not set.
+	 * Accessor for the uomLabels. Will return an empty list if not set.
 	 */
 	public List<String> getUomLabels() {
 		return (Collections.unmodifiableList(_cachedUomLabels));
 	}
 	
 	/**
-	 * Builder accessor for the String representation of the uomLabels
+	 * Accessor for the String representation of the uomLabels
 	 */
 	public String getUomLabelsAsXsList() {
 		return (Util.getXsList(getUomLabels()));

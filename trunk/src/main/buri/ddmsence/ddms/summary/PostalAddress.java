@@ -27,7 +27,6 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
@@ -170,7 +169,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		if (!Util.isEmpty(getState()) && !Util.isEmpty(getProvince())) {
 			throw new InvalidDDMSException("Only 1 of state or province can be used.");
 		}
@@ -181,7 +180,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), POSTAL_CODE_NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.NAME, 0, 1);
 		if (getCountryCode() != null) {
-			Util.requireSameVersion(this, getCountryCode());
+			Util.requireCompatibleVersion(this, getCountryCode());
 		}
 		
 		validateWarnings();

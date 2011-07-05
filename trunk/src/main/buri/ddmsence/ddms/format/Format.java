@@ -26,7 +26,6 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -151,7 +150,7 @@ public final class Format extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		Element mediaElement = getChild(MEDIA_NAME);
 		Util.requireDDMSValue("Media element", mediaElement);
 		Util.requireDDMSValue(MIME_TYPE_NAME, getMimeType());
@@ -159,7 +158,7 @@ public final class Format extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(mediaElement, MediaExtent.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(mediaElement, MEDIUM_NAME, 0, 1);
 		if (getExtent() != null)
-			Util.requireSameVersion(this, getExtent());
+			Util.requireCompatibleVersion(this, getExtent());
 
 		validateWarnings();
 	}

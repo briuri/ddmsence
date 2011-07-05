@@ -112,14 +112,17 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
-		if (!"2.0".equals(getDDMSVersion())) {
+		Util.requireDDMSQName(getXOMElement(), NAME);
+		boolean isDDMS20 = DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement());
+		
+		if (!isDDMS20) {
 			if (getExcludeFromRollup() == null)
 				throw new InvalidDDMSException("The excludeFromRollup attribute is required.");
 			if (!FIXED_ROLLUP.equals(String.valueOf(getExcludeFromRollup())))
 				throw new InvalidDDMSException("The excludeFromRollup attribute must have a fixed value of \""
 					+ FIXED_ROLLUP + "\".");
-		} else if (getExcludeFromRollup() != null)
+		}
+		else if (getExcludeFromRollup() != null)
 			throw new InvalidDDMSException("The excludeFromRollup attribute cannot be used in DDMS 2.0.");
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();

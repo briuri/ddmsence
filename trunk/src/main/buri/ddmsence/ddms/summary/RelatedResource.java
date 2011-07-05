@@ -29,7 +29,6 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
@@ -137,14 +136,14 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
 		Util.requireDDMSValue("value attribute", getValue());
 		Util.requireDDMSValidURI(getQualifier());
 		if (getChild(Link.NAME) == null)
 			throw new InvalidDDMSException("At least 1 link must exist.");
 		for (Link link : getLinks()) {
-			Util.requireSameVersion(this, link);
+			Util.requireCompatibleVersion(this, link);
 		}
 		
 		validateWarnings();

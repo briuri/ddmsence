@@ -113,6 +113,8 @@ import buri.ddmsence.util.Util;
  */
 public final class SecurityAttributes extends AbstractAttributeGroup {
 	
+	private String _ddmsNamespace = null;
+	
 	private String _cachedClassification = null;
 	private List<String> _cachedOwnerProducers = null;
 	private List<String> _cachedSCIcontrols = null;
@@ -227,8 +229,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public SecurityAttributes(Element element) throws InvalidDDMSException {
-		super(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));
-		String icNamespace = DDMSVersion.getVersionFor(getDDMSVersion()).getIcismNamespace();
+		_ddmsNamespace = element.getNamespaceURI();
+		String icNamespace = DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace()).getIcismNamespace();
 		_cachedClassification = element.getAttributeValue(CLASSIFICATION_NAME, icNamespace);
 		_cachedOwnerProducers = Util.getXsListAsList(element.getAttributeValue(OWNER_PRODUCER_NAME, icNamespace));
 		_cachedSCIcontrols = Util.getXsListAsList(element.getAttributeValue(SCI_CONTROLS_NAME, icNamespace));
@@ -280,7 +282,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public SecurityAttributes(String classification, List<String> ownerProducers, Map<String, String> otherAttributes) throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion());
+		_ddmsNamespace = DDMSVersion.getCurrentVersion().getNamespace();
 		if (ownerProducers == null)
 			ownerProducers = Collections.emptyList();
 		if (otherAttributes == null)
@@ -330,16 +332,13 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * Convenience method to add these attributes onto an existing XOM Element
 	 * 
 	 * @param element the element to decorate
-	 * @throws InvalidDDMSException if the DDMS version of the element is different
 	 */
-	public void addTo(Element element) throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getVersionFor(getDDMSVersion());
-		DDMSVersion elementVersion = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
-		if (!version.getNamespace().equals(elementVersion.getNamespace())) {
+	public void addTo(Element element) throws InvalidDDMSException {		
+		if (!getDDMSNamespace().equals(element.getNamespaceURI())) {
 			throw new InvalidDDMSException("These security attributes cannot decorate a DDMS component with"
 				+ " a different DDMS version.");
 		}			
-		String icNamespace = version.getIcismNamespace();
+		String icNamespace = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI()).getIcismNamespace();
 		String icPrefix = PropertyReader.getProperty("icism.prefix");
 		Util.addAttribute(element, icPrefix, CLASSIFICATION_NAME, icNamespace, getClassification());
 		Util.addAttribute(element, icPrefix, OWNER_PRODUCER_NAME, icNamespace, Util.getXsList(getOwnerProducers()));
@@ -429,7 +428,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		boolean isDDDMS20 = "2.0".equals(getDDMSVersion());
+		boolean isDDDMS20 = "2.0".equals(DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace()).getVersion());
 		if (!Util.isEmpty(getClassification())) {
 			if (!isDDDMS20 || !ISMVocabulary.usingOldClassification(getClassification()))
 				validateEnumeration(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, getClassification());
@@ -598,7 +597,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof SecurityAttributes))
+		if (!(obj instanceof SecurityAttributes))
 			return (false);		
 		SecurityAttributes test = (SecurityAttributes) obj;
 		return (getClassification().equals(test.getClassification())
@@ -627,7 +626,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * @see Object#hashCode()
 	 */
 	public int hashCode() {
-		int result = super.hashCode();
+		int result = 0;
 		result = 7 * result + getClassification().hashCode();
 		result = 7 * result + getOwnerProducers().hashCode();
 		result = 7 * result + getSCIcontrols().hashCode();
@@ -653,6 +652,13 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			result = 7 * result + getDeclassManualReview().hashCode();
 		return (result);
 	}	
+	
+	/**
+	 * Accessor for the DDMS namespace on the enclosing element.
+	 */
+	public String getDDMSNamespace() {
+		return (Util.getNonNullString(_ddmsNamespace));
+	}
 	
 	/**
 	 * Accessor for the classification attribute.

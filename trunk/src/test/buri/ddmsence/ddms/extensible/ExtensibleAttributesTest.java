@@ -256,21 +256,6 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 		}
 	}
 	
-	public void testWrongVersionAttributes() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("2.0");
-		List<Attribute> attributes = new ArrayList<Attribute>();
-		attributes.add(new Attribute(TEST_ATTRIBUTE));
-		ExtensibleAttributes extAttributes = testConstructor(WILL_SUCCEED, attributes);
-		DDMSVersion.setCurrentVersion("3.0");
-		try {
-			new Keyword("value", extAttributes);
-			fail("Allowed different versions.");
-		}
-		catch (InvalidDDMSException e) {
-			// Good
-		}
-	}
-	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);

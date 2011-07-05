@@ -93,8 +93,7 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		DDMSVersion version = DDMSVersion.getVersionForNamespace(getXOMElement().getNamespaceURI());
-		if (version != null)
+		if (DDMSVersion.isSupportedDDMSNamespace(getNamespace()))
 			throw new InvalidDDMSException("Extensible elements cannot be defined in the DDMS namespace.");
 	}
 
@@ -111,16 +110,6 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 	public String toText() {
 		return ("");
 	}
-
-	/**
-	 * ExtensibleElements are not tied to any particular version.
-	 * 
-	 * @see IDDMSComponent#getDDMSVersion()
-	 */
-	public String getDDMSVersion() {
-		return ("?");
-	}
-	
 	
 	/**
 	 * @see Object#equals(Object)

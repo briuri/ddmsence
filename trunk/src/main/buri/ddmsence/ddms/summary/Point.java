@@ -24,7 +24,6 @@ import java.io.Serializable;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
-import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -166,14 +165,7 @@ public final class Point extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
-	/**
-	 * @see IDDMSComponent#getDDMSVersion()
-	 */
-	public String getDDMSVersion() {
-		return (DDMSVersion.getVersionForGmlNamespace(getXOMElement().getNamespaceURI()).getVersion());
-	}
-	
+		
 	/**
 	 * Validates the component.
 	 * 
@@ -189,13 +181,13 @@ public final class Point extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getGmlNamespace(), NAME);
+		Util.requireQName(getXOMElement(), getNamespace(), NAME);
 		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
 		Util.requireDDMSValue(ID_NAME, getId());
 		Util.requireValidNCName(getId());
 		Util.requireDDMSValue("position", getPosition());
-		Util.requireSameVersion(this, getPosition());
+		Util.requireCompatibleVersion(this, getPosition());
 		String srsName = getPosition().getSRSAttributes().getSrsName();
 		if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))
 			throw new InvalidDDMSException("The srsName of the position must match the srsName of the Point.");

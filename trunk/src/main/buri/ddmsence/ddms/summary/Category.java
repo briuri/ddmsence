@@ -136,12 +136,12 @@ public final class Category extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		Util.requireDDMSValue("label attribute", getLabel());
 		if (!Util.isEmpty(getQualifier())) {
 			Util.requireDDMSValidURI(getQualifier());
 		}			
-		if ("2.0".equals(getDDMSVersion()) && !getExtensibleAttributes().isEmpty())
+		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("xs:anyAttribute can only be applied to ddms:category in DDMS 3.0.");
 	}
 	

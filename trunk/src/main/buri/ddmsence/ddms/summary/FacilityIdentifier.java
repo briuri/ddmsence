@@ -25,7 +25,6 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -105,7 +104,7 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		Util.requireDDMSValue(BE_NUMBER_NAME, getBeNumber());
 		Util.requireDDMSValue(OSUFFIX_NAME, getOsuffix());
 	}

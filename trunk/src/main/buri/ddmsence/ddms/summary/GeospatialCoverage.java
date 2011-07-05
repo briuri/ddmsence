@@ -187,7 +187,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		Element extElement = getChild(GEOSPATIAL_EXTENT_NAME);
 		Util.requireDDMSValue("GeospatialExtent element", extElement);
 		
@@ -197,30 +197,29 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(extElement, PostalAddress.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(extElement, VerticalExtent.NAME, 0, 1);
 		
-		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException(
-				"Security attributes can only be applied to this component in DDMS 3.0.");
+		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS v2.0.");
 		}	
 		
 		int validComponents = 0;
 		if (getGeographicIdentifier() != null) {
-			Util.requireSameVersion(this, getGeographicIdentifier());
+			Util.requireCompatibleVersion(this, getGeographicIdentifier());
 			validComponents++;
 		}
 		if (getBoundingBox() != null) {
-			Util.requireSameVersion(this, getBoundingBox());
+			Util.requireCompatibleVersion(this, getBoundingBox());
 			validComponents++;
 		}
 		if (getBoundingGeometry() != null) {
-			Util.requireSameVersion(this, getBoundingGeometry());
+			Util.requireCompatibleVersion(this, getBoundingGeometry());
 			validComponents++;
 		}
 		if (getPostalAddress() != null) {
-			Util.requireSameVersion(this, getPostalAddress());
+			Util.requireCompatibleVersion(this, getPostalAddress());
 			validComponents++;
 		}
 		if (getVerticalExtent() != null) {
-			Util.requireSameVersion(this, getVerticalExtent());
+			Util.requireCompatibleVersion(this, getVerticalExtent());
 			validComponents++;
 		}
 		if (validComponents == 0) {

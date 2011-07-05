@@ -52,6 +52,8 @@ import nu.xom.xslt.XSLException;
 import nu.xom.xslt.XSLTransform;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.summary.Point;
+import buri.ddmsence.ddms.summary.Polygon;
 
 /** 
  * A collection of static utility methods.
@@ -203,7 +205,7 @@ public class Util {
     public static String getFirstDDMSChildValue(Element parent, String name) {
     	Util.requireValue("parent element", parent);
     	Util.requireValue("child name", name);
-    	if (DDMSVersion.getVersionForNamespace(parent.getNamespaceURI()) == null)
+    	if (!DDMSVersion.isSupportedDDMSNamespace(parent.getNamespaceURI()))
     		throw new IllegalArgumentException("This method should only be called on an element in the DDMS namespace.");
     	Element child = parent.getFirstChildElement(name, parent.getNamespaceURI());
     	return (child == null ? "" : child.getValue());
@@ -219,7 +221,7 @@ public class Util {
     public static List<String> getDDMSChildValues(Element parent, String name) {
     	Util.requireValue("parent element", parent);
     	Util.requireValue("child name", name);
-    	if (DDMSVersion.getVersionForNamespace(parent.getNamespaceURI()) == null)
+    	if (!DDMSVersion.isSupportedDDMSNamespace(parent.getNamespaceURI()))
     		throw new IllegalArgumentException("This method should only be called on an element in the DDMS namespace.");
      	List<String> childTexts = new ArrayList<String>();
 		Elements childElements = parent.getChildElements(name, parent.getNamespaceURI());
@@ -255,23 +257,39 @@ public class Util {
 	}
 	
 	/**
-	 * Asserts that the qualified name of an element matches the expected name
+	 * Asserts that the qualified name of an element matches the expected name and a supported version of the 
+	 * DDMS XML namespace
 	 * 
 	 * @param element the element to check
-	 * @param namespaceURI the namespace URI
 	 * @param localName the local name to compare to
-	 * @throws InvalidDDMSException if the value is invalid. Does nothing if value is null.
+	 * @throws InvalidDDMSException if the name is incorrect
 	 */
-	public static void requireDDMSQName(Element element, String namespaceURI, String localName) throws InvalidDDMSException {
+	public static void requireDDMSQName(Element element, String localName) throws InvalidDDMSException {
 		Util.requireValue("element", element);
 		Util.requireValue("local name", localName);
-		if (namespaceURI == null)
-			namespaceURI = "";		
-		if (!localName.equals(element.getLocalName()) || !namespaceURI.equals(element.getNamespaceURI())) {
+		if (!localName.equals(element.getLocalName()) || !DDMSVersion.isSupportedDDMSNamespace(element.getNamespaceURI())) {
 			throw new InvalidDDMSException("Unexpected namespace URI and local name encountered: " + element.getQualifiedName());
 		}
 	}
 	
+	/**
+	 * Asserts that the qualified name of an element matches the expected name and namespace URI
+	 * 
+	 * @param element the element to check
+	 * @param namespaceURI the namespace to check
+	 * @param localName the local name to compare to
+	 * @throws IllegalArgumentException if the name is incorrect
+	 */
+	public static void requireQName(Element element, String namespaceURI, String localName) throws InvalidDDMSException {
+		Util.requireValue("element", element);
+		Util.requireValue("local name", localName);
+		if (namespaceURI == null)
+			namespaceURI = "";
+		if (!localName.equals(element.getLocalName()) || !namespaceURI.equals(element.getNamespaceURI())) {
+			throw new InvalidDDMSException("Unexpected namespace URI and local name encountered: " + element.getQualifiedName());
+		}
+	}
+		
 	/**
 	 * Asserts that a value required, for general cases.
 	 * 
@@ -297,7 +315,7 @@ public class Util {
 		throws InvalidDDMSException {
 		Util.requireValue("parent element", parent);
 		Util.requireValue("child name", childName);
-    	if (DDMSVersion.getVersionForNamespace(parent.getNamespaceURI()) == null)
+    	if (!DDMSVersion.isSupportedDDMSNamespace(parent.getNamespaceURI()))
     		throw new IllegalArgumentException("This method should only be called on an element in the DDMS namespace.");
 		int childCount = parent.getChildElements(childName, parent.getNamespaceURI()).size();
 		if (!isBounded(childCount, lowBound, highBound)) {
@@ -338,16 +356,22 @@ public class Util {
 	}
 	
 	/**
-	 * Validates that a child component has the same DDMS version as the parent.
+	 * Validates that a child component has a compatible DDMS version as the parent.
 	 * 
 	 * @param parent the parent component
 	 * @param child the child component
 	 * @throws InvalidDDMSException if 
 	 */
-	public static void requireSameVersion(IDDMSComponent parent, IDDMSComponent child) throws InvalidDDMSException {
+	public static void requireCompatibleVersion(IDDMSComponent parent, IDDMSComponent child) throws InvalidDDMSException {
 		Util.requireValue("parent", parent);
 		Util.requireValue("child", child);
-		if (!parent.getDDMSVersion().equals(child.getDDMSVersion())) {
+		// Cover acceptable case where parent (BoundingGeometry) has different XML namespace than child.
+		String parentNamespace = parent.getNamespace();
+		if (child instanceof Polygon || child instanceof Point) {
+			parentNamespace = DDMSVersion.getVersionForDDMSNamespace(parentNamespace).getGmlNamespace();
+		}		
+		String childNamespace = child.getNamespace();
+		if (!parentNamespace.equals(childNamespace)) {
 			throw new InvalidDDMSException("A child component, " + child.getQualifiedName()
 				+ ", is using a different version of DDMS from its parent.");
 		}

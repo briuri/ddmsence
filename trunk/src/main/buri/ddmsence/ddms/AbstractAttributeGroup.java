@@ -26,8 +26,6 @@ import java.util.List;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.ddms.summary.SRSAttributes;
-import buri.ddmsence.util.DDMSVersion;
-import buri.ddmsence.util.Util;
 
 /**
  * Top-level base class for attribute groups, specifically {@link SRSAttributes}, {@link SecurityAttributes}, and
@@ -41,51 +39,24 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractAttributeGroup {
 
-	private String _ddmsVersion;
 	private List<ValidationMessage> _warnings;
 	
 	/**
-	 * Superconstructor sets the DDMS Version
-	 * 
-	 * @param version the currently in-use version of DDMS
+	 * Empty constructor
 	 */
-	public AbstractAttributeGroup(DDMSVersion version) {
-		_ddmsVersion = (version == null ? null : version.getVersion());
-	}
+	public AbstractAttributeGroup() {}
 	
 	/**
 	 * Base validation case for attribute groups.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>The DDMS Version is not null.</li>
+	 * <li>No rules are validated at this level. Extending classes may have additional rules.</li>
 	 * </td></tr></table>
 	 * 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	protected void validate() throws InvalidDDMSException {
-		Util.requireDDMSValue("version", getDDMSVersion());
-	}
-		
-	/**
-	 * @see Object#equals(Object)
-	 */
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!(obj instanceof AbstractAttributeGroup))
-			return (false);		
-		AbstractAttributeGroup test = (AbstractAttributeGroup) obj;
-		return (DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace().equals(
-			DDMSVersion.getVersionFor(test.getDDMSVersion()).getNamespace()));
-	}
-
-	/**
-	 * @see Object#hashCode()
-	 */
-	public int hashCode() {
-		return (DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace().hashCode());
-	}	
-	
+	protected void validate() throws InvalidDDMSException {}
+			
 	/**
 	 * Returns a list of any warning messages that occurred during validation. Warnings do not prevent a valid component
 	 * from being formed.
@@ -94,13 +65,6 @@ public abstract class AbstractAttributeGroup {
 	 */
 	public List<ValidationMessage> getValidationWarnings() {
 		return (Collections.unmodifiableList(getWarnings()));
-	}
-
-	/**
-	 * Accessor for the DDMS Version
-	 */
-	public String getDDMSVersion() {
-		return (_ddmsVersion);
 	}
 	
 	/**

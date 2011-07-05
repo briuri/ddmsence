@@ -179,11 +179,6 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 		}
 	}
 	
-	public void testVersion() {
-		ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
-		assertEquals("?", component.getDDMSVersion());
-	}
-	
 	public void testBuilder() throws SAXException, IOException, InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);

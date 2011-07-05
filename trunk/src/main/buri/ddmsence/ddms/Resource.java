@@ -613,8 +613,10 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
-		if (!"2.0".equals(getDDMSVersion())) {
+		Util.requireDDMSQName(getXOMElement(), NAME);
+		boolean isDDMS20 = DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement());
+		
+		if (!isDDMS20) {
 			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
 			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
 			Util.requireDDMSValue(DES_VERSION_NAME, getDESVersion());
@@ -645,13 +647,13 @@ public final class Resource extends AbstractBaseComponent {
 			}
 			validateRollup(getSecurityAttributes(), childAttributes);
 		}
-		if ("2.0".equals(getDDMSVersion()) && getExtensibleElements().size() > 1) {
+		if (isDDMS20 && getExtensibleElements().size() > 1) {
 			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
 		}
 		for (IDDMSComponent component : getTopLevelComponents()) {
 			if (component instanceof ExtensibleElement)
 				continue;
-			Util.requireSameVersion(this, component);
+			Util.requireCompatibleVersion(this, component);
 		}
 		
 		validateWarnings();
@@ -752,7 +754,7 @@ public final class Resource extends AbstractBaseComponent {
 			html.append(component.toHTML());
 		html.append(buildHTMLMeta("extensible.layer", String.valueOf(!getExtensibleElements().isEmpty()), true));
 		html.append(buildHTMLMeta("ddms.generator", "DDMSence " + PropertyReader.getProperty("version"), true));
-		html.append(buildHTMLMeta("ddms.version", getDDMSVersion(), true));
+		html.append(buildHTMLMeta("ddms.version", DDMSVersion.getVersionForDDMSNamespace(getNamespace()).getVersion(), true));
 		return (html.toString());
 	}
 
@@ -773,7 +775,7 @@ public final class Resource extends AbstractBaseComponent {
 			text.append(component.toText());
 		text.append(buildTextLine("Extensible Layer", String.valueOf(!getExtensibleElements().isEmpty()), true));
 		text.append(buildTextLine("DDMS Generator", "DDMSence " + PropertyReader.getProperty("version"), true));
-		text.append(buildTextLine("DDMS Version", getDDMSVersion(), true));
+		text.append(buildTextLine("DDMS Version", DDMSVersion.getVersionForDDMSNamespace(getNamespace()).getVersion(), true));
 		return (text.toString());
 	}
 

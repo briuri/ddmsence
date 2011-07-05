@@ -230,7 +230,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		Element periodElement = getChild(TIME_PERIOD_NAME);
 		Util.requireDDMSValue("TimePeriod element", periodElement);
 		Util.requireBoundedDDMSChildCount(periodElement, TIME_PERIOD_NAME_NAME, 0, 1);
@@ -244,8 +244,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getEnd().getXMLSchemaType());
 		else
 			validateExtendedDateType(getEndString());
-		if (DDMSVersion.isVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes can only be applied to this component in DDMS 3.0.");
+		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS v2.0.");
 		}
 		if (getStart() != null && getEnd() != null) {
 			if (getStart().toGregorianCalendar().after(getEnd().toGregorianCalendar())) {

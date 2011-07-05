@@ -216,7 +216,7 @@ public class DDMSReader {
 	 * @throws InvalidDDMSException if the component could not be built
 	 */
 	protected Resource buildResource(Element xomElement) throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion(DDMSVersion.getVersionForNamespace(xomElement.getNamespaceURI())
+		DDMSVersion.setCurrentVersion(DDMSVersion.getVersionForDDMSNamespace(xomElement.getNamespaceURI())
 			.getVersion());
 		return (new Resource(xomElement));
 	}

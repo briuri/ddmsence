@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--  Represents a single ddms:postalAddress element, for unit testing -->
-<ddms:postalAddress xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/">
+<ddms:postalAddress xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.1/">
 	<ddms:street>1600 Pennsylvania Avenue, NW</ddms:street>
 	<ddms:city>Washington</ddms:city>
 	<ddms:state>DC</ddms:state>

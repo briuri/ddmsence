@@ -32,7 +32,6 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.SecurityAttributes;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
@@ -180,7 +179,7 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), DDMSVersion.getVersionFor(getDDMSVersion()).getNamespace(), NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
 		Util.requireDDMSValue("relationship attribute", getRelationship());
 		Util.requireDDMSValidURI(getRelationship());
 		if (!Util.isEmpty(getDirection()))
@@ -188,7 +187,7 @@ public final class RelatedResources extends AbstractBaseComponent {
 		if (getChild(RelatedResource.NAME) == null)
 			throw new InvalidDDMSException("At least 1 RelatedResource must exist.");
 		for (RelatedResource related : getRelatedResources())
-			Util.requireSameVersion(this, related);
+			Util.requireCompatibleVersion(this, related);
 
 		validateWarnings();
 	}
