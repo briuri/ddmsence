@@ -460,9 +460,9 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			others.put(SecurityAttributes.DECLASS_DATE_NAME, "2005-10-10");
 			others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-10");
 			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
-			assertEquals("<meta name=\"declassDate\" content=\"2005-10-10\" />\n"
-				+ "<meta name=\"dateOfExemptedSource\" content=\"2005-10-10\" />\n", dataAttributes.toHTML(""));
-			assertEquals("Declass Date: 2005-10-10\nDate Of Exempted Source: 2005-10-10\n", dataAttributes.toText(""));
+			assertEquals("<meta name=\"dateOfExemptedSource\" content=\"2005-10-10\" />\n"
+				+ "<meta name=\"declassDate\" content=\"2005-10-10\" />\n", dataAttributes.toHTML(""));
+			assertEquals("Date Of Exempted Source: 2005-10-10\nDeclass Date: 2005-10-10\n", dataAttributes.toText(""));
 		}
 	}
 	
@@ -525,8 +525,8 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		map.put(SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, "true");
 		SecurityAttributes attributes = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
 		assertEquals("<meta name=\"classification\" content=\"U\" />\n"
-			+ "<meta name=\"ownerProducer\" content=\"USA\" />\n"
-			+ "<meta name=\"declassManualReview\" content=\"true\" />\n", attributes.toHTML(""));
+			+ "<meta name=\"declassManualReview\" content=\"true\" />\n"
+			+ "<meta name=\"ownerProducer\" content=\"USA\" />\n", attributes.toHTML(""));
 	}
 	
 	public void testCVEErrorsByDefault() {
