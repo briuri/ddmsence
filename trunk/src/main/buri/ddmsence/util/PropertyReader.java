@@ -59,7 +59,7 @@ public class PropertyReader {
 	static {
 		CUSTOM_PROPERTIES.add("ddms.prefix");
 		CUSTOM_PROPERTIES.add("gml.prefix");
-		CUSTOM_PROPERTIES.add("icism.cve.enumLocation");
+		CUSTOM_PROPERTIES.add("icism.cve.customEnumLocation");
 		CUSTOM_PROPERTIES.add("icism.cve.validationAsErrors");
 		CUSTOM_PROPERTIES.add("icism.prefix");
 		CUSTOM_PROPERTIES.add("sample.data");
@@ -106,14 +106,12 @@ public class PropertyReader {
 	 * 
 	 * @param name the key of the property, without the "buri.ddmsence." prefix
 	 * @param value the new value of the property
-	 * @throws IllegalArgumentException if the property is not a valid configurable property, or if the value is empty.
+	 * @throws IllegalArgumentException if the property is not a valid configurable property.
 	 */
 	public static void setProperty(String name, String value) {
 		if (!CUSTOM_PROPERTIES.contains(name))
 			throw new IllegalArgumentException(name + " is not a configurable property.");
-		if (Util.isEmpty(value))
-			throw new IllegalArgumentException("The " + name + " property cannot be set to an empty value.");
-		INSTANCE.getProperties().setProperty(PROPERTIES_PREFIX + name, value);
+		INSTANCE.getProperties().setProperty(PROPERTIES_PREFIX + name, Util.getNonNullString(value).trim());
 	}
 	
 	/**

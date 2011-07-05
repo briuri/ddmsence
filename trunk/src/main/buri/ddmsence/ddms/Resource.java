@@ -645,7 +645,7 @@ public final class Resource extends AbstractBaseComponent {
 				if (component.getSecurityAttributes() != null && !(component instanceof Security))
 					childAttributes.add(component.getSecurityAttributes());
 			}
-			validateRollup(getSecurityAttributes(), childAttributes);
+			ISMVocabulary.validateRollup(getSecurityAttributes(), childAttributes);
 		}
 		if (isDDMS20 && getExtensibleElements().size() > 1) {
 			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
@@ -692,51 +692,7 @@ public final class Resource extends AbstractBaseComponent {
 		}
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
-	
-	/**
-	 * Validates that the security attributes of any subcomponents are no more restrictive than
-	 * the parent attributes. Does not include the ddms:security tag which has a fixed
-	 * excludeFromRollup="true" attribute.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>For any subcomponent's security attributes:</li>
-	 * <ul>
-	 * <li>The classification must belong to the same classification system as the parent's
-	 * classification (US or NATO markings).</li>
-	 * <li>The classification cannot be more restrictive than the parent classification. The ordering
-	 * for US markings (from least to most restrictive) is [U, C, S, TS]. The ordering for NATO
-	 * markings (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTSA].</li>
-	 * </ul>
-	 * </td></tr></table>
-	 * 	
-	 * @param parentAttributes the master attributes to compare to
-	 * @param childAttributes a set of all nested attributes
-	 */
-	private void validateRollup(SecurityAttributes parentAttributes, Set<SecurityAttributes> childAttributes)
-		throws InvalidDDMSException {
-		Util.requireValue("parent classification", parentAttributes.getClassification());
-
-		String parentClass = parentAttributes.getClassification();
-		boolean isParentUS = ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, parentClass);
-		int parentIndex = ISMVocabulary.getClassificationIndex(parentClass);
 		
-		for (SecurityAttributes childAttr : childAttributes) {
-			String childClass = childAttr.getClassification();
-			if (Util.isEmpty(childClass))
-				continue;
-			boolean isChildUS = ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, childClass);
-			int childIndex = ISMVocabulary.getClassificationIndex(childClass);
-			if (isParentUS != isChildUS) {
-				throw new InvalidDDMSException("The security classification of a nested component is using a "
-					+ "different marking system than the ddms:Resource itself.");
-			}
-			if (childIndex > parentIndex) {
-				throw new InvalidDDMSException("The security classification of a nested component is more "
-					+ "restrictive than the ddms:Resource itself.");
-			}			
-		}
-	}
-	
 	/**
 	 * @see AbstractBaseComponent#toHTML()
 	 */

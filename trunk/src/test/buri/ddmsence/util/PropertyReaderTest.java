@@ -71,16 +71,6 @@ public class PropertyReaderTest extends TestCase {
 		}
 	}
 	
-	public void testSetPropertyInvalidValue() {
-		try {
-			PropertyReader.setProperty("ddms.prefix", "");
-			fail("Did not prevent invalid property value.");
-		}
-		catch (IllegalArgumentException e) {
-			// Good
-		}
-	}
-	
 	public void testSetPropertyValid() {
 		PropertyReader.setProperty("ddms.prefix", "DDMS");
 		assertEquals("DDMS", PropertyReader.getProperty("ddms.prefix"));

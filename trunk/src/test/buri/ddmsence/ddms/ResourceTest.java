@@ -1123,6 +1123,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 	public void testRollupWrongSystem() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			if ("3.1".equals(version))
+				continue;
+			
 			createComponents();
 			String icPrefix = PropertyReader.getProperty("icism.prefix");
 			String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
@@ -1151,7 +1154,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 	public void testRollupManualReviewWarning() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			if ("3.1".equals(version))
+				continue;
 			createComponents();
+			
 			String icPrefix = PropertyReader.getProperty("icism.prefix");
 			String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
 			

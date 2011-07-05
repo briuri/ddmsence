@@ -38,10 +38,12 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.ParsingException;
 
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -61,18 +63,20 @@ import buri.ddmsence.util.Util;
  * 
  * <ul>
  * <li>CVEnumISM25X.xml: tokens allowed in the "declassException" attribute</li>
+ * <li>CVEnumISMAtomicEnergyMarkings.xml: tokens allowed in the "atomicEnergyMarkings" attribute (V5 only)</li>
  * <li>CVEnumISMClassificationAll.xml: tokens allowed in the "classification" attribute</li>
  * <li>CVEnumISMClassificationUS.xml: subset of the tokens allowed in the "classification" attribute</li>
+ * <li>CVEnumISMCompliesWith.xml: tokens allowed in the "compliesWith" attribute (V5 only)</li>
  * <li>CVEnumISMDissem.xml: tokens allowed in the "disseminationControls" attribute</li>
  * <li>CVEnumISMFGIOpen.xml: tokens allowed in the "FGIsourceOpen" attribute</li>
  * <li>CVEnumISMFGIProtected.xml: tokens allowed in the "FGIsourceProtected" attribute</li>
  * <li>CVEnumISMNonIC.xml: tokens allowed in the "nonICmarkings" attribute</li>
- * <li>CVEnumISMNotice.xml: tokens allowed in the "notice" attribute. This is included for completeness only -- DDMS does not make use of this attribute.</li>
+ * <li>CVEnumISMNonUSControls.xml: tokens allowed in the "nonUSControls" attribute (V5 only)</li>
  * <li>CVEnumISMOwnerProducer.xml: tokens allowed in the "ownerProducer" attribute</li>
- * <li>CVEnumISMRelTo.xml: tokens allowed in the "releasableTo" attribute</li>
+ * <li>CVEnumISMRelTo.xml: tokens allowed in the "displayOnlyTo" (V5 only) and "releasableTo" attribute</li>
  * <li>CVEnumISMSAR.xml: tokens allowed in the "SARIdentifier" attribute</li>
  * <li>CVEnumISMSCIControls.xml: tokens allowed in the "SCIcontrols" attribute</li>
- * <li>CVEnumISMSourceMarked.xml: tokens allowed in the "typeOfExemptedSource" attribute</li>
+ * <li>CVEnumISMSourceMarked.xml: tokens allowed in the "typeOfExemptedSource" attribute (V2 only)</li>
  * </ul>
  * 
  * <p>
@@ -92,11 +96,20 @@ public class ISMVocabulary {
 	/** Filename for the enumerations allowed in a declassException attribute */
 	public static final String CVE_DECLASS_EXCEPTION = "CVEnumISM25X.xml";
 	
+	/** Filename for the enumerations allowed in an atomicEnergyMarkings attribute */
+	public static final String CVE_ATOMIC_ENERGY_MARKINGS = "CVEnumISMAtomicEnergyMarkings.xml";
+	
 	/** Filename for the enumerations allowed in a classification attribute */	
 	public static final String CVE_ALL_CLASSIFICATIONS = "CVEnumISMClassificationAll.xml";
 	
 	/** Filename for the enumerations allowed in a classification attribute (US only) */
 	public static final String CVE_US_CLASSIFICATIONS = "CVEnumISMClassificationUS.xml";
+	
+	/** Filename for the enumerations allowed in a compliesWith attribute */
+	public static final String CVE_COMPLIES_WITH = "CVEnumISMCompliesWith.xml";
+	
+	/** Filename for the enumerations allowed in a displayOnlyTo attribute */
+	public static final String CVE_DISPLAY_ONLY_TO = "CVEnumISMRelTo.xml";
 	
 	/** Filename for the enumerations allowed in a disseminationControls attribute */
 	public static final String CVE_DISSEMINATION_CONTROLS = "CVEnumISMDissem.xml";
@@ -110,8 +123,8 @@ public class ISMVocabulary {
 	/** Filename for the enumerations allowed in a nonICmarkings attribute */
 	public static final String CVE_NON_IC_MARKINGS = "CVEnumISMNonIC.xml";
 	
-	/** Filename for the enumerations allowed in a notice attribute */
-	public static final String CVE_NOTICE = "CVEnumISMNotice.xml";
+	/** Filename for the enumerations allowed in a nonUSControls attribute */
+	public static final String CVE_NON_US_CONTROLS = "CVEnumISMNonUSControls.xml";
 	
 	/** Filename for the enumerations allowed in an ownerProducer attribute */
 	public static final String CVE_OWNER_PRODUCERS = "CVEnumISMOwnerProducer.xml";
@@ -127,6 +140,26 @@ public class ISMVocabulary {
 	
 	/** Filename for the enumerations allowed in a typeOfExemptedSource attribute */
 	public static final String CVE_TYPE_EXEMPTED_SOURCE = "CVEnumISMSourceMarked.xml";
+	
+	private static final List<String> ALL_ENUMS = new ArrayList<String>();
+	static {
+		ALL_ENUMS.add(CVE_DECLASS_EXCEPTION);
+		ALL_ENUMS.add(CVE_ATOMIC_ENERGY_MARKINGS);
+		ALL_ENUMS.add(CVE_ALL_CLASSIFICATIONS);
+		ALL_ENUMS.add(CVE_US_CLASSIFICATIONS);
+		ALL_ENUMS.add(CVE_COMPLIES_WITH);		
+		ALL_ENUMS.add(CVE_DISSEMINATION_CONTROLS);
+		ALL_ENUMS.add(CVE_DISPLAY_ONLY_TO);
+		ALL_ENUMS.add(CVE_FGI_SOURCE_OPEN);
+		ALL_ENUMS.add(CVE_FGI_SOURCE_PROTECTED);
+		ALL_ENUMS.add(CVE_NON_IC_MARKINGS);
+		ALL_ENUMS.add(CVE_NON_US_CONTROLS);
+		ALL_ENUMS.add(CVE_OWNER_PRODUCERS);
+		ALL_ENUMS.add(CVE_RELEASABLE_TO);
+		ALL_ENUMS.add(CVE_SAR_IDENTIFIER);
+		ALL_ENUMS.add(CVE_SCI_CONTROLS);
+		ALL_ENUMS.add(CVE_TYPE_EXEMPTED_SOURCE);
+	}
 	
 	private static final List<String> ORDERED_US_CLASSIFICATION_TYPES = new ArrayList<String>();
 	static {
@@ -166,6 +199,7 @@ public class ISMVocabulary {
 	private static final String REG_EXP_NAME = "regularExpression";
 	
 	private static String _lastEnumLocation = null;
+	private static int _ismVersion;
 	
 	/**
 	 * Private to prevent instantiation
@@ -173,10 +207,26 @@ public class ISMVocabulary {
 	private ISMVocabulary() {}
 
 	/**
+	 * Selects V2 or V5 of the IC-ISM CVEs, based on the DDMS version.
+	 * 
+	 * @param version the DDMS version
+	 */
+	public static synchronized void setIsmVersion(DDMSVersion version) {
+		if ("3.1".equals(version.getVersion())) {
+			_ismVersion = 5;
+		}
+		else
+			_ismVersion = 2;
+	}
+	
+	/**
 	 * Examines the configurable property for the CVEnum location, and reloads the files if necessary.
 	 */
 	private static synchronized void updateEnumLocation() {
-		String enumLocation = PropertyReader.getProperty("icism.cve.enumLocation");
+		String enumLocation = PropertyReader.getProperty("icism.cve.customEnumLocation");
+		if (Util.isEmpty(enumLocation)) {
+			enumLocation = PropertyReader.getProperty("icism.cve.v" + getIsmVersion() + ".defaultLocation");
+		}
 		if (getLastEnumLocation() == null || !getLastEnumLocation().equals(enumLocation)) {
 			_lastEnumLocation = enumLocation;
 			try {
@@ -184,20 +234,14 @@ public class ISMVocabulary {
 				ENUM_PATTERNS.clear();
 				XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xmlReader.class"));
 				Builder builder = new Builder(reader, false);
-				loadEnumeration(enumLocation, builder, CVE_DECLASS_EXCEPTION);
-				loadEnumeration(enumLocation, builder, CVE_ALL_CLASSIFICATIONS);
-				loadEnumeration(enumLocation, builder, CVE_US_CLASSIFICATIONS);
-				loadEnumeration(enumLocation, builder, CVE_DISSEMINATION_CONTROLS);
-				loadEnumeration(enumLocation, builder, CVE_FGI_SOURCE_OPEN);
-				loadEnumeration(enumLocation, builder, CVE_FGI_SOURCE_PROTECTED);
-				loadEnumeration(enumLocation, builder, CVE_NON_IC_MARKINGS);
-				//loadEnumeration(enumLocation, builder, CVE_NOTICE);
-				loadEnumeration(enumLocation, builder, CVE_OWNER_PRODUCERS);
-				loadEnumeration(enumLocation, builder, CVE_RELEASABLE_TO);
-				loadEnumeration(enumLocation, builder, CVE_SAR_IDENTIFIER);
-				loadEnumeration(enumLocation, builder, CVE_SCI_CONTROLS);
-				loadEnumeration(enumLocation, builder, CVE_TYPE_EXEMPTED_SOURCE);
-			} catch (Exception e) {
+				for (String cve : ALL_ENUMS) {
+					try {
+						loadEnumeration(enumLocation, builder, cve);
+					} catch (Exception e) {
+						continue;
+					}
+				}
+			} catch (SAXException e) {
 				throw new RuntimeException("Could not load controlled vocabularies: " + e.getMessage());
 			}
 		}
@@ -370,9 +414,61 @@ public class ISMVocabulary {
 	}
 
 	/**
+	 * Validates that the security attributes of any subcomponents are no more restrictive than
+	 * the parent attributes. Does not include the ddms:security tag which has a fixed
+	 * excludeFromRollup="true" attribute.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>For any subcomponent's security attributes:</li>
+	 * <ul>
+	 * <li>The classification must belong to the same classification system as the parent's
+	 * classification (US or NATO markings).</li>
+	 * <li>The classification cannot be more restrictive than the parent classification. The ordering
+	 * for US markings (from least to most restrictive) is [U, C, S, TS]. The ordering for NATO
+	 * markings (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTSA].</li>
+	 * </ul>
+	 * </td></tr></table>
+	 * 	
+	 * @param parentAttributes the master attributes to compare to
+	 * @param childAttributes a set of all nested attributes
+	 */
+	public static void validateRollup(SecurityAttributes parentAttributes, Set<SecurityAttributes> childAttributes)
+		throws InvalidDDMSException {
+		Util.requireValue("parent classification", parentAttributes.getClassification());
+		setIsmVersion(DDMSVersion.getVersionForDDMSNamespace(parentAttributes.getDDMSNamespace()));
+
+		String parentClass = parentAttributes.getClassification();
+		boolean isParentUS = ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, parentClass);
+		int parentIndex = ISMVocabulary.getClassificationIndex(parentClass);
+		
+		for (SecurityAttributes childAttr : childAttributes) {
+			String childClass = childAttr.getClassification();
+			if (Util.isEmpty(childClass))
+				continue;
+			boolean isChildUS = ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, childClass);
+			int childIndex = ISMVocabulary.getClassificationIndex(childClass);
+			if (isParentUS != isChildUS) {
+				throw new InvalidDDMSException("The security classification of a nested component is using a "
+					+ "different marking system than the ddms:Resource itself.");
+			}
+			if (childIndex > parentIndex) {
+				throw new InvalidDDMSException("The security classification of a nested component is more "
+					+ "restrictive than the ddms:Resource itself.");
+			}			
+		}
+	}
+	
+	/**
 	 * Accessor for the last enum location.
 	 */
 	private static String getLastEnumLocation() {
 		return (_lastEnumLocation);
+	}
+	
+	/**
+	 * Accessor for the currently set ISM Version
+	 */
+	private static int getIsmVersion() {
+		return (_ismVersion);
 	}
 }
