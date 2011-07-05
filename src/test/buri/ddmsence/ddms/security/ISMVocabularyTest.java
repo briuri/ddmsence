@@ -42,7 +42,7 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 	 */
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		PropertyReader.setProperty("icism.cve.enumLocation", "/CVEnumISM/");
+		PropertyReader.setProperty("icism.cve.enumLocation", "/CVEnumISM/V2/");
 	}
 	
 	public void testBadKey() {

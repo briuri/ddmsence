@@ -191,7 +191,7 @@ public class ISMVocabulary {
 				loadEnumeration(enumLocation, builder, CVE_FGI_SOURCE_OPEN);
 				loadEnumeration(enumLocation, builder, CVE_FGI_SOURCE_PROTECTED);
 				loadEnumeration(enumLocation, builder, CVE_NON_IC_MARKINGS);
-				loadEnumeration(enumLocation, builder, CVE_NOTICE);
+				//loadEnumeration(enumLocation, builder, CVE_NOTICE);
 				loadEnumeration(enumLocation, builder, CVE_OWNER_PRODUCERS);
 				loadEnumeration(enumLocation, builder, CVE_RELEASABLE_TO);
 				loadEnumeration(enumLocation, builder, CVE_SAR_IDENTIFIER);
