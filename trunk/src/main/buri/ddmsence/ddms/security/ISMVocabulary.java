@@ -190,8 +190,11 @@ public class ISMVocabulary {
 		ALL_CLASSIFICATION_TYPES.addAll(ORDERED_NATO_CLASSIFICATION_TYPES);
 	}	
 	
-	private static final Map<String, Set<String>> ENUM_TOKENS = new HashMap<String, Set<String>>();
-	private static final Map<String, Set<String>> ENUM_PATTERNS = new HashMap<String, Set<String>>();
+	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_TOKENS = new HashMap<String, Map<String, Set<String>>>();
+	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_PATTERNS = new HashMap<String, Map<String, Set<String>>>();
+	
+//	private static final Map<String, Set<String>> ENUM_TOKENS = new HashMap<String, Set<String>>();
+//	private static final Map<String, Set<String>> ENUM_PATTERNS = new HashMap<String, Set<String>>();
 	
 	private static final String ENUMERATION_NAME = "Enumeration";
 	private static final String TERM_NAME = "Term";
@@ -229,20 +232,22 @@ public class ISMVocabulary {
 		}
 		if (getLastEnumLocation() == null || !getLastEnumLocation().equals(enumLocation)) {
 			_lastEnumLocation = enumLocation;
-			try {
-				ENUM_TOKENS.clear();
-				ENUM_PATTERNS.clear();
-				XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xmlReader.class"));
-				Builder builder = new Builder(reader, false);
-				for (String cve : ALL_ENUMS) {
-					try {
-						loadEnumeration(enumLocation, builder, cve);
-					} catch (Exception e) {
-						continue;
+			if (LOCATION_TO_ENUM_TOKENS.get(getLastEnumLocation()) == null) {
+				try {
+					LOCATION_TO_ENUM_TOKENS.put(getLastEnumLocation(), new HashMap<String, Set<String>>());
+					LOCATION_TO_ENUM_PATTERNS.put(getLastEnumLocation(), new HashMap<String, Set<String>>());
+					XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xmlReader.class"));
+					Builder builder = new Builder(reader, false);
+					for (String cve : ALL_ENUMS) {
+						try {
+							loadEnumeration(enumLocation, builder, cve);
+						} catch (Exception e) {
+							continue;
+						}
 					}
+				} catch (SAXException e) {
+					throw new RuntimeException("Could not load controlled vocabularies: " + e.getMessage());
 				}
-			} catch (SAXException e) {
-				throw new RuntimeException("Could not load controlled vocabularies: " + e.getMessage());
 			}
 		}
 	}
@@ -274,8 +279,8 @@ public class ISMVocabulary {
 					tokens.add(value.getValue());
 			}
 		}
-		ENUM_TOKENS.put(enumerationKey, tokens);
-		ENUM_PATTERNS.put(enumerationKey, patterns);
+		LOCATION_TO_ENUM_TOKENS.get(getLastEnumLocation()).put(enumerationKey, tokens);
+		LOCATION_TO_ENUM_PATTERNS.get(getLastEnumLocation()).put(enumerationKey, patterns);
 	}
 	
 	/**
@@ -299,7 +304,7 @@ public class ISMVocabulary {
 	 */
 	public static Set<String> getEnumerationTokens(String enumerationKey) {
 		updateEnumLocation();
-		Set<String> vocabulary = ENUM_TOKENS.get(enumerationKey);
+		Set<String> vocabulary = LOCATION_TO_ENUM_TOKENS.get(getLastEnumLocation()).get(enumerationKey);
 		if (vocabulary == null) {
 			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: "
 				+ enumerationKey);
@@ -316,7 +321,7 @@ public class ISMVocabulary {
 	 */
 	public static Set<String> getEnumerationPatterns(String enumerationKey) {
 		updateEnumLocation();
-		Set<String> vocabulary = ENUM_PATTERNS.get(enumerationKey);
+		Set<String> vocabulary = LOCATION_TO_ENUM_PATTERNS.get(getLastEnumLocation()).get(enumerationKey);
 		if (vocabulary == null) {
 			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: "
 				+ enumerationKey);
