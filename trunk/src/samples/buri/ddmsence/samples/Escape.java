@@ -39,6 +39,7 @@ import buri.ddmsence.ddms.summary.Keyword;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
 import buri.ddmsence.samples.util.AbstractSample;
 import buri.ddmsence.samples.util.Distribution;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 
 /**
@@ -121,12 +122,14 @@ public class Escape extends AbstractSample {
 		URL mimeTypeUrl = buildMimeTypeGraph();
 		URL keywordUrl = buildKeywordGraph();
 		URL dateUrl = buildDateGraph();
+		URL versionUrl = buildVersionGraph();
 		
 		// Render the data in the Swing UI
 		JTabbedPane pane = new JTabbedPane(JTabbedPane.TOP);
 		pane.add("Mime Types", buildVisualizationPanel(mimeTypeUrl));
 		pane.add("Keywords", buildVisualizationPanel(keywordUrl));
 		pane.add("Dates", buildVisualizationPanel(dateUrl));
+		pane.add("DDMS Versions", buildVisualizationPanel(versionUrl));
 		getFrame().getContentPane().add(pane, BorderLayout.CENTER);		
 	}
 	
@@ -234,6 +237,19 @@ public class Escape extends AbstractSample {
 			}	
 		}
 		return (buildPieGraphURL("DDMS%20Date%20Distribution", distribution, PIE_GRAPH));
+	}	
+	
+	/**
+	 * Examines every Resource and creates a distribution of DDMS Versions
+	 * 
+	 * @return URL representing the Google URL
+	 */
+	private URL buildVersionGraph() throws IOException {
+		Distribution distribution = new Distribution();
+		for (Resource resource : getResources()) {
+			distribution.incrementCount(DDMSVersion.getVersionForDDMSNamespace(resource.getNamespace()).getVersion());
+		}
+		return (buildPieGraphURL("DDMS%20Version%20Distribution", distribution, PIE_GRAPH));
 	}	
 	
 	/**
