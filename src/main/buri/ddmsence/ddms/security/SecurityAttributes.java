@@ -448,7 +448,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>(v3.1) The atomicEnergyMarkings can only be used in DDMS 3.1.</li>
-	 * <li>If set, the atomicEnergyMarkings must be valid tokens.</li>	 * 
+	 * <li>If set, the atomicEnergyMarkings must be valid tokens.</li>
 	 * <li>If set, the classification must be a valid token.</li>
 	 * <li>(v3.1) The compliesWith can only be used in DDMS 3.1.</li>
 	 * <li>If set, the compliesWith must be valid tokens.</li>

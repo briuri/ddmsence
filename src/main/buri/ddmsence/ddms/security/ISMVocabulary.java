@@ -426,6 +426,7 @@ public class ISMVocabulary {
 	 * <li>The classification cannot be more restrictive than the parent classification. The ordering
 	 * for US markings (from least to most restrictive) is [U, C, S, TS]. The ordering for NATO
 	 * markings (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTSA].</li>
+	 * <li>The markings, CTS-B, CTS-BALK, and R, are not currently ordered (see Issue #21).</li>
 	 * </ul>
 	 * </td></tr></table>
 	 * 	
