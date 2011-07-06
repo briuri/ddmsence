@@ -65,7 +65,7 @@
 				+ "  xmlns:ddms=\"http://metadata.dod.mil/mdr/ns/DDMS/3.1/\" \n"
 				+ "  xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" \n"
 				+ "  xmlns:ICISM=\"urn:us:gov:ic:ism\" \n"
-				+ "  ICISM:resourceElement=\"true\" ICISM:DESVersion=\"2\" \n"
+				+ "  ICISM:resourceElement=\"true\" ICISM:DESVersion=\"5\" \n"
 				+ "  ICISM:createDate=\"2010-01-21\" ICISM:classification=\"U\" \n"
 				+ "  ICISM:ownerProducer=\"USA\">\n"
 				+ "  <ddms:identifier ddms:qualifier=\"URI\" ddms:value=\"urn:buri:ddmsence\"/>\n"
