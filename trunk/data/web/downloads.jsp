@@ -22,7 +22,7 @@ I have included the <code>.project</code> file if you wish to import the project
 
 <h1>Latest Release: v1.10.0</h1>
 
-<p>Version <b>1.10.0</b> (07/06/2011) is a stable release, which adds support for DDMS 3.1 (<a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.10.0">Issue #82 - 85</a>).
+<p>Version <b>1.10.0</b> (07/05/2011) is a stable release, which adds support for DDMS 3.1 (<a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.10.0">Issue #82 - 85</a>).
 It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=88">backwards compatible</a> with earlier versions.</p>
 
 <ul>
