@@ -34,6 +34,20 @@ import buri.ddmsence.util.Util;
  */
 public class BaseComponentTest extends TestCase {
 	
+	/**
+	 * Resets the in-use version of DDMS.
+	 */
+	protected void setUp() throws Exception {
+		DDMSVersion.clearCurrentVersion();
+	}
+	
+	/**
+	 * Resets the in-use version of DDMS.
+	 */
+	protected void tearDown() throws Exception {
+		DDMSVersion.clearCurrentVersion();
+	}
+	
 	public void testSelfEquality() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		assertEquals(rights, rights);
