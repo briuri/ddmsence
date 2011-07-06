@@ -285,13 +285,14 @@ Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 
 <table>
 <tr><th>Element or Attribute</th><th>DDMS 2.0 Notes</th><th>DDMS 3.0 Notes</th><th>DDMS 3.1 Notes</th></tr>
+<tr><td>XML Namespace</td><td>http://metadata.dod.mil/mdr/ns/DDMS/2.0/</td><td>http://metadata.dod.mil/mdr/ns/DDMS/3.0/</td><td>http://metadata.dod.mil/mdr/ns/DDMS/3.1/</td></tr>
 <tr><td><code>ddms:category</code></td><td>No extensible attributes can be used.</td><td>Zero to many attributes can live in the <code>xs:anyAttribute</code> extensible area.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:dates@ddms:approvedOn</code></td><td>Cannot exist in this version.</td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr>
 <tr><td><code>ddms:countryCode@ddms:qualifier<br />ddms:countryCode@ddms:value</code></td><td>Follows 3.0 rules: both attributes are required.</td><td>Both attributes are required.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:geospatialCoverage@ICISM:classification<br />ddms:geospatialCoverage@ICISM:ownerProducer<br />ddms:geospatialCoverage@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:keyword</code></td><td>No extensible attributes can be used.</td><td>Zero to many attributes can live in the <code>xs:anyAttribute</code> extensible area.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:relatedResources</code></td><td>Follows 3.0 rules: at least 1 ddms:RelatedResource must exist.</td><td>At least 1 ddms:RelatedResource must exist.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:Resource@ICISM:createDate<br />ddms:Resource@ICISM:DESVersion<br />ddms:Resource@ICISM:resourceElement</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be passed in as a constructor parameter.</td><td>New and required in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:Resource@ICISM:createDate<br />ddms:Resource@ICISM:DESVersion<br />ddms:Resource@ICISM:resourceElement</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be passed in as a constructor parameter.</td><td>New and required in this version. DESVersion should be 2.</td><td>DESVersion must be 5.</td></tr>
 <tr><td><code>ddms:Resource@ICISM:classification<br />ddms:Resource@ICISM:ownerProducer</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New and required in this version.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:Resource@ICISM (additional security)</td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:Resource (xs:any)</code></td><td>Zero or one extensible element can appear after the <code>ddms:security</code> element.</td><td>Zero to many extensible elements can appear after the <code>ddms:security</code> element.</td><td>Same as DDMS 3.0.</td></tr>
@@ -322,7 +323,6 @@ can be compared to see which values have been added or removed.</p>
 <tr><td><code>@ICISM:declassManualReview</code></td><td>Yes</td><td>No</td><td>No</td></tr>
 <tr><td><code>@ICISM:derivativelyClassifiedBy</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ICISM:derivedFrom</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:DESVersion</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ICISM:displayOnlyTo</code></td><td>No</td><td>No</td><td>Yes</td></tr>
 <tr><td><code>@ICISM:disseminationControls</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ICISM:FGIsourceOpen</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
