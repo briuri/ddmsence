@@ -96,7 +96,7 @@ return (buildPieGraphURL("DDMS%20Keyword%20Distribution", distribution, PIE_GRAP
 in the Resource and then traversing its complete list of Keywords. The only minor difference here is that multi-word Keyword values are being split
 up into single words (to make the visualization more exciting).</p> 
 
-<p>The last visualization can be seen in the "Dates" tab.</p>
+<p>The next visualization can be seen in the "Dates" tab.</p>
 
 <img src="./images/escape-03.png" width="400" height="266" title="Third Screen" />
 <p class="figure">Figure 5. The Dates Distribution</p>
@@ -146,7 +146,7 @@ return (buildPieGraphURL("DDMS%20Date%20Distribution", distribution, PIE_GRAPH))
 is then tracked as it was in the previous two examples. A more useful graph might show just expiration dates or time periods -- I added the additional
 dates to provide more examples of traversing a Resource, and to make the visualization more exciting.</p>
 
-<p>If you would like to add new Resources to the dataset, simply copy your XML files into the <code>data/samples/</code> directory, or use the <u>Escort</u> wizard
+<p>The final distribution in "DDMS Versions" tab shows the DDMS versions of the loaded Resources, based on the XML namespaces in the files. If you would like to add new Resources to the dataset, simply copy your XML files into the <code>data/samples/</code> directory, or use the <u>Escort</u> wizard
 application to generate Resources. When you open up <u>Escape</u> again, your new files will be included in the metrics.</p>
 
 <h3>Conclusion</h3>
