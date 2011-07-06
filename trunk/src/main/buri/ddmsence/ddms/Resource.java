@@ -607,7 +607,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>All child components are using the same version of DDMS.</li>
 	 * </td></tr></table>
 	 * 
-	 * @see Resource#validateRollup(SecurityAttributes, Set)
+	 * @see ISMVocabulary#validateRollup(SecurityAttributes, Set)
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
