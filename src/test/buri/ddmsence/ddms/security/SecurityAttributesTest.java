@@ -133,10 +133,10 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	 */
 	private static Map<String, String> getOtherAttributes(String version) {
 		if ("2.0".equals(version))
-			return (TEST_OTHERS_20);
+			return (new HashMap<String, String>(TEST_OTHERS_20));
 		if ("3.0".equals(version))
-			return (TEST_OTHERS_30);
-		return (TEST_OTHERS_31);
+			return (new HashMap<String, String>(TEST_OTHERS_30));
+		return (new HashMap<String, String>(TEST_OTHERS_31));
 	}
 	
 	/**
@@ -374,7 +374,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			if (!DDMSVersion.isCurrentVersion("2.0")) {
+			if (!"2.0".equals(version)) {
 				changed = new HashMap<String, String>(others);
 				changed.put(SecurityAttributes.COMPILATION_REASON_NAME, DIFFERENT_VALUE);
 				dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
@@ -406,7 +406,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			if (!DDMSVersion.isCurrentVersion("3.1")) {
+			if (!"3.1".equals(version)) {
 				changed = new HashMap<String, String>(others);
 				changed.put(SecurityAttributes.TYPE_OF_EXEMPTED_SOURCE_NAME, "X4");
 				dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
@@ -417,8 +417,28 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 				dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
 				assertFalse(elementAttributes.equals(dataAttributes));
 			}
-			
-			if (DDMSVersion.isCurrentVersion("2.0")) {
+			if ("3.1".equals(version)) {
+				changed = new HashMap<String, String>(others);
+				changed.put(SecurityAttributes.ATOMIC_ENERGY_MARKINGS_NAME, "FRD");
+				dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
+				assertFalse(elementAttributes.equals(dataAttributes));
+				
+				changed = new HashMap<String, String>(others);
+				changed.put(SecurityAttributes.COMPLIES_WITH_NAME, "DoD5230.24");
+				dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
+				assertFalse(elementAttributes.equals(dataAttributes));
+				
+				changed = new HashMap<String, String>(others);
+				changed.put(SecurityAttributes.DISPLAY_ONLY_TO_NAME, "USA");
+				dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
+				assertFalse(elementAttributes.equals(dataAttributes));
+				
+				changed = new HashMap<String, String>(others);
+				changed.put(SecurityAttributes.NON_US_CONTROLS_NAME, "BALK");
+				dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
+				assertFalse(elementAttributes.equals(dataAttributes));
+			}
+			if ("2.0".equals(version)) {
 				changed = new HashMap<String, String>(others);
 				changed.put(SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, "false");
 				dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, changed);
@@ -448,6 +468,71 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void test30AttributesIn31() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("3.1");
+		Map<String, String> others = getOtherAttributes("3.1");
+		others.put(SecurityAttributes.TYPE_OF_EXEMPTED_SOURCE_NAME, "OADR");
+		try {
+			new SecurityAttributes(TEST_CLASS, TEST_OWNERS, others);
+			fail("Allowed 3.0 attributes in 3.1.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		others = getOtherAttributes("3.1");
+		others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2010-01-01");
+		try {
+			new SecurityAttributes(TEST_CLASS, TEST_OWNERS, others);
+			fail("Allowed 3.0 attributes in 3.1.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	public void test31AttributesIn30() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("3.0");
+		Map<String, String> others = getOtherAttributes("3.0");
+		others.put(SecurityAttributes.ATOMIC_ENERGY_MARKINGS_NAME, "RD");
+		try {
+			new SecurityAttributes(TEST_CLASS, TEST_OWNERS, others);
+			fail("Allowed 3.1 attributes in 3.0.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		others = getOtherAttributes("3.0");
+		others.put(SecurityAttributes.COMPLIES_WITH_NAME, "ICD-710");
+		try {
+			new SecurityAttributes(TEST_CLASS, TEST_OWNERS, others);
+			fail("Allowed 3.1 attributes in 3.0.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		others = getOtherAttributes("3.0");
+		others.put(SecurityAttributes.DISPLAY_ONLY_TO_NAME, "AIA");
+		try {
+			new SecurityAttributes(TEST_CLASS, TEST_OWNERS, others);
+			fail("Allowed 3.1 attributes in 3.0.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		others = getOtherAttributes("3.0");
+		others.put(SecurityAttributes.NON_US_CONTROLS_NAME, "ATOMAL");
+		try {
+			new SecurityAttributes(TEST_CLASS, TEST_OWNERS, others);
+			fail("Allowed 3.1 attributes in 3.0.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
 	public void testClassificationValidation() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
@@ -493,15 +578,20 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testDateOutput() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			if ("3.1".equals(version))
-				continue;
 			Map<String, String> others = new HashMap<String, String>();
 			others.put(SecurityAttributes.DECLASS_DATE_NAME, "2005-10-10");
-			others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-10");
 			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
-			assertEquals("<meta name=\"dateOfExemptedSource\" content=\"2005-10-10\" />\n"
-				+ "<meta name=\"declassDate\" content=\"2005-10-10\" />\n", dataAttributes.toHTML(""));
-			assertEquals("Date Of Exempted Source: 2005-10-10\nDeclass Date: 2005-10-10\n", dataAttributes.toText(""));
+			assertEquals("<meta name=\"declassDate\" content=\"2005-10-10\" />\n", dataAttributes.toHTML(""));
+			assertEquals("Declass Date: 2005-10-10\n", dataAttributes.toText(""));
+
+			if (!"3.1".equals(version)) {
+				others = new HashMap<String, String>();
+				others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-10");
+				dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
+				assertEquals("<meta name=\"dateOfExemptedSource\" content=\"2005-10-10\" />\n", dataAttributes.toHTML(""));
+				assertEquals("Date Of Exempted Source: 2005-10-10\n", dataAttributes.toText(""));
+			}
+		
 		}
 	}
 	
@@ -631,6 +721,12 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			assertNotNull(builder.getReleasableTo().get(1));
 			assertNotNull(builder.getNonICmarkings().get(1));
 			
+			if ("3.1".equals(version)) {
+				assertNotNull(builder.getAtomicEnergyMarkings().get(1));
+				assertNotNull(builder.getCompliesWith().get(1));
+				assertNotNull(builder.getDisplayOnlyTo().get(1));
+				assertNotNull(builder.getNonUSControls().get(1));
+			}	
 		}
 	}
 }
