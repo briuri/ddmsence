@@ -59,6 +59,15 @@ div.newsFeed {
 div.newsUpdate {
 	margin: 2px 5px 2px 5px;
 }
+div.powerTipDivider {
+	background-color: #47a6dc;
+	height: 2px;
+	margin-bottom: 40px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 25px;
+	width: 70%;
+}
 .example {
 	background-color: #f2f2fa;
 	border-color: #bdc3c5;
@@ -90,7 +99,7 @@ form {
 }
 h1 {
 	font-size: 14pt;
-	text-shadow: #47A6DC 1px 1px 1px;
+	text-shadow: #47a6dc 1px 1px 1px;
 }
 h2 {
 	font-size: 12pt;
