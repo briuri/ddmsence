@@ -161,34 +161,27 @@ public class ISMVocabulary {
 		ALL_ENUMS.add(CVE_TYPE_EXEMPTED_SOURCE);
 	}
 	
-	private static final List<String> ORDERED_US_CLASSIFICATION_TYPES = new ArrayList<String>();
+	private static final List<String> ORDERED_BASE_CLASSIFICATIONS = new ArrayList<String>();
 	static {
-		ORDERED_US_CLASSIFICATION_TYPES.add("U");
-		ORDERED_US_CLASSIFICATION_TYPES.add("C");
-		ORDERED_US_CLASSIFICATION_TYPES.add("S");
-		ORDERED_US_CLASSIFICATION_TYPES.add("TS");
+		ORDERED_BASE_CLASSIFICATIONS.add("U");
+		ORDERED_BASE_CLASSIFICATIONS.add("R");
+		ORDERED_BASE_CLASSIFICATIONS.add("C");
+		ORDERED_BASE_CLASSIFICATIONS.add("S");
+		ORDERED_BASE_CLASSIFICATIONS.add("TS");
 	}
 	
-	private static final List<String> ORDERED_NATO_CLASSIFICATION_TYPES = new ArrayList<String>();
+	private static final List<String> ORDERED_NATO_CLASSIFICATIONS = new ArrayList<String>();
 	static {		
-		ORDERED_NATO_CLASSIFICATION_TYPES.add("NU");
-		ORDERED_NATO_CLASSIFICATION_TYPES.add("R");
-		ORDERED_NATO_CLASSIFICATION_TYPES.add("NR");
-		ORDERED_NATO_CLASSIFICATION_TYPES.add("NC");
-		ORDERED_NATO_CLASSIFICATION_TYPES.add("NCA");
-		ORDERED_NATO_CLASSIFICATION_TYPES.add("NS");
-		ORDERED_NATO_CLASSIFICATION_TYPES.add("NSAT");	
-		ORDERED_NATO_CLASSIFICATION_TYPES.add("CTS");
-		ORDERED_NATO_CLASSIFICATION_TYPES.add("CTS-B");
-		ORDERED_NATO_CLASSIFICATION_TYPES.add("CTS-BALK");
-		ORDERED_NATO_CLASSIFICATION_TYPES.add("CTSA");
+		ORDERED_NATO_CLASSIFICATIONS.add("NU");
+		ORDERED_NATO_CLASSIFICATIONS.add("NR");
+		ORDERED_NATO_CLASSIFICATIONS.add("NC");
+		ORDERED_NATO_CLASSIFICATIONS.add("NCA");
+		ORDERED_NATO_CLASSIFICATIONS.add("NS");
+		ORDERED_NATO_CLASSIFICATIONS.add("NSAT");	
+		ORDERED_NATO_CLASSIFICATIONS.add("CTS");
+		ORDERED_NATO_CLASSIFICATIONS.add("CTS-?");
+		ORDERED_NATO_CLASSIFICATIONS.add("CTSA");
 	}
-	
-	private static final Set<String> ALL_CLASSIFICATION_TYPES = new HashSet<String>();
-	static {
-		ALL_CLASSIFICATION_TYPES.addAll(ORDERED_US_CLASSIFICATION_TYPES);
-		ALL_CLASSIFICATION_TYPES.addAll(ORDERED_NATO_CLASSIFICATION_TYPES);
-	}	
 	
 	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_TOKENS = new HashMap<String, Map<String, Set<String>>>();
 	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_PATTERNS = new HashMap<String, Map<String, Set<String>>>();
@@ -360,41 +353,20 @@ public class ISMVocabulary {
 	 * restrictive).
 	 * 
 	 * <p>
-	 * The ordering for US markings (from least to most restrictive) is [U, C, S, TS]. The ordering for NATO markings
-	 * (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTSA].
-	 * </p>
-	 * 
-	 * <p>
-	 * CTS-B, CTS-BALK, and R are not included in the ordering, so they return -1.
+	 * The ordering for standard markings (from least to most restrictive) is [U, R, C, S, TS]. The ordering for NATO markings
+	 * (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTS-B/CTS-BALK, CTSA]. For the purposes of rollup,
+	 * CTS-B and CTS-BALK are presumed to be siblings.
 	 * </p>
 	 * 
 	 * @param classification the classification to test
 	 * @return an index, or -1 if the marking does not belong to any known systems.
 	 */
 	public static int getClassificationIndex(String classification) {
-		if (!Util.isEmpty(classification)) {
-			if (enumContains(CVE_US_CLASSIFICATIONS, classification))
-				return (ORDERED_US_CLASSIFICATION_TYPES.indexOf(classification));
-			if (!classificationNeedsReview(classification))
-				return (ORDERED_NATO_CLASSIFICATION_TYPES.indexOf(classification));
-		}
-		return (-1);
-	}
-	
-	/**
-	 * Checks if the classification is CTS-B, CTS-BALK, or R.
-	 * 
-	 * <p>
-	 * I was not sure how these 3 markings are ordered when compared to other NATO markings. Need to research further.
-	 * </p>
-	 * 
-	 * @param classification the classification to test
-	 * @return true if it is, false otherwise
-	 */
-	public static boolean classificationNeedsReview(String classification) {
-		if (Util.isEmpty(classification))
-			return (false);
-		return ("CTS-B".equals(classification) || "CTS-BALK".equals(classification) || "R".equals(classification));
+		if (ORDERED_BASE_CLASSIFICATIONS.contains(classification))
+			return (ORDERED_BASE_CLASSIFICATIONS.indexOf(classification));
+		if ("CTS-B".equals(classification) || "CTS-BALK".equals(classification))
+			return (ORDERED_NATO_CLASSIFICATIONS.indexOf("CTS-?"));
+		return (ORDERED_NATO_CLASSIFICATIONS.indexOf(classification));
 	}
 	
 	/**
@@ -428,10 +400,10 @@ public class ISMVocabulary {
 	 * <ul>
 	 * <li>The classification must belong to the same classification system as the parent's
 	 * classification (US or NATO markings).</li>
-	 * <li>The classification cannot be more restrictive than the parent classification. The ordering
-	 * for US markings (from least to most restrictive) is [U, C, S, TS]. The ordering for NATO
-	 * markings (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTSA].</li>
-	 * <li>The markings, CTS-B, CTS-BALK, and R, are not currently ordered (see Issue #21).</li>
+	 * <li>The classification cannot be more restrictive than the parent classification. The ordering 
+	 * for standard markings (from least to most restrictive) is [U, R, C, S, TS]. The ordering for NATO markings
+	 * (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTS-B/CTS-BALK, CTSA]. For the purposes of rollup,
+	 * CTS-B and CTS-BALK are presumed to be siblings.</li>
 	 * </ul>
 	 * </td></tr></table>
 	 * 	

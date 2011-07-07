@@ -664,9 +664,6 @@ public final class Resource extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>(v2.0) If ddms:Resource has no classification, warn about ignoring rollup validation.</li>
-	 * <li>If the markings [R, CTS-B, or CTS-BALK] are used, a validation warning will be generated, asking
-	 * the user to review the markings manually. I'm not sure how these compare to other markings in the
-	 * NATO scheme.</li>
 	 * <li>Include all child component validation warnings, and any warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
@@ -675,18 +672,6 @@ public final class Resource extends AbstractBaseComponent {
 			addWarning("Security rollup validation is being skipped, because no classification exists "
 				+ "on the ddms:Resource itself.");
 		}
-		
-		boolean needsManualReview = ISMVocabulary.classificationNeedsReview(getSecurityAttributes().getClassification());
-		for (IDDMSComponent component : getTopLevelComponents()) {
-			if (component.getSecurityAttributes() != null)
-				needsManualReview = needsManualReview
-					|| ISMVocabulary.classificationNeedsReview(component.getSecurityAttributes().getClassification());
-		}
-		if (needsManualReview) {
-			addWarning("A security classification from the set [R, CTS-B, or CTS-BALK] is being used. "
-				+ "Please review your ddms:Resource and confirm that security rollup is being handled correctly.");
-		}
-		
 		for (IDDMSComponent component : getTopLevelComponents()) {
 			addWarnings(component.getValidationWarnings(), false);
 		}

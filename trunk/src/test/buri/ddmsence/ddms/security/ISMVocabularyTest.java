@@ -143,17 +143,11 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 
 	public void testGetClassificationIndex() {
 		assertEquals(-1, ISMVocabulary.getClassificationIndex("SuperSecret"));
-		assertEquals(-1, ISMVocabulary.getClassificationIndex("R"));
-		assertEquals(-1, ISMVocabulary.getClassificationIndex("CTS-BALK"));
-		assertEquals(-1, ISMVocabulary.getClassificationIndex("CTS-B"));
+		assertEquals(1, ISMVocabulary.getClassificationIndex("R"));
+		assertEquals(7, ISMVocabulary.getClassificationIndex("CTS-BALK"));
+		assertEquals(7, ISMVocabulary.getClassificationIndex("CTS-B"));
 		assertTrue(ISMVocabulary.getClassificationIndex("TS") > ISMVocabulary.getClassificationIndex("C"));
 		assertTrue(ISMVocabulary.getClassificationIndex("CTS") > ISMVocabulary.getClassificationIndex("NU"));
-	}
-
-	public void testNeedsReview() {
-		assertTrue(ISMVocabulary.classificationNeedsReview("CTS-B"));
-		assertTrue(ISMVocabulary.classificationNeedsReview("CTS-BALK"));
-		assertFalse(ISMVocabulary.classificationNeedsReview("CTS"));
 	}
 	
 	public void testInvalidMessage() {
