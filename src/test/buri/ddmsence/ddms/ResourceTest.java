@@ -1150,46 +1150,6 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 		}
 	}
-
-	public void testRollupManualReviewWarning() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			if ("3.1".equals(version))
-				continue;
-			createComponents();
-			
-			String icPrefix = PropertyReader.getProperty("icism.prefix");
-			String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
-			
-			List<String> ownerProducers = new ArrayList<String>();
-			ownerProducers.add("USA");
-			Organization org = new Organization("creator", getAsList("DISA"), null, null, 
-				new SecurityAttributes("CTS-B", ownerProducers, null));
-
-			Element element = Util.buildDDMSElement(Resource.NAME, null);
-			Util.addAttribute(element, icPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, icPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, icPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion(version)));
-
-			SecurityAttributes parentAttr = new SecurityAttributes("CTS-BALK", ownerProducers, null);
-			parentAttr.addTo(element);
-
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(new Title("DDMSence", parentAttr).getXOMElementCopy());
-			element.appendChild(org.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(new Security(parentAttr).getXOMElementCopy());
-			Resource resource = testConstructor(WILL_SUCCEED, element);
-			assertEquals(1, resource.getValidationWarnings().size());
-			assertEquals("A security classification from the set [R, CTS-B, or CTS-BALK] is being used. "
-				+ "Please review your ddms:Resource and confirm that security rollup is being handled correctly.",
-				resource.getValidationWarnings().get(0).getText());
-			assertEquals("/ddms:Resource", resource.getValidationWarnings().get(0).getLocator());
-
-		}
-	}
 	
 	public void test20Usage() throws InvalidDDMSException {
 		String version = "2.0";
