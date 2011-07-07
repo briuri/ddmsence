@@ -60,7 +60,7 @@ public class BaseComponentTest extends TestCase {
 	
 	public void testVersion() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
-		assertEquals(DDMSVersion.getVersionFor("3.1").getNamespace(), rights.getNamespace());
+		assertEquals(DDMSVersion.getCurrentVersion().getNamespace(), rights.getNamespace());
 	}
 	
 	public void testCustomPrefix() throws InvalidDDMSException {

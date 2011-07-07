@@ -44,25 +44,15 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 	public SchematronValidationTest() throws InvalidDDMSException {
 		super("resource.xml");
 		versionToResourceMap = new HashMap<String, Resource>();
-		versionToResourceMap.put("2.0", new Resource(getValidElement("2.0")));
-		versionToResourceMap.put("3.0", new Resource(getValidElement("3.0")));
-		versionToResourceMap.put("3.1", new Resource(getValidElement("3.1")));
-	}
-
-	/**
-	 * Returns a valid Resource object of a specific DDMS version
-	 * 
-	 * @param version the DDMS version
-	 * @return the Resource
-	 */
-	private Resource getResource(String version) {
-		return (versionToResourceMap.get(version));
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			versionToResourceMap.put(version, new Resource(getValidElement(version)));
+		}
 	}
 	
 	public void testSchematronValidation() throws InvalidDDMSException, IOException, XSLException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			String ddmsNamespace = DDMSVersion.getVersionFor(version).getNamespace();
-			List<ValidationMessage> messages = getResource(version).validateWithSchematron(new File("data/test/"
+			List<ValidationMessage> messages = versionToResourceMap.get(version).validateWithSchematron(new File("data/test/"
 				+ version + "/testSchematron.sch"));
 			assertEquals(2, messages.size());
 			assertEquals("//*[local-name()='Resource' and namespace-uri()='" + ddmsNamespace + "']", 
