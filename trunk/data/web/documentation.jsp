@@ -336,6 +336,8 @@ can be compared to see which values have been added or removed.</p>
 <tr><td><code>@ICISM:typeOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td></tr></table>
 <p class="figure">Table 2. Security Attribute changes from DDMS 2.0 to DDMS 3.1</p>
 
+<div class="powerTipDivider"></div>
+
 <a name="tips-attributes"></a><h4>IC and GML Attribute Groups</h4>
 
 <h5>ICISM Security Attributes</h5>
@@ -392,7 +394,8 @@ is set, for example to <code>/CVEnumISM/V4/</code>, any XML files in that direct
 property to <b>false</b>, which will force DDMSence to return warnings on enumerations, rather than errors.</li>
 </ol>
 
-<p>Please see the Power Tip on <a href="#tips-configuration">Configurable Properties</a> for details on how to set these properties.</p>
+<p>Please see the Power Tip on <a href="#tips-configuration">Configurable Properties</a> for details on how to set these properties. Also note that the controlled vocabularies
+for DES Version 5 are incorporated into the base ISM schema, so you may get inconsistent results if you try to change the CVE location with DDMS 3.1.</p>
 
 <h5>SRS Attributes</h5>
 
@@ -425,6 +428,8 @@ System.out.println(position.toXML());</pre>
 <p class="figure">Figure 12. The resultant XML element with SRS attributes</p>
   
 <p>Please note that the SRSAttributes do not belong in any XML namespace -- this is correct according to the DDMS GML Profile.</p>
+
+<div class="powerTipDivider"></div>
 
 <a name="tips-extensible"></a><h4>The Extensible Layer</h4>
 
@@ -542,6 +547,8 @@ Resource resource = new Resource(myComponents, null, null, null, null, extension
 <p>As a best practice, it is recommended that you create these attributes as explicitly as possible: if an attribute can be defined with constructor parameters or inside
 of a SecurityAttributes instance, it should. This will make DDMS 2.0 resources more consistent with their DDMS 3.x counterparts.</p>
 
+<div class="powerTipDivider"></div>
+
 <a name="tips-builders"></a><h4>Using Component Builders</h4>
 
 <p>Beginning with DDMSence 1.8.0, every DDMS component has an associated <a href="/docs/buri/ddmsence/ddms/IBuilder.html">Builder</a> class
@@ -622,6 +629,8 @@ Resource myDdms30Resource = builder.commit();</pre>
 the framework or documentation could be improved to better support your Resource editing needs. I have also created a sample <a href="builder.uri">DDMS Builder</a> 
 web application which puts these features to work.</li></p> 
 
+<div class="powerTipDivider"></div>
+
 <a name="tips-schematron"></a><h4>Schematron Validation</h4>
 
 <p>It is expected that organizations and communities of interest may have additional constraints on the data in their DDMS Resources, besides the rules in the DDMS specification.
@@ -690,6 +699,8 @@ of other engines and the (unscientific) results are shown below.</p>
 
 <p>Support for Schematron validation through alternative XSLT engines (other than the default Xalan engine) is provided through the 
 <code>xml.transform.TransformerFactory</code> configurable property, which can be set to the class name of another processor.</p>
+
+<div class="powerTipDivider"></div>
 
 <a name="tips-configuration"></a><h4>Configurable Properties</h4>
 
