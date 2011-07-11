@@ -239,13 +239,13 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
-import buri.app.util.Util;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.util.DDMSReader;
+import buri.ddmsence.util.Util;
 
 /**
  * Controller class for validating DDMS Records
@@ -387,7 +387,7 @@ public class ValidatorControl extends SimpleFormController {
 	This is a simple data class which supports the form you see on this page.</li>
 <pre class="brush: java; collapse: true">package buri.web.ddmsence;
 
-import buri.app.util.Util;
+import buri.ddmsence.util.Util;
 
 /**
  * Form bean for online DDMS validation
