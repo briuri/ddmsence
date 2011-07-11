@@ -308,15 +308,10 @@ public class ISMVocabulary {
 	 * 
 	 * @param enumerationKey the key of the enumeration
 	 * @return an unmodifiable set of Strings
-	 * @throws IllegalArgumentException if the key does not match a controlled vocabulary
 	 */
 	private static Set<String> getEnumerationPatterns(String enumerationKey) {
 		updateEnumLocation();
 		Set<String> vocabulary = LOCATION_TO_ENUM_PATTERNS.get(getLastEnumLocation()).get(enumerationKey);
-		if (vocabulary == null) {
-			throw new IllegalArgumentException("No controlled vocabulary could be found for this key: "
-				+ enumerationKey);
-		}
 		return (Collections.unmodifiableSet(vocabulary));
 	}
 	

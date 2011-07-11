@@ -650,4 +650,13 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			}	
 		}
 	}
+	
+	public void testBuilderListEquality() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("3.1");
+		SecurityAttributes.Builder builder = new SecurityAttributes.Builder();
+		builder.setAtomicEnergyMarkings(Util.getXsListAsList(""));
+		assertTrue(builder.isEmpty());
+		builder.setAtomicEnergyMarkings(Util.getXsListAsList("RD FRD"));
+		assertFalse(builder.isEmpty());
+	}
 }
