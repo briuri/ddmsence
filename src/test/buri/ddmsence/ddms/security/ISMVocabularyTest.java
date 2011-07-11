@@ -53,12 +53,6 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 		} catch (IllegalArgumentException e) {
 			// Good
 		}
-		try {
-			ISMVocabulary.getEnumerationPatterns("unknownKey");
-			fail("Allowed invalid key.");
-		} catch (IllegalArgumentException e) {
-			// Good
-		}
 	}
 
 	public void testEnumerationTokens() {

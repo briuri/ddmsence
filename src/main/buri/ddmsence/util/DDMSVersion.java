@@ -27,6 +27,7 @@ import java.util.Map;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.UnsupportedVersionException;
+import buri.ddmsence.ddms.security.ISMVocabulary;
 
 /**
  * Manages the supported versions of DDMS.
@@ -202,7 +203,8 @@ public class DDMSVersion {
 	
 	/**
 	 * Sets the currentVersion which will be used for by DDMS component constructors to determine the namespace and
-	 * schema to use.
+	 * schema to use. Also updates the ISMVersion on the ISMVocabulary class, which is used to determine
+	 * which set of IC CVEs to validate with (V2 vs. V5).
 	 * 
 	 * @param version the new version, which must be supported by DDMSence
 	 * @throws UnsupportedVersionException if the version is not supported
@@ -212,6 +214,7 @@ public class DDMSVersion {
 		if (!getSupportedVersionsProperty().contains(version))
 			throw new UnsupportedVersionException(version);
 		_currentVersion = getVersionFor(version);
+		ISMVocabulary.setIsmVersion(getCurrentVersion());
 	}
 	
 	/**

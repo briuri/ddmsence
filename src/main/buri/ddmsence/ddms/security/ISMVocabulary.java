@@ -186,9 +186,6 @@ public class ISMVocabulary {
 	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_TOKENS = new HashMap<String, Map<String, Set<String>>>();
 	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_PATTERNS = new HashMap<String, Map<String, Set<String>>>();
 	
-//	private static final Map<String, Set<String>> ENUM_TOKENS = new HashMap<String, Set<String>>();
-//	private static final Map<String, Set<String>> ENUM_PATTERNS = new HashMap<String, Set<String>>();
-	
 	private static final String ENUMERATION_NAME = "Enumeration";
 	private static final String TERM_NAME = "Term";
 	private static final String VALUE_NAME = "Value";
@@ -196,6 +193,9 @@ public class ISMVocabulary {
 	
 	private static String _lastEnumLocation = null;
 	private static int _ismVersion;
+	static {
+		setIsmVersion(DDMSVersion.getCurrentVersion());
+	}
 	
 	/**
 	 * Private to prevent instantiation
@@ -203,7 +203,9 @@ public class ISMVocabulary {
 	private ISMVocabulary() {}
 
 	/**
-	 * Selects V2 or V5 of the IC-ISM CVEs, based on the DDMS version.
+	 * Selects V2 or V5 of the IC-ISM CVEs, based on the DDMS version. The ultimate set of CVE files used
+	 * is also dependent on the property, <code>icism.cve.customEnumLocation</code>. If that property has been
+	 * set, neither V2 or V5 will be used.
 	 * 
 	 * @param version the DDMS version
 	 */
@@ -277,19 +279,15 @@ public class ISMVocabulary {
 	}
 	
 	/**
-	 * Checks if a value exists in the controlled vocabulary identified by the key.
+	 * Returns an unmodifiable set of controlled vocabulary tokens. This method is publicly available
+	 * so that these tokens can be used as reference data (for example, a select box on a web form).
 	 * 
-	 * @param enumerationKey the key of the enumeration
-	 * @param value the test value
-	 * @throws InvalidDDMSException if the value is not.
-	 */
-	public static void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
-		if (!enumContains(enumerationKey, value))
-			throw new InvalidDDMSException(getInvalidMessage(enumerationKey, value));
-	}
-	
-	/**
-	 * Returns an unmodifiable set of controlled vocabulary tokens.
+	 * <p>
+	 * If you wish to use these tokens in that way, you must explicitly call <code>setISMVersion()</code>
+	 * in advance, to ensure that the appropriate set of CVE files is used to look up the tokens, OR
+	 * you may use the configurable property, <code>icism.cve.customEnumLocation</code>, to force the
+	 * use of a custom set of CVE files. If neither option is used, the default set of tokens returned
+	 * will be based on the current value of <code>DDMSVersion.getCurrentVersion()</code>.</p>
 	 * 
 	 * @param enumerationKey the key of the enumeration
 	 * @return an unmodifiable set of Strings
@@ -312,7 +310,7 @@ public class ISMVocabulary {
 	 * @return an unmodifiable set of Strings
 	 * @throws IllegalArgumentException if the key does not match a controlled vocabulary
 	 */
-	public static Set<String> getEnumerationPatterns(String enumerationKey) {
+	private static Set<String> getEnumerationPatterns(String enumerationKey) {
 		updateEnumLocation();
 		Set<String> vocabulary = LOCATION_TO_ENUM_PATTERNS.get(getLastEnumLocation()).get(enumerationKey);
 		if (vocabulary == null) {
@@ -416,15 +414,15 @@ public class ISMVocabulary {
 		setIsmVersion(DDMSVersion.getVersionForDDMSNamespace(parentAttributes.getDDMSNamespace()));
 
 		String parentClass = parentAttributes.getClassification();
-		boolean isParentUS = ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, parentClass);
-		int parentIndex = ISMVocabulary.getClassificationIndex(parentClass);
+		boolean isParentUS = enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, parentClass);
+		int parentIndex = getClassificationIndex(parentClass);
 		
 		for (SecurityAttributes childAttr : childAttributes) {
 			String childClass = childAttr.getClassification();
 			if (Util.isEmpty(childClass))
 				continue;
-			boolean isChildUS = ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, childClass);
-			int childIndex = ISMVocabulary.getClassificationIndex(childClass);
+			boolean isChildUS = enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, childClass);
+			int childIndex = getClassificationIndex(childClass);
 			if (isParentUS != isChildUS) {
 				throw new InvalidDDMSException("The security classification of a nested component is using a "
 					+ "different marking system than the ddms:Resource itself.");
