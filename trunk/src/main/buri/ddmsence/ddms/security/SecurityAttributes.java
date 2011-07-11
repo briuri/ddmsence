@@ -566,11 +566,12 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 */
 	private void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
 		boolean validationAsErrors = Boolean.valueOf(PropertyReader.getProperty("icism.cve.validationAsErrors")).booleanValue();
-		if (validationAsErrors)
-			ISMVocabulary.validateEnumeration(enumerationKey, value);
-		else {
-			if (!ISMVocabulary.enumContains(enumerationKey, value))
-				getWarnings().add(ValidationMessage.newWarning(ISMVocabulary.getInvalidMessage(enumerationKey, value), null));
+		if (!ISMVocabulary.enumContains(enumerationKey, value)) {
+			String message = ISMVocabulary.getInvalidMessage(enumerationKey, value);
+			if (validationAsErrors)
+				throw new InvalidDDMSException(message);
+			else
+				getWarnings().add(ValidationMessage.newWarning(message, null));
 		}
 	}
 
