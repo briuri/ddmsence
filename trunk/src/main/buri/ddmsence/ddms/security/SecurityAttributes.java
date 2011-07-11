@@ -948,29 +948,9 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 */
 	public static class Builder implements Serializable {
 		private static final long serialVersionUID = 279072341662308051L;
-		private String _classification = null;
-		private List<String> _ownerProducers = null;
-		private List<String> _SCIcontrols = null;
-		private List<String> _SARIdentifier = null;
-		private List<String> _disseminationControls = null;
-		private List<String> _FGIsourceOpen = null;
-		private List<String> _FGIsourceProtected = null;
-		private List<String> _releasableTo = null;
-		private List<String> _nonICmarkings = null;
-		private List<String> _atomicEnergyMarkings = null;
-		private List<String> _compliesWith = null;
-		private List<String> _displayOnlyTo = null;
-		private List<String> _nonUSControls = null;
-		private String _classifiedBy = null;
-		private String _compilationReason = null;
-		private String _derivativelyClassifiedBy = null;
-		private String _classificationReason = null;
-		private String _derivedFrom = null;	
-		private String _declassDate = null;
-		private String _declassEvent = null;
-		private String _declassException = null;
-		private String _typeOfExemptedSource = null;
-		private String _dateOfExemptedSource = null;
+		
+		private Map<String, String> _stringAttributes = new HashMap<String, String>();
+		private Map<String, List<String>> _listAttributes = new HashMap<String, List<String>>();		
 		private Boolean _declassManualReview = null;
 		
 		/**
@@ -982,33 +962,33 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(SecurityAttributes attributes) {
-			setClassification(attributes.getClassification());
-			setOwnerProducers(attributes.getOwnerProducers());
-			setSCIcontrols(attributes.getSCIcontrols());
-			setSARIdentifier(attributes.getSARIdentifier());
-			setDisseminationControls(attributes.getDisseminationControls());
-			setFGIsourceOpen(attributes.getFGIsourceOpen());
-			setFGIsourceProtected(attributes.getFGIsourceProtected());
-			setReleasableTo(attributes.getReleasableTo());
-			setNonICmarkings(attributes.getNonICmarkings());			
 			setAtomicEnergyMarkings(attributes.getAtomicEnergyMarkings());
-			setCompliesWith(attributes.getCompliesWith());
-			setDisplayOnlyTo(attributes.getDisplayOnlyTo());
-			setNonUSControls(attributes.getNonUSControls());		
+			setClassification(attributes.getClassification());
+			setClassificationReason(attributes.getClassificationReason());
 			setClassifiedBy(attributes.getClassifiedBy());
 			setCompilationReason(attributes.getCompilationReason());
-			setDerivativelyClassifiedBy(attributes.getDerivativelyClassifiedBy());
-			setClassificationReason(attributes.getClassificationReason());
-			setDerivedFrom(attributes.getDerivedFrom());
+			setCompliesWith(attributes.getCompliesWith());
+			if (attributes.getDateOfExemptedSource() != null)
+				setDateOfExemptedSource(attributes.getDateOfExemptedSource().toXMLFormat());
 			if (attributes.getDeclassDate() != null)
 				setDeclassDate(attributes.getDeclassDate().toXMLFormat());
 			setDeclassEvent(attributes.getDeclassEvent());
 			setDeclassException(attributes.getDeclassException());
-			setTypeOfExemptedSource(attributes.getTypeOfExemptedSource());
-			if (attributes.getDateOfExemptedSource() != null)
-				setDateOfExemptedSource(attributes.getDateOfExemptedSource().toXMLFormat());
 			if (attributes.getDeclassManualReview() != null)
 				setDeclassManualReview(attributes.getDeclassManualReview());
+			setDerivativelyClassifiedBy(attributes.getDerivativelyClassifiedBy());
+			setDerivedFrom(attributes.getDerivedFrom());
+			setDisplayOnlyTo(attributes.getDisplayOnlyTo());
+			setDisseminationControls(attributes.getDisseminationControls());
+			setFGIsourceOpen(attributes.getFGIsourceOpen());
+			setFGIsourceProtected(attributes.getFGIsourceProtected());
+			setNonICmarkings(attributes.getNonICmarkings());			
+			setNonUSControls(attributes.getNonUSControls());		
+			setOwnerProducers(attributes.getOwnerProducers());
+			setReleasableTo(attributes.getReleasableTo());
+			setSARIdentifier(attributes.getSARIdentifier());
+			setSCIcontrols(attributes.getSCIcontrols());
+			setTypeOfExemptedSource(attributes.getTypeOfExemptedSource());
 		}
 		
 		/**
@@ -1019,29 +999,29 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 */
 		public SecurityAttributes commit() throws InvalidDDMSException {
 			Map<String, String> otherAttributes = new HashMap<String, String>();
-			otherAttributes.put(SCI_CONTROLS_NAME, Util.getXsList(getSCIcontrols()));
-			otherAttributes.put(SAR_IDENTIFIER_NAME, Util.getXsList(getSARIdentifier()));
-			otherAttributes.put(DISSEMINATION_CONTROLS_NAME, Util.getXsList(getDisseminationControls()));
-			otherAttributes.put(FGI_SOURCE_OPEN_NAME, Util.getXsList(getFGIsourceOpen()));
-			otherAttributes.put(FGI_SOURCE_PROTECTED_NAME, Util.getXsList(getFGIsourceProtected()));
-			otherAttributes.put(RELEASABLE_TO_NAME, Util.getXsList(getReleasableTo()));
-			otherAttributes.put(NON_IC_MARKINGS_NAME, Util.getXsList(getNonICmarkings()));			
 			otherAttributes.put(ATOMIC_ENERGY_MARKINGS_NAME, Util.getXsList(getAtomicEnergyMarkings()));
-			otherAttributes.put(COMPLIES_WITH_NAME, Util.getXsList(getCompliesWith()));
-			otherAttributes.put(DISPLAY_ONLY_TO_NAME, Util.getXsList(getDisplayOnlyTo()));
-			otherAttributes.put(NON_US_CONTROLS_NAME, Util.getXsList(getNonUSControls()));			
+			otherAttributes.put(CLASSIFICATION_REASON_NAME, getClassificationReason());
 			otherAttributes.put(CLASSIFIED_BY_NAME, getClassifiedBy());
 			otherAttributes.put(COMPILATION_REASON_NAME, getCompilationReason());
-			otherAttributes.put(DERIVATIVELY_CLASSIFIED_BY_NAME, getDerivativelyClassifiedBy());
-			otherAttributes.put(CLASSIFICATION_REASON_NAME, getClassificationReason());
-			otherAttributes.put(DERIVED_FROM_NAME, getDerivedFrom());
+			otherAttributes.put(COMPLIES_WITH_NAME, Util.getXsList(getCompliesWith()));
+			otherAttributes.put(DATE_OF_EXEMPTED_SOURCE_NAME, getDateOfExemptedSource());
 			otherAttributes.put(DECLASS_DATE_NAME, getDeclassDate());
 			otherAttributes.put(DECLASS_EVENT_NAME, getDeclassEvent());
 			otherAttributes.put(DECLASS_EXCEPTION_NAME, getDeclassException());
-			otherAttributes.put(TYPE_OF_EXEMPTED_SOURCE_NAME, getTypeOfExemptedSource());
-			otherAttributes.put(DATE_OF_EXEMPTED_SOURCE_NAME, getDateOfExemptedSource());
 			if (getDeclassManualReview() != null)
 				otherAttributes.put(DECLASS_MANUAL_REVIEW_NAME, getDeclassManualReview().toString());
+			otherAttributes.put(DERIVATIVELY_CLASSIFIED_BY_NAME, getDerivativelyClassifiedBy());
+			otherAttributes.put(DERIVED_FROM_NAME, getDerivedFrom());
+			otherAttributes.put(DISPLAY_ONLY_TO_NAME, Util.getXsList(getDisplayOnlyTo()));
+			otherAttributes.put(DISSEMINATION_CONTROLS_NAME, Util.getXsList(getDisseminationControls()));
+			otherAttributes.put(FGI_SOURCE_OPEN_NAME, Util.getXsList(getFGIsourceOpen()));
+			otherAttributes.put(FGI_SOURCE_PROTECTED_NAME, Util.getXsList(getFGIsourceProtected()));
+			otherAttributes.put(NON_IC_MARKINGS_NAME, Util.getXsList(getNonICmarkings()));			
+			otherAttributes.put(NON_US_CONTROLS_NAME, Util.getXsList(getNonUSControls()));			
+			otherAttributes.put(RELEASABLE_TO_NAME, Util.getXsList(getReleasableTo()));
+			otherAttributes.put(SAR_IDENTIFIER_NAME, Util.getXsList(getSARIdentifier()));
+			otherAttributes.put(SCI_CONTROLS_NAME, Util.getXsList(getSCIcontrols()));
+			otherAttributes.put(TYPE_OF_EXEMPTED_SOURCE_NAME, getTypeOfExemptedSource());
 			return (new SecurityAttributes(getClassification(), getOwnerProducers(), otherAttributes));
 		}
 		
@@ -1051,312 +1031,154 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 * @return true if every field is empty
 		 */
 		public boolean isEmpty() {
-			return (Util.isEmpty(getClassification())
-				&& Util.containsOnlyEmptyValues(getOwnerProducers())
-				&& Util.containsOnlyEmptyValues(getSCIcontrols())
-				&& Util.containsOnlyEmptyValues(getSARIdentifier())
-				&& Util.containsOnlyEmptyValues(getDisseminationControls())
-				&& Util.containsOnlyEmptyValues(getFGIsourceOpen())
-				&& Util.containsOnlyEmptyValues(getFGIsourceProtected())
-				&& Util.containsOnlyEmptyValues(getReleasableTo())
-				&& Util.containsOnlyEmptyValues(getNonICmarkings())
-				&& Util.containsOnlyEmptyValues(getAtomicEnergyMarkings())
-				&& Util.containsOnlyEmptyValues(getCompliesWith())
-				&& Util.containsOnlyEmptyValues(getDisplayOnlyTo())
-				&& Util.containsOnlyEmptyValues(getNonUSControls())				
-				&& Util.isEmpty(getClassifiedBy())
-				&& Util.isEmpty(getCompilationReason())
-				&& Util.isEmpty(getDerivativelyClassifiedBy())
-				&& Util.isEmpty(getClassificationReason())
-				&& Util.isEmpty(getDerivedFrom())
-				&& Util.isEmpty(getDeclassDate())
-				&& Util.isEmpty(getDeclassEvent())
-				&& Util.isEmpty(getDeclassException())
-				&& Util.isEmpty(getTypeOfExemptedSource())
-				&& Util.isEmpty(getDateOfExemptedSource())
-				&& getDeclassManualReview() == null);				
+			boolean isEmpty = true;
+			for (String value : getStringAttributes().values()) {
+				isEmpty = isEmpty && Util.isEmpty(value);
+			}
+			for (List<String> list : getListAttributes().values()) {
+				isEmpty = isEmpty && Util.containsOnlyEmptyValues(list);
+			}
+			return (isEmpty && getDeclassManualReview() == null);				
+		}
+		
+		/**
+		 * Builder accessor for the atomicEnergyMarkings attribute
+		 */
+		public List<String> getAtomicEnergyMarkings() {
+			return (getListAttribute(ATOMIC_ENERGY_MARKINGS_NAME));
+		}
+
+		/**
+		 * Builder accessor for the atomicEnergyMarkings attribute
+		 */
+		public void setAtomicEnergyMarkings(List<String> atomicEnergyMarkings) {
+			setListAttribute(ATOMIC_ENERGY_MARKINGS_NAME, atomicEnergyMarkings);
 		}
 		
 		/**
 		 * Builder accessor for the classification attribute
 		 */
 		public String getClassification() {
-			return _classification;
+			return (getStringAttributes().get(CLASSIFICATION_NAME));
 		}
 		
 		/**
 		 * Builder accessor for the classification attribute
 		 */
 		public void setClassification(String classification) {
-			_classification = classification;
-		}
-		
-		/**
-		 * Builder accessor for the ownerProducers attribute
-		 */
-		public List<String> getOwnerProducers() {
-			if (_ownerProducers == null)
-				_ownerProducers = new LazyList(String.class);
-			return _ownerProducers;
-		}
-		
-		/**
-		 * Builder accessor for the ownerProducers attribute
-		 */
-		public void setOwnerProducers(List<String> ownerProducers) {
-			_ownerProducers = new LazyList(ownerProducers, String.class);
-		}
-		
-		/**
-		 * Builder accessor for the SCIcontrols attribute
-		 */
-		public List<String> getSCIcontrols() {
-			if (_SCIcontrols == null)
-				_SCIcontrols = new LazyList(String.class);
-			return _SCIcontrols;
-		}
-		
-		/**
-		 * Builder accessor for the SCIcontrols attribute
-		 */
-		public void setSCIcontrols(List<String> SCIcontrols) {
-			_SCIcontrols = new LazyList(SCIcontrols, String.class);
-		}
-		
-		/**
-		 * Builder accessor for the SARIdentifier attribute
-		 */
-		public List<String> getSARIdentifier() {
-			if (_SARIdentifier == null)
-				_SARIdentifier = new LazyList(String.class);
-			return _SARIdentifier;
-		}
-		
-		/**
-		 * Builder accessor for the SARIdentifier attribute
-		 */
-		public void setSARIdentifier(List<String> SARIdentifier) {
-			_SARIdentifier = new LazyList(SARIdentifier, String.class);
-		}
-		
-		/**
-		 * Builder accessor for the disseminationControls attribute
-		 */
-		public List<String> getDisseminationControls() {
-			if (_disseminationControls == null)
-				_disseminationControls = new LazyList(String.class);
-			return _disseminationControls;
-		}
-		
-		/**
-		 * Builder accessor for the disseminationControls attribute
-		 */
-		public void setDisseminationControls(List<String> disseminationControls) {
-			_disseminationControls = new LazyList(disseminationControls, String.class);
-		}
-		
-		/**
-		 * Builder accessor for the FGIsourceOpen attribute
-		 */
-		public List<String> getFGIsourceOpen() {
-			if (_FGIsourceOpen == null)
-				_FGIsourceOpen = new LazyList(String.class);
-			return _FGIsourceOpen;
-		}
-		
-		/**
-		 * Builder accessor for the FGIsourceOpen attribute
-		 */
-		public void setFGIsourceOpen(List<String> FGIsourceOpen) {
-			_FGIsourceOpen = new LazyList(FGIsourceOpen, String.class);
-		}
-		
-		/**
-		 * Builder accessor for the FGIsourceProtected attribute
-		 */
-		public List<String> getFGIsourceProtected() {
-			if (_FGIsourceProtected == null)
-				_FGIsourceProtected = new LazyList(String.class);			
-			return _FGIsourceProtected;
-		}
-		
-		/**
-		 * Builder accessor for the FGIsourceProtected attribute
-		 */
-		public void setFGIsourceProtected(List<String> FGIsourceProtected) {
-			_FGIsourceProtected = new LazyList(FGIsourceProtected, String.class);
-		}
-		
-		/**
-		 * Builder accessor for the releasableTo attribute
-		 */
-		public List<String> getReleasableTo() {
-			if (_releasableTo == null)
-				_releasableTo = new LazyList(String.class);
-			return _releasableTo;
-		}
-		
-		/**
-		 * Builder accessor for the releasableTo attribute
-		 */
-		public void setReleasableTo(List<String> releasableTo) {
-			_releasableTo = new LazyList(releasableTo, String.class);
-		}
-		
-		/**
-		 * Builder accessor for the nonICmarkings attribute
-		 */
-		public List<String> getNonICmarkings() {
-			if (_nonICmarkings == null)
-				_nonICmarkings = new LazyList(String.class);
-			return _nonICmarkings;
-		}
-		
-		/**
-		 * Builder accessor for the nonICmarkings attribute
-		 */
-		public void setNonICmarkings(List<String> nonICmarkings) {
-			_nonICmarkings = new LazyList(nonICmarkings, String.class);
-		}
-		
-		/**
-		 * Builder accessor for the classifiedBy attribute
-		 */
-		public String getClassifiedBy() {
-			return _classifiedBy;
-		}
-		
-		/**
-		 * Builder accessor for the classifiedBy attribute
-		 */
-		public void setClassifiedBy(String classifiedBy) {
-			_classifiedBy = classifiedBy;
-		}
-		
-		/**
-		 * Builder accessor for the compilationReason attribute
-		 */
-		public String getCompilationReason() {
-			return _compilationReason;
-		}
-		
-		/**
-		 * Builder accessor for the compilationReason attribute
-		 */
-		public void setCompilationReason(String compilationReason) {
-			_compilationReason = compilationReason;
-		}
-		
-		/**
-		 * Builder accessor for the derivativelyClassifiedBy attribute
-		 */
-		public String getDerivativelyClassifiedBy() {
-			return _derivativelyClassifiedBy;
-		}
-		
-		/**
-		 * Builder accessor for the derivativelyClassifiedBy attribute
-		 */
-		public void setDerivativelyClassifiedBy(String derivativelyClassifiedBy) {
-			_derivativelyClassifiedBy = derivativelyClassifiedBy;
+			getStringAttributes().put(CLASSIFICATION_NAME, classification);
 		}
 		
 		/**
 		 * Builder accessor for the classificationReason attribute
 		 */
 		public String getClassificationReason() {
-			return _classificationReason;
+			return (getStringAttributes().get(CLASSIFICATION_REASON_NAME));
 		}
 		
 		/**
 		 * Builder accessor for the classificationReason attribute
 		 */
 		public void setClassificationReason(String classificationReason) {
-			_classificationReason = classificationReason;
+			getStringAttributes().put(CLASSIFICATION_REASON_NAME, classificationReason);
 		}
 		
 		/**
-		 * Builder accessor for the derivedFrom attribute
+		 * Builder accessor for the classifiedBy attribute
 		 */
-		public String getDerivedFrom() {
-			return _derivedFrom;
+		public String getClassifiedBy() {
+			return (getStringAttributes().get(CLASSIFIED_BY_NAME));
 		}
 		
 		/**
-		 * Builder accessor for the derivedFrom attribute
+		 * Builder accessor for the classifiedBy attribute
 		 */
-		public void setDerivedFrom(String derivedFrom) {
-			_derivedFrom = derivedFrom;
+		public void setClassifiedBy(String classifiedBy) {
+			getStringAttributes().put(CLASSIFIED_BY_NAME, classifiedBy);
 		}
 		
 		/**
-		 * Builder accessor for the declassDate attribute
+		 * Builder accessor for the compilationReason attribute
 		 */
-		public String getDeclassDate() {
-			return _declassDate;
+		public String getCompilationReason() {
+			return (getStringAttributes().get(COMPILATION_REASON_NAME));
 		}
 		
 		/**
-		 * Builder accessor for the declassDate attribute
+		 * Builder accessor for the compilationReason attribute
 		 */
-		public void setDeclassDate(String declassDate) {
-			_declassDate = declassDate;
+		public void setCompilationReason(String compilationReason) {
+			getStringAttributes().put(COMPILATION_REASON_NAME, compilationReason);
 		}
-		
+
 		/**
-		 * Builder accessor for the declassEvent attribute
+		 * Builder accessor for the compliesWith attribute
 		 */
-		public String getDeclassEvent() {
-			return _declassEvent;
+		public List<String> getCompliesWith() {
+			return (getListAttribute(COMPLIES_WITH_NAME));
 		}
-		
+
 		/**
-		 * Builder accessor for the declassEvent attribute
+		 * Builder accessor for the compliesWith attribute
 		 */
-		public void setDeclassEvent(String declassEvent) {
-			_declassEvent = declassEvent;
-		}
-		
-		/**
-		 * Builder accessor for the declassException attribute
-		 */
-		public String getDeclassException() {
-			return _declassException;
-		}
-		
-		/**
-		 * Builder accessor for the declassException attribute
-		 */
-		public void setDeclassException(String declassException) {
-			_declassException = declassException;
-		}
-		
-		/**
-		 * Builder accessor for the typeOfExemptedSource attribute
-		 */
-		public String getTypeOfExemptedSource() {
-			return _typeOfExemptedSource;
-		}
-		
-		/**
-		 * Builder accessor for the typeOfExemptedSource attribute
-		 */
-		public void setTypeOfExemptedSource(String typeOfExemptedSource) {
-			_typeOfExemptedSource = typeOfExemptedSource;
+		public void setCompliesWith(List<String> compliesWith) {
+			setListAttribute(COMPLIES_WITH_NAME, compliesWith);
 		}
 		
 		/**
 		 * Builder accessor for the dateOfExemptedSource attribute
 		 */
 		public String getDateOfExemptedSource() {
-			return _dateOfExemptedSource;
+			return (getStringAttributes().get(DATE_OF_EXEMPTED_SOURCE_NAME));
 		}
 		
 		/**
 		 * Builder accessor for the dateOfExemptedSource attribute
 		 */
 		public void setDateOfExemptedSource(String dateOfExemptedSource) {
-			_dateOfExemptedSource = dateOfExemptedSource;
+			getStringAttributes().put(DATE_OF_EXEMPTED_SOURCE_NAME, dateOfExemptedSource);
+		}
+		
+		/**
+		 * Builder accessor for the declassDate attribute
+		 */
+		public String getDeclassDate() {
+			return (getStringAttributes().get(DECLASS_DATE_NAME));
+		}
+		
+		/**
+		 * Builder accessor for the declassDate attribute
+		 */
+		public void setDeclassDate(String declassDate) {
+			getStringAttributes().put(DECLASS_DATE_NAME, declassDate);
+		}
+		
+		/**
+		 * Builder accessor for the declassEvent attribute
+		 */
+		public String getDeclassEvent() {
+			return (getStringAttributes().get(DECLASS_EVENT_NAME));
+		}
+		
+		/**
+		 * Builder accessor for the declassEvent attribute
+		 */
+		public void setDeclassEvent(String declassEvent) {
+			getStringAttributes().put(DECLASS_EVENT_NAME, declassEvent);
+		}
+		
+		/**
+		 * Builder accessor for the declassException attribute
+		 */
+		public String getDeclassException() {
+			return (getStringAttributes().get(DECLASS_EXCEPTION_NAME));
+		}
+		
+		/**
+		 * Builder accessor for the declassException attribute
+		 */
+		public void setDeclassException(String declassException) {
+			getStringAttributes().put(DECLASS_EXCEPTION_NAME, declassException);
 		}
 		
 		/**
@@ -1372,69 +1194,223 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		public void setDeclassManualReview(Boolean declassManualReview) {
 			_declassManualReview = declassManualReview;
 		}
-
+		
 		/**
-		 * Builder accessor for the atomicEnergyMarkings attribute
+		 * Builder accessor for the derivativelyClassifiedBy attribute
 		 */
-		public List<String> getAtomicEnergyMarkings() {
-			if (_atomicEnergyMarkings == null)
-				_atomicEnergyMarkings = new LazyList(String.class);
-			return _atomicEnergyMarkings;
+		public String getDerivativelyClassifiedBy() {
+			return (getStringAttributes().get(DERIVATIVELY_CLASSIFIED_BY_NAME));
 		}
-
+		
 		/**
-		 * Builder accessor for the atomicEnergyMarkings attribute
+		 * Builder accessor for the derivativelyClassifiedBy attribute
 		 */
-		public void setAtomicEnergyMarkings(List<String> atomicEnergyMarkings) {
-			_atomicEnergyMarkings = new LazyList(atomicEnergyMarkings, String.class);
+		public void setDerivativelyClassifiedBy(String derivativelyClassifiedBy) {
+			getStringAttributes().put(DERIVATIVELY_CLASSIFIED_BY_NAME, derivativelyClassifiedBy);
 		}
-
+		
 		/**
-		 * Builder accessor for the compliesWith attribute
+		 * Builder accessor for the derivedFrom attribute
 		 */
-		public List<String> getCompliesWith() {
-			if (_compliesWith == null)
-				_compliesWith = new LazyList(String.class);
-			return _compliesWith;
+		public String getDerivedFrom() {
+			return (getStringAttributes().get(DERIVED_FROM_NAME));
 		}
-
+		
 		/**
-		 * Builder accessor for the compliesWith attribute
+		 * Builder accessor for the derivedFrom attribute
 		 */
-		public void setCompliesWith(List<String> compliesWith) {
-			_compliesWith = new LazyList(compliesWith, String.class);
+		public void setDerivedFrom(String derivedFrom) {
+			getStringAttributes().put(DERIVED_FROM_NAME, derivedFrom);
 		}
-
+		
 		/**
 		 * Builder accessor for the displayOnlyTo attribute
 		 */
 		public List<String> getDisplayOnlyTo() {
-			if (_displayOnlyTo == null)
-				_displayOnlyTo = new LazyList(String.class);
-			return _displayOnlyTo;
+			return (getListAttribute(DISPLAY_ONLY_TO_NAME));
 		}
 
 		/**
 		 * Builder accessor for the displayOnlyTo attribute
 		 */
 		public void setDisplayOnlyTo(List<String> displayOnlyTo) {
-			_displayOnlyTo = new LazyList(displayOnlyTo, String.class);
+			setListAttribute(DISPLAY_ONLY_TO_NAME, displayOnlyTo);
+		}
+		
+		/**
+		 * Builder accessor for the disseminationControls attribute
+		 */
+		public List<String> getDisseminationControls() {
+			return (getListAttribute(DISSEMINATION_CONTROLS_NAME));
+		}
+		
+		/**
+		 * Builder accessor for the disseminationControls attribute
+		 */
+		public void setDisseminationControls(List<String> disseminationControls) {
+			setListAttribute(DISSEMINATION_CONTROLS_NAME, disseminationControls);
+		}
+
+		/**
+		 * Builder accessor for the FGIsourceOpen attribute
+		 */
+		public List<String> getFGIsourceOpen() {
+			return (getListAttribute(FGI_SOURCE_OPEN_NAME));
+		}
+		
+		/**
+		 * Builder accessor for the FGIsourceOpen attribute
+		 */
+		public void setFGIsourceOpen(List<String> FGIsourceOpen) {
+			setListAttribute(FGI_SOURCE_OPEN_NAME, FGIsourceOpen);
+		}
+		
+		/**
+		 * Builder accessor for the FGIsourceProtected attribute
+		 */
+		public List<String> getFGIsourceProtected() {
+			return (getListAttribute(FGI_SOURCE_PROTECTED_NAME));
+		}
+		
+		/**
+		 * Builder accessor for the FGIsourceProtected attribute
+		 */
+		public void setFGIsourceProtected(List<String> FGIsourceProtected) {
+			setListAttribute(FGI_SOURCE_PROTECTED_NAME, FGIsourceProtected);
+		}
+		
+		/**
+		 * Builder accessor for the nonICmarkings attribute
+		 */
+		public List<String> getNonICmarkings() {
+			return (getListAttribute(NON_IC_MARKINGS_NAME));
+		}
+		
+		/**
+		 * Builder accessor for the nonICmarkings attribute
+		 */
+		public void setNonICmarkings(List<String> nonICmarkings) {
+			setListAttribute(NON_IC_MARKINGS_NAME, nonICmarkings);
 		}
 
 		/**
 		 * Builder accessor for the nonUSControls attribute
 		 */
 		public List<String> getNonUSControls() {
-			if (_nonUSControls == null)
-				_nonUSControls = new LazyList(String.class);
-			return _nonUSControls;
+			return (getListAttribute(NON_US_CONTROLS_NAME));
 		}
 
 		/**
 		 * Builder accessor for the nonUSControls attribute
 		 */
 		public void setNonUSControls(List<String> nonUSControls) {
-			_nonUSControls = new LazyList(nonUSControls, String.class);
+			setListAttribute(NON_US_CONTROLS_NAME, nonUSControls);
+		}
+				
+		/**
+		 * Builder accessor for the ownerProducers attribute
+		 */
+		public List<String> getOwnerProducers() {
+			return (getListAttribute(OWNER_PRODUCER_NAME));
+		}
+		
+		/**
+		 * Builder accessor for the ownerProducers attribute
+		 */
+		public void setOwnerProducers(List<String> ownerProducers) {
+			setListAttribute(OWNER_PRODUCER_NAME, ownerProducers);
+		}
+		
+		/**
+		 * Builder accessor for the releasableTo attribute
+		 */
+		public List<String> getReleasableTo() {
+			return (getListAttribute(RELEASABLE_TO_NAME));
+		}
+		
+		/**
+		 * Builder accessor for the releasableTo attribute
+		 */
+		public void setReleasableTo(List<String> releasableTo) {
+			setListAttribute(RELEASABLE_TO_NAME, releasableTo);
+		}
+		
+		/**
+		 * Builder accessor for the SARIdentifier attribute
+		 */
+		public List<String> getSARIdentifier() {
+			return (getListAttribute(SAR_IDENTIFIER_NAME));
+		}
+		
+		/**
+		 * Builder accessor for the SARIdentifier attribute
+		 */
+		public void setSARIdentifier(List<String> SARIdentifier) {
+			setListAttribute(SAR_IDENTIFIER_NAME, SARIdentifier);
+		}
+		
+		/**
+		 * Builder accessor for the SCIcontrols attribute
+		 */
+		public List<String> getSCIcontrols() {
+			return (getListAttribute(SCI_CONTROLS_NAME));
+		}
+		
+		/**
+		 * Builder accessor for the SCIcontrols attribute
+		 */
+		public void setSCIcontrols(List<String> SCIcontrols) {
+			setListAttribute(SCI_CONTROLS_NAME, SCIcontrols);
+		}
+		
+		/**
+		 * Builder accessor for the typeOfExemptedSource attribute
+		 */
+		public String getTypeOfExemptedSource() {
+			return (getStringAttributes().get(TYPE_OF_EXEMPTED_SOURCE_NAME));
+		}
+		
+		/**
+		 * Builder accessor for the typeOfExemptedSource attribute
+		 */
+		public void setTypeOfExemptedSource(String typeOfExemptedSource) {
+			getStringAttributes().put(TYPE_OF_EXEMPTED_SOURCE_NAME, typeOfExemptedSource);
+		}
+		
+		/**
+		 * Helper method to look up a key in the map of attribute. Lazily creates a new list if null.
+		 * 
+		 * @param key the attribute name
+		 * @return the list of strings mapped to that attribute name
+		 */
+		private List<String> getListAttribute(String key) {
+			if (getListAttributes().get(key) == null)
+				getListAttributes().put(key, new LazyList(String.class));
+			return (getListAttributes().get(key));
+		}
+		
+		/**
+		 * Helper method to initialize a new lazy list for some attribute.
+		 * 
+		 * @param key the attribute name
+		 * @param value the list to save, which will be wrapped in a lazy list
+		 */
+		private void setListAttribute(String key, List<String> value)  {
+			getListAttributes().put(key, new LazyList(value, String.class));
+		}
+		
+		/**
+		 * Accessor for the map of attribute names to list values
+		 */
+		private Map<String, List<String>> getListAttributes()  {
+			return (_listAttributes);
+		}
+		
+		/**
+		 * Accessor for the map of attribute names to string values
+		 */
+		private Map<String, String> getStringAttributes()  {
+			return (_stringAttributes);
 		}
 	}
 }
