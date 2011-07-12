@@ -114,6 +114,8 @@ import buri.ddmsence.util.Util;
 public final class SecurityAttributes extends AbstractAttributeGroup {
 	
 	private String _ddmsNamespace = null;
+	private Map<String, String> _stringAttributes = new HashMap<String, String>();
+	private Map<String, List<String>> _listAttributes = new HashMap<String, List<String>>();		
 	
 	private List<String> _cachedAtomicEnergyMarkings = null;
 	private String _cachedClassification = null;
@@ -758,6 +760,13 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
+	 * Accessor for the atomicEnergyMarkings attribute. Returns a copy.
+	 */
+	public List<String> getAtomicEnergyMarkings() {
+		return (Collections.unmodifiableList(_cachedAtomicEnergyMarkings));
+	}
+	
+	/**
 	 * Accessor for the classification attribute.
 	 */
 	public String getClassification() {
@@ -765,61 +774,12 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * Accessor for the ownerProducers attribute. Returns a copy.
+	 * Accessor for the classificationReason attribute.
 	 */
-	public List<String> getOwnerProducers() {
-		return (Collections.unmodifiableList(_cachedOwnerProducers));
+	public String getClassificationReason() {
+		return (Util.getNonNullString(_cachedClassificationReason));
 	}
-
-	/**
-	 * Accessor for the SCIcontrols attribute. Returns a copy.
-	 */
-	public List<String> getSCIcontrols() {
-		return (Collections.unmodifiableList(_cachedSCIcontrols));
-	}
-
-	/**
-	 * Accessor for the SARIdentifier attribute. Returns a copy.
-	 */
-	public List<String> getSARIdentifier() {
-		return (Collections.unmodifiableList(_cachedSARIdentifier));
-	}
-
-	/**
-	 * Accessor for the disseminationControls attribute. Returns a copy.
-	 */
-	public List<String> getDisseminationControls() {
-		return (Collections.unmodifiableList(_cachedDisseminationControls));
-	}
-
-	/**
-	 * Accessor for the FGIsourceOpen attribute. Returns a copy.
-	 */
-	public List<String> getFGIsourceOpen() {
-		return (Collections.unmodifiableList(_cachedFGIsourceOpen));
-	}
-
-	/**
-	 * Accessor for the FGIsourceProtected attribute. Returns a copy.
-	 */
-	public List<String> getFGIsourceProtected() {
-		return (Collections.unmodifiableList(_cachedFGIsourceProtected));
-	}
-
-	/**
-	 * Accessor for the releasableTo attribute. Returns a copy.
-	 */
-	public List<String> getReleasableTo() {
-		return (Collections.unmodifiableList(_cachedReleasableTo));
-	}
-
-	/**
-	 * Accessor for the nonICmarkings attribute. Returns a copy.
-	 */
-	public List<String> getNonICmarkings() {
-		return (Collections.unmodifiableList(_cachedNonICmarkings));
-	}
-
+	
 	/**
 	 * Accessor for the classifiedBy attribute.
 	 */
@@ -833,26 +793,20 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	public String getCompilationReason() {
 		return (Util.getNonNullString(_cachedCompilationReason));
 	}
-
-	/**
-	 * Accessor for the derivativelyClassifiedBy attribute.
-	 */
-	public String getDerivativelyClassifiedBy() {
-		return (Util.getNonNullString(_cachedDerivativelyClassifiedBy));
-	}
-
-	/**
-	 * Accessor for the classificationReason attribute.
-	 */
-	public String getClassificationReason() {
-		return (Util.getNonNullString(_cachedClassificationReason));
-	}
 	
 	/**
-	 * Accessor for the derivedFrom attribute.
+	 * Accessor for the compliesWith attribute. Returns a copy.
 	 */
-	public String getDerivedFrom() {
-		return (Util.getNonNullString(_cachedDerivedFrom));
+	public List<String> getCompliesWith() {
+		return (Collections.unmodifiableList(_cachedCompliesWith));
+	}
+
+	/**
+	 * Accessor for the dateOfExemptedSource attribute. May return null if not set.
+	 */
+	public XMLGregorianCalendar getDateOfExemptedSource() {
+		return (_cachedDateOfExemptedSource == null ? null 
+			: getFactory().newXMLGregorianCalendar(_cachedDateOfExemptedSource.toXMLFormat()));
 	}
 
 	/**
@@ -879,42 +833,26 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * Accessor for the typeOfExemptedSource attribute. In DDMS 2.0, this could be a list of tokens. This is represented
-	 * here as a space-delimited string.
-	 */
-	public String getTypeOfExemptedSource() {
-		return (Util.getNonNullString(_cachedTypeOfExemptedSource));
-	}
-
-	/**
-	 * Accessor for the dateOfExemptedSource attribute. May return null if not set.
-	 */
-	public XMLGregorianCalendar getDateOfExemptedSource() {
-		return (_cachedDateOfExemptedSource == null ? null 
-			: getFactory().newXMLGregorianCalendar(_cachedDateOfExemptedSource.toXMLFormat()));
-	}
-
-	/**
 	 * Accessor for the declassManualReview attribute. Will be null in DDMS 3.0.
 	 */
 	public Boolean getDeclassManualReview() {
 		return (_cachedDeclassManualReview);
 	}
-	
+
 	/**
-	 * Accessor for the atomicEnergyMarkings attribute. Returns a copy.
+	 * Accessor for the derivativelyClassifiedBy attribute.
 	 */
-	public List<String> getAtomicEnergyMarkings() {
-		return (Collections.unmodifiableList(_cachedAtomicEnergyMarkings));
+	public String getDerivativelyClassifiedBy() {
+		return (Util.getNonNullString(_cachedDerivativelyClassifiedBy));
 	}
 	
 	/**
-	 * Accessor for the compliesWith attribute. Returns a copy.
+	 * Accessor for the derivedFrom attribute.
 	 */
-	public List<String> getCompliesWith() {
-		return (Collections.unmodifiableList(_cachedCompliesWith));
+	public String getDerivedFrom() {
+		return (Util.getNonNullString(_cachedDerivedFrom));
 	}
-	
+
 	/**
 	 * Accessor for the displayOnlyTo attribute. Returns a copy.
 	 */
@@ -923,10 +861,93 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
+	 * Accessor for the disseminationControls attribute. Returns a copy.
+	 */
+	public List<String> getDisseminationControls() {
+		return (Collections.unmodifiableList(_cachedDisseminationControls));
+	}
+
+	/**
+	 * Accessor for the FGIsourceOpen attribute. Returns a copy.
+	 */
+	public List<String> getFGIsourceOpen() {
+		return (Collections.unmodifiableList(_cachedFGIsourceOpen));
+	}
+
+	/**
+	 * Accessor for the FGIsourceProtected attribute. Returns a copy.
+	 */
+	public List<String> getFGIsourceProtected() {
+		return (Collections.unmodifiableList(_cachedFGIsourceProtected));
+	}
+	
+	/**
+	 * Accessor for the nonICmarkings attribute. Returns a copy.
+	 */
+	public List<String> getNonICmarkings() {
+		return (Collections.unmodifiableList(_cachedNonICmarkings));
+	}
+	
+	/**
 	 * Accessor for the nonUSControls attribute. Returns a copy.
 	 */
 	public List<String> getNonUSControls() {
 		return (Collections.unmodifiableList(_cachedNonUSControls));
+	}
+	
+	/**
+	 * Accessor for the ownerProducers attribute. Returns a copy.
+	 */
+	public List<String> getOwnerProducers() {
+		return (Collections.unmodifiableList(_cachedOwnerProducers));
+	}
+
+	/**
+	 * Accessor for the releasableTo attribute. Returns a copy.
+	 */
+	public List<String> getReleasableTo() {
+		return (Collections.unmodifiableList(_cachedReleasableTo));
+	}
+	
+	/**
+	 * Accessor for the SARIdentifier attribute. Returns a copy.
+	 */
+	public List<String> getSARIdentifier() {
+		return (Collections.unmodifiableList(_cachedSARIdentifier));
+	}
+
+	/**
+	 * Accessor for the SCIcontrols attribute. Returns a copy.
+	 */
+	public List<String> getSCIcontrols() {
+		return (Collections.unmodifiableList(_cachedSCIcontrols));
+	}
+
+	/**
+	 * Accessor for the typeOfExemptedSource attribute. In DDMS 2.0, this could be a list of tokens. This is represented
+	 * here as a space-delimited string.
+	 */
+	public String getTypeOfExemptedSource() {
+		return (Util.getNonNullString(_cachedTypeOfExemptedSource));
+	}
+	
+	/**
+	 * Helper method to look up a key in the map of attribute. Lazily creates a new list if null.
+	 * 
+	 * @param key the attribute name
+	 * @return the list of strings mapped to that attribute name
+	 */
+	private List<String> getListAttribute(String key) {
+		if (_listAttributes.get(key) == null)
+			_listAttributes.put(key, new LazyList(String.class));
+		return (_listAttributes.get(key));
+	}
+	
+	/**
+	 * Accessor for the map of attribute names to string values
+	 */
+	private Map<String, String> getStringAttributes()  {
+		return (_stringAttributes);
 	}
 	
 	/**
