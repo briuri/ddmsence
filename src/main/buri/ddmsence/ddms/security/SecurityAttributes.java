@@ -114,9 +114,7 @@ import buri.ddmsence.util.Util;
 public final class SecurityAttributes extends AbstractAttributeGroup {
 	
 	private String _ddmsNamespace = null;
-	private Map<String, String> _stringAttributes = new HashMap<String, String>();
-	private Map<String, List<String>> _listAttributes = new HashMap<String, List<String>>();		
-	
+
 	private List<String> _cachedAtomicEnergyMarkings = null;
 	private String _cachedClassification = null;
 	private String _cachedClassificationReason = null;
@@ -930,26 +928,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	public String getTypeOfExemptedSource() {
 		return (Util.getNonNullString(_cachedTypeOfExemptedSource));
 	}
-	
-	/**
-	 * Helper method to look up a key in the map of attribute. Lazily creates a new list if null.
-	 * 
-	 * @param key the attribute name
-	 * @return the list of strings mapped to that attribute name
-	 */
-	private List<String> getListAttribute(String key) {
-		if (_listAttributes.get(key) == null)
-			_listAttributes.put(key, new LazyList(String.class));
-		return (_listAttributes.get(key));
-	}
-	
-	/**
-	 * Accessor for the map of attribute names to string values
-	 */
-	private Map<String, String> getStringAttributes()  {
-		return (_stringAttributes);
-	}
-	
+		
 	/**
 	 * Accesor for the datatype factory
 	 */
