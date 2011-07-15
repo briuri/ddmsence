@@ -50,6 +50,8 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 	}
 	
 	public void testSchematronValidation() throws InvalidDDMSException, IOException, XSLException {
+//		PropertyReader.setProperty("xml.transform.TransformerFactory", "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
+//		PropertyReader.setProperty("xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			String ddmsNamespace = DDMSVersion.getVersionFor(version).getNamespace();
 			List<ValidationMessage> messages = versionToResourceMap.get(version).validateWithSchematron(new File("data/test/"

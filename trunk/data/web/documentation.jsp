@@ -634,7 +634,7 @@ web application which puts these features to work.</li></p>
 <a name="tips-schematron"></a><h4>Schematron Validation</h4>
 
 <p>It is expected that organizations and communities of interest may have additional constraints on the data in their DDMS Resources, besides the rules in the DDMS specification.
-DDMSence provides support for these rules through the <a href="http://www.schematron.com/">ISO Schematron</a> standard. Using a combination of the <a href="http://xml.apache.org/xalan-j/">Xalan</a> interpretive XSLT processor
+DDMSence provides support for these rules through the <a href="http://www.schematron.com/">ISO Schematron</a> standard. Using a combination of a configurable XSLT engine
 and <a href="http://xom.nu/">XOM</a>, DDMSence can validate a Resource against a custom Schematron file (<code>.sch</code>) and return the results of validation as
 a list of <a href="/docs/index.html?buri/ddmsence/ddms/ValidationMessage.html">ValidationMessage</a>s. The XSLT transformation makes use of Rick Jelliffe's <a href="http://www.schematron.com/implementation.html">mature implementation</a>
 of ISO Schematron.</p> 
@@ -681,19 +681,18 @@ It is important to notice that 1) Schematron validation can only be performed on
 to any ValidationMessages.</p>
 
 <p>Schematron files contain the XML namespaces of any elements you might traverse -- please make sure you use the correct namespaces for the version
-of DDMS you are employing. The sample file, <code>testPublisherValue.sch</code>, is written only for DDMS 3.0.</p>
+of DDMS you are employing. The sample file, <code>testPublisherValue.sch</code>, is written only for DDMS 3.1.</p>
 
 <p>DDMSence comes bundled with the the Xalan interpretive XSLT engine (v2.7.1) for stylesheet transformations. I have performed cursory tests
 of other engines and the (unscientific) results are shown below.</p>
 
 <table>
-<tr><th>Name and Version</th><th>Class Name</th><th>Benchmark</th></tr>
-<tr><td>Xalan interpretive, v2.7.1</td><td><code>org.apache.xalan.processor.TransformerFactoryImpl</code></td><td>0.891s (default engine)</td></tr>
+<tr><th>Name and Version</th><th>Class Name</th><th>XSLT1 Benchmark</th></tr>
+<tr><td>Xalan interpretive, v2.7.1</td><td><code>org.apache.xalan.processor.TransformerFactoryImpl</code></td><td>0.489s (default engine)</td></tr>
 <tr><td>Xalan XSLTC, v2.7.1</td><td><code>org.apache.xalan.xsltc.trax.TransformerFactoryImpl</code></td><td>fails, SVRL transformation doesn't seem to occur properly</td></tr>
 <tr><td>Xalan XSLTC, bundled with Java 1.5</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>fails, Xalan bug treats XSLT warning as an error</td></tr>
-<tr><td>Xalan XSLTC, bundled with Java 1.6</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>0.703s</td></tr>
-<tr><td>Saxon HE 9.2</td><td><code>net.sf.saxon.TransformerFactoryImpl</code></td><td>1.469s</td></tr>
-<tr><td>Saxon-B 9.1.0.8</td><td><code>net.sf.saxon.TransformerFactoryImpl</code></td><td>1.266s</td></tr>
+<tr><td>Xalan XSLTC, bundled with Java 1.6</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>0.463s</td></tr>
+<tr><td>Saxon HE 9.3.0.5</td><td><code>net.sf.saxon.TransformerFactoryImpl</code></td><td>0.795s</td></tr>
 </table>
 <p class="figure">Table 3. XSLT Engines for Schematron Validation</p>
 
