@@ -640,8 +640,8 @@ a list of <a href="/docs/index.html?buri/ddmsence/ddms/ValidationMessage.html">V
 of ISO Schematron.</p> 
 
 <p>Creating a custom Schematron file is outside the scope of this documentation, but there are plenty of Schematron tutorials available online, and I have also codified several
-complex rules from the DDMS Specification for example's sake in the <a href="#explorations">Explorations</a> section. A very simple 
-example, <code>testPublisherValueXslt1.sch</code>, can be found in <code>/data/sample/schematron/</code>. This file examines the surname of person designated as a publisher and 
+complex rules from the DDMS Specification for example's sake in the <a href="#explorations">Explorations</a> section. There are two very simple examples in the 
+<code>/data/sample/schematron/</code> directory. The file, <code><a href="http://ddmsence.googlecode.com/svn/trunk/data/sample/schematron/testPublisherValueXslt1.sch">testPublisherValueXslt1.sch</a></code> examines the surname of person designated as a publisher and 
 fails if the surname is "<b>Uri</b>".</p>
 
 <pre class="brush: xml">&lt;iso:pattern title="Fixed Surname Value"&gt;
@@ -650,6 +650,20 @@ fails if the surname is "<b>Uri</b>".</p>
    &lt;/iso:rule&gt;
 &lt;/iso:pattern&gt;</pre>
 <p class="figure">Figure 24. The test from testPublisherValueXslt1.sch</p>
+
+<p>The file, <code><a href="http://ddmsence.googlecode.com/svn/trunk/data/sample/schematron/testPositionValuesXslt2.sch">testPositionValuesXslt2.sch</a></code> requires that any positions and forces them to match an exact location in Reston, Virginia. It makes use of the
+XPath 2.0 function, <code>tokenize()</code>, so it must be handled with an XSLT2-compatible engine. DDMSence decides whether to use XSLT1 or XSLT2 based on the <code>queryBinding</code>
+attribute on the root element of your Schematron file. The supported values are <code>xslt</code> or <code>xslt2</code>, and the former will be the default if this attribute does not exist.</p>
+
+<pre class="brush: xml">&lt;iso:pattern id="FGM_Reston_Location"&gt;
+   &lt;iso:rule context="//gml:pos"&gt;
+      &lt;iso:let name="firstCoord" value="number(tokenize(text(), ' ')[1])"/&gt;
+      &lt;iso:let name="secondCoord" value="number(tokenize(text(), ' ')[2])"/&gt;
+      &lt;iso:assert test="$firstCoord = 38.95"&gt;The first coordinate in a gml:pos element must be 38.95 degrees.&lt;/iso:assert&gt;
+      &lt;iso:assert test="$secondCoord = -77.36"&gt;The second coordinate in a gml:pos element must be -77.36 degrees.&lt;/iso:assert&gt;
+   &lt;/iso:rule&gt;
+&lt;/iso:pattern&gt;</pre>
+<p class="figure">Figure 25. The test from testPositionValuesXslt2.sch</p>
 
 <p>The following code sample will build a DDMS Resource from one of the sample XML files, and then validate it through Schematron:</p>
 
@@ -663,14 +677,14 @@ for (ValidationMessage message : schematronMessages) {
    System.out.println("Location: " + message.getLocator());
    System.out.println("Message: " + message.getText());
 }</pre>
-<p class="figure">Figure 25. Sample code to validate DDMSence_Example.xml with testPublisherValueXslt1.sch</p>
+<p class="figure">Figure 26. Sample code to validate DDMSence_Example.xml with testPublisherValueXslt1.sch</p>
 
-<pre class="brush: xml">Location: //*[local-name()='Resource' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
-   /*[local-name()='publisher' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
-   /*[local-name()='Person' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
-   /*[local-name()='surname' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
+<pre class="brush: xml">Location: //*[local-name()='Resource' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/']
+   /*[local-name()='publisher' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/']
+   /*[local-name()='Person' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/']
+   /*[local-name()='surname' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/']
 Message: Members of the Uri family cannot be publishers.</pre>
-<p class="figure">Figure 26. Ouput of the code from Figure 24</p>
+<p class="figure">Figure 27. Ouput of the code from Figure 26</p>
 
 <p>Schematron files are made up of a series of patterns and rules which assert rules and report information. The raw output of Schematron validation
 is a series of <code>failed-assert</code> and <code>successful-report</code> elements in Schematron Validation Report Language (SVRL). DDMSence converts
@@ -681,24 +695,23 @@ It is important to notice that 1) Schematron validation can only be performed on
 to any ValidationMessages.</p>
 
 <p>Schematron files contain the XML namespaces of any elements you might traverse -- please make sure you use the correct namespaces for the version
-of DDMS you are employing. The sample file, <code>testPublisherValue.sch</code>, is written only for DDMS 3.1.</p>
+of DDMS you are employing. The sample files described above are written only for DDMS 3.1.</p>
 
-<p>DDMSence comes bundled with the the Xalan interpretive XSLT engine (v2.7.1) for XSLT1 stylesheet transformations. I have performed cursory tests
-of other engines and the (unscientific) results are shown below.</p>
+<h5>Supported XSLT Engines</h5>
+
+<p>DDMSence comes bundled with Saxon Home Edition (v9.3.0.5) because it supports both XSLT1 and XSLT2 transformations. Support for alternate engines is provided through the 
+<code>xml.transform.TransformerFactory</code> configurable property, which can be set to the class name of another processor. Please 
+see the Power Tip on <a href="#tips-configuration">Configurable Properties</a> for details on how to set this property. The table below lists the engines I have tested with.</p>
 
 <table>
-<tr><th>Name and Version</th><th>Class Name</th><th>XSLT1 Benchmark</th></tr>
-<tr><td>Xalan interpretive, v2.7.1</td><td><code>org.apache.xalan.processor.TransformerFactoryImpl</code></td><td>0.489s (default engine)</td></tr>
-<tr><td>Xalan XSLTC, v2.7.1</td><td><code>org.apache.xalan.xsltc.trax.TransformerFactoryImpl</code></td><td>fails, SVRL transformation doesn't seem to occur properly</td></tr>
-<tr><td>Xalan XSLTC, bundled with Java 1.5</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>fails, Xalan bug treats XSLT warning as an error</td></tr>
-<tr><td>Xalan XSLTC, bundled with Java 1.6</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>0.463s</td></tr>
-<tr><td>Saxon HE 9.3.0.5</td><td><code>net.sf.saxon.TransformerFactoryImpl</code></td><td>0.795s</td></tr>
+<tr><th>Name and Version</th><th>Class Name</th><th>XSLT1</th><th>XSLT2</th></tr>
+<tr><td>Saxon HE 9.3.0.5</td><td><code>net.sf.saxon.TransformerFactoryImpl</code></td><td>supported</td><td>supported</td></tr>
+<tr><td>Xalan interpretive, v2.7.1</td><td><code>org.apache.xalan.processor.TransformerFactoryImpl</code></td><td>supported</td><td>fails, doesn't support XSLT 2.0</td></tr>
+<tr><td>Xalan XSLTC, v2.7.1</td><td><code>org.apache.xalan.xsltc.trax.TransformerFactoryImpl</code></td><td>fails, SVRL transformation doesn't seem to occur properly</td><td>fails, doesn't support XSLT 2.0</td></tr>
+<tr><td>Xalan XSLTC, bundled with Java 1.5</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>fails, Xalan bug treats XSLT warning as an error</td><td>fails, doesn't support XSLT 2.0</td></tr>
+<tr><td>Xalan XSLTC, bundled with Java 1.6</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>supported</td><td>fails, doesn't support XSLT 2.0</td></tr>
 </table>
 <p class="figure">Table 3. XSLT Engines for Schematron Validation</p>
-
-<p>Support for Schematron validation through alternative XSLT engines (other than the default Xalan engine) is provided through the 
-<code>xml.transform.TransformerFactory</code> configurable property, which can be set to the class name of another processor. Please 
-see the Power Tip on <a href="#tips-configuration">Configurable Properties</a> for details on how to set this property.</p>
 
 <div class="powerTipDivider"></div>
 
@@ -709,7 +722,7 @@ building components from scratch, and you wish to use "ic" as a namespace prefix
 instead of "ICISM", you would set the "icism.prefix" property with a custom value of <code>ic</code>.</p>
 
 <pre class="brush: java">PropertyReader.setProperty("icism.prefix", "ic");</pre>
-<p class="figure">Figure 27. Command to change a configurable property.</p>
+<p class="figure">Figure 28. Command to change a configurable property.</p>
 
 <p>Only the subset of properties listed below can be set programmatically. Attempts to change other DDMSence properties will result in an exception.</p>
 
@@ -717,12 +730,12 @@ instead of "ICISM", you would set the "icism.prefix" property with a custom valu
 <tr><th>Property Name</th><th>Description</th><th>Default Value</th></tr>
 <tr><td>ddms.prefix</td><td>Default DDMS prefix used when generating components from scratch</td><td><code>ddms</code></td></tr>
 <tr><td>gml.prefix</td><td>Default GML prefix used when generating components from scratch</td><td><code>gml</code></td></tr>
-<tr><td>icism.cve.customEnumLocation</td><td>Classpath resource location for the ICISM Controlled Vocabulary files</td><td>empty by default</td></tr>
+<tr><td>icism.cve.customEnumLocation</td><td>Classpath resource location for an alternate set of ICISM Controlled Vocabulary files</td><td>empty by default</td></tr>
 <tr><td>icism.cve.validationAsErrors</td><td>When validating SecurityAttributes, ICISM Controlled Vocabulary checks should return errors, instead of warnings</td><td><code>true</code></td></tr>
 <tr><td>icism.prefix</td><td>Default ICISM prefix used when generating components from scratch</td><td><code>ICISM</code></td></tr>
 <tr><td>sample.data</td><td>Default data directory used by sample applications</td><td><code>data/sample/</code></td></tr>
 <tr><td>xlink.prefix</td><td>Default XLink prefix used when generating components from scratch</td><td><code>xlink</code></td></tr>
-<tr><td>xml.transform.TransformerFactory</td><td>XSLT Engine class name, for Schematron validation<td><code>org.apache.xalan.processor.TransformerFactoryImpl</code></td></tr>
+<tr><td>xml.transform.TransformerFactory</td><td>XSLT Engine class name, for Schematron validation<td><code>net.sf.saxon.TransformerFactoryImpl</code></td></tr>
 </table>
 <p class="figure">Table 4. Configurable Properties</p>
 

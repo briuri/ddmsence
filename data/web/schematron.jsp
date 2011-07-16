@@ -15,6 +15,10 @@
 to validate correctness and syntax, a Schematron file can more easily address rules related to content and dependencies between 
 various elements and attributes. Please note that DDMSence currently validates these rules with Java instead of Schematron, for slightly increased performance.</p>
 
+<p><a href="documentation.jsp#feedback">Feedback</a> on this document is appreciated!</p>
+
+<h4>Schematron File Template</h4>
+
 <p>Schematron rules must be placed in a valid schema template which identifies any XML namespaces that the XML instance might employ.</p>
 
 <pre class="brush: xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
@@ -31,7 +35,14 @@ various elements and attributes. Please note that DDMSence currently validates t
    &lt;!-- Patterns go here. --&gt;
 &lt;/iso:schema&gt;</pre>   
 
-<p><a href="documentation.jsp#feedback">Feedback</a> on this document is appreciated!</p>
+<p>If your rules employ any newer XSLT2 functions, a <code>queryBinding</code> attribute is required. Setting this attribute to <code>xslt2</code> will
+ensure that the proper Schematron transformation stylesheets are used. The absence of this attribute defaults to "<code>xslt1</code>".</p>
+
+<pre class="brush: xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;iso:schema   
+   xmlns="http://purl.oclc.org/dsdl/schematron"
+   xmlns:iso="http://purl.oclc.org/dsdl/schematron"
+   queryBinding="xslt2"&gt;</pre>   
 
 <h4>Bounding Box Constraints</h4>
 
@@ -151,7 +162,7 @@ various elements and attributes. Please note that DDMSence currently validates t
 
 <h4>Position Constraints</h4>
 
-<pre class="brush: xml">&lt;!-- This rule employs the XPath 2.0 function, tokenize(). DDMSence currently does Schematron validation with XSLT 1.0 --&gt;
+<pre class="brush: xml">&lt;!-- This rule employs the XPath 2.0 function, tokenize(). Make sure you have a queryBinding attribute set. --&gt;
 &lt;iso:pattern id="Position_Constraints"&gt;
    &lt;iso:rule context="//gml:pos"&gt;
       &lt;iso:let name="firstCoord" value="number(tokenize(text(), ' ')[1])"/&gt;
