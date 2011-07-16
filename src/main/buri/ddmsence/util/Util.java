@@ -27,10 +27,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -65,7 +67,7 @@ public class Util {
 	
 	private static XSLTransform _schematronIncludeTransform;
 	private static XSLTransform _schematronAbstractTransform;
-	private static XSLTransform _schematronSvrlTransform;
+	private static Map<String, XSLTransform> _schematronSvrlTransforms = new HashMap<String, XSLTransform>();
 		
 	private static final String PROP_TRANSFORM_FACTORY = "javax.xml.transform.TransformerFactory";
 	private static final LinkedHashMap<String, String> XML_SPECIAL_CHARS = new LinkedHashMap<String, String>();
@@ -633,6 +635,18 @@ public class Util {
 	}
 	
 	/**
+	 * Locates the queryBinding attribute in an ISO Schematron file and returns it.
+	 * 
+	 * @param schDocument the Schematron file as an XML Document
+	 * @return the value of the queryBinding attribute, or "xslt" if undefined.
+	 * @throws IOException if there are file-related problems with looking up the attribute
+	 */
+	public static String getSchematronQueryBinding(Document schDocument) throws IOException {
+		Attribute attr = schDocument.getRootElement().getAttribute("queryBinding");
+		return (attr == null ? "xslt" : attr.getValue());
+	}
+	
+	/**
 	 * Takes a Schematron file and transforms it with the ISO Schematron skeleton files.
 	 * 
 	 * <ol>
@@ -657,6 +671,7 @@ public class Util {
 			System.setProperty(PROP_TRANSFORM_FACTORY, newFactory);
 		}		
 		Document schDocument = Util.buildXmlDocument(new FileInputStream(schematronFile));
+		String queryBinding = getSchematronQueryBinding(schDocument);
 
 //		long time = new Date().getTime();
 		XSLTransform phase1 = getSchematronIncludeTransform();
@@ -667,7 +682,7 @@ public class Util {
 //		System.out.println((new Date().getTime() - time) + "ms (Abstract)");
 		
 //		time = new Date().getTime();
-		XSLTransform phase3 = getSchematronSvrlTransform();
+		XSLTransform phase3 = getSchematronSvrlTransform(queryBinding);
 //		System.out.println((new Date().getTime() - time) + "ms (SVRL)");
 		
 //		time = new Date().getTime();
@@ -687,7 +702,7 @@ public class Util {
 	private synchronized static void clearTransformCaches() {
 		_schematronIncludeTransform = null;
 		_schematronAbstractTransform = null;
-		_schematronSvrlTransform = null;
+		_schematronSvrlTransforms.clear();
 	}
 	
 	/**
@@ -717,14 +732,22 @@ public class Util {
 	}
 	
 	/**
-	 * Lazy instantiation / cached accessor for the third step of Schematron validation.
+	 * Lazy instantiation / cached accessor for the third step of Schematron validation, using XSLT1 or XSLT2
 	 * 
+	 * @param queryBinding the queryBinding value of the Schematron file. Currently "xslt" or "xslt2" are supported.
 	 * @return the phase three transform
+	 * @throws IllegalArgumentException if the queryBinding is unsupported
 	 */
-	private synchronized static XSLTransform getSchematronSvrlTransform() throws IOException, XSLException {
-		if (_schematronSvrlTransform == null) {
-			try {
-				String resourceName = "schematron/iso_svrl_for_xslt1.xsl";
+	private synchronized static XSLTransform getSchematronSvrlTransform(String queryBinding) throws IOException, XSLException {
+		String resourceName;
+		if ("xslt2".equals(queryBinding))
+			resourceName = "schematron/iso_svrl_for_xslt2.xsl";
+		else if ("xslt".equals(queryBinding))
+			resourceName = "schematron/iso_svrl_for_xslt1.xsl";
+		else
+			throw new IllegalArgumentException("DDMSence currently only supports Schematron files with a queryBinding attribute of \"xslt\" or \"xslt2\".");		
+		if (_schematronSvrlTransforms.get(resourceName) == null) {
+			try {				
 				InputStream schematronStylesheet = getLoader().getResourceAsStream(resourceName);
 				Document svrlStylesheet = Util.buildXmlDocument(schematronStylesheet);
 
@@ -732,14 +755,14 @@ public class Util {
 				URI svrlUri = getLoader().getResource(resourceName).toURI();
 				svrlStylesheet.setBaseURI(svrlUri.toString());
 				
-				_schematronSvrlTransform = new XSLTransform(svrlStylesheet);
+				_schematronSvrlTransforms.put(resourceName, new XSLTransform(svrlStylesheet));
 			} catch (URISyntaxException e) {
 				throw new IOException(e.getMessage());
 			}			
 		}
-		return (_schematronSvrlTransform);
+		return (_schematronSvrlTransforms.get(resourceName));
 	}
-
+	
 	/**
 	 * Generate a ClassLoader to be used to load resources
 	 * 

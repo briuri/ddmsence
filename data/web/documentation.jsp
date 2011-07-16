@@ -641,7 +641,7 @@ of ISO Schematron.</p>
 
 <p>Creating a custom Schematron file is outside the scope of this documentation, but there are plenty of Schematron tutorials available online, and I have also codified several
 complex rules from the DDMS Specification for example's sake in the <a href="#explorations">Explorations</a> section. A very simple 
-example, <code>testPublisherValue.sch</code>, can be found in <code>/data/sample/schematron/</code>. This file examines the surname of person designated as a publisher and 
+example, <code>testPublisherValueXslt1.sch</code>, can be found in <code>/data/sample/schematron/</code>. This file examines the surname of person designated as a publisher and 
 fails if the surname is "<b>Uri</b>".</p>
 
 <pre class="brush: xml">&lt;iso:pattern title="Fixed Surname Value"&gt;
@@ -649,12 +649,12 @@ fails if the surname is "<b>Uri</b>".</p>
       &lt;iso:report test="normalize-space(.) = 'Uri'"&gt;Members of the Uri family cannot be publishers.&lt;/iso:report&gt;
    &lt;/iso:rule&gt;
 &lt;/iso:pattern&gt;</pre>
-<p class="figure">Figure 24. The test from testPublisherValue.sch</p>
+<p class="figure">Figure 24. The test from testPublisherValueXslt1.sch</p>
 
 <p>The following code sample will build a DDMS Resource from one of the sample XML files, and then validate it through Schematron:</p>
 
 <pre class="brush: java">File resourceFile = new File("data/sample/DDMSence_Example.xml");
-File schFile = new File("data/sample/schematron/testPublisherValue.sch");
+File schFile = new File("data/sample/schematron/testPublisherValueXslt1.sch");
 
 DDMSReader reader = new DDMSReader();
 Resource resource = reader.getDDMSResource(resourceFile);
@@ -663,7 +663,7 @@ for (ValidationMessage message : schematronMessages) {
    System.out.println("Location: " + message.getLocator());
    System.out.println("Message: " + message.getText());
 }</pre>
-<p class="figure">Figure 25. Sample code to validate DDMSence_Example.xml with testPublisherValue.sch</p>
+<p class="figure">Figure 25. Sample code to validate DDMSence_Example.xml with testPublisherValueXslt1.sch</p>
 
 <pre class="brush: xml">Location: //*[local-name()='Resource' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
    /*[local-name()='publisher' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.0/']
