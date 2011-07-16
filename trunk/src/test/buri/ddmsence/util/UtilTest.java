@@ -30,6 +30,7 @@ import javax.xml.datatype.DatatypeConstants;
 
 import junit.framework.TestCase;
 import nu.xom.Attribute;
+import nu.xom.Document;
 import nu.xom.Element;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Identifier;
@@ -955,5 +956,12 @@ public class UtilTest extends TestCase {
 		catch (IOException e) {
 			// Good
 		}
+	}
+	
+	public void testSchematronQueryBinding() throws Exception {
+		Document schDocument = Util.buildXmlDocument(new FileInputStream("data/sample/schematron/testPublisherValueXslt1.sch"));
+		assertEquals("xslt", Util.getSchematronQueryBinding(schDocument));
+		schDocument = Util.buildXmlDocument(new FileInputStream("data/sample/schematron/testPositionValuesXslt2.sch"));
+		assertEquals("xslt2", Util.getSchematronQueryBinding(schDocument));
 	}
 }
