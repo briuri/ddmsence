@@ -651,7 +651,7 @@ fails if the surname is "<b>Uri</b>".</p>
 &lt;/iso:pattern&gt;</pre>
 <p class="figure">Figure 24. The test from testPublisherValueXslt1.sch</p>
 
-<p>The file, <code><a href="http://ddmsence.googlecode.com/svn/trunk/data/sample/schematron/testPositionValuesXslt2.sch">testPositionValuesXslt2.sch</a></code> requires that any positions and forces them to match an exact location in Reston, Virginia. It makes use of the
+<p>The file, <code><a href="http://ddmsence.googlecode.com/svn/trunk/data/sample/schematron/testPositionValuesXslt2.sch">testPositionValuesXslt2.sch</a></code> forces any positions to match an exact location in Reston, Virginia. It makes use of the
 XPath 2.0 function, <code>tokenize()</code>, so it must be handled with an XSLT2-compatible engine. DDMSence decides whether to use XSLT1 or XSLT2 based on the <code>queryBinding</code>
 attribute on the root element of your Schematron file. The supported values are <code>xslt</code> or <code>xslt2</code>, and the former will be the default if this attribute does not exist.</p>
 
