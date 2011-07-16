@@ -18,8 +18,8 @@ should not need to download them separately.</p>
 <ul>
 	<li><a href="http://www.schematron.com/">Rick Jelliffe's ISO Schematron implementation 4-21-2010</a> 
 		(<a href="http://www.opensource.org/licenses/zlib-license.php">zlib/libpng License</a>): Core library needed for Schematron validation.</li>
-	<li><a href="http://xml.apache.org/xalan-j/">Xalan 2.7.1</a>
-		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for Schematron validation.</li>
+	<li><a href="http://saxon.sourceforge.net/">Saxon HE 9.3.0.5</a> 
+		(<a href="http://www.opensource.org/licenses/MPL-1.1">Mozilla Public License v1.1</a>): Core library needed for Schematron validation.</li>
 	<li><a href="http://xerces.apache.org/xerces2-j/">Xerces 2.9.1</a>
 		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for XML parsing.</li>
 	<li><a href="http://xml.apache.org/commons/">XML-Commons 1.3.04</a>
