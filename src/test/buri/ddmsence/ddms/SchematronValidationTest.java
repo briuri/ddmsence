@@ -51,8 +51,7 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 	}
 	
 	public void testSchematronValidationXslt1() throws InvalidDDMSException, IOException, XSLException {
-		String[] supportedXslt1Processors = new String[] {"org.apache.xalan.processor.TransformerFactoryImpl",
-			"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", "net.sf.saxon.TransformerFactoryImpl"};
+		String[] supportedXslt1Processors = new String[] {"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", "net.sf.saxon.TransformerFactoryImpl"};
 		for (String processor : supportedXslt1Processors) {
 			PropertyReader.setProperty("xml.transform.TransformerFactory", processor);
 			for (String version : DDMSVersion.getSupportedVersions()) {
