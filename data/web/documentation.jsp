@@ -683,7 +683,7 @@ to any ValidationMessages.</p>
 <p>Schematron files contain the XML namespaces of any elements you might traverse -- please make sure you use the correct namespaces for the version
 of DDMS you are employing. The sample file, <code>testPublisherValue.sch</code>, is written only for DDMS 3.1.</p>
 
-<p>DDMSence comes bundled with the the Xalan interpretive XSLT engine (v2.7.1) for stylesheet transformations. I have performed cursory tests
+<p>DDMSence comes bundled with the the Xalan interpretive XSLT engine (v2.7.1) for XSLT1 stylesheet transformations. I have performed cursory tests
 of other engines and the (unscientific) results are shown below.</p>
 
 <table>
@@ -697,7 +697,8 @@ of other engines and the (unscientific) results are shown below.</p>
 <p class="figure">Table 3. XSLT Engines for Schematron Validation</p>
 
 <p>Support for Schematron validation through alternative XSLT engines (other than the default Xalan engine) is provided through the 
-<code>xml.transform.TransformerFactory</code> configurable property, which can be set to the class name of another processor.</p>
+<code>xml.transform.TransformerFactory</code> configurable property, which can be set to the class name of another processor. Please 
+see the Power Tip on <a href="#tips-configuration">Configurable Properties</a> for details on how to set this property.</p>
 
 <div class="powerTipDivider"></div>
 
