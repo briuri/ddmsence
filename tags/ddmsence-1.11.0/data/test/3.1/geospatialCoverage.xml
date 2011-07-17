@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  Represents a single ddms:geospatialCoverage element, for unit testing -->
+<ddms:geospatialCoverage xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.1/" xmlns:ICISM="urn:us:gov:ic:ism" ICISM:classification="U" ICISM:ownerProducer="USA">
+	<ddms:GeospatialExtent>
+		<ddms:geographicIdentifier>
+			<ddms:facilityIdentifier ddms:beNumber="1234DD56789" ddms:osuffix="DD123"/>
+		</ddms:geographicIdentifier>
+	</ddms:GeospatialExtent>
+</ddms:geospatialCoverage>	
