@@ -596,6 +596,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>(v3.0) resourceElement attribute must exist.</li>
 	 * <li>(v3.0) createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD).</li>
 	 * <li>(v3.0) DESVersion must exist and be a valid Integer.</li>
+	 * <li>(v3.1) DESVersion must exist and be "5".</li>
 	 * <li>(v3.0) A classification is required.</li>
 	 * <li>(v3.0) At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights, 0-1 formats, exactly 1
@@ -615,11 +616,16 @@ public final class Resource extends AbstractBaseComponent {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), NAME);
 		boolean isDDMS20 = DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement());
+		boolean isDDMS31 = DDMSVersion.isCompatibleWithVersion("3.1", getXOMElement());
 		
 		if (!isDDMS20) {
 			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
 			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
 			Util.requireDDMSValue(DES_VERSION_NAME, getDESVersion());
+			if (isDDMS31) {
+				if (!(new Integer(5).equals(getDESVersion())))
+					throw new InvalidDDMSException("The DESVersion must be 5 in DDMS 3.1 resources.");	
+			}
 			Util.requireDDMSValue("security attributes", getSecurityAttributes());
 			getSecurityAttributes().requireClassification();
 			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
