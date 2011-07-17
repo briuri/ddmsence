@@ -616,14 +616,21 @@ below takes a DDMS 2.0 resource, adds the new fields required in DDMS 3.0, and c
 <pre class="brush: java">Resource.Builder builder = new Resource.Builder(myDdms20Resource);
 builder.setResourceElement(Boolean.TRUE);
 builder.setCreateDate("2011-07-05");
-builder.setDESVersion(new Integer(5));
+builder.setDESVersion(new Integer(2));
 builder.getSecurityAttributes().setClassification("U");
 builder.getSecurityAttributes().getOwnerProducers().add("USA");
 
 DDMSVersion.setCurrentVersion("3.0");
 Resource myDdms30Resource = builder.commit();</pre>
+<p class="figure">Figure 23. Transforming a DDMS 2.0 resource with the Builder Framework</p>
 
-<p class="figure">Figure 23. Transforming an old resource with the Builder Framework</p>
+<p>The similar code shown below will transform a 3.0 resource into a 3.1 resource.</p>
+
+<pre class="brush: java">Resource.Builder builder = new Resource.Builder(myDdms30Resource);
+builder.setDESVersion(new Integer(5));
+DDMSVersion.setCurrentVersion("3.1");
+Resource myDdms30Resource = builder.commit();</pre>
+<p class="figure">Figure 24. Transforming a DDMS 3.0 resource with the Builder Framework</p>
 
 <p>The Component Builder framework is a very recent addition to DDMSence, and I would love to hear your <a href="#feedback">feedback</a> on ways
 the framework or documentation could be improved to better support your Resource editing needs. I have also created a sample <a href="builder.uri">DDMS Builder</a> 
@@ -649,7 +656,7 @@ fails if the surname is "<b>Uri</b>".</p>
       &lt;iso:report test="normalize-space(.) = 'Uri'"&gt;Members of the Uri family cannot be publishers.&lt;/iso:report&gt;
    &lt;/iso:rule&gt;
 &lt;/iso:pattern&gt;</pre>
-<p class="figure">Figure 24. The test from testPublisherValueXslt1.sch</p>
+<p class="figure">Figure 25. The test from testPublisherValueXslt1.sch</p>
 
 <p>The file, <code><a href="http://ddmsence.googlecode.com/svn/trunk/data/sample/schematron/testPositionValuesXslt2.sch">testPositionValuesXslt2.sch</a></code> forces any positions to match an exact location in Reston, Virginia. It makes use of the
 XPath 2.0 function, <code>tokenize()</code>, so it must be handled with an XSLT2-compatible engine. DDMSence decides whether to use XSLT1 or XSLT2 based on the <code>queryBinding</code>
@@ -663,7 +670,7 @@ attribute on the root element of your Schematron file. The supported values are 
       &lt;iso:assert test="$secondCoord = -77.36"&gt;The second coordinate in a gml:pos element must be -77.36 degrees.&lt;/iso:assert&gt;
    &lt;/iso:rule&gt;
 &lt;/iso:pattern&gt;</pre>
-<p class="figure">Figure 25. The test from testPositionValuesXslt2.sch</p>
+<p class="figure">Figure 26. The test from testPositionValuesXslt2.sch</p>
 
 <p>The following code sample will build a DDMS Resource from one of the sample XML files, and then validate it through Schematron:</p>
 
@@ -677,14 +684,14 @@ for (ValidationMessage message : schematronMessages) {
    System.out.println("Location: " + message.getLocator());
    System.out.println("Message: " + message.getText());
 }</pre>
-<p class="figure">Figure 26. Sample code to validate DDMSence_Example.xml with testPublisherValueXslt1.sch</p>
+<p class="figure">Figure 27. Sample code to validate DDMSence_Example.xml with testPublisherValueXslt1.sch</p>
 
 <pre class="brush: xml">Location: //*[local-name()='Resource' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/']
    /*[local-name()='publisher' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/']
    /*[local-name()='Person' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/']
    /*[local-name()='surname' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/']
 Message: Members of the Uri family cannot be publishers.</pre>
-<p class="figure">Figure 27. Ouput of the code from Figure 26</p>
+<p class="figure">Figure 28. Ouput of the code from Figure 27</p>
 
 <p>Schematron files are made up of a series of patterns and rules which assert rules and report information. The raw output of Schematron validation
 is a series of <code>failed-assert</code> and <code>successful-report</code> elements in Schematron Validation Report Language (SVRL). DDMSence converts
@@ -722,7 +729,7 @@ building components from scratch, and you wish to use "ic" as a namespace prefix
 instead of "ICISM", you would set the "icism.prefix" property with a custom value of <code>ic</code>.</p>
 
 <pre class="brush: java">PropertyReader.setProperty("icism.prefix", "ic");</pre>
-<p class="figure">Figure 28. Command to change a configurable property.</p>
+<p class="figure">Figure 29. Command to change a configurable property.</p>
 
 <p>Only the subset of properties listed below can be set programmatically. Attempts to change other DDMSence properties will result in an exception.</p>
 

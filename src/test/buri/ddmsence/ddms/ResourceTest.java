@@ -996,24 +996,25 @@ public class ResourceTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			Integer desVersion = ("2.0".equals(version) ? getDESVersion(version) : getDESVersion(version));
 			createComponents();
 
 			Resource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
 			Resource dataComponent = testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, false, TEST_CREATE_DATE,
-				desVersion);
+				getDESVersion(version));
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
-				"1999-10-10", desVersion);
+				"1999-10-10", getDESVersion(version));
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
-				TEST_CREATE_DATE, new Integer(1));
-			assertFalse(elementComponent.equals(dataComponent));
+			if (!"3.1".equals(version)) {
+				dataComponent = testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
+					TEST_CREATE_DATE, new Integer(1));
+				assertFalse(elementComponent.equals(dataComponent));
+			}
 
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT,
-				TEST_CREATE_DATE, desVersion);
+				TEST_CREATE_DATE, getDESVersion(version));
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -1595,6 +1596,27 @@ public class ResourceTest extends AbstractComponentTestCase {
 		builder.commit();
 	}
 
+	public void testLoad30Commit31() throws InvalidDDMSException {
+		Resource.Builder builder = new Resource.Builder(new Resource(getValidElement("3.0")));
+		
+		// Direct mapping works
+		DDMSVersion.setCurrentVersion("3.0");
+		builder.commit();
+		
+		// Transform up to 3.1 fails on 3.0-specific fields
+		DDMSVersion.setCurrentVersion("3.1");
+		try {
+			builder.commit();
+			fail("Builder allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		builder.setDESVersion(new Integer(5));
+		builder.commit();
+	}
+	
 	public void testBuilderEmptiness() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
