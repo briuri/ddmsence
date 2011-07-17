@@ -203,7 +203,7 @@ public class ISMVocabulary {
 	private ISMVocabulary() {}
 
 	/**
-	 * Selects V2 or V5 of the IC-ISM CVEs, based on the DDMS version. The ultimate set of CVE files used
+	 * Selects V2 or V5 of the IC-ISM / ISM.XML CVEs, based on the DDMS version. The ultimate set of CVE files used
 	 * is also dependent on the property, <code>icism.cve.customEnumLocation</code>. If that property has been
 	 * set, neither V2 or V5 will be used.
 	 * 
