@@ -153,7 +153,7 @@ DDMSence grew out of his desire to gain more practical XML Schema experience, to
 unusually large amount of free time.</p>
 
 <p>In June 2011, Brian assumed a new role as an XML Information Engineer, promoting interoperability between UCORE and other standards, such as NIEM, 
-DDMS, IC-ISM, and various common cores. He foolishly expects that this will give him more spare time to work on DDMSence.</p>
+DDMS, ISM.XML, and various common cores. He foolishly expects that this will give him more spare time to work on DDMSence.</p>
 
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>

@@ -377,8 +377,8 @@ System.out.println(title.toXML());</pre>
 &lt;/ddms:title&gt;</pre>
 <p class="figure">Figure 9. The resultant XML element with security attributes</p>
 
-<p>The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. A set of Schematron files is bundled with IC-ISM V5 (which is used by DDMS 3.1), 
-but they have not been incorporated into DDMSence yet.</p>
+<p>The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. A set of Schematron files is bundled with ISM.XML V5 (which is used by DDMS 3.1),
+and sampel code for using DDMSence with these files can be found below in the <a href="#tips-schematron">Schematron Validation</a> Power Tip.</p>
 
 <p>The values assigned to some attributes must come from the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/V2/">Controlled 
 Vocabulary Enumerations</a> (CVEs) defined by the Intelligence Community. The enumerations used by DDMSence are taken from the DES Version 2 (for DDMS 2.0 and 3.0)
@@ -704,6 +704,35 @@ to any ValidationMessages.</p>
 <p>Schematron files contain the XML namespaces of any elements you might traverse -- please make sure you use the correct namespaces for the version
 of DDMS you are employing. The sample files described above are written only for DDMS 3.1.</p>
 
+<h5>Validating with ISM.XML Schematron Files</h5>
+
+<p>Recent versions of ISM.XML include Schematron files for validating logical constraints on the ICISM security attributes. DDMSence does not include these files,
+but you can download the Public Release versions from the <a href="http://www.dni.gov/ICEA/ism/default.htm">ODNI website</a>, and your organization might have
+access to versions from higher classification levels as well. The top-level Schematron file, <code>ISM/Schematron/ISM/ISM_XML.sch</code> is the orchestration
+point for each of the supporting files and the vocabularies needed for validation.</p>
+
+<p>Here is an example which validates one of the sample DDMS resources against the ISM.XML Schematron files. It assumes that the top-level file and all of
+the files and subdirectories it depends on have been copied into the working directory.</p>
+
+<pre class="brush: java">File schematronFile = new File("ISM_XML.sch");
+Resource resource = new DDMSReader().getDDMSResource(new File("data/sample/DDMSence_Example_v3_1.xml"));
+List&lt;ValidationMessage&gt; messages = resource.validateWithSchematron(schematronFile);
+for (ValidationMessage message : messages) {
+   System.out.println("Location: " + message.getLocator());
+   System.out.println("Message: " + message.getText());
+}</pre>
+<p class="figure">Figure 29. Sample code to validate with ISM.XML Schematron Files</p>
+
+<p>Running this code will not display any errors or warnings, but we can make the output more exciting by intentionally breaking a rule. One of the rules described
+in the DES states that <code>ICISM:ownerProducer</code> token values must be in alphabetical order (ISM-ID-00100). If you edit this attribute on the root node
+of the DDMS resource file so the value is <code>"USA AUS"</code> and then run the code again, you should get the following output.</p>
+
+<pre class="brush: xml">Location: //*:Resource[namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/'][1]
+   /*:title[namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/'][1]
+Message: [ISM-ID-00100][Error] If ISM-CAPCO-RESOURCE and attribute ownerProducer is specified, then each of its values must 
+   be ordered in accordance with CVEnumISMOwnerProducer.xml. The following values are out of order [AUS] for [USA AUS]</pre>
+<p class="figure">Figure 30. Schematron output when intentionally flaunting the rules</p>
+
 <h5>Supported XSLT Engines</h5>
 
 <p>DDMSence comes bundled with Saxon Home Edition (v9.3.0.5) because it supports both XSLT1 and XSLT2 transformations. Support for alternate engines is provided through the 
@@ -729,7 +758,7 @@ building components from scratch, and you wish to use "ic" as a namespace prefix
 instead of "ICISM", you would set the "icism.prefix" property with a custom value of <code>ic</code>.</p>
 
 <pre class="brush: java">PropertyReader.setProperty("icism.prefix", "ic");</pre>
-<p class="figure">Figure 29. Command to change a configurable property.</p>
+<p class="figure">Figure 31. Command to change a configurable property.</p>
 
 <p>Only the subset of properties listed below can be set programmatically. Attempts to change other DDMSence properties will result in an exception.</p>
 
