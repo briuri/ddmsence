@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 07/05/2011 at 11:50</p>
+<p align="right"><b>Last Update:</b> 07/16/2011 at 15:32</p>
 
 <a name="top"></a><h1>Schematron Implementation for DDMS</h1>
 
