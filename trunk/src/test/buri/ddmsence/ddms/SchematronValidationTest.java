@@ -21,6 +21,7 @@ package buri.ddmsence.ddms;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,10 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 	}
 	
 	public void testSchematronValidationXslt1() throws InvalidDDMSException, IOException, XSLException {
-		String[] supportedXslt1Processors = new String[] {"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", "net.sf.saxon.TransformerFactoryImpl"};
+		List<String> supportedXslt1Processors = new ArrayList<String>();
+		if (System.getProperty("java.version").indexOf("1.5.0") == -1)
+			supportedXslt1Processors.add("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
+		supportedXslt1Processors.add("net.sf.saxon.TransformerFactoryImpl");
 		for (String processor : supportedXslt1Processors) {
 			PropertyReader.setProperty("xml.transform.TransformerFactory", processor);
 			for (String version : DDMSVersion.getSupportedVersions()) {
