@@ -54,13 +54,6 @@ public class LazyList implements List, Serializable {
 	private static final long serialVersionUID = 1241524905390180551L;
 	private List<?> _list;
 	private Class _class;
-	
-    /**
-     * Empty constructor
-     */
-    protected LazyList() {
-    	super();
-    }
     
     /**
      * Base constructor for a lazy list.

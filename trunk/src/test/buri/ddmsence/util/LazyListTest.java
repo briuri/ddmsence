@@ -29,7 +29,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
+import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.resource.Rights;
 
@@ -181,6 +183,26 @@ public class LazyListTest extends TestCase {
 		}
 		catch (NullPointerException e) {
 			fail("Should not have thrown NPE.");
+		}
+	}
+	
+	public void testListGetExceptions() {
+		LazyList list = new LazyList(null, AbstractBaseComponent.class);
+		try {
+			list.get(0);
+			fail("Allowed invalid class.");
+		}
+		catch (IllegalArgumentException e) {
+			// Good
+		}
+		
+		list = new LazyList(null, IDDMSComponent.class);
+		try {
+			list.get(0);
+			fail("Allowed invalid class.");
+		}
+		catch (IllegalArgumentException e) {
+			// Good
 		}
 	}
 }
