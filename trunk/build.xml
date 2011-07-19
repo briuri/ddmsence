@@ -214,6 +214,6 @@
 		<tstamp>
 			<format property="backupStamp" pattern="yyMMdd-HHmm"/>
 		</tstamp>		
-		<zip destfile="../${backupStamp}-DDMSence-${version}.zip" basedir=".." includes="DDMSence/**" excludes="DDMSence/output/**" />
+		<zip destfile="../${backupStamp}-DDMSence-${version}.zip" basedir=".." includes="ddmsence/**" excludes="ddmsence/output/**" />
 	</target>	
 </project>
