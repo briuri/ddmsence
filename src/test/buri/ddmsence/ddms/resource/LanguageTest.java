@@ -89,7 +89,7 @@ public class LanguageTest extends AbstractComponentTestCase {
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"language.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"language\" content=\"").append(TEST_VALUE).append("\" />\n");
+		html.append("<meta name=\"language.value\" content=\"").append(TEST_VALUE).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -98,8 +98,8 @@ public class LanguageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Language qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append("Language: ").append(TEST_VALUE).append("\n");
+		text.append("language qualifier: ").append(TEST_QUALIFIER).append("\n");
+		text.append("language value: ").append(TEST_VALUE).append("\n");
 		return (text.toString());
 	}
 

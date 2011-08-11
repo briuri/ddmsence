@@ -150,10 +150,10 @@ public final class Category extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("subject.category.qualifier", getQualifier(), false));
-		html.append(buildHTMLMeta("subject.category.code", getCode(), false));
-		html.append(buildHTMLMeta("subject.category.label", getLabel(), true));
-		html.append(getExtensibleAttributes().toHTML("subject.category"));
+		html.append(buildHTMLMeta("subjectCoverage.Subject.category.qualifier", getQualifier(), false));
+		html.append(buildHTMLMeta("subjectCoverage.Subject.category.code", getCode(), false));
+		html.append(buildHTMLMeta("subjectCoverage.Subject.category.label", getLabel(), true));
+		html.append(getExtensibleAttributes().toHTML("subjectCoverage.Subject.category"));
 		return (html.toString());
 	}
 	
@@ -162,10 +162,10 @@ public final class Category extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Category Qualifier", getQualifier(), false));
-		text.append(buildTextLine("Category Code", getCode(), false));
-		text.append(buildTextLine("Category Label", getLabel(), true));
-		text.append(getExtensibleAttributes().toText("Category"));
+		text.append(buildTextLine("category qualifier", getQualifier(), false));
+		text.append(buildTextLine("category code", getCode(), false));
+		text.append(buildTextLine("category label", getLabel(), true));
+		text.append(getExtensibleAttributes().toText("category"));
 		return (text.toString());
 	}
 	

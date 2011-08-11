@@ -96,12 +96,12 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"temporal.TimePeriod\" content=\"").append(TEST_NAME).append("\" />\n");
-		html.append("<meta name=\"temporal.DateStart\" content=\"").append(TEST_START).append("\" />\n");
-		html.append("<meta name=\"temporal.DateEnd\" content=\"").append(TEST_END).append("\" />\n");
+		html.append("<meta name=\"temporalCoverage.TimePeriod.name\" content=\"").append(TEST_NAME).append("\" />\n");
+		html.append("<meta name=\"temporalCoverage.TimePeriod.start\" content=\"").append(TEST_START).append("\" />\n");
+		html.append("<meta name=\"temporalCoverage.TimePeriod.end\" content=\"").append(TEST_END).append("\" />\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			html.append("<meta name=\"temporal.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"temporal.ownerProducer\" content=\"USA\" />\n");
+			html.append("<meta name=\"temporalCoverage.classification\" content=\"U\" />\n");
+			html.append("<meta name=\"temporalCoverage.ownerProducer\" content=\"USA\" />\n");
 		}
 		return (html.toString());
 	}
@@ -111,12 +111,12 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Time Period: ").append(TEST_NAME).append("\n");
-		text.append("Date Start: ").append(TEST_START).append("\n");
-		text.append("Date End: ").append(TEST_END).append("\n");
+		text.append("TimePeriod name: ").append(TEST_NAME).append("\n");
+		text.append("TimePeriod start: ").append(TEST_START).append("\n");
+		text.append("TimePeriod end: ").append(TEST_END).append("\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			text.append("Time Period Classification: U\n");
-			text.append("Time Period ownerProducer: USA\n");
+			text.append("TimePeriod classification: U\n");
+			text.append("TimePeriod ownerProducer: USA\n");
 		}
 		return (text.toString());
 	}

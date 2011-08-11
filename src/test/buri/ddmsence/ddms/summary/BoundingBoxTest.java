@@ -100,10 +100,10 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatial.boundingBox.WestBL\" content=\"").append(TEST_WEST).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingBox.EastBL\" content=\"").append(TEST_EAST).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingBox.SouthBL\" content=\"").append(TEST_SOUTH).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingBox.NorthBL\" content=\"").append(TEST_NORTH).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.WestBL\" content=\"").append(TEST_WEST).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.EastBL\" content=\"").append(TEST_EAST).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.SouthBL\" content=\"").append(TEST_SOUTH).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.NorthBL\" content=\"").append(TEST_NORTH).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -112,10 +112,10 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Bounding Box Westbound Longitude: ").append(TEST_WEST).append("\n");
-		text.append("Bounding Box Eastbound Longitude: ").append(TEST_EAST).append("\n");
-		text.append("Bounding Box Southbound Latitude: ").append(TEST_SOUTH).append("\n");
-		text.append("Bounding Box Northbound Latitude: ").append(TEST_NORTH).append("\n");
+		text.append("boundingBox WestBL: ").append(TEST_WEST).append("\n");
+		text.append("boundingBox EastBL: ").append(TEST_EAST).append("\n");
+		text.append("boundingBox SouthBL: ").append(TEST_SOUTH).append("\n");
+		text.append("boundingBox NorthBL: ").append(TEST_NORTH).append("\n");
 		return (text.toString());
 	}
 

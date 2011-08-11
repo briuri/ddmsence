@@ -129,8 +129,8 @@ public final class MediaExtent extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("format.extentqualifier", getQualifier(), false));
-		html.append(buildHTMLMeta("format.extent", getValue(), false));
+		html.append(buildHTMLMeta("format.Media.extent.qualifier", getQualifier(), false));
+		html.append(buildHTMLMeta("format.Media.extent.value", getValue(), false));
 		return (html.toString());
 	}
 
@@ -139,8 +139,8 @@ public final class MediaExtent extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Extent qualifier", getQualifier(), false));
-		text.append(buildTextLine("Extent", getValue(), false));
+		text.append(buildTextLine("format.Media.extent.qualifier", getQualifier(), false));
+		text.append(buildTextLine("format.Media.extent.value", getValue(), false));
 		return (text.toString());
 	}
 

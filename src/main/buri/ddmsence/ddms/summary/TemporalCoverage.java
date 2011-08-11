@@ -285,10 +285,10 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("temporal.TimePeriod", getTimePeriodName(), false));
-		html.append(buildHTMLMeta("temporal.DateStart", getStartString(), true));
-		html.append(buildHTMLMeta("temporal.DateEnd", getEndString(), true));
-		html.append(getSecurityAttributes().toHTML("temporal"));
+		html.append(buildHTMLMeta("temporalCoverage.TimePeriod.name", getTimePeriodName(), false));
+		html.append(buildHTMLMeta("temporalCoverage.TimePeriod.start", getStartString(), true));
+		html.append(buildHTMLMeta("temporalCoverage.TimePeriod.end", getEndString(), true));
+		html.append(getSecurityAttributes().toHTML("temporalCoverage"));
 		return (html.toString());
 	}
 		
@@ -297,10 +297,10 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Time Period", getTimePeriodName(), false));
-		text.append(buildTextLine("Date Start", getStartString(), true));
-		text.append(buildTextLine("Date End", getEndString(), true));
-		text.append(getSecurityAttributes().toText("Time Period"));
+		text.append(buildTextLine("TimePeriod name", getTimePeriodName(), false));
+		text.append(buildTextLine("TimePeriod start", getStartString(), true));
+		text.append(buildTextLine("TimePeriod end", getEndString(), true));
+		text.append(getSecurityAttributes().toText("TimePeriod"));
 		return (text.toString());
 	}
 	 

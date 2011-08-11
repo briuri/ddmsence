@@ -113,11 +113,11 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"Link.type\" content=\"").append(TEST_TYPE).append("\" />\n");
-		html.append("<meta name=\"Link.href\" content=\"").append(TEST_HREF).append("\" />\n");
-		html.append("<meta name=\"Link.role\" content=\"").append(TEST_ROLE).append("\" />\n");
-		html.append("<meta name=\"Link.title\" content=\"").append(TEST_TITLE).append("\" />\n");
-		html.append("<meta name=\"Link.label\" content=\"").append(TEST_LABEL).append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"").append(TEST_TYPE).append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"").append(TEST_HREF).append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.role\" content=\"").append(TEST_ROLE).append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.title\" content=\"").append(TEST_TITLE).append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.label\" content=\"").append(TEST_LABEL).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -126,11 +126,11 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Link type: ").append(TEST_TYPE).append("\n");
-		text.append("Link href: ").append(TEST_HREF).append("\n");
-		text.append("Link role: ").append(TEST_ROLE).append("\n");
-		text.append("Link title: ").append(TEST_TITLE).append("\n");
-		text.append("Link label: ").append(TEST_LABEL).append("\n");
+		text.append("Related Resource link type: ").append(TEST_TYPE).append("\n");
+		text.append("Related Resource link href: ").append(TEST_HREF).append("\n");
+		text.append("Related Resource link role: ").append(TEST_ROLE).append("\n");
+		text.append("Related Resource link title: ").append(TEST_TITLE).append("\n");
+		text.append("Related Resource link label: ").append(TEST_LABEL).append("\n");
 		return (text.toString());
 	}
 

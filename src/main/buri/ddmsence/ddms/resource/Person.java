@@ -210,7 +210,7 @@ public final class Person extends AbstractProducer {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer(super.toHTML());
 		html.append(buildHTMLMeta(getProducerType() + ".surname", getSurname(), true));
-		html.append(buildHTMLMeta(getProducerType() + ".userid", getUserID(), false));
+		html.append(buildHTMLMeta(getProducerType() + ".userID", getUserID(), false));
 		html.append(buildHTMLMeta(getProducerType() + ".affiliation", getAffiliation(), false));
 		return (html.toString());
 	}
@@ -223,9 +223,9 @@ public final class Person extends AbstractProducer {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer(super.toText());
-		text.append(buildTextLine("Surname", getSurname(), true));
-		text.append(buildTextLine("UserID", getUserID(), false));
-		text.append(buildTextLine("Affiliation", getAffiliation(), false));
+		text.append(buildTextLine("surname", getSurname(), true));
+		text.append(buildTextLine("userID", getUserID(), false));
+		text.append(buildTextLine("affiliation", getAffiliation(), false));
 		return (text.toString());
 	}
 	

@@ -64,7 +64,7 @@ import buri.ddmsence.util.Util;
  * In general, the HTML/Text output of security attributes will be prefixed with the name of the element being marked.
  * For example:</p>
  * <ul><code>
- * Title Owner Producer: US<br />
+ * title ownerProducer: US<br />
  * &lt;meta name="security.classification" content="U" /&gt;<br />
  * </code></ul></p>
  * <p>
@@ -644,41 +644,41 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		if (!Util.isEmpty(prefix))
 			prefix = prefix + " ";
 		StringBuffer text = new StringBuffer();
-		text.append(Security.buildTextLine(prefix + "Atomic Energy Markings",
+		text.append(Security.buildTextLine(prefix + ATOMIC_ENERGY_MARKINGS_NAME,
 			Util.getXsList(getAtomicEnergyMarkings()), false));
-		text.append(Security.buildTextLine(prefix + "Classification", getClassification(), false));
-		text.append(Security.buildTextLine(prefix + "Classification Reason", getClassificationReason(), false));
-		text.append(Security.buildTextLine(prefix + "Classified By", getClassifiedBy(), false));
-		text.append(Security.buildTextLine(prefix + "Compilation Reason", getCompilationReason(), false));
-		text.append(Security.buildTextLine(prefix + "Complies With", Util.getXsList(getCompliesWith()), false));
+		text.append(Security.buildTextLine(prefix + CLASSIFICATION_NAME, getClassification(), false));
+		text.append(Security.buildTextLine(prefix + CLASSIFICATION_REASON_NAME, getClassificationReason(), false));
+		text.append(Security.buildTextLine(prefix + CLASSIFIED_BY_NAME, getClassifiedBy(), false));
+		text.append(Security.buildTextLine(prefix + COMPILATION_REASON_NAME, getCompilationReason(), false));
+		text.append(Security.buildTextLine(prefix + COMPLIES_WITH_NAME, Util.getXsList(getCompliesWith()), false));
 		if (getDateOfExemptedSource() != null) {
-			text.append(Security.buildTextLine(prefix + "Date Of Exempted Source", 
+			text.append(Security.buildTextLine(prefix + DATE_OF_EXEMPTED_SOURCE_NAME, 
 				getDateOfExemptedSource().toXMLFormat(), false));
 		}
 		if (getDeclassDate() != null)
-			text.append(Security.buildTextLine(prefix + "Declass Date", getDeclassDate().toXMLFormat(), false));
-		text.append(Security.buildTextLine(prefix + "Declass Event", getDeclassEvent(), false));
-		text.append(Security.buildTextLine(prefix + "Declass Exception", getDeclassException(), false));
+			text.append(Security.buildTextLine(prefix + DECLASS_DATE_NAME, getDeclassDate().toXMLFormat(), false));
+		text.append(Security.buildTextLine(prefix + DECLASS_EVENT_NAME, getDeclassEvent(), false));
+		text.append(Security.buildTextLine(prefix + DECLASS_EXCEPTION_NAME, getDeclassException(), false));
 		if (getDeclassManualReview() != null) {
-			text.append(Security.buildTextLine(prefix + "Declass Manual Review", getDeclassManualReview().toString(),
+			text.append(Security.buildTextLine(prefix + DECLASS_MANUAL_REVIEW_NAME, getDeclassManualReview().toString(),
 				false));
 		}
-		text.append(Security.buildTextLine(prefix + "Derivatively Classified By", getDerivativelyClassifiedBy(), 
+		text.append(Security.buildTextLine(prefix + DERIVATIVELY_CLASSIFIED_BY_NAME, getDerivativelyClassifiedBy(), 
 			false));
-		text.append(Security.buildTextLine(prefix + "Derived From", getDerivedFrom(), false));
-		text.append(Security.buildTextLine(prefix + "Display Only To", Util.getXsList(getDisplayOnlyTo()), false));
-		text.append(Security.buildTextLine(prefix + "Dissemination Controls", 
+		text.append(Security.buildTextLine(prefix + DERIVED_FROM_NAME, getDerivedFrom(), false));
+		text.append(Security.buildTextLine(prefix + DISPLAY_ONLY_TO_NAME, Util.getXsList(getDisplayOnlyTo()), false));
+		text.append(Security.buildTextLine(prefix + DISSEMINATION_CONTROLS_NAME, 
 			Util.getXsList(getDisseminationControls()), false));
-		text.append(Security.buildTextLine(prefix + "FGI Source Open", Util.getXsList(getFGIsourceOpen()), false));
-		text.append(Security.buildTextLine(prefix + "FGI Source Protected", Util.getXsList(getFGIsourceProtected()),
+		text.append(Security.buildTextLine(prefix + FGI_SOURCE_OPEN_NAME, Util.getXsList(getFGIsourceOpen()), false));
+		text.append(Security.buildTextLine(prefix + FGI_SOURCE_PROTECTED_NAME, Util.getXsList(getFGIsourceProtected()),
 			false));
-		text.append(Security.buildTextLine(prefix + "Non-IC Markings", Util.getXsList(getNonICmarkings()), false));
-		text.append(Security.buildTextLine(prefix + "Non-US Controls", Util.getXsList(getNonUSControls()), false));
-		text.append(Security.buildTextLine(prefix + "ownerProducer", Util.getXsList(getOwnerProducers()), false));
-		text.append(Security.buildTextLine(prefix + "Releasable To", Util.getXsList(getReleasableTo()), false));
-		text.append(Security.buildTextLine(prefix + "SAR Identifier", Util.getXsList(getSARIdentifier()), false));
-		text.append(Security.buildTextLine(prefix + "SCI Controls", Util.getXsList(getSCIcontrols()), false));
-		text.append(Security.buildTextLine(prefix + "Type Of Exempted Source", getTypeOfExemptedSource(), false));
+		text.append(Security.buildTextLine(prefix + NON_IC_MARKINGS_NAME, Util.getXsList(getNonICmarkings()), false));
+		text.append(Security.buildTextLine(prefix + NON_US_CONTROLS_NAME, Util.getXsList(getNonUSControls()), false));
+		text.append(Security.buildTextLine(prefix + OWNER_PRODUCER_NAME, Util.getXsList(getOwnerProducers()), false));
+		text.append(Security.buildTextLine(prefix + RELEASABLE_TO_NAME, Util.getXsList(getReleasableTo()), false));
+		text.append(Security.buildTextLine(prefix + SAR_IDENTIFIER_NAME, Util.getXsList(getSARIdentifier()), false));
+		text.append(Security.buildTextLine(prefix + SCI_CONTROLS_NAME, Util.getXsList(getSCIcontrols()), false));
+		text.append(Security.buildTextLine(prefix + TYPE_OF_EXEMPTED_SOURCE_NAME, getTypeOfExemptedSource(), false));
 		return (text.toString());
 	}
 	

@@ -277,7 +277,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			html.append(getPostalAddress().toHTML());
 		if (getVerticalExtent() != null)
 			html.append(getVerticalExtent().toHTML());
-		html.append(getSecurityAttributes().toHTML("geospatial"));
+		html.append(getSecurityAttributes().toHTML("geospatialCoverage"));
 		return (html.toString());
 	}
 	
@@ -296,7 +296,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			text.append(getPostalAddress().toText());
 		if (getVerticalExtent() != null)
 			text.append(getVerticalExtent().toText());
-		text.append(getSecurityAttributes().toText("Geospatial"));
+		text.append(getSecurityAttributes().toText("geospatialCoverage"));
 		return (text.toString());
 	}
 	

@@ -138,15 +138,15 @@ public class PolygonTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatial.boundingGeometry.id\" content=\"").append(TEST_ID).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.type\" content=\"Polygon\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.srsName\" content=\"")
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.id\" content=\"").append(TEST_ID).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.type\" content=\"Polygon\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.srsName\" content=\"")
 			.append(SRSAttributesTest.getFixture().getSrsName()).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.srsDimension\" content=\"")
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.srsDimension\" content=\"")
 			.append(SRSAttributesTest.getFixture().getSrsDimension()).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.axisLabels\" content=\"")
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.axisLabels\" content=\"")
 			.append(SRSAttributesTest.getFixture().getAxisLabelsAsXsList()).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.uomLabels\" content=\"")
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.uomLabels\" content=\"")
 			.append(SRSAttributesTest.getFixture().getUomLabelsAsXsList()).append("\" />\n");
 		for (Position pos : getPositions()) {
 			html.append(pos.toHTML());
@@ -159,15 +159,15 @@ public class PolygonTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("Geospatial Geometry ID: ").append(TEST_ID).append("\n");
-		text.append("Geospatial Geometry Type: Polygon\n");
-		text.append("Geospatial Geometry SRS Name: ").append(SRSAttributesTest.getFixture().getSrsName())
+		text.append("boundingGeometry id: ").append(TEST_ID).append("\n");
+		text.append("boundingGeometry type: Polygon\n");
+		text.append("boundingGeometry srsName: ").append(SRSAttributesTest.getFixture().getSrsName())
 		.append("\n");
-		text.append("Geospatial Geometry SRS Dimension: ").append(SRSAttributesTest.getFixture().getSrsDimension())
+		text.append("boundingGeometry srsDimension: ").append(SRSAttributesTest.getFixture().getSrsDimension())
 		.append("\n");
-		text.append("Geospatial Geometry Axis Labels: ").append(SRSAttributesTest.getFixture().getAxisLabelsAsXsList())
+		text.append("boundingGeometry axisLabels: ").append(SRSAttributesTest.getFixture().getAxisLabelsAsXsList())
 			.append("\n");
-		text.append("Geospatial Geometry Unit of Measure Labels: ")
+		text.append("boundingGeometry uomLabels: ")
 			.append(SRSAttributesTest.getFixture().getUomLabelsAsXsList()).append("\n");
 		for (Position pos : getPositions()) {
 			text.append(pos.toText());

@@ -48,17 +48,17 @@ import buri.ddmsence.util.Util;
  * <p>The DDMS documentation has no Text/HTML examples for the output of this component, so a best guess was taken:</p>
  * <ul>
  * <p><b>Suggested Text Output</b><br /><code>
- * Vertical Extent Unit of Measure: value<br />
- * Vertical Extent Datum: value<br />
- * Minimum Vertical Extent: value<br />
- * Maximum Vertical Extent: value<br />
+ * verticalExtent unitOfMeasure: value<br />
+ * verticalExtent datum: value<br />
+ * verticalExtent minimum: value<br />
+ * verticalExtent maximum: value<br />
  * </code></p>
  * 
  * <p><b>Suggested HTML Output</b><br /><code>
- * &lt;meta name="geospatial.verticalExtent.unitOfMeasure" content="value" /&gt;<br />
- * &lt;meta name="geospatial.verticalExtent.datum" content="value" /&gt;<br />
- * &lt;meta name="geospatial.verticalExtent.minimum" content="value" /&gt;<br />
- * &lt;meta name="geospatial.verticalExtent.maximum" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.verticalExtent.unitOfMeasure" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.verticalExtent.datum" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.verticalExtent.minimum" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.verticalExtent.maximum" content="value" /&gt;<br />
  * </code>
  * </ul>
  * </p>
@@ -240,10 +240,10 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("geospatial.verticalExtent.unitOfMeasure", getUnitOfMeasure(), true));
-		html.append(buildHTMLMeta("geospatial.verticalExtent.datum", getDatum(), true));
-		html.append(buildHTMLMeta("geospatial.verticalExtent.minimum", String.valueOf(getMinVerticalExtent()), true));
-		html.append(buildHTMLMeta("geospatial.verticalExtent.maximum", String.valueOf(getMaxVerticalExtent()), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.verticalExtent.unitOfMeasure", getUnitOfMeasure(), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.verticalExtent.datum", getDatum(), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.verticalExtent.minimum", String.valueOf(getMinVerticalExtent()), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.verticalExtent.maximum", String.valueOf(getMaxVerticalExtent()), true));
 		return (html.toString());
 	}
 		 
@@ -252,10 +252,10 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Vertical Extent Unit of Measure", getUnitOfMeasure(), true));
-		text.append(buildTextLine("Vertical Extent Datum", getDatum(), true));
-		text.append(buildTextLine("Minimum Vertical Extent", String.valueOf(getMinVerticalExtent()), true));
-		text.append(buildTextLine("Maximum Vertical Extent", String.valueOf(getMaxVerticalExtent()), true));
+		text.append(buildTextLine("verticalExtent unitOfMeasure", getUnitOfMeasure(), true));
+		text.append(buildTextLine("verticalExtent datum", getDatum(), true));
+		text.append(buildTextLine("verticalExtent minimum", String.valueOf(getMinVerticalExtent()), true));
+		text.append(buildTextLine("verticalExtent maximum", String.valueOf(getMaxVerticalExtent()), true));
 		return (text.toString());
 	}
 	

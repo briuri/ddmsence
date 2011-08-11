@@ -95,12 +95,12 @@ public class DatesTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"date.created\" content=\"").append(TEST_CREATED).append("\" />\n");
-		html.append("<meta name=\"date.posted\" content=\"").append(TEST_POSTED).append("\" />\n");
-		html.append("<meta name=\"date.validtil\" content=\"").append(TEST_VALID).append("\" />\n");
-		html.append("<meta name=\"date.infocutoff\" content=\"").append(TEST_CUTOFF).append("\" />\n");
+		html.append("<meta name=\"dates.created\" content=\"").append(TEST_CREATED).append("\" />\n");
+		html.append("<meta name=\"dates.posted\" content=\"").append(TEST_POSTED).append("\" />\n");
+		html.append("<meta name=\"dates.validTil\" content=\"").append(TEST_VALID).append("\" />\n");
+		html.append("<meta name=\"dates.infoCutOff\" content=\"").append(TEST_CUTOFF).append("\" />\n");
 		if (DDMSVersion.isCurrentVersion("3.1"))
-			html.append("<meta name=\"date.approvedon\" content=\"").append(TEST_APPROVED).append("\" />\n");
+			html.append("<meta name=\"dates.approvedOn\" content=\"").append(TEST_APPROVED).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -109,12 +109,12 @@ public class DatesTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Date Created: ").append(TEST_CREATED).append("\n");
-		text.append("Date Posted: ").append(TEST_POSTED).append("\n");
-		text.append("Date Valid Til: ").append(TEST_VALID).append("\n");
-		text.append("Date Info Cut Off: ").append(TEST_CUTOFF).append("\n");
+		text.append("created: ").append(TEST_CREATED).append("\n");
+		text.append("posted: ").append(TEST_POSTED).append("\n");
+		text.append("validTil: ").append(TEST_VALID).append("\n");
+		text.append("infoCutOff: ").append(TEST_CUTOFF).append("\n");
 		if (DDMSVersion.isCurrentVersion("3.1"))
-			text.append("Date Approved On: ").append(TEST_APPROVED).append("\n");
+			text.append("approvedOn: ").append(TEST_APPROVED).append("\n");
 		return (text.toString());
 	}
 

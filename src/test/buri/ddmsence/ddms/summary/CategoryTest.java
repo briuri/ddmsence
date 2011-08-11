@@ -96,9 +96,9 @@ public class CategoryTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"subject.category.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"subject.category.code\" content=\"").append(TEST_CODE).append("\" />\n");
-		html.append("<meta name=\"subject.category.label\" content=\"").append(TEST_LABEL).append("\" />\n");
+		html.append("<meta name=\"subjectCoverage.Subject.category.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
+		html.append("<meta name=\"subjectCoverage.Subject.category.code\" content=\"").append(TEST_CODE).append("\" />\n");
+		html.append("<meta name=\"subjectCoverage.Subject.category.label\" content=\"").append(TEST_LABEL).append("\" />\n");
 
 		return (html.toString());
 	}
@@ -108,9 +108,9 @@ public class CategoryTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Category Qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append("Category Code: ").append(TEST_CODE).append("\n");
-		text.append("Category Label: ").append(TEST_LABEL).append("\n");
+		text.append("category qualifier: ").append(TEST_QUALIFIER).append("\n");
+		text.append("category code: ").append(TEST_CODE).append("\n");
+		text.append("category label: ").append(TEST_LABEL).append("\n");
 		return (text.toString());
 	}
 

@@ -136,15 +136,6 @@ public final class Service extends AbstractProducer {
 	}
 	
 	/**
-	 * Overridden, because Services are referred to as "Web Service" in Text output
-	 * 
-	 * @see AbstractProducer#getTextOutputName()
-	 */
-	protected String getTextOutputName() {
-		return ("Web " + getEntityType());
-	}
-	
-	/**
 	 * Builder for this DDMS component.
 	 * 
 	 * @see IBuilder

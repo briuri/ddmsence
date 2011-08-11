@@ -210,12 +210,12 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("RelatedResources.relationship", getRelationship(), true));
-		html.append(buildHTMLMeta("RelatedResources.direction", getDirection(), false));
+		html.append(buildHTMLMeta("relatedResources.relationship", getRelationship(), true));
+		html.append(buildHTMLMeta("relatedResources.direction", getDirection(), false));
 		for (RelatedResource resource : getRelatedResources()) {
 			html.append(resource.toHTML());
 		}
-		html.append(getSecurityAttributes().toHTML("RelatedResources"));
+		html.append(getSecurityAttributes().toHTML("relatedResources"));
 		return (html.toString());
 	}
 	
@@ -224,12 +224,12 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Related Resources relationship", getRelationship(), true));
-		text.append(buildTextLine("Related Resources direction", getDirection(), false));
+		text.append(buildTextLine("relatedResources relationship", getRelationship(), true));
+		text.append(buildTextLine("relatedResources direction", getDirection(), false));
 		for (RelatedResource resource : getRelatedResources()) {
 			text.append(resource.toText());
 		}
-		text.append(getSecurityAttributes().toText("Related Resources"));
+		text.append(getSecurityAttributes().toText("relatedResources"));
 		return (text.toString());
 	}
 			 

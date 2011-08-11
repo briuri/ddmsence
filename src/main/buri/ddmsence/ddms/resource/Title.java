@@ -145,8 +145,8 @@ public final class Title extends AbstractSimpleString {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Title", getValue(), false));
-		text.append(getSecurityAttributes().toText("Title"));
+		text.append(buildTextLine(Title.NAME, getValue(), false));
+		text.append(getSecurityAttributes().toText(Title.NAME));
 		return (text.toString());
 	}
 	

@@ -134,8 +134,8 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("subject.keyword", getValue(), false));
-		html.append(getExtensibleAttributes().toHTML("subject.keyword"));
+		html.append(buildHTMLMeta("subjectCoverage.Subject.keyword", getValue(), false));
+		html.append(getExtensibleAttributes().toHTML("subjectCoverage.Subject.keyword"));
 		return (html.toString());
 
 	}
@@ -145,8 +145,8 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Keyword", getValue(), false));
-		text.append(getExtensibleAttributes().toText("Keyword"));
+		text.append(buildTextLine("keyword", getValue(), false));
+		text.append(getExtensibleAttributes().toText("keyword"));
 		return (text.toString());
 	}
 	

@@ -503,14 +503,14 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			others.put(SecurityAttributes.DECLASS_DATE_NAME, "2005-10-10");
 			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
 			assertEquals("<meta name=\"declassDate\" content=\"2005-10-10\" />\n", dataAttributes.toHTML(""));
-			assertEquals("Declass Date: 2005-10-10\n", dataAttributes.toText(""));
+			assertEquals("declassDate: 2005-10-10\n", dataAttributes.toText(""));
 
 			if (!"3.1".equals(version)) {
 				others = new HashMap<String, String>();
 				others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-10");
 				dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
 				assertEquals("<meta name=\"dateOfExemptedSource\" content=\"2005-10-10\" />\n", dataAttributes.toHTML(""));
-				assertEquals("Date Of Exempted Source: 2005-10-10\n", dataAttributes.toText(""));
+				assertEquals("dateOfExemptedSource: 2005-10-10\n", dataAttributes.toText(""));
 			}
 		
 		}
@@ -554,7 +554,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		map.remove(SecurityAttributes.COMPILATION_REASON_NAME);
 		SecurityAttributes attr = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
 		assertTrue(attr.toHTML("").contains("<meta name=\"declassManualReview\" content=\"true\" />"));
-		assertTrue(attr.toText("").contains("Declass Manual Review: true"));		
+		assertTrue(attr.toText("").contains("declassManualReview: true"));		
 	}
 	
 	public void testMultipleDeclassException() throws InvalidDDMSException {

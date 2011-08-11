@@ -125,7 +125,7 @@ public final class Language extends AbstractQualifierValue {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		html.append(buildHTMLMeta("language.qualifier", getQualifier(), false));
-		html.append(buildHTMLMeta(Language.NAME, getValue(), false));
+		html.append(buildHTMLMeta("language.value", getValue(), false));
 		return (html.toString());
 	}
 	
@@ -134,8 +134,8 @@ public final class Language extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Language qualifier", getQualifier(), false));
-		text.append(buildTextLine("Language", getValue(), false));
+		text.append(buildTextLine("language qualifier", getQualifier(), false));
+		text.append(buildTextLine("language value", getValue(), false));
 		return (text.toString());		
 	}
 	

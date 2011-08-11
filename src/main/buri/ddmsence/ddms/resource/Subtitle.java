@@ -146,8 +146,8 @@ public final class Subtitle extends AbstractSimpleString {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Subtitle", getValue(), false));
-		text.append(getSecurityAttributes().toText("Subtitle"));
+		text.append(buildTextLine(Subtitle.NAME, getValue(), false));
+		text.append(getSecurityAttributes().toText(Subtitle.NAME));
 		return (text.toString());
 	}
 	

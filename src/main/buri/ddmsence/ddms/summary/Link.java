@@ -137,11 +137,11 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("Link.type", getType(), true));
-		html.append(buildHTMLMeta("Link.href", getHref(), true));
-		html.append(buildHTMLMeta("Link.role", getRole(), false));
-		html.append(buildHTMLMeta("Link.title", getTitle(), false));
-		html.append(buildHTMLMeta("Link.label", getLabel(), false));
+		html.append(buildHTMLMeta("relatedResources.RelatedResource.link.type", getType(), true));
+		html.append(buildHTMLMeta("relatedResources.RelatedResource.link.href", getHref(), true));
+		html.append(buildHTMLMeta("relatedResources.RelatedResource.link.role", getRole(), false));
+		html.append(buildHTMLMeta("relatedResources.RelatedResource.link.title", getTitle(), false));
+		html.append(buildHTMLMeta("relatedResources.RelatedResource.link.label", getLabel(), false));
 		return (html.toString());
 
 	}
@@ -151,11 +151,11 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Link type", getType(), true));
-		text.append(buildTextLine("Link href", getHref(), true));
-		text.append(buildTextLine("Link role", getRole(), false));
-		text.append(buildTextLine("Link title", getTitle(), false));
-		text.append(buildTextLine("Link label", getLabel(), false));
+		text.append(buildTextLine("Related Resource link type", getType(), true));
+		text.append(buildTextLine("Related Resource link href", getHref(), true));
+		text.append(buildTextLine("Related Resource link role", getRole(), false));
+		text.append(buildTextLine("Related Resource link title", getTitle(), false));
+		text.append(buildTextLine("Related Resource link label", getLabel(), false));
 		return (text.toString());
 	}
 	

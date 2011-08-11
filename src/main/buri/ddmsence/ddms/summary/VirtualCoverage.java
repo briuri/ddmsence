@@ -155,7 +155,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		html.append(buildHTMLMeta("virtual.address", getAddress(), false));
-		html.append(buildHTMLMeta("virtual.networkProtocol", getProtocol(), false));
+		html.append(buildHTMLMeta("virtual.protocol", getProtocol(), false));
 		html.append(getSecurityAttributes().toHTML("virtual"));
 		return (html.toString());
 	}
@@ -165,9 +165,9 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Virtual address", getAddress(), false));
-		text.append(buildTextLine("Network Protocol", getProtocol(), false));
-		text.append(getSecurityAttributes().toText("Virtual"));
+		text.append(buildTextLine("virtual address", getAddress(), false));
+		text.append(buildTextLine("virtual protocol", getProtocol(), false));
+		text.append(getSecurityAttributes().toText("virtual"));
 		return (text.toString());
 	}
 	

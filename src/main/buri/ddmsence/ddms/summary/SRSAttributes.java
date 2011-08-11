@@ -104,7 +104,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	/**
 	 * Constructor which builds from raw data.
 	 * 
-	 * @param srsName	the srsName (required if the name is not Position.NAME)
+	 * @param srsName	the srsName (required if the name is not "pos")
 	 * @param srsDimension the srsDimension (optional)
 	 * @param axisLabels the axis labels (optional, but should be omitted if no srsName is set)
 	 * @param uomLabels the labels for UOM (required when axisLabels is set)

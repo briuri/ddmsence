@@ -134,8 +134,8 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Type qualifier", getQualifier(), false));
-		text.append(buildTextLine("Type", getValue(), false));
+		text.append(buildTextLine("type qualifier", getQualifier(), false));
+		text.append(buildTextLine("type value", getValue(), false));
 		return (text.toString());
 	}
 	

@@ -41,34 +41,34 @@ import buri.ddmsence.util.Util;
  * <p>
  * <b>Suggested Text Output</b><br />
  * <code>
- * Geospatial Geometry ID: value<br />
- * Geospatial Geometry Type: Point<br />
- * Geospatial Geometry SRS Name: value<br />
- * Geospatial Geometry SRS Dimension: value<br />
- * Geospatial Geometry Axis Labels: value<br />
- * Geospatial Geometry Unit of Measure Labels: value<br />
- * Geospatial Geometry Position: value<br />
- * Geospatial Geometry Position SRS Name: value<br />
- * Geospatial Geometry Position SRS Dimension: value<br />
- * Geospatial Geometry Position Axis Labels: value<br />
- * Geospatial Geometry Position Unit of Measure Labels: value<br />
+ * boundingGeometry id: value<br />
+ * boundingGeometry type: Point<br />
+ * boundingGeometry srsName: value<br />
+ * boundingGeometry srsDimension: value<br />
+ * boundingGeometry axisLabels: value<br />
+ * boundingGeometry uomLabels: value<br />
+ * boundingGeometry position: value<br />
+ * boundingGeometry position srsName: value<br />
+ * boundingGeometry position srsDimension: value<br />
+ * boundingGeometry position axisLabels: value<br />
+ * boundingGeometry position uomLabels: value<br />
  * </code>
  * </p>
  * 
  * <p>
  * <b>Suggested HTML Output</b><br />
  * <code>
- * &lt;meta name="geospatial.boundingGeometry.id" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.type" content="Point" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.srsName" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.srsDimension" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.axisLabels" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.uomLabels" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.position" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.position.srsName" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.position.srsDimension" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.position.axisLabels" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.position.uomLabels" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.id" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.type" content="Point" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.srsName" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.srsDimension" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.axisLabels" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.uomLabels" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsName" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsDimension" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.axisLabels" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.uomLabels" content="value" /&gt;<br />
  * </code>
  * </p>
  * </ul>
@@ -212,16 +212,16 @@ public final class Point extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.id", getId(), true));
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.type", Point.NAME, true));
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.srsName", getSRSAttributes().getSrsName(), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.id", getId(), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.type", Point.NAME, true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.srsName", getSRSAttributes().getSrsName(), true));
 		if (getSRSAttributes().getSrsDimension() != null) {
-			html.append(buildHTMLMeta("geospatial.boundingGeometry.srsDimension", 
+			html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.srsDimension", 
 				String.valueOf(getSRSAttributes().getSrsDimension()), false));
 		}
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.axisLabels", getSRSAttributes().getAxisLabelsAsXsList(),
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.axisLabels", getSRSAttributes().getAxisLabelsAsXsList(),
 			false));
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.uomLabels", getSRSAttributes().getUomLabelsAsXsList(),
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.uomLabels", getSRSAttributes().getUomLabelsAsXsList(),
 			false));
 		html.append(getPosition().toHTML());
 		return (html.toString());
@@ -232,16 +232,16 @@ public final class Point extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Geospatial Geometry ID", getId(), true));
-		text.append(buildTextLine("Geospatial Geometry Type", Point.NAME, true));		
-		text.append(buildTextLine("Geospatial Geometry SRS Name", getSRSAttributes().getSrsName(), true));
+		text.append(buildTextLine("boundingGeometry id", getId(), true));
+		text.append(buildTextLine("boundingGeometry type", Point.NAME, true));		
+		text.append(buildTextLine("boundingGeometry srsName", getSRSAttributes().getSrsName(), true));
 		if (getSRSAttributes().getSrsDimension() != null) {
-			text.append(buildTextLine("Geospatial Geometry SRS Dimension", 
+			text.append(buildTextLine("boundingGeometry srsDimension", 
 				String.valueOf(getSRSAttributes().getSrsDimension()), false));
 		}
-		text.append(buildTextLine("Geospatial Geometry Axis Labels", getSRSAttributes().getAxisLabelsAsXsList(), 
+		text.append(buildTextLine("boundingGeometry axisLabels", getSRSAttributes().getAxisLabelsAsXsList(), 
 			false));
-		text.append(buildTextLine("Geospatial Geometry Unit of Measure Labels", 
+		text.append(buildTextLine("boundingGeometry uomLabels", 
 			getSRSAttributes().getUomLabelsAsXsList(), false));
 		text.append(getPosition().toText());
 		return (text.toString());

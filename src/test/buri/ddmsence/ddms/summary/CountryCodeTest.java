@@ -101,12 +101,12 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	 * @param parentType the enclosing parent type
 	 */
 	private String getExpectedHTMLOutput(String parentType) {
-		String parentHtml = (parentType.equals(GeographicIdentifier.NAME) ? "geospatial.identifier"
-			: "geospatial.address");
+		String parentHtml = (parentType.equals(GeographicIdentifier.NAME) ? "geospatialCoverage.GeospatialExtent.geographicIdentifier"
+			: "geospatialCoverage.GeospatialExtent.postalAddress");
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"").append(parentHtml).append(".country.qualifier\" content=\"")
+		html.append("<meta name=\"").append(parentHtml).append(".countryCode.qualifier\" content=\"")
 			.append(TEST_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"").append(parentHtml).append(".country\" content=\"").append(TEST_VALUE)
+		html.append("<meta name=\"").append(parentHtml).append(".countryCode.value\" content=\"").append(TEST_VALUE)
 			.append("\" />\n");
 		return (html.toString());
 	}
@@ -117,10 +117,10 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	 * @param parentType the enclosing parent type
 	 */
 	private String getExpectedTextOutput(String parentType) {
-		String parentText = (parentType.equals(GeographicIdentifier.NAME) ? "Geographic Identifier" : "Postal Address");
+		String parentText = (parentType.equals(GeographicIdentifier.NAME) ? "geographicIdentifier" : "postalAddress");
 		StringBuffer text = new StringBuffer();
-		text.append(parentText).append(" Country Qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append(parentText).append(" Country: ").append(TEST_VALUE).append("\n");
+		text.append(parentText).append(" countryCode qualifier: ").append(TEST_QUALIFIER).append("\n");
+		text.append(parentText).append(" countryCode value: ").append(TEST_VALUE).append("\n");
 		return (text.toString());
 	}
 

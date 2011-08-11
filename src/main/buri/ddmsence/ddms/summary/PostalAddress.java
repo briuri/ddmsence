@@ -209,11 +209,11 @@ public final class PostalAddress extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		for (String street : getStreets())
-			html.append(buildHTMLMeta("geospatial.address.street", street, false));
-		html.append(buildHTMLMeta("geospatial.address.city", getCity(), false));
-		html.append(buildHTMLMeta("geospatial.address.state", getState(), false));
-		html.append(buildHTMLMeta("geospatial.address.province", getProvince(), false));
-		html.append(buildHTMLMeta("geospatial.address.postalcode", getPostalCode(), false));
+			html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.postalAddress.street", street, false));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.postalAddress.city", getCity(), false));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.postalAddress.state", getState(), false));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.postalAddress.province", getProvince(), false));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.postalAddress.postalCode", getPostalCode(), false));
 		if (getCountryCode() != null)
 			html.append(getCountryCode().toHTML());
 		return (html.toString());
@@ -225,11 +225,11 @@ public final class PostalAddress extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		for (String street : getStreets())
-			text.append(buildTextLine("Postal Address Street", street, false));
-		text.append(buildTextLine("Postal Address City", getCity(), false));
-		text.append(buildTextLine("Postal Address State", getState(), false));
-		text.append(buildTextLine("Postal Address Province", getProvince(), false));
-		text.append(buildTextLine("Postal Address Postal Code", getPostalCode(), false));
+			text.append(buildTextLine("postalAddress street", street, false));
+		text.append(buildTextLine("postalAddress city", getCity(), false));
+		text.append(buildTextLine("postalAddress state", getState(), false));
+		text.append(buildTextLine("postalAddress province", getProvince(), false));
+		text.append(buildTextLine("postalAddress postalCode", getPostalCode(), false));
 		if (getCountryCode() != null)
 			text.append(getCountryCode().toText());
 		return (text.toString());

@@ -103,8 +103,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getHtmlIcism() {
 		if (!DDMSVersion.isCurrentVersion("2.0"))
-			return ("<meta name=\"geospatial.classification\" content=\"U\" />\n"
-			+ "<meta name=\"geospatial.ownerProducer\" content=\"USA\" />\n");
+			return ("<meta name=\"geospatialCoverage.classification\" content=\"U\" />\n"
+			+ "<meta name=\"geospatialCoverage.ownerProducer\" content=\"USA\" />\n");
 		return ("");
 	}
 
@@ -113,7 +113,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getTextIcism() {
 		if (!DDMSVersion.isCurrentVersion("2.0"))
-			return ("Geospatial Classification: U\nGeospatial ownerProducer: USA\n");
+			return ("geospatialCoverage classification: U\ngeospatialCoverage ownerProducer: USA\n");
 		return ("");
 	}
 

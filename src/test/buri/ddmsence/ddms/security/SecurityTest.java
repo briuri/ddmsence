@@ -96,8 +96,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
 		if (!DDMSVersion.isCurrentVersion("2.0"))
-			text.append("Exclude From Rollup: true\n");
-		text.append("Classification: U\n");
+			text.append("excludeFromRollup: true\n");
+		text.append("classification: U\n");
 		text.append("ownerProducer: USA\n");
 		return (text.toString());
 	}

@@ -124,15 +124,15 @@ public class ServiceTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append(Util.capitalize(TEST_PRODUCER_TYPE)).append(" EntityType: Web Service\n");
+		text.append(TEST_PRODUCER_TYPE).append(" EntityType: Service\n");
 		for (String name : TEST_NAMES)
-			text.append("Name: ").append(name).append("\n");
+			text.append("name: ").append(name).append("\n");
 		for (String phone : TEST_PHONES)
-			text.append("Phone Number: ").append(phone).append("\n");
+			text.append("phone: ").append(phone).append("\n");
 		for (String email : TEST_EMAILS)
-			text.append("Email: ").append(email).append("\n");
-		text.append(Util.capitalize(TEST_PRODUCER_TYPE)).append(" Classification: U\n");
-		text.append(Util.capitalize(TEST_PRODUCER_TYPE)).append(" ownerProducer: USA\n");
+			text.append("email: ").append(email).append("\n");
+		text.append(TEST_PRODUCER_TYPE).append(" classification: U\n");
+		text.append(TEST_PRODUCER_TYPE).append(" ownerProducer: USA\n");
 		return (text.toString());
 	}
 
