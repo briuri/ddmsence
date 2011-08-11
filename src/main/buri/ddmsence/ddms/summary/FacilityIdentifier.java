@@ -44,7 +44,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#FacilityBENumber<br />
+ * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_geographicIdentifier_facilityIdentifier<br />
  * <u>Description</u>: Information about rights held in and over the resource<br />
  * <u>Obligation</u>: Optional nested in a geospatialCoverage element, but if used, must be used alone<br />
  * <u>Schema Modification Date</u>: 2010-01-25<br />

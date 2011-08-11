@@ -49,7 +49,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Source<br />
+ * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#source<br />
  * <u>Description</u>: References to assets or resources from which the tagged data asset is derived.<br />
  * <u>Obligation</u>: Optional<br />
  * <u>Schema Modification Date</u>: 2004-07-01<br />

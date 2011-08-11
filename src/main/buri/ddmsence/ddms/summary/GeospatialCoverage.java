@@ -65,7 +65,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeospatialCoverage<br />
+ * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage<br />
  * <u>Description</u>: Geographic place names or coordinates that relate to the resource.<br />
  * <u>Obligation</u>: Mandatory unless Not Applicable<br />
  * <u>Schema Modification Date</u>: 2010-01-25<br />

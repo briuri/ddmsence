@@ -51,7 +51,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Subject<br />
+ * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#subjectCoverage_Subject_category<br />
  * <u>Description</u>: A category describes the subject area of a resource using a controlled vocabulary.<br />
  * <u>Obligation</u>: At least 1 category or keyword is required in a Subject<br />
  * <u>Schema Modification Date</u>: 2010-01-26<br />

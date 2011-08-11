@@ -195,7 +195,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Date"><code>ddms:dates</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#dates"><code>ddms:dates</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -255,7 +255,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Identifier"><code>ddms:identifier</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#identifier"><code>ddms:identifier</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -306,7 +306,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Language"><code>ddms:language</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#language"><code>ddms:language</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -359,7 +359,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<td class="relName" colspan="2">
 			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Organization"><code>ddms:Organization</code></a>,
 			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Person"><code>ddms:Person</code></a>,
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#WebService"><code>ddms:Service</code></a>, and
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Service"><code>ddms:Service</code></a>, and
 			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Unknown"><code>ddms:Unknown</code></a>
 		</td>
 	</tr>
@@ -442,7 +442,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Rights"><code>ddms:rights</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#rights"><code>ddms:rights</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -496,7 +496,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Source"><code>ddms:source</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#source"><code>ddms:source</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -553,7 +553,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Subtitle"><code>ddms:subtitle</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Title_subtitle"><code>ddms:subtitle</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -649,7 +649,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Type"><code>ddms:type</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#type"><code>ddms:type</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -705,7 +705,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Format"><code>ddms:format</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#format"><code>ddms:format</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -756,7 +756,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Extent"><code>ddms:extent</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#format_Media_extent"><code>ddms:extent</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -812,7 +812,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicBoundingBox"><code>ddms:boundingBox</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_boundingBox"><code>ddms:boundingBox</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -869,7 +869,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicBoundingGeometry"><code>ddms:boundingGeometry</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_boundingGeometry"><code>ddms:boundingGeometry</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -915,7 +915,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#CategoryQualifier"><code>ddms:category</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#subjectCoverage_Subject_category"><code>ddms:category</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -969,7 +969,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#CountryCode"><code>ddms:countryCode</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_geographicIdentifier_countryCode"><code>ddms:countryCode</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1020,7 +1020,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Description"><code>ddms:description</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#description"><code>ddms:description</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1068,7 +1068,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#FacilityBENumber"><code>ddms:facilityIdentifier</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_geographicIdentifier_facilityIdentifier"><code>ddms:facilityIdentifier</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1119,7 +1119,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicIdentifier"><code>ddms:geographicIdentifier</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_geographicIdentifier"><code>ddms:geographicIdentifier</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1171,7 +1171,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeospatialCoverage"><code>ddms:geospatialCoverage</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage"><code>ddms:geospatialCoverage</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1220,7 +1220,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicBoundingGeometry"><code>gml:Point</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_boundingGeometry_Point"><code>gml:Point</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1268,7 +1268,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicBoundingGeometry"><code>gml:Polygon</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_boundingGeometry_Polygon"><code>gml:Polygon</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1318,7 +1318,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#GeographicBoundingGeometry"><code>gml:pos</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_boundingGeometry_Point"><code>gml:pos</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1375,7 +1375,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Keyword"><code>ddms:keyword</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#subjectCoverage_Subject_keyword"><code>ddms:keyword</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1423,7 +1423,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#RelatedResourcesRelatedResourceLink"><code>ddms:link</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#relatedResources_RelatedResource_link"><code>ddms:link</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1484,7 +1484,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#PostalAddress"><code>ddms:postalAddress</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_postalAddress"><code>ddms:postalAddress</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1544,7 +1544,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#RelatedResourcesRelatedResource"><code>ddms:RelatedResource</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#relatedResources_RelatedResource"><code>ddms:RelatedResource</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1595,7 +1595,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#RelatedResources"><code>ddms:relatedResources</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#relatedResources"><code>ddms:relatedResources</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1712,7 +1712,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Subject"><code>ddms:subjectCoverage</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#subjectCoverage"><code>ddms:subjectCoverage</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1758,7 +1758,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#TemporalCoverage"><code>ddms:temporalCoverage</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#temporalCoverage"><code>ddms:temporalCoverage</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1814,7 +1814,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#VerticalExtent"><code>ddms:verticalExtent</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_verticalExtent"><code>ddms:verticalExtent</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1873,7 +1873,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#VirtualCoverage"><code>ddms:virtualCoverage</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#virtualCoverage"><code>ddms:virtualCoverage</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1929,7 +1929,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Security"><code>ddms:security</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#security"><code>ddms:security</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
