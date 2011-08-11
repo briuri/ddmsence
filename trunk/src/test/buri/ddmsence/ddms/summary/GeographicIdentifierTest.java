@@ -114,8 +114,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatial.identifier.name\" content=\"").append(TEST_NAMES.get(0)).append("\" />\n");
-		html.append("<meta name=\"geospatial.identifier.region\" content=\"").append(TEST_REGIONS.get(0))
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.geographicIdentifier.name\" content=\"").append(TEST_NAMES.get(0)).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.geographicIdentifier.region\" content=\"").append(TEST_REGIONS.get(0))
 			.append("\" />\n");
 		html.append(CountryCodeTest.getFixture(GeographicIdentifier.NAME).toHTML());
 		return (html.toString());
@@ -126,8 +126,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("Geographic Identifier Name: ").append(TEST_NAMES.get(0)).append("\n");
-		text.append("Geographic Identifier Region: ").append(TEST_REGIONS.get(0)).append("\n");
+		text.append("geographicIdentifier name: ").append(TEST_NAMES.get(0)).append("\n");
+		text.append("geographicIdentifier region: ").append(TEST_REGIONS.get(0)).append("\n");
 		text.append(CountryCodeTest.getFixture(GeographicIdentifier.NAME).toText());
 		return (text.toString());
 	}

@@ -116,15 +116,15 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"RelatedResources.relationship\" content=\"").append(TEST_RELATIONSHIP)
+		html.append("<meta name=\"relatedResources.relationship\" content=\"").append(TEST_RELATIONSHIP)
 			.append("\" />\n");
-		html.append("<meta name=\"RelatedResources.direction\" content=\"").append(TEST_DIRECTION).append("\" />\n");
-		html.append("<meta name=\"RelatedResource.qualifier\" content=\"http://purl.org/dc/terms/URI\" />\n");
-		html.append("<meta name=\"RelatedResource.value\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
-		html.append("<meta name=\"Link.type\" content=\"locator\" />\n");
-		html.append("<meta name=\"Link.href\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
-		html.append("<meta name=\"RelatedResources.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"RelatedResources.ownerProducer\" content=\"USA\" />\n");
+		html.append("<meta name=\"relatedResources.direction\" content=\"").append(TEST_DIRECTION).append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.qualifier\" content=\"http://purl.org/dc/terms/URI\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.value\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"locator\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
+		html.append("<meta name=\"relatedResources.classification\" content=\"U\" />\n");
+		html.append("<meta name=\"relatedResources.ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -133,14 +133,14 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Related Resources relationship: ").append(TEST_RELATIONSHIP).append("\n");
-		text.append("Related Resources direction: ").append(TEST_DIRECTION).append("\n");
+		text.append("relatedResources relationship: ").append(TEST_RELATIONSHIP).append("\n");
+		text.append("relatedResources direction: ").append(TEST_DIRECTION).append("\n");
 		text.append("Related Resource qualifier: http://purl.org/dc/terms/URI\n");
 		text.append("Related Resource value: http://en.wikipedia.org/wiki/Tank\n");
-		text.append("Link type: locator\n");
-		text.append("Link href: http://en.wikipedia.org/wiki/Tank\n");
-		text.append("Related Resources Classification: U\n");
-		text.append("Related Resources ownerProducer: USA\n");
+		text.append("Related Resource link type: locator\n");
+		text.append("Related Resource link href: http://en.wikipedia.org/wiki/Tank\n");
+		text.append("relatedResources classification: U\n");
+		text.append("relatedResources ownerProducer: USA\n");
 
 		return (text.toString());
 	}

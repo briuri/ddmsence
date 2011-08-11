@@ -92,7 +92,7 @@ public class KeywordTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"subject.keyword\" content=\"").append(TEST_VALUE).append("\" />\n");
+		html.append("<meta name=\"subjectCoverage.Subject.keyword\" content=\"").append(TEST_VALUE).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -101,7 +101,7 @@ public class KeywordTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Keyword: ").append(TEST_VALUE).append("\n");
+		text.append("keyword: ").append(TEST_VALUE).append("\n");
 		return (text.toString());
 	}
 

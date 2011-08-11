@@ -159,8 +159,8 @@ public final class Source extends AbstractQualifierValue {
 		StringBuffer html = new StringBuffer();
 		html.append(buildHTMLMeta("source.qualifier", getQualifier(), false));
 		html.append(buildHTMLMeta("source.value", getValue(), false));
-		html.append(buildHTMLMeta("source.schema.qualifier", getSchemaQualifier(), false));
-		html.append(buildHTMLMeta("source.schema.href", getSchemaHref(), false));
+		html.append(buildHTMLMeta("source.schemaQualifier", getSchemaQualifier(), false));
+		html.append(buildHTMLMeta("source.schemaHref", getSchemaHref(), false));
 		html.append(getSecurityAttributes().toHTML(Source.NAME));
 		return (html.toString());
 	}
@@ -170,10 +170,10 @@ public final class Source extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Source Qualifier", getQualifier(), false));
-		text.append(buildTextLine("Source Value", getValue(), false));
-		text.append(buildTextLine("Source Schema Qualifier", getSchemaQualifier(), false));
-		text.append(buildTextLine("Source Schema href", getSchemaHref(), false));
+		text.append(buildTextLine("source qualifier", getQualifier(), false));
+		text.append(buildTextLine("source value", getValue(), false));
+		text.append(buildTextLine("source schemaQualifier", getSchemaQualifier(), false));
+		text.append(buildTextLine("source schemaHref", getSchemaHref(), false));
 		text.append(getSecurityAttributes().toText("Source"));
 		return (text.toString());
 	}

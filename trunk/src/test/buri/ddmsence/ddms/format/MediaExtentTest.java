@@ -99,8 +99,8 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"format.extentqualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"format.extent\" content=\"").append(TEST_VALUE).append("\" />\n");
+		html.append("<meta name=\"format.Media.extent.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
+		html.append("<meta name=\"format.Media.extent.value\" content=\"").append(TEST_VALUE).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -109,8 +109,8 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Extent qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append("Extent: ").append(TEST_VALUE).append("\n");
+		text.append("format.Media.extent.qualifier: ").append(TEST_QUALIFIER).append("\n");
+		text.append("format.Media.extent.value: ").append(TEST_VALUE).append("\n");
 		return (text.toString());
 	}
 

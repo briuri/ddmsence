@@ -225,7 +225,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			html.append(keyword.toHTML());
 		for (Category category : getCategories())
 			html.append(category.toHTML());
-		html.append(getSecurityAttributes().toHTML("subject"));
+		html.append(getSecurityAttributes().toHTML("subjectCoverage"));
 		return (html.toString());
 
 	}
@@ -239,7 +239,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			text.append(keyword.toText());
 		for (Category category : getCategories())
 			text.append(category.toText());
-		text.append(getSecurityAttributes().toText("Subject"));
+		text.append(getSecurityAttributes().toText("subjectCoverage"));
 		return (text.toString());
 	}
 	

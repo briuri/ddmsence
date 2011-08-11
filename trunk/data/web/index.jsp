@@ -20,10 +20,10 @@
 	<meta name="description.ownerProducer" content="USA" />
 	<meta name="language.qualifier" content="http://purl.org/dc/elements/1.1/language" />
 	<meta name="language" content="en" />
-	<meta name="date.created" content="2010-03-13" />
-	<meta name="date.posted" content="2003-03-13" />
+	<meta name="dates.created" content="2010-03-13" />
+	<meta name="dates.posted" content="2003-03-13" />
 	<meta name="rights.privacy" content="false" />
-	<meta name="rights.intellectualproperty" content="true" />
+	<meta name="rights.intellectualProperty" content="true" />
 	<meta name="rights.copy" content="true" />
 	<meta name="type.qualifier" content="DCMITYPE" />
 	<meta name="type.value" content="http://purl.org/dc/dcmitype/Text" />
@@ -41,16 +41,16 @@
 	<meta name="pointOfContact.surname" content="Uri" />
 	<meta name="format.media" content="text/html" />
 	<meta name="format.medium" content="digital" />
-	<meta name="subject.keyword" content="DDMSence" />
-	<meta name="subject.keyword" content="DDMS" />
-	<meta name="subject.keyword" content="Metadata" />
-	<meta name="subject.keyword" content="Discovery" />
-	<meta name="subject.keyword" content="Java" />
-	<meta name="subject.keyword" content="DoD" />
-	<meta name="subject.keyword" content="XML" />
-	<meta name="subject.keyword" content="DDMEssence" />
-	<meta name="subject.keyword" content="DDMSense" />
-	<meta name="subject.keyword" content="Essence" />
+	<meta name="subjectCoverage.Subject.keyword" content="DDMSence" />
+	<meta name="subjectCoverage.Subject.keyword" content="DDMS" />
+	<meta name="subjectCoverage.Subject.keyword" content="Metadata" />
+	<meta name="subjectCoverage.Subject.keyword" content="Discovery" />
+	<meta name="subjectCoverage.Subject.keyword" content="Java" />
+	<meta name="subjectCoverage.Subject.keyword" content="DoD" />
+	<meta name="subjectCoverage.Subject.keyword" content="XML" />
+	<meta name="subjectCoverage.Subject.keyword" content="DDMEssence" />
+	<meta name="subjectCoverage.Subject.keyword" content="DDMSense" />
+	<meta name="subjectCoverage.Subject.keyword" content="Essence" />
 	<meta name="virtual.address" content="http://ddmsence.urizone.net/" />
 	<meta name="virtual.networkProtocol" content="URL" />
 	<meta name="temporal.TimePeriod" content="Unknown" />

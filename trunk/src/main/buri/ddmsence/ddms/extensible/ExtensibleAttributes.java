@@ -71,9 +71,9 @@ import buri.ddmsence.util.Util;
  * 
  * <p>The DDMS documentation does not provide sample HTML/Text output for extensible attributes, so the following
  * approach is used. In general, the HTML/Text output of extensible attributes will be prefixed with the name of the
- * element being marked. For example:</p> <ul><code> Keyword Opensearch Relevance: 95<br /> Keyword Opensearch
- * Confidence: 82<br /> &lt;meta name="subject.keyword.opensearch.relevance" content="95" /&gt;<br /> &lt;meta
- * name="subject.keyword.opensearch.confidence" content="82" /&gt;<br /> </code></ul></p>
+ * element being marked. For example:</p> <ul><code> keyword opensearch:relevance: 95<br /> keyword opensearch:confidence: 82
+ * <br /> &lt;meta name="subjectCoverage.Subject.keyword.opensearch.relevance" content="95" /&gt;<br /> &lt;meta
+ * name="subjectCoverage.Subject.keyword.opensearch.confidence" content="82" /&gt;<br /> </code></ul></p>
  * 
  * <p>Details about the XOM Attribute class can be found at:
  * <i>http://www.xom.nu/apidocs/index.html?nu/xom/Attribute.html</i></p>
@@ -216,8 +216,8 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			prefix = prefix + " ";
 		StringBuffer text = new StringBuffer();
 		for (Attribute attribute : getAttributes()) {
-			text.append(Resource.buildTextLine(prefix + Util.capitalize(attribute.getNamespacePrefix()) + " "
-				+ Util.capitalize(attribute.getLocalName()), attribute.getValue(), false));	
+			text.append(Resource.buildTextLine(prefix + attribute.getNamespacePrefix() + ":"
+				+ attribute.getLocalName(), attribute.getValue(), false));	
 		}
 		return (text.toString());
 	}

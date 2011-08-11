@@ -99,9 +99,9 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Subtitle: ").append(TEST_VALUE).append("\n");
-		text.append("Subtitle Classification: U\n");
-		text.append("Subtitle ownerProducer: USA\n");
+		text.append("subtitle: ").append(TEST_VALUE).append("\n");
+		text.append("subtitle classification: U\n");
+		text.append("subtitle ownerProducer: USA\n");
 		return (text.toString());
 	}
 

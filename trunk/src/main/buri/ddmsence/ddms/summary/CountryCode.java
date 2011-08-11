@@ -34,8 +34,8 @@ import buri.ddmsence.util.Util;
  * 
  * <p>
  * The Text/HTML output of this class depends on the enclosing element of this country code. For example,
- * if the country code is used in a GeographicIdentifier.NAME, the HTML meta tags will prefix each field
- * with "geospatial.identifier.". See the DDMS category descriptions for other examples:
+ * if the country code is used in a geographicIdentifier, the HTML meta tags will prefix each field
+ * with "geospatialCoverage.GeospatialExtent.geographicIdentifier.". See the DDMS category descriptions for other examples:
  * http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#CountryCodeQualifier
  * </p>
  * 
@@ -153,10 +153,10 @@ public final class CountryCode extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		String parentHtml = (getParentType().equals(GeographicIdentifier.NAME)
-			? "geospatial.identifier" : "geospatial.address");
+			? "geospatialCoverage.GeospatialExtent.geographicIdentifier" : "geospatialCoverage.GeospatialExtent.postalAddress");
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(parentHtml + ".country.qualifier", getQualifier(), true));
-		html.append(buildHTMLMeta(parentHtml + ".country", getValue(), true));
+		html.append(buildHTMLMeta(parentHtml + ".countryCode.qualifier", getQualifier(), true));
+		html.append(buildHTMLMeta(parentHtml + ".countryCode.value", getValue(), true));
 		return (html.toString());
 	}
 	
@@ -165,10 +165,10 @@ public final class CountryCode extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		String parentText = (getParentType().equals(GeographicIdentifier.NAME) 
-			? "Geographic Identifier" : "Postal Address");
+			? "geographicIdentifier" : "postalAddress");
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(parentText + " Country Qualifier", getQualifier(), true));
-		text.append(buildTextLine(parentText + " Country", getValue(), true));
+		text.append(buildTextLine(parentText + " countryCode qualifier", getQualifier(), true));
+		text.append(buildTextLine(parentText + " countryCode value", getValue(), true));
 		return (text.toString());
 	}
 	

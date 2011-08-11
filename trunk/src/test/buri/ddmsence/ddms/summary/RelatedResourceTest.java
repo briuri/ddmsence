@@ -117,13 +117,13 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"RelatedResource.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"RelatedResource.value\" content=\"").append(TEST_VALUE).append("\" />\n");
-		html.append("<meta name=\"Link.type\" content=\"locator\" />\n");
-		html.append("<meta name=\"Link.href\" content=\"").append(TEST_VALUE).append("\" />\n");
-		html.append("<meta name=\"Link.role\" content=\"tank\" />\n");
-		html.append("<meta name=\"Link.title\" content=\"Tank Page\" />\n");
-		html.append("<meta name=\"Link.label\" content=\"tank\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.value\" content=\"").append(TEST_VALUE).append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"locator\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"").append(TEST_VALUE).append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.role\" content=\"tank\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.title\" content=\"Tank Page\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.label\" content=\"tank\" />\n");
 		return (html.toString());
 	}
 
@@ -134,11 +134,11 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		StringBuffer text = new StringBuffer();
 		text.append("Related Resource qualifier: ").append(TEST_QUALIFIER).append("\n");
 		text.append("Related Resource value: ").append(TEST_VALUE).append("\n");
-		text.append("Link type: locator\n");
-		text.append("Link href: ").append(TEST_VALUE).append("\n");
-		text.append("Link role: tank\n");
-		text.append("Link title: Tank Page\n");
-		text.append("Link label: tank\n");
+		text.append("Related Resource link type: locator\n");
+		text.append("Related Resource link href: ").append(TEST_VALUE).append("\n");
+		text.append("Related Resource link role: tank\n");
+		text.append("Related Resource link title: Tank Page\n");
+		text.append("Related Resource link label: tank\n");
 		return (text.toString());
 	}
 

@@ -92,9 +92,9 @@ public class FormatTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"format.media\" content=\"").append(TEST_MIME_TYPE).append("\" />\n");
+		html.append("<meta name=\"format.Media.mimeType\" content=\"").append(TEST_MIME_TYPE).append("\" />\n");
 		html.append(MediaExtentTest.getFixture().toHTML());
-		html.append("<meta name=\"format.medium\" content=\"").append(TEST_MEDIUM).append("\" />\n");
+		html.append("<meta name=\"format.Media.medium\" content=\"").append(TEST_MEDIUM).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -103,9 +103,9 @@ public class FormatTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("Media format: ").append(TEST_MIME_TYPE).append("\n");
+		text.append("format.Media.mimeType: ").append(TEST_MIME_TYPE).append("\n");
 		text.append(MediaExtentTest.getFixture().toText());
-		text.append("Medium: ").append(TEST_MEDIUM).append("\n");
+		text.append("format.Media.medium: ").append(TEST_MEDIUM).append("\n");
 		return (text.toString());
 	}
 

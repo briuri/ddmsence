@@ -97,9 +97,9 @@ public class RightsTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Privacy Act: true\n");
-		text.append("Intellectual Property Rights: true\n");
-		text.append("Copyright: false\n");
+		text.append("privacyAct: true\n");
+		text.append("intellectualProperty: true\n");
+		text.append("copyright: false\n");
 		return (text.toString());
 	}
 

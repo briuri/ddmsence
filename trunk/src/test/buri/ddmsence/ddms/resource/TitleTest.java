@@ -97,9 +97,9 @@ public class TitleTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Title: ").append(TEST_VALUE).append("\n");
-		text.append("Title Classification: U\n");
-		text.append("Title ownerProducer: USA\n");
+		text.append("title: ").append(TEST_VALUE).append("\n");
+		text.append("title classification: U\n");
+		text.append("title ownerProducer: USA\n");
 		return (text.toString());
 	}
 

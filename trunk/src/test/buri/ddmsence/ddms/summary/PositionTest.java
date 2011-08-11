@@ -95,15 +95,15 @@ public class PositionTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatial.boundingGeometry.position\" content=\"").append(TEST_XS_LIST)
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.position\" content=\"").append(TEST_XS_LIST)
 			.append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.position.srsName\" content=\"")
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsName\" content=\"")
 			.append(SRSAttributesTest.TEST_SRS_NAME).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.position.srsDimension\" content=\"")
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsDimension\" content=\"")
 			.append(SRSAttributesTest.TEST_SRS_DIMENSION).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.position.axisLabels\" content=\"")
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.position.axisLabels\" content=\"")
 			.append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.position.uomLabels\" content=\"")
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.position.uomLabels\" content=\"")
 			.append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\" />\n");
 		return (html.toString());
 	}
@@ -113,14 +113,14 @@ public class PositionTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Geospatial Geometry Position: ").append(TEST_XS_LIST).append("\n");
-		text.append("Geospatial Geometry Position SRS Name: ").append(SRSAttributesTest.TEST_SRS_NAME)
+		text.append("boundingGeometry position: ").append(TEST_XS_LIST).append("\n");
+		text.append("boundingGeometry position srsName: ").append(SRSAttributesTest.TEST_SRS_NAME)
 			.append("\n");
-		text.append("Geospatial Geometry Position SRS Dimension: ").append(SRSAttributesTest.TEST_SRS_DIMENSION)
+		text.append("boundingGeometry position srsDimension: ").append(SRSAttributesTest.TEST_SRS_DIMENSION)
 			.append("\n");
-		text.append("Geospatial Geometry Position Axis Labels: ")
+		text.append("boundingGeometry position axisLabels: ")
 			.append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\n");
-		text.append("Geospatial Geometry Position Unit of Measure Labels: ")
+		text.append("boundingGeometry position uomLabels: ")
 			.append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\n");
 		return (text.toString());
 	}

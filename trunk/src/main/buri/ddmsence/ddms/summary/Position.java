@@ -44,22 +44,22 @@ import buri.ddmsence.util.Util;
  * <p>
  * <b>Suggested Text Output</b><br />
  * <code>
- * Geospatial Geometry Position: value<br />
- * Geospatial Geometry Position SRS Name: value<br />
- * Geospatial Geometry Position SRS Dimension: value<br />
- * Geospatial Geometry Position Axis Labels: value<br />
- * Geospatial Geometry Position Unit of Measure Labels: value<br />
+ * boundingGeometry position: value<br />
+ * boundingGeometry position srsName: value<br />
+ * boundingGeometry position srsDimension: value<br />
+ * boundingGeometry position axisLabels: value<br />
+ * boundingGeometry position uomLabels: value<br />
  * </code>
  * </p>
  * 
  * <p>
  * <b>Suggested HTML Output</b><br />
  * <code>
- * &lt;meta name="geospatial.boundingGeometry.position" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.position.srsName" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.position.srsDimension" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.position.axisLabels" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingGeometry.position.uomLabels" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsName" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsDimension" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.axisLabels" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.uomLabels" content="value" /&gt;<br />
  * </code>
  * </p>
  * </ul>
@@ -207,16 +207,16 @@ public final class Position extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.position", getCoordinatesAsXsList(), true));
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.position.srsName", getSRSAttributes().getSrsName(),
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position", getCoordinatesAsXsList(), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsName", getSRSAttributes().getSrsName(),
 			false));
 		if (getSRSAttributes().getSrsDimension() != null) {
-			html.append(buildHTMLMeta("geospatial.boundingGeometry.position.srsDimension", 
+			html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsDimension", 
 				String.valueOf(getSRSAttributes().getSrsDimension()), false));
 		}
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.position.axisLabels", 
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position.axisLabels", 
 			getSRSAttributes().getAxisLabelsAsXsList(), false));
-		html.append(buildHTMLMeta("geospatial.boundingGeometry.position.uomLabels", 
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position.uomLabels", 
 			getSRSAttributes().getUomLabelsAsXsList(), false));
 		return (html.toString());
 	}
@@ -226,16 +226,16 @@ public final class Position extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Geospatial Geometry Position", getCoordinatesAsXsList(), true));
-		text.append(buildTextLine("Geospatial Geometry Position SRS Name", 
+		text.append(buildTextLine("boundingGeometry position", getCoordinatesAsXsList(), true));
+		text.append(buildTextLine("boundingGeometry position srsName", 
 			getSRSAttributes().getSrsName(), false));
 		if (getSRSAttributes().getSrsDimension() != null) {
-			text.append(buildTextLine("Geospatial Geometry Position SRS Dimension", 
+			text.append(buildTextLine("boundingGeometry position srsDimension", 
 				String.valueOf(getSRSAttributes().getSrsDimension()), false));
 		}
-		text.append(buildTextLine("Geospatial Geometry Position Axis Labels", 
+		text.append(buildTextLine("boundingGeometry position axisLabels", 
 			getSRSAttributes().getAxisLabelsAsXsList(), false));
-		text.append(buildTextLine("Geospatial Geometry Position Unit of Measure Labels", 
+		text.append(buildTextLine("boundingGeometry position uomLabels", 
 			getSRSAttributes().getUomLabelsAsXsList(), false));
 		return (text.toString());
 	}

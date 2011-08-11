@@ -114,8 +114,8 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("geospatial.identifier.facility.BEnumber", getBeNumber(), true));
-		html.append(buildHTMLMeta("geospatial.identifier.facility.Osuffix", getOsuffix(), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.geographicIdentifier.facilityIdentifier.beNumber", getBeNumber(), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.geographicIdentifier.facilityIdentifier.osuffix", getOsuffix(), true));
 		return (html.toString());
 	}
 	
@@ -124,8 +124,8 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Geographic Identifier BEnumber", getBeNumber(), true));
-		text.append(buildTextLine("Geographic Identifier Osuffix", getOsuffix(), true));
+		text.append(buildTextLine("geographicIdentifier facilityIdentifer beNumber", getBeNumber(), true));
+		text.append(buildTextLine("geographicIdentifier facilityIdentifer osuffix", getOsuffix(), true));
 		return (text.toString());
 	}
 

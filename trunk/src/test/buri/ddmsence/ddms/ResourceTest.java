@@ -278,8 +278,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"description.classification\" content=\"U\" />\n");
 		html.append("<meta name=\"description.ownerProducer\" content=\"USA\" />\n");
 		html.append("<meta name=\"language.qualifier\" content=\"http://purl.org/dc/elements/1.1/language\" />\n");
-		html.append("<meta name=\"language\" content=\"en\" />\n");
-		html.append("<meta name=\"date.created\" content=\"2003\" />\n");
+		html.append("<meta name=\"language.value\" content=\"en\" />\n");
+		html.append("<meta name=\"dates.created\" content=\"2003\" />\n");
 		html.append("<meta name=\"rights.privacy\" content=\"true\" />\n");
 		html.append("<meta name=\"rights.intellectualproperty\" content=\"true\" />\n");
 		html.append("<meta name=\"rights.copy\" content=\"true\" />\n");
@@ -302,28 +302,28 @@ public class ResourceTest extends AbstractComponentTestCase {
 			html.append("<meta name=\"pointOfContact.name\" content=\"Brian\" />\n");
 			html.append("<meta name=\"pointOfContact.surname\" content=\"Uri\" />\n");
 		}
-		html.append("<meta name=\"format.media\" content=\"text/xml\" />\n");
-		html.append("<meta name=\"subject.keyword\" content=\"DDMSence\" />\n");
+		html.append("<meta name=\"format.Media.mimeType\" content=\"text/xml\" />\n");
+		html.append("<meta name=\"subjectCoverage.Subject.keyword\" content=\"DDMSence\" />\n");
 		html.append("<meta name=\"virtual.address\" content=\"123.456.789.0\" />\n");
-		html.append("<meta name=\"virtual.networkProtocol\" content=\"IP\" />\n");
-		html.append("<meta name=\"temporal.TimePeriod\" content=\"Unknown\" />\n");
-		html.append("<meta name=\"temporal.DateStart\" content=\"1979-09-15\" />\n");
-		html.append("<meta name=\"temporal.DateEnd\" content=\"Not Applicable\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.id\" content=\"IDValue\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.type\" content=\"Point\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.srsName\" ")
+		html.append("<meta name=\"virtual.protocol\" content=\"IP\" />\n");
+		html.append("<meta name=\"temporalCoverage.TimePeriod.name\" content=\"Unknown\" />\n");
+		html.append("<meta name=\"temporalCoverage.TimePeriod.start\" content=\"1979-09-15\" />\n");
+		html.append("<meta name=\"temporalCoverage.TimePeriod.end\" content=\"Not Applicable\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.id\" content=\"IDValue\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.type\" content=\"Point\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.srsName\" ")
 			.append("content=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.srsDimension\" content=\"10\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.axisLabels\" content=\"A B C\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.uomLabels\" content=\"Meter Meter Meter\" />\n");
-		html.append("<meta name=\"geospatial.boundingGeometry.position\" content=\"32.1 40.1\" />\n");
-		html.append("<meta name=\"RelatedResources.relationship\" ")
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.srsDimension\" content=\"10\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.axisLabels\" content=\"A B C\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.uomLabels\" content=\"Meter Meter Meter\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.position\" content=\"32.1 40.1\" />\n");
+		html.append("<meta name=\"relatedResources.relationship\" ")
 			.append("content=\"http://purl.org/dc/terms/references\" />\n");
-		html.append("<meta name=\"RelatedResources.direction\" content=\"outbound\" />\n");
-		html.append("<meta name=\"RelatedResource.qualifier\" content=\"http://purl.org/dc/terms/URI\" />\n");
-		html.append("<meta name=\"RelatedResource.value\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
-		html.append("<meta name=\"Link.type\" content=\"locator\" />\n");
-		html.append("<meta name=\"Link.href\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
+		html.append("<meta name=\"relatedResources.direction\" content=\"outbound\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.qualifier\" content=\"http://purl.org/dc/terms/URI\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.value\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"locator\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
 		if (!DDMSVersion.isCurrentVersion("2.0"))
 			html.append("<meta name=\"security.excludeFromRollup\" content=\"true\" />\n");
 		html.append("<meta name=\"security.classification\" content=\"U\" />\n");
@@ -341,80 +341,80 @@ public class ResourceTest extends AbstractComponentTestCase {
 		StringBuffer text = new StringBuffer();
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
 			String desVersion = DDMSVersion.isCurrentVersion("3.0") ? "2" : "5";
-			text.append("ResourceElement: true\n");
-			text.append("Create Date: 2010-01-21\n");
-			text.append("DES Version: ").append(desVersion).append("\n");
-			text.append("Classification: U\n");
+			text.append("resourceElement: true\n");
+			text.append("createDate: 2010-01-21\n");
+			text.append("DESVersion: ").append(desVersion).append("\n");
+			text.append("classification: U\n");
 			text.append("ownerProducer: USA\n");
 		}
 		else {
 			// Adding the optional ICISM tag allows the namespace declaration to definitely be in the Resource element.
-			text.append("DES Version: 2\n");
+			text.append("DESVersion: 2\n");
 		}
-		text.append("Identifier qualifier: URI\n");
-		text.append("Identifier value: urn:buri:ddmsence:testIdentifier\n");
-		text.append("Title: DDMSence\n");
-		text.append("Title Classification: U\n");
-		text.append("Title ownerProducer: USA\n");
-		text.append("Subtitle: Version 0.1\n");
-		text.append("Subtitle Classification: U\n");
-		text.append("Subtitle ownerProducer: USA\n");
-		text.append("Description: A transformation service.\n");
-		text.append("Description Classification: U\n");
-		text.append("Description ownerProducer: USA\n");
-		text.append("Language qualifier: http://purl.org/dc/elements/1.1/language\n");
-		text.append("Language: en\n");
-		text.append("Date Created: 2003\n");
-		text.append("Privacy Act: true\n");
-		text.append("Intellectual Property Rights: true\n");
-		text.append("Copyright: true\n");
-		text.append("Source Value: http://www.xmethods.com\n");
-		text.append("Type qualifier: DCMITYPE\n");
-		text.append("Type: http://purl.org/dc/dcmitype/Text\n");
-		text.append("Creator EntityType: Organization\n");
-		text.append("Name: DISA\n");
-		text.append("Publisher EntityType: Person\n");
-		text.append("Name: Brian\n");
-		text.append("Surname: Uri\n");
-		text.append("Contributor EntityType: Web Service\n");
-		text.append("Name: https://metadata.dod.mil/ebxmlquery/soap\n");
+		text.append("identifier qualifier: URI\n");
+		text.append("identifier value: urn:buri:ddmsence:testIdentifier\n");
+		text.append("title: DDMSence\n");
+		text.append("title classification: U\n");
+		text.append("title ownerProducer: USA\n");
+		text.append("subtitle: Version 0.1\n");
+		text.append("subtitle classification: U\n");
+		text.append("subtitle ownerProducer: USA\n");
+		text.append("description: A transformation service.\n");
+		text.append("description classification: U\n");
+		text.append("description ownerProducer: USA\n");
+		text.append("language qualifier: http://purl.org/dc/elements/1.1/language\n");
+		text.append("language value: en\n");
+		text.append("created: 2003\n");
+		text.append("privacyAct: true\n");
+		text.append("intellectualProperty: true\n");
+		text.append("copyright: true\n");
+		text.append("source value: http://www.xmethods.com\n");
+		text.append("type qualifier: DCMITYPE\n");
+		text.append("type value: http://purl.org/dc/dcmitype/Text\n");
+		text.append("creator EntityType: Organization\n");
+		text.append("name: DISA\n");
+		text.append("publisher EntityType: Person\n");
+		text.append("name: Brian\n");
+		text.append("surname: Uri\n");
+		text.append("contributor EntityType: Service\n");
+		text.append("name: https://metadata.dod.mil/ebxmlquery/soap\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			text.append("PointOfContact EntityType: Unknown\n");
-			text.append("Name: Unknown Entity\n");
+			text.append("pointOfContact EntityType: Unknown\n");
+			text.append("name: Unknown Entity\n");
 		}
 		else {
-			text.append("PointOfContact EntityType: Person\n");
-			text.append("Name: Brian\n");
-			text.append("Surname: Uri\n");			
+			text.append("pointOfContact EntityType: Person\n");
+			text.append("name: Brian\n");
+			text.append("surname: Uri\n");			
 		}
-		text.append("Media format: text/xml\n");
-		text.append("Keyword: DDMSence\n");
-		text.append("Virtual address: 123.456.789.0\n");
-		text.append("Network Protocol: IP\n");
-		text.append("Time Period: Unknown\n");
-		text.append("Date Start: 1979-09-15\n");
-		text.append("Date End: Not Applicable\n");
-		text.append("Geospatial Geometry ID: IDValue\n");
-		text.append("Geospatial Geometry Type: Point\n");
-		text.append("Geospatial Geometry SRS Name: http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\n");
-		text.append("Geospatial Geometry SRS Dimension: 10\n");
-		text.append("Geospatial Geometry Axis Labels: A B C\n");
-		text.append("Geospatial Geometry Unit of Measure Labels: Meter Meter Meter\n");
-		text.append("Geospatial Geometry Position: 32.1 40.1\n");
-		text.append("Related Resources relationship: http://purl.org/dc/terms/references\n");
-		text.append("Related Resources direction: outbound\n");
+		text.append("format.Media.mimeType: text/xml\n");
+		text.append("keyword: DDMSence\n");
+		text.append("virtual address: 123.456.789.0\n");
+		text.append("virtual protocol: IP\n");
+		text.append("TimePeriod name: Unknown\n");
+		text.append("TimePeriod start: 1979-09-15\n");
+		text.append("TimePeriod end: Not Applicable\n");
+		text.append("boundingGeometry id: IDValue\n");
+		text.append("boundingGeometry type: Point\n");
+		text.append("boundingGeometry srsName: http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\n");
+		text.append("boundingGeometry srsDimension: 10\n");
+		text.append("boundingGeometry axisLabels: A B C\n");
+		text.append("boundingGeometry uomLabels: Meter Meter Meter\n");
+		text.append("boundingGeometry position: 32.1 40.1\n");
+		text.append("relatedResources relationship: http://purl.org/dc/terms/references\n");
+		text.append("relatedResources direction: outbound\n");
 		text.append("Related Resource qualifier: http://purl.org/dc/terms/URI\n");
 		text.append("Related Resource value: http://en.wikipedia.org/wiki/Tank\n");
-		text.append("Link type: locator\n");
-		text.append("Link href: http://en.wikipedia.org/wiki/Tank\n");
+		text.append("Related Resource link type: locator\n");
+		text.append("Related Resource link href: http://en.wikipedia.org/wiki/Tank\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			text.append("Exclude From Rollup: true\n");
+			text.append("excludeFromRollup: true\n");
 		}
-		text.append("Classification: U\n");
+		text.append("classification: U\n");
 		text.append("ownerProducer: USA\n");
-		text.append("Extensible Layer: false\n");
-		text.append("DDMS Generator: DDMSence ").append(PropertyReader.getProperty("version")).append("\n");
-		text.append("DDMS Version: ").append(DDMSVersion.getCurrentVersion()).append("\n");
+		text.append("extensibleLayer: false\n");
+		text.append("DDMSGenerator: DDMSence ").append(PropertyReader.getProperty("version")).append("\n");
+		text.append("DDMSVersion: ").append(DDMSVersion.getCurrentVersion()).append("\n");
 		return (text.toString());
 	}
 
@@ -1391,7 +1391,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		Resource resource = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
 			getDESVersion(version));
 		assertTrue(resource.toHTML().indexOf("<meta name=\"extensible.layer\" content=\"true\" />") != -1);
-		assertTrue(resource.toText().indexOf("Extensible Layer: true\n") != -1);
+		assertTrue(resource.toText().indexOf("extensibleLayer: true\n") != -1);
 	}
 	
 	public void testWrongVersionExtensibleElementAllowed() throws InvalidDDMSException {

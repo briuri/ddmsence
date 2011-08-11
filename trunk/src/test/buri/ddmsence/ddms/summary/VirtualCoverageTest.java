@@ -94,7 +94,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"virtual.address\" content=\"").append(TEST_ADDRESS).append("\" />\n");
-		html.append("<meta name=\"virtual.networkProtocol\" content=\"").append(TEST_PROTOCOL).append("\" />\n");
+		html.append("<meta name=\"virtual.protocol\" content=\"").append(TEST_PROTOCOL).append("\" />\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
 			html.append("<meta name=\"virtual.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"virtual.ownerProducer\" content=\"USA\" />\n");
@@ -107,11 +107,11 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Virtual address: ").append(TEST_ADDRESS).append("\n");
-		text.append("Network Protocol: ").append(TEST_PROTOCOL).append("\n");
+		text.append("virtual address: ").append(TEST_ADDRESS).append("\n");
+		text.append("virtual protocol: ").append(TEST_PROTOCOL).append("\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			text.append("Virtual Classification: U\n");
-			text.append("Virtual ownerProducer: USA\n");
+			text.append("virtual classification: U\n");
+			text.append("virtual ownerProducer: USA\n");
 		}
 		return (text.toString());
 	}

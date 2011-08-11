@@ -115,19 +115,19 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput(boolean hasState) {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatial.address.street\" content=\"").append(TEST_STREETS.get(0))
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.street\" content=\"").append(TEST_STREETS.get(0))
 			.append("\" />\n");
-		html.append("<meta name=\"geospatial.address.city\" content=\"").append(TEST_CITY).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.city\" content=\"").append(TEST_CITY).append("\" />\n");
 		if (hasState)
-			html.append("<meta name=\"geospatial.address.state\" content=\"").append(TEST_STATE).append("\" />\n");
+			html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.state\" content=\"").append(TEST_STATE).append("\" />\n");
 		else {
-			html.append("<meta name=\"geospatial.address.province\" content=\"").append(TEST_PROVINCE)
+			html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.province\" content=\"").append(TEST_PROVINCE)
 				.append("\" />\n");
 		}
-		html.append("<meta name=\"geospatial.address.postalcode\" content=\"").append(TEST_POSTAL_CODE)
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.postalCode\" content=\"").append(TEST_POSTAL_CODE)
 			.append("\" />\n");
-		html.append("<meta name=\"geospatial.address.country.qualifier\" content=\"ISO-3166\" />\n");
-		html.append("<meta name=\"geospatial.address.country\" content=\"USA\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.countryCode.qualifier\" content=\"ISO-3166\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.countryCode.value\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -138,15 +138,15 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput(boolean hasState) {
 		StringBuffer text = new StringBuffer();
-		text.append("Postal Address Street: ").append(TEST_STREETS.get(0)).append("\n");
-		text.append("Postal Address City: ").append(TEST_CITY).append("\n");
+		text.append("postalAddress street: ").append(TEST_STREETS.get(0)).append("\n");
+		text.append("postalAddress city: ").append(TEST_CITY).append("\n");
 		if (hasState)
-			text.append("Postal Address State: ").append(TEST_STATE).append("\n");
+			text.append("postalAddress state: ").append(TEST_STATE).append("\n");
 		else
-			text.append("Postal Address Province: ").append(TEST_PROVINCE).append("\n");
-		text.append("Postal Address Postal Code: ").append(TEST_POSTAL_CODE).append("\n");
-		text.append("Postal Address Country Qualifier: ISO-3166\n");
-		text.append("Postal Address Country: USA\n");
+			text.append("postalAddress province: ").append(TEST_PROVINCE).append("\n");
+		text.append("postalAddress postalCode: ").append(TEST_POSTAL_CODE).append("\n");
+		text.append("postalAddress countryCode qualifier: ISO-3166\n");
+		text.append("postalAddress countryCode value: USA\n");
 		return (text.toString());
 	}
 

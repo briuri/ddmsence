@@ -99,9 +99,9 @@ public class DescriptionTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Description: ").append(TEST_VALUE).append("\n");
-		text.append("Description Classification: U\n");
-		text.append("Description ownerProducer: USA\n");
+		text.append("description: ").append(TEST_VALUE).append("\n");
+		text.append("description classification: U\n");
+		text.append("description ownerProducer: USA\n");
 		return (text.toString());
 	}
 

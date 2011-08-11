@@ -158,7 +158,7 @@ public final class Security extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		if (getExcludeFromRollup() != null)
-			text.append(buildTextLine("Exclude From Rollup", String.valueOf(getExcludeFromRollup()), true));
+			text.append(buildTextLine("excludeFromRollup", String.valueOf(getExcludeFromRollup()), true));
 		text.append(getSecurityAttributes().toText(""));
 		return (text.toString());
 	}

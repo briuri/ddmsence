@@ -82,8 +82,8 @@ import buri.ddmsence.util.Util;
  * (and may be removed). For example:</p>
  * 
  * <ul><code>
- * DDMS Generator: DDMSence 1.0.0<br />
- * DDMS Version: 3.0<br /><br />
+ * DDMSGenerator: DDMSence 1.0.0<br />
+ * DDMSVersion: 3.0<br /><br />
  * &lt;meta name="ddms.generator" content="DDMSence 1.0.0" /&gt;<br />
  * &lt;meta name="ddms.version" content="3.0" /&gt;<br />
  * </code></ul></p>
@@ -711,18 +711,18 @@ public final class Resource extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		if (isResourceElement() != null)
-			text.append(buildTextLine("ResourceElement", String.valueOf(isResourceElement()), true));
+			text.append(buildTextLine("resourceElement", String.valueOf(isResourceElement()), true));
 		if (getCreateDate() != null)
-			text.append(buildTextLine("Create Date", getCreateDate().toXMLFormat(), true));
+			text.append(buildTextLine("createDate", getCreateDate().toXMLFormat(), true));
 		if (getDESVersion() != null)
-			text.append(buildTextLine("DES Version", String.valueOf(getDESVersion()), true));
+			text.append(buildTextLine("DESVersion", String.valueOf(getDESVersion()), true));
 		text.append(getSecurityAttributes().toText(""));
 		text.append(getExtensibleAttributes().toText(""));
 		for (IDDMSComponent component : getTopLevelComponents())
 			text.append(component.toText());
-		text.append(buildTextLine("Extensible Layer", String.valueOf(!getExtensibleElements().isEmpty()), true));
-		text.append(buildTextLine("DDMS Generator", "DDMSence " + PropertyReader.getProperty("version"), true));
-		text.append(buildTextLine("DDMS Version", DDMSVersion.getVersionForDDMSNamespace(getNamespace()).getVersion(), true));
+		text.append(buildTextLine("extensibleLayer", String.valueOf(!getExtensibleElements().isEmpty()), true));
+		text.append(buildTextLine("DDMSGenerator", "DDMSence " + PropertyReader.getProperty("version"), true));
+		text.append(buildTextLine("DDMSVersion", DDMSVersion.getVersionForDDMSNamespace(getNamespace()).getVersion(), true));
 		return (text.toString());
 	}
 

@@ -114,9 +114,9 @@ public final class Rights extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Privacy Act", String.valueOf(getPrivacyAct()), true));
-		text.append(buildTextLine("Intellectual Property Rights", String.valueOf(getIntellectualProperty()), true));
-		text.append(buildTextLine("Copyright", String.valueOf(getCopyright()), true));
+		text.append(buildTextLine("privacyAct", String.valueOf(getPrivacyAct()), true));
+		text.append(buildTextLine("intellectualProperty", String.valueOf(getIntellectualProperty()), true));
+		text.append(buildTextLine("copyright", String.valueOf(getCopyright()), true));
 		return (text.toString());
 	}
 	

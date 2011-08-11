@@ -33,17 +33,17 @@ import buri.ddmsence.util.Util;
  * <p>The DDMS documentation has no Text/HTML examples for the output of this component, so a best guess was taken:</p>
  * <ul>
  * <p><b>Suggested Text Output</b><br /><code>
- * Bounding Box Westbound Longitude: value<br />
- * Bounding Box Eastbound Longitude: value<br />
- * Bounding Box Southbound Latitude: value<br />
- * Bounding Box Northbound Latitude: value<br />
+ * boundingBox WestBL: value<br />
+ * boundingBox EastBL: value<br />
+ * boundingBox SouthBL: value<br />
+ * boundingBox NorthBL: value<br />
  * </code></p>
  * 
  * <p><b>Suggested HTML Output</b><br /><code>
- * &lt;meta name="geospatial.boundingBox.WestBL" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingBox.EastBL" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingBox.SouthBL" content="value" /&gt;<br />
- * &lt;meta name="geospatial.boundingBox.NorthBL" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.WestBL" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.EastBL" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.SouthBL" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.NorthBL" content="value" /&gt;<br />
  * </code>
  * </ul></p>
  *
@@ -161,10 +161,10 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("geospatial.boundingBox.WestBL", String.valueOf(getWestBL()), true));
-		html.append(buildHTMLMeta("geospatial.boundingBox.EastBL", String.valueOf(getEastBL()), true));
-		html.append(buildHTMLMeta("geospatial.boundingBox.SouthBL", String.valueOf(getSouthBL()), true));
-		html.append(buildHTMLMeta("geospatial.boundingBox.NorthBL", String.valueOf(getNorthBL()), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingBox.WestBL", String.valueOf(getWestBL()), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingBox.EastBL", String.valueOf(getEastBL()), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingBox.SouthBL", String.valueOf(getSouthBL()), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingBox.NorthBL", String.valueOf(getNorthBL()), true));
 		return (html.toString());
 	}
 	
@@ -173,10 +173,10 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Bounding Box Westbound Longitude", String.valueOf(getWestBL()), true));
-		text.append(buildTextLine("Bounding Box Eastbound Longitude", String.valueOf(getEastBL()), true));
-		text.append(buildTextLine("Bounding Box Southbound Latitude", String.valueOf(getSouthBL()), true));
-		text.append(buildTextLine("Bounding Box Northbound Latitude", String.valueOf(getNorthBL()), true));
+		text.append(buildTextLine("boundingBox WestBL", String.valueOf(getWestBL()), true));
+		text.append(buildTextLine("boundingBox EastBL", String.valueOf(getEastBL()), true));
+		text.append(buildTextLine("boundingBox SouthBL", String.valueOf(getSouthBL()), true));
+		text.append(buildTextLine("boundingBox NorthBL", String.valueOf(getNorthBL()), true));
 		return (text.toString());
 	}
 	

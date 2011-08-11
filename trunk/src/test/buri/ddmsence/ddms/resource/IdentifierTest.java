@@ -97,8 +97,8 @@ public class IdentifierTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Identifier qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append("Identifier value: ").append(TEST_VALUE).append("\n");
+		text.append("identifier qualifier: ").append(TEST_QUALIFIER).append("\n");
+		text.append("identifier value: ").append(TEST_VALUE).append("\n");
 		return (text.toString());
 	}
 

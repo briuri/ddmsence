@@ -205,15 +205,15 @@ public final class Dates extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		if (getCreated() != null)
-			html.append(buildHTMLMeta("date.created", getCreated().toXMLFormat(), true));
+			html.append(buildHTMLMeta("dates.created", getCreated().toXMLFormat(), true));
 		if (getPosted() != null)
-			html.append(buildHTMLMeta("date.posted", getPosted().toXMLFormat(), true));
+			html.append(buildHTMLMeta("dates.posted", getPosted().toXMLFormat(), true));
 		if (getValidTil() != null)
-			html.append(buildHTMLMeta("date.validtil", getValidTil().toXMLFormat(), true));
+			html.append(buildHTMLMeta("dates.validTil", getValidTil().toXMLFormat(), true));
 		if (getInfoCutOff() != null)
-			html.append(buildHTMLMeta("date.infocutoff", getInfoCutOff().toXMLFormat(), true));
+			html.append(buildHTMLMeta("dates.infoCutOff", getInfoCutOff().toXMLFormat(), true));
 		if (getApprovedOn() != null)
-			html.append(buildHTMLMeta("date.approvedon", getApprovedOn().toXMLFormat(), true));
+			html.append(buildHTMLMeta("dates.approvedOn", getApprovedOn().toXMLFormat(), true));
 		return (html.toString());
 	}
 	
@@ -223,15 +223,15 @@ public final class Dates extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		if (getCreated() != null)
-			text.append(buildTextLine("Date Created", getCreated().toXMLFormat(), true));
+			text.append(buildTextLine("created", getCreated().toXMLFormat(), true));
 		if (getPosted() != null)
-			text.append(buildTextLine("Date Posted", getPosted().toXMLFormat(), true));
+			text.append(buildTextLine("posted", getPosted().toXMLFormat(), true));
 		if (getValidTil() != null)
-			text.append(buildTextLine("Date Valid Til", getValidTil().toXMLFormat(), true));
+			text.append(buildTextLine("validTil", getValidTil().toXMLFormat(), true));
 		if (getInfoCutOff() != null)
-			text.append(buildTextLine("Date Info Cut Off", getInfoCutOff().toXMLFormat(), true));
+			text.append(buildTextLine("infoCutOff", getInfoCutOff().toXMLFormat(), true));
 		if (getApprovedOn() != null)
-			text.append(buildTextLine("Date Approved On", getApprovedOn().toXMLFormat(), true));
+			text.append(buildTextLine("approvedOn", getApprovedOn().toXMLFormat(), true));
 		return (text.toString());
 	}
 	

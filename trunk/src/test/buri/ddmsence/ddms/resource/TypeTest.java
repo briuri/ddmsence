@@ -98,8 +98,8 @@ public class TypeTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Type qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append("Type: ").append(TEST_VALUE).append("\n");
+		text.append("type qualifier: ").append(TEST_QUALIFIER).append("\n");
+		text.append("type value: ").append(TEST_VALUE).append("\n");
 		return (text.toString());
 	}
 

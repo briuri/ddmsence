@@ -193,10 +193,10 @@ public final class Format extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("format.media", getMimeType(), true));
+		html.append(buildHTMLMeta("format.Media.mimeType", getMimeType(), true));
 		if (getExtent() != null)
 			html.append(getExtent().toHTML());
-		html.append(buildHTMLMeta("format.medium", getMedium(), false));
+		html.append(buildHTMLMeta("format.Media.medium", getMedium(), false));
 		return (html.toString());
 	}
 		
@@ -205,10 +205,10 @@ public final class Format extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Media format", getMimeType(), true));
+		text.append(buildTextLine("format.Media.mimeType", getMimeType(), true));
 		if (getExtent() != null)
 			text.append(getExtent().toText());
-		text.append(buildTextLine("Medium", getMedium(), false));
+		text.append(buildTextLine("format.Media.medium", getMedium(), false));
 		return (text.toString());
 	}
 	

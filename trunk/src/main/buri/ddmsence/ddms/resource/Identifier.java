@@ -115,8 +115,8 @@ public final class Identifier extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Identifier qualifier", getQualifier(), true));
-		text.append(buildTextLine("Identifier value", getValue(), true));
+		text.append(buildTextLine("identifier qualifier", getQualifier(), true));
+		text.append(buildTextLine("identifier value", getValue(), true));
 		return (text.toString());
 	}
 	

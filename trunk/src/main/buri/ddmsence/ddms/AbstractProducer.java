@@ -348,26 +348,16 @@ public abstract class AbstractProducer extends AbstractBaseComponent implements 
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(Util.capitalize(getProducerType()) + " EntityType", getTextOutputName(), true));
+		text.append(buildTextLine(getProducerType() + " EntityType", getEntityType(), true));
 		for (String name : getNames())
-			text.append(buildTextLine("Name", name, true));
+			text.append(buildTextLine("name", name, true));
 		for (String phone : getPhones())
-			text.append(buildTextLine("Phone Number", phone, true));
+			text.append(buildTextLine("phone", phone, true));
 		for (String email : getEmails())
-			text.append(buildTextLine("Email", email, true));
-		text.append(getSecurityAttributes().toText(Util.capitalize(getProducerType())));
-		text.append(getExtensibleAttributes().toText(Util.capitalize(getProducerType())));
+			text.append(buildTextLine("email", email, true));
+		text.append(getSecurityAttributes().toText(getProducerType()));
+		text.append(getExtensibleAttributes().toText(getProducerType()));
 		return (text.toString());		
-	}
-	
-	/**
-	 * Returns the producer entity name for Text output. This is overridden for Service entities, which are called
-	 * Service.NAME in XML and HTML, but "Web Service" in Text.
-	 * 
-	 * @return the name
-	 */
-	protected String getTextOutputName() {
-		return (getEntityType());
 	}
 	
 	/**

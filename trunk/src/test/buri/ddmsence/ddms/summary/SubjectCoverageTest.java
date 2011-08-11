@@ -109,14 +109,14 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"subject.keyword\" content=\"DDMSence\" />\n");
-		html.append("<meta name=\"subject.keyword\" content=\"Uri\" />\n");
-		html.append("<meta name=\"subject.category.qualifier\" content=\"urn:buri:ddmsence:categories\" />\n");
-		html.append("<meta name=\"subject.category.code\" content=\"DDMS\" />\n");
-		html.append("<meta name=\"subject.category.label\" content=\"DDMS\" />\n");
+		html.append("<meta name=\"subjectCoverage.Subject.keyword\" content=\"DDMSence\" />\n");
+		html.append("<meta name=\"subjectCoverage.Subject.keyword\" content=\"Uri\" />\n");
+		html.append("<meta name=\"subjectCoverage.Subject.category.qualifier\" content=\"urn:buri:ddmsence:categories\" />\n");
+		html.append("<meta name=\"subjectCoverage.Subject.category.code\" content=\"DDMS\" />\n");
+		html.append("<meta name=\"subjectCoverage.Subject.category.label\" content=\"DDMS\" />\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			html.append("<meta name=\"subject.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"subject.ownerProducer\" content=\"USA\" />\n");
+			html.append("<meta name=\"subjectCoverage.classification\" content=\"U\" />\n");
+			html.append("<meta name=\"subjectCoverage.ownerProducer\" content=\"USA\" />\n");
 		}
 		return (html.toString());
 	}
@@ -126,14 +126,14 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Keyword: DDMSence\n");
-		text.append("Keyword: Uri\n");
-		text.append("Category Qualifier: urn:buri:ddmsence:categories\n");
-		text.append("Category Code: DDMS\n");
-		text.append("Category Label: DDMS\n");
+		text.append("keyword: DDMSence\n");
+		text.append("keyword: Uri\n");
+		text.append("category qualifier: urn:buri:ddmsence:categories\n");
+		text.append("category code: DDMS\n");
+		text.append("category label: DDMS\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			text.append("Subject Classification: U\n");
-			text.append("Subject ownerProducer: USA\n");
+			text.append("subjectCoverage classification: U\n");
+			text.append("subjectCoverage ownerProducer: USA\n");
 		}
 		return (text.toString());
 	}

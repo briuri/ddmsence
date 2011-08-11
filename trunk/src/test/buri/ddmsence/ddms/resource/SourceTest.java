@@ -101,9 +101,9 @@ public class SourceTest extends AbstractComponentTestCase {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"source.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
 		html.append("<meta name=\"source.value\" content=\"").append(TEST_VALUE).append("\" />\n");
-		html.append("<meta name=\"source.schema.qualifier\" content=\"").append(TEST_SCHEMA_QUALIFIER)
+		html.append("<meta name=\"source.schemaQualifier\" content=\"").append(TEST_SCHEMA_QUALIFIER)
 			.append("\" />\n");
-		html.append("<meta name=\"source.schema.href\" content=\"").append(TEST_SCHEMA_HREF).append("\" />\n");
+		html.append("<meta name=\"source.schemaHref\" content=\"").append(TEST_SCHEMA_HREF).append("\" />\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
 			html.append("<meta name=\"source.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"source.ownerProducer\" content=\"USA\" />\n");
@@ -116,12 +116,12 @@ public class SourceTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Source Qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append("Source Value: ").append(TEST_VALUE).append("\n");
-		text.append("Source Schema Qualifier: ").append(TEST_SCHEMA_QUALIFIER).append("\n");
-		text.append("Source Schema href: ").append(TEST_SCHEMA_HREF).append("\n");
+		text.append("source qualifier: ").append(TEST_QUALIFIER).append("\n");
+		text.append("source value: ").append(TEST_VALUE).append("\n");
+		text.append("source schemaQualifier: ").append(TEST_SCHEMA_QUALIFIER).append("\n");
+		text.append("source schemaHref: ").append(TEST_SCHEMA_HREF).append("\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			text.append("Source Classification: U\n");
+			text.append("Source classification: U\n");
 			text.append("Source ownerProducer: USA\n");
 		}
 		return (text.toString());
