@@ -378,7 +378,7 @@ System.out.println(title.toXML());</pre>
 <p class="figure">Figure 9. The resultant XML element with security attributes</p>
 
 <p>The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. A set of Schematron files is bundled with ISM.XML V5 (which is used by DDMS 3.1),
-and sampel code for using DDMSence with these files can be found below in the <a href="#tips-schematron">Schematron Validation</a> Power Tip.</p>
+and sample code for using DDMSence with these files can be found below in the <a href="#tips-schematron">Schematron Validation</a> Power Tip.</p>
 
 <p>The values assigned to some attributes must come from the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/V2/">Controlled 
 Vocabulary Enumerations</a> (CVEs) defined by the Intelligence Community. The enumerations used by DDMSence are taken from the DES Version 2 (for DDMS 2.0 and 3.0)
