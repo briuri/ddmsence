@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 07/05/2011 at 11:50</p>
+<p align="right"><b>Last Update:</b> 08/11/2011 at 17:51</p>
 
 <a name="top"></a><h1>Relational Database Model for DDMS</h1>
 
