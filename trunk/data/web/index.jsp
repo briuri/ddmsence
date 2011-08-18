@@ -147,13 +147,13 @@ It is being released under the GNU Lesser General Public License (<a href="licen
 <h1>About the Author</h1>
 
 <p><img src="./images/BU.jpg" width="73" height="100" title="BU" class="bordered" align="left" />
-<b><a href="http://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a software engineer at <a href="http://www.fgm.com/" target="_new">FGM, Inc.</a> 
+<b><a href="http://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a Technical Lead at <a href="http://www.fgm.com/" target="_new">FGM, Inc.</a> 
 in Reston, Virginia. He has been involved in the development and support of the <a href="http://metadata.ces.mil/" target="_new">DoD Metadata Registry</a>
-and other enterprise services since the inception of the Net-Centric Enterprise Services (NCES) program in 2005, most recently as a Technical Lead. 
+and other enterprise services since the inception of the Net-Centric Enterprise Services (NCES) program in 2005. 
 DDMSence grew out of his desire to gain more practical XML Schema experience, to write something useful which had never been done before, and an 
 unusually large amount of free time.</p>
 
-<p>In July 2011, Brian assumed a new role as an XML Information Engineer, promoting interoperability between UCORE and other standards, such as NIEM, 
+<p>In July 2011, Brian assumed a new role, promoting interoperability between Universal Core (UCore) and other standards, such as NIEM, 
 DDMS, ISM.XML, and various common cores. He foolishly expects that this will give him more spare time to work on DDMSence.</p>
 
 <div class="clear"></div>
