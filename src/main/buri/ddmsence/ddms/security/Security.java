@@ -86,8 +86,8 @@ public final class Security extends AbstractBaseComponent {
 		try {
 			Element element = Util.buildDDMSElement(Security.NAME, null);
 			if (!DDMSVersion.isCurrentVersion("2.0"))
-				Util.addAttribute(element, PropertyReader.getProperty("icism.prefix"), EXCLUDE_FROM_ROLLUP_NAME, 
-					DDMSVersion.getCurrentVersion().getIcismNamespace(), FIXED_ROLLUP);
+				Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), EXCLUDE_FROM_ROLLUP_NAME, 
+					DDMSVersion.getCurrentVersion().getIsmNamespace(), FIXED_ROLLUP);
 			_cachedSecurityAttributes = securityAttributes;
 			if (securityAttributes != null)
 				securityAttributes.addTo(element);
@@ -189,7 +189,7 @@ public final class Security extends AbstractBaseComponent {
 	 * Accessor for the excludeFromRollup attribute. This may be null for DDMS v2.0 components.
 	 */
 	public Boolean getExcludeFromRollup() {
-		String value = getAttributeValue(EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		String value = getAttributeValue(EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion().getIsmNamespace());
 		if ("true".equals(value))
 			return (Boolean.TRUE);
 		if ("false".equals(value))

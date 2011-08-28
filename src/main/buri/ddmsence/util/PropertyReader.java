@@ -59,9 +59,8 @@ public class PropertyReader {
 	static {
 		CUSTOM_PROPERTIES.add("ddms.prefix");
 		CUSTOM_PROPERTIES.add("gml.prefix");
-		CUSTOM_PROPERTIES.add("icism.cve.customEnumLocation");
-		CUSTOM_PROPERTIES.add("icism.cve.validationAsErrors");
-		CUSTOM_PROPERTIES.add("icism.prefix");
+		CUSTOM_PROPERTIES.add("ism.cve.validationAsErrors");
+		CUSTOM_PROPERTIES.add("ism.prefix");
 		CUSTOM_PROPERTIES.add("sample.data");
 		CUSTOM_PROPERTIES.add("xlink.prefix");
 		CUSTOM_PROPERTIES.add("xml.transform.TransformerFactory");

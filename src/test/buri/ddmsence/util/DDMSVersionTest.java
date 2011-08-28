@@ -129,7 +129,8 @@ public class DDMSVersionTest extends TestCase {
 		assertEquals("/schemas/3.0/DDMS/DDMS-v3_0.xsd", version.getSchema());
 		assertEquals("http://www.opengis.net/gml/3.2", version.getGmlNamespace());
 		assertEquals("/schemas/3.0/DDMS/DDMS-GML-Profile.xsd", version.getGmlSchema());
-		assertEquals("urn:us:gov:ic:ism", version.getIcismNamespace());
+		assertEquals("urn:us:gov:ic:ism", version.getIsmNamespace());
+		assertEquals("/schemas/3.0/ISM/CVE/", version.getIsmCveLocation());
 	}
 	
 	public void testAliasVersion() {

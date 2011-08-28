@@ -7,18 +7,18 @@
          xsi:schemaLocation="urn:us:gov:ic:cve:v1 ../Schema/CVEXml.xsd"
          ism:ownerProducer="USA"
          ism:classification="U"
-         ism:DESVersion="3"
+         ism:DESVersion="2"
          ism:resourceElement="true"
-		 ism:createDate="2010-03-12">
- 
-                <cve:IRM>
-                    <ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:ism:25x:v1"/>
-                    <ddms:title ism:ownerProducer="USA" ism:classification="U">CVEnumISM25X</ddms:title>
-                    <ddms:description ism:ownerProducer="USA" ism:classification="U">All currently authorized 25X values.</ddms:description>
+		 ism:createDate="2009-11-19">
 
-                    <cve:Created>2010-03-12T11:29:00-04:00</cve:Created>
+                <cve:IRM>
+                    <ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:ism:sar:v1"/>
+                    <ddms:title ism:ownerProducer="USA" ism:classification="U">CVEnumISMSAR</ddms:title>
+                    <ddms:description ism:ownerProducer="USA" ism:classification="U">All currently valid SAR controls from the published register</ddms:description>
+
+                    <cve:Created>2009-10-26T12:00:00-04:00</cve:Created>
                     
-                    <ddms:source ddms:value="Marking Classified National Security Information Directive No. 1"/>
+                    <ddms:source ddms:value="CAPCO Register"/>
                     <ddms:pointOfContact>
                         <ddms:Organization>
                             <ddms:name>Office IC CIO</ddms:name>
@@ -28,11 +28,12 @@
                 </cve:IRM>
                 
                 <cve:Enumeration ism:ownerProducer="USA" ism:classification="U">
-		<!--  This is a test enumeration file with different values, to unit test the pluggable CVEnum Location feature -->
+
 		<Term ism:classification="U" ism:ownerProducer="USA" deprecated="false">
-			<Value ism:classification="U" ism:ownerProducer="USA">25X0</Value>
-			<ddms:description ism:classification="U" ism:ownerProducer="USA">This is not a real value.</ddms:description>
+		    <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">SAR-[A-Z][A-Z][A-Z]?</Value>
+			<ddms:description ism:classification="U" ism:ownerProducer="USA">SPECIAL ACCESS REQUIRED-XXX, XXX represents the Digraph or Trigraph of the SAR</ddms:description>
 		</Term>
+                    
                 </cve:Enumeration>
                 
                 </cve:CVE>

@@ -108,7 +108,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:security xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
-			.append("\" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace()).append("\" ");
+			.append("\" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
 		if (!DDMSVersion.isCurrentVersion("2.0"))
 			xml.append("ICISM:excludeFromRollup=\"true\" ");
 		xml.append("ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\" />");
@@ -154,14 +154,14 @@ public class SecurityTest extends AbstractComponentTestCase {
 
 			// Incorrect excludeFromRollup
 			element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, PropertyReader.getProperty("icism.prefix"), "excludeFromRollup", DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), "false");
+			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), "excludeFromRollup", DDMSVersion.getCurrentVersion()
+				.getIsmNamespace(), "false");
 			testConstructor(WILL_FAIL, element);
 			
 			// Invalid excludeFromRollup
 			element = Util.buildDDMSElement(Security.NAME, null);
-			Util.addAttribute(element, PropertyReader.getProperty("icism.prefix"), "excludeFromRollup", DDMSVersion.getCurrentVersion()
-				.getIcismNamespace(), "aardvark");
+			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), "excludeFromRollup", DDMSVersion.getCurrentVersion()
+				.getIsmNamespace(), "aardvark");
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -249,8 +249,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 	
 	public void test20Usage() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		String icPrefix = PropertyReader.getProperty("icism.prefix");
-		String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
+		String icPrefix = PropertyReader.getProperty("ism.prefix");
+		String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
 		
 		Element element = Util.buildDDMSElement("security", null);
 		Util.addAttribute(element, icPrefix, "classification", icNamespace, "U");

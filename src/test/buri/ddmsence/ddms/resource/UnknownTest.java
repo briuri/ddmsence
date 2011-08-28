@@ -143,7 +143,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:").append(TEST_PRODUCER_TYPE).append(" xmlns:ddms=\"").append(
 			DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace())
+		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace())
 			.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"><ddms:Unknown>\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");

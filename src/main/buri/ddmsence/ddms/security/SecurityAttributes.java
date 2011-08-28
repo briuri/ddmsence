@@ -250,7 +250,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 */
 	public SecurityAttributes(Element element) throws InvalidDDMSException {
 		_ddmsNamespace = element.getNamespaceURI();
-		String icNamespace = DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace()).getIcismNamespace();
+		String icNamespace = DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace()).getIsmNamespace();
 		_cachedAtomicEnergyMarkings = Util.getXsListAsList(element.getAttributeValue(ATOMIC_ENERGY_MARKINGS_NAME, icNamespace));
 		_cachedClassification = element.getAttributeValue(CLASSIFICATION_NAME, icNamespace);
 		_cachedClassificationReason = element.getAttributeValue(CLASSIFICATION_REASON_NAME, icNamespace);
@@ -367,8 +367,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			throw new InvalidDDMSException("These security attributes cannot decorate a DDMS component with"
 				+ " a different DDMS version.");
 		}			
-		String icNamespace = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI()).getIcismNamespace();
-		String icPrefix = PropertyReader.getProperty("icism.prefix");
+		String icNamespace = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI()).getIsmNamespace();
+		String icPrefix = PropertyReader.getProperty("ism.prefix");
 		
 		Util.addAttribute(element, icPrefix, ATOMIC_ENERGY_MARKINGS_NAME, icNamespace,
 			Util.getXsList(getAtomicEnergyMarkings()));
@@ -483,7 +483,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		// Should be reviewed as additional versions of DDMS are supported.
 		boolean isDDMS20 = "2.0".equals(DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace()).getVersion());
 		boolean isDDMS30 = "3.0".equals(DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace()).getVersion());
-		ISMVocabulary.setIsmVersion(DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace()));
+		ISMVocabulary.setDDMSVersion(DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace()));
 		
 		if ((isDDMS20 || isDDMS30) && !getAtomicEnergyMarkings().isEmpty())
 			throw new InvalidDDMSException("The atomicEnergyMarkings attribute cannot be used in DDMS 2.0 or 3.0.");
@@ -565,7 +565,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if the value is not and validation should result in errors
 	 */
 	private void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
-		boolean validationAsErrors = Boolean.valueOf(PropertyReader.getProperty("icism.cve.validationAsErrors")).booleanValue();
+		boolean validationAsErrors = Boolean.valueOf(PropertyReader.getProperty("ism.cve.validationAsErrors")).booleanValue();
 		if (!ISMVocabulary.enumContains(enumerationKey, value)) {
 			String message = ISMVocabulary.getInvalidMessage(enumerationKey, value);
 			if (validationAsErrors)
