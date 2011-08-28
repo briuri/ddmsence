@@ -447,30 +447,30 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * "compliationReason" on a DDMS 2.0 component will always result in an error.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>(v3.1) The atomicEnergyMarkings can only be used in DDMS 3.1.</li>
+	 * <li>(v2.0, 3.0) The atomicEnergyMarkings cannot be used in DDMS 2.0 or 3.0.</li>
 	 * <li>If set, the atomicEnergyMarkings must be valid tokens.</li>
 	 * <li>If set, the classification must be a valid token.</li>
-	 * <li>(v3.1) The compliesWith can only be used in DDMS 3.1.</li>
+	 * <li>(v2.0, 3.0) The compliesWith cannot be used in DDMS 2.0 or 3.0.</li>
 	 * <li>If set, the compliesWith must be valid tokens.</li>
 	 * <li>(v2.0) The compilationReason cannot be used in DDMS 2.0.</li>
-	 * <li>(v3.1) The dateOfExemptedSource cannot be used in DDMS 3.1.</li>
+	 * <li>(v2.0, 3.0) The dateOfExemptedSource can only be used in DDMS 2.0 or 3.0.</li>
 	 * <li>If set, the dateOfExemptedSource is a valid xs:date value.</li>
 	 * <li>If set, the declassDate is a valid xs:date value.</li>
 	 * <li>If set, the declassException must be a valid token.</li>
-	 * <li>(v3.0, v3.1) The declassManualReview cannot be used after DDMS 2.0.</li>
-	 * <li>(v3.1) The displayOnlyTo can only be used in DDMS 3.1.</li>
+	 * <li>(v2.0) The declassManualReview cannot be used after DDMS 2.0.</li>
+	 * <li>(v2.0, 3.0) The displayOnlyTo cannot be used in DDMS 2.0 or 3.0.</li>
 	 * <li>If set, the displayOnlyTo must be valid tokens.</li>
 	 * <li>If set, the disseminationControls must be valid tokens.</li>
 	 * <li>If set, the FGIsourceOpen must be valid tokens.</li>
 	 * <li>If set, the FGIsourceProtected must be valid tokens.</li>
 	 * <li>If set, the nonICmarkings must be valid tokens.</li>
-	 * <li>(v3.1) The nonUSControls can only be used in DDMS 3.1.</li>
+	 * <li>(v2.0, 3.0) The nonUSControls cannot be used in DDMS 2.0 or 3.0..</li>
 	 * <li>If set, the nonUSControls must be valid tokens.</li>	 
 	 * <li>If set, the ownerProducers must be valid tokens.</li>
 	 * <li>If set, the releasableTo must be valid tokens.</li>
 	 * <li>If set, the SARIdentifiers must be valid tokens.</li>
 	 * <li>If set, the SCIcontrols must be valid tokens.</li>
-	 * <li>(v3.1) The typeOfExemptedSource cannot be used in DDMS 3.1.</li>
+	 * <li>(v2.0, 3.0) The typeOfExemptedSource can only be used in DDMS 2.0 or 3.0.</li>
 	 * <li>If set, the typeOfExemptedSource must be a valid token.</li>
 	 *  
 	 * <li>Does NOT do any validation on the constraints described in the DES ISM specification.</li>
@@ -480,27 +480,27 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
+		// Should be reviewed as additional versions of DDMS are supported.
 		boolean isDDMS20 = "2.0".equals(DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace()).getVersion());
 		boolean isDDMS30 = "3.0".equals(DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace()).getVersion());
-		boolean isDDMS31 = "3.1".equals(DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace()).getVersion());
 		ISMVocabulary.setIsmVersion(DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace()));
 		
-		if (!isDDMS31 && !getAtomicEnergyMarkings().isEmpty())
-			throw new InvalidDDMSException("The atomicEnergyMarkings attribute can only be used in DDMS 3.1.");
+		if ((isDDMS20 || isDDMS30) && !getAtomicEnergyMarkings().isEmpty())
+			throw new InvalidDDMSException("The atomicEnergyMarkings attribute cannot be used in DDMS 2.0 or 3.0.");
 		for (String atomic : getAtomicEnergyMarkings())
 			validateEnumeration(ISMVocabulary.CVE_ATOMIC_ENERGY_MARKINGS, atomic);
 		if (!Util.isEmpty(getClassification())) {
 			if (!isDDMS20 || !ISMVocabulary.usingOldClassification(getClassification()))
 				validateEnumeration(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, getClassification());
 		}
-		if (!isDDMS31 && !getCompliesWith().isEmpty())
-			throw new InvalidDDMSException("The compliesWith attribute can only be used in DDMS 3.1.");
+		if ((isDDMS20 || isDDMS30) && !getCompliesWith().isEmpty())
+			throw new InvalidDDMSException("The compliesWith attribute cannot be used in DDMS 2.0 or 3.0.");
 		for (String with : getCompliesWith())
 			validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);	
 		if (isDDMS20 && !Util.isEmpty(getCompilationReason()))
 			throw new InvalidDDMSException("The compilationReason attribute cannot be used in DDMS 2.0.");		
-		if (isDDMS31 && getDateOfExemptedSource() != null)
-			throw new InvalidDDMSException("The dateOfExemptedSource attribute cannot be used in DDMS 3.1.");		
+		if (!(isDDMS20 || isDDMS30) && getDateOfExemptedSource() != null)
+			throw new InvalidDDMSException("The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0.");		
 		if (getDateOfExemptedSource() != null
 			&& !getDateOfExemptedSource().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException("The dateOfExemptedSource attribute must be in the xs:date format (YYYY-MM-DD).");
@@ -517,8 +517,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		}
 		if (!isDDMS20 && getDeclassManualReview() != null)
 			throw new InvalidDDMSException("The declassManualReview attribute can only be used in DDMS 2.0.");
-		if (!isDDMS31 && !getDisplayOnlyTo().isEmpty())
-			throw new InvalidDDMSException("The displayOnlyTo attribute can only be used in DDMS 3.1.");
+		if ((isDDMS20 || isDDMS30) && !getDisplayOnlyTo().isEmpty())
+			throw new InvalidDDMSException("The displayOnlyTo attribute cannot be used in DDMS 2.0 or 3.0.");
 		for (String display : getDisplayOnlyTo())
 			validateEnumeration(ISMVocabulary.CVE_DISPLAY_ONLY_TO, display);
 		for (String dissemination : getDisseminationControls())
@@ -529,8 +529,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			validateEnumeration(ISMVocabulary.CVE_FGI_SOURCE_PROTECTED, fgiSourceProtected);
 		for (String nonIC : getNonICmarkings())
 			validateEnumeration(ISMVocabulary.CVE_NON_IC_MARKINGS, nonIC);
-		if (!isDDMS31 && !getNonUSControls().isEmpty())
-			throw new InvalidDDMSException("The nonUSControls attribute can only be used in DDMS 3.1.");
+		if ((isDDMS20 || isDDMS30) && !getNonUSControls().isEmpty())
+			throw new InvalidDDMSException("The nonUSControls attribute cannot be used in DDMS 2.0 or 3.0.");
 		for (String nonUS : getNonUSControls())
 			validateEnumeration(ISMVocabulary.CVE_NON_US_CONTROLS, nonUS);	
 		for (String op : getOwnerProducers())
@@ -550,8 +550,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			else if (isDDMS30) {
 				validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, getTypeOfExemptedSource());
 			}
-			else if (isDDMS31) {
-				throw new InvalidDDMSException("The typeOfExemptedSource attribute cannot be used in DDMS 3.1.");
+			else {
+				throw new InvalidDDMSException("The typeOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0.");
 			}
 		}
 	}

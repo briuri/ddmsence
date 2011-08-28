@@ -222,6 +222,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * <li>start is a valid date format.</li>
 	 * <li>end is a valid date format.</li>
 	 * <li>0-1 names, exactly 1 start, and exactly 1 end exist.</li>
+	 * <li>The start date is before the end date.</li>
 	 * <li>The SecurityAttributes do not exist in DDMS v2.0.</li>
 	 * </td></tr></table>
 	 * 
@@ -244,13 +245,15 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getEnd().getXMLSchemaType());
 		else
 			validateExtendedDateType(getEndString());
-		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS v2.0.");
-		}
 		if (getStart() != null && getEnd() != null) {
 			if (getStart().toGregorianCalendar().after(getEnd().toGregorianCalendar())) {
 				throw new InvalidDDMSException("The start date is after the end date.");
 			}
+		}
+
+		// Should be reviewed as additional versions of DDMS are supported.
+		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS v2.0.");
 		}
 		
 		validateWarnings();

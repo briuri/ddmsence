@@ -129,6 +129,7 @@ public final class Source extends AbstractQualifierValue {
 		if (!Util.isEmpty(getSchemaHref())) {
 			Util.requireDDMSValidURI(getSchemaHref());
 		}		
+		// Should be reviewed as additional versions of DDMS are supported.
 		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS v2.0.");
 		}
