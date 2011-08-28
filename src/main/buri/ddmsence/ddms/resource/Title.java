@@ -53,8 +53,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Title extends AbstractSimpleString {
-
-	private SecurityAttributes _cachedSecurityAttributes = null;
 	
 	/** The element name of this component */
 	public static final String NAME = "title";
@@ -66,13 +64,7 @@ public final class Title extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Title(Element element) throws InvalidDDMSException {
-		try {
-			_cachedSecurityAttributes = new SecurityAttributes(element);
-			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
-			e.setLocator(getQualifiedName());
-			throw (e);
-		}
+		super(element);
 	}
 	
 	/**
@@ -83,17 +75,7 @@ public final class Title extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Title(String title, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(Title.NAME, title);
-		try {
-			Element element = getXOMElement();
-			_cachedSecurityAttributes = securityAttributes;
-			if (securityAttributes != null)
-				securityAttributes.addTo(element);
-			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
-			e.setLocator(getQualifiedName());
-			throw (e);
-		}
+		super(Title.NAME, title, securityAttributes);
 	}
 		
 	/**
@@ -111,10 +93,7 @@ public final class Title extends AbstractSimpleString {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), NAME);
-		Util.requireDDMSValue("title value", getValue());
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
-		getSecurityAttributes().requireClassification();
-		
+		Util.requireDDMSValue("title value", getValue());		
 		validateWarnings();
 	}
 	
@@ -137,7 +116,6 @@ public final class Title extends AbstractSimpleString {
 		html.append(buildHTMLMeta(Title.NAME, getValue(), false));
 		html.append(getSecurityAttributes().toHTML(Title.NAME));
 		return (html.toString());
-
 	}
 	
 	/**
@@ -156,26 +134,9 @@ public final class Title extends AbstractSimpleString {
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof Title))
 			return (false);
-		Title test = (Title) obj;
-		return (getSecurityAttributes().equals(test.getSecurityAttributes()));
+		return (true);
 	}
-	
-	/**
-	 * @see Object#hashCode()
-	 */
-	public int hashCode() {
-		int result = super.hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
-		return (result);
-	}
-	
-	/**
-	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
-	 */
-	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
-	}
-	
+			
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -185,7 +146,6 @@ public final class Title extends AbstractSimpleString {
 	 */
 	public static class Builder extends AbstractSimpleString.Builder {
 		private static final long serialVersionUID = -7348511606867959470L;
-		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
 		 * Empty constructor
@@ -199,7 +159,6 @@ public final class Title extends AbstractSimpleString {
 		 */
 		public Builder(Title title) {
 			super(title);
-			setSecurityAttributes(new SecurityAttributes.Builder(title.getSecurityAttributes()));
 		}
 		
 		/**
@@ -207,29 +166,6 @@ public final class Title extends AbstractSimpleString {
 		 */
 		public Title commit() throws InvalidDDMSException {
 			return (isEmpty() ? null : new Title(getValue(), getSecurityAttributes().commit()));
-		}
-		
-		/**
-		 * @see IBuilder#isEmpty()
-		 */
-		public boolean isEmpty() {
-			return (super.isEmpty() && getSecurityAttributes().isEmpty());
-		}
-		
-		/**
-		 * Builder accessor for the Security Attributes
-		 */
-		public SecurityAttributes.Builder getSecurityAttributes() {
-			if (_securityAttributes == null)
-				_securityAttributes = new SecurityAttributes.Builder();
-			return _securityAttributes;
-		}
-		
-		/**
-		 * Builder accessor for the Security Attributes
-		 */
-		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
-			_securityAttributes = securityAttributes;
 		}
 	}
 } 

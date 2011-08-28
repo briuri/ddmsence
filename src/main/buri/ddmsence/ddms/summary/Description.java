@@ -53,8 +53,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Description extends AbstractSimpleString {
-
-	private SecurityAttributes _cachedSecurityAttributes = null;
 	
 	/** The element name of this component */
 	public static final String NAME = "description";
@@ -66,13 +64,7 @@ public final class Description extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Description(Element element) throws InvalidDDMSException {
-		try {
-			_cachedSecurityAttributes = new SecurityAttributes(element);
-			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
-			e.setLocator(getQualifiedName());
-			throw (e);
-		}
+		super(element);
 	}
 	
 	/**
@@ -83,17 +75,7 @@ public final class Description extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Description(String description, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(Description.NAME, description);
-		try {
-			Element element = getXOMElement();
-			_cachedSecurityAttributes = securityAttributes;
-			if (securityAttributes != null)
-				securityAttributes.addTo(element);
-			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
-			e.setLocator(getQualifiedName());
-			throw (e);
-		}
+		super(Description.NAME, description, securityAttributes);
 	}
 		
 	/**
@@ -101,18 +83,13 @@ public final class Description extends AbstractSimpleString {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * </td></tr></table>
 	 *  
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
-		getSecurityAttributes().requireClassification();
-				
+		Util.requireDDMSQName(getXOMElement(), NAME);			
 		validateWarnings();
 	}
 	
@@ -138,7 +115,6 @@ public final class Description extends AbstractSimpleString {
 		html.append(buildHTMLMeta(Description.NAME, getValue(), false));
 		html.append(getSecurityAttributes().toHTML(Description.NAME));
 		return (html.toString());
-
 	}
 	
 	/**
@@ -157,24 +133,7 @@ public final class Description extends AbstractSimpleString {
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof Description))
 			return (false);
-		Description test = (Description) obj;
-		return (getSecurityAttributes().equals(test.getSecurityAttributes()));
-	}
-	
-	/**
-	 * @see Object#hashCode()
-	 */
-	public int hashCode() {
-		int result = super.hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
-		return (result);
-	}
-	
-	/**
-	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
-	 */
-	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (true);
 	}
 	
 	/**
@@ -186,7 +145,6 @@ public final class Description extends AbstractSimpleString {
 	 */
 	public static class Builder extends AbstractSimpleString.Builder {
 		private static final long serialVersionUID = 7750664735441105296L;
-		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
 		 * Empty constructor
@@ -200,7 +158,6 @@ public final class Description extends AbstractSimpleString {
 		 */
 		public Builder(Description description) {
 			super(description);
-			setSecurityAttributes(new SecurityAttributes.Builder(description.getSecurityAttributes()));
 		}
 		
 		/**
@@ -208,29 +165,6 @@ public final class Description extends AbstractSimpleString {
 		 */
 		public Description commit() throws InvalidDDMSException {
 			return (isEmpty() ? null : new Description(getValue(), getSecurityAttributes().commit()));
-		}
-		
-		/**
-		 * @see IBuilder#isEmpty()
-		 */
-		public boolean isEmpty() {
-			return (super.isEmpty() && getSecurityAttributes().isEmpty());
-		}
-		
-		/**
-		 * Builder accessor for the Security Attributes
-		 */
-		public SecurityAttributes.Builder getSecurityAttributes() {
-			if (_securityAttributes == null)
-				_securityAttributes = new SecurityAttributes.Builder();
-			return _securityAttributes;
-		}
-		
-		/**
-		 * Builder accessor for the Security Attributes
-		 */
-		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
-			_securityAttributes = securityAttributes;
 		}
 	}
 } 

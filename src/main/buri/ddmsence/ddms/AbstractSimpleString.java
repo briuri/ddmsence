@@ -21,6 +21,9 @@ package buri.ddmsence.ddms;
 
 import java.io.Serializable;
 
+import nu.xom.Element;
+
+import buri.ddmsence.ddms.security.SecurityAttributes;
 import buri.ddmsence.util.Util;
 
 /**
@@ -35,21 +38,55 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	
-	/**
-	 * This implicit superconstructor does nothing.
-	 */
-	protected AbstractSimpleString() throws InvalidDDMSException {}
+	private SecurityAttributes _cachedSecurityAttributes = null;
 	
 	/**
-	 * Constructor which builds from raw data. The object is not validated at this point -- attributes may be required
-	 * which have not been created yet.
+	 * Base constructor which works from a XOM element.
+	 */
+	protected AbstractSimpleString(Element element) throws InvalidDDMSException {
+		try {
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
+	}
+	
+	/**
+	 * Constructor which builds from raw data.
 	 * 
 	 * @param name the name of the element without a prefix
 	 * @param value the value of the element's child text
+	 * @param attributes the security attributes
 	 */
-	protected AbstractSimpleString(String name, String value) throws InvalidDDMSException {
-		setXOMElement(Util.buildDDMSElement(name, value), false);
-		// This cannot actually throw an exception, so locator information is not inserted in a catch statement.
+	protected AbstractSimpleString(String name, String value, SecurityAttributes attributes) throws InvalidDDMSException {
+		try {
+			Element element = Util.buildDDMSElement(name, value);
+			_cachedSecurityAttributes = attributes;
+			if (attributes != null)
+				attributes.addTo(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
+	}
+	
+	/**
+	 * Validates the component.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A classification is required.</li>
+	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
+	 * </td></tr></table>
+	 * 
+	 * @see AbstractBaseComponent#validate()
+	 */
+	protected void validate() throws InvalidDDMSException {
+		super.validate();
+		Util.requireDDMSValue("security attributes", getSecurityAttributes());
+		getSecurityAttributes().requireClassification();
 	}
 	
 	/**
@@ -59,7 +96,8 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof AbstractSimpleString))
 			return (false);
 		AbstractSimpleString test = (AbstractSimpleString) obj;
-		return (getValue().equals(test.getValue()));
+		return (getValue().equals(test.getValue())
+			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
 	}
 
 	/**
@@ -68,6 +106,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 7 * result + getValue().hashCode();
+		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
 	
@@ -77,6 +116,13 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	 */
 	public String getValue() {
 		return (getXOMElement().getValue()); 
+	}
+	
+	/**
+	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
+	 */
+	public SecurityAttributes getSecurityAttributes() {
+		return (_cachedSecurityAttributes);
 	}
 	
 	/**
@@ -92,6 +138,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	public static abstract class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = 7824644958681123708L;
 		private String _value;
+		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
 		 * Empty constructor
@@ -103,6 +150,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		 */
 		protected Builder(AbstractSimpleString simpleString) {
 			setValue(simpleString.getValue());
+			setSecurityAttributes(new SecurityAttributes.Builder(simpleString.getSecurityAttributes()));
 		}
 		
 		/**
@@ -111,7 +159,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		 * @return true if all values are empty
 		 */
 		public boolean isEmpty() {
-			return (Util.isEmpty(getValue()));
+			return (Util.isEmpty(getValue()) && getSecurityAttributes().isEmpty());
 		}
 		
 		/**
@@ -126,6 +174,22 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		 */
 		public void setValue(String value) {
 			_value = value;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public SecurityAttributes.Builder getSecurityAttributes() {
+			if (_securityAttributes == null)
+				_securityAttributes = new SecurityAttributes.Builder();
+			return _securityAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
+			_securityAttributes = securityAttributes;
 		}
 	}
 }
