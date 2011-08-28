@@ -1226,7 +1226,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/Point.html">Point</a>
+			<a href="/docs/buri/ddmsence/ddms/summary/gml/Point.html">Point</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1274,7 +1274,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/Polygon.html">Polygon</a>
+			<a href="/docs/buri/ddmsence/ddms/summary/gml/Polygon.html">Polygon</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1324,7 +1324,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/Position.html">Position</a>
+			<a href="/docs/buri/ddmsence/ddms/summary/gml/Position.html">Position</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1654,7 +1654,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/SRSAttributes.html">SRSAttributes</a>
+			<a href="/docs/buri/ddmsence/ddms/summary/gml/SRSAttributes.html">SRSAttributes</a>
 		</td>
 	</tr>
 	<tr class="relRow">

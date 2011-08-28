@@ -54,8 +54,8 @@ import nu.xom.xslt.XSLException;
 import nu.xom.xslt.XSLTransform;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.summary.Point;
-import buri.ddmsence.ddms.summary.Polygon;
+import buri.ddmsence.ddms.summary.gml.Point;
+import buri.ddmsence.ddms.summary.gml.Polygon;
 
 /** 
  * A collection of static utility methods.
