@@ -305,8 +305,7 @@ Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 <p class="figure">Table 1. Component changes from DDMS 2.0 to DDMS 3.1</p>
 
 <p>The table below lists the complete set of ICISM security attributes, and shows which attributes can be used with each version of DDMS. Several of
-the controlled vocabularies which populate these attributes changed between V2 and V5. The <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/">old and new vocabularies</a>
-can be compared to see which values have been added or removed.</p>
+the controlled vocabularies which populate these attributes changed between <a href="http://ddmsence.googlecode.com/svn/trunk/data/schemas/2.0/ISM/CVE/">V2</a> and <a hreef="http://ddmsence.googlecode.com/svn/trunk/data/schemas/3.1/ISM/CVEGenerated/">V5</a>.</p>
 
 <table>
 <tr><th>Attribute</th><th>DDMS 2.0 (ISM V2-PR)</th><th>DDMS 3.0 (ISM V2)</th><th>DDMS 3.1 (ISM V5)</th></tr>
@@ -380,22 +379,9 @@ System.out.println(title.toXML());</pre>
 <p>The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. A set of Schematron files is bundled with ISM.XML V5 (which is used by DDMS 3.1),
 and sample code for using DDMSence with these files can be found below in the <a href="#tips-schematron">Schematron Validation</a> Power Tip.</p>
 
-<p>The values assigned to some attributes must come from the <a href="http://ddmsence.googlecode.com/svn/trunk/data/CVEnumISM/V2/">Controlled 
-Vocabulary Enumerations</a> (CVEs) defined by the Intelligence Community. The enumerations used by DDMSence are taken from the DES Version 2 (for DDMS 2.0 and 3.0)
-and DES Version 5 (for DDMS 3.1) Public Release, so DDMSence will not be able to recognize enumeration values from higher classification levels. There are two approaches 
-you can use to eliminate this restriction:</p>
-
-<ol>
-<li>If you have access to enumeration files from more restricted distributions of ISM (or wish to use enumeration files from previous DESVersions), 
-you can create a classpath-accessible directory containing your files, and then use the <code>icism.cve.customEnumLocation</code> configurable property 
-to point to your files. Normally, DDMSence will toggle between the V2 and V5 enumeration files, based on the resource being validated. If this configurable property
-is set, for example to <code>/CVEnumISM/V4/</code>, any XML files in that directory will be used all of the time.</li>
-<li>If you do not have access to any other enumeration files, you can set the <code>icism.cve.validationAsErrors</code> configurable 
-property to <b>false</b>, which will force DDMSence to return warnings on enumerations, rather than errors.</li>
-</ol>
-
-<p>Please see the Power Tip on <a href="#tips-configuration">Configurable Properties</a> for details on how to set these properties. Also note that the controlled vocabularies
-for DES Version 5 are incorporated into the base ISM schema, so you may get inconsistent results if you try to change the CVE location with DDMS 3.1.</p>
+<p>The values assigned to some attributes must come from the Controlled Vocabulary Enumerations (CVEs) defined by the Intelligence Community. The 
+enumerations used by DDMSence are taken from Public Release versions of ISM.XML, so DDMSence will not be able to recognize enumeration values from 
+higher classification levels. This restriction will be addressed in a future release.</p>
 
 <h5>SRS Attributes</h5>
 
@@ -755,9 +741,9 @@ see the Power Tip on <a href="#tips-configuration">Configurable Properties</a> f
 
 <p>DDMSence exposes some properties, such as the namespace prefixes used for each XML namespace, so they can be configured by the end user. For example, if you are 
 building components from scratch, and you wish to use "ic" as a namespace prefix for the Intelligence Community namespace
-instead of "ICISM", you would set the "icism.prefix" property with a custom value of <code>ic</code>.</p>
+instead of "ICISM", you would set the "ism.prefix" property with a custom value of <code>ic</code>.</p>
 
-<pre class="brush: java">PropertyReader.setProperty("icism.prefix", "ic");</pre>
+<pre class="brush: java">PropertyReader.setProperty("ism.prefix", "ic");</pre>
 <p class="figure">Figure 31. Command to change a configurable property.</p>
 
 <p>Only the subset of properties listed below can be set programmatically. Attempts to change other DDMSence properties will result in an exception.</p>
@@ -766,9 +752,8 @@ instead of "ICISM", you would set the "icism.prefix" property with a custom valu
 <tr><th>Property Name</th><th>Description</th><th>Default Value</th></tr>
 <tr><td>ddms.prefix</td><td>Default DDMS prefix used when generating components from scratch</td><td><code>ddms</code></td></tr>
 <tr><td>gml.prefix</td><td>Default GML prefix used when generating components from scratch</td><td><code>gml</code></td></tr>
-<tr><td>icism.cve.customEnumLocation</td><td>Classpath resource location for an alternate set of ICISM Controlled Vocabulary files</td><td>empty by default</td></tr>
-<tr><td>icism.cve.validationAsErrors</td><td>When validating SecurityAttributes, ICISM Controlled Vocabulary checks should return errors, instead of warnings</td><td><code>true</code></td></tr>
-<tr><td>icism.prefix</td><td>Default ICISM prefix used when generating components from scratch</td><td><code>ICISM</code></td></tr>
+<tr><td>ism.cve.validationAsErrors</td><td>When validating SecurityAttributes in DDMS 2.0 and 3.0, ICISM Controlled Vocabulary checks should return errors, instead of warnings</td><td><code>true</code></td></tr>
+<tr><td>ism.prefix</td><td>Default ICISM prefix used when generating components from scratch</td><td><code>ICISM</code></td></tr>
 <tr><td>sample.data</td><td>Default data directory used by sample applications</td><td><code>data/sample/</code></td></tr>
 <tr><td>xlink.prefix</td><td>Default XLink prefix used when generating components from scratch</td><td><code>xlink</code></td></tr>
 <tr><td>xml.transform.TransformerFactory</td><td>XSLT Engine class name, for Schematron validation<td><code>net.sf.saxon.TransformerFactoryImpl</code></td></tr>

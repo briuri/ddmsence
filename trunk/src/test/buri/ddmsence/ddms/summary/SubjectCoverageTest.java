@@ -148,7 +148,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		xml.append("<ddms:subjectCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
 			.append("\"");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			xml.append(" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIcismNamespace())
+			xml.append(" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace())
 				.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n\t<ddms:Subject>\n");

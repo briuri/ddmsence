@@ -210,11 +210,11 @@ public final class Resource extends AbstractBaseComponent {
 			String namespace = element.getNamespaceURI();
 			setXOMElement(element, false);
 
-			String createDate = getAttributeValue(CREATE_DATE_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+			String createDate = getAttributeValue(CREATE_DATE_NAME, DDMSVersion.getCurrentVersion().getIsmNamespace());
 			if (!Util.isEmpty(createDate))
 				_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
 			String desVersion = element.getAttributeValue(DES_VERSION_NAME, 
-				DDMSVersion.getCurrentVersion().getIcismNamespace());
+				DDMSVersion.getCurrentVersion().getIsmNamespace());
 			if (!Util.isEmpty(desVersion)) {
 				try {
 					_cachedDESVersion = Integer.valueOf(desVersion);
@@ -401,16 +401,16 @@ public final class Resource extends AbstractBaseComponent {
 			if (topLevelComponents == null)
 				topLevelComponents = Collections.emptyList();
 			Element element = Util.buildDDMSElement(Resource.NAME, null);
-			String icPrefix = PropertyReader.getProperty("icism.prefix");
+			String ismPrefix = PropertyReader.getProperty("ism.prefix");
 			// Attributes
 			if (resourceElement != null) {
-				Util.addAttribute(element, icPrefix, RESOURCE_ELEMENT_NAME, 
-					DDMSVersion.getCurrentVersion().getIcismNamespace(), String.valueOf(resourceElement));
+				Util.addAttribute(element, ismPrefix, RESOURCE_ELEMENT_NAME, 
+					DDMSVersion.getCurrentVersion().getIsmNamespace(), String.valueOf(resourceElement));
 			}
 			if (desVersion != null) {
 				_cachedDESVersion = desVersion;
-				Util.addAttribute(element, icPrefix, DES_VERSION_NAME, 
-					DDMSVersion.getCurrentVersion().getIcismNamespace(), desVersion.toString());
+				Util.addAttribute(element, ismPrefix, DES_VERSION_NAME, 
+					DDMSVersion.getCurrentVersion().getIsmNamespace(), desVersion.toString());
 			}
 			if (!Util.isEmpty(createDate)) {
 				try {
@@ -419,8 +419,8 @@ public final class Resource extends AbstractBaseComponent {
 				catch (IllegalArgumentException e) {
 					throw new InvalidDDMSException("The ICISM:createDate attribute is not in a valid date format.");
 				}
-				Util.addAttribute(element, icPrefix, CREATE_DATE_NAME, 
-					DDMSVersion.getCurrentVersion().getIcismNamespace(), getCreateDate().toXMLFormat());
+				Util.addAttribute(element, ismPrefix, CREATE_DATE_NAME, 
+					DDMSVersion.getCurrentVersion().getIsmNamespace(), getCreateDate().toXMLFormat());
 			}
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
@@ -912,7 +912,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * Accessor for the resourceElement attribute. This may be null for v2.0 Resource components.
 	 */
 	public Boolean isResourceElement() {
-		String value = getAttributeValue(RESOURCE_ELEMENT_NAME, DDMSVersion.getCurrentVersion().getIcismNamespace());
+		String value = getAttributeValue(RESOURCE_ELEMENT_NAME, DDMSVersion.getCurrentVersion().getIsmNamespace());
 		if ("true".equals(value))
 			return (Boolean.TRUE);
 		if ("false".equals(value))

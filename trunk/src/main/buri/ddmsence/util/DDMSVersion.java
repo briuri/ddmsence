@@ -49,6 +49,7 @@ import buri.ddmsence.ddms.security.ISMVocabulary;
  * <li><code>&lt;versionNumber&gt;.ddms.xsdLocation</code>: i.e. "/schemas/2.0/DDMS/DDMS-v2_0.xsd"</li>
  * <li><code>&lt;versionNumber&gt;.gml.xmlNamespace</code>: i.e. "http://www.opengis.net/gml"</li>
  * <li><code>&lt;versionNumber&gt;.gml.xsdLocation</code>: i.e. "/schemas/2.0/DDMS/DDMS-GML-Profile.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.ism.cveLocation</code>: i.e. "/schemas/2.0/ISM/CVE/"</li>
  * <li><code>&lt;versionNumber&gt;.ism.xmlNamespace</code>: i.e. "urn:us:gov:ic:ism:v2"</li>
  * <li><code>&lt;versionNumber&gt;.xlink.xmlNamespace</code>: i.e. "http://www.w3.org/1999/xlink"</li>
  * 
@@ -77,7 +78,8 @@ public class DDMSVersion {
 	private String _schema;
 	private String _gmlNamespace;
 	private String _gmlSchema;
-	private String _icismNamespace;
+	private String _ismCveLocation;
+	private String _ismNamespace;
 	private String _xlinkNamespace;
 	
 	private static DDMSVersion _currentVersion;
@@ -102,7 +104,8 @@ public class DDMSVersion {
 		_schema = PropertyReader.getProperty(version + ".ddms.xsdLocation");
 		_gmlNamespace = PropertyReader.getProperty(version + ".gml.xmlNamespace");
 		_gmlSchema = PropertyReader.getProperty(version + ".gml.xsdLocation");
-		_icismNamespace = PropertyReader.getProperty(version + ".ism.xmlNamespace");
+		_ismCveLocation = PropertyReader.getProperty(version + ".ism.cveLocation");
+		_ismNamespace = PropertyReader.getProperty(version + ".ism.xmlNamespace");
 		_xlinkNamespace = PropertyReader.getProperty(version + ".xlink.xmlNamespace");
 	}
 	
@@ -217,7 +220,7 @@ public class DDMSVersion {
 		if (!getSupportedVersionsProperty().contains(version))
 			throw new UnsupportedVersionException(version);
 		_currentVersion = getVersionFor(version);
-		ISMVocabulary.setIsmVersion(getCurrentVersion());
+		ISMVocabulary.setDDMSVersion(getCurrentVersion());
 	}
 	
 	/**
@@ -290,10 +293,17 @@ public class DDMSVersion {
 	}
 	
 	/**
-	 * Accessor for the ICISM namespace
+	 * Accessor for the ISM CVE location
 	 */
-	public String getIcismNamespace() {
-		return _icismNamespace;
+	public String getIsmCveLocation() {
+		return _ismCveLocation;
+	}
+	
+	/**
+	 * Accessor for the ISM namespace
+	 */
+	public String getIsmNamespace() {
+		return _ismNamespace;
 	}
 	
 	/**

@@ -192,9 +192,9 @@ public class ISMVocabulary {
 	private static final String REG_EXP_NAME = "regularExpression";
 	
 	private static String _lastEnumLocation = null;
-	private static int _ismVersion;
+	private static DDMSVersion _ddmsVersion;
 	static {
-		setIsmVersion(DDMSVersion.getCurrentVersion());
+		setDDMSVersion(DDMSVersion.getCurrentVersion());
 	}
 	
 	/**
@@ -203,28 +203,19 @@ public class ISMVocabulary {
 	private ISMVocabulary() {}
 
 	/**
-	 * Selects V2 or V5 of the IC-ISM / ISM.XML CVEs, based on the DDMS version. The ultimate set of CVE files used
-	 * is also dependent on the property, <code>icism.cve.customEnumLocation</code>. If that property has been
-	 * set, neither V2 or V5 will be used.
+	 * Maintains a DDMSVersion which will be used to look up the CVE files.
 	 * 
 	 * @param version the DDMS version
 	 */
-	public static synchronized void setIsmVersion(DDMSVersion version) {
-		if ("3.1".equals(version.getVersion())) {
-			_ismVersion = 5;
-		}
-		else
-			_ismVersion = 2;
+	public static synchronized void setDDMSVersion(DDMSVersion version) {
+		_ddmsVersion = version;
 	}
 	
 	/**
-	 * Examines the configurable property for the CVEnum location, and reloads the files if necessary.
+	 * Reloads CVEs if necessary.
 	 */
 	private static synchronized void updateEnumLocation() {
-		String enumLocation = PropertyReader.getProperty("icism.cve.customEnumLocation");
-		if (Util.isEmpty(enumLocation)) {
-			enumLocation = PropertyReader.getProperty("icism.cve.v" + getIsmVersion() + ".defaultLocation");
-		}
+		String enumLocation = PropertyReader.getProperty(getDDMSVersion().getVersion() + ".ism.cveLocation");
 		if (getLastEnumLocation() == null || !getLastEnumLocation().equals(enumLocation)) {
 			_lastEnumLocation = enumLocation;
 			if (LOCATION_TO_ENUM_TOKENS.get(getLastEnumLocation()) == null) {
@@ -261,7 +252,7 @@ public class ISMVocabulary {
 		Document doc = builder.build(stream);
 		Set<String> tokens = new TreeSet<String>();
 		Set<String> patterns = new HashSet<String>();
-		String cveNamespace = PropertyReader.getProperty("icism.cve.xmlNamespace");
+		String cveNamespace = PropertyReader.getProperty("ism.cve.xmlNamespace");
 		Element enumerationElement = doc.getRootElement().getFirstChildElement(ENUMERATION_NAME, cveNamespace);
 		Elements terms = enumerationElement.getChildElements(TERM_NAME, cveNamespace);
 		for (int i = 0; i < terms.size(); i++) {
@@ -406,7 +397,7 @@ public class ISMVocabulary {
 	public static void validateRollup(SecurityAttributes parentAttributes, Set<SecurityAttributes> childAttributes)
 		throws InvalidDDMSException {
 		Util.requireValue("parent classification", parentAttributes.getClassification());
-		setIsmVersion(DDMSVersion.getVersionForDDMSNamespace(parentAttributes.getDDMSNamespace()));
+		setDDMSVersion(DDMSVersion.getVersionForDDMSNamespace(parentAttributes.getDDMSNamespace()));
 
 		String parentClass = parentAttributes.getClassification();
 		boolean isParentUS = enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, parentClass);
@@ -437,9 +428,9 @@ public class ISMVocabulary {
 	}
 	
 	/**
-	 * Accessor for the currently set ISM Version
+	 * Accessor for the currently set DDMS Version
 	 */
-	private static int getIsmVersion() {
-		return (_ismVersion);
+	private static DDMSVersion getDDMSVersion() {
+		return (_ddmsVersion);
 	}
 }

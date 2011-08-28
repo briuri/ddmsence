@@ -146,12 +146,12 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	private void buildReservedNames(String parentNamespace) {
 		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(parentNamespace);
 		RESERVED_RESOURCE_NAMES.clear();
-		String icismPrefix = PropertyReader.getProperty("icism.prefix");
+		String ismPrefix = PropertyReader.getProperty("ism.prefix");
 		for (String reservedName : Resource.NON_EXTENSIBLE_NAMES) {
-			RESERVED_RESOURCE_NAMES.add(new QName(version.getIcismNamespace(), reservedName, icismPrefix));
+			RESERVED_RESOURCE_NAMES.add(new QName(version.getIsmNamespace(), reservedName, ismPrefix));
 		}
 		for (String reservedName : SecurityAttributes.NON_EXTENSIBLE_NAMES) {
-			RESERVED_RESOURCE_NAMES.add(new QName(version.getIcismNamespace(), reservedName, icismPrefix));
+			RESERVED_RESOURCE_NAMES.add(new QName(version.getIsmNamespace(), reservedName, ismPrefix));
 		}
 	}
 	

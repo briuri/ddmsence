@@ -50,7 +50,6 @@
 		<include name="*.properties" />
 	</fileset>				
 	<fileset dir="${data.dir}" id="files.requiredData">
-		<include name="CVEnumISM/**" />
 		<include name="schemas/**" />
 		<include name="schematron/**" />
 	</fileset>	
@@ -85,16 +84,7 @@
 			<fileset refid="files.properties" />
 			<fileset refid="files.requiredData" />
 		</copy>
-		
-		<!-- Set up test files for custom CVE testing -->
-		<copy todir="${compile.test.dir}/customCVEnumISM" filtering="true">
-			<fileset dir="${data.dir}/CVEnumISM/V2">
-				<include name="**" />
-			</fileset>
-		</copy>
-		<copy tofile="${compile.test.dir}/customCVEnumISM/CVEnumISM25X.xml" file="${data.dir}/test/customCVEnumISM/CVEnumISM25X.xml" 
-			overwrite="true" />
-		
+				
 		<copy todir="${output.dir}" filtering="true">
 			<fileset refid="files.website" />
 		</copy>
@@ -152,7 +142,6 @@
 				<exclude name="${src.test.dir}/**"/>
 				<exclude name="${conf.dir}/**"/>
 				<exclude name="${output.dir}/**"/>
-				<exclude name="${data.dir}/CVEnumISM/**"/>
 				<exclude name="${data.dir}/schemas/**"/>
 				<exclude name="${data.dir}/schematron/**"/>
 				<exclude name="${data.dir}/test/**"/>
