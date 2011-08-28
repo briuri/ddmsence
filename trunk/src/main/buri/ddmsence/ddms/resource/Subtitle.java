@@ -54,8 +54,6 @@ import buri.ddmsence.util.Util;
  */
 public final class Subtitle extends AbstractSimpleString {
 
-	private SecurityAttributes _cachedSecurityAttributes = null;
-
 	/** The element name of this component */
 	public static final String NAME = "subtitle";
 	
@@ -66,13 +64,7 @@ public final class Subtitle extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Subtitle(Element element) throws InvalidDDMSException {
-		try {
-			_cachedSecurityAttributes = new SecurityAttributes(element);
-			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
-			e.setLocator(getQualifiedName());
-			throw (e);
-		}
+		super(element);
 	}
 	
 	/**
@@ -83,17 +75,7 @@ public final class Subtitle extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Subtitle(String subtitle, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(Subtitle.NAME, subtitle);
-		try {
-			Element element = getXOMElement();
-			_cachedSecurityAttributes = securityAttributes;
-			if (securityAttributes != null)
-				securityAttributes.addTo(element);
-			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
-			e.setLocator(getQualifiedName());
-			throw (e);
-		}
+		super(Subtitle.NAME, subtitle, securityAttributes);
 	}
 
 	/**
@@ -110,9 +92,6 @@ public final class Subtitle extends AbstractSimpleString {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), NAME);
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
-		getSecurityAttributes().requireClassification();
-		
 		validateWarnings();
 	}
 	
@@ -138,7 +117,6 @@ public final class Subtitle extends AbstractSimpleString {
 		html.append(buildHTMLMeta(Subtitle.NAME, getValue(), false));
 		html.append(getSecurityAttributes().toHTML(Subtitle.NAME));
 		return (html.toString());
-
 	}
 	
 	/**
@@ -157,24 +135,7 @@ public final class Subtitle extends AbstractSimpleString {
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof Subtitle))
 			return (false);
-		Subtitle test = (Subtitle) obj;
-		return (getSecurityAttributes().equals(test.getSecurityAttributes()));
-	}
-	
-	/**
-	 * @see Object#hashCode()
-	 */
-	public int hashCode() {
-		int result = super.hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
-		return (result);
-	}
-	
-	/**
-	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
-	 */
-	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (true);
 	}
 	
 	/**
@@ -186,7 +147,6 @@ public final class Subtitle extends AbstractSimpleString {
 	 */
 	public static class Builder extends AbstractSimpleString.Builder {
 		private static final long serialVersionUID = -4292523556431396882L;
-		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
 		 * Empty constructor
@@ -200,7 +160,6 @@ public final class Subtitle extends AbstractSimpleString {
 		 */
 		public Builder(Subtitle subtitle) {
 			super(subtitle);
-			setSecurityAttributes(new SecurityAttributes.Builder(subtitle.getSecurityAttributes()));
 		}
 		
 		/**
@@ -208,29 +167,6 @@ public final class Subtitle extends AbstractSimpleString {
 		 */
 		public Subtitle commit() throws InvalidDDMSException {
 			return (isEmpty() ? null : new Subtitle(getValue(), getSecurityAttributes().commit()));
-		}
-		
-		/**
-		 * @see IBuilder#isEmpty()
-		 */
-		public boolean isEmpty() {
-			return (super.isEmpty() && getSecurityAttributes().isEmpty());
-		}
-		
-		/**
-		 * Builder accessor for the Security Attributes
-		 */
-		public SecurityAttributes.Builder getSecurityAttributes() {
-			if (_securityAttributes == null)
-				_securityAttributes = new SecurityAttributes.Builder();
-			return _securityAttributes;
-		}
-		
-		/**
-		 * Builder accessor for the Security Attributes
-		 */
-		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
-			_securityAttributes = securityAttributes;
 		}
 	}
 } 
