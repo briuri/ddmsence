@@ -1,0 +1,45 @@
+This is a draft list of the changes which break backwards compatibility between v1.11.0 and v2.0.0.
+I will create an official ticket once all of the changes are complete and the dust has settled.
+
+#########################################################################################################
+The ability to point at a custom set of CVEs with the "icism.cve.customEnumLocation" property has been removed (Issue #95). 
+
+SEVERITY: Major 
+DETAILS:
+	The selection of CVE is now based upon the current DDMSVersion and uses bundled Public Release CVEs all of the time.
+	Because V5 and above of ISM.XML validate vocabularies directly from the schemas (with generated CVE schemas), 
+	changing the vocabulary without changing the schema no longer made sense. Issue #154 tracks future work to reintroduce this 
+	general concept of swappable ISM, but at the schema level and not just the vocabulary level.
+	You can still toggle CVEs between warnings and errors with the "ism.cve.validationAsErrors" custom property.
+FIX:
+	There is no workaround at this time. Please contact me with feedback on how you used this feature previously so I can support your use case in the future.
+
+#########################################################################################################
+GML-related classes have been moved into a new package, buri.ddmsence.ddms.summary.gml (Issue #148).
+
+SEVERITY: Minor
+DETAILS:
+	Affected classes: Point, Polygon, Position, and SRSAttributes
+FIX:
+	Update any Java import statements that point to the old package.
+
+#########################################################################################################
+Configurable property names have changed (Issue #95)
+
+SEVERITY: Minor
+DETAILS: 
+	- icism.cve.validationAsErrors became ism.cve.validationAsErrors.
+	- icism.prefix became ism.prefix.
+FIX:
+	Update property names if you used these custom properties.
+
+#########################################################################################################
+Method names have changed (Issue #95)
+
+SEVERITY: Minor
+DETAILS:
+	- DDMSVersion: getIcismNamespace() became getIsmNamespace() (Issue #95).
+	- ISMVocabulary: setIsmVersion() became setDDMSVersion() (Issue #95).
+FIX:
+	Update method names in your code if you ever called them.	
+
