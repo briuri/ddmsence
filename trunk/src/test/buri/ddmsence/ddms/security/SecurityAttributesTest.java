@@ -340,15 +340,15 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			getFixture(true).addTo(element);
 			SecurityAttributes expected = testConstructor(WILL_SUCCEED, element);
 
-			if ("3.1".equals(version))
+			if (!"2.0".equals(version) && !"3.0".equals(version))
 				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.ATOMIC_ENERGY_MARKINGS_NAME, "FRD");
 			assertFalse(expected.equals(testConstructor(WILL_SUCCEED, "C", TEST_OWNERS, getOtherAttributes()))); // Classification
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.CLASSIFIED_BY_NAME, DIFFERENT_VALUE);
 			if (!"2.0".equals(version))
 				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.COMPILATION_REASON_NAME, DIFFERENT_VALUE);
-			if ("3.1".equals(version))
+			if (!"2.0".equals(version) && !"3.0".equals(version))
 				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.COMPLIES_WITH_NAME, "DoD5230.24");
-			if (!"3.1".equals(version))
+			if ("2.0".equals(version) || "3.0".equals(version))
 				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2001-10-10");
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.DECLASS_DATE_NAME, "2001-10-10");
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.DECLASS_EVENT_NAME, DIFFERENT_VALUE);
@@ -357,19 +357,19 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, "false");
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.DERIVATIVELY_CLASSIFIED_BY_NAME, DIFFERENT_VALUE);
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.DERIVED_FROM_NAME, DIFFERENT_VALUE);
-			if ("3.1".equals(version))
+			if (!"2.0".equals(version) && !"3.0".equals(version))
 				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.DISPLAY_ONLY_TO_NAME, "USA");
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.DISSEMINATION_CONTROLS_NAME, "EYES");
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.FGI_SOURCE_OPEN_NAME, "BGR");
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.FGI_SOURCE_PROTECTED_NAME, "BGR");
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.NON_IC_MARKINGS_NAME, "SBU");
-			if ("3.1".equals(version))
+			if (!"2.0".equals(version) && !"3.0".equals(version))
 				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.NON_US_CONTROLS_NAME, "BALK");
 			assertFalse(expected.equals(testConstructor(WILL_SUCCEED, TEST_CLASS, Util.getXsListAsList("AUS"), getOtherAttributes()))); // OwnerProducer
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.RELEASABLE_TO_NAME, "BGR");
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.SAR_IDENTIFIER_NAME, "SAR-AIA");
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.SCI_CONTROLS_NAME, "TK");
-			if (!"3.1".equals(version))
+			if ("2.0".equals(version) || "3.0".equals(version))
 				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.TYPE_OF_EXEMPTED_SOURCE_NAME, "X4");
 		}
 	}
@@ -505,7 +505,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			assertEquals("<meta name=\"declassDate\" content=\"2005-10-10\" />\n", dataAttributes.toHTML(""));
 			assertEquals("declassDate: 2005-10-10\n", dataAttributes.toText(""));
 
-			if (!"3.1".equals(version)) {
+			if ("2.0".equals(version) || "3.0".equals(version)) {
 				others = new HashMap<String, String>();
 				others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-10");
 				dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
@@ -642,7 +642,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			assertNotNull(builder.getReleasableTo().get(1));
 			assertNotNull(builder.getNonICmarkings().get(1));
 			
-			if ("3.1".equals(version)) {
+			if (!"2.0".equals(version) && !"3.0".equals(version)) {
 				assertNotNull(builder.getAtomicEnergyMarkings().get(1));
 				assertNotNull(builder.getCompliesWith().get(1));
 				assertNotNull(builder.getDisplayOnlyTo().get(1));
