@@ -14,7 +14,7 @@
 		</xs:documentation>
 	</xs:annotation>
 	<!-- This copy of IC-ISM.xsd has been made available for Public Release -->
-	<xs:import namespace="urn:us:gov:ic:ism" schemaLocation="../../INT/schemas/2010-06-06/IC-ISM.xsd"/>
+	<xs:import namespace="urn:us:gov:ic:ism" schemaLocation="../ISM/IC-ISM.xsd"/>
 	<xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="DDMS-GML-Profile.xsd"/>
 	<xs:include schemaLocation="GeospatialCoverage_attributeVocabularyDefinitions.xsd"/>
 	<xs:element name="geospatialCoverage" type="GeospatialCoverageType">
