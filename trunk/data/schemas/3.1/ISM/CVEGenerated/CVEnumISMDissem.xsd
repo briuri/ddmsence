@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--UNCLASSIFIED//FOUO--><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ism="urn:us:gov:ic:ism"
+<!--UNCLASSIFIED--><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ism="urn:us:gov:ic:ism"
             elementFormDefault="qualified"
             xml:lang="en"
             ism:ownerProducer="USA"
             ism:classification="U"
-            ism:disseminationControls="FOUO"
             ism:DESVersion="5"
             ism:resourceElement="true"
             ism:createDate="2010-03-12">
@@ -72,30 +71,6 @@
                <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) EYES ONLY</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U//FOUO) The value "FRONTO" is classified (U//FOUO) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" ism:disseminationControls="FOUO"
-                          value="FRONTO">
-            <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA" ism:disseminationControls="FOUO">(U//FOUO) FRONTO</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <!--(U//FOUO) The value "KEYRUT" is classified (U//FOUO) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" ism:disseminationControls="FOUO"
-                          value="KEYRUT">
-            <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA" ism:disseminationControls="FOUO">(U//FOUO) KEYRUT</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <!--(U//FOUO) The value "SEABOOT" is classified (U//FOUO) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" ism:disseminationControls="FOUO"
-                          value="SEABOOT">
-            <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA" ism:disseminationControls="FOUO">(U//FOUO) SEABOOT</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <!--(U//FOUO) The value "SETTEE" is classified (U//FOUO) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" ism:disseminationControls="FOUO"
-                          value="SETTEE">
-            <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA" ism:disseminationControls="FOUO">(U//FOUO) SETTEE</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
          <!--(U) The value "DSEN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="DSEN">
             <xsd:annotation>
                <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) DEA SENSITIVE</xsd:documentation>
@@ -118,7 +93,7 @@
          <xsd:simpleType>
             <xsd:list itemType="CVEnumISMDissemValues"/>
          </xsd:simpleType>
-         <xsd:maxLength value="16"/>
+         <xsd:maxLength value="12"/>
       </xsd:restriction>
    </xsd:simpleType>
 </xsd:schema>

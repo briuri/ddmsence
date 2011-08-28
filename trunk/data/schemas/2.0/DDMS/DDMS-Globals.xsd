@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ICISM="urn:us:gov:ic:ism" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:mdr="http://metadata.dod.mil/" xmlns:xlink="http://www.w3.org/1999/xlink" targetNamespace="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" elementFormDefault="qualified" attributeFormDefault="qualified" version="3.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://metadata.dod.mil/mdr/ns/DDMS/2.0/" xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/2.0/" xmlns:ICISM="urn:us:gov:ic:ism:v2" xmlns:gml="http://www.opengis.net/gml" xmlns:mdr="http://metadata.dod.mil/" xmlns:xlink="http://www.w3.org/1999/xlink" targetNamespace="http://metadata.dod.mil/mdr/ns/DDMS/2.0/" elementFormDefault="qualified" attributeFormDefault="qualified" version="2.0">
 	<xs:annotation>
 		<xs:documentation>
 			Change Log:
@@ -9,78 +9,120 @@
 				7/1/2008 (D. Barclay) -- Made elements "extent" and "medium" optional in type MediaType (per DDMS-CR-2008-6).
 				7/15/2008 (J. Pantella) -- Modified security attributes on creator, publisher, and contributor to be optional, added optional security attributes to pointOfContact for consistency across the elements.
 				7/15/2008 (J. Pantella) -- Modified version to reflect that this is version 2.0.
-                1/5/2010 (P. Lunceford)  -- Created DDMS 3.0.  Implemented CRs 2009-04 (replaced creatorType/publisherType/contributorType/pointOfContactType with contactInfoType), 2009-07 (set minOccurs on RelatedResourceType to 1), 2009-09 (added Unknown entity to accompany Person, Organization, and Service for a choice for Creator, Publisher, Contributor, and PointOfContact), 2009-10 (added extensions to CompoundKeywordIdentifierType and CompoundCategoryIdentifierType), and 2009-12 (added Security Markings to SubjectCoverageType, CompoundSouceIdentifierType, TemporalCoverageType, and VirtualCoverageType).
 				
 		</xs:documentation>
 	</xs:annotation>
-	<!-- This copy of IC-ISM.xsd has been made available for Public Release -->
-	<xs:import namespace="urn:us:gov:ic:ism" schemaLocation="IC-ISM.xsd"/>
+	<xs:import namespace="urn:us:gov:ic:ism:v2" schemaLocation="../ISM/IC-ISM-v2.1.xsd"/>
 	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="DDMS-XLink-Profile.xsd"/>
 	<!-- Start Global Elements -->
 	<xs:element name="identifier" type="CompoundResourceIdentifierType">
 		<xs:annotation>
 			<xs:appinfo>
 				<mdr:definition>An unambiguous reference to a resource within a given context.  {An attribute stores the source of the tag's value}
-{sources: DCMI: identifier, v. 004;  IC MSP v. 1.0a:  IdentifierList}  An identifier may be an internal, external, and/or universal identification label for representing a resource by means of a string or number conforming to a formal identification system.  An example of an identifier would be an International Standard Serial Number (ISSN), or a Uniform Resource Locator (URL).  Any type of identifier can be accommodated, so long as the identifier qualifier is specified with the identifier value. See also, DDMS Version 3.0 Identifier.</mdr:definition>
+{sources: DCMI: identifier, v. 004;  IC MSP v. 1.0a:  IdentifierList}  An identifier may be an internal, external, and/or universal identification label for representing a resource by means of a string or number conforming to a formal identification system.  An example of an identifier would be an International Standard Serial Number (ISSN), or a Uniform Resource Locator (URL).  Any type of identifier can be accommodated, so long as the identifier qualifier is specified with the identifier value. See also, DDMS Version 2.0 Identifier.</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="title" type="TitleType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>A name, or names, given to the resource	{from DCMI: title, v. 004}.  The title category must contain at least one title, and may contain subtitles, or supplementary, explanatory titles for use on cover pages and for cataloging and searching.  See also, DDMS Version 3.0 Title.</mdr:definition>
+				<mdr:definition>A name, or names, given to the resource	{from DCMI: title, v. 004}.  The title category must contain at least one title, and may contain subtitles, or supplementary, explanatory titles for use on cover pages and for cataloging and searching.  See also, DDMS Version 2.0 Title.</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="subtitle" type="SubtitleType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>A subtitle may be any form of the title used as a substitute, or it may be an alternative to the formal title of the resource.  See also, DDMS Version 3.0 Title.</mdr:definition>
+				<mdr:definition>A subtitle may be any form of the title used as a substitute, or it may be an alternative to the formal title of the resource.  See also, DDMS Version 2.0 Title.</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<!-- The following line has been commented out to reduce the complexity of the schema.  Some enterprise tools are unable to handle the way in which the DDMS XML Schema used substitution groups to model the options available for the  publisher/contributor/creator elements. As a result the ProducerRelationType remains defined but is unused in this version of the schema.  The use of the ProducerRelationType remains commented out until such time that the tools are able to adequately handle this usage.-->
 	<!-- 	<xs:element name="creator" type="ProducerRelationType"> -->
-	<xs:element name="creator" type="contactInfoType">
+	<xs:element name="creator" type="creatorType">
 		<xs:annotation>
 			<xs:appinfo>
 				<mdr:definition>A subtitle may be any form of the title used as a substitute, or it may be an alternative to the formal title of the resource. Information about the entity responsible for generating the resource  {Source: DCMI:  creator, v. 004; IC MSP v. 1.0a:  AuthorInfo, POCInfo} 
-When a creator is a service or an organization, and not an individual, it is expected that the contact authority (person or organization) for the resource will be listed.  The relations provided in this schema are Organization, Person, Service, Unknown.  See also, DDMS Version 3.0 Creator.</mdr:definition>
+When a creator is a service or an organization, and not an individual, it is expected that the contact authority (person or organization) for the resource will be listed.  The relations provided in this schema are Organization, Person, Service.  See also, DDMS Version 2.0 Creator.</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
-	<xs:element name="publisher" type="contactInfoType">
+	<xs:complexType name="creatorType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>This category is used to tag the identification of the entity responsible for releasing the data asset—the entity primarily responsible for the intellectual content of the product.  It is intended that this category apply whenever applicable to an organization, as opposed to a person.  Typically, the name of a Publisher should be used to indicate the organization, agency, or domain responsible for the resource.  See also, DDMS Version 3.0 Publisher.</mdr:definition>
-			</xs:appinfo>
-		</xs:annotation>
-	</xs:element>
-	<xs:element name="contributor" type="contactInfoType">
-		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>Information about an organization, person, or entity, that contributed intellectual content to a resource, other than the publishing organization  {DCMI:  contributor, v. 004; IC MSP v. 1.0a: Contributor} When a creator is a service or an organization, and not an individual, it is expected that the contact authority (person or organization) for the resource will be listed.  The relations provided in this schema are Organization, Person, Service, Unknown.  See also, DDMS Version 3.0 Contributor.</mdr:definition>
-			</xs:appinfo>
-		</xs:annotation>
-	</xs:element>
-	<xs:element name="pointOfContact" type="contactInfoType">
-		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>The point of contact, usually a Person, is the entity primarily responsible for accepting inquiries regarding the resource.</mdr:definition>
-			</xs:appinfo>
-		</xs:annotation>
-	</xs:element>
-	<xs:complexType name="contactInfoType">
-		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>Type used to model the ddms:creator, ddms:publisher, ddms:contributor, and ddms:pointOfContact elements.</mdr:definition>
+				<mdr:definition>Type used to model the ddms:creator element.</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:choice>
 			<xs:element ref="Organization"/>
 			<xs:element ref="Person"/>
 			<xs:element ref="Service"/>
-			<xs:element ref="Unknown"/>
+		</xs:choice>
+		<xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup"/>
+	</xs:complexType>
+	<!-- The following line has been commented out to reduce the complexity of the schema.  Some enterprise tools are unable to handle the way in which the DDMS XML Schema used substitution groups to model the options available for the  publisher/contributor/creator elements. As a result the ProducerRelationType remains defined but is unused in this version of the schema.  The use of the ProducerRelationType remains commented out until such time that the tools are able to adequately handle this usage.-->
+	<!-- 	<xs:element name="publisher" type="ProducerRelationType"> -->
+	<xs:element name="publisher" type="publisherType">
+		<xs:annotation>
+			<xs:appinfo>
+				<mdr:definition>This category is used to tag the identification of the entity responsible for releasing the data asset—the entity primarily responsible for the intellectual content of the product.  It is intended that this category apply whenever applicable to an organization, as opposed to a person.  Typically, the name of a Publisher should be used to indicate the organization, agency, or domain responsible for the resource.  See also, DDMS Version 2.0 Publisher.</mdr:definition>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="publisherType">
+		<xs:annotation>
+			<xs:appinfo>
+				<mdr:definition>Type used to model the ddms:publisher element.</mdr:definition>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element ref="Organization"/>
+			<xs:element ref="Person"/>
+			<xs:element ref="Service"/>
+		</xs:choice>
+		<xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup"/>
+	</xs:complexType>
+	<!-- The following line has been commented out to reduce the complexity of the schema.  Some enterprise tools are unable to handle the way in which the DDMS XML Schema used substitution groups to model the options available for the  publisher/contributor/creator elements. As a result the ProducerRelationType remains defined but is unused in this version of the schema.  The use of the ProducerRelationType remains commented out until such time that the tools are able to adequately handle this usage.-->
+	<!--	<xs:element name="contributor" type="ProducerRelationType"> -->
+	<xs:element name="contributor" type="contributorType">
+		<xs:annotation>
+			<xs:appinfo>
+				<mdr:definition>Information about an organization, person, or entity, that contributed intellectual content to a resource, other than the publishing organization  {DCMI:  contributor, v. 004; IC MSP v. 1.0a: Contributor} When a creator is a service or an organization, and not an individual, it is expected that the contact authority (person or organization) for the resource will be listed.  The relations provided in this schema are Organization, Person, Service.  See also, DDMS Version 2.0 Contributor.</mdr:definition>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="contributorType">
+		<xs:annotation>
+			<xs:appinfo>
+				<mdr:definition>Type used to model the ddms:contributor element.</mdr:definition>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element ref="Organization"/>
+			<xs:element ref="Person"/>
+			<xs:element ref="Service"/>
+		</xs:choice>
+		<xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup"/>
+	</xs:complexType>
+	<!-- The following line has been commented out to reduce the complexity of the schema.  Some enterprise tools are unable to handle the way in which the DDMS XML Schema used substitution groups to model the options available for the  publisher/contributor/creator elements. As a result the ProducerRelationType remains defined but is unused in this version of the schema.  The use of the ProducerRelationType remains commented out until such time that the tools are able to adequately handle this usage.-->
+	<!--	<xs:element name="pointOfContact" type="ProducerRelationType"> -->
+	<xs:element name="pointOfContact" type="pointOfContactType">
+		<xs:annotation>
+			<xs:appinfo>
+				<mdr:definition>The point of contact, usually a Person, is the entity primarily responsible for accepting inquiries regarding the resource.</mdr:definition>
+			</xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="pointOfContactType">
+		<xs:annotation>
+			<xs:appinfo>
+				<mdr:definition>Type used to model the ddms:pointOfContact element.</mdr:definition>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element ref="Organization"/>
+			<xs:element ref="Person"/>
+			<xs:element ref="Service"/>
 		</xs:choice>
 		<xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup"/>
 	</xs:complexType>
@@ -88,56 +130,56 @@ When a creator is a service or an organization, and not an individual, it is exp
 		<xs:annotation>
 			<xs:appinfo>
 				<mdr:definition>References to assets or resources from which the tagged data asset is derived.  {Source: DCMI: type, v. 004}
-Sources may be derived partially or wholly, and it is recommended that an identifier (such as a string or number from a formal identification system) be used as a reference.  See also, DDMS Version 3.0 Source.</mdr:definition>
+Sources may be derived partially or wholly, and it is recommended that an identifier (such as a string or number from a formal identification system) be used as a reference.  See also, DDMS Version 2.0 Source.</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="language" type="CompoundLanguageIdentifierType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>The primary language of the intellectual content of the resource.  {Source: DCMI: language, v. 004IC MSP v. 1.0a: Language} The most specific in-scope language present (if any) should be specified in this category. See DDMS Version 3.0 Language.</mdr:definition>
+				<mdr:definition>The primary language of the intellectual content of the resource.  {Source: DCMI: language, v. 004IC MSP v. 1.0a: Language} The most specific in-scope language present (if any) should be specified in this category. See DDMS Version 2.0 Language.</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="description" type="DescriptionType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>An account of the content of the resource.  {Source: DCMI: description, v. 004IC MSP v. 1.0a:  Description} Description may include but is not limited to: an abstract, reference to a graphical representation of content or a free-text account of the content.  See DDMS Version 3.0 Description.</mdr:definition>
+				<mdr:definition>An account of the content of the resource.  {Source: DCMI: description, v. 004IC MSP v. 1.0a:  Description} Description may include but is not limited to: an abstract, reference to a graphical representation of content or a free-text account of the content.  See DDMS Version 2.0 Description.</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="dates" type="DatesType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>The date related properties of this resource.  See DDMS Version 3.0 Date.</mdr:definition>
+				<mdr:definition>The date related properties of this resource.  See DDMS Version 2.0 Date.</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="rights" type="RightsType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>Information about rights held in and over the resource. Typically, a rights element will contain a rights management statement for the resource, or reference a service providing such information. Rights information often encompasses Intellectual Property Rights (IPR), Copyright, and various Property Rights. If the rights element is absent, no assumptions can be made about the status of these and other rights with respect to the resource.	See DDMS Version 3.0 Rights. </mdr:definition>
+				<mdr:definition>Information about rights held in and over the resource. Typically, a rights element will contain a rights management statement for the resource, or reference a service providing such information. Rights information often encompasses Intellectual Property Rights (IPR), Copyright, and various Property Rights. If the rights element is absent, no assumptions can be made about the status of these and other rights with respect to the resource.	See DDMS Version 2.0 Rights. </mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="type" type="CompoundTypeIdentifierType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>The nature or genre fo the content of the resource.  See, DCMI Type Vocabulary [DCMITYPE], which includes, Collection, Dataset, Event Image, InteractiveResource, Service, Software, Sound, Text, PhysicalObject, StillImage, MovingImage.  See DDMS Version 3.0 Type.</mdr:definition>
+				<mdr:definition>The nature or genre fo the content of the resource.  See, DCMI Type Vocabulary [DCMITYPE], which includes, Collection, Dataset, Event Image, InteractiveResource, Service, Software, Sound, Text, PhysicalObject, StillImage, MovingImage.  See DDMS Version 2.0 Type.</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="format" type="FormatType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>The physical or digital manifestation of the resource.  Used to define the medium, extent or duration, and MIME type of the resource.  See DDMS Version 3.0 Format.</mdr:definition>
+				<mdr:definition>The physical or digital manifestation of the resource.  Used to define the medium, extent or duration, and MIME type of the resource.  See DDMS Version 2.0 Format.</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="medium" type="MediumType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>The physical medium or instantiation of the resource.  See also DDMS Version 3.0 Format.  
+				<mdr:definition>The physical medium or instantiation of the resource.  See also DDMS Version 2.0 Format.  
 			</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
@@ -145,7 +187,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 	<xs:element name="mimeType" type="MimeTypeType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>The Internet Media Type [MIME] of the Resource.  See DDMS Version 3.0 Format.  
+				<mdr:definition>The Internet Media Type [MIME] of the Resource.  See DDMS Version 2.0 Format.  
 			</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
@@ -153,7 +195,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 	<xs:element name="extent" type="QualifiedExtentValueType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>A related data size, compression rate, or pixel size (etc.) of the resource.  See also, DDMS Version 3.0 Format.  
+				<mdr:definition>A related data size, compression rate, or pixel size (etc.) of the resource.  See also, DDMS Version 2.0 Format.  
 			</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
@@ -161,7 +203,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 	<xs:element name="subjectCoverage" type="SubjectCoverageType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>The range of concepts that characterize the subject matter of the resource.  See DDMS Version 3.0 Subject.  
+				<mdr:definition>The range of concepts that characterize the subject matter of the resource.  See DDMS Version 2.0 Subject.  
 			</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
@@ -169,7 +211,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 	<xs:element name="Subject" type="SubjectType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>Container for the categorical subject and natural language subject classifications.  See also SubjectType.  NOTE: At least one of either Keyword or Category must appear, after one instance of either appears, additional categories must appear before additional keywords.  See DDMS Version 3.0 Subject.  
+				<mdr:definition>Container for the categorical subject and natural language subject classifications.  See also SubjectType.  NOTE: At least one of either Keyword or Category must appear, after one instance of either appears, additional categories must appear before additional keywords.  See DDMS Version 2.0 Subject.  
 			</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
@@ -177,7 +219,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 	<xs:element name="category" type="CompoundCategoryIdentifierType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>Specification of the subject matter by a qualified entry from a controlled vocabulary.  See DDMS Version 3.0 Subject.  
+				<mdr:definition>Specification of the subject matter by a qualified entry from a controlled vocabulary.  See DDMS Version 2.0 Subject.  
 			</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
@@ -185,7 +227,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 	<xs:element name="keyword" type="CompoundKeywordIdentifierType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>A natural language indication of the resource's subject matter.  See DDMS Version 3.0 Subject.  
+				<mdr:definition>A natural language indication of the resource's subject matter.  See DDMS Version 2.0 Subject.  
 			</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
@@ -193,7 +235,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 	<xs:element name="temporalCoverage" type="TemporalCoverageType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>The subject-matter coverage in terms of one or more periods of time.  That is, an indication of the time period for which the subject of the resource applies.  (E.g. The 50's, or a span of time indicated by a start and end time.)  See DDMS Version 3.0 Temporal Coverage.  
+				<mdr:definition>The subject-matter coverage in terms of one or more periods of time.  That is, an indication of the time period for which the subject of the resource applies.  (E.g. The 50's, or a span of time indicated by a start and end time.)  See DDMS Version 2.0 Temporal Coverage.  
 			</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
@@ -201,23 +243,42 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 	<xs:element name="virtualCoverage" type="VirtualCoverageType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>The subject-matter coverage of a publication in terms of one ore more virtual addresses.  Must identify the protocol being used and the virtual address of the resource. See DDMS Version 3.0 Virtual Coverage.  
+				<mdr:definition>The subject-matter coverage of a publication in terms of one ore more virtual addresses.  Must identify the protocol being used and the virtual address of the resource. See DDMS Version 2.0 Virtual Coverage.  
 			</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
+	<!--	
+The following lines have been commented out to reduce the complexity of the schema.  Some enterprise tools are unable to handle the way in which the DDMS XML Schema used substitution groups to model the options available for the  publisher/contributor/creator elements. As a result the ProducerRelationType remains defined but is unused in this version of the schema.  The use of the ProducerRelationType remains commented out until such time that the tools are able to adequately handle this usage.
+
+	<xs:element name="Entity" type="ProducerType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>
+			Information about the entity responsible for generating the resource.  Available sub-structures identified in this schema are "Organization," "Person," or "Service."		
+		
+			See also DDMS Version 2.0 Creator.  
+			See also DDMS Version 2.0 Publisher.  
+			See also DDMS Version 2.0 Contributor.  
+			</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+-->
+	<!-- The OrganizationType has been remodeled to accomodate tools that are unable to adequately handle the increased complexity acquired with the use of SubstitutionGroups.  The line remains commented out in the event that the tools are able to accomodate this level of complexity in the future. -->
+	<!--	<xs:element name="Organization" type="OrganizationType" substitutionGroup="iiss:Entity"> -->
 	<xs:element name="Organization" type="OrganizationType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>A named organization responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher.  See DDMS Version 3.0 Creator.  See also DDMS Version 3.0 Publisher.  See also DDMS Version 3.0 Contributor.  
+				<mdr:definition>A named organization responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher.  See DDMS Version 2.0 Creator.  See also DDMS Version 2.0 Publisher.  See also DDMS Version 2.0 Contributor.  
 			</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
+	<!-- The PersonType has been remodeled to accomodate tools that are unable to adequately handle the increased complexity acquired with the use of SubstitutionGroups.  The line remains commented out in the event that the tools are able to accomodate this level of complexity in the future. -->
+	<!--	<xs:element name="Person" type="PersonType" substitutionGroup="iiss:Entity"> -->
 	<xs:element name="Person" type="PersonType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>A person responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher. See DDMS Version 3.0 Creator.  See also DDMS Version 3.0 Publisher.  See also DDMS Version 3.0 Contributor.  
+				<mdr:definition>A person responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher. See DDMS Version 2.0 Creator.  See also DDMS Version 2.0 Publisher.  See also DDMS Version 2.0 Contributor.  
 			</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
@@ -227,15 +288,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 	<xs:element name="Service" type="ServiceType">
 		<xs:annotation>
 			<xs:appinfo>
-				<mdr:definition>A named service responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher. See DDMS Version 3.0 Creator.  See also DDMS Version 3.0 Publisher.  See also DDMS Version 3.0 Contributor.  
-			</mdr:definition>
-			</xs:appinfo>
-		</xs:annotation>
-	</xs:element>
-	<xs:element name="Unknown" type="UnknownType">
-		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>Identification that the type of entity of the encompassing element i.e. as a creator, contributor, or publisher, is unknown.  See DDMS Version 3.0 Creator.  See also DDMS Version 3.0 Publisher.  See also DDMS Version 3.0 Contributor.  
+				<mdr:definition>A named service responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher. See DDMS Version 2.0 Creator.  See also DDMS Version 2.0 Publisher.  See also DDMS Version 2.0 Contributor.  
 			</mdr:definition>
 			</xs:appinfo>
 		</xs:annotation>
@@ -247,7 +300,6 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:attribute ref="ICISM:excludeFromRollup" use="required" fixed="true"/>
 			<xs:attributeGroup ref="ICISM:SecurityAttributesGroup"/>
 		</xs:complexType>
 	</xs:element>
@@ -332,6 +384,20 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
+	<!--
+The following lines have been commented out to reduce the complexity of the schema.  Some enterprise tools are unable to handle the way in which the DDMS XML Schema used substitution groups to model the options available for the  publisher/contributor/creator elements. As a result the ProducerRelationType remains defined but is unused in this version of the schema.  The use of the ProducerRelationType remains commented out until such time that the tools are able to adequately handle this usage.
+
+	<xs:complexType name="ProducerRelationType">
+		<xs:annotation>
+			<xs:documentation>
+			Type used to model the entity, creator, producer, and service elements.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="iiss:Entity"/>
+		</xs:sequence>
+	</xs:complexType>
+-->
 	<xs:complexType name="ProducerBaseType">
 		<xs:annotation>
 			<xs:appinfo>
@@ -465,35 +531,6 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="UnknownType">
-		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>The type used to model the ddms:Unknown element.</mdr:definition>
-			</xs:appinfo>
-		</xs:annotation>
-		<xs:complexContent>
-			<xs:extension base="ProducerType">
-				<xs:sequence>
-					<xs:element name="phone" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-						<xs:annotation>
-							<xs:appinfo>
-								<mdr:definition>A telephone number.  Optional.  This value must include country code and area code, when applicable.
-							</mdr:definition>
-							</xs:appinfo>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="email" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-						<xs:annotation>
-							<xs:appinfo>
-								<mdr:definition>An address for electronic mail.
-							</mdr:definition>
-							</xs:appinfo>
-						</xs:annotation>
-					</xs:element>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
-	</xs:complexType>
 	<xs:complexType name="DatesType">
 		<xs:annotation>
 			<xs:appinfo>
@@ -589,7 +626,6 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 		<xs:attribute name="value" type="xs:string" use="optional"/>
 		<xs:attribute name="schemaQualifier" type="xs:string" use="optional"/>
 		<xs:attribute name="schemaHref" type="xs:anyURI" use="optional"/>
-		<xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup"/>
 	</xs:complexType>
 	<xs:complexType name="CompoundLanguageIdentifierType">
 		<xs:attribute name="qualifier" type="xs:string">
@@ -715,12 +751,19 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 		<xs:sequence>
 			<xs:element ref="Subject"/>
 		</xs:sequence>
-		<xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup"/>
 	</xs:complexType>
 	<xs:complexType name="SubjectType">
 		<xs:annotation>
 			<xs:appinfo>
 				<mdr:definition>The type used to model the Subject element.</mdr:definition>
+				<mdr:comment>Developer's Note:  Change request 2006-1 http://metadata.dod.mil/irs/DDMS/cm/CR/2006/DDMS-CR-2006-1 identifies an issue with the way this was modeled in DDMS 1.3.  In that the Apache AXIS code generator was unable to generate working code from the XML Schema.  This representation addresses part of the issue, however in order to work properly with Apache AXIS the developer may need to add minOccurs="0" maxOccurs="unbounded" to the keyword and category element references.  That is, this choice may need to be modified to the following representation in order for the Apache AXIS WSDL2Java tool to generate code:
+				<!--
+					<xs:choice minOccurs="1" maxOccurs="unbounded">
+						<xs:element ref="category" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element ref="keyword" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:choice>
+				-->
+				</mdr:comment>
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:choice maxOccurs="unbounded">
@@ -732,23 +775,19 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 		<xs:annotation>
 			<xs:appinfo>
 				<mdr:definition>Type used to model the ddms:keyword element.</mdr:definition>
-				<mdr:comment>  Allowed extension for allowing automated populators to give extra values for confidence and relativity.</mdr:comment>
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:attribute name="value" type="xs:string" use="required"/>
-		<xs:anyAttribute namespace="##other" processContents="lax"/>
 	</xs:complexType>
 	<xs:complexType name="CompoundCategoryIdentifierType">
 		<xs:annotation>
 			<xs:appinfo>
 				<mdr:definition>Type used to model the attributes of the ddms:category element.</mdr:definition>
-				<mdr:comment>  Allowed attriubute extension for allowing automated populators to give extra values for confidence and relativity.</mdr:comment>
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:attribute name="qualifier" type="xs:anyURI" use="optional"/>
 		<xs:attribute name="code" type="xs:string" use="optional"/>
 		<xs:attribute name="label" type="xs:string" use="required"/>
-		<xs:anyAttribute namespace="##other" processContents="lax"/>
 	</xs:complexType>
 	<xs:complexType name="TemporalCoverageType">
 		<xs:annotation>
@@ -760,7 +799,6 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 		<xs:sequence>
 			<xs:element name="TimePeriod" type="TimePeriodType"/>
 		</xs:sequence>
-		<xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup"/>
 	</xs:complexType>
 	<xs:complexType name="TimePeriodType">
 		<xs:annotation>
@@ -784,7 +822,6 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 		</xs:annotation>
 		<xs:attribute name="protocol" type="xs:string" use="optional"/>
 		<xs:attribute name="address" type="xs:string" use="optional"/>
-		<xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup"/>
 	</xs:complexType>
 	<xs:complexType name="RelatedResourcesType">
 		<xs:annotation>
@@ -793,7 +830,7 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RelatedResource" maxOccurs="unbounded">
+			<xs:element name="RelatedResource" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation>
 					<xs:appinfo>
 						<mdr:definition>Each RelatedResource element represents a resource related to the resource described by the enclosing ddms:Resource element.  The relationship is in the direction specified by the direction attribute on the parent relatedResources element.</mdr:definition>
