@@ -58,7 +58,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	protected static Element getFixtureElement() throws InvalidDDMSException {
 		String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
-		String xlinkNamespace = PropertyReader.getProperty("xlink.xmlNamespace");
+		String xlinkNamespace = DDMSVersion.getCurrentVersion().getXlinkNamespace();
 		Element linkElement = Util.buildDDMSElement(Link.NAME, null);
 		linkElement.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), DDMSVersion.getCurrentVersion().getNamespace());
 		linkElement.addNamespaceDeclaration(xlinkPrefix, xlinkNamespace);
@@ -140,7 +140,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:link xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
-			.append("\" xmlns:xlink=\"").append(PropertyReader.getProperty("xlink.xmlNamespace")).append("\" ");
+			.append("\" xmlns:xlink=\"").append(DDMSVersion.getCurrentVersion().getXlinkNamespace()).append("\" ");
 		xml.append("xlink:type=\"").append(TEST_TYPE).append("\" ");
 		xml.append("xlink:href=\"").append(TEST_HREF).append("\" ");
 		xml.append("xlink:role=\"").append(TEST_ROLE).append("\" ");
@@ -159,7 +159,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	private Element buildComponentElement(String type, String href) {
 		Element element = Util.buildDDMSElement(Link.NAME, null);
 		String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
-		String xlinkNamespace = PropertyReader.getProperty("xlink.xmlNamespace");
+		String xlinkNamespace = DDMSVersion.getCurrentVersion().getXlinkNamespace();
 		if (type != null)
 			element.addAttribute(Util.buildAttribute(xlinkPrefix, "type", xlinkNamespace, type));
 		if (href != null)

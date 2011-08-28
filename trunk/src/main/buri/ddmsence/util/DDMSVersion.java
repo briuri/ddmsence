@@ -40,24 +40,21 @@ import buri.ddmsence.ddms.security.ISMVocabulary;
  * <code>buri.ddmsence.ddms.defaultVersion</code> in the properties file. This defaults to 3.1 right now.</p>
  * 
  * <p>
- * The ddmsence.properties file has six properties which can be a comma-separated list:
+ * The ddmsence.properties file has a property, <code>ddms.supportedVersions</code> which can be a comma-separated list of version
+ * numbers. Each of these token values then has a set of six properties which identify the namespace and schema locations for each
+ * DDMS version:
  * </p>
  * 
- * 
- * <li><code>ddms.supportedVersions</code>: i.e. "2.0,3.0"</li>
- * <li><code>ddms.xmlNamespaces</code>: 
- * i.e. "http://metadata.dod.mil/mdr/ns/DDMS/2.0/,http://metadata.dod.mil/mdr/ns/DDMS/3.0/"</li>
- * <li><code>ddms.xsdLocations</code>: 
- * i.e. "/schemas/2.0/DDMS-v2_0.xsd,/schemas/3.0/DDMS-v3_0.xsd"</li>
- * <li><code>gml.xmlNamespaces</code>: i.e. "http://www.opengis.net/gml,http://www.opengis.net/gml/3.2"</li>
- * <li><code>gml.xsdLocations</code>: 
- * i.e. "/schemas/2.0/DDMS-GML-Profile.xsd,/schemas/3.0/DDMS-GML-Profile.xsd"</li>
- * <li><code>icism.xmlNamespaces</code>: i.e. "urn:us:gov:ic:ism:v2,urn:us:gov:ic:ism"</li>
- *  
+ * <li><code>&lt;versionNumber&gt;.ddms.xmlNamespace</code>: i.e. "http://metadata.dod.mil/mdr/ns/DDMS/2.0/"</li>
+ * <li><code>&lt;versionNumber&gt;.ddms.xsdLocation</code>: i.e. "/schemas/2.0/DDMS/DDMS-v2_0.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.gml.xmlNamespace</code>: i.e. "http://www.opengis.net/gml"</li>
+ * <li><code>&lt;versionNumber&gt;.gml.xsdLocation</code>: i.e. "/schemas/2.0/DDMS/DDMS-GML-Profile.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.ism.xmlNamespace</code>: i.e. "urn:us:gov:ic:ism:v2"</li>
+ * <li><code>&lt;versionNumber&gt;.xlink.xmlNamespace</code>: i.e. "http://www.w3.org/1999/xlink"</li>
  * 
  * <p>
- * The number of items in each property must match the number of supported DDMS versions. The format of an xsdLocation 
- * should follow <code>/schemas/versionNumber/schemaLocationInDataDirectory</code>.
+ * The format of an xsdLocation should generally follow
+ * <code>/schemas/&lt;versionNumber&gt;/schemaLocationInDataDirectory</code>.
  * </p>
  * 
  * <p>
@@ -81,6 +78,7 @@ public class DDMSVersion {
 	private String _gmlNamespace;
 	private String _gmlSchema;
 	private String _icismNamespace;
+	private String _xlinkNamespace;
 	
 	private static DDMSVersion _currentVersion;
 
@@ -100,11 +98,12 @@ public class DDMSVersion {
 	private DDMSVersion(String version) {
 		int index = getSupportedVersionsProperty().indexOf(version);
 		_version = version;
-		_namespace = getSupportedNamespacesProperty().get(index);
-		_schema = PropertyReader.getListProperty("ddms.xsdLocations").get(index);
-		_gmlNamespace = PropertyReader.getListProperty("gml.xmlNamespaces").get(index);
-		_gmlSchema = PropertyReader.getListProperty("gml.xsdLocations").get(index);
-		_icismNamespace = PropertyReader.getListProperty("icism.xmlNamespaces").get(index);
+		_namespace = getSupportedDDMSNamespacesProperty().get(index);
+		_schema = PropertyReader.getProperty(version + ".ddms.xsdLocation");
+		_gmlNamespace = PropertyReader.getProperty(version + ".gml.xmlNamespace");
+		_gmlSchema = PropertyReader.getProperty(version + ".gml.xsdLocation");
+		_icismNamespace = PropertyReader.getProperty(version + ".ism.xmlNamespace");
+		_xlinkNamespace = PropertyReader.getProperty(version + ".xlink.xmlNamespace");
 	}
 	
 	/**
@@ -130,8 +129,12 @@ public class DDMSVersion {
 	 * 
 	 * @return List of String version numbers
 	 */
-	private static List<String> getSupportedNamespacesProperty() {
-		return (PropertyReader.getListProperty("ddms.xmlNamespaces"));
+	private static List<String> getSupportedDDMSNamespacesProperty() {
+		List<String> supportedNamespaces = new ArrayList<String>();
+		for (String version : getSupportedVersionsProperty()) {
+			supportedNamespaces.add(PropertyReader.getProperty(version + ".ddms.xmlNamespace"));
+		}
+		return (supportedNamespaces);
 	}
 	
 	/**
@@ -141,7 +144,7 @@ public class DDMSVersion {
 	 * @return true if the namespace is supported
 	 */
 	public static boolean isSupportedDDMSNamespace(String xmlNamespace) {
-		return (getSupportedNamespacesProperty().contains(xmlNamespace));
+		return (getSupportedDDMSNamespacesProperty().contains(xmlNamespace));
 	}
 	
 	/**
@@ -291,5 +294,12 @@ public class DDMSVersion {
 	 */
 	public String getIcismNamespace() {
 		return _icismNamespace;
+	}
+	
+	/**
+	 * Accessor for the xlink namespace
+	 */
+	public String getXlinkNamespace() {
+		return _xlinkNamespace;
 	}
 }

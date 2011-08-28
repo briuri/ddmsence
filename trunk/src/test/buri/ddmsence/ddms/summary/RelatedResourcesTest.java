@@ -158,7 +158,7 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 		xml.append(TEST_DIRECTION).append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t");
 		xml.append("<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ")
 			.append("ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n\t\t");
-		xml.append("<ddms:link xmlns:xlink=\"").append(PropertyReader.getProperty("xlink.xmlNamespace"))
+		xml.append("<ddms:link xmlns:xlink=\"").append(DDMSVersion.getCurrentVersion().getXlinkNamespace())
 			.append("\" xlink:type=\"locator\" xlink:href=\"http://en.wikipedia.org/wiki/Tank\" />\n\t");
 		xml.append("</ddms:RelatedResource>\n");
 		xml.append("</ddms:relatedResources>");

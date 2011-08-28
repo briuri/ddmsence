@@ -21,10 +21,12 @@ package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -63,6 +65,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Link extends AbstractBaseComponent {
 
+	private String _xlinkNamespace;
 	private static final String FIXED_TYPE = "locator";
 	
 	/** The element name of this component */
@@ -81,7 +84,19 @@ public final class Link extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Link(Element element) throws InvalidDDMSException {
-		super(element);
+		try {
+			for (int i = 0; i < element.getAttributeCount(); i++) {
+				Attribute attr = element.getAttribute(i);
+				if (TYPE_NAME.equals(attr.getLocalName()))
+					_xlinkNamespace = attr.getNamespaceURI();
+			}
+			if (Util.isEmpty(getXlinkNamespace()))
+				throw new InvalidDDMSException("Could not find the xlink namespace URI on this ddms:link element.");
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -97,12 +112,12 @@ public final class Link extends AbstractBaseComponent {
 		try {
 			Element element = Util.buildDDMSElement(Link.NAME, null);
 			String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
-			String xlinkNamespace = PropertyReader.getProperty("xlink.xmlNamespace");
-			Util.addAttribute(element, xlinkPrefix, TYPE_NAME, xlinkNamespace, FIXED_TYPE);
-			Util.addAttribute(element, xlinkPrefix, HREF_NAME, xlinkNamespace, href);
-			Util.addAttribute(element, xlinkPrefix, ROLE_NAME, xlinkNamespace, role);
-			Util.addAttribute(element, xlinkPrefix, TITLE_NAME, xlinkNamespace, title);
-			Util.addAttribute(element, xlinkPrefix, LABEL_NAME, xlinkNamespace, label);
+			_xlinkNamespace = DDMSVersion.getCurrentVersion().getXlinkNamespace();
+			Util.addAttribute(element, xlinkPrefix, TYPE_NAME, getXlinkNamespace(), FIXED_TYPE);
+			Util.addAttribute(element, xlinkPrefix, HREF_NAME, getXlinkNamespace(), href);
+			Util.addAttribute(element, xlinkPrefix, ROLE_NAME, getXlinkNamespace(), role);
+			Util.addAttribute(element, xlinkPrefix, TITLE_NAME, getXlinkNamespace(), title);
+			Util.addAttribute(element, xlinkPrefix, LABEL_NAME, getXlinkNamespace(), label);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -187,38 +202,45 @@ public final class Link extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Builder accessor for the type attribute.
+	 * Accessor for the type attribute.
 	 */
 	public String getType() {
-		return (getAttributeValue(TYPE_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
+		return (getAttributeValue(TYPE_NAME, getXlinkNamespace()));
 	}
 	
 	/**
-	 * Builder accessor for the href attribute.
+	 * Accessor for the href attribute.
 	 */
 	public String getHref() {
-		return (getAttributeValue(HREF_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
+		return (getAttributeValue(HREF_NAME, getXlinkNamespace()));
 	}
 	
 	/**
-	 * Builder accessor for the role attribute.
+	 * Accessor for the role attribute.
 	 */
 	public String getRole() {
-		return (getAttributeValue(ROLE_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
+		return (getAttributeValue(ROLE_NAME, getXlinkNamespace()));
 	}
 	
 	/**
-	 * Builder accessor for the title attribute.
+	 * Accessor for the title attribute.
 	 */
 	public String getTitle() {
-		return (getAttributeValue(TITLE_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
+		return (getAttributeValue(TITLE_NAME, getXlinkNamespace()));
 	}
 	
 	/**
-	 * Builder accessor for the label attribute.
+	 * Accessor for the label attribute.
 	 */
 	public String getLabel() {
-		return (getAttributeValue(LABEL_NAME, PropertyReader.getProperty("xlink.xmlNamespace")));
+		return (getAttributeValue(LABEL_NAME, getXlinkNamespace()));
+	}
+	
+	/**
+	 * Accessor for the xlink namespace
+	 */
+	private String getXlinkNamespace() {
+		return _xlinkNamespace;
 	}
 	
 	/**
