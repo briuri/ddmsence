@@ -17,33 +17,36 @@
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
 */
-package buri.ddmsence.ddms.summary;
+package buri.ddmsence.ddms.summary.gml;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
-import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of gml:pos.
+ * An immutable implementation of gml:Point.
  * 
  * <p>
  * The DDMS documentation has no Text/HTML examples for the output of this component, so a best guess was taken
  * (suggestions are welcome, as this is probably not an optimal solution):
  * </p>
+ * 
  * <ul>
  * <p>
  * <b>Suggested Text Output</b><br />
  * <code>
+ * boundingGeometry id: value<br />
+ * boundingGeometry type: Point<br />
+ * boundingGeometry srsName: value<br />
+ * boundingGeometry srsDimension: value<br />
+ * boundingGeometry axisLabels: value<br />
+ * boundingGeometry uomLabels: value<br />
  * boundingGeometry position: value<br />
  * boundingGeometry position srsName: value<br />
  * boundingGeometry position srsDimension: value<br />
@@ -55,6 +58,12 @@ import buri.ddmsence.util.Util;
  * <p>
  * <b>Suggested HTML Output</b><br />
  * <code>
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.id" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.type" content="Point" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.srsName" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.srsDimension" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.axisLabels" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.uomLabels" content="value" /&gt;<br />
  * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position" content="value" /&gt;<br />
  * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsName" content="value" /&gt;<br />
  * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsDimension" content="value" /&gt;<br />
@@ -67,23 +76,28 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>A position must either have 2 coordinates (to comply with WGS84E_2D) or 3 coordinates (to comply with WGS84E_3D).
- * </li>
+ * <li>The srsName must also be non-empty.</li>
  * </ul>
  * </td></tr></table>
  * 
+ * 
+ * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * <u>gml:pos</u>: the position (exactly 1 required)<br />
+ * </td></tr></table>
+ * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>srsName</u>: A URI-based name (optional)<br />
+ * <u>srsName</u>: A URI-based name (required)<br />
  * <u>srsDimension</u>: A positive integer dimension (optional)<br />
  * <u>axisLabels</u>: Ordered list of labels for the axes, as a space-delimited list of NCNames (valid XML names without
  * colons) (optional, but if no srsName is set, this should be omitted too)<br />
  * <u>uomLabels</u>: Ordered list of unit of measure (uom) labels for all the axes, as a space-delimited list of NCNames
  * (valid XML names without colons) (required when axisLabels is set)<br />
+ * <u>gml:id</u>: unique ID (required)<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_boundingGeometry_Point<br />
- * <u>Description</u>: This component is used to build gml:Polygon or gml:Point.<br />
+ * <u>Description</u>: Specifies a position using a single coordinate tuple.<br />
  * <u>Obligation</u>: Optional<br />
  * <u>Schema Modification Date</u>: 2010-01-25<br />
  * </td></tr></table>
@@ -91,14 +105,16 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public final class Position extends AbstractBaseComponent {
+public final class Point extends AbstractBaseComponent {
 
 	// Values are cached upon instantiation, so objects are only created once
 	private SRSAttributes _cachedSrsAttributes;
-	private List<Double> _cachedCoordinates;	
+	private Position _cachedPosition;
 	
 	/** The element name of this component */
-	public static final String NAME = "pos";
+	public static final String NAME = "Point";
+	
+	private static final String ID_NAME = "id";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -106,17 +122,15 @@ public final class Position extends AbstractBaseComponent {
 	 * @param element the XOM element representing this 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Position(Element element) throws InvalidDDMSException {
+	public Point(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			List<String> tuple = Util.getXsListAsList(getCoordinatesAsXsList());
-			_cachedCoordinates = new ArrayList<Double>();
-			for (String coordinate : tuple) {
-				_cachedCoordinates.add(getStringAsDouble(coordinate));
-			}
+			Element posElement = element.getFirstChildElement(Position.NAME, 
+				element.getNamespaceURI());
+			if (posElement != null)
+				_cachedPosition = new Position(posElement);
 			_cachedSrsAttributes = new SRSAttributes(element);
 			setXOMElement(element, true);
-
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -125,68 +139,58 @@ public final class Position extends AbstractBaseComponent {
 	
 	/**
 	 * Constructor for creating a component from raw data
-	 * @param coordinates a list of either 2 or 3 coordinate Double values
-	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels
-	 *  
+	 * 
+	 * @param position the position of the Point (required)
+	 * @param srsAttributes the attribute group containing srsName, srsDimension, axisLabels, and uomLabels (srsName
+	 * required)
+	 * @param id the id value (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Position(List<Double> coordinates, SRSAttributes srsAttributes) throws InvalidDDMSException {
+	public Point(Position position, SRSAttributes srsAttributes, String id) throws InvalidDDMSException {
 		try {
-			if (coordinates == null)
-				coordinates = Collections.emptyList();
-			_cachedSrsAttributes = (srsAttributes == null ? new SRSAttributes(null, null, null, null) : srsAttributes);
-			_cachedCoordinates = coordinates;
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME, 
-				DDMSVersion.getCurrentVersion().getGmlNamespace(), Util.getXsList(coordinates));
+			_cachedPosition = position;
+			_cachedSrsAttributes = srsAttributes;
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Point.NAME, 
+				DDMSVersion.getCurrentVersion().getGmlNamespace(), null);
+			if (position != null) {
+				element.appendChild(position.getXOMElementCopy());
+			}
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);
+			Util.addAttribute(element, PropertyReader.getProperty("gml.prefix"), ID_NAME, 
+				DDMSVersion.getCurrentVersion().getGmlNamespace(), id);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
 	}
-	
-	/**
-	 * Helper method to assist with string to double conversion
-	 * 
-	 * @param string the double as a string
-	 * @return a Double if possible, or null if the string cannot be converted
-	 */
-	private Double getStringAsDouble(String string) {
-		if (Util.isEmpty(string))
-			return (null);
-		try {
-			return (Double.valueOf(string));
-		}
-		catch (NumberFormatException e) {
-			return (null);
-		}
-	}
-			
+		
 	/**
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>Each coordinate is a valid Double value.</li>
-	 * <li>The position is represented by 2 or 3 coordinates.</li>
-	 * <li>The first coordinate is a valid latitude.</li>
-	 * <li>The second coordinate is a valid longitude.</li>
+	 * <li>The srsName is required.</li>
+	 * <li>The ID is required, and must be a valid NCName.</li>
+	 * <li>If the position has an srsName, it matches the srsName of this Point.</li>
 	 * <li>Does not perform any special validation on the third coordinate (height above ellipsoid).</li>
 	 * </td></tr></table>
-	 * 
+	 *
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireQName(getXOMElement(), getNamespace(), NAME);
-		for (Double coordinate : getCoordinates())
-			Util.requireDDMSValue("coordinate", coordinate);
-		if (!Util.isBounded(getCoordinates().size(), 2, 3))
-			throw new InvalidDDMSException("A position must be represented by either 2 or 3 coordinates.");
-		Util.requireValidLatitude(getCoordinates().get(0));
-		Util.requireValidLongitude(getCoordinates().get(1));
+		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
+		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
+		Util.requireDDMSValue(ID_NAME, getId());
+		Util.requireValidNCName(getId());
+		Util.requireDDMSValue("position", getPosition());
+		Util.requireCompatibleVersion(this, getPosition());
+		String srsName = getPosition().getSRSAttributes().getSrsName();
+		if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))
+			throw new InvalidDDMSException("The srsName of the position must match the srsName of the Point.");
 		
 		validateWarnings();
 	}
@@ -195,10 +199,11 @@ public final class Position extends AbstractBaseComponent {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the SRS attributes.</li>
+	 * <li>Include any validation warnings from the SRS attributes and the child position.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
+		addWarnings(getPosition().getValidationWarnings(), false);
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);
 	}
 	
@@ -207,17 +212,18 @@ public final class Position extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position", getCoordinatesAsXsList(), true));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsName", getSRSAttributes().getSrsName(),
-			false));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.id", getId(), true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.type", Point.NAME, true));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.srsName", getSRSAttributes().getSrsName(), true));
 		if (getSRSAttributes().getSrsDimension() != null) {
-			html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsDimension", 
+			html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.srsDimension", 
 				String.valueOf(getSRSAttributes().getSrsDimension()), false));
 		}
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position.axisLabels", 
-			getSRSAttributes().getAxisLabelsAsXsList(), false));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position.uomLabels", 
-			getSRSAttributes().getUomLabelsAsXsList(), false));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.axisLabels", getSRSAttributes().getAxisLabelsAsXsList(),
+			false));
+		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.uomLabels", getSRSAttributes().getUomLabelsAsXsList(),
+			false));
+		html.append(getPosition().toHTML());
 		return (html.toString());
 	}
 
@@ -226,30 +232,31 @@ public final class Position extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("boundingGeometry position", getCoordinatesAsXsList(), true));
-		text.append(buildTextLine("boundingGeometry position srsName", 
-			getSRSAttributes().getSrsName(), false));
+		text.append(buildTextLine("boundingGeometry id", getId(), true));
+		text.append(buildTextLine("boundingGeometry type", Point.NAME, true));		
+		text.append(buildTextLine("boundingGeometry srsName", getSRSAttributes().getSrsName(), true));
 		if (getSRSAttributes().getSrsDimension() != null) {
-			text.append(buildTextLine("boundingGeometry position srsDimension", 
+			text.append(buildTextLine("boundingGeometry srsDimension", 
 				String.valueOf(getSRSAttributes().getSrsDimension()), false));
 		}
-		text.append(buildTextLine("boundingGeometry position axisLabels", 
-			getSRSAttributes().getAxisLabelsAsXsList(), false));
-		text.append(buildTextLine("boundingGeometry position uomLabels", 
+		text.append(buildTextLine("boundingGeometry axisLabels", getSRSAttributes().getAxisLabelsAsXsList(), 
+			false));
+		text.append(buildTextLine("boundingGeometry uomLabels", 
 			getSRSAttributes().getUomLabelsAsXsList(), false));
+		text.append(getPosition().toText());
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof Position))
+		if (!super.equals(obj) || !(obj instanceof Point))
 			return (false);
-		Position test = (Position) obj;
+		Point test = (Point) obj;
 		return (getSRSAttributes().equals(test.getSRSAttributes()) 
-			&& getCoordinates().size() == test.getCoordinates().size()
-			&& Util.listEquals(getCoordinates(), test.getCoordinates()));
+			&& getPosition().equals(test.getPosition())
+			&& getId().equals(test.getId()));
 	}
 
 	/**
@@ -258,29 +265,30 @@ public final class Position extends AbstractBaseComponent {
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 7 * result + getSRSAttributes().hashCode();
-		result = 7 * result + getCoordinatesAsXsList().hashCode();
+		result = 7 * result + getId().hashCode();
+		result = 7 * result + getPosition().hashCode();
 		return (result);
 	}
 	
 	/**
-	 * Accessor for the SRS Attributes. Will always be non-null, even if the attributes inside are not set.
+	 * Accessor for the SRS Attributes. Will always be non-null.
 	 */
 	public SRSAttributes getSRSAttributes() {
 		return (_cachedSrsAttributes);
 	}
 	
 	/**
+	 * Accessor for the ID
+	 */
+	public String getId() {
+		return (getAttributeValue(ID_NAME, getXOMElement().getNamespaceURI()));
+	}
+	
+	/**
 	 * Accessor for the coordinates of the position. May return null, but cannot happen after instantiation.
 	 */
-	public List<Double> getCoordinates() {
-		return (Collections.unmodifiableList(_cachedCoordinates));
-	}
-		
-	/**
-	 * Accessor for the String representation of the coordinates
-	 */
-	public String getCoordinatesAsXsList() {
-		return (getXOMElement().getValue());
+	public Position getPosition() {
+		return (_cachedPosition);
 	}
 	
 	/**
@@ -291,9 +299,10 @@ public final class Position extends AbstractBaseComponent {
 	 * @since 1.8.0
 	 */
 	public static class Builder implements IBuilder, Serializable {
-		private static final long serialVersionUID = 33638279863455987L;
+		private static final long serialVersionUID = 4003805386998809149L;
 		private SRSAttributes.Builder _srsAttributes;
-		private List<Position.DoubleBuilder> _coordinates;
+		private Position.Builder _position;
+		private String _id;
 		
 		/**
 		 * Empty constructor
@@ -303,36 +312,24 @@ public final class Position extends AbstractBaseComponent {
 		/**
 		 * Constructor which starts from an existing component.
 		 */
-		public Builder(Position position) {
-			setSrsAttributes(new SRSAttributes.Builder(position.getSRSAttributes()));
-			for (Double coord : position.getCoordinates())
-				getCoordinates().add(new DoubleBuilder(coord));
+		public Builder(Point point) {
+			setSrsAttributes(new SRSAttributes.Builder(point.getSRSAttributes()));
+			setPosition(new Position.Builder(point.getPosition()));
+			setId(point.getId());
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
-		public Position commit() throws InvalidDDMSException {
-			if (isEmpty())
-				return (null);
-			List<Double> coordinates = new ArrayList<Double>();
-			for (Position.DoubleBuilder builder : getCoordinates()) {
-				Double coord = builder.commit();
-				if (coord != null)
-					coordinates.add(coord);
-			}	
-			return (new Position(coordinates, getSrsAttributes().commit()));
+		public Point commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new Point(getPosition().commit(), getSrsAttributes().commit(), getId()));
 		}
 		
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			boolean hasValueInList = false;
-			for (Position.DoubleBuilder builder : getCoordinates()) {
-				hasValueInList = hasValueInList || !builder.isEmpty();
-			}
-			return (!hasValueInList && getSrsAttributes().isEmpty());
+			return (Util.isEmpty(getId()) && getPosition().isEmpty() && getSrsAttributes().isEmpty());
 		}
 		
 		/**
@@ -350,70 +347,35 @@ public final class Position extends AbstractBaseComponent {
 		public void setSrsAttributes(SRSAttributes.Builder srsAttributes) {
 			_srsAttributes = srsAttributes;
 		}
-		
+
 		/**
-		 * Builder accessor for the coordinates of the position
+		 * Builder accessor for the position
 		 */
-		public List<Position.DoubleBuilder> getCoordinates() {
-			if (_coordinates == null)
-				_coordinates = new LazyList(Position.DoubleBuilder.class);
-			return _coordinates;
-		}		
-	}
-	
-	/**
-	 * Builder for a Double
-	 * 
-	 * <p>This builder is implemented because the Java Double class does not have a no-arg constructor which can be hooked into
-	 * a LazyList. Because the Builder returns a Double instead of an IDDMSComponent, it does not officially implement
-	 * the IBuilder interface.</p>
-	 * 
-	 * @see IBuilder
-	 * @author Brian Uri!
-	 * @since 1.9.0
-	 */
-	public static class DoubleBuilder implements Serializable {
-		private static final long serialVersionUID = -5102193614065692204L;
-		private Double _value;
-		
-		/**
-		 * Empty constructor
-		 */
-		public DoubleBuilder() {}
-		
-		/**
-		 * Constructor which starts from an existing component.
-		 */
-		public DoubleBuilder(Double value) {
-			setValue(value);
-		}
-		
-		/**
-		 * @see IBuilder#commit()
-		 */
-		public Double commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : getValue());
+		public Position.Builder getPosition() {
+			if (_position == null)
+				_position = new Position.Builder();
+			return _position;
 		}
 
 		/**
-		 * @see IBuilder#isEmpty()
+		 * Builder accessor for the position
 		 */
-		public boolean isEmpty() {
-			return (getValue() == null);
+		public void setPosition(Position.Builder position) {
+			_position = position;
 		}
 
 		/**
-		 * Builder accessor for the value
+		 * Accessor for the ID
 		 */
-		public Double getValue() {
-			return _value;
+		public String getId() {
+			return _id;
 		}
 
 		/**
-		 * Builder accessor for the value
+		 * Accessor for the ID
 		 */
-		public void setValue(Double value) {
-			_value = value;
-		}
-	}
+		public void setId(String id) {
+			_id = id;
+		}			
+	}	
 } 

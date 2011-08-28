@@ -17,7 +17,7 @@
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
 */
-package buri.ddmsence.ddms.summary;
+package buri.ddmsence.ddms.summary.gml;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -25,7 +25,7 @@ import java.util.List;
 
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.security.SecurityAttributes;
-import buri.ddmsence.ddms.summary.SRSAttributes;
+import buri.ddmsence.ddms.summary.gml.SRSAttributes;
 
 /**
  * Top-level base class for attribute groups, specifically {@link SRSAttributes}, {@link SecurityAttributes}, and
