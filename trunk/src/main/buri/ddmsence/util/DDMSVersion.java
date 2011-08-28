@@ -27,7 +27,7 @@ import java.util.Map;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.UnsupportedVersionException;
-import buri.ddmsence.ddms.security.ISMVocabulary;
+import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 
 /**
  * Manages the supported versions of DDMS.

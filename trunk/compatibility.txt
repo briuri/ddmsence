@@ -15,11 +15,12 @@ FIX:
 	There is no workaround at this time. Please contact me with feedback on how you used this feature previously so I can support your use case in the future.
 
 #########################################################################################################
-GML-related classes have been moved into a new package, buri.ddmsence.ddms.summary.gml (Issue #148).
+Non-DDMS classes have been moved into new packages (Issue #148).
 
 SEVERITY: Minor
 DETAILS:
-	Affected classes: Point, Polygon, Position, and SRSAttributes
+	- GML classes (Point, Polygon, Position, and SRSAttributes) have moved into buri.ddmsence.ddms.summary.gml.
+	- ISM classes (ISMVocabulary, and SecurityAttributes) have moved into buri.ddmsence.ddms.security.ism.
 FIX:
 	Update any Java import statements that point to the old package.
 

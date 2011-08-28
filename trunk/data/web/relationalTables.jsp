@@ -1984,7 +1984,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/security/SecurityAttributes.html">SecurityAttributes</a>
+			<a href="/docs/buri/ddmsence/ddms/security/ism/SecurityAttributes.html">SecurityAttributes</a>
 		</td>
 	</tr>
 	<tr class="relRow">

@@ -17,9 +17,10 @@
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
  */
-package buri.ddmsence.ddms.security;
+package buri.ddmsence.ddms.security.ism;
 
 import buri.ddmsence.ddms.AbstractComponentTestCase;
+import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.util.DDMSVersion;
 
 /**

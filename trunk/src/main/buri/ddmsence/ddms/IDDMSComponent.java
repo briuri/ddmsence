@@ -22,7 +22,7 @@ package buri.ddmsence.ddms;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 
 /**
  * Interface for a single DDMS element.

@@ -17,7 +17,7 @@
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
 */
-package buri.ddmsence.ddms.security;
+package buri.ddmsence.ddms.security.ism;
 
 import java.io.IOException;
 import java.io.InputStream;
