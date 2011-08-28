@@ -178,6 +178,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			Util.requireCompatibleVersion(this, keyword);
 		for (Category category : getCategories())
 			Util.requireCompatibleVersion(this, category);
+		// Should be reviewed as additional versions of DDMS are supported.
 		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS v2.0.");
 		}

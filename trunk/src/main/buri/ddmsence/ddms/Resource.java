@@ -593,19 +593,19 @@ public final class Resource extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>(v3.0) resourceElement attribute must exist.</li>
-	 * <li>(v3.0) createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD).</li>
-	 * <li>(v3.0) DESVersion must exist and be a valid Integer.</li>
-	 * <li>(v3.1) DESVersion must exist and be "5".</li>
-	 * <li>(v3.0) A classification is required.</li>
-	 * <li>(v3.0) At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights, 0-1 formats, exactly 1
 	 * subjectCoverage, and exactly 1 security element must exist.</li>
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
 	 * <li>If this resource has security attributes, the SecurityAttributes on any subcomponents are valid according 
 	 * to rollup rules (security attributes are not required in DDMS 2.0).</li>
-	 * <li>(v2.0) Only 1 extensible element can exist.</li>
 	 * <li>All child components are using the same version of DDMS.</li>
+	 * <li>(v3.0, 3.1, 4.0) resourceElement attribute must exist.</li>
+	 * <li>(v3.0, 3.1, 4.0) createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD).</li>
+	 * <li>(v3.0, 3.1, 4.0) DESVersion must exist and be a valid Integer.</li>
+	 * <li>(v3.1) DESVersion must exist and be "5".</li>
+	 * <li>(v3.0, 3.1, 4.0) A classification is required.</li>
+	 * <li>(v3.0, 3.1, 4.0) At least 1 ownerProducer exists and is non-empty.</li>
+	 * <li>(v2.0) Only 1 extensible element can exist.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see ISMVocabulary#validateRollup(SecurityAttributes, Set)
@@ -615,22 +615,6 @@ public final class Resource extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), NAME);
-		boolean isDDMS20 = DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement());
-		boolean isDDMS31 = DDMSVersion.isCompatibleWithVersion("3.1", getXOMElement());
-		
-		if (!isDDMS20) {
-			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
-			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
-			Util.requireDDMSValue(DES_VERSION_NAME, getDESVersion());
-			if (isDDMS31) {
-				if (!(new Integer(5).equals(getDESVersion())))
-					throw new InvalidDDMSException("The DESVersion must be 5 in DDMS 3.1 resources.");	
-			}
-			Util.requireDDMSValue("security attributes", getSecurityAttributes());
-			getSecurityAttributes().requireClassification();
-			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
-				throw new InvalidDDMSException("The createDate must be in the xs:date format (YYYY-MM-DD).");
-		}
 
 		if (getIdentifiers().size() < 1)
 			throw new InvalidDDMSException("At least 1 identifier is required.");
@@ -653,13 +637,30 @@ public final class Resource extends AbstractBaseComponent {
 			}
 			ISMVocabulary.validateRollup(getSecurityAttributes(), childAttributes);
 		}
-		if (isDDMS20 && getExtensibleElements().size() > 1) {
-			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
-		}
 		for (IDDMSComponent component : getTopLevelComponents()) {
 			if (component instanceof ExtensibleElement)
 				continue;
 			Util.requireCompatibleVersion(this, component);
+		}
+		
+		// Should be reviewed as additional versions of DDMS are supported.
+		boolean isDDMS20 = DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement());
+		boolean isDDMS31 = DDMSVersion.isCompatibleWithVersion("3.1", getXOMElement());
+		if (!isDDMS20) {
+			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
+			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
+			Util.requireDDMSValue(DES_VERSION_NAME, getDESVersion());
+			if (isDDMS31) {
+				if (!(new Integer(5).equals(getDESVersion())))
+					throw new InvalidDDMSException("The DESVersion must be 5 in DDMS 3.1 resources.");	
+			}
+			Util.requireDDMSValue("security attributes", getSecurityAttributes());
+			getSecurityAttributes().requireClassification();
+			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
+				throw new InvalidDDMSException("The createDate must be in the xs:date format (YYYY-MM-DD).");
+		}
+		if (isDDMS20 && getExtensibleElements().size() > 1) {
+			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
 		}
 		
 		validateWarnings();

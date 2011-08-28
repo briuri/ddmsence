@@ -105,7 +105,7 @@ public final class Security extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>(v3.0) The excludeFromRollup is set and has a value of "true".</li>
+	 * <li>(v3.0, 3.1, 4.0) The excludeFromRollup is set and has a value of "true".</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -113,8 +113,8 @@ public final class Security extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), NAME);
-		boolean isDDMS20 = DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement());
-		
+		// Should be reviewed as additional versions of DDMS are supported.
+		boolean isDDMS20 = DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement());		
 		if (!isDDMS20) {
 			if (getExcludeFromRollup() == null)
 				throw new InvalidDDMSException("The excludeFromRollup attribute is required.");
@@ -124,6 +124,7 @@ public final class Security extends AbstractBaseComponent {
 		}
 		else if (getExcludeFromRollup() != null)
 			throw new InvalidDDMSException("The excludeFromRollup attribute cannot be used in DDMS 2.0.");
+		
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 

@@ -129,8 +129,8 @@ public final class Unknown extends AbstractProducer {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		boolean isDDMS20 = DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement());
-		if (isDDMS20)
+		// Should be reviewed as additional versions of DDMS are supported.
+		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()))
 			throw new InvalidDDMSException("The ddms:Unknown element cannot be used in DDMS 2.0.");
 		Util.requireDDMSQName(getXOMElement(), getProducerType());
 		Util.requireDDMSQName(getEntityElement(), NAME);

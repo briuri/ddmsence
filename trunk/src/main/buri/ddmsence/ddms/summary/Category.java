@@ -141,8 +141,9 @@ public final class Category extends AbstractBaseComponent {
 		if (!Util.isEmpty(getQualifier())) {
 			Util.requireDDMSValidURI(getQualifier());
 		}			
+		// Should be reviewed as additional versions of DDMS are supported.
 		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getExtensibleAttributes().isEmpty())
-			throw new InvalidDDMSException("xs:anyAttribute can only be applied to ddms:category in DDMS 3.0.");
+			throw new InvalidDDMSException("xs:anyAttribute cannot be applied to ddms:category in DDMS 2.0.");
 	}
 	
 	/**
