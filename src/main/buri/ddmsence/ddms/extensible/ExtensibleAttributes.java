@@ -39,7 +39,7 @@ import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Unknown;
-import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.Category;
 import buri.ddmsence.ddms.summary.Keyword;
 import buri.ddmsence.util.DDMSVersion;

@@ -23,7 +23,7 @@ import java.io.Serializable;
 
 import nu.xom.Element;
 
-import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.Util;
 
 /**

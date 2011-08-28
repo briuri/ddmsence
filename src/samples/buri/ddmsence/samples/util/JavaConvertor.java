@@ -37,7 +37,7 @@ import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
 import buri.ddmsence.ddms.security.Security;
-import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.BoundingBox;
 import buri.ddmsence.ddms.summary.BoundingGeometry;
 import buri.ddmsence.ddms.summary.Category;

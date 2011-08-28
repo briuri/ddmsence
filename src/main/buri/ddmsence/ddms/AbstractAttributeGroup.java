@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
-import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.gml.SRSAttributes;
 
 /**
