@@ -153,7 +153,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			.append("\" ");
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
 			.append("\">\n\t");
-		xml.append("<ddms:link xmlns:xlink=\"").append(PropertyReader.getProperty("xlink.xmlNamespace")).append("\" xlink:type=\"locator\" ");
+		xml.append("<ddms:link xmlns:xlink=\"").append(DDMSVersion.getCurrentVersion().getXlinkNamespace()).append("\" xlink:type=\"locator\" ");
 		xml.append("xlink:href=\"").append(TEST_VALUE).append("\" ");
 		xml.append("xlink:role=\"tank\" ");
 		xml.append("xlink:title=\"Tank Page\" ");
