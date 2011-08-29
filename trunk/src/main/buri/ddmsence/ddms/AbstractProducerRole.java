@@ -181,7 +181,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	/**
 	 * Accessor for the producer entity
 	 */
-	protected IProducerEntity getProducerEntity() {
+	public IProducerEntity getProducerEntity() {
 		return _producerEntity;
 	}
 	
@@ -205,6 +205,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	public static abstract class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = -1694935853087559491L;
 
+		private String _producerType;
 		private String _entityType;
 		private OrganizationX.Builder _organization;
 		private PersonX.Builder _person;
@@ -213,14 +214,19 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
-		 * Empty constructor
+		 * Base constructor
+		 * 
+		 * @param producerType the producer type for this role
 		 */
-		protected Builder() {}
+		protected Builder(String producerType) {
+			setProducerType(producerType);
+		}
 		
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		protected Builder(AbstractProducerRole producer) {
+			setProducerType(producer.getName());
 			setEntityType(producer.getProducerEntity().getName());
 			if (OrganizationX.NAME.equals(getEntityType()))
 				setOrganization(new OrganizationX.Builder((OrganizationX) producer.getProducerEntity()));
@@ -252,7 +258,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 * 
 		 * @return true if all values are empty
 		 */
-		public boolean isEmpty() {
+		public boolean isEmpty() {	
 			return (getOrganization().isEmpty()
 				&& getPerson().isEmpty()
 				&& getService().isEmpty()
@@ -294,8 +300,10 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 * Builder accessor for the organization builder
 		 */
 		public OrganizationX.Builder getOrganization() {
-			if (_organization == null)
+			if (_organization == null) {
 				_organization = new OrganizationX.Builder();
+				_organization.setParentType(getProducerType());
+			}
 			return _organization;
 		}
 
@@ -304,14 +312,17 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 */
 		public void setOrganization(OrganizationX.Builder organization) {
 			_organization = organization;
+			_organization.setParentType(getProducerType());
 		}
 
 		/**
 		 * Builder accessor for the person builder
 		 */
 		public PersonX.Builder getPerson() {
-			if (_person == null)
+			if (_person == null) {
 				_person = new PersonX.Builder();
+				_person.setParentType(getProducerType());
+			}
 			return _person;
 		}
 
@@ -320,14 +331,17 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 */
 		public void setPerson(PersonX.Builder person) {
 			_person = person;
+			_person.setParentType(getProducerType());
 		}
 
 		/**
 		 * Builder accessor for the service builder
 		 */
 		public ServiceX.Builder getService() {
-			if (_service == null)
+			if (_service == null) {
 				_service = new ServiceX.Builder();
+				_service.setParentType(getProducerType());
+			}
 			return _service;
 		}
 
@@ -336,14 +350,17 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 */
 		public void setService(ServiceX.Builder service) {
 			_service = service;
+			_service.setParentType(getProducerType());
 		}
 
 		/**
 		 * Builder accessor for the unknown builder
 		 */
 		public UnknownX.Builder getUnknown() {
-			if (_unknown == null)
+			if (_unknown == null) {
 				_unknown = new UnknownX.Builder();
+				_unknown.setParentType(getProducerType());
+			}
 			return _unknown;
 		}
 
@@ -352,6 +369,21 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 */
 		public void setUnknown(UnknownX.Builder unknown) {
 			_unknown = unknown;
+			_unknown.setParentType(getProducerType());
+		}
+
+		/**
+		 * Builder accessor for the producerType
+		 */
+		public String getProducerType() {
+			return _producerType;
+		}
+
+		/**
+		 * Builder accessor for the producerType
+		 */
+		public void setProducerType(String producerType) {
+			_producerType = producerType;
 		}
 	}
 }

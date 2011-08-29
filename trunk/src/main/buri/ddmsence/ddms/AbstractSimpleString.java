@@ -22,7 +22,6 @@ package buri.ddmsence.ddms;
 import java.io.Serializable;
 
 import nu.xom.Element;
-
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.Util;
 

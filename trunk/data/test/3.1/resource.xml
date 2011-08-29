@@ -28,7 +28,7 @@
 	</ddms:contributor>
 	<ddms:pointOfContact>
 		<ddms:Unknown>
-			<ddms:name>Unknown Entity</ddms:name>
+			<ddms:name>UnknownEntity</ddms:name>
 		</ddms:Unknown>	
 	</ddms:pointOfContact>
 	<ddms:format>

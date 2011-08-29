@@ -21,8 +21,8 @@ package buri.ddmsence.samples.util;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
+import buri.ddmsence.ddms.AbstractProducerRole;
 import buri.ddmsence.ddms.IDDMSComponent;
-import buri.ddmsence.ddms.IProducer;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleElement;
@@ -30,12 +30,15 @@ import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.resource.Identifier;
 import buri.ddmsence.ddms.resource.Language;
-import buri.ddmsence.ddms.resource.Person;
+import buri.ddmsence.ddms.resource.OrganizationX;
+import buri.ddmsence.ddms.resource.PersonX;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.ddms.resource.ServiceX;
 import buri.ddmsence.ddms.resource.Source;
 import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
+import buri.ddmsence.ddms.resource.UnknownX;
 import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.BoundingBox;
@@ -94,7 +97,7 @@ public class JavaConvertor {
 	 * the core library, because it's DDMSence-specific, and a one-off from DDMS.
 	 *
 	 * @param r the resource to convert
-	 * @return String of Java code
+	 * @return the Java code as a String
 	 */
 	public static String toJavaCode(Resource r) {
 		resetVariableCount();
@@ -127,8 +130,8 @@ public class JavaConvertor {
 				convert(java, (Source) component);
 			else if (component instanceof Type)
 				convert(java, (Type) component);
-			else if (component instanceof IProducer)
-				convert(java, (IProducer) component);
+			else if (component instanceof AbstractProducerRole)
+				convert(java, (AbstractProducerRole) component);
 			
 			// Format Set
 			else if (component instanceof Format)
@@ -183,7 +186,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param i the identifier
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, Identifier identifier) {
 		int count = getVariableCount();
@@ -198,7 +200,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param title the title
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, Title title) {
 		int count = getVariableCount();
@@ -214,7 +215,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param subtitle the subtitle
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, Subtitle subtitle) {
 		int count = getVariableCount();
@@ -230,7 +230,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param description the description
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, Description description) {
 		java.append("\n// ddms:description\n");
@@ -245,7 +244,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param language the language
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, Language language) {
 		int count = getVariableCount();
@@ -260,7 +258,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param dates the dates
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, Dates dates) {
 		java.append("\n// ddms:dates\n");
@@ -285,7 +282,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param rights the rights
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, Rights rights) {
 		java.append("\n// ddms:rights\n");
@@ -299,7 +295,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param source the source
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, Source source) {
 		int count = getVariableCount();
@@ -316,7 +311,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param type the type
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, Type type) {
 		int count = getVariableCount();
@@ -327,50 +321,149 @@ public class JavaConvertor {
 	}
 	
 	/**
+	 * Helper method to convert an organization into Java code
+	 * 
+	 * @param java the buffer to add to
+	 * @param parentType the parentType
+	 * @param organization the organization
+	 */
+	public static String convert(StringBuffer java, String parentType, OrganizationX organization) {
+		int count = getVariableCount();				
+		java.append("\n// ddms:organization\n");
+		convert(java, organization.getExtensibleAttributes());
+		java.append("List<String> names").append(count).append(" = new ArrayList<String>();\n");
+		for (String name : organization.getNames())
+			java.append("names").append(count).append(".add(\"").append(name).append("\");\n");
+		java.append("List<String> phones").append(count).append(" = new ArrayList<String>();\n");
+		for (String phone : organization.getPhones())
+			java.append("phones").append(count).append(".add(\"").append(phone).append("\");\n");
+		java.append("List<String> emails").append(count).append(" = new ArrayList<String>();\n");
+		for (String email : organization.getEmails())
+			java.append("emails").append(count).append(".add(\"").append(email).append("\");\n");
+		java.append("Organization organization").append(count).append(" = new Organization(\"").append(parentType).append("\", ");
+		java.append(" names").append(count).append(", ");
+		java.append(" phones").append(count).append(", emails").append(count)
+			.append(", extensions);\n");
+		return ("organization" + count);
+	}
+	
+	/**
+	 * Helper method to convert a service into Java code
+	 * 
+	 * @param java the buffer to add to
+	 * @param parentType the parentType
+	 * @param service the service
+	 */
+	public static String convert(StringBuffer java, String parentType, ServiceX service) {
+		int count = getVariableCount();				
+		java.append("\n// ddms:service\n");
+		convert(java, service.getExtensibleAttributes());
+		java.append("List<String> names").append(count).append(" = new ArrayList<String>();\n");
+		for (String name : service.getNames())
+			java.append("names").append(count).append(".add(\"").append(name).append("\");\n");
+		java.append("List<String> phones").append(count).append(" = new ArrayList<String>();\n");
+		for (String phone : service.getPhones())
+			java.append("phones").append(count).append(".add(\"").append(phone).append("\");\n");
+		java.append("List<String> emails").append(count).append(" = new ArrayList<String>();\n");
+		for (String email : service.getEmails())
+			java.append("emails").append(count).append(".add(\"").append(email).append("\");\n");
+		java.append("Service service").append(count).append(" = new Service(\"").append(parentType).append("\", ");
+		java.append(" names").append(count).append(", ");
+		java.append(" phones").append(count).append(", emails").append(count)
+			.append(", extensions);\n");
+		return ("service" + count);
+	}
+	
+	/**
+	 * Helper method to convert an unknown into Java code
+	 * 
+	 * @param java the buffer to add to
+	 * @param parentType the parentType
+	 * @param unknown the unknown
+	 */
+	public static String convert(StringBuffer java, String parentType, UnknownX unknown) {
+		int count = getVariableCount();				
+		java.append("\n// ddms:unknown\n");
+		convert(java, unknown.getExtensibleAttributes());
+		java.append("List<String> names").append(count).append(" = new ArrayList<String>();\n");
+		for (String name : unknown.getNames())
+			java.append("names").append(count).append(".add(\"").append(name).append("\");\n");
+		java.append("List<String> phones").append(count).append(" = new ArrayList<String>();\n");
+		for (String phone : unknown.getPhones())
+			java.append("phones").append(count).append(".add(\"").append(phone).append("\");\n");
+		java.append("List<String> emails").append(count).append(" = new ArrayList<String>();\n");
+		for (String email : unknown.getEmails())
+			java.append("emails").append(count).append(".add(\"").append(email).append("\");\n");
+		java.append("Unknown unknown").append(count).append(" = new Service(\"").append(parentType).append("\", ");
+		java.append(" names").append(count).append(", ");
+		java.append(" phones").append(count).append(", emails").append(count)
+			.append(", extensions);\n");
+		return ("unknown" + count);
+	}
+	
+	/**
+	 * Helper method to convert a person into Java code
+	 * 
+	 * @param java the buffer to add to
+	 * @param parentType the parentType
+	 * @param person the person
+	 */
+	public static String convert(StringBuffer java, String parentType, PersonX person) {
+		int count = getVariableCount();				
+		java.append("\n// ddms:person\n");
+		convert(java, person.getExtensibleAttributes());
+		java.append("List<String> names").append(count).append(" = new ArrayList<String>();\n");
+		for (String name : person.getNames())
+			java.append("names").append(count).append(".add(\"").append(name).append("\");\n");
+		java.append("List<String> phones").append(count).append(" = new ArrayList<String>();\n");
+		for (String phone : person.getPhones())
+			java.append("phones").append(count).append(".add(\"").append(phone).append("\");\n");
+		java.append("List<String> emails").append(count).append(" = new ArrayList<String>();\n");
+		for (String email : person.getEmails())
+			java.append("emails").append(count).append(".add(\"").append(email).append("\");\n");
+		java.append("Person person").append(count).append(" = new Service(\"").append(parentType).append("\", ");
+		java.append("\"").append(person.getSurname()).append("\", ");
+		java.append(" names").append(count).append(", ");
+		java.append("\"").append(person.getUserID()).append("\", \"")
+			.append(person.getAffiliation()).append("\", ");
+		java.append(" phones").append(count).append(", emails").append(count)
+			.append(", extensions);\n");
+		return ("person" + count);
+	}
+	
+	/**
 	 * Helper method to convert a producer into Java code
 	 * 
 	 * @param java the buffer to add to
 	 * @param producer the producer
-	 * @return String of Java code
 	 */
-	public static void convert(StringBuffer java, IProducer producer) {
+	public static void convert(StringBuffer java, AbstractProducerRole producer) {
 		int count = getVariableCount();
 		String producerType = producer.getName();
-		String entityType = producer.getEntityType();
-		String entityClass = Util.capitalize(entityType);
+		String producerClass = Util.capitalize(producerType);
 				
 		java.append("\n// ddms:").append(producerType).append("\n");
 		convert(java, producer.getSecurityAttributes());
-		convert(java, producer.getExtensibleAttributes());
-		java.append("List<String> names").append(count).append(" = new ArrayList<String>();\n");
-		for (String name : producer.getNames())
-			java.append("names").append(count).append(".add(\"").append(name).append("\");\n");
-		java.append("List<String> phones").append(count).append(" = new ArrayList<String>();\n");
-		for (String phone : producer.getPhones())
-			java.append("phones").append(count).append(".add(\"").append(phone).append("\");\n");
-		java.append("List<String> emails").append(count).append(" = new ArrayList<String>();\n");
-		for (String email : producer.getEmails())
-			java.append("emails").append(count).append(".add(\"").append(email).append("\");\n");
-		java.append(entityClass).append(" ").append(entityType.toLowerCase()).append(count).append(" = new ")
-		.append(entityClass).append("(\"").append(producerType).append("\", ");
-		if (Person.NAME.equals(entityType))
-			java.append("\"").append(((Person) producer).getSurname()).append("\", ");
-		java.append(" names").append(count).append(", ");
-		if (Person.NAME.equals(entityType)) {
-			java.append("\"").append(((Person) producer).getUserID()).append("\", \"")
-				.append(((Person) producer).getAffiliation()).append("\", ");
-		}
-		java.append(" phones").append(count).append(", emails").append(count)
-			.append(", securityAttributes, extensions);\n");
-		java.append("topLevelComponents.add(").append(entityType.toLowerCase()).append(count).append(");\n");
+		String entityVariable = null;
+		if (PersonX.NAME.equals(producer.getProducerEntity().getName()))
+			entityVariable = convert(java, producerType, (PersonX) producer.getProducerEntity());
+		if (OrganizationX.NAME.equals(producer.getProducerEntity().getName()))
+			entityVariable = convert(java, producerType, (OrganizationX) producer.getProducerEntity());
+		if (ServiceX.NAME.equals(producer.getProducerEntity().getName()))
+			entityVariable = convert(java, producerType, (ServiceX) producer.getProducerEntity());
+		if (UnknownX.NAME.equals(producer.getProducerEntity().getName()))
+			entityVariable = convert(java, producerType, (UnknownX) producer.getProducerEntity());
+
+		java.append(producerClass).append(" ").append(producerType).append(count).append(" = new ");
+		java.append(producerClass).append("(").append(entityVariable).append(", securityAttributes);");
+		java.append("topLevelComponents.add(").append(producerType).append(count).append(");\n");
 	}
-	
+		
 	/**
 	 * Helper method to convert a format into Java code
 	 * 
 	 * @param java the buffer to add to
 	 * @param format the format
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, Format format) {
 		int count = getVariableCount();
@@ -392,7 +485,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param security the security
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, Security security) {
 		java.append("\n// ddms:security\n");
@@ -406,7 +498,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param extension the element
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, ExtensibleElement extension) {
 		java.append("\n// Extensible Layer element\n");
@@ -424,7 +515,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param subjectCoverage the subjectCoverage
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, SubjectCoverage subjectCoverage) {
 		java.append("\n// ddms:subjectCoverage\n");
@@ -449,7 +539,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param virtualCoverage the virtualCoverage
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, VirtualCoverage virtualCoverage) {
 		int count = getVariableCount();
@@ -466,7 +555,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param temporalCoverage the temporalCoverage
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, TemporalCoverage temporalCoverage) {
 		int count = getVariableCount();
@@ -483,7 +571,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param coverage the geospatialCoverage
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, GeospatialCoverage coverage) {
 		int count = getVariableCount();
@@ -531,7 +618,6 @@ public class JavaConvertor {
 	 * @param java the buffer to add to
 	 * @param the parent count
 	 * @param geoId the GeographicIdentifier
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, int count, GeographicIdentifier geoId) {
 		if (geoId.hasFacilityIdentifier()) {
@@ -563,7 +649,6 @@ public class JavaConvertor {
 	 * @param java the buffer to add to
 	 * @param the parent count
 	 * @param b the BoundingGeometry
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, int count, BoundingGeometry b) {
 		java.append("List<Polygon> polygons").append(count).append(" = new ArrayList<Polygon>();\n");
@@ -603,7 +688,6 @@ public class JavaConvertor {
 	 * @param java the buffer to add to
 	 * @param the parent count
 	 * @param address the the address
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, int count, PostalAddress address) {
 		java.append("List<String> streets").append(count).append(" = new ArrayList<String>();\n");
@@ -627,7 +711,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param resources the relatedResources
-	 * @return String of Java code
 	 */
 	public static void convert(StringBuffer java, RelatedResources resources) {
 		int count = getVariableCount();
@@ -658,7 +741,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param attributes the attributes
-	 * @return String of Java code
 	 */
 	private static void convert(StringBuffer java, SRSAttributes attributes) {
 		int count = getVariableCount();
@@ -681,7 +763,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param attributes the attributes
-	 * @return String of Java code
 	 */
 	private static void convert(StringBuffer java, SecurityAttributes attributes) {
 		int count = getVariableCount();
@@ -741,7 +822,6 @@ public class JavaConvertor {
 	 * 
 	 * @param java the buffer to add to
 	 * @param attributes the attributes
-	 * @return String of Java code
 	 */
 	private static void convert(StringBuffer java, ExtensibleAttributes attributes) {
 		int count = getVariableCount();

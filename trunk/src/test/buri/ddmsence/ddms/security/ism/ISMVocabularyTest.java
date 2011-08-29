@@ -20,7 +20,6 @@
 package buri.ddmsence.ddms.security.ism;
 
 import buri.ddmsence.ddms.AbstractComponentTestCase;
-import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.util.DDMSVersion;
 
 /**

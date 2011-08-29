@@ -360,8 +360,7 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 		 * @return true if all values are empty
 		 */
 		public boolean isEmpty() {
-			return (Util.isEmpty(getParentType())
-				&& Util.containsOnlyEmptyValues(getNames())
+			return (Util.containsOnlyEmptyValues(getNames())
 				&& Util.containsOnlyEmptyValues(getPhones())
 				&& Util.containsOnlyEmptyValues(getEmails())
 				&& getExtensibleAttributes().isEmpty());

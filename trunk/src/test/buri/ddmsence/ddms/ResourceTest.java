@@ -34,18 +34,22 @@ import buri.ddmsence.ddms.extensible.ExtensibleElement;
 import buri.ddmsence.ddms.extensible.ExtensibleElementTest;
 import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.format.MediaExtent;
+import buri.ddmsence.ddms.resource.Contributor;
+import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.resource.Identifier;
 import buri.ddmsence.ddms.resource.Language;
-import buri.ddmsence.ddms.resource.Organization;
-import buri.ddmsence.ddms.resource.Person;
+import buri.ddmsence.ddms.resource.OrganizationX;
+import buri.ddmsence.ddms.resource.PersonX;
+import buri.ddmsence.ddms.resource.PointOfContact;
+import buri.ddmsence.ddms.resource.Publisher;
 import buri.ddmsence.ddms.resource.Rights;
-import buri.ddmsence.ddms.resource.Service;
+import buri.ddmsence.ddms.resource.ServiceX;
 import buri.ddmsence.ddms.resource.Source;
 import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
-import buri.ddmsence.ddms.resource.Unknown;
+import buri.ddmsence.ddms.resource.UnknownX;
 import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -88,10 +92,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 	private Rights TEST_RIGHTS;
 	private Source TEST_SOURCE;
 	private Type TEST_TYPE;
-	private IProducer TEST_CREATOR;
-	private IProducer TEST_PUBLISHER;
-	private IProducer TEST_CONTRIBUTOR;
-	private IProducer TEST_POC;
+	private Creator TEST_CREATOR;
+	private Publisher TEST_PUBLISHER;
+	private Contributor TEST_CONTRIBUTOR;
+	private PointOfContact TEST_POC;
 	private Format TEST_FORMAT;
 	private SubjectCoverage TEST_SUBJECT;
 	private VirtualCoverage TEST_VIRTUAL;
@@ -126,13 +130,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 		TEST_RIGHTS = new Rights(true, true, true);
 		TEST_SOURCE = new Source(null, "http://www.xmethods.com", null, null, null);
 		TEST_TYPE = new Type("DCMITYPE", "http://purl.org/dc/dcmitype/Text");
-		TEST_CREATOR = new Organization("creator", getAsList("DISA"), null, null, null);
-		TEST_PUBLISHER = new Person("publisher", "Uri", getAsList("Brian"), null, null, null, null, null);
-		TEST_CONTRIBUTOR = new Service(Organization.CONTRIBUTOR_NAME,
-			getAsList("https://metadata.dod.mil/ebxmlquery/soap"), null, null, null);
-		TEST_POC = (DDMSVersion.isCurrentVersion("2.0") ?
-			new Person("pointOfContact", "Uri", getAsList("Brian"), null, null, null, null, null)
-			: new Unknown("pointOfContact", getAsList("Unknown Entity"), null, null, null));
+		TEST_CREATOR = new Creator(new OrganizationX("creator", getAsList("DISA"), null, null), null);
+		TEST_PUBLISHER = new Publisher(new PersonX("publisher", "Uri", getAsList("Brian"), null, null, null, null), null);
+		TEST_CONTRIBUTOR = new Contributor(new ServiceX("contributor",
+			getAsList("https://metadata.dod.mil/ebxmlquery/soap"), null, null), null);
+		TEST_POC = new PointOfContact((DDMSVersion.isCurrentVersion("2.0") ?
+			new PersonX("pointOfContact", "Uri", getAsList("Brian"), null, null, null, null)
+			: new UnknownX("pointOfContact", getAsList("UnknownEntity"), null, null)), null);
 		TEST_FORMAT = new Format("text/xml", null, null);
 
 		List<Keyword> keywords = new ArrayList<Keyword>();
@@ -295,7 +299,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"contributor.name\" content=\"https://metadata.dod.mil/ebxmlquery/soap\" />\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
 			html.append("<meta name=\"pointOfContact.entityType\" content=\"Unknown\" />\n");
-			html.append("<meta name=\"pointOfContact.name\" content=\"Unknown Entity\" />\n");
+			html.append("<meta name=\"pointOfContact.name\" content=\"UnknownEntity\" />\n");
 		}
 		else {
 			html.append("<meta name=\"pointOfContact.entityType\" content=\"Person\" />\n");
@@ -380,7 +384,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		text.append("name: https://metadata.dod.mil/ebxmlquery/soap\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
 			text.append("pointOfContact EntityType: Unknown\n");
-			text.append("name: Unknown Entity\n");
+			text.append("name: UnknownEntity\n");
 		}
 		else {
 			text.append("pointOfContact EntityType: Person\n");
@@ -466,7 +470,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("\t<ddms:pointOfContact>\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
 			xml.append("\t\t<ddms:Unknown>\n");
-			xml.append("\t\t\t<ddms:name>Unknown Entity</ddms:name>\n");
+			xml.append("\t\t\t<ddms:name>UnknownEntity</ddms:name>\n");
 			xml.append("\t\t</ddms:Unknown>\t\n");
 		}
 		else {
@@ -1084,8 +1088,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 			
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("USA");
-			Organization org = new Organization("creator", getAsList("DISA"), null, null, new SecurityAttributes("TS",
-				ownerProducers, null));
+			OrganizationX org = new OrganizationX("creator", getAsList("DISA"), null, null);
+			Creator creator = new Creator(org, new SecurityAttributes("TS", ownerProducers, null));
 
 			Element element = Util.buildDDMSElement(Resource.NAME, null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
@@ -1096,7 +1100,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(org.getXOMElementCopy());
+			element.appendChild(creator.getXOMElementCopy());
 			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
 			element.appendChild(TEST_SECURITY.getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
@@ -1109,13 +1113,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 		
 		List<String> ownerProducers = new ArrayList<String>();
 		ownerProducers.add("USA");
-		Organization org = new Organization("creator", getAsList("DISA"), null, null, new SecurityAttributes("TS",
-			ownerProducers, null));
+		OrganizationX org = new OrganizationX("creator", getAsList("DISA"), null, null);
+		Creator creator = new Creator(org, new SecurityAttributes("TS", ownerProducers, null));
 		
 		Element element = Util.buildDDMSElement(Resource.NAME, null);
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 		element.appendChild(TEST_TITLE.getXOMElementCopy());
-		element.appendChild(org.getXOMElementCopy());
+		element.appendChild(creator.getXOMElementCopy());
 		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
 		element.appendChild(TEST_SECURITY.getXOMElementCopy());
 		testConstructor(WILL_SUCCEED, element);
@@ -1133,8 +1137,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 			
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("USA");
-			Organization org = new Organization("creator", getAsList("DISA"), null, null, 
-				new SecurityAttributes("CTSA", ownerProducers, null));
+			OrganizationX org = new OrganizationX("creator", getAsList("DISA"), null, null);
+			Creator creator = new Creator(org, new SecurityAttributes("CTSA", ownerProducers, null));
 
 			Element element = Util.buildDDMSElement(Resource.NAME, null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
@@ -1145,7 +1149,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(org.getXOMElementCopy());
+			element.appendChild(creator.getXOMElementCopy());
 			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
 			element.appendChild(TEST_SECURITY.getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
@@ -1494,8 +1498,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		builder.getTitles().get(0).setValue("testTitle");
 		builder.getTitles().get(0).getSecurityAttributes().setClassification("U");
 		builder.getTitles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-		builder.getOrganizations().get(0).setNames(Util.getXsListAsList("testName"));
-		builder.getOrganizations().get(0).setProducerType("creator");
+		builder.getCreators().get(0).setEntityType(OrganizationX.NAME);
+		builder.getCreators().get(0).getOrganization().setNames(Util.getXsListAsList("testName"));
 		builder.getSubjectCoverage().getKeywords().get(0).setValue("keyword");
 		builder.getSecurity().getSecurityAttributes().setClassification("U");
 		builder.getSecurity().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
@@ -1527,8 +1531,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		builder.getTitles().get(0).setValue("testTitle");
 		builder.getTitles().get(0).getSecurityAttributes().setClassification("U");
 		builder.getTitles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-		builder.getOrganizations().get(0).setNames(Util.getXsListAsList("testName"));
-		builder.getOrganizations().get(0).setProducerType("creator");
+		builder.getCreators().get(0).setEntityType(OrganizationX.NAME);
+		builder.getCreators().get(0).getOrganization().setNames(Util.getXsListAsList("testName"));
 		builder.getSubjectCoverage().getKeywords().get(0).setValue("keyword");
 		builder.getSecurity().getSecurityAttributes().setClassification("U");
 		builder.getSecurity().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
@@ -1566,7 +1570,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		}
 		
 		// Wiping of 3.0-specific fields works
-		builder.getUnknowns().set(0, new Unknown.Builder());
+		builder.getPointOfContacts().clear();
 		builder.commit();
 	}
 		
@@ -1616,7 +1620,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		builder.setDESVersion(new Integer(5));
 		builder.commit();
 	}
-	
+		
 	public void testBuilderEmptiness() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
@@ -1635,13 +1639,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertTrue(builder.isEmpty());
 			builder.getTypes().add(new Type.Builder());
 			assertTrue(builder.isEmpty());			
-			builder.getOrganizations().add(new Organization.Builder());
+			builder.getCreators().add(new Creator.Builder());
 			assertTrue(builder.isEmpty());
-			builder.getPersons().add(new Person.Builder());
+			builder.getContributors().add(new Contributor.Builder());
 			assertTrue(builder.isEmpty());
-			builder.getServices().add(new Service.Builder());
+			builder.getPublishers().add(new Publisher.Builder());
 			assertTrue(builder.isEmpty());
-			builder.getUnknowns().add(new Unknown.Builder());
+			builder.getPointOfContacts().add(new PointOfContact.Builder());
 			assertTrue(builder.isEmpty());
 			assertEquals(4, builder.getProducers().size());
 			builder.getVirtualCoverages().add(new VirtualCoverage.Builder());
@@ -1688,10 +1692,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertNotNull(builder.getLanguages().get(1));
 			assertNotNull(builder.getSources().get(1));
 			assertNotNull(builder.getTypes().get(1));
-			assertNotNull(builder.getOrganizations().get(1));
-			assertNotNull(builder.getPersons().get(1));
-			assertNotNull(builder.getServices().get(1));
-			assertNotNull(builder.getUnknowns().get(1));
+			assertNotNull(builder.getCreators().get(1));
+			assertNotNull(builder.getContributors().get(1));
+			assertNotNull(builder.getPublishers().get(1));
+			assertNotNull(builder.getPointOfContacts().get(1));
 			assertNotNull(builder.getVirtualCoverages().get(1));
 			assertNotNull(builder.getTemporalCoverages().get(1));
 			assertNotNull(builder.getGeospatialCoverages().get(1));

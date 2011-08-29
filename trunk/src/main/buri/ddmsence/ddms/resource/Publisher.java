@@ -20,7 +20,6 @@
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.AbstractProducer;
 import buri.ddmsence.ddms.AbstractProducerRole;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IProducerEntity;
@@ -114,7 +113,7 @@ public class Publisher extends AbstractProducerRole {
 		 * Empty constructor
 		 */
 		public Builder() {
-			super();
+			super(Publisher.NAME);
 		}
 		
 		/**

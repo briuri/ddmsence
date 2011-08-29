@@ -34,25 +34,30 @@ import java.util.Set;
 import nu.xom.Comment;
 import nu.xom.Document;
 import nu.xom.Serializer;
+import buri.ddmsence.ddms.AbstractProducerRole;
 import buri.ddmsence.ddms.IDDMSComponent;
-import buri.ddmsence.ddms.IProducer;
+import buri.ddmsence.ddms.IProducerEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.format.MediaExtent;
+import buri.ddmsence.ddms.resource.Contributor;
+import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.resource.Identifier;
 import buri.ddmsence.ddms.resource.Language;
-import buri.ddmsence.ddms.resource.Organization;
-import buri.ddmsence.ddms.resource.Person;
+import buri.ddmsence.ddms.resource.OrganizationX;
+import buri.ddmsence.ddms.resource.PersonX;
+import buri.ddmsence.ddms.resource.PointOfContact;
+import buri.ddmsence.ddms.resource.Publisher;
 import buri.ddmsence.ddms.resource.Rights;
-import buri.ddmsence.ddms.resource.Service;
+import buri.ddmsence.ddms.resource.ServiceX;
 import buri.ddmsence.ddms.resource.Source;
 import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
-import buri.ddmsence.ddms.resource.Unknown;
+import buri.ddmsence.ddms.resource.UnknownX;
 import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.BoundingBox;
@@ -214,7 +219,7 @@ public class Escort {
 				return (new Type(qualifier, value));
 			}		
 		});
-		BUILDERS.put(IProducer.class, new IComponentBuilder() {
+		BUILDERS.put(AbstractProducerRole.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String producerType = readString("the producer type [creator]");
 				String entityType = readString("the entity type [Organization]");
@@ -240,23 +245,34 @@ public class Escort {
 				String surname = null;
 				String userID = null;
 				String affiliation = null;
-				if (Person.NAME.equals(entityType)) {
+				if (PersonX.NAME.equals(entityType)) {
 					surname = readString("the Person surname [testSurname]");
 					userID = readString("the Person userID [testID]");
 					affiliation = readString("the Person affiliation [testOrg]");
 				}
 				String classification = readString("the producer classification [U]");
 				String ownerProducers = readString("the producer's ownerProducers as a space-delimited string [USA]");
-
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				if (Person.NAME.equals(entityType))
-					return (new Person(producerType, surname, names, userID, affiliation, phones, emails, attr));
-				else if (Organization.NAME.equals(entityType))
-					return (new Organization(producerType, names, phones, emails, attr));
-				else if (Service.NAME.equals(entityType))
-					return (new Service(producerType, names, phones, emails, attr));
+				
+				IProducerEntity entity = null;
+				if (PersonX.NAME.equals(entityType))
+					entity = new PersonX(producerType, surname, names, userID, affiliation, phones, emails);
+				else if (OrganizationX.NAME.equals(entityType))
+					entity = new OrganizationX(producerType, names, phones, emails);
+				else if (ServiceX.NAME.equals(entityType))
+					entity = new ServiceX(producerType, names, phones, emails);
 				else 
-					return (new Unknown(producerType, names, phones, emails, attr));
+					entity = new UnknownX(producerType, names, phones, emails);
+				
+				if (Creator.NAME.equals(producerType))
+					return (new Creator(entity, attr));
+				if (Contributor.NAME.equals(producerType))
+					return (new Creator(entity, attr));
+				if (Publisher.NAME.equals(producerType))
+					return (new Publisher(entity, attr));
+				if (PointOfContact.NAME.equals(producerType))
+					return (new PointOfContact(entity, attr));
+				throw new InvalidDDMSException("Unknown producerType: " + producerType);
 			}		
 		});		
 		BUILDERS.put(Format.class, new IComponentBuilder() {
@@ -663,9 +679,9 @@ public class Escort {
 		}
 				
 		printHead("Producers: creator, publisher, contributor, and pointOfContact (at least 1 required)");
-		getTopLevelComponents().add(inputLoop(IProducer.class));	
+		getTopLevelComponents().add(inputLoop(AbstractProducerRole.class));	
 		while (!onlyRequiredComponents && confirm("Add another producer?")) {
-			getTopLevelComponents().add(inputLoop(IProducer.class));	
+			getTopLevelComponents().add(inputLoop(AbstractProducerRole.class));	
 		}
 		
 		if (!onlyRequiredComponents) {

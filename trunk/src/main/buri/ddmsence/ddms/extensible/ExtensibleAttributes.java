@@ -31,14 +31,9 @@ import javax.xml.namespace.QName;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractAttributeGroup;
-import buri.ddmsence.ddms.AbstractProducer;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
-import buri.ddmsence.ddms.resource.Organization;
-import buri.ddmsence.ddms.resource.Person;
-import buri.ddmsence.ddms.resource.Service;
-import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.Category;
 import buri.ddmsence.ddms.summary.Keyword;
@@ -46,6 +41,8 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
+
+import com.sun.org.apache.bcel.internal.classfile.Unknown;
 
 /**
  * Attribute group representing the xs:anyAttribute tag which appears on various DDMS components.
@@ -97,10 +94,6 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 */
 	public ExtensibleAttributes(Element element) throws InvalidDDMSException {
 		buildReservedNames(element.getNamespaceURI());
-		
-		// For producers, the extensible attributes will be one child deep.
-		if (AbstractProducer.PRODUCER_TYPES.contains(element.getLocalName()))
-			element = element.getChildElements().get(0);
 		
 		_cachedAttributes = new ArrayList<Attribute>();
 		for (int i = 0; i < element.getAttributeCount(); i++) {
