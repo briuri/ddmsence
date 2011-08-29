@@ -43,18 +43,18 @@ import nu.xom.xslt.XSLTransform;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleElement;
 import buri.ddmsence.ddms.format.Format;
+import buri.ddmsence.ddms.resource.Contributor;
+import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.resource.Identifier;
 import buri.ddmsence.ddms.resource.Language;
-import buri.ddmsence.ddms.resource.Organization;
-import buri.ddmsence.ddms.resource.Person;
+import buri.ddmsence.ddms.resource.PointOfContact;
+import buri.ddmsence.ddms.resource.Publisher;
 import buri.ddmsence.ddms.resource.Rights;
-import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Source;
 import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
-import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
@@ -68,6 +68,8 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
+
+import com.sun.org.apache.bcel.internal.classfile.Unknown;
 
 /**
  * An immutable implementation of ddms:Resource (the top-level element of a DDMS record).
@@ -155,10 +157,10 @@ public final class Resource extends AbstractBaseComponent {
 	private Rights _cachedRights = null;
 	private List<Source> _cachedSources = new ArrayList<Source>();
 	private List<Type> _cachedTypes = new ArrayList<Type>();
-	private List<IProducer> _cachedCreators = new ArrayList<IProducer>();
-	private List<IProducer> _cachedPublishers = new ArrayList<IProducer>();
-	private List<IProducer> _cachedContributors = new ArrayList<IProducer>();
-	private List<IProducer> _cachedPointOfContacts = new ArrayList<IProducer>();
+	private List<Creator> _cachedCreators = new ArrayList<Creator>();
+	private List<Publisher> _cachedPublishers = new ArrayList<Publisher>();
+	private List<Contributor> _cachedContributors = new ArrayList<Contributor>();
+	private List<PointOfContact> _cachedPointOfContacts = new ArrayList<PointOfContact>();
 	private Format _cachedFormat = null;
 	private SubjectCoverage _cachedSubjectCoverage = null;
 	private List<VirtualCoverage> _cachedVirtualCoverages = new ArrayList<VirtualCoverage>();
@@ -259,21 +261,21 @@ public final class Resource extends AbstractBaseComponent {
 			for (int i = 0; i < components.size(); i++) {
 				_cachedTypes.add(new Type(components.get(i)));
 			}
-			components = element.getChildElements(AbstractProducer.CREATOR_NAME, namespace);
+			components = element.getChildElements(Creator.NAME, namespace);
 			for (int i = 0; i < components.size(); i++) {
-				_cachedCreators.add(getEntityFor(components.get(i)));
+				_cachedCreators.add(new Creator(components.get(i)));
 			}
-			components = element.getChildElements(AbstractProducer.PUBLISHER_NAME, namespace);
+			components = element.getChildElements(Publisher.NAME, namespace);
 			for (int i = 0; i < components.size(); i++) {
-				_cachedPublishers.add(getEntityFor(components.get(i)));
+				_cachedPublishers.add(new Publisher(components.get(i)));
 			}
-			components = element.getChildElements(AbstractProducer.CONTRIBUTOR_NAME, namespace);
+			components = element.getChildElements(Contributor.NAME, namespace);
 			for (int i = 0; i < components.size(); i++) {
-				_cachedContributors.add(getEntityFor(components.get(i)));
+				_cachedContributors.add(new Contributor(components.get(i)));
 			}
-			components = element.getChildElements(AbstractProducer.POC_NAME, namespace);
+			components = element.getChildElements(PointOfContact.NAME, namespace);
 			for (int i = 0; i < components.size(); i++) {
-				_cachedPointOfContacts.add(getEntityFor(components.get(i)));
+				_cachedPointOfContacts.add(new PointOfContact(components.get(i)));
 			}
 
 			// Format Set
@@ -449,18 +451,14 @@ public final class Resource extends AbstractBaseComponent {
 					_cachedSources.add((Source) component);
 				else if (component instanceof Type)
 					_cachedTypes.add((Type) component);
-				else if (component instanceof IProducer) {
-					IProducer producer = (IProducer) component;
-					if (AbstractProducer.CREATOR_NAME.equals(producer.getName())) {
-						_cachedCreators.add(producer);
-					} else if (AbstractProducer.PUBLISHER_NAME.equals(producer.getName())) {
-						_cachedPublishers.add(producer);
-					} else if (AbstractProducer.CONTRIBUTOR_NAME.equals(producer.getName())) {
-						_cachedContributors.add(producer);
-					} else if (AbstractProducer.POC_NAME.equals(producer.getName())) {
-						_cachedPointOfContacts.add(producer);
-					}
-				}
+				else if (component instanceof Creator)
+					_cachedCreators.add((Creator) component);
+				else if (component instanceof Publisher)
+					_cachedPublishers.add((Publisher) component);
+				else if (component instanceof Contributor)
+					_cachedContributors.add((Contributor) component);
+				else if (component instanceof PointOfContact)
+					_cachedPointOfContacts.add((PointOfContact) component);
 				// Format Set
 				else if (component instanceof Format)
 					_cachedFormat = (Format) component;
@@ -494,25 +492,6 @@ public final class Resource extends AbstractBaseComponent {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
-	}
-
-	/**
-	 * Helper method to convert a XOM Element into a producer entity, based on the producer entity type.
-	 * 
-	 * @param element the producerRole element (creator, contributor, etc.)
-	 * @return an IProducer
-	 */
-	private IProducer getEntityFor(Element element) throws InvalidDDMSException {
-		Element entityElement = element.getChildElements().get(0);
-		Util.requireDDMSValue("entity element", entityElement);
-		if (Person.NAME.equals(entityElement.getLocalName()))
-			return (new Person(element));
-		else if (Organization.NAME.equals(entityElement.getLocalName()))
-			return (new Organization(element));
-		else if (Service.NAME.equals(entityElement.getLocalName()))
-			return (new Service(element));
-		else	// Unknown
-			return (new Unknown(element));
 	}
 	
 	/**
@@ -826,28 +805,28 @@ public final class Resource extends AbstractBaseComponent {
 	/**
 	 * Accessor for a list of all Creator entities (0-many)
 	 */
-	public List<IProducer> getCreators() {
+	public List<Creator> getCreators() {
 		return (Collections.unmodifiableList(_cachedCreators));
 	}
 
 	/**
 	 * Accessor for a list of all Publisher entities (0-many)
 	 */
-	public List<IProducer> getPublishers() {
+	public List<Publisher> getPublishers() {
 		return (Collections.unmodifiableList(_cachedPublishers));
 	}
 
 	/**
 	 * Accessor for a list of all Contributor entities (0-many)
 	 */
-	public List<IProducer> getContributors() {
+	public List<Contributor> getContributors() {
 		return (Collections.unmodifiableList(_cachedContributors));
 	}
 
 	/**
 	 * Accessor for a list of all PointOfContact entities (0-many)
 	 */
-	public List<IProducer> getPointOfContacts() {
+	public List<PointOfContact> getPointOfContacts() {
 		return (Collections.unmodifiableList(_cachedPointOfContacts));
 	}
 
@@ -983,10 +962,10 @@ public final class Resource extends AbstractBaseComponent {
 		private Rights.Builder _rights;
 		private List<Source.Builder> _sources;
 		private List<Type.Builder> _types;
-		private List<Organization.Builder> _organizations;
-		private List<Person.Builder> _persons;
-		private List<Service.Builder> _services;
-		private List<Unknown.Builder> _unknowns;
+		private List<Creator.Builder> _creators;
+		private List<Contributor.Builder> _contributors;
+		private List<Publisher.Builder> _publishers;
+		private List<PointOfContact.Builder> _pointOfContacts;
 		private Format.Builder _format;
 		private SubjectCoverage.Builder _subjectCoverage;
 		private List<VirtualCoverage.Builder> _virtualCoverages;
@@ -1033,17 +1012,15 @@ public final class Resource extends AbstractBaseComponent {
 					getSources().add(new Source.Builder((Source) component));
 				else if (component instanceof Type)
 					getTypes().add(new Type.Builder((Type) component));
-				else if (component instanceof IProducer) {
-					IProducer producer = (IProducer) component;
-					if (Organization.NAME.equals(producer.getEntityType()))
-						getOrganizations().add(new Organization.Builder((Organization) component));
-					if (Person.NAME.equals(producer.getEntityType()))
-						getPersons().add(new Person.Builder((Person) component));
-					if (Service.NAME.equals(producer.getEntityType()))
-						getServices().add(new Service.Builder((Service) component));
-					if (Unknown.NAME.equals(producer.getEntityType()))
-						getUnknowns().add(new Unknown.Builder((Unknown) component));
-				}
+				else if (component instanceof Creator)
+					getCreators().add(new Creator.Builder((Creator) component));
+				else if (component instanceof Contributor)
+					getContributors().add(new Contributor.Builder((Contributor) component));
+				else if (component instanceof Publisher)
+					getPublishers().add(new Publisher.Builder((Publisher) component));
+				else if (component instanceof PointOfContact)
+					getPointOfContacts().add(new PointOfContact.Builder((PointOfContact) component));
+					
 				// Format Set
 				else if (component instanceof Format)
 					setFormat(new Format.Builder((Format) component));
@@ -1117,10 +1094,10 @@ public final class Resource extends AbstractBaseComponent {
 			list.addAll(getLanguages());
 			list.addAll(getSources());
 			list.addAll(getTypes());
-			list.addAll(getOrganizations());
-			list.addAll(getPersons());
-			list.addAll(getServices());
-			list.addAll(getUnknowns());
+			list.addAll(getCreators());
+			list.addAll(getContributors());
+			list.addAll(getPublishers());
+			list.addAll(getPointOfContacts());
 			list.addAll(getVirtualCoverages());
 			list.addAll(getTemporalCoverages());
 			list.addAll(getGeospatialCoverages());
@@ -1238,50 +1215,50 @@ public final class Resource extends AbstractBaseComponent {
 		}
 		
 		/**
-		 * Convenience Builder accessor for all of the producers. This list does not grow dynamically.
+		 * Convenience accessor for all of the producers. This list does not grow dynamically.
 		 */
 		public List<IBuilder> getProducers() {
 			List<IBuilder> producers = new ArrayList<IBuilder>();
-			producers.addAll(getOrganizations());
-			producers.addAll(getPersons());
-			producers.addAll(getServices());
-			producers.addAll(getUnknowns());
+			producers.addAll(getCreators());
+			producers.addAll(getContributors());
+			producers.addAll(getPublishers());
+			producers.addAll(getPointOfContacts());
 			return (producers);
 		}
 		/**
-		 * Builder accessor for organizations in producer roles
+		 * Builder accessor for creators
 		 */
-		public List<Organization.Builder> getOrganizations() {
-			if (_organizations == null)
-				_organizations = new LazyList(Organization.Builder.class);
-			return _organizations;
+		public List<Creator.Builder> getCreators() {
+			if (_creators == null)
+				_creators = new LazyList(Creator.Builder.class);
+			return _creators;
 		}
 		
 		/**
-		 * Builder accessor for persons in producer roles
+		 * Builder accessor for contributors
 		 */
-		public List<Person.Builder> getPersons() {
-			if (_persons == null)
-				_persons = new LazyList(Person.Builder.class);
-			return _persons;
+		public List<Contributor.Builder> getContributors() {
+			if (_contributors == null)
+				_contributors = new LazyList(Contributor.Builder.class);
+			return _contributors;
 		}
 		
 		/**
-		 * Builder accessor for services in producer roles
+		 * Builder accessor for publishers
 		 */
-		public List<Service.Builder> getServices() {
-			if (_services == null)
-				_services = new LazyList(Service.Builder.class);
-			return _services;
+		public List<Publisher.Builder> getPublishers() {
+			if (_publishers == null)
+				_publishers = new LazyList(Publisher.Builder.class);
+			return _publishers;
 		}
 		
 		/**
-		 * Builder accessor for unknown entities in producer roles
+		 * Builder accessor for points of contact
 		 */
-		public List<Unknown.Builder> getUnknowns() {
-			if (_unknowns == null)
-				_unknowns = new LazyList(Unknown.Builder.class);
-			return _unknowns;
+		public List<PointOfContact.Builder> getPointOfContacts() {
+			if (_pointOfContacts == null)
+				_pointOfContacts = new LazyList(PointOfContact.Builder.class);
+			return _pointOfContacts;
 		}
 				
 		/**

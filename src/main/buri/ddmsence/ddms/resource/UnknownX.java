@@ -22,7 +22,6 @@ package buri.ddmsence.ddms.resource;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.AbstractProducer;
 import buri.ddmsence.ddms.AbstractProducerEntity;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;

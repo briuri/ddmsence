@@ -346,6 +346,7 @@ public class UnknownXTest extends AbstractComponentTestCase {
 			// Validation
 			builder = new UnknownX.Builder();
 			builder.setParentType(TEST_PARENT_TYPE);
+			builder.setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
