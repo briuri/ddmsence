@@ -142,14 +142,6 @@ followed these rules to determine which components are important enough to deser
 		which decorates components in the GML profile.</li>
 </ul>
 
-<h4>Producers and Producer Entities</h4>
-
-<p>In DDMS terms, there are producer roles (like "creator") and producer entities (like "Organization"). The DDMS schema models the relationship between
-the two as "a producer role which is filled by some entity". In the Java object model, this hierarchy is simplified as "a producer entity which fills 
-some role". The producer entity is modeled as an Object, and the producer role it is filling is a property on that Object. This design decision does not 
-affect any output -- it is only intended to make the producer hierarchy easier to understand on the Java side. I tried modeling producers both ways,
-and the approach I chose seemed more understandable from an object-oriented perspective.</p> 
-
 <h4>Empty String vs. No Value</h4>
 
 <p>When analyzing <code>xs:string</code>-based components, DDMSence treats the absence of some element/attribute in the same manner as it would treat that element/attribute if it were
