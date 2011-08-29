@@ -424,7 +424,7 @@ public class JavaConvertor {
 		java.append("List<String> emails").append(count).append(" = new ArrayList<String>();\n");
 		for (String email : person.getEmails())
 			java.append("emails").append(count).append(".add(\"").append(email).append("\");\n");
-		java.append("Person person").append(count).append(" = new Service(\"").append(parentType).append("\", ");
+		java.append("Person person").append(count).append(" = new Person(\"").append(parentType).append("\", ");
 		java.append("\"").append(person.getSurname()).append("\", ");
 		java.append(" names").append(count).append(", ");
 		java.append("\"").append(person.getUserID()).append("\", \"")
@@ -458,7 +458,7 @@ public class JavaConvertor {
 			entityVariable = convert(java, producerType, (Unknown) producer.getProducerEntity());
 
 		java.append(producerClass).append(" ").append(producerType).append(count).append(" = new ");
-		java.append(producerClass).append("(").append(entityVariable).append(", securityAttributes);");
+		java.append(producerClass).append("(").append(entityVariable).append(", securityAttributes);\n");
 		java.append("topLevelComponents.add(").append(producerType).append(count).append(");\n");
 	}
 		
@@ -639,7 +639,7 @@ public class JavaConvertor {
 			java.append("geoId").append(count).append(" = new GeographicIdentifier(names").append(count)
 				.append(", regions").append(count).append(", ");
 			if (geoId.getCountryCode() != null)
-				java.append("new CountryCode(\"").append(geoId.getCountryCode().getQualifier()).append("\", \"")
+				java.append("new CountryCode(\"geographicIdentifier\", \"").append(geoId.getCountryCode().getQualifier()).append("\", \"")
 					.append(geoId.getCountryCode().getValue()).append("\"));\n");
 			else
 				java.append("null);\n");
@@ -667,7 +667,7 @@ public class JavaConvertor {
 			}			
 			convert(java, polygon.getSRSAttributes());
 			java.append("polygons").append(count).append(".add(new Polygon(positions").append(count)
-				.append(", srsAttributes, \"").append(polygon.getId()).append("\");\n");
+				.append(", srsAttributes, \"").append(polygon.getId()).append("\"));\n");
 		}
 		java.append("List<Point> points").append(count).append(" = new ArrayList<Point>();\n");
 		for (Point point : b.getPoints()) {
@@ -697,12 +697,12 @@ public class JavaConvertor {
 		for (String street : address.getStreets())
 			java.append("streets").append(count).append(".add(\"").append(street).append("\");\n");
 		boolean hasState = !Util.isEmpty(address.getState());
-		java.append("postalAddress").append(count).append(" = new PostalAddress(streets, \"")
+		java.append("postalAddress").append(count).append(" = new PostalAddress(streets").append(count).append(", \"")
 			.append(address.getCity()).append("\", \"")
 			.append(hasState ? address.getState() : address.getProvince()).append("\", \"")
 			.append(address.getPostalCode()).append("\", ");
 		if (address.getCountryCode() != null)
-			java.append("new CountryCode(\"").append(address.getCountryCode().getQualifier()).append("\", \"")
+			java.append("new CountryCode(\"postalAddress\", \"").append(address.getCountryCode().getQualifier()).append("\", \"")
 				.append(address.getCountryCode().getValue()).append("\"), ");
 		else
 			java.append("null, ");
