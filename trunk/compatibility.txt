@@ -2,6 +2,31 @@ This is a draft list of the changes which break backwards compatibility between 
 I will create an official ticket once all of the changes are complete and the dust has settled.
 
 #########################################################################################################
+Producers and producer entities are now modeled exactly as they appear in the schemas (Issue #153).
+
+SEVERITY: Major
+DETAILS:
+	In previous versions of DDMSence, the producer hierarchy was flattened to be more object-oriented:
+	
+	<ddms:creator>
+   		<ddms:Organization>
+      		<ddms:name>DISA</ddms:name>
+   		</ddms:Organization>	
+	</ddms:creator>
+	
+	This creator element was modeled in DDMSence as "An instance of Organization has the role of creator" and the Organization class
+	contained this entire construct. With DDMS 4.0, Organizations and Persons can now appear in other elements besides the
+	classic producers (Addressee and RecordKeeper), and the old approach became fragile. Producers and producer entities are now
+	consistent with the schema -- the above construct is modeled as "An instance of Creator contains an instance of Organization".
+	
+	Specifically, there is a new class for Creator, Contributor, Publisher, and PointOfContact, and the old producer entities, Organization
+	Person, Service, and Unknown are no longer top-level components.
+FIX:
+	As an example, if you previously had code that worked with an "Organization that was a creator", you would now deal with a "Creator that
+	contains an Organization". See Issue #153 for a description of the OLD class hierarchy and the NEW class hierarchy. I will also be glad to
+	review your code and provide feedback on how it can be upgraded.
+	
+#########################################################################################################
 The ability to point at a custom set of CVEs with the "icism.cve.customEnumLocation" property has been removed (Issue #95). 
 
 SEVERITY: Major 
