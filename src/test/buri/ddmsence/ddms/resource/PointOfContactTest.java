@@ -69,9 +69,9 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	private IProducerEntity getEntityFixture() {
 		try {
 			if ("2.0".equals(DDMSVersion.getCurrentVersion().getVersion()))
-				return (new ServiceX(PointOfContact.NAME, Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), 
+				return (new Service(PointOfContact.NAME, Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), 
 					Util.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
-			return (new UnknownX(PointOfContact.NAME, Util.getXsListAsList("UnknownEntity"),
+			return (new Unknown(PointOfContact.NAME, Util.getXsListAsList("UnknownEntity"),
 				Util.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
@@ -222,7 +222,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			PointOfContact elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			PointOfContact dataComponent = testConstructor(WILL_SUCCEED, new ServiceX(PointOfContact.NAME, Util.getXsListAsList("DISA PEO-GES"),
+			PointOfContact dataComponent = testConstructor(WILL_SUCCEED, new Service(PointOfContact.NAME, Util.getXsListAsList("DISA PEO-GES"),
 				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")));
 			assertFalse(elementComponent.equals(dataComponent));
 		}
@@ -293,7 +293,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 			
 			// Validation
 			builder = new PointOfContact.Builder();
-			builder.setEntityType(PersonX.NAME);
+			builder.setEntityType(Person.NAME);
 			builder.getOrganization().setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();

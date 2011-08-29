@@ -42,8 +42,6 @@ import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
-import com.sun.org.apache.bcel.internal.classfile.Unknown;
-
 /**
  * Attribute group representing the xs:anyAttribute tag which appears on various DDMS components.
  * 

@@ -68,7 +68,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 	 */
 	private IProducerEntity getEntityFixture() {
 		try {
-			return (new OrganizationX(Contributor.NAME, Util.getXsListAsList("DISA PEO-GES"),
+			return (new Organization(Contributor.NAME, Util.getXsListAsList("DISA PEO-GES"),
 				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
@@ -210,7 +210,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Contributor elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			Contributor dataComponent = testConstructor(WILL_SUCCEED, new ServiceX(Contributor.NAME, Util.getXsListAsList("DISA PEO-GES"),
+			Contributor dataComponent = testConstructor(WILL_SUCCEED, new Service(Contributor.NAME, Util.getXsListAsList("DISA PEO-GES"),
 				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")));
 			assertFalse(elementComponent.equals(dataComponent));
 		}
@@ -281,7 +281,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 			
 			// Validation
 			builder = new Contributor.Builder();
-			builder.setEntityType(OrganizationX.NAME);
+			builder.setEntityType(Organization.NAME);
 			builder.getOrganization().setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();

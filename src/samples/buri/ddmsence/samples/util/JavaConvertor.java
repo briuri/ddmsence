@@ -30,15 +30,15 @@ import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.resource.Identifier;
 import buri.ddmsence.ddms.resource.Language;
-import buri.ddmsence.ddms.resource.OrganizationX;
-import buri.ddmsence.ddms.resource.PersonX;
+import buri.ddmsence.ddms.resource.Organization;
+import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.Rights;
-import buri.ddmsence.ddms.resource.ServiceX;
+import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Source;
 import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
-import buri.ddmsence.ddms.resource.UnknownX;
+import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.BoundingBox;
@@ -327,7 +327,7 @@ public class JavaConvertor {
 	 * @param parentType the parentType
 	 * @param organization the organization
 	 */
-	public static String convert(StringBuffer java, String parentType, OrganizationX organization) {
+	public static String convert(StringBuffer java, String parentType, Organization organization) {
 		int count = getVariableCount();				
 		java.append("\n// ddms:organization\n");
 		convert(java, organization.getExtensibleAttributes());
@@ -354,7 +354,7 @@ public class JavaConvertor {
 	 * @param parentType the parentType
 	 * @param service the service
 	 */
-	public static String convert(StringBuffer java, String parentType, ServiceX service) {
+	public static String convert(StringBuffer java, String parentType, Service service) {
 		int count = getVariableCount();				
 		java.append("\n// ddms:service\n");
 		convert(java, service.getExtensibleAttributes());
@@ -381,7 +381,7 @@ public class JavaConvertor {
 	 * @param parentType the parentType
 	 * @param unknown the unknown
 	 */
-	public static String convert(StringBuffer java, String parentType, UnknownX unknown) {
+	public static String convert(StringBuffer java, String parentType, Unknown unknown) {
 		int count = getVariableCount();				
 		java.append("\n// ddms:unknown\n");
 		convert(java, unknown.getExtensibleAttributes());
@@ -408,7 +408,7 @@ public class JavaConvertor {
 	 * @param parentType the parentType
 	 * @param person the person
 	 */
-	public static String convert(StringBuffer java, String parentType, PersonX person) {
+	public static String convert(StringBuffer java, String parentType, Person person) {
 		int count = getVariableCount();				
 		java.append("\n// ddms:person\n");
 		convert(java, person.getExtensibleAttributes());
@@ -445,14 +445,14 @@ public class JavaConvertor {
 		java.append("\n// ddms:").append(producerType).append("\n");
 		convert(java, producer.getSecurityAttributes());
 		String entityVariable = null;
-		if (PersonX.NAME.equals(producer.getProducerEntity().getName()))
-			entityVariable = convert(java, producerType, (PersonX) producer.getProducerEntity());
-		if (OrganizationX.NAME.equals(producer.getProducerEntity().getName()))
-			entityVariable = convert(java, producerType, (OrganizationX) producer.getProducerEntity());
-		if (ServiceX.NAME.equals(producer.getProducerEntity().getName()))
-			entityVariable = convert(java, producerType, (ServiceX) producer.getProducerEntity());
-		if (UnknownX.NAME.equals(producer.getProducerEntity().getName()))
-			entityVariable = convert(java, producerType, (UnknownX) producer.getProducerEntity());
+		if (Person.NAME.equals(producer.getProducerEntity().getName()))
+			entityVariable = convert(java, producerType, (Person) producer.getProducerEntity());
+		if (Organization.NAME.equals(producer.getProducerEntity().getName()))
+			entityVariable = convert(java, producerType, (Organization) producer.getProducerEntity());
+		if (Service.NAME.equals(producer.getProducerEntity().getName()))
+			entityVariable = convert(java, producerType, (Service) producer.getProducerEntity());
+		if (Unknown.NAME.equals(producer.getProducerEntity().getName()))
+			entityVariable = convert(java, producerType, (Unknown) producer.getProducerEntity());
 
 		java.append(producerClass).append(" ").append(producerType).append(count).append(" = new ");
 		java.append(producerClass).append("(").append(entityVariable).append(", securityAttributes);");

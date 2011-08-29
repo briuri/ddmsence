@@ -47,17 +47,17 @@ import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.resource.Identifier;
 import buri.ddmsence.ddms.resource.Language;
-import buri.ddmsence.ddms.resource.OrganizationX;
-import buri.ddmsence.ddms.resource.PersonX;
+import buri.ddmsence.ddms.resource.Organization;
+import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.PointOfContact;
 import buri.ddmsence.ddms.resource.Publisher;
 import buri.ddmsence.ddms.resource.Rights;
-import buri.ddmsence.ddms.resource.ServiceX;
+import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Source;
 import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
-import buri.ddmsence.ddms.resource.UnknownX;
+import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.BoundingBox;
@@ -245,7 +245,7 @@ public class Escort {
 				String surname = null;
 				String userID = null;
 				String affiliation = null;
-				if (PersonX.NAME.equals(entityType)) {
+				if (Person.NAME.equals(entityType)) {
 					surname = readString("the Person surname [testSurname]");
 					userID = readString("the Person userID [testID]");
 					affiliation = readString("the Person affiliation [testOrg]");
@@ -255,14 +255,14 @@ public class Escort {
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				
 				IProducerEntity entity = null;
-				if (PersonX.NAME.equals(entityType))
-					entity = new PersonX(producerType, surname, names, userID, affiliation, phones, emails);
-				else if (OrganizationX.NAME.equals(entityType))
-					entity = new OrganizationX(producerType, names, phones, emails);
-				else if (ServiceX.NAME.equals(entityType))
-					entity = new ServiceX(producerType, names, phones, emails);
+				if (Person.NAME.equals(entityType))
+					entity = new Person(producerType, surname, names, userID, affiliation, phones, emails);
+				else if (Organization.NAME.equals(entityType))
+					entity = new Organization(producerType, names, phones, emails);
+				else if (Service.NAME.equals(entityType))
+					entity = new Service(producerType, names, phones, emails);
 				else 
-					entity = new UnknownX(producerType, names, phones, emails);
+					entity = new Unknown(producerType, names, phones, emails);
 				
 				if (Creator.NAME.equals(producerType))
 					return (new Creator(entity, attr));

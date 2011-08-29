@@ -22,10 +22,10 @@ package buri.ddmsence.ddms;
 import java.io.Serializable;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.resource.OrganizationX;
-import buri.ddmsence.ddms.resource.PersonX;
-import buri.ddmsence.ddms.resource.ServiceX;
-import buri.ddmsence.ddms.resource.UnknownX;
+import buri.ddmsence.ddms.resource.Organization;
+import buri.ddmsence.ddms.resource.Person;
+import buri.ddmsence.ddms.resource.Service;
+import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.Util;
 
@@ -62,14 +62,14 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 				Element entityElement = element.getChildElements().get(0);
 				String producerType = element.getLocalName();
 				String entityType = entityElement.getLocalName();
-				if (OrganizationX.NAME.equals(entityType))
-					_producerEntity = new OrganizationX(producerType, entityElement);
-				if (PersonX.NAME.equals(entityType))
-					_producerEntity = new PersonX(producerType, entityElement);
-				if (ServiceX.NAME.equals(entityType))
-					_producerEntity = new ServiceX(producerType, entityElement);
-				if (UnknownX.NAME.equals(entityType))
-					_producerEntity = new UnknownX(producerType, entityElement);
+				if (Organization.NAME.equals(entityType))
+					_producerEntity = new Organization(producerType, entityElement);
+				if (Person.NAME.equals(entityType))
+					_producerEntity = new Person(producerType, entityElement);
+				if (Service.NAME.equals(entityType))
+					_producerEntity = new Service(producerType, entityElement);
+				if (Unknown.NAME.equals(entityType))
+					_producerEntity = new Unknown(producerType, entityElement);
 			}
 			_cachedSecurityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, true);
@@ -207,10 +207,10 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 
 		private String _producerType;
 		private String _entityType;
-		private OrganizationX.Builder _organization;
-		private PersonX.Builder _person;
-		private ServiceX.Builder _service;
-		private UnknownX.Builder _unknown;
+		private Organization.Builder _organization;
+		private Person.Builder _person;
+		private Service.Builder _service;
+		private Unknown.Builder _unknown;
 		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
@@ -228,14 +228,14 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		protected Builder(AbstractProducerRole producer) {
 			setProducerType(producer.getName());
 			setEntityType(producer.getProducerEntity().getName());
-			if (OrganizationX.NAME.equals(getEntityType()))
-				setOrganization(new OrganizationX.Builder((OrganizationX) producer.getProducerEntity()));
-			if (PersonX.NAME.equals(getEntityType()))
-				setPerson(new PersonX.Builder((PersonX) producer.getProducerEntity()));
-			if (ServiceX.NAME.equals(getEntityType()))
-				setService(new ServiceX.Builder((ServiceX) producer.getProducerEntity()));
-			if (UnknownX.NAME.equals(getEntityType()))
-				setUnknown(new UnknownX.Builder((UnknownX) producer.getProducerEntity()));
+			if (Organization.NAME.equals(getEntityType()))
+				setOrganization(new Organization.Builder((Organization) producer.getProducerEntity()));
+			if (Person.NAME.equals(getEntityType()))
+				setPerson(new Person.Builder((Person) producer.getProducerEntity()));
+			if (Service.NAME.equals(getEntityType()))
+				setService(new Service.Builder((Service) producer.getProducerEntity()));
+			if (Unknown.NAME.equals(getEntityType()))
+				setUnknown(new Unknown.Builder((Unknown) producer.getProducerEntity()));
 			setSecurityAttributes(new SecurityAttributes.Builder(producer.getSecurityAttributes()));
 		}
 		
@@ -244,11 +244,11 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 * @return the entity
 		 */
 		protected IProducerEntity commitSelectedEntity() throws InvalidDDMSException {
-			if (OrganizationX.NAME.equals(getEntityType()))
+			if (Organization.NAME.equals(getEntityType()))
 				return (getOrganization().commit());
-			if (PersonX.NAME.equals(getEntityType()))
+			if (Person.NAME.equals(getEntityType()))
 				return (getPerson().commit());
-			if (ServiceX.NAME.equals(getEntityType()))
+			if (Service.NAME.equals(getEntityType()))
 				return (getService().commit());
 			return (getUnknown().commit());
 		}
@@ -299,9 +299,9 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		/**
 		 * Builder accessor for the organization builder
 		 */
-		public OrganizationX.Builder getOrganization() {
+		public Organization.Builder getOrganization() {
 			if (_organization == null) {
-				_organization = new OrganizationX.Builder();
+				_organization = new Organization.Builder();
 				_organization.setParentType(getProducerType());
 			}
 			return _organization;
@@ -310,7 +310,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		/**
 		 * Builder accessor for the organization builder
 		 */
-		public void setOrganization(OrganizationX.Builder organization) {
+		public void setOrganization(Organization.Builder organization) {
 			_organization = organization;
 			_organization.setParentType(getProducerType());
 		}
@@ -318,9 +318,9 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		/**
 		 * Builder accessor for the person builder
 		 */
-		public PersonX.Builder getPerson() {
+		public Person.Builder getPerson() {
 			if (_person == null) {
-				_person = new PersonX.Builder();
+				_person = new Person.Builder();
 				_person.setParentType(getProducerType());
 			}
 			return _person;
@@ -329,7 +329,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		/**
 		 * Builder accessor for the person builder
 		 */
-		public void setPerson(PersonX.Builder person) {
+		public void setPerson(Person.Builder person) {
 			_person = person;
 			_person.setParentType(getProducerType());
 		}
@@ -337,9 +337,9 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		/**
 		 * Builder accessor for the service builder
 		 */
-		public ServiceX.Builder getService() {
+		public Service.Builder getService() {
 			if (_service == null) {
-				_service = new ServiceX.Builder();
+				_service = new Service.Builder();
 				_service.setParentType(getProducerType());
 			}
 			return _service;
@@ -348,7 +348,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		/**
 		 * Builder accessor for the service builder
 		 */
-		public void setService(ServiceX.Builder service) {
+		public void setService(Service.Builder service) {
 			_service = service;
 			_service.setParentType(getProducerType());
 		}
@@ -356,9 +356,9 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		/**
 		 * Builder accessor for the unknown builder
 		 */
-		public UnknownX.Builder getUnknown() {
+		public Unknown.Builder getUnknown() {
 			if (_unknown == null) {
-				_unknown = new UnknownX.Builder();
+				_unknown = new Unknown.Builder();
 				_unknown.setParentType(getProducerType());
 			}
 			return _unknown;
@@ -367,7 +367,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		/**
 		 * Builder accessor for the unknown builder
 		 */
-		public void setUnknown(UnknownX.Builder unknown) {
+		public void setUnknown(Unknown.Builder unknown) {
 			_unknown = unknown;
 			_unknown.setParentType(getProducerType());
 		}
