@@ -69,8 +69,6 @@ import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
-import com.sun.org.apache.bcel.internal.classfile.Unknown;
-
 /**
  * An immutable implementation of ddms:Resource (the top-level element of a DDMS record).
  * 

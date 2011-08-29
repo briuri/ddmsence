@@ -27,7 +27,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.resource.Contributor;
-import buri.ddmsence.ddms.resource.OrganizationX;
+import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -41,12 +41,12 @@ public class ProducerEntityTest extends TestCase {
 
 	public void testValidateParentTypeSuccess() throws InvalidDDMSException {
 		// TODO: Replace with constant.
-		OrganizationX.validateParentType(Contributor.NAME);
+		Organization.validateParentType(Contributor.NAME);
 	}
 
 	public void testValidateProducerTypeFailure() {
 		try {
-			OrganizationX.validateParentType("editor");
+			Organization.validateParentType("editor");
 			fail("Allowed invalid data.");
 		} catch (InvalidDDMSException e) {
 			// Good
@@ -55,20 +55,20 @@ public class ProducerEntityTest extends TestCase {
 
 	public void testSharedWarnings() throws InvalidDDMSException {
 		// Empty phone
-		Element entityElement = Util.buildDDMSElement(OrganizationX.NAME, null);
+		Element entityElement = Util.buildDDMSElement(Organization.NAME, null);
 		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 		entityElement.appendChild(Util.buildDDMSElement("phone", ""));
-		OrganizationX component = new OrganizationX(Contributor.NAME, entityElement);
+		Organization component = new Organization(Contributor.NAME, entityElement);
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A ddms:phone element was found with no value.", 
 			component.getValidationWarnings().get(0).getText());
 
 		// Empty email
-		entityElement = Util.buildDDMSElement(OrganizationX.NAME, null);
+		entityElement = Util.buildDDMSElement(Organization.NAME, null);
 		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 		entityElement.appendChild(Util.buildDDMSElement("email", ""));
-		component = new OrganizationX(Contributor.NAME, entityElement);
+		component = new Organization(Contributor.NAME, entityElement);
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A ddms:email element was found with no value.", 
@@ -82,7 +82,7 @@ public class ProducerEntityTest extends TestCase {
 			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
 			List<String> names = new ArrayList<String>();
 			names.add("DISA");
-			new OrganizationX(Contributor.NAME, names, null, null, attr);
+			new Organization(Contributor.NAME, names, null, null, attr);
 		}
 	}
 	

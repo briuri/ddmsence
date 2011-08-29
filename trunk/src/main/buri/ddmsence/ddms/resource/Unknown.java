@@ -26,10 +26,11 @@ import buri.ddmsence.ddms.AbstractProducerEntity;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of a ddms:service element.
+ * An immutable implementation of a ddms:unknown element.
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
@@ -44,42 +45,45 @@ import buri.ddmsence.util.Util;
  * </ul>
  * </td></tr></table>
  * 
+ * <p>The ddms:Unknown element is new in v3.0. Attempts to use it with DDMS v2.0 will result in an 
+ * UnsupportedVersionException.</p>
+ * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:name</u>: names of the producer entity (1-many, at least 1 required)<br />
- * <u>ddms:phone</u>: phone numbers of the producer entity (0-many optional)<br />
- * <u>ddms:email</u>: email addresses of the producer entity (0-many optional)<br />
+ * <u>ddms:name</u>: names of the producer (1-many, at least 1 required)<br />
+ * <u>ddms:phone</u>: phone numbers of the producer (0-many optional)<br />
+ * <u>ddms:email</u>: email addresses of the producer (0-many optional)<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * In both DDMS 2.0 and DDMS 3.0, this component can be decorated with optional {@link ExtensibleAttributes}.
+ * In DDMS 3.0, this component can be decorated with optional {@link ExtensibleAttributes}.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Service<br />
- * <u>Description</u>: Information about a service fulfilling some producer role.<br />
+ * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Unknown<br />
+ * <u>Description</u>: Information about an unknown producer entity fulfilling some producer role.<br />
  * <u>Obligation</u>: At least one of the four producerTypes is required.<br />
- * <u>Schema Modification Date</u>: 2004-08-26<br />
+ * <u>Schema Modification Date</u>: 2010-01-26<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public final class ServiceX extends AbstractProducerEntity {
+public final class Unknown extends AbstractProducerEntity {
 
 	/** The element name of this component */
-	public static final String NAME = "Service";
+	public static final String NAME = "Unknown";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 * 
+	 *  
 	 * @param parentType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
 	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public ServiceX(String parentType, Element element) throws InvalidDDMSException {
+	public Unknown(String parentType, Element element) throws InvalidDDMSException {
 		super(parentType, element);
 	}
-
+	
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
@@ -88,7 +92,7 @@ public final class ServiceX extends AbstractProducerEntity {
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 */
-	public ServiceX(String parentType, List<String> names, List<String> phones, List<String> emails)
+	public Unknown(String parentType, List<String> names, List<String> phones, List<String> emails)
 		throws InvalidDDMSException {
 		this(parentType, names, phones, emails, null);
 	}
@@ -102,9 +106,9 @@ public final class ServiceX extends AbstractProducerEntity {
 	 * @param emails an ordered list of email addresses
 	 * @param extensions extensible attributes (optional)
 	 */
-	public ServiceX(String parentType, List<String> names, List<String> phones, List<String> emails,
+	public Unknown(String parentType, List<String> names, List<String> phones, List<String> emails,
 		ExtensibleAttributes extensions) throws InvalidDDMSException {
-		super(parentType, ServiceX.NAME, names, phones, emails, extensions, true);
+		super(parentType, Unknown.NAME, names, phones, emails, extensions, true);
 	}
 	
 	/**
@@ -112,6 +116,7 @@ public final class ServiceX extends AbstractProducerEntity {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
+	 * <li>The DDMS Version must be 3.0 or higher.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractProducer#validate()
@@ -119,14 +124,17 @@ public final class ServiceX extends AbstractProducerEntity {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(),  NAME);
+		Util.requireDDMSQName(getXOMElement(), NAME);
+		// Should be reviewed as additional versions of DDMS are supported.
+		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()))
+			throw new InvalidDDMSException("The ddms:Unknown element cannot be used in DDMS 2.0.");
 	}
 		
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		return (super.equals(obj) && (obj instanceof ServiceX));
+		return (super.equals(obj) && (obj instanceof Unknown));
 	}
 	
 	/**
@@ -137,7 +145,7 @@ public final class ServiceX extends AbstractProducerEntity {
 	 * @since 1.8.0
 	 */
 	public static class Builder extends AbstractProducerEntity.Builder {
-		private static final long serialVersionUID = 7653534173085296283L;
+		private static final long serialVersionUID = -2278534009019179572L;
 
 		/**
 		 * Empty constructor
@@ -149,15 +157,15 @@ public final class ServiceX extends AbstractProducerEntity {
 		/**
 		 * Constructor which starts from an existing component.
 		 */
-		public Builder(ServiceX service) {
-			super(service);
+		public Builder(Unknown unknown) {
+			super(unknown);
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
-		public ServiceX commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new ServiceX(getParentType(), getNames(), getPhones(), getEmails(), 
+		public Unknown commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new Unknown(getParentType(), getNames(), getPhones(), getEmails(), 
 				getExtensibleAttributes().commit()));
 		}
 	}

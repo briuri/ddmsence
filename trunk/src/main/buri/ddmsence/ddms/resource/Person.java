@@ -70,7 +70,7 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public final class PersonX extends AbstractProducerEntity {
+public final class Person extends AbstractProducerEntity {
 	
 	/** The element name of this component */
 	public static final String NAME = "Person";
@@ -86,7 +86,7 @@ public final class PersonX extends AbstractProducerEntity {
 	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public PersonX(String parentType, Element element) throws InvalidDDMSException {
+	public Person(String parentType, Element element) throws InvalidDDMSException {
 		super(parentType, element);
 	}
 
@@ -101,7 +101,7 @@ public final class PersonX extends AbstractProducerEntity {
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 */
-	public PersonX(String parentType, String surname, List<String> names, String userID, String affiliation,
+	public Person(String parentType, String surname, List<String> names, String userID, String affiliation,
 		List<String> phones, List<String> emails) throws InvalidDDMSException {
 		this(parentType, surname, names, userID, affiliation, phones, emails, null);
 	}
@@ -118,10 +118,10 @@ public final class PersonX extends AbstractProducerEntity {
 	 * @param emails an ordered list of email addresses
 	 * @param extensions extensible attributes (optional)
 	 */
-	public PersonX(String parentType, String surname, List<String> names, String userID, String affiliation,
+	public Person(String parentType, String surname, List<String> names, String userID, String affiliation,
 		List<String> phones, List<String> emails, ExtensibleAttributes extensions)
 		throws InvalidDDMSException {
-		super(parentType, PersonX.NAME, names, phones, emails, extensions, false);
+		super(parentType, Person.NAME, names, phones, emails, extensions, false);
 		try {
 			int insertIndex = (names == null ? 0 : names.size());
 			insertElements(insertIndex, surname, userID, affiliation);
@@ -226,9 +226,9 @@ public final class PersonX extends AbstractProducerEntity {
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof PersonX))
+		if (!super.equals(obj) || !(obj instanceof Person))
 			return (false);
-		PersonX test = (PersonX) obj;
+		Person test = (Person) obj;
 		return (getSurname().equals(test.getSurname()) 
 			&& getUserID().equals(test.getUserID()) 
 			&& getAffiliation().equals(test.getAffiliation()));
@@ -289,7 +289,7 @@ public final class PersonX extends AbstractProducerEntity {
 		/**
 		 * Constructor which starts from an existing component.
 		 */
-		public Builder(PersonX person) {
+		public Builder(Person person) {
 			super(person);
 			setSurname(person.getSurname());
 			setUserID(person.getUserID());
@@ -299,8 +299,8 @@ public final class PersonX extends AbstractProducerEntity {
 		/**
 		 * @see IBuilder#commit()
 		 */
-		public PersonX commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new PersonX(getParentType(), getSurname(), getNames(), getUserID(), getAffliation(), 
+		public Person commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new Person(getParentType(), getSurname(), getNames(), getUserID(), getAffliation(), 
 				getPhones(), getEmails(), getExtensibleAttributes().commit()));
 		}
 

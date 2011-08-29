@@ -68,7 +68,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 	 */
 	private IProducerEntity getEntityFixture() {
 		try {
-			return (new PersonX(Creator.NAME, "Uri", Util.getXsListAsList("Brian BU"), "123", "DISA",
+			return (new Person(Creator.NAME, "Uri", Util.getXsListAsList("Brian BU"), "123", "DISA",
 				Util.getXsListAsList("703-885-1000"), Util.getXsListAsList("ddms@fgm.com")));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
@@ -212,7 +212,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Creator elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			Creator dataComponent = testConstructor(WILL_SUCCEED, new ServiceX(Creator.NAME, Util.getXsListAsList("DISA PEO-GES"),
+			Creator dataComponent = testConstructor(WILL_SUCCEED, new Service(Creator.NAME, Util.getXsListAsList("DISA PEO-GES"),
 				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")));
 			assertFalse(elementComponent.equals(dataComponent));
 		}
@@ -283,7 +283,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 			
 			// Validation
 			builder = new Creator.Builder();
-			builder.setEntityType(PersonX.NAME);
+			builder.setEntityType(Person.NAME);
 			builder.getOrganization().setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();

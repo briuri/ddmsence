@@ -39,17 +39,17 @@ import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.resource.Identifier;
 import buri.ddmsence.ddms.resource.Language;
-import buri.ddmsence.ddms.resource.OrganizationX;
-import buri.ddmsence.ddms.resource.PersonX;
+import buri.ddmsence.ddms.resource.Organization;
+import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.PointOfContact;
 import buri.ddmsence.ddms.resource.Publisher;
 import buri.ddmsence.ddms.resource.Rights;
-import buri.ddmsence.ddms.resource.ServiceX;
+import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Source;
 import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
-import buri.ddmsence.ddms.resource.UnknownX;
+import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -130,13 +130,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 		TEST_RIGHTS = new Rights(true, true, true);
 		TEST_SOURCE = new Source(null, "http://www.xmethods.com", null, null, null);
 		TEST_TYPE = new Type("DCMITYPE", "http://purl.org/dc/dcmitype/Text");
-		TEST_CREATOR = new Creator(new OrganizationX("creator", getAsList("DISA"), null, null), null);
-		TEST_PUBLISHER = new Publisher(new PersonX("publisher", "Uri", getAsList("Brian"), null, null, null, null), null);
-		TEST_CONTRIBUTOR = new Contributor(new ServiceX("contributor",
+		TEST_CREATOR = new Creator(new Organization("creator", getAsList("DISA"), null, null), null);
+		TEST_PUBLISHER = new Publisher(new Person("publisher", "Uri", getAsList("Brian"), null, null, null, null), null);
+		TEST_CONTRIBUTOR = new Contributor(new Service("contributor",
 			getAsList("https://metadata.dod.mil/ebxmlquery/soap"), null, null), null);
 		TEST_POC = new PointOfContact((DDMSVersion.isCurrentVersion("2.0") ?
-			new PersonX("pointOfContact", "Uri", getAsList("Brian"), null, null, null, null)
-			: new UnknownX("pointOfContact", getAsList("UnknownEntity"), null, null)), null);
+			new Person("pointOfContact", "Uri", getAsList("Brian"), null, null, null, null)
+			: new Unknown("pointOfContact", getAsList("UnknownEntity"), null, null)), null);
 		TEST_FORMAT = new Format("text/xml", null, null);
 
 		List<Keyword> keywords = new ArrayList<Keyword>();
@@ -1088,7 +1088,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("USA");
-			OrganizationX org = new OrganizationX("creator", getAsList("DISA"), null, null);
+			Organization org = new Organization("creator", getAsList("DISA"), null, null);
 			Creator creator = new Creator(org, new SecurityAttributes("TS", ownerProducers, null));
 
 			Element element = Util.buildDDMSElement(Resource.NAME, null);
@@ -1113,7 +1113,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		
 		List<String> ownerProducers = new ArrayList<String>();
 		ownerProducers.add("USA");
-		OrganizationX org = new OrganizationX("creator", getAsList("DISA"), null, null);
+		Organization org = new Organization("creator", getAsList("DISA"), null, null);
 		Creator creator = new Creator(org, new SecurityAttributes("TS", ownerProducers, null));
 		
 		Element element = Util.buildDDMSElement(Resource.NAME, null);
@@ -1137,7 +1137,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("USA");
-			OrganizationX org = new OrganizationX("creator", getAsList("DISA"), null, null);
+			Organization org = new Organization("creator", getAsList("DISA"), null, null);
 			Creator creator = new Creator(org, new SecurityAttributes("CTSA", ownerProducers, null));
 
 			Element element = Util.buildDDMSElement(Resource.NAME, null);
@@ -1498,7 +1498,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		builder.getTitles().get(0).setValue("testTitle");
 		builder.getTitles().get(0).getSecurityAttributes().setClassification("U");
 		builder.getTitles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-		builder.getCreators().get(0).setEntityType(OrganizationX.NAME);
+		builder.getCreators().get(0).setEntityType(Organization.NAME);
 		builder.getCreators().get(0).getOrganization().setNames(Util.getXsListAsList("testName"));
 		builder.getSubjectCoverage().getKeywords().get(0).setValue("keyword");
 		builder.getSecurity().getSecurityAttributes().setClassification("U");
@@ -1531,7 +1531,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		builder.getTitles().get(0).setValue("testTitle");
 		builder.getTitles().get(0).getSecurityAttributes().setClassification("U");
 		builder.getTitles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-		builder.getCreators().get(0).setEntityType(OrganizationX.NAME);
+		builder.getCreators().get(0).setEntityType(Organization.NAME);
 		builder.getCreators().get(0).getOrganization().setNames(Util.getXsListAsList("testName"));
 		builder.getSubjectCoverage().getKeywords().get(0).setValue("keyword");
 		builder.getSecurity().getSecurityAttributes().setClassification("U");
