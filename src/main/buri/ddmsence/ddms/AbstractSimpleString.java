@@ -33,6 +33,11 @@ import buri.ddmsence.util.Util;
  * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
  * before the component is used. </p>
  * 
+ * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * This class is decorated with ICISM {@link SecurityAttributes}. The classification and
+ * ownerProducer attributes are required.
+ * </td></tr></table>
+ * 
  * @author Brian Uri!
  * @since 0.9.b
  */

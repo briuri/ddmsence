@@ -1,0 +1,432 @@
+/* Copyright 2010 - 2011 by Brian Uri!
+   
+   This file is part of DDMSence.
+   
+   This library is free software; you can redistribute it and/or modify
+   it under the terms of version 3.0 of the GNU Lesser General Public 
+   License as published by the Free Software Foundation.
+   
+   This library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+   GNU Lesser General Public License for more details.
+   
+   You should have received a copy of the GNU Lesser General Public 
+   License along with DDMSence. If not, see <http://www.gnu.org/licenses/>.
+
+   You can contact the author at ddmsence@urizone.net. The DDMSence
+   home page is located at http://ddmsence.urizone.net/
+ */
+package buri.ddmsence.ddms.resource;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import nu.xom.Element;
+import buri.ddmsence.ddms.AbstractComponentTestCase;
+import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
+import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
+import buri.ddmsence.util.Util;
+
+/**
+ * <p>Tests related to ddms:Person elements</p>
+ * 
+ * @author Brian Uri!
+ * @since 0.9.b
+ */
+public class PersonXTest extends AbstractComponentTestCase {
+
+	private static final String TEST_PARENT_TYPE = Creator.NAME;
+
+	private static final String TEST_SURNAME = "Uri";
+	private static final String TEST_USERID = "123";
+	private static final String TEST_AFFILIATION = "DISA";
+	private static final List<String> TEST_NAMES = new ArrayList<String>();
+	private static final List<String> TEST_PHONES = new ArrayList<String>();
+	private static final List<String> TEST_EMAILS = new ArrayList<String>();
+	static {
+		TEST_NAMES.add("Brian");
+		TEST_NAMES.add("BU");
+		TEST_PHONES.add("703-885-1000");
+		TEST_EMAILS.add("ddms@fgm.com");
+	}
+
+	/**
+	 * Constructor
+	 */
+	public PersonXTest() {
+		super("person.xml");
+	}
+
+	/**
+	 * Attempts to build a component from a XOM element.
+	 * 
+	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param element the element to build from
+	 * 
+	 * @return a valid object
+	 */
+	private PersonX testConstructor(boolean expectFailure, Element element) {
+		PersonX component = null;
+		try {
+			component = new PersonX(TEST_PARENT_TYPE, element);
+			checkConstructorSuccess(expectFailure);
+		} catch (InvalidDDMSException e) {
+			checkConstructorFailure(expectFailure, e);
+		}
+		return (component);
+	}
+
+	/**
+	 * Helper method to create an object which is expected to be valid.
+	 * 
+	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param surname the surname of the person
+	 * @param names an ordered list of names
+	 * @param userID optional unique identifier within an organization
+	 * @param affiliation organizational affiliation of the person
+	 * @param phones an ordered list of phone numbers
+	 * @param emails an ordered list of email addresses
+	 */
+	private PersonX testConstructor(boolean expectFailure, String surname, List<String> names, String userID,
+		String affiliation, List<String> phones, List<String> emails) {
+		PersonX component = null;
+		try {
+			component = new PersonX(TEST_PARENT_TYPE, surname, names, userID, affiliation, phones, emails);
+			checkConstructorSuccess(expectFailure);
+		} catch (InvalidDDMSException e) {
+			checkConstructorFailure(expectFailure, e);
+		}
+		return (component);
+	}
+
+	/**
+	 * Returns the expected HTML output for this unit test
+	 */
+	private String getExpectedHTMLOutput() {
+		StringBuffer html = new StringBuffer();
+		html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".entityType\" content=\"Person\" />\n");
+		for (String name : TEST_NAMES)
+			html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".name\" content=\"").append(name)
+				.append("\" />\n");
+		for (String phone : TEST_PHONES)
+			html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".phone\" content=\"").append(phone)
+				.append("\" />\n");
+		for (String email : TEST_EMAILS)
+			html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".email\" content=\"").append(email)
+				.append("\" />\n");
+		html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".surname\" content=\"").append(TEST_SURNAME)
+			.append("\" />\n");
+		html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".userID\" content=\"").append(TEST_USERID)
+			.append("\" />\n");
+		html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".affiliation\" content=\"")
+			.append(TEST_AFFILIATION).append("\" />\n");
+		return (html.toString());
+	}
+
+	/**
+	 * Returns the expected Text output for this unit test
+	 */
+	private String getExpectedTextOutput() {
+		StringBuffer text = new StringBuffer();
+		text.append(TEST_PARENT_TYPE).append(" EntityType: Person\n");
+		for (String name : TEST_NAMES)
+			text.append("name: ").append(name).append("\n");
+		for (String phone : TEST_PHONES)
+			text.append("phone: ").append(phone).append("\n");
+		for (String email : TEST_EMAILS)
+			text.append("email: ").append(email).append("\n");
+		text.append("surname: ").append(TEST_SURNAME).append("\n");
+		text.append("userID: ").append(TEST_USERID).append("\n");
+		text.append("affiliation: ").append(TEST_AFFILIATION).append("\n");
+		return (text.toString());
+	}
+
+	/**
+	 * Returns the expected XML output for this unit test
+	 * 
+	 * @param preserveFormatting if true, include line breaks and tabs.
+	 */
+	private String getExpectedXMLOutput(boolean preserveFormatting) {
+		StringBuffer xml = new StringBuffer();
+		xml.append("<ddms:Person xmlns:ddms=\"").append(
+			DDMSVersion.getCurrentVersion().getNamespace()).append("\">\n");
+		for (String name : TEST_NAMES)
+			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
+		xml.append("\t<ddms:surname>").append(TEST_SURNAME).append("</ddms:surname>\n");
+		xml.append("\t<ddms:userID>").append(TEST_USERID).append("</ddms:userID>\n");
+		xml.append("\t<ddms:affiliation>").append(TEST_AFFILIATION).append("</ddms:affiliation>\n");
+		for (String phone : TEST_PHONES)
+			xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
+		for (String email : TEST_EMAILS)
+			xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
+		xml.append("</ddms:Person>");
+		return (formatXml(xml.toString(), preserveFormatting));
+	}
+
+	public void testNameAndNamespace() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			PersonX component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(PersonX.NAME, component.getName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + PersonX.NAME, component.getQualifiedName());
+
+			// Wrong name/namespace
+			Element element = Util.buildDDMSElement("wrongName", null);
+			testConstructor(WILL_FAIL, element);
+		}
+	}
+
+	public void testElementConstructorValid() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// All fields
+			testConstructor(WILL_SUCCEED, getValidElement(version));
+
+			// No optional fields
+			Element element = Util.buildDDMSElement(PersonX.NAME, null);
+			element.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
+			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
+			testConstructor(WILL_SUCCEED, element);
+		}
+	}
+
+	public void testDataConstructorValid() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// All fields
+			testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION, TEST_PHONES,
+				TEST_EMAILS);
+
+			// No optional fields
+			testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, null, null, null, null);
+		}
+	}
+
+	public void testElementConstructorInvalid() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Missing name
+			Element entityElement = Util.buildDDMSElement(PersonX.NAME, null);
+			entityElement.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
+			testConstructor(WILL_FAIL, entityElement);
+
+			// Empty name
+			entityElement = Util.buildDDMSElement(PersonX.NAME, null);
+			entityElement.appendChild(Util.buildDDMSElement("name", ""));
+			testConstructor(WILL_FAIL, entityElement);
+
+			// Missing surname
+			entityElement = Util.buildDDMSElement(PersonX.NAME, null);
+			entityElement.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
+			testConstructor(WILL_FAIL, entityElement);
+
+			// Empty surname
+			entityElement = Util.buildDDMSElement(PersonX.NAME, null);
+			entityElement.appendChild(Util.buildDDMSElement("surname", ""));
+			testConstructor(WILL_FAIL, entityElement);
+
+			// Too many surnames
+			Element element = Util.buildDDMSElement(PersonX.NAME, null);
+			element.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
+			element.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
+			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
+			testConstructor(WILL_FAIL, entityElement);
+
+			// Too many userIds
+			element = Util.buildDDMSElement(PersonX.NAME, null);
+			element.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
+			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
+			element.appendChild(Util.buildDDMSElement("userID", TEST_USERID));
+			element.appendChild(Util.buildDDMSElement("userID", TEST_USERID));
+			testConstructor(WILL_FAIL, entityElement);
+
+			// Too many affiliations
+			element = Util.buildDDMSElement(PersonX.NAME, null);
+			element.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
+			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
+			element.appendChild(Util.buildDDMSElement("affiliation", TEST_AFFILIATION));
+			element.appendChild(Util.buildDDMSElement("affiliation", TEST_AFFILIATION));
+			testConstructor(WILL_FAIL, entityElement);
+		}
+	}
+
+	public void testDataConstructorInvalid() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// Missing name
+			testConstructor(WILL_FAIL, TEST_SURNAME, null, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
+
+			// Empty name
+			List<String> names = new ArrayList<String>();
+			names.add("");
+			testConstructor(WILL_FAIL, TEST_SURNAME, names, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
+
+			// Missing surname
+			testConstructor(WILL_FAIL, null, TEST_NAMES, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
+
+			// Empty surname
+			testConstructor(WILL_FAIL, "", TEST_NAMES, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
+		}
+	}
+
+	public void testWarnings() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			// No warnings
+			PersonX component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(0, component.getValidationWarnings().size());
+
+			// Empty userID
+			Element entityElement = Util.buildDDMSElement(PersonX.NAME, null);
+			entityElement.appendChild(Util.buildDDMSElement("name", "name"));
+			entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
+			entityElement.appendChild(Util.buildDDMSElement("userID", ""));
+			component = new PersonX(TEST_PARENT_TYPE, entityElement);
+			assertEquals(1, component.getValidationWarnings().size());
+			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+			assertEquals("A ddms:userID element was found with no value.", 
+				component.getValidationWarnings().get(0).getText());
+			assertEquals("/ddms:Person", component.getValidationWarnings().get(0).getLocator());
+
+			// Empty affiliation
+			entityElement = Util.buildDDMSElement(PersonX.NAME, null);
+			entityElement.appendChild(Util.buildDDMSElement("name", "name"));
+			entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
+			entityElement.appendChild(Util.buildDDMSElement("affiliation", ""));
+			component = new PersonX(TEST_PARENT_TYPE, entityElement);
+			assertEquals(1, component.getValidationWarnings().size());
+			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+			assertEquals("A ddms:affiliation element was found with no value.", 
+				component.getValidationWarnings().get(0).getText());
+			assertEquals("/ddms:Person", component.getValidationWarnings().get(0).getLocator());
+		}
+	}
+
+	public void testConstructorEquality() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			PersonX elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			PersonX dataComponent = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID,
+				TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
+			assertEquals(elementComponent, dataComponent);
+			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+		}
+	}
+
+	public void testConstructorInequalityDifferentValues() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			PersonX elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			PersonX dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_NAMES, TEST_USERID,
+				TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			List<String> differentNames = new ArrayList<String>();
+			differentNames.add("Brian");
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_SURNAME, differentNames, TEST_USERID, TEST_AFFILIATION,
+				TEST_PHONES, TEST_EMAILS);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, DIFFERENT_VALUE, TEST_AFFILIATION,
+				TEST_PHONES, TEST_EMAILS);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, DIFFERENT_VALUE,
+				TEST_PHONES, TEST_EMAILS);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
+				null, TEST_EMAILS);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
+				TEST_PHONES, null);
+			assertFalse(elementComponent.equals(dataComponent));
+		}
+	}
+
+	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			PersonX elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Rights wrongComponent = new Rights(true, true, true);
+			assertFalse(elementComponent.equals(wrongComponent));
+		}
+	}
+
+	public void testHTMLOutput() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			PersonX component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
+				TEST_PHONES, TEST_EMAILS);
+			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+		}
+	}
+
+	public void testTextOutput() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			PersonX component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedTextOutput(), component.toText());
+
+			component = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
+				TEST_PHONES, TEST_EMAILS);
+			assertEquals(getExpectedTextOutput(), component.toText());
+		}
+	}
+
+	public void testXMLOutput() {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			PersonX component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(getExpectedXMLOutput(true), component.toXML());
+
+			component = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
+				TEST_PHONES, TEST_EMAILS);
+			assertEquals(getExpectedXMLOutput(false), component.toXML());
+		}
+	}
+	
+	public void testBuilder() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			PersonX component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			
+			// Equality after Building
+			PersonX.Builder builder = new PersonX.Builder(component);
+			assertEquals(builder.commit(), component);
+			
+			// Empty case
+			builder = new PersonX.Builder();
+			assertNull(builder.commit());
+			
+			// Validation
+			builder = new PersonX.Builder();
+			builder.setParentType(TEST_PARENT_TYPE);
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
+		}
+	}
+	
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
+			PersonX.Builder builder = new PersonX.Builder();
+			assertNotNull(builder.getNames().get(1));
+			assertNotNull(builder.getPhones().get(1));
+			assertNotNull(builder.getEmails().get(1));			
+		}
+	}
+}
