@@ -109,6 +109,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A producer entity exists.</li>
+	 * <li>The producer entity is using the same version of DDMS as this producer role.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -117,6 +118,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();	
 		Util.requireDDMSValue("producer entity", getProducerEntity());
+		Util.requireCompatibleVersion(this, getProducerEntity());
 		validateSharedWarnings();
 	}
 	

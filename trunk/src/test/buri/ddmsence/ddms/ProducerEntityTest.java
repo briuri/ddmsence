@@ -27,6 +27,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.resource.Contributor;
+import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -40,7 +41,6 @@ import buri.ddmsence.util.Util;
 public class ProducerEntityTest extends TestCase {
 
 	public void testValidateParentTypeSuccess() throws InvalidDDMSException {
-		// TODO: Replace with constant.
 		Organization.validateParentType(Contributor.NAME);
 	}
 
@@ -49,6 +49,19 @@ public class ProducerEntityTest extends TestCase {
 			Organization.validateParentType("editor");
 			fail("Allowed invalid data.");
 		} catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
+	public void testSameVersion() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("3.0");
+		Organization org = new Organization(Contributor.NAME, Util.getXsListAsList("DISA"), null, null);
+		DDMSVersion.setCurrentVersion("2.0");
+		try {
+			new Creator(org, null);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
