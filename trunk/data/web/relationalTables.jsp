@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 08/11/2011 at 17:51</p>
+<p align="right"><b>Last Update:</b> 08/30/2011 at 07:09</p>
 
 <a name="top"></a><h1>Relational Database Model for DDMS</h1>
 
@@ -54,6 +54,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsIdentifier">ddmsIdentifier</a></li>
 				<li><a href="#ddmsLanguage">ddmsLanguage</a></li>
 				<li><a href="#ddmsProducer">ddmsProducer</a></li>
+				<li><a href="#ddmsProducerEntity">ddmsProducerEntity</a></li>
 				<li><a href="#ddmsRights">ddmsRights</a></li>
 				<li><a href="#ddmsSource">ddmsSource</a></li>
 				<li><a href="#ddmsSubtitle">ddmsSubtitle</a></li>
@@ -357,6 +358,62 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#creator"><code>ddms:creator</code></a>,
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#contributor"><code>ddms:contributor</code></a>,
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#pointOfContact"><code>ddms:pointOfContact</code></a>, and
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#publisher"><code>ddms:publisher</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/resource/Creator.html">Creator</a>,
+			<a href="/docs/buri/ddmsence/ddms/resource/Contributor.html">Contributor</a>,
+			<a href="/docs/buri/ddmsence/ddms/resource/PointOfContact.html">PointOfContact</a>, and
+			<a href="/docs/buri/ddmsence/ddms/resource/Publisher.html">Publisher</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsProducerEntity">ddmsProducerEntity</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			This modeling assumes that there is no reuse of producer entities between various roles. So, while the person named "Brian Uri" might have a creator 
+			role and a contributor role, and while Brian's details might be identical in each XML element, each set of details would have a separate 
+			row in this table.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">producerType</td><td class="relRules">char(24)</td><td>the type of this producer, i.e. "creator", "contributor", "pointOfContact" or "publisher"</td>
+	</tr>	
+</table>
+
+<a name="ddmsProducerEntity"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsProducerEntity</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
 			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Organization"><code>ddms:Organization</code></a>,
 			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Person"><code>ddms:Person</code></a>,
 			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Service"><code>ddms:Service</code></a>, and
@@ -381,18 +438,15 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a> and 
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
+			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
-			This table is consistent with the DDMSence approach of <a href="documentation.jsp#design">flattening the producer hierarchy</a>, and each row 
-			is a "producer entity that fulfills some role". In the DDMS schema, the hierarchy is modelled as "a producer role that is filled by some entity".<br><br>
 			All four producer entities share similar characteristics (at least one name, and optional phone numbers and email addresses), so 
 			they are grouped into a single table, rather than a separate table for each producer entity type. The latter approach is equally viable.<br /><br />
-			This modeling also assumes that there is no reuse of producers between various roles. So, while the person named "Brian Uri" might have a creator 
+			This modeling also assumes that there is no reuse of entities between various roles. So, while the person named "Brian Uri" might have a creator 
 			role and a contributor role, and while Brian's details might be identical in each XML element, each set of details would have a separate 
 			row in this table.
 		</td>
@@ -404,14 +458,10 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
+		<td class="relField">producerId</td><td class="relRules">integer</td><td>foreign key to the parent producer role fulfilled by this entity</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">producerType</td><td class="relRules">char(24)</td><td>the role being filled by this producer, i.e. "creator", "contributor", "pointOfContact", 
-			or "publisher"</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">entityType</td><td class="relRules">char(24)</td><td>the type of this producer, i.e. "Organization", "Person", "Service" or "Unknown"</td>
+		<td class="relField">entityType</td><td class="relRules">char(24)</td><td>the type of this entity, i.e. "Organization", "Person", "Service" or "Unknown"</td>
 	</tr>	
 	<tr class="relRow">
 		<td class="relField">name</td><td class="relRules">char(256), not null</td><td>a delimited string-list of names for this producer. At least one is required.</td>
