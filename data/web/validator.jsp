@@ -243,7 +243,7 @@ import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
-import buri.ddmsence.ddms.security.SecurityAttributes;
+import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSReader;
 import buri.ddmsence.util.Util;
 

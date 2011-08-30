@@ -31,16 +31,13 @@
 				'titles[0].securityAttributes.ownerProducers': {
 					required: true
 				},				
-				'organizations[0].producerType': {
+				'creators[0].organization.names[0]': {
 					required: true
 				},
-				'organizations[0].names[0]': {
+				'creators[0].organization.phones[0]': {
 					required: true
 				},
-				'organizations[0].phones[0]': {
-					required: true
-				},
-				'organizations[0].emails[0]': {
+				'creators[0].organization.emails[0]': {
 					required: true
 				},
 				'subjectCoverage.keywords[0].value': {
@@ -81,16 +78,13 @@
 				'titles[0].securityAttributes.ownerProducers': {
 					required: "At least one owner/producer is required."
 				},
-				'organizations[0].producerType': {
-					required: "A producer type is required."
-				},
-				'organizations[0].names[0]': {
+				'creators[0].organization.names[0]': {
 					required: "A name is required."
 				},
-				'organizations[0].phones[0]': {
+				'creators[0].organization.phones[0]': {
 					required: "A phone number is required."
 				},
-				'organizations[0].emails[0]': {
+				'creators[0].organization.emails[0]': {
 					required: "An email address is required."
 				},
 				'subjectCoverage.keywords[0].value': {
@@ -124,10 +118,9 @@
 		form.elements['titles[0].value'].value = 'DDMSence';
 		form.elements['titles[0].securityAttributes.classification'].value = 'U';
 		form.elements['titles[0].securityAttributes.ownerProducers'].value = 'USA';
-		form.elements['organizations[0].producerType'].value = 'contributor';
-		form.elements['organizations[0].names[0]'].value = 'FGM, Inc.';
-		form.elements['organizations[0].phones[0]'].value = '703-885-1000';
-		form.elements['organizations[0].emails[0]'].value = 'ddmsence@urizone.net';
+		form.elements['creators[0].organization.names[0]'].value = 'FGM, Inc.';
+		form.elements['creators[0].organization.phones[0]'].value = '703-885-1000';
+		form.elements['creators[0].organization.emails[0]'].value = 'ddmsence@urizone.net';
 		form.elements['subjectCoverage.keywords[0].value'].value = 'DDMSence';
 		form.elements['security.securityAttributes.classification'].value = 'U';
 		form.elements['security.securityAttributes.ownerProducers'].value = 'USA';
@@ -179,21 +172,15 @@ Information submitted through this tool is not retained on the server.</p>
 	</form:select></div>
 				
 	<br />
-	<label class="builderComponent">Producer</label>
-	<div class="clear"></div>
-	<div class="clear"><label class="builderField" for="organizations[0].producerType">Producer Type: *</label>
-	 	<form:select path="organizations[0].producerType"  multiple="false" size="1">
- 		<form:option value=""></form:option>
- 		<c:forEach var="producerType" items="${producerTypes}">
-			<form:option value="${producerType}">${producerType}</form:option>
-		</c:forEach>
-	</form:select></div>
-	<div class="clear"><label class="builderField" for="organizations[0].names[0]">Organization Name: *</label>
-	<form:input path="organizations[0].names[0]" size="25" maxlength="256" /></div>
-	<div class="clear"><label class="builderField" for="organizations[0].phones[0]">Organization Phone: *</label>
-	<form:input path="organizations[0].phones[0]" size="25" maxlength="256" /></div>
-	<div class="clear"><label class="builderField" for="organizations[0].emails[0]">Organization Email: *</label>
-	<form:input path="organizations[0].emails[0]" size="25" maxlength="2048" /></div>
+	<label class="builderComponent">Creator</label>
+	<div class="clear"><label class="builderField" for="creators[0].entityType">Entity Type: *</label>
+	<span class="formElement">Organization<input type="hidden" name="creators[0].entityType" value="Organization" /></span></div>
+	<div class="clear"><label class="builderField" for="creators[0].organization.names[0]">Organization Name: *</label>
+	<form:input path="creators[0].organization.names[0]" size="25" maxlength="256" /></div>
+	<div class="clear"><label class="builderField" for="creators[0].organization.phones[0]">Organization Phone: *</label>
+	<form:input path="creators[0].organization.phones[0]" size="25" maxlength="256" /></div>
+	<div class="clear"><label class="builderField" for="creators[0].organization.emails[0]">Organization Email: *</label>
+	<form:input path="creators[0].organization.emails[0]" size="25" maxlength="2048" /></div>
 
 	<br />
 	<label class="builderComponent">SubjectCoverage</label>
@@ -291,7 +278,7 @@ import buri.ddmsence.ddms.AbstractProducer;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
-import buri.ddmsence.ddms.security.ISMVocabulary;
+import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.util.Util;
 
 /**
@@ -325,7 +312,6 @@ public class BuilderControl extends SimpleFormController {
     public Map&lt;String, Object&gt; referenceData(HttpServletRequest request) throws Exception {
        Map&lt;String, Object&gt; data = new HashMap&lt;String, Object&gt;();
        data.put("ownerProducers", ISMVocabulary.getEnumerationTokens(ISMVocabulary.CVE_OWNER_PRODUCERS));
-       data.put("producerTypes", AbstractProducer.PRODUCER_TYPES);
        return (data);
     }  
     
