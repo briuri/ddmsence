@@ -86,9 +86,9 @@ public class DDMSVersion {
 
 	private static final Map<String, DDMSVersion> VERSIONS_TO_DETAILS = new HashMap<String, DDMSVersion>();
 	static {
-		VERSIONS_TO_DETAILS.put("2.0", new DDMSVersion("2.0"));
-		VERSIONS_TO_DETAILS.put("3.0", new DDMSVersion("3.0"));
-		VERSIONS_TO_DETAILS.put("3.1", new DDMSVersion("3.1"));
+		for (String version : PropertyReader.getListProperty("ddms.supportedVersions")) {
+			VERSIONS_TO_DETAILS.put(version, new DDMSVersion(version));
+		}
 		_currentVersion = getVersionFor(PropertyReader.getProperty("ddms.defaultVersion"));
 	}
 			

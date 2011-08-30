@@ -48,6 +48,7 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 
 	public void testEnumerationTokens() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
 			ISMVocabulary.setDDMSVersion(DDMSVersion.getVersionFor(version));
 			assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, "C"));
 			assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, "unknown"));
@@ -76,12 +77,12 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 			assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DECLASS_EXCEPTION, "25X1"));
 			assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_DECLASS_EXCEPTION, "unknown"));
 	
-			if (!"3.1".equals(version)) {
+			if (!isDDMS31OrGreater()) {
 				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, "X1"));
 				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, "unknown"));
 			}
 			
-			if ("3.1".equals(version)) {
+			if (isDDMS31OrGreater()) {
 				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_ATOMIC_ENERGY_MARKINGS, "RD"));
 				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_ATOMIC_ENERGY_MARKINGS, "unknown"));
 				
@@ -99,6 +100,7 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 
 	public void testEnumerationPatterns() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(version);
 			ISMVocabulary.setDDMSVersion(DDMSVersion.getVersionFor(version));
 			assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "SI-G-ABCD"));
 			assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "SI-ECI-ABC"));
@@ -108,7 +110,7 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 			assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SAR_IDENTIFIER, "SAR-AB"));
 			assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_SAR_IDENTIFIER, "SAR-ABCD"));
 			
-			if (!"3.1".equals(version)) {
+			if (!isDDMS31OrGreater()) {
 				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, "RD-SG-1"));
 				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, "RD-SG-12"));
 				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, "RD-SG-100"));

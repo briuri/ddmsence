@@ -129,4 +129,12 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	public Element getValidElement(String version) {
 		return (_elementMap.get(version));
 	}
+	
+
+	/**
+	 * Convenience method to check that DDMS Version is 3.1 or greater
+	 */
+	protected boolean isDDMS31OrGreater() {
+		return (!(DDMSVersion.isCurrentVersion("2.0") || DDMSVersion.isCurrentVersion("3.0")));
+	}
 }

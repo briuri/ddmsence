@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  Represents a single ddms:creator element, for unit testing -->
+<ddms:creator
+	xmlns:ddms="urn:us:mil:ces:metadata:ddms:4"
+	xmlns:ICISM="urn:us:gov:ic:ism"
+	ICISM:classification="U"
+	ICISM:ownerProducer="USA">
+	<ddms:Person>
+		<ddms:name>Brian</ddms:name>
+		<ddms:name>BU</ddms:name>
+		<ddms:surname>Uri</ddms:surname>
+		<ddms:userID>123</ddms:userID>
+		<ddms:affiliation>DISA</ddms:affiliation>
+		<ddms:phone>703-885-1000</ddms:phone>
+		<ddms:email>ddms@fgm.com</ddms:email>
+	</ddms:Person>
+</ddms:creator>	
