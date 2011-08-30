@@ -14,39 +14,43 @@ DETAILS:
    		</ddms:Organization>	
 	</ddms:creator>
 	
-	This creator element was modeled in DDMSence as "An instance of Organization has the role of creator" and the Organization class
-	contained this entire construct. With DDMS 4.0, Organizations and Persons can now appear in other elements (Addressee and RecordKeeper)
-	besides the classic producers , and the old approach became fragile. Producers and producer entities are now
-	consistent with the schema -- the above construct is modeled as "An instance of Creator contains an instance of Organization".
+	This creator element was modeled in DDMSence as "An instance of Organization has the role of creator" 
+	and the Organization class contained this entire construct. With DDMS 4.0, Organizations and Persons 
+	can now appear in other elements (Addressee and RecordKeeper) besides the classic producers, and the 
+	old approach became fragile. Producers and producer entities are now consistent with the schema -- 
+	the above construct is modeled as "An instance of Creator contains an instance of Organization".
 	
-	Specifically, there is a new class for Creator, Contributor, Publisher, and PointOfContact, and the old producer entities, Organization
-	Person, Service, and Unknown are no longer top-level components.
+	Specifically, there is a new class for Creator, Contributor, Publisher, and PointOfContact, and the 
+	old producer entities, Organization Person, Service, and Unknown are no longer top-level components.
 FIX:
-	The four producer entity classes must now be wrapped into a produler role class. As an example, if you previously had code that
-	worked with an "Organization that was a creator":
+	The four producer entity classes must now be wrapped into a producer role class. As an example, if you 
+	previously had code that worked with an "Organization that was a creator":
 	
-	Organization org = new Organization(Organization.CREATOR_NAME, names, phones, emails, securityAttributes, extensibleAttributes);
+	Organization org =
+		new Organization(Organization.CREATOR_NAME, names, phones, emails, securityAttributes, extensibleAttributes);
 	
 	You would now deal with a "Creator that contains an Organization":
 	
 	Organization org = new Organization(Creator.NAME, names, phones, emails, extensibleAttributes);
 	Creator creator = new Creator(org, securityAttributes);
 		
-	See Issue #153 for a description of the OLD class hierarchy and the NEW class hierarchy. I will also be glad to
-	review your code and provide feedback on how it can be upgraded.
+	See Issue #153 for a description of the OLD class hierarchy and the NEW class hierarchy. I will also 
+	be glad to review your code and provide feedback on how it can be upgraded.
 	
 #########################################################################################################
-The ability to point at a custom set of CVEs with the "icism.cve.customEnumLocation" property has been removed (Issue #95). 
+The ability to point at custom CVEs with the "icism.cve.customEnumLocation" property has been removed (Issue #95). 
 
 SEVERITY: Major 
 DETAILS:
-	The selection of CVE is now based upon the current DDMSVersion and uses bundled Public Release CVEs all of the time.
-	Because V5 and above of ISM.XML validate vocabularies directly from the schemas (with generated CVE schemas), 
-	changing the vocabulary without changing the schema no longer made sense. Issue #154 tracks future work to reintroduce this 
-	general concept of swappable ISM, but at the schema level and not just the vocabulary level.
-	You can still toggle CVEs between warnings and errors with the "ism.cve.validationAsErrors" custom property.
+	The selection of CVE is now based upon the current DDMSVersion and uses bundled Public Release CVEs all 
+	of the time. Because V5 and above of ISM.XML validate vocabularies directly from the schemas (with 
+	generated CVE schemas), changing the vocabulary without changing the schema no longer made sense. 
+	Issue #154 tracks future work to reintroduce this general concept of swappable ISM, but at the schema 
+	level and not just the vocabulary level. You can still toggle CVEs between warnings and errors with the 
+	"ism.cve.validationAsErrors" custom property.
 FIX:
-	There is no workaround at this time. Please contact me with feedback on how you used this feature previously so I can support your use case in the future.
+	There is no workaround at this time. Please contact me with feedback on how you used this feature previously 
+	so I can support your use case in the future.
 
 #########################################################################################################
 Non-DDMS classes have been moved into new packages (Issue #148).
