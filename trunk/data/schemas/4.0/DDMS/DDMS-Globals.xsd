@@ -206,7 +206,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
-	<xs:element name="temporalCoverage" type="TemporalCoverageType">
+	<xs:element name="temporalCoverage" type="TimePeriodType">
 		<xs:annotation>
 			<xs:appinfo>
 				<mdr:definition>The subject-matter coverage in terms of one or more periods of time.  That is, an indication of the time period for which the subject of the resource applies.  (E.g. The 50's, or a span of time indicated by a start and end time.)  See DDMS Spec Cateogry: Temporal Coverage.  
@@ -771,22 +771,10 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 		<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
 		<xs:anyAttribute namespace="##other" processContents="lax"/>
 	</xs:complexType>
-	<xs:complexType name="TemporalCoverageType">
-		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>Type used to model the temporalCoverage element.
-			</mdr:definition>
-			</xs:appinfo>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="TimePeriod" type="TimePeriodType"/>
-		</xs:sequence>
-		<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
-	</xs:complexType>
 	<xs:complexType name="TimePeriodType">
 		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>Type used to model the TimePeriod sub-element of the ddms:temporalCoverage element.</mdr:definition>
+			<xs:appinfo xml:lang="en">
+				Type used to model the TimePeriod sub-element of the ddms:temporalCoverage element.
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
@@ -794,6 +782,7 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 			<xs:element name="start" type="ExtendedCombinedDateType" default="Unknown"/>
 			<xs:element name="end" type="ExtendedCombinedDateType" default="Unknown"/>
 		</xs:sequence>
+		<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
 	</xs:complexType>
 	<xs:complexType name="VirtualCoverageType">
 		<xs:annotation>
