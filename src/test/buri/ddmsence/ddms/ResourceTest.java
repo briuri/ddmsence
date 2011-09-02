@@ -140,7 +140,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		TEST_FORMAT = new Format("text/xml", null, null);
 
 		List<Keyword> keywords = new ArrayList<Keyword>();
-		keywords.add(new Keyword("DDMSence"));
+		keywords.add(new Keyword("DDMSence", null));
 		TEST_SUBJECT = new SubjectCoverage(keywords, null, null);
 		TEST_VIRTUAL = new VirtualCoverage("123.456.789.0", "IP", null);
 		TEST_TEMPORAL = new TemporalCoverage(null, "1979-09-15", "Not Applicable", null);
@@ -919,7 +919,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			// Non-top-level component
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
-			components.add(new Keyword("test"));
+			components.add(new Keyword("test", null));
 			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getDESVersion(version));
 		}
 	}

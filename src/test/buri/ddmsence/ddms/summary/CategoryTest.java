@@ -101,8 +101,8 @@ public class CategoryTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"subjectCoverage.Subject.category.code\" content=\"").append(TEST_CODE).append("\" />\n");
 		html.append("<meta name=\"subjectCoverage.Subject.category.label\" content=\"").append(TEST_LABEL).append("\" />\n");
 		if (isDDMS40OrGreater()) {
-			html.append("<meta name=\"category.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"category.ownerProducer\" content=\"USA\" />\n");
+			html.append("<meta name=\"subjectCoverage.Subject.category.classification\" content=\"U\" />\n");
+			html.append("<meta name=\"subjectCoverage.Subject.category.ownerProducer\" content=\"USA\" />\n");
 		}
 		return (html.toString());
 	}

@@ -120,12 +120,12 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// All fields
-			Element element = new Keyword("testValue").getXOMElementCopy();
+			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			testConstructor(WILL_SUCCEED, element);
 
 			// No optional fields
-			element = new Keyword("testValue").getXOMElementCopy();
+			element = new Keyword("testValue", null).getXOMElementCopy();
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -161,7 +161,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// No warnings
-			Element element = new Keyword("testValue").getXOMElementCopy();
+			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			testConstructor(WILL_SUCCEED, element);
 			ExtensibleAttributes component = testConstructor(WILL_SUCCEED, element);
@@ -173,7 +173,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			
-			Element element = new Keyword("testValue").getXOMElementCopy();
+			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
 
@@ -189,7 +189,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 	public void testIsEmpty() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			Element element = new Keyword("testValue").getXOMElementCopy();
+			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
 			assertFalse(elementAttributes.isEmpty());
@@ -202,7 +202,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			Element element = new Keyword("testValue").getXOMElementCopy();
+			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
 			List<Attribute> attributes = new ArrayList<Attribute>();
@@ -218,7 +218,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			Element element = new Keyword("testValue").getXOMElementCopy();
+			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
 			Rights wrongComponent = new Rights(true, true, true);
@@ -229,7 +229,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			Element element = new Keyword("testValue").getXOMElementCopy();
+			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
 			assertEquals(getExpectedHTMLOutput(), elementAttributes.toHTML("subjectCoverage.Subject.keyword"));
@@ -244,7 +244,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			Element element = new Keyword("testValue").getXOMElementCopy();
+			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
 			assertEquals(getExpectedTextOutput(), elementAttributes.toText("keyword"));
@@ -259,7 +259,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			Element element = new Keyword("testValue").getXOMElementCopy();
+			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes component = testConstructor(WILL_SUCCEED, element);
 			

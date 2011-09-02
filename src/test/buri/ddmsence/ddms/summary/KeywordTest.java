@@ -29,6 +29,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -79,7 +80,7 @@ public class KeywordTest extends AbstractComponentTestCase {
 	private Keyword testConstructor(boolean expectFailure, String value) {
 		Keyword component = null;
 		try {
-			component = new Keyword(value);
+			component = new Keyword(value, isDDMS40OrGreater() ? SecurityAttributesTest.getFixture(false) : null);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -93,6 +94,10 @@ public class KeywordTest extends AbstractComponentTestCase {
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"subjectCoverage.Subject.keyword\" content=\"").append(TEST_VALUE).append("\" />\n");
+		if (isDDMS40OrGreater()) {
+			html.append("<meta name=\"subjectCoverage.Subject.keyword.classification\" content=\"U\" />\n");
+			html.append("<meta name=\"subjectCoverage.Subject.keyword.ownerProducer\" content=\"USA\" />\n");
+		}
 		return (html.toString());
 	}
 
@@ -102,6 +107,10 @@ public class KeywordTest extends AbstractComponentTestCase {
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
 		text.append("keyword: ").append(TEST_VALUE).append("\n");
+		if (isDDMS40OrGreater()) {
+			text.append("keyword classification: U\n");
+			text.append("keyword ownerProducer: USA\n");
+		}
 		return (text.toString());
 	}
 
@@ -111,7 +120,14 @@ public class KeywordTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:keyword xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		xml.append("ddms:value=\"").append(TEST_VALUE).append("\" />");
+		if (isDDMS40OrGreater()) {
+			xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
+		}	
+		xml.append("ddms:value=\"").append(TEST_VALUE).append("\"");
+		if (isDDMS40OrGreater()) {
+			xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
+		}
+		xml.append(" />");	
 		return (xml.toString());
 	}
 
@@ -241,7 +257,7 @@ public class KeywordTest extends AbstractComponentTestCase {
 		// Extensible attribute added
 		DDMSVersion.setCurrentVersion("3.0");
 		ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
-		new Keyword("xml", attr);		
+		new Keyword("xml", null, attr);		
 	}
 	
 	public void testExtensibleFailure() throws InvalidDDMSException {
@@ -249,7 +265,7 @@ public class KeywordTest extends AbstractComponentTestCase {
 		DDMSVersion.setCurrentVersion("2.0");
 		ExtensibleAttributes attributes = ExtensibleAttributesTest.getFixture();
 		try {
-			new Keyword(TEST_VALUE, attributes);
+			new Keyword(TEST_VALUE, null, attributes);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -264,10 +280,20 @@ public class KeywordTest extends AbstractComponentTestCase {
 		extAttributes.add(attr);
 		attributes = new ExtensibleAttributes(extAttributes);
 		try {
-			new Keyword(TEST_VALUE, attributes);
+			new Keyword(TEST_VALUE, null, attributes);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
+	public void testSecurityAttributesWrongVersion() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("3.1");
+		try {
+			new Keyword(TEST_VALUE, SecurityAttributesTest.getFixture(false));
+			fail("Allowed invalid data.");
+		} catch (InvalidDDMSException e) {
 			// Good
 		}
 	}

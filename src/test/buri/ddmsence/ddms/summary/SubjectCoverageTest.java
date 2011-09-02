@@ -53,8 +53,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	private static List<Keyword> getKeywords() throws InvalidDDMSException {
 		List<Keyword> keywords = new ArrayList<Keyword>();
-		keywords.add(new Keyword("DDMSence"));
-		keywords.add(new Keyword("Uri"));
+		keywords.add(new Keyword("DDMSence", null));
+		keywords.add(new Keyword("Uri", null));
 		return (keywords);
 	}
 	
