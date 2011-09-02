@@ -23,6 +23,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
+import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -75,7 +76,7 @@ public class TypeTest extends AbstractComponentTestCase {
 	private Type testConstructor(boolean expectFailure, String qualifier, String value) {
 		Type component = null;
 		try {
-			component = new Type(qualifier, value);
+			component = new Type(qualifier, value, isDDMS40OrGreater() ? SecurityAttributesTest.getFixture(false) : null);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -90,6 +91,10 @@ public class TypeTest extends AbstractComponentTestCase {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"type.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
 		html.append("<meta name=\"type.value\" content=\"").append(TEST_VALUE).append("\" />\n");
+		if (isDDMS40OrGreater()) {
+			html.append("<meta name=\"type.classification\" content=\"U\" />\n");
+			html.append("<meta name=\"type.ownerProducer\" content=\"USA\" />\n");
+		}
 		return (html.toString());
 	}
 
@@ -100,6 +105,10 @@ public class TypeTest extends AbstractComponentTestCase {
 		StringBuffer text = new StringBuffer();
 		text.append("type qualifier: ").append(TEST_QUALIFIER).append("\n");
 		text.append("type value: ").append(TEST_VALUE).append("\n");
+		if (isDDMS40OrGreater()) {
+			text.append("type classification: U\n");
+			text.append("type ownerProducer: USA\n");
+		}
 		return (text.toString());
 	}
 
@@ -109,8 +118,15 @@ public class TypeTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:type xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
+		if (isDDMS40OrGreater()) {
+			xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
+		}
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
-			.append("\" />");
+			.append("\"");
+		if (isDDMS40OrGreater()) {
+			xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
+		}
+		xml.append(" />");			
 		return (xml.toString());
 	}
 
@@ -255,6 +271,16 @@ public class TypeTest extends AbstractComponentTestCase {
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
+		}
+	}
+	
+	public void testSecurityAttributesWrongVersion() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("3.1");
+		try {
+			new Type(TEST_QUALIFIER, TEST_VALUE, SecurityAttributesTest.getFixture(false));
+			fail("Allowed invalid data.");
+		} catch (InvalidDDMSException e) {
+			// Good
 		}
 	}
 	

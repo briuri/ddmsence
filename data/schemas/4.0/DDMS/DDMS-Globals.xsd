@@ -644,14 +644,13 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 		</xs:simpleContent>
 	</xs:complexType>
 	<xs:complexType name="CompoundTypeIdentifierType">
-		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>Types used to model the type element.
-			</mdr:definition>
-			</xs:appinfo>
-		</xs:annotation>
-		<xs:attribute name="qualifier" type="xs:string"/>
-		<xs:attribute name="value" type="xs:string"/>
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="qualifier" type="xs:string"/>
+				<xs:attribute name="value" type="xs:string"/>
+				<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
+			</xs:extension>
+		</xs:simpleContent>
 	</xs:complexType>
 	<!-- Types used to model the format element -->
 	<xs:complexType name="FormatType">

@@ -129,7 +129,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		TEST_DATES = new Dates("2003", null, null, null, null);
 		TEST_RIGHTS = new Rights(true, true, true);
 		TEST_SOURCE = new Source(null, "http://www.xmethods.com", null, null, null);
-		TEST_TYPE = new Type("DCMITYPE", "http://purl.org/dc/dcmitype/Text");
+		TEST_TYPE = new Type("DCMITYPE", "http://purl.org/dc/dcmitype/Text", null);
 		TEST_CREATOR = new Creator(new Organization("creator", getAsList("DISA"), null, null), null, null);
 		TEST_PUBLISHER = new Publisher(new Person("publisher", "Uri", getAsList("Brian"), null, null, null, null), null, null);
 		TEST_CONTRIBUTOR = new Contributor(new Service("contributor",

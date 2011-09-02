@@ -2,6 +2,9 @@
 <!--  Represents a single ddms:type element, for unit testing -->
 <ddms:type
 	xmlns:ddms="urn:us:mil:ces:metadata:ddms:4"
+	xmlns:ICISM="urn:us:gov:ic:ism"
 	ddms:qualifier="DCMITYPE"
-	ddms:value="http://purl.org/dc/dcmitype/Text"/>
+	ddms:value="http://purl.org/dc/dcmitype/Text"
+	ICISM:classification="U"
+	ICISM:ownerProducer="USA" />
 			

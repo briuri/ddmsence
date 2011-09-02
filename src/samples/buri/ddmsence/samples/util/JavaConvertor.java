@@ -318,8 +318,9 @@ public class JavaConvertor {
 	public static void convert(StringBuffer java, Type type) {
 		int count = getVariableCount();
 		java.append("\n// ddms:type\n");
+		convert(java, type.getSecurityAttributes());	
 		java.append("Type type").append(count).append(" = new Type(\"").append(type.getQualifier()).append("\", \"")
-			.append(type.getValue()).append("\");\n");
+			.append(type.getValue()).append("\", securityAttributes);\n");
 		java.append("topLevelComponents.add(type").append(count).append(");\n");
 	}
 	
@@ -458,7 +459,7 @@ public class JavaConvertor {
 			entityVariable = convert(java, producerType, (Unknown) producer.getProducerEntity());
 
 		java.append(producerClass).append(" ").append(producerType).append(count).append(" = new ");
-		java.append(producerClass).append("(").append(entityVariable).append(", null, securityAttributes);\n");
+		java.append(producerClass).append("(").append(entityVariable).append(", \"").append(producer.getPOCType()).append("\", securityAttributes);\n");
 		java.append("topLevelComponents.add(").append(producerType).append(count).append(");\n");
 	}
 		
