@@ -291,7 +291,10 @@ public class Escort {
 		BUILDERS.put(Keyword.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String keyword = readString("the keyword value [testValue]");
-				return (new Keyword(keyword));
+				String classification = readString("the keyword's classification [U]");
+				String ownerProducers = readString("the keyword's ownerProducers as a space-delimited string [USA]");
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new Keyword(keyword, attr));
 			}
 		});
 		BUILDERS.put(Category.class, new IComponentBuilder() {
@@ -299,8 +302,8 @@ public class Escort {
 				String qualifier = readString("the qualifier [testQualifier]");
 				String code = readString("the code [testCode]");
 				String label = readString("the label [testLabel]");
-				String classification = readString("the type classification [U]");
-				String ownerProducers = readString("the type's ownerProducers as a space-delimited string [USA]");
+				String classification = readString("the category's classification [U]");
+				String ownerProducers = readString("the category's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				return (new Category(qualifier, code, label, attr));
 			}

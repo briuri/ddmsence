@@ -53,6 +53,22 @@ FIX:
 	so I can support your use case in the future.
 
 #########################################################################################################
+Many constructors now have an additional parameter for SecurityAttributes (numerous Issues)
+
+SEVERITY: Minor
+DETAILS:
+	Several existing components, such as Keywords and Categories, can now support optional SecurityAttributes. An
+	additional parameter has been added to the data-based constructors for these components.
+FIX:
+	Update this code:
+	
+	Keyword keyword = new Keyword("ddmsence");
+	
+	with:
+	
+	Keyword keyword = new Keyword("ddmsence", null);
+		
+#########################################################################################################
 Non-DDMS classes have been moved into new packages (Issue #148).
 
 SEVERITY: Minor

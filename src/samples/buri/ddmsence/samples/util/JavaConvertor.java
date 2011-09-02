@@ -524,8 +524,9 @@ public class JavaConvertor {
 		java.append("\n// ddms:subjectCoverage\n");
 		java.append("List<Keyword> keywords = new ArrayList<Keyword>();\n");
 		for (Keyword keyword : subjectCoverage.getKeywords()) {
+			convert(java, keyword.getSecurityAttributes());
 			convert(java, keyword.getExtensibleAttributes());
-			java.append("keywords.add(new Keyword(\"").append(keyword.getValue()).append("\", extensions));\n");
+			java.append("keywords.add(new Keyword(\"").append(keyword.getValue()).append("\", securityAttributes, extensions));\n");
 		}
 		java.append("List<Category> categories = new ArrayList<Category>();\n");
 		for (Category category : subjectCoverage.getCategories()) {
