@@ -155,5 +155,13 @@ public class DDMSVersionTest extends TestCase {
 		assertTrue(DDMSVersion.getVersionFor("3.0").isAtLeast("3.0.1"));
 		assertTrue(DDMSVersion.getVersionFor("4.0").isAtLeast("3.1"));
 		assertTrue(DDMSVersion.getVersionFor("4.0").isAtLeast("4.0"));
+		
+		try {
+			DDMSVersion.getCurrentVersion().isAtLeast("dog");
+			fail("Allowed invalid data.");
+		}
+		catch (UnsupportedVersionException e) {
+			// Good
+		}
 	}
 }

@@ -135,13 +135,13 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	 * Convenience method to check that DDMS Version is 3.1 or greater
 	 */
 	protected boolean isDDMS31OrGreater() {
-		return (!(DDMSVersion.isCurrentVersion("2.0") || DDMSVersion.isCurrentVersion("3.0")));
+		return (DDMSVersion.getCurrentVersion().isAtLeast("3.1"));
 	}
 	
 	/**
 	 * Convenience method to check that DDMS Version is 4.0 or greater
 	 */
 	protected boolean isDDMS40OrGreater() {
-		return (isDDMS31OrGreater() && !(DDMSVersion.isCurrentVersion("3.1")));
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0"));
 	}
 }
