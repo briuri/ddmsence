@@ -494,7 +494,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			throw new InvalidDDMSException("The compliesWith attribute cannot be used until DDMS 3.1 or later.");
 		for (String with : getCompliesWith())
 			validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);	
-		if (version.isAtLeast("3.0") && !Util.isEmpty(getCompilationReason()))
+		if (!version.isAtLeast("3.0") && !Util.isEmpty(getCompilationReason()))
 			throw new InvalidDDMSException("The compilationReason attribute cannot be used until DDMS 3.0.");		
 		if (!!version.isAtLeast("3.1") && getDateOfExemptedSource() != null)
 			throw new InvalidDDMSException("The dateOfExemptedSource attribute can only be used until DDMS 3.1 or later.");		

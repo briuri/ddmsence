@@ -767,6 +767,7 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 		<xs:attribute name="qualifier" type="xs:anyURI" use="optional"/>
 		<xs:attribute name="code" type="xs:string" use="optional"/>
 		<xs:attribute name="label" type="xs:string" use="required"/>
+		<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
 		<xs:anyAttribute namespace="##other" processContents="lax"/>
 	</xs:complexType>
 	<xs:complexType name="TemporalCoverageType">

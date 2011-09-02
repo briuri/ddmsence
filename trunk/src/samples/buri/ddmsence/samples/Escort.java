@@ -299,7 +299,10 @@ public class Escort {
 				String qualifier = readString("the qualifier [testQualifier]");
 				String code = readString("the code [testCode]");
 				String label = readString("the label [testLabel]");
-				return (new Category(qualifier, code, label));
+				String classification = readString("the type classification [U]");
+				String ownerProducers = readString("the type's ownerProducers as a space-delimited string [USA]");
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new Category(qualifier, code, label, attr));
 			}
 		});
 		BUILDERS.put(SubjectCoverage.class, new IComponentBuilder() {

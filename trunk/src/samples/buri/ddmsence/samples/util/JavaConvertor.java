@@ -522,7 +522,6 @@ public class JavaConvertor {
 	 */
 	public static void convert(StringBuffer java, SubjectCoverage subjectCoverage) {
 		java.append("\n// ddms:subjectCoverage\n");
-		convert(java, subjectCoverage.getSecurityAttributes());
 		java.append("List<Keyword> keywords = new ArrayList<Keyword>();\n");
 		for (Keyword keyword : subjectCoverage.getKeywords()) {
 			convert(java, keyword.getExtensibleAttributes());
@@ -530,10 +529,12 @@ public class JavaConvertor {
 		}
 		java.append("List<Category> categories = new ArrayList<Category>();\n");
 		for (Category category : subjectCoverage.getCategories()) {
+			convert(java, category.getSecurityAttributes());
 			convert(java, category.getExtensibleAttributes());
 			java.append("categories.add(new Category(\"").append(category.getQualifier()).append("\", \"")
-				.append(category.getCode()).append("\", \"").append(category.getLabel()).append("\", extensions));\n");
+				.append(category.getCode()).append("\", \"").append(category.getLabel()).append("\", securityAttributes, extensions));\n");
 		}
+		convert(java, subjectCoverage.getSecurityAttributes());
 		java.append("SubjectCoverage subjectCoverage = new SubjectCoverage(keywords, categories, securityAttributes);\n");
 		java.append("topLevelComponents.add(subjectCoverage);\n");
 	}

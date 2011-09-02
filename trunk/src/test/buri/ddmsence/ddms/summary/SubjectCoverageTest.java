@@ -60,7 +60,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	
 	private static List<Category> getCategories() throws InvalidDDMSException {
 		List<Category> categories = new ArrayList<Category>();
-		categories.add(new Category("urn:buri:ddmsence:categories", "DDMS", "DDMS"));
+		categories.add(new Category("urn:buri:ddmsence:categories", "DDMS", "DDMS", null));
 		return (categories);
 	}
 	

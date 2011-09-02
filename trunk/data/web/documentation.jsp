@@ -468,10 +468,6 @@ ExtensibleAttributes extensions = new ExtensibleAttributes(extAttributes);
 Keyword keyword = new Keyword("XML", extensions);</pre>
 <p class="figure">Figure 16. Creating the extensible attribute from scratch</p>
 
-<p>Note: Currently, all of the <code>xs:anyAttribute</code> definitions use lax processing <i>except</i> for the definition on the producer elements. This means
-that any extensible attributes you add to a producer will be strictly validated when loaded by a schema parser. I am in contact with the DDMS Team to determine
-whether this is an <a href="http://code.google.com/p/ddmsence/issues/detail?id=12">intentional design decision</a> or an oversight.</p>
-
 <h5>ExtensibleAttributes on a Resource</h5>
 
 <p>The <code>ddms:Resource</code> element is the only extensible element which has additional (ICISM) attributes that might conflict with your extensible
@@ -524,6 +520,11 @@ Resource resource = new Resource(myComponents, null, null, null, null, extension
 
 <p>As a best practice, it is recommended that you create these attributes as explicitly as possible: if an attribute can be defined with constructor parameters or inside
 of a SecurityAttributes instance, it should. This will make DDMS 2.0 resources more consistent with their DDMS 3.x counterparts.</p>
+
+<h5>ExtensibleAttributes on a Keyword or Category</h5>
+
+<p>Starting with DDMS 4.0, <code>ddms:keyword</code> and <code>ddms:category</code> can have both extensible and security attributes, just like a Resource. The same guidelines apply in this
+situation -- define your security attributes as explicitly as possible to avoid confusion.</p>
 
 <div class="powerTipDivider"></div>
 
