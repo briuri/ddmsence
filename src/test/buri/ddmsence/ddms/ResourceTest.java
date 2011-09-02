@@ -193,7 +193,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 	 * @return a DESVersion
 	 */
 	private Integer getDESVersion(String version) {
-		if ("2.0".equals(version) || "3.0".equals(version))
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") || "3.0".equals(version))
 			return (new Integer(2));
 		return (new Integer(5));
 	}
@@ -989,9 +989,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 			createComponents();
 			
 			Resource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			Resource dataComponent = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS,
-				null, null, getDESVersion(version)) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS,
-				TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getDESVersion(version)));
+			Resource dataComponent = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ?
+				testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null, getDESVersion(version))
+				: testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getDESVersion(version)));
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -1011,7 +1011,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 				"1999-10-10", getDESVersion(version));
 			assertFalse(elementComponent.equals(dataComponent));
 
-			if (!"3.1".equals(version)) {
+			// Can only use alternate DESVersions in early DDMS versions
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.1")) {
 				dataComponent = testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
 					TEST_CREATE_DATE, new Integer(1));
 				assertFalse(elementComponent.equals(dataComponent));
@@ -1042,7 +1043,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			component = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
+			component = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
 				getDESVersion(version)) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
 				TEST_CREATE_DATE, getDESVersion(version)));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
@@ -1057,7 +1058,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
-			component = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
+			component = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
 				getDESVersion(version)) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
 				TEST_CREATE_DATE, getDESVersion(version)));
 			assertEquals(getExpectedTextOutput(), component.toText());
@@ -1072,7 +1073,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = ("2.0".equals(version) ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
+			component = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
 				getDESVersion(version)) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
 				TEST_CREATE_DATE, getDESVersion(version)));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
@@ -1128,7 +1129,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 	public void testRollupWrongSystem() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			if (!"2.0".equals(version) && !"3.0".equals(version))
+			if (DDMSVersion.getCurrentVersion().isAtLeast("3.1"))
 				continue;
 			
 			createComponents();
@@ -1175,7 +1176,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			
 			// Extensible attribute added
 			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
-			if ("2.0".equals(version))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				new Resource(TEST_TOP_LEVEL_COMPONENTS, attr);
 			else
 				new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getDESVersion(version),

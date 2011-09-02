@@ -149,7 +149,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if ("2.0".equals(version))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				continue;
 
 			Unknown component = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -167,7 +167,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if ("2.0".equals(version))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				continue;
 
 			// All fields
@@ -184,7 +184,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if ("2.0".equals(version))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				continue;
 
 			// Missing name
@@ -202,7 +202,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if ("2.0".equals(version))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				continue;
 
 			// Missing name		
@@ -219,7 +219,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if ("2.0".equals(version))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				continue;
 
 			// No warnings
@@ -232,7 +232,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if ("2.0".equals(version))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				continue;
 
 			Unknown elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -246,7 +246,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if ("2.0".equals(version))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				continue;
 
 			Unknown elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -262,7 +262,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if ("2.0".equals(version))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				continue;
 
 			Unknown elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -275,7 +275,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if ("2.0".equals(version))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				continue;
 
 			Unknown component = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -290,7 +290,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if ("2.0".equals(version))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				continue;
 
 			Unknown component = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -305,7 +305,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 
-			if ("2.0".equals(version))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				continue;
 
 			Unknown component = testConstructor(WILL_SUCCEED, getValidElement(version));
@@ -330,7 +330,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			
-			if ("2.0".equals(version))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				continue;
 			
 			Unknown component = testConstructor(WILL_SUCCEED, getValidElement(version));
