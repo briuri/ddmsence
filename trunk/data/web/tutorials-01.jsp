@@ -25,7 +25,7 @@ optional parameter: the name of a file to load upon startup.</p>
 <h3>Walkthrough</h3>
 
 <p>When the application first opens, go to the <i>File</i> menu and choose <i>Open...</i>. You will be able to select an XML file containing
-a <code>ddms:Resource</code>. The four sample files that are bundled with DDMS v3.0 can be found in the <code>data/sample/</code> directory. Let's start by
+a <code>ddms:Resource</code>. The four sample files that are bundled with DDMS 3.0 can be found in the <code>data/sample/</code> directory. Let's start by
 selecting the sample file, <code>DDMS-v3_0_Identifier_Postal_Address_Example.xml</code> and clicking on the <i>Open</i> button.</p>
 
 <img src="./images/essentials-02.png" width="300" height="206" title="Essentials File Chooser" />

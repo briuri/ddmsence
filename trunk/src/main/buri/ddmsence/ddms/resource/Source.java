@@ -44,7 +44,7 @@ import buri.ddmsence.util.Util;
  * (optional)<br />
  * <u>ddms:schemaQualifier</u>: the schema type (optional)<br />
  * <u>ddms:schemaHref</u>: a resolvable reference to the schema (optional)<br />
- * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS v3.0. The classification and
+ * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 
@@ -117,7 +117,7 @@ public final class Source extends AbstractQualifierValue {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If a schemaHref is present, it is a valid URI.</li>
-	 * <li>The SecurityAttributes do not exist in DDMS v2.0.</li>
+	 * <li>The SecurityAttributes do not exist in DDMS 2.0.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -130,8 +130,9 @@ public final class Source extends AbstractQualifierValue {
 			Util.requireDDMSValidURI(getSchemaHref());
 		}		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS v2.0.");
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
+		if (!version.isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS 2.0.");
 		}
 		
 		validateWarnings();

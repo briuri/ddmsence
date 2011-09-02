@@ -132,10 +132,8 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		Util.requireDDMSValue("producer entity", getProducerEntity());
 		Util.requireCompatibleVersion(this, getProducerEntity());
 		// Should be reviewed as additional versions of DDMS are supported.
-		if ((DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement())
-			|| DDMSVersion.isCompatibleWithVersion("3.0", getXOMElement())
-			|| DDMSVersion.isCompatibleWithVersion("3.1", getXOMElement()))
-			&& !Util.isEmpty(getPOCType())) {
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
+		if (!version.isAtLeast("4.0") && !Util.isEmpty(getPOCType())) {
 			throw new InvalidDDMSException("This component cannot have a POCType until DDMS 4.0 or later.");
 		}
 		validateSharedWarnings();

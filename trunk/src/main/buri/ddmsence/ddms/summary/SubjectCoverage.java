@@ -60,7 +60,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * This class is decorated with ICISM {@link SecurityAttributes}, starting in DDMS v3.0. The classification and
+ * This class is decorated with ICISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 
@@ -160,7 +160,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 of "Keyword" or "Category" must exist.</li>
 	 * <li>The DDMS Version of the Keywords and Categories is the same as the SubjectCoverage.</li>
-	 * <li>The SecurityAttributes do not exist in DDMS v2.0.</li>
+	 * <li>The SecurityAttributes do not exist in DDMS 2.0.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -179,8 +179,9 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		for (Category category : getCategories())
 			Util.requireCompatibleVersion(this, category);
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS v2.0.");
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
+		if (!version.isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 		
 		validateWarnings();

@@ -20,7 +20,6 @@
 package buri.ddmsence.util;
 
 import junit.framework.TestCase;
-import nu.xom.Element;
 import buri.ddmsence.ddms.UnsupportedVersionException;
 
 /**
@@ -43,14 +42,6 @@ public class DDMSVersionTest extends TestCase {
 	 */
 	protected void tearDown() throws Exception {
 		DDMSVersion.clearCurrentVersion();
-	}
-	
-	public void testIsVersion() {
-		Element element = Util.buildDDMSElement("test", null);
-		assertTrue(DDMSVersion.isCompatibleWithVersion("3.1", element));
-		assertFalse(DDMSVersion.isCompatibleWithVersion("3.0.1", element));
-		assertFalse(DDMSVersion.isCompatibleWithVersion("3.0", element));
-		assertFalse(DDMSVersion.isCompatibleWithVersion("2.0", element));
 	}
 	
 	public void testGetVersionForInvalid() {
@@ -138,8 +129,31 @@ public class DDMSVersionTest extends TestCase {
 		assertEquals("3.0", DDMSVersion.getCurrentVersion().getVersion());		
 		assertEquals("3.0", DDMSVersion.getVersionFor("3.0.1").getVersion());
 		assertTrue(DDMSVersion.isCurrentVersion("3.0.1"));
-		Element element = Util.buildDDMSElement("test", null);
-		assertTrue(DDMSVersion.isCompatibleWithVersion("3.0", element));
-		assertTrue(DDMSVersion.isCompatibleWithVersion("3.0.1", element));		
+	}
+	
+	public void testIsNewerThan() {
+		assertTrue(DDMSVersion.getVersionFor("2.0").isAtLeast("2.0"));
+		assertFalse(DDMSVersion.getVersionFor("2.0").isAtLeast("3.0"));
+		assertFalse(DDMSVersion.getVersionFor("2.0").isAtLeast("3.0.1"));
+		assertFalse(DDMSVersion.getVersionFor("2.0").isAtLeast("3.1"));
+		assertFalse(DDMSVersion.getVersionFor("2.0").isAtLeast("4.0"));
+		
+		assertTrue(DDMSVersion.getVersionFor("3.0").isAtLeast("2.0"));
+		assertTrue(DDMSVersion.getVersionFor("3.0").isAtLeast("3.0"));
+		assertTrue(DDMSVersion.getVersionFor("3.0").isAtLeast("3.0.1"));
+		assertFalse(DDMSVersion.getVersionFor("3.0").isAtLeast("3.1"));
+		assertFalse(DDMSVersion.getVersionFor("3.0").isAtLeast("4.0"));
+		
+		assertTrue(DDMSVersion.getVersionFor("3.1").isAtLeast("2.0"));
+		assertTrue(DDMSVersion.getVersionFor("3.1").isAtLeast("3.0"));
+		assertTrue(DDMSVersion.getVersionFor("3.0").isAtLeast("3.0.1"));
+		assertTrue(DDMSVersion.getVersionFor("3.1").isAtLeast("3.1"));
+		assertFalse(DDMSVersion.getVersionFor("3.1").isAtLeast("4.0"));
+		
+		assertTrue(DDMSVersion.getVersionFor("4.0").isAtLeast("2.0"));
+		assertTrue(DDMSVersion.getVersionFor("4.0").isAtLeast("3.0"));
+		assertTrue(DDMSVersion.getVersionFor("3.0").isAtLeast("3.0.1"));
+		assertTrue(DDMSVersion.getVersionFor("4.0").isAtLeast("3.1"));
+		assertTrue(DDMSVersion.getVersionFor("4.0").isAtLeast("4.0"));
 	}
 }

@@ -134,7 +134,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+		
 	/**
 	 * Constructor for creating a component from raw data
 	 * 

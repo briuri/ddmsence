@@ -216,35 +216,35 @@ instance contains the specific XML namespaces used for DDMS, GML, and ICISM comp
 
 <pre class="brush: java">DDMSVersion.setCurrentVersion("2.0");
 DDMSVersion version = DDMSVersion.getCurrentVersion();
-System.out.println("In DDMS v" + version.getVersion() + ", the following namespaces are used: ");
+System.out.println("In DDMS " + version.getVersion() + ", the following namespaces are used: ");
 System.out.println("ddms: " + version.getNamespace());
 System.out.println("gml: " + version.getGmlNamespace());
 System.out.println("ICISM: " + version.getIcismNamespace());
 System.out.println("Are we using DDMS 2.0? " + DDMSVersion.isCurrentVersion("2.0"));
 System.out.println("If I see the namespace, http://metadata.dod.mil/mdr/ns/DDMS/3.0/, "
-   + "I know we are using DDMS v"
+   + "I know we are using DDMS "
    + DDMSVersion.getVersionForDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/").getVersion());
 
 Identifier identifier = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
    "http://www.whitehouse.gov/news/releases/2005/06/20050621.html");
-System.out.println("This identifier was created with DDMS v"
+System.out.println("This identifier was created with DDMS "
    + DDMSVersion.getVersionForDDMSNamespace(identifier.getNamespace()));
 
 DDMSVersion.setCurrentVersion("3.0");
 Identifier identifier2 = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
    "http://www.whitehouse.gov/news/releases/2005/06/20050621.html");
-System.out.println("This identifier was created with DDMS v"
+System.out.println("This identifier was created with DDMS "
    + DDMSVersion.getVersionForDDMSNamespace(identifier.getNamespace()));</pre>
 <p class="figure">Figure 3. Using a different version of DDMS</p>
 
-<pre class="brush: xml">In DDMS v2.0, the following namespaces are used: 
+<pre class="brush: xml">In DDMS 2.0, the following namespaces are used: 
 ddms: http://metadata.dod.mil/mdr/ns/DDMS/2.0/
 gml: http://www.opengis.net/gml
 ICISM: urn:us:gov:ic:ism:v2
 Are we using DDMS 2.0? true
-If I see the namespace, http://metadata.dod.mil/mdr/ns/DDMS/3.0/, I know we are using DDMS v3.0
-This identifier was created with DDMS v2.0
-This identifier was created with DDMS v3.0</pre>
+If I see the namespace, http://metadata.dod.mil/mdr/ns/DDMS/3.0/, I know we are using DDMS 3.0
+This identifier was created with DDMS 2.0
+This identifier was created with DDMS 3.0</pre>
 <p class="figure">Figure 4. Output of the code in Figure 3</p>
 
 <p>Calling <code>DDMSVersion.setCurrentVersion("2.0")</code> will make any components you create from that point on obey DDMS 2.0 

@@ -82,3 +82,21 @@ DETAILS:
 FIX:
 	Update method names in your code if you ever called them.	
 
+#########################################################################################################
+Mechanism for version comparison changed (Issue #159)
+
+SEVERITY: Minor
+DETAILS:
+	Previously, the method DDMSVersion.isCompatibleWithVersion() was introduced to determine whether
+	an element with a particular DDMS namespace was compatible with some version of DDMS. This introduced
+	unnecessary complexity, since there is still a 1-to-1 relationship between DDMSVersions and namespaces.
+	The method has been replaced with a similar method that checks whether a version is greater than or
+	equal to a test version -- this conditional is much more useful.
+FIX:
+	If you had this code:
+	
+	boolean isCompatible = DDMSVersion.isCompatibleWithVersion("3.0", xomElement);
+	
+	You can accomplish the same thing with:
+	
+	boolean isCompatible = "3.0".equals(DDMSVersion.getVersionForDDMSNamespace(xomElement.getNamespaceURI()).getVersion());	

@@ -118,12 +118,12 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ICISM:resourceElement</u>: Identifies whether this tag sets the classification for the xml file as a whole
- * (required, starting in DDMS v3.0)<br />
+ * (required, starting in DDMS 3.0)<br />
  * <u>ICISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in 
- * DDMS v3.0)<br />
+ * DDMS 3.0)<br />
  * <u>ICISM:DESVersion</u>: Specifies the version of the Digital Encryption Schema used for the security
- * markings on this record. (required, starting in DDMS v3.0)<br />
- * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS v3.0. The classification and
+ * markings on this record. (required, starting in DDMS 3.0)<br />
+ * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
  * ownerProducer attributes are required. Optional {@link ExtensibleAttributes} can also be applied.<br /><br />
  * In DDMS 3.0, the ICISM attributes explicitly defined in the schema should appear in the SecurityAttributes, not
  * the ExtensibleAttributes. Attempts to load them as ExtensibleAttributes will throw an InvalidDDMSException.
@@ -619,25 +619,23 @@ public final class Resource extends AbstractBaseComponent {
 				continue;
 			Util.requireCompatibleVersion(this, component);
 		}
+
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		boolean isDDMS20 = DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement());
-		boolean isDDMS31 = DDMSVersion.isCompatibleWithVersion("3.1", getXOMElement());
-		if (!isDDMS20) {
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
+		if ("3.1".equals(version.getVersion()) && !(new Integer(5).equals(getDESVersion())))
+			throw new InvalidDDMSException("The DESVersion must be 5 in DDMS 3.1 resources.");	
+		if (!version.isAtLeast("3.0") && getExtensibleElements().size() > 1) {
+			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
+		}
+		if (version.isAtLeast("3.0")) {
 			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
 			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
 			Util.requireDDMSValue(DES_VERSION_NAME, getDESVersion());
-			if (isDDMS31) {
-				if (!(new Integer(5).equals(getDESVersion())))
-					throw new InvalidDDMSException("The DESVersion must be 5 in DDMS 3.1 resources.");	
-			}
 			Util.requireDDMSValue("security attributes", getSecurityAttributes());
 			getSecurityAttributes().requireClassification();
 			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 				throw new InvalidDDMSException("The createDate must be in the xs:date format (YYYY-MM-DD).");
-		}
-		if (isDDMS20 && getExtensibleElements().size() > 1) {
-			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
 		}
 		
 		validateWarnings();
@@ -906,7 +904,7 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the DESVersion attribute. Because this attribute does not exist in DDMS v2.0, the accessor
+	 * Accessor for the DESVersion attribute. Because this attribute does not exist in DDMS 2.0, the accessor
 	 * will return null for v2.0 Resource elements.
 	 */
 	public Integer getDESVersion() {
