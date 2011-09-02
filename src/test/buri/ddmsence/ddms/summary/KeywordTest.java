@@ -192,13 +192,16 @@ public class KeywordTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Keyword elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
 			Keyword dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			
+			// Backwards compatible constructors
+			assertEquals(new Keyword(TEST_VALUE), new Keyword(TEST_VALUE, null));
 		}
 	}
 

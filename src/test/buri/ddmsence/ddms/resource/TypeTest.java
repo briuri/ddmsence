@@ -220,13 +220,16 @@ public class TypeTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Type elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
 			Type dataComponent = testConstructor(WILL_SUCCEED, isDDMS40OrGreater() ? TEST_DESCRIPTION : "", TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			
+			// Backwards compatible constructors
+			assertEquals(new Type(TEST_QUALIFIER, TEST_VALUE),new Type(null, TEST_QUALIFIER, TEST_VALUE, null));
 		}
 	}
 
@@ -236,6 +239,10 @@ public class TypeTest extends AbstractComponentTestCase {
 			Type elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
 			Type dataComponent = testConstructor(WILL_SUCCEED, isDDMS40OrGreater() ? TEST_DESCRIPTION : "", TEST_QUALIFIER, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
+			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
+				dataComponent = testConstructor(WILL_SUCCEED, "differentDescription", TEST_QUALIFIER, TEST_VALUE);
+				assertFalse(elementComponent.equals(dataComponent));
+			}
 		}
 	}
 
