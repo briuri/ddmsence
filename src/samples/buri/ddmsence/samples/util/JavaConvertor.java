@@ -319,7 +319,7 @@ public class JavaConvertor {
 		int count = getVariableCount();
 		java.append("\n// ddms:type\n");
 		convert(java, type.getSecurityAttributes());	
-		java.append("Type type").append(count).append(" = new Type(\"").append(type.getQualifier()).append("\", \"")
+		java.append("Type type").append(count).append(" = new Type(\"").append(type.getDescription()).append("\", \"").append(type.getQualifier()).append("\", \"")
 			.append(type.getValue()).append("\", securityAttributes);\n");
 		java.append("topLevelComponents.add(type").append(count).append(");\n");
 	}

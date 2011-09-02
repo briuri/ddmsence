@@ -6,5 +6,5 @@
 	ddms:qualifier="DCMITYPE"
 	ddms:value="http://purl.org/dc/dcmitype/Text"
 	ICISM:classification="U"
-	ICISM:ownerProducer="USA" />
+	ICISM:ownerProducer="USA">Description</ddms:type>
 			

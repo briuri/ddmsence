@@ -36,6 +36,7 @@ import buri.ddmsence.util.Util;
  */
 public class TypeTest extends AbstractComponentTestCase {
 
+	private static final String TEST_DESCRIPTION = "Description";
 	private static final String TEST_QUALIFIER = "DCMITYPE";
 	private static final String TEST_VALUE = "http://purl.org/dc/dcmitype/Text";
 
@@ -69,14 +70,15 @@ public class TypeTest extends AbstractComponentTestCase {
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param description the description child text
 	 * @param qualifier the qualifier value
 	 * @param value the value
 	 * @return a valid object
 	 */
-	private Type testConstructor(boolean expectFailure, String qualifier, String value) {
+	private Type testConstructor(boolean expectFailure, String description, String qualifier, String value) {
 		Type component = null;
 		try {
-			component = new Type(qualifier, value, isDDMS40OrGreater() ? SecurityAttributesTest.getFixture(false) : null);
+			component = new Type(description, qualifier, value, isDDMS40OrGreater() ? SecurityAttributesTest.getFixture(false) : null);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -89,6 +91,8 @@ public class TypeTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
+		if (isDDMS40OrGreater())
+			html.append("<meta name=\"type.description\" content=\"").append(TEST_DESCRIPTION).append("\" />\n");
 		html.append("<meta name=\"type.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
 		html.append("<meta name=\"type.value\" content=\"").append(TEST_VALUE).append("\" />\n");
 		if (isDDMS40OrGreater()) {
@@ -103,6 +107,8 @@ public class TypeTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
+		if (isDDMS40OrGreater())
+			text.append("type description: ").append(TEST_DESCRIPTION).append("\n");
 		text.append("type qualifier: ").append(TEST_QUALIFIER).append("\n");
 		text.append("type value: ").append(TEST_VALUE).append("\n");
 		if (isDDMS40OrGreater()) {
@@ -124,9 +130,10 @@ public class TypeTest extends AbstractComponentTestCase {
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
 			.append("\"");
 		if (isDDMS40OrGreater()) {
-			xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
+			xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">Description</ddms:type>");
 		}
-		xml.append(" />");			
+		else
+			xml.append(" />");			
 		return (xml.toString());
 	}
 
@@ -160,10 +167,10 @@ public class TypeTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			testConstructor(WILL_SUCCEED, isDDMS40OrGreater() ? TEST_DESCRIPTION : "", TEST_QUALIFIER, TEST_VALUE);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, "", "");
+			testConstructor(WILL_SUCCEED, "", "", "");
 		}
 	}
 
@@ -181,7 +188,7 @@ public class TypeTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing qualifier
-			testConstructor(WILL_FAIL, null, TEST_VALUE);
+			testConstructor(WILL_FAIL, null, null, TEST_VALUE);
 		}
 	}
 
@@ -217,7 +224,7 @@ public class TypeTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Type elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			Type dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			Type dataComponent = testConstructor(WILL_SUCCEED, isDDMS40OrGreater() ? TEST_DESCRIPTION : "", TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -227,7 +234,7 @@ public class TypeTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Type elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			Type dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, DIFFERENT_VALUE);
+			Type dataComponent = testConstructor(WILL_SUCCEED, isDDMS40OrGreater() ? TEST_DESCRIPTION : "", TEST_QUALIFIER, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -247,7 +254,7 @@ public class TypeTest extends AbstractComponentTestCase {
 			Type component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			component = testConstructor(WILL_SUCCEED, isDDMS40OrGreater() ? TEST_DESCRIPTION : "", TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		}
 	}
@@ -258,7 +265,7 @@ public class TypeTest extends AbstractComponentTestCase {
 			Type component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			component = testConstructor(WILL_SUCCEED, isDDMS40OrGreater() ? TEST_DESCRIPTION : "", TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedTextOutput(), component.toText());
 		}
 	}
@@ -269,7 +276,7 @@ public class TypeTest extends AbstractComponentTestCase {
 			Type component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			component = testConstructor(WILL_SUCCEED, isDDMS40OrGreater() ? TEST_DESCRIPTION : "", TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -277,7 +284,17 @@ public class TypeTest extends AbstractComponentTestCase {
 	public void testSecurityAttributesWrongVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new Type(TEST_QUALIFIER, TEST_VALUE, SecurityAttributesTest.getFixture(false));
+			new Type(null, TEST_QUALIFIER, TEST_VALUE, SecurityAttributesTest.getFixture(false));
+			fail("Allowed invalid data.");
+		} catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
+	public void testDescriptionAttributesWrongVersion() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("3.1");
+		try {
+			new Type(TEST_DESCRIPTION, TEST_QUALIFIER, TEST_VALUE, null);
 			fail("Allowed invalid data.");
 		} catch (InvalidDDMSException e) {
 			// Good
