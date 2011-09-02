@@ -69,11 +69,12 @@ public class Contributor extends AbstractProducerRole {
 	 * Constructor which builds from raw data.
 	 * 
 	 * @param producerEntity the actual entity fulfilling this role
+	 * @param pocType the ISM POCType for this producer (optional, starting in DDMS 4.0)
 	 * @param securityAttributes any security attributes (optional)
 	 */
-	public Contributor(IProducerEntity producerEntity, SecurityAttributes securityAttributes)
+	public Contributor(IProducerEntity producerEntity, String pocType, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
-		super(NAME, producerEntity, securityAttributes);
+		super(NAME, producerEntity, pocType, securityAttributes);
 	}
 	
 	/**
@@ -126,7 +127,7 @@ public class Contributor extends AbstractProducerRole {
 		 * @see IBuilder#commit()
 		 */
 		public Contributor commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Contributor(commitSelectedEntity(), getSecurityAttributes().commit()));
+			return (isEmpty() ? null : new Contributor(commitSelectedEntity(), getPocType(), getSecurityAttributes().commit()));
 		}
 	}
 }

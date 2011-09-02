@@ -58,7 +58,7 @@ public class ProducerEntityTest extends TestCase {
 		Organization org = new Organization(Contributor.NAME, Util.getXsListAsList("DISA"), null, null);
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
-			new Creator(org, null);
+			new Creator(org, null, null);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

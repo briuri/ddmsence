@@ -458,7 +458,7 @@ public class JavaConvertor {
 			entityVariable = convert(java, producerType, (Unknown) producer.getProducerEntity());
 
 		java.append(producerClass).append(" ").append(producerType).append(count).append(" = new ");
-		java.append(producerClass).append("(").append(entityVariable).append(", securityAttributes);\n");
+		java.append(producerClass).append("(").append(entityVariable).append(", null, securityAttributes);\n");
 		java.append("topLevelComponents.add(").append(producerType).append(count).append(");\n");
 	}
 		

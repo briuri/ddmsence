@@ -92,8 +92,14 @@ When a creator is a service or an organization, and not an individual, it is exp
 			<xs:element ref="Service"/>
 			<xs:element ref="Unknown"/>
 		</xs:choice>
+		<xs:attribute ref="POCType" use="optional">
+			<xs:annotation>
+				<xs:documentation>Indicates that the element specifies a point-of-contact (POC) and the methods with which to contact them. As certain POCs are required for different reasons (ICD-710 compliance, DoD Distribution statements, etc), the values for this attribute specify the reason(s) why the POC is provided. ISM approved values can be found in the ISM CV Enumeration: ISM Poc Type.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
 	</xs:complexType>
+	<xs:attribute name="POCType" type="xs:string"/>
 	<xs:element name="source" type="CompoundSourceIdentifierType">
 		<xs:annotation>
 			<xs:appinfo>
