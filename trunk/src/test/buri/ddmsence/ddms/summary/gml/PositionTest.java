@@ -367,4 +367,10 @@ public class PositionTest extends AbstractComponentTestCase {
 			assertNotNull(builder.getCoordinates().get(1));
 		}
 	}
+	
+	public void testGetStringAsDouble() {
+		assertNull(Position.getStringAsDouble(null));
+		assertEquals(new Double(2.1), Position.getStringAsDouble("2.1"));
+		assertNull(Position.getStringAsDouble("notADouble"));
+	}
 }

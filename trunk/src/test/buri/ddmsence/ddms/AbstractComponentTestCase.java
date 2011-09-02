@@ -137,4 +137,11 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	protected boolean isDDMS31OrGreater() {
 		return (!(DDMSVersion.isCurrentVersion("2.0") || DDMSVersion.isCurrentVersion("3.0")));
 	}
+	
+	/**
+	 * Convenience method to check that DDMS Version is 4.0 or greater
+	 */
+	protected boolean isDDMS40OrGreater() {
+		return (isDDMS31OrGreater() && !(DDMSVersion.isCurrentVersion("3.1")));
+	}
 }

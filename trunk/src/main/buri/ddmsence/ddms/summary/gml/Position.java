@@ -153,7 +153,7 @@ public final class Position extends AbstractBaseComponent {
 	 * @param string the double as a string
 	 * @return a Double if possible, or null if the string cannot be converted
 	 */
-	private Double getStringAsDouble(String string) {
+	public static Double getStringAsDouble(String string) {
 		if (Util.isEmpty(string))
 			return (null);
 		try {

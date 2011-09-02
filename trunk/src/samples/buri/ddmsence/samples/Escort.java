@@ -265,13 +265,13 @@ public class Escort {
 					entity = new Unknown(producerType, names, phones, emails);
 				
 				if (Creator.NAME.equals(producerType))
-					return (new Creator(entity, attr));
+					return (new Creator(entity, null, attr));
 				if (Contributor.NAME.equals(producerType))
-					return (new Creator(entity, attr));
+					return (new Creator(entity, null, attr));
 				if (Publisher.NAME.equals(producerType))
-					return (new Publisher(entity, attr));
+					return (new Publisher(entity, null, attr));
 				if (PointOfContact.NAME.equals(producerType))
-					return (new PointOfContact(entity, attr));
+					return (new PointOfContact(entity, null, attr));
 				throw new InvalidDDMSException("Unknown producerType: " + producerType);
 			}		
 		});		

@@ -32,7 +32,7 @@ FIX:
 	You would now deal with a "Creator that contains an Organization":
 	
 	Organization org = new Organization(Creator.NAME, names, phones, emails, extensibleAttributes);
-	Creator creator = new Creator(org, securityAttributes);
+	Creator creator = new Creator(org, null, securityAttributes);
 		
 	See Issue #153 for a description of the OLD class hierarchy and the NEW class hierarchy. I will also 
 	be glad to review your code and provide feedback on how it can be upgraded.

@@ -70,11 +70,12 @@ public class Publisher extends AbstractProducerRole {
 	 * Constructor which builds from raw data.
 	 * 
 	 * @param producerEntity the actual entity fulfilling this role
+	 * @param pocType the ISM POCType for this producer (optional, starting in DDMS 4.0)
 	 * @param securityAttributes any security attributes (optional)
 	 */
-	public Publisher(IProducerEntity producerEntity, SecurityAttributes securityAttributes)
+	public Publisher(IProducerEntity producerEntity, String pocType, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
-		super(NAME, producerEntity, securityAttributes);
+		super(NAME, producerEntity, pocType, securityAttributes);
 	}
 	
 	/**
@@ -127,7 +128,7 @@ public class Publisher extends AbstractProducerRole {
 		 * @see IBuilder#commit()
 		 */
 		public Publisher commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Publisher(commitSelectedEntity(), getSecurityAttributes().commit()));
+			return (isEmpty() ? null : new Publisher(commitSelectedEntity(), getPocType(), getSecurityAttributes().commit()));
 		}
 	}
 }
