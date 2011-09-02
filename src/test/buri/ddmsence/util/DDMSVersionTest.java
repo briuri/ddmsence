@@ -102,12 +102,7 @@ public class DDMSVersionTest extends TestCase {
 		DDMSVersion.setCurrentVersion("2.0");
 		assertEquals("/schemas/2.0/DDMS/DDMS-v2_0.xsd", DDMSVersion.getCurrentVersion().getSchema());
 	}
-	
-	public void testIsCurrentVersion() {
-		DDMSVersion.setCurrentVersion("2.0");
-		assertTrue(DDMSVersion.isCurrentVersion("2.0"));
-		assertFalse(DDMSVersion.isCurrentVersion("3.0"));
-	}
+
 	public void testToString() {
 		assertEquals(DDMSVersion.getCurrentVersion().getVersion(), DDMSVersion.getCurrentVersion().toString());
 	}
@@ -128,7 +123,7 @@ public class DDMSVersionTest extends TestCase {
 		DDMSVersion.setCurrentVersion("3.0.1");
 		assertEquals("3.0", DDMSVersion.getCurrentVersion().getVersion());		
 		assertEquals("3.0", DDMSVersion.getVersionFor("3.0.1").getVersion());
-		assertTrue(DDMSVersion.isCurrentVersion("3.0.1"));
+		assertTrue(DDMSVersion.getCurrentVersion().getVersion().equals("3.0"));
 	}
 	
 	public void testIsNewerThan() {

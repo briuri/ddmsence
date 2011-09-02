@@ -60,7 +60,7 @@ public class SourceTest extends AbstractComponentTestCase {
 	private Source testConstructor(boolean expectFailure, Element element) {
 		Source component = null;
 		try {
-			if (!DDMSVersion.isCurrentVersion("2.0"))
+			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new Source(element);
 			checkConstructorSuccess(expectFailure);
@@ -84,8 +84,8 @@ public class SourceTest extends AbstractComponentTestCase {
 		String schemaHref) {
 		Source component = null;
 		try {
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0")) ? null
-				: SecurityAttributesTest.getFixture(false);
+			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? null
+				: SecurityAttributesTest.getFixture(false));
 			component = new Source(qualifier, value, schemaQualifier, schemaHref, attr);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
@@ -104,7 +104,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"source.schemaQualifier\" content=\"").append(TEST_SCHEMA_QUALIFIER)
 			.append("\" />\n");
 		html.append("<meta name=\"source.schemaHref\" content=\"").append(TEST_SCHEMA_HREF).append("\" />\n");
-		if (!DDMSVersion.isCurrentVersion("2.0")) {
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			html.append("<meta name=\"source.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"source.ownerProducer\" content=\"USA\" />\n");
 		}
@@ -120,7 +120,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		text.append("source value: ").append(TEST_VALUE).append("\n");
 		text.append("source schemaQualifier: ").append(TEST_SCHEMA_QUALIFIER).append("\n");
 		text.append("source schemaHref: ").append(TEST_SCHEMA_HREF).append("\n");
-		if (!DDMSVersion.isCurrentVersion("2.0")) {
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			text.append("source classification: U\n");
 			text.append("source ownerProducer: USA\n");
 		}
@@ -133,13 +133,13 @@ public class SourceTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:source xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		if (!DDMSVersion.isCurrentVersion("2.0"))
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
 			.append("\" ");
 		xml.append("ddms:schemaQualifier=\"").append(TEST_SCHEMA_QUALIFIER).append("\" ");
 		xml.append("ddms:schemaHref=\"").append(TEST_SCHEMA_HREF).append("\" ");
-		if (!DDMSVersion.isCurrentVersion("2.0"))
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			xml.append("ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\" ");
 		xml.append("/>");
 		return (xml.toString());
@@ -301,10 +301,10 @@ public class SourceTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null 
+			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? null 
 				: SecurityAttributesTest.getFixture(false));
 			Source component = new Source(TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF, attr);
-			if (DDMSVersion.isCurrentVersion("2.0"))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());
 			else
 				assertEquals(attr, component.getSecurityAttributes());

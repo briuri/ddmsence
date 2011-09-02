@@ -86,7 +86,7 @@ public final class Security extends AbstractBaseComponent {
 	public Security(SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Security.NAME, null);
-			if (!DDMSVersion.isCurrentVersion("2.0"))
+			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), EXCLUDE_FROM_ROLLUP_NAME, 
 					DDMSVersion.getCurrentVersion().getIsmNamespace(), FIXED_ROLLUP);
 			_cachedSecurityAttributes = securityAttributes;

@@ -61,7 +61,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	private GeospatialCoverage testConstructor(boolean expectFailure, Element element) {
 		GeospatialCoverage component = null;
 		try {
-			if (!DDMSVersion.isCurrentVersion("2.0"))
+			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new GeospatialCoverage(element);
 			checkConstructorSuccess(expectFailure);
@@ -87,7 +87,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		VerticalExtent verticalExtent) {
 		GeospatialCoverage component = null;
 		try {
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0")) ? null 
+			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) ? null 
 				: SecurityAttributesTest.getFixture(false);
 			component = new GeospatialCoverage(geographicIdentifier, boundingBox, boundingGeometry, postalAddress,
 				verticalExtent, attr);
@@ -102,7 +102,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	 * Returns the ICISM attributes HTML output, if the DDMS Version supports it.
 	 */
 	private String getHtmlIcism() {
-		if (!DDMSVersion.isCurrentVersion("2.0"))
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			return ("<meta name=\"geospatialCoverage.classification\" content=\"U\" />\n"
 			+ "<meta name=\"geospatialCoverage.ownerProducer\" content=\"USA\" />\n");
 		return ("");
@@ -112,7 +112,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	 * Returns the ICISM attributes Text output, if the DDMS Version supports it.
 	 */
 	private String getTextIcism() {
-		if (!DDMSVersion.isCurrentVersion("2.0"))
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			return ("geospatialCoverage classification: U\ngeospatialCoverage ownerProducer: USA\n");
 		return ("");
 	}
@@ -124,7 +124,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
 		StringBuffer html = new StringBuffer();
 		html.append(GeographicIdentifierTest.getFixture().toHTML());
-		if (!DDMSVersion.isCurrentVersion("2.0"))
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			html.append(getHtmlIcism());
 		return (html.toString());
 	}
@@ -135,7 +135,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	private String getExpectedTextOutput() throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		text.append(GeographicIdentifierTest.getFixture().toText());
-		if (!DDMSVersion.isCurrentVersion("2.0"))
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			text.append(getTextIcism());
 		return (text.toString());
 	}
@@ -149,7 +149,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:geospatialCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
 			.append("\"");
-		if (!DDMSVersion.isCurrentVersion("2.0")) {
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			xml.append(" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace())
 				.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
 		}
@@ -509,11 +509,11 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null 
+			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? null 
 				: SecurityAttributesTest.getFixture(false));
 			GeospatialCoverage component = new GeospatialCoverage(GeographicIdentifierTest.getFixture(), null, null,
 				null, null, attr);
-			if (DDMSVersion.isCurrentVersion("2.0"))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());
 			else
 				assertEquals(attr, component.getSecurityAttributes());

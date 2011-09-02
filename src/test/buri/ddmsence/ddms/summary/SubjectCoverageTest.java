@@ -73,7 +73,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	private SubjectCoverage testConstructor(boolean expectFailure, Element element) {
 		SubjectCoverage component = null;
 		try {
-			if (!DDMSVersion.isCurrentVersion("2.0"))
+			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new SubjectCoverage(element);
 			checkConstructorSuccess(expectFailure);
@@ -94,7 +94,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	private SubjectCoverage testConstructor(boolean expectFailure, List<Keyword> keywords, List<Category> categories) {
 		SubjectCoverage component = null;
 		try {
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0")) ? null : SecurityAttributesTest
+			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) ? null : SecurityAttributesTest
 				.getFixture(false);
 			component = new SubjectCoverage(keywords, categories, attr);
 			checkConstructorSuccess(expectFailure);
@@ -114,7 +114,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"subjectCoverage.Subject.category.qualifier\" content=\"urn:buri:ddmsence:categories\" />\n");
 		html.append("<meta name=\"subjectCoverage.Subject.category.code\" content=\"DDMS\" />\n");
 		html.append("<meta name=\"subjectCoverage.Subject.category.label\" content=\"DDMS\" />\n");
-		if (!DDMSVersion.isCurrentVersion("2.0")) {
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			html.append("<meta name=\"subjectCoverage.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"subjectCoverage.ownerProducer\" content=\"USA\" />\n");
 		}
@@ -131,7 +131,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		text.append("category qualifier: urn:buri:ddmsence:categories\n");
 		text.append("category code: DDMS\n");
 		text.append("category label: DDMS\n");
-		if (!DDMSVersion.isCurrentVersion("2.0")) {
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			text.append("subjectCoverage classification: U\n");
 			text.append("subjectCoverage ownerProducer: USA\n");
 		}
@@ -147,7 +147,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:subjectCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
 			.append("\"");
-		if (!DDMSVersion.isCurrentVersion("2.0")) {
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			xml.append(" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace())
 				.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
 		}
@@ -338,10 +338,10 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null 
+			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? null 
 				: SecurityAttributesTest.getFixture(false));
 			SubjectCoverage component = new SubjectCoverage(getKeywords(), getCategories(), attr);
-			if (DDMSVersion.isCurrentVersion("2.0"))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());
 			else
 				assertEquals(attr, component.getSecurityAttributes());

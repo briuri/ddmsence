@@ -57,7 +57,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	private VirtualCoverage testConstructor(boolean expectFailure, Element element) {
 		VirtualCoverage component = null;
 		try {
-			if (!DDMSVersion.isCurrentVersion("2.0"))
+			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new VirtualCoverage(element);
 			checkConstructorSuccess(expectFailure);
@@ -78,7 +78,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	private VirtualCoverage testConstructor(boolean expectFailure, String address, String protocol) {
 		VirtualCoverage component = null;
 		try {
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0")) ? null : SecurityAttributesTest
+			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) ? null : SecurityAttributesTest
 				.getFixture(false);
 			component = new VirtualCoverage(address, protocol, attr);
 			checkConstructorSuccess(expectFailure);
@@ -95,7 +95,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"virtual.address\" content=\"").append(TEST_ADDRESS).append("\" />\n");
 		html.append("<meta name=\"virtual.protocol\" content=\"").append(TEST_PROTOCOL).append("\" />\n");
-		if (!DDMSVersion.isCurrentVersion("2.0")) {
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			html.append("<meta name=\"virtual.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"virtual.ownerProducer\" content=\"USA\" />\n");
 		}
@@ -109,7 +109,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		StringBuffer text = new StringBuffer();
 		text.append("virtual address: ").append(TEST_ADDRESS).append("\n");
 		text.append("virtual protocol: ").append(TEST_PROTOCOL).append("\n");
-		if (!DDMSVersion.isCurrentVersion("2.0")) {
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			text.append("virtual classification: U\n");
 			text.append("virtual ownerProducer: USA\n");
 		}
@@ -123,12 +123,12 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:virtualCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
 			.append("\"");
-		if (!DDMSVersion.isCurrentVersion("2.0")) {
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			xml.append(" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\"");
 		}
 		xml.append(" ddms:address=\"").append(TEST_ADDRESS).append("\" ddms:protocol=\"").append(TEST_PROTOCOL)
 			.append("\"");
-		if (!DDMSVersion.isCurrentVersion("2.0")) {
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
 		}
 		xml.append(" />");
@@ -275,10 +275,10 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);			
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null 
+			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? null 
 				: SecurityAttributesTest.getFixture(false));
 			VirtualCoverage component = new VirtualCoverage(TEST_ADDRESS, TEST_PROTOCOL, attr);
-			if (DDMSVersion.isCurrentVersion("2.0"))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());
 			else
 				assertEquals(attr, component.getSecurityAttributes());

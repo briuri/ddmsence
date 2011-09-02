@@ -43,10 +43,8 @@
 	</ddms:subjectCoverage>
 	<ddms:virtualCoverage ddms:address="123.456.789.0" ddms:protocol="IP" />
 	<ddms:temporalCoverage>
-		<ddms:TimePeriod>
-			<ddms:start>1979-09-15</ddms:start>
-			<ddms:end>Not Applicable</ddms:end>
-		</ddms:TimePeriod>
+		<ddms:start>1979-09-15</ddms:start>
+		<ddms:end>Not Applicable</ddms:end>
 	</ddms:temporalCoverage>
 	<ddms:geospatialCoverage>
 		<ddms:GeospatialExtent>

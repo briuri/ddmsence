@@ -58,7 +58,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	private TemporalCoverage testConstructor(boolean expectFailure, Element element) {
 		TemporalCoverage component = null;
 		try {
-			if (!DDMSVersion.isCurrentVersion("2.0"))
+			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new TemporalCoverage(element);
 			checkConstructorSuccess(expectFailure);
@@ -81,7 +81,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		String endString) {
 		TemporalCoverage component = null;
 		try {
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0")) ? null 
+			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) ? null 
 				: SecurityAttributesTest.getFixture(false);
 			component = new TemporalCoverage(timePeriodName, startString, endString, attr);
 			checkConstructorSuccess(expectFailure);
@@ -99,7 +99,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"temporalCoverage.TimePeriod.name\" content=\"").append(TEST_NAME).append("\" />\n");
 		html.append("<meta name=\"temporalCoverage.TimePeriod.start\" content=\"").append(TEST_START).append("\" />\n");
 		html.append("<meta name=\"temporalCoverage.TimePeriod.end\" content=\"").append(TEST_END).append("\" />\n");
-		if (!DDMSVersion.isCurrentVersion("2.0")) {
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			html.append("<meta name=\"temporalCoverage.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"temporalCoverage.ownerProducer\" content=\"USA\" />\n");
 		}
@@ -114,7 +114,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		text.append("TimePeriod name: ").append(TEST_NAME).append("\n");
 		text.append("TimePeriod start: ").append(TEST_START).append("\n");
 		text.append("TimePeriod end: ").append(TEST_END).append("\n");
-		if (!DDMSVersion.isCurrentVersion("2.0")) {
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			text.append("TimePeriod classification: U\n");
 			text.append("TimePeriod ownerProducer: USA\n");
 		}
@@ -459,10 +459,10 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);			
-			SecurityAttributes attr = (DDMSVersion.isCurrentVersion("2.0") ? null 
+			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? null 
 				: SecurityAttributesTest.getFixture(false));
 			TemporalCoverage component = new TemporalCoverage(TEST_NAME, TEST_START, TEST_END, attr);
-			if (DDMSVersion.isCurrentVersion("2.0"))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());
 			else
 				assertEquals(attr, component.getSecurityAttributes());
