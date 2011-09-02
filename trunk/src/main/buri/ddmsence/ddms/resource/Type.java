@@ -31,7 +31,8 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:type.
  * 
- * <p>Beginning in DDMS 4.0, a ddms:type element can contain child text.</p>
+ * <p>Beginning in DDMS 4.0, a ddms:type element can contain child text. The intent of this text is to provide further
+ * context when the ddms:type element references an IC activity.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
@@ -87,17 +88,31 @@ public final class Type extends AbstractQualifierValue {
 	}
 	
 	/**
+	 * Constructor for creating a component from raw data. Provided for backwards compatibility to pre-DDMS 4.0 elements.
+	 *  
+	 * @param qualifier	the value of the qualifier attribute
+	 * @param value	the value of the value attribute 
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public Type(String qualifier, String value) throws InvalidDDMSException {
+		this(null, qualifier, value, null);
+	}
+	
+	/**
 	 * Constructor for creating a component from raw data
 	 *  
+	 * @param description the child text describing an IC activity, if this component is used to reference an IC activity
 	 * @param qualifier	the value of the qualifier attribute
 	 * @param value	the value of the value attribute 
 	 * @param securityAttributes any security attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Type(String qualifier, String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public Type(String description, String qualifier, String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		super(Type.NAME, qualifier, value, false);
 		try {
 			Element element = getXOMElement();
+			if (!Util.isEmpty(description))
+				element.appendChild(description);
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
 			_cachedSecurityAttributes.addTo(element);
@@ -113,6 +128,7 @@ public final class Type extends AbstractQualifierValue {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
+	 * <li>The description child text cannot exist until DDMS 4.0 or later.</li>
 	 * <li>If a value is set, a qualifier must exist and be non-empty.</li>
 	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
 	 * <li>The SecurityAttributes do not exist in DDMS 2.0, 3.0, or 3.1.</li>
@@ -128,6 +144,9 @@ public final class Type extends AbstractQualifierValue {
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
 		// Should be reviewed as additional versions of DDMS are supported.
 		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
+		if (!version.isAtLeast("4.0") && !Util.isEmpty(getDescription())) {
+			throw new InvalidDDMSException("This component cannot contain description child text until DDMS 4.0 or later.");
+		}
 		if (!version.isAtLeast("4.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 4.0 or later.");
 		}
@@ -157,6 +176,7 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
+		html.append(buildHTMLMeta("type.description", getDescription(), false));
 		html.append(buildHTMLMeta("type.qualifier", getQualifier(), false));
 		html.append(buildHTMLMeta("type.value", getValue(), false));
 		html.append(getSecurityAttributes().toHTML(Type.NAME));
@@ -168,6 +188,7 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
+		text.append(buildTextLine("type description", getDescription(), false));
 		text.append(buildTextLine("type qualifier", getQualifier(), false));
 		text.append(buildTextLine("type value", getValue(), false));
 		text.append(getSecurityAttributes().toText("type"));
@@ -181,7 +202,8 @@ public final class Type extends AbstractQualifierValue {
 		if (!super.equals(obj) || !(obj instanceof Type))
 			return (false);
 		Type test = (Type) obj;
-		return (getSecurityAttributes().equals(test.getSecurityAttributes()));
+		return (getDescription().equals(test.getDescription())
+			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
 	}
 	
 	/**
@@ -189,8 +211,17 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
+		result = 7 * result + getDescription().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
+	}
+
+	/**
+	 * Accessor for the description child text, which provides additional context to the qualifier/value pairing of this component.
+	 * The underlying XOM method which retrieves the child text returns an empty string if not found.
+	 */
+	public String getDescription() {
+		return (getXOMElement().getValue());
 	}
 	
 	/**
@@ -209,6 +240,7 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	public static class Builder extends AbstractQualifierValue.Builder {
 		private static final long serialVersionUID = 4388694130954618393L;
+		private String _description;
 		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
@@ -223,6 +255,7 @@ public final class Type extends AbstractQualifierValue {
 		 */
 		public Builder(Type type) {
 			super(type);
+			setDescription(type.getDescription());
 			setSecurityAttributes(new SecurityAttributes.Builder(type.getSecurityAttributes()));
 		}
 		
@@ -230,14 +263,28 @@ public final class Type extends AbstractQualifierValue {
 		 * @see IBuilder#commit()
 		 */
 		public Type commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Type(getQualifier(), getValue(), getSecurityAttributes().commit()));
+			return (isEmpty() ? null : new Type(getDescription(), getQualifier(), getValue(), getSecurityAttributes().commit()));
 		}
 		
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			return (super.isEmpty() && getSecurityAttributes().isEmpty());
+			return (super.isEmpty() && Util.isEmpty(getDescription()) && getSecurityAttributes().isEmpty());
+		}
+		
+		/**
+		 * Builder accessor for the description
+		 */
+		public String getDescription() {
+			return _description;
+		}
+
+		/**
+		 * Builder accessor for the description
+		 */
+		public void setDescription(String description) {
+			_description = description;
 		}
 		
 		/**

@@ -214,12 +214,13 @@ public class Escort {
 		});
 		BUILDERS.put(Type.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String description = readString("the description child text [testDescription]");
 				String qualifier = readString("the qualifier [testQualifier]");
 				String value = readString("the value [testValue]");
 				String classification = readString("the type classification [U]");
 				String ownerProducers = readString("the type's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new Type(qualifier, value, attr));
+				return (new Type(description, qualifier, value, attr));
 			}		
 		});
 		BUILDERS.put(AbstractProducerRole.class, new IComponentBuilder() {
