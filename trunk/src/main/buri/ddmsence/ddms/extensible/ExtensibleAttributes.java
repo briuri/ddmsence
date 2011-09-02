@@ -100,7 +100,9 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			if (element.getNamespaceURI().equals(attribute.getNamespaceURI()))
 				continue;
 			// Skip reserved ICISM attributes on Resource and Category
-			if (Resource.NAME.equals(element.getLocalName()) || Category.NAME.equals(element.getLocalName())) {
+			if (Resource.NAME.equals(element.getLocalName())
+				|| Category.NAME.equals(element.getLocalName())
+				|| Keyword.NAME.equals(element.getLocalName())) {
 				QName testName = new QName(attribute.getNamespaceURI(), attribute.getLocalName(), 
 					attribute.getNamespacePrefix());
 				if (RESERVED_RESOURCE_NAMES.contains(testName))

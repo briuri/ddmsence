@@ -755,6 +755,7 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:attribute name="value" type="xs:string" use="required"/>
+		<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
 		<xs:anyAttribute namespace="##other" processContents="lax"/>
 	</xs:complexType>
 	<xs:complexType name="CompoundCategoryIdentifierType">

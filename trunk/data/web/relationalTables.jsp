@@ -986,7 +986,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 3.0) and
+			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 4.0) and
 			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>
@@ -1447,6 +1447,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
+			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 4.0) and
 			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>

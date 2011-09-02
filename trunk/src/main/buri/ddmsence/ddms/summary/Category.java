@@ -187,7 +187,7 @@ public final class Category extends AbstractBaseComponent {
 		html.append(buildHTMLMeta("subjectCoverage.Subject.category.qualifier", getQualifier(), false));
 		html.append(buildHTMLMeta("subjectCoverage.Subject.category.code", getCode(), false));
 		html.append(buildHTMLMeta("subjectCoverage.Subject.category.label", getLabel(), true));
-		html.append(getSecurityAttributes().toHTML(Category.NAME));
+		html.append(getSecurityAttributes().toHTML("subjectCoverage.Subject.category"));
 		html.append(getExtensibleAttributes().toHTML("subjectCoverage.Subject.category"));
 		return (html.toString());
 	}
