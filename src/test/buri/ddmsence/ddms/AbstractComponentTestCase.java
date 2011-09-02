@@ -37,8 +37,10 @@ import buri.ddmsence.util.PropertyReader;
  */
 public abstract class AbstractComponentTestCase extends TestCase {
 
-	private Map<String, Element> _elementMap;
-
+	private String _type;
+	
+	private static Map<String, Element> _elementMap = new HashMap<String, Element>();
+	
 	protected static final String TEST_ID = "IDValue";
 
 	protected static final boolean WILL_SUCCEED = false;
@@ -66,15 +68,22 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	 * @param validDocumentFile the filename to load. One of these will be loaded for each supporting version.
 	 */
 	public AbstractComponentTestCase(String validDocumentFile) {
-		_elementMap = new HashMap<String, Element>();
+		_type = validDocumentFile;
 		if (validDocumentFile == null)
 			return;
 		try {
-			DDMSReader reader = new DDMSReader();
+			DDMSReader reader = null;
 			for (String version : DDMSVersion.getSupportedVersions()) {
-				File file = new File(PropertyReader.getProperty("test.unit.data") + version, validDocumentFile);
-				if (file.exists()) {
-					_elementMap.put(version, reader.getElement(file));
+				if (getValidElement(version) == null) {
+					if (reader == null)
+						reader = new DDMSReader();
+					File file = new File(PropertyReader.getProperty("test.unit.data") + version, validDocumentFile);
+					if (file.exists()) {
+						Element element = reader.getElement(file);
+						synchronized (_elementMap) {
+							_elementMap.put(getType() + ":" + version, element);
+						}
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -127,9 +136,15 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	 * testing as a "correct base case".
 	 */
 	public Element getValidElement(String version) {
-		return (_elementMap.get(version));
+		return (_elementMap.get(getType() + ":" + version));
 	}
 	
+	/**
+	 * Accessor for the local identifier for the type of component being tested
+	 */
+	private String getType() {
+		return (_type);
+	}
 
 	/**
 	 * Convenience method to check that DDMS Version is 3.1 or greater
