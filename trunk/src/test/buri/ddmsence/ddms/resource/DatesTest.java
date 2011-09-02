@@ -293,6 +293,17 @@ public class DatesTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testApprovedOnWrongVersion() {
+		DDMSVersion.setCurrentVersion("3.0");
+		try {
+			new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, TEST_APPROVED);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);

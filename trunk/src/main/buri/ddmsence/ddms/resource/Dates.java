@@ -28,6 +28,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -165,6 +166,7 @@ public final class Dates extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If set, each date attribute adheres to an acceptable date format.</li>
+	 * <li>The approvedOn date cannot exist in DDMS 2.0 or 3.0.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -182,7 +184,12 @@ public final class Dates extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getInfoCutOff().getXMLSchemaType());
 		if (getApprovedOn() != null)
 			Util.requireDDMSDateFormat(getApprovedOn().getXMLSchemaType());
-		
+		// Should be reviewed as additional versions of DDMS are supported.
+		if ((DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement())
+			|| DDMSVersion.isCompatibleWithVersion("3.0", getXOMElement()))
+			&& getApprovedOn() != null) {
+			throw new InvalidDDMSException("This component cannot have an approvedOn date until DDMS 3.1 or later.");
+		}
 		validateWarnings();
 	}
 	
