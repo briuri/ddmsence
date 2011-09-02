@@ -185,9 +185,8 @@ public final class Dates extends AbstractBaseComponent {
 		if (getApprovedOn() != null)
 			Util.requireDDMSDateFormat(getApprovedOn().getXMLSchemaType());
 		// Should be reviewed as additional versions of DDMS are supported.
-		if ((DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement())
-			|| DDMSVersion.isCompatibleWithVersion("3.0", getXOMElement()))
-			&& getApprovedOn() != null) {
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
+		if (!version.isAtLeast("3.1") && getApprovedOn() != null) {
 			throw new InvalidDDMSException("This component cannot have an approvedOn date until DDMS 3.1 or later.");
 		}
 		validateWarnings();

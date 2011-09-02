@@ -69,7 +69,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * This class is decorated with ICISM {@link SecurityAttributes}, starting in DDMS v3.0. The classification and
+ * This class is decorated with ICISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 
@@ -223,7 +223,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * <li>end is a valid date format.</li>
 	 * <li>0-1 names, exactly 1 start, and exactly 1 end exist.</li>
 	 * <li>The start date is before the end date.</li>
-	 * <li>The SecurityAttributes do not exist in DDMS v2.0.</li>
+	 * <li>The SecurityAttributes do not exist in DDMS 2.0.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -252,8 +252,9 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		}
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS v2.0.");
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());		
+		if (!version.isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 		
 		validateWarnings();

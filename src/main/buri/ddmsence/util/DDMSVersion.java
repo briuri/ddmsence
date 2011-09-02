@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import nu.xom.Element;
 import buri.ddmsence.ddms.UnsupportedVersionException;
 import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 
@@ -109,6 +108,24 @@ public class DDMSVersion {
 		_xlinkNamespace = PropertyReader.getProperty(version + ".xlink.xmlNamespace");
 	}
 	
+	
+	/**
+	 * Convenience method to check if a DDMS version number is equal to or higher that some
+	 * test number. An example of where this might be used is to determine the capitalization
+	 * of element names, many of which changed in DDMS 4.0.
+	 * 
+	 * @param version the version number to check
+	 * @return true if the version is equal to or greater than the test version
+	 */
+	public boolean isAtLeast(String version) {
+		version = aliasVersion(version);
+		if (!getSupportedVersionsProperty().contains(version))
+			throw new UnsupportedVersionException(version);
+		int index = getSupportedVersionsProperty().indexOf(this.getVersion());
+		int testIndex = getSupportedVersionsProperty().indexOf(version);
+		return (index >= testIndex);		
+	}
+	
 	/**
 	 * Returns a list of supported DDMS versions
 	 * 
@@ -149,21 +166,7 @@ public class DDMSVersion {
 	public static boolean isSupportedDDMSNamespace(String xmlNamespace) {
 		return (getSupportedDDMSNamespacesProperty().contains(xmlNamespace));
 	}
-	
-	/**
-	 * Checks if some element in a DDMS XML namespace is compatible with some DDMS version, based on the XML namespace.
-	 * 
-	 * @param ddmsVersion the version expected
-	 * @param ddmsElement the element containing the namespaceURI to test. This only works on DDMS namespaces, not GML or IC.
-	 * @return true if the element is in the correct version's namespace, false otherwise
-	 */
-	public static boolean isCompatibleWithVersion(String ddmsVersion, Element ddmsElement) {
-		Util.requireValue("test version", ddmsVersion);
-		Util.requireValue("test element", ddmsElement);
-		DDMSVersion version = DDMSVersion.getVersionFor(ddmsVersion);
-		return (version.getNamespace().equals(ddmsElement.getNamespaceURI()));
-	}
-	
+		
 	/**
 	 * Checks if the string matches the current version.
 	 * 
@@ -210,7 +213,7 @@ public class DDMSVersion {
 	/**
 	 * Sets the currentVersion which will be used for by DDMS component constructors to determine the namespace and
 	 * schema to use. Also updates the ISMVersion on the ISMVocabulary class, which is used to determine
-	 * which set of IC CVEs to validate with (V2 vs. V5).
+	 * which set of IC CVEs to validate with.
 	 * 
 	 * @param version the new version, which must be supported by DDMSence
 	 * @throws UnsupportedVersionException if the version is not supported

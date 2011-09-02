@@ -49,7 +49,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:qualifier</u>: a URI-based qualifier (required if value is set)<br />
  * <u>ddms:value</u>: includes terms describing general categories, functions, genres, or aggregation levels (optional)<br />
- * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS v4.0. The classification and
+ * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS 4.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 
@@ -115,7 +115,7 @@ public final class Type extends AbstractQualifierValue {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If a value is set, a qualifier must exist and be non-empty.</li>
 	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
-	 * <li>The SecurityAttributes do not exist in DDMS v2.0, 3.0, or 3.1.</li>
+	 * <li>The SecurityAttributes do not exist in DDMS 2.0, 3.0, or 3.1.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -127,11 +127,9 @@ public final class Type extends AbstractQualifierValue {
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
 		// Should be reviewed as additional versions of DDMS are supported.
-		if ((DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement())
-			|| DDMSVersion.isCompatibleWithVersion("3.0", getXOMElement())
-			|| DDMSVersion.isCompatibleWithVersion("3.1", getXOMElement()))
-			&& !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component before DDMS v4.0.");
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
+		if (!version.isAtLeast("4.0") && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component before DDMS 4.0.");
 		}
 		
 		validateWarnings();

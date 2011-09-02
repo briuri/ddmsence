@@ -115,8 +115,8 @@ public final class Security extends AbstractBaseComponent {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), NAME);
 		// Should be reviewed as additional versions of DDMS are supported.
-		boolean isDDMS20 = DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement());		
-		if (!isDDMS20) {
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
+		if (version.isAtLeast("3.0")) {
 			if (getExcludeFromRollup() == null)
 				throw new InvalidDDMSException("The excludeFromRollup attribute is required.");
 			if (!FIXED_ROLLUP.equals(String.valueOf(getExcludeFromRollup())))
@@ -187,7 +187,7 @@ public final class Security extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the excludeFromRollup attribute. This may be null for DDMS v2.0 components.
+	 * Accessor for the excludeFromRollup attribute. This may be null for DDMS 2.0 components.
 	 */
 	public Boolean getExcludeFromRollup() {
 		String value = getAttributeValue(EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion.getCurrentVersion().getIsmNamespace());

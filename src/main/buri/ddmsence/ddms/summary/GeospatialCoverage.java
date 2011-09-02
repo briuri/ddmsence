@@ -60,7 +60,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * This class is decorated with ICISM {@link SecurityAttributes}, starting in DDMS v3.0. The classification and
+ * This class is decorated with ICISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 
@@ -179,7 +179,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * <li>No more than 1 geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent can 
 	 * be used.</li>
 	 * <li>If a geographicIdentifer is used and contains a facilityIdentifier, no other subcomponents can be used.</li>
-	 * <li>The SecurityAttributes do not exist in DDMS v2.0.</li>
+	 * <li>The SecurityAttributes do not exist in DDMS 2.0.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -196,11 +196,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(extElement, BoundingGeometry.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(extElement, PostalAddress.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(extElement, VerticalExtent.NAME, 0, 1);
-		
-		if (DDMSVersion.isCompatibleWithVersion("2.0", getXOMElement()) && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS v2.0.");
-		}	
-		
+			
 		int validComponents = 0;
 		if (getGeographicIdentifier() != null) {
 			Util.requireCompatibleVersion(this, getGeographicIdentifier());
@@ -230,6 +226,12 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			throw new InvalidDDMSException("A geographicIdentifier containing a facilityIdentifier cannot be used in "
 				+ "tandem with any other coverage elements.");
 		}	
+		
+		// Should be reviewed as additional versions of DDMS are supported.
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
+		if (!version.isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 3.0 or later.");
+		}
 		
 		validateWarnings();
 	}
