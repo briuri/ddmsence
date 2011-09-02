@@ -216,7 +216,10 @@ public class Escort {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String qualifier = readString("the qualifier [testQualifier]");
 				String value = readString("the value [testValue]");
-				return (new Type(qualifier, value));
+				String classification = readString("the type classification [U]");
+				String ownerProducers = readString("the type's ownerProducers as a space-delimited string [USA]");
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new Type(qualifier, value, attr));
 			}		
 		});
 		BUILDERS.put(AbstractProducerRole.class, new IComponentBuilder() {
@@ -606,7 +609,7 @@ public class Escort {
 	private void run() throws IOException {
 		println("Escort: a DDMSence Sample\n");
 		
-		println("This program allows you to build a DDMS 3.1 resource from scratch.");
+		println("This program allows you to build a DDMS 4.0 resource from scratch.");
 		println("If you do not know how to answer a question, a suggested valid answer is provided in square brackets.");
 		println("However, this is not a default value (hitting Enter will answer the question with an empty string).\n");
 
@@ -615,7 +618,7 @@ public class Escort {
 		println("In COMPLETE mode, Escort will let you create all of the top-level components.");
 		boolean onlyRequiredComponents = confirm("Would you like to run in FAST mode?");
 				
-		DDMSVersion.setCurrentVersion("3.1");
+		DDMSVersion.setCurrentVersion("4.0");
 		
 		printHead("ddms:identifier (at least 1 required)");
 		getTopLevelComponents().add(inputLoop(Identifier.class));

@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 08/30/2011 at 07:09</p>
+<p align="right"><b>Last Update:</b> 09/02/2011</p>
 
 <a name="top"></a><h1>Relational Database Model for DDMS</h1>
 
@@ -404,6 +404,9 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>
 	<tr class="relRow">
 		<td class="relField">producerType</td><td class="relRules">char(24)</td><td>the type of this producer, i.e. "creator", "contributor", "pointOfContact" or "publisher"</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">pocType</td><td class="relRules">char(24)</td><td>the ISM POCType for this producer (DDMS 4.0)</td>
 	</tr>	
 </table>
 
@@ -717,7 +720,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			No other tables.
+			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">

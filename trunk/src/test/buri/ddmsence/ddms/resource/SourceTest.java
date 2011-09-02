@@ -121,8 +121,8 @@ public class SourceTest extends AbstractComponentTestCase {
 		text.append("source schemaQualifier: ").append(TEST_SCHEMA_QUALIFIER).append("\n");
 		text.append("source schemaHref: ").append(TEST_SCHEMA_HREF).append("\n");
 		if (!DDMSVersion.isCurrentVersion("2.0")) {
-			text.append("Source classification: U\n");
-			text.append("Source ownerProducer: USA\n");
+			text.append("source classification: U\n");
+			text.append("source ownerProducer: USA\n");
 		}
 		return (text.toString());
 	}

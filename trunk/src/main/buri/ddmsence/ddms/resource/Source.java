@@ -175,7 +175,7 @@ public final class Source extends AbstractQualifierValue {
 		text.append(buildTextLine("source value", getValue(), false));
 		text.append(buildTextLine("source schemaQualifier", getSchemaQualifier(), false));
 		text.append(buildTextLine("source schemaHref", getSchemaHref(), false));
-		text.append(getSecurityAttributes().toText("Source"));
+		text.append(getSecurityAttributes().toText("source"));
 		return (text.toString());
 	}
 		
