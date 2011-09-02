@@ -129,7 +129,7 @@ public final class Type extends AbstractQualifierValue {
 		// Should be reviewed as additional versions of DDMS are supported.
 		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
 		if (!version.isAtLeast("4.0") && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component before DDMS 4.0.");
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 4.0 or later.");
 		}
 		
 		validateWarnings();

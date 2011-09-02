@@ -28,6 +28,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
+import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -47,7 +48,9 @@ import buri.ddmsence.util.Util;
  * qualifier (optional)<br />
  * <u>ddms:label</u>: The human readable representation of the concept that corresponds to the category qualifier and
  * the category code, if they exist. (required)<br />
- * In DDMS 3.0, this component can also be decorated with optional {@link ExtensibleAttributes}.
+ * Starting in DDMS 3.0, this component can also be decorated with optional {@link ExtensibleAttributes}.<br />
+ * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS 4.0. The classification and
+ * ownerProducer attributes are optional.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
@@ -62,6 +65,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Category extends AbstractBaseComponent {
 
+	private SecurityAttributes _cachedSecurityAttributes = null;
 	private ExtensibleAttributes _cachedExtensibleAttributes = null;
 	
 	/** The element name of this component */
@@ -78,8 +82,14 @@ public final class Category extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Category(Element element) throws InvalidDDMSException {
-		_cachedExtensibleAttributes = new ExtensibleAttributes(element);
-		setXOMElement(element, true);
+		try {
+			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
+			setXOMElement(element, true);
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -88,10 +98,11 @@ public final class Category extends AbstractBaseComponent {
 	 * @param qualifier the qualifier (optional)
 	 * @param code the code (optional)
 	 * @param label the label (required)
+	 * @param securityAttributes any security attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Category(String qualifier, String code, String label) throws InvalidDDMSException {
-		this(qualifier, code, label, null);
+	public Category(String qualifier, String code, String label, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		this(qualifier, code, label, securityAttributes, null);
 	}
 	
 	/**
@@ -103,15 +114,19 @@ public final class Category extends AbstractBaseComponent {
 	 * @param qualifier the qualifier (optional)
 	 * @param code the code (optional)
 	 * @param label the label (required)
+	 * @param securityAttributes any security attributes (optional)
 	 * @param extensions extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Category(String qualifier, String code, String label, ExtensibleAttributes extensions) throws InvalidDDMSException {
+	public Category(String qualifier, String code, String label, SecurityAttributes securityAttributes, ExtensibleAttributes extensions) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Category.NAME, null);
 			Util.addDDMSAttribute(element, QUALIFIER_NAME, qualifier);
 			Util.addDDMSAttribute(element, CODE_NAME, code);
 			Util.addDDMSAttribute(element, LABEL_NAME, label);
+			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
+				: securityAttributes);
+			_cachedSecurityAttributes.addTo(element);
 			_cachedExtensibleAttributes = (extensions == null ? new ExtensibleAttributes((List<Attribute>) null)
 				: extensions);
 			_cachedExtensibleAttributes.addTo(element);
@@ -129,6 +144,7 @@ public final class Category extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A label exists and is not empty.</li>
 	 * <li>If a qualifier exists, it is a valid URI.</li>
+	 * <li>The SecurityAttributes do not exist in DDMS 2.0, 3.0, or 3.1.</li>
 	 * <li>(v2.0) No extensible attributes can exist.</li>
 	 * </td></tr></table>
 	 * 
@@ -143,8 +159,24 @@ public final class Category extends AbstractBaseComponent {
 		}			
 		// Should be reviewed as additional versions of DDMS are supported.
 		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		if (version.isAtLeast("3.0") && !getExtensibleAttributes().isEmpty())
+		if (!version.isAtLeast("4.0") && !getSecurityAttributes().isEmpty()) {
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 4.0 or later.");
+		}
+		if (!version.isAtLeast("3.0") && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("xs:anyAttribute cannot be applied to ddms:category until DDMS 3.0 or later.");
+		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Include any validation warnings from the security attributes.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	
 	/**
@@ -155,6 +187,7 @@ public final class Category extends AbstractBaseComponent {
 		html.append(buildHTMLMeta("subjectCoverage.Subject.category.qualifier", getQualifier(), false));
 		html.append(buildHTMLMeta("subjectCoverage.Subject.category.code", getCode(), false));
 		html.append(buildHTMLMeta("subjectCoverage.Subject.category.label", getLabel(), true));
+		html.append(getSecurityAttributes().toHTML(Category.NAME));
 		html.append(getExtensibleAttributes().toHTML("subjectCoverage.Subject.category"));
 		return (html.toString());
 	}
@@ -167,6 +200,7 @@ public final class Category extends AbstractBaseComponent {
 		text.append(buildTextLine("category qualifier", getQualifier(), false));
 		text.append(buildTextLine("category code", getCode(), false));
 		text.append(buildTextLine("category label", getLabel(), true));
+		text.append(getSecurityAttributes().toText("category"));
 		text.append(getExtensibleAttributes().toText("category"));
 		return (text.toString());
 	}
@@ -181,6 +215,7 @@ public final class Category extends AbstractBaseComponent {
 		return (getQualifier().equals(test.getQualifier()) 
 			&& getCode().equals(test.getCode()) 
 			&& getLabel().equals(test.getLabel())
+			&& getSecurityAttributes().equals(test.getSecurityAttributes())
 			&& getExtensibleAttributes().equals(test.getExtensibleAttributes()));
 	}
 
@@ -192,6 +227,7 @@ public final class Category extends AbstractBaseComponent {
 		result = 7 * result + getQualifier().hashCode();
 		result = 7 * result + getCode().hashCode();
 		result = 7 * result + getLabel().hashCode();
+		result = 7 * result + getSecurityAttributes().hashCode();
 		result = 7 * result + getExtensibleAttributes().hashCode();
 		return (result);
 	}
@@ -218,6 +254,13 @@ public final class Category extends AbstractBaseComponent {
 	}
 	
 	/**
+	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
+	 */
+	public SecurityAttributes getSecurityAttributes() {
+		return (_cachedSecurityAttributes);
+	}
+	
+	/**
 	 * Accessor for the extensible attributes. Will always be non-null, even if not set.
 	 */
 	public ExtensibleAttributes getExtensibleAttributes() {
@@ -236,6 +279,7 @@ public final class Category extends AbstractBaseComponent {
 		private String _qualifier;
 		private String _code;
 		private String _label;
+		private SecurityAttributes.Builder _securityAttributes;
 		private ExtensibleAttributes.Builder _extensibleAttributes;
 		
 		/**
@@ -250,6 +294,7 @@ public final class Category extends AbstractBaseComponent {
 			setQualifier(category.getQualifier());
 			setCode(category.getCode());
 			setLabel(category.getLabel());
+			setSecurityAttributes(new SecurityAttributes.Builder(category.getSecurityAttributes()));
 			setExtensibleAttributes(new ExtensibleAttributes.Builder(category.getExtensibleAttributes()));
 		}
 		
@@ -257,7 +302,8 @@ public final class Category extends AbstractBaseComponent {
 		 * @see IBuilder#commit()
 		 */
 		public Category commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Category(getQualifier(), getCode(), getLabel(), getExtensibleAttributes().commit()));
+			return (isEmpty() ? null : new Category(getQualifier(), getCode(), getLabel(), 
+				getSecurityAttributes().commit(), getExtensibleAttributes().commit()));
 		}	
 		
 		/**
@@ -267,6 +313,7 @@ public final class Category extends AbstractBaseComponent {
 			return (Util.isEmpty(getQualifier())
 				&& Util.isEmpty(getCode())
 				&& Util.isEmpty(getLabel())
+				&& getSecurityAttributes().isEmpty()
 				&& getExtensibleAttributes().isEmpty());
 		}
 
@@ -312,6 +359,22 @@ public final class Category extends AbstractBaseComponent {
 			_label = label;
 		}
 				
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public SecurityAttributes.Builder getSecurityAttributes() {
+			if (_securityAttributes == null)
+				_securityAttributes = new SecurityAttributes.Builder();
+			return _securityAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the Security Attributes
+		 */
+		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
+			_securityAttributes = securityAttributes;
+		}
+		
 		/**
 		 * Builder accessor for the Extensible Attributes
 		 */

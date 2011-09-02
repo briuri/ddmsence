@@ -29,6 +29,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -83,7 +84,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 	private Category testConstructor(boolean expectFailure, String qualifier, String code, String label) {
 		Category component = null;
 		try {
-			component = new Category(qualifier, code, label);
+			component = new Category(qualifier, code, label, isDDMS40OrGreater() ? SecurityAttributesTest.getFixture(false) : null);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -99,7 +100,10 @@ public class CategoryTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"subjectCoverage.Subject.category.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
 		html.append("<meta name=\"subjectCoverage.Subject.category.code\" content=\"").append(TEST_CODE).append("\" />\n");
 		html.append("<meta name=\"subjectCoverage.Subject.category.label\" content=\"").append(TEST_LABEL).append("\" />\n");
-
+		if (isDDMS40OrGreater()) {
+			html.append("<meta name=\"category.classification\" content=\"U\" />\n");
+			html.append("<meta name=\"category.ownerProducer\" content=\"USA\" />\n");
+		}
 		return (html.toString());
 	}
 
@@ -111,6 +115,10 @@ public class CategoryTest extends AbstractComponentTestCase {
 		text.append("category qualifier: ").append(TEST_QUALIFIER).append("\n");
 		text.append("category code: ").append(TEST_CODE).append("\n");
 		text.append("category label: ").append(TEST_LABEL).append("\n");
+		if (isDDMS40OrGreater()) {
+			text.append("category classification: U\n");
+			text.append("category ownerProducer: USA\n");
+		}
 		return (text.toString());
 	}
 
@@ -120,9 +128,16 @@ public class CategoryTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:category xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
+		if (isDDMS40OrGreater()) {
+			xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
+		}		
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ");
 		xml.append("ddms:code=\"").append(TEST_CODE).append("\" ");
-		xml.append("ddms:label=\"").append(TEST_LABEL).append("\" />");
+		xml.append("ddms:label=\"").append(TEST_LABEL).append("\"");
+		if (isDDMS40OrGreater()) {
+			xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
+		}
+		xml.append(" />");	
 		return (xml.toString());
 	}
 
@@ -264,7 +279,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 		// Extensible attribute added
 		DDMSVersion.setCurrentVersion("3.0");
 		ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
-		new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, attr);		
+		new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attr);		
 	}
 	
 	public void testExtensibleFailure() throws InvalidDDMSException {
@@ -272,7 +287,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 		DDMSVersion.setCurrentVersion("2.0");
 		ExtensibleAttributes attributes = ExtensibleAttributesTest.getFixture();
 		try {
-			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, attributes);
+			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -286,7 +301,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 		extAttributes.add(new Attribute("ddms:qualifier", DDMSVersion.getCurrentVersion().getNamespace(), "dog"));
 		attributes = new ExtensibleAttributes(extAttributes);
 		try {
-			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, attributes);
+			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -298,7 +313,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 		extAttributes.add(new Attribute("ddms:code", DDMSVersion.getCurrentVersion().getNamespace(), "dog"));
 		attributes = new ExtensibleAttributes(extAttributes);
 		try {
-			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, attributes);
+			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -310,10 +325,31 @@ public class CategoryTest extends AbstractComponentTestCase {
 		extAttributes.add(new Attribute("ddms:label", DDMSVersion.getCurrentVersion().getNamespace(), "dog"));
 		attributes = new ExtensibleAttributes(extAttributes);
 		try {
-			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, attributes);
+			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		// Using icism:classification as the extension (data)
+		extAttributes = new ArrayList<Attribute>();
+		extAttributes.add(new Attribute("icism:classification", DDMSVersion.getCurrentVersion().getIsmNamespace(), "U"));
+		attributes = new ExtensibleAttributes(extAttributes);
+		try {
+			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Prevented valid data.");
+		}
+	}
+	
+	public void testSecurityAttributesWrongVersion() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("3.1");
+		try {
+			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, SecurityAttributesTest.getFixture(false));
+			fail("Allowed invalid data.");
+		} catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
