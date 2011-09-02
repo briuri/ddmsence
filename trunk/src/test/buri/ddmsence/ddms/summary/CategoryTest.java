@@ -208,13 +208,16 @@ public class CategoryTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Category elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
 			Category dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			
+			// Backwards compatible constructors
+			assertEquals(new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL), new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null));
 		}
 	}
 
