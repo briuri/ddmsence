@@ -166,16 +166,6 @@ public class DDMSVersion {
 	public static boolean isSupportedDDMSNamespace(String xmlNamespace) {
 		return (getSupportedDDMSNamespacesProperty().contains(xmlNamespace));
 	}
-		
-	/**
-	 * Checks if the string matches the current version.
-	 * 
-	 * @param ddmsVersion the version to test
-	 * @return true if the current version matches the test version, false otherwise
-	 */
-	public static boolean isCurrentVersion(String ddmsVersion) {
-		return (getCurrentVersion().getVersion().equals(aliasVersion(ddmsVersion)));
-	}
 	
 	/**
 	 * Returns the DDMSVersion instance mapped to a particular version number.

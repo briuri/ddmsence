@@ -85,7 +85,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		if (!DDMSVersion.isCurrentVersion("2.0"))
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			html.append("<meta name=\"security.excludeFromRollup\" content=\"true\" />\n");
 		html.append("<meta name=\"security.classification\" content=\"U\" />\n");
 		html.append("<meta name=\"security.ownerProducer\" content=\"USA\" />\n");
@@ -97,7 +97,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		if (!DDMSVersion.isCurrentVersion("2.0"))
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			text.append("excludeFromRollup: true\n");
 		text.append("classification: U\n");
 		text.append("ownerProducer: USA\n");
@@ -111,7 +111,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:security xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
 			.append("\" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
-		if (!DDMSVersion.isCurrentVersion("2.0"))
+		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			xml.append("ICISM:excludeFromRollup=\"true\" ");
 		xml.append("ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\" />");
 		return (xml.toString());
