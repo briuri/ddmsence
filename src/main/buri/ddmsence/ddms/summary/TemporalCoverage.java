@@ -39,9 +39,14 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:temporalCoverage.
  * 
  * <p>
- * A temporalCoverage element contains a locally defined TimePeriod construct. This TimePeriod construct is a container
- * for the name, start, and end values of a time period. It exists only inside of a ddms:temporalCoverage parent, so it
- * is not implemented as a Java object.
+ * Before DDMS 4.0, a temporalCoverage element contains a locally defined TimePeriod construct. 
+ * This TimePeriod construct is a container for the name, start, and end values of a time period.
+ * It exists only inside of a ddms:temporalCoverage parent, so it is not implemented as a Java object.
+ * Starting in DDMS 4.0, the TimePeriod wrapper has been removed.
+ * </p>
+ * 
+ * <p>To avoid confusion between the name of the temporalCoverage element and the name of the specified time period,
+ * the latter is referred to as the "time period name".
  * </p>
  * 
  * <p>
@@ -107,7 +112,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	// The name of the TimePeriod element itself
 	private static final String TIME_PERIOD_NAME = "TimePeriod";
 	
-	// The name of the "name" element nested in a TimePeriod 
+	// The name of the "name" element nested inside the temporalCoverage element 
 	private static final String TIME_PERIOD_NAME_NAME = "name";
 	
 	private static final String START_NAME = "start";
@@ -122,7 +127,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	public TemporalCoverage(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("temporalCoverage element", element);
-			Element periodElement = element.getFirstChildElement(TIME_PERIOD_NAME, element.getNamespaceURI());
+			setXOMElement(element, false);
+			Element periodElement = getTimePeriodElement();
 			if (periodElement != null) {
 				Element nameElement = periodElement.getFirstChildElement(TIME_PERIOD_NAME_NAME, element
 					.getNamespaceURI());
@@ -135,7 +141,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 				loadDateCaches(startString, endString);
 			}
 			_cachedSecurityAttributes = new SecurityAttributes(element);
-			setXOMElement(element, true);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -154,7 +160,10 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	public TemporalCoverage(String timePeriodName, String startString, String endString,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
-			Element periodElement = Util.buildDDMSElement(TIME_PERIOD_NAME, null);
+			Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+			
+			Element periodElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? element 
+				: Util.buildDDMSElement(TIME_PERIOD_NAME, null);
 			if (!Util.isEmpty(timePeriodName))
 				_cachedName = timePeriodName;
 			startString = (Util.isEmpty(startString) ? DEFAULT_VALUE : startString);
@@ -164,8 +173,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			periodElement.appendChild(Util.buildDDMSElement(END_NAME, endString));
 			loadDateCaches(startString, endString);
 
-			Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
-			element.appendChild(periodElement);
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
+				element.appendChild(periodElement);
 
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
@@ -232,7 +241,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), NAME);
-		Element periodElement = getChild(TIME_PERIOD_NAME);
+		Element periodElement = getTimePeriodElement();
 		Util.requireDDMSValue("TimePeriod element", periodElement);
 		Util.requireBoundedDDMSChildCount(periodElement, TIME_PERIOD_NAME_NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(periodElement, START_NAME, 1, 1);
@@ -252,7 +261,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		}
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());		
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
 		if (!version.isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
@@ -269,8 +278,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		Element periodElement = getChild(TIME_PERIOD_NAME);
-		Element timePeriodName = periodElement.getFirstChildElement(TIME_PERIOD_NAME_NAME, 
+		Element periodElement = getTimePeriodElement();
+		Element timePeriodName = periodElement.getFirstChildElement(TIME_PERIOD_NAME_NAME,
 			periodElement.getNamespaceURI());
 		if (timePeriodName != null && Util.isEmpty(timePeriodName.getValue()))
 			addWarning("A ddms:name element was found with no value. Defaulting to \"" + DEFAULT_VALUE + "\".");
@@ -281,7 +290,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		return (ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix() + ":" + TIME_PERIOD_NAME);
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
+		return (version.isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix() + ":" + TIME_PERIOD_NAME);
 	}
 	
 	/**
@@ -331,6 +341,17 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		result = 7 * result + getEndString().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element which contains the time period name, start date, and end date. Before DDMS 4.0,
+	 * this is a wrapper element called ddms:TimePeriod. Starting in DDMS 4.0, it is the ddms:temporalCoverage
+	 * element itself.
+	 */
+	private Element getTimePeriodElement() {
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
+		Element periodElement = (version.isAtLeast("4.0") ? getXOMElement() : getChild(TIME_PERIOD_NAME));
+		return (periodElement);
 	}
 	
 	/**
