@@ -200,8 +200,8 @@ Developer's Note:  The srsName attribute is required on the Polygon element.  Th
       </xs:appinfo>
     </xs:annotation>
     <xs:sequence>
-      <xs:element ref="minVerticalExtent" />
-      <xs:element ref="maxVerticalExtent" />
+      <xs:element ref="MinVerticalExtent" />
+      <xs:element ref="MaxVerticalExtent" />
     </xs:sequence>
     <xs:attribute name="unitOfMeasure" type="LengthMeasureType" use="required" />
     <xs:attribute name="datum" type="VerticalDatumType" use="required" />
