@@ -214,8 +214,8 @@ Developer's Note:  The srsName attribute is required on the Polygon element.  Th
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
-  <xs:element name="minVerticalExtent" type="VerticalDistanceType" />
-  <xs:element name="maxVerticalExtent" type="VerticalDistanceType" />
+  <xs:element name="MinVerticalExtent" type="VerticalDistanceType" />
+  <xs:element name="MaxVerticalExtent" type="VerticalDistanceType" />
   <!-- =====================================================================
 		Models a standalone postal address. 
 	===================================================================== -->
