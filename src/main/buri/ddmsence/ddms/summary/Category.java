@@ -93,6 +93,18 @@ public final class Category extends AbstractBaseComponent {
 	}
 	
 	/**
+	 * Constructor for creating a component from raw data. Provided for backwards compatibility to pre-DDMS 4.0 elements.
+	 *  
+	 * @param qualifier the qualifier (optional)
+	 * @param code the code (optional)
+	 * @param label the label (required)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public Category(String qualifier, String code, String label) throws InvalidDDMSException {
+		this(qualifier, code, label, null, null);
+	}
+	
+	/**
 	 * Constructor for creating a component from raw data
 	 *  
 	 * @param qualifier the qualifier (optional)
