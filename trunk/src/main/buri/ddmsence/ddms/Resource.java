@@ -98,14 +98,10 @@ import buri.ddmsence.util.Util;
  * <u>ddms:rights</u>: (0-1 optional), implemented as a {@link Rights}<br />
  * <u>ddms:source</u>: (0-many optional), implemented as a {@link Source}<br />
  * <u>ddms:type</u>: (0-many optional), implemented as a {@link Type}<br />
- * <u>ddms:creator</u>: (0-many optional), implemented as a {@link Person}, {@link Organization}, {@link Service}, or
- * {@link Unknown}<br />
- * <u>ddms:publisher</u>: (0-many optional), implemented as a {@link Person}, {@link Organization}, {@link Service}, or
- * {@link Unknown}<br />
- * <u>ddms:contributor</u>: (0-many optional), implemented as a {@link Person}, {@link Organization}, {@link Service}, 
- * or {@link Unknown}<br />
- * <u>ddms:pointOfContact</u>: (0-many optional), implemented as a {@link Person}, {@link Organization}, 
- * {@link Service}, or {@link Unknown}<br />
+ * <u>ddms:creator</u>: (0-many optional), implemented as a {@link Creator}<br />
+ * <u>ddms:publisher</u>: (0-many optional), implemented as a {@link Publisher}<br />
+ * <u>ddms:contributor</u>: (0-many optional), implemented as a {@link Contributor}<br />
+ * <u>ddms:pointOfContact</u>: (0-many optional), implemented as a {@link PointOfContact}<br />
  * <u>ddms:format</u>: (0-1 optional), implemented as a {@link Format}<br />
  * <u>ddms:subjectCoverage</u>: (exactly 1 required), implemented as a {@link SubjectCoverage}<br />
  * <u>ddms:virtualCoverage</u>: (0-many optional), implemented as a {@link VirtualCoverage}<br />

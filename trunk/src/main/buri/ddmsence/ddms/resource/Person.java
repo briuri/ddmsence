@@ -163,7 +163,7 @@ public final class Person extends AbstractProducerEntity {
 	 * <li>Exactly 1 surname, 0-1 userIDs, 0-1 affiliations exist.</li>
 	 * </td></tr></table>
 	 * 
-	 * @see AbstractProducer#validate()
+	 * @see AbstractProducerEntity#validate()
 	 * @throws InvalidDDMSException
 	 *             if any required information is missing or malformed
 	 */
@@ -198,7 +198,7 @@ public final class Person extends AbstractProducerEntity {
 	 * Because ordering is not important in HTML output, this method merely appends the additional Person fields to the
 	 * end of the AbstractProducer output. All fields will still be underneath a line identifying the entity type.
 	 * 
-	 * @see AbstractProducer#toHTML()
+	 * @see AbstractProducerEntity#toHTML()
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer(super.toHTML());
@@ -212,7 +212,7 @@ public final class Person extends AbstractProducerEntity {
 	 * Because ordering is not important in Text output, this method merely appends the additional Person fields to the
 	 * end of the AbstractProducer output. All fields will still be underneath a line identifying the entity type.
 	 * 
-	 * @see AbstractProducer#toText()
+	 * @see AbstractProducerEntity#toText()
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer(super.toText());

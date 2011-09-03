@@ -45,9 +45,11 @@ import buri.ddmsence.util.Util;
 /**
  * Attribute group representing the xs:anyAttribute tag which appears on various DDMS components.
  * 
- * <p>Starting in DDMS 3.0, this attribute group can decorate {@link Organization}, {@link Person}, {@link Service},
- * {@link Unknown}, {@link Keyword}, {@link Category}, or the {@link Resource} itself. In DDMS 2.0, this attribute group
- * can only decorate {@link Organization}, {@link Person}, {@link Service}, or the {@link Resource}.</p>
+ * <p>Starting in DDMS 3.0, this attribute group can decorate {@link buri.ddmsence.ddms.resource.Organization}, 
+ * {@link buri.ddmsence.ddms.resource.Person}, {@link buri.ddmsence.ddms.resource.Service},
+ * {@link buri.ddmsence.ddms.resource.Unknown}, {@link Keyword}, {@link Category}, or the {@link Resource} itself. 
+ * In DDMS 2.0, this attribute group can only decorate {@link buri.ddmsence.ddms.resource.Organization}, 
+ * {@link buri.ddmsence.ddms.resource.Person}, {@link buri.ddmsence.ddms.resource.Service}, or the {@link Resource}.</p>
  * 
  * <p>No validation or processing of any kind is performed by DDMSence on extensible attributes, other than the base
  * validation used when loading attributes from an XML file, and a check to confirm that extensible attributes do not

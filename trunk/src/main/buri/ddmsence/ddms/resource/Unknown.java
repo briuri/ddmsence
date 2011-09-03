@@ -119,7 +119,7 @@ public final class Unknown extends AbstractProducerEntity {
 	 * <li>This component cannot be used until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
-	 * @see AbstractProducer#validate()
+	 * @see AbstractProducerEntity#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
