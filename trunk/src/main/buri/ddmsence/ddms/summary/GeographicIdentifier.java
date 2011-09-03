@@ -36,9 +36,9 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>No more than 1 countryCode or facilityIdentifier can be used. The schema seems to support this assertion with
+ * <li>No more than 1 countryCode, subDivisionCode, or facilityIdentifier can be used. The schema seems to support this assertion with
  * explicit restrictions on those elements, but the enclosing xs:choice element allows multiples.</li>
- * <li>At least 1 of name, region, countryCode, or facilityIdentifier must be present. Once again, the xs:choice 
+ * <li>At least 1 of name, region, countryCode, subDivisionCode, or facilityIdentifier must be present. Once again, the xs:choice 
  * restrictions create a loophole which could allow a completely empty geographicIdentifier to be valid.</li>
  * </ul>
  * </td></tr></table>
@@ -47,6 +47,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:name</u>: geographic name (0-many optional)<br />
  * <u>ddms:region</u>: geographic region (0-many optional)<br />
  * <u>ddms:countryCode</u>: the country code (0-1 optional), implemented as a {@link CountryCode}<br />
+ * <u>ddms:subDivisionCode</u>: the subdivision code (0-1 optional, starting in DDMS 4.0), implemented as a {@link SubDivisionCode}<br />
  * <u>ddms:facilityIdentifier</u>: the facility identifier (0-1 optional), implemented as a 
  * {@link FacilityIdentifier}<br />
  * </td></tr></table>
@@ -68,6 +69,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	private List<String> _cachedNames = null;
 	private List<String> _cachedRegions = null;
 	private CountryCode _cachedCountryCode = null;
+	private SubDivisionCode _cachedSubDivisionCode = null;
 	private FacilityIdentifier _cachedFacilityIdentifier = null;
 	
 	/** The element name of this component */
@@ -90,6 +92,9 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			Element countryCodeElement = element.getFirstChildElement(CountryCode.NAME, element.getNamespaceURI());
 			if (countryCodeElement != null)
 				_cachedCountryCode = new CountryCode(GeographicIdentifier.NAME, countryCodeElement);
+			Element subDivisionCodeElement = element.getFirstChildElement(SubDivisionCode.NAME, element.getNamespaceURI());
+			if (subDivisionCodeElement != null)
+				_cachedSubDivisionCode = new SubDivisionCode(subDivisionCodeElement);
 			Element facilityIdentifierElement = element.getFirstChildElement(FacilityIdentifier.NAME, element
 				.getNamespaceURI());
 			if (facilityIdentifierElement != null)
@@ -103,7 +108,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	
 	/**
 	 * Constructor for creating a component from raw data. Note that the facilityIdentifier component cannot be used
-	 * with the components in this constructor.
+	 * with the components in this constructor. Provided for backwards compatibility to pre-DDMS 4.0 components.
 	 * 
 	 * @param names the names (optional)
 	 * @param regions the region names (optional)
@@ -111,6 +116,21 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public GeographicIdentifier(List<String> names, List<String> regions, CountryCode countryCode)
+		throws InvalidDDMSException {
+		this(names, regions, countryCode, null);
+	}
+	
+	/**
+	 * Constructor for creating a component from raw data. Note that the facilityIdentifier component cannot be used
+	 * with the components in this constructor. Provided for backwards compatibility to pre-DDMS 4.0 components.
+	 * 
+	 * @param names the names (optional)
+	 * @param regions the region names (optional)
+	 * @param countryCode the country code (optional)
+	 * @param subDivisionCode the subdivision code (optional, starting in DDMS 4.0)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public GeographicIdentifier(List<String> names, List<String> regions, CountryCode countryCode, SubDivisionCode subDivisionCode)
 		throws InvalidDDMSException {
 		try {
 			if (names == null)
@@ -126,9 +146,12 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			}
 			if (countryCode != null)
 				element.appendChild(countryCode.getXOMElementCopy());
+			if (subDivisionCode != null)
+				element.appendChild(subDivisionCode.getXOMElementCopy());
 			_cachedNames = names;
 			_cachedRegions = regions;
 			_cachedCountryCode = countryCode;
+			_cachedSubDivisionCode = subDivisionCode;
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -156,10 +179,10 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>At least 1 of name, region, countryCode, or facilityIdentifier must exist.</li>
-	 * <li>No more than 1 countryCode or facilityIdentifier can exist.</li>
+	 * <li>At least 1 of name, region, countryCode, subDivisionCode or facilityIdentifier must exist.</li>
+	 * <li>No more than 1 countryCode, subDivisionCode or facilityIdentifier can exist.</li>
 	 * <li>If facilityIdentifier is used, no other components can exist.</li>
-	 * <li>If a countryCode or facilityIdentifier exists, it is using the same version of DDMS.</li>
+	 * <li>If a countryCode, subDivisionCode or facilityIdentifier exists, it is using the same version of DDMS.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -168,20 +191,22 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), NAME);
-		if (getNames().isEmpty() && getRegions().isEmpty() && getCountryCode() == null
+		if (getNames().isEmpty() && getRegions().isEmpty() && getCountryCode() == null && getSubDivisionCode() == null
 			&& getFacilityIdentifier() == null) {
-			throw new InvalidDDMSException("At least 1 of name, region, countryCode, or facilityIdentifier must exist.");
+			throw new InvalidDDMSException("At least 1 of name, region, countryCode, subDivisionCode, or facilityIdentifier must exist.");
 		}
 		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.NAME, 0, 1);
+		Util.requireBoundedDDMSChildCount(getXOMElement(), SubDivisionCode.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), FacilityIdentifier.NAME, 0, 1);
 		if (hasFacilityIdentifier()) {
 			Util.requireCompatibleVersion(this, getFacilityIdentifier());
-			if (!getNames().isEmpty() || !getRegions().isEmpty() || getCountryCode() != null)
+			if (!getNames().isEmpty() || !getRegions().isEmpty() || getCountryCode() != null || getSubDivisionCode() != null)
 				throw new InvalidDDMSException("facilityIdentifier cannot be used in tandem with other components.");
 		}		
 		if (getCountryCode() != null)
 			Util.requireCompatibleVersion(this, getCountryCode());
-		
+		if (getSubDivisionCode() != null)
+			Util.requireCompatibleVersion(this, getSubDivisionCode());
 		validateWarnings();
 	}
 	
@@ -189,14 +214,16 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the facility identifier or country code.</li>
+	 * <li>Include any validation warnings from the facility identifier, country code, or subdivision code.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (hasFacilityIdentifier())
-			addWarnings(getFacilityIdentifier().getValidationWarnings(), false);
 		if (getCountryCode() != null)
 			addWarnings(getCountryCode().getValidationWarnings(), false);
+		if (getSubDivisionCode() != null)
+			addWarnings(getSubDivisionCode().getValidationWarnings(), false);
+		if (hasFacilityIdentifier())
+			addWarnings(getFacilityIdentifier().getValidationWarnings(), false);
 	}
 	
 	/**
@@ -211,6 +238,8 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			html.append(buildHTMLMeta(prefix + REGION_NAME, region, false));
 		if (getCountryCode() != null)
 			html.append(getCountryCode().toHTML());
+		if (getSubDivisionCode() != null)
+			html.append(getSubDivisionCode().toHTML());
 		if (hasFacilityIdentifier())
 			html.append(getFacilityIdentifier().toHTML());
 		return (html.toString());
@@ -227,6 +256,8 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			text.append(buildTextLine(NAME + " " + REGION_NAME, region, false));
 		if (getCountryCode() != null)
 			text.append(getCountryCode().toText());
+		if (getSubDivisionCode() != null)
+			text.append(getSubDivisionCode().toText());
 		if (hasFacilityIdentifier())
 			text.append(getFacilityIdentifier().toText());
 		return (text.toString());
@@ -242,6 +273,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		boolean isEqual = Util.listEquals(getNames(), test.getNames())
 			&& Util.listEquals(getRegions(), test.getRegions())
 			&& Util.nullEquals(getCountryCode(), test.getCountryCode())
+			&& Util.nullEquals(getSubDivisionCode(), test.getSubDivisionCode())
 			&& Util.nullEquals(getFacilityIdentifier(), test.getFacilityIdentifier());
 		return (isEqual);
 	}
@@ -255,6 +287,8 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		result = 7 * result + getRegions().hashCode();
 		if (getCountryCode() != null)
 			result = 7 * result + getCountryCode().hashCode();
+		if (getSubDivisionCode() != null)
+			result = 7 * result + getSubDivisionCode().hashCode();
 		if (hasFacilityIdentifier())
 			result = 7 * result + getFacilityIdentifier().hashCode();
 		return (result);
@@ -279,6 +313,13 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 */
 	public CountryCode getCountryCode() {
 		return (_cachedCountryCode);
+	}
+	
+	/**
+	 * Accessor for the subdivision code. May return null if no code was used.
+	 */
+	public SubDivisionCode getSubDivisionCode() {
+		return (_cachedSubDivisionCode);
 	}
 	
 	/**
@@ -307,6 +348,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		private List<String> _names = null;
 		private List<String> _regions = null;
 		private CountryCode.Builder _countryCode = null;
+		private SubDivisionCode.Builder _subDivisionCode = null;
 		private FacilityIdentifier.Builder _facilityIdentifier = null;
 				
 		/**
@@ -323,7 +365,10 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			else {
 				setNames(identifier.getNames());
 				setRegions(identifier.getRegions());
-				setCountryCode(new CountryCode.Builder(identifier.getCountryCode()));
+				if (identifier.getCountryCode() != null)
+					setCountryCode(new CountryCode.Builder(identifier.getCountryCode()));
+				if (identifier.getSubDivisionCode() != null)
+					setSubDivisionCode(new SubDivisionCode.Builder(identifier.getSubDivisionCode()));
 			}
 		}
 		
@@ -336,7 +381,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			FacilityIdentifier identifier = getFacilityIdentifier().commit();
 			if (identifier != null)
 				return (new GeographicIdentifier(identifier));
-			return (new GeographicIdentifier(getNames(), getRegions(), getCountryCode().commit()));
+			return (new GeographicIdentifier(getNames(), getRegions(), getCountryCode().commit(), getSubDivisionCode().commit()));
 		}
 
 		/**
@@ -346,6 +391,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			return (Util.containsOnlyEmptyValues(getNames())
 				&& Util.containsOnlyEmptyValues(getRegions())
 				&& getCountryCode().isEmpty()
+				&& getSubDivisionCode().isEmpty()
 				&& getFacilityIdentifier().isEmpty());
 		}
 		
@@ -401,6 +447,23 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			_countryCode = countryCode;
 		}
 
+		/**
+		 * Builder accessor for the subdivision code
+		 */
+		public SubDivisionCode.Builder getSubDivisionCode() {
+			if (_subDivisionCode == null) {
+				_subDivisionCode = new SubDivisionCode.Builder();
+			}
+			return _subDivisionCode;
+		}
+
+		/**
+		 * Builder accessor for the subdivision code
+		 */
+		public void setSubDivisionCode(SubDivisionCode.Builder subDivisionCode) {
+			_subDivisionCode = subDivisionCode;
+		}
+		
 		/**
 		 * Builder accessor for the facility identifier
 		 */

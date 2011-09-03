@@ -4,5 +4,6 @@
 	<ddms:name>The White House</ddms:name>
 	<ddms:region>Mid-Atlantic States</ddms:region>
 	<ddms:countryCode ddms:qualifier="ISO-3166" ddms:value="USA"/>
+	<ddms:subDivisionCode ddms:qualifier="ISO-3166" ddms:value="USA"/>
 </ddms:geographicIdentifier>
 				

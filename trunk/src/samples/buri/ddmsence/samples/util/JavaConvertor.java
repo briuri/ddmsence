@@ -646,7 +646,10 @@ public class JavaConvertor {
 				.append(", regions").append(count).append(", ");
 			if (geoId.getCountryCode() != null)
 				java.append("new CountryCode(\"geographicIdentifier\", \"").append(geoId.getCountryCode().getQualifier()).append("\", \"")
-					.append(geoId.getCountryCode().getValue()).append("\"));\n");
+					.append(geoId.getCountryCode().getValue()).append("\"), ");
+			if (geoId.getSubDivisionCode() != null)
+				java.append("new SubDivisionCode(\"").append(geoId.getSubDivisionCode().getQualifier()).append("\", \"")
+				.append(geoId.getSubDivisionCode().getValue()).append("\"));\n");
 			else
 				java.append("null);\n");
 		}
