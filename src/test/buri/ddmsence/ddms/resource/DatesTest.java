@@ -40,6 +40,7 @@ public class DatesTest extends AbstractComponentTestCase {
 	private static final String TEST_VALID = "2003-02-15";
 	private static final String TEST_CUTOFF = "2001-10-31T17:00:00Z";
 	private static final String TEST_APPROVED = "2003-02-16";
+	private static final String TEST_RECEIVED = "2003-02-17";
 
 	/**
 	 * Constructor
@@ -75,14 +76,15 @@ public class DatesTest extends AbstractComponentTestCase {
 	 * @param posted the posting date (optional)
 	 * @param validTil the expiration date (optional)
 	 * @param infoCutOff the info cutoff date (optional)
-	 * @param approvedOn the approved on date (optional, starting in v3.1)
+	 * @param approvedOn the approved on date (optional, starting in 3.1)
+	 * @param receivedOn the received on date (optional, starting in 4.0)
 	 * @return a valid object
 	 */
 	private Dates testConstructor(boolean expectFailure, String created, String posted, String validTil,
-		String infoCutOff, String approvedOn) {
+		String infoCutOff, String approvedOn, String receivedOn) {
 		Dates component = null;
 		try {
-			component = new Dates(created, posted, validTil, infoCutOff, approvedOn);
+			component = new Dates(created, posted, validTil, infoCutOff, approvedOn, receivedOn);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -101,6 +103,8 @@ public class DatesTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"dates.infoCutOff\" content=\"").append(TEST_CUTOFF).append("\" />\n");
 		if (isDDMS31OrGreater())
 			html.append("<meta name=\"dates.approvedOn\" content=\"").append(TEST_APPROVED).append("\" />\n");
+		if (isDDMS40OrGreater())
+			html.append("<meta name=\"dates.receivedOn\" content=\"").append(TEST_RECEIVED).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -115,6 +119,8 @@ public class DatesTest extends AbstractComponentTestCase {
 		text.append("infoCutOff: ").append(TEST_CUTOFF).append("\n");
 		if (isDDMS31OrGreater())
 			text.append("approvedOn: ").append(TEST_APPROVED).append("\n");
+		if (isDDMS40OrGreater())
+			text.append("receivedOn: ").append(TEST_RECEIVED).append("\n");
 		return (text.toString());
 	}
 
@@ -130,6 +136,8 @@ public class DatesTest extends AbstractComponentTestCase {
 		xml.append("ddms:infoCutOff=\"").append(TEST_CUTOFF).append("\" ");
 		if (isDDMS31OrGreater())
 			xml.append("ddms:approvedOn=\"").append(TEST_APPROVED).append("\" ");
+		if (isDDMS40OrGreater())
+			xml.append("ddms:receivedOn=\"").append(TEST_RECEIVED).append("\" ");
 		xml.append("/>");
 		return (xml.toString());
 	}
@@ -164,12 +172,13 @@ public class DatesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			String approvedOn = (isDDMS31OrGreater() ? TEST_APPROVED : "");
+			String receivedOn = (isDDMS40OrGreater() ? TEST_RECEIVED : "");
 			
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn);
+			testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn, receivedOn);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, "", "", "", "", "");
+			testConstructor(WILL_SUCCEED, "", "", "", "", "", "");
 		}
 	}
 
@@ -187,9 +196,10 @@ public class DatesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			String approvedOn = (isDDMS31OrGreater() ? TEST_APPROVED : "");
+			String receivedOn = (isDDMS40OrGreater() ? TEST_RECEIVED : "");
 			
 			// Wrong date format (using xs:gDay here)
-			testConstructor(WILL_FAIL, "---31", TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn);
+			testConstructor(WILL_FAIL, "---31", TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn, receivedOn);
 		}
 	}
 
@@ -215,9 +225,10 @@ public class DatesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			String approvedOn = isDDMS31OrGreater() ? TEST_APPROVED : "";
+			String receivedOn = (isDDMS40OrGreater() ? TEST_RECEIVED : "");
 			
 			Dates elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			Dates dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn);
+			Dates dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn, receivedOn);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -227,22 +238,28 @@ public class DatesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			String approvedOn = (isDDMS31OrGreater() ? TEST_APPROVED : "");
+			String receivedOn = (isDDMS40OrGreater() ? TEST_RECEIVED : "");
 			
 			Dates elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			Dates dataComponent = testConstructor(WILL_SUCCEED, "", TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn);
+			Dates dataComponent = testConstructor(WILL_SUCCEED, "", TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn, receivedOn);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, "", TEST_VALID, TEST_CUTOFF, approvedOn);
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, "", TEST_VALID, TEST_CUTOFF, approvedOn, receivedOn);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, "", TEST_CUTOFF, approvedOn);
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, "", TEST_CUTOFF, approvedOn, receivedOn);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, "", approvedOn);
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, "", approvedOn, receivedOn);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			if (isDDMS31OrGreater()) {
-				dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, "");
+				dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, "", receivedOn);
+				assertFalse(elementComponent.equals(dataComponent));
+			}
+			
+			if (isDDMS40OrGreater()) {
+				dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn, "");
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 		}
@@ -261,10 +278,11 @@ public class DatesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			String approvedOn = (isDDMS31OrGreater() ? TEST_APPROVED : "");
+			String receivedOn = (isDDMS40OrGreater() ? TEST_RECEIVED : "");
 			Dates component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn);
+			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn, receivedOn);
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		}
 	}
@@ -273,10 +291,11 @@ public class DatesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			String approvedOn = (isDDMS31OrGreater() ? TEST_APPROVED : "");
+			String receivedOn = (isDDMS40OrGreater() ? TEST_RECEIVED : "");
 			Dates component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn);
+			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn, receivedOn);
 			assertEquals(getExpectedTextOutput(), component.toText());
 		}
 	}
@@ -285,10 +304,11 @@ public class DatesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			String approvedOn = (isDDMS31OrGreater() ? TEST_APPROVED : "");
+			String receivedOn = (isDDMS40OrGreater() ? TEST_RECEIVED : "");
 			Dates component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn);
+			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn, receivedOn);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -297,6 +317,17 @@ public class DatesTest extends AbstractComponentTestCase {
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
 			new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, TEST_APPROVED);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
+	public void testReceivedOnWrongVersion() {
+		DDMSVersion.setCurrentVersion("3.0");
+		try {
+			new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, null, TEST_RECEIVED);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

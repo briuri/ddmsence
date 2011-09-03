@@ -247,6 +247,9 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relField">approvedOn</td><td class="relRules">char(32)</td><td>the approval date (DDMS 3.1)</td>
 	</tr>
+		<tr class="relRow">
+		<td class="relField">receivedOn</td><td class="relRules">char(32)</td><td>the received on date (DDMS 4.0)</td>
+	</tr>
 </table>
 
 <a name="ddmsIdentifier"></a><table class="rel">

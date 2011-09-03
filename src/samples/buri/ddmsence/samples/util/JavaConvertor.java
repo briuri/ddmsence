@@ -275,7 +275,10 @@ public class JavaConvertor {
 			java.append(dates.getInfoCutOff().toXMLFormat());
 		java.append("\", \"");
 		if (dates.getApprovedOn() != null)
-			java.append(dates.getApprovedOn().toXMLFormat());		
+			java.append(dates.getApprovedOn().toXMLFormat());
+		java.append("\", \"");
+		if (dates.getReceivedOn() != null)
+			java.append(dates.getReceivedOn().toXMLFormat());
 		java.append("\");\n");
 		java.append("topLevelComponents.add(dates);\n");
 	}
