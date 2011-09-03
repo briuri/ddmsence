@@ -73,6 +73,7 @@ import buri.ddmsence.ddms.summary.Link;
 import buri.ddmsence.ddms.summary.PostalAddress;
 import buri.ddmsence.ddms.summary.RelatedResource;
 import buri.ddmsence.ddms.summary.RelatedResources;
+import buri.ddmsence.ddms.summary.SubDivisionCode;
 import buri.ddmsence.ddms.summary.SubjectCoverage;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
 import buri.ddmsence.ddms.summary.VerticalExtent;
@@ -382,7 +383,13 @@ public class Escort {
 					String value = readString("the value [USA]");
 					code = new CountryCode("geographicIdentifier", qualifier, value);
 				}
-				return (new GeographicIdentifier(names, regions, code));
+				SubDivisionCode subCode = null;
+				if (confirm("Include a subDivisionCode?")) {
+					String qualifier = readString("the qualifier [testQualifier]");
+					String value = readString("the value [USA]");
+					subCode = new SubDivisionCode(qualifier, value);
+				}
+				return (new GeographicIdentifier(names, regions, code, subCode));
 			}		
 		});
 		BUILDERS.put(BoundingBox.class, new IComponentBuilder() {
