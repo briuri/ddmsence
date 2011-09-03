@@ -121,6 +121,20 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Helper method to get the correct-case of the minVerticalExtent eleemnt.
+	 */
+	private String getMinVerticalExtentName() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "minVerticalExtent" : "MinVerticalExtent");
+	}
+	
+	/**
+	 * Helper method to get the correct-case of the maxVerticalExtent eleemnt.
+	 */
+	private String getMaxVerticalExtentName() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "maxVerticalExtent" : "MaxVerticalExtent");
+	}
+	
+	/**
 	 * Returns the expected XML output for this unit test
 	 * 
 	 * @param preserveFormatting if true, include line breaks and tabs.
@@ -131,8 +145,8 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 			.append("\" ");
 		xml.append("ddms:unitOfMeasure=\"").append(TEST_UOM).append("\" ");
 		xml.append("ddms:datum=\"").append(TEST_DATUM).append("\">\n\t");
-		xml.append("<ddms:MinVerticalExtent>").append(TEST_MIN).append("</ddms:MinVerticalExtent>\n\t");
-		xml.append("<ddms:MaxVerticalExtent>").append(TEST_MAX).append("</ddms:MaxVerticalExtent>\n");
+		xml.append("<ddms:").append(getMinVerticalExtentName()).append(">").append(TEST_MIN).append("</ddms:").append(getMinVerticalExtentName()).append(">\n\t");
+		xml.append("<ddms:").append(getMaxVerticalExtentName()).append(">").append(TEST_MAX).append("</ddms:").append(getMaxVerticalExtentName()).append(">\n");
 		xml.append("</ddms:verticalExtent>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
@@ -171,101 +185,101 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 			// Missing UOM
 			Element element = Util.buildDDMSElement(VerticalExtent.NAME, null);
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
-			element.appendChild(Util.buildDDMSElement("MinVerticalExtent", String.valueOf(TEST_MIN)));
-			element.appendChild(Util.buildDDMSElement("MaxVerticalExtent", String.valueOf(TEST_MAX)));
+			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN)));
+			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX)));
 			testConstructor(WILL_FAIL, element);
 
 			// Invalid UOM
 			element = Util.buildDDMSElement(VerticalExtent.NAME, null);
 			Util.addDDMSAttribute(element, "unitOfMeasure", "furlong");
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
-			element.appendChild(Util.buildDDMSElement("MinVerticalExtent", String.valueOf(TEST_MIN)));
-			element.appendChild(Util.buildDDMSElement("MaxVerticalExtent", String.valueOf(TEST_MAX)));
+			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN)));
+			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX)));
 			testConstructor(WILL_FAIL, element);
 
 			// Missing Datum
 			element = Util.buildDDMSElement(VerticalExtent.NAME, null);
 			Util.addDDMSAttribute(element, "unitOfMeasure", TEST_UOM);
-			element.appendChild(Util.buildDDMSElement("MinVerticalExtent", String.valueOf(TEST_MIN)));
-			element.appendChild(Util.buildDDMSElement("MaxVerticalExtent", String.valueOf(TEST_MAX)));
+			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN)));
+			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX)));
 			testConstructor(WILL_FAIL, element);
 
 			// Invalid Datum
 			element = Util.buildDDMSElement(VerticalExtent.NAME, null);
 			Util.addDDMSAttribute(element, "unitOfMeasure", TEST_UOM);
 			Util.addDDMSAttribute(element, "datum", "PDQ");
-			element.appendChild(Util.buildDDMSElement("MinVerticalExtent", String.valueOf(TEST_MIN)));
-			element.appendChild(Util.buildDDMSElement("MaxVerticalExtent", String.valueOf(TEST_MAX)));
+			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN)));
+			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX)));
 			testConstructor(WILL_FAIL, element);
 
 			// Missing MinVerticalExtent
 			element = Util.buildDDMSElement(VerticalExtent.NAME, null);
 			Util.addDDMSAttribute(element, "unitOfMeasure", TEST_UOM);
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
-			element.appendChild(Util.buildDDMSElement("MaxVerticalExtent", String.valueOf(TEST_MAX)));
+			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX)));
 			testConstructor(WILL_FAIL, element);
 
 			// Missing MaxVerticalExtent
 			element = Util.buildDDMSElement(VerticalExtent.NAME, null);
 			Util.addDDMSAttribute(element, "unitOfMeasure", TEST_UOM);
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
-			element.appendChild(Util.buildDDMSElement("MinVerticalExtent", String.valueOf(TEST_MIN)));
+			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN)));
 			testConstructor(WILL_FAIL, element);
 
 			// MinVerticalExtent UOM doesn't match parent
-			Element minElement = Util.buildDDMSElement("MinVerticalExtent", String.valueOf(TEST_MIN));
+			Element minElement = Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN));
 			Util.addDDMSAttribute(minElement, "unitOfMeasure", "Inch");
 			element = Util.buildDDMSElement(VerticalExtent.NAME, null);
 			Util.addDDMSAttribute(element, "unitOfMeasure", TEST_UOM);
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
 			element.appendChild(minElement);
-			element.appendChild(Util.buildDDMSElement("MaxVerticalExtent", String.valueOf(TEST_MAX)));
+			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX)));
 			testConstructor(WILL_FAIL, element);
 
 			// MinVerticalExtent Datum doesn't match parent
-			minElement = Util.buildDDMSElement("MinVerticalExtent", String.valueOf(TEST_MIN));
+			minElement = Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN));
 			Util.addDDMSAttribute(minElement, "datum", "PDQ");
 			element = Util.buildDDMSElement(VerticalExtent.NAME, null);
 			Util.addDDMSAttribute(element, "unitOfMeasure", TEST_UOM);
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
 			element.appendChild(minElement);
-			element.appendChild(Util.buildDDMSElement("MaxVerticalExtent", String.valueOf(TEST_MAX)));
+			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX)));
 			testConstructor(WILL_FAIL, element);
 
 			// MaxVerticalExtent UOM doesn't match parent
-			Element maxElement = Util.buildDDMSElement("MaxVerticalExtent", String.valueOf(TEST_MAX));
+			Element maxElement = Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX));
 			Util.addDDMSAttribute(maxElement, "unitOfMeasure", "Inch");
 			element = Util.buildDDMSElement(VerticalExtent.NAME, null);
 			Util.addDDMSAttribute(element, "unitOfMeasure", TEST_UOM);
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
 			element.appendChild(maxElement);
-			element.appendChild(Util.buildDDMSElement("MinVerticalExtent", String.valueOf(TEST_MIN)));
+			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN)));
 			testConstructor(WILL_FAIL, element);
 
 			// MaxVerticalExtent Datum doesn't match parent
-			maxElement = Util.buildDDMSElement("MaxVerticalExtent", String.valueOf(TEST_MAX));
+			maxElement = Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX));
 			Util.addDDMSAttribute(maxElement, "datum", "PDQ");
 			element = Util.buildDDMSElement(VerticalExtent.NAME, null);
 			Util.addDDMSAttribute(element, "unitOfMeasure", TEST_UOM);
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
 			element.appendChild(maxElement);
-			element.appendChild(Util.buildDDMSElement("MinVerticalExtent", String.valueOf(TEST_MIN)));
+			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN)));
 			testConstructor(WILL_FAIL, element);
 
 			// MinVerticalExtent is not less than MaxVerticalExtent
 			element = Util.buildDDMSElement(VerticalExtent.NAME, null);
 			Util.addDDMSAttribute(element, "unitOfMeasure", TEST_UOM);
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
-			element.appendChild(Util.buildDDMSElement("MinVerticalExtent", String.valueOf(TEST_MAX)));
-			element.appendChild(Util.buildDDMSElement("MaxVerticalExtent", String.valueOf(TEST_MIN)));
+			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MAX)));
+			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MIN)));
 			testConstructor(WILL_FAIL, element);
 
 			// Not Double
 			element = Util.buildDDMSElement(VerticalExtent.NAME, null);
 			Util.addDDMSAttribute(element, "unitOfMeasure", TEST_UOM);
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
-			element.appendChild(Util.buildDDMSElement("MinVerticalExtent", String.valueOf(TEST_MIN)));
-			element.appendChild(Util.buildDDMSElement("MaxVerticalExtent", String.valueOf("ground-level")));
+			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN)));
+			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf("ground-level")));
 			testConstructor(WILL_FAIL, element);
 		}
 	}

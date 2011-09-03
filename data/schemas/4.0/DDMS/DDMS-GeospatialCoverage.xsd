@@ -200,8 +200,8 @@ Developer's Note:  The srsName attribute is required on the Polygon element.  Th
       </xs:appinfo>
     </xs:annotation>
     <xs:sequence>
-      <xs:element ref="MinVerticalExtent" />
-      <xs:element ref="MaxVerticalExtent" />
+      <xs:element ref="minVerticalExtent" />
+      <xs:element ref="maxVerticalExtent" />
     </xs:sequence>
     <xs:attribute name="unitOfMeasure" type="LengthMeasureType" use="required" />
     <xs:attribute name="datum" type="VerticalDatumType" use="required" />
@@ -214,8 +214,8 @@ Developer's Note:  The srsName attribute is required on the Polygon element.  Th
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>
-  <xs:element name="MinVerticalExtent" type="VerticalDistanceType" />
-  <xs:element name="MaxVerticalExtent" type="VerticalDistanceType" />
+  <xs:element name="minVerticalExtent" type="VerticalDistanceType" />
+  <xs:element name="maxVerticalExtent" type="VerticalDistanceType" />
   <!-- =====================================================================
 		Models a standalone postal address. 
 	===================================================================== -->
