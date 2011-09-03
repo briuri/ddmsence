@@ -51,7 +51,7 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:mimeType</u>: the MIME type (exactly 1 required)<br />
- * <u>ddms:extent</u>: the format extent (0-1 optional), implemented as a {@link MediaExtent}<br />
+ * <u>ddms:extent</u>: the format extent (0-1 optional), implemented as a {@link Extent}<br />
  * <u>ddms:medium</u>: the physical medium (0-1 optional)<br />
  * </td></tr></table>
  * 
@@ -69,7 +69,7 @@ public final class Format extends AbstractBaseComponent {
 	
 	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
 	private String _cachedMimeType;
-	private MediaExtent _cachedExtent;
+	private Extent _cachedExtent;
 	private String _cachedMedium;
 	
 	/** The element name of this component */
@@ -94,9 +94,9 @@ public final class Format extends AbstractBaseComponent {
 				Element mimeTypeElement = mediaElement.getFirstChildElement(MIME_TYPE_NAME, ddmsNamespace);
 				if (mimeTypeElement != null)
 					_cachedMimeType = mimeTypeElement.getValue();
-				Element extentElement = mediaElement.getFirstChildElement(MediaExtent.NAME, ddmsNamespace);
+				Element extentElement = mediaElement.getFirstChildElement(Extent.NAME, ddmsNamespace);
 				if (extentElement != null)
-					_cachedExtent = new MediaExtent(extentElement);
+					_cachedExtent = new Extent(extentElement);
 				Element mediumElement = mediaElement.getFirstChildElement(MEDIUM_NAME, ddmsNamespace);
 				if (mediumElement != null)
 					_cachedMedium = mediumElement.getValue();
@@ -116,7 +116,7 @@ public final class Format extends AbstractBaseComponent {
 	 * @param medium the medium element (may be null)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Format(String mimeType, MediaExtent extent, String medium) throws InvalidDDMSException {
+	public Format(String mimeType, Extent extent, String medium) throws InvalidDDMSException {
 		try {
 			Element mediaElement = Util.buildDDMSElement(MEDIA_NAME, null);
 			Util.addDDMSChildElement(mediaElement, MIME_TYPE_NAME, mimeType);
@@ -155,7 +155,7 @@ public final class Format extends AbstractBaseComponent {
 		Util.requireDDMSValue("Media element", mediaElement);
 		Util.requireDDMSValue(MIME_TYPE_NAME, getMimeType());
 		Util.requireBoundedDDMSChildCount(mediaElement, MIME_TYPE_NAME, 1, 1);
-		Util.requireBoundedDDMSChildCount(mediaElement, MediaExtent.NAME, 0, 1);
+		Util.requireBoundedDDMSChildCount(mediaElement, Extent.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(mediaElement, MEDIUM_NAME, 0, 1);
 		if (getExtent() != null)
 			Util.requireCompatibleVersion(this, getExtent());
@@ -168,7 +168,7 @@ public final class Format extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A ddms:medium element was found with no value.</li>
-	 * <li>Include any validation warnings from the MediaExtent child.</li>
+	 * <li>Include any validation warnings from the Extent child.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
@@ -248,7 +248,7 @@ public final class Format extends AbstractBaseComponent {
 	/**
 	 * Accessor for the extent
 	 */
-	public MediaExtent getExtent() {
+	public Extent getExtent() {
 		return (_cachedExtent);
 	}
 
@@ -283,7 +283,7 @@ public final class Format extends AbstractBaseComponent {
 	public static class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = 7851044806424206976L;
 		private String _mimeType;
-		private MediaExtent.Builder _extent;
+		private Extent.Builder _extent;
 		private String _medium;
 		
 		/**
@@ -297,7 +297,7 @@ public final class Format extends AbstractBaseComponent {
 		public Builder(Format format) {
 			setMimeType(format.getMimeType());
 			if (format.getExtent() != null)
-				setExtent(new MediaExtent.Builder(format.getExtent()));
+				setExtent(new Extent.Builder(format.getExtent()));
 			setMedium(format.getMedium());			
 		}
 		
@@ -332,16 +332,16 @@ public final class Format extends AbstractBaseComponent {
 		/**
 		 * Builder accessor for the mediaExtent element.
 		 */
-		public MediaExtent.Builder getExtent() {
+		public Extent.Builder getExtent() {
 			if (_extent == null)
-				_extent = new MediaExtent.Builder();
+				_extent = new Extent.Builder();
 			return _extent;
 		}
 
 		/**
 		 * Builder accessor for the mediaExtent element.
 		 */
-		public void setExtent(MediaExtent.Builder extent) {
+		public void setExtent(Extent.Builder extent) {
 			_extent = extent;
 		}
 

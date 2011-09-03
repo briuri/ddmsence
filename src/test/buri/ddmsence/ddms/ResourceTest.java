@@ -33,7 +33,7 @@ import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.extensible.ExtensibleElement;
 import buri.ddmsence.ddms.extensible.ExtensibleElementTest;
 import buri.ddmsence.ddms.format.Format;
-import buri.ddmsence.ddms.format.MediaExtent;
+import buri.ddmsence.ddms.format.Extent;
 import buri.ddmsence.ddms.resource.Contributor;
 import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Dates;
@@ -938,7 +938,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			// Nested warnings
 			List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
-			components.add(new Format("test", new MediaExtent("test", ""), "test"));
+			components.add(new Format("test", new Extent("test", ""), "test"));
 			component = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
 				getDESVersion());
 			warnings = DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? 1 : 2;
