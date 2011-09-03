@@ -291,7 +291,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	protected String getLocatorSuffix() {
 		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		return (version.isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix() + ":" + TIME_PERIOD_NAME);
+		return (version.isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix()
+			+ ":" + TIME_PERIOD_NAME);
 	}
 	
 	/**
