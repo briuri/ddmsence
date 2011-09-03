@@ -34,7 +34,7 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:security.
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ICISM:excludeFromRollup</u>: (required, fixed as "true", starting in v3.0)<br />
+ * <u>ICISM:excludeFromRollup</u>: (required, fixed as "true", starting in DDMS 3.0)<br />
  * This class is also decorated with ICISM {@link SecurityAttributes}. The classification and
  * ownerProducer attributes are required.
  * </td></tr></table>
@@ -106,7 +106,7 @@ public final class Security extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>(v3.0, 3.1, 4.0) The excludeFromRollup is set and has a value of "true".</li>
+	 * <li>The excludeFromRollup is set and has a value of "true", starting in DDMS 3.0.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -124,7 +124,7 @@ public final class Security extends AbstractBaseComponent {
 					+ FIXED_ROLLUP + "\".");
 		}
 		else if (getExcludeFromRollup() != null)
-			throw new InvalidDDMSException("The excludeFromRollup attribute cannot be used in DDMS 2.0.");
+			throw new InvalidDDMSException("The excludeFromRollup attribute cannot be used until DDMS 3.0 or later.");
 		
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
@@ -149,7 +149,7 @@ public final class Security extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		if (getExcludeFromRollup() != null)
-			html.append(buildHTMLMeta("security.excludeFromRollup", String.valueOf(getExcludeFromRollup()), true));
+			html.append(buildHTMLMeta(Security.NAME + "." + EXCLUDE_FROM_ROLLUP_NAME, String.valueOf(getExcludeFromRollup()), true));
 		html.append(getSecurityAttributes().toHTML(Security.NAME));
 		return (html.toString());
 	}
@@ -160,7 +160,7 @@ public final class Security extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		if (getExcludeFromRollup() != null)
-			text.append(buildTextLine("excludeFromRollup", String.valueOf(getExcludeFromRollup()), true));
+			text.append(buildTextLine(EXCLUDE_FROM_ROLLUP_NAME, String.valueOf(getExcludeFromRollup()), true));
 		text.append(getSecurityAttributes().toText(""));
 		return (text.toString());
 	}
@@ -172,7 +172,7 @@ public final class Security extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Security))
 			return (false);
 		Security test = (Security) obj;
-		// ExcludeFromRollup is not included in equality, becuase it is fixed at TRUE.
+		// ExcludeFromRollup is not included in equality, because it is fixed at TRUE.
 		return (getSecurityAttributes().equals(test.getSecurityAttributes()));
 	}
 
@@ -181,7 +181,7 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		// ExcludeFromRollup is not included in hashCode, becuase it is fixed at TRUE.
+		// ExcludeFromRollup is not included in hashCode, because it is fixed at TRUE.
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}

@@ -142,8 +142,8 @@ public final class Keyword extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The keyword value exists and is not empty.</li>
-	 * <li>The SecurityAttributes do not exist in DDMS 2.0, 3.0, or 3.1.</li>
-	 * <li>(v2.0) No extensible attributes can exist.</li>
+	 * <li>The SecurityAttributes do not exist until DDMS 4.0 or later.</li>
+	 * <li>No extensible attributes can exist until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -179,9 +179,10 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("subjectCoverage.Subject.keyword", getValue(), false));
-		html.append(getSecurityAttributes().toHTML("subjectCoverage.Subject.keyword"));
-		html.append(getExtensibleAttributes().toHTML("subjectCoverage.Subject.keyword"));
+		String prefix = SubjectCoverage.NAME + ".Subject." + NAME;
+		html.append(buildHTMLMeta(prefix, getValue(), false));
+		html.append(getSecurityAttributes().toHTML(prefix));
+		html.append(getExtensibleAttributes().toHTML(prefix));
 		return (html.toString());
 
 	}
@@ -191,9 +192,9 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("keyword", getValue(), false));
-		text.append(getSecurityAttributes().toText("keyword"));
-		text.append(getExtensibleAttributes().toText("keyword"));
+		text.append(buildTextLine(NAME, getValue(), false));
+		text.append(getSecurityAttributes().toText(NAME));
+		text.append(getExtensibleAttributes().toText(NAME));
 		return (text.toString());
 	}
 	

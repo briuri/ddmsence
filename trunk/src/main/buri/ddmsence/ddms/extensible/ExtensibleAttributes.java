@@ -45,7 +45,7 @@ import buri.ddmsence.util.Util;
 /**
  * Attribute group representing the xs:anyAttribute tag which appears on various DDMS components.
  * 
- * <p>In DDMS 3.0, this attribute group can decorate {@link Organization}, {@link Person}, {@link Service},
+ * <p>Starting in DDMS 3.0, this attribute group can decorate {@link Organization}, {@link Person}, {@link Service},
  * {@link Unknown}, {@link Keyword}, {@link Category}, or the {@link Resource} itself. In DDMS 2.0, this attribute group
  * can only decorate {@link Organization}, {@link Person}, {@link Service}, or the {@link Resource}.</p>
  * 
@@ -66,9 +66,12 @@ import buri.ddmsence.util.Util;
  * 
  * <p>The DDMS documentation does not provide sample HTML/Text output for extensible attributes, so the following
  * approach is used. In general, the HTML/Text output of extensible attributes will be prefixed with the name of the
- * element being marked. For example:</p> <ul><code> keyword opensearch:relevance: 95<br /> keyword opensearch:confidence: 82
- * <br /> &lt;meta name="subjectCoverage.Subject.keyword.opensearch.relevance" content="95" /&gt;<br /> &lt;meta
- * name="subjectCoverage.Subject.keyword.opensearch.confidence" content="82" /&gt;<br /> </code></ul></p>
+ * element being marked. For example:</p> 
+ * 
+ * <ul><code> keyword opensearch:relevance: 95<br /> keyword opensearch:confidence: 82<br />
+ * &lt;meta name="subjectCoverage.Subject.keyword.opensearch.relevance" content="95" /&gt;<br />
+ * &lt;meta name="subjectCoverage.Subject.keyword.opensearch.confidence" content="82" /&gt;<br />
+ * </code></ul>
  * 
  * <p>Details about the XOM Attribute class can be found at:
  * <i>http://www.xom.nu/apidocs/index.html?nu/xom/Attribute.html</i></p>

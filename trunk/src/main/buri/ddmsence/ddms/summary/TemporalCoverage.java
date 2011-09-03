@@ -232,7 +232,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * <li>end is a valid date format.</li>
 	 * <li>0-1 names, exactly 1 start, and exactly 1 end exist.</li>
 	 * <li>The start date is before the end date.</li>
-	 * <li>The SecurityAttributes do not exist in DDMS 2.0.</li>
+	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -300,9 +300,10 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("temporalCoverage.TimePeriod.name", getTimePeriodName(), false));
-		html.append(buildHTMLMeta("temporalCoverage.TimePeriod.start", getStartString(), true));
-		html.append(buildHTMLMeta("temporalCoverage.TimePeriod.end", getEndString(), true));
+		String prefix = NAME + "." + TIME_PERIOD_NAME + ".";
+		html.append(buildHTMLMeta(prefix + TIME_PERIOD_NAME_NAME, getTimePeriodName(), false));
+		html.append(buildHTMLMeta(prefix + START_NAME, getStartString(), true));
+		html.append(buildHTMLMeta(prefix + END_NAME, getEndString(), true));
 		html.append(getSecurityAttributes().toHTML("temporalCoverage"));
 		return (html.toString());
 	}
@@ -312,9 +313,9 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("TimePeriod name", getTimePeriodName(), false));
-		text.append(buildTextLine("TimePeriod start", getStartString(), true));
-		text.append(buildTextLine("TimePeriod end", getEndString(), true));
+		text.append(buildTextLine(TIME_PERIOD_NAME + " " + TIME_PERIOD_NAME_NAME, getTimePeriodName(), false));
+		text.append(buildTextLine(TIME_PERIOD_NAME + " " + START_NAME, getStartString(), true));
+		text.append(buildTextLine(TIME_PERIOD_NAME + " " + END_NAME, getEndString(), true));
 		text.append(getSecurityAttributes().toText("TimePeriod"));
 		return (text.toString());
 	}

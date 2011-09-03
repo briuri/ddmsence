@@ -73,7 +73,7 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:Resource (the top-level element of a DDMS record).
  * 
  * <p>
- * DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 schema still allows 
+ * Starting in DDMS 3.0, resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 schema still allows 
  * "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present.
  * </p>
  *  
@@ -125,11 +125,11 @@ import buri.ddmsence.util.Util;
  * markings on this record. (required, starting in DDMS 3.0)<br />
  * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
  * ownerProducer attributes are required. Optional {@link ExtensibleAttributes} can also be applied.<br /><br />
- * In DDMS 3.0, the ICISM attributes explicitly defined in the schema should appear in the SecurityAttributes, not
+ * Starting in DDMS 3.0, the ICISM attributes explicitly defined in the schema should appear in the SecurityAttributes, not
  * the ExtensibleAttributes. Attempts to load them as ExtensibleAttributes will throw an InvalidDDMSException.
  * <br /><br />
  * In DDMS 2.0, there are no ICISM attributes explicitly defined in the schema, so you can load them in any way you 
- * want. It is recommended that you load them as SecurityAttributes anyhow, for consistency with DDMS 3.0 resources. 
+ * want. It is recommended that you load them as SecurityAttributes anyhow, for consistency with newer DDMS resources. 
  * Please see the "Power Tips" on the Extensible Layer (on the DDMSence home page) for details. 
  * </td></tr></table>
  * 
@@ -199,8 +199,8 @@ public final class Resource extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
-	 * <p>DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 schema still
-	 * allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present. </p>
+	 * <p>Starting in DDMS 3.0, resources have additional ICISM attributes which did not exist in 2.0. However, the 
+	 * 2.0 schema still allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present.</p>
 	 * 
 	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -330,7 +330,7 @@ public final class Resource extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a DDMS 2.0 Resource from raw data.
 	 * 
-	 * <p>This helper constructor merely calls the fully-parameterized version. Attempts to use it with DDMS 3.0
+	 * <p>This helper constructor merely calls the fully-parameterized version. Attempts to use it with DDMS 3.0 (or higher)
 	 * components will fail, because some required attributes are missing.</p>
 	 * 
 	 * @param topLevelComponents a list of top level components
@@ -343,7 +343,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * Constructor for creating a DDMS 2.0 Resource from raw data.
 	 * 
 	 * <p>This helper constructor merely calls the fully-parameterized version. Attempts to use it with DDMS 3.0
-	 * components will fail, because some required attributes are missing.</p>
+	 * (or higher) components will fail, because some required attributes are missing.</p>
 	 * 
 	 * @param topLevelComponents a list of top level components
 	 * @param extensions any extensible attributes (optional)
@@ -353,15 +353,15 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Constructor for creating a DDMS 2.0 or 3.0 Resource from raw data.
+	 * Constructor for creating a DDMS resource of any version from raw data.
 	 * 
 	 * <p>This helper constructor merely calls the fully-parameterized version.</p>
 	 * 
 	 * @param topLevelComponents a list of top level components
-	 * @param resourceElement value of the resourceElement attribute (required in v3.0)
-	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required in v3.0)
-	 * @param desVersion the DES Version as an Integer (required in v3.0)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required in v3.0)
+	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
+	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
+	 * @param desVersion the DES Version as an Integer (required, starting in DDMS 3.0)
+	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in DDMS 3.0)
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
 		Integer desVersion, SecurityAttributes securityAttributes) throws InvalidDDMSException {
@@ -369,7 +369,7 @@ public final class Resource extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Constructor for creating a DDMS 2.0 or 3.0 Resource from raw data.
+	 * Constructor for creating a DDMS resource of any version from raw data.
 	 * 
 	 * <p>The other two data-driven constructors call this one.</p>
 	 * 
@@ -382,14 +382,14 @@ public final class Resource extends AbstractBaseComponent {
 	 * multiple identifier components), those components will be stored and output in the order of the list. If only 1
 	 * instance can be supported, the last one in the list will be the one used. </p>
 	 * 
-	 * <p> DDMS 3.0 Resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 schema still
-	 * allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present. </p>
+	 * <p>Starting in DDMS 3.0, resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 
+	 * schema still allows "any" attributes on the Resource, so the attribute values will be loaded if present. </p>
 	 * 
 	 * @param topLevelComponents a list of top level components
-	 * @param resourceElement value of the resourceElement attribute (required in v3.0)
-	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required in v3.0)
-	 * @param desVersion the DES Version as an Integer (required in v3.0)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required in v3.0)
+	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
+	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
+	 * @param desVersion the DES Version as an Integer (required, starting in DDMS 3.0)
+	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in DDMS 3.0)
 	 * @param extensions any extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
 	 * does not belong at the top-level of the Resource.
@@ -527,8 +527,8 @@ public final class Resource extends AbstractBaseComponent {
 
 	/**
 	 * Performs a Schematron validation of the DDMS Resource, via the ISO Schematron skeleton stylesheets for XSLT1
-	 * processors. This action can only be performed on a DDMS Resource which is already valid according to the DDMS
-	 * specification.
+	 * or XSLT2 processors. This action can only be performed on a DDMS Resource which is already valid according 
+	 * to the DDMS specification.
 	 * 
 	 * <p>The informational results of this validation are returned to the caller in a list of ValidationMessages of
 	 * type "Warning" for reports and "Error" for failed asserts. These messages do NOT affect the validity of the
@@ -576,13 +576,13 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>If this resource has security attributes, the SecurityAttributes on any subcomponents are valid according 
 	 * to rollup rules (security attributes are not required in DDMS 2.0).</li>
 	 * <li>All child components are using the same version of DDMS.</li>
-	 * <li>(v3.0, 3.1, 4.0) resourceElement attribute must exist.</li>
-	 * <li>(v3.0, 3.1, 4.0) createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD).</li>
-	 * <li>(v3.0, 3.1, 4.0) DESVersion must exist and be a valid Integer.</li>
-	 * <li>(v3.1) DESVersion must exist and be "5".</li>
-	 * <li>(v3.0, 3.1, 4.0) A classification is required.</li>
-	 * <li>(v3.0, 3.1, 4.0) At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>(v2.0) Only 1 extensible element can exist.</li>
+	 * <li>resourceElement attribute must exist, starting in DDMS 3.0.</li>
+	 * <li>createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD), starting in DDMS 3.0.</li>
+	 * <li>DESVersion must exist and be a valid Integer, starting in DDMS 3.0.</li>
+	 * <li>DESVersion must exist and be "5" in DDMS 3.1.</li>
+	 * <li>A classification is required, starting in DDMS 3.0.</li>
+	 * <li>At least 1 ownerProducer exists and is non-empty, starting in DDMS 3.0y.</li>
+	 * <li>Only 1 extensible element can exist in DDMS 2.0.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see ISMVocabulary#validateRollup(SecurityAttributes, Set)
@@ -619,7 +619,6 @@ public final class Resource extends AbstractBaseComponent {
 				continue;
 			Util.requireCompatibleVersion(this, component);
 		}
-
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
@@ -645,7 +644,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>(v2.0) If ddms:Resource has no classification, warn about ignoring rollup validation.</li>
+	 * <li>If ddms:Resource has no classification, warn about ignoring rollup validation.</li>
 	 * <li>Include all child component validation warnings, and any warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
@@ -666,18 +665,20 @@ public final class Resource extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		if (isResourceElement() != null)
-			html.append(buildHTMLMeta("security.resourceElement", String.valueOf(isResourceElement()), true));
+			html.append(buildHTMLMeta(Security.NAME + "." + RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement()),
+				true));
 		if (getCreateDate() != null)
-			html.append(buildHTMLMeta("security.createDate", getCreateDate().toXMLFormat(), true));
+			html.append(buildHTMLMeta(Security.NAME + "." + CREATE_DATE_NAME, getCreateDate().toXMLFormat(), true));
 		if (getDESVersion() != null)
-			html.append(buildHTMLMeta("security.DESVersion", String.valueOf(getDESVersion()), true));
+			html.append(buildHTMLMeta(Security.NAME + "." + DES_VERSION_NAME, String.valueOf(getDESVersion()), true));
 		html.append(getSecurityAttributes().toHTML(Security.NAME));
 		html.append(getExtensibleAttributes().toHTML(""));
 		for (IDDMSComponent component : getTopLevelComponents())
 			html.append(component.toHTML());
 		html.append(buildHTMLMeta("extensible.layer", String.valueOf(!getExtensibleElements().isEmpty()), true));
 		html.append(buildHTMLMeta("ddms.generator", "DDMSence " + PropertyReader.getProperty("version"), true));
-		html.append(buildHTMLMeta("ddms.version", DDMSVersion.getVersionForDDMSNamespace(getNamespace()).getVersion(), true));
+		html.append(buildHTMLMeta("ddms.version", DDMSVersion.getVersionForDDMSNamespace(getNamespace()).getVersion(),
+			true));
 		return (html.toString());
 	}
 
@@ -687,18 +688,19 @@ public final class Resource extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		if (isResourceElement() != null)
-			text.append(buildTextLine("resourceElement", String.valueOf(isResourceElement()), true));
+			text.append(buildTextLine(RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement()), true));
 		if (getCreateDate() != null)
-			text.append(buildTextLine("createDate", getCreateDate().toXMLFormat(), true));
+			text.append(buildTextLine(CREATE_DATE_NAME, getCreateDate().toXMLFormat(), true));
 		if (getDESVersion() != null)
-			text.append(buildTextLine("DESVersion", String.valueOf(getDESVersion()), true));
+			text.append(buildTextLine(DES_VERSION_NAME, String.valueOf(getDESVersion()), true));
 		text.append(getSecurityAttributes().toText(""));
 		text.append(getExtensibleAttributes().toText(""));
 		for (IDDMSComponent component : getTopLevelComponents())
 			text.append(component.toText());
 		text.append(buildTextLine("extensibleLayer", String.valueOf(!getExtensibleElements().isEmpty()), true));
 		text.append(buildTextLine("DDMSGenerator", "DDMSence " + PropertyReader.getProperty("version"), true));
-		text.append(buildTextLine("DDMSVersion", DDMSVersion.getVersionForDDMSNamespace(getNamespace()).getVersion(), true));
+		text.append(buildTextLine("DDMSVersion", DDMSVersion.getVersionForDDMSNamespace(getNamespace()).getVersion(),
+			true));
 		return (text.toString());
 	}
 

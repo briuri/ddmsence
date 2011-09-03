@@ -152,11 +152,12 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("relatedResources.RelatedResource.link.type", getType(), true));
-		html.append(buildHTMLMeta("relatedResources.RelatedResource.link.href", getHref(), true));
-		html.append(buildHTMLMeta("relatedResources.RelatedResource.link.role", getRole(), false));
-		html.append(buildHTMLMeta("relatedResources.RelatedResource.link.title", getTitle(), false));
-		html.append(buildHTMLMeta("relatedResources.RelatedResource.link.label", getLabel(), false));
+		String prefix = RelatedResources.NAME + "." + RelatedResource.NAME + "." + NAME + ".";
+		html.append(buildHTMLMeta(prefix + TYPE_NAME, getType(), true));
+		html.append(buildHTMLMeta(prefix + HREF_NAME, getHref(), true));
+		html.append(buildHTMLMeta(prefix + ROLE_NAME, getRole(), false));
+		html.append(buildHTMLMeta(prefix + TITLE_NAME, getTitle(), false));
+		html.append(buildHTMLMeta(prefix + LABEL_NAME, getLabel(), false));
 		return (html.toString());
 
 	}
@@ -166,11 +167,12 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Related Resource link type", getType(), true));
-		text.append(buildTextLine("Related Resource link href", getHref(), true));
-		text.append(buildTextLine("Related Resource link role", getRole(), false));
-		text.append(buildTextLine("Related Resource link title", getTitle(), false));
-		text.append(buildTextLine("Related Resource link label", getLabel(), false));
+		String prefix = "Related Resource " + NAME + " "; 
+		text.append(buildTextLine(prefix + TYPE_NAME, getType(), true));
+		text.append(buildTextLine(prefix + HREF_NAME, getHref(), true));
+		text.append(buildTextLine(prefix + ROLE_NAME, getRole(), false));
+		text.append(buildTextLine(prefix + TITLE_NAME, getTitle(), false));
+		text.append(buildTextLine(prefix + LABEL_NAME, getLabel(), false));
 		return (text.toString());
 	}
 	

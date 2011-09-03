@@ -105,8 +105,8 @@ public final class Identifier extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("identifier.qualifier", getQualifier(), true));
-		html.append(buildHTMLMeta("identifier.value", getValue(), true));
+		html.append(buildHTMLMeta(NAME + "." + QUALIFIER_NAME, getQualifier(), true));
+		html.append(buildHTMLMeta(NAME + "." + VALUE_NAME, getValue(), true));
 		return (html.toString());
 	}
 	
@@ -115,8 +115,8 @@ public final class Identifier extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("identifier qualifier", getQualifier(), true));
-		text.append(buildTextLine("identifier value", getValue(), true));
+		text.append(buildTextLine(NAME + " " + QUALIFIER_NAME, getQualifier(), true));
+		text.append(buildTextLine(NAME + " " + VALUE_NAME, getValue(), true));
 		return (text.toString());
 	}
 	

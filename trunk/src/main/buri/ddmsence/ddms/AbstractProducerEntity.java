@@ -251,11 +251,11 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 		StringBuffer html = new StringBuffer();
 		html.append(buildHTMLMeta(getParentType() + ".entityType", getName(), true));
 		for (String name : getNames())
-			html.append(buildHTMLMeta(getParentType() + ".name", name, true));
+			html.append(buildHTMLMeta(getParentType() + "." + NAME_NAME, name, true));
 		for (String phone : getPhones())
-			html.append(buildHTMLMeta(getParentType() + ".phone", phone, true));
+			html.append(buildHTMLMeta(getParentType() + "." + PHONE_NAME, phone, true));
 		for (String email : getEmails())
-			html.append(buildHTMLMeta(getParentType() + ".email", email, true));
+			html.append(buildHTMLMeta(getParentType() + "." + EMAIL_NAME, email, true));
 		html.append(getExtensibleAttributes().toHTML(getParentType()));
 		return (html.toString());
 	}
@@ -270,11 +270,11 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 		StringBuffer text = new StringBuffer();
 		text.append(buildTextLine(getParentType() + " EntityType", getName(), true));
 		for (String name : getNames())
-			text.append(buildTextLine("name", name, true));
+			text.append(buildTextLine(NAME_NAME, name, true));
 		for (String phone : getPhones())
-			text.append(buildTextLine("phone", phone, true));
+			text.append(buildTextLine(PHONE_NAME, phone, true));
 		for (String email : getEmails())
-			text.append(buildTextLine("email", email, true));
+			text.append(buildTextLine(EMAIL_NAME, email, true));
 		text.append(getExtensibleAttributes().toText(getParentType()));
 		return (text.toString());		
 	}

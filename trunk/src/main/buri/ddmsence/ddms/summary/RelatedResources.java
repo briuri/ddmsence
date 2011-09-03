@@ -41,7 +41,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p><ul>
  * <li>A non-empty relationship attribute is required.</li>
- * <li>(v2.0) Although 0 RelatedResource elements can exist in v2.0, this is considered invalid data. DDMSence requires
+ * <li>Although 0 RelatedResource elements can exist in DDMS 2.0, this is considered invalid data. DDMSence requires
  * at least 1 RelatedResource.</li>
  * </ul>
  * </td></tr></table>
@@ -210,8 +210,8 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("relatedResources.relationship", getRelationship(), true));
-		html.append(buildHTMLMeta("relatedResources.direction", getDirection(), false));
+		html.append(buildHTMLMeta(NAME + "." + RELATIONSHIP_NAME, getRelationship(), true));
+		html.append(buildHTMLMeta(NAME + "." + DIRECTION_NAME, getDirection(), false));
 		for (RelatedResource resource : getRelatedResources()) {
 			html.append(resource.toHTML());
 		}
@@ -224,8 +224,8 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("relatedResources relationship", getRelationship(), true));
-		text.append(buildTextLine("relatedResources direction", getDirection(), false));
+		text.append(buildTextLine(NAME + " " + RELATIONSHIP_NAME, getRelationship(), true));
+		text.append(buildTextLine(NAME + " " + DIRECTION_NAME, getDirection(), false));
 		for (RelatedResource resource : getRelatedResources()) {
 			text.append(resource.toText());
 		}

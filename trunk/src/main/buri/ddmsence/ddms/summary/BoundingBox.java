@@ -161,10 +161,11 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingBox.WestBL", String.valueOf(getWestBL()), true));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingBox.EastBL", String.valueOf(getEastBL()), true));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingBox.SouthBL", String.valueOf(getSouthBL()), true));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingBox.NorthBL", String.valueOf(getNorthBL()), true));
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + NAME + ".";
+		html.append(buildHTMLMeta(prefix + WEST_BL_NAME, String.valueOf(getWestBL()), true));
+		html.append(buildHTMLMeta(prefix + EAST_BL_NAME, String.valueOf(getEastBL()), true));
+		html.append(buildHTMLMeta(prefix + SOUTH_BL_NAME, String.valueOf(getSouthBL()), true));
+		html.append(buildHTMLMeta(prefix + NORTH_BL_NAME, String.valueOf(getNorthBL()), true));
 		return (html.toString());
 	}
 	
@@ -173,10 +174,10 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("boundingBox WestBL", String.valueOf(getWestBL()), true));
-		text.append(buildTextLine("boundingBox EastBL", String.valueOf(getEastBL()), true));
-		text.append(buildTextLine("boundingBox SouthBL", String.valueOf(getSouthBL()), true));
-		text.append(buildTextLine("boundingBox NorthBL", String.valueOf(getNorthBL()), true));
+		text.append(buildTextLine(NAME + " " + WEST_BL_NAME, String.valueOf(getWestBL()), true));
+		text.append(buildTextLine(NAME + " " + EAST_BL_NAME, String.valueOf(getEastBL()), true));
+		text.append(buildTextLine(NAME + " " + SOUTH_BL_NAME, String.valueOf(getSouthBL()), true));
+		text.append(buildTextLine(NAME + " " + NORTH_BL_NAME, String.valueOf(getNorthBL()), true));
 		return (text.toString());
 	}
 	

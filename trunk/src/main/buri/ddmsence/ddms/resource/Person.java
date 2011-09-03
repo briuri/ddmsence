@@ -202,9 +202,9 @@ public final class Person extends AbstractProducerEntity {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer(super.toHTML());
-		html.append(buildHTMLMeta(getParentType() + ".surname", getSurname(), true));
-		html.append(buildHTMLMeta(getParentType() + ".userID", getUserID(), false));
-		html.append(buildHTMLMeta(getParentType() + ".affiliation", getAffiliation(), false));
+		html.append(buildHTMLMeta(getParentType() + "." + SURNAME_NAME, getSurname(), true));
+		html.append(buildHTMLMeta(getParentType() + "." + USERID_NAME, getUserID(), false));
+		html.append(buildHTMLMeta(getParentType() + "." + AFFILIATION_NAME, getAffiliation(), false));
 		return (html.toString());
 	}
 
@@ -216,9 +216,9 @@ public final class Person extends AbstractProducerEntity {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer(super.toText());
-		text.append(buildTextLine("surname", getSurname(), true));
-		text.append(buildTextLine("userID", getUserID(), false));
-		text.append(buildTextLine("affiliation", getAffiliation(), false));
+		text.append(buildTextLine(SURNAME_NAME, getSurname(), true));
+		text.append(buildTextLine(USERID_NAME, getUserID(), false));
+		text.append(buildTextLine(AFFILIATION_NAME, getAffiliation(), false));
 		return (text.toString());
 	}
 	

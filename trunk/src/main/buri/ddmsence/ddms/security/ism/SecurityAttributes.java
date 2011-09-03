@@ -35,7 +35,6 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractAttributeGroup;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.util.DDMSVersion;
@@ -46,17 +45,6 @@ import buri.ddmsence.util.Util;
 /**
  * Attribute group for the ICISM markings used throughout DDMS.
  * 
- * <p>In DDMS 3.0, this attribute group can decorate {@link buri.ddmsence.ddms.summary.Description}, 
- * {@link buri.ddmsence.ddms.summary.GeospatialCoverage}, {@link Organization},
- * {@link Person}, {@link buri.ddmsence.ddms.summary.RelatedResources}, {@link Security}, {@link Service}, 
- * {@link buri.ddmsence.ddms.resource.Source}, {@link buri.ddmsence.ddms.summary.SubjectCoverage}, {@link buri.ddmsence.ddms.resource.Subtitle},
- * {@link buri.ddmsence.ddms.summary.TemporalCoverage}, {@link buri.ddmsence.ddms.resource.Title}, {@link Unknown}, 
- * {@link buri.ddmsence.ddms.summary.VirtualCoverage}, or the {@link Resource} itself. In DDMS 2.0, this 
- * attribute group can only decorate {@link buri.ddmsence.ddms.summary.Description}, {@link Organization}, 
- * {@link Person}, {@link buri.ddmsence.ddms.summary.RelatedResources}, 
- * {@link Security}, {@link Service}, {@link buri.ddmsence.ddms.resource.Subtitle}, 
- * {@link buri.ddmsence.ddms.resource.Title}, {@link Unknown}, or the {@link Resource} itself.</p>		
- * 				
  * <p>The DDMS documentation does not provide sample HTML/Text output for every attribute, so a best guess was taken. 
  * In general, the HTML/Text output of security attributes will be prefixed with the name of the element being marked.
  * For example:</p>
@@ -79,30 +67,30 @@ import buri.ddmsence.util.Util;
  * point to a classpath accessible directory containing your enumeration XML files.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ICISM:atomicEnergyMarkings</u>: (optional, v3.1 only)<br />
+ * <u>ICISM:atomicEnergyMarkings</u>: (optional, starting in DDMS 3.1)<br />
  * <u>ICISM:classification</u>: (optional)<br />
  * <u>ICISM:classificationReason</u>: (optional)<br />
  * <u>ICISM:classifiedBy</u>: (optional)<br />
- * <u>ICISM:compilationReason</u>: (optional, v3.0, v3.1 only)<br />
+ * <u>ICISM:compilationReason</u>: (optional, starting in DDMS 3.0)<br />
  * <u>ICISM:compliesWith</u>: (optional, v3.1 only)<br />
- * <u>ICISM:dateOfExemptedSource</u>: (optional, v2.0, v3.0 only)<br />
+ * <u>ICISM:dateOfExemptedSource</u>: (optional, DDMS 2.0 and 3.0 only)<br />
  * <u>ICISM:declassDate</u>: (optional)<br />
  * <u>ICISM:declassEvent</u>: (optional)<br />
  * <u>ICISM:declassException</u>: (optional)<br />
- * <u>ICISM:declassManualReview</u>: (optional, v2.0 only)<br />
+ * <u>ICISM:declassManualReview</u>: (optional, DDMS 2.0 only)<br />
  * <u>ICISM:derivativelyClassifiedBy</u>: (optional)<br />
  * <u>ICISM:derivedFrom</u>: (optional)<br />
- * <u>ICISM:displayOnlyTo</u>: (optional, v3.1 only)<br />
+ * <u>ICISM:displayOnlyTo</u>: (optional, starting in DDMS 3.1)<br />
  * <u>ICISM:disseminationControls</u>: (optional)<br />
  * <u>ICISM:FGIsourceOpen</u>: (optional)<br />
  * <u>ICISM:FGIsourceProtected</u>: (optional)<br />
  * <u>ICISM:nonICmarkings</u>: (optional)<br />
- * <u>ICISM:nonUSControls</u>: (optional, v3.1 only)<br />
+ * <u>ICISM:nonUSControls</u>: (optional, starting in DDMS 3.1)<br />
  * <u>ICISM:ownerProducer</u>: (optional)<br />
  * <u>ICISM:releasableTo</u>: (optional)<br />
  * <u>ICISM:SARIdentifier</u>: (optional)<br />
  * <u>ICISM:SCIcontrols</u>: (optional)<br />
- * <u>ICISM:typeOfExemptedSource</u>: (optional, v2.0, v3.0 only)<br />
+ * <u>ICISM:typeOfExemptedSource</u>: (optional, DDMS 2.0 and 3.0 only)<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -444,31 +432,31 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * "compliationReason" on a DDMS 2.0 component will always result in an error.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>(v2.0, 3.0) The atomicEnergyMarkings cannot be used until DDMS 3.1 or later.</li>
-	 * <li>If set, the atomicEnergyMarkings must be valid tokens.</li>
-	 * <li>If set, the classification must be a valid token.</li>
-	 * <li>(v2.0, 3.0) The compliesWith cannot be used until DDMS 3.1 or later.</li>
-	 * <li>If set, the compliesWith must be valid tokens.</li>
-	 * <li>(v2.0) The compilationReason cannot be used in DDMS 2.0.</li>
-	 * <li>(v2.0, 3.0) The dateOfExemptedSource can only be used until DDMS 3.1 or later.</li>
-	 * <li>If set, the dateOfExemptedSource is a valid xs:date value.</li>
-	 * <li>If set, the declassDate is a valid xs:date value.</li>
-	 * <li>If set, the declassException must be a valid token.</li>
-	 * <li>(v2.0) The declassManualReview cannot be used after DDMS 2.0.</li>
-	 * <li>(v2.0, 3.0) The displayOnlyTo cannot be used until DDMS 3.1 or later.</li>
-	 * <li>If set, the displayOnlyTo must be valid tokens.</li>
-	 * <li>If set, the disseminationControls must be valid tokens.</li>
-	 * <li>If set, the FGIsourceOpen must be valid tokens.</li>
-	 * <li>If set, the FGIsourceProtected must be valid tokens.</li>
-	 * <li>If set, the nonICmarkings must be valid tokens.</li>
-	 * <li>(v2.0, 3.0) The nonUSControls cannot be used until DDMS 3.1 or later..</li>
-	 * <li>If set, the nonUSControls must be valid tokens.</li>	 
-	 * <li>If set, the ownerProducers must be valid tokens.</li>
-	 * <li>If set, the releasableTo must be valid tokens.</li>
-	 * <li>If set, the SARIdentifiers must be valid tokens.</li>
-	 * <li>If set, the SCIcontrols must be valid tokens.</li>
-	 * <li>(v2.0, 3.0) The typeOfExemptedSource can only be used in DDMS 2.0 or DDMS 3.0.</li>
-	 * <li>If set, the typeOfExemptedSource must be a valid token.</li>
+	 * <li>The atomicEnergyMarkings cannot be used until DDMS 3.1 or later.</li>
+	 * <li>If set, the atomicEnergyMarkings attribute must be valid tokens.</li>
+	 * <li>If set, the classification attribute must be a valid token.</li>
+	 * <li>The compliesWith attribute cannot be used until DDMS 3.1 or later.</li>
+	 * <li>If set, the compliesWith attribute must be valid tokens.</li>
+	 * <li>The compilationReason attribute cannot be used until DDMS 3.0 or later.</li>
+	 * <li>The dateOfExemptedSource attribute can only be used until DDMS 3.1 or later.</li>
+	 * <li>If set, the dateOfExemptedSource attribute is a valid xs:date value.</li>
+	 * <li>If set, the declassDate attribute is a valid xs:date value.</li>
+	 * <li>If set, the declassException attribute must be a valid token.</li>
+	 * <li>The declassManualReview attribute cannot be used after DDMS 2.0.</li>
+	 * <li>The displayOnlyTo attribute cannot be used until DDMS 3.1 or later.</li>
+	 * <li>If set, the displayOnlyTo attribute must be valid tokens.</li>
+	 * <li>If set, the disseminationControls attribute must be valid tokens.</li>
+	 * <li>If set, the FGIsourceOpen attribute must be valid tokens.</li>
+	 * <li>If set, the FGIsourceProtected attribute must be valid tokens.</li>
+	 * <li>If set, the nonICmarkings attribute must be valid tokens.</li>
+	 * <li>The nonUSControls attribute cannot be used until DDMS 3.1 or later..</li>
+	 * <li>If set, the nonUSControls attribute must be valid tokens.</li>	 
+	 * <li>If set, the ownerProducers attribute must be valid tokens.</li>
+	 * <li>If set, the releasableTo attribute must be valid tokens.</li>
+	 * <li>If set, the SARIdentifiers attribute must be valid tokens.</li>
+	 * <li>If set, the SCIcontrols attribute must be valid tokens.</li>
+	 * <li>The typeOfExemptedSource attribute can only be used in DDMS 2.0 or DDMS 3.0.</li>
+	 * <li>If set, the typeOfExemptedSource attribute must be a valid token.</li>
 	 *  
 	 * <li>Does NOT do any validation on the constraints described in the DES ISM specification.</li>
 	 * </td></tr></table>
@@ -495,7 +483,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		for (String with : getCompliesWith())
 			validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);	
 		if (!version.isAtLeast("3.0") && !Util.isEmpty(getCompilationReason()))
-			throw new InvalidDDMSException("The compilationReason attribute cannot be used until DDMS 3.0.");		
+			throw new InvalidDDMSException("The compilationReason attribute cannot be used until DDMS 3.0 or later.");		
 		if (!!version.isAtLeast("3.1") && getDateOfExemptedSource() != null)
 			throw new InvalidDDMSException("The dateOfExemptedSource attribute can only be used until DDMS 3.1 or later.");		
 		if (getDateOfExemptedSource() != null

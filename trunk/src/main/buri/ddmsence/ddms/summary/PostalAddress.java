@@ -208,12 +208,13 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + NAME + ".";
 		for (String street : getStreets())
-			html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.postalAddress.street", street, false));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.postalAddress.city", getCity(), false));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.postalAddress.state", getState(), false));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.postalAddress.province", getProvince(), false));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.postalAddress.postalCode", getPostalCode(), false));
+			html.append(buildHTMLMeta(prefix + STREET_NAME, street, false));
+		html.append(buildHTMLMeta(prefix + CITY_NAME, getCity(), false));
+		html.append(buildHTMLMeta(prefix + STATE_NAME, getState(), false));
+		html.append(buildHTMLMeta(prefix + PROVINCE_NAME, getProvince(), false));
+		html.append(buildHTMLMeta(prefix + POSTAL_CODE_NAME, getPostalCode(), false));
 		if (getCountryCode() != null)
 			html.append(getCountryCode().toHTML());
 		return (html.toString());
@@ -225,11 +226,11 @@ public final class PostalAddress extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		for (String street : getStreets())
-			text.append(buildTextLine("postalAddress street", street, false));
-		text.append(buildTextLine("postalAddress city", getCity(), false));
-		text.append(buildTextLine("postalAddress state", getState(), false));
-		text.append(buildTextLine("postalAddress province", getProvince(), false));
-		text.append(buildTextLine("postalAddress postalCode", getPostalCode(), false));
+			text.append(buildTextLine(NAME + " " + STREET_NAME, street, false));
+		text.append(buildTextLine(NAME + " " + CITY_NAME, getCity(), false));
+		text.append(buildTextLine(NAME + " " + STATE_NAME, getState(), false));
+		text.append(buildTextLine(NAME + " " + PROVINCE_NAME, getProvince(), false));
+		text.append(buildTextLine(NAME + " " + POSTAL_CODE_NAME, getPostalCode(), false));
 		if (getCountryCode() != null)
 			text.append(getCountryCode().toText());
 		return (text.toString());

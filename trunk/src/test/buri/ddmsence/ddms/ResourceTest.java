@@ -282,9 +282,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"language.qualifier\" content=\"http://purl.org/dc/elements/1.1/language\" />\n");
 		html.append("<meta name=\"language.value\" content=\"en\" />\n");
 		html.append("<meta name=\"dates.created\" content=\"2003\" />\n");
-		html.append("<meta name=\"rights.privacy\" content=\"true\" />\n");
-		html.append("<meta name=\"rights.intellectualproperty\" content=\"true\" />\n");
-		html.append("<meta name=\"rights.copy\" content=\"true\" />\n");
+		html.append("<meta name=\"rights.privacyAct\" content=\"true\" />\n");
+		html.append("<meta name=\"rights.intellectualProperty\" content=\"true\" />\n");
+		html.append("<meta name=\"rights.copyright\" content=\"true\" />\n");
 		html.append("<meta name=\"source.value\" content=\"http://www.xmethods.com\" />\n");
 		html.append("<meta name=\"type.qualifier\" content=\"DCMITYPE\" />\n");
 		html.append("<meta name=\"type.value\" content=\"http://purl.org/dc/dcmitype/Text\" />\n");

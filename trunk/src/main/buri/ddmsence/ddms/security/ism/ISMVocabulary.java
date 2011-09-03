@@ -63,30 +63,26 @@ import buri.ddmsence.util.Util;
  * 
  * <ul>
  * <li>CVEnumISM25X.xml: tokens allowed in the "declassException" attribute</li>
- * <li>CVEnumISMAtomicEnergyMarkings.xml: tokens allowed in the "atomicEnergyMarkings" attribute (V5 only)</li>
+ * <li>CVEnumISMAtomicEnergyMarkings.xml: tokens allowed in the "atomicEnergyMarkings" attribute (starting in DDMS 3.1)</li>
  * <li>CVEnumISMClassificationAll.xml: tokens allowed in the "classification" attribute</li>
  * <li>CVEnumISMClassificationUS.xml: subset of the tokens allowed in the "classification" attribute</li>
- * <li>CVEnumISMCompliesWith.xml: tokens allowed in the "compliesWith" attribute (V5 only)</li>
+ * <li>CVEnumISMCompliesWith.xml: tokens allowed in the "compliesWith" attribute (starting in DDMS 3.1)</li>
  * <li>CVEnumISMDissem.xml: tokens allowed in the "disseminationControls" attribute</li>
  * <li>CVEnumISMFGIOpen.xml: tokens allowed in the "FGIsourceOpen" attribute</li>
  * <li>CVEnumISMFGIProtected.xml: tokens allowed in the "FGIsourceProtected" attribute</li>
  * <li>CVEnumISMNonIC.xml: tokens allowed in the "nonICmarkings" attribute</li>
- * <li>CVEnumISMNonUSControls.xml: tokens allowed in the "nonUSControls" attribute (V5 only)</li>
+ * <li>CVEnumISMNonUSControls.xml: tokens allowed in the "nonUSControls" attribute (starting in DDMS 3.1)</li>
  * <li>CVEnumISMOwnerProducer.xml: tokens allowed in the "ownerProducer" attribute</li>
- * <li>CVEnumISMRelTo.xml: tokens allowed in the "displayOnlyTo" (V5 only) and "releasableTo" attribute</li>
+ * <li>CVEnumISMRelTo.xml: tokens allowed in the "displayOnlyTo" (starting in DDMS 3.1) and "releasableTo" attribute</li>
  * <li>CVEnumISMSAR.xml: tokens allowed in the "SARIdentifier" attribute</li>
  * <li>CVEnumISMSCIControls.xml: tokens allowed in the "SCIcontrols" attribute</li>
- * <li>CVEnumISMSourceMarked.xml: tokens allowed in the "typeOfExemptedSource" attribute (V2 only)</li>
+ * <li>CVEnumISMSourceMarked.xml: tokens allowed in the "typeOfExemptedSource" attribute (DDMS 2.0 and DDMS 3.0 only)</li>
  * </ul>
  * 
- * <p>
- * Some of these vocabularies include regular expression patterns.
- * </p>
+ * <p>Some of these vocabularies include regular expression patterns.</p>
  * 
- * <p>
- * Separate Java lists of Classification values are maintained to calculate the ordering of classifications from least
- * to most restrictive.
- * </p>
+ * <p>Separate Java lists of Classification values are maintained to calculate the ordering of classifications from least
+ * to most restrictive.</p>
  * 
  * @author Brian Uri!
  * @since 0.9.d

@@ -131,7 +131,7 @@ public final class Type extends AbstractQualifierValue {
 	 * <li>The description child text cannot exist until DDMS 4.0 or later.</li>
 	 * <li>If a value is set, a qualifier must exist and be non-empty.</li>
 	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
-	 * <li>The SecurityAttributes do not exist in DDMS 2.0, 3.0, or 3.1.</li>
+	 * <li>The SecurityAttributes do not exist until DDMS 4.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -176,10 +176,10 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("type.description", getDescription(), false));
-		html.append(buildHTMLMeta("type.qualifier", getQualifier(), false));
-		html.append(buildHTMLMeta("type.value", getValue(), false));
-		html.append(getSecurityAttributes().toHTML(Type.NAME));
+		html.append(buildHTMLMeta(NAME + "." + "description", getDescription(), false));
+		html.append(buildHTMLMeta(NAME + "." + QUALIFIER_NAME, getQualifier(), false));
+		html.append(buildHTMLMeta(NAME + "." + VALUE_NAME, getValue(), false));
+		html.append(getSecurityAttributes().toHTML(NAME));
 		return (html.toString());
 	}
 	
@@ -188,10 +188,10 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("type description", getDescription(), false));
-		text.append(buildTextLine("type qualifier", getQualifier(), false));
-		text.append(buildTextLine("type value", getValue(), false));
-		text.append(getSecurityAttributes().toText("type"));
+		text.append(buildTextLine(NAME + " " + "description", getDescription(), false));
+		text.append(buildTextLine(NAME + " " + QUALIFIER_NAME, getQualifier(), false));
+		text.append(buildTextLine(NAME + " " + VALUE_NAME, getValue(), false));
+		text.append(getSecurityAttributes().toText(NAME));
 		return (text.toString());
 	}
 	

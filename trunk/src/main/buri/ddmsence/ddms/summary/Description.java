@@ -122,8 +122,8 @@ public final class Description extends AbstractSimpleString {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("description", getValue(), false));
-		text.append(getSecurityAttributes().toText("description"));
+		text.append(buildTextLine(NAME, getValue(), false));
+		text.append(getSecurityAttributes().toText(NAME));
 		return (text.toString());
 	}
 	

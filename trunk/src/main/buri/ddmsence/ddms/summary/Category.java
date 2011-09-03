@@ -156,8 +156,8 @@ public final class Category extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A label exists and is not empty.</li>
 	 * <li>If a qualifier exists, it is a valid URI.</li>
-	 * <li>The SecurityAttributes do not exist in DDMS 2.0, 3.0, or 3.1.</li>
-	 * <li>(v2.0) No extensible attributes can exist.</li>
+	 * <li>The SecurityAttributes do not exist  until DDMS 4.0 or later.</li>
+	 * <li>No extensible attributes can exist until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -196,11 +196,12 @@ public final class Category extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("subjectCoverage.Subject.category.qualifier", getQualifier(), false));
-		html.append(buildHTMLMeta("subjectCoverage.Subject.category.code", getCode(), false));
-		html.append(buildHTMLMeta("subjectCoverage.Subject.category.label", getLabel(), true));
-		html.append(getSecurityAttributes().toHTML("subjectCoverage.Subject.category"));
-		html.append(getExtensibleAttributes().toHTML("subjectCoverage.Subject.category"));
+		String prefix = SubjectCoverage.NAME + ".Subject." + NAME;
+		html.append(buildHTMLMeta(prefix + "." + QUALIFIER_NAME, getQualifier(), false));
+		html.append(buildHTMLMeta(prefix + "." +CODE_NAME, getCode(), false));
+		html.append(buildHTMLMeta(prefix + "." +LABEL_NAME, getLabel(), true));
+		html.append(getSecurityAttributes().toHTML(prefix));
+		html.append(getExtensibleAttributes().toHTML(prefix));
 		return (html.toString());
 	}
 	
@@ -209,11 +210,11 @@ public final class Category extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("category qualifier", getQualifier(), false));
-		text.append(buildTextLine("category code", getCode(), false));
-		text.append(buildTextLine("category label", getLabel(), true));
-		text.append(getSecurityAttributes().toText("category"));
-		text.append(getExtensibleAttributes().toText("category"));
+		text.append(buildTextLine(NAME + " " + QUALIFIER_NAME, getQualifier(), false));
+		text.append(buildTextLine(NAME + " " + CODE_NAME, getCode(), false));
+		text.append(buildTextLine(NAME + " " + LABEL_NAME, getLabel(), true));
+		text.append(getSecurityAttributes().toText(NAME));
+		text.append(getExtensibleAttributes().toText(NAME));
 		return (text.toString());
 	}
 	

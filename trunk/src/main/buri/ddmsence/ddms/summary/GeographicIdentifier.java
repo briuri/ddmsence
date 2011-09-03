@@ -204,10 +204,11 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + NAME + ".";
 		for (String name : getNames())
-			html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.geographicIdentifier.name", name, false));
+			html.append(buildHTMLMeta(prefix + NAME_NAME, name, false));
 		for (String region : getRegions())
-			html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.geographicIdentifier.region", region, false));
+			html.append(buildHTMLMeta(prefix + REGION_NAME, region, false));
 		if (getCountryCode() != null)
 			html.append(getCountryCode().toHTML());
 		if (hasFacilityIdentifier())
@@ -221,9 +222,9 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		for (String name : getNames())
-			text.append(buildTextLine("geographicIdentifier name", name, false));
+			text.append(buildTextLine(NAME + " " + NAME_NAME, name, false));
 		for (String region : getRegions())
-			text.append(buildTextLine("geographicIdentifier region", region, false));
+			text.append(buildTextLine(NAME + " " + REGION_NAME, region, false));
 		if (getCountryCode() != null)
 			text.append(getCountryCode().toText());
 		if (hasFacilityIdentifier())

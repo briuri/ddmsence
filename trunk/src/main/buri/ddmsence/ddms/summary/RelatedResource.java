@@ -167,8 +167,9 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("relatedResources.RelatedResource.qualifier", getQualifier(), true));
-		html.append(buildHTMLMeta("relatedResources.RelatedResource.value", getValue(), true));
+		String prefix = RelatedResources.NAME + "." + NAME + ".";
+		html.append(buildHTMLMeta(prefix + QUALIFIER_NAME, getQualifier(), true));
+		html.append(buildHTMLMeta(prefix + VALUE_NAME, getValue(), true));
 		for (Link link : getLinks()) {
 			html.append(link.toHTML());
 		}
@@ -180,8 +181,8 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Related Resource qualifier", getQualifier(), true));
-		text.append(buildTextLine("Related Resource value", getValue(), true));
+		text.append(buildTextLine("Related Resource " + QUALIFIER_NAME, getQualifier(), true));
+		text.append(buildTextLine("Related Resource " + VALUE_NAME, getValue(), true));
 		for (Link link : getLinks()) {
 			text.append(link.toText());
 		}
