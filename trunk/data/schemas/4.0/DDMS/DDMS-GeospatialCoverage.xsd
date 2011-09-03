@@ -112,10 +112,10 @@
       </xs:appinfo>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="WestBL" type="xs:double" />
-      <xs:element name="EastBL" type="xs:double" />
-      <xs:element name="SouthBL" type="xs:double" />
-      <xs:element name="NorthBL" type="xs:double" />
+      <xs:element name="westBL" type="xs:double" />
+      <xs:element name="eastBL" type="xs:double" />
+      <xs:element name="southBL" type="xs:double" />
+      <xs:element name="northBL" type="xs:double" />
     </xs:sequence>
   </xs:complexType>
   <!-- =====================================================================

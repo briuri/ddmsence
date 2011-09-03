@@ -96,14 +96,46 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Helper method to get the name of the westbound longitude element, which changed in DDMS 4.0.
+	 */
+	private String getWestBLName() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "westBL" : "WestBL");
+	}
+	
+	/**
+	 * Helper method to get the name of the eastbound longitude element, which changed in DDMS 4.0.
+	 */
+	private String getEastBLName() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "eastBL" : "EastBL");
+	}
+	
+	/**
+	 * Helper method to get the name of the southbound latitude element, which changed in DDMS 4.0.
+	 */
+	private String getSouthBLName() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "southBL" : "SouthBL");
+	}
+	
+	/**
+	 * Helper method to get the name of the northbound latitude element, which changed in DDMS 4.0.
+	 */
+	private String getNorthBLName() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "northBL" : "NorthBL");
+	}
+	
+	/**
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.WestBL\" content=\"").append(TEST_WEST).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.EastBL\" content=\"").append(TEST_EAST).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.SouthBL\" content=\"").append(TEST_SOUTH).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.NorthBL\" content=\"").append(TEST_NORTH).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.").append(getWestBLName())
+			.append("\" content=\"").append(TEST_WEST).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.").append(getEastBLName())
+			.append("\" content=\"").append(TEST_EAST).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.").append(getSouthBLName())
+			.append("\" content=\"").append(TEST_SOUTH).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.").append(getNorthBLName())
+			.append("\" content=\"").append(TEST_NORTH).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -112,10 +144,10 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("boundingBox WestBL: ").append(TEST_WEST).append("\n");
-		text.append("boundingBox EastBL: ").append(TEST_EAST).append("\n");
-		text.append("boundingBox SouthBL: ").append(TEST_SOUTH).append("\n");
-		text.append("boundingBox NorthBL: ").append(TEST_NORTH).append("\n");
+		text.append("boundingBox ").append(getWestBLName()).append(": ").append(TEST_WEST).append("\n");
+		text.append("boundingBox ").append(getEastBLName()).append(": ").append(TEST_EAST).append("\n");
+		text.append("boundingBox ").append(getSouthBLName()).append(": ").append(TEST_SOUTH).append("\n");
+		text.append("boundingBox ").append(getNorthBLName()).append(": ").append(TEST_NORTH).append("\n");
 		return (text.toString());
 	}
 
@@ -128,10 +160,14 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:boundingBox xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
 			.append("\">\n\t");
-		xml.append("<ddms:WestBL>").append(TEST_WEST).append("</ddms:WestBL>\n\t");
-		xml.append("<ddms:EastBL>").append(TEST_EAST).append("</ddms:EastBL>\n\t");
-		xml.append("<ddms:SouthBL>").append(TEST_SOUTH).append("</ddms:SouthBL>\n\t");
-		xml.append("<ddms:NorthBL>").append(TEST_NORTH).append("</ddms:NorthBL>\n");
+		xml.append("<ddms:").append(getWestBLName()).append(">").append(TEST_WEST).append("</ddms:")
+			.append(getWestBLName()).append(">\n\t");
+		xml.append("<ddms:").append(getEastBLName()).append(">").append(TEST_EAST).append("</ddms:")
+			.append(getEastBLName()).append(">\n\t");
+		xml.append("<ddms:").append(getSouthBLName()).append(">").append(TEST_SOUTH).append("</ddms:")
+			.append(getSouthBLName()).append(">\n\t");
+		xml.append("<ddms:").append(getNorthBLName()).append(">").append(TEST_NORTH).append("</ddms:")
+			.append(getNorthBLName()).append(">\n");
 		xml.append("</ddms:boundingBox>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
@@ -147,10 +183,10 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	 */
 	private Element buildComponentElement(String west, String east, String south, String north) {
 		Element element = Util.buildDDMSElement(BoundingBox.NAME, null);
-		element.appendChild(Util.buildDDMSElement("WestBL", String.valueOf("west")));
-		element.appendChild(Util.buildDDMSElement("EastBL", String.valueOf(TEST_EAST)));
-		element.appendChild(Util.buildDDMSElement("SouthBL", String.valueOf(TEST_SOUTH)));
-		element.appendChild(Util.buildDDMSElement("NorthBL", String.valueOf(TEST_NORTH)));
+		element.appendChild(Util.buildDDMSElement(getWestBLName(), String.valueOf("west")));
+		element.appendChild(Util.buildDDMSElement(getEastBLName(), String.valueOf(TEST_EAST)));
+		element.appendChild(Util.buildDDMSElement(getSouthBLName(), String.valueOf(TEST_SOUTH)));
+		element.appendChild(Util.buildDDMSElement(getNorthBLName(), String.valueOf(TEST_NORTH)));
 		return (element);
 	}
 	
