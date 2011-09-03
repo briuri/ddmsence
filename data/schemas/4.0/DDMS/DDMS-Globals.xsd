@@ -655,25 +655,8 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 	<!-- Types used to model the format element -->
 	<xs:complexType name="FormatType">
 		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>Type used to model the ddms:format element.</mdr:definition>
-			</xs:appinfo>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element name="Media" type="MediaType">
-				<xs:annotation>
-					<xs:appinfo>
-						<mdr:definition>Container item for holding media info.
-					</mdr:definition>
-					</xs:appinfo>
-				</xs:annotation>
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="MediaType">
-		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>Type used to model the ddms:medium element.</mdr:definition>
+			<xs:appinfo xml:lang="en">
+				Type used to model the ddms:format element.
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>

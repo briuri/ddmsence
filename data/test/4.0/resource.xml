@@ -32,9 +32,7 @@
 		</ddms:Unknown>	
 	</ddms:pointOfContact>
 	<ddms:format>
-		<ddms:Media>
-			<ddms:mimeType>text/xml</ddms:mimeType>
-		</ddms:Media>
+		<ddms:mimeType>text/xml</ddms:mimeType>
 	</ddms:format>
 	<ddms:subjectCoverage>
 		<ddms:Subject>

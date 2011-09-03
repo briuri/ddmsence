@@ -26,15 +26,17 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:format.
  * 
  * <p>
- * A format element contains a locally defined Media construct. This Media construct is a container for the mimeType,
- * extent, and medium of a resource. It exists only inside of a ddms:format parent, so it is not implemented as a Java
- * object.
+ * Before DDMS 4.0, a format element contains a locally defined Media construct.
+ * This Media construct is a container for the mimeType,extent, and medium of a resource. 
+ * It exists only inside of a ddms:format parent, so it is not implemented as a Java
+ * object. Starting in DDMS 4.0, the Media wrapper has been removed.
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
@@ -88,20 +90,20 @@ public final class Format extends AbstractBaseComponent {
 	public Format(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("format element", element);
-			String ddmsNamespace = element.getNamespaceURI();
-			Element mediaElement = element.getFirstChildElement(MEDIA_NAME, ddmsNamespace);
+			setXOMElement(element, false);
+			Element mediaElement = getMediaElement();
 			if (mediaElement != null) {
-				Element mimeTypeElement = mediaElement.getFirstChildElement(MIME_TYPE_NAME, ddmsNamespace);
+				Element mimeTypeElement = mediaElement.getFirstChildElement(MIME_TYPE_NAME, element.getNamespaceURI());
 				if (mimeTypeElement != null)
 					_cachedMimeType = mimeTypeElement.getValue();
-				Element extentElement = mediaElement.getFirstChildElement(Extent.NAME, ddmsNamespace);
+				Element extentElement = mediaElement.getFirstChildElement(Extent.NAME, element.getNamespaceURI());
 				if (extentElement != null)
 					_cachedExtent = new Extent(extentElement);
-				Element mediumElement = mediaElement.getFirstChildElement(MEDIUM_NAME, ddmsNamespace);
+				Element mediumElement = mediaElement.getFirstChildElement(MEDIUM_NAME, element.getNamespaceURI());
 				if (mediumElement != null)
 					_cachedMedium = mediumElement.getValue();
 			}
-			setXOMElement(element, true);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -118,13 +120,18 @@ public final class Format extends AbstractBaseComponent {
 	 */
 	public Format(String mimeType, Extent extent, String medium) throws InvalidDDMSException {
 		try {
-			Element mediaElement = Util.buildDDMSElement(MEDIA_NAME, null);
+			Element element = Util.buildDDMSElement(Format.NAME, null);
+			
+			Element mediaElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? element 
+				: Util.buildDDMSElement(MEDIA_NAME, null);
 			Util.addDDMSChildElement(mediaElement, MIME_TYPE_NAME, mimeType);
 			if (extent != null)
 				mediaElement.appendChild(extent.getXOMElementCopy());
 			Util.addDDMSChildElement(mediaElement, MEDIUM_NAME, medium);
-			Element element = Util.buildDDMSElement(Format.NAME, null);
-			element.appendChild(mediaElement);
+			
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
+				element.appendChild(mediaElement);
+			
 			_cachedMimeType = mimeType;
 			_cachedExtent = extent;
 			_cachedMedium = medium;
@@ -151,7 +158,7 @@ public final class Format extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), NAME);
-		Element mediaElement = getChild(MEDIA_NAME);
+		Element mediaElement = getMediaElement();
 		Util.requireDDMSValue("Media element", mediaElement);
 		Util.requireDDMSValue(MIME_TYPE_NAME, getMimeType());
 		Util.requireBoundedDDMSChildCount(mediaElement, MIME_TYPE_NAME, 1, 1);
@@ -172,7 +179,7 @@ public final class Format extends AbstractBaseComponent {
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		Element mediaElement = getChild(MEDIA_NAME);
+		Element mediaElement = getMediaElement();
 		if (Util.isEmpty(getMedium())
 				&& mediaElement.getChildElements(MEDIUM_NAME, mediaElement.getNamespaceURI()).size() == 1)
 			addWarning("A ddms:medium element was found with no value.");
@@ -185,7 +192,9 @@ public final class Format extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		return (ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix() + ":" + MEDIA_NAME);
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
+		return (version.isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix()
+			+ ":" + MEDIA_NAME);
 	}
 	
 	/**
@@ -237,6 +246,17 @@ public final class Format extends AbstractBaseComponent {
 		return (result);
 	}
 
+	/**
+	 * Accessor for the element which contains the mimeType, medium, and extent. Before DDMS 4.0,
+	 * this is a wrapper element called ddms:Media. Starting in DDMS 4.0, it is the ddms:format
+	 * element itself.
+	 */
+	private Element getMediaElement() {
+		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
+		Element periodElement = (version.isAtLeast("4.0") ? getXOMElement() : getChild(MEDIA_NAME));
+		return (periodElement);
+	}
+	
 	/**
 	 * Accessor for the mimeType element child text. Will return an empty string if not set, but that cannot occur after
 	 * instantiation.
