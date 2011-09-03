@@ -25,7 +25,6 @@ import buri.ddmsence.ddms.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -130,8 +129,7 @@ public final class Source extends AbstractQualifierValue {
 			Util.requireDDMSValidURI(getSchemaHref());
 		}		
 		// Should be reviewed as additional versions of DDMS are supported.
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		if (!version.isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
+		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 		

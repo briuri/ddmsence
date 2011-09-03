@@ -26,7 +26,6 @@ import buri.ddmsence.ddms.AbstractProducerEntity;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -126,8 +125,7 @@ public final class Unknown extends AbstractProducerEntity {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), NAME);
 		// Should be reviewed as additional versions of DDMS are supported.
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		if (!version.isAtLeast("3.0"))
+		if (!getDDMSVersion().isAtLeast("3.0"))
 			throw new InvalidDDMSException("The ddms:Unknown element cannot be used until DDMS 3.0 or later.");
 	}
 		

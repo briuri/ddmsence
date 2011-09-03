@@ -28,7 +28,6 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -214,11 +213,10 @@ public final class Dates extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getApprovedOn().getXMLSchemaType());
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		if (!version.isAtLeast("3.1") && getApprovedOn() != null) {
+		if (!getDDMSVersion().isAtLeast("3.1") && getApprovedOn() != null) {
 			throw new InvalidDDMSException("This component cannot have an approvedOn date until DDMS 3.1 or later.");
 		}
-		if (!version.isAtLeast("4.0") && getReceivedOn() != null) {
+		if (!getDDMSVersion().isAtLeast("4.0") && getReceivedOn() != null) {
 			throw new InvalidDDMSException("This component cannot have a receivedOn date until DDMS 4.0 or later.");
 		}
 		validateWarnings();
