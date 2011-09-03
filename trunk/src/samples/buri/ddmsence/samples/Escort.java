@@ -41,7 +41,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.format.Format;
-import buri.ddmsence.ddms.format.MediaExtent;
+import buri.ddmsence.ddms.format.Extent;
 import buri.ddmsence.ddms.resource.Contributor;
 import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Dates;
@@ -285,7 +285,7 @@ public class Escort {
 				String qualifier = readString("the extent qualifier [testQualifier]");
 				String value = readString("the extent value [testValue]");
 				String medium = readString("the medium [testValue]");
-				MediaExtent extent = new MediaExtent(qualifier, value);
+				Extent extent = new Extent(qualifier, value);
 				return (new Format(mimeType, extent, medium));
 			}		
 		});

@@ -58,7 +58,7 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public final class MediaExtent extends AbstractQualifierValue {
+public final class Extent extends AbstractQualifierValue {
 
 	/** The element name of this component */
 	public static final String NAME = "extent";
@@ -69,7 +69,7 @@ public final class MediaExtent extends AbstractQualifierValue {
 	 * @param element the XOM element representing this 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public MediaExtent(Element element) throws InvalidDDMSException {
+	public Extent(Element element) throws InvalidDDMSException {
 		super(element);
 	}
 	
@@ -80,8 +80,8 @@ public final class MediaExtent extends AbstractQualifierValue {
 	 * @param value the value of the value attribute
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public MediaExtent(String qualifier, String value) throws InvalidDDMSException {
-		super(MediaExtent.NAME, qualifier, value, true);
+	public Extent(String qualifier, String value) throws InvalidDDMSException {
+		super(Extent.NAME, qualifier, value, true);
 	}
 
 	/**
@@ -148,7 +148,7 @@ public final class MediaExtent extends AbstractQualifierValue {
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		return (super.equals(obj) && (obj instanceof MediaExtent));
+		return (super.equals(obj) && (obj instanceof Extent));
 	}
 	
 	/**
@@ -171,15 +171,15 @@ public final class MediaExtent extends AbstractQualifierValue {
 		/**
 		 * Constructor which starts from an existing component.
 		 */
-		public Builder(MediaExtent mediaExtent) {
+		public Builder(Extent mediaExtent) {
 			super(mediaExtent);
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
-		public MediaExtent commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new MediaExtent(getQualifier(), getValue()));
+		public Extent commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new Extent(getQualifier(), getValue()));
 		}
 		
 		/**

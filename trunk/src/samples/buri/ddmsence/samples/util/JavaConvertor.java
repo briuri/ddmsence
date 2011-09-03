@@ -475,7 +475,7 @@ public class JavaConvertor {
 		java.append("Format format").append(count).append(" = new Format(\"").append(format.getMimeType())
 			.append("\", ");
 		if (format.getExtent() != null) {
-			java.append(" new MediaExtent(\"").append(format.getExtentQualifier()).append("\", \"")
+			java.append(" new Extent(\"").append(format.getExtentQualifier()).append("\", \"")
 				.append(format.getExtentValue()).append("\"), ");
 		}
 		else

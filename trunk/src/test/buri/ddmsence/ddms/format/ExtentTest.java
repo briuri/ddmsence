@@ -34,7 +34,7 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class MediaExtentTest extends AbstractComponentTestCase {
+public class ExtentTest extends AbstractComponentTestCase {
 
 	private static final String TEST_QUALIFIER = "sizeBytes";
 	private static final String TEST_VALUE = "75000";
@@ -42,18 +42,18 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	/**
 	 * Constructor
 	 */
-	public MediaExtentTest() {
+	public ExtentTest() {
 		super("media-extent.xml");
 	}
 
 	/**
 	 * Returns a valid test fixture.
 	 * 
-	 * @return MediaExtent
+	 * @return Extent
 	 * @throws InvalidDDMSException
 	 */
-	protected static MediaExtent getFixture() throws InvalidDDMSException {
-		return (new MediaExtent("sizeBytes", "75000"));
+	protected static Extent getFixture() throws InvalidDDMSException {
+		return (new Extent("sizeBytes", "75000"));
 	}
 
 	/**
@@ -64,10 +64,10 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	 * 
 	 * @return a valid object
 	 */
-	private MediaExtent testConstructor(boolean expectFailure, Element element) {
-		MediaExtent component = null;
+	private Extent testConstructor(boolean expectFailure, Element element) {
+		Extent component = null;
 		try {
-			component = new MediaExtent(element);
+			component = new Extent(element);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -83,10 +83,10 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	 * @param value the value
 	 * @return a valid object
 	 */
-	private MediaExtent testConstructor(boolean expectFailure, String qualifier, String value) {
-		MediaExtent component = null;
+	private Extent testConstructor(boolean expectFailure, String qualifier, String value) {
+		Extent component = null;
 		try {
-			component = new MediaExtent(qualifier, value);
+			component = new Extent(qualifier, value);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -128,10 +128,10 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	public void testNameAndNamespace() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			MediaExtent component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(MediaExtent.NAME, component.getName());
+			Extent component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			assertEquals(Extent.NAME, component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + MediaExtent.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Extent.NAME, component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -146,7 +146,7 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(MediaExtent.NAME, null);
+			Element element = Util.buildDDMSElement(Extent.NAME, null);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -166,12 +166,12 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing qualifier
-			Element element = Util.buildDDMSElement(MediaExtent.NAME, null);
+			Element element = Util.buildDDMSElement(Extent.NAME, null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
 
 			// Qualifier not URI
-			element = Util.buildDDMSElement(MediaExtent.NAME, null);
+			element = Util.buildDDMSElement(Extent.NAME, null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			Util.addDDMSAttribute(element, "qualifier", INVALID_URI);
 			testConstructor(WILL_FAIL, element);
@@ -193,11 +193,11 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// No warnings
-			MediaExtent component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Extent component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Qualifier without value
-			Element element = Util.buildDDMSElement(MediaExtent.NAME, null);
+			Element element = Util.buildDDMSElement(Extent.NAME, null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
@@ -207,7 +207,7 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 			assertEquals("/ddms:extent", component.getValidationWarnings().get(0).getLocator());
 
 			// Neither attribute
-			element = Util.buildDDMSElement(MediaExtent.NAME, null);
+			element = Util.buildDDMSElement(Extent.NAME, null);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
@@ -220,8 +220,8 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			MediaExtent elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			MediaExtent dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			Extent elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Extent dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -230,8 +230,8 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			MediaExtent elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			MediaExtent dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_VALUE);
+			Extent elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Extent dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, DIFFERENT_VALUE);
@@ -242,7 +242,7 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			MediaExtent elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Extent elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -251,7 +251,7 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	public void testHTMLOutput() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			MediaExtent component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Extent component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
@@ -262,7 +262,7 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	public void testTextOutput() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			MediaExtent component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Extent component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
@@ -273,7 +273,7 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			MediaExtent component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Extent component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
@@ -284,18 +284,18 @@ public class MediaExtentTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			MediaExtent component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Extent component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			
 			// Equality after Building
-			MediaExtent.Builder builder = new MediaExtent.Builder(component);
+			Extent.Builder builder = new Extent.Builder(component);
 			assertEquals(builder.commit(), component);
 			
 			// Empty case
-			builder = new MediaExtent.Builder();
+			builder = new Extent.Builder();
 			assertNull(builder.commit());
 			
 			// Validation
-			builder = new MediaExtent.Builder();
+			builder = new Extent.Builder();
 			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();

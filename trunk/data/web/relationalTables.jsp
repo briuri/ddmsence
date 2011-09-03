@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 09/02/2011</p>
+<p align="right"><b>Last Update:</b> 09/03/2011</p>
 
 <a name="top"></a><h1>Relational Database Model for DDMS</h1>
 
@@ -65,7 +65,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 			<a href="#tables-format">Format Set</a>
 			<ul>
 				<li><a href="#ddmsFormat">ddmsFormat</a></li>
-				<li><a href="#ddmsMediaExtent">ddmsMediaExtent</a></li>
+				<li><a href="#ddmsExtent">ddmsExtent</a></li>
 			</ul>
 		</td><td class="relOverviewLayer">
 			<a href="#tables-summary">Summary Set</a>
@@ -770,7 +770,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsMediaExtent">ddmsMediaExtent</a>
+			<a href="#ddmsExtent">ddmsExtent</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -802,9 +802,9 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>
 </table>
 
-<a name="ddmsMediaExtent"></a><table class="rel">
+<a name="ddmsExtent"></a><table class="rel">
 	<tr>
-		<th class="relName" colspan="3">ddmsMediaExtent</th>
+		<th class="relName" colspan="3">ddmsExtent</th>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
@@ -815,7 +815,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/format/MediaExtent.html">MediaExtent</a>
+			<a href="/docs/buri/ddmsence/ddms/format/Extent.html">Extent</a>
 		</td>
 	</tr>
 	<tr class="relRow">
