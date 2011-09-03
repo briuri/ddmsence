@@ -5,4 +5,5 @@
 	ddms:posted="2003-02"
 	ddms:validTil="2003-02-15"
 	ddms:infoCutOff="2001-10-31T17:00:00Z"
-	ddms:approvedOn="2003-02-16" />
+	ddms:approvedOn="2003-02-16"
+	ddms:receivedOn="2003-02-17" />

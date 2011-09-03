@@ -553,6 +553,13 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 				</xs:appinfo>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="receivedOn" type="CombinedDateType" use="optional">
+			<xs:annotation>
+				<xs:appinfo xml:lang="en">
+					The date on which the resource was approved for publishing or posting.
+				</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:simpleType name="CombinedDateType">
 		<xs:annotation>

@@ -52,6 +52,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:validTil</u>: expiration date (optional)<br />
  * <u>ddms:infoCutOff</u>: info cutoff date (optional)<br />
  * <u>ddms:approvedOn</u>: approved for posting date (optional, starting in v3.1)<br />
+ * <u>ddms:receivedOn</u>: received date (optional, starting in v4.0)<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
@@ -72,6 +73,7 @@ public final class Dates extends AbstractBaseComponent {
 	private XMLGregorianCalendar _cachedValidTil = null;
 	private XMLGregorianCalendar _cachedInfoCutOff = null;
 	private XMLGregorianCalendar _cachedApprovedOn = null;
+	private XMLGregorianCalendar _cachedReceivedOn = null;
 	
 	/** The element name of this component */
 	public static final String NAME = "dates";
@@ -81,6 +83,7 @@ public final class Dates extends AbstractBaseComponent {
 	private static final String VALID_TIL_NAME = "validTil";
 	private static final String INFO_CUT_OFF_NAME = "infoCutOff";
 	private static final String APPROVED_ON_NAME = "approvedOn";
+	private static final String RECEIVED_ON_NAME = "receivedOn";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -106,11 +109,29 @@ public final class Dates extends AbstractBaseComponent {
 			String approvedOn = getAttributeValue(APPROVED_ON_NAME);
 			if (!Util.isEmpty(approvedOn))
 				_cachedApprovedOn = getFactory().newXMLGregorianCalendar(approvedOn);
+			String receivedOn = getAttributeValue(RECEIVED_ON_NAME);
+			if (!Util.isEmpty(receivedOn))
+				_cachedReceivedOn = getFactory().newXMLGregorianCalendar(receivedOn);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
+	}
+	
+	/**
+	 * Constructor for creating a component from raw data. The string-based inputs must conform to one of the XML date
+	 * types: xs:dateTime, xs:date, xs:gYearMonth, or xs:gYear. Provided for backwards compatibility to pre-DDMS 4.0 elements.
+	 * 
+	 * @param created the creation date (optional)
+	 * @param posted the posting date (optional)
+	 * @param validTil the expiration date (optional)
+	 * @param infoCutOff the info cutoff date (optional)
+	 * @param approvedOn the approved on date (optional, starting in DDMS 3.1)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public Dates(String created, String posted, String validTil, String infoCutOff, String approvedOn) throws InvalidDDMSException {
+		this(created, posted, validTil, infoCutOff, approvedOn, null);
 	}
 	
 	/**
@@ -121,10 +142,12 @@ public final class Dates extends AbstractBaseComponent {
 	 * @param posted the posting date (optional)
 	 * @param validTil the expiration date (optional)
 	 * @param infoCutOff the info cutoff date (optional)
-	 * @param approvedOn the approved on date (optional, starting in v3.1)
+	 * @param approvedOn the approved on date (optional, starting in DDMS 3.1)
+	 * @param receivedOn the received on date (optional, starting in DDMS 4.0)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Dates(String created, String posted, String validTil, String infoCutOff, String approvedOn) throws InvalidDDMSException {
+	public Dates(String created, String posted, String validTil, String infoCutOff, String approvedOn, String receivedOn)
+		throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Dates.NAME, null);
 			try {
@@ -148,6 +171,10 @@ public final class Dates extends AbstractBaseComponent {
 					_cachedApprovedOn = getFactory().newXMLGregorianCalendar(approvedOn);
 					Util.addDDMSAttribute(element, APPROVED_ON_NAME, getApprovedOn().toXMLFormat());
 				}
+				if (!Util.isEmpty(receivedOn)) {
+					_cachedReceivedOn = getFactory().newXMLGregorianCalendar(receivedOn);
+					Util.addDDMSAttribute(element, RECEIVED_ON_NAME, getReceivedOn().toXMLFormat());
+				}
 			}
 			catch (IllegalArgumentException e) {
 				throw new InvalidDDMSException("One or more ddms:dates attributes are not in a valid date format.");
@@ -167,6 +194,7 @@ public final class Dates extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If set, each date attribute adheres to an acceptable date format.</li>
 	 * <li>The approvedOn date cannot exist in DDMS 2.0 or 3.0.</li>
+	 * <li>The receivedOn date cannot exist in DDMS 2.0, 3.0, or 3.1.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -184,10 +212,14 @@ public final class Dates extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getInfoCutOff().getXMLSchemaType());
 		if (getApprovedOn() != null)
 			Util.requireDDMSDateFormat(getApprovedOn().getXMLSchemaType());
+		
 		// Should be reviewed as additional versions of DDMS are supported.
 		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
 		if (!version.isAtLeast("3.1") && getApprovedOn() != null) {
 			throw new InvalidDDMSException("This component cannot have an approvedOn date until DDMS 3.1 or later.");
+		}
+		if (!version.isAtLeast("4.0") && getReceivedOn() != null) {
+			throw new InvalidDDMSException("This component cannot have a receivedOn date until DDMS 4.0 or later.");
 		}
 		validateWarnings();
 	}
@@ -200,7 +232,8 @@ public final class Dates extends AbstractBaseComponent {
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (getCreated() == null && getPosted() == null && getValidTil() == null && getInfoCutOff() == null && getApprovedOn() == null) {
+		if (getCreated() == null && getPosted() == null && getValidTil() == null && getInfoCutOff() == null
+			&& getApprovedOn() == null && getReceivedOn() == null) {
 			addWarning("A completely empty ddms:dates element was found.");
 		}
 	}
@@ -220,6 +253,8 @@ public final class Dates extends AbstractBaseComponent {
 			html.append(buildHTMLMeta("dates.infoCutOff", getInfoCutOff().toXMLFormat(), true));
 		if (getApprovedOn() != null)
 			html.append(buildHTMLMeta("dates.approvedOn", getApprovedOn().toXMLFormat(), true));
+		if (getReceivedOn() != null)
+			html.append(buildHTMLMeta("dates.receivedOn", getReceivedOn().toXMLFormat(), true));
 		return (html.toString());
 	}
 	
@@ -238,6 +273,8 @@ public final class Dates extends AbstractBaseComponent {
 			text.append(buildTextLine("infoCutOff", getInfoCutOff().toXMLFormat(), true));
 		if (getApprovedOn() != null)
 			text.append(buildTextLine("approvedOn", getApprovedOn().toXMLFormat(), true));
+		if (getReceivedOn() != null)
+			text.append(buildTextLine("receivedOn", getReceivedOn().toXMLFormat(), true));
 		return (text.toString());
 	}
 	
@@ -252,7 +289,8 @@ public final class Dates extends AbstractBaseComponent {
 			&& Util.nullEquals(getPosted(), test.getPosted())
 			&& Util.nullEquals(getValidTil(), test.getValidTil())
 			&& Util.nullEquals(getInfoCutOff(), test.getInfoCutOff())
-			&& Util.nullEquals(getApprovedOn(), test.getApprovedOn()));
+			&& Util.nullEquals(getApprovedOn(), test.getApprovedOn())
+			&& Util.nullEquals(getReceivedOn(), test.getReceivedOn()));
 	}
 
 	/**
@@ -270,6 +308,8 @@ public final class Dates extends AbstractBaseComponent {
 			result = 7 * result + getInfoCutOff().hashCode();
 		if (getApprovedOn() != null)
 			result = 7 * result + getApprovedOn().hashCode();
+		if (getReceivedOn() != null)
+			result = 7 * result + getReceivedOn().hashCode();
 		return (result);
 	}
 	
@@ -311,6 +351,14 @@ public final class Dates extends AbstractBaseComponent {
 	}
 
 	/**
+	 * Accessor for the received on date (optional). Returns a copy.
+	 */
+	public XMLGregorianCalendar getReceivedOn() {
+		return (_cachedReceivedOn == null ? null
+			: getFactory().newXMLGregorianCalendar(_cachedReceivedOn.toXMLFormat()));
+	}
+	
+	/**
 	 * Accesor for the datatype factory
 	 */
 	private static DatatypeFactory getFactory() {
@@ -331,6 +379,7 @@ public final class Dates extends AbstractBaseComponent {
 		private String _validTil;
 		private String _infoCutOff;
 		private String _approvedOn;
+		private String _receivedOn;
 		
 		/**
 		 * Empty constructor
@@ -351,13 +400,15 @@ public final class Dates extends AbstractBaseComponent {
 				setInfoCutOff(dates.getInfoCutOff().toXMLFormat());
 			if (dates.getApprovedOn() != null)
 				setApprovedOn(dates.getApprovedOn().toXMLFormat());
+			if (dates.getReceivedOn() != null)
+				setReceivedOn(dates.getReceivedOn().toXMLFormat());
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public Dates commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Dates(getCreated(), getPosted(), getValidTil(), getInfoCutOff(), getApprovedOn()));
+			return (isEmpty() ? null : new Dates(getCreated(), getPosted(), getValidTil(), getInfoCutOff(), getApprovedOn(), getReceivedOn()));
 		}
 
 		/**
@@ -365,7 +416,7 @@ public final class Dates extends AbstractBaseComponent {
 		 */
 		public boolean isEmpty() {
 			return (Util.isEmpty(getCreated()) && Util.isEmpty(getPosted()) && Util.isEmpty(getValidTil()) 
-				&& Util.isEmpty(getInfoCutOff()) && Util.isEmpty(getApprovedOn()));
+				&& Util.isEmpty(getInfoCutOff()) && Util.isEmpty(getApprovedOn()) && Util.isEmpty(getReceivedOn()));
 		}
 		
 		/**
@@ -436,6 +487,20 @@ public final class Dates extends AbstractBaseComponent {
 		 */
 		public void setApprovedOn(String approvedOn) {
 			_approvedOn = approvedOn;
+		}
+
+		/**
+		 * Builder accessor for the receivedOn
+		 */
+		public String getReceivedOn() {
+			return _receivedOn;
+		}
+
+		/**
+		 * Builder accessor for the receivedOn
+		 */
+		public void setReceivedOn(String receivedOn) {
+			_receivedOn = receivedOn;
 		}
 	}
 }
