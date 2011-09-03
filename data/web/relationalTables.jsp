@@ -78,9 +78,6 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsFacilityIdentifier">ddmsFacilityIdentifier</a></li>
 				<li><a href="#ddmsGeographicIdentifier">ddmsGeographicIdentifier</a></li>
 				<li><a href="#ddmsGeospatialCoverage">ddmsGeospatialCoverage</a></li>
-				<li><a href="#ddmsGmlPoint">ddmsGmlPoint</a></li>
-				<li><a href="#ddmsGmlPolygon">ddmsGmlPolygon</a></li>
-				<li><a href="#ddmsGmlPosition">ddmsGmlPosition</a></li>
 				<li><a href="#ddmsKeyword">ddmsKeyword</a></li>
 				<li><a href="#ddmsLink">ddmsLink</a></li>
 				<li><a href="#ddmsPostalAddress">ddmsPostalAddress</a></li>
@@ -92,11 +89,14 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsTemporalCoverage">ddmsTemporalCoverage</a></li>
 				<li><a href="#ddmsVerticalExtent">ddmsVerticalExtent</a></li>
 				<li><a href="#ddmsVirtualCoverage">ddmsVirtualCoverage</a></li>
+				<li><a href="#gmlPoint">gmlPoint</a></li>
+				<li><a href="#gmlPolygon">gmlPolygon</a></li>
+				<li><a href="#gmlPosition">gmlPosition</a></li>
 			</ul>		
 			<a href="#tables-security">Security Set</a>
 			<ul>
 				<li><a href="#ddmsSecurity">ddmsSecurity</a></li>
-				<li><a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a></li>
+				<li><a href="#ismSecurityAttribute">ismSecurityAttribute</a></li>
 			</ul>			
 				
 		</td><td class="relOverviewLayer">
@@ -156,7 +156,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
 			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a> (DDMS 3.0), and
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 3.0)
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -386,7 +386,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -571,7 +571,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -628,7 +628,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -676,7 +676,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -724,7 +724,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -938,8 +938,8 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsGmlPoint">ddmsGmlPoint</a> or
-			<a href="#ddmsGmlPolygon">ddmsGmlPolygon</a>
+			<a href="#gmlPoint">gmlPoint</a> or
+			<a href="#gmlPolygon">gmlPolygon</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -990,7 +990,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 4.0) and
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a> (DDMS 4.0) and
 			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>
@@ -1096,7 +1096,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1252,7 +1252,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 3.0)
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1269,161 +1269,6 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>
 	<tr class="relRow">
 		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
-	</tr>
-</table>
-
-<a name="ddmsGmlPoint"></a><table class="rel">
-	<tr>
-		<th class="relName" colspan="3">ddmsGmlPoint</th>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMS:</td>
-		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_boundingGeometry_Point"><code>gml:Point</code></a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMSence:</td>
-		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/gml/Point.html">Point</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Parent Of:</td>
-		<td class="relInfo" colspan="2">
-			<a href="#ddmsGmlPosition">ddmsGmlPosition</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Augmented By:</td>
-		<td class="relInfo" colspan="2">
-			<a href="#ddmsSrsAttributes">ddmsSrsAttributes</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Additional Notes:</td>
-		<td class="relInfo" colspan="2">
-			No other notes.
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader" colspan="3">Columns:</td>
-	</tr>		
-	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent boundingGeometry element of this attribute</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">gmlId</td><td class="relRules">char(64), not null</td><td>a unique ID for the point</td>
-	</tr>	
-</table>
-
-<a name="ddmsGmlPolygon"></a><table class="rel">
-	<tr>
-		<th class="relName" colspan="3">ddmsGmlPolygon</th>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMS:</td>
-		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_boundingGeometry_Polygon"><code>gml:Polygon</code></a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMSence:</td>
-		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/gml/Polygon.html">Polygon</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Parent Of:</td>
-		<td class="relInfo" colspan="2">
-			<a href="#ddmsGmlPosition">ddmsGmlPosition</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Augmented By:</td>
-		<td class="relInfo" colspan="2">
-			<a href="#ddmsSrsAttributes">ddmsSrsAttributes</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Additional Notes:</td>
-		<td class="relInfo" colspan="2">
-			Because a polygon is comprised of ordered positions that create an enclosed area, it is assumed that positions are ordered 
-			according to their <code>index</code> value. As a closed shape, the first and last positions should be identical, but no 
-			validation is done on this constraint here. The last position should definitely be a separate row in the ddmsGmlPosition table.
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader" colspan="3">Columns:</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent boundingGeometry element of this attribute</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">gmlId</td><td class="relRules">char(64), not null</td><td>a unique ID for the polygon</td>
-	</tr>		
-</table>
-
-<a name="ddmsGmlPosition"></a><table class="rel">
-	<tr>
-		<th class="relName" colspan="3">ddmsGmlPosition</th>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMS:</td>
-		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_boundingGeometry_Point"><code>gml:pos</code></a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMSence:</td>
-		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/gml/Position.html">Position</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Parent Of:</td>
-		<td class="relInfo" colspan="2">
-			No other tables.
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Augmented By:</td>
-		<td class="relInfo" colspan="2">
-			<a href="#ddmsSrsAttributes">ddmsSrsAttributes</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Additional Notes:</td>
-		<td class="relInfo" colspan="2">
-			The <code>index</code> column is intended for positions that are part of a polygon, and should be 0-based.
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader" colspan="3">Columns:</td>
-	</tr>		
-	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent component of this attribute</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">index</td><td class="relRules">integer</td><td>a 0-based index for an ordered set of positions</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">latitude</td><td class="relRules">double, not null</td><td>first coordinate</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">longitude</td><td class="relRules">double, not null</td><td>second coordinate</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">heightAboveEllipsoid</td><td class="relRules">number</td><td>optional third coordinate</td>
 	</tr>
 </table>
 
@@ -1452,7 +1297,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 4.0) and
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a> (DDMS 4.0) and
 			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>
@@ -1673,7 +1518,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1726,9 +1571,9 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augments:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsGmlPoint">ddmsGmlPoint</a>,
-			<a href="#ddmsGmlPolygon">ddmsGmlPolygon</a>, and
-			<a href="#ddmsGmlPosition">ddmsGmlPosition</a>
+			<a href="#gmlPoint">gmlPoint</a>,
+			<a href="#gmlPolygon">gmlPolygon</a>, and
+			<a href="#gmlPosition">gmlPosition</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1842,7 +1687,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 3.0)
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1887,7 +1732,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 3.0)
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -2002,7 +1847,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a> (DDMS 3.0)
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a> (DDMS 3.0)
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -2028,8 +1873,160 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>
 </table>
 
+<a name="gmlPoint"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">gmlPoint</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_boundingGeometry_Point"><code>gml:Point</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/summary/gml/Point.html">Point</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#gmlPosition">gmlPosition</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsSrsAttributes">ddmsSrsAttributes</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			No other notes.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent boundingGeometry element of this attribute</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">gmlId</td><td class="relRules">char(64), not null</td><td>a unique ID for the point</td>
+	</tr>	
+</table>
 
+<a name="gmlPolygon"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">gmlPolygon</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_boundingGeometry_Polygon"><code>gml:Polygon</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/summary/gml/Polygon.html">Polygon</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#gmlPosition">gmlPosition</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsSrsAttributes">ddmsSrsAttributes</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			Because a polygon is comprised of ordered positions that create an enclosed area, it is assumed that positions are ordered 
+			according to their <code>index</code> value. As a closed shape, the first and last positions should be identical, but no 
+			validation is done on this constraint here. The last position should definitely be a separate row in the gmlPosition table.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent boundingGeometry element of this attribute</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">gmlId</td><td class="relRules">char(64), not null</td><td>a unique ID for the polygon</td>
+	</tr>		
+</table>
 
+<a name="gmlPosition"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">gmlPosition</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_boundingGeometry_Point"><code>gml:pos</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/summary/gml/Position.html">Position</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsSrsAttributes">ddmsSrsAttributes</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			The <code>index</code> column is intended for positions that are part of a polygon, and should be 0-based.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent component of this attribute</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">index</td><td class="relRules">integer</td><td>a 0-based index for an ordered set of positions</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">latitude</td><td class="relRules">double, not null</td><td>first coordinate</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">longitude</td><td class="relRules">double, not null</td><td>second coordinate</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">heightAboveEllipsoid</td><td class="relRules">number</td><td>optional third coordinate</td>
+	</tr>
+</table>
 
 <a name="tables-security"></a><h4>The Security Set</h4>
 
@@ -2058,7 +2055,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsSecurityAttribute">ddmsSecurityAttribute</a>
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -2082,9 +2079,9 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>
 </table>
 
-<a name="ddmsSecurityAttribute"></a><table class="rel">
+<a name="ismSecurityAttribute"></a><table class="rel">
 	<tr>
-		<th class="relName" colspan="3">ddmsSecurityAttribute</th>
+		<th class="relName" colspan="3">ismSecurityAttribute</th>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
