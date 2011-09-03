@@ -477,9 +477,14 @@ public class ResourceTest extends AbstractComponentTestCase {
 		}
 		xml.append("\t</ddms:pointOfContact>\n");
 		xml.append("\t<ddms:format>\n");
-		xml.append("\t\t<ddms:Media>\n");
-		xml.append("\t\t\t<ddms:mimeType>text/xml</ddms:mimeType>\n");
-		xml.append("\t\t</ddms:Media>\n");
+		if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
+			xml.append("\t\t<ddms:mimeType>text/xml</ddms:mimeType>\n");
+		}
+		else {
+			xml.append("\t\t<ddms:Media>\n");
+			xml.append("\t\t\t<ddms:mimeType>text/xml</ddms:mimeType>\n");
+			xml.append("\t\t</ddms:Media>\n");			
+		}
 		xml.append("\t</ddms:format>\n");
 		xml.append("\t<ddms:subjectCoverage>\n");
 		xml.append("\t\t<ddms:Subject>\n");
@@ -955,8 +960,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 			} else {
 				assertEquals("A qualifier has been set without an accompanying value attribute.", 
 					component.getValidationWarnings().get(0).getText());
-				assertEquals("/ddms:Resource/ddms:format/ddms:Media/ddms:extent", 
-					component.getValidationWarnings().get(0).getLocator());
+				String locatorSuffix = (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) ? "/ddms:Resource/ddms:format/ddms:extent"
+					: "/ddms:Resource/ddms:format/ddms:Media/ddms:extent";
+				assertEquals(locatorSuffix, component.getValidationWarnings().get(0).getLocator());
 			}
 			
 			// More nested warnings

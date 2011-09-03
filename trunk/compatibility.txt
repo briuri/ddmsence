@@ -81,7 +81,15 @@ DETAILS:
 	- ISMVocabulary: setIsmVersion() became setDDMSVersion() (Issue #95).
 FIX:
 	Update method names in your code if you ever called them.	
+#########################################################################################################
+MediaExtent class renamed as Extent
 
+SEVERITY: Minor
+DETAILS:
+	Because the Media wrapper was removed in DDMS 4.0, the name, MediaExtent, no longer made sense.
+FIX:
+	Rename any references to MediaExtent as Extent.
+	
 #########################################################################################################
 Mechanism for version comparison changed (Issue #159)
 

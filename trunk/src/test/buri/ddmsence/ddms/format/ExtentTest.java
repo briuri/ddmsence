@@ -43,7 +43,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 	 * Constructor
 	 */
 	public ExtentTest() {
-		super("media-extent.xml");
+		super("extent.xml");
 	}
 
 	/**
