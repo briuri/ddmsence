@@ -33,25 +33,27 @@ import buri.ddmsence.util.Util;
  * <p>The DDMS documentation has no Text/HTML examples for the output of this component, so a best guess was taken:</p>
  * <ul>
  * <p><b>Suggested Text Output</b><br /><code>
- * boundingBox WestBL: value<br />
- * boundingBox EastBL: value<br />
- * boundingBox SouthBL: value<br />
- * boundingBox NorthBL: value<br />
+ * boundingBox westBL: value<br />
+ * boundingBox eastBL: value<br />
+ * boundingBox southBL: value<br />
+ * boundingBox northBL: value<br />
  * </code></p>
  * 
  * <p><b>Suggested HTML Output</b><br /><code>
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.WestBL" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.EastBL" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.SouthBL" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.NorthBL" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.westBL" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.eastBL" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.southBL" content="value" /&gt;<br />
+ * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.northBL" content="value" /&gt;<br />
  * </code>
  * </ul></p>
  *
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:WestBL</u>: westbound longitude (required)<br />
- * <u>ddms:EastBL</u>: eastbound longitude (required)<br />
- * <u>ddms:SouthBL</u>: northbound latitude (required)<br />
- * <u>ddms:NorthBL</u>: southbound latitude (required)<br />
+ * <u>ddms:westBL</u>: westbound longitude (required)<br />
+ * <u>ddms:eastBL</u>: eastbound longitude (required)<br />
+ * <u>ddms:southBL</u>: northbound latitude (required)<br />
+ * <u>ddms:northBL</u>: southbound latitude (required)<br />
+ * Please note that the case of the nested elements changed starting in DDMS 4.0. Previously, the first letter
+ * of each element was capitalized (i.e. WestBL/EastBL/SouthBL/NorthBL).
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
@@ -75,12 +77,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 		
 	/** The element name of this component */
 	public static final String NAME = "boundingBox";
-	
-	private static final String WEST_BL_NAME = "WestBL";
-	private static final String EAST_BL_NAME = "EastBL";
-	private static final String SOUTH_BL_NAME = "SouthBL";
-	private static final String NORTH_BL_NAME = "NorthBL";
-		
+			
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 *  
@@ -90,11 +87,12 @@ public final class BoundingBox extends AbstractBaseComponent {
 	public BoundingBox(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("boundingBox element", element);
-			_cachedWestBL = getChildTextAsDouble(element, WEST_BL_NAME);
-			_cachedEastBL = getChildTextAsDouble(element, EAST_BL_NAME);
-			_cachedSouthBL = getChildTextAsDouble(element, SOUTH_BL_NAME);
-			_cachedNorthBL = getChildTextAsDouble(element, NORTH_BL_NAME);
-			setXOMElement(element, true);
+			setXOMElement(element, false);
+			_cachedWestBL = getChildTextAsDouble(element, getWestBLName());
+			_cachedEastBL = getChildTextAsDouble(element, getEastBLName());
+			_cachedSouthBL = getChildTextAsDouble(element, getSouthBLName());
+			_cachedNorthBL = getChildTextAsDouble(element, getNorthBLName());
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -113,15 +111,16 @@ public final class BoundingBox extends AbstractBaseComponent {
 	public BoundingBox(double westBL, double eastBL, double southBL, double northBL) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(BoundingBox.NAME, null);
-			element.appendChild(Util.buildDDMSElement(WEST_BL_NAME, String.valueOf(westBL)));
-			element.appendChild(Util.buildDDMSElement(EAST_BL_NAME, String.valueOf(eastBL)));
-			element.appendChild(Util.buildDDMSElement(SOUTH_BL_NAME, String.valueOf(southBL)));
-			element.appendChild(Util.buildDDMSElement(NORTH_BL_NAME, String.valueOf(northBL)));
+			setXOMElement(element, false);
+			element.appendChild(Util.buildDDMSElement(getWestBLName(), String.valueOf(westBL)));
+			element.appendChild(Util.buildDDMSElement(getEastBLName(), String.valueOf(eastBL)));
+			element.appendChild(Util.buildDDMSElement(getSouthBLName(), String.valueOf(southBL)));
+			element.appendChild(Util.buildDDMSElement(getNorthBLName(), String.valueOf(northBL)));
 			_cachedWestBL = Double.valueOf(westBL);
 			_cachedEastBL = Double.valueOf(eastBL);
 			_cachedSouthBL = Double.valueOf(southBL);
 			_cachedNorthBL = Double.valueOf(northBL);
-			setXOMElement(element, true);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -162,10 +161,10 @@ public final class BoundingBox extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + NAME + ".";
-		html.append(buildHTMLMeta(prefix + WEST_BL_NAME, String.valueOf(getWestBL()), true));
-		html.append(buildHTMLMeta(prefix + EAST_BL_NAME, String.valueOf(getEastBL()), true));
-		html.append(buildHTMLMeta(prefix + SOUTH_BL_NAME, String.valueOf(getSouthBL()), true));
-		html.append(buildHTMLMeta(prefix + NORTH_BL_NAME, String.valueOf(getNorthBL()), true));
+		html.append(buildHTMLMeta(prefix + getWestBLName(), String.valueOf(getWestBL()), true));
+		html.append(buildHTMLMeta(prefix + getEastBLName(), String.valueOf(getEastBL()), true));
+		html.append(buildHTMLMeta(prefix + getSouthBLName(), String.valueOf(getSouthBL()), true));
+		html.append(buildHTMLMeta(prefix + getNorthBLName(), String.valueOf(getNorthBL()), true));
 		return (html.toString());
 	}
 	
@@ -174,10 +173,10 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(NAME + " " + WEST_BL_NAME, String.valueOf(getWestBL()), true));
-		text.append(buildTextLine(NAME + " " + EAST_BL_NAME, String.valueOf(getEastBL()), true));
-		text.append(buildTextLine(NAME + " " + SOUTH_BL_NAME, String.valueOf(getSouthBL()), true));
-		text.append(buildTextLine(NAME + " " + NORTH_BL_NAME, String.valueOf(getNorthBL()), true));
+		text.append(buildTextLine(NAME + " " + getWestBLName(), String.valueOf(getWestBL()), true));
+		text.append(buildTextLine(NAME + " " + getEastBLName(), String.valueOf(getEastBL()), true));
+		text.append(buildTextLine(NAME + " " + getSouthBLName(), String.valueOf(getSouthBL()), true));
+		text.append(buildTextLine(NAME + " " + getNorthBLName(), String.valueOf(getNorthBL()), true));
 		return (text.toString());
 	}
 	
@@ -204,6 +203,34 @@ public final class BoundingBox extends AbstractBaseComponent {
 		result = 7 * result + getSouthBL().hashCode();
 		result = 7 * result + getNorthBL().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the name of the westbound longitude element, which changed in DDMS 4.0.
+	 */
+	private String getWestBLName() {
+		return (getDDMSVersion().isAtLeast("4.0") ? "westBL" : "WestBL");
+	}
+	
+	/**
+	 * Accessor for the name of the eastbound longitude element, which changed in DDMS 4.0.
+	 */
+	private String getEastBLName() {
+		return (getDDMSVersion().isAtLeast("4.0") ? "eastBL" : "EastBL");
+	}
+	
+	/**
+	 * Accessor for the name of the southbound latitude element, which changed in DDMS 4.0.
+	 */
+	private String getSouthBLName() {
+		return (getDDMSVersion().isAtLeast("4.0") ? "southBL" : "SouthBL");
+	}
+	
+	/**
+	 * Accessor for the name of the northbound latitude element, which changed in DDMS 4.0.
+	 */
+	private String getNorthBLName() {
+		return (getDDMSVersion().isAtLeast("4.0") ? "northBL" : "NorthBL");
 	}
 	
 	/**
