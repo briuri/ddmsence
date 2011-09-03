@@ -67,11 +67,13 @@
         <xs:element name="name" type="xs:string" minOccurs="0" />
         <xs:element name="region" type="xs:string" minOccurs="0" />
         <xs:element ref="ddms:countryCode" />
+        <xs:element ref="ddms:subDivisionCode" />
         <xs:element ref="ddms:facilityIdentifier" />
       </xs:choice>
     </xs:complexType>
   </xs:element>
   <xs:element name="countryCode" type="CompoundCountryCodeIdentifierType" />
+  <xs:element name="subDivisionCode" type="CompoundCountryCodeIdentifierType"/>
   <xs:complexType name="CompoundCountryCodeIdentifierType">
     <xs:attribute name="qualifier" type="xs:string" use="required" />
     <xs:attribute name="value" type="xs:string" use="required" />
