@@ -87,6 +87,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsRelatedResource">ddmsRelatedResource</a></li>
 				<li><a href="#ddmsRelatedResources">ddmsRelatedResources</a></li>
 				<li><a href="#ddmsSrsAttributes">ddmsSrsAttributes</a></li>
+				<li><a href="#ddmsSubDivisionCode">ddmsSubDivisionCode</a></li>
 				<li><a href="#ddmsSubjectCoverage">ddmsSubjectCoverage</a></li>
 				<li><a href="#ddmsTemporalCoverage">ddmsTemporalCoverage</a></li>
 				<li><a href="#ddmsVerticalExtent">ddmsVerticalExtent</a></li>
@@ -1188,8 +1189,9 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsCountryCode">ddmsCountryCode</a> or
-			<a href="#ddmsFacilityIdentifier">ddmsFacilityIdentifier</a>
+			<a href="#ddmsCountryCode">ddmsCountryCode</a>, 
+			<a href="#ddmsFacilityIdentifier">ddmsFacilityIdentifier</a>, or
+			<a href="#ddmsSubDivisionCode">ddmsSubDivisionCode</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -1761,6 +1763,57 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<td class="relField">uomLabels</td><td class="relRules">char(2048)</td><td>an ordered list of unit-of-measure labels for 
 			the axes, as a space-delimited list of NCNames</td>
 	</tr>		
+</table>
+
+<a name="ddmsSubDivisionCode"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsSubDivisionCode</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_geographicIdentifier_subDivisionCode"><code>ddms:subDivisionCode</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/summary/SubDivisionCode.html">SubDivisionCode</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			A subdivision code might appear in a <code>ddms:geographicIdentifier</code> element.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent component of this attribute</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">qualifier</td><td class="relRules">char(2048), not null</td><td>the qualifier URI</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(256), not null</td><td>the value</td>
+	</tr>
 </table>
 
 <a name="ddmsSubjectCoverage"></a><table class="rel">
