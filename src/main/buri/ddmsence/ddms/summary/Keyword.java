@@ -90,7 +90,6 @@ public final class Keyword extends AbstractBaseComponent {
 	 * Constructor for creating a component from raw data. Provided for backwards compatibility to pre-DDMS 4.0 elements.
 	 *  
 	 * @param value the value attribute (required)
-	 * @param securityAttributes any security attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Keyword(String value) throws InvalidDDMSException {

@@ -85,7 +85,7 @@ public class Publisher extends AbstractProducerRole {
 	 * <li>The qualified name of the element is correct.</li>
 	 * </td></tr></table>
 	 * 
-	 * @see AbstractProducer#validate()
+	 * @see AbstractProducerRole#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
