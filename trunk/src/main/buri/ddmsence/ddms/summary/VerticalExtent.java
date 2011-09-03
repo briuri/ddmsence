@@ -27,7 +27,6 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -292,16 +291,14 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 * Accessor for the name of the minimum vertical extent element, which changed in DDMS 4.0.
 	 */
 	private String getMinVerticalExtentName() {
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		return (version.isAtLeast("4.0") ? "minVerticalExtent" : "MinVerticalExtent");
+		return (getDDMSVersion().isAtLeast("4.0") ? "minVerticalExtent" : "MinVerticalExtent");
 	}
 	
 	/**
 	 * Accessor for the name of the maximum vertical extent element, which changed in DDMS 4.0.
 	 */
 	private String getMaxVerticalExtentName() {
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		return (version.isAtLeast("4.0") ? "maxVerticalExtent" : "MaxVerticalExtent");
+		return (getDDMSVersion().isAtLeast("4.0") ? "maxVerticalExtent" : "MaxVerticalExtent");
 	}
 	
 	/**

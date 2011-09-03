@@ -617,13 +617,12 @@ public final class Resource extends AbstractBaseComponent {
 		}
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		if ("3.1".equals(version.getVersion()) && !(new Integer(5).equals(getDESVersion())))
+		if ("3.1".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getDESVersion())))
 			throw new InvalidDDMSException("The DESVersion must be 5 in DDMS 3.1 resources.");	
-		if (!version.isAtLeast("3.0") && getExtensibleElements().size() > 1) {
+		if (!getDDMSVersion().isAtLeast("3.0") && getExtensibleElements().size() > 1) {
 			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
 		}
-		if (version.isAtLeast("3.0")) {
+		if (getDDMSVersion().isAtLeast("3.0")) {
 			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
 			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
 			Util.requireDDMSValue(DES_VERSION_NAME, getDESVersion());

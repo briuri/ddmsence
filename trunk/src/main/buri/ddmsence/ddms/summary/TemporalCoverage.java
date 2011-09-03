@@ -261,8 +261,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		}
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		if (!version.isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
+		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 		
@@ -290,8 +289,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		return (version.isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix()
+		return (getDDMSVersion().isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix()
 			+ ":" + TIME_PERIOD_NAME);
 	}
 	
@@ -351,9 +349,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * element itself.
 	 */
 	private Element getTimePeriodElement() {
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		Element periodElement = (version.isAtLeast("4.0") ? getXOMElement() : getChild(TIME_PERIOD_NAME));
-		return (periodElement);
+		return (getDDMSVersion().isAtLeast("4.0") ? getXOMElement() : getChild(TIME_PERIOD_NAME));
 	}
 	
 	/**

@@ -25,6 +25,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -232,6 +233,18 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		catch (NumberFormatException e) {
 			return (null);
 		}
+	}
+	
+	/**
+	 * Returns the most recent compatible DDMSVersion for this component, based on the XML Namespace. Depends on the XOM Element being set.
+	 * 
+	 * This is mainly a convenience method intended for use on components in the DDMS namespace.
+	 * 
+	 * @return a version
+	 * @throws UnsupportedVersionException if the XML namespace is not one of the supported DDMS namespaces.
+	 */
+	protected DDMSVersion getDDMSVersion() {
+		return (DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI()));	
 	}
 	
 	/**

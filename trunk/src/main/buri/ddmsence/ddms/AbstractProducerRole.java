@@ -27,7 +27,6 @@ import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -132,8 +131,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		Util.requireDDMSValue("producer entity", getProducerEntity());
 		Util.requireCompatibleVersion(this, getProducerEntity());
 		// Should be reviewed as additional versions of DDMS are supported.
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		if (!version.isAtLeast("4.0") && !Util.isEmpty(getPOCType())) {
+		if (!getDDMSVersion().isAtLeast("4.0") && !Util.isEmpty(getPOCType())) {
 			throw new InvalidDDMSException("This component cannot have a POCType until DDMS 4.0 or later.");
 		}
 		validateSharedWarnings();

@@ -192,8 +192,7 @@ public final class Format extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		return (version.isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix()
+		return (getDDMSVersion().isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix()
 			+ ":" + MEDIA_NAME);
 	}
 	
@@ -252,9 +251,7 @@ public final class Format extends AbstractBaseComponent {
 	 * element itself.
 	 */
 	private Element getMediaElement() {
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
-		Element periodElement = (version.isAtLeast("4.0") ? getXOMElement() : getChild(MEDIA_NAME));
-		return (periodElement);
+		return (getDDMSVersion().isAtLeast("4.0") ? getXOMElement() : getChild(MEDIA_NAME));
 	}
 	
 	/**
