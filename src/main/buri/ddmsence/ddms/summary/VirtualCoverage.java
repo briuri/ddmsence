@@ -118,7 +118,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If an address is provided, the protocol is required and must not be empty.</li>
-	 * <li>The SecurityAttributes do not exist in DDMS 2.0.</li>
+	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -156,8 +156,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("virtual.address", getAddress(), false));
-		html.append(buildHTMLMeta("virtual.protocol", getProtocol(), false));
+		html.append(buildHTMLMeta("virtual." + ADDRESS_NAME, getAddress(), false));
+		html.append(buildHTMLMeta("virtual." + PROTOCOL_NAME, getProtocol(), false));
 		html.append(getSecurityAttributes().toHTML("virtual"));
 		return (html.toString());
 	}
@@ -167,8 +167,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("virtual address", getAddress(), false));
-		text.append(buildTextLine("virtual protocol", getProtocol(), false));
+		text.append(buildTextLine("virtual " + ADDRESS_NAME, getAddress(), false));
+		text.append(buildTextLine("virtual " + PROTOCOL_NAME, getProtocol(), false));
 		text.append(getSecurityAttributes().toText("virtual"));
 		return (text.toString());
 	}

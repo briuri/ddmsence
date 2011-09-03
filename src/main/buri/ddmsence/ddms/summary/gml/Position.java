@@ -28,6 +28,8 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.summary.BoundingGeometry;
+import buri.ddmsence.ddms.summary.GeospatialCoverage;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
@@ -207,17 +209,15 @@ public final class Position extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position", getCoordinatesAsXsList(), true));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsName", getSRSAttributes().getSrsName(),
-			false));
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + BoundingGeometry.NAME + ".position";
+		html.append(buildHTMLMeta(prefix, getCoordinatesAsXsList(), true));
+		html.append(buildHTMLMeta(prefix + ".srsName", getSRSAttributes().getSrsName(), false));
 		if (getSRSAttributes().getSrsDimension() != null) {
-			html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsDimension", 
-				String.valueOf(getSRSAttributes().getSrsDimension()), false));
+			html.append(buildHTMLMeta(prefix + ".srsDimension", String.valueOf(getSRSAttributes().getSrsDimension()),
+				false));
 		}
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position.axisLabels", 
-			getSRSAttributes().getAxisLabelsAsXsList(), false));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.boundingGeometry.position.uomLabels", 
-			getSRSAttributes().getUomLabelsAsXsList(), false));
+		html.append(buildHTMLMeta(prefix + ".axisLabels", getSRSAttributes().getAxisLabelsAsXsList(), false));
+		html.append(buildHTMLMeta(prefix + ".uomLabels", getSRSAttributes().getUomLabelsAsXsList(), false));
 		return (html.toString());
 	}
 
@@ -226,16 +226,17 @@ public final class Position extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("boundingGeometry position", getCoordinatesAsXsList(), true));
-		text.append(buildTextLine("boundingGeometry position srsName", 
+		String prefix = BoundingGeometry.NAME + " position";
+		text.append(buildTextLine(prefix, getCoordinatesAsXsList(), true));
+		text.append(buildTextLine(prefix + " srsName", 
 			getSRSAttributes().getSrsName(), false));
 		if (getSRSAttributes().getSrsDimension() != null) {
-			text.append(buildTextLine("boundingGeometry position srsDimension", 
+			text.append(buildTextLine(prefix + " srsDimension", 
 				String.valueOf(getSRSAttributes().getSrsDimension()), false));
 		}
-		text.append(buildTextLine("boundingGeometry position axisLabels", 
+		text.append(buildTextLine(prefix + " axisLabels", 
 			getSRSAttributes().getAxisLabelsAsXsList(), false));
-		text.append(buildTextLine("boundingGeometry position uomLabels", 
+		text.append(buildTextLine(prefix + " uomLabels", 
 			getSRSAttributes().getUomLabelsAsXsList(), false));
 		return (text.toString());
 	}

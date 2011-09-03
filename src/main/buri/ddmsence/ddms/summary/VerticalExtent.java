@@ -240,10 +240,11 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.verticalExtent.unitOfMeasure", getUnitOfMeasure(), true));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.verticalExtent.datum", getDatum(), true));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.verticalExtent.minimum", String.valueOf(getMinVerticalExtent()), true));
-		html.append(buildHTMLMeta("geospatialCoverage.GeospatialExtent.verticalExtent.maximum", String.valueOf(getMaxVerticalExtent()), true));
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + NAME + ".";
+		html.append(buildHTMLMeta(prefix + UOM_NAME, getUnitOfMeasure(), true));
+		html.append(buildHTMLMeta(prefix + DATUM_NAME, getDatum(), true));
+		html.append(buildHTMLMeta(prefix + "minimum", String.valueOf(getMinVerticalExtent()), true));
+		html.append(buildHTMLMeta(prefix + "maximum", String.valueOf(getMaxVerticalExtent()), true));
 		return (html.toString());
 	}
 		 
@@ -252,10 +253,10 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("verticalExtent unitOfMeasure", getUnitOfMeasure(), true));
-		text.append(buildTextLine("verticalExtent datum", getDatum(), true));
-		text.append(buildTextLine("verticalExtent minimum", String.valueOf(getMinVerticalExtent()), true));
-		text.append(buildTextLine("verticalExtent maximum", String.valueOf(getMaxVerticalExtent()), true));
+		text.append(buildTextLine(NAME + " " + UOM_NAME, getUnitOfMeasure(), true));
+		text.append(buildTextLine(NAME + " " + DATUM_NAME, getDatum(), true));
+		text.append(buildTextLine(NAME + " minimum", String.valueOf(getMinVerticalExtent()), true));
+		text.append(buildTextLine(NAME + " maximum", String.valueOf(getMaxVerticalExtent()), true));
 		return (text.toString());
 	}
 	

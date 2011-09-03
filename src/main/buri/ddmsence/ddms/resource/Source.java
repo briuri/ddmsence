@@ -117,7 +117,7 @@ public final class Source extends AbstractQualifierValue {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If a schemaHref is present, it is a valid URI.</li>
-	 * <li>The SecurityAttributes do not exist in DDMS 2.0.</li>
+	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -132,7 +132,7 @@ public final class Source extends AbstractQualifierValue {
 		// Should be reviewed as additional versions of DDMS are supported.
 		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI());
 		if (!version.isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component in DDMS 2.0.");
+			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 		
 		validateWarnings();
@@ -159,10 +159,10 @@ public final class Source extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("source.qualifier", getQualifier(), false));
-		html.append(buildHTMLMeta("source.value", getValue(), false));
-		html.append(buildHTMLMeta("source.schemaQualifier", getSchemaQualifier(), false));
-		html.append(buildHTMLMeta("source.schemaHref", getSchemaHref(), false));
+		html.append(buildHTMLMeta(NAME + "." + QUALIFIER_NAME, getQualifier(), false));
+		html.append(buildHTMLMeta(NAME + "." + VALUE_NAME, getValue(), false));
+		html.append(buildHTMLMeta(NAME + "." + SCHEMA_QUALIFIER_NAME, getSchemaQualifier(), false));
+		html.append(buildHTMLMeta(NAME + "." + SCHEMA_HREF_NAME, getSchemaHref(), false));
 		html.append(getSecurityAttributes().toHTML(Source.NAME));
 		return (html.toString());
 	}
@@ -172,10 +172,10 @@ public final class Source extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("source qualifier", getQualifier(), false));
-		text.append(buildTextLine("source value", getValue(), false));
-		text.append(buildTextLine("source schemaQualifier", getSchemaQualifier(), false));
-		text.append(buildTextLine("source schemaHref", getSchemaHref(), false));
+		text.append(buildTextLine(NAME + " " + QUALIFIER_NAME, getQualifier(), false));
+		text.append(buildTextLine(NAME + " " + VALUE_NAME, getValue(), false));
+		text.append(buildTextLine(NAME + " " + SCHEMA_QUALIFIER_NAME, getSchemaQualifier(), false));
+		text.append(buildTextLine(NAME + " " + SCHEMA_HREF_NAME, getSchemaHref(), false));
 		text.append(getSecurityAttributes().toText("source"));
 		return (text.toString());
 	}

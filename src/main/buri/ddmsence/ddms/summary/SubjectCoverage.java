@@ -160,7 +160,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 of "Keyword" or "Category" must exist.</li>
 	 * <li>The DDMS Version of the Keywords and Categories is the same as the SubjectCoverage.</li>
-	 * <li>The SecurityAttributes do not exist in DDMS 2.0.</li>
+	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -227,7 +227,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			html.append(keyword.toHTML());
 		for (Category category : getCategories())
 			html.append(category.toHTML());
-		html.append(getSecurityAttributes().toHTML("subjectCoverage"));
+		html.append(getSecurityAttributes().toHTML(NAME));
 		return (html.toString());
 
 	}
@@ -241,7 +241,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			text.append(keyword.toText());
 		for (Category category : getCategories())
 			text.append(category.toText());
-		text.append(getSecurityAttributes().toText("subjectCoverage"));
+		text.append(getSecurityAttributes().toText(NAME));
 		return (text.toString());
 	}
 	

@@ -179,7 +179,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * <li>No more than 1 geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent can 
 	 * be used.</li>
 	 * <li>If a geographicIdentifer is used and contains a facilityIdentifier, no other subcomponents can be used.</li>
-	 * <li>The SecurityAttributes do not exist in DDMS 2.0.</li>
+	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -279,7 +279,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			html.append(getPostalAddress().toHTML());
 		if (getVerticalExtent() != null)
 			html.append(getVerticalExtent().toHTML());
-		html.append(getSecurityAttributes().toHTML("geospatialCoverage"));
+		html.append(getSecurityAttributes().toHTML(NAME));
 		return (html.toString());
 	}
 	
@@ -298,7 +298,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			text.append(getPostalAddress().toText());
 		if (getVerticalExtent() != null)
 			text.append(getVerticalExtent().toText());
-		text.append(getSecurityAttributes().toText("geospatialCoverage"));
+		text.append(getSecurityAttributes().toText(NAME));
 		return (text.toString());
 	}
 	

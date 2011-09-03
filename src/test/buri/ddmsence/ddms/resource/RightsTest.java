@@ -86,9 +86,9 @@ public class RightsTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"rights.privacy\" content=\"true\" />\n");
-		html.append("<meta name=\"rights.intellectualproperty\" content=\"true\" />\n");
-		html.append("<meta name=\"rights.copy\" content=\"false\" />\n");
+		html.append("<meta name=\"rights.privacyAct\" content=\"true\" />\n");
+		html.append("<meta name=\"rights.intellectualProperty\" content=\"true\" />\n");
+		html.append("<meta name=\"rights.copyright\" content=\"false\" />\n");
 		return (html.toString());
 	}
 

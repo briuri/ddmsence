@@ -121,7 +121,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A producer entity exists.</li>
 	 * <li>The producer entity is using the same version of DDMS as this producer role.</li>
-	 * <li>The POCType cannot be used in DDMS 2.0, 3.0, or 3.1.</li>
+	 * <li>The POCType cannot be used before DDMS 4.0.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -182,7 +182,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		html.append(getProducerEntity().toHTML());
-		html.append(buildHTMLMeta(getName() + ".POCType", getPOCType(), false));
+		html.append(buildHTMLMeta(getName() + "." + POC_TYPE_NAME, getPOCType(), false));
 		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}

@@ -106,8 +106,8 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("geographicIdentifier facilityIdentifer beNumber: ").append(TEST_BENUMBER).append("\n");
-		text.append("geographicIdentifier facilityIdentifer osuffix: ").append(TEST_OSUFFIX).append("\n");
+		text.append("geographicIdentifier facilityIdentifier beNumber: ").append(TEST_BENUMBER).append("\n");
+		text.append("geographicIdentifier facilityIdentifier osuffix: ").append(TEST_OSUFFIX).append("\n");
 		return (text.toString());
 	}
 

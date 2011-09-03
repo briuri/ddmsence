@@ -51,8 +51,8 @@ import buri.ddmsence.util.Util;
  * <u>ddms:posted</u>: posting date (optional)<br />
  * <u>ddms:validTil</u>: expiration date (optional)<br />
  * <u>ddms:infoCutOff</u>: info cutoff date (optional)<br />
- * <u>ddms:approvedOn</u>: approved for posting date (optional, starting in v3.1)<br />
- * <u>ddms:receivedOn</u>: received date (optional, starting in v4.0)<br />
+ * <u>ddms:approvedOn</u>: approved for posting date (optional, starting in DDMS 3.1)<br />
+ * <u>ddms:receivedOn</u>: received date (optional, starting in DDMS 4.0)<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
@@ -244,17 +244,17 @@ public final class Dates extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		if (getCreated() != null)
-			html.append(buildHTMLMeta("dates.created", getCreated().toXMLFormat(), true));
+			html.append(buildHTMLMeta(NAME + "." + CREATED_NAME, getCreated().toXMLFormat(), true));
 		if (getPosted() != null)
-			html.append(buildHTMLMeta("dates.posted", getPosted().toXMLFormat(), true));
+			html.append(buildHTMLMeta(NAME + "." + POSTED_NAME, getPosted().toXMLFormat(), true));
 		if (getValidTil() != null)
-			html.append(buildHTMLMeta("dates.validTil", getValidTil().toXMLFormat(), true));
+			html.append(buildHTMLMeta(NAME + "." + VALID_TIL_NAME, getValidTil().toXMLFormat(), true));
 		if (getInfoCutOff() != null)
-			html.append(buildHTMLMeta("dates.infoCutOff", getInfoCutOff().toXMLFormat(), true));
+			html.append(buildHTMLMeta(NAME + "." + INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat(), true));
 		if (getApprovedOn() != null)
-			html.append(buildHTMLMeta("dates.approvedOn", getApprovedOn().toXMLFormat(), true));
+			html.append(buildHTMLMeta(NAME + "." + APPROVED_ON_NAME, getApprovedOn().toXMLFormat(), true));
 		if (getReceivedOn() != null)
-			html.append(buildHTMLMeta("dates.receivedOn", getReceivedOn().toXMLFormat(), true));
+			html.append(buildHTMLMeta(NAME + "." + RECEIVED_ON_NAME, getReceivedOn().toXMLFormat(), true));
 		return (html.toString());
 	}
 	
@@ -264,17 +264,17 @@ public final class Dates extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		if (getCreated() != null)
-			text.append(buildTextLine("created", getCreated().toXMLFormat(), true));
+			text.append(buildTextLine(CREATED_NAME, getCreated().toXMLFormat(), true));
 		if (getPosted() != null)
-			text.append(buildTextLine("posted", getPosted().toXMLFormat(), true));
+			text.append(buildTextLine(POSTED_NAME, getPosted().toXMLFormat(), true));
 		if (getValidTil() != null)
-			text.append(buildTextLine("validTil", getValidTil().toXMLFormat(), true));
+			text.append(buildTextLine(VALID_TIL_NAME, getValidTil().toXMLFormat(), true));
 		if (getInfoCutOff() != null)
-			text.append(buildTextLine("infoCutOff", getInfoCutOff().toXMLFormat(), true));
+			text.append(buildTextLine(INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat(), true));
 		if (getApprovedOn() != null)
-			text.append(buildTextLine("approvedOn", getApprovedOn().toXMLFormat(), true));
+			text.append(buildTextLine(APPROVED_ON_NAME, getApprovedOn().toXMLFormat(), true));
 		if (getReceivedOn() != null)
-			text.append(buildTextLine("receivedOn", getReceivedOn().toXMLFormat(), true));
+			text.append(buildTextLine(RECEIVED_ON_NAME, getReceivedOn().toXMLFormat(), true));
 		return (text.toString());
 	}
 	

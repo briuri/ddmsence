@@ -42,7 +42,7 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of an element which might fulfill the xs:any space in the Extensible Layer.
  * 
- * <p>In DDMS 3.0, zero to many of these elements may appear in a ddms:Resource and can live in any other
+ * <p>Starting in DDMS 3.0, zero to many of these elements may appear in a ddms:Resource and can live in any other
  * namespace besides the DDMS namespace. In DDMS 2.0, only one of these is allowed.</p>
  * 
  * <p>No validation or processing of any kind is performed by DDMSence on extensible attributes, other than the base

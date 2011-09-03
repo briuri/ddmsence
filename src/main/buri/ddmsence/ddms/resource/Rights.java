@@ -102,9 +102,9 @@ public final class Rights extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("rights.privacy", String.valueOf(getPrivacyAct()), true));
-		html.append(buildHTMLMeta("rights.intellectualproperty", String.valueOf(getIntellectualProperty()), true));
-		html.append(buildHTMLMeta("rights.copy", String.valueOf(getCopyright()), true));
+		html.append(buildHTMLMeta(NAME + "." + PRIVACY_ACT_NAME, String.valueOf(getPrivacyAct()), true));
+		html.append(buildHTMLMeta(NAME + "." + INTELLECTUAL_PROPERY_NAME, String.valueOf(getIntellectualProperty()), true));
+		html.append(buildHTMLMeta(NAME + "." + COPYRIGHT_NAME, String.valueOf(getCopyright()), true));
 		return (html.toString());
 	}
 	
@@ -113,9 +113,9 @@ public final class Rights extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("privacyAct", String.valueOf(getPrivacyAct()), true));
-		text.append(buildTextLine("intellectualProperty", String.valueOf(getIntellectualProperty()), true));
-		text.append(buildTextLine("copyright", String.valueOf(getCopyright()), true));
+		text.append(buildTextLine(PRIVACY_ACT_NAME, String.valueOf(getPrivacyAct()), true));
+		text.append(buildTextLine(INTELLECTUAL_PROPERY_NAME, String.valueOf(getIntellectualProperty()), true));
+		text.append(buildTextLine(COPYRIGHT_NAME, String.valueOf(getCopyright()), true));
 		return (text.toString());
 	}
 	

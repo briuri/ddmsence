@@ -44,7 +44,7 @@ import buri.ddmsence.util.Util;
  * <ul>
  * <li>A non-empty qualifier value is required.</li>
  * <li>A non-empty value attribute is required.</li>
- * <li>(v2.0) Although qualifier and value are optional in v2.0, this is considered invalid data. DDMSence requires
+ * <li>Although qualifier and value are optional in DDMS 2.0, this is considered invalid data. DDMSence requires
  * a non-empty qualifier and value.</li>
  * </ul>
  * </td></tr></table>
@@ -152,11 +152,10 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
-		String parentHtml = (getParentType().equals(GeographicIdentifier.NAME)
-			? "geospatialCoverage.GeospatialExtent.geographicIdentifier" : "geospatialCoverage.GeospatialExtent.postalAddress");
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(parentHtml + ".countryCode.qualifier", getQualifier(), true));
-		html.append(buildHTMLMeta(parentHtml + ".countryCode.value", getValue(), true));
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + getParentType() + "." + NAME + ".";
+		html.append(buildHTMLMeta(prefix + QUALIFIER_NAME, getQualifier(), true));
+		html.append(buildHTMLMeta(prefix + VALUE_NAME, getValue(), true));
 		return (html.toString());
 	}
 	
@@ -164,11 +163,10 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
-		String parentText = (getParentType().equals(GeographicIdentifier.NAME) 
-			? "geographicIdentifier" : "postalAddress");
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(parentText + " countryCode qualifier", getQualifier(), true));
-		text.append(buildTextLine(parentText + " countryCode value", getValue(), true));
+		String prefix = getParentType() + " " + NAME + " ";
+		text.append(buildTextLine(prefix + QUALIFIER_NAME, getQualifier(), true));
+		text.append(buildTextLine(prefix + VALUE_NAME, getValue(), true));
 		return (text.toString());
 	}
 	
