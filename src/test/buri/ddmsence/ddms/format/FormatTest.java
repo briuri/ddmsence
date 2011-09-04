@@ -138,9 +138,9 @@ public class FormatTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Format component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Format.NAME, component.getName());
+			assertEquals(Format.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Format.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Format.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -156,14 +156,14 @@ public class FormatTest extends AbstractComponentTestCase {
 
 			// No optional fields
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(Format.getName(DDMSVersion.getCurrentVersion()), null);
 				Util.addDDMSChildElement(element, "mimeType", "text/html");
 				testConstructor(WILL_SUCCEED, element);
 			}
 			else {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				Util.addDDMSChildElement(mediaElement, "mimeType", "text/html");
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(Format.getName(DDMSVersion.getCurrentVersion()), null);
 				element.appendChild(mediaElement);
 				testConstructor(WILL_SUCCEED, element);
 			}
@@ -184,27 +184,30 @@ public class FormatTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String extentName = Extent.getName(DDMSVersion.getCurrentVersion());
+			String formatName = Format.getName(DDMSVersion.getCurrentVersion());
+			
 			// Missing mimeType
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(formatName, null);
 				testConstructor(WILL_FAIL, element);
 			}
 			else {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(mediaElement);
 				testConstructor(WILL_FAIL, element);
 			}
 
 			// Empty mimeType
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(Util.buildDDMSElement("mimeType", ""));
 				testConstructor(WILL_FAIL, element);
 			}
 			else {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(formatName, null);
 				mediaElement.appendChild(Util.buildDDMSElement("mimeType", ""));
 				element.appendChild(mediaElement);
 				testConstructor(WILL_FAIL, element);
@@ -212,7 +215,7 @@ public class FormatTest extends AbstractComponentTestCase {
 
 			// Too many mimeTypes
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				element.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				testConstructor(WILL_FAIL, element);
@@ -221,32 +224,32 @@ public class FormatTest extends AbstractComponentTestCase {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(mediaElement);
 				testConstructor(WILL_FAIL, element);
 			}
 
 			// Too many extents
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
-				element.appendChild(Util.buildDDMSElement(Extent.NAME, null));
-				element.appendChild(Util.buildDDMSElement(Extent.NAME, null));
+				element.appendChild(Util.buildDDMSElement(extentName, null));
+				element.appendChild(Util.buildDDMSElement(extentName, null));
 				testConstructor(WILL_FAIL, element);
 			}
 			else {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
-				mediaElement.appendChild(Util.buildDDMSElement(Extent.NAME, null));
-				mediaElement.appendChild(Util.buildDDMSElement(Extent.NAME, null));
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				mediaElement.appendChild(Util.buildDDMSElement(extentName, null));
+				mediaElement.appendChild(Util.buildDDMSElement(extentName, null));
+				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(mediaElement);
 				testConstructor(WILL_FAIL, element);
 			}
 
 			// Too many mediums
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				element.appendChild(Util.buildDDMSElement("medium", TEST_MEDIUM));
 				element.appendChild(Util.buildDDMSElement("medium", TEST_MEDIUM));
@@ -257,27 +260,27 @@ public class FormatTest extends AbstractComponentTestCase {
 				mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				mediaElement.appendChild(Util.buildDDMSElement("medium", TEST_MEDIUM));
 				mediaElement.appendChild(Util.buildDDMSElement("medium", TEST_MEDIUM));
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(mediaElement);
 				testConstructor(WILL_FAIL, element);
 			}
 
 			// Invalid Extent
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element element = Util.buildDDMSElement(Format.NAME, null);
-				Element extentElement = Util.buildDDMSElement(Extent.NAME, null);
+				Element element = Util.buildDDMSElement(formatName, null);
+				Element extentElement = Util.buildDDMSElement(extentName, null);
 				Util.addDDMSAttribute(extentElement, "value", "test");
 				Util.addDDMSChildElement(element, "mimeType", "text/html");
 				element.appendChild(extentElement);
 				testConstructor(WILL_FAIL, element);
 			}
 			else {
-				Element extentElement = Util.buildDDMSElement(Extent.NAME, null);
+				Element extentElement = Util.buildDDMSElement(extentName, null);
 				Util.addDDMSAttribute(extentElement, "value", "test");
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				Util.addDDMSChildElement(mediaElement, "mimeType", "text/html");
 				mediaElement.appendChild(extentElement);
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(formatName, null);
 				testConstructor(WILL_FAIL, element);
 			}
 		}
@@ -303,7 +306,7 @@ public class FormatTest extends AbstractComponentTestCase {
 
 			// Medium element with no value or empty value
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(Format.getName(DDMSVersion.getCurrentVersion()), null);
 				element.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				element.appendChild(Util.buildDDMSElement("medium", null));
 				component = testConstructor(WILL_SUCCEED, element);
@@ -317,7 +320,7 @@ public class FormatTest extends AbstractComponentTestCase {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				mediaElement.appendChild(Util.buildDDMSElement("medium", null));
-				Element element = Util.buildDDMSElement(Format.NAME, null);
+				Element element = Util.buildDDMSElement(Format.getName(DDMSVersion.getCurrentVersion()), null);
 				element.appendChild(mediaElement);
 				component = testConstructor(WILL_SUCCEED, element);
 				assertEquals(1, component.getValidationWarnings().size());

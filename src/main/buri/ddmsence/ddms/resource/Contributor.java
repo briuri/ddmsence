@@ -25,6 +25,7 @@ import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IProducerEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -51,9 +52,6 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public class Contributor extends AbstractProducerRole {
-	
-	/** The element name of this component */
-	public static final String NAME = "contributor";
 
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -74,7 +72,7 @@ public class Contributor extends AbstractProducerRole {
 	 */
 	public Contributor(IProducerEntity producerEntity, String pocType, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
-		super(NAME, producerEntity, pocType, securityAttributes);
+		super(Contributor.getName(DDMSVersion.getCurrentVersion()), producerEntity, pocType, securityAttributes);
 	}
 	
 	/**
@@ -89,7 +87,7 @@ public class Contributor extends AbstractProducerRole {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Contributor.getName(getDDMSVersion()));
 	}
 	
 	/**
@@ -98,6 +96,17 @@ public class Contributor extends AbstractProducerRole {
 	public boolean equals(Object obj) {
 		return (super.equals(obj) && (obj instanceof Contributor));
 	}	
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("contributor");
+	}
 	
 	/**
 	 * Builder for this DDMS component.
@@ -113,7 +122,7 @@ public class Contributor extends AbstractProducerRole {
 		 * Empty constructor
 		 */
 		public Builder() {
-			super(Contributor.NAME);
+			super();
 		}
 		
 		/**
@@ -127,6 +136,7 @@ public class Contributor extends AbstractProducerRole {
 		 * @see IBuilder#commit()
 		 */
 		public Contributor commit() throws InvalidDDMSException {
+			setProducerType(Contributor.getName(DDMSVersion.getCurrentVersion()));
 			return (isEmpty() ? null : new Contributor(commitSelectedEntity(), getPocType(), getSecurityAttributes().commit()));
 		}
 	}

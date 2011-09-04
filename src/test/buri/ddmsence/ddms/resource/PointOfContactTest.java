@@ -78,9 +78,9 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	private IProducerEntity getEntityFixture() {
 		try {
 			if ("2.0".equals(DDMSVersion.getCurrentVersion().getVersion()))
-				return (new Service(PointOfContact.NAME, Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), 
+				return (new Service(PointOfContact.getName(DDMSVersion.getCurrentVersion()), Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), 
 					Util.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
-			return (new Unknown(PointOfContact.NAME, Util.getXsListAsList("UnknownEntity"),
+			return (new Unknown(PointOfContact.getName(DDMSVersion.getCurrentVersion()), Util.getXsListAsList("UnknownEntity"),
 				Util.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
@@ -113,10 +113,10 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		StringBuffer html = new StringBuffer();
 		html.append(getEntityFixture().toHTML());
 		if (isDDMS40OrGreater()) {
-			html.append("<meta name=\"").append(PointOfContact.NAME).append(".POCType\" content=\"ICD-710\" />\n");
+			html.append("<meta name=\"").append(PointOfContact.getName(DDMSVersion.getCurrentVersion())).append(".POCType\" content=\"ICD-710\" />\n");
 		}
-		html.append("<meta name=\"").append(PointOfContact.NAME).append(".classification\" content=\"U\" />\n");
-		html.append("<meta name=\"").append(PointOfContact.NAME).append(".ownerProducer\" content=\"USA\" />\n");
+		html.append("<meta name=\"").append(PointOfContact.getName(DDMSVersion.getCurrentVersion())).append(".classification\" content=\"U\" />\n");
+		html.append("<meta name=\"").append(PointOfContact.getName(DDMSVersion.getCurrentVersion())).append(".ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -129,8 +129,8 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		if (isDDMS40OrGreater()) {
 			text.append("POCType: ICD-710\n");
 		}
-		text.append(PointOfContact.NAME).append(" classification: U\n");
-		text.append(PointOfContact.NAME).append(" ownerProducer: USA\n");
+		text.append(PointOfContact.getName(DDMSVersion.getCurrentVersion())).append(" classification: U\n");
+		text.append(PointOfContact.getName(DDMSVersion.getCurrentVersion())).append(" ownerProducer: USA\n");
 		return (text.toString());
 	}
 
@@ -170,9 +170,9 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			PointOfContact component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(PointOfContact.NAME, component.getName());
+			assertEquals(PointOfContact.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + PointOfContact.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + PointOfContact.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -187,7 +187,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(PointOfContact.NAME, null);
+			Element element = Util.buildDDMSElement(PointOfContact.getName(DDMSVersion.getCurrentVersion()), null);
 			element.appendChild(getEntityFixture().getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -205,7 +205,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing entity
-			Element element = Util.buildDDMSElement(PointOfContact.NAME, null);
+			Element element = Util.buildDDMSElement(PointOfContact.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -241,7 +241,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			PointOfContact elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			PointOfContact dataComponent = testConstructor(WILL_SUCCEED, new Service(PointOfContact.NAME, Util.getXsListAsList("DISA PEO-GES"),
+			PointOfContact dataComponent = testConstructor(WILL_SUCCEED, new Service(PointOfContact.getName(DDMSVersion.getCurrentVersion()), Util.getXsListAsList("DISA PEO-GES"),
 				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}

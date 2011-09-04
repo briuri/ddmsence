@@ -536,9 +536,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Resource.NAME, component.getName());
+			assertEquals(Resource.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Resource.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Resource.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -557,7 +557,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Resource.NAME, null);
+			Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -589,15 +589,17 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String stringVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(stringVersion);
 			createComponents();
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			String ismPrefix = PropertyReader.getProperty("ism.prefix");
-			String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
+			String icNamespace = version.getIsmNamespace();
 			
-			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
+			
+			if (version.isAtLeast("3.0")) {
 				// Missing resourceElement
-				Element element = Util.buildDDMSElement(Resource.NAME, null);
+				Element element = Util.buildDDMSElement(Resource.getName(version), null);
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace, 
 					String.valueOf(getDESVersion()));
@@ -610,7 +612,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				testConstructor(WILL_FAIL, element);
 
 				// Empty resourceElement
-				element = Util.buildDDMSElement(Resource.NAME, null);
+				element = Util.buildDDMSElement(Resource.getName(version), null);
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, "");
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace, 
@@ -624,7 +626,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				testConstructor(WILL_FAIL, element);
 
 				// Invalid resourceElement
-				element = Util.buildDDMSElement(Resource.NAME, null);
+				element = Util.buildDDMSElement(Resource.getName(version), null);
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, "aardvark");
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace, 
@@ -638,7 +640,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				testConstructor(WILL_FAIL, element);
 
 				// Missing createDate
-				element = Util.buildDDMSElement(Resource.NAME, null);
+				element = Util.buildDDMSElement(Resource.getName(version), null);
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, DDMSVersion
 					.getCurrentVersion().getIsmNamespace(), String.valueOf(TEST_RESOURCE_ELEMENT));
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, 
@@ -652,7 +654,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				testConstructor(WILL_FAIL, element);
 
 				// Invalid createDate
-				element = Util.buildDDMSElement(Resource.NAME, null);
+				element = Util.buildDDMSElement(Resource.getName(version), null);
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 					String.valueOf(TEST_RESOURCE_ELEMENT));
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, 
@@ -668,7 +670,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				testConstructor(WILL_FAIL, element);
 
 				// Missing desVersion
-				element = Util.buildDDMSElement(Resource.NAME, null);
+				element = Util.buildDDMSElement(Resource.getName(version), null);
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 					String.valueOf(TEST_RESOURCE_ELEMENT));
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, 
@@ -682,7 +684,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				testConstructor(WILL_FAIL, element);
 
 				// desVersion not an integer
-				element = Util.buildDDMSElement(Resource.NAME, null);
+				element = Util.buildDDMSElement(Resource.getName(version), null);
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 					String.valueOf(TEST_RESOURCE_ELEMENT));
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -697,7 +699,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			}
 			
 			// At least 1 producer
-			Element element = Util.buildDDMSElement(Resource.NAME, null);
+			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -711,7 +713,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// At least 1 identifier
-			element = Util.buildDDMSElement(Resource.NAME, null);
+			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -725,7 +727,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// At least 1 title
-			element = Util.buildDDMSElement(Resource.NAME, null);
+			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -739,7 +741,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 description
-			element = Util.buildDDMSElement(Resource.NAME, null);
+			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -756,7 +758,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 dates
-			element = Util.buildDDMSElement(Resource.NAME, null);
+			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -773,7 +775,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 rights
-			element = Util.buildDDMSElement(Resource.NAME, null);
+			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -790,7 +792,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 formats
-			element = Util.buildDDMSElement(Resource.NAME, null);
+			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -807,7 +809,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// At least 1 subjectCoverage
-			element = Util.buildDDMSElement(Resource.NAME, null);
+			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -821,7 +823,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 subjectCoverage
-			element = Util.buildDDMSElement(Resource.NAME, null);
+			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -837,7 +839,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// At least 1 security
-			element = Util.buildDDMSElement(Resource.NAME, null);
+			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -851,7 +853,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 security
-			element = Util.buildDDMSElement(Resource.NAME, null);
+			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -867,7 +869,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No top level components
-			element = Util.buildDDMSElement(Resource.NAME, null);
+			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -1100,7 +1102,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			Organization org = new Organization("creator", getAsList("DISA"), null, null);
 			Creator creator = new Creator(org, null, new SecurityAttributes("TS", ownerProducers, null));
 
-			Element element = Util.buildDDMSElement(Resource.NAME, null);
+			Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -1125,7 +1127,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		Organization org = new Organization("creator", getAsList("DISA"), null, null);
 		Creator creator = new Creator(org, null, new SecurityAttributes("TS", ownerProducers, null));
 		
-		Element element = Util.buildDDMSElement(Resource.NAME, null);
+		Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 		element.appendChild(TEST_TITLE.getXOMElementCopy());
 		element.appendChild(creator.getXOMElementCopy());
@@ -1149,7 +1151,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			Organization org = new Organization("creator", getAsList("DISA"), null, null);
 			Creator creator = new Creator(org, null, new SecurityAttributes("CTSA", ownerProducers, null));
 
-			Element element = Util.buildDDMSElement(Resource.NAME, null);
+			Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -1199,7 +1201,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		String ismPrefix = PropertyReader.getProperty("ism.prefix");
 		
 		// ICISM:DESVersion in element
-		Element element = Util.buildDDMSElement(Resource.NAME, null);
+		Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
 		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, 
 			DDMSVersion.getCurrentVersion().getIsmNamespace(), String.valueOf(getDESVersion()));
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
@@ -1213,7 +1215,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		assertEquals(0, component.getExtensibleAttributes().getAttributes().size());
 		
 		// ICISM:classification in element
-		element = Util.buildDDMSElement(Resource.NAME, null);
+		element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
 		Util.addAttribute(element, ismPrefix, SecurityAttributes.CLASSIFICATION_NAME, 
 			DDMSVersion.getCurrentVersion().getIsmNamespace(), "U");
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
@@ -1226,7 +1228,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		assertEquals(0, component.getExtensibleAttributes().getAttributes().size());
 		
 		// ddmsence:confidence in element
-		element = Util.buildDDMSElement(Resource.NAME, null);
+		element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
 		Util.addAttribute(element, "ddmsence", "confidence", "http://ddmsence.urizone.net/", "95");
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 		element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -1376,7 +1378,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
 			ExtensibleElement component = new ExtensibleElement(ExtensibleElementTest.getElementFixture());
 		
-			Element element = Util.buildDDMSElement(Resource.NAME, null);
+			Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -1445,7 +1447,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		createComponents();
 		String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
 	
-		Element element = Util.buildDDMSElement(Resource.NAME, null);
+		Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
 		Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, icNamespace, "true");
 		SecurityAttributesTest.getFixture(false).addTo(element);
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());

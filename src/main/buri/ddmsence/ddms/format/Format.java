@@ -74,9 +74,6 @@ public final class Format extends AbstractBaseComponent {
 	private Extent _cachedExtent;
 	private String _cachedMedium;
 	
-	/** The element name of this component */
-	public static final String NAME = "format";
-	
 	private static final String MEDIA_NAME = "Media";
 	private static final String MIME_TYPE_NAME = "mimeType";
 	private static final String MEDIUM_NAME = "medium";
@@ -96,7 +93,8 @@ public final class Format extends AbstractBaseComponent {
 				Element mimeTypeElement = mediaElement.getFirstChildElement(MIME_TYPE_NAME, element.getNamespaceURI());
 				if (mimeTypeElement != null)
 					_cachedMimeType = mimeTypeElement.getValue();
-				Element extentElement = mediaElement.getFirstChildElement(Extent.NAME, element.getNamespaceURI());
+				Element extentElement = mediaElement.getFirstChildElement(Extent.getName(getDDMSVersion()),
+					element.getNamespaceURI());
 				if (extentElement != null)
 					_cachedExtent = new Extent(extentElement);
 				Element mediumElement = mediaElement.getFirstChildElement(MEDIUM_NAME, element.getNamespaceURI());
@@ -120,7 +118,7 @@ public final class Format extends AbstractBaseComponent {
 	 */
 	public Format(String mimeType, Extent extent, String medium) throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(Format.NAME, null);
+			Element element = Util.buildDDMSElement(Format.getName(DDMSVersion.getCurrentVersion()), null);
 			
 			Element mediaElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? element 
 				: Util.buildDDMSElement(MEDIA_NAME, null);
@@ -157,12 +155,12 @@ public final class Format extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Format.getName(getDDMSVersion()));
 		Element mediaElement = getMediaElement();
 		Util.requireDDMSValue("Media element", mediaElement);
 		Util.requireDDMSValue(MIME_TYPE_NAME, getMimeType());
 		Util.requireBoundedDDMSChildCount(mediaElement, MIME_TYPE_NAME, 1, 1);
-		Util.requireBoundedDDMSChildCount(mediaElement, Extent.NAME, 0, 1);
+		Util.requireBoundedDDMSChildCount(mediaElement, Extent.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(mediaElement, MEDIUM_NAME, 0, 1);
 		if (getExtent() != null)
 			Util.requireCompatibleVersion(this, getExtent());
@@ -201,10 +199,10 @@ public final class Format extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(NAME + "." + MEDIA_NAME + "." + MIME_TYPE_NAME, getMimeType(), true));
+		html.append(buildHTMLMeta(getName() + "." + MEDIA_NAME + "." + MIME_TYPE_NAME, getMimeType(), true));
 		if (getExtent() != null)
 			html.append(getExtent().toHTML());
-		html.append(buildHTMLMeta(NAME + "." + MEDIA_NAME + "." + MEDIUM_NAME, getMedium(), false));
+		html.append(buildHTMLMeta(getName() + "." + MEDIA_NAME + "." + MEDIUM_NAME, getMedium(), false));
 		return (html.toString());
 	}
 		
@@ -213,10 +211,10 @@ public final class Format extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(NAME + "." + MEDIA_NAME + "." + MIME_TYPE_NAME, getMimeType(), true));
+		text.append(buildTextLine(getName() + "." + MEDIA_NAME + "." + MIME_TYPE_NAME, getMimeType(), true));
 		if (getExtent() != null)
 			text.append(getExtent().toText());
-		text.append(buildTextLine(NAME + "." + MEDIA_NAME + "." + MEDIUM_NAME, getMedium(), false));
+		text.append(buildTextLine(getName() + "." + MEDIA_NAME + "." + MEDIUM_NAME, getMedium(), false));
 		return (text.toString());
 	}
 	
@@ -245,6 +243,17 @@ public final class Format extends AbstractBaseComponent {
 		return (result);
 	}
 
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("format");
+	}
+	
 	/**
 	 * Accessor for the element which contains the mimeType, medium, and extent. Before DDMS 4.0,
 	 * this is a wrapper element called ddms:Media. Starting in DDMS 4.0, it is the ddms:format

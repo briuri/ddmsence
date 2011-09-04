@@ -170,9 +170,6 @@ public final class Resource extends AbstractBaseComponent {
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	private ExtensibleAttributes _cachedExtensibleAttributes = null;
 	
-	/** The element name of this component */
-	public static final String NAME = "Resource";
-	
 	/** The attribute name for resource element flag */
 	public static final String RESOURCE_ELEMENT_NAME = "resourceElement";
 		
@@ -255,25 +252,25 @@ public final class Resource extends AbstractBaseComponent {
 			for (int i = 0; i < components.size(); i++) {
 				_cachedTypes.add(new Type(components.get(i)));
 			}
-			components = element.getChildElements(Creator.NAME, namespace);
+			components = element.getChildElements(Creator.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedCreators.add(new Creator(components.get(i)));
 			}
-			components = element.getChildElements(Publisher.NAME, namespace);
+			components = element.getChildElements(Publisher.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedPublishers.add(new Publisher(components.get(i)));
 			}
-			components = element.getChildElements(Contributor.NAME, namespace);
+			components = element.getChildElements(Contributor.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedContributors.add(new Contributor(components.get(i)));
 			}
-			components = element.getChildElements(PointOfContact.NAME, namespace);
+			components = element.getChildElements(PointOfContact.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedPointOfContacts.add(new PointOfContact(components.get(i)));
 			}
 
 			// Format Set
-			component = getChild(Format.NAME);
+			component = getChild(Format.getName(getDDMSVersion()));
 			if (component != null)
 				_cachedFormat = new Format(component);
 
@@ -299,7 +296,7 @@ public final class Resource extends AbstractBaseComponent {
 			}
 
 			// Security Set
-			component = getChild(Security.NAME);
+			component = getChild(Security.getName(getDDMSVersion()));
 			if (component != null) {
 				_cachedSecurity = new Security(component);
 
@@ -396,7 +393,7 @@ public final class Resource extends AbstractBaseComponent {
 		try {
 			if (topLevelComponents == null)
 				topLevelComponents = Collections.emptyList();
-			Element element = Util.buildDDMSElement(Resource.NAME, null);
+			Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
 			String ismPrefix = PropertyReader.getProperty("ism.prefix");
 			// Attributes
 			if (resourceElement != null) {
@@ -587,7 +584,7 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Resource.getName(getDDMSVersion()));
 
 		if (getIdentifiers().size() < 1)
 			throw new InvalidDDMSException("At least 1 identifier is required.");
@@ -599,9 +596,9 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Description.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Dates.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Rights.NAME, 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), Format.NAME, 0, 1);
+		Util.requireBoundedDDMSChildCount(getXOMElement(), Format.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), SubjectCoverage.NAME, 1, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.NAME, 1, 1);	
+		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);	
 		if (!getSecurityAttributes().isEmpty()) {
 			Set<SecurityAttributes> childAttributes = new HashSet<SecurityAttributes>();
 			for (IDDMSComponent component : getTopLevelComponents()) {
@@ -659,14 +656,15 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
+		String securityName = Security.getName(getDDMSVersion());
 		if (isResourceElement() != null)
-			html.append(buildHTMLMeta(Security.NAME + "." + RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement()),
+			html.append(buildHTMLMeta(securityName + "." + RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement()),
 				true));
 		if (getCreateDate() != null)
-			html.append(buildHTMLMeta(Security.NAME + "." + CREATE_DATE_NAME, getCreateDate().toXMLFormat(), true));
+			html.append(buildHTMLMeta(securityName + "." + CREATE_DATE_NAME, getCreateDate().toXMLFormat(), true));
 		if (getDESVersion() != null)
-			html.append(buildHTMLMeta(Security.NAME + "." + DES_VERSION_NAME, String.valueOf(getDESVersion()), true));
-		html.append(getSecurityAttributes().toHTML(Security.NAME));
+			html.append(buildHTMLMeta(securityName + "." + DES_VERSION_NAME, String.valueOf(getDESVersion()), true));
+		html.append(getSecurityAttributes().toHTML(securityName));
 		html.append(getExtensibleAttributes().toHTML(""));
 		for (IDDMSComponent component : getTopLevelComponents())
 			html.append(component.toHTML());
@@ -732,6 +730,17 @@ public final class Resource extends AbstractBaseComponent {
 		return (result);
 	}
 
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("Resource");
+	}
+	
 	/**
 	 * Accessor for the identifier components. There will always be at least one.
 	 */
