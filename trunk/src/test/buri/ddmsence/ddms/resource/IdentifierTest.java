@@ -118,9 +118,9 @@ public class IdentifierTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Identifier component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Identifier.NAME, component.getName());
+			assertEquals(Identifier.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Identifier.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Identifier.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -145,30 +145,32 @@ public class IdentifierTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String identifierName = Identifier.getName(DDMSVersion.getCurrentVersion());
+			
 			// Missing qualifier
-			Element element = Util.buildDDMSElement(Identifier.NAME, null);
+			Element element = Util.buildDDMSElement(identifierName, null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
 
 			// Empty qualifier
-			element = Util.buildDDMSElement(Identifier.NAME, null);
+			element = Util.buildDDMSElement(identifierName, null);
 			Util.addDDMSAttribute(element, "qualifier", "");
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing value
-			element = Util.buildDDMSElement(Identifier.NAME, null);
+			element = Util.buildDDMSElement(identifierName, null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			testConstructor(WILL_FAIL, element);
 
 			// Empty value
-			element = Util.buildDDMSElement(Identifier.NAME, null);
+			element = Util.buildDDMSElement(identifierName, null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(element, "value", "");
 			testConstructor(WILL_FAIL, element);
 
 			// Qualifier not URI
-			element = Util.buildDDMSElement(Identifier.NAME, null);
+			element = Util.buildDDMSElement(identifierName, null);
 			Util.addDDMSAttribute(element, "qualifier", INVALID_URI);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			testConstructor(WILL_FAIL, element);

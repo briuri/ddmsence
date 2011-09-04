@@ -27,6 +27,7 @@ import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -100,17 +101,18 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			String namespace = element.getNamespaceURI();
 			Element extElement = element.getFirstChildElement(GEOSPATIAL_EXTENT_NAME, namespace);
 			if (extElement != null) {
-				Element geographicIdentifierElement = extElement.getFirstChildElement(GeographicIdentifier.NAME,
+				DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI());
+				Element geographicIdentifierElement = extElement.getFirstChildElement(GeographicIdentifier.getName(version),
 					namespace);
 				if (geographicIdentifierElement != null)
 					_cachedGeographicIdentifier = new GeographicIdentifier(geographicIdentifierElement);
-				Element boundingBoxElement = extElement.getFirstChildElement(BoundingBox.NAME, namespace);
+				Element boundingBoxElement = extElement.getFirstChildElement(BoundingBox.getName(version), namespace);
 				if (boundingBoxElement != null)
 					_cachedBoundingBox = new BoundingBox(boundingBoxElement);
 				Element boundingGeometryElement = extElement.getFirstChildElement(BoundingGeometry.NAME, namespace);
 				if (boundingGeometryElement != null)
 					_cachedBoundingGeometry = new BoundingGeometry(boundingGeometryElement);
-				Element postalAddressElement = extElement.getFirstChildElement(PostalAddress.NAME, namespace);
+				Element postalAddressElement = extElement.getFirstChildElement(PostalAddress.getName(version), namespace);
 				if (postalAddressElement != null)
 					_cachedPostalAddress = new PostalAddress(postalAddressElement);
 				Element verticalExtentElement = extElement.getFirstChildElement(VerticalExtent.NAME, namespace);
@@ -190,10 +192,10 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		Element extElement = getChild(GEOSPATIAL_EXTENT_NAME);
 		Util.requireDDMSValue("GeospatialExtent element", extElement);
 		
-		Util.requireBoundedDDMSChildCount(extElement, GeographicIdentifier.NAME, 0, 1);
-		Util.requireBoundedDDMSChildCount(extElement, BoundingBox.NAME, 0, 1);
+		Util.requireBoundedDDMSChildCount(extElement, GeographicIdentifier.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedDDMSChildCount(extElement, BoundingBox.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(extElement, BoundingGeometry.NAME, 0, 1);
-		Util.requireBoundedDDMSChildCount(extElement, PostalAddress.NAME, 0, 1);
+		Util.requireBoundedDDMSChildCount(extElement, PostalAddress.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(extElement, VerticalExtent.NAME, 0, 1);
 			
 		int validComponents = 0;

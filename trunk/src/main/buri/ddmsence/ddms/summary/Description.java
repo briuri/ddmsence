@@ -25,6 +25,7 @@ import buri.ddmsence.ddms.AbstractSimpleString;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -54,9 +55,6 @@ import buri.ddmsence.util.Util;
  */
 public final class Description extends AbstractSimpleString {
 	
-	/** The element name of this component */
-	public static final String NAME = "description";
-	
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 *  
@@ -75,7 +73,7 @@ public final class Description extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Description(String description, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(Description.NAME, description, securityAttributes);
+		super(Description.getName(DDMSVersion.getCurrentVersion()), description, securityAttributes);
 	}
 		
 	/**
@@ -89,7 +87,7 @@ public final class Description extends AbstractSimpleString {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);			
+		Util.requireDDMSQName(getXOMElement(), Description.getName(getDDMSVersion()));			
 		validateWarnings();
 	}
 	
@@ -112,8 +110,8 @@ public final class Description extends AbstractSimpleString {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(Description.NAME, getValue(), false));
-		html.append(getSecurityAttributes().toHTML(Description.NAME));
+		html.append(buildHTMLMeta(getName(), getValue(), false));
+		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}
 	
@@ -122,9 +120,20 @@ public final class Description extends AbstractSimpleString {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(NAME, getValue(), false));
-		text.append(getSecurityAttributes().toText(NAME));
+		text.append(buildTextLine(getName(), getValue(), false));
+		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("description");
 	}
 	
 	/**

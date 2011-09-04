@@ -25,6 +25,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -47,9 +48,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Rights extends AbstractBaseComponent {
-
-	/** The element name of this component */
-	public static final String NAME = "rights";
 
 	private static final String PRIVACY_ACT_NAME = "privacyAct";
 	private static final String INTELLECTUAL_PROPERY_NAME = "intellectualProperty";
@@ -74,7 +72,7 @@ public final class Rights extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Rights(boolean privacyAct, boolean intellectualProperty, boolean copyright) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(Rights.NAME, null);
+		Element element = Util.buildDDMSElement(Rights.getName(DDMSVersion.getCurrentVersion()), null);
 		Util.addDDMSAttribute(element, PRIVACY_ACT_NAME, Boolean.toString(privacyAct));
 		Util.addDDMSAttribute(element, INTELLECTUAL_PROPERY_NAME, Boolean.toString(intellectualProperty));
 		Util.addDDMSAttribute(element, COPYRIGHT_NAME, Boolean.toString(copyright));
@@ -94,7 +92,7 @@ public final class Rights extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Rights.getName(getDDMSVersion()));
 	}
 	
 	/**
@@ -102,9 +100,9 @@ public final class Rights extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(NAME + "." + PRIVACY_ACT_NAME, String.valueOf(getPrivacyAct()), true));
-		html.append(buildHTMLMeta(NAME + "." + INTELLECTUAL_PROPERY_NAME, String.valueOf(getIntellectualProperty()), true));
-		html.append(buildHTMLMeta(NAME + "." + COPYRIGHT_NAME, String.valueOf(getCopyright()), true));
+		html.append(buildHTMLMeta(getName() + "." + PRIVACY_ACT_NAME, String.valueOf(getPrivacyAct()), true));
+		html.append(buildHTMLMeta(getName() + "." + INTELLECTUAL_PROPERY_NAME, String.valueOf(getIntellectualProperty()), true));
+		html.append(buildHTMLMeta(getName() + "." + COPYRIGHT_NAME, String.valueOf(getCopyright()), true));
 		return (html.toString());
 	}
 	
@@ -140,6 +138,17 @@ public final class Rights extends AbstractBaseComponent {
 		result = 7 * result + Util.booleanHashCode(getIntellectualProperty());
 		result = 7 * result + Util.booleanHashCode(getCopyright());
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("rights");
 	}
 	
 	/**

@@ -24,6 +24,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -58,9 +59,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Language extends AbstractQualifierValue {
-
-	/** The element name of this component */
-	public static final String NAME = "language";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -80,7 +78,7 @@ public final class Language extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Language(String qualifier, String value) throws InvalidDDMSException {
-		super(Language.NAME, qualifier, value, true);
+		super(Language.getName(DDMSVersion.getCurrentVersion()), qualifier, value, true);
 	}
 
 	/**
@@ -97,7 +95,7 @@ public final class Language extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Language.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
 		
@@ -124,8 +122,8 @@ public final class Language extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(NAME + "." + QUALIFIER_NAME, getQualifier(), false));
-		html.append(buildHTMLMeta(NAME + "." + VALUE_NAME, getValue(), false));
+		html.append(buildHTMLMeta(getName() + "." + QUALIFIER_NAME, getQualifier(), false));
+		html.append(buildHTMLMeta(getName() + "." + VALUE_NAME, getValue(), false));
 		return (html.toString());
 	}
 	
@@ -134,8 +132,8 @@ public final class Language extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(NAME + " " + QUALIFIER_NAME, getQualifier(), false));
-		text.append(buildTextLine(NAME + " " + VALUE_NAME, getValue(), false));
+		text.append(buildTextLine(getName() + " " + QUALIFIER_NAME, getQualifier(), false));
+		text.append(buildTextLine(getName() + " " + VALUE_NAME, getValue(), false));
 		return (text.toString());		
 	}
 	
@@ -144,6 +142,17 @@ public final class Language extends AbstractQualifierValue {
 	 */
 	public boolean equals(Object obj) {
 		return (super.equals(obj) && (obj instanceof Language));
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("language");
 	}
 	
 	/**

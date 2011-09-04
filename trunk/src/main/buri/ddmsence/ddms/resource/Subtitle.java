@@ -25,6 +25,7 @@ import buri.ddmsence.ddms.AbstractSimpleString;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -53,9 +54,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Subtitle extends AbstractSimpleString {
-
-	/** The element name of this component */
-	public static final String NAME = "subtitle";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -75,7 +73,7 @@ public final class Subtitle extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Subtitle(String subtitle, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(Subtitle.NAME, subtitle, securityAttributes);
+		super(Subtitle.getName(DDMSVersion.getCurrentVersion()), subtitle, securityAttributes);
 	}
 
 	/**
@@ -91,7 +89,7 @@ public final class Subtitle extends AbstractSimpleString {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Subtitle.getName(getDDMSVersion()));
 		validateWarnings();
 	}
 	
@@ -114,8 +112,8 @@ public final class Subtitle extends AbstractSimpleString {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(Subtitle.NAME, getValue(), false));
-		html.append(getSecurityAttributes().toHTML(Subtitle.NAME));
+		html.append(buildHTMLMeta(getName(), getValue(), false));
+		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}
 	
@@ -124,8 +122,8 @@ public final class Subtitle extends AbstractSimpleString {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(Subtitle.NAME, getValue(), false));
-		text.append(getSecurityAttributes().toText(Subtitle.NAME));
+		text.append(buildTextLine(getName(), getValue(), false));
+		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
 	}
 	
@@ -136,6 +134,17 @@ public final class Subtitle extends AbstractSimpleString {
 		if (!super.equals(obj) || !(obj instanceof Subtitle))
 			return (false);
 		return (true);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("subtitle");
 	}
 	
 	/**

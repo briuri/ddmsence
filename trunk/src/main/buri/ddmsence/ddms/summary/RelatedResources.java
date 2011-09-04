@@ -32,6 +32,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
@@ -76,9 +77,6 @@ public final class RelatedResources extends AbstractBaseComponent {
 	private List<RelatedResource> _cachedResources;
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	
-	/** The element name of this component */
-	public static final String NAME = "relatedResources";
-	
 	/** The value for an inbound direction. */
 	public static final String INBOUND_DIRECTION = "inbound";
 	
@@ -107,13 +105,14 @@ public final class RelatedResources extends AbstractBaseComponent {
 	public RelatedResources(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("RelatedResources element", element);
+			setXOMElement(element, false);
 			_cachedResources = new ArrayList<RelatedResource>();
-			Elements resources = element.getChildElements(RelatedResource.NAME, element.getNamespaceURI());
+			Elements resources = element.getChildElements(RelatedResource.getName(getDDMSVersion()), element.getNamespaceURI());
 			for (int i = 0; i < resources.size(); i++) {
 				_cachedResources.add(new RelatedResource(resources.get(i)));
 			}
 			_cachedSecurityAttributes = new SecurityAttributes(element);
-			setXOMElement(element, true);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -132,7 +131,7 @@ public final class RelatedResources extends AbstractBaseComponent {
 	public RelatedResources(List<RelatedResource> resources, String relationship, String direction,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(RelatedResources.NAME, null);
+			Element element = Util.buildDDMSElement(RelatedResources.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, RELATIONSHIP_NAME, relationship);
 			Util.addDDMSAttribute(element, DIRECTION_NAME, direction);
 			if (resources == null)
@@ -179,12 +178,12 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), RelatedResources.getName(getDDMSVersion()));
 		Util.requireDDMSValue("relationship attribute", getRelationship());
 		Util.requireDDMSValidURI(getRelationship());
 		if (!Util.isEmpty(getDirection()))
 			validateRelationshipDirection(getDirection());
-		if (getChild(RelatedResource.NAME) == null)
+		if (getChild(RelatedResource.getName(getDDMSVersion())) == null)
 			throw new InvalidDDMSException("At least 1 RelatedResource must exist.");
 		for (RelatedResource related : getRelatedResources())
 			Util.requireCompatibleVersion(this, related);
@@ -210,8 +209,8 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(NAME + "." + RELATIONSHIP_NAME, getRelationship(), true));
-		html.append(buildHTMLMeta(NAME + "." + DIRECTION_NAME, getDirection(), false));
+		html.append(buildHTMLMeta(getName() + "." + RELATIONSHIP_NAME, getRelationship(), true));
+		html.append(buildHTMLMeta(getName() + "." + DIRECTION_NAME, getDirection(), false));
 		for (RelatedResource resource : getRelatedResources()) {
 			html.append(resource.toHTML());
 		}
@@ -224,8 +223,8 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(NAME + " " + RELATIONSHIP_NAME, getRelationship(), true));
-		text.append(buildTextLine(NAME + " " + DIRECTION_NAME, getDirection(), false));
+		text.append(buildTextLine(getName() + " " + RELATIONSHIP_NAME, getRelationship(), true));
+		text.append(buildTextLine(getName() + " " + DIRECTION_NAME, getDirection(), false));
 		for (RelatedResource resource : getRelatedResources()) {
 			text.append(resource.toText());
 		}
@@ -256,6 +255,17 @@ public final class RelatedResources extends AbstractBaseComponent {
 		result = 7 * result + getRelatedResources().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("relatedResources");
 	}
 	
 	/**

@@ -27,6 +27,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
@@ -70,9 +71,6 @@ public final class PostalAddress extends AbstractBaseComponent {
 	private String _cachedPostalCode;
 	private CountryCode _cachedCountryCode;
 	
-	/** The element name of this component */
-	public static final String NAME = "postalAddress";
-	
 	private static final String STREET_NAME = "street";
 	private static final String CITY_NAME = "city";
 	private static final String STATE_NAME = "state";
@@ -88,6 +86,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 	public PostalAddress(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("postalAddress element", element);
+			setXOMElement(element, false);
 			String namespace = element.getNamespaceURI();
 			_cachedStreets = Util.getDDMSChildValues(element, STREET_NAME);
 			Element cityElement = element.getFirstChildElement(CITY_NAME, namespace);
@@ -102,10 +101,10 @@ public final class PostalAddress extends AbstractBaseComponent {
 			Element postalCodeElement = element.getFirstChildElement(POSTAL_CODE_NAME, namespace);
 			if (postalCodeElement != null)
 				_cachedPostalCode = postalCodeElement.getValue();
-			Element countryCodeElement = element.getFirstChildElement(CountryCode.NAME, namespace);
+			Element countryCodeElement = element.getFirstChildElement(CountryCode.getName(getDDMSVersion()), namespace);
 			if (countryCodeElement != null)
-				_cachedCountryCode = new CountryCode(PostalAddress.NAME, countryCodeElement);
-			setXOMElement(element, true);
+				_cachedCountryCode = new CountryCode(PostalAddress.getName(getDDMSVersion()), countryCodeElement);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -129,7 +128,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		try {
 			if (streets == null)
 				streets = Collections.emptyList();
-			Element element = Util.buildDDMSElement(PostalAddress.NAME, null);
+			Element element = Util.buildDDMSElement(PostalAddress.getName(DDMSVersion.getCurrentVersion()), null);
 			for (String street : streets) {
 				element.appendChild(Util.buildDDMSElement(STREET_NAME, street));
 			}
@@ -169,7 +168,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), PostalAddress.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getState()) && !Util.isEmpty(getProvince())) {
 			throw new InvalidDDMSException("Only 1 of state or province can be used.");
 		}
@@ -178,7 +177,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), STATE_NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), PROVINCE_NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), POSTAL_CODE_NAME, 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.NAME, 0, 1);
+		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.getName(getDDMSVersion()), 0, 1);
 		if (getCountryCode() != null) {
 			Util.requireCompatibleVersion(this, getCountryCode());
 		}
@@ -208,7 +207,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + NAME + ".";
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + getName() + ".";
 		for (String street : getStreets())
 			html.append(buildHTMLMeta(prefix + STREET_NAME, street, false));
 		html.append(buildHTMLMeta(prefix + CITY_NAME, getCity(), false));
@@ -226,11 +225,11 @@ public final class PostalAddress extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		for (String street : getStreets())
-			text.append(buildTextLine(NAME + " " + STREET_NAME, street, false));
-		text.append(buildTextLine(NAME + " " + CITY_NAME, getCity(), false));
-		text.append(buildTextLine(NAME + " " + STATE_NAME, getState(), false));
-		text.append(buildTextLine(NAME + " " + PROVINCE_NAME, getProvince(), false));
-		text.append(buildTextLine(NAME + " " + POSTAL_CODE_NAME, getPostalCode(), false));
+			text.append(buildTextLine(getName() + " " + STREET_NAME, street, false));
+		text.append(buildTextLine(getName() + " " + CITY_NAME, getCity(), false));
+		text.append(buildTextLine(getName() + " " + STATE_NAME, getState(), false));
+		text.append(buildTextLine(getName() + " " + PROVINCE_NAME, getProvince(), false));
+		text.append(buildTextLine(getName() + " " + POSTAL_CODE_NAME, getPostalCode(), false));
 		if (getCountryCode() != null)
 			text.append(getCountryCode().toText());
 		return (text.toString());
@@ -265,6 +264,17 @@ public final class PostalAddress extends AbstractBaseComponent {
 		if (getCountryCode() != null)
 			result = 7 * result + getCountryCode().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("postalAddress");
 	}
 	
 	/**
@@ -354,6 +364,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 				throw new InvalidDDMSException("Only 1 of state or province can be used.");
 			boolean hasState = !Util.isEmpty(getState());
 			String stateOrProvince = hasState ? getState() : getProvince();
+			getCountryCode().setParentType(PostalAddress.getName(DDMSVersion.getCurrentVersion()));
 			return (new PostalAddress(getStreets(), getCity(), stateOrProvince, getPostalCode(), getCountryCode().commit(), hasState));
 		}
 		
@@ -447,7 +458,6 @@ public final class PostalAddress extends AbstractBaseComponent {
 		public CountryCode.Builder getCountryCode() {
 			if (_countryCode == null) {
 				_countryCode = new CountryCode.Builder();
-				_countryCode.setParentType(PostalAddress.NAME);
 			}
 			return _countryCode;
 		}
@@ -456,9 +466,6 @@ public final class PostalAddress extends AbstractBaseComponent {
 		 * Builder accessor for the countryCode
 		 */
 		public void setCountryCode(CountryCode.Builder countryCode) {
-			if (countryCode != null) {
-				countryCode.setParentType(PostalAddress.NAME);
-			}
 			_countryCode = countryCode;
 		}		
 	}

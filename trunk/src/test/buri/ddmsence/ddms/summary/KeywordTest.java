@@ -135,9 +135,9 @@ public class KeywordTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Keyword component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Keyword.NAME, component.getName());
+			assertEquals(Keyword.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Keyword.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Keyword.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -163,11 +163,11 @@ public class KeywordTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing value
-			Element element = Util.buildDDMSElement(Keyword.NAME, null);
+			Element element = Util.buildDDMSElement(Keyword.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_FAIL, element);
 
 			// Empty value
-			element = Util.buildDDMSElement(Keyword.NAME, "");
+			element = Util.buildDDMSElement(Keyword.getName(DDMSVersion.getCurrentVersion()), "");
 			testConstructor(WILL_FAIL, element);
 		}
 	}

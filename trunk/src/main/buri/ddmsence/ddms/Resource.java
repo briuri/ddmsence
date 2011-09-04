@@ -219,36 +219,36 @@ public final class Resource extends AbstractBaseComponent {
 			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
 			
 			// Resource Set
-			Elements components = element.getChildElements(Identifier.NAME, namespace);
+			Elements components = element.getChildElements(Identifier.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedIdentifiers.add(new Identifier(components.get(i)));
 			}
-			components = element.getChildElements(Title.NAME, namespace);
+			components = element.getChildElements(Title.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedTitles.add(new Title(components.get(i)));
 			}
-			components = element.getChildElements(Subtitle.NAME, namespace);
+			components = element.getChildElements(Subtitle.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedSubtitles.add(new Subtitle(components.get(i)));
 			}
-			Element component = getChild(Description.NAME);
+			Element component = getChild(Description.getName(getDDMSVersion()));
 			if (component != null)
 				_cachedDescription = new Description(component);
-			components = element.getChildElements(Language.NAME, namespace);
+			components = element.getChildElements(Language.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedLanguages.add(new Language(components.get(i)));
 			}
-			component = getChild(Dates.NAME);
+			component = getChild(Dates.getName(getDDMSVersion()));
 			if (component != null)
 				_cachedDates = new Dates(component);
-			component = getChild(Rights.NAME);
+			component = getChild(Rights.getName(getDDMSVersion()));
 			if (component != null)
 				_cachedRights = new Rights(component);
-			components = element.getChildElements(Source.NAME, namespace);
+			components = element.getChildElements(Source.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedSources.add(new Source(components.get(i)));
 			}
-			components = element.getChildElements(Type.NAME, namespace);
+			components = element.getChildElements(Type.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedTypes.add(new Type(components.get(i)));
 			}
@@ -290,7 +290,7 @@ public final class Resource extends AbstractBaseComponent {
 			for (int i = 0; i < components.size(); i++) {
 				_cachedGeospatialCoverages.add(new GeospatialCoverage(components.get(i)));
 			}
-			components = element.getChildElements(RelatedResources.NAME, namespace);
+			components = element.getChildElements(RelatedResources.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedRelatedResources.add(new RelatedResources(components.get(i)));
 			}
@@ -593,9 +593,9 @@ public final class Resource extends AbstractBaseComponent {
 		if (getCreators().size() + getContributors().size() + getPublishers().size() + getPointOfContacts().size() == 0)
 			throw new InvalidDDMSException(
 				"At least 1 producer (creator, contributor, publisher, or pointOfContact) is required.");
-		Util.requireBoundedDDMSChildCount(getXOMElement(), Description.NAME, 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), Dates.NAME, 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), Rights.NAME, 0, 1);
+		Util.requireBoundedDDMSChildCount(getXOMElement(), Description.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedDDMSChildCount(getXOMElement(), Dates.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedDDMSChildCount(getXOMElement(), Rights.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Format.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), SubjectCoverage.NAME, 1, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);	

@@ -968,7 +968,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			}
 			
 			// More nested warnings
-			Element element = Util.buildDDMSElement(PostalAddress.NAME, null);
+			Element element = Util.buildDDMSElement(PostalAddress.getName(DDMSVersion.getCurrentVersion()), null);
 			PostalAddress address = new PostalAddress(element);
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.add(new GeospatialCoverage(null, null, null, address, null, null));

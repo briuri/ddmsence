@@ -118,9 +118,9 @@ public class LanguageTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Language component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Language.NAME, component.getName());
+			assertEquals(Language.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Language.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Language.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -135,7 +135,7 @@ public class LanguageTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Language.NAME, null);
+			Element element = Util.buildDDMSElement(Language.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -155,7 +155,7 @@ public class LanguageTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing qualifier
-			Element element = Util.buildDDMSElement(Language.NAME, null);
+			Element element = Util.buildDDMSElement(Language.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
 		}
@@ -177,7 +177,7 @@ public class LanguageTest extends AbstractComponentTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Qualifier without value
-			Element element = Util.buildDDMSElement(Language.NAME, null);
+			Element element = Util.buildDDMSElement(Language.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
@@ -187,7 +187,7 @@ public class LanguageTest extends AbstractComponentTestCase {
 			assertEquals("/ddms:language", component.getValidationWarnings().get(0).getLocator());
 
 			// Neither attribute
-			element = Util.buildDDMSElement(Language.NAME, null);
+			element = Util.buildDDMSElement(Language.getName(DDMSVersion.getCurrentVersion()), null);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());

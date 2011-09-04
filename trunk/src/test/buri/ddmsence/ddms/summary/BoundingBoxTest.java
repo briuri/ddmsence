@@ -182,7 +182,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	 * @return Element
 	 */
 	private Element buildComponentElement(String west, String east, String south, String north) {
-		Element element = Util.buildDDMSElement(BoundingBox.NAME, null);
+		Element element = Util.buildDDMSElement(BoundingBox.getName(DDMSVersion.getCurrentVersion()), null);
 		element.appendChild(Util.buildDDMSElement(getWestBLName(), String.valueOf("west")));
 		element.appendChild(Util.buildDDMSElement(getEastBLName(), String.valueOf(TEST_EAST)));
 		element.appendChild(Util.buildDDMSElement(getSouthBLName(), String.valueOf(TEST_SOUTH)));
@@ -194,9 +194,9 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(BoundingBox.NAME, component.getName());
+			assertEquals(BoundingBox.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + BoundingBox.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + BoundingBox.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -222,7 +222,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing values
-			Element element = Util.buildDDMSElement(BoundingBox.NAME, null);
+			Element element = Util.buildDDMSElement(BoundingBox.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_FAIL, element);
 
 			// Not Double

@@ -59,7 +59,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	protected static Element getFixtureElement() throws InvalidDDMSException {
 		String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
 		String xlinkNamespace = DDMSVersion.getCurrentVersion().getXlinkNamespace();
-		Element linkElement = Util.buildDDMSElement(Link.NAME, null);
+		Element linkElement = Util.buildDDMSElement(Link.getName(DDMSVersion.getCurrentVersion()), null);
 		linkElement.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), DDMSVersion.getCurrentVersion().getNamespace());
 		linkElement.addNamespaceDeclaration(xlinkPrefix, xlinkNamespace);
 		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "type", xlinkNamespace, TEST_TYPE));
@@ -157,7 +157,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	 * @return Element
 	 */
 	private Element buildComponentElement(String type, String href) {
-		Element element = Util.buildDDMSElement(Link.NAME, null);
+		Element element = Util.buildDDMSElement(Link.getName(DDMSVersion.getCurrentVersion()), null);
 		String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
 		String xlinkNamespace = DDMSVersion.getCurrentVersion().getXlinkNamespace();
 		if (type != null)
@@ -171,9 +171,9 @@ public class LinkTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(Link.NAME, component.getName());
+			assertEquals(Link.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Link.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Link.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);

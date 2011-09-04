@@ -121,9 +121,9 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Subtitle component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Subtitle.NAME, component.getName());
+			assertEquals(Subtitle.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Subtitle.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Subtitle.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -138,7 +138,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Subtitle.NAME, null);
+			Element element = Util.buildDDMSElement(Subtitle.getName(DDMSVersion.getCurrentVersion()), null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -186,7 +186,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// No value
-			Element element = Util.buildDDMSElement(Subtitle.NAME, null);
+			Element element = Util.buildDDMSElement(Subtitle.getName(DDMSVersion.getCurrentVersion()), null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());

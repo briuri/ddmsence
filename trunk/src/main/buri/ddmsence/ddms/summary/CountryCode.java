@@ -27,6 +27,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -68,15 +69,6 @@ public final class CountryCode extends AbstractQualifierValue {
 
 	private String _parentType;
 	
-	private static Set<String> PARENT_TYPES = new HashSet<String>();
-	static {
-		PARENT_TYPES.add(GeographicIdentifier.NAME);
-		PARENT_TYPES.add(PostalAddress.NAME);
-	}
-	
-	/** The element name of this component */
-	public static final String NAME = "countryCode";
-	
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
@@ -104,7 +96,7 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public CountryCode(String parentType, String qualifier, String value) throws InvalidDDMSException {
-		super(CountryCode.NAME, qualifier, value, false);
+		super(CountryCode.getName(DDMSVersion.getCurrentVersion()), qualifier, value, false);
 		try {
 			_parentType = parentType;
 			setXOMElement(getXOMElement(), true);
@@ -120,10 +112,13 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @param parentType the type to test
 	 * @throws InvalidDDMSException if the value is null, empty or invalid.
 	 */
-	public static void validateParentType(String parentType) throws InvalidDDMSException {
+	private void validateParentType(String parentType) throws InvalidDDMSException {
 		Util.requireDDMSValue("parent type", parentType);
-		if (!PARENT_TYPES.contains(parentType))
-			throw new InvalidDDMSException("The parent type must be one of " + PARENT_TYPES);
+		Set<String> parentTypes = new HashSet<String>();
+		parentTypes.add(GeographicIdentifier.getName(getDDMSVersion()));
+		parentTypes.add(PostalAddress.getName(getDDMSVersion()));
+		if (!parentTypes.contains(parentType))
+			throw new InvalidDDMSException("The parent type must be one of " + parentTypes);
 	}
 	
 	/**
@@ -142,7 +137,7 @@ public final class CountryCode extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), CountryCode.getName(getDDMSVersion()));
 		validateParentType(getParentType());
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
 		Util.requireDDMSValue("value attribute", getValue());
@@ -153,7 +148,7 @@ public final class CountryCode extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + getParentType() + "." + NAME + ".";
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + getParentType() + "." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + QUALIFIER_NAME, getQualifier(), true));
 		html.append(buildHTMLMeta(prefix + VALUE_NAME, getValue(), true));
 		return (html.toString());
@@ -164,7 +159,7 @@ public final class CountryCode extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		String prefix = getParentType() + " " + NAME + " ";
+		String prefix = getParentType() + " " + getName() + " ";
 		text.append(buildTextLine(prefix + QUALIFIER_NAME, getQualifier(), true));
 		text.append(buildTextLine(prefix + VALUE_NAME, getValue(), true));
 		return (text.toString());
@@ -187,6 +182,17 @@ public final class CountryCode extends AbstractQualifierValue {
 		int result = super.hashCode();
 		result = 7 * result + getParentType().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("countryCode");
 	}
 	
 	/**

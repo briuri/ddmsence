@@ -94,21 +94,22 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	public SubjectCoverage(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("subjectCoverage element", element);
+			setXOMElement(element, false);
 			Element subjectElement = element.getFirstChildElement(SUBJECT_NAME, element.getNamespaceURI());
 			_cachedKeywords = new ArrayList<Keyword>();
 			_cachedCategories = new ArrayList<Category>();
 			if (subjectElement != null) {
-				Elements keywords = subjectElement.getChildElements(Keyword.NAME, subjectElement.getNamespaceURI());
+				Elements keywords = subjectElement.getChildElements(Keyword.getName(getDDMSVersion()), subjectElement.getNamespaceURI());
 				for (int i = 0; i < keywords.size(); i++) {
 					_cachedKeywords.add(new Keyword(keywords.get(i)));
 				}
-				Elements categories = subjectElement.getChildElements(Category.NAME, subjectElement.getNamespaceURI());
+				Elements categories = subjectElement.getChildElements(Category.getName(getDDMSVersion()), subjectElement.getNamespaceURI());
 				for (int i = 0; i < categories.size(); i++) {
 					_cachedCategories.add(new Category(categories.get(i)));
 				}
 			}
 			_cachedSecurityAttributes = new SecurityAttributes(element);
-			setXOMElement(element, true);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -169,8 +170,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), NAME);
 		Element subjectElement = getChild(SUBJECT_NAME);
 		Util.requireDDMSValue("Subject element", subjectElement);
-		int count = subjectElement.getChildElements(Keyword.NAME, subjectElement.getNamespaceURI()).size()
-			+ subjectElement.getChildElements(Category.NAME, subjectElement.getNamespaceURI()).size();
+		int count = subjectElement.getChildElements(Keyword.getName(getDDMSVersion()), subjectElement.getNamespaceURI()).size()
+			+ subjectElement.getChildElements(Category.getName(getDDMSVersion()), subjectElement.getNamespaceURI()).size();
 		if (count < 1)
 			throw new InvalidDDMSException("At least 1 keyword or category must exist.");
 		for (Keyword keyword : getKeywords())

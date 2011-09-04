@@ -25,6 +25,7 @@ import buri.ddmsence.ddms.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -61,9 +62,6 @@ public final class Source extends AbstractQualifierValue {
 
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	
-	/** The element name of this component */
-	public static final String NAME = "source";
-	
 	private static final String SCHEMA_QUALIFIER_NAME = "schemaQualifier";
 	private static final String SCHEMA_HREF_NAME = "schemaHref";
 
@@ -95,7 +93,7 @@ public final class Source extends AbstractQualifierValue {
 	 */
 	public Source(String qualifier, String value, String schemaQualifier, String schemaHref,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(Source.NAME, qualifier, value, false);
+		super(Source.getName(DDMSVersion.getCurrentVersion()), qualifier, value, false);
 		try {
 			Element element = getXOMElement();
 			Util.addDDMSAttribute(element, SCHEMA_QUALIFIER_NAME, schemaQualifier);
@@ -124,7 +122,7 @@ public final class Source extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Source.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getSchemaHref())) {
 			Util.requireDDMSValidURI(getSchemaHref());
 		}		
@@ -157,11 +155,11 @@ public final class Source extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(NAME + "." + QUALIFIER_NAME, getQualifier(), false));
-		html.append(buildHTMLMeta(NAME + "." + VALUE_NAME, getValue(), false));
-		html.append(buildHTMLMeta(NAME + "." + SCHEMA_QUALIFIER_NAME, getSchemaQualifier(), false));
-		html.append(buildHTMLMeta(NAME + "." + SCHEMA_HREF_NAME, getSchemaHref(), false));
-		html.append(getSecurityAttributes().toHTML(Source.NAME));
+		html.append(buildHTMLMeta(getName() + "." + QUALIFIER_NAME, getQualifier(), false));
+		html.append(buildHTMLMeta(getName() + "." + VALUE_NAME, getValue(), false));
+		html.append(buildHTMLMeta(getName() + "." + SCHEMA_QUALIFIER_NAME, getSchemaQualifier(), false));
+		html.append(buildHTMLMeta(getName() + "." + SCHEMA_HREF_NAME, getSchemaHref(), false));
+		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}
 	
@@ -170,11 +168,11 @@ public final class Source extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(NAME + " " + QUALIFIER_NAME, getQualifier(), false));
-		text.append(buildTextLine(NAME + " " + VALUE_NAME, getValue(), false));
-		text.append(buildTextLine(NAME + " " + SCHEMA_QUALIFIER_NAME, getSchemaQualifier(), false));
-		text.append(buildTextLine(NAME + " " + SCHEMA_HREF_NAME, getSchemaHref(), false));
-		text.append(getSecurityAttributes().toText("source"));
+		text.append(buildTextLine(getName() + " " + QUALIFIER_NAME, getQualifier(), false));
+		text.append(buildTextLine(getName() + " " + VALUE_NAME, getValue(), false));
+		text.append(buildTextLine(getName() + " " + SCHEMA_QUALIFIER_NAME, getSchemaQualifier(), false));
+		text.append(buildTextLine(getName() + " " + SCHEMA_HREF_NAME, getSchemaHref(), false));
+		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
 	}
 		
@@ -199,6 +197,17 @@ public final class Source extends AbstractQualifierValue {
 		result = 7 * result + getSchemaHref().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("source");
 	}
 	
 	/**
