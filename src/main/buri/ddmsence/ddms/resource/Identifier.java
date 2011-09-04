@@ -24,6 +24,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -53,9 +54,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Identifier extends AbstractQualifierValue {
-
-	/** The element name of this component */
-	public static final String NAME = "identifier";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -75,7 +73,7 @@ public final class Identifier extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Identifier(String qualifier, String value) throws InvalidDDMSException {
-		super(Identifier.NAME, qualifier, value, true);
+		super(Identifier.getName(DDMSVersion.getCurrentVersion()), qualifier, value, true);
 	}
 	
 	/**
@@ -94,7 +92,7 @@ public final class Identifier extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Identifier.getName(getDDMSVersion()));
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
 		Util.requireDDMSValue("value attribute", getValue());
 		Util.requireDDMSValidURI(getQualifier());
@@ -105,8 +103,8 @@ public final class Identifier extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(NAME + "." + QUALIFIER_NAME, getQualifier(), true));
-		html.append(buildHTMLMeta(NAME + "." + VALUE_NAME, getValue(), true));
+		html.append(buildHTMLMeta(getName() + "." + QUALIFIER_NAME, getQualifier(), true));
+		html.append(buildHTMLMeta(getName() + "." + VALUE_NAME, getValue(), true));
 		return (html.toString());
 	}
 	
@@ -115,8 +113,8 @@ public final class Identifier extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(NAME + " " + QUALIFIER_NAME, getQualifier(), true));
-		text.append(buildTextLine(NAME + " " + VALUE_NAME, getValue(), true));
+		text.append(buildTextLine(getName() + " " + QUALIFIER_NAME, getQualifier(), true));
+		text.append(buildTextLine(getName() + " " + VALUE_NAME, getValue(), true));
 		return (text.toString());
 	}
 	
@@ -125,6 +123,17 @@ public final class Identifier extends AbstractQualifierValue {
 	 */
 	public boolean equals(Object obj) {
 		return (super.equals(obj) && (obj instanceof Identifier));
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("identifier");
 	}
 	
 	/**

@@ -149,9 +149,9 @@ public class SourceTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Source component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Source.NAME, component.getName());
+			assertEquals(Source.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Source.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Source.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -166,7 +166,7 @@ public class SourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Source.NAME, null);
+			Element element = Util.buildDDMSElement(Source.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -186,7 +186,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Href not URI
-			Element element = Util.buildDDMSElement(Source.NAME, null);
+			Element element = Util.buildDDMSElement(Source.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "schemaHref", INVALID_URI);
 			testConstructor(WILL_FAIL, element);
 		}
@@ -207,7 +207,7 @@ public class SourceTest extends AbstractComponentTestCase {
 			Source component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(0, component.getValidationWarnings().size());
 
-			Element element = Util.buildDDMSElement(Source.NAME, null);
+			Element element = Util.buildDDMSElement(Source.getName(DDMSVersion.getCurrentVersion()), null);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());

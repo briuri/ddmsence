@@ -27,6 +27,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
@@ -71,10 +72,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	private CountryCode _cachedCountryCode = null;
 	private SubDivisionCode _cachedSubDivisionCode = null;
 	private FacilityIdentifier _cachedFacilityIdentifier = null;
-	
-	/** The element name of this component */
-	public static final String NAME = "geographicIdentifier";
-	
+
 	private static final String NAME_NAME = "name";
 	private static final String REGION_NAME = "region";
 	
@@ -87,19 +85,20 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	public GeographicIdentifier(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("geographicIdentifier element", element);
+			setXOMElement(element, false);
 			_cachedNames = Util.getDDMSChildValues(element, NAME_NAME);
 			_cachedRegions = Util.getDDMSChildValues(element, REGION_NAME);
-			Element countryCodeElement = element.getFirstChildElement(CountryCode.NAME, element.getNamespaceURI());
+			Element countryCodeElement = element.getFirstChildElement(CountryCode.getName(getDDMSVersion()), element.getNamespaceURI());
 			if (countryCodeElement != null)
-				_cachedCountryCode = new CountryCode(GeographicIdentifier.NAME, countryCodeElement);
+				_cachedCountryCode = new CountryCode(GeographicIdentifier.getName(getDDMSVersion()), countryCodeElement);
 			Element subDivisionCodeElement = element.getFirstChildElement(SubDivisionCode.NAME, element.getNamespaceURI());
 			if (subDivisionCodeElement != null)
 				_cachedSubDivisionCode = new SubDivisionCode(subDivisionCodeElement);
-			Element facilityIdentifierElement = element.getFirstChildElement(FacilityIdentifier.NAME, element
+			Element facilityIdentifierElement = element.getFirstChildElement(FacilityIdentifier.getName(getDDMSVersion()), element
 				.getNamespaceURI());
 			if (facilityIdentifierElement != null)
 				_cachedFacilityIdentifier = new FacilityIdentifier(facilityIdentifierElement);
-			setXOMElement(element, true);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -137,7 +136,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 				names = Collections.emptyList();
 			if (regions == null)
 				regions = Collections.emptyList();
-			Element element = Util.buildDDMSElement(GeographicIdentifier.NAME, null);
+			Element element = Util.buildDDMSElement(GeographicIdentifier.getName(DDMSVersion.getCurrentVersion()), null);
 			for (String name : names) {
 				element.appendChild(Util.buildDDMSElement(NAME_NAME, name));
 			}
@@ -166,7 +165,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public GeographicIdentifier(FacilityIdentifier facilityIdentifier) throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(GeographicIdentifier.NAME, null);
+		Element element = Util.buildDDMSElement(GeographicIdentifier.getName(DDMSVersion.getCurrentVersion()), null);
 		if (facilityIdentifier != null)
 			element.appendChild(facilityIdentifier.getXOMElementCopy());
 		_cachedNames = Collections.emptyList();
@@ -190,14 +189,14 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), GeographicIdentifier.getName(getDDMSVersion()));
 		if (getNames().isEmpty() && getRegions().isEmpty() && getCountryCode() == null && getSubDivisionCode() == null
 			&& getFacilityIdentifier() == null) {
 			throw new InvalidDDMSException("At least 1 of name, region, countryCode, subDivisionCode, or facilityIdentifier must exist.");
 		}
-		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.NAME, 0, 1);
+		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), SubDivisionCode.NAME, 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), FacilityIdentifier.NAME, 0, 1);
+		Util.requireBoundedDDMSChildCount(getXOMElement(), FacilityIdentifier.getName(getDDMSVersion()), 0, 1);
 		if (hasFacilityIdentifier()) {
 			Util.requireCompatibleVersion(this, getFacilityIdentifier());
 			if (!getNames().isEmpty() || !getRegions().isEmpty() || getCountryCode() != null || getSubDivisionCode() != null)
@@ -231,7 +230,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + NAME + ".";
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + getName() + ".";
 		for (String name : getNames())
 			html.append(buildHTMLMeta(prefix + NAME_NAME, name, false));
 		for (String region : getRegions())
@@ -251,9 +250,9 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		for (String name : getNames())
-			text.append(buildTextLine(NAME + " " + NAME_NAME, name, false));
+			text.append(buildTextLine(getName() + " " + NAME_NAME, name, false));
 		for (String region : getRegions())
-			text.append(buildTextLine(NAME + " " + REGION_NAME, region, false));
+			text.append(buildTextLine(getName() + " " + REGION_NAME, region, false));
 		if (getCountryCode() != null)
 			text.append(getCountryCode().toText());
 		if (getSubDivisionCode() != null)
@@ -292,6 +291,17 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		if (hasFacilityIdentifier())
 			result = 7 * result + getFacilityIdentifier().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("geographicIdentifier");
 	}
 	
 	/**
@@ -381,6 +391,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			FacilityIdentifier identifier = getFacilityIdentifier().commit();
 			if (identifier != null)
 				return (new GeographicIdentifier(identifier));
+			getCountryCode().setParentType(GeographicIdentifier.getName(DDMSVersion.getCurrentVersion()));
 			return (new GeographicIdentifier(getNames(), getRegions(), getCountryCode().commit(), getSubDivisionCode().commit()));
 		}
 
@@ -433,7 +444,6 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		public CountryCode.Builder getCountryCode() {
 			if (_countryCode == null) {
 				_countryCode = new CountryCode.Builder();
-				_countryCode.setParentType(GeographicIdentifier.NAME);
 			}
 			return _countryCode;
 		}
@@ -442,8 +452,6 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		 * Builder accessor for the country code
 		 */
 		public void setCountryCode(CountryCode.Builder countryCode) {
-			if (countryCode != null)
-				countryCode.setParentType(GeographicIdentifier.NAME);
 			_countryCode = countryCode;
 		}
 

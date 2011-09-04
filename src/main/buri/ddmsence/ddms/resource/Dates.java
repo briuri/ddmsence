@@ -28,6 +28,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -73,9 +74,6 @@ public final class Dates extends AbstractBaseComponent {
 	private XMLGregorianCalendar _cachedInfoCutOff = null;
 	private XMLGregorianCalendar _cachedApprovedOn = null;
 	private XMLGregorianCalendar _cachedReceivedOn = null;
-	
-	/** The element name of this component */
-	public static final String NAME = "dates";
 	
 	private static final String CREATED_NAME = "created";
 	private static final String POSTED_NAME = "posted";
@@ -148,7 +146,7 @@ public final class Dates extends AbstractBaseComponent {
 	public Dates(String created, String posted, String validTil, String infoCutOff, String approvedOn, String receivedOn)
 		throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(Dates.NAME, null);
+			Element element = Util.buildDDMSElement(Dates.getName(DDMSVersion.getCurrentVersion()), null);
 			try {
 				if (!Util.isEmpty(created)) {
 						_cachedCreated = getFactory().newXMLGregorianCalendar(created);
@@ -200,7 +198,7 @@ public final class Dates extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Dates.getName(getDDMSVersion()));
 		if (getCreated() != null)
 			Util.requireDDMSDateFormat(getCreated().getXMLSchemaType());
 		if (getPosted() != null)
@@ -242,17 +240,17 @@ public final class Dates extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		if (getCreated() != null)
-			html.append(buildHTMLMeta(NAME + "." + CREATED_NAME, getCreated().toXMLFormat(), true));
+			html.append(buildHTMLMeta(getName() + "." + CREATED_NAME, getCreated().toXMLFormat(), true));
 		if (getPosted() != null)
-			html.append(buildHTMLMeta(NAME + "." + POSTED_NAME, getPosted().toXMLFormat(), true));
+			html.append(buildHTMLMeta(getName() + "." + POSTED_NAME, getPosted().toXMLFormat(), true));
 		if (getValidTil() != null)
-			html.append(buildHTMLMeta(NAME + "." + VALID_TIL_NAME, getValidTil().toXMLFormat(), true));
+			html.append(buildHTMLMeta(getName() + "." + VALID_TIL_NAME, getValidTil().toXMLFormat(), true));
 		if (getInfoCutOff() != null)
-			html.append(buildHTMLMeta(NAME + "." + INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat(), true));
+			html.append(buildHTMLMeta(getName() + "." + INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat(), true));
 		if (getApprovedOn() != null)
-			html.append(buildHTMLMeta(NAME + "." + APPROVED_ON_NAME, getApprovedOn().toXMLFormat(), true));
+			html.append(buildHTMLMeta(getName() + "." + APPROVED_ON_NAME, getApprovedOn().toXMLFormat(), true));
 		if (getReceivedOn() != null)
-			html.append(buildHTMLMeta(NAME + "." + RECEIVED_ON_NAME, getReceivedOn().toXMLFormat(), true));
+			html.append(buildHTMLMeta(getName() + "." + RECEIVED_ON_NAME, getReceivedOn().toXMLFormat(), true));
 		return (html.toString());
 	}
 	
@@ -309,6 +307,17 @@ public final class Dates extends AbstractBaseComponent {
 		if (getReceivedOn() != null)
 			result = 7 * result + getReceivedOn().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("dates");
 	}
 	
 	/**

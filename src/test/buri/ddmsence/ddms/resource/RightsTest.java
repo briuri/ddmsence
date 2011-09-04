@@ -117,9 +117,9 @@ public class RightsTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Rights component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Rights.NAME, component.getName());
+			assertEquals(Rights.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Rights.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Rights.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -134,7 +134,7 @@ public class RightsTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Rights.NAME, null);
+			Element element = Util.buildDDMSElement(Rights.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -226,7 +226,7 @@ public class RightsTest extends AbstractComponentTestCase {
 	public void testDefaultValues() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-			Element element = Util.buildDDMSElement(Rights.NAME, null);
+			Element element = Util.buildDDMSElement(Rights.getName(DDMSVersion.getCurrentVersion()), null);
 			Rights component = testConstructor(WILL_SUCCEED, element);
 			assertFalse(component.getPrivacyAct());
 			assertFalse(component.getIntellectualProperty());

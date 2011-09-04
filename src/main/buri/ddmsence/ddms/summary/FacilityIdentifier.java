@@ -25,6 +25,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -54,9 +55,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class FacilityIdentifier extends AbstractBaseComponent {
-
-	/** The element name of this component */
-	public static final String NAME = "facilityIdentifier";
 	
 	private static final String BE_NUMBER_NAME = "beNumber";
 	private static final String OSUFFIX_NAME = "osuffix";
@@ -80,7 +78,7 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	 */
 	public FacilityIdentifier(String beNumber, String osuffix) throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(FacilityIdentifier.NAME, null);
+			Element element = Util.buildDDMSElement(FacilityIdentifier.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, BE_NUMBER_NAME, beNumber);
 			Util.addDDMSAttribute(element, OSUFFIX_NAME, osuffix);
 			setXOMElement(element, true);
@@ -104,7 +102,7 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), FacilityIdentifier.getName(getDDMSVersion()));
 		Util.requireDDMSValue(BE_NUMBER_NAME, getBeNumber());
 		Util.requireDDMSValue(OSUFFIX_NAME, getOsuffix());
 	}
@@ -114,7 +112,7 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + GeographicIdentifier.NAME + "." + NAME + ".";
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + GeographicIdentifier.getName(DDMSVersion.getCurrentVersion()) + "." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + BE_NUMBER_NAME, getBeNumber(), true));
 		html.append(buildHTMLMeta(prefix + OSUFFIX_NAME, getOsuffix(), true));
 		return (html.toString());
@@ -125,7 +123,7 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		String prefix = GeographicIdentifier.NAME + " " + NAME + " ";
+		String prefix = GeographicIdentifier.getName(DDMSVersion.getCurrentVersion()) + " " + getName() + " ";
 		text.append(buildTextLine(prefix + BE_NUMBER_NAME, getBeNumber(), true));
 		text.append(buildTextLine(prefix + OSUFFIX_NAME, getOsuffix(), true));
 		return (text.toString());
@@ -150,6 +148,17 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 		result = 7 * result + getBeNumber().hashCode();
 		result = 7 * result + getOsuffix().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("facilityIdentifier");
 	}
 	
 	/**

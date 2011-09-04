@@ -107,8 +107,8 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			// Skip reserved ICISM attributes on Resource and Category
 			DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI());
 			if (Resource.getName(version).equals(element.getLocalName())
-				|| Category.NAME.equals(element.getLocalName())
-				|| Keyword.NAME.equals(element.getLocalName())) {
+				|| Category.getName(version).equals(element.getLocalName())
+				|| Keyword.getName(version).equals(element.getLocalName())) {
 				QName testName = new QName(attribute.getNamespaceURI(), attribute.getLocalName(), 
 					attribute.getNamespacePrefix());
 				if (RESERVED_RESOURCE_NAMES.contains(testName))

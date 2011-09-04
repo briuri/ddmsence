@@ -145,9 +145,9 @@ public class CategoryTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Category component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Category.NAME, component.getName());
+			assertEquals(Category.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Category.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Category.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -162,7 +162,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Category.NAME, null);
+			Element element = Util.buildDDMSElement(Category.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "label", TEST_LABEL);
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -183,7 +183,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing label
-			Element element = Util.buildDDMSElement(Category.NAME, null);
+			Element element = Util.buildDDMSElement(Category.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_FAIL, element);
 		}
 	}

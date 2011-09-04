@@ -25,6 +25,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -74,10 +75,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 	private Double _cachedEastBL = null;
 	private Double _cachedSouthBL = null;
 	private Double _cachedNorthBL = null;
-		
-	/** The element name of this component */
-	public static final String NAME = "boundingBox";
-			
+					
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 *  
@@ -110,7 +108,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 */
 	public BoundingBox(double westBL, double eastBL, double southBL, double northBL) throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(BoundingBox.NAME, null);
+			Element element = Util.buildDDMSElement(BoundingBox.getName(DDMSVersion.getCurrentVersion()), null);
 			setXOMElement(element, false);
 			element.appendChild(Util.buildDDMSElement(getWestBLName(), String.valueOf(westBL)));
 			element.appendChild(Util.buildDDMSElement(getEastBLName(), String.valueOf(eastBL)));
@@ -144,7 +142,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 */	
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), BoundingBox.getName(getDDMSVersion()));
 		Util.requireDDMSValue("westbound longitude", getWestBL());
 		Util.requireDDMSValue("eastbound longitude", getEastBL());
 		Util.requireDDMSValue("southbound latitude", getSouthBL());
@@ -160,7 +158,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + NAME + ".";
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + getWestBLName(), String.valueOf(getWestBL()), true));
 		html.append(buildHTMLMeta(prefix + getEastBLName(), String.valueOf(getEastBL()), true));
 		html.append(buildHTMLMeta(prefix + getSouthBLName(), String.valueOf(getSouthBL()), true));
@@ -173,10 +171,10 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(NAME + " " + getWestBLName(), String.valueOf(getWestBL()), true));
-		text.append(buildTextLine(NAME + " " + getEastBLName(), String.valueOf(getEastBL()), true));
-		text.append(buildTextLine(NAME + " " + getSouthBLName(), String.valueOf(getSouthBL()), true));
-		text.append(buildTextLine(NAME + " " + getNorthBLName(), String.valueOf(getNorthBL()), true));
+		text.append(buildTextLine(getName() + " " + getWestBLName(), String.valueOf(getWestBL()), true));
+		text.append(buildTextLine(getName() + " " + getEastBLName(), String.valueOf(getEastBL()), true));
+		text.append(buildTextLine(getName() + " " + getSouthBLName(), String.valueOf(getSouthBL()), true));
+		text.append(buildTextLine(getName() + " " + getNorthBLName(), String.valueOf(getNorthBL()), true));
 		return (text.toString());
 	}
 	
@@ -203,6 +201,17 @@ public final class BoundingBox extends AbstractBaseComponent {
 		result = 7 * result + getSouthBL().hashCode();
 		result = 7 * result + getNorthBL().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("boundingBox");
 	}
 	
 	/**

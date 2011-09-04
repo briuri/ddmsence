@@ -25,6 +25,7 @@ import buri.ddmsence.ddms.AbstractSimpleString;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -53,10 +54,7 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Title extends AbstractSimpleString {
-	
-	/** The element name of this component */
-	public static final String NAME = "title";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 *  
@@ -75,7 +73,7 @@ public final class Title extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Title(String title, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(Title.NAME, title, securityAttributes);
+		super(Title.getName(DDMSVersion.getCurrentVersion()), title, securityAttributes);
 	}
 		
 	/**
@@ -92,7 +90,7 @@ public final class Title extends AbstractSimpleString {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Title.getName(getDDMSVersion()));
 		Util.requireDDMSValue("title value", getValue());		
 		validateWarnings();
 	}
@@ -113,8 +111,8 @@ public final class Title extends AbstractSimpleString {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(Title.NAME, getValue(), false));
-		html.append(getSecurityAttributes().toHTML(Title.NAME));
+		html.append(buildHTMLMeta(getName(), getValue(), false));
+		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}
 	
@@ -123,8 +121,8 @@ public final class Title extends AbstractSimpleString {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(Title.NAME, getValue(), false));
-		text.append(getSecurityAttributes().toText(Title.NAME));
+		text.append(buildTextLine(getName(), getValue(), false));
+		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
 	}
 	
@@ -136,7 +134,18 @@ public final class Title extends AbstractSimpleString {
 			return (false);
 		return (true);
 	}
-			
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("title");
+	}
+	
 	/**
 	 * Builder for this DDMS component.
 	 * 

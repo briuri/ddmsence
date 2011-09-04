@@ -29,6 +29,7 @@ import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -62,9 +63,6 @@ public final class Keyword extends AbstractBaseComponent {
 
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	private ExtensibleAttributes _cachedExtensibleAttributes = null;
-	
-	/** The element name of this component */
-	public static final String NAME = "keyword";
 	
 	private static final String VALUE_NAME = "value";
 	
@@ -119,7 +117,7 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	public Keyword(String value, SecurityAttributes securityAttributes, ExtensibleAttributes extensions) throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(Keyword.NAME, null);
+			Element element = Util.buildDDMSElement(Keyword.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, VALUE_NAME, value);
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
@@ -148,7 +146,7 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Keyword.getName(getDDMSVersion()));
 		Util.requireDDMSValue("value attribute", getValue());
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0") && !getSecurityAttributes().isEmpty()) {
@@ -176,7 +174,7 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = SubjectCoverage.NAME + ".Subject." + NAME;
+		String prefix = SubjectCoverage.NAME + ".Subject." + getName();
 		html.append(buildHTMLMeta(prefix, getValue(), false));
 		html.append(getSecurityAttributes().toHTML(prefix));
 		html.append(getExtensibleAttributes().toHTML(prefix));
@@ -189,9 +187,9 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(NAME, getValue(), false));
-		text.append(getSecurityAttributes().toText(NAME));
-		text.append(getExtensibleAttributes().toText(NAME));
+		text.append(buildTextLine(getName(), getValue(), false));
+		text.append(getSecurityAttributes().toText(getName()));
+		text.append(getExtensibleAttributes().toText(getName()));
 		return (text.toString());
 	}
 	
@@ -216,6 +214,17 @@ public final class Keyword extends AbstractBaseComponent {
 		result = 7 * result + getSecurityAttributes().hashCode();
 		result = 7 * result + getExtensibleAttributes().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("keyword");
 	}
 	
 	/**

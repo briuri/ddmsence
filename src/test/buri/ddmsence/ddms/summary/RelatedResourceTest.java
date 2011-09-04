@@ -66,7 +66,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	 * @return a XOM element representing a valid resource
 	 */
 	private static Element getFixtureElement() throws InvalidDDMSException {
-		Element resourceElement = Util.buildDDMSElement(RelatedResource.NAME, null);
+		Element resourceElement = Util.buildDDMSElement(RelatedResource.getName(DDMSVersion.getCurrentVersion()), null);
 		resourceElement.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), DDMSVersion.getCurrentVersion().getNamespace());
 		resourceElement.addAttribute(Util.buildDDMSAttribute("qualifier", TEST_QUALIFIER));
 		resourceElement.addAttribute(Util.buildDDMSAttribute("value", TEST_VALUE));
@@ -166,9 +166,9 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			RelatedResource component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(RelatedResource.NAME, component.getName());
+			assertEquals(RelatedResource.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + RelatedResource.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + RelatedResource.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -194,25 +194,25 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing qualifier
-			Element element = Util.buildDDMSElement(RelatedResource.NAME, null);
+			Element element = Util.buildDDMSElement(RelatedResource.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			element.appendChild(new Element(LinkTest.getFixtureElement()));
 			testConstructor(WILL_FAIL, element);
 
 			// qualifier not URI
-			element = Util.buildDDMSElement(RelatedResource.NAME, null);
+			element = Util.buildDDMSElement(RelatedResource.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "qualifier", INVALID_URI);
 			element.appendChild(new Element(LinkTest.getFixtureElement()));
 			testConstructor(WILL_FAIL, element);
 
 			// Missing value
-			element = Util.buildDDMSElement(RelatedResource.NAME, null);
+			element = Util.buildDDMSElement(RelatedResource.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			element.appendChild(new Element(LinkTest.getFixtureElement()));
 			testConstructor(WILL_FAIL, element);
 
 			// Missing link
-			element = Util.buildDDMSElement(RelatedResource.NAME, null);
+			element = Util.buildDDMSElement(RelatedResource.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			testConstructor(WILL_FAIL, element);

@@ -119,9 +119,9 @@ public class TitleTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Title component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Title.NAME, component.getName());
+			assertEquals(Title.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Title.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Title.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -148,11 +148,11 @@ public class TitleTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing child text
-			Element element = Util.buildDDMSElement(Title.NAME, null);
+			Element element = Util.buildDDMSElement(Title.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_FAIL, element);
 
 			// Empty child text
-			element = Util.buildDDMSElement(Title.NAME, "");
+			element = Util.buildDDMSElement(Title.getName(DDMSVersion.getCurrentVersion()), "");
 			testConstructor(WILL_FAIL, element);
 		}
 	}

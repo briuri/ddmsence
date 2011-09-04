@@ -68,9 +68,6 @@ public final class Link extends AbstractBaseComponent {
 	private String _xlinkNamespace;
 	private static final String FIXED_TYPE = "locator";
 	
-	/** The element name of this component */
-	public static final String NAME = "link";
-	
 	private static final String TYPE_NAME = "type";
 	private static final String HREF_NAME = "href";
 	private static final String ROLE_NAME = "role";
@@ -110,7 +107,7 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	public Link(String href, String role, String title, String label) throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(Link.NAME, null);
+			Element element = Util.buildDDMSElement(Link.getName(DDMSVersion.getCurrentVersion()), null);
 			String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
 			_xlinkNamespace = DDMSVersion.getCurrentVersion().getXlinkNamespace();
 			Util.addAttribute(element, xlinkPrefix, TYPE_NAME, getXlinkNamespace(), FIXED_TYPE);
@@ -139,7 +136,7 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Link.getName(getDDMSVersion()));
 		Util.requireDDMSValue("type attribute", getType());
 		Util.requireDDMSValue("href attribute", getHref());
 		Util.requireDDMSValidURI(getHref());
@@ -152,14 +149,14 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = RelatedResources.NAME + "." + RelatedResource.NAME + "." + NAME + ".";
+		String prefix = RelatedResources.getName(getDDMSVersion()) + "." + RelatedResource.getName(getDDMSVersion())
+			+ "." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + TYPE_NAME, getType(), true));
 		html.append(buildHTMLMeta(prefix + HREF_NAME, getHref(), true));
 		html.append(buildHTMLMeta(prefix + ROLE_NAME, getRole(), false));
 		html.append(buildHTMLMeta(prefix + TITLE_NAME, getTitle(), false));
 		html.append(buildHTMLMeta(prefix + LABEL_NAME, getLabel(), false));
 		return (html.toString());
-
 	}
 	
 	/**
@@ -167,7 +164,7 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		String prefix = "Related Resource " + NAME + " "; 
+		String prefix = "Related Resource " + getName() + " "; 
 		text.append(buildTextLine(prefix + TYPE_NAME, getType(), true));
 		text.append(buildTextLine(prefix + HREF_NAME, getHref(), true));
 		text.append(buildTextLine(prefix + ROLE_NAME, getRole(), false));
@@ -201,6 +198,17 @@ public final class Link extends AbstractBaseComponent {
 		result = 7 * result + getTitle().hashCode();
 		result = 7 * result + getLabel().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("link");
 	}
 	
 	/**

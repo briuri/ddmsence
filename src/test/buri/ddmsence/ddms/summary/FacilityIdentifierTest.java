@@ -129,9 +129,9 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			FacilityIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(FacilityIdentifier.NAME, component.getName());
+			assertEquals(FacilityIdentifier.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + FacilityIdentifier.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + FacilityIdentifier.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -157,23 +157,23 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing beNumber
-			Element element = Util.buildDDMSElement(FacilityIdentifier.NAME, null);
+			Element element = Util.buildDDMSElement(FacilityIdentifier.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "osuffix", TEST_OSUFFIX);
 			testConstructor(WILL_FAIL, element);
 
 			// Empty beNumber
-			element = Util.buildDDMSElement(FacilityIdentifier.NAME, null);
+			element = Util.buildDDMSElement(FacilityIdentifier.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "beNumber", "");
 			Util.addDDMSAttribute(element, "osuffix", TEST_OSUFFIX);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing osuffix
-			element = Util.buildDDMSElement(FacilityIdentifier.NAME, null);
+			element = Util.buildDDMSElement(FacilityIdentifier.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "beNumber", TEST_BENUMBER);
 			testConstructor(WILL_FAIL, element);
 
 			// Empty osuffix
-			element = Util.buildDDMSElement(FacilityIdentifier.NAME, null);
+			element = Util.buildDDMSElement(FacilityIdentifier.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "beNumber", TEST_BENUMBER);
 			Util.addDDMSAttribute(element, "osuffix", "");
 			testConstructor(WILL_FAIL, element);

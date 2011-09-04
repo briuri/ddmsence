@@ -169,9 +169,9 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			RelatedResources component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(RelatedResources.NAME, component.getName());
+			assertEquals(RelatedResources.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + RelatedResources.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + RelatedResources.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -186,7 +186,7 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(RelatedResources.NAME, null);
+			Element element = Util.buildDDMSElement(RelatedResources.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
 			element.appendChild(getResources().get(0).getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
@@ -207,25 +207,26 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String relatedName = RelatedResources.getName(DDMSVersion.getCurrentVersion());
 			// Missing relationship
-			Element element = Util.buildDDMSElement(RelatedResources.NAME, null);
+			Element element = Util.buildDDMSElement(relatedName, null);
 			element.appendChild(getResources().get(0).getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// Missing resource
-			element = Util.buildDDMSElement(RelatedResources.NAME, null);
+			element = Util.buildDDMSElement(relatedName, null);
 			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
 			testConstructor(WILL_FAIL, element);
 
 			// Invalid direction
-			element = Util.buildDDMSElement(RelatedResources.NAME, null);
+			element = Util.buildDDMSElement(relatedName, null);
 			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
 			Util.addDDMSAttribute(element, "direction", "north");
 			element.appendChild(getResources().get(0).getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// relationship not URI
-			element = Util.buildDDMSElement(RelatedResources.NAME, null);
+			element = Util.buildDDMSElement(relatedName, null);
 			Util.addDDMSAttribute(element, "relationship", INVALID_URI);
 			element.appendChild(getResources().get(0).getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);

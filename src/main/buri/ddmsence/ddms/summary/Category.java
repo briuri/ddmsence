@@ -29,6 +29,7 @@ import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -66,9 +67,6 @@ public final class Category extends AbstractBaseComponent {
 
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	private ExtensibleAttributes _cachedExtensibleAttributes = null;
-	
-	/** The element name of this component */
-	public static final String NAME = "category";
 	
 	private static final String QUALIFIER_NAME = "qualifier";
 	private static final String CODE_NAME = "code";
@@ -131,7 +129,7 @@ public final class Category extends AbstractBaseComponent {
 	 */
 	public Category(String qualifier, String code, String label, SecurityAttributes securityAttributes, ExtensibleAttributes extensions) throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(Category.NAME, null);
+			Element element = Util.buildDDMSElement(Category.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, QUALIFIER_NAME, qualifier);
 			Util.addDDMSAttribute(element, CODE_NAME, code);
 			Util.addDDMSAttribute(element, LABEL_NAME, label);
@@ -163,7 +161,7 @@ public final class Category extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Category.getName(getDDMSVersion()));
 		Util.requireDDMSValue("label attribute", getLabel());
 		if (!Util.isEmpty(getQualifier())) {
 			Util.requireDDMSValidURI(getQualifier());
@@ -194,7 +192,7 @@ public final class Category extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = SubjectCoverage.NAME + ".Subject." + NAME;
+		String prefix = SubjectCoverage.NAME + ".Subject." + getName();
 		html.append(buildHTMLMeta(prefix + "." + QUALIFIER_NAME, getQualifier(), false));
 		html.append(buildHTMLMeta(prefix + "." +CODE_NAME, getCode(), false));
 		html.append(buildHTMLMeta(prefix + "." +LABEL_NAME, getLabel(), true));
@@ -208,11 +206,11 @@ public final class Category extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(NAME + " " + QUALIFIER_NAME, getQualifier(), false));
-		text.append(buildTextLine(NAME + " " + CODE_NAME, getCode(), false));
-		text.append(buildTextLine(NAME + " " + LABEL_NAME, getLabel(), true));
-		text.append(getSecurityAttributes().toText(NAME));
-		text.append(getExtensibleAttributes().toText(NAME));
+		text.append(buildTextLine(getName() + " " + QUALIFIER_NAME, getQualifier(), false));
+		text.append(buildTextLine(getName() + " " + CODE_NAME, getCode(), false));
+		text.append(buildTextLine(getName() + " " + LABEL_NAME, getLabel(), true));
+		text.append(getSecurityAttributes().toText(getName()));
+		text.append(getExtensibleAttributes().toText(getName()));
 		return (text.toString());
 	}
 	
@@ -241,6 +239,17 @@ public final class Category extends AbstractBaseComponent {
 		result = 7 * result + getSecurityAttributes().hashCode();
 		result = 7 * result + getExtensibleAttributes().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("category");
 	}
 	
 	/**

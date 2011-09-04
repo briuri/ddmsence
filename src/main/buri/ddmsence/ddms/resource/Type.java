@@ -25,6 +25,7 @@ import buri.ddmsence.ddms.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -66,10 +67,7 @@ import buri.ddmsence.util.Util;
 public final class Type extends AbstractQualifierValue {
 
 	private SecurityAttributes _cachedSecurityAttributes = null;
-	
-	/** The element name of this component */
-	public static final String NAME = "type";
-	
+		
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 *  
@@ -107,7 +105,7 @@ public final class Type extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Type(String description, String qualifier, String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(Type.NAME, qualifier, value, false);
+		super(Type.getName(DDMSVersion.getCurrentVersion()), qualifier, value, false);
 		try {
 			Element element = getXOMElement();
 			if (!Util.isEmpty(description))
@@ -138,7 +136,7 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Type.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
 		// Should be reviewed as additional versions of DDMS are supported.
@@ -174,10 +172,10 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(NAME + "." + "description", getDescription(), false));
-		html.append(buildHTMLMeta(NAME + "." + QUALIFIER_NAME, getQualifier(), false));
-		html.append(buildHTMLMeta(NAME + "." + VALUE_NAME, getValue(), false));
-		html.append(getSecurityAttributes().toHTML(NAME));
+		html.append(buildHTMLMeta(getName() + "." + "description", getDescription(), false));
+		html.append(buildHTMLMeta(getName() + "." + QUALIFIER_NAME, getQualifier(), false));
+		html.append(buildHTMLMeta(getName() + "." + VALUE_NAME, getValue(), false));
+		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}
 	
@@ -186,10 +184,10 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(NAME + " " + "description", getDescription(), false));
-		text.append(buildTextLine(NAME + " " + QUALIFIER_NAME, getQualifier(), false));
-		text.append(buildTextLine(NAME + " " + VALUE_NAME, getValue(), false));
-		text.append(getSecurityAttributes().toText(NAME));
+		text.append(buildTextLine(getName() + " " + "description", getDescription(), false));
+		text.append(buildTextLine(getName() + " " + QUALIFIER_NAME, getQualifier(), false));
+		text.append(buildTextLine(getName() + " " + VALUE_NAME, getValue(), false));
+		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
 	}
 	
@@ -214,6 +212,17 @@ public final class Type extends AbstractQualifierValue {
 		return (result);
 	}
 
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("type");
+	}
+	
 	/**
 	 * Accessor for the description child text, which provides additional context to the qualifier/value pairing of this component.
 	 * The underlying XOM method which retrieves the child text returns an empty string if not found.

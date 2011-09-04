@@ -29,6 +29,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
@@ -70,9 +71,6 @@ public final class RelatedResource extends AbstractQualifierValue {
 	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
 	private List<Link> _cachedLinks;
 	
-	/** The element name of this component */
-	public static final String NAME = "RelatedResource";
-	
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 *  
@@ -82,12 +80,13 @@ public final class RelatedResource extends AbstractQualifierValue {
 	public RelatedResource(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("RelatedResource element", element);
+			setXOMElement(element, false);
 			_cachedLinks = new ArrayList<Link>();
-			Elements links = element.getChildElements(Link.NAME, element.getNamespaceURI());
+			Elements links = element.getChildElements(Link.getName(getDDMSVersion()), element.getNamespaceURI());
 			for (int i = 0; i < links.size(); i++) {
 				_cachedLinks.add(new Link(links.get(i)));
 			}
-			setXOMElement(element, true);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -103,7 +102,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RelatedResource(List<Link> links, String qualifier, String value) throws InvalidDDMSException {
-		super(RelatedResource.NAME, qualifier, value, false);
+		super(RelatedResource.getName(DDMSVersion.getCurrentVersion()), qualifier, value, false);
 		try {
 			Element element = getXOMElement();
 			if (links == null)
@@ -136,11 +135,11 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), RelatedResource.getName(getDDMSVersion()));
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
 		Util.requireDDMSValue("value attribute", getValue());
 		Util.requireDDMSValidURI(getQualifier());
-		if (getChild(Link.NAME) == null)
+		if (getChild(Link.getName(getDDMSVersion())) == null)
 			throw new InvalidDDMSException("At least 1 link must exist.");
 		for (Link link : getLinks()) {
 			Util.requireCompatibleVersion(this, link);
@@ -167,7 +166,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = RelatedResources.NAME + "." + NAME + ".";
+		String prefix = RelatedResources.getName(getDDMSVersion()) + "." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + QUALIFIER_NAME, getQualifier(), true));
 		html.append(buildHTMLMeta(prefix + VALUE_NAME, getValue(), true));
 		for (Link link : getLinks()) {
@@ -206,6 +205,17 @@ public final class RelatedResource extends AbstractQualifierValue {
 		int result = super.hashCode();
 		result = 7 * result + getLinks().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("RelatedResource");
 	}
 	
 	/**
