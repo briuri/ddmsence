@@ -27,6 +27,7 @@ import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -69,13 +70,13 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 				Element entityElement = element.getChildElements().get(0);
 				String producerType = element.getLocalName();
 				String entityType = entityElement.getLocalName();
-				if (Organization.NAME.equals(entityType))
+				if (Organization.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
 					_producerEntity = new Organization(producerType, entityElement);
-				if (Person.NAME.equals(entityType))
+				if (Person.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
 					_producerEntity = new Person(producerType, entityElement);
-				if (Service.NAME.equals(entityType))
+				if (Service.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
 					_producerEntity = new Service(producerType, entityElement);
-				if (Unknown.NAME.equals(entityType))
+				if (Unknown.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
 					_producerEntity = new Unknown(producerType, entityElement);
 			}
 			_cachedSecurityAttributes = new SecurityAttributes(element);
@@ -253,13 +254,13 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		protected Builder(AbstractProducerRole producer) {
 			setProducerType(producer.getName());
 			setEntityType(producer.getProducerEntity().getName());
-			if (Organization.NAME.equals(getEntityType()))
+			if (Organization.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType()))
 				setOrganization(new Organization.Builder((Organization) producer.getProducerEntity()));
-			if (Person.NAME.equals(getEntityType()))
+			if (Person.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType()))
 				setPerson(new Person.Builder((Person) producer.getProducerEntity()));
-			if (Service.NAME.equals(getEntityType()))
+			if (Service.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType()))
 				setService(new Service.Builder((Service) producer.getProducerEntity()));
-			if (Unknown.NAME.equals(getEntityType()))
+			if (Unknown.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType()))
 				setUnknown(new Unknown.Builder((Unknown) producer.getProducerEntity()));
 			setPocType(producer.getPOCType());
 			setSecurityAttributes(new SecurityAttributes.Builder(producer.getSecurityAttributes()));
@@ -270,15 +271,15 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 * @return the entity
 		 */
 		protected IProducerEntity commitSelectedEntity() throws InvalidDDMSException {
-			if (Organization.NAME.equals(getEntityType())) {
+			if (Organization.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType())) {
 				getOrganization().setParentType(getProducerType());
 				return (getOrganization().commit());
 			}
-			if (Person.NAME.equals(getEntityType())) {
+			if (Person.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType())) {
 				getPerson().setParentType(getProducerType());
 				return (getPerson().commit());
 			}
-			if (Service.NAME.equals(getEntityType())) {
+			if (Service.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType())) {
 				getService().setParentType(getProducerType());
 				return (getService().commit());
 			}

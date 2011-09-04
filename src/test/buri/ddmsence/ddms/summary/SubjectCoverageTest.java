@@ -164,9 +164,9 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(SubjectCoverage.NAME, component.getName());
+			assertEquals(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + SubjectCoverage.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -183,7 +183,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			// No optional fields
 			Element subjectElement = Util.buildDDMSElement("Subject", null);
 			subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
-			Element element = Util.buildDDMSElement(SubjectCoverage.NAME, null);
+			Element element = Util.buildDDMSElement(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			element.appendChild(subjectElement);
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -205,7 +205,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			// No keywords or categories
 			Element subjectElement = Util.buildDDMSElement("Subject", null);
-			Element element = Util.buildDDMSElement(SubjectCoverage.NAME, null);
+			Element element = Util.buildDDMSElement(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			element.appendChild(subjectElement);
 			testConstructor(WILL_FAIL, element);
 		}
@@ -230,7 +230,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			Element subjectElement = Util.buildDDMSElement("Subject", null);
 			subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
 			subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
-			Element element = Util.buildDDMSElement(SubjectCoverage.NAME, null);
+			Element element = Util.buildDDMSElement(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			element.appendChild(subjectElement);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
@@ -242,7 +242,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			subjectElement = Util.buildDDMSElement("Subject", null);
 			subjectElement.appendChild(getCategories().get(0).getXOMElementCopy());
 			subjectElement.appendChild(getCategories().get(0).getXOMElementCopy());
-			element = Util.buildDDMSElement(SubjectCoverage.NAME, null);
+			element = Util.buildDDMSElement(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			element.appendChild(subjectElement);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());

@@ -311,7 +311,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 			
 			// Validation
 			builder = new Contributor.Builder();
-			builder.setEntityType(Organization.NAME);
+			builder.setEntityType(Organization.getName(DDMSVersion.getCurrentVersion()));
 			builder.getOrganization().setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();

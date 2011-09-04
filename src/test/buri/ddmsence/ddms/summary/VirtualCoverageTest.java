@@ -139,9 +139,9 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			VirtualCoverage component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(VirtualCoverage.NAME, component.getName());
+			assertEquals(VirtualCoverage.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + VirtualCoverage.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + VirtualCoverage.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -156,7 +156,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(VirtualCoverage.NAME, null);
+			Element element = Util.buildDDMSElement(VirtualCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -176,7 +176,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// address without protocol
-			Element element = Util.buildDDMSElement(VirtualCoverage.NAME, null);
+			Element element = Util.buildDDMSElement(VirtualCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "address", TEST_ADDRESS);
 			testConstructor(WILL_FAIL, element);
 		}
@@ -198,7 +198,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty element
-			Element element = Util.buildDDMSElement(VirtualCoverage.NAME, null);
+			Element element = Util.buildDDMSElement(VirtualCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());

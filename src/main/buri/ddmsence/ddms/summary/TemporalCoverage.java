@@ -106,9 +106,6 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		EXTENDED_DATE_TYPES.add("Unknown");
 	}
 	
-	/** The element name of this component */
-	public static final String NAME = "temporalCoverage";
-	
 	// The name of the TimePeriod element itself
 	private static final String TIME_PERIOD_NAME = "TimePeriod";
 	
@@ -160,7 +157,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	public TemporalCoverage(String timePeriodName, String startString, String endString,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+			Element element = Util.buildDDMSElement(TemporalCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			
 			Element periodElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? element 
 				: Util.buildDDMSElement(TIME_PERIOD_NAME, null);
@@ -240,7 +237,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), TemporalCoverage.getName(getDDMSVersion()));
 		Element periodElement = getTimePeriodElement();
 		Util.requireDDMSValue("TimePeriod element", periodElement);
 		Util.requireBoundedDDMSChildCount(periodElement, TIME_PERIOD_NAME_NAME, 0, 1);
@@ -298,7 +295,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = NAME + "." + TIME_PERIOD_NAME + ".";
+		String prefix = getName() + "." + TIME_PERIOD_NAME + ".";
 		html.append(buildHTMLMeta(prefix + TIME_PERIOD_NAME_NAME, getTimePeriodName(), false));
 		html.append(buildHTMLMeta(prefix + START_NAME, getStartString(), true));
 		html.append(buildHTMLMeta(prefix + END_NAME, getEndString(), true));
@@ -341,6 +338,17 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		result = 7 * result + getEndString().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("temporalCoverage");
 	}
 	
 	/**

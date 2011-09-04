@@ -27,6 +27,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -110,9 +111,6 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		LENGTH_MEASURE_TYPES.add("Fathom");
 		LENGTH_MEASURE_TYPES.add("Inch");
 	}
-	
-	/** The element name of this component */
-	public static final String NAME = "verticalExtent";
 
 	private static final String DATUM_NAME = "datum";
 	private static final String UOM_NAME ="unitOfMeasure";
@@ -148,7 +146,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	public VerticalExtent(double minVerticalExtent, double maxVerticalExtent, String unitOfMeasure, String datum)
 		throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(VerticalExtent.NAME, null);
+			Element element = Util.buildDDMSElement(VerticalExtent.getName(DDMSVersion.getCurrentVersion()), null);
 			setXOMElement(element, false);
 			Util.addDDMSAttribute(element, UOM_NAME, unitOfMeasure);
 			Util.addDDMSAttribute(element, DATUM_NAME, datum);
@@ -205,7 +203,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), VerticalExtent.getName(getDDMSVersion()));
 		Util.requireDDMSValue(getMinVerticalExtentName(), getMinVerticalExtent());
 		Util.requireDDMSValue(getMaxVerticalExtentName(), getMaxVerticalExtent());
 		Util.requireDDMSValue(UOM_NAME, getUnitOfMeasure());
@@ -242,7 +240,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + NAME + ".";
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + UOM_NAME, getUnitOfMeasure(), true));
 		html.append(buildHTMLMeta(prefix + DATUM_NAME, getDatum(), true));
 		html.append(buildHTMLMeta(prefix + "minimum", String.valueOf(getMinVerticalExtent()), true));
@@ -255,10 +253,10 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(NAME + " " + UOM_NAME, getUnitOfMeasure(), true));
-		text.append(buildTextLine(NAME + " " + DATUM_NAME, getDatum(), true));
-		text.append(buildTextLine(NAME + " minimum", String.valueOf(getMinVerticalExtent()), true));
-		text.append(buildTextLine(NAME + " maximum", String.valueOf(getMaxVerticalExtent()), true));
+		text.append(buildTextLine(getName() + " " + UOM_NAME, getUnitOfMeasure(), true));
+		text.append(buildTextLine(getName() + " " + DATUM_NAME, getDatum(), true));
+		text.append(buildTextLine(getName() + " minimum", String.valueOf(getMinVerticalExtent()), true));
+		text.append(buildTextLine(getName() + " maximum", String.valueOf(getMaxVerticalExtent()), true));
 		return (text.toString());
 	}
 	
@@ -285,6 +283,17 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		result = 7 * result + getMinVerticalExtent().hashCode();
 		result = 7 * result + getMaxVerticalExtent().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("verticalExtent");
 	}
 	
 	/**

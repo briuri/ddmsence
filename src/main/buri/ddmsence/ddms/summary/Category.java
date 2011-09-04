@@ -192,7 +192,7 @@ public final class Category extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = SubjectCoverage.NAME + ".Subject." + getName();
+		String prefix = SubjectCoverage.getName(getDDMSVersion()) + ".Subject." + getName();
 		html.append(buildHTMLMeta(prefix + "." + QUALIFIER_NAME, getQualifier(), false));
 		html.append(buildHTMLMeta(prefix + "." +CODE_NAME, getCode(), false));
 		html.append(buildHTMLMeta(prefix + "." +LABEL_NAME, getLabel(), true));

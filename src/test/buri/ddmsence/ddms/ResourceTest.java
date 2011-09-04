@@ -1509,7 +1509,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		builder.getTitles().get(0).setValue("testTitle");
 		builder.getTitles().get(0).getSecurityAttributes().setClassification("U");
 		builder.getTitles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-		builder.getCreators().get(0).setEntityType(Organization.NAME);
+		builder.getCreators().get(0).setEntityType(Organization.getName(DDMSVersion.getCurrentVersion()));
 		builder.getCreators().get(0).getOrganization().setNames(Util.getXsListAsList("testName"));
 		builder.getSubjectCoverage().getKeywords().get(0).setValue("keyword");
 		builder.getSecurity().getSecurityAttributes().setClassification("U");
@@ -1542,7 +1542,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		builder.getTitles().get(0).setValue("testTitle");
 		builder.getTitles().get(0).getSecurityAttributes().setClassification("U");
 		builder.getTitles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-		builder.getCreators().get(0).setEntityType(Organization.NAME);
+		builder.getCreators().get(0).setEntityType(Organization.getName(DDMSVersion.getCurrentVersion()));
 		builder.getCreators().get(0).getOrganization().setNames(Util.getXsListAsList("testName"));
 		builder.getSubjectCoverage().getKeywords().get(0).setValue("keyword");
 		builder.getSecurity().getSecurityAttributes().setClassification("U");

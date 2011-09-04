@@ -24,6 +24,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -54,9 +55,6 @@ import buri.ddmsence.util.Util;
  */
 public final class SubDivisionCode extends AbstractQualifierValue {
 	
-	/** The element name of this component */
-	public static final String NAME = "subDivisionCode";
-	
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
@@ -75,7 +73,7 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public SubDivisionCode(String qualifier, String value) throws InvalidDDMSException {
-		super(SubDivisionCode.NAME, qualifier, value, true);
+		super(SubDivisionCode.getName(DDMSVersion.getCurrentVersion()), qualifier, value, true);
 	}
 	
 	/**
@@ -93,7 +91,7 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), SubDivisionCode.getName(getDDMSVersion()));
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
 		Util.requireDDMSValue("value attribute", getValue());
 	}
@@ -103,7 +101,7 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + GeographicIdentifier.getName(getDDMSVersion()) + "." + NAME + ".";
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + GeographicIdentifier.getName(getDDMSVersion()) + "." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + QUALIFIER_NAME, getQualifier(), true));
 		html.append(buildHTMLMeta(prefix + VALUE_NAME, getValue(), true));
 		return (html.toString());
@@ -114,7 +112,7 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 	 */
 	public String toText() {
 		StringBuffer text = new StringBuffer();
-		String prefix = GeographicIdentifier.getName(getDDMSVersion()) + " " + NAME + " ";
+		String prefix = GeographicIdentifier.getName(getDDMSVersion()) + " " + getName() + " ";
 		text.append(buildTextLine(prefix + QUALIFIER_NAME, getQualifier(), true));
 		text.append(buildTextLine(prefix + VALUE_NAME, getValue(), true));
 		return (text.toString());
@@ -127,6 +125,17 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 		if (!super.equals(obj) || !(obj instanceof SubDivisionCode))
 			return (false);
 		return (true);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("subDivisionCode");
 	}
 	
 	/**

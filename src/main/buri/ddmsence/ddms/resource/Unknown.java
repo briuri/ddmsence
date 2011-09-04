@@ -26,6 +26,7 @@ import buri.ddmsence.ddms.AbstractProducerEntity;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -68,9 +69,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Unknown extends AbstractProducerEntity {
-
-	/** The element name of this component */
-	public static final String NAME = "Unknown";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -107,7 +105,7 @@ public final class Unknown extends AbstractProducerEntity {
 	 */
 	public Unknown(String parentType, List<String> names, List<String> phones, List<String> emails,
 		ExtensibleAttributes extensions) throws InvalidDDMSException {
-		super(parentType, Unknown.NAME, names, phones, emails, extensions, true);
+		super(parentType, Unknown.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions, true);
 	}
 	
 	/**
@@ -123,7 +121,7 @@ public final class Unknown extends AbstractProducerEntity {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Unknown.getName(getDDMSVersion()));
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.0"))
 			throw new InvalidDDMSException("The ddms:Unknown element cannot be used until DDMS 3.0 or later.");
@@ -134,6 +132,17 @@ public final class Unknown extends AbstractProducerEntity {
 	 */
 	public boolean equals(Object obj) {
 		return (super.equals(obj) && (obj instanceof Unknown));
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("Unknown");
 	}
 	
 	/**

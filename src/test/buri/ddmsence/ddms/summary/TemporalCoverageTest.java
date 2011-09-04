@@ -155,9 +155,9 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			TemporalCoverage component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(TemporalCoverage.NAME, component.getName());
+			assertEquals(TemporalCoverage.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + TemporalCoverage.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + TemporalCoverage.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -168,12 +168,14 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String coverageName = TemporalCoverage.getName(DDMSVersion.getCurrentVersion());
+			
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element periodElement = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element periodElement = Util.buildDDMSElement(coverageName, null);
 				periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
 				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
 				testConstructor(WILL_SUCCEED, periodElement);
@@ -182,14 +184,14 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
 				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
-				Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element element = Util.buildDDMSElement(coverageName, null);
 				element.appendChild(periodElement);
 				testConstructor(WILL_SUCCEED, element);
 			}
 
 			// No optional fields, empty name element rather than no name element
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element periodElement = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element periodElement = Util.buildDDMSElement(coverageName, null);
 				periodElement.appendChild(Util.buildDDMSElement("name", ""));
 				periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
 				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
@@ -200,7 +202,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 				periodElement.appendChild(Util.buildDDMSElement("name", ""));
 				periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
 				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
-				Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element element = Util.buildDDMSElement(coverageName, null);
 				element.appendChild(periodElement);
 				testConstructor(WILL_SUCCEED, element);
 			}
@@ -221,36 +223,37 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-
+			String coverageName = TemporalCoverage.getName(DDMSVersion.getCurrentVersion());
+			
 			// Missing start
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element periodElement = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element periodElement = Util.buildDDMSElement(coverageName, null);
 				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
 				testConstructor(WILL_FAIL, periodElement);
 			} else {
 				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
-				Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element element = Util.buildDDMSElement(coverageName, null);
 				element.appendChild(periodElement);
 				testConstructor(WILL_FAIL, element);
 			}
 
 			// Missing end
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element periodElement = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element periodElement = Util.buildDDMSElement(coverageName, null);
 				periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
 				testConstructor(WILL_FAIL, periodElement);
 			} else {
 				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
-				Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element element = Util.buildDDMSElement(coverageName, null);
 				element.appendChild(periodElement);
 				testConstructor(WILL_FAIL, element);
 			}
 
 			// Wrong date format (using xs:gDay here)
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element periodElement = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element periodElement = Util.buildDDMSElement(coverageName, null);
 				periodElement.appendChild(Util.buildDDMSElement("start", "---31"));
 				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
 				testConstructor(WILL_FAIL, periodElement);
@@ -258,14 +261,14 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(Util.buildDDMSElement("start", "---31"));
 				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
-				Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element element = Util.buildDDMSElement(coverageName, null);
 				element.appendChild(periodElement);
 				testConstructor(WILL_FAIL, element);
 			}
 
 			// Wrong extended value
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element periodElement = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element periodElement = Util.buildDDMSElement(coverageName, null);
 				periodElement.appendChild(Util.buildDDMSElement("start", "---31"));
 				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
 				testConstructor(WILL_FAIL, periodElement);
@@ -273,14 +276,14 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(Util.buildDDMSElement("start", "N/A"));
 				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
-				Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element element = Util.buildDDMSElement(coverageName, null);
 				element.appendChild(periodElement);
 				testConstructor(WILL_FAIL, element);
 			}
 
 			// Bad range
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element periodElement = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element periodElement = Util.buildDDMSElement(coverageName, null);
 				periodElement.appendChild(Util.buildDDMSElement("start", "---31"));
 				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
 				testConstructor(WILL_FAIL, periodElement);
@@ -288,7 +291,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(Util.buildDDMSElement("start", "2004"));
 				periodElement.appendChild(Util.buildDDMSElement("end", "2003"));
-				Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element element = Util.buildDDMSElement(coverageName, null);
 				element.appendChild(periodElement);
 				testConstructor(WILL_FAIL, element);
 			}
@@ -312,13 +315,15 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	public void testWarnings() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String coverageName = TemporalCoverage.getName(DDMSVersion.getCurrentVersion());
+			
 			// No warnings
 			TemporalCoverage component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty name element
 			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element periodElement = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element periodElement = Util.buildDDMSElement(coverageName, null);
 				periodElement.appendChild(Util.buildDDMSElement("name", null));
 				periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
 				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
@@ -334,7 +339,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 				periodElement.appendChild(Util.buildDDMSElement("name", null));
 				periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
 				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
-				Element element = Util.buildDDMSElement(TemporalCoverage.NAME, null);
+				Element element = Util.buildDDMSElement(coverageName, null);
 				element.appendChild(periodElement);
 				component = testConstructor(WILL_SUCCEED, element);
 				assertEquals(1, component.getValidationWarnings().size());

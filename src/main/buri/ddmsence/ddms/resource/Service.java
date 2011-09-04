@@ -26,6 +26,7 @@ import buri.ddmsence.ddms.AbstractProducerEntity;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -65,9 +66,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Service extends AbstractProducerEntity {
-
-	/** The element name of this component */
-	public static final String NAME = "Service";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -104,7 +102,7 @@ public final class Service extends AbstractProducerEntity {
 	 */
 	public Service(String parentType, List<String> names, List<String> phones, List<String> emails,
 		ExtensibleAttributes extensions) throws InvalidDDMSException {
-		super(parentType, Service.NAME, names, phones, emails, extensions, true);
+		super(parentType, Service.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions, true);
 	}
 	
 	/**
@@ -119,7 +117,7 @@ public final class Service extends AbstractProducerEntity {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(),  NAME);
+		Util.requireDDMSQName(getXOMElement(), Service.getName(getDDMSVersion()));
 	}
 		
 	/**
@@ -127,6 +125,17 @@ public final class Service extends AbstractProducerEntity {
 	 */
 	public boolean equals(Object obj) {
 		return (super.equals(obj) && (obj instanceof Service));
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("Service");
 	}
 	
 	/**

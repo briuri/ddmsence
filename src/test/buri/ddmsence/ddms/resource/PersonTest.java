@@ -170,9 +170,9 @@ public class PersonTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Person component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Person.NAME, component.getName());
+			assertEquals(Person.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Person.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Person.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -187,7 +187,7 @@ public class PersonTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Person.NAME, null);
+			Element element = Util.buildDDMSElement(Person.getName(DDMSVersion.getCurrentVersion()), null);
 			element.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 			testConstructor(WILL_SUCCEED, element);
@@ -209,35 +209,36 @@ public class PersonTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String personName = Person.getName(DDMSVersion.getCurrentVersion());
 			// Missing name
-			Element entityElement = Util.buildDDMSElement(Person.NAME, null);
+			Element entityElement = Util.buildDDMSElement(personName, null);
 			entityElement.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
 			testConstructor(WILL_FAIL, entityElement);
 
 			// Empty name
-			entityElement = Util.buildDDMSElement(Person.NAME, null);
+			entityElement = Util.buildDDMSElement(personName, null);
 			entityElement.appendChild(Util.buildDDMSElement("name", ""));
 			testConstructor(WILL_FAIL, entityElement);
 
 			// Missing surname
-			entityElement = Util.buildDDMSElement(Person.NAME, null);
+			entityElement = Util.buildDDMSElement(personName, null);
 			entityElement.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 			testConstructor(WILL_FAIL, entityElement);
 
 			// Empty surname
-			entityElement = Util.buildDDMSElement(Person.NAME, null);
+			entityElement = Util.buildDDMSElement(personName, null);
 			entityElement.appendChild(Util.buildDDMSElement("surname", ""));
 			testConstructor(WILL_FAIL, entityElement);
 
 			// Too many surnames
-			Element element = Util.buildDDMSElement(Person.NAME, null);
+			Element element = Util.buildDDMSElement(personName, null);
 			element.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
 			element.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 			testConstructor(WILL_FAIL, entityElement);
 
 			// Too many userIds
-			element = Util.buildDDMSElement(Person.NAME, null);
+			element = Util.buildDDMSElement(personName, null);
 			element.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 			element.appendChild(Util.buildDDMSElement("userID", TEST_USERID));
@@ -245,7 +246,7 @@ public class PersonTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, entityElement);
 
 			// Too many affiliations
-			element = Util.buildDDMSElement(Person.NAME, null);
+			element = Util.buildDDMSElement(personName, null);
 			element.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 			element.appendChild(Util.buildDDMSElement("affiliation", TEST_AFFILIATION));
@@ -281,7 +282,7 @@ public class PersonTest extends AbstractComponentTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty userID
-			Element entityElement = Util.buildDDMSElement(Person.NAME, null);
+			Element entityElement = Util.buildDDMSElement(Person.getName(DDMSVersion.getCurrentVersion()), null);
 			entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 			entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
 			entityElement.appendChild(Util.buildDDMSElement("userID", ""));
@@ -293,7 +294,7 @@ public class PersonTest extends AbstractComponentTestCase {
 			assertEquals("/ddms:Person", component.getValidationWarnings().get(0).getLocator());
 
 			// Empty affiliation
-			entityElement = Util.buildDDMSElement(Person.NAME, null);
+			entityElement = Util.buildDDMSElement(Person.getName(DDMSVersion.getCurrentVersion()), null);
 			entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 			entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
 			entityElement.appendChild(Util.buildDDMSElement("affiliation", ""));

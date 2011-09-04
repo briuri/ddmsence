@@ -153,9 +153,9 @@ public class UnknownTest extends AbstractComponentTestCase {
 				continue;
 
 			Unknown component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Unknown.NAME, component.getName());
+			assertEquals(Unknown.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Unknown.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Unknown.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -174,7 +174,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Unknown.NAME, null);
+			Element element = Util.buildDDMSElement(Unknown.getName(DDMSVersion.getCurrentVersion()), null);
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -188,11 +188,11 @@ public class UnknownTest extends AbstractComponentTestCase {
 				continue;
 
 			// Missing name
-			Element element = Util.buildDDMSElement(Unknown.NAME, null);
+			Element element = Util.buildDDMSElement(Unknown.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_FAIL, element);
 
 			// Empty name
-			element = Util.buildDDMSElement(Unknown.NAME, null);
+			element = Util.buildDDMSElement(Unknown.getName(DDMSVersion.getCurrentVersion()), null);
 			element.appendChild(Util.buildDDMSElement("name", ""));
 			testConstructor(WILL_FAIL, element);
 		}
