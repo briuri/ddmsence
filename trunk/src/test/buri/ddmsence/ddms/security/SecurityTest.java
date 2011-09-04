@@ -121,9 +121,9 @@ public class SecurityTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Security component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Security.NAME, component.getName());
+			assertEquals(Security.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Security.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Security.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -151,17 +151,17 @@ public class SecurityTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing excludeFromRollup
-			Element element = Util.buildDDMSElement(Security.NAME, null);
+			Element element = Util.buildDDMSElement(Security.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_FAIL, element);
 
 			// Incorrect excludeFromRollup
-			element = Util.buildDDMSElement(Security.NAME, null);
+			element = Util.buildDDMSElement(Security.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), "excludeFromRollup", DDMSVersion.getCurrentVersion()
 				.getIsmNamespace(), "false");
 			testConstructor(WILL_FAIL, element);
 			
 			// Invalid excludeFromRollup
-			element = Util.buildDDMSElement(Security.NAME, null);
+			element = Util.buildDDMSElement(Security.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), "excludeFromRollup", DDMSVersion.getCurrentVersion()
 				.getIsmNamespace(), "aardvark");
 			testConstructor(WILL_FAIL, element);

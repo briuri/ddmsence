@@ -38,8 +38,6 @@ import buri.ddmsence.util.Util;
  */
 public class PersonTest extends AbstractComponentTestCase {
 
-	private static final String TEST_PARENT_TYPE = Creator.NAME;
-
 	private static final String TEST_SURNAME = "Uri";
 	private static final String TEST_USERID = "123";
 	private static final String TEST_AFFILIATION = "DISA";
@@ -71,7 +69,8 @@ public class PersonTest extends AbstractComponentTestCase {
 	private Person testConstructor(boolean expectFailure, Element element) {
 		Person component = null;
 		try {
-			component = new Person(TEST_PARENT_TYPE, element);
+			DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI());
+			component = new Person(Creator.getName(version), element);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -94,7 +93,7 @@ public class PersonTest extends AbstractComponentTestCase {
 		String affiliation, List<String> phones, List<String> emails) {
 		Person component = null;
 		try {
-			component = new Person(TEST_PARENT_TYPE, surname, names, userID, affiliation, phones, emails);
+			component = new Person(Creator.getName(DDMSVersion.getCurrentVersion()), surname, names, userID, affiliation, phones, emails);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -107,21 +106,22 @@ public class PersonTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".entityType\" content=\"Person\" />\n");
+		String parentType = Creator.getName(DDMSVersion.getCurrentVersion());
+		html.append("<meta name=\"").append(parentType).append(".entityType\" content=\"Person\" />\n");
 		for (String name : TEST_NAMES)
-			html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".name\" content=\"").append(name)
+			html.append("<meta name=\"").append(parentType).append(".name\" content=\"").append(name)
 				.append("\" />\n");
 		for (String phone : TEST_PHONES)
-			html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".phone\" content=\"").append(phone)
+			html.append("<meta name=\"").append(parentType).append(".phone\" content=\"").append(phone)
 				.append("\" />\n");
 		for (String email : TEST_EMAILS)
-			html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".email\" content=\"").append(email)
+			html.append("<meta name=\"").append(parentType).append(".email\" content=\"").append(email)
 				.append("\" />\n");
-		html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".surname\" content=\"").append(TEST_SURNAME)
+		html.append("<meta name=\"").append(parentType).append(".surname\" content=\"").append(TEST_SURNAME)
 			.append("\" />\n");
-		html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".userID\" content=\"").append(TEST_USERID)
+		html.append("<meta name=\"").append(parentType).append(".userID\" content=\"").append(TEST_USERID)
 			.append("\" />\n");
-		html.append("<meta name=\"").append(TEST_PARENT_TYPE).append(".affiliation\" content=\"")
+		html.append("<meta name=\"").append(parentType).append(".affiliation\" content=\"")
 			.append(TEST_AFFILIATION).append("\" />\n");
 		return (html.toString());
 	}
@@ -131,7 +131,7 @@ public class PersonTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append(TEST_PARENT_TYPE).append(" EntityType: Person\n");
+		text.append(Creator.getName(DDMSVersion.getCurrentVersion())).append(" EntityType: Person\n");
 		for (String name : TEST_NAMES)
 			text.append("name: ").append(name).append("\n");
 		for (String phone : TEST_PHONES)
@@ -285,7 +285,7 @@ public class PersonTest extends AbstractComponentTestCase {
 			entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 			entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
 			entityElement.appendChild(Util.buildDDMSElement("userID", ""));
-			component = new Person(TEST_PARENT_TYPE, entityElement);
+			component = new Person(Creator.getName(DDMSVersion.getCurrentVersion()), entityElement);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 			assertEquals("A ddms:userID element was found with no value.", 
@@ -297,7 +297,7 @@ public class PersonTest extends AbstractComponentTestCase {
 			entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 			entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
 			entityElement.appendChild(Util.buildDDMSElement("affiliation", ""));
-			component = new Person(TEST_PARENT_TYPE, entityElement);
+			component = new Person(Creator.getName(DDMSVersion.getCurrentVersion()), entityElement);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 			assertEquals("A ddms:affiliation element was found with no value.", 
@@ -409,7 +409,7 @@ public class PersonTest extends AbstractComponentTestCase {
 			
 			// Validation
 			builder = new Person.Builder();
-			builder.setParentType(TEST_PARENT_TYPE);
+			builder.setParentType(Creator.getName(DDMSVersion.getCurrentVersion()));
 			builder.setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();

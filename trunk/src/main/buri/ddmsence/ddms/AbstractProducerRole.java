@@ -244,12 +244,8 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		
 		/**
 		 * Base constructor
-		 * 
-		 * @param producerType the producer type for this role
 		 */
-		protected Builder(String producerType) {
-			setProducerType(producerType);
-		}
+		protected Builder() {}
 		
 		/**
 		 * Constructor which starts from an existing component.
@@ -274,12 +270,19 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 * @return the entity
 		 */
 		protected IProducerEntity commitSelectedEntity() throws InvalidDDMSException {
-			if (Organization.NAME.equals(getEntityType()))
+			if (Organization.NAME.equals(getEntityType())) {
+				getOrganization().setParentType(getProducerType());
 				return (getOrganization().commit());
-			if (Person.NAME.equals(getEntityType()))
+			}
+			if (Person.NAME.equals(getEntityType())) {
+				getPerson().setParentType(getProducerType());
 				return (getPerson().commit());
-			if (Service.NAME.equals(getEntityType()))
+			}
+			if (Service.NAME.equals(getEntityType())) {
+				getService().setParentType(getProducerType());
 				return (getService().commit());
+			}
+			getUnknown().setParentType(getProducerType());
 			return (getUnknown().commit());
 		}
 		

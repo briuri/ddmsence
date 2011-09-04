@@ -24,6 +24,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -59,9 +60,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Extent extends AbstractQualifierValue {
-
-	/** The element name of this component */
-	public static final String NAME = "extent";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -81,7 +79,7 @@ public final class Extent extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Extent(String qualifier, String value) throws InvalidDDMSException {
-		super(Extent.NAME, qualifier, value, true);
+		super(Extent.getName(DDMSVersion.getCurrentVersion()), qualifier, value, true);
 	}
 
 	/**
@@ -99,7 +97,7 @@ public final class Extent extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Extent.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
 		if (!Util.isEmpty(getQualifier())) {
@@ -149,6 +147,17 @@ public final class Extent extends AbstractQualifierValue {
 	 */
 	public boolean equals(Object obj) {
 		return (super.equals(obj) && (obj instanceof Extent));
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("extent");
 	}
 	
 	/**

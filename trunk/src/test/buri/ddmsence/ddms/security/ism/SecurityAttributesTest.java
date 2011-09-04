@@ -224,13 +224,13 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
 			
 			// All fields
-			Element element = Util.buildDDMSElement(Security.NAME, null);
+			Element element = Util.buildDDMSElement(Security.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addAttribute(element, ismPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			getFixture(true).addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 
 			// No optional fields
-			element = Util.buildDDMSElement(Security.NAME, null);
+			element = Util.buildDDMSElement(Security.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addAttribute(element, ismPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace, 
@@ -261,7 +261,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
 			
 			// invalid declassDate
-			Element element = Util.buildDDMSElement(Security.NAME, null);
+			Element element = Util.buildDDMSElement(Security.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addAttribute(element, ismPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace,
@@ -270,7 +270,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// invalid dateOfExemptedSource
-			element = Util.buildDDMSElement(Security.NAME, null);
+			element = Util.buildDDMSElement(Security.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addAttribute(element, ismPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace,
@@ -305,7 +305,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
 			
 			// No warnings
-			Element element = Util.buildDDMSElement(Security.NAME, null);
+			Element element = Util.buildDDMSElement(Security.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes attr = testConstructor(WILL_SUCCEED, element);
@@ -318,7 +318,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
 			
-			Element element = Util.buildDDMSElement(Security.NAME, null);
+			Element element = Util.buildDDMSElement(Security.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
@@ -335,7 +335,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(version);
 			String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
 
-			Element element = Util.buildDDMSElement(Security.NAME, null);
+			Element element = Util.buildDDMSElement(Security.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), Security.EXCLUDE_FROM_ROLLUP_NAME,
 				icNamespace, "true");
 			getFixture(true).addTo(element);

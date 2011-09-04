@@ -51,6 +51,23 @@ DETAILS:
 FIX:
 	There is no workaround at this time. Please contact me with feedback on how you used this feature previously 
 	so I can support your use case in the future.
+
+#########################################################################################################
+Components no longer have a publicly-accessible constant, NAME (Issue #152)
+
+SEVERITY: Minor
+DETAILS:
+	Previously all components had a public NAME field containing the expected name of the component. Because
+	many elements have had their names changed in DDMS 4.0 (i.e. ddms:Person became ddms:person), component
+	classes now have a static method which returns a name for some DDMSVersion.
+FIX:
+	If you previously referenced something like:
+	
+	String extentName = Extent.NAME;
+	
+	You would now call a static method:
+	
+	String extentName = Extent.getName(ddmsVersion);
 		
 #########################################################################################################
 Non-DDMS classes have been moved into new packages (Issue #148).

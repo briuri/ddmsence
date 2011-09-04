@@ -25,6 +25,7 @@ import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IProducerEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -51,9 +52,6 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public class PointOfContact extends AbstractProducerRole {
-	
-	/** The element name of this component */
-	public static final String NAME = "pointOfContact";
 
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -74,7 +72,7 @@ public class PointOfContact extends AbstractProducerRole {
 	 */
 	public PointOfContact(IProducerEntity producerEntity, String pocType, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
-		super(NAME, producerEntity, pocType, securityAttributes);
+		super(PointOfContact.getName(DDMSVersion.getCurrentVersion()), producerEntity, pocType, securityAttributes);
 	}
 	
 	/**
@@ -89,7 +87,7 @@ public class PointOfContact extends AbstractProducerRole {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), PointOfContact.getName(getDDMSVersion()));
 	}
 	
 	/**
@@ -98,6 +96,17 @@ public class PointOfContact extends AbstractProducerRole {
 	public boolean equals(Object obj) {
 		return (super.equals(obj) && (obj instanceof PointOfContact));
 	}	
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("pointOfContact");
+	}
 	
 	/**
 	 * Builder for this DDMS component.
@@ -112,9 +121,7 @@ public class PointOfContact extends AbstractProducerRole {
 		/**
 		 * Empty constructor
 		 */
-		public Builder() {
-			super(PointOfContact.NAME);
-		}
+		public Builder() {}
 		
 		/**
 		 * Constructor which starts from an existing component.
@@ -127,6 +134,7 @@ public class PointOfContact extends AbstractProducerRole {
 		 * @see IBuilder#commit()
 		 */
 		public PointOfContact commit() throws InvalidDDMSException {
+			setProducerType(PointOfContact.getName(DDMSVersion.getCurrentVersion()));
 			return (isEmpty() ? null : new PointOfContact(commitSelectedEntity(), getPocType(), getSecurityAttributes().commit()));
 		}
 	}

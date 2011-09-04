@@ -73,14 +73,6 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	/** The element name for email addresses */
 	protected static final String EMAIL_NAME = "email";	
 	
-	private static Set<String> PARENT_TYPES = new HashSet<String>();
-	static {
-		PARENT_TYPES.add(Contributor.NAME);
-		PARENT_TYPES.add(Creator.NAME);
-		PARENT_TYPES.add(PointOfContact.NAME);
-		PARENT_TYPES.add(Publisher.NAME);
-	}
-
 	/**
 	 * Base constructor
 	 * 
@@ -153,13 +145,16 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	/**
 	 * Validates a parent type against the allowed types.
 	 * 
-	 * @param parentType the type to test
 	 * @throws InvalidDDMSException if the value is null, empty or invalid.
 	 */
-	public static void validateParentType(String parentType) throws InvalidDDMSException {
-		Util.requireDDMSValue("parent type", parentType);
-		if (!PARENT_TYPES.contains(parentType))
-			throw new InvalidDDMSException("The parent type must be one of " + PARENT_TYPES);
+	private void validateParentType() throws InvalidDDMSException {
+		Set<String> parentTypes = new HashSet<String>();
+		parentTypes.add(Creator.getName(getDDMSVersion()));
+		parentTypes.add(Contributor.getName(getDDMSVersion()));
+		parentTypes.add(PointOfContact.getName(getDDMSVersion()));
+		parentTypes.add(Publisher.getName(getDDMSVersion()));
+		if (!parentTypes.contains(getParentType()))
+			throw new InvalidDDMSException("The parent type must be one of " + parentTypes);
 	}
 		
 	/**
@@ -175,7 +170,7 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();	
-		validateParentType(getParentType());
+		validateParentType();
 		if (getXOMElement().getChildElements(NAME_NAME, getNamespace()).size() == 0)
 			throw new InvalidDDMSException("At least 1 name element must exist.");
 		

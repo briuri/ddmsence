@@ -55,9 +55,6 @@ public final class Security extends AbstractBaseComponent {
 	
 	private static final String FIXED_ROLLUP = "true";
 	
-	/** The element name of this component */
-	public static final String NAME = "security";
-	
 	/** Attribute name */
 	public static final String EXCLUDE_FROM_ROLLUP_NAME = "excludeFromRollup";
 	
@@ -85,7 +82,7 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	public Security(SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(Security.NAME, null);
+			Element element = Util.buildDDMSElement(Security.getName(DDMSVersion.getCurrentVersion()), null);
 			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), EXCLUDE_FROM_ROLLUP_NAME, 
 					DDMSVersion.getCurrentVersion().getIsmNamespace(), FIXED_ROLLUP);
@@ -113,7 +110,7 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Security.getName(getDDMSVersion()));
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (getDDMSVersion().isAtLeast("3.0")) {
 			if (getExcludeFromRollup() == null)
@@ -148,8 +145,8 @@ public final class Security extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		if (getExcludeFromRollup() != null)
-			html.append(buildHTMLMeta(Security.NAME + "." + EXCLUDE_FROM_ROLLUP_NAME, String.valueOf(getExcludeFromRollup()), true));
-		html.append(getSecurityAttributes().toHTML(Security.NAME));
+			html.append(buildHTMLMeta(getName() + "." + EXCLUDE_FROM_ROLLUP_NAME, String.valueOf(getExcludeFromRollup()), true));
+		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}
 	
@@ -183,6 +180,17 @@ public final class Security extends AbstractBaseComponent {
 		// ExcludeFromRollup is not included in hashCode, because it is fixed at TRUE.
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("security");
 	}
 	
 	/**

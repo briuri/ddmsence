@@ -25,6 +25,7 @@ import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IProducerEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -50,9 +51,6 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public class Creator extends AbstractProducerRole {
-	
-	/** The element name of this component */
-	public static final String NAME = "creator";
 
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -73,7 +71,7 @@ public class Creator extends AbstractProducerRole {
 	 */
 	public Creator(IProducerEntity producerEntity, String pocType, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
-		super(NAME, producerEntity, pocType, securityAttributes);
+		super(Creator.getName(DDMSVersion.getCurrentVersion()), producerEntity, pocType, securityAttributes);
 	}
 	
 	/**
@@ -88,7 +86,7 @@ public class Creator extends AbstractProducerRole {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Creator.getName(getDDMSVersion()));
 	}
 	
 	/**
@@ -97,6 +95,17 @@ public class Creator extends AbstractProducerRole {
 	public boolean equals(Object obj) {
 		return (super.equals(obj) && (obj instanceof Creator));
 	}	
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("creator");
+	}
 	
 	/**
 	 * Builder for this DDMS component.
@@ -112,7 +121,7 @@ public class Creator extends AbstractProducerRole {
 		 * Empty constructor
 		 */
 		public Builder() {
-			super(Creator.NAME);
+			super();
 		}
 		
 		/**
@@ -126,6 +135,7 @@ public class Creator extends AbstractProducerRole {
 		 * @see IBuilder#commit()
 		 */
 		public Creator commit() throws InvalidDDMSException {
+			setProducerType(Creator.getName(DDMSVersion.getCurrentVersion()));
 			return (isEmpty() ? null : new Creator(commitSelectedEntity(), getPocType(), getSecurityAttributes().commit()));
 		}
 	}

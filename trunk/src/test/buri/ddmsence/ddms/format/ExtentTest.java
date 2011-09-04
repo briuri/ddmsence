@@ -128,10 +128,11 @@ public class ExtentTest extends AbstractComponentTestCase {
 	public void testNameAndNamespace() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String extentName = Extent.getName(DDMSVersion.getCurrentVersion());
 			Extent component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Extent.NAME, component.getName());
+			assertEquals(extentName, component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Extent.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + extentName, component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -146,7 +147,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Extent.NAME, null);
+			Element element = Util.buildDDMSElement(Extent.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -166,12 +167,12 @@ public class ExtentTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing qualifier
-			Element element = Util.buildDDMSElement(Extent.NAME, null);
+			Element element = Util.buildDDMSElement(Extent.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
 
 			// Qualifier not URI
-			element = Util.buildDDMSElement(Extent.NAME, null);
+			element = Util.buildDDMSElement(Extent.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			Util.addDDMSAttribute(element, "qualifier", INVALID_URI);
 			testConstructor(WILL_FAIL, element);
@@ -192,12 +193,13 @@ public class ExtentTest extends AbstractComponentTestCase {
 	public void testWarnings() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
+			String extentName = Extent.getName(DDMSVersion.getCurrentVersion());
 			// No warnings
 			Extent component = testConstructor(WILL_SUCCEED, getValidElement(version));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Qualifier without value
-			Element element = Util.buildDDMSElement(Extent.NAME, null);
+			Element element = Util.buildDDMSElement(extentName, null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
@@ -207,7 +209,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 			assertEquals("/ddms:extent", component.getValidationWarnings().get(0).getLocator());
 
 			// Neither attribute
-			element = Util.buildDDMSElement(Extent.NAME, null);
+			element = Util.buildDDMSElement(extentName, null);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());

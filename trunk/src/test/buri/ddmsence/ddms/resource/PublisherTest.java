@@ -77,7 +77,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 	 */
 	private IProducerEntity getEntityFixture() {
 		try {
-			return (new Service(Publisher.NAME, Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), 
+			return (new Service(Publisher.getName(DDMSVersion.getCurrentVersion()), Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), 
 				Util.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
@@ -110,10 +110,10 @@ public class PublisherTest extends AbstractComponentTestCase {
 		StringBuffer html = new StringBuffer();
 		html.append(getEntityFixture().toHTML());
 		if (isDDMS40OrGreater()) {
-			html.append("<meta name=\"").append(Publisher.NAME).append(".POCType\" content=\"ICD-710\" />\n");
+			html.append("<meta name=\"").append(Publisher.getName(DDMSVersion.getCurrentVersion())).append(".POCType\" content=\"ICD-710\" />\n");
 		}
-		html.append("<meta name=\"").append(Publisher.NAME).append(".classification\" content=\"U\" />\n");
-		html.append("<meta name=\"").append(Publisher.NAME).append(".ownerProducer\" content=\"USA\" />\n");
+		html.append("<meta name=\"").append(Publisher.getName(DDMSVersion.getCurrentVersion())).append(".classification\" content=\"U\" />\n");
+		html.append("<meta name=\"").append(Publisher.getName(DDMSVersion.getCurrentVersion())).append(".ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -126,8 +126,8 @@ public class PublisherTest extends AbstractComponentTestCase {
 		if (isDDMS40OrGreater()) {
 			text.append("POCType: ICD-710\n");
 		}
-		text.append(Publisher.NAME).append(" classification: U\n");
-		text.append(Publisher.NAME).append(" ownerProducer: USA\n");
+		text.append(Publisher.getName(DDMSVersion.getCurrentVersion())).append(" classification: U\n");
+		text.append(Publisher.getName(DDMSVersion.getCurrentVersion())).append(" ownerProducer: USA\n");
 		return (text.toString());
 	}
 
@@ -156,9 +156,9 @@ public class PublisherTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Publisher.NAME, component.getName());
+			assertEquals(Publisher.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Publisher.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Publisher.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -173,7 +173,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Publisher.NAME, null);
+			Element element = Util.buildDDMSElement(Publisher.getName(DDMSVersion.getCurrentVersion()), null);
 			element.appendChild(getEntityFixture().getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -191,7 +191,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing entity
-			Element element = Util.buildDDMSElement(Publisher.NAME, null);
+			Element element = Util.buildDDMSElement(Publisher.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -227,7 +227,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Publisher elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			Publisher dataComponent = testConstructor(WILL_SUCCEED, new Service(Publisher.NAME, Util.getXsListAsList("DISA PEO-GES"),
+			Publisher dataComponent = testConstructor(WILL_SUCCEED, new Service(Publisher.getName(DDMSVersion.getCurrentVersion()), Util.getXsListAsList("DISA PEO-GES"),
 				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
