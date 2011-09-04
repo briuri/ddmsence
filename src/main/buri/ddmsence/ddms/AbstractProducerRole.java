@@ -254,13 +254,13 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		protected Builder(AbstractProducerRole producer) {
 			setProducerType(producer.getName());
 			setEntityType(producer.getProducerEntity().getName());
-			if (Organization.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType()))
+			if (Organization.getName(producer.getDDMSVersion()).equals(getEntityType()))
 				setOrganization(new Organization.Builder((Organization) producer.getProducerEntity()));
-			if (Person.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType()))
+			if (Person.getName(producer.getDDMSVersion()).equals(getEntityType()))
 				setPerson(new Person.Builder((Person) producer.getProducerEntity()));
-			if (Service.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType()))
+			if (Service.getName(producer.getDDMSVersion()).equals(getEntityType()))
 				setService(new Service.Builder((Service) producer.getProducerEntity()));
-			if (Unknown.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType()))
+			if (Unknown.getName(producer.getDDMSVersion()).equals(getEntityType()))
 				setUnknown(new Unknown.Builder((Unknown) producer.getProducerEntity()));
 			setPocType(producer.getPOCType());
 			setSecurityAttributes(new SecurityAttributes.Builder(producer.getSecurityAttributes()));
@@ -271,15 +271,16 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 * @return the entity
 		 */
 		protected IProducerEntity commitSelectedEntity() throws InvalidDDMSException {
-			if (Organization.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType())) {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			if (Organization.getName(version).equals(getEntityType())) {
 				getOrganization().setParentType(getProducerType());
 				return (getOrganization().commit());
 			}
-			if (Person.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType())) {
+			if (Person.getName(version).equals(getEntityType())) {
 				getPerson().setParentType(getProducerType());
 				return (getPerson().commit());
 			}
-			if (Service.getName(DDMSVersion.getCurrentVersion()).equals(getEntityType())) {
+			if (Service.getName(version).equals(getEntityType())) {
 				getService().setParentType(getProducerType());
 				return (getService().commit());
 			}

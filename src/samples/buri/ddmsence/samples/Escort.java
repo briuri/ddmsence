@@ -227,6 +227,7 @@ public class Escort {
 		});
 		BUILDERS.put(AbstractProducerRole.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				DDMSVersion version = DDMSVersion.getCurrentVersion();
 				String producerType = readString("the producer type [creator]");
 				String entityType = readString("the entity type [Organization]");
 				int numNames = readInt("the number of names this producer has [1]");
@@ -251,7 +252,7 @@ public class Escort {
 				String surname = null;
 				String userID = null;
 				String affiliation = null;
-				if (Person.getName(DDMSVersion.getCurrentVersion()).equals(entityType)) {
+				if (Person.getName(version).equals(entityType)) {
 					surname = readString("the Person surname [testSurname]");
 					userID = readString("the Person userID [testID]");
 					affiliation = readString("the Person affiliation [testOrg]");
@@ -261,22 +262,22 @@ public class Escort {
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				
 				IProducerEntity entity = null;
-				if (Person.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
+				if (Person.getName(version).equals(entityType))
 					entity = new Person(producerType, surname, names, userID, affiliation, phones, emails);
-				else if (Organization.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
+				else if (Organization.getName(version).equals(entityType))
 					entity = new Organization(producerType, names, phones, emails);
-				else if (Service.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
+				else if (Service.getName(version).equals(entityType))
 					entity = new Service(producerType, names, phones, emails);
 				else 
 					entity = new Unknown(producerType, names, phones, emails);
 				
-				if (Creator.getName(DDMSVersion.getCurrentVersion()).equals(producerType))
+				if (Creator.getName(version).equals(producerType))
 					return (new Creator(entity, null, attr));
-				if (Contributor.getName(DDMSVersion.getCurrentVersion()).equals(producerType))
+				if (Contributor.getName(version).equals(producerType))
 					return (new Creator(entity, null, attr));
-				if (Publisher.getName(DDMSVersion.getCurrentVersion()).equals(producerType))
+				if (Publisher.getName(version).equals(producerType))
 					return (new Publisher(entity, null, attr));
-				if (PointOfContact.getName(DDMSVersion.getCurrentVersion()).equals(producerType))
+				if (PointOfContact.getName(version).equals(producerType))
 					return (new PointOfContact(entity, null, attr));
 				throw new InvalidDDMSException("Unknown producerType: " + producerType);
 			}		
