@@ -150,9 +150,9 @@ public class ServiceTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Service component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Service.NAME, component.getName());
+			assertEquals(Service.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Service.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Service.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -167,7 +167,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Service.NAME, null);
+			Element element = Util.buildDDMSElement(Service.getName(DDMSVersion.getCurrentVersion()), null);
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -188,11 +188,11 @@ public class ServiceTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing name
-			Element element = Util.buildDDMSElement(Service.NAME, null);
+			Element element = Util.buildDDMSElement(Service.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_FAIL, element);
 
 			// Empty name
-			element = Util.buildDDMSElement(Service.NAME, null);
+			element = Util.buildDDMSElement(Service.getName(DDMSVersion.getCurrentVersion()), null);
 			element.appendChild(Util.buildDDMSElement("name", ""));
 			testConstructor(WILL_FAIL, element);
 		}

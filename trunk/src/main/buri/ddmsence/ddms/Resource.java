@@ -275,14 +275,14 @@ public final class Resource extends AbstractBaseComponent {
 				_cachedFormat = new Format(component);
 
 			// Summary Set
-			component = getChild(SubjectCoverage.NAME);
+			component = getChild(SubjectCoverage.getName(getDDMSVersion()));
 			if (component != null)
 				_cachedSubjectCoverage = new SubjectCoverage(component);
-			components = element.getChildElements(VirtualCoverage.NAME, namespace);
+			components = element.getChildElements(VirtualCoverage.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedVirtualCoverages.add(new VirtualCoverage(components.get(i)));
 			}
-			components = element.getChildElements(TemporalCoverage.NAME, namespace);
+			components = element.getChildElements(TemporalCoverage.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedTemporalCoverages.add(new TemporalCoverage(components.get(i)));
 			}
@@ -597,7 +597,7 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Dates.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Rights.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Format.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), SubjectCoverage.NAME, 1, 1);
+		Util.requireBoundedDDMSChildCount(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()), 1, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);	
 		if (!getSecurityAttributes().isEmpty()) {
 			Set<SecurityAttributes> childAttributes = new HashSet<SecurityAttributes>();

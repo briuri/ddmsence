@@ -174,7 +174,7 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = SubjectCoverage.NAME + ".Subject." + getName();
+		String prefix = SubjectCoverage.getName(getDDMSVersion()) + ".Subject." + getName();
 		html.append(buildHTMLMeta(prefix, getValue(), false));
 		html.append(getSecurityAttributes().toHTML(prefix));
 		html.append(getExtensibleAttributes().toHTML(prefix));

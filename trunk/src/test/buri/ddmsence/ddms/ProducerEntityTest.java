@@ -68,7 +68,7 @@ public class ProducerEntityTest extends TestCase {
 
 	public void testSharedWarnings() throws InvalidDDMSException {
 		// Empty phone
-		Element entityElement = Util.buildDDMSElement(Organization.NAME, null);
+		Element entityElement = Util.buildDDMSElement(Organization.getName(DDMSVersion.getCurrentVersion()), null);
 		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 		entityElement.appendChild(Util.buildDDMSElement("phone", ""));
 		Organization component = new Organization(Contributor.getName(DDMSVersion.getCurrentVersion()), entityElement);
@@ -78,7 +78,7 @@ public class ProducerEntityTest extends TestCase {
 			component.getValidationWarnings().get(0).getText());
 
 		// Empty email
-		entityElement = Util.buildDDMSElement(Organization.NAME, null);
+		entityElement = Util.buildDDMSElement(Organization.getName(DDMSVersion.getCurrentVersion()), null);
 		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 		entityElement.appendChild(Util.buildDDMSElement("email", ""));
 		component = new Organization(Contributor.getName(DDMSVersion.getCurrentVersion()), entityElement);

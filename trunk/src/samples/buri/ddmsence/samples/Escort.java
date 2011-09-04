@@ -251,7 +251,7 @@ public class Escort {
 				String surname = null;
 				String userID = null;
 				String affiliation = null;
-				if (Person.NAME.equals(entityType)) {
+				if (Person.getName(DDMSVersion.getCurrentVersion()).equals(entityType)) {
 					surname = readString("the Person surname [testSurname]");
 					userID = readString("the Person userID [testID]");
 					affiliation = readString("the Person affiliation [testOrg]");
@@ -261,11 +261,11 @@ public class Escort {
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				
 				IProducerEntity entity = null;
-				if (Person.NAME.equals(entityType))
+				if (Person.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
 					entity = new Person(producerType, surname, names, userID, affiliation, phones, emails);
-				else if (Organization.NAME.equals(entityType))
+				else if (Organization.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
 					entity = new Organization(producerType, names, phones, emails);
-				else if (Service.NAME.equals(entityType))
+				else if (Service.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
 					entity = new Service(producerType, names, phones, emails);
 				else 
 					entity = new Unknown(producerType, names, phones, emails);

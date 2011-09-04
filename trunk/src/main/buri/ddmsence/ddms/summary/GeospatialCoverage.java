@@ -115,7 +115,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 				Element postalAddressElement = extElement.getFirstChildElement(PostalAddress.getName(version), namespace);
 				if (postalAddressElement != null)
 					_cachedPostalAddress = new PostalAddress(postalAddressElement);
-				Element verticalExtentElement = extElement.getFirstChildElement(VerticalExtent.NAME, namespace);
+				Element verticalExtentElement = extElement.getFirstChildElement(VerticalExtent.getName(version), namespace);
 				if (verticalExtentElement != null)
 					_cachedVerticalExtent = new VerticalExtent(verticalExtentElement);
 			}
@@ -196,7 +196,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(extElement, BoundingBox.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(extElement, BoundingGeometry.NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(extElement, PostalAddress.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedDDMSChildCount(extElement, VerticalExtent.NAME, 0, 1);
+		Util.requireBoundedDDMSChildCount(extElement, VerticalExtent.getName(getDDMSVersion()), 0, 1);
 			
 		int validComponents = 0;
 		if (getGeographicIdentifier() != null) {

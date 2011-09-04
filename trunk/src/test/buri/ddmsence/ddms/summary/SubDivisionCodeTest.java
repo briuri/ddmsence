@@ -133,9 +133,9 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 				continue;
 
 			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(SubDivisionCode.NAME, component.getName());
+			assertEquals(SubDivisionCode.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + SubDivisionCode.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + SubDivisionCode.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -168,28 +168,28 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
-
+			String subCode = SubDivisionCode.getName(DDMSVersion.getCurrentVersion());
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
 			
 			// Missing qualifier
-			Element element = Util.buildDDMSElement(SubDivisionCode.NAME, null);
+			Element element = Util.buildDDMSElement(subCode, null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
 
 			// Empty qualifier
-			element = Util.buildDDMSElement(SubDivisionCode.NAME, null);
+			element = Util.buildDDMSElement(subCode, null);
 			Util.addDDMSAttribute(element, "qualifier", "");
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing value
-			element = Util.buildDDMSElement(SubDivisionCode.NAME, null);
+			element = Util.buildDDMSElement(subCode, null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			testConstructor(WILL_FAIL, element);
 
 			// Empty value
-			element = Util.buildDDMSElement(SubDivisionCode.NAME, null);
+			element = Util.buildDDMSElement(subCode, null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(element, "value", "");
 			testConstructor(WILL_FAIL, element);

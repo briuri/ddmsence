@@ -26,6 +26,7 @@ import buri.ddmsence.ddms.AbstractProducerEntity;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -71,9 +72,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class Person extends AbstractProducerEntity {
-	
-	/** The element name of this component */
-	public static final String NAME = "Person";
 	
 	private static final String AFFILIATION_NAME = "affiliation";
 	private static final String USERID_NAME = "userID";
@@ -121,7 +119,7 @@ public final class Person extends AbstractProducerEntity {
 	public Person(String parentType, String surname, List<String> names, String userID, String affiliation,
 		List<String> phones, List<String> emails, ExtensibleAttributes extensions)
 		throws InvalidDDMSException {
-		super(parentType, Person.NAME, names, phones, emails, extensions, false);
+		super(parentType, Person.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions, false);
 		try {
 			int insertIndex = (names == null ? 0 : names.size());
 			insertElements(insertIndex, surname, userID, affiliation);
@@ -169,7 +167,7 @@ public final class Person extends AbstractProducerEntity {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), Person.getName(getDDMSVersion()));
 		Util.requireDDMSValue(SURNAME_NAME, getSurname());
 		Util.requireBoundedDDMSChildCount(getXOMElement(), SURNAME_NAME, 1, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), USERID_NAME, 0, 1);
@@ -243,6 +241,17 @@ public final class Person extends AbstractProducerEntity {
 		result = 7 * result + getUserID().hashCode();
 		result = 7 * result + getAffiliation().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("Person");
 	}
 	
 	/**

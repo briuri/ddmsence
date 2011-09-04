@@ -33,6 +33,7 @@ import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
@@ -79,9 +80,6 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	private List<Keyword> _cachedKeywords;
 	private List<Category> _cachedCategories;
 	private SecurityAttributes _cachedSecurityAttributes = null;
-	
-	/** The element name of this component */
-	public static final String NAME = "subjectCoverage";
 	
 	private static final String SUBJECT_NAME = "Subject";
 	
@@ -138,7 +136,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			for (Category category : categories) {
 				subjectElement.appendChild(category.getXOMElementCopy());
 			}
-			Element element = Util.buildDDMSElement(SubjectCoverage.NAME, null);
+			Element element = Util.buildDDMSElement(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			element.appendChild(subjectElement);
 
 			_cachedKeywords = keywords;
@@ -167,7 +165,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()));
 		Element subjectElement = getChild(SUBJECT_NAME);
 		Util.requireDDMSValue("Subject element", subjectElement);
 		int count = subjectElement.getChildElements(Keyword.getName(getDDMSVersion()), subjectElement.getNamespaceURI()).size()
@@ -226,7 +224,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			html.append(keyword.toHTML());
 		for (Category category : getCategories())
 			html.append(category.toHTML());
-		html.append(getSecurityAttributes().toHTML(NAME));
+		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 
 	}
@@ -240,7 +238,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			text.append(keyword.toText());
 		for (Category category : getCategories())
 			text.append(category.toText());
-		text.append(getSecurityAttributes().toText(NAME));
+		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
 	}
 	
@@ -265,6 +263,17 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		result = 7 * result + getCategories().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("subjectCoverage");
 	}
 	
 	/**

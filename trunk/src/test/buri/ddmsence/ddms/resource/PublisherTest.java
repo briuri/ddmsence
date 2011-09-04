@@ -309,7 +309,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 			
 			// Validation
 			builder = new Publisher.Builder();
-			builder.setEntityType(Person.NAME);
+			builder.setEntityType(Person.getName(DDMSVersion.getCurrentVersion()));
 			builder.getOrganization().setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();

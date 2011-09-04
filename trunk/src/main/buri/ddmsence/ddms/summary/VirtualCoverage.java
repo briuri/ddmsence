@@ -26,6 +26,7 @@ import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
@@ -65,9 +66,6 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	
-	/** The element name of this component */
-	public static final String NAME = "virtualCoverage";
-	
 	private static final String ADDRESS_NAME = "address";
 	private static final String PROTOCOL_NAME = "protocol";
 	
@@ -98,7 +96,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	public VirtualCoverage(String address, String protocol, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(VirtualCoverage.NAME, null);
+			Element element = Util.buildDDMSElement(VirtualCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, ADDRESS_NAME, address);
 			Util.addDDMSAttribute(element, PROTOCOL_NAME, protocol);
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
@@ -124,7 +122,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), VirtualCoverage.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getAddress()))
 			Util.requireDDMSValue(PROTOCOL_NAME, getProtocol());
 		// Should be reviewed as additional versions of DDMS are supported.
@@ -192,6 +190,17 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		result = 7 * result + getProtocol().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("virtualCoverage");
 	}
 	
 	/**

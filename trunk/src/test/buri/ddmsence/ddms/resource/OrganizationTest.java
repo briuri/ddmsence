@@ -151,9 +151,9 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Organization.NAME, component.getName());
+			assertEquals(Organization.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Organization.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Organization.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -168,7 +168,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(version));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Organization.NAME, null);
+			Element element = Util.buildDDMSElement(Organization.getName(DDMSVersion.getCurrentVersion()), null);
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -189,11 +189,11 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		for (String version : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(version);
 			// Missing name
-			Element entityElement = Util.buildDDMSElement(Organization.NAME, null);
+			Element entityElement = Util.buildDDMSElement(Organization.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_FAIL, entityElement);
 
 			// Empty name
-			entityElement = Util.buildDDMSElement(Organization.NAME, null);
+			entityElement = Util.buildDDMSElement(Organization.getName(DDMSVersion.getCurrentVersion()), null);
 			entityElement.appendChild(Util.buildDDMSElement("name", ""));
 			testConstructor(WILL_FAIL, entityElement);
 		}
