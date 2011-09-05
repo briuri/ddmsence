@@ -27,9 +27,9 @@
 		</ddms:Service>	
 	</ddms:contributor>
 	<ddms:pointOfContact>
-		<ddms:Unknown>
+		<ddms:unknown>
 			<ddms:name>UnknownEntity</ddms:name>
-		</ddms:Unknown>	
+		</ddms:unknown>	
 	</ddms:pointOfContact>
 	<ddms:format>
 		<ddms:mimeType>text/xml</ddms:mimeType>

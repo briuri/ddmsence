@@ -30,7 +30,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:Unknown elements</p>
+ * <p>Tests related to ddms:unknown elements</p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -96,9 +96,10 @@ public class UnknownTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer html = new StringBuffer();
-		String parentType = Creator.getName(DDMSVersion.getCurrentVersion());
-		html.append("<meta name=\"").append(parentType).append(".entityType\" content=\"Unknown\" />\n");
+		String parentType = Creator.getName(version);
+		html.append("<meta name=\"").append(parentType).append(".entityType\" content=\"").append(Unknown.getName(version)).append("\" />\n");
 		for (String name : TEST_NAMES)
 			html.append("<meta name=\"").append(parentType).append(".name\" content=\"").append(name).append("\" />\n");
 		for (String phone : TEST_PHONES)
@@ -114,8 +115,9 @@ public class UnknownTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(Creator.getName(DDMSVersion.getCurrentVersion())).append(" EntityType: Unknown\n");
+		text.append(Creator.getName(DDMSVersion.getCurrentVersion())).append(" EntityType: ").append(Unknown.getName(version)).append("\n");
 		for (String name : TEST_NAMES)
 			text.append("name: ").append(name).append("\n");
 		for (String phone : TEST_PHONES)
@@ -131,8 +133,9 @@ public class UnknownTest extends AbstractComponentTestCase {
 	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:Unknown xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+		xml.append("<ddms:").append(Unknown.getName(version)).append(" xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
 			.append("\">\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
@@ -140,7 +143,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 			xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
 		for (String email : TEST_EMAILS)
 			xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
-		xml.append("</ddms:Unknown>");
+		xml.append("</ddms:").append(Unknown.getName(version)).append(">");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
