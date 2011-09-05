@@ -55,33 +55,35 @@ public class ProducerEntityTest extends TestCase {
 	
 	public void testSameVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
-		Organization org = new Organization(Contributor.getName(DDMSVersion.getCurrentVersion()), Util.getXsListAsList("DISA"), null, null);
+		Organization org = new Organization(Contributor.getName(DDMSVersion.getCurrentVersion()),
+			Util.getXsListAsList("DISA"), null, null);
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
 			new Creator(org, null, null);
 			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
 
 	public void testSharedWarnings() throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		
 		// Empty phone
-		Element entityElement = Util.buildDDMSElement(Organization.getName(DDMSVersion.getCurrentVersion()), null);
+		Element entityElement = Util.buildDDMSElement(Organization.getName(version), null);
 		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 		entityElement.appendChild(Util.buildDDMSElement("phone", ""));
-		Organization component = new Organization(Contributor.getName(DDMSVersion.getCurrentVersion()), entityElement);
+		Organization component = new Organization(Contributor.getName(version), entityElement);
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A ddms:phone element was found with no value.", 
 			component.getValidationWarnings().get(0).getText());
 
 		// Empty email
-		entityElement = Util.buildDDMSElement(Organization.getName(DDMSVersion.getCurrentVersion()), null);
+		entityElement = Util.buildDDMSElement(Organization.getName(version), null);
 		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 		entityElement.appendChild(Util.buildDDMSElement("email", ""));
-		component = new Organization(Contributor.getName(DDMSVersion.getCurrentVersion()), entityElement);
+		component = new Organization(Contributor.getName(version), entityElement);
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A ddms:email element was found with no value.", 
@@ -89,13 +91,13 @@ public class ProducerEntityTest extends TestCase {
 	}
 	
 	public void testExtensibleSuccess() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
 			List<String> names = new ArrayList<String>();
 			names.add("DISA");
-			new Organization(Contributor.getName(DDMSVersion.getCurrentVersion()), names, null, null, attr);
+			new Organization(Contributor.getName(version), names, null, null, attr);
 		}
 	}
 	

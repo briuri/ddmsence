@@ -55,12 +55,12 @@ public class DDMSVersionTest extends TestCase {
 	}
 	
 	public void testGetVersionForDDMSNamespace() {
-		assertEquals(DDMSVersion.getVersionFor("3.0"), DDMSVersion.getVersionForDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/"));
+		assertEquals(DDMSVersion.getVersionFor("3.0"),
+			DDMSVersion.getVersionForDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/"));
 		try {
 			DDMSVersion.getVersionForDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/1.4/");
 			fail("Allowed unsupported version.");
-		}
-		catch (UnsupportedVersionException e) {
+		} catch (UnsupportedVersionException e) {
 			// Good
 		}
 	}
@@ -99,8 +99,9 @@ public class DDMSVersionTest extends TestCase {
 	}
 	
 	public void testGetSchemaForValid() {
-		DDMSVersion.setCurrentVersion("2.0");
+		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		assertEquals("/schemas/2.0/DDMS/DDMS-v2_0.xsd", DDMSVersion.getCurrentVersion().getSchema());
+		assertEquals("2.0", version.getVersion());
 	}
 
 	public void testToString() {

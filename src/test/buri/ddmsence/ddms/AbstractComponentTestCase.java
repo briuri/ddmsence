@@ -73,15 +73,15 @@ public abstract class AbstractComponentTestCase extends TestCase {
 			return;
 		try {
 			DDMSReader reader = null;
-			for (String version : DDMSVersion.getSupportedVersions()) {
-				if (getValidElement(version) == null) {
+			for (String versionString : DDMSVersion.getSupportedVersions()) {
+				if (getValidElement(versionString) == null) {
 					if (reader == null)
 						reader = new DDMSReader();
-					File file = new File(PropertyReader.getProperty("test.unit.data") + version, validDocumentFile);
+					File file = new File(PropertyReader.getProperty("test.unit.data") + versionString, validDocumentFile);
 					if (file.exists()) {
 						Element element = reader.getElement(file);
 						synchronized (_elementMap) {
-							_elementMap.put(getType() + ":" + version, element);
+							_elementMap.put(getType() + ":" + versionString, element);
 						}
 					}
 				}

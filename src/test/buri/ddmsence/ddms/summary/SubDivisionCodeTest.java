@@ -126,13 +126,13 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
 
-			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(SubDivisionCode.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
 			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + SubDivisionCode.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
@@ -144,19 +144,19 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorValid() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
 			
-			testConstructor(WILL_SUCCEED, getValidElement(version));
+			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 		}
 	}
 
 	public void testDataConstructorValid() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
@@ -166,8 +166,8 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			String subCode = SubDivisionCode.getName(DDMSVersion.getCurrentVersion());
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
@@ -197,8 +197,8 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
@@ -218,26 +218,26 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
 			
 			// No warnings
-			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
 	public void testConstructorEquality() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
 			
-			SubDivisionCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			SubDivisionCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			SubDivisionCode dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -245,13 +245,13 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
 			
-			SubDivisionCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			SubDivisionCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			SubDivisionCode dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
@@ -261,26 +261,26 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
 			
-			SubDivisionCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			SubDivisionCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
 	}
 
 	public void testHTMLOutput() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
 			
-			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
@@ -289,13 +289,13 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testTextOutput() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
 			
-			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
@@ -304,13 +304,13 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
 			
-			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
@@ -319,13 +319,13 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	}
 	
 	public void testBuilder() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				continue;
 			
-			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			
 			// Equality after Building
 			SubDivisionCode.Builder builder = new SubDivisionCode.Builder(component);

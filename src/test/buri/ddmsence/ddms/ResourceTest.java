@@ -131,7 +131,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		TEST_SOURCE = new Source(null, "http://www.xmethods.com", null, null, null);
 		TEST_TYPE = new Type(null, "DCMITYPE", "http://purl.org/dc/dcmitype/Text", null);
 		TEST_CREATOR = new Creator(new Organization("creator", getAsList("DISA"), null, null), null, null);
-		TEST_PUBLISHER = new Publisher(new Person("publisher", "Uri", getAsList("Brian"), null, null, null, null), null, null);
+		TEST_PUBLISHER = new Publisher(new Person("publisher", "Uri", getAsList("Brian"), null, null, null, null),
+			null, null);
 		TEST_CONTRIBUTOR = new Contributor(new Service("contributor",
 			getAsList("https://metadata.dod.mil/ebxmlquery/soap"), null, null), null, null);
 		TEST_POC = new PointOfContact(DDMSVersion.getCurrentVersion().isAtLeast("3.0") ?
@@ -533,12 +534,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Resource.getName(DDMSVersion.getCurrentVersion()), component.getName());
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			Resource component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			assertEquals(Resource.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Resource.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Resource.getName(version), component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -547,17 +549,17 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
 			String ismPrefix = PropertyReader.getProperty("ism.prefix");
-			String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
+			String icNamespace = version.getIsmNamespace();
 			
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(version));
+			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, 
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -574,8 +576,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
 			
 			// All fields
@@ -589,10 +591,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String stringVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(stringVersion);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
-			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			String ismPrefix = PropertyReader.getProperty("ism.prefix");
 			String icNamespace = version.getIsmNamespace();
 			
@@ -641,10 +642,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 				// Missing createDate
 				element = Util.buildDDMSElement(Resource.getName(version), null);
-				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, DDMSVersion
-					.getCurrentVersion().getIsmNamespace(), String.valueOf(TEST_RESOURCE_ELEMENT));
-				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, 
-					icNamespace, String.valueOf(getDESVersion()));
+				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
+					String.valueOf(TEST_RESOURCE_ELEMENT));
+				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
+					String.valueOf(getDESVersion()));
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 				element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -881,11 +882,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
 			
-			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
+			if (version.isAtLeast("3.0")) {
 				// Missing createDate
 				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, null, getDESVersion());
 
@@ -893,7 +894,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, "2001", getDESVersion());
 
 				// Nonsensical createDate
-				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, "notAnXmlDate", getDESVersion());
+				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, "notAnXmlDate",
+					getDESVersion());
 
 				// Missing desVersion
 				testConstructor(WILL_FAIL, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null);
@@ -934,13 +936,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
 
 			// base warnings (1 for 2.0, 0 for all others)
-			int warnings = DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? 0 : 1;
-			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			int warnings = version.isAtLeast("3.0") ? 0 : 1;
+			Resource component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(warnings, component.getValidationWarnings().size());
 
 			// Nested warnings
@@ -948,10 +950,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 			components.add(new Format("test", new Extent("test", ""), "test"));
 			component = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
 				getDESVersion());
-			warnings = DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? 1 : 2;
+			warnings = version.isAtLeast("3.0") ? 1 : 2;
 			assertEquals(warnings, component.getValidationWarnings().size());
 
-			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
+			if (!version.isAtLeast("3.0")) {
 				assertEquals("Security rollup validation is being skipped, because no classification exists "
 					+ "on the ddms:Resource itself.", component.getValidationWarnings().get(0).getText());
 				assertEquals("A qualifier has been set without an accompanying value attribute.", 
@@ -962,21 +964,21 @@ public class ResourceTest extends AbstractComponentTestCase {
 			} else {
 				assertEquals("A qualifier has been set without an accompanying value attribute.", 
 					component.getValidationWarnings().get(0).getText());
-				String locatorSuffix = (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) ? "/ddms:Resource/ddms:format/ddms:extent"
+				String locatorSuffix = (version.isAtLeast("4.0")) ? "/ddms:Resource/ddms:format/ddms:extent"
 					: "/ddms:Resource/ddms:format/ddms:Media/ddms:extent";
 				assertEquals(locatorSuffix, component.getValidationWarnings().get(0).getLocator());
 			}
 			
 			// More nested warnings
-			Element element = Util.buildDDMSElement(PostalAddress.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(PostalAddress.getName(version), null);
 			PostalAddress address = new PostalAddress(element);
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.add(new GeospatialCoverage(null, null, null, address, null, null));
 			component = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
 				getDESVersion());
-			warnings = DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? 1 : 2;
+			warnings = version.isAtLeast("3.0") ? 1 : 2;
 			assertEquals(warnings, component.getValidationWarnings().size());
-			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
+			if (!version.isAtLeast("3.0")) {
 				assertEquals("Security rollup validation is being skipped, because no classification exists "
 					+ "on the ddms:Resource itself.", component.getValidationWarnings().get(0).getText());
 				assertEquals("A completely empty ddms:postalAddress element was found.", 
@@ -994,25 +996,25 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
-			
-			Resource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
-			Resource dataComponent = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ?
-				testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null, getDESVersion())
-				: testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getDESVersion()));
+
+			Resource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Resource dataComponent = (!version.isAtLeast("3.0") ? testConstructor(WILL_SUCCEED,
+				TEST_TOP_LEVEL_COMPONENTS, null, null, getDESVersion()) : testConstructor(WILL_SUCCEED,
+				TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getDESVersion()));
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
 
-			Resource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Resource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Resource dataComponent = testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, false, TEST_CREATE_DATE,
 				getDESVersion());
 			assertFalse(elementComponent.equals(dataComponent));
@@ -1022,7 +1024,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertFalse(elementComponent.equals(dataComponent));
 
 			// Can only use alternate DESVersions in early DDMS versions
-			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.1")) {
+			if (!version.isAtLeast("3.1")) {
 				dataComponent = testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
 					TEST_CREATE_DATE, new Integer(1));
 				assertFalse(elementComponent.equals(dataComponent));
@@ -1035,25 +1037,25 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
 			
-			Resource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Resource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
 	}
 
 	public void testHTMLOutput() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);		
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);		
 			createComponents();
 			
-			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Resource component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			component = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
+			component = (!version.isAtLeast("3.0") ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
 				getDESVersion()) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
 				TEST_CREATE_DATE, getDESVersion()));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
@@ -1061,14 +1063,14 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	public void testTextOutput() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
 			
-			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Resource component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
-			component = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
+			component = (!version.isAtLeast("3.0") ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
 				getDESVersion()) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
 				TEST_CREATE_DATE, getDESVersion()));
 			assertEquals(getExpectedTextOutput(), component.toText());
@@ -1076,14 +1078,14 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
 			
-			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Resource component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
+			component = (!version.isAtLeast("3.0") ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null, null,
 				getDESVersion()) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
 				TEST_CREATE_DATE, getDESVersion()));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
@@ -1091,18 +1093,18 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	public void testRollupTooRestrictive() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
 			String ismPrefix = PropertyReader.getProperty("ism.prefix");
-			String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
+			String icNamespace = version.getIsmNamespace();
 			
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("USA");
 			Organization org = new Organization("creator", getAsList("DISA"), null, null);
 			Creator creator = new Creator(org, null, new SecurityAttributes("TS", ownerProducers, null));
 
-			Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -1119,7 +1121,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 	
 	public void testSkipRollupIfNotAvailable() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("2.0");
+		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		createComponents();
 		
 		List<String> ownerProducers = new ArrayList<String>();
@@ -1127,7 +1129,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		Organization org = new Organization("creator", getAsList("DISA"), null, null);
 		Creator creator = new Creator(org, null, new SecurityAttributes("TS", ownerProducers, null));
 		
-		Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
+		Element element = Util.buildDDMSElement(Resource.getName(version), null);
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 		element.appendChild(TEST_TITLE.getXOMElementCopy());
 		element.appendChild(creator.getXOMElementCopy());
@@ -1137,21 +1139,21 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	public void testRollupWrongSystem() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			if (DDMSVersion.getCurrentVersion().isAtLeast("3.1"))
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			if (version.isAtLeast("3.1"))
 				continue;
 			
 			createComponents();
 			String ismPrefix = PropertyReader.getProperty("ism.prefix");
-			String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
+			String icNamespace = version.getIsmNamespace();
 			
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("USA");
 			Organization org = new Organization("creator", getAsList("DISA"), null, null);
 			Creator creator = new Creator(org, null, new SecurityAttributes("CTSA", ownerProducers, null));
 
-			Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -1168,8 +1170,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 	
 	public void test20Usage() throws InvalidDDMSException {
-		String version = "2.0";
-		DDMSVersion.setCurrentVersion(version);
+		DDMSVersion.setCurrentVersion("2.0");
 		createComponents();
 		// Security attributes do not exist in 2.0
 		new Resource(TEST_TOP_LEVEL_COMPONENTS);
@@ -1180,13 +1181,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 	
 	public void testExtensibleSuccess() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
 			
 			// Extensible attribute added
 			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
-			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
+			if (!version.isAtLeast("3.0"))
 				new Resource(TEST_TOP_LEVEL_COMPONENTS, attr);
 			else
 				new Resource(TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getDESVersion(),
@@ -1195,15 +1196,14 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 	
 	public void test20ExtensibleElementSize() throws InvalidDDMSException {
-		String version = "2.0";
-		DDMSVersion.setCurrentVersion(version);
+		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		createComponents();
 		String ismPrefix = PropertyReader.getProperty("ism.prefix");
 		
 		// ICISM:DESVersion in element
-		Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
+		Element element = Util.buildDDMSElement(Resource.getName(version), null);
 		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, 
-			DDMSVersion.getCurrentVersion().getIsmNamespace(), String.valueOf(getDESVersion()));
+			version.getIsmNamespace(), String.valueOf(getDESVersion()));
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 		element.appendChild(TEST_TITLE.getXOMElementCopy());
 		element.appendChild(TEST_CREATOR.getXOMElementCopy());
@@ -1215,9 +1215,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		assertEquals(0, component.getExtensibleAttributes().getAttributes().size());
 		
 		// ICISM:classification in element
-		element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
+		element = Util.buildDDMSElement(Resource.getName(version), null);
 		Util.addAttribute(element, ismPrefix, SecurityAttributes.CLASSIFICATION_NAME, 
-			DDMSVersion.getCurrentVersion().getIsmNamespace(), "U");
+			version.getIsmNamespace(), "U");
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 		element.appendChild(TEST_TITLE.getXOMElementCopy());
 		element.appendChild(TEST_CREATOR.getXOMElementCopy());
@@ -1228,7 +1228,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		assertEquals(0, component.getExtensibleAttributes().getAttributes().size());
 		
 		// ddmsence:confidence in element
-		element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
+		element = Util.buildDDMSElement(Resource.getName(version), null);
 		Util.addAttribute(element, "ddmsence", "confidence", "http://ddmsence.urizone.net/", "95");
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 		element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -1241,16 +1241,15 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 	
 	public void test20ExtensibleDataSizes() throws InvalidDDMSException {
-		String version = "2.0";
-		DDMSVersion.setCurrentVersion(version);
+		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		createComponents();
 		
 		// This can be a parameter or an extensible.
-		Attribute icAttribute = new Attribute("ICISM:DESVersion", DDMSVersion.getCurrentVersion().getIsmNamespace(),
+		Attribute icAttribute = new Attribute("ICISM:DESVersion", version.getIsmNamespace(),
 			"2");
 		// This can be a securityAttribute or an extensible.
 		Attribute secAttribute = new Attribute("ICISM:classification", 
-			DDMSVersion.getCurrentVersion().getIsmNamespace(), "U");
+			version.getIsmNamespace(), "U");
 		// This can be an extensible.
 		Attribute uniqueAttribute = new Attribute("ddmsence:confidence", "http://ddmsence.urizone.net/", "95");
 		List<Attribute> exAttr = new ArrayList<Attribute>();
@@ -1338,14 +1337,14 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 	
 	public void testExtensibleDataDuplicates() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
 			
 			// DESVersion in parameter AND extensible.
 			try {
 				List<Attribute> exAttr = new ArrayList<Attribute>();
-				exAttr.add(new Attribute("ICISM:DESVersion", DDMSVersion.getCurrentVersion().getIsmNamespace(), 
+				exAttr.add(new Attribute("ICISM:DESVersion", version.getIsmNamespace(), 
 					"2"));
 				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, getDESVersion(), 
 					SecurityAttributesTest.getFixture(false), new ExtensibleAttributes(exAttr));
@@ -1359,7 +1358,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			try {
 				List<Attribute> exAttr = new ArrayList<Attribute>();
 				exAttr.add(new Attribute("ICISM:classification", 
-					DDMSVersion.getCurrentVersion().getIsmNamespace(), "U"));
+					version.getIsmNamespace(), "U"));
 				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, 
 					SecurityAttributesTest.getFixture(false), new ExtensibleAttributes(exAttr));
 				fail("Allowed invalid data.");
@@ -1371,14 +1370,15 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 	
 	public void testExtensibleElementElementConstructor() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
 			String ismPrefix = PropertyReader.getProperty("ism.prefix");
-			String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
+			String icNamespace = version.getIsmNamespace();
+			
 			ExtensibleElement component = new ExtensibleElement(ExtensibleElementTest.getElementFixture());
 		
-			Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
 				String.valueOf(TEST_RESOURCE_ELEMENT));
 			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
@@ -1396,8 +1396,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 	
 	public void testExtensibleElementOutput() throws InvalidDDMSException {
-		String version = "3.0";
-		DDMSVersion.setCurrentVersion(version);
+		DDMSVersion.setCurrentVersion("3.0");
 		createComponents();
 		ExtensibleElement component = new ExtensibleElement(ExtensibleElementTest.getElementFixture());
 		
@@ -1443,12 +1442,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 	
 	public void test20DeclassManualReviewAttribute() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("2.0");
+		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		createComponents();
-		String icNamespace = DDMSVersion.getCurrentVersion().getIsmNamespace();
+		String icNamespace = version.getIsmNamespace();
 	
-		Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
-		Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, icNamespace, "true");
+		Element element = Util.buildDDMSElement(Resource.getName(version), null);
+		Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"),
+			SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, icNamespace, "true");
 		SecurityAttributesTest.getFixture(false).addTo(element);
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 		element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -1462,9 +1462,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 	
 	public void testBuilder() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			Resource component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			
 			// Equality after Building
 			Resource.Builder builder = new Resource.Builder(component);
@@ -1472,7 +1472,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 			
 			// Equality with ExtensibleElement
 			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
-			builder.getExtensibleElements().get(0).setXml("<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">This is an extensible element.</ddmsence:extension>");
+			builder.getExtensibleElements().get(0).setXml(
+				"<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">"
+				+ "This is an extensible element.</ddmsence:extension>");
 			component = builder.commit();
 			builder = new Resource.Builder(component);
 			assertEquals(builder.commit(), component);
@@ -1496,7 +1498,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 	
 	public void testBuild20Commit30() throws InvalidDDMSException {
 		// Version during building should be 100% irrelevant
-		DDMSVersion.setCurrentVersion("2.0");
+		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		Resource.Builder builder = new Resource.Builder();
 		builder.setResourceElement(TEST_RESOURCE_ELEMENT);
 		builder.setCreateDate(TEST_CREATE_DATE);
@@ -1509,7 +1511,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		builder.getTitles().get(0).setValue("testTitle");
 		builder.getTitles().get(0).getSecurityAttributes().setClassification("U");
 		builder.getTitles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-		builder.getCreators().get(0).setEntityType(Organization.getName(DDMSVersion.getCurrentVersion()));
+		builder.getCreators().get(0).setEntityType(Organization.getName(version));
 		builder.getCreators().get(0).getOrganization().setNames(Util.getXsListAsList("testName"));
 		builder.getSubjectCoverage().getKeywords().get(0).setValue("keyword");
 		builder.getSecurity().getSecurityAttributes().setClassification("U");
@@ -1530,7 +1532,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 	public void testBuild30Commit20() throws InvalidDDMSException {
 		// Version during building should be 100% irrelevant
-		DDMSVersion.setCurrentVersion("3.0");
+		DDMSVersion version = DDMSVersion.setCurrentVersion("3.0");
 		Resource.Builder builder = new Resource.Builder();
 		builder.setResourceElement(TEST_RESOURCE_ELEMENT);
 		builder.setDESVersion(getDESVersion());
@@ -1542,7 +1544,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		builder.getTitles().get(0).setValue("testTitle");
 		builder.getTitles().get(0).getSecurityAttributes().setClassification("U");
 		builder.getTitles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-		builder.getCreators().get(0).setEntityType(Organization.getName(DDMSVersion.getCurrentVersion()));
+		builder.getCreators().get(0).setEntityType(Organization.getName(version));
 		builder.getCreators().get(0).getOrganization().setNames(Util.getXsListAsList("testName"));
 		builder.getSubjectCoverage().getKeywords().get(0).setValue("keyword");
 		builder.getSecurity().getSecurityAttributes().setClassification("U");
@@ -1633,8 +1635,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 		
 	public void testBuilderEmptiness() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
 			
 			Resource.Builder builder = new Resource.Builder();
 			assertTrue(builder.isEmpty());
@@ -1675,9 +1677,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 	
 	public void testSerializableBuilders() throws Exception {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Resource component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			Resource component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			
 			Resource.Builder builder = new Resource.Builder(component);
 		    ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -1694,8 +1696,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 	
 	public void testBuilderLazyList() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
 			Resource.Builder builder = new Resource.Builder();
 			assertNotNull(builder.getIdentifiers().get(1));
 			assertNotNull(builder.getTitles().get(1));

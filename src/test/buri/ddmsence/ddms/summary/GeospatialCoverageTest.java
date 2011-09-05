@@ -191,9 +191,9 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(GeospatialCoverage.NAME, component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
 			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + GeospatialCoverage.NAME, component.getQualifiedName());
@@ -205,10 +205,10 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 	
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// geographicIdentifier
-			testConstructor(WILL_SUCCEED, getValidElement(version));
+			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// boundingBox
 			Element element = buildComponentElement(BoundingBoxTest.getFixture());
@@ -238,8 +238,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// geographicIdentifier
 			testConstructor(WILL_SUCCEED, GeographicIdentifierTest.getFixture(), null, null, null, null);
 
@@ -264,8 +264,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 
 	
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// At least 1 of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent 
 			// must be used.
 			Element element = buildComponentElement((IDDMSComponent) null);
@@ -316,8 +316,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// At least 1 of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent 
 			// must be used.
 			testConstructor(WILL_FAIL, null, null, null, null, null);
@@ -329,18 +329,18 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// No warnings
-			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			GeospatialCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			GeospatialCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			GeospatialCoverage dataComponent = testConstructor(WILL_SUCCEED, GeographicIdentifierTest.getFixture(),
 				null, null, null, null);
 			assertEquals(elementComponent, dataComponent);
@@ -377,9 +377,9 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			GeospatialCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			GeospatialCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			GeospatialCoverage dataComponent = testConstructor(WILL_SUCCEED, null, BoundingBoxTest.getFixture(), null,
 				null, null);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -396,18 +396,18 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			GeospatialCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			GeospatialCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
 	}
 
 	public void testHTMLOutput() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, GeographicIdentifierTest.getFixture(), null, null, null, null);
@@ -428,9 +428,9 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testTextOutput() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, GeographicIdentifierTest.getFixture(), null, null, null, null);
@@ -451,9 +451,9 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, GeographicIdentifierTest.getFixture(), null, null, null, null);
@@ -462,8 +462,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testGeographicIdentifierReuse() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			GeographicIdentifier geoId = GeographicIdentifierTest.getFixture();
 			testConstructor(WILL_SUCCEED, geoId, null, null, null, null);
 			testConstructor(WILL_SUCCEED, geoId, null, null, null, null);
@@ -471,8 +471,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testBoundingBoxReuse() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			BoundingBox box = BoundingBoxTest.getFixture();
 			testConstructor(WILL_SUCCEED, null, box, null, null, null);
 			testConstructor(WILL_SUCCEED, null, box, null, null, null);
@@ -480,8 +480,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testBoundingGeometryReuse() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry geo = BoundingGeometryTest.getFixture();
 			testConstructor(WILL_SUCCEED, null, null, geo, null, null);
 			testConstructor(WILL_SUCCEED, null, null, geo, null, null);
@@ -489,8 +489,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testPostalAddressReuse() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			PostalAddress address = PostalAddressTest.getFixture();
 			testConstructor(WILL_SUCCEED, null, null, null, address, null);
 			testConstructor(WILL_SUCCEED, null, null, null, address, null);
@@ -498,8 +498,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testVerticalExtentReuse() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			VerticalExtent extent = VerticalExtentTest.getFixture();
 			testConstructor(WILL_SUCCEED, null, null, null, null, extent);
 			testConstructor(WILL_SUCCEED, null, null, null, null, extent);
@@ -507,8 +507,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testSecurityAttributes() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? null 
 				: SecurityAttributesTest.getFixture(false));
 			GeospatialCoverage component = new GeospatialCoverage(GeographicIdentifierTest.getFixture(), null, null,
@@ -584,8 +584,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 	
 	public void testBuilder() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			// Equality after Building
 			GeospatialCoverage component = testConstructor(WILL_SUCCEED, GeographicIdentifierTest.getFixture(), null, null, null, null);

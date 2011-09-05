@@ -47,18 +47,19 @@ public class LazyListTest extends TestCase {
 		LazyList list = new LazyList(Dates.Builder.class);
 		list.add(new Dates.Builder());
 		((Dates.Builder) (list.get(0))).setCreated("05-24-2011");
-		
-	    ByteArrayOutputStream out = new ByteArrayOutputStream();
-	    ObjectOutputStream oos = new ObjectOutputStream(out);
-	    oos.writeObject(list);
-	    oos.close();
-	    byte[] serialized = out.toByteArray();
-	    assertTrue(serialized.length > 0);
 
-	    ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(serialized));
-	    LazyList unserializedList = (LazyList) ois.readObject();
-	    assertEquals(list.size(), unserializedList.size());
-	    assertEquals(((Dates.Builder) (list.get(0))).getCreated(), ((Dates.Builder) (unserializedList.get(0))).getCreated());
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(out);
+		oos.writeObject(list);
+		oos.close();
+		byte[] serialized = out.toByteArray();
+		assertTrue(serialized.length > 0);
+
+		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(serialized));
+		LazyList unserializedList = (LazyList) ois.readObject();
+		assertEquals(list.size(), unserializedList.size());
+		assertEquals(((Dates.Builder) (list.get(0))).getCreated(),
+			((Dates.Builder) (unserializedList.get(0))).getCreated());
 	}
 	
 	public void testUnmodifiableList() {
