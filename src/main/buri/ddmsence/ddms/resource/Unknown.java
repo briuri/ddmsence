@@ -45,8 +45,8 @@ import buri.ddmsence.util.Util;
  * </ul>
  * </td></tr></table>
  * 
- * <p>The ddms:Unknown element is new in DDMS 3.0. Attempts to use it with DDMS 2.0 will result in an 
- * UnsupportedVersionException.</p>
+ * <p>The ddms:unknown element is new in DDMS 3.0. Attempts to use it with DDMS 2.0 will result in an 
+ * UnsupportedVersionException. Its name was changed from "Unknown" to "unknown" in DDMS 4.0.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:name</u>: names of the producer (1-many, at least 1 required)<br />
@@ -124,7 +124,7 @@ public final class Unknown extends AbstractProducerEntity {
 		Util.requireDDMSQName(getXOMElement(), Unknown.getName(getDDMSVersion()));
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.0"))
-			throw new InvalidDDMSException("The ddms:Unknown element cannot be used until DDMS 3.0 or later.");
+			throw new InvalidDDMSException("The ddms:" + Unknown.getName(getDDMSVersion()) + " element cannot be used until DDMS 3.0 or later.");
 	}
 		
 	/**
@@ -142,7 +142,7 @@ public final class Unknown extends AbstractProducerEntity {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return ("Unknown");
+		return (version.isAtLeast("4.0") ? "unknown" : "Unknown");
 	}
 	
 	/**

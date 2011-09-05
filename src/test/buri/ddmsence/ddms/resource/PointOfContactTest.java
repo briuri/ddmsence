@@ -145,6 +145,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:pointOfContact xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
 			.append("\" ");
@@ -160,11 +161,11 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 			xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
 			xml.append("\t</ddms:Service>");
 		} else {
-			xml.append("<ddms:Unknown>\n");
+			xml.append("<ddms:").append(Unknown.getName(version)).append(">\n");
 			xml.append("\t\t<ddms:name>UnknownEntity</ddms:name>\n");
 			xml.append("\t\t<ddms:phone>703-882-1000</ddms:phone>\n");
 			xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
-			xml.append("\t</ddms:Unknown>");
+			xml.append("\t</ddms:").append(Unknown.getName(version)).append(">");
 		}
 		xml.append("\n</ddms:pointOfContact>");
 		return (formatXml(xml.toString(), preserveFormatting));

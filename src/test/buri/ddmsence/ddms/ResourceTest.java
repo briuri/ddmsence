@@ -258,8 +258,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer html = new StringBuffer();
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
+		if (version.isAtLeast("3.0")) {
 			html.append("<meta name=\"security.resourceElement\" content=\"true\" />\n");
 			html.append("<meta name=\"security.createDate\" content=\"2010-01-21\" />\n");
 			html.append("<meta name=\"security.DESVersion\" content=\"").append(getDESVersion()).append("\" />\n");
@@ -296,8 +297,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"publisher.surname\" content=\"Uri\" />\n");
 		html.append("<meta name=\"contributor.entityType\" content=\"Service\" />\n");
 		html.append("<meta name=\"contributor.name\" content=\"https://metadata.dod.mil/ebxmlquery/soap\" />\n");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			html.append("<meta name=\"pointOfContact.entityType\" content=\"Unknown\" />\n");
+		if (version.isAtLeast("3.0")) {
+			html.append("<meta name=\"pointOfContact.entityType\" content=\"").append(Unknown.getName(version)).append("\" />\n");
 			html.append("<meta name=\"pointOfContact.name\" content=\"UnknownEntity\" />\n");
 		} else {
 			html.append("<meta name=\"pointOfContact.entityType\" content=\"Person\" />\n");
@@ -326,14 +327,14 @@ public class ResourceTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"relatedResources.RelatedResource.value\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
 		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"locator\" />\n");
 		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
+		if (version.isAtLeast("3.0"))
 			html.append("<meta name=\"security.excludeFromRollup\" content=\"true\" />\n");
 		html.append("<meta name=\"security.classification\" content=\"U\" />\n");
 		html.append("<meta name=\"security.ownerProducer\" content=\"USA\" />\n");
 		html.append("<meta name=\"extensible.layer\" content=\"false\" />\n");
 		html.append("<meta name=\"ddms.generator\" content=\"DDMSence ").append(PropertyReader.getProperty("version"))
 			.append("\" />\n");
-		html.append("<meta name=\"ddms.version\" content=\"").append(DDMSVersion.getCurrentVersion()).append("\" />\n");
+		html.append("<meta name=\"ddms.version\" content=\"").append(version).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -341,8 +342,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
+		if (version.isAtLeast("3.0")) {
 			text.append("resourceElement: true\n");
 			text.append("createDate: 2010-01-21\n");
 			text.append("DESVersion: ").append(getDESVersion()).append("\n");
@@ -379,8 +381,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		text.append("surname: Uri\n");
 		text.append("contributor EntityType: Service\n");
 		text.append("name: https://metadata.dod.mil/ebxmlquery/soap\n");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			text.append("pointOfContact EntityType: Unknown\n");
+		if (version.isAtLeast("3.0")) {
+			text.append("pointOfContact EntityType: ").append(Unknown.getName(version)).append("\n");
 			text.append("name: UnknownEntity\n");
 		} else {
 			text.append("pointOfContact EntityType: Person\n");
@@ -407,14 +409,14 @@ public class ResourceTest extends AbstractComponentTestCase {
 		text.append("Related Resource value: http://en.wikipedia.org/wiki/Tank\n");
 		text.append("Related Resource link type: locator\n");
 		text.append("Related Resource link href: http://en.wikipedia.org/wiki/Tank\n");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
+		if (version.isAtLeast("3.0")) {
 			text.append("excludeFromRollup: true\n");
 		}
 		text.append("classification: U\n");
 		text.append("ownerProducer: USA\n");
 		text.append("extensibleLayer: false\n");
 		text.append("DDMSGenerator: DDMSence ").append(PropertyReader.getProperty("version")).append("\n");
-		text.append("DDMSVersion: ").append(DDMSVersion.getCurrentVersion()).append("\n");
+		text.append("DDMSVersion: ").append(version).append("\n");
 		return (text.toString());
 	}
 
@@ -424,11 +426,12 @@ public class ResourceTest extends AbstractComponentTestCase {
 	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:Resource xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+		xml.append("<ddms:Resource xmlns:ddms=\"").append(version.getNamespace())
 			.append("\" xmlns:ICISM=\"");
-		xml.append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\"");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
+		xml.append(version.getIsmNamespace()).append("\"");
+		if (version.isAtLeast("3.0")) {
 			xml.append(" ICISM:resourceElement=\"true\" ICISM:DESVersion=\"").append(getDESVersion())
 				.append("\" ICISM:createDate=\"2010-01-21\" ")
 				.append("ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
@@ -463,10 +466,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("\t\t</ddms:Service>\t\n");
 		xml.append("\t</ddms:contributor>\n");
 		xml.append("\t<ddms:pointOfContact>\n");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			xml.append("\t\t<ddms:Unknown>\n");
+		if (version.isAtLeast("3.0")) {
+			xml.append("\t\t<ddms:").append(Unknown.getName(version)).append(">\n");
 			xml.append("\t\t\t<ddms:name>UnknownEntity</ddms:name>\n");
-			xml.append("\t\t</ddms:Unknown>\t\n");
+			xml.append("\t\t</ddms:").append(Unknown.getName(version)).append(">\t\n");
 		} else {
 			xml.append("\t\t<ddms:Person>\n");
 			xml.append("\t\t\t<ddms:name>Brian</ddms:name>\n");
@@ -475,7 +478,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		}
 		xml.append("\t</ddms:pointOfContact>\n");
 		xml.append("\t<ddms:format>\n");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0")) {
 			xml.append("\t\t<ddms:mimeType>text/xml</ddms:mimeType>\n");
 		} else {
 			xml.append("\t\t<ddms:Media>\n");
@@ -490,7 +493,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("\t</ddms:subjectCoverage>\n");
 		xml.append("\t<ddms:virtualCoverage ddms:address=\"123.456.789.0\" ddms:protocol=\"IP\" />\n");
 		xml.append("\t<ddms:temporalCoverage>\n");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0")) {
 			xml.append("\t\t<ddms:start>1979-09-15</ddms:start>\n");
 			xml.append("\t\t<ddms:end>Not Applicable</ddms:end>\n");
 		} else {
@@ -503,7 +506,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("\t<ddms:geospatialCoverage>\n");
 		xml.append("\t\t<ddms:GeospatialExtent>\n");
 		xml.append("\t\t\t<ddms:boundingGeometry>\n");
-		xml.append("\t\t\t\t<gml:Point xmlns:gml=\"").append(DDMSVersion.getCurrentVersion().getGmlNamespace())
+		xml.append("\t\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace())
 			.append("\" ");
 		xml.append("srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ").append(
 			"axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\" gml:id=\"IDValue\">\n");
@@ -521,7 +524,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("\t\t</ddms:RelatedResource>\n");
 		xml.append("\t</ddms:relatedResources>\n");
 		xml.append("\t<ddms:security ");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
+		if (version.isAtLeast("3.0"))
 			xml.append("ICISM:excludeFromRollup=\"true\" ");
 		xml.append("ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\" />\n");
 		xml.append("</ddms:Resource>");

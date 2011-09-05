@@ -292,7 +292,7 @@ Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 <tr><td><code>ddms:source/@ICISM:classification<br />ddms:source/@ICISM:ownerProducer<br />ddms:source/@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:subjectCoverage/@ICISM:classification<br />ddms:subjectCoverage/@ICISM:ownerProducer<br />ddms:subjectCoverage/@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:temporalCoverage/@ICISM:classification<br />ddms:temporalCoverage/@ICISM:ownerProducer<br />ddms:temporalCoverage/@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:Unknown</code></td><td>Cannot exist in this version.</td><td>Can be used to fill a producer role in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:unknown</code></td><td>Cannot exist in this version.</td><td>Can be used to fill a producer role in this version.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:virtualCoverage/@ICISM:classification<br />ddms:virtualCoverage/@ICISM:ownerProducer<br />ddms:virtualCoverage/@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr></table>
 <p class="figure">Table 1. Component changes from DDMS 2.0 to DDMS 3.1</p>
 

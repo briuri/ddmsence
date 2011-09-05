@@ -90,7 +90,7 @@ When a creator is a service or an organization, and not an individual, it is exp
 			<xs:element ref="Organization"/>
 			<xs:element ref="Person"/>
 			<xs:element ref="Service"/>
-			<xs:element ref="Unknown"/>
+			<xs:element ref="unknown"/>
 		</xs:choice>
 		<xs:attribute ref="POCType" use="optional">
 			<xs:annotation>
@@ -248,7 +248,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
-	<xs:element name="Unknown" type="UnknownType">
+	<xs:element name="unknown" type="UnknownType">
 		<xs:annotation>
 			<xs:appinfo>
 				<mdr:definition>Identification that the type of entity of the encompassing element i.e. as a creator, contributor, or publisher, is unknown.  See also, DDMS Spec Cateogries: Contributor, Creator, Publisher.  
