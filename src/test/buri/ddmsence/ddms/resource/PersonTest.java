@@ -31,7 +31,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:Person elements</p>
+ * <p>Tests related to ddms:person elements</p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -106,9 +106,10 @@ public class PersonTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer html = new StringBuffer();
-		String parentType = Creator.getName(DDMSVersion.getCurrentVersion());
-		html.append("<meta name=\"").append(parentType).append(".entityType\" content=\"Person\" />\n");
+		String parentType = Creator.getName(version);
+		html.append("<meta name=\"").append(parentType).append(".entityType\" content=\"").append(Person.getName(version)).append("\" />\n");
 		for (String name : TEST_NAMES)
 			html.append("<meta name=\"").append(parentType).append(".name\" content=\"").append(name).append("\" />\n");
 		for (String phone : TEST_PHONES)
@@ -130,8 +131,9 @@ public class PersonTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(Creator.getName(DDMSVersion.getCurrentVersion())).append(" EntityType: Person\n");
+		text.append(Creator.getName(version)).append(" EntityType: ").append(Person.getName(version)).append("\n");
 		for (String name : TEST_NAMES)
 			text.append("name: ").append(name).append("\n");
 		for (String phone : TEST_PHONES)
@@ -150,8 +152,9 @@ public class PersonTest extends AbstractComponentTestCase {
 	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:Person xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\">\n");
+		xml.append("<ddms:").append(Person.getName(version)).append(" xmlns:ddms=\"").append(version.getNamespace()).append("\">\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
 		xml.append("\t<ddms:surname>").append(TEST_SURNAME).append("</ddms:surname>\n");
@@ -161,7 +164,7 @@ public class PersonTest extends AbstractComponentTestCase {
 			xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
 		for (String email : TEST_EMAILS)
 			xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
-		xml.append("</ddms:Person>");
+		xml.append("</ddms:").append(Person.getName(version)).append(">");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
@@ -291,7 +294,7 @@ public class PersonTest extends AbstractComponentTestCase {
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 			assertEquals("A ddms:userID element was found with no value.", component.getValidationWarnings().get(0)
 				.getText());
-			assertEquals("/ddms:Person", component.getValidationWarnings().get(0).getLocator());
+			assertEquals("/ddms:" + Person.getName(version), component.getValidationWarnings().get(0).getLocator());
 
 			// Empty affiliation
 			entityElement = Util.buildDDMSElement(Person.getName(version), null);
@@ -303,7 +306,7 @@ public class PersonTest extends AbstractComponentTestCase {
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 			assertEquals("A ddms:affiliation element was found with no value.", component.getValidationWarnings()
 				.get(0).getText());
-			assertEquals("/ddms:Person", component.getValidationWarnings().get(0).getLocator());
+			assertEquals("/ddms:" +  Person.getName(version), component.getValidationWarnings().get(0).getLocator());
 		}
 	}
 

@@ -290,9 +290,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"source.value\" content=\"http://www.xmethods.com\" />\n");
 		html.append("<meta name=\"type.qualifier\" content=\"DCMITYPE\" />\n");
 		html.append("<meta name=\"type.value\" content=\"http://purl.org/dc/dcmitype/Text\" />\n");
-		html.append("<meta name=\"creator.entityType\" content=\"Organization\" />\n");
+		html.append("<meta name=\"creator.entityType\" content=\"").append(Organization.getName(version)).append("\" />\n");
 		html.append("<meta name=\"creator.name\" content=\"DISA\" />\n");
-		html.append("<meta name=\"publisher.entityType\" content=\"Person\" />\n");
+		html.append("<meta name=\"publisher.entityType\" content=\"").append(Person.getName(version)).append("\" />\n");
 		html.append("<meta name=\"publisher.name\" content=\"Brian\" />\n");
 		html.append("<meta name=\"publisher.surname\" content=\"Uri\" />\n");
 		html.append("<meta name=\"contributor.entityType\" content=\"").append(Service.getName(version)).append("\" />\n");
@@ -301,7 +301,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			html.append("<meta name=\"pointOfContact.entityType\" content=\"").append(Unknown.getName(version)).append("\" />\n");
 			html.append("<meta name=\"pointOfContact.name\" content=\"UnknownEntity\" />\n");
 		} else {
-			html.append("<meta name=\"pointOfContact.entityType\" content=\"Person\" />\n");
+			html.append("<meta name=\"pointOfContact.entityType\" content=\"").append(Person.getName(version)).append("\" />\n");
 			html.append("<meta name=\"pointOfContact.name\" content=\"Brian\" />\n");
 			html.append("<meta name=\"pointOfContact.surname\" content=\"Uri\" />\n");
 		}
@@ -374,9 +374,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		text.append("source value: http://www.xmethods.com\n");
 		text.append("type qualifier: DCMITYPE\n");
 		text.append("type value: http://purl.org/dc/dcmitype/Text\n");
-		text.append("creator EntityType: Organization\n");
+		text.append("creator EntityType: ").append(Organization.getName(version)).append("\n");
 		text.append("name: DISA\n");
-		text.append("publisher EntityType: Person\n");
+		text.append("publisher EntityType: ").append(Person.getName(version)).append("\n");
 		text.append("name: Brian\n");
 		text.append("surname: Uri\n");
 		text.append("contributor EntityType: ").append(Service.getName(version)).append("\n");
@@ -385,7 +385,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			text.append("pointOfContact EntityType: ").append(Unknown.getName(version)).append("\n");
 			text.append("name: UnknownEntity\n");
 		} else {
-			text.append("pointOfContact EntityType: Person\n");
+			text.append("pointOfContact EntityType: ").append(Person.getName(version)).append("\n");
 			text.append("name: Brian\n");
 			text.append("surname: Uri\n");
 		}
@@ -450,15 +450,15 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("\t<ddms:source ddms:value=\"http://www.xmethods.com\" />\n");
 		xml.append("\t<ddms:type ddms:qualifier=\"DCMITYPE\" ddms:value=\"http://purl.org/dc/dcmitype/Text\" />\n");
 		xml.append("\t<ddms:creator>\n");
-		xml.append("\t\t<ddms:Organization>\n");
-		xml.append("\t\t\t\t<ddms:name>DISA</ddms:name>\n");
-		xml.append("\t\t</ddms:Organization>\t\n");
+		xml.append("\t\t<ddms:").append(Organization.getName(version)).append(">\n");
+		xml.append("\t\t\t<ddms:name>DISA</ddms:name>\n");
+		xml.append("\t\t</ddms:").append(Organization.getName(version)).append(">\t\n");
 		xml.append("\t</ddms:creator>\n");
 		xml.append("\t<ddms:publisher>\n");
-		xml.append("\t\t<ddms:Person>\n");
+		xml.append("\t\t<ddms:").append(Person.getName(version)).append(">\n");
 		xml.append("\t\t\t<ddms:name>Brian</ddms:name>\n");
 		xml.append("\t\t\t<ddms:surname>Uri</ddms:surname>\n");
-		xml.append("\t\t</ddms:Person>\t\n");
+		xml.append("\t\t</ddms:").append(Person.getName(version)).append(">\t\n");
 		xml.append("\t</ddms:publisher>\n");
 		xml.append("\t<ddms:contributor>\n");
 		xml.append("\t\t<ddms:").append(Service.getName(version)).append(">\n");
@@ -471,10 +471,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 			xml.append("\t\t\t<ddms:name>UnknownEntity</ddms:name>\n");
 			xml.append("\t\t</ddms:").append(Unknown.getName(version)).append(">\t\n");
 		} else {
-			xml.append("\t\t<ddms:Person>\n");
+			xml.append("\t\t<ddms:").append(Person.getName(version)).append(">\n");
 			xml.append("\t\t\t<ddms:name>Brian</ddms:name>\n");
 			xml.append("\t\t\t<ddms:surname>Uri</ddms:surname>\n");
-			xml.append("\t\t</ddms:Person>\n");
+			xml.append("\t\t</ddms:").append(Person.getName(version)).append(">\n");
 		}
 		xml.append("\t</ddms:pointOfContact>\n");
 		xml.append("\t<ddms:format>\n");

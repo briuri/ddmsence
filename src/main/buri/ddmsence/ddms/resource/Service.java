@@ -45,7 +45,7 @@ import buri.ddmsence.util.Util;
  * </ul>
  * </td></tr></table>
  * 
- * The name of this component was changed from "Service" to "service" in DDMS 4.0.
+ * <p>The name of this component was changed from "Service" to "service" in DDMS 4.0.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:name</u>: names of the producer entity (1-many, at least 1 required)<br />

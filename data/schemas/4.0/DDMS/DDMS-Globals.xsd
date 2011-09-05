@@ -87,8 +87,8 @@ When a creator is a service or an organization, and not an individual, it is exp
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:choice>
-			<xs:element ref="Organization"/>
-			<xs:element ref="Person"/>
+			<xs:element ref="organization"/>
+			<xs:element ref="person"/>
 			<xs:element ref="service"/>
 			<xs:element ref="unknown"/>
 		</xs:choice>
@@ -222,7 +222,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
-	<xs:element name="Organization" type="OrganizationType">
+	<xs:element name="organization" type="OrganizationType">
 		<xs:annotation>
 			<xs:appinfo>
 				<mdr:definition>A named organization responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher.  See also, DDMS Spec Cateogries: Contributor, Creator, Publisher.
@@ -230,7 +230,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
-	<xs:element name="Person" type="PersonType">
+	<xs:element name="person" type="PersonType">
 		<xs:annotation>
 			<xs:appinfo>
 				<mdr:definition>A person responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher. See also, DDMS Spec Cateogries: Contributor, Creator, Publisher. 
