@@ -101,8 +101,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"source.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
 		html.append("<meta name=\"source.value\" content=\"").append(TEST_VALUE).append("\" />\n");
-		html.append("<meta name=\"source.schemaQualifier\" content=\"").append(TEST_SCHEMA_QUALIFIER)
-			.append("\" />\n");
+		html.append("<meta name=\"source.schemaQualifier\" content=\"").append(TEST_SCHEMA_QUALIFIER).append("\" />\n");
 		html.append("<meta name=\"source.schemaHref\" content=\"").append(TEST_SCHEMA_HREF).append("\" />\n");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			html.append("<meta name=\"source.classification\" content=\"U\" />\n");
@@ -149,9 +148,10 @@ public class SourceTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Source component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(Source.getName(DDMSVersion.getCurrentVersion()), component.getName());
+			assertEquals(Source.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Source.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Source.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -166,14 +166,14 @@ public class SourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Source.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Source.getName(version), null);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
 
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF);
 
@@ -186,7 +186,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// Href not URI
-			Element element = Util.buildDDMSElement(Source.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Source.getName(version), null);
 			Util.addDDMSAttribute(element, "schemaHref", INVALID_URI);
 			testConstructor(WILL_FAIL, element);
 		}
@@ -194,7 +194,7 @@ public class SourceTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorInvalidHrefNotURI() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// Href not URI
 			testConstructor(WILL_FAIL, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, INVALID_URI);
 		}
@@ -207,19 +207,19 @@ public class SourceTest extends AbstractComponentTestCase {
 			Source component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
 
-			Element element = Util.buildDDMSElement(Source.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Source.getName(version), null);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A completely empty ddms:source element was found.", 
-				component.getValidationWarnings().get(0).getText());
+			assertEquals("A completely empty ddms:source element was found.", component.getValidationWarnings().get(0)
+				.getText());
 			assertEquals("/ddms:source", component.getValidationWarnings().get(0).getLocator());
 		}
 	}
 
 	public void testConstructorEquality() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Source elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Source dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
 				TEST_SCHEMA_HREF);
@@ -230,7 +230,7 @@ public class SourceTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Source elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Source dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, DIFFERENT_VALUE,
 				TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF);
@@ -255,7 +255,7 @@ public class SourceTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Source elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -264,7 +264,7 @@ public class SourceTest extends AbstractComponentTestCase {
 
 	public void testHTMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Source component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
@@ -276,7 +276,7 @@ public class SourceTest extends AbstractComponentTestCase {
 
 	public void testTextOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Source component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
@@ -288,7 +288,7 @@ public class SourceTest extends AbstractComponentTestCase {
 
 	public void testXMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Source component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
@@ -301,10 +301,9 @@ public class SourceTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? null 
-				: SecurityAttributesTest.getFixture(false));
+			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture(false));
 			Source component = new Source(TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF, attr);
-			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
+			if (!version.isAtLeast("3.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());
 			else
 				assertEquals(attr, component.getSecurityAttributes());
@@ -314,35 +313,34 @@ public class SourceTest extends AbstractComponentTestCase {
 	public void test20Usage() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
-			new Source(TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF, SecurityAttributesTest
-				.getFixture(false));
+			new Source(TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF,
+				SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
 		} catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Source component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building
 			Source.Builder builder = new Source.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new Source.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new Source.Builder();
 			builder.getSecurityAttributes().setClassification("SuperSecret");
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

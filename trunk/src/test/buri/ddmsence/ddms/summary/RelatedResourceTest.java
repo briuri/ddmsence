@@ -50,7 +50,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	public RelatedResourceTest() {
 		super(null);
 	}
-	
+
 	/**
 	 * Returns a list of links for testing
 	 */
@@ -67,7 +67,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	 */
 	private static Element getFixtureElement() throws InvalidDDMSException {
 		Element resourceElement = Util.buildDDMSElement(RelatedResource.getName(DDMSVersion.getCurrentVersion()), null);
-		resourceElement.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), DDMSVersion.getCurrentVersion().getNamespace());
+		resourceElement.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), DDMSVersion
+			.getCurrentVersion().getNamespace());
 		resourceElement.addAttribute(Util.buildDDMSAttribute("qualifier", TEST_QUALIFIER));
 		resourceElement.addAttribute(Util.buildDDMSAttribute("value", TEST_VALUE));
 		resourceElement.appendChild(new Element(LinkTest.getFixtureElement()));
@@ -117,10 +118,13 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"relatedResources.RelatedResource.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.value\" content=\"").append(TEST_VALUE).append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.qualifier\" content=\"").append(TEST_QUALIFIER)
+			.append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.value\" content=\"").append(TEST_VALUE)
+			.append("\" />\n");
 		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"locator\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"").append(TEST_VALUE).append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"").append(TEST_VALUE)
+			.append("\" />\n");
 		html.append("<meta name=\"relatedResources.RelatedResource.link.role\" content=\"tank\" />\n");
 		html.append("<meta name=\"relatedResources.RelatedResource.link.title\" content=\"Tank Page\" />\n");
 		html.append("<meta name=\"relatedResources.RelatedResource.link.label\" content=\"tank\" />\n");
@@ -153,7 +157,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			.append("\" ");
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
 			.append("\">\n\t");
-		xml.append("<ddms:link xmlns:xlink=\"").append(DDMSVersion.getCurrentVersion().getXlinkNamespace()).append("\" xlink:type=\"locator\" ");
+		xml.append("<ddms:link xmlns:xlink=\"").append(DDMSVersion.getCurrentVersion().getXlinkNamespace())
+			.append("\" xlink:type=\"locator\" ");
 		xml.append("xlink:href=\"").append(TEST_VALUE).append("\" ");
 		xml.append("xlink:role=\"tank\" ");
 		xml.append("xlink:title=\"Tank Page\" ");
@@ -166,9 +171,10 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			RelatedResource component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(RelatedResource.getName(DDMSVersion.getCurrentVersion()), component.getName());
+			assertEquals(RelatedResource.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + RelatedResource.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + RelatedResource.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -178,14 +184,14 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			testConstructor(WILL_SUCCEED, getFixtureElement());
 		}
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			testConstructor(WILL_SUCCEED, getLinks(), TEST_QUALIFIER, TEST_VALUE);
 		}
 	}
@@ -194,25 +200,25 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// Missing qualifier
-			Element element = Util.buildDDMSElement(RelatedResource.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			element.appendChild(new Element(LinkTest.getFixtureElement()));
 			testConstructor(WILL_FAIL, element);
 
 			// qualifier not URI
-			element = Util.buildDDMSElement(RelatedResource.getName(DDMSVersion.getCurrentVersion()), null);
+			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "qualifier", INVALID_URI);
 			element.appendChild(new Element(LinkTest.getFixtureElement()));
 			testConstructor(WILL_FAIL, element);
 
 			// Missing value
-			element = Util.buildDDMSElement(RelatedResource.getName(DDMSVersion.getCurrentVersion()), null);
+			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			element.appendChild(new Element(LinkTest.getFixtureElement()));
 			testConstructor(WILL_FAIL, element);
 
 			// Missing link
-			element = Util.buildDDMSElement(RelatedResource.getName(DDMSVersion.getCurrentVersion()), null);
+			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
@@ -221,7 +227,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// Missing qualifier
 			testConstructor(WILL_FAIL, getLinks(), null, TEST_VALUE);
 
@@ -238,7 +244,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 	public void testWarnings() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// No warnings
 			RelatedResource component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(0, component.getValidationWarnings().size());
@@ -247,7 +253,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			RelatedResource elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			RelatedResource dataComponent = testConstructor(WILL_SUCCEED, getLinks(), TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
@@ -257,7 +263,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			RelatedResource elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			RelatedResource dataComponent = testConstructor(WILL_SUCCEED, getLinks(), DIFFERENT_VALUE, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -274,7 +280,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			RelatedResource elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -283,7 +289,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			RelatedResource component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
@@ -294,7 +300,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			RelatedResource component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedTextOutput(), component.toText());
 
@@ -305,7 +311,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			RelatedResource component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
@@ -316,13 +322,13 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 	public void testLinkReuse() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			List<Link> links = getLinks();
 			testConstructor(WILL_SUCCEED, links, TEST_QUALIFIER, TEST_VALUE);
 			testConstructor(WILL_SUCCEED, links, TEST_QUALIFIER, TEST_VALUE);
 		}
 	}
-	
+
 	public void testWrongVersions() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		List<Link> links = getLinks();
@@ -334,31 +340,30 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			RelatedResource component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			
+
 			// Equality after Building
 			RelatedResource.Builder builder = new RelatedResource.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new RelatedResource.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new RelatedResource.Builder();
 			builder.setQualifier(TEST_QUALIFIER);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
-			
+
 			// Skip empty Links
 			builder = new RelatedResource.Builder();
 			builder.setQualifier(TEST_QUALIFIER);
@@ -371,10 +376,10 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			assertEquals(1, builder.commit().getLinks().size());
 		}
 	}
-	
+
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			RelatedResource.Builder builder = new RelatedResource.Builder();
 			assertNotNull(builder.getLinks().get(1));
 		}

@@ -59,8 +59,8 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 	 */
 	protected static BoundingGeometry getFixture() throws InvalidDDMSException {
 		List<Point> points = new ArrayList<Point>();
-		points.add(new Point(new Position(PositionTest.TEST_COORDS, SRSAttributesTest.getFixture()), 
-			SRSAttributesTest.getFixture(), TEST_ID));
+		points.add(new Point(new Position(PositionTest.TEST_COORDS, SRSAttributesTest.getFixture()), SRSAttributesTest
+			.getFixture(), TEST_ID));
 		return (new BoundingGeometry(null, points));
 	}
 
@@ -152,12 +152,12 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:boundingGeometry xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
-			.append("\">\n\t");
-		xml.append("<gml:Point xmlns:gml=\"").append(DDMSVersion.getCurrentVersion().getGmlNamespace()).append("\" ");
-		xml.append("srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ")
-			.append("axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\" gml:id=\"IDValue\">\n\t\t");
+		xml.append("<ddms:boundingGeometry xmlns:ddms=\"").append(version.getNamespace()).append("\">\n\t");
+		xml.append("<gml:Point xmlns:gml=\"").append(version.getGmlNamespace()).append("\" ");
+		xml.append("srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ").append(
+			"axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\" gml:id=\"IDValue\">\n\t\t");
 		xml.append("<gml:pos>32.1 40.1</gml:pos>\n\t");
 		xml.append("</gml:Point>\n");
 		xml.append("</ddms:boundingGeometry>");
@@ -166,11 +166,12 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testNameAndNamespace() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(BoundingGeometry.NAME, component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + BoundingGeometry.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + BoundingGeometry.NAME,
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -180,7 +181,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// Point
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
@@ -199,7 +200,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// Point
 			testConstructor(WILL_SUCCEED, null, getPoints());
 
@@ -213,7 +214,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// No polygons or points
 			Element element = Util.buildDDMSElement(BoundingGeometry.NAME, null);
 			testConstructor(WILL_FAIL, element);
@@ -222,7 +223,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// No polygons or points
 			testConstructor(WILL_FAIL, null, null);
 		}
@@ -230,7 +231,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testWarnings() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// No warnings
 			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
@@ -239,7 +240,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			BoundingGeometry dataComponent = testConstructor(WILL_SUCCEED, null, getPoints());
 			assertEquals(elementComponent, dataComponent);
@@ -249,7 +250,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			BoundingGeometry dataComponent = testConstructor(WILL_SUCCEED, getPolygons(), getPoints());
 			assertFalse(elementComponent.equals(dataComponent));
@@ -261,7 +262,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -270,7 +271,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
@@ -284,7 +285,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
@@ -298,7 +299,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
@@ -335,12 +336,12 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building (Point-based)
 			BoundingGeometry.Builder builder = new BoundingGeometry.Builder(component);
 			assertEquals(builder.commit(), component);
@@ -349,23 +350,22 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			component = new BoundingGeometry(getPolygons(), null);
 			builder = new BoundingGeometry.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new BoundingGeometry.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new BoundingGeometry.Builder();
 			for (Point point : getPoints()) {
 				Point.Builder pointBuilder = new Point.Builder(point);
 				pointBuilder.setId("");
 				builder.getPoints().add(pointBuilder);
-			}			
+			}
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder = new BoundingGeometry.Builder();
@@ -373,7 +373,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 				builder.getPolygons().add(new Polygon.Builder(polygon));
 			}
 			builder.commit();
-			
+
 			// Skip empty Points
 			builder = new BoundingGeometry.Builder();
 			Point.Builder emptyBuilder = new Point.Builder();
@@ -385,7 +385,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			builder.getPoints().add(emptyBuilder);
 			builder.getPoints().add(fullBuilder);
 			assertEquals(1, builder.commit().getPoints().size());
-			
+
 			// Skip empty Polygons
 			builder = new BoundingGeometry.Builder();
 			Polygon.Builder emptyPolygonBuilder = new Polygon.Builder();
@@ -398,13 +398,13 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			fullPolygonBuilder.getPositions().add(new Position.Builder());
 			fullPolygonBuilder.getPositions().get(0).getCoordinates().get(0).setValue(PolygonTest.TEST_COORDS_1.get(0));
 			fullPolygonBuilder.getPositions().get(0).getCoordinates().get(1).setValue(PolygonTest.TEST_COORDS_1.get(1));
-			
+
 			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(0).setValue(PolygonTest.TEST_COORDS_2.get(0));
 			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(1).setValue(PolygonTest.TEST_COORDS_2.get(1));
-			
+
 			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(0).setValue(PolygonTest.TEST_COORDS_3.get(0));
 			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(1).setValue(PolygonTest.TEST_COORDS_3.get(1));
-			
+
 			fullPolygonBuilder.getPositions().get(3).getCoordinates().get(0).setValue(PolygonTest.TEST_COORDS_1.get(0));
 			fullPolygonBuilder.getPositions().get(3).getCoordinates().get(1).setValue(PolygonTest.TEST_COORDS_1.get(1));
 
@@ -413,10 +413,10 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			assertEquals(1, builder.commit().getPolygons().size());
 		}
 	}
-	
+
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry.Builder builder = new BoundingGeometry.Builder();
 			assertNotNull(builder.getPoints().get(1));
 			assertNotNull(builder.getPolygons().get(1));

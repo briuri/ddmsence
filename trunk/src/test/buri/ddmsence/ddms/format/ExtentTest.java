@@ -204,8 +204,8 @@ public class ExtentTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A qualifier has been set without an accompanying value attribute.", 
-				component.getValidationWarnings().get(0).getText());
+			assertEquals("A qualifier has been set without an accompanying value attribute.", component
+				.getValidationWarnings().get(0).getText());
 			assertEquals("/ddms:extent", component.getValidationWarnings().get(0).getLocator());
 
 			// Neither attribute
@@ -213,8 +213,8 @@ public class ExtentTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A completely empty ddms:extent element was found.", 
-				component.getValidationWarnings().get(0).getText());
+			assertEquals("A completely empty ddms:extent element was found.", component.getValidationWarnings().get(0)
+				.getText());
 			assertEquals("/ddms:extent", component.getValidationWarnings().get(0).getLocator());
 		}
 	}
@@ -282,28 +282,27 @@ public class ExtentTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Extent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building
 			Extent.Builder builder = new Extent.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new Extent.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new Extent.Builder();
 			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.setQualifier(TEST_QUALIFIER);

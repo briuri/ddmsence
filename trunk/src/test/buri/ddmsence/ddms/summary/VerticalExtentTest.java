@@ -53,7 +53,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	protected static VerticalExtent getFixture() throws InvalidDDMSException {
 		return (new VerticalExtent(1.1, 2.2, "Meter", "HAE"));
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -100,11 +100,14 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.verticalExtent.unitOfMeasure\" content=\"").append(TEST_UOM)
-			.append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.verticalExtent.datum\" content=\"").append(TEST_DATUM).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.verticalExtent.minimum\" content=\"").append(TEST_MIN).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.verticalExtent.maximum\" content=\"").append(TEST_MAX).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.verticalExtent.unitOfMeasure\" content=\"")
+			.append(TEST_UOM).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.verticalExtent.datum\" content=\"")
+			.append(TEST_DATUM).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.verticalExtent.minimum\" content=\"")
+			.append(TEST_MIN).append("\" />\n");
+		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.verticalExtent.maximum\" content=\"")
+			.append(TEST_MAX).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -126,14 +129,14 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	private String getMinVerticalExtentName() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "minVerticalExtent" : "MinVerticalExtent");
 	}
-	
+
 	/**
 	 * Helper method to get the correct-case of the maxVerticalExtent eleemnt.
 	 */
 	private String getMaxVerticalExtentName() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "maxVerticalExtent" : "MaxVerticalExtent");
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -145,8 +148,10 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 			.append("\" ");
 		xml.append("ddms:unitOfMeasure=\"").append(TEST_UOM).append("\" ");
 		xml.append("ddms:datum=\"").append(TEST_DATUM).append("\">\n\t");
-		xml.append("<ddms:").append(getMinVerticalExtentName()).append(">").append(TEST_MIN).append("</ddms:").append(getMinVerticalExtentName()).append(">\n\t");
-		xml.append("<ddms:").append(getMaxVerticalExtentName()).append(">").append(TEST_MAX).append("</ddms:").append(getMaxVerticalExtentName()).append(">\n");
+		xml.append("<ddms:").append(getMinVerticalExtentName()).append(">").append(TEST_MIN).append("</ddms:")
+			.append(getMinVerticalExtentName()).append(">\n\t");
+		xml.append("<ddms:").append(getMaxVerticalExtentName()).append(">").append(TEST_MAX).append("</ddms:")
+			.append(getMaxVerticalExtentName()).append(">\n");
 		xml.append("</ddms:verticalExtent>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
@@ -155,9 +160,10 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			VerticalExtent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(VerticalExtent.getName(DDMSVersion.getCurrentVersion()), component.getName());
+			assertEquals(VerticalExtent.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + VerticalExtent.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + VerticalExtent.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -167,14 +173,14 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 		}
 	}
 
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			testConstructor(WILL_SUCCEED, TEST_MIN, TEST_MAX, TEST_UOM, TEST_DATUM);
 		}
 	}
@@ -182,7 +188,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String extentName = VerticalExtent.getName(DDMSVersion.getCurrentVersion());
+			String extentName = VerticalExtent.getName(version);
 			// Missing UOM
 			Element element = Util.buildDDMSElement(extentName, null);
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
@@ -287,7 +293,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// Missing UOM
 			testConstructor(WILL_FAIL, TEST_MIN, TEST_MAX, null, TEST_DATUM);
 
@@ -307,7 +313,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 
 	public void testWarnings() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// No warnings
 			VerticalExtent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
@@ -316,7 +322,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 
 	public void testConstructorEquality() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			VerticalExtent elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			VerticalExtent dataComponent = testConstructor(WILL_SUCCEED, TEST_MIN, TEST_MAX, TEST_UOM, TEST_DATUM);
 			assertEquals(elementComponent, dataComponent);
@@ -326,7 +332,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			VerticalExtent elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			VerticalExtent dataComponent = testConstructor(WILL_SUCCEED, TEST_MIN, TEST_MAX, "Inch", TEST_DATUM);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -344,7 +350,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			VerticalExtent elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -353,7 +359,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 
 	public void testHTMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			VerticalExtent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
@@ -364,7 +370,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 
 	public void testTextOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			VerticalExtent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
@@ -375,7 +381,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 
 	public void testXMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			VerticalExtent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
@@ -386,34 +392,33 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 
 	public void testDoubleEquality() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			VerticalExtent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(component.getMinVerticalExtent(), Double.valueOf(TEST_MIN));
 			assertEquals(component.getMaxVerticalExtent(), Double.valueOf(TEST_MAX));
 		}
 	}
-		
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			VerticalExtent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building
 			VerticalExtent.Builder builder = new VerticalExtent.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new VerticalExtent.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new VerticalExtent.Builder();
 			builder.setUnitOfMeasure(TEST_UOM);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

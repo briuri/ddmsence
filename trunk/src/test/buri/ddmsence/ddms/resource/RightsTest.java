@@ -117,9 +117,10 @@ public class RightsTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Rights component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(Rights.getName(DDMSVersion.getCurrentVersion()), component.getName());
+			assertEquals(Rights.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Rights.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Rights.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -134,14 +135,14 @@ public class RightsTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Rights.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Rights.getName(version), null);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
 
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
 			testConstructor(WILL_SUCCEED, true, true, true);
 		}
@@ -149,7 +150,7 @@ public class RightsTest extends AbstractComponentTestCase {
 
 	public void testWarnings() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// No warnings
 			Rights component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
@@ -158,7 +159,7 @@ public class RightsTest extends AbstractComponentTestCase {
 
 	public void testConstructorEquality() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Rights elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights dataComponent = testConstructor(WILL_SUCCEED, true, true, false);
 			assertEquals(elementComponent, dataComponent);
@@ -168,7 +169,7 @@ public class RightsTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Rights elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights dataComponent = testConstructor(WILL_SUCCEED, false, true, false);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -183,7 +184,7 @@ public class RightsTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Rights elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Language wrongComponent = new Language("qualifier", "value");
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -192,7 +193,7 @@ public class RightsTest extends AbstractComponentTestCase {
 
 	public void testHTMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Rights component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
@@ -203,7 +204,7 @@ public class RightsTest extends AbstractComponentTestCase {
 
 	public void testTextOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Rights component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
@@ -214,7 +215,7 @@ public class RightsTest extends AbstractComponentTestCase {
 
 	public void testXMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Rights component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
@@ -226,27 +227,27 @@ public class RightsTest extends AbstractComponentTestCase {
 	public void testDefaultValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			Element element = Util.buildDDMSElement(Rights.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Rights.getName(version), null);
 			Rights component = testConstructor(WILL_SUCCEED, element);
 			assertFalse(component.getPrivacyAct());
 			assertFalse(component.getIntellectualProperty());
 			assertFalse(component.getCopyright());
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Rights component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building
 			Rights.Builder builder = new Rights.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new Rights.Builder();
 			assertNull(builder.commit());
-			
+
 			// Default values (at least 1 value must be explicit to prevent a null commit)
 			builder = new Rights.Builder();
 			builder.setPrivacyAct(true);

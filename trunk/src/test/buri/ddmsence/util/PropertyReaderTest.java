@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.util;
 
 import java.util.List;
@@ -44,33 +44,31 @@ public class PropertyReaderTest extends TestCase {
 	protected void tearDown() throws Exception {
 		PropertyReader.setProperty("ddms.prefix", "ddms");
 	}
-	
+
 	public void testGetPropertyInvalid() {
 		try {
 			PropertyReader.getProperty("unknown.property");
 			fail("Did not prevent invalid property.");
-		}
-		catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
-	
+
 	public void testGetListPropertyValid() {
 		List<String> properties = PropertyReader.getListProperty("ddms.supportedVersions");
 		assertEquals(4, properties.size());
 	}
-	
+
 	public void testSetPropertyInvalidName() {
 		// This also handles unconfigurable properties.
 		try {
 			PropertyReader.setProperty("unknown.property", "value");
 			fail("Did not prevent invalid property name.");
-		}
-		catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
-	
+
 	public void testSetPropertyValid() {
 		PropertyReader.setProperty("ddms.prefix", "DDMS");
 		assertEquals("DDMS", PropertyReader.getProperty("ddms.prefix"));

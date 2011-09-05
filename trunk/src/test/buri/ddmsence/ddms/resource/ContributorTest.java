@@ -37,7 +37,7 @@ import buri.ddmsence.util.Util;
 public class ContributorTest extends AbstractComponentTestCase {
 
 	private static final String TEST_POC_TYPE = "ICD-710";
-	
+
 	/**
 	 * Constructor
 	 */
@@ -71,7 +71,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 	private String getPOCTypeFixture() {
 		return (isDDMS40OrGreater() ? TEST_POC_TYPE : "");
 	}
-	
+
 	/**
 	 * Helper method to create a fixture organization to act as an entity
 	 */
@@ -85,7 +85,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
@@ -110,7 +110,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 	private String getExpectedHTMLOutput() {
 		String contributorName = Contributor.getName(DDMSVersion.getCurrentVersion());
 		StringBuffer html = new StringBuffer();
-		html.append(getEntityFixture().toHTML());		
+		html.append(getEntityFixture().toHTML());
 		if (isDDMS40OrGreater()) {
 			html.append("<meta name=\"").append(contributorName).append(".POCType\" content=\"ICD-710\" />\n");
 		}
@@ -123,9 +123,9 @@ public class ContributorTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
-		String contributorName = Contributor.getName(DDMSVersion.getCurrentVersion());		
+		String contributorName = Contributor.getName(DDMSVersion.getCurrentVersion());
 		StringBuffer text = new StringBuffer();
-		text.append(getEntityFixture().toText());		
+		text.append(getEntityFixture().toText());
 		if (isDDMS40OrGreater()) {
 			text.append("POCType: ICD-710\n");
 		}
@@ -141,13 +141,13 @@ public class ContributorTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:contributor xmlns:ddms=\"").append(
-			DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
+		xml.append("<ddms:contributor xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+			.append("\" ");
 		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\"");
 		if (isDDMS40OrGreater()) {
 			xml.append(" ddms:POCType=\"ICD-710\"");
 		}
-		xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t<ddms:Organization>\n");		
+		xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t<ddms:Organization>\n");
 		xml.append("\t\t<ddms:name>DISA</ddms:name>\n");
 		xml.append("\t\t<ddms:name>PEO-GES</ddms:name>\n");
 		xml.append("\t\t<ddms:phone>703-882-1000</ddms:phone>\n");
@@ -163,8 +163,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 			Contributor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Contributor.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(
-				PropertyReader.getProperty("ddms.prefix") + ":" + Contributor.getName(version),
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Contributor.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -234,7 +233,8 @@ public class ContributorTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Contributor elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Contributor dataComponent = testConstructor(WILL_SUCCEED,
+			Contributor dataComponent = testConstructor(
+				WILL_SUCCEED,
 				new Service(Contributor.getName(version), Util.getXsListAsList("DISA PEO-GES"), Util
 					.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -290,31 +290,30 @@ public class ContributorTest extends AbstractComponentTestCase {
 			assertEquals(SecurityAttributesTest.getFixture(false), component.getSecurityAttributes());
 		}
 	}
-	
+
 	public void testPOCTypeWrongVersion() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
 			new Contributor(getEntityFixture(), TEST_POC_TYPE, SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Contributor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building
 			Contributor.Builder builder = new Contributor.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new Contributor.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new Contributor.Builder();
 			builder.setEntityType(Organization.getName(version));
@@ -322,8 +321,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

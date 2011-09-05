@@ -122,8 +122,7 @@ public class FormatTest extends AbstractComponentTestCase {
 			xml.append("<ddms:mimeType>text/xml</ddms:mimeType>\n\t");
 			xml.append("<ddms:extent ddms:qualifier=\"sizeBytes\" ddms:value=\"75000\" />\n\t");
 			xml.append("<ddms:medium>digital</ddms:medium>\n");
-		}
-		else {
+		} else {
 			xml.append("<ddms:Media>\n\t\t");
 			xml.append("<ddms:mimeType>text/xml</ddms:mimeType>\n\t\t");
 			xml.append("<ddms:extent ddms:qualifier=\"sizeBytes\" ddms:value=\"75000\" />\n\t\t");
@@ -160,8 +159,7 @@ public class FormatTest extends AbstractComponentTestCase {
 				Element element = Util.buildDDMSElement(Format.getName(version), null);
 				Util.addDDMSChildElement(element, "mimeType", "text/html");
 				testConstructor(WILL_SUCCEED, element);
-			}
-			else {
+			} else {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				Util.addDDMSChildElement(mediaElement, "mimeType", "text/html");
 				Element element = Util.buildDDMSElement(Format.getName(version), null);
@@ -187,13 +185,12 @@ public class FormatTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			String extentName = Extent.getName(version);
 			String formatName = Format.getName(version);
-			
+
 			// Missing mimeType
 			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(formatName, null);
 				testConstructor(WILL_FAIL, element);
-			}
-			else {
+			} else {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(mediaElement);
@@ -205,8 +202,7 @@ public class FormatTest extends AbstractComponentTestCase {
 				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(Util.buildDDMSElement("mimeType", ""));
 				testConstructor(WILL_FAIL, element);
-			}
-			else {
+			} else {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				Element element = Util.buildDDMSElement(formatName, null);
 				mediaElement.appendChild(Util.buildDDMSElement("mimeType", ""));
@@ -220,8 +216,7 @@ public class FormatTest extends AbstractComponentTestCase {
 				element.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				element.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				testConstructor(WILL_FAIL, element);
-			}
-			else {
+			} else {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
@@ -237,8 +232,7 @@ public class FormatTest extends AbstractComponentTestCase {
 				element.appendChild(Util.buildDDMSElement(extentName, null));
 				element.appendChild(Util.buildDDMSElement(extentName, null));
 				testConstructor(WILL_FAIL, element);
-			}
-			else {
+			} else {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				mediaElement.appendChild(Util.buildDDMSElement(extentName, null));
@@ -255,8 +249,7 @@ public class FormatTest extends AbstractComponentTestCase {
 				element.appendChild(Util.buildDDMSElement("medium", TEST_MEDIUM));
 				element.appendChild(Util.buildDDMSElement("medium", TEST_MEDIUM));
 				testConstructor(WILL_FAIL, element);
-			}
-			else {
+			} else {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				mediaElement.appendChild(Util.buildDDMSElement("medium", TEST_MEDIUM));
@@ -274,8 +267,7 @@ public class FormatTest extends AbstractComponentTestCase {
 				Util.addDDMSChildElement(element, "mimeType", "text/html");
 				element.appendChild(extentElement);
 				testConstructor(WILL_FAIL, element);
-			}
-			else {
+			} else {
 				Element extentElement = Util.buildDDMSElement(extentName, null);
 				Util.addDDMSAttribute(extentElement, "value", "test");
 				Element mediaElement = Util.buildDDMSElement("Media", null);
@@ -313,11 +305,10 @@ public class FormatTest extends AbstractComponentTestCase {
 				component = testConstructor(WILL_SUCCEED, element);
 				assertEquals(1, component.getValidationWarnings().size());
 				assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-				assertEquals("A ddms:medium element was found with no value.", 
-					component.getValidationWarnings().get(0).getText());
+				assertEquals("A ddms:medium element was found with no value.", component.getValidationWarnings().get(0)
+					.getText());
 				assertEquals("/ddms:format", component.getValidationWarnings().get(0).getLocator());
-			}
-			else {
+			} else {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				mediaElement.appendChild(Util.buildDDMSElement("medium", null));
@@ -326,16 +317,16 @@ public class FormatTest extends AbstractComponentTestCase {
 				component = testConstructor(WILL_SUCCEED, element);
 				assertEquals(1, component.getValidationWarnings().size());
 				assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-				assertEquals("A ddms:medium element was found with no value.", 
-					component.getValidationWarnings().get(0).getText());
+				assertEquals("A ddms:medium element was found with no value.", component.getValidationWarnings().get(0)
+					.getText());
 				assertEquals("/ddms:format/ddms:Media", component.getValidationWarnings().get(0).getLocator());
 			}
 
 			// Nested warnings
 			component = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, new Extent("sizeBytes", ""), TEST_MEDIUM);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals("A qualifier has been set without an accompanying value attribute.", 
-				component.getValidationWarnings().get(0).getText());
+			assertEquals("A qualifier has been set without an accompanying value attribute.", component
+				.getValidationWarnings().get(0).getText());
 			String locatorSuffix = (version.isAtLeast("4.0")) ? "/ddms:format/ddms:extent"
 				: "/ddms:format/ddms:Media/ddms:extent";
 			assertEquals(locatorSuffix, component.getValidationWarnings().get(0).getLocator());
@@ -346,8 +337,7 @@ public class FormatTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Format elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Format dataComponent = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, ExtentTest.getFixture(),
-				TEST_MEDIUM);
+			Format dataComponent = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, ExtentTest.getFixture(), TEST_MEDIUM);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -358,8 +348,7 @@ public class FormatTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(versionString);
 
 			Format elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Format dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, ExtentTest.getFixture(),
-				TEST_MEDIUM);
+			Format dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, ExtentTest.getFixture(), TEST_MEDIUM);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, null, TEST_MEDIUM);
@@ -464,31 +453,30 @@ public class FormatTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Format component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building
 			Format.Builder builder = new Format.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new Format.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new Format.Builder();
 			builder.setMedium(TEST_MEDIUM);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
-			
+
 			// No extent vs. empty extent
 			builder = new Format.Builder();
 			builder.setMimeType(TEST_MIME_TYPE);

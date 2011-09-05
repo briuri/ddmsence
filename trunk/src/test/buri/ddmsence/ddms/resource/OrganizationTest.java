@@ -103,8 +103,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		String parentType = Creator.getName(DDMSVersion.getCurrentVersion());
 		html.append("<meta name=\"").append(parentType).append(".entityType\" content=\"Organization\" />\n");
 		for (String name : TEST_NAMES)
-			html.append("<meta name=\"").append(parentType).append(".name\" content=\"").append(name)
-				.append("\" />\n");
+			html.append("<meta name=\"").append(parentType).append(".name\" content=\"").append(name).append("\" />\n");
 		for (String phone : TEST_PHONES)
 			html.append("<meta name=\"").append(parentType).append(".phone\" content=\"").append(phone)
 				.append("\" />\n");
@@ -136,7 +135,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:Organization xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\">\n");
+		xml.append("<ddms:Organization xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+			.append("\">\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
 		for (String phone : TEST_PHONES)
@@ -151,9 +151,10 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(Organization.getName(DDMSVersion.getCurrentVersion()), component.getName());
+			assertEquals(Organization.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Organization.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Organization.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -168,7 +169,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Organization.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Organization.getName(version), null);
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -176,7 +177,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
 
@@ -189,11 +190,11 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// Missing name
-			Element entityElement = Util.buildDDMSElement(Organization.getName(DDMSVersion.getCurrentVersion()), null);
+			Element entityElement = Util.buildDDMSElement(Organization.getName(version), null);
 			testConstructor(WILL_FAIL, entityElement);
 
 			// Empty name
-			entityElement = Util.buildDDMSElement(Organization.getName(DDMSVersion.getCurrentVersion()), null);
+			entityElement = Util.buildDDMSElement(Organization.getName(version), null);
 			entityElement.appendChild(Util.buildDDMSElement("name", ""));
 			testConstructor(WILL_FAIL, entityElement);
 		}
@@ -201,7 +202,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// Missing name		
 			testConstructor(WILL_FAIL, null, TEST_PHONES, TEST_EMAILS);
 
@@ -214,7 +215,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 
 	public void testWarnings() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// No warnings
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
@@ -223,7 +224,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 
 	public void testConstructorEquality() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Organization elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Organization dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
 			assertEquals(elementComponent, dataComponent);
@@ -233,7 +234,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Organization elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Organization dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, null, TEST_EMAILS);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -245,7 +246,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Organization elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -254,7 +255,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 
 	public void testHTMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
@@ -265,7 +266,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 
 	public void testTextOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
@@ -276,7 +277,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 
 	public void testXMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
@@ -284,41 +285,40 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building
 			Organization.Builder builder = new Organization.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new Organization.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new Organization.Builder();
-			builder.setParentType(Creator.getName(DDMSVersion.getCurrentVersion()));
+			builder.setParentType(Creator.getName(version));
 			builder.setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
 	}
-	
+
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Organization.Builder builder = new Organization.Builder();
 			assertNotNull(builder.getNames().get(1));
 			assertNotNull(builder.getPhones().get(1));
-			assertNotNull(builder.getEmails().get(1));			
+			assertNotNull(builder.getEmails().get(1));
 		}
 	}
 }

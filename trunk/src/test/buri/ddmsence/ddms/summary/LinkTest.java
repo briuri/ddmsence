@@ -57,10 +57,11 @@ public class LinkTest extends AbstractComponentTestCase {
 	 * @return a XOM element representing a valid link
 	 */
 	protected static Element getFixtureElement() throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
-		String xlinkNamespace = DDMSVersion.getCurrentVersion().getXlinkNamespace();
-		Element linkElement = Util.buildDDMSElement(Link.getName(DDMSVersion.getCurrentVersion()), null);
-		linkElement.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), DDMSVersion.getCurrentVersion().getNamespace());
+		String xlinkNamespace = version.getXlinkNamespace();
+		Element linkElement = Util.buildDDMSElement(Link.getName(version), null);
+		linkElement.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), version.getNamespace());
 		linkElement.addNamespaceDeclaration(xlinkPrefix, xlinkNamespace);
 		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "type", xlinkNamespace, TEST_TYPE));
 		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "href", xlinkNamespace, TEST_HREF));
@@ -113,11 +114,16 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"").append(TEST_TYPE).append("\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"").append(TEST_HREF).append("\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.role\" content=\"").append(TEST_ROLE).append("\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.title\" content=\"").append(TEST_TITLE).append("\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.label\" content=\"").append(TEST_LABEL).append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"").append(TEST_TYPE)
+			.append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"").append(TEST_HREF)
+			.append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.role\" content=\"").append(TEST_ROLE)
+			.append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.title\" content=\"").append(TEST_TITLE)
+			.append("\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.label\" content=\"").append(TEST_LABEL)
+			.append("\" />\n");
 		return (html.toString());
 	}
 
@@ -148,18 +154,19 @@ public class LinkTest extends AbstractComponentTestCase {
 		xml.append("xlink:label=\"").append(TEST_LABEL).append("\" />");
 		return (xml.toString());
 	}
-	
+
 	/**
 	 * Helper method to create a XOM element that can be used to test element constructors
 	 * 
 	 * @param type the type
-	 * @param href the  href
+	 * @param href the href
 	 * @return Element
 	 */
 	private Element buildComponentElement(String type, String href) {
-		Element element = Util.buildDDMSElement(Link.getName(DDMSVersion.getCurrentVersion()), null);
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		Element element = Util.buildDDMSElement(Link.getName(version), null);
 		String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
-		String xlinkNamespace = DDMSVersion.getCurrentVersion().getXlinkNamespace();
+		String xlinkNamespace = version.getXlinkNamespace();
 		if (type != null)
 			element.addAttribute(Util.buildAttribute(xlinkPrefix, "type", xlinkNamespace, type));
 		if (href != null)
@@ -171,9 +178,10 @@ public class LinkTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(Link.getName(DDMSVersion.getCurrentVersion()), component.getName());
+			assertEquals(Link.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Link.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Link.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -181,10 +189,9 @@ public class LinkTest extends AbstractComponentTestCase {
 		}
 	}
 
-	
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
 			testConstructor(WILL_SUCCEED, getFixtureElement());
 
@@ -196,7 +203,7 @@ public class LinkTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
 
@@ -207,7 +214,7 @@ public class LinkTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// Missing href
 			Element element = buildComponentElement(TEST_TYPE, null);
 			testConstructor(WILL_FAIL, element);
@@ -224,7 +231,7 @@ public class LinkTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// Missing href
 			testConstructor(WILL_FAIL, "", TEST_ROLE, TEST_TITLE, TEST_LABEL);
 
@@ -235,7 +242,7 @@ public class LinkTest extends AbstractComponentTestCase {
 
 	public void testWarnings() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// No warnings
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(0, component.getValidationWarnings().size());
@@ -244,7 +251,7 @@ public class LinkTest extends AbstractComponentTestCase {
 
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Link elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			Link dataComponent = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
 			assertEquals(elementComponent, dataComponent);
@@ -254,7 +261,7 @@ public class LinkTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Link elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			Link dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_ROLE, TEST_TITLE, TEST_LABEL);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -272,7 +279,7 @@ public class LinkTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Link elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -281,7 +288,7 @@ public class LinkTest extends AbstractComponentTestCase {
 
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
@@ -292,7 +299,7 @@ public class LinkTest extends AbstractComponentTestCase {
 
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedTextOutput(), component.toText());
 
@@ -303,7 +310,7 @@ public class LinkTest extends AbstractComponentTestCase {
 
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
@@ -311,28 +318,27 @@ public class LinkTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			
+
 			// Equality after Building
 			Link.Builder builder = new Link.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new Link.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new Link.Builder();
 			builder.setRole(TEST_ROLE);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

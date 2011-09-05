@@ -206,6 +206,7 @@ public class DDMSVersion {
 	 * which set of IC CVEs to validate with.
 	 * 
 	 * @param version the new version, which must be supported by DDMSence
+	 * @return the version which was just set, as a full-fledged DDMSVersion object
 	 * @throws UnsupportedVersionException if the version is not supported
 	 */
 	public static synchronized DDMSVersion setCurrentVersion(String version) {

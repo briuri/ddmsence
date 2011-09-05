@@ -39,7 +39,7 @@ import buri.ddmsence.util.PropertyReader;
 public class SchematronValidationTest extends AbstractComponentTestCase {
 
 	private Map<String, Resource> versionToResourceMap;
-	
+
 	/**
 	 * Constructor
 	 */
@@ -50,7 +50,7 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 			versionToResourceMap.put(versionString, new Resource(getValidElement(versionString)));
 		}
 	}
-	
+
 	public void testSchematronValidationXslt1() throws InvalidDDMSException, IOException, XSLException {
 		List<String> supportedXslt1Processors = new ArrayList<String>();
 		if (System.getProperty("java.version").indexOf("1.5.0") == -1)
@@ -78,7 +78,7 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 			}
 		}
 	}
-	
+
 	public void testSchematronValidationXslt2() throws InvalidDDMSException, IOException, XSLException {
 		String[] supportedXslt1Processors = new String[] { "net.sf.saxon.TransformerFactoryImpl" };
 		for (String processor : supportedXslt1Processors) {
@@ -101,15 +101,15 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 			}
 		}
 	}
-	
-//	public void testIsmXmlV5SchematronValidation() throws SAXException, InvalidDDMSException, IOException, XSLException {
-//		// For this test to work, the ISM.XML V5 distribution must be unpacked in the data directory.
-//		File schematronFile = new File("ISM_XML.sch");
-//		Resource resource = new DDMSReader().getDDMSResource(new File("data/sample/DDMSence_Example_v3_1.xml"));
-//		List<ValidationMessage> messages = resource.validateWithSchematron(schematronFile);
-//		for (ValidationMessage message : messages) {
-//			System.out.println("Location: " + message.getLocator());
-//			System.out.println("Message: " + message.getText());
-//		}
-//	}
+
+	//	public void testIsmXmlV5SchematronValidation() throws SAXException, InvalidDDMSException, IOException, XSLException {
+	//		// For this test to work, the ISM.XML V5 distribution must be unpacked in the data directory.
+	//		File schematronFile = new File("ISM_XML.sch");
+	//		Resource resource = new DDMSReader().getDDMSResource(new File("data/sample/DDMSence_Example_v3_1.xml"));
+	//		List<ValidationMessage> messages = resource.validateWithSchematron(schematronFile);
+	//		for (ValidationMessage message : messages) {
+	//			System.out.println("Location: " + message.getLocator());
+	//			System.out.println("Message: " + message.getText());
+	//		}
+	//	}
 }
