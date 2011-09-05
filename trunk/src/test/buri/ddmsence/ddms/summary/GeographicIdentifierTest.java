@@ -296,6 +296,9 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 
+			// Backwards compatible constructors
+			assertEquals(new GeographicIdentifier(TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(GeographicIdentifier.getName(version))),
+				new GeographicIdentifier(TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(GeographicIdentifier.getName(version)), null));
 		}
 	}
 
