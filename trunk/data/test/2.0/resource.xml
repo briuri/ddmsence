@@ -11,7 +11,7 @@
 	<ddms:type ddms:qualifier="DCMITYPE" ddms:value="http://purl.org/dc/dcmitype/Text"/>
 	<ddms:creator>
 		<ddms:Organization>
-				<ddms:name>DISA</ddms:name>
+			<ddms:name>DISA</ddms:name>
 		</ddms:Organization>	
 	</ddms:creator>
 	<ddms:publisher>

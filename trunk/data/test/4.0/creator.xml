@@ -6,7 +6,7 @@
 	ICISM:classification="U"
 	ICISM:ownerProducer="USA"
 	ddms:POCType="ICD-710">
-	<ddms:Person>
+	<ddms:person>
 		<ddms:name>Brian</ddms:name>
 		<ddms:name>BU</ddms:name>
 		<ddms:surname>Uri</ddms:surname>
@@ -14,5 +14,5 @@
 		<ddms:affiliation>DISA</ddms:affiliation>
 		<ddms:phone>703-885-1000</ddms:phone>
 		<ddms:email>ddms@fgm.com</ddms:email>
-	</ddms:Person>
+	</ddms:person>
 </ddms:creator>	

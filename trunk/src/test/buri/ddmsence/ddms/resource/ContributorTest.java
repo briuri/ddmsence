@@ -140,20 +140,21 @@ public class ContributorTest extends AbstractComponentTestCase {
 	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:contributor xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
-			.append("\" ");
-		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\"");
+		xml.append("<ddms:contributor xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
+		xml.append("xmlns:ICISM=\"").append(version.getIsmNamespace()).append("\"");
 		if (isDDMS40OrGreater()) {
 			xml.append(" ddms:POCType=\"ICD-710\"");
 		}
-		xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t<ddms:Organization>\n");
+		xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t<ddms:")
+			.append(Organization.getName(version)).append(">\n");
 		xml.append("\t\t<ddms:name>DISA</ddms:name>\n");
 		xml.append("\t\t<ddms:name>PEO-GES</ddms:name>\n");
 		xml.append("\t\t<ddms:phone>703-882-1000</ddms:phone>\n");
 		xml.append("\t\t<ddms:phone>703-885-1000</ddms:phone>\n");
 		xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
-		xml.append("\t</ddms:Organization>\n</ddms:contributor>");
+		xml.append("\t</ddms:").append(Organization.getName(version)).append(">\n</ddms:contributor>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 

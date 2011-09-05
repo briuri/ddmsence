@@ -147,7 +147,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 		if (isDDMS40OrGreater()) {
 			xml.append(" ddms:POCType=\"ICD-710\"");
 		}
-		xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t<ddms:Person>\n");
+		xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t<ddms:")
+			.append(Person.getName(version)).append(">\n");
 		xml.append("\t\t<ddms:name>Brian</ddms:name>\n");
 		xml.append("\t\t<ddms:name>BU</ddms:name>\n");
 		xml.append("\t\t<ddms:surname>Uri</ddms:surname>\n");
@@ -155,7 +156,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 		xml.append("\t\t<ddms:affiliation>DISA</ddms:affiliation>\n");
 		xml.append("\t\t<ddms:phone>703-885-1000</ddms:phone>\n");
 		xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
-		xml.append("\t</ddms:Person>\n</ddms:creator>");
+		xml.append("\t</ddms:").append(Person.getName(version)).append(">\n</ddms:creator>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 

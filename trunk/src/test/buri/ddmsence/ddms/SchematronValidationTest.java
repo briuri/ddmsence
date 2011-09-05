@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import nu.xom.xslt.XSLException;
+import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 
@@ -59,7 +60,8 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 		for (String processor : supportedXslt1Processors) {
 			PropertyReader.setProperty("xml.transform.TransformerFactory", processor);
 			for (String versionString : DDMSVersion.getSupportedVersions()) {
-				String ddmsNamespace = DDMSVersion.getVersionFor(versionString).getNamespace();
+				DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+				String ddmsNamespace = version.getNamespace();
 				List<ValidationMessage> messages = versionToResourceMap.get(versionString).validateWithSchematron(
 					new File("data/test/" + versionString + "/testSchematronXslt1.sch"));
 				assertEquals(2, messages.size());
@@ -70,7 +72,7 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 				assertEquals(ValidationMessage.ERROR_TYPE, messages.get(0).getType());
 				assertEquals("//*[local-name()='Resource' and namespace-uri()='" + ddmsNamespace + "']"
 					+ "/*[local-name()='publisher' and namespace-uri()='" + ddmsNamespace + "']"
-					+ "/*[local-name()='Person' and namespace-uri()='" + ddmsNamespace + "']"
+					+ "/*[local-name()='" + Person.getName(version) + "' and namespace-uri()='" + ddmsNamespace + "']"
 					+ "/*[local-name()='surname' and namespace-uri()='" + ddmsNamespace + "']", messages.get(1)
 					.getLocator());
 				assertEquals("Members of the Uri family cannot be publishers.", messages.get(1).getText());

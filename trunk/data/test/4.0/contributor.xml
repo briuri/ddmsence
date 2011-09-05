@@ -6,11 +6,11 @@
 	ICISM:classification="U"
 	ICISM:ownerProducer="USA"
 	ddms:POCType="ICD-710">
-	<ddms:Organization >
+	<ddms:organization >
 		<ddms:name>DISA</ddms:name>
 		<ddms:name>PEO-GES</ddms:name>
 		<ddms:phone>703-882-1000</ddms:phone>
 		<ddms:phone>703-885-1000</ddms:phone>
 		<ddms:email>ddms@fgm.com</ddms:email>
-	</ddms:Organization>
+	</ddms:organization>
 </ddms:contributor>

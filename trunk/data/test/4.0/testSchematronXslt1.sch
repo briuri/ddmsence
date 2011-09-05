@@ -3,7 +3,7 @@
 	xmlns="http://purl.oclc.org/dsdl/schematron"
 	xmlns:iso="http://purl.oclc.org/dsdl/schematron">
 	
-	<iso:title>Test ISO Schematron File for DDMSence (DDMS 3.0)</iso:title>
+	<iso:title>Test ISO Schematron File for DDMSence (DDMS 4.0)</iso:title>
 	<iso:ns prefix='ddms' uri='urn:us:mil:ces:metadata:ddms:4' />
 	<iso:ns prefix='ICISM' uri='urn:us:gov:ic:ism' />
 	<iso:ns prefix='gml' uri='http://www.opengis.net/gml/3.2' />
@@ -16,7 +16,7 @@
 	</iso:pattern>
 
 	<iso:pattern title="Fixed Surname Value">
-		<iso:rule context="//ddms:publisher/ddms:Person/ddms:surname">
+		<iso:rule context="//ddms:publisher/ddms:person/ddms:surname">
 			<iso:report test="normalize-space(.) = 'Uri'">Members of the Uri family cannot be publishers.</iso:report>
 		</iso:rule>
 	</iso:pattern>

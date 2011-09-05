@@ -631,7 +631,7 @@ complex rules from the DDMS Specification for example's sake in the <a href="#ex
 fails if the surname is "<b>Uri</b>".</p>
 
 <pre class="brush: xml">&lt;iso:pattern title="Fixed Surname Value"&gt;
-   &lt;iso:rule context="//ddms:publisher/ddms:Person/ddms:surname"&gt;
+   &lt;iso:rule context="//ddms:publisher/ddms:person/ddms:surname"&gt;
       &lt;iso:report test="normalize-space(.) = 'Uri'"&gt;Members of the Uri family cannot be publishers.&lt;/iso:report&gt;
    &lt;/iso:rule&gt;
 &lt;/iso:pattern&gt;</pre>

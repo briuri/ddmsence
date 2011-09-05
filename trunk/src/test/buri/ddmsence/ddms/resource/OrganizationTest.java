@@ -99,9 +99,10 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer html = new StringBuffer();
-		String parentType = Creator.getName(DDMSVersion.getCurrentVersion());
-		html.append("<meta name=\"").append(parentType).append(".entityType\" content=\"Organization\" />\n");
+		String parentType = Creator.getName(version);
+		html.append("<meta name=\"").append(parentType).append(".entityType\" content=\"").append(Organization.getName(version)).append("\" />\n");
 		for (String name : TEST_NAMES)
 			html.append("<meta name=\"").append(parentType).append(".name\" content=\"").append(name).append("\" />\n");
 		for (String phone : TEST_PHONES)
@@ -117,8 +118,9 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(Creator.getName(DDMSVersion.getCurrentVersion())).append(" EntityType: Organization\n");
+		text.append(Creator.getName(version)).append(" EntityType: ").append(Organization.getName(version)).append("\n");
 		for (String name : TEST_NAMES)
 			text.append("name: ").append(name).append("\n");
 		for (String phone : TEST_PHONES)
@@ -134,8 +136,9 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:Organization xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+		xml.append("<ddms:").append(Organization.getName(version)).append(" xmlns:ddms=\"").append(version.getNamespace())
 			.append("\">\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
@@ -143,7 +146,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
 		for (String email : TEST_EMAILS)
 			xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
-		xml.append("</ddms:Organization>");
+		xml.append("</ddms:").append(Organization.getName(version)).append(">");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 

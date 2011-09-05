@@ -11,15 +11,15 @@
 	<ddms:source ddms:value="http://www.xmethods.com" />
 	<ddms:type ddms:qualifier="DCMITYPE" ddms:value="http://purl.org/dc/dcmitype/Text"/>
 	<ddms:creator>
-		<ddms:Organization>
-				<ddms:name>DISA</ddms:name>
-		</ddms:Organization>	
+		<ddms:organization>
+			<ddms:name>DISA</ddms:name>
+		</ddms:organization>	
 	</ddms:creator>
 	<ddms:publisher>
-		<ddms:Person>
+		<ddms:person>
 			<ddms:name>Brian</ddms:name>
 			<ddms:surname>Uri</ddms:surname>
-		</ddms:Person>	
+		</ddms:person>	
 	</ddms:publisher>
 	<ddms:contributor>
 		<ddms:service>
