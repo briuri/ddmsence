@@ -101,7 +101,8 @@ public final class Rights extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		html.append(buildHTMLMeta(getName() + "." + PRIVACY_ACT_NAME, String.valueOf(getPrivacyAct()), true));
-		html.append(buildHTMLMeta(getName() + "." + INTELLECTUAL_PROPERY_NAME, String.valueOf(getIntellectualProperty()), true));
+		html.append(buildHTMLMeta(getName() + "." + INTELLECTUAL_PROPERY_NAME,
+			String.valueOf(getIntellectualProperty()), true));
 		html.append(buildHTMLMeta(getName() + "." + COPYRIGHT_NAME, String.valueOf(getCopyright()), true));
 		return (html.toString());
 	}
@@ -198,17 +199,18 @@ public final class Rights extends AbstractBaseComponent {
 			setIntellectualProperty(Boolean.valueOf(rights.getIntellectualProperty()));
 			setCopyright(Boolean.valueOf(rights.getCopyright()));
 		}
-				
+
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public Rights commit() throws InvalidDDMSException {
 			if (isEmpty())
 				return (null);
-			
+
 			// Handle default values.
 			boolean privacyAct = (getPrivacyAct() == null) ? false : getPrivacyAct().booleanValue();
-			boolean intellectualProperty = (getIntellectualProperty() == null) ? false : getIntellectualProperty().booleanValue();
+			boolean intellectualProperty = (getIntellectualProperty() == null) ? false
+				: getIntellectualProperty().booleanValue();
 			boolean copyright = (getCopyright() == null) ? false : getCopyright().booleanValue();
 			return (new Rights(privacyAct, intellectualProperty, copyright));
 		}

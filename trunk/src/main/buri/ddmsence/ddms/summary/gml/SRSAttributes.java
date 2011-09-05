@@ -248,8 +248,9 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	/**
 	 * Builder for these attributes.
 	 * 
-	 * <p>This class does not implement the IBuilder interface, because the behavior of commit() is at odds with the standard
-	 * commit() method. As an attribute group, an empty attribute group will always be returned instead of null.
+	 * <p>This class does not implement the IBuilder interface, because the behavior of commit() is at odds with the
+	 * standard commit() method. As an attribute group, an empty attribute group will always be returned instead of
+	 * null.
 	 * 
 	 * @see IBuilder
 	 * @author Brian Uri!

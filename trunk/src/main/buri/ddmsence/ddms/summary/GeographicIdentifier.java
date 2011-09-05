@@ -37,10 +37,10 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>No more than 1 countryCode, subDivisionCode, or facilityIdentifier can be used. The schema seems to support this assertion with
- * explicit restrictions on those elements, but the enclosing xs:choice element allows multiples.</li>
- * <li>At least 1 of name, region, countryCode, subDivisionCode, or facilityIdentifier must be present. Once again, the xs:choice 
- * restrictions create a loophole which could allow a completely empty geographicIdentifier to be valid.</li>
+ * <li>No more than 1 countryCode, subDivisionCode, or facilityIdentifier can be used. The schema seems to support this 
+ * assertion with explicit restrictions on those elements, but the enclosing xs:choice element allows multiples.</li>
+ * <li>At least 1 of name, region, countryCode, subDivisionCode, or facilityIdentifier must be present. Once again, the 
+ * xs:choice restrictions create a loophole which could allow a completely empty geographicIdentifier to be valid.</li>
  * </ul>
  * </td></tr></table>
  * 				
@@ -48,7 +48,8 @@ import buri.ddmsence.util.Util;
  * <u>ddms:name</u>: geographic name (0-many optional)<br />
  * <u>ddms:region</u>: geographic region (0-many optional)<br />
  * <u>ddms:countryCode</u>: the country code (0-1 optional), implemented as a {@link CountryCode}<br />
- * <u>ddms:subDivisionCode</u>: the subdivision code (0-1 optional, starting in DDMS 4.0), implemented as a {@link SubDivisionCode}<br />
+ * <u>ddms:subDivisionCode</u>: the subdivision code (0-1 optional, starting in DDMS 4.0), implemented as a 
+ * {@link SubDivisionCode}<br />
  * <u>ddms:facilityIdentifier</u>: the facility identifier (0-1 optional), implemented as a 
  * {@link FacilityIdentifier}<br />
  * </td></tr></table>
@@ -88,14 +89,17 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			setXOMElement(element, false);
 			_cachedNames = Util.getDDMSChildValues(element, NAME_NAME);
 			_cachedRegions = Util.getDDMSChildValues(element, REGION_NAME);
-			Element countryCodeElement = element.getFirstChildElement(CountryCode.getName(getDDMSVersion()), element.getNamespaceURI());
+			DDMSVersion version = getDDMSVersion();
+			Element countryCodeElement = element.getFirstChildElement(CountryCode.getName(version),
+				element.getNamespaceURI());
 			if (countryCodeElement != null)
-				_cachedCountryCode = new CountryCode(GeographicIdentifier.getName(getDDMSVersion()), countryCodeElement);
-			Element subDivisionCodeElement = element.getFirstChildElement(SubDivisionCode.getName(getDDMSVersion()), element.getNamespaceURI());
+				_cachedCountryCode = new CountryCode(GeographicIdentifier.getName(version), countryCodeElement);
+			Element subDivisionCodeElement = element.getFirstChildElement(SubDivisionCode.getName(version),
+				element.getNamespaceURI());
 			if (subDivisionCodeElement != null)
 				_cachedSubDivisionCode = new SubDivisionCode(subDivisionCodeElement);
-			Element facilityIdentifierElement = element.getFirstChildElement(FacilityIdentifier.getName(getDDMSVersion()), element
-				.getNamespaceURI());
+			Element facilityIdentifierElement = element.getFirstChildElement(FacilityIdentifier.getName(version),
+				element.getNamespaceURI());
 			if (facilityIdentifierElement != null)
 				_cachedFacilityIdentifier = new FacilityIdentifier(facilityIdentifierElement);
 			validate();
@@ -129,14 +133,15 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * @param subDivisionCode the subdivision code (optional, starting in DDMS 4.0)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public GeographicIdentifier(List<String> names, List<String> regions, CountryCode countryCode, SubDivisionCode subDivisionCode)
-		throws InvalidDDMSException {
+	public GeographicIdentifier(List<String> names, List<String> regions, CountryCode countryCode,
+		SubDivisionCode subDivisionCode) throws InvalidDDMSException {
 		try {
 			if (names == null)
 				names = Collections.emptyList();
 			if (regions == null)
 				regions = Collections.emptyList();
-			Element element = Util.buildDDMSElement(GeographicIdentifier.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util
+				.buildDDMSElement(GeographicIdentifier.getName(DDMSVersion.getCurrentVersion()), null);
 			for (String name : names) {
 				element.appendChild(Util.buildDDMSElement(NAME_NAME, name));
 			}
@@ -192,16 +197,18 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), GeographicIdentifier.getName(getDDMSVersion()));
 		if (getNames().isEmpty() && getRegions().isEmpty() && getCountryCode() == null && getSubDivisionCode() == null
 			&& getFacilityIdentifier() == null) {
-			throw new InvalidDDMSException("At least 1 of name, region, countryCode, subDivisionCode, or facilityIdentifier must exist.");
+			throw new InvalidDDMSException(
+				"At least 1 of name, region, countryCode, subDivisionCode, or facilityIdentifier must exist.");
 		}
 		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), SubDivisionCode.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), FacilityIdentifier.getName(getDDMSVersion()), 0, 1);
 		if (hasFacilityIdentifier()) {
 			Util.requireCompatibleVersion(this, getFacilityIdentifier());
-			if (!getNames().isEmpty() || !getRegions().isEmpty() || getCountryCode() != null || getSubDivisionCode() != null)
+			if (!getNames().isEmpty() || !getRegions().isEmpty() || getCountryCode() != null
+				|| getSubDivisionCode() != null)
 				throw new InvalidDDMSException("facilityIdentifier cannot be used in tandem with other components.");
-		}		
+		}
 		if (getCountryCode() != null)
 			Util.requireCompatibleVersion(this, getCountryCode());
 		if (getSubDivisionCode() != null)
@@ -392,7 +399,8 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			if (identifier != null)
 				return (new GeographicIdentifier(identifier));
 			getCountryCode().setParentType(GeographicIdentifier.getName(DDMSVersion.getCurrentVersion()));
-			return (new GeographicIdentifier(getNames(), getRegions(), getCountryCode().commit(), getSubDivisionCode().commit()));
+			return (new GeographicIdentifier(getNames(), getRegions(), getCountryCode().commit(), 
+				getSubDivisionCode().commit()));
 		}
 
 		/**

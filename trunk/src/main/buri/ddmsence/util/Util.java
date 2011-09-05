@@ -269,8 +269,10 @@ public class Util {
 	public static void requireDDMSQName(Element element, String localName) throws InvalidDDMSException {
 		Util.requireValue("element", element);
 		Util.requireValue("local name", localName);
-		if (!localName.equals(element.getLocalName()) || !DDMSVersion.isSupportedDDMSNamespace(element.getNamespaceURI())) {
-			throw new InvalidDDMSException("Unexpected namespace URI and local name encountered: " + element.getQualifiedName());
+		if (!localName.equals(element.getLocalName())
+			|| !DDMSVersion.isSupportedDDMSNamespace(element.getNamespaceURI())) {
+			throw new InvalidDDMSException("Unexpected namespace URI and local name encountered: "
+				+ element.getQualifiedName());
 		}
 	}
 	
@@ -288,7 +290,8 @@ public class Util {
 		if (namespaceURI == null)
 			namespaceURI = "";
 		if (!localName.equals(element.getLocalName()) || !namespaceURI.equals(element.getNamespaceURI())) {
-			throw new InvalidDDMSException("Unexpected namespace URI and local name encountered: " + element.getQualifiedName());
+			throw new InvalidDDMSException("Unexpected namespace URI and local name encountered: "
+				+ element.getQualifiedName());
 		}
 	}
 		
@@ -317,8 +320,8 @@ public class Util {
 		throws InvalidDDMSException {
 		Util.requireValue("parent element", parent);
 		Util.requireValue("child name", childName);
-    	if (!DDMSVersion.isSupportedDDMSNamespace(parent.getNamespaceURI()))
-    		throw new IllegalArgumentException("This method should only be called on an element in the DDMS namespace.");
+		if (!DDMSVersion.isSupportedDDMSNamespace(parent.getNamespaceURI()))
+			throw new IllegalArgumentException("This method should only be called on an element in the DDMS namespace.");
 		int childCount = parent.getChildElements(childName, parent.getNamespaceURI()).size();
 		if (!isBounded(childCount, lowBound, highBound)) {
 			StringBuffer error = new StringBuffer();
@@ -327,16 +330,14 @@ public class Util {
 				if (highBound != 1)
 					error.append("s");
 				error.append(" must exist.");
-			}
-			else if (lowBound == 0) {
+			} else if (lowBound == 0) {
 				error.append("No more than ").append(highBound).append(" ").append(childName).append(" element");
 				if (highBound != 1)
 					error.append("s");
 				error.append(" can exist.");
-			}
-			else {
+			} else {
 				error.append("The number of ").append(childName).append(" elements must be between ").append(lowBound)
-						.append(" and ").append(highBound).append(".");
+					.append(" and ").append(highBound).append(".");
 			}
 			throw new InvalidDDMSException(error.toString());
 		}
@@ -527,8 +528,8 @@ public class Util {
 	 * @param attributeValue the value of the attribute
 	 */
 	public static void addDDMSAttribute(Element element, String attributeName, String attributeValue) {
-		addAttribute(element, PropertyReader.getProperty("ddms.prefix"), attributeName, DDMSVersion.getCurrentVersion().getNamespace(), 
-			attributeValue);
+		addAttribute(element, PropertyReader.getProperty("ddms.prefix"), attributeName, 
+			DDMSVersion.getCurrentVersion().getNamespace(), attributeValue);
 	}
 	
 	/**
@@ -568,7 +569,8 @@ public class Util {
 	 * @param childText the text of the element (optional)
 	 */
 	public static Element buildDDMSElement(String name, String childText) {
-		return (buildElement(PropertyReader.getProperty("ddms.prefix"), name, DDMSVersion.getCurrentVersion().getNamespace(), childText));
+		return (buildElement(PropertyReader.getProperty("ddms.prefix"), name, 
+			DDMSVersion.getCurrentVersion().getNamespace(), childText));
 	}
 	
 	/**
@@ -597,7 +599,8 @@ public class Util {
 	 * @param value the value of the attribute
 	 */
 	public static Attribute buildDDMSAttribute(String name, String value) {
-		return (buildAttribute(PropertyReader.getProperty("ddms.prefix"), name, DDMSVersion.getCurrentVersion().getNamespace(), value));
+		return (buildAttribute(PropertyReader.getProperty("ddms.prefix"), name, 
+			DDMSVersion.getCurrentVersion().getNamespace(), value));
 	} 
 	
 	/**
@@ -738,27 +741,29 @@ public class Util {
 	 * @return the phase three transform
 	 * @throws IllegalArgumentException if the queryBinding is unsupported
 	 */
-	private synchronized static XSLTransform getSchematronSvrlTransform(String queryBinding) throws IOException, XSLException {
+	private synchronized static XSLTransform getSchematronSvrlTransform(String queryBinding) throws IOException,
+		XSLException {
 		String resourceName;
 		if ("xslt2".equals(queryBinding))
 			resourceName = "schematron/iso_svrl_for_xslt2.xsl";
 		else if ("xslt".equals(queryBinding))
 			resourceName = "schematron/iso_svrl_for_xslt1.xsl";
 		else
-			throw new IllegalArgumentException("DDMSence currently only supports Schematron files with a queryBinding attribute of \"xslt\" or \"xslt2\".");		
+			throw new IllegalArgumentException(
+				"DDMSence currently only supports Schematron files with a queryBinding attribute of \"xslt\" or \"xslt2\".");
 		if (_schematronSvrlTransforms.get(resourceName) == null) {
-			try {				
+			try {
 				InputStream schematronStylesheet = getLoader().getResourceAsStream(resourceName);
 				Document svrlStylesheet = Util.buildXmlDocument(schematronStylesheet);
 
 				// XOM passes the Base URI to Xalan as the SystemId, which cannot be empty.
 				URI svrlUri = getLoader().getResource(resourceName).toURI();
 				svrlStylesheet.setBaseURI(svrlUri.toString());
-				
+
 				_schematronSvrlTransforms.put(resourceName, new XSLTransform(svrlStylesheet));
 			} catch (URISyntaxException e) {
 				throw new IOException(e.getMessage());
-			}			
+			}
 		}
 		return (_schematronSvrlTransforms.get(resourceName));
 	}

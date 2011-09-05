@@ -32,13 +32,14 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of a ddms:contributor element.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:organization, ddms:person, ddms:service, or ddms:unknown</u>: the entity which fulfills this role (exactly 1 required)<br />
+ * <u>ddms:organization, ddms:person, ddms:service, or ddms:unknown</u>: the entity which fulfills this role (exactly 1 
+ * required)<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#contributor<br />
- * <u>Description</u>: Information about an organization, person, or entity, that contributed intellectual content to a resource, 
- * other than the publishing organization.<br />
+ * <u>Description</u>: Information about an organization, person, or entity, that contributed intellectual content to a 
+ * resource, other than the publishing organization.<br />
  * <u>Obligation</u>: At least one of the four producerTypes is required.<br />
  * <u>Schema Modification Date</u>: 2010-01-26<br />
  * </td></tr></table>
@@ -131,13 +132,14 @@ public class Contributor extends AbstractProducerRole {
 		public Builder(Contributor producer) {
 			super(producer);
 		}
-		
+
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public Contributor commit() throws InvalidDDMSException {
 			setProducerType(Contributor.getName(DDMSVersion.getCurrentVersion()));
-			return (isEmpty() ? null : new Contributor(commitSelectedEntity(), getPocType(), getSecurityAttributes().commit()));
+			return (isEmpty() ? null : new Contributor(commitSelectedEntity(), getPocType(), 
+				getSecurityAttributes().commit()));
 		}
 	}
 }

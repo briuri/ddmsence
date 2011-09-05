@@ -190,8 +190,8 @@ public final class Format extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		return (getDDMSVersion().isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix()
-			+ ":" + MEDIA_NAME);
+		return (getDDMSVersion().isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX
+			+ getXOMElement().getNamespacePrefix() + ":" + MEDIA_NAME);
 	}
 	
 	/**

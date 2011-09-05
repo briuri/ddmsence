@@ -192,8 +192,8 @@ public final class Resource extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
-	 * <p>Starting in DDMS 3.0, resources have additional ICISM attributes which did not exist in 2.0. However, the 
-	 * 2.0 schema still allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present.</p>
+	 * <p>Starting in DDMS 3.0, resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0
+	 * schema still allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present.</p>
 	 * 
 	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -218,71 +218,72 @@ public final class Resource extends AbstractBaseComponent {
 			_cachedSecurityAttributes = new SecurityAttributes(element);
 			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
 			
+			DDMSVersion version = getDDMSVersion();
 			// Resource Set
-			Elements components = element.getChildElements(Identifier.getName(getDDMSVersion()), namespace);
+			Elements components = element.getChildElements(Identifier.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedIdentifiers.add(new Identifier(components.get(i)));
 			}
-			components = element.getChildElements(Title.getName(getDDMSVersion()), namespace);
+			components = element.getChildElements(Title.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedTitles.add(new Title(components.get(i)));
 			}
-			components = element.getChildElements(Subtitle.getName(getDDMSVersion()), namespace);
+			components = element.getChildElements(Subtitle.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedSubtitles.add(new Subtitle(components.get(i)));
 			}
-			Element component = getChild(Description.getName(getDDMSVersion()));
+			Element component = getChild(Description.getName(version));
 			if (component != null)
 				_cachedDescription = new Description(component);
-			components = element.getChildElements(Language.getName(getDDMSVersion()), namespace);
+			components = element.getChildElements(Language.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedLanguages.add(new Language(components.get(i)));
 			}
-			component = getChild(Dates.getName(getDDMSVersion()));
+			component = getChild(Dates.getName(version));
 			if (component != null)
 				_cachedDates = new Dates(component);
-			component = getChild(Rights.getName(getDDMSVersion()));
+			component = getChild(Rights.getName(version));
 			if (component != null)
 				_cachedRights = new Rights(component);
-			components = element.getChildElements(Source.getName(getDDMSVersion()), namespace);
+			components = element.getChildElements(Source.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedSources.add(new Source(components.get(i)));
 			}
-			components = element.getChildElements(Type.getName(getDDMSVersion()), namespace);
+			components = element.getChildElements(Type.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedTypes.add(new Type(components.get(i)));
 			}
-			components = element.getChildElements(Creator.getName(getDDMSVersion()), namespace);
+			components = element.getChildElements(Creator.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedCreators.add(new Creator(components.get(i)));
 			}
-			components = element.getChildElements(Publisher.getName(getDDMSVersion()), namespace);
+			components = element.getChildElements(Publisher.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedPublishers.add(new Publisher(components.get(i)));
 			}
-			components = element.getChildElements(Contributor.getName(getDDMSVersion()), namespace);
+			components = element.getChildElements(Contributor.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedContributors.add(new Contributor(components.get(i)));
 			}
-			components = element.getChildElements(PointOfContact.getName(getDDMSVersion()), namespace);
+			components = element.getChildElements(PointOfContact.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedPointOfContacts.add(new PointOfContact(components.get(i)));
 			}
 
 			// Format Set
-			component = getChild(Format.getName(getDDMSVersion()));
+			component = getChild(Format.getName(version));
 			if (component != null)
 				_cachedFormat = new Format(component);
 
 			// Summary Set
-			component = getChild(SubjectCoverage.getName(getDDMSVersion()));
+			component = getChild(SubjectCoverage.getName(version));
 			if (component != null)
 				_cachedSubjectCoverage = new SubjectCoverage(component);
-			components = element.getChildElements(VirtualCoverage.getName(getDDMSVersion()), namespace);
+			components = element.getChildElements(VirtualCoverage.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedVirtualCoverages.add(new VirtualCoverage(components.get(i)));
 			}
-			components = element.getChildElements(TemporalCoverage.getName(getDDMSVersion()), namespace);
+			components = element.getChildElements(TemporalCoverage.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedTemporalCoverages.add(new TemporalCoverage(components.get(i)));
 			}
@@ -290,13 +291,13 @@ public final class Resource extends AbstractBaseComponent {
 			for (int i = 0; i < components.size(); i++) {
 				_cachedGeospatialCoverages.add(new GeospatialCoverage(components.get(i)));
 			}
-			components = element.getChildElements(RelatedResources.getName(getDDMSVersion()), namespace);
+			components = element.getChildElements(RelatedResources.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedRelatedResources.add(new RelatedResources(components.get(i)));
 			}
 
 			// Security Set
-			component = getChild(Security.getName(getDDMSVersion()));
+			component = getChild(Security.getName(version));
 			if (component != null) {
 				_cachedSecurity = new Security(component);
 
@@ -323,8 +324,8 @@ public final class Resource extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a DDMS 2.0 Resource from raw data.
 	 * 
-	 * <p>This helper constructor merely calls the fully-parameterized version. Attempts to use it with DDMS 3.0 (or higher)
-	 * components will fail, because some required attributes are missing.</p>
+	 * <p>This helper constructor merely calls the fully-parameterized version. Attempts to use it with DDMS 3.0 (or
+	 * higher) components will fail, because some required attributes are missing.</p>
 	 * 
 	 * @param topLevelComponents a list of top level components
 	 */
@@ -341,7 +342,8 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param topLevelComponents a list of top level components
 	 * @param extensions any extensible attributes (optional)
 	 */
-	public Resource(List<IDDMSComponent> topLevelComponents, ExtensibleAttributes extensions) throws InvalidDDMSException {
+	public Resource(List<IDDMSComponent> topLevelComponents, ExtensibleAttributes extensions)
+		throws InvalidDDMSException {
 		this(topLevelComponents, null, null, null, null, extensions);
 	}
 
@@ -354,13 +356,14 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
 	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
 	 * @param desVersion the DES Version as an Integer (required, starting in DDMS 3.0)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in DDMS 3.0)
+	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
+	 * DDMS 3.0)
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
 		Integer desVersion, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		this(topLevelComponents, resourceElement, createDate, desVersion, securityAttributes, null);
 	}
-	
+
 	/**
 	 * Constructor for creating a DDMS resource of any version from raw data.
 	 * 
@@ -375,14 +378,15 @@ public final class Resource extends AbstractBaseComponent {
 	 * multiple identifier components), those components will be stored and output in the order of the list. If only 1
 	 * instance can be supported, the last one in the list will be the one used. </p>
 	 * 
-	 * <p>Starting in DDMS 3.0, resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 
+	 * <p>Starting in DDMS 3.0, resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0
 	 * schema still allows "any" attributes on the Resource, so the attribute values will be loaded if present. </p>
 	 * 
 	 * @param topLevelComponents a list of top level components
 	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
 	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
 	 * @param desVersion the DES Version as an Integer (required, starting in DDMS 3.0)
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in DDMS 3.0)
+	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
+	 * DDMS 3.0)
 	 * @param extensions any extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
 	 * does not belong at the top-level of the Resource.
@@ -551,8 +555,8 @@ public final class Resource extends AbstractBaseComponent {
 				boolean isAssert = "failed-assert".equals(outputElement.getLocalName());
 				String text = outputElement.getFirstChildElement("text", svrlNamespace).getValue();
 				String locator = outputElement.getAttributeValue("location");
-				messages.add(isAssert ? ValidationMessage.newError(text, locator) : ValidationMessage.newWarning(text,
-					locator));
+				messages.add(isAssert ? ValidationMessage.newError(text, locator)
+					: ValidationMessage.newWarning(text, locator));
 			}
 		}		
 		return (messages);

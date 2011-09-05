@@ -290,16 +290,17 @@ public final class Polygon extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		text.append(buildTextLine(BoundingGeometry.NAME + " " + ID_NAME, getId(), true));
-		text.append(buildTextLine(BoundingGeometry.NAME + " type", Polygon.NAME, true));		
+		text.append(buildTextLine(BoundingGeometry.NAME + " type", Polygon.NAME, true));
 		text.append(buildTextLine(BoundingGeometry.NAME + " srsName", getSRSAttributes().getSrsName(), true));
 		if (getSRSAttributes().getSrsDimension() != null) {
-			text.append(buildTextLine(BoundingGeometry.NAME + " srsDimension", 
+			text.append(buildTextLine(BoundingGeometry.NAME + " srsDimension",
 				String.valueOf(getSRSAttributes().getSrsDimension()), false));
 		}
-		text.append(buildTextLine(BoundingGeometry.NAME + " axisLabels", getSRSAttributes().getAxisLabelsAsXsList(), false));
-		text.append(buildTextLine(BoundingGeometry.NAME + " uomLabels", 
-			getSRSAttributes().getUomLabelsAsXsList(), false));
-		for (Position pos: getPositions())
+		text.append(buildTextLine(BoundingGeometry.NAME + " axisLabels", getSRSAttributes().getAxisLabelsAsXsList(),
+			false));
+		text.append(buildTextLine(BoundingGeometry.NAME + " uomLabels", getSRSAttributes().getUomLabelsAsXsList(),
+			false));
+		for (Position pos : getPositions())
 			text.append(pos.toText());
 		return (text.toString());
 	}

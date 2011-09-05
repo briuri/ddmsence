@@ -268,8 +268,9 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	/**
 	 * Builder for these attributes.
 	 * 
-	 * <p>This class does not implement the IBuilder interface, because the behavior of commit() is at odds with the standard
-	 * commit() method. As an attribute group, an empty attribute group will always be returned instead of null.
+	 * <p>This class does not implement the IBuilder interface, because the behavior of commit() is at odds with the
+	 * standard commit() method. As an attribute group, an empty attribute group will always be returned instead of
+	 * null.
 	 * 
 	 * @see IBuilder
 	 * @author Brian Uri!
@@ -331,9 +332,9 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	/**
 	 * Builder for a XOM attribute.
 	 * 
-	 * <p>This builder is implemented because the XOM attribute does not have a no-arg constructor which can be hooked into
-	 * a LazyList. Because the Builder returns a XOM attribute instead of an IDDMSComponent, it does not officially implement
-	 * the IBuilder interface.</p>
+	 * <p>This builder is implemented because the XOM attribute does not have a no-arg constructor which can be hooked
+	 * into a LazyList. Because the Builder returns a XOM attribute instead of an IDDMSComponent, it does not officially
+	 * implement the IBuilder interface.</p>
 	 * 
 	 * @see IBuilder
 	 * @author Brian Uri!

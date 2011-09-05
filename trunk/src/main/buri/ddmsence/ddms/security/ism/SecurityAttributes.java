@@ -236,7 +236,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	public SecurityAttributes(Element element) throws InvalidDDMSException {
 		_ddmsNamespace = element.getNamespaceURI();
 		String icNamespace = DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace()).getIsmNamespace();
-		_cachedAtomicEnergyMarkings = Util.getXsListAsList(element.getAttributeValue(ATOMIC_ENERGY_MARKINGS_NAME, icNamespace));
+		_cachedAtomicEnergyMarkings = Util.getXsListAsList(element.getAttributeValue(ATOMIC_ENERGY_MARKINGS_NAME,
+			icNamespace));
 		_cachedClassification = element.getAttributeValue(CLASSIFICATION_NAME, icNamespace);
 		_cachedClassificationReason = element.getAttributeValue(CLASSIFICATION_REASON_NAME, icNamespace);
 		_cachedClassifiedBy = element.getAttributeValue(CLASSIFIED_BY_NAME, icNamespace);
@@ -256,11 +257,13 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		_cachedDerivativelyClassifiedBy = element.getAttributeValue(DERIVATIVELY_CLASSIFIED_BY_NAME, icNamespace);
 		_cachedDerivedFrom = element.getAttributeValue(DERIVED_FROM_NAME, icNamespace);			
 		_cachedDisplayOnlyTo = Util.getXsListAsList(element.getAttributeValue(DISPLAY_ONLY_TO_NAME, icNamespace));
-		_cachedDisseminationControls = Util.getXsListAsList(element.getAttributeValue(DISSEMINATION_CONTROLS_NAME, icNamespace));
+		_cachedDisseminationControls = Util.getXsListAsList(element.getAttributeValue(DISSEMINATION_CONTROLS_NAME,
+			icNamespace));
 		_cachedFGIsourceOpen = Util.getXsListAsList(element.getAttributeValue(FGI_SOURCE_OPEN_NAME, icNamespace));
-		_cachedFGIsourceProtected = Util.getXsListAsList(element.getAttributeValue(FGI_SOURCE_PROTECTED_NAME, icNamespace));
-		_cachedNonICmarkings = Util.getXsListAsList(element.getAttributeValue(NON_IC_MARKINGS_NAME, icNamespace));		
-		_cachedNonUSControls = Util.getXsListAsList(element.getAttributeValue(NON_US_CONTROLS_NAME, icNamespace));		
+		_cachedFGIsourceProtected = Util.getXsListAsList(element.getAttributeValue(FGI_SOURCE_PROTECTED_NAME,
+			icNamespace));
+		_cachedNonICmarkings = Util.getXsListAsList(element.getAttributeValue(NON_IC_MARKINGS_NAME, icNamespace));
+	_cachedNonUSControls = Util.getXsListAsList(element.getAttributeValue(NON_US_CONTROLS_NAME, icNamespace));		
 		_cachedOwnerProducers = Util.getXsListAsList(element.getAttributeValue(OWNER_PRODUCER_NAME, icNamespace));
 		_cachedReleasableTo = Util.getXsListAsList(element.getAttributeValue(RELEASABLE_TO_NAME, icNamespace));
 		_cachedSARIdentifier = Util.getXsListAsList(element.getAttributeValue(SAR_IDENTIFIER_NAME, icNamespace));
@@ -290,7 +293,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 *            appears in XML.
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public SecurityAttributes(String classification, List<String> ownerProducers, Map<String, String> otherAttributes) throws InvalidDDMSException {
+	public SecurityAttributes(String classification, List<String> ownerProducers, Map<String, String> otherAttributes)
+		throws InvalidDDMSException {
 		_ddmsNamespace = DDMSVersion.getCurrentVersion().getNamespace();
 		if (ownerProducers == null)
 			ownerProducers = Collections.emptyList();
@@ -449,7 +453,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * <li>If set, the FGIsourceOpen attribute must be valid tokens.</li>
 	 * <li>If set, the FGIsourceProtected attribute must be valid tokens.</li>
 	 * <li>If set, the nonICmarkings attribute must be valid tokens.</li>
-	 * <li>The nonUSControls attribute cannot be used until DDMS 3.1 or later..</li>
+	 * <li>The nonUSControls attribute cannot be used until DDMS 3.1 or later.</li>
 	 * <li>If set, the nonUSControls attribute must be valid tokens.</li>	 
 	 * <li>If set, the ownerProducers attribute must be valid tokens.</li>
 	 * <li>If set, the releasableTo attribute must be valid tokens.</li>
@@ -488,7 +492,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			throw new InvalidDDMSException("The dateOfExemptedSource attribute can only be used until DDMS 3.1 or later.");		
 		if (getDateOfExemptedSource() != null
 			&& !getDateOfExemptedSource().getXMLSchemaType().equals(DatatypeConstants.DATE))
-			throw new InvalidDDMSException("The dateOfExemptedSource attribute must be in the xs:date format (YYYY-MM-DD).");
+			throw new InvalidDDMSException(
+				"The dateOfExemptedSource attribute must be in the xs:date format (YYYY-MM-DD).");
 		if (getDeclassDate() != null && !getDeclassDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException("The declassDate must be in the xs:date format (YYYY-MM-DD).");
 		if (!Util.isEmpty(getDeclassException())) {
@@ -542,15 +547,17 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
-	 * Helper method to validate a value from a controlled vocabulary. This is the delegate that handles whether a
-	 * bad validation should result in a warning or error, based on the configurable property, "icism.cve.validationAsErrors".
+	 * Helper method to validate a value from a controlled vocabulary. This is the delegate that handles whether a bad
+	 * validation should result in a warning or error, based on the configurable property,
+	 * "icism.cve.validationAsErrors".
 	 * 
 	 * @param enumerationKey the key of the enumeration
 	 * @param value the test value
 	 * @throws InvalidDDMSException if the value is not and validation should result in errors
 	 */
 	private void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
-		boolean validationAsErrors = Boolean.valueOf(PropertyReader.getProperty("ism.cve.validationAsErrors")).booleanValue();
+		boolean validationAsErrors = Boolean.valueOf(PropertyReader.getProperty("ism.cve.validationAsErrors"))
+			.booleanValue();
 		if (!ISMVocabulary.enumContains(enumerationKey, value)) {
 			String message = ISMVocabulary.getInvalidMessage(enumerationKey, value);
 			if (validationAsErrors)
@@ -924,8 +931,9 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	/**
 	 * Builder for these attributes.
 	 * 
-	 * <p>This class does not implement the IBuilder interface, because the behavior of commit() is at odds with the standard
-	 * commit() method. As an attribute group, an empty attribute group will always be returned instead of null.
+	 * <p>This class does not implement the IBuilder interface, because the behavior of commit() is at odds with the
+	 * standard commit() method. As an attribute group, an empty attribute group will always be returned instead of
+	 * null.
 	 * 
 	 * @see IBuilder
 	 * @author Brian Uri!

@@ -128,7 +128,8 @@ public final class Source extends AbstractQualifierValue {
 		}		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 3.0 or later.");
+			throw new InvalidDDMSException(
+				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 		
 		validateWarnings();

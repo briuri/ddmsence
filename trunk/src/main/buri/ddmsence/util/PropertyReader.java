@@ -31,19 +31,15 @@ import java.util.Set;
 /**
  * Utility class for dealing with the property file.
  * 
- * <p>
- * Properties in DDMSence are found in the <code>ddmsence.properties</code> file. All properties are prefixed with
- * "buri.ddmsence.", so <code>getProperty</code> calls should be performed with just the property suffix.
- * </p>
+ * <p> Properties in DDMSence are found in the <code>ddmsence.properties</code> file. All properties are prefixed with
+ * "buri.ddmsence.", so <code>getProperty</code> calls should be performed with just the property suffix. </p>
  * 
- * <p>
- * The Property Reader supports several custom properties, which can be specified at runtime. The complete list of configurable
- * properties can be found on the DDMSence website at: http://ddmsence.urizone.net/documentation.jsp#tips-configuration.
- * </p> 
+ * <p> The Property Reader supports several custom properties, which can be specified at runtime. The complete list of
+ * configurable properties can be found on the DDMSence website at:
+ * http://ddmsence.urizone.net/documentation.jsp#tips-configuration. </p>
  * 
- * <p>
- * Changing a namespace prefix will affect both components created from scratch and components loaded from XML files.
- * </p>
+ * <p> Changing a namespace prefix will affect both components created from scratch and components loaded from XML
+ * files. </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b

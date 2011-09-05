@@ -41,7 +41,8 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#security<br />
- * <u>Description</u>: The highest level of classification, dissemination controls, and declassification rules applicable to a data asset.<br />
+ * <u>Description</u>: The highest level of classification, dissemination controls, and declassification rules 
+ * applicable to a data asset.<br />
  * <u>Obligation</u>: Mandatory<br />
  * <u>Schema Modification Date</u>: 2010-01-26<br />
  * </td></tr></table>
@@ -145,7 +146,8 @@ public final class Security extends AbstractBaseComponent {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		if (getExcludeFromRollup() != null)
-			html.append(buildHTMLMeta(getName() + "." + EXCLUDE_FROM_ROLLUP_NAME, String.valueOf(getExcludeFromRollup()), true));
+			html.append(buildHTMLMeta(getName() + "." + EXCLUDE_FROM_ROLLUP_NAME,
+				String.valueOf(getExcludeFromRollup()), true));
 		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}
