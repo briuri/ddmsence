@@ -25,6 +25,7 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.UnsupportedVersionException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -156,17 +157,25 @@ public class PointTest extends AbstractComponentTestCase {
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
-	public void testNameAndNamespace() {
+	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Point component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(Point.NAME, component.getName());
+			assertEquals(Point.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("gml.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Point.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Point.getName(version), component.getQualifiedName());
 
 			// Wrong name/namespace
-			Element element = Util.buildDDMSElement("wrongName", null);
+			Element element = Util.buildElement("gml", "wrongName", version.getGmlNamespace(), null);
 			testConstructor(WILL_FAIL, element);
+			try {
+				element = Util.buildElement("gml", Point.getName(version), "http://wrongNs/", null);
+				new Point(element);
+				fail("Allowed invalid data.");
+			}
+			catch (UnsupportedVersionException e) {
+				// Good
+			}
 		}
 	}
 
@@ -177,7 +186,7 @@ public class PointTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Point.NAME,
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Point.getName(version),
 				version.getGmlNamespace(), null);
 			Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE,
 				SRSAttributesTest.getFixture().getSrsName());
@@ -203,7 +212,7 @@ public class PointTest extends AbstractComponentTestCase {
 			String gmlNamespace = version.getGmlNamespace();
 
 			// Missing SRS Name
-			Element element = Util.buildElement(gmlPrefix, Point.NAME, gmlNamespace, null);
+			Element element = Util.buildElement(gmlPrefix, Point.getName(version), gmlNamespace, null);
 			SRSAttributes attr = new SRSAttributes(null, SRSAttributesTest.getFixture().getSrsDimension(), null, null);
 			attr.addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
@@ -211,7 +220,7 @@ public class PointTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// Empty SRS Name
-			element = Util.buildElement(gmlPrefix, Point.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Point.getName(version), gmlNamespace, null);
 			attr = new SRSAttributes("", SRSAttributesTest.getFixture().getSrsDimension(), null, null);
 			attr.addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
@@ -219,7 +228,7 @@ public class PointTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// Point SRS Name doesn't match pos SRS Name
-			element = Util.buildElement(gmlPrefix, Point.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Point.getName(version), gmlNamespace, null);
 			attr = new SRSAttributes(DIFFERENT_VALUE, SRSAttributesTest.getFixture().getSrsDimension(),
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
 			attr.addTo(element);
@@ -228,27 +237,27 @@ public class PointTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// Missing ID
-			element = Util.buildElement(gmlPrefix, Point.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Point.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			element.appendChild(getPosition().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// Empty ID
-			element = Util.buildElement(gmlPrefix, Point.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Point.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, "");
 			element.appendChild(getPosition().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// ID not NCName
-			element = Util.buildElement(gmlPrefix, Point.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Point.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, "1TEST");
 			element.appendChild(getPosition().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// Missing position
-			element = Util.buildElement(gmlPrefix, Point.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Point.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			testConstructor(WILL_FAIL, element);

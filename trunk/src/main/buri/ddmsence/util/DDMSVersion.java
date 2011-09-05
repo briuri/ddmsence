@@ -182,6 +182,25 @@ public class DDMSVersion {
 	}
 		
 	/**
+	 * Returns the DDMSVersion instance mapped to a particular GML XML namespace. If the
+	 * namespace is shared by multiple versions of DDMS, the most recent will be
+	 * returned.
+	 * 
+	 * @param namespace the GML XML namespace
+	 * @return the instance
+	 * @throws UnsupportedVersionException if the version number is not supported
+	 */
+	public static DDMSVersion getVersionForGMLNamespace(String namespace) {
+		List<DDMSVersion> versions = new ArrayList<DDMSVersion>(VERSIONS_TO_DETAILS.values());
+		Collections.reverse(versions);
+		for (DDMSVersion version : versions) {
+			if (version.getGmlNamespace().equals(namespace))
+				return (version);
+		}
+		throw new UnsupportedVersionException("for GML XML namespace " + namespace);
+	}
+	
+	/**
 	 * Returns the DDMSVersion instance mapped to a particular XML namespace. If the
 	 * namespace is shared by multiple versions of DDMS, the most recent will be
 	 * returned.
@@ -197,7 +216,7 @@ public class DDMSVersion {
 			if (version.getNamespace().equals(namespace))
 				return (version);
 		}
-		throw new UnsupportedVersionException("for XML namespace " + namespace);
+		throw new UnsupportedVersionException("for DDMS XML namespace " + namespace);
 	}
 	
 	/**

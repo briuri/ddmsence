@@ -99,9 +99,6 @@ public final class Position extends AbstractBaseComponent {
 	private SRSAttributes _cachedSrsAttributes;
 	private List<Double> _cachedCoordinates;	
 	
-	/** The element name of this component */
-	public static final String NAME = "pos";
-	
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 *  
@@ -138,8 +135,9 @@ public final class Position extends AbstractBaseComponent {
 				coordinates = Collections.emptyList();
 			_cachedSrsAttributes = (srsAttributes == null ? new SRSAttributes(null, null, null, null) : srsAttributes);
 			_cachedCoordinates = coordinates;
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME, 
-				DDMSVersion.getCurrentVersion().getGmlNamespace(), Util.getXsList(coordinates));
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.getName(version),
+				version.getGmlNamespace(), Util.getXsList(coordinates));
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);
 			setXOMElement(element, true);
@@ -182,7 +180,7 @@ public final class Position extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireQName(getXOMElement(), getNamespace(), NAME);
+		Util.requireQName(getXOMElement(), getNamespace(), Position.getName(getDDMSVersion()));
 		for (Double coordinate : getCoordinates())
 			Util.requireDDMSValue("coordinate", coordinate);
 		if (!Util.isBounded(getCoordinates().size(), 2, 3))
@@ -261,6 +259,17 @@ public final class Position extends AbstractBaseComponent {
 		result = 7 * result + getSRSAttributes().hashCode();
 		result = 7 * result + getCoordinatesAsXsList().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("pos");
 	}
 	
 	/**

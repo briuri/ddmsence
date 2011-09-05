@@ -25,6 +25,7 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.UnsupportedVersionException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -223,17 +224,25 @@ public class PolygonTest extends AbstractComponentTestCase {
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
-	public void testNameAndNamespace() {
+	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(Polygon.NAME, component.getName());
+			assertEquals(Polygon.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("gml.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Polygon.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Polygon.getName(version), component.getQualifiedName());
 
 			// Wrong name/namespace
-			Element element = Util.buildDDMSElement("wrongName", null);
+			Element element = Util.buildElement("gml", "wrongName", version.getGmlNamespace(), null);
 			testConstructor(WILL_FAIL, element);
+			try {
+				element = Util.buildElement("gml", Polygon.getName(version), "http://wrongNs/", null);
+				new Polygon(element);
+				fail("Allowed invalid data.");
+			}
+			catch (UnsupportedVersionException e) {
+				// Good
+			}
 		}
 	}
 
@@ -247,7 +256,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
+			Element element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE,
 				SRSAttributesTest.getFixture().getSrsName());
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
@@ -255,12 +264,12 @@ public class PolygonTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, element);
 
 			// First position matches last position but has extra whitespace.
-			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			List<Position> newPositions = new ArrayList<Position>(getPositions());
 			newPositions.add(getPositions().get(1));
-			Element posElement = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, "32.1         40.1");
+			Element posElement = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, "32.1         40.1");
 			SRSAttributesTest.getFixture().addTo(posElement);
 			Position positionWhitespace = new Position(posElement);
 			newPositions.add(positionWhitespace);
@@ -283,7 +292,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
 			String gmlNamespace = version.getGmlNamespace();
 			// Missing SRS Name
-			Element element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
+			Element element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			SRSAttributes attr = new SRSAttributes(null, SRSAttributesTest.getFixture().getSrsDimension(), null, null);
 			attr.addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
@@ -291,7 +300,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// Empty SRS Name
-			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			attr = new SRSAttributes("", SRSAttributesTest.getFixture().getSrsDimension(), null, null);
 			attr.addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
@@ -299,7 +308,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// Polygon SRS Name doesn't match pos SRS Name
-			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			attr = new SRSAttributes(DIFFERENT_VALUE, SRSAttributesTest.getFixture().getSrsDimension(),
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
 			attr.addTo(element);
@@ -308,34 +317,34 @@ public class PolygonTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// Missing ID
-			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			element.appendChild(wrapPositions(getPositions()));
 			testConstructor(WILL_FAIL, element);
 
 			// Empty ID
-			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, "");
 			element.appendChild(wrapPositions(getPositions()));
 			testConstructor(WILL_FAIL, element);
 
 			// ID not NCName
-			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, "1TEST");
 			element.appendChild(wrapPositions(getPositions()));
 			testConstructor(WILL_FAIL, element);
 
 			// Missing Positions
-			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			element.appendChild(wrapPositions(new ArrayList<Position>()));
 			testConstructor(WILL_FAIL, element);
 
 			// First position doesn't match last position.
-			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			List<Position> newPositions = new ArrayList<Position>(getPositions());
@@ -344,7 +353,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// Not enough positions
-			element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
+			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			newPositions = new ArrayList<Position>();

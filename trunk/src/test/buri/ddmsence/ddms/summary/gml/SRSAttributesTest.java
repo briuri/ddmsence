@@ -134,14 +134,14 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// All fields
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME,
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.getName(version),
 				version.getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
 				Util.getXsList(TEST_UOM_LABELS));
 			testConstructor(WILL_SUCCEED, element);
 
 			// No optional fields
-			element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME,
+			element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.getName(version),
 				version.getGmlNamespace(), null);
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -160,28 +160,28 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// srsName not a URI
-			Element element = Util.buildDDMSElement(Position.NAME, null);
+			Element element = Util.buildDDMSElement(Position.getName(version), null);
 			addAttributes(element, INVALID_URI, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
 				Util.getXsList(TEST_UOM_LABELS));
 			testConstructor(WILL_FAIL, element);
 
 			// axisLabels without srsName
-			element = Util.buildDDMSElement(Position.NAME, null);
+			element = Util.buildDDMSElement(Position.getName(version), null);
 			addAttributes(element, null, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
 				Util.getXsList(TEST_UOM_LABELS));
 			testConstructor(WILL_FAIL, element);
 
 			// uomLabels without axisLabels
-			element = Util.buildDDMSElement(Position.NAME, null);
+			element = Util.buildDDMSElement(Position.getName(version), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, null, Util.getXsList(TEST_UOM_LABELS));
 			testConstructor(WILL_FAIL, element);
 
 			// Non-NCNames in axisLabels
 			List<String> newLabels = new ArrayList<String>(TEST_AXIS_LABELS);
 			newLabels.add("1TEST");
-			element = Util.buildDDMSElement(Position.NAME, null);
+			element = Util.buildDDMSElement(Position.getName(version), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(newLabels),
 				Util.getXsList(TEST_UOM_LABELS));
 			testConstructor(WILL_FAIL, element);
@@ -189,13 +189,13 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			// Non-NCNames in uomLabels
 			newLabels = new ArrayList<String>(TEST_UOM_LABELS);
 			newLabels.add("TEST:TEST");
-			element = Util.buildDDMSElement(Position.NAME, null);
+			element = Util.buildDDMSElement(Position.getName(version), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
 				Util.getXsList(newLabels));
 			testConstructor(WILL_FAIL, element);
 
 			// Dimension is a positive integer
-			element = Util.buildDDMSElement(Position.NAME, null);
+			element = Util.buildDDMSElement(Position.getName(version), null);
 			addAttributes(element, TEST_SRS_NAME, new Integer(-1), null, Util.getXsList(TEST_UOM_LABELS));
 			testConstructor(WILL_FAIL, element);
 		}
@@ -232,7 +232,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// No warnings
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME,
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.getName(version),
 				version.getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
 				Util.getXsList(TEST_UOM_LABELS));
@@ -244,7 +244,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME,
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.getName(version),
 				version.getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
 				Util.getXsList(TEST_UOM_LABELS));
@@ -260,7 +260,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME,
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.getName(version),
 				version.getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
 				Util.getXsList(TEST_UOM_LABELS));
@@ -286,7 +286,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.NAME,
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.getName(version),
 				version.getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
 				Util.getXsList(TEST_UOM_LABELS));
