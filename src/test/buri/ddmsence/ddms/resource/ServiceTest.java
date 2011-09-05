@@ -96,9 +96,11 @@ public class ServiceTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer html = new StringBuffer();
 		String parentType = Creator.getName(DDMSVersion.getCurrentVersion());
-		html.append("<meta name=\"").append(parentType).append(".entityType\" content=\"Service\" />\n");
+		html.append("<meta name=\"").append(parentType).append(".entityType\" content=\"")
+			.append(Service.getName(version)).append("\" />\n");
 		for (String name : TEST_NAMES)
 			html.append("<meta name=\"").append(parentType).append(".name\" content=\"").append(name).append("\" />\n");
 		for (String phone : TEST_PHONES)
@@ -114,8 +116,10 @@ public class ServiceTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(Creator.getName(DDMSVersion.getCurrentVersion())).append(" EntityType: Service\n");
+		text.append(Creator.getName(DDMSVersion.getCurrentVersion())).append(" EntityType: ")
+			.append(Service.getName(version)).append("\n");
 		for (String name : TEST_NAMES)
 			text.append("name: ").append(name).append("\n");
 		for (String phone : TEST_PHONES)
@@ -131,8 +135,9 @@ public class ServiceTest extends AbstractComponentTestCase {
 	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:Service xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+		xml.append("<ddms:").append(Service.getName(version)).append(" xmlns:ddms=\"").append(version.getNamespace())
 			.append("\">\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
@@ -140,7 +145,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 			xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
 		for (String email : TEST_EMAILS)
 			xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
-		xml.append("</ddms:Service>");
+		xml.append("</ddms:").append(Service.getName(version)).append(">");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 

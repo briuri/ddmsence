@@ -295,7 +295,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"publisher.entityType\" content=\"Person\" />\n");
 		html.append("<meta name=\"publisher.name\" content=\"Brian\" />\n");
 		html.append("<meta name=\"publisher.surname\" content=\"Uri\" />\n");
-		html.append("<meta name=\"contributor.entityType\" content=\"Service\" />\n");
+		html.append("<meta name=\"contributor.entityType\" content=\"").append(Service.getName(version)).append("\" />\n");
 		html.append("<meta name=\"contributor.name\" content=\"https://metadata.dod.mil/ebxmlquery/soap\" />\n");
 		if (version.isAtLeast("3.0")) {
 			html.append("<meta name=\"pointOfContact.entityType\" content=\"").append(Unknown.getName(version)).append("\" />\n");
@@ -379,7 +379,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		text.append("publisher EntityType: Person\n");
 		text.append("name: Brian\n");
 		text.append("surname: Uri\n");
-		text.append("contributor EntityType: Service\n");
+		text.append("contributor EntityType: ").append(Service.getName(version)).append("\n");
 		text.append("name: https://metadata.dod.mil/ebxmlquery/soap\n");
 		if (version.isAtLeast("3.0")) {
 			text.append("pointOfContact EntityType: ").append(Unknown.getName(version)).append("\n");
@@ -461,9 +461,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("\t\t</ddms:Person>\t\n");
 		xml.append("\t</ddms:publisher>\n");
 		xml.append("\t<ddms:contributor>\n");
-		xml.append("\t\t<ddms:Service>\n");
+		xml.append("\t\t<ddms:").append(Service.getName(version)).append(">\n");
 		xml.append("\t\t\t<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>\n");
-		xml.append("\t\t</ddms:Service>\t\n");
+		xml.append("\t\t</ddms:").append(Service.getName(version)).append(">\t\n");
 		xml.append("\t</ddms:contributor>\n");
 		xml.append("\t<ddms:pointOfContact>\n");
 		if (version.isAtLeast("3.0")) {

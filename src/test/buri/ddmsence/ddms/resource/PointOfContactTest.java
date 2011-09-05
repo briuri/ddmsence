@@ -147,19 +147,19 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:pointOfContact xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+		xml.append("<ddms:pointOfContact xmlns:ddms=\"").append(version.getNamespace())
 			.append("\" ");
-		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\"");
+		xml.append("xmlns:ICISM=\"").append(version.getIsmNamespace()).append("\"");
 		if (isDDMS40OrGreater()) {
 			xml.append(" ddms:POCType=\"ICD-710\"");
 		}
 		xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t");
-		if ("2.0".equals(DDMSVersion.getCurrentVersion().getVersion())) {
-			xml.append("<ddms:Service>\n");
+		if ("2.0".equals(version.getVersion())) {
+			xml.append("<ddms:").append(Service.getName(version)).append(">\n");
 			xml.append("\t\t<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>\n");
 			xml.append("\t\t<ddms:phone>703-882-1000</ddms:phone>\n");
 			xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
-			xml.append("\t</ddms:Service>");
+			xml.append("\t</ddms:").append(Service.getName(version)).append(">");
 		} else {
 			xml.append("<ddms:").append(Unknown.getName(version)).append(">\n");
 			xml.append("\t\t<ddms:name>UnknownEntity</ddms:name>\n");
