@@ -37,7 +37,7 @@ import buri.ddmsence.util.Util;
 public class CreatorTest extends AbstractComponentTestCase {
 
 	private static final String TEST_POC_TYPE = "ICD-710";
-	
+
 	/**
 	 * Constructor
 	 */
@@ -71,7 +71,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 	private String getPOCTypeFixture() {
 		return (isDDMS40OrGreater() ? TEST_POC_TYPE : "");
 	}
-	
+
 	/**
 	 * Helper method to create a fixture organization to act as an entity
 	 */
@@ -110,7 +110,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
 		String creatorName = Creator.getName(DDMSVersion.getCurrentVersion());
-		html.append(getEntityFixture().toHTML());		
+		html.append(getEntityFixture().toHTML());
 		if (isDDMS40OrGreater()) {
 			html.append("<meta name=\"").append(creatorName).append(".POCType\" content=\"ICD-710\" />\n");
 		}
@@ -165,7 +165,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 			Creator component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Creator.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Creator.getName(version), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Creator.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -234,8 +235,10 @@ public class CreatorTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Creator elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Creator dataComponent = testConstructor(WILL_SUCCEED, new Service(Creator.getName(version), Util.getXsListAsList("DISA PEO-GES"),
-				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
+			Creator dataComponent = testConstructor(
+				WILL_SUCCEED,
+				new Service(Creator.getName(version), Util.getXsListAsList("DISA PEO-GES"), Util
+					.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -255,7 +258,6 @@ public class CreatorTest extends AbstractComponentTestCase {
 			Creator component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			
 			component = testConstructor(WILL_SUCCEED, getEntityFixture(), getPOCTypeFixture());
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		}
@@ -290,31 +292,30 @@ public class CreatorTest extends AbstractComponentTestCase {
 			assertEquals(SecurityAttributesTest.getFixture(false), component.getSecurityAttributes());
 		}
 	}
-	
+
 	public void testPOCTypeWrongVersion() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
 			new Creator(getEntityFixture(), TEST_POC_TYPE, SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Creator component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building
 			Creator.Builder builder = new Creator.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new Creator.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new Creator.Builder();
 			builder.setEntityType(Person.getName(version));
@@ -322,8 +323,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

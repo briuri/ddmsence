@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.ddms;
 
 import junit.framework.TestCase;
@@ -33,36 +33,36 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public class BaseComponentTest extends TestCase {
-	
+
 	/**
 	 * Resets the in-use version of DDMS.
 	 */
 	protected void setUp() throws Exception {
 		DDMSVersion.clearCurrentVersion();
 	}
-	
+
 	/**
 	 * Resets the in-use version of DDMS.
 	 */
 	protected void tearDown() throws Exception {
 		DDMSVersion.clearCurrentVersion();
 	}
-	
+
 	public void testSelfEquality() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		assertEquals(rights, rights);
 	}
-	
+
 	public void testToString() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		assertEquals(rights.toString(), rights.toXML());
 	}
-	
+
 	public void testVersion() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		assertEquals(DDMSVersion.getCurrentVersion().getNamespace(), rights.getNamespace());
 	}
-	
+
 	public void testCustomPrefix() throws InvalidDDMSException {
 		String namespace = DDMSVersion.getCurrentVersion().getNamespace();
 		Element element = Util.buildElement("customPrefix", Language.getName(DDMSVersion.getCurrentVersion()),

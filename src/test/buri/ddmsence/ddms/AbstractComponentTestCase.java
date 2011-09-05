@@ -38,9 +38,9 @@ import buri.ddmsence.util.PropertyReader;
 public abstract class AbstractComponentTestCase extends TestCase {
 
 	private String _type;
-	
+
 	private static Map<String, Element> _elementMap = new HashMap<String, Element>();
-	
+
 	protected static final String TEST_ID = "IDValue";
 
 	protected static final boolean WILL_SUCCEED = false;
@@ -77,7 +77,8 @@ public abstract class AbstractComponentTestCase extends TestCase {
 				if (getValidElement(versionString) == null) {
 					if (reader == null)
 						reader = new DDMSReader();
-					File file = new File(PropertyReader.getProperty("test.unit.data") + versionString, validDocumentFile);
+					File file = new File(PropertyReader.getProperty("test.unit.data") + versionString,
+						validDocumentFile);
 					if (file.exists()) {
 						Element element = reader.getElement(file);
 						synchronized (_elementMap) {
@@ -138,7 +139,7 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	public Element getValidElement(String version) {
 		return (_elementMap.get(getType() + ":" + version));
 	}
-	
+
 	/**
 	 * Accessor for the local identifier for the type of component being tested
 	 */
@@ -152,7 +153,7 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	protected boolean isDDMS31OrGreater() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("3.1"));
 	}
-	
+
 	/**
 	 * Convenience method to check that DDMS Version is 4.0 or greater
 	 */

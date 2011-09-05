@@ -250,12 +250,12 @@ public class SecurityTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
-	
+
 	public void test20Usage() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		String icPrefix = PropertyReader.getProperty("ism.prefix");
 		String icNamespace = version.getIsmNamespace();
-		
+
 		Element element = Util.buildDDMSElement("security", null);
 		Util.addAttribute(element, icPrefix, "classification", icNamespace, "U");
 		Util.addAttribute(element, icPrefix, "ownerProducer", icNamespace, "USA");
@@ -267,28 +267,27 @@ public class SecurityTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Security component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building
 			Security.Builder builder = new Security.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new Security.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new Security.Builder();
 			builder.getSecurityAttributes().setClassification("SuperSecret");
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

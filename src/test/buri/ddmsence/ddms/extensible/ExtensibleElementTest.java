@@ -178,33 +178,32 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
-	
+
 	public void testBuilder() throws SAXException, IOException, InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
-			
+
 			// Equality after Building
 			ExtensibleElement.Builder builder = new ExtensibleElement.Builder(component);
-			assertEquals(builder.commit(), component);			
+			assertEquals(builder.commit(), component);
 			builder = new ExtensibleElement.Builder();
 			builder.setXml(getElementFixture().toXML());
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new ExtensibleElement.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new ExtensibleElement.Builder();
 			builder.setXml("InvalidXml");
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
-			}			
+			}
 			builder.setXml(getExpectedXMLOutput());
 			builder.commit();
 		}

@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.util;
 
 import java.io.ByteArrayInputStream;
@@ -42,7 +42,7 @@ import buri.ddmsence.ddms.resource.Rights;
  * @since 1.9.9
  */
 public class LazyListTest extends TestCase {
-	
+
 	public void testSerializableInterface() throws Exception {
 		LazyList list = new LazyList(Dates.Builder.class);
 		list.add(new Dates.Builder());
@@ -61,19 +61,18 @@ public class LazyListTest extends TestCase {
 		assertEquals(((Dates.Builder) (list.get(0))).getCreated(),
 			((Dates.Builder) (unserializedList.get(0))).getCreated());
 	}
-	
+
 	public void testUnmodifiableList() {
 		List<String> list = new ArrayList<String>();
 		list.add("Test");
 		LazyList lazyList = new LazyList(Collections.unmodifiableList(list), String.class);
 		try {
 			lazyList.set(0, "Test2");
-		}
-		catch (UnsupportedOperationException e) {
+		} catch (UnsupportedOperationException e) {
 			fail("Should have unwrapped the unmodifiable list.");
 		}
 	}
-	
+
 	public void testObjectMethods() {
 		List<String> list = new ArrayList<String>();
 		list.add("Test");
@@ -83,10 +82,10 @@ public class LazyListTest extends TestCase {
 		assertEquals(lazyList.hashCode(), list.hashCode());
 		assertEquals(lazyList.toString(), list.toString());
 	}
-	
+
 	public void testListInterface() {
 		// Because a Java ArrayList underlies this Object, I'm not too worried that these tests are necessary.
-		
+
 		LazyList list = new LazyList(Dates.Builder.class);
 		assertTrue(list.isEmpty());
 		Dates.Builder datesBuilder = new Dates.Builder();
@@ -111,23 +110,22 @@ public class LazyListTest extends TestCase {
 		assertEquals(0, list.indexOf(datesBuilder));
 		list.add(datesBuilder);
 		assertEquals(1, list.lastIndexOf(datesBuilder));
-		
-		
+
 		IBuilder[] array = new IBuilder[0];
 		Object[] returnedArray = list.toArray();
 		assertEquals(2, returnedArray.length);
 		IBuilder[] returnedBuilderArray = (IBuilder[]) list.toArray(array);
 		assertEquals(2, returnedBuilderArray.length);
-		
+
 		assertNotNull(list.listIterator());
 		assertNotNull(list.listIterator(1));
-		
+
 		list.set(1, rightsBuilder);
 		assertEquals(rightsBuilder, list.get(1));
 		list.add(1, datesBuilder);
 		assertEquals(datesBuilder, list.get(1));
 		assertEquals(rightsBuilder, list.get(2));
-		
+
 		List newList = new ArrayList();
 		newList.add(rightsBuilder);
 		list.removeAll(newList);
@@ -135,38 +133,38 @@ public class LazyListTest extends TestCase {
 		assertEquals(2, list.size());
 		list.add(rightsBuilder);
 		list.retainAll(newList);
-		assertEquals(1, list.size());		
+		assertEquals(1, list.size());
 		assertTrue(list.containsAll(newList));
-		
+
 		list.addAll(newList);
 		assertEquals(2, list.size());
 		list.add(datesBuilder);
 		list.addAll(2, newList);
 		assertEquals(rightsBuilder, list.get(2));
 		assertEquals(datesBuilder, list.get(3));
-		
+
 		list.add(datesBuilder);
 		list.clear();
 		assertTrue(list.isEmpty());
 	}
-	
+
 	public void testSublist() {
 		LazyList list = new LazyList(Dates.Builder.class);
 		Rights.Builder rightsBuilder = new Rights.Builder();
 		Dates.Builder datesBuilder = new Dates.Builder();
-		
+
 		list.add(rightsBuilder);
 		list.add(rightsBuilder);
 		list.add(rightsBuilder);
 		list.add(datesBuilder);
-		
+
 		List subList = list.subList(0, 1);
 		assertFalse(subList.contains(datesBuilder));
 		assertEquals(1, subList.size());
-		
+
 		assertNotNull(subList.get(10));
 	}
-	
+
 	public void testGet() {
 		LazyList list = new LazyList(Dates.Builder.class);
 		assertTrue(list.isEmpty());
@@ -176,33 +174,30 @@ public class LazyListTest extends TestCase {
 		Dates.Builder builder = (Dates.Builder) list.get(3);
 		assertNotNull(builder);
 		assertEquals(4, list.size());
-	}		
-	
+	}
+
 	public void testNullList() {
 		try {
 			new LazyList(null, String.class);
-		}
-		catch (NullPointerException e) {
+		} catch (NullPointerException e) {
 			fail("Should not have thrown NPE.");
 		}
 	}
-	
+
 	public void testListGetExceptions() {
 		LazyList list = new LazyList(null, AbstractBaseComponent.class);
 		try {
 			list.get(0);
 			fail("Allowed invalid class.");
-		}
-		catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			// Good
 		}
-		
+
 		list = new LazyList(null, IDDMSComponent.class);
 		try {
 			list.get(0);
 			fail("Allowed invalid class.");
-		}
-		catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			// Good
 		}
 	}

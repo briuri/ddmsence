@@ -52,7 +52,7 @@ public class ProducerEntityTest extends TestCase {
 			// Good
 		}
 	}
-	
+
 	public void testSameVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		Organization org = new Organization(Contributor.getName(DDMSVersion.getCurrentVersion()),
@@ -68,7 +68,7 @@ public class ProducerEntityTest extends TestCase {
 
 	public void testSharedWarnings() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		
+
 		// Empty phone
 		Element entityElement = Util.buildDDMSElement(Organization.getName(version), null);
 		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
@@ -76,8 +76,8 @@ public class ProducerEntityTest extends TestCase {
 		Organization component = new Organization(Contributor.getName(version), entityElement);
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-		assertEquals("A ddms:phone element was found with no value.", 
-			component.getValidationWarnings().get(0).getText());
+		assertEquals("A ddms:phone element was found with no value.", component.getValidationWarnings().get(0)
+			.getText());
 
 		// Empty email
 		entityElement = Util.buildDDMSElement(Organization.getName(version), null);
@@ -86,21 +86,21 @@ public class ProducerEntityTest extends TestCase {
 		component = new Organization(Contributor.getName(version), entityElement);
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-		assertEquals("A ddms:email element was found with no value.", 
-			component.getValidationWarnings().get(0).getText());
+		assertEquals("A ddms:email element was found with no value.", component.getValidationWarnings().get(0)
+			.getText());
 	}
-	
+
 	public void testExtensibleSuccess() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
 			List<String> names = new ArrayList<String>();
 			names.add("DISA");
 			new Organization(Contributor.getName(version), names, null, null, attr);
 		}
 	}
-	
+
 	public void testExtensibleFailure() throws InvalidDDMSException {
 		// No failure cases to test right now.
 		// ICISM attributes are at creator/contributor level, so they never clash with extensibles on the entity level.

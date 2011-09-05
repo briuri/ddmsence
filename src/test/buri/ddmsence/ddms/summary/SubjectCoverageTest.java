@@ -48,7 +48,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 */
 	public SubjectCoverageTest() throws InvalidDDMSException {
 		super("subjectCoverage.xml");
-		
+
 	}
 
 	private static List<Keyword> getKeywords() throws InvalidDDMSException {
@@ -57,13 +57,13 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		keywords.add(new Keyword("Uri", null));
 		return (keywords);
 	}
-	
+
 	private static List<Category> getCategories() throws InvalidDDMSException {
 		List<Category> categories = new ArrayList<Category>();
 		categories.add(new Category("urn:buri:ddmsence:categories", "DDMS", "DDMS", null));
 		return (categories);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
@@ -94,8 +94,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	private SubjectCoverage testConstructor(boolean expectFailure, List<Keyword> keywords, List<Category> categories) {
 		SubjectCoverage component = null;
 		try {
-			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) ? null : SecurityAttributesTest
-				.getFixture(false);
+			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) ? null
+				: SecurityAttributesTest.getFixture(false);
 			component = new SubjectCoverage(keywords, categories, attr);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
@@ -144,18 +144,18 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subjectCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
-			.append("\"");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			xml.append(" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace())
+		xml.append("<ddms:subjectCoverage xmlns:ddms=\"").append(version.getNamespace()).append("\"");
+		if (version.isAtLeast("3.0")) {
+			xml.append(" xmlns:ICISM=\"").append(version.getIsmNamespace())
 				.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n\t<ddms:Subject>\n");
 		xml.append("\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
 		xml.append("\t\t<ddms:keyword ddms:value=\"Uri\" />\n");
-		xml.append("\t\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ")
-			.append("ddms:label=\"DDMS\" />\n");
+		xml.append("\t\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ").append(
+			"ddms:label=\"DDMS\" />\n");
 		xml.append("\t</ddms:Subject>\n</ddms:subjectCoverage>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
@@ -164,9 +164,10 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), component.getName());
+			assertEquals(SubjectCoverage.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + SubjectCoverage.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -183,7 +184,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			// No optional fields
 			Element subjectElement = Util.buildDDMSElement("Subject", null);
 			subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
-			Element element = Util.buildDDMSElement(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
 			element.appendChild(subjectElement);
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -191,7 +192,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
 			testConstructor(WILL_SUCCEED, getKeywords(), getCategories());
 
@@ -205,7 +206,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// No keywords or categories
 			Element subjectElement = Util.buildDDMSElement("Subject", null);
-			Element element = Util.buildDDMSElement(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
 			element.appendChild(subjectElement);
 			testConstructor(WILL_FAIL, element);
 		}
@@ -213,7 +214,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// No keywords or categories
 			testConstructor(WILL_FAIL, null, null);
 		}
@@ -230,7 +231,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			Element subjectElement = Util.buildDDMSElement("Subject", null);
 			subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
 			subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
-			Element element = Util.buildDDMSElement(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
 			element.appendChild(subjectElement);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
@@ -242,20 +243,20 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			subjectElement = Util.buildDDMSElement("Subject", null);
 			subjectElement.appendChild(getCategories().get(0).getXOMElementCopy());
 			subjectElement.appendChild(getCategories().get(0).getXOMElementCopy());
-			element = Util.buildDDMSElement(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), null);
+			element = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
 			element.appendChild(subjectElement);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("1 or more categories have the same value.", 
-				component.getValidationWarnings().get(0).getText());
+			assertEquals("1 or more categories have the same value.", component.getValidationWarnings().get(0)
+				.getText());
 			assertEquals("/ddms:subjectCoverage/ddms:Subject", component.getValidationWarnings().get(0).getLocator());
 		}
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			SubjectCoverage dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), getCategories());
 			assertEquals(elementComponent, dataComponent);
@@ -265,7 +266,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			SubjectCoverage dataComponent = testConstructor(WILL_SUCCEED, null, getCategories());
 			assertFalse(elementComponent.equals(dataComponent));
@@ -277,7 +278,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -286,7 +287,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
@@ -297,7 +298,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
@@ -308,7 +309,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
@@ -319,7 +320,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	public void testCategoryReuse() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			List<Category> categories = getCategories();
 			testConstructor(WILL_SUCCEED, null, categories);
 			testConstructor(WILL_SUCCEED, null, categories);
@@ -328,7 +329,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	public void testKeywordReuse() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			List<Keyword> keywords = getKeywords();
 			testConstructor(WILL_SUCCEED, keywords, null);
 			testConstructor(WILL_SUCCEED, keywords, null);
@@ -338,16 +339,15 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? null 
-				: SecurityAttributesTest.getFixture(false));
+			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture(false));
 			SubjectCoverage component = new SubjectCoverage(getKeywords(), getCategories(), attr);
-			if (!DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
+			if (!version.isAtLeast("3.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());
 			else
 				assertEquals(attr, component.getSecurityAttributes());
 		}
 	}
-	
+
 	public void test20Usage() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
@@ -357,7 +357,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
-	
+
 	public void testWrongVersions() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		List<Keyword> keywords = getKeywords();
@@ -368,7 +368,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		} catch (InvalidDDMSException e) {
 			// Good
 		}
-		
+
 		DDMSVersion.setCurrentVersion("2.0");
 		List<Category> categories = getCategories();
 		DDMSVersion.setCurrentVersion("3.0");
@@ -379,21 +379,20 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building
 			SubjectCoverage.Builder builder = new SubjectCoverage.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new SubjectCoverage.Builder();
 			assertNull(builder.commit());
-			
-			
+
 			// Skip empty Keywords
 			builder = new SubjectCoverage.Builder();
 			Keyword.Builder emptyBuilder = new Keyword.Builder();
@@ -413,10 +412,10 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			assertEquals(1, builder.commit().getCategories().size());
 		}
 	}
-	
+
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage.Builder builder = new SubjectCoverage.Builder();
 			assertNotNull(builder.getKeywords().get(1));
 			assertNotNull(builder.getCategories().get(1));

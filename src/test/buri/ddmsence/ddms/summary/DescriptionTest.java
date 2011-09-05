@@ -122,9 +122,10 @@ public class DescriptionTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Description component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(Description.getName(DDMSVersion.getCurrentVersion()), component.getName());
+			assertEquals(Description.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Description.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Description.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -139,7 +140,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Description.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Description.getName(version), null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -147,7 +148,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_VALUE);
 
@@ -158,7 +159,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// Bad security attributes
 			try {
 				new Description(TEST_VALUE, null);
@@ -177,7 +178,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// No value
-			Element element = Util.buildDDMSElement(Description.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Description.getName(version), null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
@@ -190,7 +191,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 
 	public void testConstructorEquality() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Description elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Description dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
@@ -200,7 +201,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Description elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Description dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -209,7 +210,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Description elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -218,7 +219,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 
 	public void testHTMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Description component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
@@ -229,7 +230,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 
 	public void testTextOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Description component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
@@ -240,7 +241,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 
 	public void testXMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Description component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
@@ -248,28 +249,27 @@ public class DescriptionTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Description component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building
 			Description.Builder builder = new Description.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new Description.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new Description.Builder();
 			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

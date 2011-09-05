@@ -81,8 +81,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 */
-	private Service testConstructor(boolean expectFailure, List<String> names, List<String> phones, 
-		List<String> emails) {
+	private Service testConstructor(boolean expectFailure, List<String> names, List<String> phones, List<String> emails) {
 		Service component = null;
 		try {
 			component = new Service(Creator.getName(DDMSVersion.getCurrentVersion()), names, phones, emails);
@@ -101,14 +100,13 @@ public class ServiceTest extends AbstractComponentTestCase {
 		String parentType = Creator.getName(DDMSVersion.getCurrentVersion());
 		html.append("<meta name=\"").append(parentType).append(".entityType\" content=\"Service\" />\n");
 		for (String name : TEST_NAMES)
-			html.append("<meta name=\"").append(parentType).append(".name\" content=\"").append(name)
-			.append("\" />\n");
+			html.append("<meta name=\"").append(parentType).append(".name\" content=\"").append(name).append("\" />\n");
 		for (String phone : TEST_PHONES)
 			html.append("<meta name=\"").append(parentType).append(".phone\" content=\"").append(phone)
-			.append("\" />\n");
+				.append("\" />\n");
 		for (String email : TEST_EMAILS)
 			html.append("<meta name=\"").append(parentType).append(".email\" content=\"").append(email)
-			.append("\" />\n");
+				.append("\" />\n");
 		return (html.toString());
 	}
 
@@ -134,8 +132,8 @@ public class ServiceTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:Service xmlns:ddms=\"").append(
-			DDMSVersion.getCurrentVersion().getNamespace()).append("\">\n");
+		xml.append("<ddms:Service xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+			.append("\">\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
 		for (String phone : TEST_PHONES)
@@ -150,9 +148,10 @@ public class ServiceTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Service component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(Service.getName(DDMSVersion.getCurrentVersion()), component.getName());
+			assertEquals(Service.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Service.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Service.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -167,7 +166,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Service.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Service.getName(version), null);
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -175,7 +174,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
 
@@ -188,11 +187,11 @@ public class ServiceTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// Missing name
-			Element element = Util.buildDDMSElement(Service.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(Service.getName(version), null);
 			testConstructor(WILL_FAIL, element);
 
 			// Empty name
-			element = Util.buildDDMSElement(Service.getName(DDMSVersion.getCurrentVersion()), null);
+			element = Util.buildDDMSElement(Service.getName(version), null);
 			element.appendChild(Util.buildDDMSElement("name", ""));
 			testConstructor(WILL_FAIL, element);
 		}
@@ -200,7 +199,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// Missing name		
 			testConstructor(WILL_FAIL, null, TEST_PHONES, TEST_EMAILS);
 
@@ -213,7 +212,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 
 	public void testWarnings() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			// No warnings
 			Service component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
@@ -222,7 +221,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 
 	public void testConstructorEquality() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Service elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Service dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
 			assertEquals(elementComponent, dataComponent);
@@ -232,7 +231,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Service elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Service dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, null, TEST_EMAILS);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -244,7 +243,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Service elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -253,7 +252,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 
 	public void testHTMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Service component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
@@ -264,7 +263,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 
 	public void testTextOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Service component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
@@ -275,7 +274,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 
 	public void testXMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Service component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
@@ -283,41 +282,40 @@ public class ServiceTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Service component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building
 			Service.Builder builder = new Service.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new Service.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new Service.Builder();
-			builder.setParentType(Creator.getName(DDMSVersion.getCurrentVersion()));
+			builder.setParentType(Creator.getName(version));
 			builder.setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
 	}
-	
+
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Service.Builder builder = new Service.Builder();
 			assertNotNull(builder.getNames().get(1));
 			assertNotNull(builder.getPhones().get(1));
-			assertNotNull(builder.getEmails().get(1));			
+			assertNotNull(builder.getEmails().get(1));
 		}
 	}
 }

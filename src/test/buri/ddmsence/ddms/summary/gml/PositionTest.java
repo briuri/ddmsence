@@ -116,14 +116,13 @@ public class PositionTest extends AbstractComponentTestCase {
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
 		text.append("boundingGeometry position: ").append(TEST_XS_LIST).append("\n");
-		text.append("boundingGeometry position srsName: ").append(SRSAttributesTest.TEST_SRS_NAME)
-			.append("\n");
+		text.append("boundingGeometry position srsName: ").append(SRSAttributesTest.TEST_SRS_NAME).append("\n");
 		text.append("boundingGeometry position srsDimension: ").append(SRSAttributesTest.TEST_SRS_DIMENSION)
 			.append("\n");
 		text.append("boundingGeometry position axisLabels: ")
 			.append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\n");
-		text.append("boundingGeometry position uomLabels: ")
-			.append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\n");
+		text.append("boundingGeometry position uomLabels: ").append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS))
+			.append("\n");
 		return (text.toString());
 	}
 
@@ -162,14 +161,14 @@ public class PositionTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
 			String gmlNamespace = version.getGmlNamespace();
-			
+
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
 			Element element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST);
 			testConstructor(WILL_SUCCEED, element);
-			
+
 			// Empty coordinate
 			element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, "25.0    26.0");
 			testConstructor(WILL_SUCCEED, element);
@@ -256,22 +255,26 @@ public class PositionTest extends AbstractComponentTestCase {
 	}
 
 	public void testEqualityWhitespace() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {	
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
 			String gmlNamespace = version.getGmlNamespace();
 			Position position = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST));
-			Position positionEqual = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST));
-			Position positionEqualWhitespace = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST + "   "));
-			Position positionUnequal2d = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, "32.1 40.0"));
-			Position positionUnequal3d = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST + " 40.0"));
+			Position positionEqual = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace,
+				TEST_XS_LIST));
+			Position positionEqualWhitespace = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace,
+				TEST_XS_LIST + "   "));
+			Position positionUnequal2d = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace,
+				"32.1 40.0"));
+			Position positionUnequal3d = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace,
+				TEST_XS_LIST + " 40.0"));
 			assertEquals(position, positionEqual);
 			assertEquals(position, positionEqualWhitespace);
 			assertFalse(position.equals(positionUnequal2d));
 			assertFalse(position.equals(positionUnequal3d));
 		}
 	}
-	
+
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
@@ -327,31 +330,30 @@ public class PositionTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Position component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// Equality after Building
 			Position.Builder builder = new Position.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new Position.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new Position.Builder();
 			builder.getCoordinates().get(0).setValue(Double.valueOf(0));
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
-			
+
 			// Skip empty Coordinates
 			builder = new Position.Builder();
 			builder.setSrsAttributes(new SRSAttributes.Builder(SRSAttributesTest.getFixture()));
@@ -361,7 +363,7 @@ public class PositionTest extends AbstractComponentTestCase {
 			assertEquals(2, builder.commit().getCoordinates().size());
 		}
 	}
-	
+
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
@@ -369,7 +371,7 @@ public class PositionTest extends AbstractComponentTestCase {
 			assertNotNull(builder.getCoordinates().get(1));
 		}
 	}
-	
+
 	public void testGetStringAsDouble() {
 		assertNull(Position.getStringAsDouble(null));
 		assertEquals(new Double(2.1), Position.getStringAsDouble("2.1"));
