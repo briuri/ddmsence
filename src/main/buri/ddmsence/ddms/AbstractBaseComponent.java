@@ -25,6 +25,9 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.ddms.summary.gml.Point;
+import buri.ddmsence.ddms.summary.gml.Polygon;
+import buri.ddmsence.ddms.summary.gml.Position;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -245,7 +248,9 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @throws UnsupportedVersionException if the XML namespace is not one of the supported DDMS namespaces.
 	 */
 	protected DDMSVersion getDDMSVersion() {
-		return (DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI()));	
+		boolean isGML = (this instanceof Point || this instanceof Polygon || this instanceof Position);
+		String namespace = getXOMElement().getNamespaceURI();		
+		return (isGML ? DDMSVersion.getVersionForGMLNamespace(namespace) : DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI()));	
 	}
 	
 	/**

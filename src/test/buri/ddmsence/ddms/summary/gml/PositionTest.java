@@ -25,6 +25,7 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.UnsupportedVersionException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -142,17 +143,25 @@ public class PositionTest extends AbstractComponentTestCase {
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
-	public void testNameAndNamespace() {
+	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Position component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(Position.NAME, component.getName());
+			assertEquals(Position.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("gml.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Position.NAME, component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Position.getName(version), component.getQualifiedName());
 
 			// Wrong name/namespace
-			Element element = Util.buildDDMSElement("wrongName", null);
+			Element element = Util.buildElement("gml", "wrongName", version.getGmlNamespace(), null);
 			testConstructor(WILL_FAIL, element);
+			try {
+				element = Util.buildElement("gml", Position.getName(version), "http://wrongNs/", null);
+				new Position(element);
+				fail("Allowed invalid data.");
+			}
+			catch (UnsupportedVersionException e) {
+				// Good
+			}
 		}
 	}
 
@@ -166,11 +175,11 @@ public class PositionTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST);
+			Element element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, TEST_XS_LIST);
 			testConstructor(WILL_SUCCEED, element);
 
 			// Empty coordinate
-			element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, "25.0    26.0");
+			element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, "25.0    26.0");
 			testConstructor(WILL_SUCCEED, element);
 
 		}
@@ -193,22 +202,22 @@ public class PositionTest extends AbstractComponentTestCase {
 			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
 			String gmlNamespace = version.getGmlNamespace();
 			// Missing coordinates
-			Element element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, null);
+			Element element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// At least 2 coordinates
-			element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, "25.0");
+			element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, "25.0");
 			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 3 coordinates
-			element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST + " 25.0 35.0");
+			element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, TEST_XS_LIST + " 25.0 35.0");
 			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Each coordinate is a Double
-			element = Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, "25.0 Dog");
+			element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, "25.0 Dog");
 			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 		}
@@ -259,14 +268,14 @@ public class PositionTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
 			String gmlNamespace = version.getGmlNamespace();
-			Position position = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace, TEST_XS_LIST));
-			Position positionEqual = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace,
+			Position position = new Position(Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, TEST_XS_LIST));
+			Position positionEqual = new Position(Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace,
 				TEST_XS_LIST));
-			Position positionEqualWhitespace = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace,
+			Position positionEqualWhitespace = new Position(Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace,
 				TEST_XS_LIST + "   "));
-			Position positionUnequal2d = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace,
+			Position positionUnequal2d = new Position(Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace,
 				"32.1 40.0"));
-			Position positionUnequal3d = new Position(Util.buildElement(gmlPrefix, Position.NAME, gmlNamespace,
+			Position positionUnequal3d = new Position(Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace,
 				TEST_XS_LIST + " 40.0"));
 			assertEquals(position, positionEqual);
 			assertEquals(position, positionEqualWhitespace);

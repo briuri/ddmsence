@@ -31,7 +31,6 @@ import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.summary.gml.Point;
 import buri.ddmsence.ddms.summary.gml.Polygon;
-import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
@@ -75,18 +74,19 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	public BoundingGeometry(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("boundingGeometry element", element);
-			String gmlNamespace = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI()).getGmlNamespace();
+			setXOMElement(element, false);
+			String gmlNamespace = getDDMSVersion().getGmlNamespace();
 			_cachedPolygons = new ArrayList<Polygon>();
 			_cachedPoints = new ArrayList<Point>();
-			Elements polygons = element.getChildElements(Polygon.NAME, gmlNamespace);
+			Elements polygons = element.getChildElements(Polygon.getName(getDDMSVersion()), gmlNamespace);
 			for (int i = 0; i < polygons.size(); i++) {
 				_cachedPolygons.add(new Polygon(polygons.get(i)));
 			}
-			Elements points = element.getChildElements(Point.NAME, gmlNamespace);
+			Elements points = element.getChildElements(Point.getName(getDDMSVersion()), gmlNamespace);
 			for (int i = 0; i < points.size(); i++) {
 				_cachedPoints.add(new Point(points.get(i)));
 			}
-			setXOMElement(element, true);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);

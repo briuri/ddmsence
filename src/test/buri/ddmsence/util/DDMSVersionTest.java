@@ -54,8 +54,14 @@ public class DDMSVersionTest extends TestCase {
 	}
 
 	public void testGetVersionForDDMSNamespace() {
+		assertEquals(DDMSVersion.getVersionFor("2.0"),
+			DDMSVersion.getVersionForDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
 		assertEquals(DDMSVersion.getVersionFor("3.0"),
 			DDMSVersion.getVersionForDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/"));
+		assertEquals(DDMSVersion.getVersionFor("3.1"),
+			DDMSVersion.getVersionForDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.1/"));
+		assertEquals(DDMSVersion.getVersionFor("4.0"),
+			DDMSVersion.getVersionForDDMSNamespace("urn:us:mil:ces:metadata:ddms:4"));
 		try {
 			DDMSVersion.getVersionForDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/1.4/");
 			fail("Allowed unsupported version.");
@@ -63,7 +69,20 @@ public class DDMSVersionTest extends TestCase {
 			// Good
 		}
 	}
-
+			
+	public void testGetVersionForGMLNamespace() {
+		assertEquals(DDMSVersion.getVersionFor("2.0"),
+			DDMSVersion.getVersionForGMLNamespace("http://www.opengis.net/gml"));
+		assertEquals(DDMSVersion.getVersionFor("4.0"),
+			DDMSVersion.getVersionForGMLNamespace("http://www.opengis.net/gml/3.2"));
+		try {
+			DDMSVersion.getVersionForGMLNamespace("http://www.opengis.net/gml/3.2.1");
+			fail("Allowed unsupported version.");
+		} catch (UnsupportedVersionException e) {
+			// Good
+		}
+	}
+	
 	public void testGetSupportedVersions() {
 		assertFalse(DDMSVersion.getSupportedVersions().isEmpty());
 		assertTrue(DDMSVersion.getSupportedVersions().contains("3.0"));

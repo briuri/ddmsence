@@ -125,9 +125,6 @@ public final class Polygon extends AbstractBaseComponent {
 	private SRSAttributes _cachedSrsAttributes;
 	private List<Position> _cachedPositions;
 	
-	/** The element name of this component */
-	public static final String NAME = "Polygon";
-	
 	private static final String EXTERIOR_NAME = "exterior";
 	private static final String LINEAR_RING_NAME = "LinearRing";
 	private static final String ID_NAME = "id";
@@ -146,7 +143,7 @@ public final class Polygon extends AbstractBaseComponent {
 			if (extElement != null) {
 				Element ringElement = extElement.getFirstChildElement(LINEAR_RING_NAME, element.getNamespaceURI());
 				if (ringElement != null) {
-					Elements positions = ringElement.getChildElements(Position.NAME, element.getNamespaceURI());
+					Elements positions = ringElement.getChildElements(Position.getName(getDDMSVersion()), element.getNamespaceURI());
 					for (int i = 0; i < positions.size(); i++) {
 						_cachedPositions.add(new Position(positions.get(i)));
 					}
@@ -175,15 +172,16 @@ public final class Polygon extends AbstractBaseComponent {
 				positions = Collections.emptyList();
 			_cachedPositions = positions;
 			_cachedSrsAttributes = srsAttributes;
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
-			String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
+			String gmlNamespace = version.getGmlNamespace();
 			Element ringElement = Util.buildElement(gmlPrefix, LINEAR_RING_NAME, gmlNamespace, null);
 			for (Position pos : positions) {
 				ringElement.appendChild(pos.getXOMElementCopy());
 			}
 			Element extElement = Util.buildElement(gmlPrefix, EXTERIOR_NAME, gmlNamespace, null);
 			extElement.appendChild(ringElement);
-			Element element = Util.buildElement(gmlPrefix, Polygon.NAME, gmlNamespace, null);
+			Element element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);
 			Util.addAttribute(element, gmlPrefix, ID_NAME, gmlNamespace, id);
@@ -211,7 +209,7 @@ public final class Polygon extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireQName(getXOMElement(), getNamespace(), NAME);
+		Util.requireQName(getXOMElement(), getNamespace(), Polygon.getName(getDDMSVersion()));
 		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
 		Util.requireDDMSValue(ID_NAME, getId());
@@ -271,7 +269,7 @@ public final class Polygon extends AbstractBaseComponent {
 		StringBuffer html = new StringBuffer();
 		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + BoundingGeometry.NAME + ".";
 		html.append(buildHTMLMeta(prefix + ID_NAME, getId(), true));
-		html.append(buildHTMLMeta(prefix + "type", Polygon.NAME, true));
+		html.append(buildHTMLMeta(prefix + "type", getName(), true));
 		html.append(buildHTMLMeta(prefix + "srsName", getSRSAttributes().getSrsName(), true));
 		if (getSRSAttributes().getSrsDimension() != null) {
 			html.append(buildHTMLMeta(prefix + "srsDimension", String.valueOf(getSRSAttributes().getSrsDimension()),
@@ -290,7 +288,7 @@ public final class Polygon extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		text.append(buildTextLine(BoundingGeometry.NAME + " " + ID_NAME, getId(), true));
-		text.append(buildTextLine(BoundingGeometry.NAME + " type", Polygon.NAME, true));
+		text.append(buildTextLine(BoundingGeometry.NAME + " type", getName(), true));
 		text.append(buildTextLine(BoundingGeometry.NAME + " srsName", getSRSAttributes().getSrsName(), true));
 		if (getSRSAttributes().getSrsDimension() != null) {
 			text.append(buildTextLine(BoundingGeometry.NAME + " srsDimension",
@@ -326,6 +324,17 @@ public final class Polygon extends AbstractBaseComponent {
 		result = 7 * result + getId().hashCode();
 		result = 7 * result + getPositions().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("Polygon");
 	}
 	
 	/**

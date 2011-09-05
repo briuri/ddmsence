@@ -113,9 +113,6 @@ public final class Point extends AbstractBaseComponent {
 	private SRSAttributes _cachedSrsAttributes;
 	private Position _cachedPosition;
 	
-	/** The element name of this component */
-	public static final String NAME = "Point";
-	
 	private static final String ID_NAME = "id";
 	
 	/**
@@ -127,7 +124,7 @@ public final class Point extends AbstractBaseComponent {
 	public Point(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			Element posElement = element.getFirstChildElement(Position.NAME, 
+			Element posElement = element.getFirstChildElement(Position.getName(getDDMSVersion()), 
 				element.getNamespaceURI());
 			if (posElement != null)
 				_cachedPosition = new Position(posElement);
@@ -152,15 +149,16 @@ public final class Point extends AbstractBaseComponent {
 		try {
 			_cachedPosition = position;
 			_cachedSrsAttributes = srsAttributes;
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Point.NAME, 
-				DDMSVersion.getCurrentVersion().getGmlNamespace(), null);
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Point.getName(version),
+				version.getGmlNamespace(), null);
 			if (position != null) {
 				element.appendChild(position.getXOMElementCopy());
 			}
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);
-			Util.addAttribute(element, PropertyReader.getProperty("gml.prefix"), ID_NAME, 
-				DDMSVersion.getCurrentVersion().getGmlNamespace(), id);
+			Util.addAttribute(element, PropertyReader.getProperty("gml.prefix"), ID_NAME, DDMSVersion
+				.getCurrentVersion().getGmlNamespace(), id);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -183,7 +181,7 @@ public final class Point extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireQName(getXOMElement(), getNamespace(), NAME);
+		Util.requireQName(getXOMElement(), getNamespace(), Point.getName(getDDMSVersion()));
 		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
 		Util.requireDDMSValue(ID_NAME, getId());
@@ -216,7 +214,7 @@ public final class Point extends AbstractBaseComponent {
 		StringBuffer html = new StringBuffer();
 		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + BoundingGeometry.NAME + ".";
 		html.append(buildHTMLMeta(prefix + ID_NAME, getId(), true));
-		html.append(buildHTMLMeta(prefix + "type", Point.NAME, true));
+		html.append(buildHTMLMeta(prefix + "type", getName(), true));
 		html.append(buildHTMLMeta(prefix + "srsName", getSRSAttributes().getSrsName(), true));
 		if (getSRSAttributes().getSrsDimension() != null) {
 			html.append(buildHTMLMeta(prefix + "srsDimension", String.valueOf(getSRSAttributes().getSrsDimension()),
@@ -234,7 +232,7 @@ public final class Point extends AbstractBaseComponent {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		text.append(buildTextLine(BoundingGeometry.NAME + " " + ID_NAME, getId(), true));
-		text.append(buildTextLine(BoundingGeometry.NAME + " type", Point.NAME, true));
+		text.append(buildTextLine(BoundingGeometry.NAME + " type", getName(), true));
 		text.append(buildTextLine(BoundingGeometry.NAME + " srsName", getSRSAttributes().getSrsName(), true));
 		if (getSRSAttributes().getSrsDimension() != null) {
 			text.append(buildTextLine(BoundingGeometry.NAME + " srsDimension",
@@ -271,6 +269,17 @@ public final class Point extends AbstractBaseComponent {
 		return (result);
 	}
 	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("Point");
+	}
+	 
 	/**
 	 * Accessor for the SRS Attributes. Will always be non-null.
 	 */
