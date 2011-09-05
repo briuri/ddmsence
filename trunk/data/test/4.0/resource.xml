@@ -22,9 +22,9 @@
 		</ddms:Person>	
 	</ddms:publisher>
 	<ddms:contributor>
-		<ddms:Service>
+		<ddms:service>
 			<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>
-		</ddms:Service>	
+		</ddms:service>	
 	</ddms:contributor>
 	<ddms:pointOfContact>
 		<ddms:unknown>

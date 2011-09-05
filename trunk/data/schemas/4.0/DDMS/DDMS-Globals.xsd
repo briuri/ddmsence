@@ -89,7 +89,7 @@ When a creator is a service or an organization, and not an individual, it is exp
 		<xs:choice>
 			<xs:element ref="Organization"/>
 			<xs:element ref="Person"/>
-			<xs:element ref="Service"/>
+			<xs:element ref="service"/>
 			<xs:element ref="unknown"/>
 		</xs:choice>
 		<xs:attribute ref="POCType" use="optional">
@@ -240,7 +240,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 	</xs:element>
 	<!-- The ServiceType has been remodeled to accomodate tools that are unable to adequately handle the increased complexity acquired with the use of SubstitutionGroups.  The line remains commented out in the event that the tools are able to accomodate this level of complexity in the future. -->
 	<!--	<xs:element name="Service" type="ServiceType" substitutionGroup="iiss:Entity"> -->
-	<xs:element name="Service" type="ServiceType">
+	<xs:element name="service" type="ServiceType">
 		<xs:annotation>
 			<xs:appinfo>
 				<mdr:definition>A named service responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher.  See also, DDMS Spec Cateogries: Contributor, Creator, Publisher.  

@@ -6,9 +6,9 @@
 	ICISM:classification="U"
 	ICISM:ownerProducer="USA"
 	ddms:POCType="ICD-710">
-	<ddms:Service>
+	<ddms:service>
 		<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>
 		<ddms:phone>703-882-1000</ddms:phone>
 		<ddms:email>ddms@fgm.com</ddms:email>
-	</ddms:Service>
+	</ddms:service>
 </ddms:publisher>	
