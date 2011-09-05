@@ -153,9 +153,9 @@ public class PublisherTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Publisher.getName(DDMSVersion.getCurrentVersion()), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
 			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Publisher.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
@@ -167,10 +167,10 @@ public class PublisherTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorValid() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(version));
+			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(Publisher.getName(DDMSVersion.getCurrentVersion()), null);
@@ -180,16 +180,16 @@ public class PublisherTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// All fields
 			testConstructor(WILL_SUCCEED, getEntityFixture(), null);
 		}
 	}
 
 	public void testElementConstructorInvalid() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// Missing entity
 			Element element = Util.buildDDMSElement(Publisher.getName(DDMSVersion.getCurrentVersion()), null);
 			testConstructor(WILL_FAIL, element);
@@ -197,26 +197,26 @@ public class PublisherTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// Missing entity		
 			testConstructor(WILL_FAIL, (IProducerEntity) null, null);
 		}
 	}
 
 	public void testWarnings() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// No warnings
-			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
 	public void testConstructorEquality() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Publisher elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			Publisher elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Publisher dataComponent = testConstructor(WILL_SUCCEED, getEntityFixture(), getPOCTypeFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -224,9 +224,9 @@ public class PublisherTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Publisher elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			Publisher elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Publisher dataComponent = testConstructor(WILL_SUCCEED, new Service(Publisher.getName(DDMSVersion.getCurrentVersion()), Util.getXsListAsList("DISA PEO-GES"),
 				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -234,18 +234,18 @@ public class PublisherTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Publisher elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			Publisher elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
 	}
 
 	public void testHTMLOutput() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, getEntityFixture(), getPOCTypeFixture());
@@ -254,9 +254,9 @@ public class PublisherTest extends AbstractComponentTestCase {
 	}
 
 	public void testTextOutput() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, getEntityFixture(), getPOCTypeFixture());
@@ -265,9 +265,9 @@ public class PublisherTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, getEntityFixture(), getPOCTypeFixture());
@@ -276,8 +276,8 @@ public class PublisherTest extends AbstractComponentTestCase {
 	}
 
 	public void testSecurityAttributes() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Publisher component = new Publisher(getEntityFixture(), null, SecurityAttributesTest.getFixture(false));
 			assertEquals(SecurityAttributesTest.getFixture(false), component.getSecurityAttributes());
 		}
@@ -295,9 +295,9 @@ public class PublisherTest extends AbstractComponentTestCase {
 	}
 	
 	public void testBuilder() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			
 			// Equality after Building
 			Publisher.Builder builder = new Publisher.Builder(component);

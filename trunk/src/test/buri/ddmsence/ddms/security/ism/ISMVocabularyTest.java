@@ -47,9 +47,9 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 	}
 
 	public void testEnumerationTokens() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			ISMVocabulary.setDDMSVersion(DDMSVersion.getVersionFor(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			ISMVocabulary.setDDMSVersion(version);
 			assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, "C"));
 			assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, "unknown"));
 	
@@ -99,9 +99,9 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 	}
 
 	public void testEnumerationPatterns() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			ISMVocabulary.setDDMSVersion(DDMSVersion.getVersionFor(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			ISMVocabulary.setDDMSVersion(version);
 			assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "SI-G-ABCD"));
 			assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "SI-ECI-ABC"));
 			assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "SI-G-ABCDE"));

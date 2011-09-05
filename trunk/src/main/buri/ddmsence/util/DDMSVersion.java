@@ -208,12 +208,13 @@ public class DDMSVersion {
 	 * @param version the new version, which must be supported by DDMSence
 	 * @throws UnsupportedVersionException if the version is not supported
 	 */
-	public static synchronized void setCurrentVersion(String version) {
+	public static synchronized DDMSVersion setCurrentVersion(String version) {
 		version = aliasVersion(version);
 		if (!getSupportedVersionsProperty().contains(version))
 			throw new UnsupportedVersionException(version);
 		_currentVersion = getVersionFor(version);
 		ISMVocabulary.setDDMSVersion(getCurrentVersion());
+		return (getCurrentVersion());
 	}
 	
 	/**

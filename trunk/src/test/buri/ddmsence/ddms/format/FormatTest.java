@@ -116,8 +116,8 @@ public class FormatTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:format xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append(
-			"\">\n\t");
+		xml.append("<ddms:format xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
+			.append("\">\n\t");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
 			xml.append("<ddms:mimeType>text/xml</ddms:mimeType>\n\t");
 			xml.append("<ddms:extent ddms:qualifier=\"sizeBytes\" ddms:value=\"75000\" />\n\t");
@@ -135,12 +135,13 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Format component = testConstructor(WILL_SUCCEED, getValidElement(version));
-			assertEquals(Format.getName(DDMSVersion.getCurrentVersion()), component.getName());
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			Format component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			assertEquals(Format.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Format.getName(DDMSVersion.getCurrentVersion()), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Format.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
@@ -149,21 +150,21 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorValid() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(version));
+			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element element = Util.buildDDMSElement(Format.getName(DDMSVersion.getCurrentVersion()), null);
+			if (version.isAtLeast("4.0")) {
+				Element element = Util.buildDDMSElement(Format.getName(version), null);
 				Util.addDDMSChildElement(element, "mimeType", "text/html");
 				testConstructor(WILL_SUCCEED, element);
 			}
 			else {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				Util.addDDMSChildElement(mediaElement, "mimeType", "text/html");
-				Element element = Util.buildDDMSElement(Format.getName(DDMSVersion.getCurrentVersion()), null);
+				Element element = Util.buildDDMSElement(Format.getName(version), null);
 				element.appendChild(mediaElement);
 				testConstructor(WILL_SUCCEED, element);
 			}
@@ -171,8 +172,8 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, ExtentTest.getFixture(), TEST_MEDIUM);
 
@@ -182,13 +183,13 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			String extentName = Extent.getName(DDMSVersion.getCurrentVersion());
-			String formatName = Format.getName(DDMSVersion.getCurrentVersion());
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			String extentName = Extent.getName(version);
+			String formatName = Format.getName(version);
 			
 			// Missing mimeType
-			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(formatName, null);
 				testConstructor(WILL_FAIL, element);
 			}
@@ -200,7 +201,7 @@ public class FormatTest extends AbstractComponentTestCase {
 			}
 
 			// Empty mimeType
-			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(Util.buildDDMSElement("mimeType", ""));
 				testConstructor(WILL_FAIL, element);
@@ -214,7 +215,7 @@ public class FormatTest extends AbstractComponentTestCase {
 			}
 
 			// Too many mimeTypes
-			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				element.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
@@ -230,7 +231,7 @@ public class FormatTest extends AbstractComponentTestCase {
 			}
 
 			// Too many extents
-			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				element.appendChild(Util.buildDDMSElement(extentName, null));
@@ -248,7 +249,7 @@ public class FormatTest extends AbstractComponentTestCase {
 			}
 
 			// Too many mediums
-			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(formatName, null);
 				element.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				element.appendChild(Util.buildDDMSElement("medium", TEST_MEDIUM));
@@ -266,7 +267,7 @@ public class FormatTest extends AbstractComponentTestCase {
 			}
 
 			// Invalid Extent
-			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(formatName, null);
 				Element extentElement = Util.buildDDMSElement(extentName, null);
 				Util.addDDMSAttribute(extentElement, "value", "test");
@@ -287,8 +288,8 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
 			// Missing mimeType
 			testConstructor(WILL_FAIL, null, ExtentTest.getFixture(), TEST_MEDIUM);
 
@@ -298,15 +299,15 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// No warnings
-			Format component = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Format component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Medium element with no value or empty value
-			if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
-				Element element = Util.buildDDMSElement(Format.getName(DDMSVersion.getCurrentVersion()), null);
+			if (version.isAtLeast("4.0")) {
+				Element element = Util.buildDDMSElement(Format.getName(version), null);
 				element.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				element.appendChild(Util.buildDDMSElement("medium", null));
 				component = testConstructor(WILL_SUCCEED, element);
@@ -320,7 +321,7 @@ public class FormatTest extends AbstractComponentTestCase {
 				Element mediaElement = Util.buildDDMSElement("Media", null);
 				mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
 				mediaElement.appendChild(Util.buildDDMSElement("medium", null));
-				Element element = Util.buildDDMSElement(Format.getName(DDMSVersion.getCurrentVersion()), null);
+				Element element = Util.buildDDMSElement(Format.getName(version), null);
 				element.appendChild(mediaElement);
 				component = testConstructor(WILL_SUCCEED, element);
 				assertEquals(1, component.getValidationWarnings().size());
@@ -335,16 +336,16 @@ public class FormatTest extends AbstractComponentTestCase {
 			assertEquals(1, component.getValidationWarnings().size());
 			assertEquals("A qualifier has been set without an accompanying value attribute.", 
 				component.getValidationWarnings().get(0).getText());
-			String locatorSuffix = (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) ? "/ddms:format/ddms:extent"
+			String locatorSuffix = (version.isAtLeast("4.0")) ? "/ddms:format/ddms:extent"
 				: "/ddms:format/ddms:Media/ddms:extent";
 			assertEquals(locatorSuffix, component.getValidationWarnings().get(0).getLocator());
 		}
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Format elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			Format elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Format dataComponent = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, ExtentTest.getFixture(),
 				TEST_MEDIUM);
 			assertEquals(elementComponent, dataComponent);
@@ -353,10 +354,10 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
 
-			Format elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+			Format elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Format dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, ExtentTest.getFixture(),
 				TEST_MEDIUM);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -370,18 +371,18 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Format elementComponent = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			Format elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
 	}
 
 	public void testHTMLOutput() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Format component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			Format component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, ExtentTest.getFixture(), TEST_MEDIUM);
@@ -390,9 +391,9 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 
 	public void testTextOutput() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Format component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			Format component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, ExtentTest.getFixture(), TEST_MEDIUM);
@@ -401,9 +402,9 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Format component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			Format component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, ExtentTest.getFixture(), TEST_MEDIUM);
@@ -412,8 +413,8 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 
 	public void testExtentReuse() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
 			Extent extent = ExtentTest.getFixture();
 			testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, extent, TEST_MEDIUM);
 			testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, extent, TEST_MEDIUM);
@@ -421,32 +422,32 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 
 	public void testGetExtentQualifier() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Format component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			Format component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(component.getExtentQualifier(), component.getExtent().getQualifier());
 		}
 	}
 
 	public void testGetExtentQualifierNoExtent() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
 			Format component = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, null, null);
 			assertEquals("", component.getExtentQualifier());
 		}
 	}
 
 	public void testGetExtentValue() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Format component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			Format component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(component.getExtentValue(), component.getExtent().getValue());
 		}
 	}
 
 	public void testGetExtentValueNoExtent() {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
 			Format component = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, null, null);
 			assertEquals("", component.getExtentValue());
 		}
@@ -465,9 +466,9 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 	
 	public void testBuilder() throws InvalidDDMSException {
-		for (String version : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(version);
-			Format component = testConstructor(WILL_SUCCEED, getValidElement(version));
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			Format component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			
 			// Equality after Building
 			Format.Builder builder = new Format.Builder(component);

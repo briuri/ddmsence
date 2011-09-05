@@ -65,7 +65,8 @@ public class BaseComponentTest extends TestCase {
 	
 	public void testCustomPrefix() throws InvalidDDMSException {
 		String namespace = DDMSVersion.getCurrentVersion().getNamespace();
-		Element element = Util.buildElement("customPrefix", Language.getName(DDMSVersion.getCurrentVersion()), namespace, null);
+		Element element = Util.buildElement("customPrefix", Language.getName(DDMSVersion.getCurrentVersion()),
+			namespace, null);
 		Util.addAttribute(element, "customPrefix", "qualifier", namespace, "testQualifier");
 		Util.addAttribute(element, "customPrefix", "value", namespace, "en");
 		new Language(element);
