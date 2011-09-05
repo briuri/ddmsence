@@ -110,7 +110,8 @@ public final class Category extends AbstractBaseComponent {
 	 * @param securityAttributes any security attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Category(String qualifier, String code, String label, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public Category(String qualifier, String code, String label, SecurityAttributes securityAttributes)
+		throws InvalidDDMSException {
 		this(qualifier, code, label, securityAttributes, null);
 	}
 	
@@ -127,7 +128,8 @@ public final class Category extends AbstractBaseComponent {
 	 * @param extensions extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Category(String qualifier, String code, String label, SecurityAttributes securityAttributes, ExtensibleAttributes extensions) throws InvalidDDMSException {
+	public Category(String qualifier, String code, String label, SecurityAttributes securityAttributes,
+		ExtensibleAttributes extensions) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Category.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, QUALIFIER_NAME, qualifier);
@@ -168,10 +170,12 @@ public final class Category extends AbstractBaseComponent {
 		}			
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0") && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 4.0 or later.");
+			throw new InvalidDDMSException(
+				"Security attributes cannot be applied to this component until DDMS 4.0 or later.");
 		}
 		if (!getDDMSVersion().isAtLeast("3.0") && !getExtensibleAttributes().isEmpty())
-			throw new InvalidDDMSException("xs:anyAttribute cannot be applied to ddms:category until DDMS 3.0 or later.");
+			throw new InvalidDDMSException(
+				"xs:anyAttribute cannot be applied to ddms:category until DDMS 3.0 or later.");
 		
 		validateWarnings();
 	}

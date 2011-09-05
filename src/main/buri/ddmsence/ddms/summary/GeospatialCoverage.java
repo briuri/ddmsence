@@ -102,8 +102,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			Element extElement = element.getFirstChildElement(GEOSPATIAL_EXTENT_NAME, namespace);
 			if (extElement != null) {
 				DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI());
-				Element geographicIdentifierElement = extElement.getFirstChildElement(GeographicIdentifier.getName(version),
-					namespace);
+				Element geographicIdentifierElement = extElement.getFirstChildElement(
+					GeographicIdentifier.getName(version), namespace);
 				if (geographicIdentifierElement != null)
 					_cachedGeographicIdentifier = new GeographicIdentifier(geographicIdentifierElement);
 				Element boundingBoxElement = extElement.getFirstChildElement(BoundingBox.getName(version), namespace);
@@ -112,10 +112,12 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 				Element boundingGeometryElement = extElement.getFirstChildElement(BoundingGeometry.NAME, namespace);
 				if (boundingGeometryElement != null)
 					_cachedBoundingGeometry = new BoundingGeometry(boundingGeometryElement);
-				Element postalAddressElement = extElement.getFirstChildElement(PostalAddress.getName(version), namespace);
+				Element postalAddressElement = extElement.getFirstChildElement(PostalAddress.getName(version),
+					namespace);
 				if (postalAddressElement != null)
 					_cachedPostalAddress = new PostalAddress(postalAddressElement);
-				Element verticalExtentElement = extElement.getFirstChildElement(VerticalExtent.getName(version), namespace);
+				Element verticalExtentElement = extElement.getFirstChildElement(VerticalExtent.getName(version),
+					namespace);
 				if (verticalExtentElement != null)
 					_cachedVerticalExtent = new VerticalExtent(verticalExtentElement);
 			}
@@ -230,7 +232,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 3.0 or later.");
+			throw new InvalidDDMSException(
+				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 		
 		validateWarnings();
@@ -429,8 +432,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		 */
 		public GeospatialCoverage commit() throws InvalidDDMSException {
 			return (isEmpty() ? null : new GeospatialCoverage(getGeographicIdentifier().commit(), 
-				getBoundingBox().commit(), getBoundingGeometry().commit(), getPostalAddress().commit(), getVerticalExtent().commit(),
-				getSecurityAttributes().commit()));
+				getBoundingBox().commit(), getBoundingGeometry().commit(), getPostalAddress().commit(), 
+				getVerticalExtent().commit(), getSecurityAttributes().commit()));
 		}
 
 		/**

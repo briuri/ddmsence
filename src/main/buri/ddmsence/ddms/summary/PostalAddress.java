@@ -365,7 +365,8 @@ public final class PostalAddress extends AbstractBaseComponent {
 			boolean hasState = !Util.isEmpty(getState());
 			String stateOrProvince = hasState ? getState() : getProvince();
 			getCountryCode().setParentType(PostalAddress.getName(DDMSVersion.getCurrentVersion()));
-			return (new PostalAddress(getStreets(), getCity(), stateOrProvince, getPostalCode(), getCountryCode().commit(), hasState));
+			return (new PostalAddress(getStreets(), getCity(), stateOrProvince, getPostalCode(), 
+				getCountryCode().commit(), hasState));
 		}
 		
 		/**

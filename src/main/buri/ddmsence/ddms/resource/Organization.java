@@ -102,7 +102,8 @@ public final class Organization extends AbstractProducerEntity {
 	 */
 	public Organization(String parentType, List<String> names, List<String> phones, List<String> emails,
 		ExtensibleAttributes extensions) throws InvalidDDMSException {
-		super(parentType, Organization.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions, true);
+		super(parentType, Organization.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions,
+			true);
 	}
 	
 	/**

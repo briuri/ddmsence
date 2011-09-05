@@ -82,11 +82,11 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	
 	private static final String SUBJECT_NAME = "Subject";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public SubjectCoverage(Element element) throws InvalidDDMSException {
@@ -97,11 +97,13 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			_cachedKeywords = new ArrayList<Keyword>();
 			_cachedCategories = new ArrayList<Category>();
 			if (subjectElement != null) {
-				Elements keywords = subjectElement.getChildElements(Keyword.getName(getDDMSVersion()), subjectElement.getNamespaceURI());
+				Elements keywords = subjectElement.getChildElements(Keyword.getName(getDDMSVersion()),
+					subjectElement.getNamespaceURI());
 				for (int i = 0; i < keywords.size(); i++) {
 					_cachedKeywords.add(new Keyword(keywords.get(i)));
 				}
-				Elements categories = subjectElement.getChildElements(Category.getName(getDDMSVersion()), subjectElement.getNamespaceURI());
+				Elements categories = subjectElement.getChildElements(Category.getName(getDDMSVersion()),
+					subjectElement.getNamespaceURI());
 				for (int i = 0; i < categories.size(); i++) {
 					_cachedCategories.add(new Category(categories.get(i)));
 				}
@@ -168,8 +170,10 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()));
 		Element subjectElement = getChild(SUBJECT_NAME);
 		Util.requireDDMSValue("Subject element", subjectElement);
-		int count = subjectElement.getChildElements(Keyword.getName(getDDMSVersion()), subjectElement.getNamespaceURI()).size()
-			+ subjectElement.getChildElements(Category.getName(getDDMSVersion()), subjectElement.getNamespaceURI()).size();
+		int count = subjectElement
+			.getChildElements(Keyword.getName(getDDMSVersion()), subjectElement.getNamespaceURI()).size()
+			+ subjectElement.getChildElements(Category.getName(getDDMSVersion()), subjectElement.getNamespaceURI())
+				.size();
 		if (count < 1)
 			throw new InvalidDDMSException("At least 1 keyword or category must exist.");
 		for (Keyword keyword : getKeywords())
@@ -178,9 +182,10 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			Util.requireCompatibleVersion(this, category);
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 3.0 or later.");
+			throw new InvalidDDMSException(
+				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
-		
+
 		validateWarnings();
 	}
 	

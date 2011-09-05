@@ -22,8 +22,8 @@ package buri.ddmsence.ddms;
 /**
  * Identifying interface for a mutable Builder of components
  * 
- * The builder should be used when a DDMS record needs to be built up over time, but validation should not occur until
- * the end. The commit() method attempts to finalize the immutable object based on the values gathered.
+ * <p>The builder should be used when a DDMS record needs to be built up over time, but validation should not occur
+ * until the end. The commit() method attempts to finalize the immutable object based on the values gathered.</p>
  * 
  * <p>The builder approach differs from calling the immutable constructor directly because it treats a Builder instance
  * with no values provided as "no component" instead of "a component with missing values". For example, calling a
@@ -36,8 +36,8 @@ package buri.ddmsence.ddms;
 public interface IBuilder {
 	
 	/**
-	 * Finalizes the data gathered for this builder instance. If no values have been provided, a null
-	 * instance will be returned instead of a possibly invalid one or an empty one.
+	 * Finalizes the data gathered for this builder instance. If no values have been provided, a null instance will be
+	 * returned instead of a possibly invalid one or an empty one.
 	 * 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */

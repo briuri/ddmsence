@@ -115,10 +115,11 @@ public final class Dates extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data. The string-based inputs must conform to one of the XML date
-	 * types: xs:dateTime, xs:date, xs:gYearMonth, or xs:gYear. Provided for backwards compatibility to pre-DDMS 4.0 elements.
+	 * types: xs:dateTime, xs:date, xs:gYearMonth, or xs:gYear. Provided for backwards compatibility to pre-DDMS 4.0
+	 * elements.
 	 * 
 	 * @param created the creation date (optional)
 	 * @param posted the posting date (optional)
@@ -127,7 +128,8 @@ public final class Dates extends AbstractBaseComponent {
 	 * @param approvedOn the approved on date (optional, starting in DDMS 3.1)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Dates(String created, String posted, String validTil, String infoCutOff, String approvedOn) throws InvalidDDMSException {
+	public Dates(String created, String posted, String validTil, String infoCutOff, String approvedOn)
+		throws InvalidDDMSException {
 		this(created, posted, validTil, infoCutOff, approvedOn, null);
 	}
 	
@@ -415,14 +417,15 @@ public final class Dates extends AbstractBaseComponent {
 		 * @see IBuilder#commit()
 		 */
 		public Dates commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Dates(getCreated(), getPosted(), getValidTil(), getInfoCutOff(), getApprovedOn(), getReceivedOn()));
+			return (isEmpty() ? null : new Dates(getCreated(), getPosted(), getValidTil(), getInfoCutOff(),
+				getApprovedOn(), getReceivedOn()));
 		}
 
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			return (Util.isEmpty(getCreated()) && Util.isEmpty(getPosted()) && Util.isEmpty(getValidTil()) 
+			return (Util.isEmpty(getCreated()) && Util.isEmpty(getPosted()) && Util.isEmpty(getValidTil())
 				&& Util.isEmpty(getInfoCutOff()) && Util.isEmpty(getApprovedOn()) && Util.isEmpty(getReceivedOn()));
 		}
 		

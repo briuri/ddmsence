@@ -40,8 +40,8 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
  * 
  * <p>
  * The ddmsence.properties file has a property, <code>ddms.supportedVersions</code> which can be a comma-separated list of version
- * numbers. Each of these token values then has a set of six properties which identify the namespace and schema locations for each
- * DDMS version:
+ * numbers. Each of these token values then has a set of six properties which identify the namespace and schema locations 
+ * for each DDMS version:
  * </p>
  * 
  * <li><code>&lt;versionNumber&gt;.ddms.xmlNamespace</code>: i.e. "http://metadata.dod.mil/mdr/ns/DDMS/2.0/"</li>

@@ -107,7 +107,8 @@ public final class RelatedResources extends AbstractBaseComponent {
 			Util.requireDDMSValue("RelatedResources element", element);
 			setXOMElement(element, false);
 			_cachedResources = new ArrayList<RelatedResource>();
-			Elements resources = element.getChildElements(RelatedResource.getName(getDDMSVersion()), element.getNamespaceURI());
+			Elements resources = element.getChildElements(RelatedResource.getName(getDDMSVersion()),
+				element.getNamespaceURI());
 			for (int i = 0; i < resources.size(); i++) {
 				_cachedResources.add(new RelatedResource(resources.get(i)));
 			}

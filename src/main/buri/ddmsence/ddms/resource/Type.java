@@ -49,7 +49,8 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:qualifier</u>: a URI-based qualifier (required if value is set)<br />
- * <u>ddms:value</u>: includes terms describing general categories, functions, genres, or aggregation levels (optional)<br />
+ * <u>ddms:value</u>: includes terms describing general categories, functions, genres, or aggregation levels 
+ * (optional)<br />
  * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS 4.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
@@ -85,10 +86,11 @@ public final class Type extends AbstractQualifierValue {
 	}
 	
 	/**
-	 * Constructor for creating a component from raw data. Provided for backwards compatibility to pre-DDMS 4.0 elements.
-	 *  
-	 * @param qualifier	the value of the qualifier attribute
-	 * @param value	the value of the value attribute 
+	 * Constructor for creating a component from raw data. Provided for backwards compatibility to pre-DDMS 4.0
+	 * elements.
+	 * 
+	 * @param qualifier the value of the qualifier attribute
+	 * @param value the value of the value attribute
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Type(String qualifier, String value) throws InvalidDDMSException {
@@ -97,14 +99,16 @@ public final class Type extends AbstractQualifierValue {
 	
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
-	 * @param description the child text describing an IC activity, if this component is used to reference an IC activity
-	 * @param qualifier	the value of the qualifier attribute
-	 * @param value	the value of the value attribute 
+	 * 
+	 * @param description the child text describing an IC activity, if this component is used to reference an IC
+	 * activity
+	 * @param qualifier the value of the qualifier attribute
+	 * @param value the value of the value attribute
 	 * @param securityAttributes any security attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Type(String description, String qualifier, String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public Type(String description, String qualifier, String value, SecurityAttributes securityAttributes)
+		throws InvalidDDMSException {
 		super(Type.getName(DDMSVersion.getCurrentVersion()), qualifier, value, false);
 		try {
 			Element element = getXOMElement();
@@ -141,12 +145,14 @@ public final class Type extends AbstractQualifierValue {
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0") && !Util.isEmpty(getDescription())) {
-			throw new InvalidDDMSException("This component cannot contain description child text until DDMS 4.0 or later.");
+			throw new InvalidDDMSException(
+				"This component cannot contain description child text until DDMS 4.0 or later.");
 		}
 		if (!getDDMSVersion().isAtLeast("4.0") && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 4.0 or later.");
+			throw new InvalidDDMSException(
+				"Security attributes cannot be applied to this component until DDMS 4.0 or later.");
 		}
-		
+
 		validateWarnings();
 	}
 	
@@ -224,8 +230,8 @@ public final class Type extends AbstractQualifierValue {
 	}
 	
 	/**
-	 * Accessor for the description child text, which provides additional context to the qualifier/value pairing of this component.
-	 * The underlying XOM method which retrieves the child text returns an empty string if not found.
+	 * Accessor for the description child text, which provides additional context to the qualifier/value pairing of this
+	 * component. The underlying XOM method which retrieves the child text returns an empty string if not found.
 	 */
 	public String getDescription() {
 		return (getXOMElement().getValue());
@@ -270,7 +276,8 @@ public final class Type extends AbstractQualifierValue {
 		 * @see IBuilder#commit()
 		 */
 		public Type commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Type(getDescription(), getQualifier(), getValue(), getSecurityAttributes().commit()));
+			return (isEmpty() ? null : new Type(getDescription(), getQualifier(), getValue(), 
+				getSecurityAttributes().commit()));
 		}
 		
 		/**

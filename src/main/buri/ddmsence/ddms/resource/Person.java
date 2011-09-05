@@ -309,8 +309,8 @@ public final class Person extends AbstractProducerEntity {
 		 * @see IBuilder#commit()
 		 */
 		public Person commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Person(getParentType(), getSurname(), getNames(), getUserID(), getAffliation(), 
-				getPhones(), getEmails(), getExtensibleAttributes().commit()));
+			return (isEmpty() ? null : new Person(getParentType(), getSurname(), getNames(), getUserID(),
+				getAffliation(), getPhones(), getEmails(), getExtensibleAttributes().commit()));
 		}
 
 		/**

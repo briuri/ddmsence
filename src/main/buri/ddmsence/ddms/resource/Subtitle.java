@@ -45,7 +45,8 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Title_subtitle<br />
- * <u>Description</u>: A subtitle may be any form of the title used as a substitute, or it may be an alternative to the formal title of the resource.<br />
+ * <u>Description</u>: A subtitle may be any form of the title used as a substitute, or it may be an alternative to the 
+ * formal title of the resource.<br />
  * <u>Obligation</u>: Optional<br />
  * <u>Schema Modification Date</u>: 2004-11-16<br />
  * </td></tr></table>

@@ -101,7 +101,8 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + GeographicIdentifier.getName(getDDMSVersion()) + "." + getName() + ".";
+		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + GeographicIdentifier.getName(getDDMSVersion())
+			+ "." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + QUALIFIER_NAME, getQualifier(), true));
 		html.append(buildHTMLMeta(prefix + VALUE_NAME, getValue(), true));
 		return (html.toString());

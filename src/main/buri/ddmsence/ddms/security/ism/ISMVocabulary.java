@@ -63,7 +63,8 @@ import buri.ddmsence.util.Util;
  * 
  * <ul>
  * <li>CVEnumISM25X.xml: tokens allowed in the "declassException" attribute</li>
- * <li>CVEnumISMAtomicEnergyMarkings.xml: tokens allowed in the "atomicEnergyMarkings" attribute (starting in DDMS 3.1)</li>
+ * <li>CVEnumISMAtomicEnergyMarkings.xml: tokens allowed in the "atomicEnergyMarkings" attribute (starting in DDMS 
+ * 3.1)</li>
  * <li>CVEnumISMClassificationAll.xml: tokens allowed in the "classification" attribute</li>
  * <li>CVEnumISMClassificationUS.xml: subset of the tokens allowed in the "classification" attribute</li>
  * <li>CVEnumISMCompliesWith.xml: tokens allowed in the "compliesWith" attribute (starting in DDMS 3.1)</li>
@@ -81,8 +82,8 @@ import buri.ddmsence.util.Util;
  * 
  * <p>Some of these vocabularies include regular expression patterns.</p>
  * 
- * <p>Separate Java lists of Classification values are maintained to calculate the ordering of classifications from least
- * to most restrictive.</p>
+ * <p>Separate Java lists of Classification values are maintained to calculate the ordering of classifications from 
+ * least to most restrictive.</p>
  * 
  * @author Brian Uri!
  * @since 0.9.d
@@ -179,8 +180,10 @@ public class ISMVocabulary {
 		ORDERED_NATO_CLASSIFICATIONS.add("CTSA");
 	}
 	
-	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_TOKENS = new HashMap<String, Map<String, Set<String>>>();
-	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_PATTERNS = new HashMap<String, Map<String, Set<String>>>();
+	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_TOKENS
+		= new HashMap<String, Map<String, Set<String>>>();
+	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_PATTERNS 
+		= new HashMap<String, Map<String, Set<String>>>();
 	
 	private static final String ENUMERATION_NAME = "Enumeration";
 	private static final String TERM_NAME = "Term";
@@ -332,11 +335,9 @@ public class ISMVocabulary {
 	 * Returns an index which can be used to determine how restrictive a marking is (with lower numbers being less
 	 * restrictive).
 	 * 
-	 * <p>
-	 * The ordering for standard markings (from least to most restrictive) is [U, R, C, S, TS]. The ordering for NATO markings
-	 * (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTS-B/CTS-BALK, CTSA]. For the purposes of rollup,
-	 * CTS-B and CTS-BALK are presumed to be siblings.
-	 * </p>
+	 * <p> The ordering for standard markings (from least to most restrictive) is [U, R, C, S, TS]. The ordering for
+	 * NATO markings (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTS-B/CTS-BALK, CTSA]. For the
+	 * purposes of rollup, CTS-B and CTS-BALK are presumed to be siblings. </p>
 	 * 
 	 * @param classification the classification to test
 	 * @return an index, or -1 if the marking does not belong to any known systems.
@@ -382,8 +383,8 @@ public class ISMVocabulary {
 	 * classification (US or NATO markings).</li>
 	 * <li>The classification cannot be more restrictive than the parent classification. The ordering 
 	 * for standard markings (from least to most restrictive) is [U, R, C, S, TS]. The ordering for NATO markings
-	 * (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTS-B/CTS-BALK, CTSA]. For the purposes of rollup,
-	 * CTS-B and CTS-BALK are presumed to be siblings.</li>
+	 * (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTS-B/CTS-BALK, CTSA]. For the purposes of 
+	 * rollup, CTS-B and CTS-BALK are presumed to be siblings.</li>
 	 * </ul>
 	 * </td></tr></table>
 	 * 	

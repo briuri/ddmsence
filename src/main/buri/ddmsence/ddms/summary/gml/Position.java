@@ -365,9 +365,9 @@ public final class Position extends AbstractBaseComponent {
 	/**
 	 * Builder for a Double
 	 * 
-	 * <p>This builder is implemented because the Java Double class does not have a no-arg constructor which can be hooked into
-	 * a LazyList. Because the Builder returns a Double instead of an IDDMSComponent, it does not officially implement
-	 * the IBuilder interface.</p>
+	 * <p>This builder is implemented because the Java Double class does not have a no-arg constructor which can be
+	 * hooked into a LazyList. Because the Builder returns a Double instead of an IDDMSComponent, it does not officially
+	 * implement the IBuilder interface.</p>
 	 * 
 	 * @see IBuilder
 	 * @author Brian Uri!

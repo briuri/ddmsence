@@ -259,7 +259,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 3.0 or later.");
+			throw new InvalidDDMSException(
+				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 		
 		validateWarnings();
@@ -286,8 +287,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		return (getDDMSVersion().isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix()
-			+ ":" + TIME_PERIOD_NAME);
+		return (getDDMSVersion().isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX
+			+ getXOMElement().getNamespacePrefix() + ":" + TIME_PERIOD_NAME);
 	}
 	
 	/**

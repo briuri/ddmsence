@@ -115,7 +115,8 @@ public final class Keyword extends AbstractBaseComponent {
 	 * @param extensions extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Keyword(String value, SecurityAttributes securityAttributes, ExtensibleAttributes extensions) throws InvalidDDMSException {
+	public Keyword(String value, SecurityAttributes securityAttributes, ExtensibleAttributes extensions)
+		throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Keyword.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, VALUE_NAME, value);
@@ -150,11 +151,12 @@ public final class Keyword extends AbstractBaseComponent {
 		Util.requireDDMSValue("value attribute", getValue());
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0") && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 4.0 or later.");
+			throw new InvalidDDMSException(
+				"Security attributes cannot be applied to this component until DDMS 4.0 or later.");
 		}
 		if (!getDDMSVersion().isAtLeast("3.0") && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("xs:anyAttribute cannot be applied to ddms:keyword until DDMS 3.0 or later.");
-		
+
 		validateWarnings();
 	}
 	

@@ -66,21 +66,22 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	protected AbstractProducerRole(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("producer element", element);
+			setXOMElement(element, false);
 			if (element.getChildElements().size() > 0) {
 				Element entityElement = element.getChildElements().get(0);
 				String producerType = element.getLocalName();
 				String entityType = entityElement.getLocalName();
-				if (Organization.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
+				if (Organization.getName(getDDMSVersion()).equals(entityType))
 					_producerEntity = new Organization(producerType, entityElement);
-				if (Person.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
+				if (Person.getName(getDDMSVersion()).equals(entityType))
 					_producerEntity = new Person(producerType, entityElement);
-				if (Service.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
+				if (Service.getName(getDDMSVersion()).equals(entityType))
 					_producerEntity = new Service(producerType, entityElement);
-				if (Unknown.getName(DDMSVersion.getCurrentVersion()).equals(entityType))
+				if (Unknown.getName(getDDMSVersion()).equals(entityType))
 					_producerEntity = new Unknown(producerType, entityElement);
 			}
 			_cachedSecurityAttributes = new SecurityAttributes(element);
-			setXOMElement(element, true);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -254,13 +255,14 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		protected Builder(AbstractProducerRole producer) {
 			setProducerType(producer.getName());
 			setEntityType(producer.getProducerEntity().getName());
-			if (Organization.getName(producer.getDDMSVersion()).equals(getEntityType()))
+			DDMSVersion version = producer.getDDMSVersion();
+			if (Organization.getName(version).equals(getEntityType()))
 				setOrganization(new Organization.Builder((Organization) producer.getProducerEntity()));
-			if (Person.getName(producer.getDDMSVersion()).equals(getEntityType()))
+			if (Person.getName(version).equals(getEntityType()))
 				setPerson(new Person.Builder((Person) producer.getProducerEntity()));
-			if (Service.getName(producer.getDDMSVersion()).equals(getEntityType()))
+			if (Service.getName(version).equals(getEntityType()))
 				setService(new Service.Builder((Service) producer.getProducerEntity()));
-			if (Unknown.getName(producer.getDDMSVersion()).equals(getEntityType()))
+			if (Unknown.getName(version).equals(getEntityType()))
 				setUnknown(new Unknown.Builder((Unknown) producer.getProducerEntity()));
 			setPocType(producer.getPOCType());
 			setSecurityAttributes(new SecurityAttributes.Builder(producer.getSecurityAttributes()));

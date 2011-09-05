@@ -64,7 +64,8 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	 * @param value the value of the element's child text
 	 * @param attributes the security attributes
 	 */
-	protected AbstractSimpleString(String name, String value, SecurityAttributes attributes) throws InvalidDDMSException {
+	protected AbstractSimpleString(String name, String value, SecurityAttributes attributes)
+		throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(name, value);
 			_cachedSecurityAttributes = attributes;
@@ -119,7 +120,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	 * an empty string if not found.
 	 */
 	public String getValue() {
-		return (getXOMElement().getValue()); 
+		return (getXOMElement().getValue());
 	}
 	
 	/**
@@ -132,8 +133,8 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	/**
 	 * Abstract Builder for this DDMS component.
 	 * 
-	 * <p>Builders which are based upon this abstract class should implement the commit() method, returning the appropriate
-	 * concrete object type.</p>
+	 * <p>Builders which are based upon this abstract class should implement the commit() method, returning the
+	 * appropriate concrete object type.</p>
 	 * 
 	 * @see IBuilder
 	 * @author Brian Uri!

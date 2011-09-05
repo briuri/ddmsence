@@ -32,7 +32,8 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of a ddms:publisher element.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:organization, ddms:person, ddms:service, or ddms:unknown</u>: the entity which fulfills this role (exactly 1 required)<br />
+ * <u>ddms:organization, ddms:person, ddms:service, or ddms:unknown</u>: the entity which fulfills this role (exactly 1 
+ * required)<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
@@ -136,7 +137,8 @@ public class Publisher extends AbstractProducerRole {
 		 */
 		public Publisher commit() throws InvalidDDMSException {
 			setProducerType(Publisher.getName(DDMSVersion.getCurrentVersion()));
-			return (isEmpty() ? null : new Publisher(commitSelectedEntity(), getPocType(), getSecurityAttributes().commit()));
+			return (isEmpty() ? null : new Publisher(commitSelectedEntity(), getPocType(), 
+				getSecurityAttributes().commit()));
 		}
 	}
 }

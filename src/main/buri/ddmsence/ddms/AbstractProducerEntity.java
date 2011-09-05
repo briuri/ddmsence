@@ -39,17 +39,13 @@ import buri.ddmsence.util.Util;
 /**
  * Base class for entities which fulfill a producer role, such as ddms:person and ddms:organization.
  * 
- * <p>
- * The HTML output of this class depends on the producer type which the producer entity is associated with. For example,
- * if the producer entity represented by this class is a "pointOfContact", the HTML meta tags will prefix each field
- * with "pointOfContact.". See the DDMS category descriptions for other examples:
- * http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Person
- * </p>
+ * <p> The HTML output of this class depends on the producer type which the producer entity is associated with. For
+ * example, if the producer entity represented by this class is a "pointOfContact", the HTML meta tags will prefix each
+ * field with "pointOfContact.". See the DDMS category descriptions for other examples:
+ * http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Person </p>
  * 
- * <p>
- * Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set before
- * the component is used.
- * </p>
+ * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
+ * before the component is used. </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -318,8 +314,8 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	/**
 	 * Abstract Builder for this DDMS component.
 	 * 
-	 * <p>Builders which are based upon this abstract class should implement the commit() method, returning the appropriate
-	 * concrete object type.</p>
+	 * <p>Builders which are based upon this abstract class should implement the commit() method, returning the
+	 * appropriate concrete object type.</p>
 	 * 
 	 * @see IBuilder
 	 * @author Brian Uri!

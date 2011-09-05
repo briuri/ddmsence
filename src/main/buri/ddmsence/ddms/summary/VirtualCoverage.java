@@ -127,7 +127,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 			Util.requireDDMSValue(PROTOCOL_NAME, getProtocol());
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException("Security attributes cannot be applied to this component until DDMS 3.0 or later.");
+			throw new InvalidDDMSException(
+				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 
 		validateWarnings();
@@ -255,7 +256,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		 * @see IBuilder#commit()
 		 */
 		public VirtualCoverage commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new VirtualCoverage(getAddress(), getProtocol(), getSecurityAttributes().commit()));
+			return (isEmpty() ? null : new VirtualCoverage(getAddress(), getProtocol(), 
+				getSecurityAttributes().commit()));
 		}
 		
 		/**
