@@ -39,7 +39,6 @@ minor bug fixes. This release is backwards compatible with v1.10.0.</p>
 	<li>A change in major version will generally include major architecture changes and will likely break backwards compatibility.</li>
 	<li>A change in minor version can include new features and bug fixes. On rare occasions, minor releases may break backwards compatibility.</li>
 	<li>A change in patch version will be limited to bug fixes.</li>
-	<li>If the patch version is a letter, such as "<b>b</b>", the release may be unstable. Major/minor numbers will increment after an unstable release (so the beta/pre-release version of 1.2 is probably 1.1.b, and NOT 1.2.b).</li>
 </ul>
 
 <p>If a new version is listed as "backwards compatible", it means that you can update to the new version without changing any of your code that worked with the old version.  
