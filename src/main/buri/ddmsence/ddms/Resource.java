@@ -103,7 +103,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:contributor</u>: (0-many optional), implemented as a {@link Contributor}<br />
  * <u>ddms:pointOfContact</u>: (0-many optional), implemented as a {@link PointOfContact}<br />
  * <u>ddms:format</u>: (0-1 optional), implemented as a {@link Format}<br />
- * <u>ddms:subjectCoverage</u>: (exactly 1 required), implemented as a {@link SubjectCoverage}<br />
+ * <u>ddms:subjectCoverage</u>: (1-many required, starting in DDMS 4.0), implemented as a {@link SubjectCoverage}<br />
  * <u>ddms:virtualCoverage</u>: (0-many optional), implemented as a {@link VirtualCoverage}<br />
  * <u>ddms:temporalCoverage</u>: (0-many optional), implemented as a {@link TemporalCoverage}<br />
  * <u>ddms:geospatialCoverage</u>: (0-many optional), implemented as a {@link GeospatialCoverage}<br />
@@ -156,7 +156,7 @@ public final class Resource extends AbstractBaseComponent {
 	private List<Contributor> _cachedContributors = new ArrayList<Contributor>();
 	private List<PointOfContact> _cachedPointOfContacts = new ArrayList<PointOfContact>();
 	private Format _cachedFormat = null;
-	private SubjectCoverage _cachedSubjectCoverage = null;
+	private List<SubjectCoverage> _cachedSubjectCoverages = new ArrayList<SubjectCoverage>();
 	private List<VirtualCoverage> _cachedVirtualCoverages = new ArrayList<VirtualCoverage>();
 	private List<TemporalCoverage> _cachedTemporalCoverages = new ArrayList<TemporalCoverage>();
 	private List<GeospatialCoverage> _cachedGeospatialCoverages = new ArrayList<GeospatialCoverage>();
@@ -276,9 +276,10 @@ public final class Resource extends AbstractBaseComponent {
 				_cachedFormat = new Format(component);
 
 			// Summary Set
-			component = getChild(SubjectCoverage.getName(version));
-			if (component != null)
-				_cachedSubjectCoverage = new SubjectCoverage(component);
+			components = element.getChildElements(SubjectCoverage.getName(version), namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedSubjectCoverages.add(new SubjectCoverage(components.get(i)));
+			}
 			components = element.getChildElements(VirtualCoverage.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedVirtualCoverages.add(new VirtualCoverage(components.get(i)));
@@ -459,7 +460,7 @@ public final class Resource extends AbstractBaseComponent {
 					_cachedFormat = (Format) component;
 				// Summary Set
 				else if (component instanceof SubjectCoverage)
-					_cachedSubjectCoverage = (SubjectCoverage) component;
+					_cachedSubjectCoverages.add((SubjectCoverage) component);
 				else if (component instanceof VirtualCoverage)
 					_cachedVirtualCoverages.add((VirtualCoverage) component);
 				else if (component instanceof TemporalCoverage)
@@ -511,8 +512,7 @@ public final class Resource extends AbstractBaseComponent {
 		_orderedList.addAll(getPointOfContacts());
 		if (getFormat() != null)
 			_orderedList.add(getFormat());
-		if (getSubjectCoverage() != null)
-			_orderedList.add(getSubjectCoverage());
+		_orderedList.addAll(getSubjectCoverages());
 		_orderedList.addAll(getVirtualCoverages());
 		_orderedList.addAll(getTemporalCoverages());
 		_orderedList.addAll(getGeospatialCoverages());
@@ -569,6 +569,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights, 0-1 formats, exactly 1
 	 * subjectCoverage, and exactly 1 security element must exist.</li>
+	 * <li>Starting in DDMS 4.0, 1-many subjectCoverage elements can exist.</li>
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
 	 * <li>If this resource has security attributes, the SecurityAttributes on any subcomponents are valid according 
 	 * to rollup rules (security attributes are not required in DDMS 2.0).</li>
@@ -601,7 +602,12 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Dates.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Rights.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Format.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()), 1, 1);
+		if (getDDMSVersion().isAtLeast("4.0")) {
+			if (getSubjectCoverages().size() < 1)
+				throw new InvalidDDMSException("At least 1 subjectCoverage is required.");		
+		}
+		else
+			Util.requireBoundedDDMSChildCount(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()), 1, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);	
 		if (!getSecurityAttributes().isEmpty()) {
 			Set<SecurityAttributes> childAttributes = new HashSet<SecurityAttributes>();
@@ -844,11 +850,10 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the subjectCoverage component (exactly 1). May return null, but this cannot happen after
-	 * instantiation.
+	 * Accessor for the subjectCoverage component (1-many)
 	 */
-	public SubjectCoverage getSubjectCoverage() {
-		return _cachedSubjectCoverage;
+	public List<SubjectCoverage> getSubjectCoverages() {
+		return _cachedSubjectCoverages;
 	}
 
 	/**
@@ -973,7 +978,7 @@ public final class Resource extends AbstractBaseComponent {
 		private List<Publisher.Builder> _publishers;
 		private List<PointOfContact.Builder> _pointOfContacts;
 		private Format.Builder _format;
-		private SubjectCoverage.Builder _subjectCoverage;
+		private List<SubjectCoverage.Builder> _subjectCoverages;
 		private List<VirtualCoverage.Builder> _virtualCoverages;
 		private List<TemporalCoverage.Builder> _temporalCoverages;
 		private List<GeospatialCoverage.Builder> _geospatialCoverages;
@@ -1032,7 +1037,7 @@ public final class Resource extends AbstractBaseComponent {
 					setFormat(new Format.Builder((Format) component));
 				// Summary Set
 				else if (component instanceof SubjectCoverage)
-					setSubjectCoverage(new SubjectCoverage.Builder((SubjectCoverage) component));
+					getSubjectCoverages().add(new SubjectCoverage.Builder((SubjectCoverage) component));
 				else if (component instanceof VirtualCoverage)
 					getVirtualCoverages().add(new VirtualCoverage.Builder((VirtualCoverage) component));
 				else if (component instanceof TemporalCoverage)
@@ -1104,6 +1109,7 @@ public final class Resource extends AbstractBaseComponent {
 			list.addAll(getContributors());
 			list.addAll(getPublishers());
 			list.addAll(getPointOfContacts());
+			list.addAll(getSubjectCoverages());
 			list.addAll(getVirtualCoverages());
 			list.addAll(getTemporalCoverages());
 			list.addAll(getGeospatialCoverages());
@@ -1113,7 +1119,6 @@ public final class Resource extends AbstractBaseComponent {
 			list.add(getDates());
 			list.add(getRights());
 			list.add(getFormat());
-			list.add(getSubjectCoverage());
 			list.add(getSecurity());
 			return (list);
 		}
@@ -1284,21 +1289,14 @@ public final class Resource extends AbstractBaseComponent {
 		}
 		
 		/**
-		 * Builder accessor for the subjectCoverage
+		 * Builder accessor for the subjectCoverages
 		 */
-		public SubjectCoverage.Builder getSubjectCoverage() {
-			if (_subjectCoverage == null)
-				_subjectCoverage = new SubjectCoverage.Builder();
-			return _subjectCoverage;
+		public List<SubjectCoverage.Builder> getSubjectCoverages() {
+			if (_subjectCoverages == null)
+				_subjectCoverages = new LazyList(SubjectCoverage.Builder.class);
+			return _subjectCoverages;
 		}
-		
-		/**
-		 * Builder accessor for the subjectCoverage
-		 */
-		public void setSubjectCoverage(SubjectCoverage.Builder subjectCoverage) {
-			_subjectCoverage = subjectCoverage;
-		}
-		
+				
 		/**
 		 * Builder accessor for the virtualCoverages
 		 */

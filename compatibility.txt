@@ -68,7 +68,22 @@ FIX:
 	You would now call a static method:
 	
 	String extentName = Extent.getName(ddmsVersion);
-		
+
+#########################################################################################################
+There can now be 1-to-many subjectCoverage elements in a resource (Issue #126)
+
+SEVERITY: Minor
+DETAILS:
+	A resource can now have more than 1 subjectCoverage.
+FIX:
+	This accessor:
+
+	public SubjectCoverage getSubjectCoverage()
+	
+	Has changed to:
+	
+	public List<SubjectCoverage> getSubjectCoverages()
+	
 #########################################################################################################
 Non-DDMS classes have been moved into new packages (Issue #148).
 
