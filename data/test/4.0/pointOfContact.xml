@@ -2,9 +2,9 @@
 <!--  Represents a single ddms:pointOfContact element, for unit testing -->
 <ddms:pointOfContact
 	xmlns:ddms="urn:us:mil:ces:metadata:ddms:4"
-	xmlns:ICISM="urn:us:gov:ic:ism"
-	ICISM:classification="U"
-	ICISM:ownerProducer="USA"
+	xmlns:ISM="urn:us:gov:ic:ism"
+	ISM:classification="U"
+	ISM:ownerProducer="USA"
 	ddms:POCType="ICD-710">
 	<ddms:unknown>
 		<ddms:name>UnknownEntity</ddms:name>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--  Represents a single ddms:relatedResources element, for unit testing -->
-<ddms:relatedResources xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ICISM="urn:us:gov:ic:ism" ddms:relationship="http://purl.org/dc/terms/references" ddms:direction="outbound" ICISM:classification="U" ICISM:ownerProducer="USA">
+<ddms:relatedResources xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ISM="urn:us:gov:ic:ism" ddms:relationship="http://purl.org/dc/terms/references" ddms:direction="outbound" ISM:classification="U" ISM:ownerProducer="USA">
 	<ddms:RelatedResource ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://en.wikipedia.org/wiki/Tank">
 		<ddms:link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="locator" xlink:href="http://en.wikipedia.org/wiki/Tank"/>
 	</ddms:RelatedResource>

@@ -48,7 +48,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:address</u>: a computer or telecommunications network address, or a network name or locale. (optional).<br />
  * <u>ddms:protocol</u>: the type of rules for data transfer that apply to the Virtual Address (can stand alone, but
  * should be used if address is provided)<br />
- * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
+ * This class is also decorated with ISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 

@@ -56,7 +56,7 @@ import buri.ddmsence.util.Util;
  * described and other resources. (required)<br />
  * <u>ddms:direction</u>: Used to indicate the direction of the relationship between the resource being described and
  * the target related resource. Valid values are "inbound," "outbound," and "bidirectional". (optional)
- * This class is also decorated with ICISM {@link SecurityAttributes}. The classification and
+ * This class is also decorated with ISM {@link SecurityAttributes}. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 

@@ -6,7 +6,7 @@
 	
 	<iso:title>Test ISO Schematron File for DDMSence (DDMS 3.0)</iso:title>
 	<iso:ns prefix='ddms' uri='urn:us:mil:ces:metadata:ddms:4' />
-	<iso:ns prefix='ICISM' uri='urn:us:gov:ic:ism' />
+	<iso:ns prefix='ISM' uri='urn:us:gov:ic:ism' />
 	<iso:ns prefix='gml' uri='http://www.opengis.net/gml/3.2' />
 	<iso:ns prefix='xlink' uri='http://www.w3.org/1999/xlink' />
 	

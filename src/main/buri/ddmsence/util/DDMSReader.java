@@ -47,7 +47,7 @@ import buri.ddmsence.ddms.Resource;
  * Reader class which loads an XML file containing DDMS information and converts it into XOM elements.
  * 
  * <p>
- * This parsing performs schema validation against a local set of DDMS/ICISM schemas.
+ * This parsing performs schema validation against a local set of DDMS/ISM schemas.
  * </p>
  * 
  * @author Brian Uri!

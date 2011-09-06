@@ -17,7 +17,7 @@ shows an example of how the Java object model can be built with basic data types
 <p>I have implemented this wizard as a series of textual prompts, to avoid the overhead of having a full-fledged MVC Swing application (or implementing it as a web application and
 requiring a server to run). It is not as flashy, but this should make it easier to focus on the important sections of the source code.</p>
 
-<p>The only limitations on this application are that it will not ask you for the "Additional" ICISM security attributes, 
+<p>The only limitations on this application are that it will not ask you for the "Additional" ISM security attributes, 
 such as "SCIcontrols" or "SARIdentifier", the SRS Attributes on individual gml:pos elements, or any custom components in the Extensible Layer. 
 There is no good reason for these limitations, other than to make the wizard a little shorter.</p>
 

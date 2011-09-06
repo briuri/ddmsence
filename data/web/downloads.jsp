@@ -111,7 +111,7 @@ with all versions since v1.4.0.</p>
 </ul>
 
 <p>Version <b>1.6.0</b> (9/07/2010) is a stable release, which updates bundled schemas and files for DDMS 3.0. Because the changes
-mainly affected the ICISM Controlled Vocabulary files, this release is still backwards compatible with all versions since v1.4.0.</p>
+mainly affected the ISM Controlled Vocabulary files, this release is still backwards compatible with all versions since v1.4.0.</p>
 
 <ul>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.6.0.zip"><code>ddmsence-bin-1.6.0.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>

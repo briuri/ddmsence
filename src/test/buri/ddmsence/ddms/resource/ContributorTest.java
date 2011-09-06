@@ -143,11 +143,11 @@ public class ContributorTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:contributor xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
-		xml.append("xmlns:ICISM=\"").append(version.getIsmNamespace()).append("\"");
+		xml.append("xmlns:ISM=\"").append(version.getIsmNamespace()).append("\"");
 		if (isDDMS40OrGreater()) {
 			xml.append(" ddms:POCType=\"ICD-710\"");
 		}
-		xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t<ddms:")
+		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:")
 			.append(Organization.getName(version)).append(">\n");
 		xml.append("\t\t<ddms:name>DISA</ddms:name>\n");
 		xml.append("\t\t<ddms:name>PEO-GES</ddms:name>\n");

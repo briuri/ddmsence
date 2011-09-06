@@ -133,13 +133,13 @@ public class CategoryTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:category xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
 		if (isDDMS40OrGreater()) {
-			xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
+			xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
 		}
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ");
 		xml.append("ddms:code=\"").append(TEST_CODE).append("\" ");
 		xml.append("ddms:label=\"").append(TEST_LABEL).append("\"");
 		if (isDDMS40OrGreater()) {
-			xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
+			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		}
 		xml.append(" />");
 		return (xml.toString());

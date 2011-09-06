@@ -23,7 +23,7 @@ import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.util.DDMSVersion;
 
 /**
- * <p>Tests related to the ICISM Controlled Vocabularies</p>
+ * <p>Tests related to the ISM Controlled Vocabularies</p>
  * 
  * @author Brian Uri!
  * @since 0.9.d

@@ -2,9 +2,9 @@
 <!--  Represents a single ddms:creator element, for unit testing -->
 <ddms:creator
 	xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.1/"
-	xmlns:ICISM="urn:us:gov:ic:ism"
-	ICISM:classification="U"
-	ICISM:ownerProducer="USA">
+	xmlns:ISM="urn:us:gov:ic:ism"
+	ISM:classification="U"
+	ISM:ownerProducer="USA">
 	<ddms:Person>
 		<ddms:name>Brian</ddms:name>
 		<ddms:name>BU</ddms:name>

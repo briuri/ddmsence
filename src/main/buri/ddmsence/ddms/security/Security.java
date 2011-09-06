@@ -34,8 +34,8 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:security.
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ICISM:excludeFromRollup</u>: (required, fixed as "true", starting in DDMS 3.0)<br />
- * This class is also decorated with ICISM {@link SecurityAttributes}. The classification and
+ * <u>ISM:excludeFromRollup</u>: (required, fixed as "true", starting in DDMS 3.0)<br />
+ * This class is also decorated with ISM {@link SecurityAttributes}. The classification and
  * ownerProducer attributes are required.
  * </td></tr></table>
  * 

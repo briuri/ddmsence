@@ -121,11 +121,11 @@ public class KeywordTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:keyword xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
 		if (isDDMS40OrGreater()) {
-			xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
+			xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
 		}
 		xml.append("ddms:value=\"").append(TEST_VALUE).append("\"");
 		if (isDDMS40OrGreater()) {
-			xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
+			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		}
 		xml.append(" />");
 		return (xml.toString());

@@ -129,7 +129,7 @@ DDMSence also performs logical validation of rules which are not coded into the 
 <ul>
 	<li>Provides a complete implementation of the DDMS specification (including the Extensible Layer) using DDMS 2.0, 3.0, or 3.1.</li>
 	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types. Components can automatically transform into valid, well-formed XML, HTML, and Text records, according to the DDMS specification.</li>
-	<li>Adds an additional level of validation to all components, including the Controlled Vocabulary Enumerations for ICISM security attributes, as defined by the Intelligence Community. Custom validation rules can also be defined with <a href="documentation.jsp#tips-schematron">ISO Schematron</a>.</li>
+	<li>Adds an additional level of validation to all components, including the Controlled Vocabulary Enumerations for ISM attributes, as defined by the Intelligence Community. Custom validation rules can also be defined with <a href="documentation.jsp#tips-schematron">ISO Schematron</a>.</li>
 	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
 		and <a href="documentation.jsp#tips">Power Tips</a> are available for more experienced users.</li>
 </ul>

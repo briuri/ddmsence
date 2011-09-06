@@ -60,7 +60,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * This class is decorated with ICISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
+ * This class is decorated with ISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 

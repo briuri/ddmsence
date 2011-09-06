@@ -45,7 +45,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:value</u>: The keyword itself (required)<br />
  * Starting in DDMS 3.0, this component can also be decorated with optional {@link ExtensibleAttributes}.<br />
- * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS 4.0. The classification and
+ * This class is also decorated with ISM {@link SecurityAttributes}, starting in DDMS 4.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 

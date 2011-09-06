@@ -109,8 +109,8 @@ public class TitleTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:title xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace())
-			.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">");
+		xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace())
+			.append("\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE).append("</ddms:title>");
 		return (xml.toString());
 	}

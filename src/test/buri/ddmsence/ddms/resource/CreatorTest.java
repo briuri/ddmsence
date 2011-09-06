@@ -143,11 +143,11 @@ public class CreatorTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:creator xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
-		xml.append("xmlns:ICISM=\"").append(version.getIsmNamespace()).append("\"");
+		xml.append("xmlns:ISM=\"").append(version.getIsmNamespace()).append("\"");
 		if (isDDMS40OrGreater()) {
 			xml.append(" ddms:POCType=\"ICD-710\"");
 		}
-		xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t<ddms:")
+		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:")
 			.append(Person.getName(version)).append(">\n");
 		xml.append("\t\t<ddms:name>Brian</ddms:name>\n");
 		xml.append("\t\t<ddms:name>BU</ddms:name>\n");

@@ -131,8 +131,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:temporalCoverage xmlns:ddms=\"").append(version.getNamespace()).append("\"");
 		if (version.isAtLeast("3.0")) {
-			xml.append(" xmlns:ICISM=\"").append(version.getIsmNamespace())
-				.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
+			xml.append(" xmlns:ISM=\"").append(version.getIsmNamespace())
+				.append("\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n\t");
 		if (version.isAtLeast("4.0")) {

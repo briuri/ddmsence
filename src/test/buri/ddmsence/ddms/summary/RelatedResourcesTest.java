@@ -153,10 +153,10 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:relatedResources xmlns:ddms=\"").append(version.getNamespace()).append("\" xmlns:ICISM=\"")
+		xml.append("<ddms:relatedResources xmlns:ddms=\"").append(version.getNamespace()).append("\" xmlns:ISM=\"")
 			.append(version.getIsmNamespace()).append("\" ");
 		xml.append("ddms:relationship=\"").append(TEST_RELATIONSHIP).append("\" ddms:direction=\"");
-		xml.append(TEST_DIRECTION).append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t");
+		xml.append(TEST_DIRECTION).append("\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t");
 		xml.append("<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ").append(
 			"ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n\t\t");
 		xml.append("<ddms:link xmlns:xlink=\"").append(version.getXlinkNamespace())

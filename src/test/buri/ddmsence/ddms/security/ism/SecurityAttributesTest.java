@@ -36,7 +36,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to the ICISM attributes</p>
+ * <p>Tests related to the ISM attributes</p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -201,7 +201,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	 * @param expectFailure true if this operation is expected to succeed, false otherwise
 	 * @param classification the classification level, which must be a legal classification type (optional)
 	 * @param ownerProducers a list of ownerProducers (optional)
-	 * @param otherAttributes a name/value mapping of other ICISM attributes. The value will be a String value, as it
+	 * @param otherAttributes a name/value mapping of other ISM attributes. The value will be a String value, as it
 	 * appears in XML.
 	 * @return a valid object
 	 */

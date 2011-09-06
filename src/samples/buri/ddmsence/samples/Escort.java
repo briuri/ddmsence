@@ -96,7 +96,7 @@ import buri.ddmsence.util.Util;
  * the procedural structuring should make it easier to focus on the important sections of the source code.
  * </p>
  * 
- * <p>Currently, the wizard does not ask for the "Additional" ICISM security attributes, such as SCI controls or 
+ * <p>Currently, the wizard does not ask for the "Additional" ISM security attributes, such as SCI controls or 
  * SAR Identifiers, or SRS Attributes on individual gml:pos elements. It also does not ask for anything from the 
  * Extensible Layer.</p>
  * 

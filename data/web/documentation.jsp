@@ -137,7 +137,7 @@ followed these rules to determine which components are important enough to deser
 	<li>Elements which merely enclose important data AND which have no special attributes are never implemented (<code>ddms:Media</code>).</li>
 	<li>Data which can be represented as a simple Java type AND which has no special attributes is represented as a simple Java type (<code>ddms:email</code>).</li>
 	<li>Attributes are generally implemented as properties on an Object. The exceptions to this are the 
-		<a href="/docs/index.html?buri/ddmsence/ddms/security/ism/SecurityAttributes.html">ICISM Attribute Group</a>, 
+		<a href="/docs/index.html?buri/ddmsence/ddms/security/ism/SecurityAttributes.html">ISM Attribute Group</a>, 
 		which decorates many DDMS components, and the <a href="/docs/index.html?buri/ddmsence/ddms/summary/gml/SRSAttributes.html">SRS Attribute Group</a>,
 		which decorates components in the GML profile.</li>
 </ul>
@@ -173,7 +173,7 @@ The following convention is used to provide some consistency:</p>
 		<ul>
 			<li>Information about the enclosing component that may affect this new component comes first (such as the producerType of an <a href="/docs/index.html?buri/ddmsence/ddms/resource/Organization.html">Organization</a>).</li>
 			<li>The data or components needed to construct any nested elements or child text comes next (such as the list of Keywords in a <a href="/docs/buri/ddmsence/ddms/summary/SubjectCoverage.html">SubjectCoverage</a> component).</li>
-			<li>The data needed to construct any attributes comes next (such as the <a href="/docs/index.html?buri/ddmsence/ddms/security/ism/SecurityAttributes.html">ICISM SecurityAttributes</a>).</li>
+			<li>The data needed to construct any attributes comes next (such as the <a href="/docs/index.html?buri/ddmsence/ddms/security/ism/SecurityAttributes.html">ISM SecurityAttributes</a>).</li>
 			<li>Any remaining information that DDMSence needs comes last (such as the boolean flag on a <a href="/docs/index.html?buri/ddmsence/ddms/summary/PostalAddress.html">PostalAddress</a> which toggles between states and provinces).</li>
 		</ul>
 	<li>On constructors which build components from XML files, a XOM element is generally the only parameter. Additional information is implicitly
@@ -186,7 +186,7 @@ The following convention is used to provide some consistency:</p>
 
 <h4>Accessor Consistency Across Versions</h4>
 
-<p>Some attributes, such as <code>ICISM:excludeFromRollup</code> and <code>ICISM:resouceElement</code> are new in DDMS v3.0. When the accessors for these attributes are
+<p>Some attributes, such as <code>ISM:excludeFromRollup</code> and <code>ISM:resouceElement</code> are new in DDMS v3.0. When the accessors for these attributes are
 called on a DDMS 2.0 component, a null value will be returned. This decision allows DDMS records of varying versions to be
 traversed and queried in the same manner, without requiring too much knowledge of when specific attributes were introduced.</p>
 
@@ -210,7 +210,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 DDMSReader class can automatically use the correct version of DDMS based on the XML namespace defined in the file.
 When building DDMS components from scratch, the <a href="/docs/index.html?buri/ddmsence/util/DDMSVersion.html">DDMSVersion</a>
 class controls the version being used. There is an instance of DDMSVersion for each supported version, and this 
-instance contains the specific XML namespaces used for DDMS, GML, and ICISM components.</p>
+instance contains the specific XML namespaces used for DDMS, GML, and ISM components.</p>
 
 <div class="clear"></div>
 
@@ -219,7 +219,7 @@ DDMSVersion version = DDMSVersion.getCurrentVersion();
 System.out.println("In DDMS " + version.getVersion() + ", the following namespaces are used: ");
 System.out.println("ddms: " + version.getNamespace());
 System.out.println("gml: " + version.getGmlNamespace());
-System.out.println("ICISM: " + version.getIcismNamespace());
+System.out.println("ISM: " + version.getIsmNamespace());
 System.out.println("Are we using DDMS 2.0? " + DDMSVersion.isCurrentVersion("2.0"));
 System.out.println("If I see the namespace, http://metadata.dod.mil/mdr/ns/DDMS/3.0/, "
    + "I know we are using DDMS "
@@ -240,7 +240,7 @@ System.out.println("This identifier was created with DDMS "
 <pre class="brush: xml">In DDMS 2.0, the following namespaces are used: 
 ddms: http://metadata.dod.mil/mdr/ns/DDMS/2.0/
 gml: http://www.opengis.net/gml
-ICISM: urn:us:gov:ic:ism:v2
+ISM: urn:us:gov:ic:ism:v2
 Are we using DDMS 2.0? true
 If I see the namespace, http://metadata.dod.mil/mdr/ns/DDMS/3.0/, I know we are using DDMS 3.0
 This identifier was created with DDMS 2.0
@@ -281,62 +281,63 @@ Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 <tr><td><code>ddms:category</code></td><td>No extensible attributes can be used.</td><td>Zero to many attributes can live in the <code>xs:anyAttribute</code> extensible area.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:dates/@ddms:approvedOn</code></td><td>Cannot exist in this version.</td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr>
 <tr><td><code>ddms:countryCode/@ddms:qualifier<br />ddms:countryCode/@ddms:value</code></td><td>Follows 3.0 rules: both attributes are required.</td><td>Both attributes are required.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:geospatialCoverage/@ICISM:classification<br />ddms:geospatialCoverage/@ICISM:ownerProducer<br />ddms:geospatialCoverage/@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:geospatialCoverage/@ISM:*</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:keyword</code></td><td>No extensible attributes can be used.</td><td>Zero to many attributes can live in the <code>xs:anyAttribute</code> extensible area.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:relatedResources</code></td><td>Follows 3.0 rules: at least 1 ddms:RelatedResource must exist.</td><td>At least 1 ddms:RelatedResource must exist.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:Resource/@ICISM:createDate<br />ddms:Resource/@ICISM:DESVersion<br />ddms:Resource/@ICISM:resourceElement</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be passed in as a constructor parameter.</td><td>New and required in this version. DESVersion should be 2.</td><td>DESVersion must be 5.</td></tr>
-<tr><td><code>ddms:Resource/@ICISM:classification<br />ddms:Resource/@ICISM:ownerProducer</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New and required in this version.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:Resource/@ICISM (additional security)</td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:Resource/@ISM:createDate<br />ddms:Resource/@ISM:DESVersion<br />ddms:Resource/@ISM:resourceElement</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be passed in as a constructor parameter.</td><td>New and required in this version. DESVersion should be 2.</td><td>DESVersion must be 5.</td></tr>
+<tr><td><code>ddms:Resource/@ISM:classification<br />ddms:Resource/@ISM:ownerProducer</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New and required in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:Resource/@ISM:*</td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:Resource (xs:any)</code></td><td>Zero or one extensible element can appear after the <code>ddms:security</code> element.</td><td>Zero to many extensible elements can appear after the <code>ddms:security</code> element.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:security/@ICISM:excludeFromRollup</code></td><td>Cannot exist in this version.</td><td>New and required in this version. Value must be "true".</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:source/@ICISM:classification<br />ddms:source/@ICISM:ownerProducer<br />ddms:source/@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:subjectCoverage/@ICISM:classification<br />ddms:subjectCoverage/@ICISM:ownerProducer<br />ddms:subjectCoverage/@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:temporalCoverage/@ICISM:classification<br />ddms:temporalCoverage/@ICISM:ownerProducer<br />ddms:temporalCoverage/@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:security/@ISM:excludeFromRollup</code></td><td>Cannot exist in this version.</td><td>New and required in this version. Value must be "true".</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:source/@ISM:*</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:subjectCoverage/@ISM:*</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
+<tr><td><code>ddms:temporalCoverage/@ISM:*</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
 <tr><td><code>ddms:unknown</code></td><td>Cannot exist in this version.</td><td>Can be used to fill a producer role in this version.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:virtualCoverage/@ICISM:classification<br />ddms:virtualCoverage/@ICISM:ownerProducer<br />ddms:virtualCoverage/@ICISM (additional security)</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr></table>
+<tr><td><code>ddms:virtualCoverage/@ISM:*</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr></table>
 <p class="figure">Table 1. Component changes from DDMS 2.0 to DDMS 3.1</p>
 
-<p>The table below lists the complete set of ICISM security attributes, and shows which attributes can be used with each version of DDMS. Several of
+<p>The table below lists the complete set of ISM security attributes, and shows which attributes can be used with each version of DDMS. Several of
 the controlled vocabularies which populate these attributes changed between <a href="http://ddmsence.googlecode.com/svn/trunk/data/schemas/2.0/ISM/CVE/">V2</a> and <a hreef="http://ddmsence.googlecode.com/svn/trunk/data/schemas/3.1/ISM/CVEGenerated/">V5</a>.</p>
 
 <table>
-<tr><th>Attribute</th><th>DDMS 2.0 (ISM V2-PR)</th><th>DDMS 3.0 (ISM V2)</th><th>DDMS 3.1 (ISM V5)</th></tr>
-<tr><td><code>@ICISM:atomicEnergyMarkings</code></td><td>No</td><td>No</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:classification</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:classificationReason</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:classifiedBy</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:compilationReason</code></td><td>No</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:compliesWith</code></td><td>No</td><td>No</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:dateOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td></tr>
-<tr><td><code>@ICISM:declassDate</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:declassEvent</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:declassException</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:declassManualReview</code></td><td>Yes</td><td>No</td><td>No</td></tr>
-<tr><td><code>@ICISM:derivativelyClassifiedBy</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:derivedFrom</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:displayOnlyTo</code></td><td>No</td><td>No</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:disseminationControls</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:FGIsourceOpen</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:FGIsourceProtected</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:nonICmarkings</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:nonUSControls</code></td><td>No</td><td>No</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:ownerProducer</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:releasableTo</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:SARIdentifier</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:SCIcontrols</code></td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ICISM:typeOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td></tr></table>
+<tr><th>Attribute</th><th>DDMS 2.0 (ISM V2-PR)</th><th>DDMS 3.0 (ISM V2)</th><th>DDMS 3.1 (ISM V5)</th><th>DDMS 4.0 (ISM V7)</tr>
+<tr><td><code>@ISM:atomicEnergyMarkings</code></td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:classification</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:classificationReason</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:classifiedBy</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:compilationReason</code></td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:compliesWith</code></td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:dateOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td></tr>
+<tr><td><code>@ISM:declassDate</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:declassEvent</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:declassException</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:declassManualReview</code></td><td>Yes</td><td>No</td><td>No</td><td>No</td></tr>
+<tr><td><code>@ISM:derivativelyClassifiedBy</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:derivedFrom</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:displayOnlyTo</code></td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:disseminationControls</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:FGIsourceOpen</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:FGIsourceProtected</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:nonICmarkings</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:nonUSControls</code></td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:ownerProducer</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:pocType</code></td><td>No</td><td>No</td><td>No</td><td>Yes</td></tr>
+<tr><td><code>@ISM:releasableTo</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:SARIdentifier</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:SCIcontrols</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:typeOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td></tr></table>
 <p class="figure">Table 2. Security Attribute changes from DDMS 2.0 to DDMS 3.1</p>
 
 <div class="powerTipDivider"></div>
 
 <a name="tips-attributes"></a><h4>IC and GML Attribute Groups</h4>
 
-<h5>ICISM Security Attributes</h5>
+<h5>ISM Security Attributes</h5>
 
 <p>
-ICISM security attributes are defined in the Intelligence Community's "XML Data Encoding Specification for Information Security Marking Metadata" document (DES) and
+ISM security attributes are defined in the Intelligence Community's "XML Data Encoding Specification for Information Security Marking Metadata" document (DES) and
 implemented in the <a href="/docs/index.html?buri/ddmsence/ddms/security/ism/SecurityAttributes.html">SecurityAttributes</a> class. This class encapsulates
-the ICISM attributes which can decorate various DDMS components, such as <code>ddms:Resource</code> or <code>ddms:security</code>. The constructor which builds
+the ISM attributes which can decorate various DDMS components, such as <code>ddms:Resource</code> or <code>ddms:security</code>. The constructor which builds
 the attributes from a XOM element will simply load these attributes from the element itself. The constructor which builds the attributes from raw data is defined as:
 
 <pre class="brush: java">public SecurityAttributes(String classification, List&lt;String&gt; ownerProducers, Map&lt;String,String&gt; otherAttributes)</pre>
@@ -361,9 +362,9 @@ System.out.println(title.toXML());</pre>
 
 <p>Note: The actual values assigned to each attribute in Figure 8 are for example's sake only, and might be illogical in real-world metadata.</p>
 
-<pre class="brush: xml">&lt;ddms:title xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ICISM="urn:us:gov:ic:ism" 
-   ICISM:classification="C" ICISM:ownerProducer="USA AUS" ICISM:SCIcontrols="SI"
-   ICISM:SARIdentifier="SAR-USA"&gt;
+<pre class="brush: xml">&lt;ddms:title xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ISM="urn:us:gov:ic:ism" 
+   ISM:classification="C" ISM:ownerProducer="USA AUS" ISM:SCIcontrols="SI"
+   ISM:SARIdentifier="SAR-USA"&gt;
    My Confidential Notes
 &lt;/ddms:title&gt;</pre>
 <p class="figure">Figure 9. The resultant XML element with security attributes</p>
@@ -434,7 +435,7 @@ example of an extensible element as it might appear in an XML file.</p>
 
 <pre class="brush: xml">   [...]
    &lt;/ddms:subjectCoverage&gt;
-   &lt;ddms:security ICISM:ownerProducer="USA" ICISM:classification="U" ICISM:excludeFromRollup="true"/&gt;
+   &lt;ddms:security ISM:ownerProducer="USA" ISM:classification="U" ISM:excludeFromRollup="true"/&gt;
    &lt;ddmsence:extension xmlns:ddmsence="http://ddmsence.urizone.net/"&gt;
       This is an extensible element.
    &lt;/ddmsence:extension&gt;
@@ -470,20 +471,20 @@ Keyword keyword = new Keyword("XML", extensions);</pre>
 
 <h5>ExtensibleAttributes on a Resource</h5>
 
-<p>The <code>ddms:Resource</code> element is the only extensible element which has additional (ICISM) attributes that might conflict with your extensible
-attributes. The situation is trickier in DDMS 2.0, where the ICISM attributes are not explicitly defined in the schema, but can exist nonetheless.</p>
+<p>The <code>ddms:Resource</code> element is the only extensible element which has additional (ISM) attributes that might conflict with your extensible
+attributes. The situation is trickier in DDMS 2.0, where the ISM attributes are not explicitly defined in the schema, but can exist nonetheless.</p>
 
 <p>When creating an ExtensibleAttributes instance based upon a <code>ddms:Resource</code> XOM Element:</p>
 <ul>
-	<li>First, ICISM resource attributes such as <code>ICISM:DESVersion</code> will be "claimed", if present.</li>
-	<li>Next, the ICISM attributes such as <code>ICISM:classification</code> will be converted into a SecurityAttributes instance.</li>
+	<li>First, ISM resource attributes such as <code>ISM:DESVersion</code> will be "claimed", if present.</li>
+	<li>Next, the ISM attributes such as <code>ISM:classification</code> will be converted into a SecurityAttributes instance.</li>
 	<li>Any remaining attributes are considered to be ExtensibleAttributes.</li>
 </ul>
 
 <p>When building an ExtensibleAttributes instance from scratch and placing it on a Resource:</p>
 <ul>
-	<li>ICISM resource attributes which exist as constructor parameters, such as <code>ICISM:DESVersion</code> are processed first, if present.</li>
-	<li>Next, the SecurityAttributes, such as <code>ICISM:classification</code> are processed.</li>
+	<li>ISM resource attributes which exist as constructor parameters, such as <code>ISM:DESVersion</code> are processed first, if present.</li>
+	<li>Next, the SecurityAttributes, such as <code>ISM:classification</code> are processed.</li>
 	<li>Finally, the ExtensibleAttributes are processed. This means that these attributes cannot conflict with any attributes from the first two steps.</li>
 </ul>
 <p>In DDMS 2.0, it is perfectly legal to implement one of the resource attributes or security attributes as an extensible attribute:</p>
@@ -496,7 +497,7 @@ Resource resource1 = new Resource(myComponents, null, null, new Integer(2), null
 // DESVersion as an extensible attribute
 String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
 List&lt;Attribute&gt; attributes = new ArrayList&lt;Attribute&gt;();
-attributes.add(new Attribute("ICISM:DESVersion", icNamespace, "2"));
+attributes.add(new Attribute("ISM:DESVersion", icNamespace, "2"));
 ExtensibleAttributes extensions = new ExtensibleAttributes(attributes);
 Resource resource2 = new Resource(myComponents, null, null, null, null, extensions);</pre>
 <p class="figure">Figure 17. These two approaches for a resource attribute are both legal in DDMS 2.0</p>
@@ -512,8 +513,8 @@ Resource resource = new Resource(myComponents, null, null, null, secAttributes);
 // classification and ownerProducer as extensible attributes
 String icNamespace = DDMSVersion.getCurrentVersion().getIcismNamespace();
 List&lt;Attribute&gt; attributes = new ArrayList&lt;Attribute&gt;();
-attributes.add(new Attribute("ICISM:classification", icNamespace, "U"));
-attributes.add(new Attribute("ICISM:ownerProducer", icNamespace, "USA"));
+attributes.add(new Attribute("ISM:classification", icNamespace, "U"));
+attributes.add(new Attribute("ISM:ownerProducer", icNamespace, "USA"));
 ExtensibleAttributes extensions = new ExtensibleAttributes(attributes);
 Resource resource = new Resource(myComponents, null, null, null, null, extensions);</pre>
 <p class="figure">Figure 18. These two approaches for security attributes are both legal in DDMS 2.0</p>
@@ -540,7 +541,7 @@ you are ready to <code>commit()</code> the changes.</p>
 from the approach described in <a href="tutorials-02.jsp">Tutorial #2: Escort</a>, where all child components must be complete and valid before proceeding up the hierarchy.
 The following three figures provide an example of this difference, using SubjectCoverage as a representative component.</p>
 
-<pre class="brush: xml">&lt;ddms:subjectCoverage ICISM:classification="U"&gt;
+<pre class="brush: xml">&lt;ddms:subjectCoverage ISM:classification="U"&gt;
    &lt;ddms:Subject&gt;
       &lt;ddms:keyword ddms:value="DDMSence" /&gt;
    &lt;/ddms:Subject&gt;
@@ -685,7 +686,7 @@ of DDMS you are employing. The sample files described above are written only for
 
 <h5>Validating with ISM.XML Schematron Files</h5>
 
-<p>Recent versions of ISM.XML include Schematron files for validating logical constraints on the ICISM security attributes. DDMSence does not include these files,
+<p>Recent versions of ISM.XML include Schematron files for validating logical constraints on the ISM security attributes. DDMSence does not include these files,
 but you can download the Public Release versions from the <a href="http://www.dni.gov/ICEA/ism/default.htm">ODNI website</a>, and your organization might have
 access to versions from higher classification levels as well. The top-level Schematron file, <code>ISM/Schematron/ISM/ISM_XML.sch</code> is the orchestration
 point for each of the supporting files and the vocabularies needed for validation.</p>
@@ -703,7 +704,7 @@ for (ValidationMessage message : messages) {
 <p class="figure">Figure 29. Sample code to validate with ISM.XML Schematron Files</p>
 
 <p>Running this code will not display any errors or warnings, but we can make the output more exciting by intentionally breaking a rule. One of the rules described
-in the DES states that <code>ICISM:ownerProducer</code> token values must be in alphabetical order (ISM-ID-00100). If you edit this attribute on the root node
+in the DES states that <code>ISM:ownerProducer</code> token values must be in alphabetical order (ISM-ID-00100). If you edit this attribute on the root node
 of the DDMS resource file so the value is <code>"USA AUS"</code> and then run the code again, you should get the following output.</p>
 
 <pre class="brush: xml">Location: //*:Resource[namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/'][1]
@@ -734,7 +735,7 @@ see the Power Tip on <a href="#tips-configuration">Configurable Properties</a> f
 
 <p>DDMSence exposes some properties, such as the namespace prefixes used for each XML namespace, so they can be configured by the end user. For example, if you are 
 building components from scratch, and you wish to use "ic" as a namespace prefix for the Intelligence Community namespace
-instead of "ICISM", you would set the "ism.prefix" property with a custom value of <code>ic</code>.</p>
+instead of "ISM", you would set the "ism.prefix" property with a custom value of <code>ic</code>.</p>
 
 <pre class="brush: java">PropertyReader.setProperty("ism.prefix", "ic");</pre>
 <p class="figure">Figure 31. Command to change a configurable property.</p>
@@ -745,8 +746,8 @@ instead of "ICISM", you would set the "ism.prefix" property with a custom value 
 <tr><th>Property Name</th><th>Description</th><th>Default Value</th></tr>
 <tr><td>ddms.prefix</td><td>Default DDMS prefix used when generating components from scratch</td><td><code>ddms</code></td></tr>
 <tr><td>gml.prefix</td><td>Default GML prefix used when generating components from scratch</td><td><code>gml</code></td></tr>
-<tr><td>ism.cve.validationAsErrors</td><td>When validating SecurityAttributes in DDMS 2.0 and 3.0, ICISM Controlled Vocabulary checks should return errors, instead of warnings</td><td><code>true</code></td></tr>
-<tr><td>ism.prefix</td><td>Default ICISM prefix used when generating components from scratch</td><td><code>ICISM</code></td></tr>
+<tr><td>ism.cve.validationAsErrors</td><td>When validating SecurityAttributes in DDMS 2.0 and 3.0, ISM Controlled Vocabulary checks should return errors, instead of warnings</td><td><code>true</code></td></tr>
+<tr><td>ism.prefix</td><td>Default ISM prefix used when generating components from scratch</td><td><code>ISM</code></td></tr>
 <tr><td>sample.data</td><td>Default data directory used by sample applications</td><td><code>data/sample/</code></td></tr>
 <tr><td>xlink.prefix</td><td>Default XLink prefix used when generating components from scratch</td><td><code>xlink</code></td></tr>
 <tr><td>xml.transform.TransformerFactory</td><td>XSLT Engine class name, for Schematron validation<td><code>net.sf.saxon.TransformerFactoryImpl</code></td></tr>

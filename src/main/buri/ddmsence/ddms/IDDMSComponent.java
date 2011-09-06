@@ -45,7 +45,7 @@ import buri.ddmsence.ddms.security.ism.SecurityAttributes;
  * (ddms:Media).</li>
  * <li>Data which can be represented as a simple Java type AND which has no special attributes is represented as a
  * simple Java type (ddms:email).</li>
- * <li>Attributes are generally implemented as properties on an Object. The exception to this is the ICISM
+ * <li>Attributes are generally implemented as properties on an Object. The exception to this is the ISM
  * AttributeGroup, which decorates many DDMS components.</li>
  * </ul>
  * </p>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ddms:Resource xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" xmlns:ICISM="urn:us:gov:ic:ism"
-	ICISM:resourceElement="true" ICISM:DESVersion="5" ICISM:createDate="2010-01-21" ICISM:classification="U" ICISM:ownerProducer="USA">
+<ddms:Resource xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" xmlns:ISM="urn:us:gov:ic:ism"
+	ISM:resourceElement="true" ISM:DESVersion="5" ISM:createDate="2010-01-21" ISM:classification="U" ISM:ownerProducer="USA">
 	<ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence:testIdentifier" />
-	<ddms:title ICISM:classification="U" ICISM:ownerProducer="USA">DDMSence</ddms:title>
-	<ddms:subtitle ICISM:classification="U" ICISM:ownerProducer="USA">Version 0.1</ddms:subtitle>
-	<ddms:description ICISM:classification="U" ICISM:ownerProducer="USA">A transformation service.</ddms:description>
+	<ddms:title ISM:classification="U" ISM:ownerProducer="USA">DDMSence</ddms:title>
+	<ddms:subtitle ISM:classification="U" ISM:ownerProducer="USA">Version 0.1</ddms:subtitle>
+	<ddms:description ISM:classification="U" ISM:ownerProducer="USA">A transformation service.</ddms:description>
 	<ddms:language ddms:qualifier="http://purl.org/dc/elements/1.1/language" ddms:value="en" />
 	<ddms:dates ddms:created="2003" />
 	<ddms:rights ddms:privacyAct="true" ddms:intellectualProperty="true" ddms:copyright="true"/>
@@ -56,5 +56,5 @@
 			<ddms:link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="locator" xlink:href="http://en.wikipedia.org/wiki/Tank"/>
 		</ddms:RelatedResource>
 	</ddms:relatedResources>
-	<ddms:security ICISM:excludeFromRollup="true" ICISM:classification="U" ICISM:ownerProducer="USA" />
+	<ddms:security ISM:excludeFromRollup="true" ISM:classification="U" ISM:ownerProducer="USA" />
 </ddms:Resource>

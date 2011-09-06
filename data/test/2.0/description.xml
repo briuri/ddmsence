@@ -2,6 +2,6 @@
 <!-- Represents a single ddms:description element, for unit testing -->
 <ddms:description 
 	xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/2.0/"
-	xmlns:ICISM="urn:us:gov:ic:ism:v2"
-	ICISM:classification="U"
-	ICISM:ownerProducer="USA">A transformation service.</ddms:description>
+	xmlns:ISM="urn:us:gov:ic:ism:v2"
+	ISM:classification="U"
+	ISM:ownerProducer="USA">A transformation service.</ddms:description>

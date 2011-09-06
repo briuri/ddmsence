@@ -112,8 +112,8 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:subtitle xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
-		xml.append("xmlns:ICISM=\"").append(version.getIsmNamespace()).append("\" ");
-		xml.append("ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">");
+		xml.append("xmlns:ISM=\"").append(version.getIsmNamespace()).append("\" ");
+		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE).append("</ddms:subtitle>");
 		return (xml.toString());
 	}

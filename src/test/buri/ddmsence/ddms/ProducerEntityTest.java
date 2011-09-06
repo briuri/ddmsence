@@ -103,6 +103,6 @@ public class ProducerEntityTest extends TestCase {
 
 	public void testExtensibleFailure() throws InvalidDDMSException {
 		// No failure cases to test right now.
-		// ICISM attributes are at creator/contributor level, so they never clash with extensibles on the entity level.
+		// ISM attributes are at creator/contributor level, so they never clash with extensibles on the entity level.
 	}
 }
