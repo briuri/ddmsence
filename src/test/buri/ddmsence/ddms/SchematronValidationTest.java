@@ -60,19 +60,19 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 		for (String processor : supportedXslt1Processors) {
 			PropertyReader.setProperty("xml.transform.TransformerFactory", processor);
 			for (String versionString : DDMSVersion.getSupportedVersions()) {
-				DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-				String ddmsNamespace = version.getNamespace();
-				List<ValidationMessage> messages = versionToResourceMap.get(versionString).validateWithSchematron(
-					new File("data/test/" + versionString + "/testSchematronXslt1.sch"));
+				Resource resource = versionToResourceMap.get(versionString);
+				String ddmsNamespace = resource.getDDMSVersion().getNamespace();
+				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/"
+					+ versionString + "/testSchematronXslt1.sch"));
 				assertEquals(2, messages.size());
 				assertEquals("//*[local-name()='Resource' and namespace-uri()='" + ddmsNamespace + "']", messages
 					.get(0).getLocator());
-				assertEquals("A DDMS Resource must have an unknownElement child. This will always fail.",
-					messages.get(0).getText());
+				assertEquals("A DDMS Resource must have an unknownElement child. This will always fail.", messages.get(
+					0).getText());
 				assertEquals(ValidationMessage.ERROR_TYPE, messages.get(0).getType());
 				assertEquals("//*[local-name()='Resource' and namespace-uri()='" + ddmsNamespace + "']"
-					+ "/*[local-name()='publisher' and namespace-uri()='" + ddmsNamespace + "']"
-					+ "/*[local-name()='" + Person.getName(version) + "' and namespace-uri()='" + ddmsNamespace + "']"
+					+ "/*[local-name()='publisher' and namespace-uri()='" + ddmsNamespace + "']" + "/*[local-name()='"
+					+ Person.getName(resource.getDDMSVersion()) + "' and namespace-uri()='" + ddmsNamespace + "']"
 					+ "/*[local-name()='surname' and namespace-uri()='" + ddmsNamespace + "']", messages.get(1)
 					.getLocator());
 				assertEquals("Members of the Uri family cannot be publishers.", messages.get(1).getText());
@@ -86,10 +86,11 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 		for (String processor : supportedXslt1Processors) {
 			PropertyReader.setProperty("xml.transform.TransformerFactory", processor);
 			for (String versionString : DDMSVersion.getSupportedVersions()) {
-				String ddmsNamespace = DDMSVersion.getVersionFor(versionString).getNamespace();
-				String gmlNamespace = DDMSVersion.getVersionFor(versionString).getGmlNamespace();
-				List<ValidationMessage> messages = versionToResourceMap.get(versionString).validateWithSchematron(
-					new File("data/test/" + versionString + "/testSchematronXslt2.sch"));
+				Resource resource = versionToResourceMap.get(versionString);
+				String ddmsNamespace = resource.getDDMSVersion().getNamespace();
+				String gmlNamespace = resource.getDDMSVersion().getGmlNamespace();
+				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/"
+					+ versionString + "/testSchematronXslt2.sch"));
 				assertEquals(1, messages.size());
 				assertEquals("//*:Resource[namespace-uri()='" + ddmsNamespace
 					+ "'][1]/*:geospatialCoverage[namespace-uri()='" + ddmsNamespace
