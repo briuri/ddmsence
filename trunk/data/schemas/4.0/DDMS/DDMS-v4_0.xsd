@@ -109,7 +109,7 @@ JJP
 				<xs:element ref="pointOfContact" maxOccurs="unbounded"/>
 			</xs:choice>
 			<xs:element ref="format" minOccurs="0"/>
-			<xs:element ref="subjectCoverage"/>
+			<xs:element ref="subjectCoverage" maxOccurs="unbounded"/>
 			<xs:element ref="virtualCoverage" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element ref="temporalCoverage" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element ref="geospatialCoverage" minOccurs="0" maxOccurs="unbounded"/>

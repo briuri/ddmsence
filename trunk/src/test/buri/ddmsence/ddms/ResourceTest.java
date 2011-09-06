@@ -576,6 +576,24 @@ public class ResourceTest extends AbstractComponentTestCase {
 			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
 			element.appendChild(TEST_SECURITY.getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
+			
+			// More than 1 subjectCoverage
+			if (version.isAtLeast("4.0")) {
+				element = Util.buildDDMSElement(Resource.getName(version), null);
+				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
+					String.valueOf(TEST_RESOURCE_ELEMENT));
+				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
+				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
+					String.valueOf(getDESVersion()));
+				SecurityAttributesTest.getFixture(false).addTo(element);
+				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
+				element.appendChild(TEST_TITLE.getXOMElementCopy());
+				element.appendChild(TEST_CREATOR.getXOMElementCopy());
+				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+				element.appendChild(TEST_SECURITY.getXOMElementCopy());
+				testConstructor(WILL_SUCCEED, element);
+			}
 		}
 	}
 
@@ -825,20 +843,22 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 subjectCoverage
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(TEST_CREATOR.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			if (!version.isAtLeast("4.0")) {
+				element = Util.buildDDMSElement(Resource.getName(version), null);
+				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
+					String.valueOf(TEST_RESOURCE_ELEMENT));
+				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
+				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
+					String.valueOf(getDESVersion()));
+				SecurityAttributesTest.getFixture(false).addTo(element);
+				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
+				element.appendChild(TEST_TITLE.getXOMElementCopy());
+				element.appendChild(TEST_CREATOR.getXOMElementCopy());
+				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+				element.appendChild(TEST_SECURITY.getXOMElementCopy());
+				testConstructor(WILL_FAIL, element);
+			}
 
 			// At least 1 security
 			element = Util.buildDDMSElement(Resource.getName(version), null);
@@ -1509,7 +1529,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		builder.getTitles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 		builder.getCreators().get(0).setEntityType(Organization.getName(version));
 		builder.getCreators().get(0).getOrganization().setNames(Util.getXsListAsList("testName"));
-		builder.getSubjectCoverage().getKeywords().get(0).setValue("keyword");
+		builder.getSubjectCoverages().get(0).getKeywords().get(0).setValue("keyword");
 		builder.getSecurity().getSecurityAttributes().setClassification("U");
 		builder.getSecurity().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 		DDMSVersion.setCurrentVersion("3.0");
@@ -1541,7 +1561,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		builder.getTitles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 		builder.getCreators().get(0).setEntityType(Organization.getName(version));
 		builder.getCreators().get(0).getOrganization().setNames(Util.getXsListAsList("testName"));
-		builder.getSubjectCoverage().getKeywords().get(0).setValue("keyword");
+		builder.getSubjectCoverages().get(0).getKeywords().get(0).setValue("keyword");
 		builder.getSecurity().getSecurityAttributes().setClassification("U");
 		builder.getSecurity().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 
@@ -1549,8 +1569,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		builder.commit();
 
 		// Using a 3.0-specific value
-		builder.getSubjectCoverage().getSecurityAttributes().setClassification("U");
-		builder.getSubjectCoverage().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+		builder.getSubjectCoverages().get(0).getSecurityAttributes().setClassification("U");
+		builder.getSubjectCoverages().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 		try {
 			builder.commit();
 			fail("Builder allowed invalid data.");

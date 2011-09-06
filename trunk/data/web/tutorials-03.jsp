@@ -77,14 +77,16 @@ a List of DDMS components. The name of the getter will be a capitalized version 
 <pre class="brush: java">Distribution distribution = new Distribution();
 for (Resource resource : getResources()) {
    // Check any records that have a keyword (subjectCoverage is required)
-   if (!resource.getSubjectCoverage().getKeywords().isEmpty()) {
-      List&lt;Keyword&gt; keywords = resource.getSubjectCoverage().getKeywords();
-      // Record the counts for each keyword's usage
-      for (Keyword keyword : keywords) {
-         // Split multiword keywords.
-         String[] splitValues = keyword.getValue().split(" ");
-         for (int i = 0; i < splitValues.length; i++) {
-            distribution.incrementCount(splitValues[i]);
+   for (SubjectCoverage subjectCoverage : resource.getSubjectCoverages()) {
+      if (!subjectCoverage.getKeywords().isEmpty()) {
+         List&lt;Keyword&gt; keywords = subjectCoverage.getKeywords();
+         // Record the counts for each keyword's usage
+         for (Keyword keyword : keywords) {
+            // Split multiword keywords.
+            String[] splitValues = keyword.getValue().split(" ");
+            for (int i = 0; i < splitValues.length; i++) {
+               distribution.incrementCount(splitValues[i]);
+            }
          }
       }
    }

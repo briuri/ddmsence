@@ -36,6 +36,7 @@ import org.xml.sax.SAXException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.resource.Dates;
 import buri.ddmsence.ddms.summary.Keyword;
+import buri.ddmsence.ddms.summary.SubjectCoverage;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
 import buri.ddmsence.samples.util.AbstractSample;
 import buri.ddmsence.samples.util.Distribution;
@@ -183,17 +184,19 @@ public class Escape extends AbstractSample {
 		Distribution distribution = new Distribution();
 		for (Resource resource : getResources()) {
 			// Check any records that have a keyword (subjectCoverage is required)
-			if (!resource.getSubjectCoverage().getKeywords().isEmpty()) {
-				List<Keyword> keywords = resource.getSubjectCoverage().getKeywords();
-				// Record the counts for each keyword's usage
-				for (Keyword keyword : keywords) {
-					// Split multiword keywords.
-					String[] splitValues = keyword.getValue().split(" ");
-					for (int i = 0; i < splitValues.length; i++) {
-						distribution.incrementCount(splitValues[i]);
+			for (SubjectCoverage subjectCoverage : resource.getSubjectCoverages()) {
+				if (subjectCoverage.getKeywords().isEmpty()) {
+					List<Keyword> keywords = subjectCoverage.getKeywords();
+					// Record the counts for each keyword's usage
+					for (Keyword keyword : keywords) {
+						// Split multiword keywords.
+						String[] splitValues = keyword.getValue().split(" ");
+						for (int i = 0; i < splitValues.length; i++) {
+							distribution.incrementCount(splitValues[i]);
+						}
 					}
-				}
-			}			
+				}			
+			}
 		}
 		return (buildPieGraphURL("DDMS%20Keyword%20Distribution", distribution, PIE_GRAPH));
 	}
