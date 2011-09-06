@@ -264,7 +264,7 @@ System.out.println(DDMSVersion.getCurrentVersion().getVersion());
 
 <h5>Differences Between Versions</h5>
 
-<p>The validation rules between DDMS 2.0 and 3.0 are very similar, but there are a few major differences. For example, the Unknown
+<p>The validation rules between versions of DDMS are very similar, but there are a few major differences. For example, the Unknown
 entity for producers was not introduced until DDMS 3.0, so attempts to create one in DDMS 2.0 will fail.</p>
 
 <pre class="brush: java">DDMSVersion.setCurrentVersion("2.0");
@@ -273,31 +273,81 @@ names.add("Unknown Entity");
 Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 <p class="figure">Figure 6. This code will throw an InvalidDDMSException</p>
 
-<p>The table below identifies the key differences between supported versions of DDMS components in DDMSence.</p>
+<p>The tables below identify the key differences between supported versions of DDMS components in DDMSence.</p>
+<table width="100%">
+<tr><th width="36%">Component</th><th width="32%">DDMS 2.0 Notes</th><th width="32%">DDMS 3.0 Notes</th></tr>
+<tr><td>XML Namespace</td><td><code>http://metadata.dod.mil/mdr/ns/DDMS/2.0/</code></td><td>Changed to <code>http://metadata.dod.mil/mdr/ns/DDMS/3.0/</code></td></tr>
+<tr><td><code>ddms:category/@*</code></td><td>No extensible attributes.</td><td>Supports optional extensible attributes.</td></tr>
+<tr><td><code>ddms:geospatialCoverage/@ISM:*</code></td><td>No security attributes.</td><td>Supports optional security attributes.</td></tr>
+<tr><td><code>ddms:keyword/@*</code></td><td>No extensible attributes.</td><td>Supports optional extensible attributes.</td></tr>
+<tr><td><code>ddms:Resource/@ISM:classification<br />ddms:Resource/@ISM:createDate<br />ddms:Resource/@ISM:ownerProducer<br />ddms:Resource/@ISM:resourceElement</code></td><td>Unsupported, but can exist as extensible attributes.</td><td>Required.</td></tr>
+<tr><td><code>ddms:Resource/@ISM:DESVersion</code></td><td>Unsupported, but can exist as extensible attributes.</td><td>Required. DESVersion should be 2.</td></tr>
+<tr><td><code>ddms:Resource/@ISM:*</td><td>Unsupported, but can exist as extensible attributes.</td><td>Supports optional security attributes.</td></tr>
+<tr><td><code>ddms:Resource/*</code></td><td>Supports zero or one extensible elements.</td><td>Supports zero to many extensible elements.</td></tr>
+<tr><td><code>ddms:security/@ISM:excludeFromRollup</code></td><td>Cannot exist.</td><td>Required. Value must be "true".</td></tr>
+<tr><td><code>ddms:source/@ISM:*</code></td><td>No security attributes.</td><td>Supports optional security attributes.</td></tr>
+<tr><td><code>ddms:subjectCoverage/@ISM:*</code></td><td>No security attributes.</td><td>Supports optional security attributes.</td></tr>
+<tr><td><code>ddms:temporalCoverage/@ISM:*</code></td><td>No security attributes.</td><td>Supports optional security attributes.</td></tr>
+<tr><td><code>ddms:Unknown</code></td><td>Cannot exist.</td><td>New producer entity introduced.</td></tr>
+<tr><td><code>ddms:virtualCoverage/@ISM:*</code></td><td>No security attributes.</td><td>Supports optional security attributes.</td></tr>
+</table>
+<p class="figure">Table 1. Component changes from DDMS 2.0 to DDMS 3.0</p>
+<br /><br />
 
-<table>
-<tr><th>Element or Attribute</th><th>DDMS 2.0 Notes</th><th>DDMS 3.0 Notes</th><th>DDMS 3.1 Notes</th></tr>
-<tr><td>XML Namespace</td><td>http://metadata.dod.mil/mdr/ns/DDMS/2.0/</td><td>http://metadata.dod.mil/mdr/ns/DDMS/3.0/</td><td>http://metadata.dod.mil/mdr/ns/DDMS/3.1/</td></tr>
-<tr><td><code>ddms:category</code></td><td>No extensible attributes can be used.</td><td>Zero to many attributes can live in the <code>xs:anyAttribute</code> extensible area.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:dates/@ddms:approvedOn</code></td><td>Cannot exist in this version.</td><td>Cannot exist in this version.</td><td>New but optional in this version.</td></tr>
-<tr><td><code>ddms:countryCode/@ddms:qualifier<br />ddms:countryCode/@ddms:value</code></td><td>Follows 3.0 rules: both attributes are required.</td><td>Both attributes are required.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:geospatialCoverage/@ISM:*</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:keyword</code></td><td>No extensible attributes can be used.</td><td>Zero to many attributes can live in the <code>xs:anyAttribute</code> extensible area.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:relatedResources</code></td><td>Follows 3.0 rules: at least 1 ddms:RelatedResource must exist.</td><td>At least 1 ddms:RelatedResource must exist.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:Resource/@ISM:createDate<br />ddms:Resource/@ISM:DESVersion<br />ddms:Resource/@ISM:resourceElement</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be passed in as a constructor parameter.</td><td>New and required in this version. DESVersion should be 2.</td><td>DESVersion must be 5.</td></tr>
-<tr><td><code>ddms:Resource/@ISM:classification<br />ddms:Resource/@ISM:ownerProducer</code></td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New and required in this version.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:Resource/@ISM:*</td><td>Not explicitly defined in the schema, but can live in the <code>xs:anyAttribute</code> extensible area. Can also be defined in a SecurityAttributes instance.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:Resource (xs:any)</code></td><td>Zero or one extensible element can appear after the <code>ddms:security</code> element.</td><td>Zero to many extensible elements can appear after the <code>ddms:security</code> element.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:security/@ISM:excludeFromRollup</code></td><td>Cannot exist in this version.</td><td>New and required in this version. Value must be "true".</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:source/@ISM:*</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:subjectCoverage/@ISM:*</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:temporalCoverage/@ISM:*</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:unknown</code></td><td>Cannot exist in this version.</td><td>Can be used to fill a producer role in this version.</td><td>Same as DDMS 3.0.</td></tr>
-<tr><td><code>ddms:virtualCoverage/@ISM:*</code></td><td>Cannot exist in this version.</td><td>New but optional in this version.</td><td>Same as DDMS 3.0.</td></tr></table>
-<p class="figure">Table 1. Component changes from DDMS 2.0 to DDMS 3.1</p>
+<table width="100%">
+<tr><th width="36%">Component</th><th width="32%">DDMS 3.0 Notes</th><th width="32%">DDMS 3.1 Notes</th></tr>
+<tr><td>XML Namespace</td><td><code>http://metadata.dod.mil/mdr/ns/DDMS/3.0/</code></td><td>Changed to <code>http://metadata.dod.mil/mdr/ns/DDMS/3.1/</code></td></tr>
+<tr><td><code>ddms:dates/@ddms:approvedOn</code></td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:Resource/@ISM:DESVersion</td><td>Required. DESVersion should be 2.</td><td>Required. DESVersion must be 5.</td></tr>
+</table>
+<p class="figure">Table 2. Component changes from DDMS 3.0 to DDMS 3.1</p>
+<br /><br />
 
-<p>The table below lists the complete set of ISM security attributes, and shows which attributes can be used with each version of DDMS. Several of
-the controlled vocabularies which populate these attributes changed between <a href="http://ddmsence.googlecode.com/svn/trunk/data/schemas/2.0/ISM/CVE/">V2</a> and <a hreef="http://ddmsence.googlecode.com/svn/trunk/data/schemas/3.1/ISM/CVEGenerated/">V5</a>.</p>
+<table width="100%">
+<tr><th width="36%">Component</th><th width="32%">DDMS 3.1 Notes</th><th width="32%">DDMS 4.0 Notes</th></tr>
+<tr><td>XML Namespace</td><td><code>http://metadata.dod.mil/mdr/ns/DDMS/3.1/</code></td><td>Changed to <code>urn:us:mil:ces:metadata:ddms:4</code></td></tr>
+<tr><td><code>ddms:boundingBox/ddms:westBL<br />ddms:boundingBox/ddms:eastBL<br />ddms:boundingBox/ddms:southBL<br />ddms:boundingBox/ddms:northBL</td><td>Previously called "WestBL", "EastBL", "SouthBL", and "NorthBL".</td><td>Renamed.</td></tr>
+<tr><td><code>ddms:category/@ISM:*</td><td>Unsupported, but can exist as extensible attributes.</td><td>Supports optional security attributes.</td></tr>
+<tr><td><code>ddms:creator/@ddms:POCType<br />ddms:contributor/@ddms:POCType<br />ddms:pointOfContact/@ddms:POCType<br />ddms:publisher/@ddms:POCType</code></td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:dates/@ddms:receivedOn</code></td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:format/ddms:Media</td><td>Wraps around child components.</td><td>Removed.</td></tr>
+<tr><td><code>ddms:geographicIdentifier/ddms:subDivisionCode</td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:geospatialCoverage/ddms:GeospatialExtent</td><td>Wraps around child components.</td><td>Removed.</td></tr>
+<tr><td><code>ddms:geospatialCoverage/@ddms:precedence<br />ddms:geospatialCoverage/@ddms:order</td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:keyword/@ISM:*</td><td>Unsupported, but can exist as extensible attributes.</td><td>Supports optional security attributes.</td></tr>
+<tr><td><code>ddms:link/@xlink:role</td><td>Could be empty.</td><td>Cannot be empty.</td></tr>
+<tr><td><code>ddms:link/@xlink:label</td><td>Was an <code>xsd:string</code>.</td><td>Must be an <code>xsd:NCName</code>.</td></tr>
+<tr><td><code>ddms:link/@ISM:classification<br />ddms:link/@ISM:ownerProducer</td><td>Cannot exist.</td><td>Required when the link is part of a ddms:revisionRecall element.</td></tr>
+<tr><td><code>ddms:link/@ISM:*</td><td>Cannot exist.</td><td>Optional when the link is part of a ddms:revisionRecall element.</td></tr>
+<tr><td><code>ddms:organization</td><td>Previously called "Organization"</td><td>Renamed.</td></tr>
+<tr><td><code>ddms:organization/@ddms:acronym</td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:organization/ddms:subOrganization</td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:person</td><td>Previously called "Person"</td><td>Renamed.</td></tr>
+<tr><td><code>ddms:relatedResources</td><td>Wraps around ddms:relatedResource elements</td><td>Removed.</td></tr>
+<tr><td><code>ddms:relatedResource/@ddms:relationship</td><td>Cannot exist.</td><td>Required.</td></tr>
+<tr><td><code>ddms:relatedResource/@ddms:direction</td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:relatedResource/@ISM:*</td><td>Cannot exist.</td><td>Supports optional security attributes.</td></tr>
+<tr><td><code>ddms:resource</td><td>Previously called "Resource".</td><td>Renamed.</td></tr>
+<tr><td><code>ddms:resource/ddms:metacardInfo</td><td>Cannot exist.</td><td>New required component introduced (contains many other new components).</td></tr>
+<tr><td><code>ddms:resource/ddms:resourceManagement</td><td>Cannot exist.</td><td>New optional component introduced (contains many other new components).</td></tr>
+<tr><td><code>ddms:resource/ddms:subjectCoverage</td><td>Supports exactly 1 element.</td><td>Supports one to many elements.</td></tr>
+<tr><td><code>ddms:resource/@ISM:DESVersion</td><td>Required. DESVersion must be 5.</td><td>Required. DESVersion must be 7.</td></tr>
+<tr><td><code>ddms:resource/@ISM:noticeDate<br />ddms:resource/@ISM:noticeReason<br />ddms:resource/@ISM:noticeType<br />ddms:resource/@ISM:unregisteredNoticeType</code></td><td>Unsupported, but can exist as extensible attributes.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:resource/@NTK:DESVersion</td><td>Unsupported, but can exist as extensible attributes.</td><td>Required. DESVersion must be 5.</td></tr>
+<tr><td><code>ddms:security/ddms:noticeList<br />ddms:security/NTK:Access</td><td>Cannot exist.</td><td>Optional (contains many other new components).</td></tr>
+<tr><td><code>ddms:service</td><td>Previously called "Service"</td><td>Renamed.</td></tr>
+<tr><td><code>ddms:subjectCoverage/ddms:nonStateActor<br />ddms:subjectCoverage/ddms:productionMetric</td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:subjectCoverage/ddms:Subject</td><td>Wraps around child components.</td><td>Removed.</td></tr>
+<tr><td><code>ddms:temporalCoverage/ddms:TimePeriod</td><td>Wraps around child components.</td><td>Removed.</td></tr>
+<tr><td><code>ddms:type</td><td>Has no child text.</td><td>Optional child text.</td></tr>
+<tr><td><code>ddms:type/@ISM:*</td><td>Cannot exist.</td><td>Supports optional security attributes.</td></tr>
+<tr><td><code>ddms:unknown</td><td>Previously called "Unknown"</td><td>Renamed.</td></tr>
+<tr><td><code>ddms:verticalExtent/ddms:minVerticalExtent<br />ddms:verticalExtent/ddms:maxVerticalExtent</td><td>Previously called "MinVerticalExtent" and "MaxVerticalExtent".</td><td>Renamed.</td></tr>
+</table>
+<p class="figure">Table 3. Component changes from DDMS 3.1 to DDMS 4.0</p>
+<br /><br />
+
+<p>The table below lists the complete set of ISM security attributes, and shows which attributes can be used with each version of DDMS.</p>
 
 <table>
 <tr><th>Attribute</th><th>DDMS 2.0 (ISM V2-PR)</th><th>DDMS 3.0 (ISM V2)</th><th>DDMS 3.1 (ISM V5)</th><th>DDMS 4.0 (ISM V7)</tr>
@@ -326,7 +376,7 @@ the controlled vocabularies which populate these attributes changed between <a h
 <tr><td><code>@ISM:SARIdentifier</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ISM:SCIcontrols</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ISM:typeOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td></tr></table>
-<p class="figure">Table 2. Security Attribute changes from DDMS 2.0 to DDMS 3.1</p>
+<p class="figure">Table 4. Security Attribute changes from DDMS 2.0 to DDMS 4.0</p>
 
 <div class="powerTipDivider"></div>
 
@@ -727,7 +777,7 @@ see the Power Tip on <a href="#tips-configuration">Configurable Properties</a> f
 <tr><td>Xalan XSLTC, bundled with Java 1.5</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>fails, Xalan bug treats XSLT warning as an error</td><td>fails, doesn't support XSLT 2.0</td></tr>
 <tr><td>Xalan XSLTC, bundled with Java 1.6</td><td><code>com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl</code></td><td>supported</td><td>fails, doesn't support XSLT 2.0</td></tr>
 </table>
-<p class="figure">Table 3. XSLT Engines for Schematron Validation</p>
+<p class="figure">Table 5. XSLT Engines for Schematron Validation</p>
 
 <div class="powerTipDivider"></div>
 
@@ -752,7 +802,7 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 <tr><td>xlink.prefix</td><td>Default XLink prefix used when generating components from scratch</td><td><code>xlink</code></td></tr>
 <tr><td>xml.transform.TransformerFactory</td><td>XSLT Engine class name, for Schematron validation<td><code>net.sf.saxon.TransformerFactoryImpl</code></td></tr>
 </table>
-<p class="figure">Table 4. Configurable Properties</p>
+<p class="figure">Table 6. Configurable Properties</p>
 
 <a name="explorations"></a><h3>Explorations</h3>
 
