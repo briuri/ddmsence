@@ -148,15 +148,24 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:subjectCoverage xmlns:ddms=\"").append(version.getNamespace()).append("\"");
 		if (version.isAtLeast("3.0")) {
-			xml.append(" xmlns:ICISM=\"").append(version.getIsmNamespace())
-				.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
+			xml.append(" xmlns:ICISM=\"").append(version.getIsmNamespace()).append(
+				"\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
 		}
-		xml.append(">\n\t<ddms:Subject>\n");
-		xml.append("\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
-		xml.append("\t\t<ddms:keyword ddms:value=\"Uri\" />\n");
-		xml.append("\t\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ").append(
-			"ddms:label=\"DDMS\" />\n");
-		xml.append("\t</ddms:Subject>\n</ddms:subjectCoverage>");
+		xml.append(">\n");
+		if (version.isAtLeast("4.0")) {
+			xml.append("\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
+			xml.append("\t<ddms:keyword ddms:value=\"Uri\" />\n");
+			xml.append("\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ").append(
+				"ddms:label=\"DDMS\" />\n");
+		} else {
+			xml.append("\t<ddms:Subject>\n");
+			xml.append("\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
+			xml.append("\t\t<ddms:keyword ddms:value=\"Uri\" />\n");
+			xml.append("\t\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ")
+				.append("ddms:label=\"DDMS\" />\n");
+			xml.append("\t</ddms:Subject>\n");
+		}
+		xml.append("</ddms:subjectCoverage>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
@@ -182,11 +191,18 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element subjectElement = Util.buildDDMSElement("Subject", null);
-			subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
-			Element element = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
-			element.appendChild(subjectElement);
-			testConstructor(WILL_SUCCEED, element);
+			if (version.isAtLeast("4.0")) {
+				Element subjectElement = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
+				subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
+				testConstructor(WILL_SUCCEED, subjectElement);
+			}
+			else {
+				Element subjectElement = Util.buildDDMSElement("Subject", null);
+				subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
+				Element element = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
+				element.appendChild(subjectElement);
+				testConstructor(WILL_SUCCEED, element);
+			}
 		}
 	}
 
@@ -205,10 +221,16 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// No keywords or categories
-			Element subjectElement = Util.buildDDMSElement("Subject", null);
-			Element element = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
-			element.appendChild(subjectElement);
-			testConstructor(WILL_FAIL, element);
+			if (version.isAtLeast("4.0")) {
+				Element subjectElement = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
+				testConstructor(WILL_FAIL, subjectElement);				
+			}
+			else {
+				Element subjectElement = Util.buildDDMSElement("Subject", null);
+				Element element = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
+				element.appendChild(subjectElement);
+				testConstructor(WILL_FAIL, element);
+			}
 		}
 	}
 
@@ -228,29 +250,55 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Identical keywords
-			Element subjectElement = Util.buildDDMSElement("Subject", null);
-			subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
-			subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
-			Element element = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
-			element.appendChild(subjectElement);
-			component = testConstructor(WILL_SUCCEED, element);
-			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("1 or more keywords have the same value.", component.getValidationWarnings().get(0).getText());
-			assertEquals("/ddms:subjectCoverage/ddms:Subject", component.getValidationWarnings().get(0).getLocator());
+			if (version.isAtLeast("4.0")) {
+				Element subjectElement = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
+				subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
+				subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
+				component = testConstructor(WILL_SUCCEED, subjectElement);
+				assertEquals(1, component.getValidationWarnings().size());
+				assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+				assertEquals("1 or more keywords have the same value.", component.getValidationWarnings().get(0).getText());
+				assertEquals("/ddms:subjectCoverage", component.getValidationWarnings().get(0).getLocator());
+
+			}
+			else {
+				Element subjectElement = Util.buildDDMSElement("Subject", null);
+				subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
+				subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
+				Element element = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
+				element.appendChild(subjectElement);
+				component = testConstructor(WILL_SUCCEED, element);
+				assertEquals(1, component.getValidationWarnings().size());
+				assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+				assertEquals("1 or more keywords have the same value.", component.getValidationWarnings().get(0).getText());
+				assertEquals("/ddms:subjectCoverage/ddms:Subject", component.getValidationWarnings().get(0).getLocator());
+			}
 
 			// Identical categories
-			subjectElement = Util.buildDDMSElement("Subject", null);
-			subjectElement.appendChild(getCategories().get(0).getXOMElementCopy());
-			subjectElement.appendChild(getCategories().get(0).getXOMElementCopy());
-			element = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
-			element.appendChild(subjectElement);
-			component = testConstructor(WILL_SUCCEED, element);
-			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("1 or more categories have the same value.", component.getValidationWarnings().get(0)
-				.getText());
-			assertEquals("/ddms:subjectCoverage/ddms:Subject", component.getValidationWarnings().get(0).getLocator());
+			if (version.isAtLeast("4.0")) {
+				Element subjectElement = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
+				subjectElement.appendChild(getCategories().get(0).getXOMElementCopy());
+				subjectElement.appendChild(getCategories().get(0).getXOMElementCopy());
+				component = testConstructor(WILL_SUCCEED, subjectElement);
+				assertEquals(1, component.getValidationWarnings().size());
+				assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+				assertEquals("1 or more categories have the same value.", component.getValidationWarnings().get(0)
+					.getText());
+				assertEquals("/ddms:subjectCoverage", component.getValidationWarnings().get(0).getLocator());
+			}
+			else {
+				Element subjectElement = Util.buildDDMSElement("Subject", null);
+				subjectElement.appendChild(getCategories().get(0).getXOMElementCopy());
+				subjectElement.appendChild(getCategories().get(0).getXOMElementCopy());
+				Element element = Util.buildDDMSElement(SubjectCoverage.getName(version), null);
+				element.appendChild(subjectElement);
+				component = testConstructor(WILL_SUCCEED, element);
+				assertEquals(1, component.getValidationWarnings().size());
+				assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+				assertEquals("1 or more categories have the same value.", component.getValidationWarnings().get(0)
+					.getText());
+				assertEquals("/ddms:subjectCoverage/ddms:Subject", component.getValidationWarnings().get(0).getLocator());
+			}
 		}
 	}
 

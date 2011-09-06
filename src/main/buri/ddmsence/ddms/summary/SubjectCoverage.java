@@ -41,9 +41,9 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:subjectCoverage.
  * 
  * <p>
- * A subjectCoverage element contains a locally defined Subject construct. This construct is a container for the
- * keywords and categories of a resource. It exists only inside of a ddms:format parent, so it is not implemented as a
- * Java object.
+ * Before DDMS 4.0, a subjectCoverage element contains a locally defined Subject construct. This construct is a 
+ * container for the keywords and categories of a resource. It exists only inside of a ddms:subjectCoverage parent, 
+ * so it is not implemented as a Java object. Starting in DDMS 4.0, the Subject wrapper has been removed.
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
@@ -93,7 +93,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		try {
 			Util.requireDDMSValue("subjectCoverage element", element);
 			setXOMElement(element, false);
-			Element subjectElement = element.getFirstChildElement(SUBJECT_NAME, element.getNamespaceURI());
+			Element subjectElement = getSubjectElement();
 			_cachedKeywords = new ArrayList<Keyword>();
 			_cachedCategories = new ArrayList<Category>();
 			if (subjectElement != null) {
@@ -131,15 +131,19 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 				keywords = Collections.emptyList();
 			if (categories == null)
 				categories = Collections.emptyList();
-			Element subjectElement = Util.buildDDMSElement(SUBJECT_NAME, null);
+			Element element = Util.buildDDMSElement(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), null);
+			
+			Element subjectElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? element 
+				: Util.buildDDMSElement(SUBJECT_NAME, null);
 			for (Keyword keyword : keywords) {
 				subjectElement.appendChild(keyword.getXOMElementCopy());
 			}
 			for (Category category : categories) {
 				subjectElement.appendChild(category.getXOMElementCopy());
 			}
-			Element element = Util.buildDDMSElement(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), null);
-			element.appendChild(subjectElement);
+
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
+				element.appendChild(subjectElement);
 
 			_cachedKeywords = keywords;
 			_cachedCategories = categories;
@@ -168,12 +172,12 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()));
-		Element subjectElement = getChild(SUBJECT_NAME);
+		Element subjectElement = getSubjectElement();
 		Util.requireDDMSValue("Subject element", subjectElement);
-		int count = subjectElement
-			.getChildElements(Keyword.getName(getDDMSVersion()), subjectElement.getNamespaceURI()).size()
-			+ subjectElement.getChildElements(Category.getName(getDDMSVersion()), subjectElement.getNamespaceURI())
-				.size();
+		String namespace = subjectElement.getNamespaceURI();
+		int count = 
+			subjectElement.getChildElements(Keyword.getName(getDDMSVersion()), namespace).size()
+			+ subjectElement.getChildElements(Category.getName(getDDMSVersion()), namespace).size();
 		if (count < 1)
 			throw new InvalidDDMSException("At least 1 keyword or category must exist.");
 		for (Keyword keyword : getKeywords())
@@ -217,7 +221,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		return (ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix() + ":" + SUBJECT_NAME);
+		return (getDDMSVersion().isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX
+			+ getXOMElement().getNamespacePrefix() + ":" + SUBJECT_NAME);
 	}
 	
 	/**
@@ -279,6 +284,14 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
 		return ("subjectCoverage");
+	}
+
+	/**
+	 * Accessor for the element which contains the keywords and categories. Before DDMS 4.0, this is a wrapper element
+	 * called ddms:Subject. Starting in DDMS 4.0, it is the ddms:subjectCoverage element itself.
+	 */
+	private Element getSubjectElement() {
+		return (getDDMSVersion().isAtLeast("4.0") ? getXOMElement() : getChild(SUBJECT_NAME));
 	}
 	
 	/**
