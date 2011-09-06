@@ -35,9 +35,7 @@
 		<ddms:mimeType>text/xml</ddms:mimeType>
 	</ddms:format>
 	<ddms:subjectCoverage>
-		<ddms:Subject>
-			<ddms:keyword ddms:value="DDMSence"/>
-		</ddms:Subject>
+		<ddms:keyword ddms:value="DDMSence"/>
 	</ddms:subjectCoverage>
 	<ddms:virtualCoverage ddms:address="123.456.789.0" ddms:protocol="IP" />
 	<ddms:temporalCoverage>

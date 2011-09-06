@@ -174,7 +174,7 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
-	<xs:element name="subjectCoverage" type="SubjectCoverageType">
+	<xs:element name="subjectCoverage" type="SubjectType">
 		<xs:annotation>
 			<xs:appinfo>
 				<mdr:definition>The range of concepts that characterize the subject matter of the resource.  See DDMS Spec Cateogry: Subject.  
@@ -714,18 +714,6 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 		</xs:annotation>
 		<xs:restriction base="xs:string"/>
 	</xs:simpleType>
-	<xs:complexType name="SubjectCoverageType">
-		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>Type used to model the subjectCoverage element.
-			</mdr:definition>
-			</xs:appinfo>
-		</xs:annotation>
-		<xs:sequence>
-			<xs:element ref="Subject"/>
-		</xs:sequence>
-		<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
-	</xs:complexType>
 	<xs:complexType name="SubjectType">
 		<xs:annotation>
 			<xs:appinfo>
@@ -736,6 +724,7 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 			<xs:element ref="category"/>
 			<xs:element ref="keyword"/>
 		</xs:choice>
+		<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
 	</xs:complexType>
 	<xs:complexType name="CompoundKeywordIdentifierType">
 		<xs:annotation>

@@ -487,9 +487,14 @@ public class ResourceTest extends AbstractComponentTestCase {
 		}
 		xml.append("\t</ddms:format>\n");
 		xml.append("\t<ddms:subjectCoverage>\n");
-		xml.append("\t\t<ddms:Subject>\n");
-		xml.append("\t\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
-		xml.append("\t\t</ddms:Subject>\n");
+		if (version.isAtLeast("4.0")) {
+			xml.append("\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
+		}
+		else {
+			xml.append("\t\t<ddms:Subject>\n");
+			xml.append("\t\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
+			xml.append("\t\t</ddms:Subject>\n");
+		}
 		xml.append("\t</ddms:subjectCoverage>\n");
 		xml.append("\t<ddms:virtualCoverage ddms:address=\"123.456.789.0\" ddms:protocol=\"IP\" />\n");
 		xml.append("\t<ddms:temporalCoverage>\n");
