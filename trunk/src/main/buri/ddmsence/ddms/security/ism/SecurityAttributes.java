@@ -43,7 +43,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * Attribute group for the ICISM markings used throughout DDMS.
+ * Attribute group for the ISM markings used throughout DDMS.
  * 
  * <p>The DDMS documentation does not provide sample HTML/Text output for every attribute, so a best guess was taken. 
  * In general, the HTML/Text output of security attributes will be prefixed with the name of the element being marked.
@@ -67,30 +67,30 @@ import buri.ddmsence.util.Util;
  * point to a classpath accessible directory containing your enumeration XML files.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ICISM:atomicEnergyMarkings</u>: (optional, starting in DDMS 3.1)<br />
- * <u>ICISM:classification</u>: (optional)<br />
- * <u>ICISM:classificationReason</u>: (optional)<br />
- * <u>ICISM:classifiedBy</u>: (optional)<br />
- * <u>ICISM:compilationReason</u>: (optional, starting in DDMS 3.0)<br />
- * <u>ICISM:compliesWith</u>: (optional, v3.1 only)<br />
- * <u>ICISM:dateOfExemptedSource</u>: (optional, DDMS 2.0 and 3.0 only)<br />
- * <u>ICISM:declassDate</u>: (optional)<br />
- * <u>ICISM:declassEvent</u>: (optional)<br />
- * <u>ICISM:declassException</u>: (optional)<br />
- * <u>ICISM:declassManualReview</u>: (optional, DDMS 2.0 only)<br />
- * <u>ICISM:derivativelyClassifiedBy</u>: (optional)<br />
- * <u>ICISM:derivedFrom</u>: (optional)<br />
- * <u>ICISM:displayOnlyTo</u>: (optional, starting in DDMS 3.1)<br />
- * <u>ICISM:disseminationControls</u>: (optional)<br />
- * <u>ICISM:FGIsourceOpen</u>: (optional)<br />
- * <u>ICISM:FGIsourceProtected</u>: (optional)<br />
- * <u>ICISM:nonICmarkings</u>: (optional)<br />
- * <u>ICISM:nonUSControls</u>: (optional, starting in DDMS 3.1)<br />
- * <u>ICISM:ownerProducer</u>: (optional)<br />
- * <u>ICISM:releasableTo</u>: (optional)<br />
- * <u>ICISM:SARIdentifier</u>: (optional)<br />
- * <u>ICISM:SCIcontrols</u>: (optional)<br />
- * <u>ICISM:typeOfExemptedSource</u>: (optional, DDMS 2.0 and 3.0 only)<br />
+ * <u>ISM:atomicEnergyMarkings</u>: (optional, starting in DDMS 3.1)<br />
+ * <u>ISM:classification</u>: (optional)<br />
+ * <u>ISM:classificationReason</u>: (optional)<br />
+ * <u>ISM:classifiedBy</u>: (optional)<br />
+ * <u>ISM:compilationReason</u>: (optional, starting in DDMS 3.0)<br />
+ * <u>ISM:compliesWith</u>: (optional, v3.1 only)<br />
+ * <u>ISM:dateOfExemptedSource</u>: (optional, DDMS 2.0 and 3.0 only)<br />
+ * <u>ISM:declassDate</u>: (optional)<br />
+ * <u>ISM:declassEvent</u>: (optional)<br />
+ * <u>ISM:declassException</u>: (optional)<br />
+ * <u>ISM:declassManualReview</u>: (optional, DDMS 2.0 only)<br />
+ * <u>ISM:derivativelyClassifiedBy</u>: (optional)<br />
+ * <u>ISM:derivedFrom</u>: (optional)<br />
+ * <u>ISM:displayOnlyTo</u>: (optional, starting in DDMS 3.1)<br />
+ * <u>ISM:disseminationControls</u>: (optional)<br />
+ * <u>ISM:FGIsourceOpen</u>: (optional)<br />
+ * <u>ISM:FGIsourceProtected</u>: (optional)<br />
+ * <u>ISM:nonICmarkings</u>: (optional)<br />
+ * <u>ISM:nonUSControls</u>: (optional, starting in DDMS 3.1)<br />
+ * <u>ISM:ownerProducer</u>: (optional)<br />
+ * <u>ISM:releasableTo</u>: (optional)<br />
+ * <u>ISM:SARIdentifier</u>: (optional)<br />
+ * <u>ISM:SCIcontrols</u>: (optional)<br />
+ * <u>ISM:typeOfExemptedSource</u>: (optional, DDMS 2.0 and 3.0 only)<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -279,7 +279,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * The classification and ownerProducer exist as parameters, and any other security markings are passed in as a
 	 * mapping of local attribute names to String values. This approach is a compromise between a constructor with over
 	 * seventeen parameters, and the added complexity of a step-by-step factory/builder approach. If any name-value
-	 * pairing does not correlate with a valid ICISM attribute, it will be ignored.
+	 * pairing does not correlate with a valid ISM attribute, it will be ignored.
 	 * </p>
 	 * 
 	 * <p>
@@ -289,7 +289,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * 
 	 * @param classification the classification level, which must be a legal classification type (optional)
 	 * @param ownerProducers a list of ownerProducers (optional)
-	 * @param otherAttributes a name/value mapping of other ICISM attributes. The value will be a String value, as it
+	 * @param otherAttributes a name/value mapping of other ISM attributes. The value will be a String value, as it
 	 *            appears in XML.
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
@@ -313,7 +313,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 				_cachedDateOfExemptedSource = getFactory().newXMLGregorianCalendar(dateOfExemptedSource);
 			}
 			catch (IllegalArgumentException e) {
-				throw new InvalidDDMSException("The ICISM:dateOfExemptedSource attribute is not in a valid date format.");
+				throw new InvalidDDMSException("The ISM:dateOfExemptedSource attribute is not in a valid date format.");
 			}
 		}
 		String declassDate = otherAttributes.get(DECLASS_DATE_NAME);
@@ -322,7 +322,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 				_cachedDeclassDate = getFactory().newXMLGregorianCalendar(declassDate);
 			}
 			catch (IllegalArgumentException e) {
-				throw new InvalidDDMSException("The ICISM:declassDate attribute is not in a valid date format.");
+				throw new InvalidDDMSException("The ISM:declassDate attribute is not in a valid date format.");
 			}
 		}
 		_cachedDeclassEvent = otherAttributes.get(DECLASS_EVENT_NAME);

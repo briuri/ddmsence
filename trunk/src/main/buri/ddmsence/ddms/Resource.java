@@ -73,7 +73,7 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:Resource (the top-level element of a DDMS record).
  * 
  * <p>
- * Starting in DDMS 3.0, resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0 schema still allows 
+ * Starting in DDMS 3.0, resources have additional ISM attributes which did not exist in 2.0. However, the 2.0 schema still allows 
  * "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present.
  * </p>
  *  
@@ -113,18 +113,18 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ICISM:resourceElement</u>: Identifies whether this tag sets the classification for the xml file as a whole
+ * <u>ISM:resourceElement</u>: Identifies whether this tag sets the classification for the xml file as a whole
  * (required, starting in DDMS 3.0)<br />
- * <u>ICISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in 
+ * <u>ISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in 
  * DDMS 3.0)<br />
- * <u>ICISM:DESVersion</u>: Specifies the version of the Digital Encryption Schema used for the security
+ * <u>ISM:DESVersion</u>: Specifies the version of the Digital Encryption Schema used for the security
  * markings on this record. (required, starting in DDMS 3.0)<br />
- * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
+ * This class is also decorated with ISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
  * ownerProducer attributes are required. Optional {@link ExtensibleAttributes} can also be applied.<br /><br />
- * Starting in DDMS 3.0, the ICISM attributes explicitly defined in the schema should appear in the SecurityAttributes, not
+ * Starting in DDMS 3.0, the ISM attributes explicitly defined in the schema should appear in the SecurityAttributes, not
  * the ExtensibleAttributes. Attempts to load them as ExtensibleAttributes will throw an InvalidDDMSException.
  * <br /><br />
- * In DDMS 2.0, there are no ICISM attributes explicitly defined in the schema, so you can load them in any way you 
+ * In DDMS 2.0, there are no ISM attributes explicitly defined in the schema, so you can load them in any way you 
  * want. It is recommended that you load them as SecurityAttributes anyhow, for consistency with newer DDMS resources. 
  * Please see the "Power Tips" on the Extensible Layer (on the DDMSence home page) for details. 
  * </td></tr></table>
@@ -192,7 +192,7 @@ public final class Resource extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
-	 * <p>Starting in DDMS 3.0, resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0
+	 * <p>Starting in DDMS 3.0, resources have additional ISM attributes which did not exist in 2.0. However, the 2.0
 	 * schema still allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present.</p>
 	 * 
 	 * @param element the XOM element representing this
@@ -379,7 +379,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * multiple identifier components), those components will be stored and output in the order of the list. If only 1
 	 * instance can be supported, the last one in the list will be the one used. </p>
 	 * 
-	 * <p>Starting in DDMS 3.0, resources have additional ICISM attributes which did not exist in 2.0. However, the 2.0
+	 * <p>Starting in DDMS 3.0, resources have additional ISM attributes which did not exist in 2.0. However, the 2.0
 	 * schema still allows "any" attributes on the Resource, so the attribute values will be loaded if present. </p>
 	 * 
 	 * @param topLevelComponents a list of top level components
@@ -415,7 +415,7 @@ public final class Resource extends AbstractBaseComponent {
 					_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
 				}
 				catch (IllegalArgumentException e) {
-					throw new InvalidDDMSException("The ICISM:createDate attribute is not in a valid date format.");
+					throw new InvalidDDMSException("The ISM:createDate attribute is not in a valid date format.");
 				}
 				Util.addAttribute(element, ismPrefix, CREATE_DATE_NAME, 
 					DDMSVersion.getCurrentVersion().getIsmNamespace(), getCreateDate().toXMLFormat());

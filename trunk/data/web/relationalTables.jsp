@@ -29,7 +29,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<code>&lt;NULL&gt;</code> value, to support a bottom-up approach to building DDMS resources from scratch.</li>
 <li>If a table column is a character string and a value is not provided, an empty string should be favored instead of <code>&lt;NULL&gt;</code>.</li>
 <li>The intent of the tables is to model the resource data, not schema data. XML namespaces and other schema constructs are not necessarily modeled.</li>
-<li>Reference tables (i.e. the four types of producers, or the valid names of ICISM security attributes) are not included here. Columns which have string 
+<li>Reference tables (i.e. the four types of producers, or the valid names of ISM security attributes) are not included here. Columns which have string 
 	values for these constants could just as easily have foreign keys to a reference table.</li>
 <li>Most validation constraints are omitted from this model, since it is assumed that a validating library like DDMSence would be placed in front of the tables.</li>
 <li>Character string lengths are fairly arbitrary, although the numbers I chose are relatively reasonable for the types of data the fields contain. 
@@ -1579,7 +1579,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
-			Unlike the ICISM Security Attributes table, where each row is an attribute, the rows in this table represent a complete set of 
+			Unlike the ISM Security Attributes table, where each row is an attribute, the rows in this table represent a complete set of 
 			SRS information for a single element. Because the required/optional status of each attribute varies based on the parent, 
 			no constraints enforce any rules here. 
 		</td>
@@ -2086,7 +2086,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			ICISM Security Attributes
+			ISM Security Attributes
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -2121,7 +2121,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
-			Each row in this table represents a single ICISM attribute, because the "complete" set of attributes is subject to change, and most values are optional.
+			Each row in this table represents a single ISM attribute, because the "complete" set of attributes is subject to change, and most values are optional.
 		</td>
 	</tr>
 	<tr class="relRow">

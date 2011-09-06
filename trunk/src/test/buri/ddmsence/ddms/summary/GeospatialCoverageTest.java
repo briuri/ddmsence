@@ -99,7 +99,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the ICISM attributes HTML output, if the DDMS Version supports it.
+	 * Returns the ISM attributes HTML output, if the DDMS Version supports it.
 	 */
 	private String getHtmlIcism() {
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
@@ -109,7 +109,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the ICISM attributes Text output, if the DDMS Version supports it.
+	 * Returns the ISM attributes Text output, if the DDMS Version supports it.
 	 */
 	private String getTextIcism() {
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
@@ -149,8 +149,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:geospatialCoverage xmlns:ddms=\"").append(version.getNamespace()).append("\"");
 		if (version.isAtLeast("3.0")) {
-			xml.append(" xmlns:ICISM=\"").append(version.getIsmNamespace())
-				.append("\" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
+			xml.append(" xmlns:ISM=\"").append(version.getIsmNamespace())
+				.append("\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n\t");
 		xml.append("<ddms:GeospatialExtent>\n\t\t<ddms:geographicIdentifier>\n\t\t\t");

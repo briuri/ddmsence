@@ -2,9 +2,9 @@
 <!--  Represents a single ddms:pointOfContact element, for unit testing -->
 <ddms:pointOfContact
 	xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/"
-	xmlns:ICISM="urn:us:gov:ic:ism"
-	ICISM:classification="U"
-	ICISM:ownerProducer="USA">
+	xmlns:ISM="urn:us:gov:ic:ism"
+	ISM:classification="U"
+	ISM:ownerProducer="USA">
 	<ddms:Unknown>
 		<ddms:name>UnknownEntity</ddms:name>
 		<ddms:phone>703-882-1000</ddms:phone>

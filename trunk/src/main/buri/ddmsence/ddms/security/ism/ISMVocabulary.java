@@ -48,7 +48,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * Representation of the Controlled Vocabulary enumerations used by ICISM attributes.
+ * Representation of the Controlled Vocabulary enumerations used by ISM attributes.
  * 
  * <p>
  * The set of CVEs used can be configured with the configurable property, <code>icism.cve.enumLocation</code>,

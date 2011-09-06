@@ -133,13 +133,13 @@ public class SourceTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:source xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-			xml.append("xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
+			xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
 			.append("\" ");
 		xml.append("ddms:schemaQualifier=\"").append(TEST_SCHEMA_QUALIFIER).append("\" ");
 		xml.append("ddms:schemaHref=\"").append(TEST_SCHEMA_HREF).append("\" ");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-			xml.append("ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\" ");
+			xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ");
 		xml.append("/>");
 		return (xml.toString());
 	}

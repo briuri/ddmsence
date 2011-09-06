@@ -2,7 +2,7 @@
 <!--  Represents a single ddms:keyword element, for unit testing -->
 <ddms:keyword
 	xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" 
-	xmlns:ICISM="urn:us:gov:ic:ism"
+	xmlns:ISM="urn:us:gov:ic:ism"
 	ddms:value="Tornado" 
-	ICISM:classification="U"
-	ICISM:ownerProducer="USA" />
+	ISM:classification="U"
+	ISM:ownerProducer="USA" />

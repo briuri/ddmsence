@@ -144,11 +144,11 @@ public class PublisherTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		xml.append("<ddms:publisher xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
-		xml.append("xmlns:ICISM=\"").append(version.getIsmNamespace()).append("\"");
+		xml.append("xmlns:ISM=\"").append(version.getIsmNamespace()).append("\"");
 		if (isDDMS40OrGreater()) {
 			xml.append(" ddms:POCType=\"ICD-710\"");
 		}
-		xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t<ddms:").append(Service.getName(version)).append(">\n");
+		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(Service.getName(version)).append(">\n");
 		xml.append("\t\t<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>\n");
 		xml.append("\t\t<ddms:phone>703-882-1000</ddms:phone>\n");
 		xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");

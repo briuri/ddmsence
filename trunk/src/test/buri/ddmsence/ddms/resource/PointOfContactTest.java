@@ -149,11 +149,11 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:pointOfContact xmlns:ddms=\"").append(version.getNamespace())
 			.append("\" ");
-		xml.append("xmlns:ICISM=\"").append(version.getIsmNamespace()).append("\"");
+		xml.append("xmlns:ISM=\"").append(version.getIsmNamespace()).append("\"");
 		if (isDDMS40OrGreater()) {
 			xml.append(" ddms:POCType=\"ICD-710\"");
 		}
-		xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">\n\t");
+		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t");
 		if ("2.0".equals(version.getVersion())) {
 			xml.append("<ddms:").append(Service.getName(version)).append(">\n");
 			xml.append("\t\t<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>\n");

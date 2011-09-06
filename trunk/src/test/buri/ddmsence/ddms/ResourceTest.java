@@ -267,7 +267,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			html.append("<meta name=\"security.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"security.ownerProducer\" content=\"USA\" />\n");
 		} else {
-			// Adding the optional ICISM tag allows the namespace declaration to definitely be in the Resource element.
+			// Adding the optional ISM tag allows the namespace declaration to definitely be in the Resource element.
 			html.append("<meta name=\"security.DESVersion\" content=\"2\" />\n");
 		}
 		html.append("<meta name=\"identifier.qualifier\" content=\"URI\" />\n");
@@ -351,7 +351,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			text.append("classification: U\n");
 			text.append("ownerProducer: USA\n");
 		} else {
-			// Adding the optional ICISM tag allows the namespace declaration to definitely be in the Resource element.
+			// Adding the optional ISM tag allows the namespace declaration to definitely be in the Resource element.
 			text.append("DESVersion: 2\n");
 		}
 		text.append("identifier qualifier: URI\n");
@@ -429,21 +429,21 @@ public class ResourceTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:Resource xmlns:ddms=\"").append(version.getNamespace())
-			.append("\" xmlns:ICISM=\"");
+			.append("\" xmlns:ISM=\"");
 		xml.append(version.getIsmNamespace()).append("\"");
 		if (version.isAtLeast("3.0")) {
-			xml.append(" ICISM:resourceElement=\"true\" ICISM:DESVersion=\"").append(getDESVersion())
-				.append("\" ICISM:createDate=\"2010-01-21\" ")
-				.append("ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
+			xml.append(" ISM:resourceElement=\"true\" ISM:DESVersion=\"").append(getDESVersion())
+				.append("\" ISM:createDate=\"2010-01-21\" ")
+				.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		} else {
-			// Adding the optional ICISM tag allows the namespace declaration to definitely be in the Resource element.
-			xml.append(" ICISM:DESVersion=\"2\"");
+			// Adding the optional ISM tag allows the namespace declaration to definitely be in the Resource element.
+			xml.append(" ISM:DESVersion=\"2\"");
 		}
 		xml.append(">\n");
 		xml.append("\t<ddms:identifier ddms:qualifier=\"URI\" ddms:value=\"urn:buri:ddmsence:testIdentifier\" />\n");
-		xml.append("\t<ddms:title ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">DDMSence</ddms:title>\n");
-		xml.append("\t<ddms:subtitle ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">Version 0.1</ddms:subtitle>\n");
-		xml.append("\t<ddms:description ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">A transformation service.</ddms:description>\n");
+		xml.append("\t<ddms:title ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DDMSence</ddms:title>\n");
+		xml.append("\t<ddms:subtitle ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Version 0.1</ddms:subtitle>\n");
+		xml.append("\t<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">A transformation service.</ddms:description>\n");
 		xml.append("\t<ddms:language ddms:qualifier=\"http://purl.org/dc/elements/1.1/language\" ddms:value=\"en\" />\n");
 		xml.append("\t<ddms:dates ddms:created=\"2003\" />\n");
 		xml.append("\t<ddms:rights ddms:privacyAct=\"true\" ddms:intellectualProperty=\"true\" ddms:copyright=\"true\" />\n");
@@ -530,8 +530,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("\t</ddms:relatedResources>\n");
 		xml.append("\t<ddms:security ");
 		if (version.isAtLeast("3.0"))
-			xml.append("ICISM:excludeFromRollup=\"true\" ");
-		xml.append("ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\" />\n");
+			xml.append("ISM:excludeFromRollup=\"true\" ");
+		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" />\n");
 		xml.append("</ddms:Resource>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
@@ -1221,7 +1221,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		createComponents();
 		String ismPrefix = PropertyReader.getProperty("ism.prefix");
 
-		// ICISM:DESVersion in element
+		// ISM:DESVersion in element
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
 		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, version.getIsmNamespace(),
 			String.valueOf(getDESVersion()));
@@ -1235,7 +1235,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		assertTrue(component.getSecurityAttributes().isEmpty());
 		assertEquals(0, component.getExtensibleAttributes().getAttributes().size());
 
-		// ICISM:classification in element
+		// ISM:classification in element
 		element = Util.buildDDMSElement(Resource.getName(version), null);
 		Util.addAttribute(element, ismPrefix, SecurityAttributes.CLASSIFICATION_NAME, version.getIsmNamespace(), "U");
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
@@ -1265,9 +1265,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		createComponents();
 
 		// This can be a parameter or an extensible.
-		Attribute icAttribute = new Attribute("ICISM:DESVersion", version.getIsmNamespace(), "2");
+		Attribute icAttribute = new Attribute("ISM:DESVersion", version.getIsmNamespace(), "2");
 		// This can be a securityAttribute or an extensible.
-		Attribute secAttribute = new Attribute("ICISM:classification", version.getIsmNamespace(), "U");
+		Attribute secAttribute = new Attribute("ISM:classification", version.getIsmNamespace(), "U");
 		// This can be an extensible.
 		Attribute uniqueAttribute = new Attribute("ddmsence:confidence", "http://ddmsence.urizone.net/", "95");
 		List<Attribute> exAttr = new ArrayList<Attribute>();
@@ -1362,7 +1362,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			// DESVersion in parameter AND extensible.
 			try {
 				List<Attribute> exAttr = new ArrayList<Attribute>();
-				exAttr.add(new Attribute("ICISM:DESVersion", version.getIsmNamespace(), "2"));
+				exAttr.add(new Attribute("ISM:DESVersion", version.getIsmNamespace(), "2"));
 				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, getDESVersion(),
 					SecurityAttributesTest.getFixture(false), new ExtensibleAttributes(exAttr));
 				fail("Allowed invalid data.");
@@ -1373,7 +1373,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			// classification in securityAttributes AND extensible.
 			try {
 				List<Attribute> exAttr = new ArrayList<Attribute>();
-				exAttr.add(new Attribute("ICISM:classification", version.getIsmNamespace(), "U"));
+				exAttr.add(new Attribute("ISM:classification", version.getIsmNamespace(), "U"));
 				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, SecurityAttributesTest.getFixture(false),
 					new ExtensibleAttributes(exAttr));
 				fail("Allowed invalid data.");
@@ -1471,7 +1471,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		element.appendChild(TEST_SECURITY.getXOMElementCopy());
 		Resource resource = testConstructor(WILL_SUCCEED, element);
 
-		// ICISM:declassManualReview should not get picked up as an extensible attribute
+		// ISM:declassManualReview should not get picked up as an extensible attribute
 		assertEquals(0, resource.getExtensibleAttributes().getAttributes().size());
 	}
 

@@ -44,7 +44,7 @@ import buri.ddmsence.util.Util;
  * (optional)<br />
  * <u>ddms:schemaQualifier</u>: the schema type (optional)<br />
  * <u>ddms:schemaHref</u>: a resolvable reference to the schema (optional)<br />
- * This class is also decorated with ICISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
+ * This class is also decorated with ISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 

@@ -28,7 +28,7 @@ various elements and attributes. Please note that DDMSence currently validates t
    
    &lt;iso:title&gt;Test ISO Schematron File for DDMSence (DDMS 3.1)&lt;/iso:title&gt;
    &lt;iso:ns prefix='ddms' uri='http://metadata.dod.mil/mdr/ns/DDMS/3.1/' /&gt;
-   &lt;iso:ns prefix='ICISM' uri='urn:us:gov:ic:ism' /&gt;
+   &lt;iso:ns prefix='ISM' uri='urn:us:gov:ic:ism' /&gt;
    &lt;iso:ns prefix='gml' uri='http://www.opengis.net/gml/3.2' /&gt;
    &lt;iso:ns prefix='xlink' uri='http://www.w3.org/1999/xlink' /&gt;
 

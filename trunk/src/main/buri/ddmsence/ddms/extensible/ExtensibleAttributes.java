@@ -104,7 +104,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			// Skip ddms: attributes.
 			if (element.getNamespaceURI().equals(attribute.getNamespaceURI()))
 				continue;
-			// Skip reserved ICISM attributes on Resource and Category
+			// Skip reserved ISM attributes on Resource and Category
 			DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI());
 			if (Resource.getName(version).equals(element.getLocalName())
 				|| Category.getName(version).equals(element.getLocalName())
@@ -137,7 +137,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	/**
 	 * Compiles lists of attribute names which should be ignored when creating extensible attributes. In most cases,
 	 * this is easy to determine, because namespace="##other" forces all extensible attributes to be in a non-DDMS
-	 * namespace, so the Resource is the only element that might encounter collisions (it has ICISM attributes that
+	 * namespace, so the Resource is the only element that might encounter collisions (it has ISM attributes that
 	 * should be ignored).
 	 * 
 	 * @param parentNamespace the namespace of the element which owns these attributes

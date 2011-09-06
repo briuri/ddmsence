@@ -124,12 +124,12 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		xml.append("<ddms:virtualCoverage xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
 			.append("\"");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			xml.append(" xmlns:ICISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\"");
+			xml.append(" xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\"");
 		}
 		xml.append(" ddms:address=\"").append(TEST_ADDRESS).append("\" ddms:protocol=\"").append(TEST_PROTOCOL)
 			.append("\"");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\"");
+			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		}
 		xml.append(" />");
 		return (xml.toString());

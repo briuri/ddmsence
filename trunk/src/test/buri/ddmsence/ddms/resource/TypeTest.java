@@ -127,12 +127,12 @@ public class TypeTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:type xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
 		if (isDDMS40OrGreater()) {
-			xml.append("xmlns:ICISM=\"").append(version.getIsmNamespace()).append("\" ");
+			xml.append("xmlns:ISM=\"").append(version.getIsmNamespace()).append("\" ");
 		}
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
 			.append("\"");
 		if (isDDMS40OrGreater()) {
-			xml.append(" ICISM:classification=\"U\" ICISM:ownerProducer=\"USA\">Description</ddms:type>");
+			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Description</ddms:type>");
 		} else
 			xml.append(" />");
 		return (xml.toString());
