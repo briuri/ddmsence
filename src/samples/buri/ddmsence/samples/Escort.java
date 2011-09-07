@@ -252,20 +252,24 @@ public class Escort {
 				String surname = null;
 				String userID = null;
 				String affiliation = null;
+				String acronym = null;
 				if (Person.getName(version).equals(entityType)) {
 					surname = readString("the Person surname [testSurname]");
 					userID = readString("the Person userID [testID]");
 					affiliation = readString("the Person affiliation [testOrg]");
 				}
+				if (Organization.getName(version).equals(entityType)) {
+					acronym = readString("the Organization acronym [testAcronym]");
+				}
 				String classification = readString("the producer classification [U]");
 				String ownerProducers = readString("the producer's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				
+								
 				IProducerEntity entity = null;
 				if (Person.getName(version).equals(entityType))
 					entity = new Person(names, surname, phones, emails, userID, affiliation);
 				else if (Organization.getName(version).equals(entityType))
-					entity = new Organization(names, phones, emails);
+					entity = new Organization(names, phones, emails, acronym, null);
 				else if (Service.getName(version).equals(entityType))
 					entity = new Service(names, phones, emails);
 				else 

@@ -82,7 +82,7 @@ public class ProducerEntityTest extends TestCase {
 			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
 			List<String> names = new ArrayList<String>();
 			names.add("DISA");
-			new Organization(names, null, null, attr);
+			new Organization(names, null, null, null, attr);
 		}
 	}
 

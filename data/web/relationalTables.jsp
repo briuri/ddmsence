@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 09/03/2011</p>
+<p align="right"><b>Last Update:</b> 09/07/2011</p>
 
 <a name="top"></a><h1>Relational Database Model for DDMS</h1>
 
@@ -488,6 +488,10 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>	
 	<tr class="relRow">
 		<td class="relField">affiliation</td><td class="relRules">char(256)</td><td>This is a Person-specific column, containing an organizational affiliation for a user. 
+			Optional.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">acronym</td><td class="relRules">char(64)</td><td>This is an Organization-specific column, containing an organizational acronym. 
 			Optional.</td>
 	</tr>	
 </table>
