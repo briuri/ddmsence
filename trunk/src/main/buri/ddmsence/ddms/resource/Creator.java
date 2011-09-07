@@ -136,7 +136,6 @@ public class Creator extends AbstractProducerRole {
 		 * @see IBuilder#commit()
 		 */
 		public Creator commit() throws InvalidDDMSException {
-			setProducerType(Creator.getName(DDMSVersion.getCurrentVersion()));
 			return (isEmpty() ? null : new Creator(commitSelectedEntity(), getPocType(), 
 				getSecurityAttributes().commit()));
 		}

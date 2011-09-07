@@ -130,14 +130,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 		TEST_RIGHTS = new Rights(true, true, true);
 		TEST_SOURCE = new Source(null, "http://www.xmethods.com", null, null, null);
 		TEST_TYPE = new Type(null, "DCMITYPE", "http://purl.org/dc/dcmitype/Text", null);
-		TEST_CREATOR = new Creator(new Organization("creator", getAsList("DISA"), null, null), null, null);
-		TEST_PUBLISHER = new Publisher(new Person("publisher", "Uri", getAsList("Brian"), null, null, null, null),
+		TEST_CREATOR = new Creator(new Organization(getAsList("DISA"), null, null), null, null);
+		TEST_PUBLISHER = new Publisher(new Person("Uri", getAsList("Brian"), null, null, null, null), null, null);
+		TEST_CONTRIBUTOR = new Contributor(new Service(getAsList("https://metadata.dod.mil/ebxmlquery/soap"), null,
+			null), null, null);
+		TEST_POC = new PointOfContact(DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? new Unknown(
+			getAsList("UnknownEntity"), null, null) : new Person("Uri", getAsList("Brian"), null, null, null, null),
 			null, null);
-		TEST_CONTRIBUTOR = new Contributor(new Service("contributor",
-			getAsList("https://metadata.dod.mil/ebxmlquery/soap"), null, null), null, null);
-		TEST_POC = new PointOfContact(DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? new Unknown("pointOfContact",
-			getAsList("UnknownEntity"), null, null) : new Person("pointOfContact", "Uri", getAsList("Brian"), null,
-			null, null, null), null, null);
 		TEST_FORMAT = new Format("text/xml", null, null);
 
 		List<Keyword> keywords = new ArrayList<Keyword>();
@@ -1122,7 +1121,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("USA");
-			Organization org = new Organization("creator", getAsList("DISA"), null, null);
+			Organization org = new Organization(getAsList("DISA"), null, null);
 			Creator creator = new Creator(org, null, new SecurityAttributes("TS", ownerProducers, null));
 
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
@@ -1147,7 +1146,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 		List<String> ownerProducers = new ArrayList<String>();
 		ownerProducers.add("USA");
-		Organization org = new Organization("creator", getAsList("DISA"), null, null);
+		Organization org = new Organization(getAsList("DISA"), null, null);
 		Creator creator = new Creator(org, null, new SecurityAttributes("TS", ownerProducers, null));
 
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
@@ -1171,7 +1170,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("USA");
-			Organization org = new Organization("creator", getAsList("DISA"), null, null);
+			Organization org = new Organization(getAsList("DISA"), null, null);
 			Creator creator = new Creator(org, null, new SecurityAttributes("CTSA", ownerProducers, null));
 
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);

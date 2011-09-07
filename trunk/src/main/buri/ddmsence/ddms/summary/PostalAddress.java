@@ -103,7 +103,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 				_cachedPostalCode = postalCodeElement.getValue();
 			Element countryCodeElement = element.getFirstChildElement(CountryCode.getName(getDDMSVersion()), namespace);
 			if (countryCodeElement != null)
-				_cachedCountryCode = new CountryCode(PostalAddress.getName(getDDMSVersion()), countryCodeElement);
+				_cachedCountryCode = new CountryCode(countryCodeElement);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -215,7 +215,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		html.append(buildHTMLMeta(prefix + PROVINCE_NAME, getProvince(), false));
 		html.append(buildHTMLMeta(prefix + POSTAL_CODE_NAME, getPostalCode(), false));
 		if (getCountryCode() != null)
-			html.append(getCountryCode().toHTML());
+			html.append(getCountryCode().toHTML(prefix));
 		return (html.toString());
 	}
 
@@ -223,15 +223,16 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
+		String prefix = getName() + " ";
 		StringBuffer text = new StringBuffer();
 		for (String street : getStreets())
-			text.append(buildTextLine(getName() + " " + STREET_NAME, street, false));
-		text.append(buildTextLine(getName() + " " + CITY_NAME, getCity(), false));
-		text.append(buildTextLine(getName() + " " + STATE_NAME, getState(), false));
-		text.append(buildTextLine(getName() + " " + PROVINCE_NAME, getProvince(), false));
-		text.append(buildTextLine(getName() + " " + POSTAL_CODE_NAME, getPostalCode(), false));
+			text.append(buildTextLine(prefix + STREET_NAME, street, false));
+		text.append(buildTextLine(prefix + CITY_NAME, getCity(), false));
+		text.append(buildTextLine(prefix + STATE_NAME, getState(), false));
+		text.append(buildTextLine(prefix + PROVINCE_NAME, getProvince(), false));
+		text.append(buildTextLine(prefix + POSTAL_CODE_NAME, getPostalCode(), false));
 		if (getCountryCode() != null)
-			text.append(getCountryCode().toText());
+			text.append(getCountryCode().toText(prefix));
 		return (text.toString());
 	}
 	
@@ -364,7 +365,6 @@ public final class PostalAddress extends AbstractBaseComponent {
 				throw new InvalidDDMSException("Only 1 of state or province can be used.");
 			boolean hasState = !Util.isEmpty(getState());
 			String stateOrProvince = hasState ? getState() : getProvince();
-			getCountryCode().setParentType(PostalAddress.getName(DDMSVersion.getCurrentVersion()));
 			return (new PostalAddress(getStreets(), getCity(), stateOrProvince, getPostalCode(), 
 				getCountryCode().commit(), hasState));
 		}

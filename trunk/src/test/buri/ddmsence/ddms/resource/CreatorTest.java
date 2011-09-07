@@ -77,9 +77,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 	 */
 	private IProducerEntity getEntityFixture() {
 		try {
-			return (new Person(Creator.getName(DDMSVersion.getCurrentVersion()), "Uri",
-				Util.getXsListAsList("Brian BU"), "123", "DISA", Util.getXsListAsList("703-885-1000"),
-				Util.getXsListAsList("ddms@fgm.com")));
+			return (new Person("Uri", Util.getXsListAsList("Brian BU"), "123", "DISA",
+				Util.getXsListAsList("703-885-1000"), Util.getXsListAsList("ddms@fgm.com")));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
@@ -108,9 +107,9 @@ public class CreatorTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
 		String creatorName = Creator.getName(DDMSVersion.getCurrentVersion());
-		html.append(getEntityFixture().toHTML());
+		StringBuffer html = new StringBuffer();
+		html.append(getEntityFixture().toHTML(creatorName + "."));
 		if (isDDMS40OrGreater()) {
 			html.append("<meta name=\"").append(creatorName).append(".POCType\" content=\"ICD-710\" />\n");
 		}
@@ -123,9 +122,9 @@ public class CreatorTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
-		StringBuffer text = new StringBuffer();
 		String creatorName = Creator.getName(DDMSVersion.getCurrentVersion());
-		text.append(getEntityFixture().toText());
+		StringBuffer text = new StringBuffer();
+		text.append(getEntityFixture().toText(creatorName + " "));
 		if (isDDMS40OrGreater()) {
 			text.append("POCType: ICD-710\n");
 		}
@@ -234,12 +233,10 @@ public class CreatorTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Creator elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Creator dataComponent = testConstructor(
-				WILL_SUCCEED,
-				new Service(Creator.getName(version), Util.getXsListAsList("DISA PEO-GES"), Util
-					.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
+			Creator dataComponent = testConstructor(WILL_SUCCEED, new Service(Util.getXsListAsList("DISA PEO-GES"),
+				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}

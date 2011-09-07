@@ -64,8 +64,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 	private Service testConstructor(boolean expectFailure, Element element) {
 		Service component = null;
 		try {
-			DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI());
-			component = new Service(Creator.getName(version), element);
+			component = new Service(element);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -84,7 +83,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 	private Service testConstructor(boolean expectFailure, List<String> names, List<String> phones, List<String> emails) {
 		Service component = null;
 		try {
-			component = new Service(Creator.getName(DDMSVersion.getCurrentVersion()), names, phones, emails);
+			component = new Service(names, phones, emails);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -98,17 +97,13 @@ public class ServiceTest extends AbstractComponentTestCase {
 	private String getExpectedHTMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer html = new StringBuffer();
-		String parentType = Creator.getName(DDMSVersion.getCurrentVersion());
-		html.append("<meta name=\"").append(parentType).append(".entityType\" content=\"")
-			.append(Service.getName(version)).append("\" />\n");
+		html.append("<meta name=\"entityType\" content=\"").append(Service.getName(version)).append("\" />\n");
 		for (String name : TEST_NAMES)
-			html.append("<meta name=\"").append(parentType).append(".name\" content=\"").append(name).append("\" />\n");
+			html.append("<meta name=\"name\" content=\"").append(name).append("\" />\n");
 		for (String phone : TEST_PHONES)
-			html.append("<meta name=\"").append(parentType).append(".phone\" content=\"").append(phone)
-				.append("\" />\n");
+			html.append("<meta name=\"phone\" content=\"").append(phone).append("\" />\n");
 		for (String email : TEST_EMAILS)
-			html.append("<meta name=\"").append(parentType).append(".email\" content=\"").append(email)
-				.append("\" />\n");
+			html.append("<meta name=\"email\" content=\"").append(email).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -118,8 +113,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 	private String getExpectedTextOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(Creator.getName(DDMSVersion.getCurrentVersion())).append(" EntityType: ")
-			.append(Service.getName(version)).append("\n");
+		text.append("EntityType: ").append(Service.getName(version)).append("\n");
 		for (String name : TEST_NAMES)
 			text.append("name: ").append(name).append("\n");
 		for (String phone : TEST_PHONES)
@@ -290,7 +284,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Service component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// Equality after Building
@@ -303,7 +297,6 @@ public class ServiceTest extends AbstractComponentTestCase {
 
 			// Validation
 			builder = new Service.Builder();
-			builder.setParentType(Creator.getName(version));
 			builder.setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();

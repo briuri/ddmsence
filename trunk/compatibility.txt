@@ -31,7 +31,7 @@ FIX:
 	
 	You would now deal with a "Creator that contains an Organization":
 	
-	Organization org = new Organization(Creator.NAME, names, phones, emails, extensibleAttributes);
+	Organization org = new Organization(names, phones, emails, extensibleAttributes);
 	Creator creator = new Creator(org, null, securityAttributes);
 		
 	See Issue #153 for a description of the OLD class hierarchy and the NEW class hierarchy. I will also 
@@ -52,6 +52,23 @@ FIX:
 	There is no workaround at this time. Please contact me with feedback on how you used this feature previously 
 	so I can support your use case in the future.
 
+#########################################################################################################
+Producer entities and country codes no longer have a parentType (Issue #162)
+
+SEVERITY: Minor
+DETAILS:
+	Person, Organization, Service, Unknown, and CountryCode previously maintained a reference to the
+	enclosing component (such as "creator" for Person or "geographicIdentifier" for CountryCode). This made
+	the hierarchy more fragile than necessary, and has been removed.
+FIX:
+	Constructor calls which previously had the parentType:
+	
+	new CountryCode("postalAddress", element);
+	
+	Now no longer have a parentType:
+	
+	new CountryCode(element);
+	
 #########################################################################################################
 Components no longer have a publicly-accessible constant, NAME (Issue #152)
 

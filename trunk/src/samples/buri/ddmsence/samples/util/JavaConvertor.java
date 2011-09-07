@@ -348,9 +348,8 @@ public class JavaConvertor {
 		java.append("List<String> emails").append(count).append(" = new ArrayList<String>();\n");
 		for (String email : organization.getEmails())
 			java.append("emails").append(count).append(".add(\"").append(email).append("\");\n");
-		java.append("Organization organization").append(count).append(" = new Organization(\"").append(parentType)
-			.append("\", ");
-		java.append(" names").append(count).append(", ");
+		java.append("Organization organization").append(count).append(" = new Organization(names").append(count)
+			.append(", ");
 		java.append(" phones").append(count).append(", emails").append(count).append(", extensions);\n");
 		return ("organization" + count);
 	}
@@ -363,7 +362,7 @@ public class JavaConvertor {
 	 * @param service the service
 	 */
 	public static String convert(StringBuffer java, String parentType, Service service) {
-		int count = getVariableCount();				
+		int count = getVariableCount();
 		java.append("\n// ddms:service\n");
 		convert(java, service.getExtensibleAttributes());
 		java.append("List<String> names").append(count).append(" = new ArrayList<String>();\n");
@@ -375,10 +374,8 @@ public class JavaConvertor {
 		java.append("List<String> emails").append(count).append(" = new ArrayList<String>();\n");
 		for (String email : service.getEmails())
 			java.append("emails").append(count).append(".add(\"").append(email).append("\");\n");
-		java.append("Service service").append(count).append(" = new Service(\"").append(parentType).append("\", ");
-		java.append(" names").append(count).append(", ");
-		java.append(" phones").append(count).append(", emails").append(count)
-			.append(", extensions);\n");
+		java.append("Service service").append(count).append(" = new Service(names").append(count).append(", ");
+		java.append(" phones").append(count).append(", emails").append(count).append(", extensions);\n");
 		return ("service" + count);
 	}
 	
@@ -390,7 +387,7 @@ public class JavaConvertor {
 	 * @param unknown the unknown
 	 */
 	public static String convert(StringBuffer java, String parentType, Unknown unknown) {
-		int count = getVariableCount();				
+		int count = getVariableCount();
 		java.append("\n// ddms:unknown\n");
 		convert(java, unknown.getExtensibleAttributes());
 		java.append("List<String> names").append(count).append(" = new ArrayList<String>();\n");
@@ -402,10 +399,8 @@ public class JavaConvertor {
 		java.append("List<String> emails").append(count).append(" = new ArrayList<String>();\n");
 		for (String email : unknown.getEmails())
 			java.append("emails").append(count).append(".add(\"").append(email).append("\");\n");
-		java.append("Unknown unknown").append(count).append(" = new Service(\"").append(parentType).append("\", ");
-		java.append(" names").append(count).append(", ");
-		java.append(" phones").append(count).append(", emails").append(count)
-			.append(", extensions);\n");
+		java.append("Unknown unknown").append(count).append(" = new Service(names").append(count).append(", ");
+		java.append(" phones").append(count).append(", emails").append(count).append(", extensions);\n");
 		return ("unknown" + count);
 	}
 	
@@ -417,7 +412,7 @@ public class JavaConvertor {
 	 * @param person the person
 	 */
 	public static String convert(StringBuffer java, String parentType, Person person) {
-		int count = getVariableCount();				
+		int count = getVariableCount();
 		java.append("\n// ddms:person\n");
 		convert(java, person.getExtensibleAttributes());
 		java.append("List<String> names").append(count).append(" = new ArrayList<String>();\n");
@@ -429,13 +424,11 @@ public class JavaConvertor {
 		java.append("List<String> emails").append(count).append(" = new ArrayList<String>();\n");
 		for (String email : person.getEmails())
 			java.append("emails").append(count).append(".add(\"").append(email).append("\");\n");
-		java.append("Person person").append(count).append(" = new Person(\"").append(parentType).append("\", ");
-		java.append("\"").append(person.getSurname()).append("\", ");
+		java.append("Person person").append(count).append(" = new Person(\"").append(person.getSurname())
+			.append("\", ");
 		java.append(" names").append(count).append(", ");
-		java.append("\"").append(person.getUserID()).append("\", \"")
-			.append(person.getAffiliation()).append("\", ");
-		java.append(" phones").append(count).append(", emails").append(count)
-			.append(", extensions);\n");
+		java.append("\"").append(person.getUserID()).append("\", \"").append(person.getAffiliation()).append("\", ");
+		java.append(" phones").append(count).append(", emails").append(count).append(", extensions);\n");
 		return ("person" + count);
 	}
 	
@@ -648,7 +641,7 @@ public class JavaConvertor {
 			java.append("geoId").append(count).append(" = new GeographicIdentifier(names").append(count)
 				.append(", regions").append(count).append(", ");
 			if (geoId.getCountryCode() != null)
-				java.append("new CountryCode(\"geographicIdentifier\", \"")
+				java.append("new CountryCode(\"")
 					.append(geoId.getCountryCode().getQualifier()).append("\", \"")
 					.append(geoId.getCountryCode().getValue()).append("\"), ");
 			if (geoId.getSubDivisionCode() != null)
@@ -714,7 +707,7 @@ public class JavaConvertor {
 			.append(address.getCity()).append("\", \"").append(hasState ? address.getState() : address.getProvince())
 			.append("\", \"").append(address.getPostalCode()).append("\", ");
 		if (address.getCountryCode() != null)
-			java.append("new CountryCode(\"postalAddress\", \"").append(address.getCountryCode().getQualifier())
+			java.append("new CountryCode(\"").append(address.getCountryCode().getQualifier())
 				.append("\", \"").append(address.getCountryCode().getValue()).append("\"), ");
 		else
 			java.append("null, ");

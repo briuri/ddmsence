@@ -78,11 +78,9 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	private IProducerEntity getEntityFixture() {
 		try {
 			if ("2.0".equals(DDMSVersion.getCurrentVersion().getVersion()))
-				return (new Service(PointOfContact.getName(DDMSVersion.getCurrentVersion()),
-					Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"),
+				return (new Service(Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"),
 					Util.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
-			return (new Unknown(PointOfContact.getName(DDMSVersion.getCurrentVersion()),
-				Util.getXsListAsList("UnknownEntity"), Util.getXsListAsList("703-882-1000"),
+			return (new Unknown(Util.getXsListAsList("UnknownEntity"), Util.getXsListAsList("703-882-1000"),
 				Util.getXsListAsList("ddms@fgm.com")));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
@@ -112,16 +110,14 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
+		String pocName = PointOfContact.getName(DDMSVersion.getCurrentVersion());
 		StringBuffer html = new StringBuffer();
-		html.append(getEntityFixture().toHTML());
+		html.append(getEntityFixture().toHTML(pocName + "."));
 		if (isDDMS40OrGreater()) {
-			html.append("<meta name=\"").append(PointOfContact.getName(DDMSVersion.getCurrentVersion()))
-				.append(".POCType\" content=\"ICD-710\" />\n");
+			html.append("<meta name=\"").append(pocName).append(".POCType\" content=\"ICD-710\" />\n");
 		}
-		html.append("<meta name=\"").append(PointOfContact.getName(DDMSVersion.getCurrentVersion()))
-			.append(".classification\" content=\"U\" />\n");
-		html.append("<meta name=\"").append(PointOfContact.getName(DDMSVersion.getCurrentVersion()))
-			.append(".ownerProducer\" content=\"USA\" />\n");
+		html.append("<meta name=\"").append(pocName).append(".classification\" content=\"U\" />\n");
+		html.append("<meta name=\"").append(pocName).append(".ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -129,13 +125,14 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
+		String pocName = PointOfContact.getName(DDMSVersion.getCurrentVersion());
 		StringBuffer text = new StringBuffer();
-		text.append(getEntityFixture().toText());
+		text.append(getEntityFixture().toText(pocName + " "));
 		if (isDDMS40OrGreater()) {
 			text.append("POCType: ICD-710\n");
 		}
-		text.append(PointOfContact.getName(DDMSVersion.getCurrentVersion())).append(" classification: U\n");
-		text.append(PointOfContact.getName(DDMSVersion.getCurrentVersion())).append(" ownerProducer: USA\n");
+		text.append(pocName).append(" classification: U\n");
+		text.append(pocName).append(" ownerProducer: USA\n");
 		return (text.toString());
 	}
 
@@ -245,12 +242,11 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			PointOfContact elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			PointOfContact dataComponent = testConstructor(
-				WILL_SUCCEED,
-				new Service(PointOfContact.getName(version), Util.getXsListAsList("DISA PEO-GES"), Util
-					.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
+			PointOfContact dataComponent = testConstructor(WILL_SUCCEED,
+				new Service(Util.getXsListAsList("DISA PEO-GES"), Util.getXsListAsList("703-882-1000 703-885-1000"),
+					Util.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}

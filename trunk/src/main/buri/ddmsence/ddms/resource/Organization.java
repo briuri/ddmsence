@@ -72,39 +72,36 @@ public final class Organization extends AbstractProducerEntity {
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 *  
-	 * @param parentType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
 	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Organization(String parentType, Element element) throws InvalidDDMSException {
-		super(parentType, element);
+	public Organization(Element element) throws InvalidDDMSException {
+		super(element);
 	}
 	
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
-	 * @param parentType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 */
-	public Organization(String parentType, List<String> names, List<String> phones, List<String> emails)
+	public Organization(List<String> names, List<String> phones, List<String> emails)
 		throws InvalidDDMSException {
-		this(parentType, names, phones, emails, null);
+		this(names, phones, emails, null);
 	}
 	
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
-	 * @param parentType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 * @param extensions extensible attributes (optional)
 	 */
-	public Organization(String parentType, List<String> names, List<String> phones, List<String> emails,
+	public Organization(List<String> names, List<String> phones, List<String> emails,
 		ExtensibleAttributes extensions) throws InvalidDDMSException {
-		super(parentType, Organization.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions,
+		super(Organization.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions,
 			true);
 	}
 	
@@ -169,7 +166,7 @@ public final class Organization extends AbstractProducerEntity {
 		 * @see IBuilder#commit()
 		 */
 		public Organization commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Organization(getParentType(), getNames(), getPhones(), getEmails(), 
+			return (isEmpty() ? null : new Organization(getNames(), getPhones(), getEmails(), 
 				getExtensibleAttributes().commit()));
 		}
 	}

@@ -82,18 +82,16 @@ public final class Person extends AbstractProducerEntity {
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
-	 * @param parentType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
 	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Person(String parentType, Element element) throws InvalidDDMSException {
-		super(parentType, element);
+	public Person(Element element) throws InvalidDDMSException {
+		super(element);
 	}
 
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
-	 * @param parentType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
 	 * @param surname the surname of the person
 	 * @param names an ordered list of names
 	 * @param userID optional unique identifier within an organization
@@ -101,15 +99,14 @@ public final class Person extends AbstractProducerEntity {
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 */
-	public Person(String parentType, String surname, List<String> names, String userID, String affiliation,
+	public Person(String surname, List<String> names, String userID, String affiliation,
 		List<String> phones, List<String> emails) throws InvalidDDMSException {
-		this(parentType, surname, names, userID, affiliation, phones, emails, null);
+		this(surname, names, userID, affiliation, phones, emails, null);
 	}
 
 	/**
 	 * Constructor for creating a component from raw data.
 	 * 
-	 * @param parentType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
 	 * @param surname the surname of the person
 	 * @param names an ordered list of names
 	 * @param userID optional unique identifier within an organization
@@ -118,10 +115,10 @@ public final class Person extends AbstractProducerEntity {
 	 * @param emails an ordered list of email addresses
 	 * @param extensions extensible attributes (optional)
 	 */
-	public Person(String parentType, String surname, List<String> names, String userID, String affiliation,
+	public Person(String surname, List<String> names, String userID, String affiliation,
 		List<String> phones, List<String> emails, ExtensibleAttributes extensions)
 		throws InvalidDDMSException {
-		super(parentType, Person.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions, false);
+		super(Person.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions, false);
 		try {
 			int insertIndex = (names == null ? 0 : names.size());
 			insertElements(insertIndex, surname, userID, affiliation);
@@ -201,13 +198,24 @@ public final class Person extends AbstractProducerEntity {
 	 * @see AbstractProducerEntity#toHTML()
 	 */
 	public String toHTML() {
-		StringBuffer html = new StringBuffer(super.toHTML());
-		html.append(buildHTMLMeta(getParentType() + "." + SURNAME_NAME, getSurname(), true));
-		html.append(buildHTMLMeta(getParentType() + "." + USERID_NAME, getUserID(), false));
-		html.append(buildHTMLMeta(getParentType() + "." + AFFILIATION_NAME, getAffiliation(), false));
-		return (html.toString());
+		return (toHTML(""));
 	}
 
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix);
+		StringBuffer html = new StringBuffer(super.toHTML(prefix));
+		html.append(buildHTMLMeta(prefix + SURNAME_NAME, getSurname(), true));
+		html.append(buildHTMLMeta(prefix + USERID_NAME, getUserID(), false));
+		html.append(buildHTMLMeta(prefix + AFFILIATION_NAME, getAffiliation(), false));
+		return (html.toString());
+	}
+	
 	/**
 	 * Because ordering is not important in Text output, this method merely appends the additional Person fields to the
 	 * end of the AbstractProducer output. All fields will still be underneath a line identifying the entity type.
@@ -215,7 +223,18 @@ public final class Person extends AbstractProducerEntity {
 	 * @see AbstractProducerEntity#toText()
 	 */
 	public String toText() {
-		StringBuffer text = new StringBuffer(super.toText());
+		return (toText(""));
+	}
+	
+	/**
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
+	 */
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix);
+		StringBuffer text = new StringBuffer(super.toText(prefix));
 		text.append(buildTextLine(SURNAME_NAME, getSurname(), true));
 		text.append(buildTextLine(USERID_NAME, getUserID(), false));
 		text.append(buildTextLine(AFFILIATION_NAME, getAffiliation(), false));
@@ -311,8 +330,8 @@ public final class Person extends AbstractProducerEntity {
 		 * @see IBuilder#commit()
 		 */
 		public Person commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Person(getParentType(), getSurname(), getNames(), getUserID(),
-				getAffliation(), getPhones(), getEmails(), getExtensibleAttributes().commit()));
+			return (isEmpty() ? null : new Person(getSurname(), getNames(), getUserID(), getAffliation(), getPhones(),
+				getEmails(), getExtensibleAttributes().commit()));
 		}
 
 		/**

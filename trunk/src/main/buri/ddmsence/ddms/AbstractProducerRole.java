@@ -69,16 +69,15 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 			setXOMElement(element, false);
 			if (element.getChildElements().size() > 0) {
 				Element entityElement = element.getChildElements().get(0);
-				String producerType = element.getLocalName();
 				String entityType = entityElement.getLocalName();
 				if (Organization.getName(getDDMSVersion()).equals(entityType))
-					_producerEntity = new Organization(producerType, entityElement);
+					_producerEntity = new Organization(entityElement);
 				if (Person.getName(getDDMSVersion()).equals(entityType))
-					_producerEntity = new Person(producerType, entityElement);
+					_producerEntity = new Person(entityElement);
 				if (Service.getName(getDDMSVersion()).equals(entityType))
-					_producerEntity = new Service(producerType, entityElement);
+					_producerEntity = new Service(entityElement);
 				if (Unknown.getName(getDDMSVersion()).equals(entityType))
-					_producerEntity = new Unknown(producerType, entityElement);
+					_producerEntity = new Unknown(entityElement);
 			}
 			_cachedSecurityAttributes = new SecurityAttributes(element);
 			validate();
@@ -180,9 +179,10 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
+		String prefix = getName() + ".";
 		StringBuffer html = new StringBuffer();
-		html.append(getProducerEntity().toHTML());
-		html.append(buildHTMLMeta(getName() + "." + POC_TYPE_NAME, getPOCType(), false));
+		html.append(getProducerEntity().toHTML(prefix));
+		html.append(buildHTMLMeta(prefix + POC_TYPE_NAME, getPOCType(), false));
 		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}
@@ -194,8 +194,9 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
+		String prefix = getName() + " ";
 		StringBuffer text = new StringBuffer();
-		text.append(getProducerEntity().toText());
+		text.append(getProducerEntity().toText(prefix));
 		text.append(buildTextLine(POC_TYPE_NAME, getPOCType(), false));
 		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());		
@@ -235,7 +236,6 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	public static abstract class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = -1694935853087559491L;
 
-		private String _producerType;
 		private String _entityType;
 		private Organization.Builder _organization;
 		private Person.Builder _person;
@@ -253,7 +253,6 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 * Constructor which starts from an existing component.
 		 */
 		protected Builder(AbstractProducerRole producer) {
-			setProducerType(producer.getName());
 			setEntityType(producer.getProducerEntity().getName());
 			DDMSVersion version = producer.getDDMSVersion();
 			if (Organization.getName(version).equals(getEntityType()))
@@ -275,18 +274,14 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		protected IProducerEntity commitSelectedEntity() throws InvalidDDMSException {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			if (Organization.getName(version).equals(getEntityType())) {
-				getOrganization().setParentType(getProducerType());
 				return (getOrganization().commit());
 			}
 			if (Person.getName(version).equals(getEntityType())) {
-				getPerson().setParentType(getProducerType());
 				return (getPerson().commit());
 			}
 			if (Service.getName(version).equals(getEntityType())) {
-				getService().setParentType(getProducerType());
 				return (getService().commit());
 			}
-			getUnknown().setParentType(getProducerType());
 			return (getUnknown().commit());
 		}
 		
@@ -340,7 +335,6 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		public Organization.Builder getOrganization() {
 			if (_organization == null) {
 				_organization = new Organization.Builder();
-				_organization.setParentType(getProducerType());
 			}
 			return _organization;
 		}
@@ -350,7 +344,6 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 */
 		public void setOrganization(Organization.Builder organization) {
 			_organization = organization;
-			_organization.setParentType(getProducerType());
 		}
 
 		/**
@@ -359,7 +352,6 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		public Person.Builder getPerson() {
 			if (_person == null) {
 				_person = new Person.Builder();
-				_person.setParentType(getProducerType());
 			}
 			return _person;
 		}
@@ -369,7 +361,6 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 */
 		public void setPerson(Person.Builder person) {
 			_person = person;
-			_person.setParentType(getProducerType());
 		}
 
 		/**
@@ -378,7 +369,6 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		public Service.Builder getService() {
 			if (_service == null) {
 				_service = new Service.Builder();
-				_service.setParentType(getProducerType());
 			}
 			return _service;
 		}
@@ -388,7 +378,6 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 */
 		public void setService(Service.Builder service) {
 			_service = service;
-			_service.setParentType(getProducerType());
 		}
 
 		/**
@@ -397,7 +386,6 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		public Unknown.Builder getUnknown() {
 			if (_unknown == null) {
 				_unknown = new Unknown.Builder();
-				_unknown.setParentType(getProducerType());
 			}
 			return _unknown;
 		}
@@ -407,21 +395,6 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 */
 		public void setUnknown(Unknown.Builder unknown) {
 			_unknown = unknown;
-			_unknown.setParentType(getProducerType());
-		}
-
-		/**
-		 * Builder accessor for the producerType
-		 */
-		public String getProducerType() {
-			return _producerType;
-		}
-
-		/**
-		 * Builder accessor for the producerType
-		 */
-		public void setProducerType(String producerType) {
-			_producerType = producerType;
 		}
 
 		/**

@@ -137,7 +137,6 @@ public class Contributor extends AbstractProducerRole {
 		 * @see IBuilder#commit()
 		 */
 		public Contributor commit() throws InvalidDDMSException {
-			setProducerType(Contributor.getName(DDMSVersion.getCurrentVersion()));
 			return (isEmpty() ? null : new Contributor(commitSelectedEntity(), getPocType(), 
 				getSecurityAttributes().commit()));
 		}

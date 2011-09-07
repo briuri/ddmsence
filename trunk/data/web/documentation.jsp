@@ -171,7 +171,6 @@ The following convention is used to provide some consistency:</p>
 <ul>
 	<li>On constructors which build components from raw data:</li>
 		<ul>
-			<li>Information about the enclosing component that may affect this new component comes first (such as the producerType of an <a href="/docs/index.html?buri/ddmsence/ddms/resource/Organization.html">Organization</a>).</li>
 			<li>The data or components needed to construct any nested elements or child text comes next (such as the list of Keywords in a <a href="/docs/buri/ddmsence/ddms/summary/SubjectCoverage.html">SubjectCoverage</a> component).</li>
 			<li>The data needed to construct any attributes comes next (such as the <a href="/docs/index.html?buri/ddmsence/ddms/security/ism/SecurityAttributes.html">ISM SecurityAttributes</a>).</li>
 			<li>Any remaining information that DDMSence needs comes last (such as the boolean flag on a <a href="/docs/index.html?buri/ddmsence/ddms/summary/PostalAddress.html">PostalAddress</a> which toggles between states and provinces).</li>
