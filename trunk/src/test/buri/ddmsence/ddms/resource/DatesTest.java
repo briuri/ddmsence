@@ -225,9 +225,9 @@ public class DatesTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
-			String approvedOn = isDDMS31OrGreater() ? TEST_APPROVED : "";
+			
+			String approvedOn = (isDDMS31OrGreater() ? TEST_APPROVED : "");
 			String receivedOn = (isDDMS40OrGreater() ? TEST_RECEIVED : "");
-
 			Dates elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Dates dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
 				approvedOn, receivedOn);
@@ -235,8 +235,8 @@ public class DatesTest extends AbstractComponentTestCase {
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 			
 			// Backwards compatible constructors
-			assertEquals(new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, TEST_APPROVED), new Dates(
-				TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, TEST_APPROVED, null));
+			assertEquals(new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn), new Dates(
+				TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn, null));
 		}
 	}
 
