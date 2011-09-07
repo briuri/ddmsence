@@ -91,37 +91,36 @@ public final class Person extends AbstractProducerEntity {
 
 	/**
 	 * Constructor for creating a component from raw data.
-	 * 
-	 * @param surname the surname of the person
 	 * @param names an ordered list of names
-	 * @param userID optional unique identifier within an organization
-	 * @param affiliation organizational affiliation of the person
+	 * @param surname the surname of the person
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
+	 * @param userID optional unique identifier within an organization
+	 * @param affiliation organizational affiliation of the person
 	 */
-	public Person(String surname, List<String> names, String userID, String affiliation,
-		List<String> phones, List<String> emails) throws InvalidDDMSException {
-		this(surname, names, userID, affiliation, phones, emails, null);
+	public Person(List<String> names, String surname, List<String> phones, List<String> emails,
+		String userID, String affiliation) throws InvalidDDMSException {
+		this(names, surname, phones, emails, userID, affiliation, null);
 	}
 
 	/**
 	 * Constructor for creating a component from raw data.
-	 * 
-	 * @param surname the surname of the person
 	 * @param names an ordered list of names
-	 * @param userID optional unique identifier within an organization
-	 * @param affiliation organizational affiliation of the person
+	 * @param surname the surname of the person
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
+	 * @param userID optional unique identifier within an organization
+	 * @param affiliation organizational affiliation of the person
 	 * @param extensions extensible attributes (optional)
 	 */
-	public Person(String surname, List<String> names, String userID, String affiliation,
-		List<String> phones, List<String> emails, ExtensibleAttributes extensions)
+	public Person(List<String> names, String surname, List<String> phones, List<String> emails,
+		String userID, String affiliation, ExtensibleAttributes extensions)
 		throws InvalidDDMSException {
 		super(Person.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions, false);
 		try {
 			int insertIndex = (names == null ? 0 : names.size());
-			insertElements(insertIndex, surname, userID, affiliation);
+			addExtraElements(insertIndex, surname, userID, affiliation);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -138,17 +137,25 @@ public final class Person extends AbstractProducerEntity {
 	 * @param affiliation organizational affiliation of the person
 	 * @throws InvalidDDMSException if the result is an invalid component
 	 */
-	private void insertElements(int insertIndex, String surname, String userID, String affiliation)
+	private void addExtraElements(int insertIndex, String surname, String userID, String affiliation)
 		throws InvalidDDMSException {
 		Element element = getXOMElement();
-		// Inserting in reverse order allow the same index to be reused. Later inserts will "push" the early ones
-		// forward.
-		if (!Util.isEmpty(affiliation))
-			element.insertChild(Util.buildDDMSElement(AFFILIATION_NAME, affiliation), insertIndex);
-		if (!Util.isEmpty(userID))
-			element.insertChild(Util.buildDDMSElement(USERID_NAME, userID), insertIndex);
-		element.insertChild(Util.buildDDMSElement(SURNAME_NAME, surname), insertIndex);
-		setXOMElement(getXOMElement(), true);
+		if (getDDMSVersion().isAtLeast("4.0")) {
+			element.insertChild(Util.buildDDMSElement(SURNAME_NAME, surname), insertIndex);
+			if (!Util.isEmpty(userID))
+				element.appendChild(Util.buildDDMSElement(USERID_NAME, userID));
+			if (!Util.isEmpty(affiliation))
+				element.appendChild(Util.buildDDMSElement(AFFILIATION_NAME, affiliation));
+		}
+		else {
+			// 	Inserting in reverse order allow the same index to be reused. Later inserts will "push" the early ones
+			// 	forward.
+			if (!Util.isEmpty(affiliation))
+				element.insertChild(Util.buildDDMSElement(AFFILIATION_NAME, affiliation), insertIndex);
+			if (!Util.isEmpty(userID))
+				element.insertChild(Util.buildDDMSElement(USERID_NAME, userID), insertIndex);
+			element.insertChild(Util.buildDDMSElement(SURNAME_NAME, surname), insertIndex);
+		}
 	}
 
 	/**
@@ -330,8 +337,8 @@ public final class Person extends AbstractProducerEntity {
 		 * @see IBuilder#commit()
 		 */
 		public Person commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Person(getSurname(), getNames(), getUserID(), getAffliation(), getPhones(),
-				getEmails(), getExtensibleAttributes().commit()));
+			return (isEmpty() ? null : new Person(getNames(), getSurname(), getPhones(), getEmails(), getUserID(),
+				getAffliation(), getExtensibleAttributes().commit()));
 		}
 
 		/**

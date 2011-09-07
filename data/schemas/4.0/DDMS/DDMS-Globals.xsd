@@ -224,35 +224,29 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 	</xs:element>
 	<xs:element name="organization" type="OrganizationType">
 		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>A named organization responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher.  See also, DDMS Spec Cateogries: Contributor, Creator, Publisher.
-			</mdr:definition>
+			<xs:appinfo xml:lang="en">
+				A named organization responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher.  See also, DDMS Spec Cateogries: Contributor, Creator, Publisher.
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="person" type="PersonType">
 		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>A person responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher. See also, DDMS Spec Cateogries: Contributor, Creator, Publisher. 
-			</mdr:definition>
+			<xs:appinfo xml:lang="en">
+				A person responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher. See also, DDMS Spec Cateogries: Contributor, Creator, Publisher. 
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
-	<!-- The ServiceType has been remodeled to accomodate tools that are unable to adequately handle the increased complexity acquired with the use of SubstitutionGroups.  The line remains commented out in the event that the tools are able to accomodate this level of complexity in the future. -->
-	<!--	<xs:element name="Service" type="ServiceType" substitutionGroup="iiss:Entity"> -->
 	<xs:element name="service" type="ServiceType">
 		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>A named service responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher.  See also, DDMS Spec Cateogries: Contributor, Creator, Publisher.  
-			</mdr:definition>
+			<xs:appinfo xml:lang="en">
+				A named service responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher.  See also, DDMS Spec Cateogries: Contributor, Creator, Publisher.  
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="unknown" type="UnknownType">
 		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>Identification that the type of entity of the encompassing element i.e. as a creator, contributor, or publisher, is unknown.  See also, DDMS Spec Cateogries: Contributor, Creator, Publisher.  
-			</mdr:definition>
+			<xs:appinfo xml:lang="en">
+				Identification that the type of entity of the encompassing element i.e. as a creator, contributor, or publisher, is unknown.  See also, DDMS Spec Cateogries: Contributor, Creator, Publisher.  
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
@@ -346,164 +340,127 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 	</xs:complexType>
 	<xs:complexType name="ProducerBaseType">
 		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>The foundation of the ProducerType complexType.</mdr:definition>
+			<xs:appinfo xml:lang="en">
+				The foundation of the ProducerType complexType.
 			</xs:appinfo>
 		</xs:annotation>
-		<xs:anyAttribute namespace="##other"/>
+		<xs:anyAttribute namespace="##other" processContents="lax"/>
 	</xs:complexType>
 	<xs:complexType name="ProducerType">
 		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>The type used to model the ddms:producer element.</mdr:definition>
+			<xs:appinfo xml:lang="en">
+				The type used to model the ddms:producer element.
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ProducerBaseType">
 				<xs:sequence>
 					<xs:element name="name" type="xs:string" maxOccurs="unbounded"/>
+					<xs:element name="phone" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:appinfo xml:lang="en">
+								A telephone number.  Optional.  This value must include country code and area code, when applicable.
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="email" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:appinfo xml:lang="en">
+								An address for electronic mail.
+							</xs:appinfo>
+						</xs:annotation>
+					</xs:element>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="PersonType">
 		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>The type used to model the ddms:Person element.</mdr:definition>
+			<xs:appinfo xml:lang="en">
+				The type used to model the ddms:Person element.
 			</xs:appinfo>
 		</xs:annotation>
-		<xs:complexContent>
-			<xs:extension base="ProducerType">
-				<xs:sequence>
-					<xs:element name="surname" type="xs:string">
-						<xs:annotation>
-							<xs:appinfo>
-								<mdr:definition>A name shared in common to identify members of a family; also called "last name".</mdr:definition>
-							</xs:appinfo>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="userID" type="xs:string" minOccurs="0">
-						<xs:annotation>
-							<xs:appinfo>
-								<mdr:definition>Unique identifier applied by an agency to an author, coauthor, POC, tasking requester or addressee.
-							</mdr:definition>
-							</xs:appinfo>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="affiliation" type="xs:string" minOccurs="0">
-						<xs:annotation>
-							<xs:appinfo>
-								<mdr:definition>The identification of an organization or agency with which an individual or service has an affiliation.
-							</mdr:definition>
-							</xs:appinfo>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="phone" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-						<xs:annotation>
-							<xs:appinfo>
-								<mdr:definition>A telephone number.  Optional.  This value must include country code and area code, when applicable.
-							</mdr:definition>
-							</xs:appinfo>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="email" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-						<xs:annotation>
-							<xs:appinfo>
-								<mdr:definition>An address for electronic mail.
-							</mdr:definition>
-							</xs:appinfo>
-						</xs:annotation>
-					</xs:element>
-				</xs:sequence>
-			</xs:extension>
-		</xs:complexContent>
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" maxOccurs="unbounded"/>
+			<xs:element name="surname" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo xml:lang="en">
+						A name shared in common to identify members of a family; also called "last name".
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phone" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo xml:lang="en">
+						A telephone number.  Optional.  This value must include country code and area code, when applicable.
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="email" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo xml:lang="en">
+						An address for electronic mail.
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="userID" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo xml:lang="en">
+						Unique identifier applied by an agency to an author, coauthor, POC, tasking requester or addressee.
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="affiliation" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo xml:lang="en">
+						The identification of an organization or agency with which an individual or service has an affiliation.
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="OrganizationType">
 		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>The type used to model the ddms:Organization element.</mdr:definition>
+			<xs:appinfo xml:lang="en">
+				The type used to model the ddms:Organization element.
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ProducerType">
 				<xs:sequence>
-					<xs:element name="phone" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-						<xs:annotation>
-							<xs:appinfo>
-								<mdr:definition>A telephone number.  Optional.  This value must include country code and area code, when applicable.
-							</mdr:definition>
-							</xs:appinfo>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="email" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-						<xs:annotation>
-							<xs:appinfo>
-								<mdr:definition>
-							An address for electronic mail.
-							</mdr:definition>
-							</xs:appinfo>
-						</xs:annotation>
+					<xs:element name="subOrganization" minOccurs="0" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:simpleContent>
+								<xs:extension base="xs:string">
+									<xs:attributeGroup ref="SecurityAttributesGroup"/>
+								</xs:extension>
+							</xs:simpleContent>
+						</xs:complexType>
 					</xs:element>
 				</xs:sequence>
+				<xs:attribute ref="acronym" use="optional"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:attribute name="acronym" type="xs:string"/>
 	<xs:complexType name="ServiceType">
 		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>The type used to model the ddms:Service element.</mdr:definition>
+			<xs:appinfo xml:lang="en">
+				The type used to model the ddms:Service element.
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="ProducerType">
-				<xs:sequence>
-					<xs:element name="phone" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-						<xs:annotation>
-							<xs:appinfo>
-								<mdr:definition>A telephone number.  Optional.  This value must include country code and area code, when applicable.
-							</mdr:definition>
-							</xs:appinfo>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="email" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-						<xs:annotation>
-							<xs:appinfo>
-								<mdr:definition>An address for electronic mail.
-							</mdr:definition>
-							</xs:appinfo>
-						</xs:annotation>
-					</xs:element>
-				</xs:sequence>
-			</xs:extension>
+			<xs:extension base="ProducerType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="UnknownType">
 		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>The type used to model the ddms:Unknown element.</mdr:definition>
+			<xs:appinfo xml:lang="en">
+				The type used to model the ddms:Unknown element.
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:complexContent>
-			<xs:extension base="ProducerType">
-				<xs:sequence>
-					<xs:element name="phone" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-						<xs:annotation>
-							<xs:appinfo>
-								<mdr:definition>A telephone number.  Optional.  This value must include country code and area code, when applicable.
-							</mdr:definition>
-							</xs:appinfo>
-						</xs:annotation>
-					</xs:element>
-					<xs:element name="email" type="xs:string" minOccurs="0" maxOccurs="unbounded">
-						<xs:annotation>
-							<xs:appinfo>
-								<mdr:definition>An address for electronic mail.
-							</mdr:definition>
-							</xs:appinfo>
-						</xs:annotation>
-					</xs:element>
-				</xs:sequence>
-			</xs:extension>
+			<xs:extension base="ProducerType"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="DatesType">

@@ -77,8 +77,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 	 */
 	private IProducerEntity getEntityFixture() {
 		try {
-			return (new Person("Uri", Util.getXsListAsList("Brian BU"), "123", "DISA",
-				Util.getXsListAsList("703-885-1000"), Util.getXsListAsList("ddms@fgm.com")));
+			return (new Person(Util.getXsListAsList("Brian BU"), "Uri", Util.getXsListAsList("703-885-1000"), Util.getXsListAsList("ddms@fgm.com"),
+				"123", "DISA"));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
@@ -151,10 +151,18 @@ public class CreatorTest extends AbstractComponentTestCase {
 		xml.append("\t\t<ddms:name>Brian</ddms:name>\n");
 		xml.append("\t\t<ddms:name>BU</ddms:name>\n");
 		xml.append("\t\t<ddms:surname>Uri</ddms:surname>\n");
-		xml.append("\t\t<ddms:userID>123</ddms:userID>\n");
-		xml.append("\t\t<ddms:affiliation>DISA</ddms:affiliation>\n");
-		xml.append("\t\t<ddms:phone>703-885-1000</ddms:phone>\n");
-		xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
+		if (isDDMS40OrGreater()) {
+			xml.append("\t\t<ddms:phone>703-885-1000</ddms:phone>\n");
+			xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
+			xml.append("\t\t<ddms:userID>123</ddms:userID>\n");
+			xml.append("\t\t<ddms:affiliation>DISA</ddms:affiliation>\n");
+		}
+		else {
+			xml.append("\t\t<ddms:userID>123</ddms:userID>\n");
+			xml.append("\t\t<ddms:affiliation>DISA</ddms:affiliation>\n");
+			xml.append("\t\t<ddms:phone>703-885-1000</ddms:phone>\n");
+			xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");			
+		}
 		xml.append("\t</ddms:").append(Person.getName(version)).append(">\n</ddms:creator>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}

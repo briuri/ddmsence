@@ -85,21 +85,6 @@ FIX:
 	You would now call a static method:
 	
 	String extentName = Extent.getName(ddmsVersion);
-
-#########################################################################################################
-There can now be 1-to-many subjectCoverage elements in a resource (Issue #126)
-
-SEVERITY: Minor
-DETAILS:
-	A resource can now have more than 1 subjectCoverage.
-FIX:
-	This accessor:
-
-	public SubjectCoverage getSubjectCoverage()
-	
-	Has changed to:
-	
-	public List<SubjectCoverage> getSubjectCoverages()
 	
 #########################################################################################################
 Non-DDMS classes have been moved into new packages (Issue #148).
@@ -122,14 +107,16 @@ FIX:
 	Update property names if you used these custom properties.
 
 #########################################################################################################
-Method names have changed (Issue #95)
+Method signatures have changed (Issue #95, #114, #126)
 
 SEVERITY: Minor
 DETAILS:
 	- DDMSVersion: getIcismNamespace() became getIsmNamespace() (Issue #95).
 	- ISMVocabulary: setIsmVersion() became setDDMSVersion() (Issue #95).
+	- Person: The order of the constructor parameters has been reordered to match the DDMS 4.0 schema (Issue #114)
+	- Resource: getSubjectCoverage() became getSubjectCoverages() and now returns a list of SubjectCoverage components (Issue #126)
 FIX:
-	Update method names in your code if you ever called them.	
+	Update method signatures in your code if you ever called them.	
 #########################################################################################################
 MediaExtent class renamed as Extent
 

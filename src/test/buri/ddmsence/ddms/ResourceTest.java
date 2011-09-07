@@ -131,11 +131,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 		TEST_SOURCE = new Source(null, "http://www.xmethods.com", null, null, null);
 		TEST_TYPE = new Type(null, "DCMITYPE", "http://purl.org/dc/dcmitype/Text", null);
 		TEST_CREATOR = new Creator(new Organization(getAsList("DISA"), null, null), null, null);
-		TEST_PUBLISHER = new Publisher(new Person("Uri", getAsList("Brian"), null, null, null, null), null, null);
+		TEST_PUBLISHER = new Publisher(new Person(getAsList("Brian"), "Uri", null, null, null, null), null, null);
 		TEST_CONTRIBUTOR = new Contributor(new Service(getAsList("https://metadata.dod.mil/ebxmlquery/soap"), null,
 			null), null, null);
 		TEST_POC = new PointOfContact(DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? new Unknown(
-			getAsList("UnknownEntity"), null, null) : new Person("Uri", getAsList("Brian"), null, null, null, null),
+			getAsList("UnknownEntity"), null, null) : new Person(getAsList("Brian"), "Uri", null, null, null, null),
 			null, null);
 		TEST_FORMAT = new Format("text/xml", null, null);
 
