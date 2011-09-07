@@ -92,7 +92,7 @@ public class PersonTest extends AbstractComponentTestCase {
 		String affiliation, List<String> phones, List<String> emails) {
 		Person component = null;
 		try {
-			component = new Person(surname, names, userID, affiliation, phones, emails);
+			component = new Person(names, surname, phones, emails, userID, affiliation);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -150,12 +150,22 @@ public class PersonTest extends AbstractComponentTestCase {
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
 		xml.append("\t<ddms:surname>").append(TEST_SURNAME).append("</ddms:surname>\n");
-		xml.append("\t<ddms:userID>").append(TEST_USERID).append("</ddms:userID>\n");
-		xml.append("\t<ddms:affiliation>").append(TEST_AFFILIATION).append("</ddms:affiliation>\n");
-		for (String phone : TEST_PHONES)
-			xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
-		for (String email : TEST_EMAILS)
-			xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
+		if (version.isAtLeast("4.0")) {
+			for (String phone : TEST_PHONES)
+				xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
+			for (String email : TEST_EMAILS)
+				xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");		
+			xml.append("\t<ddms:userID>").append(TEST_USERID).append("</ddms:userID>\n");
+			xml.append("\t<ddms:affiliation>").append(TEST_AFFILIATION).append("</ddms:affiliation>\n");
+		}
+		else {
+			xml.append("\t<ddms:userID>").append(TEST_USERID).append("</ddms:userID>\n");
+			xml.append("\t<ddms:affiliation>").append(TEST_AFFILIATION).append("</ddms:affiliation>\n");
+			for (String phone : TEST_PHONES)
+				xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
+			for (String email : TEST_EMAILS)
+				xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");					
+		}
 		xml.append("</ddms:").append(Person.getName(version)).append(">");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}

@@ -263,7 +263,7 @@ public class Escort {
 				
 				IProducerEntity entity = null;
 				if (Person.getName(version).equals(entityType))
-					entity = new Person(surname, names, userID, affiliation, phones, emails);
+					entity = new Person(names, surname, phones, emails, userID, affiliation);
 				else if (Organization.getName(version).equals(entityType))
 					entity = new Organization(names, phones, emails);
 				else if (Service.getName(version).equals(entityType))
