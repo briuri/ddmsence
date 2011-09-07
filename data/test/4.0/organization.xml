@@ -6,4 +6,6 @@
 	<ddms:phone>703-882-1000</ddms:phone>
 	<ddms:phone>703-885-1000</ddms:phone>
 	<ddms:email>ddms@fgm.com</ddms:email>
+	<ddms:subOrganization xmlns:ISM="urn:us:gov:ic:ism" ISM:classification="U" ISM:ownerProducer="USA">sub1</ddms:subOrganization>
+	<ddms:subOrganization xmlns:ISM="urn:us:gov:ic:ism" ISM:classification="U" ISM:ownerProducer="USA">sub2</ddms:subOrganization>
 </ddms:organization>	

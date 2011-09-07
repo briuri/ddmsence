@@ -41,7 +41,7 @@ public class ProducerEntityTest extends TestCase {
 
 	public void testSameVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
-		Organization org = new Organization(Util.getXsListAsList("DISA"), null, null, null, null);
+		Organization org = new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null);
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
 			new Creator(org, null, null);
@@ -82,7 +82,7 @@ public class ProducerEntityTest extends TestCase {
 			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
 			List<String> names = new ArrayList<String>();
 			names.add("DISA");
-			new Organization(names, null, null, null, attr);
+			new Organization(names, null, null, null, null, attr);
 		}
 	}
 

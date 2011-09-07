@@ -35,6 +35,7 @@ import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Source;
+import buri.ddmsence.ddms.resource.SubOrganization;
 import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
@@ -348,9 +349,14 @@ public class JavaConvertor {
 		java.append("List<String> emails").append(count).append(" = new ArrayList<String>();\n");
 		for (String email : organization.getEmails())
 			java.append("emails").append(count).append(".add(\"").append(email).append("\");\n");
+		java.append("List<SubOrganization> subOrgs").append(count).append(" = new ArrayList<SubOrganization>();\n");
+		for (SubOrganization subOrg : organization.getSubOrganizations()) {
+			convert(java, subOrg.getSecurityAttributes());
+			java.append("subOrgs").append(count).append(".add(new SubOrganization(\"").append(subOrg.getValue()).append("\", securityAttributes));\n");
+		}
 		java.append("Organization organization").append(count).append(" = new Organization(names").append(count)
 			.append(", ");
-		java.append(" phones").append(count).append(", emails").append(count).append(", \"")
+		java.append(" phones").append(count).append(", emails").append(count).append(", subOrgs").append(count).append(", \"")
 			.append(organization.getAcronym()).append("\", extensions);\n");
 		return ("organization" + count);
 	}

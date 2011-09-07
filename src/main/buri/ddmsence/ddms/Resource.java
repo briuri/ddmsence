@@ -200,9 +200,8 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public Resource(Element element) throws InvalidDDMSException {
 		try {
-			String namespace = element.getNamespaceURI();
 			setXOMElement(element, false);
-
+			String namespace = element.getNamespaceURI();
 			String createDate = getAttributeValue(CREATE_DATE_NAME, DDMSVersion.getCurrentVersion().getIsmNamespace());
 			if (!Util.isEmpty(createDate))
 				_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
@@ -315,7 +314,7 @@ public final class Resource extends AbstractBaseComponent {
 				}	
 			}
 			populatedOrderedList();
-			setXOMElement(element, true);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);

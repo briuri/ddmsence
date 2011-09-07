@@ -57,6 +57,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsProducerEntity">ddmsProducerEntity</a></li>
 				<li><a href="#ddmsRights">ddmsRights</a></li>
 				<li><a href="#ddmsSource">ddmsSource</a></li>
+				<li><a href="#ddmsSubOrganization">ddmsSubOrganization</a></li>
 				<li><a href="#ddmsSubtitle">ddmsSubtitle</a></li>
 				<li><a href="#ddmsTitle">ddmsTitle</a></li>
 				<li><a href="#ddmsType">ddmsType</a></li>				
@@ -439,7 +440,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			No other tables.
+			<a href="#ddmsSubOrganization">ddmsSubOrganization</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -605,6 +606,54 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relField">schemaHref</td><td class="relRules">char(2048), not null</td><td>the value</td>
 	</tr>	
+</table>
+
+<a name="ddmsSubOrganization"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsSubOrganization</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#subOrganization"><code>ddms:subOrganization</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/resource/SubOrganization.html">SubOrganization</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			No other notes.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent producer entity</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the value of the subOrganization text</td>
+	</tr>
 </table>
 
 <a name="ddmsSubtitle"></a><table class="rel">

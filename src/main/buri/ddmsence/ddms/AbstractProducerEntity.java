@@ -65,15 +65,17 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	 * Base constructor
 	 * 
 	 * @param element the XOM element representing this component
+	 * @param validateNow true to validate the component immediately. Because Person and Organization entities have
+	 * additional fields they should not be validated in the superconstructor.
 	 */
-	protected AbstractProducerEntity(Element element) throws InvalidDDMSException {
+	protected AbstractProducerEntity(Element element, boolean validateNow) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("producerEntity element", element);
 			_cachedNames = Util.getDDMSChildValues(element, NAME_NAME);
 			_cachedPhones = Util.getDDMSChildValues(element, PHONE_NAME);
 			_cachedEmails = Util.getDDMSChildValues(element, EMAIL_NAME);
 			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
-			setXOMElement(element, true);
+			setXOMElement(element, validateNow);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -88,8 +90,8 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 * @param extensions extensible attributes (optional)
-	 * @param validateNow true to validate the component immediately. Because Person entities have additional fields
-	 * they should not be validated in the superconstructor.
+	 * @param validateNow true to validate the component immediately. Because Person and Organization entities have
+	 * additional fields they should not be validated in the superconstructor.
 	 */
 	protected AbstractProducerEntity(String entityName, List<String> names, List<String> phones,
 		List<String> emails, ExtensibleAttributes extensions, boolean validateNow)
