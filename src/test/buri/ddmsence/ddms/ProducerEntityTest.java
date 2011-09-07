@@ -41,7 +41,7 @@ public class ProducerEntityTest extends TestCase {
 
 	public void testSameVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
-		Organization org = new Organization(Util.getXsListAsList("DISA"), null, null);
+		Organization org = new Organization(Util.getXsListAsList("DISA"), null, null, null, null);
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
 			new Creator(org, null, null);

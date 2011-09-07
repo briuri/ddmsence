@@ -84,8 +84,9 @@ public final class Keyword extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Constructor for creating a component from raw data. Provided for backwards compatibility to pre-DDMS 4.0 elements.
+	 * Constructor for creating a component from raw data. 
 	 *  
+	 * @deprecated This constructor is provided for backwards compatibility with pre-DDMS 4.0 elements.
 	 * @param value the value attribute (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */

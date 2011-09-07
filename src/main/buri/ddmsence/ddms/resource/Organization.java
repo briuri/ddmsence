@@ -84,9 +84,9 @@ public final class Organization extends AbstractProducerEntity {
 	}
 	
 	/**
-	 * Constructor for creating a component from raw data. Provided for backwards compatibility to
-	 * pre-DDMS 4.0 elements.
+	 * Constructor for creating a component from raw data. 
 	 * 
+	 * @deprecated This constructor is provided for backwards compatibility with pre-DDMS 4.0 elements.
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses

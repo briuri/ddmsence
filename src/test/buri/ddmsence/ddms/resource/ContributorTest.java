@@ -78,7 +78,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 	private IProducerEntity getEntityFixture() {
 		try {
 			return (new Organization(Util.getXsListAsList("DISA PEO-GES"),
-				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")));
+				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com"), null, null));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}

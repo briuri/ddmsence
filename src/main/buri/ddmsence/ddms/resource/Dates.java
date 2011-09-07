@@ -118,9 +118,9 @@ public final class Dates extends AbstractBaseComponent {
 
 	/**
 	 * Constructor for creating a component from raw data. The string-based inputs must conform to one of the XML date
-	 * types: xs:dateTime, xs:date, xs:gYearMonth, or xs:gYear. Provided for backwards compatibility to pre-DDMS 4.0
-	 * elements.
+	 * types: xs:dateTime, xs:date, xs:gYearMonth, or xs:gYear.
 	 * 
+	 * @deprecated This constructor is provided for backwards compatibility with pre-DDMS 4.0 elements.
 	 * @param created the creation date (optional)
 	 * @param posted the posting date (optional)
 	 * @param validTil the expiration date (optional)
