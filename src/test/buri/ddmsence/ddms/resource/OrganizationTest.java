@@ -22,9 +22,11 @@ package buri.ddmsence.ddms.resource;
 import java.util.ArrayList;
 import java.util.List;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -221,10 +223,23 @@ public class OrganizationTest extends AbstractComponentTestCase {
 
 	public void testWarnings() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// No warnings
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
+			
+			// Empty acronym in DDMS 4.0
+			if (isDDMS40OrGreater()) {
+				Element element = Util.buildDDMSElement(Organization.getName(version), null);
+				element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
+				element.addAttribute(new Attribute("ddms:acronym", version.getNamespace(), ""));
+				component = testConstructor(WILL_SUCCEED, element);
+				assertEquals(1, component.getValidationWarnings().size());
+				assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+				assertEquals("A ddms:acronym attribute was found with no value.", component.getValidationWarnings().get(0)
+					.getText());
+				assertEquals("/ddms:organization", component.getValidationWarnings().get(0).getLocator());
+			}
 		}
 	}
 
