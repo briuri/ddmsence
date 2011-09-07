@@ -60,7 +60,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * In both DDMS 2.0 and DDMS 3.0, this component can be decorated with optional {@link ExtensibleAttributes}.
+ * This component can be decorated with optional {@link ExtensibleAttributes}.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
@@ -199,16 +199,6 @@ public final class Person extends AbstractProducerEntity {
 	}
 
 	/**
-	 * Because ordering is not important in HTML output, this method merely appends the additional Person fields to the
-	 * end of the AbstractProducer output. All fields will still be underneath a line identifying the entity type.
-	 * 
-	 * @see AbstractProducerEntity#toHTML()
-	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-
-	/**
 	 * Outputs to HTML with a prefix at the beginning of each meta tag.
 	 * 
 	 * @param prefix the prefix to add
@@ -221,16 +211,6 @@ public final class Person extends AbstractProducerEntity {
 		html.append(buildHTMLMeta(prefix + USERID_NAME, getUserID(), false));
 		html.append(buildHTMLMeta(prefix + AFFILIATION_NAME, getAffiliation(), false));
 		return (html.toString());
-	}
-	
-	/**
-	 * Because ordering is not important in Text output, this method merely appends the additional Person fields to the
-	 * end of the AbstractProducer output. All fields will still be underneath a line identifying the entity type.
-	 * 
-	 * @see AbstractProducerEntity#toText()
-	 */
-	public String toText() {
-		return (toText(""));
 	}
 	
 	/**

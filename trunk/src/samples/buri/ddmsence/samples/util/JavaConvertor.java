@@ -350,7 +350,8 @@ public class JavaConvertor {
 			java.append("emails").append(count).append(".add(\"").append(email).append("\");\n");
 		java.append("Organization organization").append(count).append(" = new Organization(names").append(count)
 			.append(", ");
-		java.append(" phones").append(count).append(", emails").append(count).append(", extensions);\n");
+		java.append(" phones").append(count).append(", emails").append(count).append(", \"")
+			.append(organization.getAcronym()).append("\", extensions);\n");
 		return ("organization" + count);
 	}
 	

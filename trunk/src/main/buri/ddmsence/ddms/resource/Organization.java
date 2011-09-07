@@ -42,6 +42,7 @@ import buri.ddmsence.util.Util;
  * <ul>
  * <li>A phone number can be set with no value.</li>
  * <li>An email can be set with no value.</li>
+ * <li>An acronym can be set with no value.</li>
  * </ul>
  * </td></tr></table>
  * 
@@ -54,7 +55,8 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * In both DDMS 2.0 and DDMS 3.0, this component can be decorated with optional {@link ExtensibleAttributes}.
+ * <u>ddms:acronym</u>: an acronym for the organization (optional, starting in DDMS 4.0)<br />
+ * This component can be decorated with optional {@link ExtensibleAttributes}.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
@@ -69,6 +71,8 @@ import buri.ddmsence.util.Util;
  */
 public final class Organization extends AbstractProducerEntity {
 	
+	private static final String ACRONYM_NAME = "acronym";
+	
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 *  
@@ -80,7 +84,8 @@ public final class Organization extends AbstractProducerEntity {
 	}
 	
 	/**
-	 * Constructor for creating a component from raw data.
+	 * Constructor for creating a component from raw data. Provided for backwards compatibility to
+	 * pre-DDMS 4.0 elements.
 	 * 
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
@@ -88,7 +93,7 @@ public final class Organization extends AbstractProducerEntity {
 	 */
 	public Organization(List<String> names, List<String> phones, List<String> emails)
 		throws InvalidDDMSException {
-		this(names, phones, emails, null);
+		this(names, phones, emails, null, null);
 	}
 	
 	/**
@@ -97,12 +102,21 @@ public final class Organization extends AbstractProducerEntity {
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
+	 * @param acronym the organization's acronym
 	 * @param extensions extensible attributes (optional)
 	 */
-	public Organization(List<String> names, List<String> phones, List<String> emails,
+	public Organization(List<String> names, List<String> phones, List<String> emails, String acronym,
 		ExtensibleAttributes extensions) throws InvalidDDMSException {
 		super(Organization.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions,
-			true);
+			false);
+		try {
+			if (!Util.isEmpty(acronym))
+				Util.addDDMSAttribute(getXOMElement(), ACRONYM_NAME, acronym);
+			validate();
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -118,14 +132,69 @@ public final class Organization extends AbstractProducerEntity {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Organization.getName(getDDMSVersion()));
+		
+		validateWarnings();
 	}
 		
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A ddms:acronym attribute was found with no value.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		if (getDDMSVersion().isAtLeast("4.0")) {
+			if (Util.isEmpty(getAcronym())
+				&& getXOMElement().getAttribute(ACRONYM_NAME, getXOMElement().getNamespaceURI()) != null)
+			addWarning("A ddms:acronym attribute was found with no value.");
+		}
+	}
+	
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix);
+		StringBuffer html = new StringBuffer(super.toHTML(prefix));
+		html.append(buildHTMLMeta(prefix + ACRONYM_NAME, getAcronym(), false));
+		return (html.toString());
+	}
+	
+	/**
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
+	 */
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix);
+		StringBuffer text = new StringBuffer(super.toText(prefix));
+		text.append(buildTextLine(ACRONYM_NAME, getAcronym(), false));
+		return (text.toString());
+	}
+	
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		return (super.equals(obj) && (obj instanceof Organization));
-	}	
+		if (!super.equals(obj) || !(obj instanceof Organization))
+			return (false);
+		Organization test = (Organization) obj;
+		return (getAcronym().equals(test.getAcronym()));
+	}
+	
+	/**
+	 * @see Object#hashCode()
+	 */
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 7 * result + getAcronym().hashCode();
+		return (result);
+	}
 	
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
@@ -139,6 +208,13 @@ public final class Organization extends AbstractProducerEntity {
 	}
 	
 	/**
+	 * Accessor for the acronym
+	 */
+	public String getAcronym() {
+		return (getAttributeValue(ACRONYM_NAME));
+	}
+	
+	/**
 	 * Builder for this DDMS component.
 	 * 
 	 * @see IBuilder
@@ -147,7 +223,8 @@ public final class Organization extends AbstractProducerEntity {
 	 */
 	public static class Builder extends AbstractProducerEntity.Builder {
 		private static final long serialVersionUID = 4565840434345629470L;
-
+		private String _acronym;
+		
 		/**
 		 * Empty constructor
 		 */
@@ -160,14 +237,29 @@ public final class Organization extends AbstractProducerEntity {
 		 */
 		public Builder(Organization organization) {
 			super(organization);
+			setAcronym(organization.getAcronym());
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public Organization commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Organization(getNames(), getPhones(), getEmails(), 
+			return (isEmpty() ? null : new Organization(getNames(), getPhones(), getEmails(), getAcronym(),
 				getExtensibleAttributes().commit()));
+		}
+
+		/**
+		 * Builder accessor for the acronym
+		 */
+		public String getAcronym() {
+			return _acronym;
+		}
+
+		/**
+		 * Builder accessor for the acronym
+		 */
+		public void setAcronym(String acronym) {
+			_acronym = acronym;
 		}
 	}
 } 

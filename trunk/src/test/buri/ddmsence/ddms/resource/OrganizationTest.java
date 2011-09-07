@@ -86,7 +86,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		List<String> emails) {
 		Organization component = null;
 		try {
-			component = new Organization(names, phones, emails);
+			String acronym = isDDMS40OrGreater() ? "DISA" : "";
+			component = new Organization(names, phones, emails, acronym, null);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -104,11 +105,11 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		for (String name : TEST_NAMES)
 			html.append("<meta name=\"name\" content=\"").append(name).append("\" />\n");
 		for (String phone : TEST_PHONES)
-			html.append("<meta name=\"phone\" content=\"").append(phone)
-				.append("\" />\n");
+			html.append("<meta name=\"phone\" content=\"").append(phone).append("\" />\n");
 		for (String email : TEST_EMAILS)
-			html.append("<meta name=\"email\" content=\"").append(email)
-				.append("\" />\n");
+			html.append("<meta name=\"email\" content=\"").append(email).append("\" />\n");
+		if (isDDMS40OrGreater())
+			html.append("<meta name=\"acronym\" content=\"DISA\" />\n");
 		return (html.toString());
 	}
 
@@ -125,6 +126,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			text.append("phone: ").append(phone).append("\n");
 		for (String email : TEST_EMAILS)
 			text.append("email: ").append(email).append("\n");
+		if (isDDMS40OrGreater())
+			text.append("acronym: DISA\n");
 		return (text.toString());
 	}
 
@@ -136,8 +139,10 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:").append(Organization.getName(version)).append(" xmlns:ddms=\"").append(version.getNamespace())
-			.append("\">\n");
+		xml.append("<ddms:").append(Organization.getName(version)).append(" xmlns:ddms=\"").append(version.getNamespace()).append("\"");
+		if (isDDMS40OrGreater())
+			xml.append(" ddms:acronym=\"DISA\"");
+		xml.append(">\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
 		for (String phone : TEST_PHONES)
