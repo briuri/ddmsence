@@ -228,13 +228,16 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Organization elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Organization dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			
+			// Backwards compatible constructors
+			assertEquals(new Organization(TEST_NAMES, TEST_PHONES, TEST_EMAILS), new Organization(TEST_NAMES, TEST_PHONES, TEST_EMAILS, null, null));
 		}
 	}
 

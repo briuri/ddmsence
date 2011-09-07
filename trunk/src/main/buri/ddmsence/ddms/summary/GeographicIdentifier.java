@@ -111,8 +111,9 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	
 	/**
 	 * Constructor for creating a component from raw data. Note that the facilityIdentifier component cannot be used
-	 * with the components in this constructor. Provided for backwards compatibility to pre-DDMS 4.0 components.
+	 * with the components in this constructor. 
 	 * 
+	 * @deprecated This constructor is provided for backwards compatibility with pre-DDMS 4.0 elements.
 	 * @param names the names (optional)
 	 * @param regions the region names (optional)
 	 * @param countryCode the country code (optional)
@@ -125,7 +126,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	
 	/**
 	 * Constructor for creating a component from raw data. Note that the facilityIdentifier component cannot be used
-	 * with the components in this constructor. Provided for backwards compatibility to pre-DDMS 4.0 components.
+	 * with the components in this constructor. 
 	 * 
 	 * @param names the names (optional)
 	 * @param regions the region names (optional)

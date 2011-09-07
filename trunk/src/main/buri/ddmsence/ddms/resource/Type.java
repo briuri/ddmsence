@@ -86,9 +86,9 @@ public final class Type extends AbstractQualifierValue {
 	}
 	
 	/**
-	 * Constructor for creating a component from raw data. Provided for backwards compatibility to pre-DDMS 4.0
-	 * elements.
+	 * Constructor for creating a component from raw data. 
 	 * 
+	 * @deprecated This constructor is provided for backwards compatibility with pre-DDMS 4.0 elements.
 	 * @param qualifier the value of the qualifier attribute
 	 * @param value the value of the value attribute
 	 * @throws InvalidDDMSException if any required information is missing or malformed

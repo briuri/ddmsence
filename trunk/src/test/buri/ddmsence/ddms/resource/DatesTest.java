@@ -222,7 +222,7 @@ public class DatesTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			String approvedOn = isDDMS31OrGreater() ? TEST_APPROVED : "";
@@ -233,6 +233,10 @@ public class DatesTest extends AbstractComponentTestCase {
 				approvedOn, receivedOn);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			
+			// Backwards compatible constructors
+			assertEquals(new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, TEST_APPROVED), new Dates(
+				TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, TEST_APPROVED, null));
 		}
 	}
 
@@ -327,7 +331,7 @@ public class DatesTest extends AbstractComponentTestCase {
 	public void testApprovedOnWrongVersion() {
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
-			new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, TEST_APPROVED);
+			new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, TEST_APPROVED, null);
 			fail("Allowed invalid data.");
 		} catch (InvalidDDMSException e) {
 			// Good
