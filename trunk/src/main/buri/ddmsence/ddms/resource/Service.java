@@ -76,7 +76,7 @@ public final class Service extends AbstractProducerEntity {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Service(Element element) throws InvalidDDMSException {
-		super(element);
+		super(element, true);
 	}
 
 	/**

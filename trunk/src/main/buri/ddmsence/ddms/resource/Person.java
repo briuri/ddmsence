@@ -86,7 +86,7 @@ public final class Person extends AbstractProducerEntity {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Person(Element element) throws InvalidDDMSException {
-		super(element);
+		super(element, true);
 	}
 
 	/**

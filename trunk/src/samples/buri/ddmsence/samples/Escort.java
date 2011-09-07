@@ -54,6 +54,7 @@ import buri.ddmsence.ddms.resource.Publisher;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Source;
+import buri.ddmsence.ddms.resource.SubOrganization;
 import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
@@ -252,6 +253,7 @@ public class Escort {
 				String surname = null;
 				String userID = null;
 				String affiliation = null;
+				List<SubOrganization> subOrgs = new ArrayList<SubOrganization>();
 				String acronym = null;
 				if (Person.getName(version).equals(entityType)) {
 					surname = readString("the Person surname [testSurname]");
@@ -259,6 +261,11 @@ public class Escort {
 					affiliation = readString("the Person affiliation [testOrg]");
 				}
 				if (Organization.getName(version).equals(entityType)) {
+					int numSubs = readInt("the number of suborganizations to include [1]");
+					for (int i = 0; i < numSubs; i++) {
+						println("* SubOrganization #" + (i + 1));
+						subOrgs.add((SubOrganization) inputLoop(SubOrganization.class));
+					}					
 					acronym = readString("the Organization acronym [testAcronym]");
 				}
 				String classification = readString("the producer classification [U]");
@@ -269,7 +276,7 @@ public class Escort {
 				if (Person.getName(version).equals(entityType))
 					entity = new Person(names, surname, phones, emails, userID, affiliation);
 				else if (Organization.getName(version).equals(entityType))
-					entity = new Organization(names, phones, emails, acronym, null);
+					entity = new Organization(names, phones, emails, subOrgs, acronym, null);
 				else if (Service.getName(version).equals(entityType))
 					entity = new Service(names, phones, emails);
 				else 
@@ -286,6 +293,15 @@ public class Escort {
 				throw new InvalidDDMSException("Unknown producerType: " + producerType);
 			}		
 		});		
+		BUILDERS.put(SubOrganization.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String value = readString("the value [testSubOrganization]");
+				String classification = readString("the suborganization's classification [U]");
+				String ownerProducers = readString("the suborganization's ownerProducers as a space-delimited string [USA]");
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new SubOrganization(value, attr));
+			}
+		});
 		BUILDERS.put(Format.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String mimeType = readString("the mimeType [testType]");

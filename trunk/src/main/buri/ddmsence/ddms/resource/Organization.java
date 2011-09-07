@@ -19,14 +19,18 @@
 */
 package buri.ddmsence.ddms.resource;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
+import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractProducerEntity;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
@@ -52,6 +56,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:name</u>: names of the producer entity (1-many, at least 1 required)<br />
  * <u>ddms:phone</u>: phone numbers of the producer entity (0-many optional)<br />
  * <u>ddms:email</u>: email addresses of the producer entity (0-many optional)<br />
+ * <u>ddms:subOrganization</u>: suborganization (0-many optional, starting in DDMS 4.0)<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -71,6 +76,8 @@ import buri.ddmsence.util.Util;
  */
 public final class Organization extends AbstractProducerEntity {
 	
+	private List<SubOrganization> _cachedSubOrganizations = new ArrayList<SubOrganization>();
+	
 	private static final String ACRONYM_NAME = "acronym";
 	
 	/**
@@ -80,7 +87,19 @@ public final class Organization extends AbstractProducerEntity {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Organization(Element element) throws InvalidDDMSException {
-		super(element);
+		super(element, false);
+		try {
+			String namespace = element.getNamespaceURI();
+			Elements components = element.getChildElements(SubOrganization.getName(getDDMSVersion()), namespace);
+			for (int i = 0; i < components.size(); i++) {
+				_cachedSubOrganizations.add(new SubOrganization(components.get(i)));
+			}
+			validate();
+		}
+		catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
@@ -93,7 +112,7 @@ public final class Organization extends AbstractProducerEntity {
 	 */
 	public Organization(List<String> names, List<String> phones, List<String> emails)
 		throws InvalidDDMSException {
-		this(names, phones, emails, null, null);
+		this(names, phones, emails, null, null, null);
 	}
 	
 	/**
@@ -102,16 +121,23 @@ public final class Organization extends AbstractProducerEntity {
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
+	 * @param subOrganizations an ordered list of suborganizations
 	 * @param acronym the organization's acronym
 	 * @param extensions extensible attributes (optional)
 	 */
-	public Organization(List<String> names, List<String> phones, List<String> emails, String acronym,
-		ExtensibleAttributes extensions) throws InvalidDDMSException {
-		super(Organization.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions,
-			false);
+	public Organization(List<String> names, List<String> phones, List<String> emails,
+		List<SubOrganization> subOrganizations, String acronym, ExtensibleAttributes extensions)
+		throws InvalidDDMSException {
+		super(Organization.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions, false);
 		try {
+			if (subOrganizations == null)
+				subOrganizations = Collections.emptyList();
 			if (!Util.isEmpty(acronym))
 				Util.addDDMSAttribute(getXOMElement(), ACRONYM_NAME, acronym);
+			for (SubOrganization subOrganization : subOrganizations) {
+				_cachedSubOrganizations.add(subOrganization);
+				getXOMElement().appendChild(subOrganization.getXOMElementCopy());
+			}
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -124,6 +150,7 @@ public final class Organization extends AbstractProducerEntity {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
+	 * <li>Acronyms cannot exist until DDMS 4.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractProducerEntity#validate()
@@ -132,7 +159,11 @@ public final class Organization extends AbstractProducerEntity {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Organization.getName(getDDMSVersion()));
-		
+		// Should be reviewed as additional versions of DDMS are supported.
+		if (!getDDMSVersion().isAtLeast("4.0")) {
+			if (!Util.isEmpty(getAcronym()))
+				throw new InvalidDDMSException("An organization cannot have an acronym until DDMS 4.0 or later.");
+		}
 		validateWarnings();
 	}
 		
@@ -150,7 +181,7 @@ public final class Organization extends AbstractProducerEntity {
 			addWarning("A ddms:acronym attribute was found with no value.");
 		}
 	}
-	
+
 	/**
 	 * Outputs to HTML with a prefix at the beginning of each meta tag.
 	 * 
@@ -160,6 +191,8 @@ public final class Organization extends AbstractProducerEntity {
 	public String toHTML(String prefix) {
 		prefix = Util.getNonNullString(prefix);
 		StringBuffer html = new StringBuffer(super.toHTML(prefix));
+		for (SubOrganization subOrg : getSubOrganizations())
+			html.append(subOrg.toHTML(prefix));
 		html.append(buildHTMLMeta(prefix + ACRONYM_NAME, getAcronym(), false));
 		return (html.toString());
 	}
@@ -173,6 +206,8 @@ public final class Organization extends AbstractProducerEntity {
 	public String toText(String prefix) {
 		prefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer(super.toText(prefix));
+		for (SubOrganization subOrg : getSubOrganizations())
+			text.append(subOrg.toText(prefix));	
 		text.append(buildTextLine(ACRONYM_NAME, getAcronym(), false));
 		return (text.toString());
 	}
@@ -184,7 +219,8 @@ public final class Organization extends AbstractProducerEntity {
 		if (!super.equals(obj) || !(obj instanceof Organization))
 			return (false);
 		Organization test = (Organization) obj;
-		return (getAcronym().equals(test.getAcronym()));
+		return (Util.listEquals(getSubOrganizations(), test.getSubOrganizations())
+			&& getAcronym().equals(test.getAcronym()));
 	}
 	
 	/**
@@ -192,6 +228,8 @@ public final class Organization extends AbstractProducerEntity {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
+		for (SubOrganization subOrg : getSubOrganizations())
+			result = 7 * result + subOrg.hashCode();
 		result = 7 * result + getAcronym().hashCode();
 		return (result);
 	}
@@ -205,6 +243,13 @@ public final class Organization extends AbstractProducerEntity {
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
 		return (version.isAtLeast("4.0") ? "organization" : "Organization");
+	}
+	
+	/**
+	 * Accessor for the suborganizations (0-many)
+	 */
+	public List<SubOrganization> getSubOrganizations() {
+		return (Collections.unmodifiableList(_cachedSubOrganizations));
 	}
 	
 	/**
@@ -223,6 +268,7 @@ public final class Organization extends AbstractProducerEntity {
 	 */
 	public static class Builder extends AbstractProducerEntity.Builder {
 		private static final long serialVersionUID = 4565840434345629470L;
+		private List<SubOrganization.Builder> _subOrganizations;
 		private String _acronym;
 		
 		/**
@@ -237,6 +283,8 @@ public final class Organization extends AbstractProducerEntity {
 		 */
 		public Builder(Organization organization) {
 			super(organization);
+			for (SubOrganization subOrg : organization.getSubOrganizations())
+				getSubOrganizations().add(new SubOrganization.Builder(subOrg));
 			setAcronym(organization.getAcronym());
 		}
 		
@@ -244,10 +292,39 @@ public final class Organization extends AbstractProducerEntity {
 		 * @see IBuilder#commit()
 		 */
 		public Organization commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Organization(getNames(), getPhones(), getEmails(), getAcronym(),
+			if (isEmpty())
+				return (null);
+			List<SubOrganization> subOrgs = new ArrayList<SubOrganization>();
+			for (IBuilder builder : getSubOrganizations()) {
+				SubOrganization component = (SubOrganization) builder.commit();
+				if (component != null)
+					subOrgs.add(component);
+			}
+			return (new Organization(getNames(), getPhones(), getEmails(), subOrgs, getAcronym(),
 				getExtensibleAttributes().commit()));
 		}
 
+		/**
+		 * @see IBuilder#isEmpty()
+		 */
+		public boolean isEmpty() {
+			boolean hasValueInList = false;
+			for (IBuilder builder : getSubOrganizations())
+				hasValueInList = hasValueInList || !builder.isEmpty();
+			return (super.isEmpty()
+				&& !hasValueInList
+				&& Util.isEmpty(getAcronym()));
+		}
+		
+		/**
+		 * Builder accessor for suborganizations
+		 */
+		public List<SubOrganization.Builder> getSubOrganizations() {
+			if (_subOrganizations == null)
+				_subOrganizations = new LazyList(SubOrganization.Builder.class);
+			return _subOrganizations;
+		}
+		
 		/**
 		 * Builder accessor for the acronym
 		 */
