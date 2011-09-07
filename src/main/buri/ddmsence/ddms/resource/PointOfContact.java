@@ -135,7 +135,6 @@ public class PointOfContact extends AbstractProducerRole {
 		 * @see IBuilder#commit()
 		 */
 		public PointOfContact commit() throws InvalidDDMSException {
-			setProducerType(PointOfContact.getName(DDMSVersion.getCurrentVersion()));
 			return (isEmpty() ? null : new PointOfContact(commitSelectedEntity(), getPocType(), getSecurityAttributes()
 				.commit()));
 		}

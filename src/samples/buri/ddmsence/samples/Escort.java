@@ -263,13 +263,13 @@ public class Escort {
 				
 				IProducerEntity entity = null;
 				if (Person.getName(version).equals(entityType))
-					entity = new Person(producerType, surname, names, userID, affiliation, phones, emails);
+					entity = new Person(surname, names, userID, affiliation, phones, emails);
 				else if (Organization.getName(version).equals(entityType))
-					entity = new Organization(producerType, names, phones, emails);
+					entity = new Organization(names, phones, emails);
 				else if (Service.getName(version).equals(entityType))
-					entity = new Service(producerType, names, phones, emails);
+					entity = new Service(names, phones, emails);
 				else 
-					entity = new Unknown(producerType, names, phones, emails);
+					entity = new Unknown(names, phones, emails);
 				
 				if (Creator.getName(version).equals(producerType))
 					return (new Creator(entity, null, attr));
@@ -382,7 +382,7 @@ public class Escort {
 				if (confirm("Include a countryCode?")) {
 					String qualifier = readString("the qualifier [testQualifier]");
 					String value = readString("the value [USA]");
-					code = new CountryCode("geographicIdentifier", qualifier, value);
+					code = new CountryCode(qualifier, value);
 				}
 				SubDivisionCode subCode = null;
 				if (confirm("Include a subDivisionCode?")) {
@@ -496,7 +496,7 @@ public class Escort {
 				if (confirm("Include a countryCode?")) {
 					String qualifier = readString("the qualifier [testQualifier]");
 					String value = readString("the value [USA]");
-					code = new CountryCode("postalAddress", qualifier, value);
+					code = new CountryCode(qualifier, value);
 				}
 				return (new PostalAddress(streets, city, stateOrProvince, postalCode, code, hasState));
 			}		

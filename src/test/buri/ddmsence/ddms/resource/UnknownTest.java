@@ -64,8 +64,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 	private Unknown testConstructor(boolean expectFailure, Element element) {
 		Unknown component = null;
 		try {
-			DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI());
-			component = new Unknown(Creator.getName(version), element);
+			component = new Unknown(element);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -84,7 +83,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 	private Unknown testConstructor(boolean expectFailure, List<String> names, List<String> phones, List<String> emails) {
 		Unknown component = null;
 		try {
-			component = new Unknown(Creator.getName(DDMSVersion.getCurrentVersion()), names, phones, emails);
+			component = new Unknown(names, phones, emails);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -98,16 +97,13 @@ public class UnknownTest extends AbstractComponentTestCase {
 	private String getExpectedHTMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer html = new StringBuffer();
-		String parentType = Creator.getName(version);
-		html.append("<meta name=\"").append(parentType).append(".entityType\" content=\"").append(Unknown.getName(version)).append("\" />\n");
+		html.append("<meta name=\"entityType\" content=\"").append(Unknown.getName(version)).append("\" />\n");
 		for (String name : TEST_NAMES)
-			html.append("<meta name=\"").append(parentType).append(".name\" content=\"").append(name).append("\" />\n");
+			html.append("<meta name=\"name\" content=\"").append(name).append("\" />\n");
 		for (String phone : TEST_PHONES)
-			html.append("<meta name=\"").append(parentType).append(".phone\" content=\"").append(phone)
-				.append("\" />\n");
+			html.append("<meta name=\"phone\" content=\"").append(phone).append("\" />\n");
 		for (String email : TEST_EMAILS)
-			html.append("<meta name=\"").append(parentType).append(".email\" content=\"").append(email)
-				.append("\" />\n");
+			html.append("<meta name=\"email\" content=\"").append(email).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -117,7 +113,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 	private String getExpectedTextOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(Creator.getName(DDMSVersion.getCurrentVersion())).append(" EntityType: ").append(Unknown.getName(version)).append("\n");
+		text.append("EntityType: ").append(Unknown.getName(version)).append("\n");
 		for (String name : TEST_NAMES)
 			text.append("name: ").append(name).append("\n");
 		for (String phone : TEST_PHONES)
@@ -321,8 +317,8 @@ public class UnknownTest extends AbstractComponentTestCase {
 
 	public void test20Usage() {
 		try {
-			DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
-			new Unknown(Creator.getName(version), TEST_NAMES, TEST_PHONES, TEST_EMAILS);
+			DDMSVersion.setCurrentVersion("2.0");
+			new Unknown(TEST_NAMES, TEST_PHONES, TEST_EMAILS);
 			fail("Allowed invalid data.");
 		} catch (InvalidDDMSException e) {
 			// Good
@@ -348,7 +344,6 @@ public class UnknownTest extends AbstractComponentTestCase {
 
 			// Validation
 			builder = new Unknown.Builder();
-			builder.setParentType(Creator.getName(version));
 			builder.setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();

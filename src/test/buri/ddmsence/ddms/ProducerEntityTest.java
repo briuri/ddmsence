@@ -26,7 +26,6 @@ import junit.framework.TestCase;
 import nu.xom.Element;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
-import buri.ddmsence.ddms.resource.Contributor;
 import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.util.DDMSVersion;
@@ -40,23 +39,9 @@ import buri.ddmsence.util.Util;
  */
 public class ProducerEntityTest extends TestCase {
 
-	public void testValidateParentTypeSuccess() throws InvalidDDMSException {
-		new Organization("creator", Util.getXsListAsList("Name"), null, null);
-	}
-
-	public void testValidateProducerTypeFailure() {
-		try {
-			new Organization("unknown", Util.getXsListAsList("Name"), null, null);
-			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
-			// Good
-		}
-	}
-
 	public void testSameVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
-		Organization org = new Organization(Contributor.getName(DDMSVersion.getCurrentVersion()),
-			Util.getXsListAsList("DISA"), null, null);
+		Organization org = new Organization(Util.getXsListAsList("DISA"), null, null);
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
 			new Creator(org, null, null);
@@ -73,7 +58,7 @@ public class ProducerEntityTest extends TestCase {
 		Element entityElement = Util.buildDDMSElement(Organization.getName(version), null);
 		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 		entityElement.appendChild(Util.buildDDMSElement("phone", ""));
-		Organization component = new Organization(Contributor.getName(version), entityElement);
+		Organization component = new Organization(entityElement);
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A ddms:phone element was found with no value.", component.getValidationWarnings().get(0)
@@ -83,7 +68,7 @@ public class ProducerEntityTest extends TestCase {
 		entityElement = Util.buildDDMSElement(Organization.getName(version), null);
 		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
 		entityElement.appendChild(Util.buildDDMSElement("email", ""));
-		component = new Organization(Contributor.getName(version), entityElement);
+		component = new Organization(entityElement);
 		assertEquals(1, component.getValidationWarnings().size());
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A ddms:email element was found with no value.", component.getValidationWarnings().get(0)
@@ -92,12 +77,12 @@ public class ProducerEntityTest extends TestCase {
 
 	public void testExtensibleSuccess() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 
 			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
 			List<String> names = new ArrayList<String>();
 			names.add("DISA");
-			new Organization(Contributor.getName(version), names, null, null, attr);
+			new Organization(names, null, null, attr);
 		}
 	}
 

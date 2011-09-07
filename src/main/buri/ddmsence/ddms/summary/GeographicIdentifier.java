@@ -93,7 +93,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			Element countryCodeElement = element.getFirstChildElement(CountryCode.getName(version),
 				element.getNamespaceURI());
 			if (countryCodeElement != null)
-				_cachedCountryCode = new CountryCode(GeographicIdentifier.getName(version), countryCodeElement);
+				_cachedCountryCode = new CountryCode(countryCodeElement);
 			Element subDivisionCodeElement = element.getFirstChildElement(SubDivisionCode.getName(version),
 				element.getNamespaceURI());
 			if (subDivisionCodeElement != null)
@@ -243,7 +243,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		for (String region : getRegions())
 			html.append(buildHTMLMeta(prefix + REGION_NAME, region, false));
 		if (getCountryCode() != null)
-			html.append(getCountryCode().toHTML());
+			html.append(getCountryCode().toHTML(prefix));
 		if (getSubDivisionCode() != null)
 			html.append(getSubDivisionCode().toHTML());
 		if (hasFacilityIdentifier())
@@ -255,13 +255,14 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
+		String prefix = getName() + " ";
 		StringBuffer text = new StringBuffer();
 		for (String name : getNames())
-			text.append(buildTextLine(getName() + " " + NAME_NAME, name, false));
+			text.append(buildTextLine(prefix + NAME_NAME, name, false));
 		for (String region : getRegions())
-			text.append(buildTextLine(getName() + " " + REGION_NAME, region, false));
+			text.append(buildTextLine(prefix + REGION_NAME, region, false));
 		if (getCountryCode() != null)
-			text.append(getCountryCode().toText());
+			text.append(getCountryCode().toText(prefix));
 		if (getSubDivisionCode() != null)
 			text.append(getSubDivisionCode().toText());
 		if (hasFacilityIdentifier())
@@ -398,7 +399,6 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 			FacilityIdentifier identifier = getFacilityIdentifier().commit();
 			if (identifier != null)
 				return (new GeographicIdentifier(identifier));
-			getCountryCode().setParentType(GeographicIdentifier.getName(DDMSVersion.getCurrentVersion()));
 			return (new GeographicIdentifier(getNames(), getRegions(), getCountryCode().commit(), 
 				getSubDivisionCode().commit()));
 		}

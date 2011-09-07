@@ -77,9 +77,8 @@ public class PublisherTest extends AbstractComponentTestCase {
 	 */
 	private IProducerEntity getEntityFixture() {
 		try {
-			return (new Service(Publisher.getName(DDMSVersion.getCurrentVersion()),
-				Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), Util.getXsListAsList("703-882-1000"),
-				Util.getXsListAsList("ddms@fgm.com")));
+			return (new Service(Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"),
+				Util.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
@@ -108,15 +107,15 @@ public class PublisherTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append(getEntityFixture().toHTML());
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		String pubName = Publisher.getName(version);
+		StringBuffer html = new StringBuffer();
+		html.append(getEntityFixture().toHTML(pubName + "."));
 		if (isDDMS40OrGreater()) {
-			html.append("<meta name=\"").append(Publisher.getName(version))
-				.append(".POCType\" content=\"ICD-710\" />\n");
+			html.append("<meta name=\"").append(pubName).append(".POCType\" content=\"ICD-710\" />\n");
 		}
-		html.append("<meta name=\"").append(Publisher.getName(version)).append(".classification\" content=\"U\" />\n");
-		html.append("<meta name=\"").append(Publisher.getName(version)).append(".ownerProducer\" content=\"USA\" />\n");
+		html.append("<meta name=\"").append(pubName).append(".classification\" content=\"U\" />\n");
+		html.append("<meta name=\"").append(pubName).append(".ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -124,14 +123,15 @@ public class PublisherTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
-		StringBuffer text = new StringBuffer();
-		text.append(getEntityFixture().toText());
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		String pubName = Publisher.getName(version);
+		StringBuffer text = new StringBuffer();
+		text.append(getEntityFixture().toText(pubName + " "));
 		if (isDDMS40OrGreater()) {
 			text.append("POCType: ICD-710\n");
 		}
-		text.append(Publisher.getName(version)).append(" classification: U\n");
-		text.append(Publisher.getName(version)).append(" ownerProducer: USA\n");
+		text.append(pubName).append(" classification: U\n");
+		text.append(pubName).append(" ownerProducer: USA\n");
 		return (text.toString());
 	}
 
@@ -230,12 +230,10 @@ public class PublisherTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Publisher elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Publisher dataComponent = testConstructor(
-				WILL_SUCCEED,
-				new Service(Publisher.getName(version), Util.getXsListAsList("DISA PEO-GES"), Util
-					.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
+			Publisher dataComponent = testConstructor(WILL_SUCCEED, new Service(Util.getXsListAsList("DISA PEO-GES"),
+				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}

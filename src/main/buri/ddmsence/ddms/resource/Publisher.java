@@ -136,7 +136,6 @@ public class Publisher extends AbstractProducerRole {
 		 * @see IBuilder#commit()
 		 */
 		public Publisher commit() throws InvalidDDMSException {
-			setProducerType(Publisher.getName(DDMSVersion.getCurrentVersion()));
 			return (isEmpty() ? null : new Publisher(commitSelectedEntity(), getPocType(), 
 				getSecurityAttributes().commit()));
 		}

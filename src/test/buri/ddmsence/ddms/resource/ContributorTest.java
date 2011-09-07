@@ -77,9 +77,8 @@ public class ContributorTest extends AbstractComponentTestCase {
 	 */
 	private IProducerEntity getEntityFixture() {
 		try {
-			return (new Organization(Contributor.getName(DDMSVersion.getCurrentVersion()),
-				Util.getXsListAsList("DISA PEO-GES"), Util.getXsListAsList("703-882-1000 703-885-1000"),
-				Util.getXsListAsList("ddms@fgm.com")));
+			return (new Organization(Util.getXsListAsList("DISA PEO-GES"),
+				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
@@ -110,7 +109,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 	private String getExpectedHTMLOutput() {
 		String contributorName = Contributor.getName(DDMSVersion.getCurrentVersion());
 		StringBuffer html = new StringBuffer();
-		html.append(getEntityFixture().toHTML());
+		html.append(getEntityFixture().toHTML(contributorName + "."));
 		if (isDDMS40OrGreater()) {
 			html.append("<meta name=\"").append(contributorName).append(".POCType\" content=\"ICD-710\" />\n");
 		}
@@ -125,7 +124,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 	private String getExpectedTextOutput() {
 		String contributorName = Contributor.getName(DDMSVersion.getCurrentVersion());
 		StringBuffer text = new StringBuffer();
-		text.append(getEntityFixture().toText());
+		text.append(getEntityFixture().toText(contributorName + " "));
 		if (isDDMS40OrGreater()) {
 			text.append("POCType: ICD-710\n");
 		}
@@ -232,12 +231,10 @@ public class ContributorTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			Contributor elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Contributor dataComponent = testConstructor(
-				WILL_SUCCEED,
-				new Service(Contributor.getName(version), Util.getXsListAsList("DISA PEO-GES"), Util
-					.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
+			Contributor dataComponent = testConstructor(WILL_SUCCEED, new Service(Util.getXsListAsList("DISA PEO-GES"),
+				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}

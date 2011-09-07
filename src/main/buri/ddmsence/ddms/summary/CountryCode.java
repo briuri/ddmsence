@@ -19,9 +19,6 @@
 */
 package buri.ddmsence.ddms.summary;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractQualifierValue;
@@ -36,9 +33,7 @@ import buri.ddmsence.util.Util;
  * <p>
  * The Text/HTML output of this class depends on the enclosing element of this country code. For example,
  * if the country code is used in a geographicIdentifier, the HTML meta tags will prefix each field
- * with "geospatialCoverage.GeospatialExtent.geographicIdentifier.". See the DDMS category descriptions for other 
- * examples:
- * http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#CountryCodeQualifier
+ * with "geospatialCoverage.GeospatialExtent.geographicIdentifier.". 
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
@@ -67,59 +62,26 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class CountryCode extends AbstractQualifierValue {
-
-	private String _parentType;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 * 
-	 * @param parentType either geographicIdentifier or postalAddress
 	 * @param element the XOM element representing this 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public CountryCode(String parentType, Element element) throws InvalidDDMSException {
-		try {
-			_parentType = parentType;
-			Util.requireDDMSValue("countryCode element", element);
-			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
-			e.setLocator(getQualifiedName());
-			throw (e);
-		}
+	public CountryCode(Element element) throws InvalidDDMSException {
+		super(element);
 	}
 	
 	/**
 	 * Constructor for creating a component from raw data
 	 *  
-	 * @param parentType either geographicIdentifier or postalAddress
 	 * @param qualifier	the value of the qualifier attribute
 	 * @param value	the value of the value attribute 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public CountryCode(String parentType, String qualifier, String value) throws InvalidDDMSException {
-		super(CountryCode.getName(DDMSVersion.getCurrentVersion()), qualifier, value, false);
-		try {
-			_parentType = parentType;
-			setXOMElement(getXOMElement(), true);
-		} catch (InvalidDDMSException e) {
-			e.setLocator(getQualifiedName());
-			throw (e);
-		}
-	}
-	
-	/**
-	 * Validates a parent type against the allowed types.
-	 * 
-	 * @param parentType the type to test
-	 * @throws InvalidDDMSException if the value is null, empty or invalid.
-	 */
-	private void validateParentType(String parentType) throws InvalidDDMSException {
-		Util.requireDDMSValue("parent type", parentType);
-		Set<String> parentTypes = new HashSet<String>();
-		parentTypes.add(GeographicIdentifier.getName(getDDMSVersion()));
-		parentTypes.add(PostalAddress.getName(getDDMSVersion()));
-		if (!parentTypes.contains(parentType))
-			throw new InvalidDDMSException("The parent type must be one of " + parentTypes);
+	public CountryCode(String qualifier, String value) throws InvalidDDMSException {
+		super(CountryCode.getName(DDMSVersion.getCurrentVersion()), qualifier, value, true);
 	}
 	
 	/**
@@ -127,7 +89,6 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The parent type is either geographicIdentifier or postalAddress.</li>
 	 * <li>The qualifier exists and is not empty.</li>
 	 * <li>The value exists and is not empty.</li>
 	 * <li>Does not validate that the value is valid against the qualifier's vocabulary.</li>
@@ -139,7 +100,6 @@ public final class CountryCode extends AbstractQualifierValue {
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
 		Util.requireDDMSQName(getXOMElement(), CountryCode.getName(getDDMSVersion()));
-		validateParentType(getParentType());
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
 		Util.requireDDMSValue("value attribute", getValue());
 	}
@@ -148,8 +108,18 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
+		return (toHTML(""));
+	}
+	
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + getParentType() + "." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + QUALIFIER_NAME, getQualifier(), true));
 		html.append(buildHTMLMeta(prefix + VALUE_NAME, getValue(), true));
 		return (html.toString());
@@ -159,8 +129,18 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
+		return (toText(""));
+	}
+	
+	/**
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
+	 */
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + " ";
 		StringBuffer text = new StringBuffer();
-		String prefix = getParentType() + " " + getName() + " ";
 		text.append(buildTextLine(prefix + QUALIFIER_NAME, getQualifier(), true));
 		text.append(buildTextLine(prefix + VALUE_NAME, getValue(), true));
 		return (text.toString());
@@ -172,17 +152,7 @@ public final class CountryCode extends AbstractQualifierValue {
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof CountryCode))
 			return (false);
-		CountryCode test = (CountryCode) obj;
-		return (getParentType().equals(test.getParentType()));
-	}
-	
-	/**
-	 * @see Object#hashCode()
-	 */
-	public int hashCode() {
-		int result = super.hashCode();
-		result = 7 * result + getParentType().hashCode();
-		return (result);
+		return (true);
 	}
 	
 	/**
@@ -197,13 +167,6 @@ public final class CountryCode extends AbstractQualifierValue {
 	}
 	
 	/**
-	 * Accessor for the name of the parent element
-	 */
-	public String getParentType() {
-		return (Util.getNonNullString(_parentType));
-	}
-	
-	/**
 	 * Builder for this DDMS component.
 	 * 
 	 * @see IBuilder
@@ -212,7 +175,6 @@ public final class CountryCode extends AbstractQualifierValue {
 	 */
 	public static class Builder extends AbstractQualifierValue.Builder {
 		private static final long serialVersionUID = 2136329013144660166L;
-		private String _parentType;
 		
 		/**
 		 * Empty constructor
@@ -226,28 +188,13 @@ public final class CountryCode extends AbstractQualifierValue {
 		 */
 		public Builder(CountryCode code) {
 			super(code);
-			setParentType(code.getParentType());
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public CountryCode commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new CountryCode(getParentType(), getQualifier(), getValue()));
-		}
-		
-		/**
-		 * Builder accessor for the parentType
-		 */
-		public String getParentType() {
-			return _parentType;
-		}
-
-		/**
-		 * Builder accessor for the parentType
-		 */
-		public void setParentType(String parentType) {
-			_parentType = parentType;
+			return (isEmpty() ? null : new CountryCode(getQualifier(), getValue()));
 		}
 	}
 } 

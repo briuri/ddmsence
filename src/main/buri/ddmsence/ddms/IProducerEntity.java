@@ -58,4 +58,20 @@ public interface IProducerEntity extends IDDMSComponent {
 	 * @return the attributes
 	 */
 	public ExtensibleAttributes getExtensibleAttributes();
+	
+	/**
+	 * Extended HTML output method which adds a prefix to each line.
+	 * 
+	 * @param prefix the text to add
+	 * @return HTML output
+	 */
+	public String toHTML(String prefix);
+	
+	/**
+	 * Extended Text output method which adds a prefix to each line.
+	 * 
+	 * @param prefix the text to add
+	 * @return Text output
+	 */
+	public String toText(String prefix);
 }

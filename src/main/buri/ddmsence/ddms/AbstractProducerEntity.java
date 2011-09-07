@@ -21,18 +21,12 @@ package buri.ddmsence.ddms;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
-import buri.ddmsence.ddms.resource.Contributor;
-import buri.ddmsence.ddms.resource.Creator;
-import buri.ddmsence.ddms.resource.PointOfContact;
-import buri.ddmsence.ddms.resource.Publisher;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
@@ -41,8 +35,7 @@ import buri.ddmsence.util.Util;
  * 
  * <p> The HTML output of this class depends on the producer type which the producer entity is associated with. For
  * example, if the producer entity represented by this class is a "pointOfContact", the HTML meta tags will prefix each
- * field with "pointOfContact.". See the DDMS category descriptions for other examples:
- * http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Person </p>
+ * field with "pointOfContact.".</p>
  * 
  * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
  * before the component is used. </p>
@@ -51,8 +44,7 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public abstract class AbstractProducerEntity extends AbstractBaseComponent implements IProducerEntity {
-	
-	private String _parentType;
+
 	private ExtensibleAttributes _cachedExtensibleAttributes = null;
 	
 	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
@@ -72,16 +64,14 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	/**
 	 * Base constructor
 	 * 
-	 * @param parentType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
 	 * @param element the XOM element representing this component
 	 */
-	protected AbstractProducerEntity(String parentType, Element element) throws InvalidDDMSException {
+	protected AbstractProducerEntity(Element element) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("producerEntity element", element);
 			_cachedNames = Util.getDDMSChildValues(element, NAME_NAME);
 			_cachedPhones = Util.getDDMSChildValues(element, PHONE_NAME);
 			_cachedEmails = Util.getDDMSChildValues(element, EMAIL_NAME);
-			_parentType = parentType;
 			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
@@ -93,7 +83,6 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	/**
 	 * Constructor which builds from raw data.
 	 * 
-	 * @param parentType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
 	 * @param entityName the element name of this entity (i.e. organization, person)
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
@@ -102,7 +91,7 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	 * @param validateNow true to validate the component immediately. Because Person entities have additional fields
 	 * they should not be validated in the superconstructor.
 	 */
-	protected AbstractProducerEntity(String parentType, String entityName, List<String> names, List<String> phones,
+	protected AbstractProducerEntity(String entityName, List<String> names, List<String> phones,
 		List<String> emails, ExtensibleAttributes extensions, boolean validateNow)
 		throws InvalidDDMSException {
 		try {
@@ -127,7 +116,6 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 			_cachedNames = names;
 			_cachedPhones = phones;
 			_cachedEmails = emails;
-			_parentType = parentType;
 			_cachedExtensibleAttributes = (extensions == null ? new ExtensibleAttributes((List<Attribute>) null)
 				: extensions);
 			_cachedExtensibleAttributes.addTo(element);
@@ -137,27 +125,11 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 			throw (e);
 		}
 	}
-	
-	/**
-	 * Validates a parent type against the allowed types.
-	 * 
-	 * @throws InvalidDDMSException if the value is null, empty or invalid.
-	 */
-	private void validateParentType() throws InvalidDDMSException {
-		Set<String> parentTypes = new HashSet<String>();
-		parentTypes.add(Creator.getName(getDDMSVersion()));
-		parentTypes.add(Contributor.getName(getDDMSVersion()));
-		parentTypes.add(PointOfContact.getName(getDDMSVersion()));
-		parentTypes.add(Publisher.getName(getDDMSVersion()));
-		if (!parentTypes.contains(getParentType()))
-			throw new InvalidDDMSException("The parent type must be one of " + parentTypes);
-	}
-		
+			
 	/**
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>The parent type is valid.</li>
 	 * <li>The producer entity has at least 1 non-empty name.</li>
 	 * </td></tr></table>
 	 * 
@@ -166,7 +138,6 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();	
-		validateParentType();
 		if (getXOMElement().getChildElements(NAME_NAME, getNamespace()).size() == 0)
 			throw new InvalidDDMSException("At least 1 name element must exist.");
 		
@@ -212,8 +183,7 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 		if (!super.equals(obj) || !(obj instanceof AbstractProducerEntity))
 			return (false);
 		AbstractProducerEntity test = (AbstractProducerEntity) obj;
-		return (getParentType().equals(test.getParentType())
-			&& Util.listEquals(getNames(), test.getNames())
+		return (Util.listEquals(getNames(), test.getNames())
 			&& Util.listEquals(getPhones(), test.getPhones())
 			&& Util.listEquals(getEmails(), test.getEmails())
 			&& getExtensibleAttributes().equals(test.getExtensibleAttributes()));
@@ -224,7 +194,6 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 7 * result + getParentType().hashCode();
 		result = 7 * result + getNames().hashCode();
 		result = 7 * result + getPhones().hashCode();
 		result = 7 * result + getEmails().hashCode();
@@ -239,15 +208,26 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
+		return (toHTML(""));
+	}
+	
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix);
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(getParentType() + ".entityType", getName(), true));
+		html.append(buildHTMLMeta(prefix + "entityType", getName(), true));
 		for (String name : getNames())
-			html.append(buildHTMLMeta(getParentType() + "." + NAME_NAME, name, true));
+			html.append(buildHTMLMeta(prefix + NAME_NAME, name, true));
 		for (String phone : getPhones())
-			html.append(buildHTMLMeta(getParentType() + "." + PHONE_NAME, phone, true));
+			html.append(buildHTMLMeta(prefix + PHONE_NAME, phone, true));
 		for (String email : getEmails())
-			html.append(buildHTMLMeta(getParentType() + "." + EMAIL_NAME, email, true));
-		html.append(getExtensibleAttributes().toHTML(getParentType()));
+			html.append(buildHTMLMeta(prefix + EMAIL_NAME, email, true));
+		html.append(getExtensibleAttributes().toHTML(prefix));
 		return (html.toString());
 	}
 
@@ -258,16 +238,27 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
+		return (toText(""));
+	}
+	
+	/**
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
+	 */
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(getParentType() + " EntityType", getName(), true));
+		text.append(buildTextLine(prefix + "EntityType", getName(), true));
 		for (String name : getNames())
 			text.append(buildTextLine(NAME_NAME, name, true));
 		for (String phone : getPhones())
 			text.append(buildTextLine(PHONE_NAME, phone, true));
 		for (String email : getEmails())
 			text.append(buildTextLine(EMAIL_NAME, email, true));
-		text.append(getExtensibleAttributes().toText(getParentType()));
-		return (text.toString());		
+		text.append(getExtensibleAttributes().toText(prefix));
+		return (text.toString());	
 	}
 	
 	/**
@@ -296,13 +287,6 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	public List<String> getEmails() {
 		return (Collections.unmodifiableList(_cachedEmails));
 	}
-		
-	/**
-	 * Accessor for the parentType (i.e. creator, contributor, etc.)
-	 */
-	protected String getParentType() {
-		return _parentType;
-	}
 	
 	/**
 	 * Accessor for the extensible attributes. Will always be non-null, even if not set.
@@ -323,7 +307,6 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	 */
 	public static abstract class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = -1694935853087559491L;
-		private String _parentType;
 		private List<String> _names;
 		private List<String> _phones;
 		private List<String> _emails;
@@ -338,7 +321,6 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 		 * Constructor which starts from an existing component.
 		 */
 		protected Builder(AbstractProducerEntity entity) {
-			setParentType(entity.getParentType());
 			setNames(entity.getNames());
 			setPhones(entity.getPhones());
 			setEmails(entity.getEmails());
@@ -357,20 +339,6 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 				&& getExtensibleAttributes().isEmpty());
 		}
 		
-		/**
-		 * Builder accessor for the parentType
-		 */
-		public String getParentType() {
-			return _parentType;
-		}
-
-		/**
-		 * Builder accessor for the parentType
-		 */
-		public void setParentType(String parentType) {
-			_parentType = parentType;
-		}
-
 		/**
 		 * Builder accessor for the names
 		 */
