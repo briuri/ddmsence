@@ -473,7 +473,7 @@ XOM Elements and Attributes. Any business logic to be performed on this Layer is
 <a href="http://xom.nu/">XOM</a> will be useful. </p>
 
 <p>The relevant code can be found in the <code>buri.ddmsence.ddms.extensible</code> package. It may also be useful to load the sample file,  
-<code>Extensible_Layer_Example_v3_0.xml</code> into the <u>Essentials</u> application, because it has an example of each extension.</p>
+<code>3.0-extensibleLayerExample.xml</code> into the <u>Essentials</u> application, because it has an example of each extension.</p>
 
 <h5>ExtensibleElements</h5>
 
@@ -703,7 +703,7 @@ attribute on the root element of your Schematron file. The supported values are 
 
 <p>The following code sample will build a DDMS Resource from one of the sample XML files, and then validate it through Schematron:</p>
 
-<pre class="brush: java">File resourceFile = new File("data/sample/DDMSence_Example.xml");
+<pre class="brush: java">File resourceFile = new File("data/sample/4.0-ddmsenceExample.xml");
 File schFile = new File("data/sample/schematron/testPublisherValueXslt1.sch");
 
 DDMSReader reader = new DDMSReader();
@@ -713,12 +713,12 @@ for (ValidationMessage message : schematronMessages) {
    System.out.println("Location: " + message.getLocator());
    System.out.println("Message: " + message.getText());
 }</pre>
-<p class="figure">Figure 27. Sample code to validate DDMSence_Example.xml with testPublisherValueXslt1.sch</p>
+<p class="figure">Figure 27. Sample code to validate 4.0-ddmsenceExample.xml with testPublisherValueXslt1.sch</p>
 
-<pre class="brush: xml">Location: //*[local-name()='Resource' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/']
-   /*[local-name()='publisher' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/']
-   /*[local-name()='Person' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/']
-   /*[local-name()='surname' and namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/']
+<pre class="brush: xml">Location: //*[local-name()='Resource' and namespace-uri()='urn:us:mil:ces:metadata:ddms:4']
+   /*[local-name()='publisher' and namespace-uri()='urn:us:mil:ces:metadata:ddms:4']
+   /*[local-name()='Person' and namespace-uri()='urn:us:mil:ces:metadata:ddms:4']
+   /*[local-name()='surname' and namespace-uri()='urn:us:mil:ces:metadata:ddms:4']
 Message: Members of the Uri family cannot be publishers.</pre>
 <p class="figure">Figure 28. Ouput of the code from Figure 27</p>
 
@@ -744,7 +744,7 @@ point for each of the supporting files and the vocabularies needed for validatio
 the files and subdirectories it depends on have been copied into the working directory.</p>
 
 <pre class="brush: java">File schematronFile = new File("ISM_XML.sch");
-Resource resource = new DDMSReader().getDDMSResource(new File("data/sample/DDMSence_Example_v3_1.xml"));
+Resource resource = new DDMSReader().getDDMSResource(new File("data/sample/4.0-ddmsenceExample.xml"));
 List&lt;ValidationMessage&gt; messages = resource.validateWithSchematron(schematronFile);
 for (ValidationMessage message : messages) {
    System.out.println("Location: " + message.getLocator());
@@ -756,8 +756,8 @@ for (ValidationMessage message : messages) {
 in the DES states that <code>ISM:ownerProducer</code> token values must be in alphabetical order (ISM-ID-00100). If you edit this attribute on the root node
 of the DDMS resource file so the value is <code>"USA AUS"</code> and then run the code again, you should get the following output.</p>
 
-<pre class="brush: xml">Location: //*:Resource[namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/'][1]
-   /*:title[namespace-uri()='http://metadata.dod.mil/mdr/ns/DDMS/3.1/'][1]
+<pre class="brush: xml">Location: //*:Resource[namespace-uri()='urn:us:mil:ces:metadata:ddms:4'][1]
+   /*:title[namespace-uri()='urn:us:mil:ces:metadata:ddms:4'][1]
 Message: [ISM-ID-00100][Error] If ISM-CAPCO-RESOURCE and attribute ownerProducer is specified, then each of its values must 
    be ordered in accordance with CVEnumISMOwnerProducer.xml. The following values are out of order [AUS] for [USA AUS]</pre>
 <p class="figure">Figure 30. Schematron output when intentionally flaunting the rules</p>

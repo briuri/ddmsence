@@ -26,7 +26,7 @@ optional parameter: the name of a file to load upon startup.</p>
 
 <p>When the application first opens, go to the <i>File</i> menu and choose <i>Open...</i>. You will be able to select an XML file containing
 a <code>ddms:Resource</code>. The four sample files that are bundled with DDMS 3.0 can be found in the <code>data/sample/</code> directory. Let's start by
-selecting the sample file, <code>DDMS-v3_0_Identifier_Postal_Address_Example.xml</code> and clicking on the <i>Open</i> button.</p>
+selecting the sample file, <code>3.0-identifierPostalAddressExample.xml</code> and clicking on the <i>Open</i> button.</p>
 
 <img src="./images/essentials-02.png" width="300" height="206" title="Essentials File Chooser" />
 <p class="figure">Figure 1. Selecting an existing DDMS Record from an XML file</p>
@@ -66,7 +66,7 @@ String javaFormat = JavaConvertor.toJavaCode(getResource());</pre>
 the Resource into XML, HTML, and Text is built-in to the Object. (I created the sample JavaConvertor to make learning the syntax a little easier, 
 but do not consider it to be part of the main DDMSence library).</p>
 
-<p>Now that you have seen a valid Resource, let's try opening an invalid one. Return to the <i>File</i> menu and select the sample file, <code>InvalidResource.xml</code> from the
+<p>Now that you have seen a valid Resource, let's try opening an invalid one. Return to the <i>File</i> menu and select the sample file, <code>3.0-invalidResourceExample.xml</code> from the
 samples directory. This XML file is invalid, because it tries to use an incorrect security classification (SuperSecret).</p>
 
 <p>Opening this file should display the following error message:</p>
@@ -74,7 +74,7 @@ samples directory. This XML file is invalid, because it tries to use an incorrec
 <pre class="brush: xml">Could not create the DDMS Resource: nu.xom.ValidityException: cvc-enumeration-valid: 
 Value 'SuperSecret' is not facet-valid with respect to enumeration '[U, C, S, TS, R, CTS, 
 CTS-B, CTS-BALK, NU, NR, NC, NS, CTSA, NSAT, NCA]'. It must be a value from the enumeration. 
-at line 18, column 110 in file:///DDMSence/data/sample/InvalidResource.xml
+at line 18, column 110 in file:///DDMSence/data/sample/3.0-invalidResourceExample.xml
 </pre>
 <p class="figure">Figure 4. A sample error message</p>
 
@@ -93,7 +93,7 @@ at any given time.</p>
 	<li>Any warnings which do not actually result in an invalid component are stored on the component, and can be retrieved via <code>getValidationWarnings()</code>.</li>
 </ul>
 
-<p>Finally, a resource from other versions of DDMS can also be opened with <u>Essentials</u>. An example is provided in the file, <code>DDMS-v2_0_EarlierVersion_Example.xml</code>. Working with
+<p>Finally, a resource from other versions of DDMS can also be opened with <u>Essentials</u>. An example is provided in the file, <code>2.0-earlierVersionExample.xml</code>. Working with
 a other versions of DDMS is covered in the <a href="documentation.jsp#tips">Power Tips</a> section.</p>
 
 <h3>Conclusion</h3>
