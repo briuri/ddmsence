@@ -182,14 +182,24 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
-	<xs:element name="Subject" type="SubjectType">
+	<xs:element name="productionMetric" type="ProductionMetricType">
 		<xs:annotation>
-			<xs:appinfo>
-				<mdr:definition>Container for the categorical subject and natural language subject classifications.  See also SubjectType.  NOTE: At least one of either Keyword or Category must appear, after one instance of either appears, additional categories must appear before additional keywords.  See DDMS Spec Cateogry: Subject.  
-			</mdr:definition>
-			</xs:appinfo>
+			<xs:documentation>A categorization scheme whose values and use are defined by DDNI-A.</xs:documentation>
 		</xs:annotation>
 	</xs:element>
+	<xs:complexType name="ProductionMetricType">
+		<xs:attribute name="subject" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:appinfo xml:lang="en">A method of categorizing the subject of a document in a fashion understandable by DDNI-A</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="coverage" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:appinfo xml:lang="en">A method of categorizing the coverage of a document in a fashion understandable by DDNI-A</xs:appinfo>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
+	</xs:complexType>
 	<xs:element name="category" type="CompoundCategoryIdentifierType">
 		<xs:annotation>
 			<xs:appinfo>
@@ -680,6 +690,7 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 		<xs:choice maxOccurs="unbounded">
 			<xs:element ref="category"/>
 			<xs:element ref="keyword"/>
+			<xs:element ref="productionMetric"/>
 		</xs:choice>
 		<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
 	</xs:complexType>

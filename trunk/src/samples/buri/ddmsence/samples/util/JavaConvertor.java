@@ -51,6 +51,7 @@ import buri.ddmsence.ddms.summary.GeospatialCoverage;
 import buri.ddmsence.ddms.summary.Keyword;
 import buri.ddmsence.ddms.summary.Link;
 import buri.ddmsence.ddms.summary.PostalAddress;
+import buri.ddmsence.ddms.summary.ProductionMetric;
 import buri.ddmsence.ddms.summary.RelatedResource;
 import buri.ddmsence.ddms.summary.RelatedResources;
 import buri.ddmsence.ddms.summary.SubjectCoverage;
@@ -526,25 +527,33 @@ public class JavaConvertor {
 	 * @param subjectCoverage the subjectCoverage
 	 */
 	public static void convert(StringBuffer java, SubjectCoverage subjectCoverage) {
+		int count = getVariableCount();
 		java.append("\n// ddms:subjectCoverage\n");
-		java.append("List<Keyword> keywords = new ArrayList<Keyword>();\n");
+		java.append("List<Keyword> keywords").append(count).append(" = new ArrayList<Keyword>();\n");
 		for (Keyword keyword : subjectCoverage.getKeywords()) {
 			convert(java, keyword.getSecurityAttributes());
 			convert(java, keyword.getExtensibleAttributes());
-			java.append("keywords.add(new Keyword(\"").append(keyword.getValue())
+			java.append("keywords").append(count).append(".add(new Keyword(\"").append(keyword.getValue())
 				.append("\", securityAttributes, extensions));\n");
 		}
-		java.append("List<Category> categories = new ArrayList<Category>();\n");
+		java.append("List<Category> categories").append(count).append(" = new ArrayList<Category>();\n");
 		for (Category category : subjectCoverage.getCategories()) {
 			convert(java, category.getSecurityAttributes());
 			convert(java, category.getExtensibleAttributes());
-			java.append("categories.add(new Category(\"").append(category.getQualifier()).append("\", \"")
-				.append(category.getCode()).append("\", \"").append(category.getLabel())
+			java.append("categories").append(count).append(".add(new Category(\"").append(category.getQualifier())
+				.append("\", \"").append(category.getCode()).append("\", \"").append(category.getLabel())
 				.append("\", securityAttributes, extensions));\n");
 		}
+		java.append("List<ProductionMetric> metrics").append(count).append(" = new ArrayList<ProductionMetric>();\n");
+		for (ProductionMetric metric : subjectCoverage.getProductionMetrics()) {
+			convert(java, metric.getSecurityAttributes());
+			java.append("metrics").append(count).append(".add(new ProductionMetric(\"").append(metric.getSubject())
+				.append("\", \"").append(metric.getCoverage()).append("\", securityAttributes));\n");
+		}
 		convert(java, subjectCoverage.getSecurityAttributes());
-		java.append("SubjectCoverage subjectCoverage = new SubjectCoverage(keywords, categories, securityAttributes);\n");
-		java.append("topLevelComponents.add(subjectCoverage);\n");
+		java.append("SubjectCoverage subjectCoverage").append(count)
+			.append(" = new SubjectCoverage(keywords, categories, metrics, null, securityAttributes);\n");
+		java.append("topLevelComponents.add(subjectCoverage").append(count).append(");\n");
 	}
 	
 	/**

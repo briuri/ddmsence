@@ -84,6 +84,7 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 	 * <li>The qualifier exists and is not empty.</li>
 	 * <li>The value exists and is not empty.</li>
 	 * <li>Does not validate that the value is valid against the qualifier's vocabulary.</li>
+	 * <li>This component cannot be used until DDMS 4.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -94,6 +95,11 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 		Util.requireDDMSQName(getXOMElement(), SubDivisionCode.getName(getDDMSVersion()));
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
 		Util.requireDDMSValue("value attribute", getValue());
+		
+		// Should be reviewed as additional versions of DDMS are supported.
+		if (!getDDMSVersion().isAtLeast("4.0"))
+			throw new InvalidDDMSException("The ddms:" + SubDivisionCode.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
+
 	}
 	
 	/**

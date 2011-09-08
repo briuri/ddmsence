@@ -315,7 +315,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void test20Usage() {
+	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
 			new Unknown(TEST_NAMES, TEST_PHONES, TEST_EMAILS);
