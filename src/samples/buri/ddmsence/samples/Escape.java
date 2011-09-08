@@ -222,6 +222,8 @@ public class Escape extends AbstractSample {
 					distribution.incrementCount(String.valueOf(dates.getInfoCutOff().getYear()));
 				if (dates.getApprovedOn() != null)
 					distribution.incrementCount(String.valueOf(dates.getApprovedOn().getYear()));
+				if (dates.getReceivedOn() != null)
+					distribution.incrementCount(String.valueOf(dates.getReceivedOn().getYear()));
 			}
 			
 			// Resource createDate (required field in 3.0, optional in 2.0)
