@@ -240,7 +240,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + getName() + ".";
+		String prefix = GeospatialCoverage.getName(getDDMSVersion()) + ".GeospatialExtent." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + UOM_NAME, getUnitOfMeasure(), true));
 		html.append(buildHTMLMeta(prefix + DATUM_NAME, getDatum(), true));
 		html.append(buildHTMLMeta(prefix + "minimum", String.valueOf(getMinVerticalExtent()), true));

@@ -287,7 +287,7 @@ public final class Resource extends AbstractBaseComponent {
 			for (int i = 0; i < components.size(); i++) {
 				_cachedTemporalCoverages.add(new TemporalCoverage(components.get(i)));
 			}
-			components = element.getChildElements(GeospatialCoverage.NAME, namespace);
+			components = element.getChildElements(GeospatialCoverage.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
 				_cachedGeospatialCoverages.add(new GeospatialCoverage(components.get(i)));
 			}

@@ -266,8 +266,9 @@ public final class Polygon extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
-		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + BoundingGeometry.NAME + ".";
+		DDMSVersion version = getDDMSVersion();
+		StringBuffer html = new StringBuffer();		
+		String prefix = GeospatialCoverage.getName(getDDMSVersion()) + ".GeospatialExtent." + BoundingGeometry.getName(version) + ".";
 		html.append(buildHTMLMeta(prefix + ID_NAME, getId(), true));
 		html.append(buildHTMLMeta(prefix + "type", getName(), true));
 		html.append(buildHTMLMeta(prefix + "srsName", getSRSAttributes().getSrsName(), true));
@@ -286,17 +287,18 @@ public final class Polygon extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
+		DDMSVersion version = getDDMSVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(BoundingGeometry.NAME + " " + ID_NAME, getId(), true));
-		text.append(buildTextLine(BoundingGeometry.NAME + " type", getName(), true));
-		text.append(buildTextLine(BoundingGeometry.NAME + " srsName", getSRSAttributes().getSrsName(), true));
+		text.append(buildTextLine(BoundingGeometry.getName(version) + " " + ID_NAME, getId(), true));
+		text.append(buildTextLine(BoundingGeometry.getName(version) + " type", getName(), true));
+		text.append(buildTextLine(BoundingGeometry.getName(version) + " srsName", getSRSAttributes().getSrsName(), true));
 		if (getSRSAttributes().getSrsDimension() != null) {
-			text.append(buildTextLine(BoundingGeometry.NAME + " srsDimension",
+			text.append(buildTextLine(BoundingGeometry.getName(version) + " srsDimension",
 				String.valueOf(getSRSAttributes().getSrsDimension()), false));
 		}
-		text.append(buildTextLine(BoundingGeometry.NAME + " axisLabels", getSRSAttributes().getAxisLabelsAsXsList(),
+		text.append(buildTextLine(BoundingGeometry.getName(version) + " axisLabels", getSRSAttributes().getAxisLabelsAsXsList(),
 			false));
-		text.append(buildTextLine(BoundingGeometry.NAME + " uomLabels", getSRSAttributes().getUomLabelsAsXsList(),
+		text.append(buildTextLine(BoundingGeometry.getName(version) + " uomLabels", getSRSAttributes().getUomLabelsAsXsList(),
 			false));
 		for (Position pos : getPositions())
 			text.append(pos.toText());

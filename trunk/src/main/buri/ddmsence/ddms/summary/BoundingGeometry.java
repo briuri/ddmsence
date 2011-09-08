@@ -31,6 +31,7 @@ import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.summary.gml.Point;
 import buri.ddmsence.ddms.summary.gml.Polygon;
+import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
@@ -61,9 +62,6 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	// Values are cached upon instantiation, so objects are only created once
 	private List<Polygon> _cachedPolygons;
 	private List<Point> _cachedPoints;
-		
-	/** The element name of this component */
-	public static final String NAME = "boundingGeometry";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -106,7 +104,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 				polygons = Collections.emptyList();
 			if (points == null)
 				points = Collections.emptyList();
-			Element element = Util.buildDDMSElement(BoundingGeometry.NAME, null);
+			Element element = Util.buildDDMSElement(BoundingGeometry.getName(DDMSVersion.getCurrentVersion()), null);
 			for (Polygon polygon : polygons)
 				element.appendChild(polygon.getXOMElementCopy());
 			for (Point point : points)
@@ -132,7 +130,7 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 */	
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), BoundingGeometry.getName(getDDMSVersion()));
 		if (getPolygons().size() + getPoints().size() == 0) {
 			throw new InvalidDDMSException("At least 1 of Polygon or Point must be used.");
 		}
@@ -205,6 +203,17 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 		result = 7 * result + getPolygons().hashCode();
 		result = 7 * result + getPoints().hashCode();
 		return (result);
+	}
+	
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("boundingGeometry");
 	}
 	
 	/**

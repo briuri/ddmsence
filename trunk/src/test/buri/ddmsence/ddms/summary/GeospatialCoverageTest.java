@@ -187,7 +187,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	 * @return Element
 	 */
 	private Element buildComponentElement(List<IDDMSComponent> components) {
-		Element element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
+		Element element = Util.buildDDMSElement(GeospatialCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 		Element extElement = isDDMS40OrGreater() ? element : Util.buildDDMSElement("GeospatialExtent", null);
 		for (IDDMSComponent component : components) {
 			if (component != null)
@@ -200,11 +200,11 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 
 	public void testNameAndNamespace() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(GeospatialCoverage.NAME, component.getName());
+			assertEquals(GeospatialCoverage.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + GeospatialCoverage.NAME,
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + GeospatialCoverage.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
