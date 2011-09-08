@@ -230,7 +230,7 @@ public class Escort {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				DDMSVersion version = DDMSVersion.getCurrentVersion();
 				String producerType = readString("the producer type [creator]");
-				String entityType = readString("the entity type [Organization]");
+				String entityType = readString("the entity type [organization]");
 				int numNames = readInt("the number of names this producer has [1]");
 				int numPhones = readInt("the number of phone numbers this producer has [0]");
 				int numEmails = readInt("the number of email addresses this producer has [0]");
