@@ -23,33 +23,27 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:subDivisionCode elements</p>
+ * <p>Tests related to ddms:productionMetric elements</p>
  * 
  * @author Brian Uri!
- * @since 2.0.0
+ * @since 0.9.b
  */
-public class SubDivisionCodeTest extends AbstractComponentTestCase {
+public class ProductionMetricTest extends AbstractComponentTestCase {
 
-	private static final String TEST_QUALIFIER = "ISO-3166";
-	private static final String TEST_VALUE = "USA";
+	private static final String TEST_SUBJECT = "FOOD";
+	private static final String TEST_COVERAGE = "AFG";
 
 	/**
 	 * Constructor
 	 */
-	public SubDivisionCodeTest() {
-		super("subDivisionCode.xml");
-	}
-
-	/**
-	 * Returns a subDivisionCode fixture
-	 */
-	protected static SubDivisionCode getFixture() throws InvalidDDMSException {
-		return (new SubDivisionCode("ISO-3166", "USA"));
+	public ProductionMetricTest() {
+		super("productionMetric.xml");
 	}
 
 	/**
@@ -60,10 +54,10 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	 * 
 	 * @return a valid object
 	 */
-	private SubDivisionCode testConstructor(boolean expectFailure, Element element) {
-		SubDivisionCode component = null;
+	private ProductionMetric testConstructor(boolean expectFailure, Element element) {
+		ProductionMetric component = null;
 		try {
-			component = new SubDivisionCode(element);
+			component = new ProductionMetric(element);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -75,14 +69,15 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param expectFailure true if this operation is expected to succeed, false otherwise
-	 * @param qualifier the qualifier value
-	 * @param value the value
+	 * @param subject a method of categorizing the subject of a document in a fashion understandable by DDNI-A (required)
+	 * @param coverage a method of categorizing the coverage of a document in a fashion understandable by DDNI-A (required)
+	 * @param label the label (required)
 	 * @return a valid object
 	 */
-	private SubDivisionCode testConstructor(boolean expectFailure, String qualifier, String value) {
-		SubDivisionCode component = null;
+	private ProductionMetric testConstructor(boolean expectFailure, String subject, String coverage) {
+		ProductionMetric component = null;
 		try {
-			component = new SubDivisionCode(qualifier, value);
+			component = new ProductionMetric(subject, coverage, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -95,8 +90,10 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"subDivisionCode.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"subDivisionCode.value\" content=\"").append(TEST_VALUE).append("\" />\n");
+		html.append("<meta name=\"productionMetric.subject\" content=\"").append(TEST_SUBJECT).append("\" />\n");
+		html.append("<meta name=\"productionMetric.coverage\" content=\"").append(TEST_COVERAGE).append("\" />\n");
+		html.append("<meta name=\"productionMetric.classification\" content=\"U\" />\n");
+		html.append("<meta name=\"productionMetric.ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -105,8 +102,10 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("subDivisionCode.qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append("subDivisionCode.value: ").append(TEST_VALUE).append("\n");
+		text.append("productionMetric.subject: ").append(TEST_SUBJECT).append("\n");
+		text.append("productionMetric.coverage: ").append(TEST_COVERAGE).append("\n");
+		text.append("productionMetric classification: U\n");
+		text.append("productionMetric ownerProducer: USA\n");
 		return (text.toString());
 	}
 
@@ -115,24 +114,26 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subDivisionCode xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
-			.append("\" ");
-		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
-			.append("\" />");
+		xml.append("<ddms:productionMetric xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
+		xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
+		xml.append("ddms:subject=\"").append(TEST_SUBJECT).append("\" ");
+		xml.append("ddms:coverage=\"").append(TEST_COVERAGE).append("\" ");
+		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
+		xml.append(" />");
 		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
+			
 			if (!version.isAtLeast("4.0"))
 				continue;
-
-			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(SubDivisionCode.getName(version), component.getName());
+			
+			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			assertEquals(ProductionMetric.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + SubDivisionCode.getName(version),
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + ProductionMetric.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -144,10 +145,11 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
+			
 			if (!version.isAtLeast("4.0"))
 				continue;
-
+			
+			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 		}
 	}
@@ -155,41 +157,30 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
+			
 			if (!version.isAtLeast("4.0"))
 				continue;
-
-			testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			
+			// All fields
+			testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
 		}
 	}
 
 	public void testElementConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String subCode = SubDivisionCode.getName(version);
+			
 			if (!version.isAtLeast("4.0"))
 				continue;
-
-			// Missing qualifier
-			Element element = Util.buildDDMSElement(subCode, null);
-			Util.addDDMSAttribute(element, "value", TEST_VALUE);
+			
+			// Missing subject
+			Element element = Util.buildDDMSElement(ProductionMetric.getName(version), null);
+			element.addAttribute(Util.buildDDMSAttribute("coverage", TEST_COVERAGE));
 			testConstructor(WILL_FAIL, element);
-
-			// Empty qualifier
-			element = Util.buildDDMSElement(subCode, null);
-			Util.addDDMSAttribute(element, "qualifier", "");
-			Util.addDDMSAttribute(element, "value", TEST_VALUE);
-			testConstructor(WILL_FAIL, element);
-
-			// Missing value
-			element = Util.buildDDMSElement(subCode, null);
-			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
-			testConstructor(WILL_FAIL, element);
-
-			// Empty value
-			element = Util.buildDDMSElement(subCode, null);
-			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
-			Util.addDDMSAttribute(element, "value", "");
+			
+			// Missing coverage
+			element = Util.buildDDMSElement(ProductionMetric.getName(version), null);
+			element.addAttribute(Util.buildDDMSAttribute("subject", TEST_SUBJECT));
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -197,46 +188,40 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
+			
 			if (!version.isAtLeast("4.0"))
 				continue;
+			
+			// Missing subject
+			testConstructor(WILL_FAIL, null, TEST_COVERAGE);
 
-			// Missing qualifier
-			testConstructor(WILL_FAIL, null, TEST_VALUE);
-
-			// Empty qualifier
-			testConstructor(WILL_FAIL, "", TEST_VALUE);
-
-			// Missing value
-			testConstructor(WILL_FAIL, TEST_QUALIFIER, null);
-
-			// Empty value
-			testConstructor(WILL_FAIL, TEST_QUALIFIER, "");
+			// Missing coverage
+			testConstructor(WILL_FAIL, TEST_SUBJECT, null);
 		}
 	}
 
 	public void testWarnings() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
+			
 			if (!version.isAtLeast("4.0"))
 				continue;
-
+			
 			// No warnings
-			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
+			
 			if (!version.isAtLeast("4.0"))
 				continue;
-
-			SubDivisionCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			SubDivisionCode dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			
+			ProductionMetric elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			ProductionMetric dataComponent = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -245,15 +230,15 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
+			
 			if (!version.isAtLeast("4.0"))
 				continue;
-
-			SubDivisionCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			SubDivisionCode dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_VALUE);
+			
+			ProductionMetric elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			ProductionMetric dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_COVERAGE);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, DIFFERENT_VALUE);
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_SUBJECT, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -261,11 +246,11 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
+			
 			if (!version.isAtLeast("4.0"))
 				continue;
-
-			SubDivisionCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			
+			ProductionMetric elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -274,14 +259,14 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	public void testHTMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
+			
 			if (!version.isAtLeast("4.0"))
 				continue;
-
-			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			
+			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			component = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		}
 	}
@@ -289,14 +274,14 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	public void testTextOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
+			
 			if (!version.isAtLeast("4.0"))
 				continue;
-
-			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			
+			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			component = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
 			assertEquals(getExpectedTextOutput(), component.toText());
 		}
 	}
@@ -304,14 +289,14 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
+			
 			if (!version.isAtLeast("4.0"))
 				continue;
-
-			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			
+			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			component = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -319,39 +304,38 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
-			new SubDivisionCode(TEST_QUALIFIER, TEST_VALUE);
+			new ProductionMetric(TEST_SUBJECT, TEST_COVERAGE, null);
 			fail("Allowed invalid data.");
 		} catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
+			
 			if (!version.isAtLeast("4.0"))
 				continue;
-
-			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			
+			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// Equality after Building
-			SubDivisionCode.Builder builder = new SubDivisionCode.Builder(component);
+			ProductionMetric.Builder builder = new ProductionMetric.Builder(component);
 			assertEquals(builder.commit(), component);
 
-			// Empty case
-			builder = new SubDivisionCode.Builder();
-			assertNull(builder.commit());
-
 			// Validation
-			builder = new SubDivisionCode.Builder();
-			builder.setValue(TEST_VALUE);
+			builder = new ProductionMetric.Builder();
+			assertNull(builder.commit());
+			builder.setCoverage(TEST_COVERAGE);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
 			} catch (InvalidDDMSException e) {
 				// Good
 			}
+			builder.setSubject(TEST_SUBJECT);			
+			builder.commit();
 		}
 	}
 }

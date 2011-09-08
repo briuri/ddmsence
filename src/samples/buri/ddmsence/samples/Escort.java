@@ -72,6 +72,7 @@ import buri.ddmsence.ddms.summary.GeospatialCoverage;
 import buri.ddmsence.ddms.summary.Keyword;
 import buri.ddmsence.ddms.summary.Link;
 import buri.ddmsence.ddms.summary.PostalAddress;
+import buri.ddmsence.ddms.summary.ProductionMetric;
 import buri.ddmsence.ddms.summary.RelatedResource;
 import buri.ddmsence.ddms.summary.RelatedResources;
 import buri.ddmsence.ddms.summary.SubDivisionCode;
@@ -332,10 +333,21 @@ public class Escort {
 				return (new Category(qualifier, code, label, attr));
 			}
 		});
+		BUILDERS.put(ProductionMetric.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String subject = readString("the subject [testSubject]");
+				String coverage = readString("the coverage [testCoverage]");
+				String classification = readString("the productionMetric's classification [U]");
+				String ownerProducers = readString("the productionMetric's ownerProducers as a space-delimited string [USA]");
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new ProductionMetric(subject, coverage, attr));
+			}
+		});
 		BUILDERS.put(SubjectCoverage.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				int numKeywords = readInt("the number of keywords to include [1]");
 				int numCategories = readInt("the number of categories to include [0]");
+				int numMetrics = readInt("the number of productionMetrics to include [0]");
 				if (numKeywords + numCategories == 0) {
 					println("At least 1 keyword or category is required. Defaulting to 1 keyword.");
 					numKeywords = 1;
@@ -350,10 +362,15 @@ public class Escort {
 					println("* Category #" + (i + 1));
 					categories.add((Category) inputLoop(Category.class));
 				}
+				List<ProductionMetric> metrics = new ArrayList<ProductionMetric>();
+				for (int i = 0; i < numMetrics; i++) {
+					println("* ProductionMetric #" + (i + 1));
+					metrics.add((ProductionMetric) inputLoop(ProductionMetric.class));
+				}
 				String classification = readString("the subject classification [U]");
 				String ownerProducers = readString("the subject's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new SubjectCoverage(keywords, categories, attr));
+				return (new SubjectCoverage(keywords, categories, metrics, null, attr));
 			}		
 		});
 		BUILDERS.put(TemporalCoverage.class, new IComponentBuilder() {

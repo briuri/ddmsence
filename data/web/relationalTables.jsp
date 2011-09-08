@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 09/07/2011</p>
+<p align="right"><b>Last Update:</b> 09/08/2011</p>
 
 <a name="top"></a><h1>Relational Database Model for DDMS</h1>
 
@@ -82,6 +82,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsKeyword">ddmsKeyword</a></li>
 				<li><a href="#ddmsLink">ddmsLink</a></li>
 				<li><a href="#ddmsPostalAddress">ddmsPostalAddress</a></li>
+				<li><a href="#ddmsProductionMetric">ddmsProductionMetric</a></li>
 				<li><a href="#ddmsRelatedResource">ddmsRelatedResource</a></li>
 				<li><a href="#ddmsRelatedResources">ddmsRelatedResources</a></li>
 				<li><a href="#ddmsSrsAttributes">ddmsSrsAttributes</a></li>
@@ -1495,6 +1496,57 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr> 	
 </table>
 
+<a name="ddmsProductionMetric"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsProductionMetric</th>
+	</tr>
+		<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#subjectCoverage_Subject_productionMetric"><code>ddms:productionMetric</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/summary/ProductionMetric.html">ProductionMetric</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			No other notes.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent subjectCoverage element</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">subject</td><td class="relRules">char(2048)</td><td>the subject attribute value</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">coverage</td><td class="relRules">char(2048)</td><td>the coverage attribute value</td>
+	</tr>
+</table>
+
 <a name="ddmsRelatedResource"></a><table class="rel">
 	<tr>
 		<th class="relName" colspan="3">ddmsRelatedResource</th>
@@ -1734,7 +1786,8 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
 			<a href="#ddmsCategory">ddmsCategory</a> or
-			<a href="#ddmsKeyword">ddmsKeyword</a>
+			<a href="#ddmsKeyword">ddmsKeyword</a> or
+			<a href="#ddmsProductionMetric">ddmsProductionMetric</a>
 		</td>
 	</tr>
 	<tr class="relRow">

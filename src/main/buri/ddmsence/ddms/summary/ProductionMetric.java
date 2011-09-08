@@ -20,51 +20,48 @@
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
-import java.util.List;
 
-import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of ddms:keyword.
+ * An immutable implementation of ddms:productionMetric.
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>The keyword value must not be empty.</li>
+ * <li>The subject and coverage attributes must be non-empty.</li>
  * </ul>
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ddms:value</u>: The keyword itself (required)<br />
- * Starting in DDMS 3.0, this component can also be decorated with optional {@link ExtensibleAttributes}.<br />
+ * <u>ddms:subject</u>: A method of categorizing the subject of a document in a fashion understandable by DDNI-A. (required)<br />
+ * <u>ddms:coverage</u>: A method of categorizing the coverage of a document in a fashion understandable by DDNI-A (required)<br />
  * This class is also decorated with ISM {@link SecurityAttributes}, starting in DDMS 4.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#subjectCoverage_Subject_keyword<br />
- * <u>Description</u>: Subject keyword(s) that characterize the subject matter of a resource.<br />
- * <u>Obligation</u>: At least 1 category or keyword is required in a SubjectCoverage.<br />
+ * <u>Link</u>: TBD<br />
+ * <u>Description</u>: A categorization scheme whose values and use are defined by DDNI-A.<br />
+ * <u>Obligation</u>: Optional in a SubjectCoverage.<br />
  * <u>Schema Modification Date</u>: 2010-01-26<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
- * @since 0.9.b
+ * @since 2.0.0
  */
-public final class Keyword extends AbstractBaseComponent {
+public final class ProductionMetric extends AbstractBaseComponent {
 
 	private SecurityAttributes _cachedSecurityAttributes = null;
-	private ExtensibleAttributes _cachedExtensibleAttributes = null;
 	
-	private static final String VALUE_NAME = "value";
+	private static final String SUBJECT_NAME = "subject";
+	private static final String COVERAGE_NAME = "coverage";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -72,92 +69,60 @@ public final class Keyword extends AbstractBaseComponent {
 	 * @param element the XOM element representing this 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Keyword(Element element) throws InvalidDDMSException {
+	public ProductionMetric(Element element) throws InvalidDDMSException {
 		try {
 			_cachedSecurityAttributes = new SecurityAttributes(element);
-			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
-	}
-	
-	/**
-	 * Constructor for creating a component from raw data. 
-	 *  
-	 * @deprecated This constructor is provided for backwards compatibility with pre-DDMS 4.0 elements.
-	 * @param value the value attribute (required)
-	 * @throws InvalidDDMSException if any required information is missing or malformed
-	 */
-	public Keyword(String value) throws InvalidDDMSException {
-		this(value, null, null);
-	}
-	
-	/**
-	 * Constructor for creating a component from raw data
-	 *  
-	 * @param value the value attribute (required)
-	 * @param securityAttributes any security attributes (optional)
-	 * @throws InvalidDDMSException if any required information is missing or malformed
-	 */
-	public Keyword(String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		this(value, securityAttributes, null);
 	}
 	
 	/**
 	 * Constructor for creating a component from raw data.
-	 * 
-	 * <p>This constructor will throw an InvalidDDMSException if the extensible attributes uses the reserved
-	 * attribute "ddms:value".</p>
 	 *  
-	 * @param value the value attribute (required)
-	 * @param securityAttributes any security attributes (optional)
-	 * @param extensions extensible attributes (optional)
+	 * @param subject a method of categorizing the subject of a document in a fashion understandable by DDNI-A (required)
+	 * @param coverage a method of categorizing the coverage of a document in a fashion understandable by DDNI-A (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Keyword(String value, SecurityAttributes securityAttributes, ExtensibleAttributes extensions)
+	public ProductionMetric(String subject, String coverage, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(Keyword.getName(DDMSVersion.getCurrentVersion()), null);
-			Util.addDDMSAttribute(element, VALUE_NAME, value);
+			Element element = Util.buildDDMSElement(ProductionMetric.getName(DDMSVersion.getCurrentVersion()), null);
+			Util.addDDMSAttribute(element, SUBJECT_NAME, subject);
+			Util.addDDMSAttribute(element, COVERAGE_NAME, coverage);
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
 			_cachedSecurityAttributes.addTo(element);
-			_cachedExtensibleAttributes = (extensions == null ? new ExtensibleAttributes((List<Attribute>) null)
-				: extensions);
-			_cachedExtensibleAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
 	}
-		
+
 	/**
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The keyword value exists and is not empty.</li>
-	 * <li>The SecurityAttributes do not exist until DDMS 4.0 or later.</li>
-	 * <li>No extensible attributes can exist until DDMS 3.0 or later.</li>
+	 * <li>A subject exists and is not empty.</li>
+	 * <li>A coverage exists and is not empty.</li>
+	 * <li>This component cannot be used until DDMS 4.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), Keyword.getName(getDDMSVersion()));
-		Util.requireDDMSValue("value attribute", getValue());
+		Util.requireDDMSQName(getXOMElement(), ProductionMetric.getName(getDDMSVersion()));
+		Util.requireDDMSValue("subject attribute", getSubject());
+		Util.requireDDMSValue("coverage attribute", getCoverage());
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0") && !getSecurityAttributes().isEmpty()) {
-			throw new InvalidDDMSException(
-				"Security attributes cannot be applied to this component until DDMS 4.0 or later.");
-		}
-		if (!getDDMSVersion().isAtLeast("3.0") && !getExtensibleAttributes().isEmpty())
-			throw new InvalidDDMSException("xs:anyAttribute cannot be applied to ddms:keyword until DDMS 3.0 or later.");
-
+		if (!getDDMSVersion().isAtLeast("4.0"))
+			throw new InvalidDDMSException("The ddms:" + ProductionMetric.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
+		
 		validateWarnings();
 	}
 	
@@ -193,11 +158,12 @@ public final class Keyword extends AbstractBaseComponent {
 	 * @return the HTML output
 	 */
 	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix);
+		prefix = Util.getNonNullString(prefix) + getName();
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix + getName(), getValue(), false));
-		html.append(getSecurityAttributes().toHTML(getName()));
-		html.append(getExtensibleAttributes().toHTML(getName()));
+		html.append(buildHTMLMeta(prefix + "." + SUBJECT_NAME, getSubject(), true));
+		html.append(buildHTMLMeta(prefix + "." + COVERAGE_NAME, getCoverage(), true));
+		html.append(getSecurityAttributes().toHTML(prefix));
+		
 		return (html.toString());
 	}
 	
@@ -208,11 +174,11 @@ public final class Keyword extends AbstractBaseComponent {
 	 * @return the Text output
 	 */
 	public String toText(String prefix) {
-		prefix = Util.getNonNullString(prefix);
+		prefix = Util.getNonNullString(prefix) + getName();
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix + getName(), getValue(), false));
-		text.append(getSecurityAttributes().toText(getName()));
-		text.append(getExtensibleAttributes().toText(getName()));
+		text.append(buildTextLine(prefix + "." + SUBJECT_NAME, getSubject(), true));
+		text.append(buildTextLine(prefix + "." + COVERAGE_NAME, getCoverage(), true));
+		text.append(getSecurityAttributes().toText(prefix));
 		return (text.toString());
 	}
 	
@@ -220,12 +186,12 @@ public final class Keyword extends AbstractBaseComponent {
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof Keyword))
+		if (!super.equals(obj) || !(obj instanceof ProductionMetric))
 			return (false);
-		Keyword test = (Keyword) obj;
-		return (getValue().equals(test.getValue())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes())
-			&& getExtensibleAttributes().equals(test.getExtensibleAttributes()));
+		ProductionMetric test = (ProductionMetric) obj;
+		return (getSubject().equals(test.getSubject()) 
+			&& getCoverage().equals(test.getCoverage())
+			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
 	}
 
 	/**
@@ -233,9 +199,9 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 7 * result + getValue().hashCode();
+		result = 7 * result + getSubject().hashCode();
+		result = 7 * result + getCoverage().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
-		result = 7 * result + getExtensibleAttributes().hashCode();
 		return (result);
 	}
 	
@@ -247,30 +213,30 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return ("keyword");
+		return ("productionMetric");
 	}
 	
 	/**
-	 * Accessor for the value attribute.
+	 * Accessor for the subject attribute.
 	 */
-	public String getValue() {
-		return (getAttributeValue(VALUE_NAME));
+	public String getSubject() {
+		return (getAttributeValue(SUBJECT_NAME));
 	}
 	
+	/**
+	 * Accessor for the coverage attribute.
+	 */
+	public String getCoverage() {
+		return (getAttributeValue(COVERAGE_NAME));
+	}
+		
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (_cachedSecurityAttributes);
 	}
-	
-	/**
-	 * Accessor for the extensible attributes. Will always be non-null, even if not set.
-	 */
-	public ExtensibleAttributes getExtensibleAttributes() {
-		return (_cachedExtensibleAttributes);
-	}
-	
+		
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -279,10 +245,10 @@ public final class Keyword extends AbstractBaseComponent {
 	 * @since 1.8.0
 	 */
 	public static class Builder implements IBuilder, Serializable {
-		private static final long serialVersionUID = 5165722850252388155L;
-		private String _value;
+		private static final long serialVersionUID = -9012648230977148516L;
+		private String _subject;
+		private String _coverage;
 		private SecurityAttributes.Builder _securityAttributes;
-		private ExtensibleAttributes.Builder _extensibleAttributes;
 		
 		/**
 		 * Empty constructor
@@ -292,43 +258,55 @@ public final class Keyword extends AbstractBaseComponent {
 		/**
 		 * Constructor which starts from an existing component.
 		 */
-		public Builder(Keyword keyword) {
-			setValue(keyword.getValue());
-			setSecurityAttributes(new SecurityAttributes.Builder(keyword.getSecurityAttributes()));
-			setExtensibleAttributes(new ExtensibleAttributes.Builder(keyword.getExtensibleAttributes()));
+		public Builder(ProductionMetric metric) {
+			setSubject(metric.getSubject());
+			setCoverage(metric.getCoverage());
+			setSecurityAttributes(new SecurityAttributes.Builder(metric.getSecurityAttributes()));
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
-		public Keyword commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Keyword(getValue(), getSecurityAttributes().commit(),
-				getExtensibleAttributes().commit()));
+		public ProductionMetric commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new ProductionMetric(getSubject(), getCoverage(), 
+				getSecurityAttributes().commit()));
 		}
 		
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			return (Util.isEmpty(getValue())
-				&& getSecurityAttributes().isEmpty()
-				&& getExtensibleAttributes().isEmpty());
+			return (Util.isEmpty(getSubject()) && Util.isEmpty(getCoverage()) && getSecurityAttributes().isEmpty());
 		}
 
 		/**
-		 * Builder accessor for the value attribute
+		 * Builder accessor for the subject attribute
 		 */
-		public String getValue() {
-			return _value;
+		public String getSubject() {
+			return _subject;
 		}
 
 		/**
-		 * Builder accessor for the value attribute
+		 * Builder accessor for the subject attribute
 		 */
-		public void setValue(String value) {
-			_value = value;
+		public void setSubject(String subject) {
+			_subject = subject;
 		}
-				
+
+		/**
+		 * Builder accessor for the coverage attribute
+		 */
+		public String getCoverage() {
+			return _coverage;
+		}
+
+		/**
+		 * Builder accessor for the coverage attribute
+		 */
+		public void setCoverage(String coverage) {
+			_coverage = coverage;
+		}
+
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
@@ -343,22 +321,6 @@ public final class Keyword extends AbstractBaseComponent {
 		 */
 		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
 			_securityAttributes = securityAttributes;
-		}
-		
-		/**
-		 * Builder accessor for the Extensible Attributes
-		 */
-		public ExtensibleAttributes.Builder getExtensibleAttributes() {
-			if (_extensibleAttributes == null)
-				_extensibleAttributes = new ExtensibleAttributes.Builder();
-			return _extensibleAttributes;
-		}
-		
-		/**
-		 * Builder accessor for the Extensible Attributes
-		 */
-		public void setExtensibleAttributes(ExtensibleAttributes.Builder extensibleAttributes) {
-			_extensibleAttributes = extensibleAttributes;
 		}
 	}
 } 

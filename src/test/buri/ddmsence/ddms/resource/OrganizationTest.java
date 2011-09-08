@@ -363,6 +363,15 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testSubOrganizationReuse() throws InvalidDDMSException {
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			List<SubOrganization> subOrgs = getSubOrganizationFixture();
+			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, subOrgs, getAcronymFixture());
+			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, subOrgs, getAcronymFixture());
+		}
+	}
+	
 	public void testAcronymWrongVersion() {
 		DDMSVersion.setCurrentVersion("4.0");
 		Organization component = testConstructor(WILL_SUCCEED, getValidElement("4.0"));

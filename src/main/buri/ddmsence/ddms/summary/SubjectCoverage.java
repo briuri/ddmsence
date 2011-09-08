@@ -56,6 +56,8 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:category</u>: a category (0-many optional), implemented as a {@link Category}<br />
  * <u>ddms:keyword</u>: a keyword (0-many optional), implemented as a {@link Keyword}<br />
+ * <u>ddms:productionMetric</u>: a categorization scheme whose values and use are defined by DDNI-A. (0-many optional,
+ * starting in DDMS 4.0), implemented as a {@link ProductionMetric}<br />
  * <p>At least 1 of category or keyword must be used.</p>
  * </td></tr></table>
  * 
@@ -79,6 +81,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
 	private List<Keyword> _cachedKeywords;
 	private List<Category> _cachedCategories;
+	private List<ProductionMetric> _cachedProductionMetrics;
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	
 	private static final String SUBJECT_NAME = "Subject";
@@ -96,6 +99,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			Element subjectElement = getSubjectElement();
 			_cachedKeywords = new ArrayList<Keyword>();
 			_cachedCategories = new ArrayList<Category>();
+			_cachedProductionMetrics = new ArrayList<ProductionMetric>();
 			if (subjectElement != null) {
 				Elements keywords = subjectElement.getChildElements(Keyword.getName(getDDMSVersion()),
 					subjectElement.getNamespaceURI());
@@ -106,6 +110,11 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 					subjectElement.getNamespaceURI());
 				for (int i = 0; i < categories.size(); i++) {
 					_cachedCategories.add(new Category(categories.get(i)));
+				}
+				Elements metrics = subjectElement.getChildElements(ProductionMetric.getName(getDDMSVersion()),
+					subjectElement.getNamespaceURI());
+				for (int i = 0; i < metrics.size(); i++) {
+					_cachedProductionMetrics.add(new ProductionMetric(metrics.get(i)));
 				}
 			}
 			_cachedSecurityAttributes = new SecurityAttributes(element);
@@ -119,6 +128,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
+	 * @deprecated This constructor is provided for backwards compatibility with pre-DDMS 4.0 elements.
 	 * @param keywords list of keywords
 	 * @param categories list of categories
 	 * @param securityAttributes any security attributes (optional)
@@ -126,20 +136,42 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 */
 	public SubjectCoverage(List<Keyword> keywords, List<Category> categories, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
+		this(keywords, categories, null, null, securityAttributes);
+	}
+	
+	/**
+	 * Constructor for creating a component from raw data
+	 * 
+	 * @param keywords list of keywords
+	 * @param categories list of categories
+	 * @param productionMetrics list of metrics
+	 * @param nonStateActors list of actors
+	 * @param securityAttributes any security attributes (optional)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public SubjectCoverage(List<Keyword> keywords, List<Category> categories, List<ProductionMetric> productionMetrics,
+		List<String> nonStateActors, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			if (keywords == null)
 				keywords = Collections.emptyList();
 			if (categories == null)
 				categories = Collections.emptyList();
+			if (productionMetrics == null)
+				productionMetrics = Collections.emptyList();
+			if (nonStateActors == null)
+				nonStateActors = Collections.emptyList();
 			Element element = Util.buildDDMSElement(SubjectCoverage.getName(DDMSVersion.getCurrentVersion()), null);
-			
-			Element subjectElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? element 
-				: Util.buildDDMSElement(SUBJECT_NAME, null);
+
+			Element subjectElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? element : Util
+				.buildDDMSElement(SUBJECT_NAME, null);
 			for (Keyword keyword : keywords) {
 				subjectElement.appendChild(keyword.getXOMElementCopy());
 			}
 			for (Category category : categories) {
 				subjectElement.appendChild(category.getXOMElementCopy());
+			}
+			for (ProductionMetric metric : productionMetrics) {
+				subjectElement.appendChild(metric.getXOMElementCopy());
 			}
 
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
@@ -147,6 +179,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 
 			_cachedKeywords = keywords;
 			_cachedCategories = categories;
+			_cachedProductionMetrics = productionMetrics;
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
 			_cachedSecurityAttributes.addTo(element);
@@ -199,7 +232,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>1 or more keywords have the same value.</li>
 	 * <li>1 or more categories have the same value.</li>
-	 * <li>Include any validation warnings from the security attributes, keywords, or categories.</li>
+	 * <li>1 or more productionMetrics have the same value.</li>
+	 * <li>Include any validation warnings from the security attributes, keywords, metrics, or categories.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
@@ -209,11 +243,16 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		Set<Category> uniqueCategories = new HashSet<Category>(getCategories());
 		if (uniqueCategories.size() != getCategories().size())
 			addWarning("1 or more categories have the same value.");
-				
+		Set<ProductionMetric> uniqueMetrics = new HashSet<ProductionMetric>(getProductionMetrics());
+		if (uniqueMetrics.size() != getProductionMetrics().size())
+			addWarning("1 or more productionMetrics have the same value.");
+		
 		for (Keyword keyword : getKeywords())
 			addWarnings(keyword.getValidationWarnings(), false);
 		for (Category category : getCategories())
 			addWarnings(category.getValidationWarnings(), false);
+		for (ProductionMetric metric : getProductionMetrics())
+			addWarnings(metric.getValidationWarnings(), false);
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	
@@ -237,6 +276,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			html.append(keyword.toHTML(prefix));
 		for (Category category : getCategories())
 			html.append(category.toHTML(prefix));
+		for (ProductionMetric metric : getProductionMetrics())
+			html.append(metric.toHTML(prefix));
 		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 
@@ -254,6 +295,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			text.append(keyword.toText(prefix));
 		for (Category category : getCategories())
 			text.append(category.toText(prefix));
+		for (ProductionMetric metric : getProductionMetrics())
+			text.append(metric.toText(prefix));
 		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
 	}
@@ -266,7 +309,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			return (false);
 		SubjectCoverage test = (SubjectCoverage) obj;
 		return (Util.listEquals(getKeywords(), test.getKeywords())
-			&& Util.listEquals(getCategories(), test.getCategories()) 
+			&& Util.listEquals(getCategories(), test.getCategories())
+			&& Util.listEquals(getProductionMetrics(), test.getProductionMetrics()) 
 			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
 	}
 
@@ -277,6 +321,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		int result = super.hashCode();
 		result = 7 * result + getKeywords().hashCode();
 		result = 7 * result + getCategories().hashCode();
+		result = 7 * result + getProductionMetrics().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
@@ -319,6 +364,15 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
+	 * Accessor for the production metrics (0 to many).
+	 * 
+	 * @return unmodifiable List
+	 */
+	public List<ProductionMetric> getProductionMetrics() {
+		return (Collections.unmodifiableList(_cachedProductionMetrics));
+	}
+	
+	/**
 	 * Accessor for the Security Attributes.  Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
@@ -336,6 +390,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		private static final long serialVersionUID = -1550204187042536412L;
 		private List<Keyword.Builder> _keywords;
 		private List<Category.Builder> _categories;
+		private List<ProductionMetric.Builder> _productionMetrics;
 		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
@@ -351,6 +406,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 				getKeywords().add(new Keyword.Builder(keyword));
 			for (Category category : coverage.getCategories())
 				getCategories().add(new Category.Builder(category));
+			for (ProductionMetric metric : coverage.getProductionMetrics())
+				getProductionMetrics().add(new ProductionMetric.Builder(metric));
 			setSecurityAttributes(new SecurityAttributes.Builder(coverage.getSecurityAttributes()));
 		}
 		
@@ -372,7 +429,13 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 				if (keyword != null)
 					keywords.add(keyword);
 			}
-			return (new SubjectCoverage(keywords, categories, getSecurityAttributes().commit()));
+			List<ProductionMetric> metrics = new ArrayList<ProductionMetric>();
+			for (ProductionMetric.Builder builder : getProductionMetrics()) {
+				ProductionMetric metric = builder.commit();
+				if (metric != null)
+					metrics.add(metric);
+			}
+			return (new SubjectCoverage(keywords, categories, metrics, null, getSecurityAttributes().commit()));
 		}
 		
 		/**
@@ -395,6 +458,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			List<IBuilder> list = new ArrayList<IBuilder>();
 			list.addAll(getKeywords());
 			list.addAll(getCategories());
+			list.addAll(getProductionMetrics());
 			return (list);
 		}
 		
@@ -414,6 +478,15 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			if (_categories == null)
 				_categories = new LazyList(Category.Builder.class);			
 			return _categories;
+		}
+		
+		/**
+		 * Builder accessor for the production metrics in this coverage.
+		 */
+		public List<ProductionMetric.Builder> getProductionMetrics() {
+			if (_productionMetrics == null)
+				_productionMetrics = new LazyList(ProductionMetric.Builder.class);			
+			return _productionMetrics;
 		}
 		
 		/**

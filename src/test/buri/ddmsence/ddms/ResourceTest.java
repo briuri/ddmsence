@@ -141,7 +141,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 		List<Keyword> keywords = new ArrayList<Keyword>();
 		keywords.add(new Keyword("DDMSence", null));
-		TEST_SUBJECT = new SubjectCoverage(keywords, null, null);
+		TEST_SUBJECT = new SubjectCoverage(keywords, null, null, null, null);
 		TEST_VIRTUAL = new VirtualCoverage("123.456.789.0", "IP", null);
 		TEST_TEMPORAL = new TemporalCoverage(null, "1979-09-15", "Not Applicable", null);
 

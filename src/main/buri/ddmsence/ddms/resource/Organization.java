@@ -76,7 +76,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Organization extends AbstractProducerEntity {
 	
-	private List<SubOrganization> _cachedSubOrganizations = new ArrayList<SubOrganization>();
+	private List<SubOrganization> _cachedSubOrganizations;
 	
 	private static final String ACRONYM_NAME = "acronym";
 	
@@ -89,6 +89,7 @@ public final class Organization extends AbstractProducerEntity {
 	public Organization(Element element) throws InvalidDDMSException {
 		super(element, false);
 		try {
+			_cachedSubOrganizations = new ArrayList<SubOrganization>();
 			String namespace = element.getNamespaceURI();
 			Elements components = element.getChildElements(SubOrganization.getName(getDDMSVersion()), namespace);
 			for (int i = 0; i < components.size(); i++) {
@@ -135,9 +136,9 @@ public final class Organization extends AbstractProducerEntity {
 			if (!Util.isEmpty(acronym))
 				Util.addDDMSAttribute(getXOMElement(), ACRONYM_NAME, acronym);
 			for (SubOrganization subOrganization : subOrganizations) {
-				_cachedSubOrganizations.add(subOrganization);
 				getXOMElement().appendChild(subOrganization.getXOMElementCopy());
 			}
+			_cachedSubOrganizations = subOrganizations;
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
