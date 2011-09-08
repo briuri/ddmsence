@@ -730,8 +730,11 @@ public class Escort {
 			}
 		}
 		
-		printHead("ddms:subjectCoverage (exactly 1 required)");
+		printHead("ddms:subjectCoverage (at least 1 required)");
 		getTopLevelComponents().add(inputLoop(SubjectCoverage.class));
+		while (!onlyRequiredComponents && confirm("Add another ddms:subjectCoverage?")) {
+			getTopLevelComponents().add(inputLoop(SubjectCoverage.class));	
+		}
 		
 		if (!onlyRequiredComponents) {
 			printHead("ddms:virtualCoverage (any number allowed)");
