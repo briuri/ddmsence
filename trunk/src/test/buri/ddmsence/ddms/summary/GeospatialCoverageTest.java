@@ -153,9 +153,17 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 				.append("\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n\t");
-		xml.append("<ddms:GeospatialExtent>\n\t\t<ddms:geographicIdentifier>\n\t\t\t");
-		xml.append("<ddms:facilityIdentifier ddms:beNumber=\"1234DD56789\" ddms:osuffix=\"DD123\" />\n\t\t");
-		xml.append("</ddms:geographicIdentifier>\n\t</ddms:GeospatialExtent>\n</ddms:geospatialCoverage>");
+		if (version.isAtLeast("4.0")) {
+			xml.append("<ddms:geographicIdentifier>\n\t\t");
+			xml.append("<ddms:facilityIdentifier ddms:beNumber=\"1234DD56789\" ddms:osuffix=\"DD123\" />\n\t");
+			xml.append("</ddms:geographicIdentifier>\n");
+		}
+		else {
+			xml.append("<ddms:GeospatialExtent>\n\t\t<ddms:geographicIdentifier>\n\t\t\t");
+			xml.append("<ddms:facilityIdentifier ddms:beNumber=\"1234DD56789\" ddms:osuffix=\"DD123\" />\n\t\t");
+			xml.append("</ddms:geographicIdentifier>\n\t</ddms:GeospatialExtent>\n");
+		}
+		xml.append("</ddms:geospatialCoverage>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
@@ -179,13 +187,14 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	 * @return Element
 	 */
 	private Element buildComponentElement(List<IDDMSComponent> components) {
-		Element extElement = Util.buildDDMSElement("GeospatialExtent", null);
+		Element element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
+		Element extElement = isDDMS40OrGreater() ? element : Util.buildDDMSElement("GeospatialExtent", null);
 		for (IDDMSComponent component : components) {
 			if (component != null)
 				extElement.appendChild(component.getXOMElementCopy());
 		}
-		Element element = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
-		element.appendChild(extElement);
+		if (!isDDMS40OrGreater())
+			element.appendChild(extElement);
 		return (element);
 	}
 

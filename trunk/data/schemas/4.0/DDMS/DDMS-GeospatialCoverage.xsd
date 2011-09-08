@@ -25,25 +25,13 @@
   <xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="DDMS-GML-Profile.xsd" />
   <xs:include schemaLocation="DDMS-Includes.xsd" />
   <xs:include schemaLocation="GeospatialCoverage_attributeVocabularyDefinitions.xsd" />
-  <xs:element name="geospatialCoverage" type="GeospatialCoverageType">
+  <xs:element name="geospatialCoverage" type="PlaceType">
     <xs:annotation>
       <xs:appinfo>
         <mdr:definition>A geographic indication of one or more places or faciliies that relate to the resource. See DDMS Spec Category: Geospatial Coverage.</mdr:definition>
       </xs:appinfo>
     </xs:annotation>
   </xs:element>
-  <xs:complexType name="GeospatialCoverageType">
-    <xs:annotation>
-      <xs:appinfo>
-        <mdr:definition>Type used to model the geospatialCoverage element.
-				</mdr:definition>
-      </xs:appinfo>
-    </xs:annotation>
-    <xs:sequence>
-      <xs:element name="GeospatialExtent" type="PlaceType" />
-    </xs:sequence>
-    <xs:attributeGroup ref="SecurityAttributesOptionGroup" />
-  </xs:complexType>
   <xs:complexType name="PlaceType">
     <xs:choice maxOccurs="unbounded">
       <xs:element ref="geographicIdentifier" />
@@ -52,6 +40,7 @@
       <xs:element ref="postalAddress" />
       <xs:element ref="verticalExtent" />
     </xs:choice>
+    <xs:attributeGroup ref="SecurityAttributesOptionGroup" />
   </xs:complexType>
   <!-- =====================================================================
 		Models a GML compliant geographic identifier.  See ISO 19115 EX_GeographicDescription.

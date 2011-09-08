@@ -92,10 +92,11 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/"
 					+ versionString + "/testSchematronXslt2.sch"));
 				assertEquals(1, messages.size());
+				String extent = resource.getDDMSVersion().isAtLeast("4.0") ? "" : "/*:GeospatialExtent[namespace-uri()='" + ddmsNamespace
+					+ "'][1]";
 				assertEquals("//*:Resource[namespace-uri()='" + ddmsNamespace
-					+ "'][1]/*:geospatialCoverage[namespace-uri()='" + ddmsNamespace
-					+ "'][1]/*:GeospatialExtent[namespace-uri()='" + ddmsNamespace
-					+ "'][1]/*:boundingGeometry[namespace-uri()='" + ddmsNamespace + "'][1]/*:Point[namespace-uri()='"
+					+ "'][1]/*:geospatialCoverage[namespace-uri()='" + ddmsNamespace + "'][1]" + extent
+					+ "/*:boundingGeometry[namespace-uri()='" + ddmsNamespace + "'][1]/*:Point[namespace-uri()='"
 					+ gmlNamespace + "'][1]/*:pos[namespace-uri()='" + gmlNamespace + "'][1]", messages.get(0)
 					.getLocator());
 				assertEquals("The second coordinate in a gml:pos element must be 40.2 degrees.", messages.get(0)
