@@ -129,7 +129,7 @@
 			form.stringRecord.value = exampleRecord;
 		</c:if>
 		<c:if test="${type eq 'url'}">
-			form.url.value = "ddmsence.googlecode.com/svn/trunk/data/sample/DDMSence_Example_v3_1.xml";
+			form.url.value = "ddmsence.googlecode.com/svn/trunk/data/sample/4.0-ddmsenceExample.xml";
 		</c:if>
 	}
 	
