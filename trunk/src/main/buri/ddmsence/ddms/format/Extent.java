@@ -126,22 +126,44 @@ public final class Extent extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("format.Media.extent.qualifier", getQualifier(), false));
-		html.append(buildHTMLMeta("format.Media.extent.value", getValue(), false));
-		return (html.toString());
+		return (toHTML(""));
 	}
 
 	/**
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
-		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("format.Media.extent.qualifier", getQualifier(), false));
-		text.append(buildTextLine("format.Media.extent.value", getValue(), false));
-		return (text.toString());
+		return (toText(""));
 	}
 
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		StringBuffer html = new StringBuffer();
+		html.append(buildHTMLMeta(prefix + QUALIFIER_NAME, getQualifier(), false));
+		html.append(buildHTMLMeta(prefix + VALUE_NAME, getValue(), false));
+		return (html.toString());
+	}
+	
+	/**
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
+	 */
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		StringBuffer text = new StringBuffer();
+		text.append(buildTextLine(prefix + QUALIFIER_NAME, getQualifier(), false));
+		text.append(buildTextLine(prefix + VALUE_NAME, getValue(), false));
+		return (text.toString());
+	}
+	
 	/**
 	 * @see Object#equals(Object)
 	 */

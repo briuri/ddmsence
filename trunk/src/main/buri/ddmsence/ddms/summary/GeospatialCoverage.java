@@ -274,17 +274,20 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
+		String prefix = getName() + ".";
+		if (!getDDMSVersion().isAtLeast("4.0"))
+			prefix += GEOSPATIAL_EXTENT_NAME + ".";
 		StringBuffer html = new StringBuffer();
 		if (getGeographicIdentifier() != null)
-			html.append(getGeographicIdentifier().toHTML());
+			html.append(getGeographicIdentifier().toHTML(prefix));
 		if (getBoundingBox() != null)
-			html.append(getBoundingBox().toHTML());
+			html.append(getBoundingBox().toHTML(prefix));
 		if (getBoundingGeometry() != null)
-			html.append(getBoundingGeometry().toHTML());
+			html.append(getBoundingGeometry().toHTML(prefix));
 		if (getPostalAddress() != null)
-			html.append(getPostalAddress().toHTML());
+			html.append(getPostalAddress().toHTML(prefix));
 		if (getVerticalExtent() != null)
-			html.append(getVerticalExtent().toHTML());
+			html.append(getVerticalExtent().toHTML(prefix));
 		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}
@@ -293,17 +296,20 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
+		String prefix = getName() + ".";
+		if (!getDDMSVersion().isAtLeast("4.0"))
+			prefix += GEOSPATIAL_EXTENT_NAME + ".";
 		StringBuffer text = new StringBuffer();
 		if (getGeographicIdentifier() != null)
-			text.append(getGeographicIdentifier().toText());
+			text.append(getGeographicIdentifier().toText(prefix));
 		if (getBoundingBox() != null)
-			text.append(getBoundingBox().toText());
+			text.append(getBoundingBox().toText(prefix));
 		if (getBoundingGeometry() != null)
-			text.append(getBoundingGeometry().toText());
+			text.append(getBoundingGeometry().toText(prefix));
 		if (getPostalAddress() != null)
-			text.append(getPostalAddress().toText());
+			text.append(getPostalAddress().toText(prefix));
 		if (getVerticalExtent() != null)
-			text.append(getVerticalExtent().toText());
+			text.append(getVerticalExtent().toText(prefix));
 		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
 	}

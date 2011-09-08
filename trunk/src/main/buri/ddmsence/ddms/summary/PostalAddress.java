@@ -206,8 +206,25 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
+		return (toHTML(""));
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#toText()
+	 */
+	public String toText() {
+		return (toText(""));
+	}
+
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.getName(getDDMSVersion()) + ".GeospatialExtent." + getName() + ".";
 		for (String street : getStreets())
 			html.append(buildHTMLMeta(prefix + STREET_NAME, street, false));
 		html.append(buildHTMLMeta(prefix + CITY_NAME, getCity(), false));
@@ -218,12 +235,15 @@ public final class PostalAddress extends AbstractBaseComponent {
 			html.append(getCountryCode().toHTML(prefix));
 		return (html.toString());
 	}
-
+	
 	/**
-	 * @see AbstractBaseComponent#toText()
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
 	 */
-	public String toText() {
-		String prefix = getName() + " ";
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		for (String street : getStreets())
 			text.append(buildTextLine(prefix + STREET_NAME, street, false));

@@ -234,29 +234,49 @@ public final class VerticalExtent extends AbstractBaseComponent {
 				+ " element must match the datum on the enclosing verticalExtent element.");
 	}
 	
-
 	/**
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
+		return (toHTML(""));
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#toText()
+	 */
+	public String toText() {
+		return (toText(""));
+	}
+
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.getName(getDDMSVersion()) + ".GeospatialExtent." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + UOM_NAME, getUnitOfMeasure(), true));
 		html.append(buildHTMLMeta(prefix + DATUM_NAME, getDatum(), true));
 		html.append(buildHTMLMeta(prefix + "minimum", String.valueOf(getMinVerticalExtent()), true));
 		html.append(buildHTMLMeta(prefix + "maximum", String.valueOf(getMaxVerticalExtent()), true));
 		return (html.toString());
 	}
-		 
+	
 	/**
-	 * @see AbstractBaseComponent#toText()
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
 	 */
-	public String toText() {
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(getName() + " " + UOM_NAME, getUnitOfMeasure(), true));
-		text.append(buildTextLine(getName() + " " + DATUM_NAME, getDatum(), true));
-		text.append(buildTextLine(getName() + " minimum", String.valueOf(getMinVerticalExtent()), true));
-		text.append(buildTextLine(getName() + " maximum", String.valueOf(getMaxVerticalExtent()), true));
+		text.append(buildTextLine(prefix + UOM_NAME, getUnitOfMeasure(), true));
+		text.append(buildTextLine(prefix + DATUM_NAME, getDatum(), true));
+		text.append(buildTextLine(prefix + "minimum", String.valueOf(getMinVerticalExtent()), true));
+		text.append(buildTextLine(prefix + "maximum", String.valueOf(getMaxVerticalExtent()), true));
 		return (text.toString());
 	}
 	

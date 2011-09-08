@@ -304,21 +304,39 @@ public class ResourceTest extends AbstractComponentTestCase {
 			html.append("<meta name=\"pointOfContact.name\" content=\"Brian\" />\n");
 			html.append("<meta name=\"pointOfContact.surname\" content=\"Uri\" />\n");
 		}
-		html.append("<meta name=\"format.Media.mimeType\" content=\"text/xml\" />\n");
-		html.append("<meta name=\"subjectCoverage.Subject.keyword\" content=\"DDMSence\" />\n");
+		if (version.isAtLeast("4.0")) {
+			html.append("<meta name=\"format.mimeType\" content=\"text/xml\" />\n");
+		}
+		else {
+			html.append("<meta name=\"format.Media.mimeType\" content=\"text/xml\" />\n");
+		}
+		if (version.isAtLeast("4.0")) {
+			html.append("<meta name=\"subjectCoverage.keyword\" content=\"DDMSence\" />\n");
+		}
+		else {
+			html.append("<meta name=\"subjectCoverage.Subject.keyword\" content=\"DDMSence\" />\n");
+		}
 		html.append("<meta name=\"virtual.address\" content=\"123.456.789.0\" />\n");
 		html.append("<meta name=\"virtual.protocol\" content=\"IP\" />\n");
-		html.append("<meta name=\"temporalCoverage.TimePeriod.name\" content=\"Unknown\" />\n");
-		html.append("<meta name=\"temporalCoverage.TimePeriod.start\" content=\"1979-09-15\" />\n");
-		html.append("<meta name=\"temporalCoverage.TimePeriod.end\" content=\"Not Applicable\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.id\" content=\"IDValue\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.type\" content=\"Point\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.srsName\" ").append(
+		if (version.isAtLeast("4.0")) {
+			html.append("<meta name=\"temporalCoverage.name\" content=\"Unknown\" />\n");
+			html.append("<meta name=\"temporalCoverage.start\" content=\"1979-09-15\" />\n");
+			html.append("<meta name=\"temporalCoverage.end\" content=\"Not Applicable\" />\n");
+		}
+		else {
+			html.append("<meta name=\"temporalCoverage.TimePeriod.name\" content=\"Unknown\" />\n");
+			html.append("<meta name=\"temporalCoverage.TimePeriod.start\" content=\"1979-09-15\" />\n");
+			html.append("<meta name=\"temporalCoverage.TimePeriod.end\" content=\"Not Applicable\" />\n");			
+		}
+		String geospatialPrefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
+		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.id\" content=\"IDValue\" />\n");
+		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.type\" content=\"Point\" />\n");
+		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.srsName\" ").append(
 			"content=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.srsDimension\" content=\"10\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.axisLabels\" content=\"A B C\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.uomLabels\" content=\"Meter Meter Meter\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.position\" content=\"32.1 40.1\" />\n");
+		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.srsDimension\" content=\"10\" />\n");
+		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.axisLabels\" content=\"A B C\" />\n");
+		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.uomLabels\" content=\"Meter Meter Meter\" />\n");
+		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.position\" content=\"32.1 40.1\" />\n");
 		html.append("<meta name=\"relatedResources.relationship\" ").append(
 			"content=\"http://purl.org/dc/terms/references\" />\n");
 		html.append("<meta name=\"relatedResources.direction\" content=\"outbound\" />\n");
@@ -388,20 +406,38 @@ public class ResourceTest extends AbstractComponentTestCase {
 			text.append("name: Brian\n");
 			text.append("surname: Uri\n");
 		}
-		text.append("format.Media.mimeType: text/xml\n");
-		text.append("keyword: DDMSence\n");
+		if (version.isAtLeast("4.0")) {
+			text.append("format.mimeType: text/xml\n");
+		}
+		else {
+			text.append("format.Media.mimeType: text/xml\n");
+		}
+		if (version.isAtLeast("4.0")) {
+			text.append("subjectCoverage.keyword: DDMSence\n");
+		}
+		else {
+			text.append("subjectCoverage.Subject.keyword: DDMSence\n");
+		}
 		text.append("virtual address: 123.456.789.0\n");
 		text.append("virtual protocol: IP\n");
-		text.append("TimePeriod name: Unknown\n");
-		text.append("TimePeriod start: 1979-09-15\n");
-		text.append("TimePeriod end: Not Applicable\n");
-		text.append("boundingGeometry id: IDValue\n");
-		text.append("boundingGeometry type: Point\n");
-		text.append("boundingGeometry srsName: http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\n");
-		text.append("boundingGeometry srsDimension: 10\n");
-		text.append("boundingGeometry axisLabels: A B C\n");
-		text.append("boundingGeometry uomLabels: Meter Meter Meter\n");
-		text.append("boundingGeometry position: 32.1 40.1\n");
+		if (isDDMS40OrGreater()) {
+			text.append("temporalCoverage.name: Unknown\n");
+			text.append("temporalCoverage.start: 1979-09-15\n");
+			text.append("temporalCoverage.end: Not Applicable\n");	
+		}
+		else {
+			text.append("temporalCoverage.TimePeriod.name: Unknown\n");
+			text.append("temporalCoverage.TimePeriod.start: 1979-09-15\n");
+			text.append("temporalCoverage.TimePeriod.end: Not Applicable\n");			
+		}
+		String geospatialPrefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
+		text.append(geospatialPrefix).append("boundingGeometry.id: IDValue\n");
+		text.append(geospatialPrefix).append("boundingGeometry.type: Point\n");
+		text.append(geospatialPrefix).append("boundingGeometry.srsName: http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\n");
+		text.append(geospatialPrefix).append("boundingGeometry.srsDimension: 10\n");
+		text.append(geospatialPrefix).append("boundingGeometry.axisLabels: A B C\n");
+		text.append(geospatialPrefix).append("boundingGeometry.uomLabels: Meter Meter Meter\n");
+		text.append(geospatialPrefix).append("boundingGeometry.position: 32.1 40.1\n");
 		text.append("relatedResources relationship: http://purl.org/dc/terms/references\n");
 		text.append("relatedResources direction: outbound\n");
 		text.append("Related Resource qualifier: http://purl.org/dc/terms/URI\n");

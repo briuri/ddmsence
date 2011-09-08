@@ -164,23 +164,45 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
-		StringBuffer html = new StringBuffer();
-		for (Polygon polygon : getPolygons())
-			html.append(polygon.toHTML());
-		for (Point point : getPoints())
-			html.append(point.toHTML());
-		return (html.toString());
+		return (toHTML(""));
 	}
 	
 	/**
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
+		return (toText(""));
+	}
+
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		StringBuffer html = new StringBuffer();
+		for (Polygon polygon : getPolygons())
+			html.append(polygon.toHTML(prefix));
+		for (Point point : getPoints())
+			html.append(point.toHTML(prefix));
+		return (html.toString());
+	}
+	
+	/**
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
+	 */
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		for (Polygon polygon : getPolygons())
-			text.append(polygon.toText());
+			text.append(polygon.toText(prefix));
 		for (Point point : getPoints())
-			text.append(point.toText());
+			text.append(point.toText(prefix));
 		return (text.toString());
 	}
 	

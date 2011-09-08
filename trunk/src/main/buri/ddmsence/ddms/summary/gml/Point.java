@@ -25,8 +25,6 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.summary.BoundingGeometry;
-import buri.ddmsence.ddms.summary.GeospatialCoverage;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -43,17 +41,17 @@ import buri.ddmsence.util.Util;
  * <p>
  * <b>Suggested Text Output</b><br />
  * <code>
- * boundingGeometry id: value<br />
- * boundingGeometry type: Point<br />
- * boundingGeometry srsName: value<br />
- * boundingGeometry srsDimension: value<br />
- * boundingGeometry axisLabels: value<br />
- * boundingGeometry uomLabels: value<br />
- * boundingGeometry position: value<br />
- * boundingGeometry position srsName: value<br />
- * boundingGeometry position srsDimension: value<br />
- * boundingGeometry position axisLabels: value<br />
- * boundingGeometry position uomLabels: value<br />
+ * boundingGeometry.id: value<br />
+ * boundingGeometry.type: Point<br />
+ * boundingGeometry.srsName: value<br />
+ * boundingGeometry.srsDimension: value<br />
+ * boundingGeometry.axisLabels: value<br />
+ * boundingGeometry.uomLabels: value<br />
+ * boundingGeometry.position: value<br />
+ * boundingGeometry.position.srsName: value<br />
+ * boundingGeometry.position.srsDimension: value<br />
+ * boundingGeometry.position.axisLabels: value<br />
+ * boundingGeometry.position.uomLabels: value<br />
  * </code>
  * </p>
  * 
@@ -211,9 +209,25 @@ public final class Point extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
-		DDMSVersion version = getDDMSVersion();
+		return (toHTML(""));
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#toText()
+	 */
+	public String toText() {
+		return (toText(""));
+	}
+
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix);
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.getName(getDDMSVersion()) + ".GeospatialExtent." + BoundingGeometry.getName(version) + ".";
 		html.append(buildHTMLMeta(prefix + ID_NAME, getId(), true));
 		html.append(buildHTMLMeta(prefix + "type", getName(), true));
 		html.append(buildHTMLMeta(prefix + "srsName", getSRSAttributes().getSrsName(), true));
@@ -223,28 +237,29 @@ public final class Point extends AbstractBaseComponent {
 		}
 		html.append(buildHTMLMeta(prefix + "axisLabels", getSRSAttributes().getAxisLabelsAsXsList(), false));
 		html.append(buildHTMLMeta(prefix + "uomLabels", getSRSAttributes().getUomLabelsAsXsList(), false));
-		html.append(getPosition().toHTML());
+		html.append(getPosition().toHTML(prefix));
 		return (html.toString());
 	}
-
+	
 	/**
-	 * @see AbstractBaseComponent#toText()
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
 	 */
-	public String toText() {
-		DDMSVersion version = getDDMSVersion();
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(BoundingGeometry.getName(version) + " " + ID_NAME, getId(), true));
-		text.append(buildTextLine(BoundingGeometry.getName(version) + " type", getName(), true));
-		text.append(buildTextLine(BoundingGeometry.getName(version) + " srsName", getSRSAttributes().getSrsName(), true));
+		text.append(buildTextLine(prefix + ID_NAME, getId(), true));
+		text.append(buildTextLine(prefix + "type", getName(), true));
+		text.append(buildTextLine(prefix + "srsName", getSRSAttributes().getSrsName(), true));
 		if (getSRSAttributes().getSrsDimension() != null) {
-			text.append(buildTextLine(BoundingGeometry.getName(version) + " srsDimension",
-				String.valueOf(getSRSAttributes().getSrsDimension()), false));
+			text.append(buildTextLine(prefix + "srsDimension", String.valueOf(getSRSAttributes().getSrsDimension()),
+				false));
 		}
-		text.append(buildTextLine(BoundingGeometry.getName(version) + " axisLabels", getSRSAttributes().getAxisLabelsAsXsList(),
-			false));
-		text.append(buildTextLine(BoundingGeometry.getName(version) + " uomLabels", getSRSAttributes().getUomLabelsAsXsList(),
-			false));
-		text.append(getPosition().toText());
+		text.append(buildTextLine(prefix + "axisLabels", getSRSAttributes().getAxisLabelsAsXsList(), false));
+		text.append(buildTextLine(prefix + "uomLabels", getSRSAttributes().getUomLabelsAsXsList(), false));
+		text.append(getPosition().toText(prefix));
 		return (text.toString());
 	}
 

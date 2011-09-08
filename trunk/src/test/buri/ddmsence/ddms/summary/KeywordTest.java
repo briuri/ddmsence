@@ -93,10 +93,10 @@ public class KeywordTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"subjectCoverage.Subject.keyword\" content=\"").append(TEST_VALUE).append("\" />\n");
+		html.append("<meta name=\"keyword\" content=\"").append(TEST_VALUE).append("\" />\n");
 		if (isDDMS40OrGreater()) {
-			html.append("<meta name=\"subjectCoverage.Subject.keyword.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"subjectCoverage.Subject.keyword.ownerProducer\" content=\"USA\" />\n");
+			html.append("<meta name=\"keyword.classification\" content=\"U\" />\n");
+			html.append("<meta name=\"keyword.ownerProducer\" content=\"USA\" />\n");
 		}
 		return (html.toString());
 	}

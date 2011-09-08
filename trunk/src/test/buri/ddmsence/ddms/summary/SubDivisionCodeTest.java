@@ -94,12 +94,9 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
-		String parentHtml = "geospatialCoverage.GeospatialExtent.geographicIdentifier";
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"").append(parentHtml).append(".subDivisionCode.qualifier\" content=\"")
-			.append(TEST_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"").append(parentHtml).append(".subDivisionCode.value\" content=\"")
-			.append(TEST_VALUE).append("\" />\n");
+		html.append("<meta name=\"subDivisionCode.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
+		html.append("<meta name=\"subDivisionCode.value\" content=\"").append(TEST_VALUE).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -108,8 +105,8 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("geographicIdentifier subDivisionCode qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append("geographicIdentifier subDivisionCode value: ").append(TEST_VALUE).append("\n");
+		text.append("subDivisionCode.qualifier: ").append(TEST_QUALIFIER).append("\n");
+		text.append("subDivisionCode.value: ").append(TEST_VALUE).append("\n");
 		return (text.toString());
 	}
 

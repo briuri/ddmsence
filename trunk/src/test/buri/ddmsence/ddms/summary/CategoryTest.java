@@ -98,15 +98,15 @@ public class CategoryTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"subjectCoverage.Subject.category.qualifier\" content=\"").append(TEST_QUALIFIER)
+		html.append("<meta name=\"category.qualifier\" content=\"").append(TEST_QUALIFIER)
 			.append("\" />\n");
-		html.append("<meta name=\"subjectCoverage.Subject.category.code\" content=\"").append(TEST_CODE)
+		html.append("<meta name=\"category.code\" content=\"").append(TEST_CODE)
 			.append("\" />\n");
-		html.append("<meta name=\"subjectCoverage.Subject.category.label\" content=\"").append(TEST_LABEL)
+		html.append("<meta name=\"category.label\" content=\"").append(TEST_LABEL)
 			.append("\" />\n");
 		if (isDDMS40OrGreater()) {
-			html.append("<meta name=\"subjectCoverage.Subject.category.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"subjectCoverage.Subject.category.ownerProducer\" content=\"USA\" />\n");
+			html.append("<meta name=\"category.classification\" content=\"U\" />\n");
+			html.append("<meta name=\"category.ownerProducer\" content=\"USA\" />\n");
 		}
 		return (html.toString());
 	}

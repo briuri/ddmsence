@@ -28,8 +28,6 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.summary.BoundingGeometry;
-import buri.ddmsence.ddms.summary.GeospatialCoverage;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
@@ -46,11 +44,11 @@ import buri.ddmsence.util.Util;
  * <p>
  * <b>Suggested Text Output</b><br />
  * <code>
- * boundingGeometry position: value<br />
- * boundingGeometry position srsName: value<br />
- * boundingGeometry position srsDimension: value<br />
- * boundingGeometry position axisLabels: value<br />
- * boundingGeometry position uomLabels: value<br />
+ * boundingGeometry.position: value<br />
+ * boundingGeometry.position.srsName: value<br />
+ * boundingGeometry.position.srsDimension: value<br />
+ * boundingGeometry.position.axisLabels: value<br />
+ * boundingGeometry.position.uomLabels: value<br />
  * </code>
  * </p>
  * 
@@ -206,9 +204,25 @@ public final class Position extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
-		DDMSVersion version = getDDMSVersion();
+		return (toHTML(""));
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#toText()
+	 */
+	public String toText() {
+		return (toText(""));
+	}
+
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix) + "position";
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.getName(getDDMSVersion()) + ".GeospatialExtent." + BoundingGeometry.getName(version) + ".position";
 		html.append(buildHTMLMeta(prefix, getCoordinatesAsXsList(), true));
 		html.append(buildHTMLMeta(prefix + ".srsName", getSRSAttributes().getSrsName(), false));
 		if (getSRSAttributes().getSrsDimension() != null) {
@@ -219,24 +233,26 @@ public final class Position extends AbstractBaseComponent {
 		html.append(buildHTMLMeta(prefix + ".uomLabels", getSRSAttributes().getUomLabelsAsXsList(), false));
 		return (html.toString());
 	}
-
+	
 	/**
-	 * @see AbstractBaseComponent#toText()
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
 	 */
-	public String toText() {
-		DDMSVersion version = getDDMSVersion();
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix) + "position";
 		StringBuffer text = new StringBuffer();
-		String prefix = BoundingGeometry.getName(version) + " position";
 		text.append(buildTextLine(prefix, getCoordinatesAsXsList(), true));
-		text.append(buildTextLine(prefix + " srsName", 
+		text.append(buildTextLine(prefix + ".srsName", 
 			getSRSAttributes().getSrsName(), false));
 		if (getSRSAttributes().getSrsDimension() != null) {
-			text.append(buildTextLine(prefix + " srsDimension", 
+			text.append(buildTextLine(prefix + ".srsDimension", 
 				String.valueOf(getSRSAttributes().getSrsDimension()), false));
 		}
-		text.append(buildTextLine(prefix + " axisLabels", 
+		text.append(buildTextLine(prefix + ".axisLabels", 
 			getSRSAttributes().getAxisLabelsAsXsList(), false));
-		text.append(buildTextLine(prefix + " uomLabels", 
+		text.append(buildTextLine(prefix + ".uomLabels", 
 			getSRSAttributes().getUomLabelsAsXsList(), false));
 		return (text.toString());
 	}
