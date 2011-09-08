@@ -206,8 +206,9 @@ public final class Position extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
+		DDMSVersion version = getDDMSVersion();
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + BoundingGeometry.NAME + ".position";
+		String prefix = GeospatialCoverage.getName(getDDMSVersion()) + ".GeospatialExtent." + BoundingGeometry.getName(version) + ".position";
 		html.append(buildHTMLMeta(prefix, getCoordinatesAsXsList(), true));
 		html.append(buildHTMLMeta(prefix + ".srsName", getSRSAttributes().getSrsName(), false));
 		if (getSRSAttributes().getSrsDimension() != null) {
@@ -223,8 +224,9 @@ public final class Position extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
+		DDMSVersion version = getDDMSVersion();
 		StringBuffer text = new StringBuffer();
-		String prefix = BoundingGeometry.NAME + " position";
+		String prefix = BoundingGeometry.getName(version) + " position";
 		text.append(buildTextLine(prefix, getCoordinatesAsXsList(), true));
 		text.append(buildTextLine(prefix + " srsName", 
 			getSRSAttributes().getSrsName(), false));

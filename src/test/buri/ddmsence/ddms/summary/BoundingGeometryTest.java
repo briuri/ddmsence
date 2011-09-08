@@ -166,11 +166,11 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testNameAndNamespace() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(BoundingGeometry.NAME, component.getName());
+			assertEquals(BoundingGeometry.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + BoundingGeometry.NAME,
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + BoundingGeometry.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -181,17 +181,17 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// Point
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// Polygon
-			Element element = Util.buildDDMSElement(BoundingGeometry.NAME, null);
+			Element element = Util.buildDDMSElement(BoundingGeometry.getName(version), null);
 			element.appendChild(getPolygons().get(0).getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 
 			// Both
-			element = Util.buildDDMSElement(BoundingGeometry.NAME, null);
+			element = Util.buildDDMSElement(BoundingGeometry.getName(version), null);
 			element.appendChild(getPolygons().get(0).getXOMElementCopy());
 			element.appendChild(getPoints().get(0).getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
@@ -214,9 +214,9 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// No polygons or points
-			Element element = Util.buildDDMSElement(BoundingGeometry.NAME, null);
+			Element element = Util.buildDDMSElement(BoundingGeometry.getName(version), null);
 			testConstructor(WILL_FAIL, element);
 		}
 	}

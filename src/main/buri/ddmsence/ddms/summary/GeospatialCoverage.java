@@ -85,9 +85,6 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	private VerticalExtent _cachedVerticalExtent;
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	
-	/** The element name of this component */
-	public static final String NAME = "geospatialCoverage";
-	
 	private static final String GEOSPATIAL_EXTENT_NAME = "GeospatialExtent";
 	
 	/**
@@ -111,7 +108,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 				Element boundingBoxElement = extElement.getFirstChildElement(BoundingBox.getName(version), namespace);
 				if (boundingBoxElement != null)
 					_cachedBoundingBox = new BoundingBox(boundingBoxElement);
-				Element boundingGeometryElement = extElement.getFirstChildElement(BoundingGeometry.NAME, namespace);
+				Element boundingGeometryElement = extElement.getFirstChildElement(BoundingGeometry.getName(version), namespace);
 				if (boundingGeometryElement != null)
 					_cachedBoundingGeometry = new BoundingGeometry(boundingGeometryElement);
 				Element postalAddressElement = extElement.getFirstChildElement(PostalAddress.getName(version),
@@ -146,7 +143,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		BoundingGeometry boundingGeometry, PostalAddress postalAddress, VerticalExtent verticalExtent,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
-			Element coverageElement = Util.buildDDMSElement(GeospatialCoverage.NAME, null);
+			Element coverageElement = Util.buildDDMSElement(GeospatialCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			
 			Element element = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? coverageElement : Util.buildDDMSElement(GEOSPATIAL_EXTENT_NAME, null);
 			if (geographicIdentifier != null)
@@ -196,13 +193,13 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), NAME);
+		Util.requireDDMSQName(getXOMElement(), GeospatialCoverage.getName(getDDMSVersion()));
 		Element extElement = getExtentElement();
 		Util.requireDDMSValue("GeospatialExtent element", extElement);
 		
 		Util.requireBoundedDDMSChildCount(extElement, GeographicIdentifier.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(extElement, BoundingBox.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedDDMSChildCount(extElement, BoundingGeometry.NAME, 0, 1);
+		Util.requireBoundedDDMSChildCount(extElement, BoundingGeometry.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(extElement, PostalAddress.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(extElement, VerticalExtent.getName(getDDMSVersion()), 0, 1);
 			
@@ -288,7 +285,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			html.append(getPostalAddress().toHTML());
 		if (getVerticalExtent() != null)
 			html.append(getVerticalExtent().toHTML());
-		html.append(getSecurityAttributes().toHTML(NAME));
+		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}
 	
@@ -307,7 +304,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			text.append(getPostalAddress().toText());
 		if (getVerticalExtent() != null)
 			text.append(getVerticalExtent().toText());
-		text.append(getSecurityAttributes().toText(NAME));
+		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
 	}
 	
@@ -346,6 +343,17 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		return (result);
 	}
 
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("geospatialCoverage");
+	}
+	
 	/**
 	 * Accessor for the element which contains the child elementsnt. Before DDMS 4.0, this is a wrapper element called
 	 * ddms:GeospatialExtent. Starting in DDMS 4.0, it is the ddms:geospatialCoverage element itself.

@@ -207,7 +207,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + getName() + ".";
+		String prefix = GeospatialCoverage.getName(getDDMSVersion()) + ".GeospatialExtent." + getName() + ".";
 		for (String street : getStreets())
 			html.append(buildHTMLMeta(prefix + STREET_NAME, street, false));
 		html.append(buildHTMLMeta(prefix + CITY_NAME, getCity(), false));

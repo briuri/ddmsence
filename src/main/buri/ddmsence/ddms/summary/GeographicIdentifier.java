@@ -238,7 +238,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + getName() + ".";
+		String prefix = GeospatialCoverage.getName(getDDMSVersion()) + ".GeospatialExtent." + getName() + ".";
 		for (String name : getNames())
 			html.append(buildHTMLMeta(prefix + NAME_NAME, name, false));
 		for (String region : getRegions())

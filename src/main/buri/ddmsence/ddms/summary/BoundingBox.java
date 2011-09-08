@@ -158,7 +158,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent." + getName() + ".";
+		String prefix = GeospatialCoverage.getName(getDDMSVersion()) + ".GeospatialExtent." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + getWestBLName(), String.valueOf(getWestBL()), true));
 		html.append(buildHTMLMeta(prefix + getEastBLName(), String.valueOf(getEastBL()), true));
 		html.append(buildHTMLMeta(prefix + getSouthBLName(), String.valueOf(getSouthBL()), true));

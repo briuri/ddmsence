@@ -112,7 +112,7 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	 */
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.NAME + ".GeospatialExtent."
+		String prefix = GeospatialCoverage.getName(getDDMSVersion()) + ".GeospatialExtent."
 			+ GeographicIdentifier.getName(DDMSVersion.getCurrentVersion()) + "." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + BE_NUMBER_NAME, getBeNumber(), true));
 		html.append(buildHTMLMeta(prefix + OSUFFIX_NAME, getOsuffix(), true));
