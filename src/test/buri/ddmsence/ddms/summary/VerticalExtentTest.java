@@ -100,14 +100,10 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.verticalExtent.unitOfMeasure\" content=\"")
-			.append(TEST_UOM).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.verticalExtent.datum\" content=\"")
-			.append(TEST_DATUM).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.verticalExtent.minimum\" content=\"")
-			.append(TEST_MIN).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.verticalExtent.maximum\" content=\"")
-			.append(TEST_MAX).append("\" />\n");
+		html.append("<meta name=\"verticalExtent.unitOfMeasure\" content=\"").append(TEST_UOM).append("\" />\n");
+		html.append("<meta name=\"verticalExtent.datum\" content=\"").append(TEST_DATUM).append("\" />\n");
+		html.append("<meta name=\"verticalExtent.minimum\" content=\"").append(TEST_MIN).append("\" />\n");
+		html.append("<meta name=\"verticalExtent.maximum\" content=\"").append(TEST_MAX).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -116,10 +112,10 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("verticalExtent unitOfMeasure: ").append(TEST_UOM).append("\n");
-		text.append("verticalExtent datum: ").append(TEST_DATUM).append("\n");
-		text.append("verticalExtent minimum: ").append(TEST_MIN).append("\n");
-		text.append("verticalExtent maximum: ").append(TEST_MAX).append("\n");
+		text.append("verticalExtent.unitOfMeasure: ").append(TEST_UOM).append("\n");
+		text.append("verticalExtent.datum: ").append(TEST_DATUM).append("\n");
+		text.append("verticalExtent.minimum: ").append(TEST_MIN).append("\n");
+		text.append("verticalExtent.maximum: ").append(TEST_MAX).append("\n");
 		return (text.toString());
 	}
 

@@ -115,13 +115,12 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.geographicIdentifier.name\" content=\"")
-			.append(TEST_NAMES.get(0)).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.geographicIdentifier.region\" content=\"")
-			.append(TEST_REGIONS.get(0)).append("\" />\n");
-		html.append(CountryCodeTest.getFixture().toHTML("geospatialCoverage.GeospatialExtent.geographicIdentifier."));
+		html.append("<meta name=\"geographicIdentifier.name\" content=\"").append(TEST_NAMES.get(0)).append("\" />\n");
+		html.append("<meta name=\"geographicIdentifier.region\" content=\"").append(TEST_REGIONS.get(0))
+			.append("\" />\n");
+		html.append(CountryCodeTest.getFixture().toHTML("geographicIdentifier."));
 		if (isDDMS40OrGreater())
-			html.append(SubDivisionCodeTest.getFixture().toHTML());
+			html.append(SubDivisionCodeTest.getFixture().toHTML("geographicIdentifier."));
 		return (html.toString());
 	}
 
@@ -130,11 +129,11 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("geographicIdentifier name: ").append(TEST_NAMES.get(0)).append("\n");
-		text.append("geographicIdentifier region: ").append(TEST_REGIONS.get(0)).append("\n");
-		text.append(CountryCodeTest.getFixture().toText("geographicIdentifier "));
+		text.append("geographicIdentifier.name: ").append(TEST_NAMES.get(0)).append("\n");
+		text.append("geographicIdentifier.region: ").append(TEST_REGIONS.get(0)).append("\n");
+		text.append(CountryCodeTest.getFixture().toText("geographicIdentifier."));
 		if (isDDMS40OrGreater())
-			text.append(SubDivisionCodeTest.getFixture().toText());
+			text.append(SubDivisionCodeTest.getFixture().toText("geographicIdentifier."));
 		return (text.toString());
 	}
 

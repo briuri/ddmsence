@@ -112,6 +112,13 @@ public final class CountryCode extends AbstractQualifierValue {
 	}
 	
 	/**
+	 * @see AbstractBaseComponent#toText()
+	 */
+	public String toText() {
+		return (toText(""));
+	}
+	
+	/**
 	 * Outputs to HTML with a prefix at the beginning of each meta tag.
 	 * 
 	 * @param prefix the prefix to add
@@ -123,13 +130,6 @@ public final class CountryCode extends AbstractQualifierValue {
 		html.append(buildHTMLMeta(prefix + QUALIFIER_NAME, getQualifier(), true));
 		html.append(buildHTMLMeta(prefix + VALUE_NAME, getValue(), true));
 		return (html.toString());
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
 	}
 	
 	/**

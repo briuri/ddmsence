@@ -119,6 +119,13 @@ public final class SubOrganization extends AbstractSimpleString {
 	}
 	
 	/**
+	 * @see AbstractBaseComponent#toText()
+	 */
+	public String toText() {
+		return (toText(""));
+	}
+	
+	/**
 	 * Outputs to HTML with a prefix at the beginning of each meta tag.
 	 * 
 	 * @param prefix the prefix to add
@@ -129,13 +136,6 @@ public final class SubOrganization extends AbstractSimpleString {
 		html.append(buildHTMLMeta(getName(), getValue(), false));
 		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
 	}
 	
 	/**

@@ -237,8 +237,25 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
+		return (toHTML(""));
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#toText()
+	 */
+	public String toText() {
+		return (toText(""));
+	}
+
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.getName(getDDMSVersion()) + ".GeospatialExtent." + getName() + ".";
 		for (String name : getNames())
 			html.append(buildHTMLMeta(prefix + NAME_NAME, name, false));
 		for (String region : getRegions())
@@ -246,17 +263,20 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		if (getCountryCode() != null)
 			html.append(getCountryCode().toHTML(prefix));
 		if (getSubDivisionCode() != null)
-			html.append(getSubDivisionCode().toHTML());
+			html.append(getSubDivisionCode().toHTML(prefix));
 		if (hasFacilityIdentifier())
-			html.append(getFacilityIdentifier().toHTML());
+			html.append(getFacilityIdentifier().toHTML(prefix));
 		return (html.toString());
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toText()
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
 	 */
-	public String toText() {
-		String prefix = getName() + " ";
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		for (String name : getNames())
 			text.append(buildTextLine(prefix + NAME_NAME, name, false));
@@ -265,9 +285,9 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		if (getCountryCode() != null)
 			text.append(getCountryCode().toText(prefix));
 		if (getSubDivisionCode() != null)
-			text.append(getSubDivisionCode().toText());
+			text.append(getSubDivisionCode().toText(prefix));
 		if (hasFacilityIdentifier())
-			text.append(getFacilityIdentifier().toText());
+			text.append(getFacilityIdentifier().toText(prefix));
 		return (text.toString());
 	}
 	

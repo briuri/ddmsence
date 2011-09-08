@@ -133,7 +133,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
 		StringBuffer html = new StringBuffer();
-		html.append(getPoints().get(0).toHTML());
+		html.append(getPoints().get(0).toHTML("boundingGeometry."));
 		return (html.toString());
 	}
 
@@ -142,7 +142,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(getPoints().get(0).toText());
+		text.append(getPoints().get(0).toText("boundingGeometry."));
 		return (text.toString());
 	}
 
@@ -279,7 +279,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, getPolygons(), null);
-			assertEquals(getPolygons().get(0).toHTML(), component.toHTML());
+			assertEquals(getPolygons().get(0).toHTML("boundingGeometry."), component.toHTML());
 		}
 	}
 
@@ -293,7 +293,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedTextOutput(), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, getPolygons(), null);
-			assertEquals(getPolygons().get(0).toText(), component.toText());
+			assertEquals(getPolygons().get(0).toText("boundingGeometry."), component.toText());
 		}
 	}
 

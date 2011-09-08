@@ -128,13 +128,13 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.").append(getWestBLName())
+		html.append("<meta name=\"boundingBox.").append(getWestBLName())
 			.append("\" content=\"").append(TEST_WEST).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.").append(getEastBLName())
+		html.append("<meta name=\"boundingBox.").append(getEastBLName())
 			.append("\" content=\"").append(TEST_EAST).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.").append(getSouthBLName())
+		html.append("<meta name=\"boundingBox.").append(getSouthBLName())
 			.append("\" content=\"").append(TEST_SOUTH).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingBox.").append(getNorthBLName())
+		html.append("<meta name=\"boundingBox.").append(getNorthBLName())
 			.append("\" content=\"").append(TEST_NORTH).append("\" />\n");
 		return (html.toString());
 	}
@@ -144,10 +144,10 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("boundingBox ").append(getWestBLName()).append(": ").append(TEST_WEST).append("\n");
-		text.append("boundingBox ").append(getEastBLName()).append(": ").append(TEST_EAST).append("\n");
-		text.append("boundingBox ").append(getSouthBLName()).append(": ").append(TEST_SOUTH).append("\n");
-		text.append("boundingBox ").append(getNorthBLName()).append(": ").append(TEST_NORTH).append("\n");
+		text.append("boundingBox.").append(getWestBLName()).append(": ").append(TEST_WEST).append("\n");
+		text.append("boundingBox.").append(getEastBLName()).append(": ").append(TEST_EAST).append("\n");
+		text.append("boundingBox.").append(getSouthBLName()).append(": ").append(TEST_SOUTH).append("\n");
+		text.append("boundingBox.").append(getNorthBLName()).append(": ").append(TEST_NORTH).append("\n");
 		return (text.toString());
 	}
 

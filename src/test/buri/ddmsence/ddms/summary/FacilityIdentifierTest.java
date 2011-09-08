@@ -94,12 +94,8 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append(
-			"<meta name=\"geospatialCoverage.GeospatialExtent.geographicIdentifier.facilityIdentifier.beNumber\" content=\"")
-			.append(TEST_BENUMBER).append("\" />\n");
-		html.append(
-			"<meta name=\"geospatialCoverage.GeospatialExtent.geographicIdentifier.facilityIdentifier.osuffix\" content=\"")
-			.append(TEST_OSUFFIX).append("\" />\n");
+		html.append("<meta name=\"facilityIdentifier.beNumber\" content=\"").append(TEST_BENUMBER).append("\" />\n");
+		html.append("<meta name=\"facilityIdentifier.osuffix\" content=\"").append(TEST_OSUFFIX).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -108,8 +104,8 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("geographicIdentifier facilityIdentifier beNumber: ").append(TEST_BENUMBER).append("\n");
-		text.append("geographicIdentifier facilityIdentifier osuffix: ").append(TEST_OSUFFIX).append("\n");
+		text.append("facilityIdentifier.beNumber: ").append(TEST_BENUMBER).append("\n");
+		text.append("facilityIdentifier.osuffix: ").append(TEST_OSUFFIX).append("\n");
 		return (text.toString());
 	}
 

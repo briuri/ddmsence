@@ -91,10 +91,13 @@ public class FormatTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
+		String prefix = "format.";
+		if (!isDDMS40OrGreater())
+			prefix = prefix += "Media.";
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"format.Media.mimeType\" content=\"").append(TEST_MIME_TYPE).append("\" />\n");
-		html.append(ExtentTest.getFixture().toHTML());
-		html.append("<meta name=\"format.Media.medium\" content=\"").append(TEST_MEDIUM).append("\" />\n");
+		html.append("<meta name=\"").append(prefix).append("mimeType\" content=\"").append(TEST_MIME_TYPE).append("\" />\n");
+		html.append(ExtentTest.getFixture().toHTML(prefix));
+		html.append("<meta name=\"").append(prefix).append("medium\" content=\"").append(TEST_MEDIUM).append("\" />\n");
 		return (html.toString());
 	}
 
@@ -102,10 +105,13 @@ public class FormatTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() throws InvalidDDMSException {
+		String prefix = "format.";
+		if (!isDDMS40OrGreater())
+			prefix = prefix += "Media.";
 		StringBuffer text = new StringBuffer();
-		text.append("format.Media.mimeType: ").append(TEST_MIME_TYPE).append("\n");
-		text.append(ExtentTest.getFixture().toText());
-		text.append("format.Media.medium: ").append(TEST_MEDIUM).append("\n");
+		text.append(prefix).append("mimeType: ").append(TEST_MIME_TYPE).append("\n");
+		text.append(ExtentTest.getFixture().toText(prefix));
+		text.append(prefix).append("medium: ").append(TEST_MEDIUM).append("\n");
 		return (text.toString());
 	}
 

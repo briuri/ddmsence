@@ -95,10 +95,13 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
+		String prefix = "temporalCoverage.";
+		if (!isDDMS40OrGreater())
+			prefix += "TimePeriod.";
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"temporalCoverage.TimePeriod.name\" content=\"").append(TEST_NAME).append("\" />\n");
-		html.append("<meta name=\"temporalCoverage.TimePeriod.start\" content=\"").append(TEST_START).append("\" />\n");
-		html.append("<meta name=\"temporalCoverage.TimePeriod.end\" content=\"").append(TEST_END).append("\" />\n");
+		html.append("<meta name=\"").append(prefix).append("name\" content=\"").append(TEST_NAME).append("\" />\n");
+		html.append("<meta name=\"").append(prefix).append("start\" content=\"").append(TEST_START).append("\" />\n");
+		html.append("<meta name=\"").append(prefix).append("end\" content=\"").append(TEST_END).append("\" />\n");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			html.append("<meta name=\"temporalCoverage.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"temporalCoverage.ownerProducer\" content=\"USA\" />\n");
@@ -110,13 +113,16 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
+		String prefix = "temporalCoverage.";
+		if (!isDDMS40OrGreater())
+			prefix += "TimePeriod.";
 		StringBuffer text = new StringBuffer();
-		text.append("TimePeriod name: ").append(TEST_NAME).append("\n");
-		text.append("TimePeriod start: ").append(TEST_START).append("\n");
-		text.append("TimePeriod end: ").append(TEST_END).append("\n");
+		text.append(prefix).append("name: ").append(TEST_NAME).append("\n");
+		text.append(prefix).append("start: ").append(TEST_START).append("\n");
+		text.append(prefix).append("end: ").append(TEST_END).append("\n");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			text.append("TimePeriod classification: U\n");
-			text.append("TimePeriod ownerProducer: USA\n");
+			text.append("temporalCoverage classification: U\n");
+			text.append("temporalCoverage ownerProducer: USA\n");
 		}
 		return (text.toString());
 	}

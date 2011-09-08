@@ -100,16 +100,15 @@ public class PointTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.id\" content=\"")
-			.append(TEST_ID).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.type\" content=\"Point\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.srsName\" content=\"")
-			.append(SRSAttributesTest.getFixture().getSrsName()).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.srsDimension\" content=\"")
-			.append(SRSAttributesTest.getFixture().getSrsDimension()).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.axisLabels\" content=\"")
+		html.append("<meta name=\"id\" content=\"").append(TEST_ID).append("\" />\n");
+		html.append("<meta name=\"type\" content=\"Point\" />\n");
+		html.append("<meta name=\"srsName\" content=\"").append(SRSAttributesTest.getFixture().getSrsName())
+			.append("\" />\n");
+		html.append("<meta name=\"srsDimension\" content=\"").append(SRSAttributesTest.getFixture().getSrsDimension())
+			.append("\" />\n");
+		html.append("<meta name=\"axisLabels\" content=\"")
 			.append(SRSAttributesTest.getFixture().getAxisLabelsAsXsList()).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.boundingGeometry.uomLabels\" content=\"")
+		html.append("<meta name=\"uomLabels\" content=\"")
 			.append(SRSAttributesTest.getFixture().getUomLabelsAsXsList()).append("\" />\n");
 		html.append(getPosition().toHTML());
 		return (html.toString());
@@ -120,15 +119,12 @@ public class PointTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("boundingGeometry id: ").append(TEST_ID).append("\n");
-		text.append("boundingGeometry type: Point\n");
-		text.append("boundingGeometry srsName: ").append(SRSAttributesTest.getFixture().getSrsName()).append("\n");
-		text.append("boundingGeometry srsDimension: ").append(SRSAttributesTest.getFixture().getSrsDimension())
-			.append("\n");
-		text.append("boundingGeometry axisLabels: ").append(SRSAttributesTest.getFixture().getAxisLabelsAsXsList())
-			.append("\n");
-		text.append("boundingGeometry uomLabels: ").append(SRSAttributesTest.getFixture().getUomLabelsAsXsList())
-			.append("\n");
+		text.append("id: ").append(TEST_ID).append("\n");
+		text.append("type: Point\n");
+		text.append("srsName: ").append(SRSAttributesTest.getFixture().getSrsName()).append("\n");
+		text.append("srsDimension: ").append(SRSAttributesTest.getFixture().getSrsDimension()).append("\n");
+		text.append("axisLabels: ").append(SRSAttributesTest.getFixture().getAxisLabelsAsXsList()).append("\n");
+		text.append("uomLabels: ").append(SRSAttributesTest.getFixture().getUomLabelsAsXsList()).append("\n");
 		text.append(getPosition().toText());
 		return (text.toString());
 	}

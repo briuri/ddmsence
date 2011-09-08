@@ -212,6 +212,16 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	public String toHTML() {
 		return (toHTML(""));
 	}
+
+	/**
+	 * The DDMS website examples are not clear on what to do if there are multiple names, phone numbers, or emails. This
+	 * method merely creates a separate Text line for each value.
+	 * 
+	 * @see AbstractBaseComponent#toText()
+	 */
+	public String toText() {
+		return (toText(""));
+	}
 	
 	/**
 	 * Outputs to HTML with a prefix at the beginning of each meta tag.
@@ -231,16 +241,6 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 			html.append(buildHTMLMeta(prefix + EMAIL_NAME, email, true));
 		html.append(getExtensibleAttributes().toHTML(prefix));
 		return (html.toString());
-	}
-
-	/**
-	 * The DDMS website examples are not clear on what to do if there are multiple names, phone numbers, or emails. This
-	 * method merely creates a separate Text line for each value.
-	 * 
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
 	}
 	
 	/**

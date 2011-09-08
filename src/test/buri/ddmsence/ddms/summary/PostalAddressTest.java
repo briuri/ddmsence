@@ -115,21 +115,16 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput(boolean hasState) {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.street\" content=\"")
-			.append(TEST_STREETS.get(0)).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.city\" content=\"")
-			.append(TEST_CITY).append("\" />\n");
+		html.append("<meta name=\"postalAddress.street\" content=\"").append(TEST_STREETS.get(0)).append("\" />\n");
+		html.append("<meta name=\"postalAddress.city\" content=\"").append(TEST_CITY).append("\" />\n");
 		if (hasState)
-			html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.state\" content=\"")
-				.append(TEST_STATE).append("\" />\n");
+			html.append("<meta name=\"postalAddress.state\" content=\"").append(TEST_STATE).append("\" />\n");
 		else {
-			html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.province\" content=\"")
-				.append(TEST_PROVINCE).append("\" />\n");
+			html.append("<meta name=\"postalAddress.province\" content=\"").append(TEST_PROVINCE).append("\" />\n");
 		}
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.postalCode\" content=\"")
-			.append(TEST_POSTAL_CODE).append("\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.countryCode.qualifier\" content=\"ISO-3166\" />\n");
-		html.append("<meta name=\"geospatialCoverage.GeospatialExtent.postalAddress.countryCode.value\" content=\"USA\" />\n");
+		html.append("<meta name=\"postalAddress.postalCode\" content=\"").append(TEST_POSTAL_CODE).append("\" />\n");
+		html.append("<meta name=\"postalAddress.countryCode.qualifier\" content=\"ISO-3166\" />\n");
+		html.append("<meta name=\"postalAddress.countryCode.value\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -140,15 +135,15 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput(boolean hasState) {
 		StringBuffer text = new StringBuffer();
-		text.append("postalAddress street: ").append(TEST_STREETS.get(0)).append("\n");
-		text.append("postalAddress city: ").append(TEST_CITY).append("\n");
+		text.append("postalAddress.street: ").append(TEST_STREETS.get(0)).append("\n");
+		text.append("postalAddress.city: ").append(TEST_CITY).append("\n");
 		if (hasState)
-			text.append("postalAddress state: ").append(TEST_STATE).append("\n");
+			text.append("postalAddress.state: ").append(TEST_STATE).append("\n");
 		else
-			text.append("postalAddress province: ").append(TEST_PROVINCE).append("\n");
-		text.append("postalAddress postalCode: ").append(TEST_POSTAL_CODE).append("\n");
-		text.append("postalAddress countryCode qualifier: ISO-3166\n");
-		text.append("postalAddress countryCode value: USA\n");
+			text.append("postalAddress.province: ").append(TEST_PROVINCE).append("\n");
+		text.append("postalAddress.postalCode: ").append(TEST_POSTAL_CODE).append("\n");
+		text.append("postalAddress.countryCode qualifier: ISO-3166\n");
+		text.append("postalAddress.countryCode value: USA\n");
 		return (text.toString());
 	}
 

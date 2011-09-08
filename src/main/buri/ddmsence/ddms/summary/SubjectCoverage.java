@@ -229,11 +229,14 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
+		String prefix = getName() + ".";
+		if (!getDDMSVersion().isAtLeast("4.0"))
+			prefix += SUBJECT_NAME + ".";
 		StringBuffer html = new StringBuffer();
 		for (Keyword keyword : getKeywords())
-			html.append(keyword.toHTML());
+			html.append(keyword.toHTML(prefix));
 		for (Category category : getCategories())
-			html.append(category.toHTML());
+			html.append(category.toHTML(prefix));
 		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 
@@ -243,11 +246,14 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
+		String prefix = getName() + ".";
+		if (!getDDMSVersion().isAtLeast("4.0"))
+			prefix += SUBJECT_NAME + ".";
 		StringBuffer text = new StringBuffer();
 		for (Keyword keyword : getKeywords())
-			text.append(keyword.toText());
+			text.append(keyword.toText(prefix));
 		for (Category category : getCategories())
-			text.append(category.toText());
+			text.append(category.toText(prefix));
 		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
 	}

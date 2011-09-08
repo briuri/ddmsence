@@ -34,10 +34,10 @@ import buri.ddmsence.util.Util;
  * <p>The DDMS documentation has no Text/HTML examples for the output of this component, so a best guess was taken:</p>
  * <ul>
  * <p><b>Suggested Text Output</b><br /><code>
- * boundingBox westBL: value<br />
- * boundingBox eastBL: value<br />
- * boundingBox southBL: value<br />
- * boundingBox northBL: value<br />
+ * boundingBox.westBL: value<br />
+ * boundingBox.eastBL: value<br />
+ * boundingBox.southBL: value<br />
+ * boundingBox.northBL: value<br />
  * </code></p>
  * 
  * <p><b>Suggested HTML Output</b><br /><code>
@@ -157,8 +157,25 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
+		return (toHTML(""));
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#toText()
+	 */
+	public String toText() {
+		return (toText(""));
+	}
+
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer html = new StringBuffer();
-		String prefix = GeospatialCoverage.getName(getDDMSVersion()) + ".GeospatialExtent." + getName() + ".";
 		html.append(buildHTMLMeta(prefix + getWestBLName(), String.valueOf(getWestBL()), true));
 		html.append(buildHTMLMeta(prefix + getEastBLName(), String.valueOf(getEastBL()), true));
 		html.append(buildHTMLMeta(prefix + getSouthBLName(), String.valueOf(getSouthBL()), true));
@@ -167,14 +184,18 @@ public final class BoundingBox extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toText()
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
 	 */
-	public String toText() {
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(getName() + " " + getWestBLName(), String.valueOf(getWestBL()), true));
-		text.append(buildTextLine(getName() + " " + getEastBLName(), String.valueOf(getEastBL()), true));
-		text.append(buildTextLine(getName() + " " + getSouthBLName(), String.valueOf(getSouthBL()), true));
-		text.append(buildTextLine(getName() + " " + getNorthBLName(), String.valueOf(getNorthBL()), true));
+		text.append(buildTextLine(prefix + getWestBLName(), String.valueOf(getWestBL()), true));
+		text.append(buildTextLine(prefix + getEastBLName(), String.valueOf(getEastBL()), true));
+		text.append(buildTextLine(prefix + getSouthBLName(), String.valueOf(getSouthBL()), true));
+		text.append(buildTextLine(prefix + getNorthBLName(), String.valueOf(getNorthBL()), true));
 		return (text.toString());
 	}
 	

@@ -176,21 +176,41 @@ public final class Keyword extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
-		StringBuffer html = new StringBuffer();
-		String prefix = SubjectCoverage.getName(getDDMSVersion()) + ".Subject." + getName();
-		html.append(buildHTMLMeta(prefix, getValue(), false));
-		html.append(getSecurityAttributes().toHTML(prefix));
-		html.append(getExtensibleAttributes().toHTML(prefix));
-		return (html.toString());
-
+		return (toHTML(""));
 	}
 	
 	/**
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
+		return (toText(""));
+	}
+	
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix);
+		StringBuffer html = new StringBuffer();
+		html.append(buildHTMLMeta(prefix + getName(), getValue(), false));
+		html.append(getSecurityAttributes().toHTML(getName()));
+		html.append(getExtensibleAttributes().toHTML(getName()));
+		return (html.toString());
+	}
+	
+	/**
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
+	 */
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(getName(), getValue(), false));
+		text.append(buildTextLine(prefix + getName(), getValue(), false));
 		text.append(getSecurityAttributes().toText(getName()));
 		text.append(getExtensibleAttributes().toText(getName()));
 		return (text.toString());
