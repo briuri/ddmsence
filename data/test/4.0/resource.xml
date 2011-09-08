@@ -43,13 +43,11 @@
 		<ddms:end>Not Applicable</ddms:end>
 	</ddms:temporalCoverage>
 	<ddms:geospatialCoverage>
-		<ddms:GeospatialExtent>
-			<ddms:boundingGeometry>
-				<gml:Point xmlns:gml="http://www.opengis.net/gml/3.2" srsName="http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D" srsDimension="10" axisLabels="A B C" uomLabels="Meter Meter Meter" gml:id="IDValue">
-					<gml:pos>32.1 40.1</gml:pos>
-				</gml:Point>
-			</ddms:boundingGeometry>
-		</ddms:GeospatialExtent>
+		<ddms:boundingGeometry>
+			<gml:Point xmlns:gml="http://www.opengis.net/gml/3.2" srsName="http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D" srsDimension="10" axisLabels="A B C" uomLabels="Meter Meter Meter" gml:id="IDValue">
+				<gml:pos>32.1 40.1</gml:pos>
+			</gml:Point>
+		</ddms:boundingGeometry>
 	</ddms:geospatialCoverage>
 	<ddms:relatedResources ddms:relationship="http://purl.org/dc/terms/references" ddms:direction="outbound">
 		<ddms:RelatedResource ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://en.wikipedia.org/wiki/Tank">
