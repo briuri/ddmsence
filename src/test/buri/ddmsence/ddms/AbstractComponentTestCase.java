@@ -168,18 +168,4 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	private String getType() {
 		return (_type);
 	}
-
-	/**
-	 * Convenience method to check that DDMS Version is 3.1 or greater
-	 */
-	protected boolean isDDMS31OrGreater() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("3.1"));
-	}
-
-	/**
-	 * Convenience method to check that DDMS Version is 4.0 or greater
-	 */
-	protected boolean isDDMS40OrGreater() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0"));
-	}
 }

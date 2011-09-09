@@ -82,10 +82,11 @@ public class CategoryTest extends AbstractComponentTestCase {
 	 * @return a valid object
 	 */
 	private Category testConstructor(boolean expectFailure, String qualifier, String code, String label) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Category component = null;
 		try {
 			component = new Category(qualifier, code, label,
-				isDDMS40OrGreater() ? SecurityAttributesTest.getFixture(false) : null);
+				version.isAtLeast("4.0") ? SecurityAttributesTest.getFixture(false) : null);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -97,6 +98,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"category.qualifier\" content=\"").append(TEST_QUALIFIER)
 			.append("\" />\n");
@@ -104,7 +106,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 			.append("\" />\n");
 		html.append("<meta name=\"category.label\" content=\"").append(TEST_LABEL)
 			.append("\" />\n");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			html.append("<meta name=\"category.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"category.ownerProducer\" content=\"USA\" />\n");
 		}
@@ -115,11 +117,12 @@ public class CategoryTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
 		text.append("category qualifier: ").append(TEST_QUALIFIER).append("\n");
 		text.append("category code: ").append(TEST_CODE).append("\n");
 		text.append("category label: ").append(TEST_LABEL).append("\n");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			text.append("category classification: U\n");
 			text.append("category ownerProducer: USA\n");
 		}
@@ -130,15 +133,16 @@ public class CategoryTest extends AbstractComponentTestCase {
 	 * Returns the expected XML output for this unit test
 	 */
 	private String getExpectedXMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:category xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
 		}
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ");
 		xml.append("ddms:code=\"").append(TEST_CODE).append("\" ");
 		xml.append("ddms:label=\"").append(TEST_LABEL).append("\"");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		}
 		xml.append(" />");

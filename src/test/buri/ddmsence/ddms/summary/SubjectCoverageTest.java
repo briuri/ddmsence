@@ -74,8 +74,9 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 * Creates a test fixture
 	 */
 	private List<ProductionMetric> getMetricFixture() throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		List<ProductionMetric> metrics = new ArrayList<ProductionMetric>();
-		if (isDDMS40OrGreater())
+		if (version.isAtLeast("4.0"))
 			metrics.add(new ProductionMetric("FOOD", "AFG", SecurityAttributesTest.getFixture(false)));
 		return (metrics);
 	}
@@ -84,8 +85,9 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 * Creates a test fixture
 	 */
 	private List<NonStateActor> getActorFixture() throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		List<NonStateActor> actors = new ArrayList<NonStateActor>();
-		if (isDDMS40OrGreater())
+		if (version.isAtLeast("4.0"))
 			actors.add(new NonStateActor("Laotian Monks", new Integer(1), SecurityAttributesTest.getFixture(false)));
 		return (actors);
 	}
@@ -137,8 +139,9 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = "subjectCoverage.";
-		if (!isDDMS40OrGreater())
+		if (!version.isAtLeast("4.0"))
 			prefix += "Subject.";		
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"").append(prefix).append("keyword\" content=\"DDMSence\" />\n");
@@ -167,8 +170,9 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = "subjectCoverage.";
-		if (!isDDMS40OrGreater())
+		if (!version.isAtLeast("4.0"))
 			prefix += "Subject.";	
 		StringBuffer text = new StringBuffer();
 		text.append(prefix).append("keyword: DDMSence\n");
@@ -390,7 +394,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			SubjectCoverage dataComponent = testConstructor(WILL_SUCCEED, null, getCategories(), getMetricFixture(), getActorFixture());
 			assertFalse(elementComponent.equals(dataComponent));
@@ -398,7 +402,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), null, getMetricFixture(), getActorFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 			
-			if (isDDMS40OrGreater()) {
+			if (version.isAtLeast("4.0")) {
 				dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), null, getActorFixture());
 				assertFalse(elementComponent.equals(dataComponent));
 				
@@ -531,7 +535,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// Equality after Building
@@ -560,7 +564,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			builder.getCategories().add(fullCategoryBuilder);
 			assertEquals(1, builder.commit().getCategories().size());
 			
-			if (isDDMS40OrGreater()) {
+			if (version.isAtLeast("4.0")) {
 				// Skip empty metrics
 				builder = new SubjectCoverage.Builder();
 				ProductionMetric.Builder emptyProductionMetricBuilder = new ProductionMetric.Builder();

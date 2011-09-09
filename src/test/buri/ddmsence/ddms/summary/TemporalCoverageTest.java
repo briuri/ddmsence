@@ -95,8 +95,9 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = "temporalCoverage.";
-		if (!isDDMS40OrGreater())
+		if (!version.isAtLeast("4.0"))
 			prefix += "TimePeriod.";
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"").append(prefix).append("name\" content=\"").append(TEST_NAME).append("\" />\n");
@@ -113,8 +114,9 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = "temporalCoverage.";
-		if (!isDDMS40OrGreater())
+		if (!version.isAtLeast("4.0"))
 			prefix += "TimePeriod.";
 		StringBuffer text = new StringBuffer();
 		text.append(prefix).append("name: ").append(TEST_NAME).append("\n");

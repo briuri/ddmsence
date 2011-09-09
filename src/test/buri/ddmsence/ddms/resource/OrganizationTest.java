@@ -62,7 +62,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	 * Generates a set of suborganizations for testing.
 	 */
 	private List<SubOrganization> getSubOrganizationFixture() throws InvalidDDMSException {
-		if (!isDDMS40OrGreater())
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		if (!version.isAtLeast("4.0"))
 			return (null);
 		List<SubOrganization> subOrgs = new ArrayList<SubOrganization>();
 		subOrgs.add(new SubOrganization("sub1", SecurityAttributesTest.getFixture(false)));
@@ -74,7 +75,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	 * Generates an acronym for testing.
 	 */
 	private String getAcronymFixture() {
-		return (isDDMS40OrGreater() ? "DISA" : "");
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		return (version.isAtLeast("4.0") ? "DISA" : "");
 	}
 	
 	/**
@@ -131,7 +133,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			html.append("<meta name=\"phone\" content=\"").append(phone).append("\" />\n");
 		for (String email : TEST_EMAILS)
 			html.append("<meta name=\"email\" content=\"").append(email).append("\" />\n");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			html.append("<meta name=\"subOrganization\" content=\"sub1\" />\n");
 			html.append("<meta name=\"subOrganization.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"subOrganization.ownerProducer\" content=\"USA\" />\n");
@@ -156,7 +158,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			text.append("phone: ").append(phone).append("\n");
 		for (String email : TEST_EMAILS)
 			text.append("email: ").append(email).append("\n");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			text.append("subOrganization: sub1\n");
 			text.append("subOrganization classification: U\n");
 			text.append("subOrganization ownerProducer: USA\n");
@@ -178,7 +180,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:").append(Organization.getName(version)).append(" xmlns:ddms=\"")
 			.append(version.getNamespace()).append("\"");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			xml.append(" ddms:acronym=\"DISA\"");
 		}
 		xml.append(">\n");
@@ -188,7 +190,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
 		for (String email : TEST_EMAILS)
 			xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			xml.append("\t<ddms:subOrganization xmlns:ISM=\"")
 				.append(DDMSVersion.getCurrentVersion().getIsmNamespace())
 				.append("\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">sub1</ddms:subOrganization>\n");
@@ -274,7 +276,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 			
 			// Empty acronym in DDMS 4.0
-			if (isDDMS40OrGreater()) {
+			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(Organization.getName(version), null);
 				element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 				element.addAttribute(new Attribute("ddms:acronym", version.getNamespace(), ""));
@@ -303,7 +305,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Organization elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Organization dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, null, TEST_EMAILS, getSubOrganizationFixture(), getAcronymFixture());
 			assertFalse(elementComponent.equals(dataComponent));
@@ -311,7 +313,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, null, getSubOrganizationFixture(), getAcronymFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 			
-			if (isDDMS40OrGreater()) {
+			if (version.isAtLeast("4.0")) {
 				dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, null, getAcronymFixture());
 				assertFalse(elementComponent.equals(dataComponent));
 			
@@ -392,7 +394,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// Equality after Building
@@ -404,7 +406,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			assertNull(builder.commit());
 
 			// List Emptiness
-			if (isDDMS40OrGreater()) {
+			if (version.isAtLeast("4.0")) {
 				assertTrue(builder.isEmpty());
 				builder.getSubOrganizations().get(0);
 				assertTrue(builder.isEmpty());

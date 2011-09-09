@@ -22,7 +22,6 @@ package buri.ddmsence.ddms.format;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -128,6 +127,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 	public void testNameAndNamespace() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
 			String extentName = Extent.getName(version);
 			Extent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(extentName, component.getName());
@@ -143,6 +143,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
@@ -193,6 +194,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 	public void testWarnings() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
 			String extentName = Extent.getName(version);
 			// No warnings
 			Extent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
@@ -203,19 +205,18 @@ public class ExtentTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A qualifier has been set without an accompanying value attribute.", component
-				.getValidationWarnings().get(0).getText());
-			assertEquals("/ddms:extent", component.getValidationWarnings().get(0).getLocator());
+			
+			String text = "A qualifier has been set without an accompanying value attribute.";
+			String locator = "ddms:extent";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
 			// Neither attribute
 			element = Util.buildDDMSElement(extentName, null);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A completely empty ddms:extent element was found.", component.getValidationWarnings().get(0)
-				.getText());
-			assertEquals("/ddms:extent", component.getValidationWarnings().get(0).getLocator());
+			text = "A completely empty ddms:extent element was found.";
+			locator = "ddms:extent";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 
