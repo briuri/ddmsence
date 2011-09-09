@@ -911,19 +911,19 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertEquals(warnings, component.getValidationWarnings().size());
 
 			if (!version.isAtLeast("3.0")) {
-				assertEquals("Security rollup validation is being skipped, because no classification exists "
-					+ "on the ddms:Resource itself.", component.getValidationWarnings().get(0).getText());
-				assertEquals("A qualifier has been set without an accompanying value attribute.", component
-					.getValidationWarnings().get(1).getText());
-				assertEquals("/ddms:Resource", component.getValidationWarnings().get(0).getLocator());
-				assertEquals("/ddms:Resource/ddms:format/ddms:Media/ddms:extent", component.getValidationWarnings()
-					.get(1).getLocator());
+				String text = "Security rollup validation is being skipped, because no classification exists "
+					+ "on the ddms:Resource itself.";
+				String locator = "ddms:Resource";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+				
+				text = "A qualifier has been set without an accompanying value attribute.";
+				locator = "ddms:Resource/ddms:format/ddms:Media/ddms:extent";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));				
 			} else {
-				assertEquals("A qualifier has been set without an accompanying value attribute.", component
-					.getValidationWarnings().get(0).getText());
-				String locatorSuffix = (version.isAtLeast("4.0")) ? "/ddms:Resource/ddms:format/ddms:extent"
-					: "/ddms:Resource/ddms:format/ddms:Media/ddms:extent";
-				assertEquals(locatorSuffix, component.getValidationWarnings().get(0).getLocator());
+				String text = "A qualifier has been set without an accompanying value attribute.";
+				String locator = (version.isAtLeast("4.0")) ? "ddms:Resource/ddms:format/ddms:extent"
+					: "ddms:Resource/ddms:format/ddms:Media/ddms:extent";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
 
 			// More nested warnings
@@ -936,19 +936,19 @@ public class ResourceTest extends AbstractComponentTestCase {
 			warnings = version.isAtLeast("3.0") ? 1 : 2;
 			assertEquals(warnings, component.getValidationWarnings().size());
 			if (!version.isAtLeast("3.0")) {
-				assertEquals("Security rollup validation is being skipped, because no classification exists "
-					+ "on the ddms:Resource itself.", component.getValidationWarnings().get(0).getText());
-				assertEquals("A completely empty ddms:postalAddress element was found.", component
-					.getValidationWarnings().get(1).getText());
-				assertEquals("/ddms:Resource", component.getValidationWarnings().get(0).getLocator());
-				assertEquals("/ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress",
-					component.getValidationWarnings().get(1).getLocator());
+				String text = "Security rollup validation is being skipped, because no classification exists "
+					+ "on the ddms:Resource itself.";
+				String locator = "ddms:Resource";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+				
+				text = "A completely empty ddms:postalAddress element was found.";
+				locator = "ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));							
 			} else {
-				assertEquals("A completely empty ddms:postalAddress element was found.", component
-					.getValidationWarnings().get(0).getText());
-				String locatorSuffix = (version.isAtLeast("4.0")) ? "/ddms:Resource/ddms:geospatialCoverage/ddms:postalAddress"
-					: "/ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
-				assertEquals(locatorSuffix, component.getValidationWarnings().get(0).getLocator());
+				String text = "A completely empty ddms:postalAddress element was found.";
+				String locator = (version.isAtLeast("4.0")) ? "ddms:Resource/ddms:geospatialCoverage/ddms:postalAddress"
+					: "ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));				
 			}
 		}
 	}
@@ -1341,7 +1341,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		testConstructor(WILL_FAIL, components, null, null, null);
 	}
 
-	public void test30TooManyExtensibleElements() throws InvalidDDMSException {
+	public void testAfter20TooManyExtensibleElements() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		createComponents();
 

@@ -117,6 +117,28 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	}
 
 	/**
+	 * Helper method to confirm that a warning message is correct.
+	 * 
+	 * @param text the text of the message
+	 * @param locator the locator text of the message
+	 * @param message the ValidationMessage to test
+	 */
+	protected void assertWarningEquality(String text, String locator, ValidationMessage message) {
+		assertEquals(ValidationMessage.newWarning(text, locator), message);
+	}
+	
+	/**
+	 * Helper method to confirm that a warning message is correct.
+	 * 
+	 * @param text the text of the message
+	 * @param locator the locator text of the message
+	 * @param message the ValidationMessage to test
+	 */
+	protected void assertErrorEquality(String text, String locator, ValidationMessage message) {
+		assertEquals(ValidationMessage.newError(text, locator), message);
+	}
+	
+	/**
 	 * Strips tabs and new lines from XML output where appropriate. The unit test samples in the XML files have tabs and
 	 * new lines, but the default implementation of XOM toXML() returns XML on a single line.
 	 * 
