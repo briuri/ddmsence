@@ -103,7 +103,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"subjectCoverage.Subject.keyword.ddmsence.relevance\" content=\"95\" />\n");
+		html.append("<meta name=\"ddmsence.relevance\" content=\"95\" />\n");
 		return (html.toString());
 	}
 
@@ -112,13 +112,14 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("keyword ddmsence:relevance: 95\n");
+		text.append("ddmsence:relevance: 95\n");
 		return (text.toString());
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
+			
 			// All fields
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
@@ -133,6 +134,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
+			
 			// All fields
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(new Attribute(TEST_ATTRIBUTE));
@@ -232,12 +234,12 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
-			assertEquals(getExpectedHTMLOutput(), elementAttributes.toHTML("subjectCoverage.Subject.keyword"));
+			assertEquals(getExpectedHTMLOutput(), elementAttributes.toHTML(""));
 
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(new Attribute(TEST_ATTRIBUTE));
 			elementAttributes = testConstructor(WILL_SUCCEED, attributes);
-			assertEquals(getExpectedHTMLOutput(), elementAttributes.toHTML("subjectCoverage.Subject.keyword"));
+			assertEquals(getExpectedHTMLOutput(), elementAttributes.toHTML(""));
 		}
 	}
 
@@ -247,12 +249,12 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
-			assertEquals(getExpectedTextOutput(), elementAttributes.toText("keyword"));
+			assertEquals(getExpectedTextOutput(), elementAttributes.toText(""));
 
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(new Attribute(TEST_ATTRIBUTE));
 			elementAttributes = testConstructor(WILL_SUCCEED, attributes);
-			assertEquals(getExpectedTextOutput(), elementAttributes.toText("keyword"));
+			assertEquals(getExpectedTextOutput(), elementAttributes.toText(""));
 		}
 	}
 
