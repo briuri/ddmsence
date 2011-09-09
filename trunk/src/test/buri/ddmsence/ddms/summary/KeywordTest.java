@@ -123,7 +123,7 @@ public class KeywordTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:keyword xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
+		xml.append("<ddms:keyword ").append(getXmlnsDDMS()).append(" ");
 		if (version.isAtLeast("4.0")) {
 			xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
 		}

@@ -114,7 +114,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:productionMetric xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
+		xml.append("<ddms:productionMetric ").append(getXmlnsDDMS()).append(" ");
 		xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
 		xml.append("ddms:subject=\"").append(TEST_SUBJECT).append("\" ");
 		xml.append("ddms:coverage=\"").append(TEST_COVERAGE).append("\" ");

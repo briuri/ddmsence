@@ -22,7 +22,6 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -108,9 +107,8 @@ public class LanguageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:language xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
-			.append("\" />");
+		xml.append("<ddms:language ").append(getXmlnsDDMS()).append(" ddms:qualifier=\"").append(TEST_QUALIFIER)
+			.append("\" ddms:value=\"").append(TEST_VALUE).append("\" />");
 		return (xml.toString());
 	}
 
@@ -182,19 +180,17 @@ public class LanguageTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A qualifier has been set without an accompanying value attribute.", component
-				.getValidationWarnings().get(0).getText());
-			assertEquals("/ddms:language", component.getValidationWarnings().get(0).getLocator());
+			String text = "A qualifier has been set without an accompanying value attribute.";
+			String locator = "ddms:language";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
 			// Neither attribute
 			element = Util.buildDDMSElement(Language.getName(version), null);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("Neither a qualifier nor a value was set on this language.", component.getValidationWarnings()
-				.get(0).getText());
-			assertEquals("/ddms:language", component.getValidationWarnings().get(0).getLocator());
+			text = "Neither a qualifier nor a value was set on this language.";
+			locator = "ddms:language";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 

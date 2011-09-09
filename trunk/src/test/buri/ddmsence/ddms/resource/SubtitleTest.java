@@ -22,7 +22,6 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -109,11 +108,9 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	 * Returns the expected XML output for this unit test
 	 */
 	private String getExpectedXMLOutput() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subtitle xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
-		xml.append("xmlns:ISM=\"").append(version.getIsmNamespace()).append("\" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:subtitle ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM())
+			.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE).append("</ddms:subtitle>");
 		return (xml.toString());
 	}
@@ -192,10 +189,9 @@ public class SubtitleTest extends AbstractComponentTestCase {
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A ddms:subtitle element was found with no subtitle value.", component.getValidationWarnings()
-				.get(0).getText());
-			assertEquals("/ddms:subtitle", component.getValidationWarnings().get(0).getLocator());
+			String text = "A ddms:subtitle element was found with no subtitle value.";
+			String locator = "ddms:subtitle";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 

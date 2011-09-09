@@ -126,7 +126,7 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	protected void assertWarningEquality(String text, String locator, ValidationMessage message) {
 		assertEquals(ValidationMessage.newWarning(text, locator), message);
 	}
-	
+
 	/**
 	 * Helper method to confirm that a warning message is correct.
 	 * 
@@ -137,7 +137,7 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	protected void assertErrorEquality(String text, String locator, ValidationMessage message) {
 		assertEquals(ValidationMessage.newError(text, locator), message);
 	}
-	
+
 	/**
 	 * Strips tabs and new lines from XML output where appropriate. The unit test samples in the XML files have tabs and
 	 * new lines, but the default implementation of XOM toXML() returns XML on a single line.
@@ -152,6 +152,20 @@ public abstract class AbstractComponentTestCase extends TestCase {
 			string = string.replaceAll("\n", "");
 		}
 		return (string);
+	}
+
+	/**
+	 * Returns a namespace declaration for DDMS
+	 */
+	protected static String getXmlnsDDMS() {
+		return ("xmlns:ddms=\"" + DDMSVersion.getCurrentVersion().getNamespace() + "\"");
+	}
+
+	/**
+	 * Returns a namespace declaration for ISM
+	 */
+	protected static String getXmlnsISM() {
+		return ("xmlns:ISM=\"" + DDMSVersion.getCurrentVersion().getIsmNamespace() + "\"");
 	}
 
 	/**

@@ -85,7 +85,7 @@ public class FormatTest extends AbstractComponentTestCase {
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Helper method to manage the deprecated Media wrapper element
 	 * 
@@ -103,15 +103,16 @@ public class FormatTest extends AbstractComponentTestCase {
 		element.appendChild(innerElement);
 		return (element);
 	}
-	
+
 	/**
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();		
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0") ? "format." : "format.Media.";
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"").append(prefix).append("mimeType\" content=\"").append(TEST_MIME_TYPE).append("\" />\n");
+		html.append("<meta name=\"").append(prefix).append("mimeType\" content=\"").append(TEST_MIME_TYPE)
+			.append("\" />\n");
 		html.append(ExtentTest.getFixture().toHTML(prefix));
 		html.append("<meta name=\"").append(prefix).append("medium\" content=\"").append(TEST_MEDIUM).append("\" />\n");
 		return (html.toString());
@@ -137,8 +138,7 @@ public class FormatTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:format xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
-			.append("\">\n\t");
+		xml.append("<ddms:format ").append(getXmlnsDDMS()).append(">\n\t");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
 			xml.append("<ddms:mimeType>text/xml</ddms:mimeType>\n\t");
 			xml.append("<ddms:extent ddms:qualifier=\"sizeBytes\" ddms:value=\"75000\" />\n\t");
@@ -168,7 +168,7 @@ public class FormatTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 		}
 	}
-	
+
 	public void testElementConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
@@ -251,7 +251,7 @@ public class FormatTest extends AbstractComponentTestCase {
 	public void testWarnings() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			// No warnings
 			Format component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
@@ -270,8 +270,7 @@ public class FormatTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, new Extent("sizeBytes", ""), TEST_MEDIUM);
 			assertEquals(1, component.getValidationWarnings().size());
 			text = "A qualifier has been set without an accompanying value attribute.";
-			locator = (version.isAtLeast("4.0")) ? "ddms:format/ddms:extent"
-				: "ddms:format/ddms:Media/ddms:extent";
+			locator = (version.isAtLeast("4.0")) ? "ddms:format/ddms:extent" : "ddms:format/ddms:Media/ddms:extent";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}

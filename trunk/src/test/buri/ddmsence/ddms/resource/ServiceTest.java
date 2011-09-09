@@ -131,8 +131,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:").append(Service.getName(version)).append(" xmlns:ddms=\"").append(version.getNamespace())
-			.append("\">\n");
+		xml.append("<ddms:").append(Service.getName(version)).append(" ").append(getXmlnsDDMS()).append(">\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
 		for (String phone : TEST_PHONES)

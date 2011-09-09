@@ -22,7 +22,6 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -93,6 +92,20 @@ public class DatesTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Generates an getApprovedOn() Date for testing
+	 */
+	private String getApprovedOn() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("3.1") ? TEST_APPROVED : "");
+	}
+
+	/**
+	 * Generates a receivedOn Date for testing
+	 */
+	private String getReceivedOn() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? TEST_RECEIVED : "");
+	}
+
+	/**
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
@@ -132,7 +145,7 @@ public class DatesTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:dates xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
+		xml.append("<ddms:dates ").append(getXmlnsDDMS()).append(" ");
 		xml.append("ddms:created=\"").append(TEST_CREATED).append("\" ");
 		xml.append("ddms:posted=\"").append(TEST_POSTED).append("\" ");
 		xml.append("ddms:validTil=\"").append(TEST_VALID).append("\" ");
@@ -174,12 +187,11 @@ public class DatesTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String approvedOn = (version.isAtLeast("3.1") ? TEST_APPROVED : "");
-			String receivedOn = (version.isAtLeast("4.0") ? TEST_RECEIVED : "");
+			DDMSVersion.setCurrentVersion(versionString);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn, receivedOn);
+			testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(),
+				getReceivedOn());
 
 			// No optional fields
 			testConstructor(WILL_SUCCEED, "", "", "", "", "", "");
@@ -198,12 +210,10 @@ public class DatesTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String approvedOn = (version.isAtLeast("3.1") ? TEST_APPROVED : "");
-			String receivedOn = (version.isAtLeast("4.0") ? TEST_RECEIVED : "");
+			DDMSVersion.setCurrentVersion(versionString);
 
 			// Wrong date format (using xs:gDay here)
-			testConstructor(WILL_FAIL, "---31", TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn, receivedOn);
+			testConstructor(WILL_FAIL, "---31", TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(), getReceivedOn());
 		}
 	}
 
@@ -218,63 +228,58 @@ public class DatesTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(Dates.getName(version), null);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A completely empty ddms:dates element was found.", component.getValidationWarnings().get(0)
-				.getText());
-			assertEquals("/ddms:dates", component.getValidationWarnings().get(0).getLocator());
+			String text = "A completely empty ddms:dates element was found.";
+			String locator = "ddms:dates";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
-			String approvedOn = (version.isAtLeast("3.1") ? TEST_APPROVED : "");
-			String receivedOn = (version.isAtLeast("4.0") ? TEST_RECEIVED : "");
+			DDMSVersion.setCurrentVersion(versionString);
+
 			Dates elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Dates dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
-				approvedOn, receivedOn);
+				getApprovedOn(), getReceivedOn());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-			
+
 			// Backwards compatible constructors
-			assertEquals(new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn), new Dates(
-				TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn, null));
+			assertEquals(new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn()), new Dates(
+				TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(), null));
 		}
 	}
 
 	public void testConstructorInequalityDifferentValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String approvedOn = (version.isAtLeast("3.1") ? TEST_APPROVED : "");
-			String receivedOn = (version.isAtLeast("4.0") ? TEST_RECEIVED : "");
 
 			Dates elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Dates dataComponent = testConstructor(WILL_SUCCEED, "", TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn,
-				receivedOn);
+			Dates dataComponent = testConstructor(WILL_SUCCEED, "", TEST_POSTED, TEST_VALID, TEST_CUTOFF,
+				getApprovedOn(), getReceivedOn());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, "", TEST_VALID, TEST_CUTOFF, approvedOn,
-				receivedOn);
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, "", TEST_VALID, TEST_CUTOFF, getApprovedOn(),
+				getReceivedOn());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, "", TEST_CUTOFF, approvedOn,
-				receivedOn);
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, "", TEST_CUTOFF, getApprovedOn(),
+				getReceivedOn());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, "", approvedOn,
-				receivedOn);
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, "", getApprovedOn(),
+				getReceivedOn());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			if (version.isAtLeast("3.1")) {
 				dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, "",
-					receivedOn);
+					getReceivedOn());
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 
 			if (version.isAtLeast("4.0")) {
 				dataComponent = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
-					approvedOn, "");
+					getApprovedOn(), "");
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 		}
@@ -291,42 +296,39 @@ public class DatesTest extends AbstractComponentTestCase {
 
 	public void testHTMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String approvedOn = (version.isAtLeast("3.1") ? TEST_APPROVED : "");
-			String receivedOn = (version.isAtLeast("4.0") ? TEST_RECEIVED : "");
+			DDMSVersion.setCurrentVersion(versionString);
+
 			Dates component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn,
-				receivedOn);
+			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
+				getApprovedOn(), getReceivedOn());
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		}
 	}
 
 	public void testTextOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String approvedOn = (version.isAtLeast("3.1") ? TEST_APPROVED : "");
-			String receivedOn = (version.isAtLeast("4.0") ? TEST_RECEIVED : "");
+			DDMSVersion.setCurrentVersion(versionString);
+
 			Dates component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn,
-				receivedOn);
+			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
+				getApprovedOn(), getReceivedOn());
 			assertEquals(getExpectedTextOutput(), component.toText());
 		}
 	}
 
 	public void testXMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String approvedOn = (version.isAtLeast("3.1") ? TEST_APPROVED : "");
-			String receivedOn = (version.isAtLeast("4.0") ? TEST_RECEIVED : "");
+			DDMSVersion.setCurrentVersion(versionString);
+
 			Dates component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, approvedOn,
-				receivedOn);
+			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
+				getApprovedOn(), getReceivedOn());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}

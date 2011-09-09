@@ -19,6 +19,9 @@
  */
 package buri.ddmsence.ddms.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -48,16 +51,27 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Generates a list of suborganizations for testing.
+	 */
+	public static List<SubOrganization> getFixtureList() throws InvalidDDMSException {
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
+			return (null);
+		List<SubOrganization> subOrgs = new ArrayList<SubOrganization>();
+		subOrgs.add(new SubOrganization("sub1", SecurityAttributesTest.getFixture(false)));
+		subOrgs.add(new SubOrganization("sub2", SecurityAttributesTest.getFixture(false)));
+		return (subOrgs);
+	}
+
+	/**
 	 * Returns a canned fixed value resource for testing.
 	 * 
 	 * @return a XOM element representing a valid resource
 	 */
 	private static Element getFixtureElement() throws InvalidDDMSException {
-		Element element = Util.buildDDMSElement(SubOrganization.getName(DDMSVersion.getCurrentVersion()), TEST_VALUE);
-		element.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), DDMSVersion.getCurrentVersion()
-			.getNamespace());
-		element.addNamespaceDeclaration(PropertyReader.getProperty("ism.prefix"), DDMSVersion.getCurrentVersion()
-			.getIsmNamespace());
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		Element element = Util.buildDDMSElement(SubOrganization.getName(version), TEST_VALUE);
+		element.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), version.getNamespace());
+		element.addNamespaceDeclaration(PropertyReader.getProperty("ism.prefix"), version.getIsmNamespace());
 		SecurityAttributesTest.getFixture(false).addTo(element);
 		return (element);
 	}
@@ -124,11 +138,9 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	 * Returns the expected XML output for this unit test
 	 */
 	private String getExpectedXMLOutput() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subOrganization xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
-		xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace())
-			.append("\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:subOrganization ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM())
+			.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE);
 		xml.append("</ddms:subOrganization>");
 		return (xml.toString());
@@ -137,10 +149,10 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SubOrganization component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(SubOrganization.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
@@ -156,10 +168,10 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			testConstructor(WILL_SUCCEED, getFixtureElement());
 		}
 	}
@@ -167,10 +179,10 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	public void testDataConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			testConstructor(WILL_SUCCEED, TEST_VALUE);
 		}
 	}
@@ -178,10 +190,10 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// Missing child text
 			Element element = Util.buildDDMSElement(SubOrganization.getName(version), null);
 			testConstructor(WILL_FAIL, element);
@@ -195,10 +207,10 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// Missing child text
 			testConstructor(WILL_FAIL, (String) null);
 
@@ -210,10 +222,10 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	public void testWarnings() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// No warnings
 			SubOrganization component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(0, component.getValidationWarnings().size());
@@ -223,10 +235,10 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SubOrganization elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			SubOrganization dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
@@ -237,10 +249,10 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SubOrganization elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			SubOrganization dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -250,10 +262,10 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SubOrganization elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -263,10 +275,10 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SubOrganization component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
@@ -278,10 +290,10 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SubOrganization component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedTextOutput(), component.toText());
 
@@ -293,10 +305,10 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SubOrganization component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
@@ -314,14 +326,14 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SubOrganization component = testConstructor(WILL_SUCCEED, getFixtureElement());
 
 			// Equality after Building

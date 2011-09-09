@@ -118,16 +118,15 @@ public class ExtentTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:extent xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
-			.append("\" />");
+		xml.append("<ddms:extent ").append(getXmlnsDDMS()).append(" ddms:qualifier=\"").append(TEST_QUALIFIER)
+			.append("\" ddms:value=\"").append(TEST_VALUE).append("\" />");
 		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			String extentName = Extent.getName(version);
 			Extent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(extentName, component.getName());
@@ -143,7 +142,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
@@ -194,7 +193,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 	public void testWarnings() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			String extentName = Extent.getName(version);
 			// No warnings
 			Extent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
@@ -205,7 +204,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			
+
 			String text = "A qualifier has been set without an accompanying value attribute.";
 			String locator = "ddms:extent";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));

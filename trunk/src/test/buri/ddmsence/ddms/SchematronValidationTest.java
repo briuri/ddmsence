@@ -65,16 +65,15 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/"
 					+ versionString + "/testSchematronXslt1.sch"));
 				assertEquals(2, messages.size());
-				
+
 				String text = "A DDMS Resource must have an unknownElement child. This will always fail.";
 				String locator = "/*[local-name()='Resource' and namespace-uri()='" + ddmsNamespace + "']";
 				assertErrorEquality(text, locator, messages.get(0));
-				
+
 				text = "Members of the Uri family cannot be publishers.";
 				locator = "/*[local-name()='Resource' and namespace-uri()='" + ddmsNamespace + "']"
-					+ "/*[local-name()='publisher' and namespace-uri()='" + ddmsNamespace + "']"
-					+ "/*[local-name()='" + Person.getName(resource.getDDMSVersion()) + "' and namespace-uri()='"
-					+ ddmsNamespace + "']"
+					+ "/*[local-name()='publisher' and namespace-uri()='" + ddmsNamespace + "']" + "/*[local-name()='"
+					+ Person.getName(resource.getDDMSVersion()) + "' and namespace-uri()='" + ddmsNamespace + "']"
 					+ "/*[local-name()='surname' and namespace-uri()='" + ddmsNamespace + "']";
 				assertWarningEquality(text, locator, messages.get(1));
 			}
@@ -92,16 +91,14 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/"
 					+ versionString + "/testSchematronXslt2.sch"));
 				assertEquals(1, messages.size());
-				
+
 				String text = "The second coordinate in a gml:pos element must be 40.2 degrees.";
 				String extent = resource.getDDMSVersion().isAtLeast("4.0") ? ""
 					: "/*:GeospatialExtent[namespace-uri()='" + ddmsNamespace + "'][1]";
 				String locator = "/*:Resource[namespace-uri()='" + ddmsNamespace + "'][1]"
-					+ "/*:geospatialCoverage[namespace-uri()='" + ddmsNamespace + "'][1]"
-					+ extent
-					+ "/*:boundingGeometry[namespace-uri()='" + ddmsNamespace + "'][1]"
-					+ "/*:Point[namespace-uri()='" + gmlNamespace + "'][1]"
-					+ "/*:pos[namespace-uri()='" + gmlNamespace + "'][1]";
+					+ "/*:geospatialCoverage[namespace-uri()='" + ddmsNamespace + "'][1]" + extent
+					+ "/*:boundingGeometry[namespace-uri()='" + ddmsNamespace + "'][1]" + "/*:Point[namespace-uri()='"
+					+ gmlNamespace + "'][1]" + "/*:pos[namespace-uri()='" + gmlNamespace + "'][1]";
 				assertErrorEquality(text, locator, messages.get(0));
 			}
 		}

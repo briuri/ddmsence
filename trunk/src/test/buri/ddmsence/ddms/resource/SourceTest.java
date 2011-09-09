@@ -22,7 +22,6 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -131,9 +130,9 @@ public class SourceTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:source xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
+		xml.append("<ddms:source ").append(getXmlnsDDMS()).append(" ");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-			xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
+			xml.append(getXmlnsISM()).append(" ");
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
 			.append("\" ");
 		xml.append("ddms:schemaQualifier=\"").append(TEST_SCHEMA_QUALIFIER).append("\" ");
@@ -210,10 +209,9 @@ public class SourceTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(Source.getName(version), null);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A completely empty ddms:source element was found.", component.getValidationWarnings().get(0)
-				.getText());
-			assertEquals("/ddms:source", component.getValidationWarnings().get(0).getLocator());
+			String text = "A completely empty ddms:source element was found.";
+			String locator = "ddms:source";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 

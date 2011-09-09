@@ -25,7 +25,6 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -146,7 +145,7 @@ public class PersonTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:").append(Person.getName(version)).append(" xmlns:ddms=\"").append(version.getNamespace()).append("\">\n");
+		xml.append("<ddms:").append(Person.getName(version)).append(" ").append(getXmlnsDDMS()).append(">\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
 		xml.append("\t<ddms:surname>").append(TEST_SURNAME).append("</ddms:surname>\n");
@@ -154,17 +153,16 @@ public class PersonTest extends AbstractComponentTestCase {
 			for (String phone : TEST_PHONES)
 				xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
 			for (String email : TEST_EMAILS)
-				xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");		
+				xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
 			xml.append("\t<ddms:userID>").append(TEST_USERID).append("</ddms:userID>\n");
 			xml.append("\t<ddms:affiliation>").append(TEST_AFFILIATION).append("</ddms:affiliation>\n");
-		}
-		else {
+		} else {
 			xml.append("\t<ddms:userID>").append(TEST_USERID).append("</ddms:userID>\n");
 			xml.append("\t<ddms:affiliation>").append(TEST_AFFILIATION).append("</ddms:affiliation>\n");
 			for (String phone : TEST_PHONES)
 				xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
 			for (String email : TEST_EMAILS)
-				xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");					
+				xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
 		}
 		xml.append("</ddms:").append(Person.getName(version)).append(">");
 		return (formatXml(xml.toString(), preserveFormatting));
@@ -293,10 +291,9 @@ public class PersonTest extends AbstractComponentTestCase {
 			entityElement.appendChild(Util.buildDDMSElement("userID", ""));
 			component = new Person(entityElement);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A ddms:userID element was found with no value.", component.getValidationWarnings().get(0)
-				.getText());
-			assertEquals("/ddms:" + Person.getName(version), component.getValidationWarnings().get(0).getLocator());
+			String text = "A ddms:userID element was found with no value.";
+			String locator = "ddms:" + Person.getName(version);
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
 			// Empty affiliation
 			entityElement = Util.buildDDMSElement(Person.getName(version), null);
@@ -305,10 +302,9 @@ public class PersonTest extends AbstractComponentTestCase {
 			entityElement.appendChild(Util.buildDDMSElement("affiliation", ""));
 			component = new Person(entityElement);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A ddms:affiliation element was found with no value.", component.getValidationWarnings()
-				.get(0).getText());
-			assertEquals("/ddms:" +  Person.getName(version), component.getValidationWarnings().get(0).getLocator());
+			text = "A ddms:affiliation element was found with no value.";
+			locator = "ddms:" + Person.getName(version);
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 

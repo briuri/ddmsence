@@ -23,6 +23,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.IProducerEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ProducerEntityTest;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -35,8 +36,6 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public class PointOfContactTest extends AbstractComponentTestCase {
-
-	private static final String TEST_POC_TYPE = "ICD-710";
 
 	/**
 	 * Constructor
@@ -63,14 +62,6 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
-	}
-
-	/**
-	 * Helper methdo to insert a POCType when testing 4.0.
-	 */
-	private String getPOCTypeFixture() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		return (version.isAtLeast("4.0") ? TEST_POC_TYPE : "");
 	}
 
 	/**
@@ -112,14 +103,12 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String pocName = PointOfContact.getName(DDMSVersion.getCurrentVersion());
 		StringBuffer html = new StringBuffer();
-		html.append(getEntityFixture().toHTML(pocName + "."));
-		if (version.isAtLeast("4.0")) {
-			html.append("<meta name=\"").append(pocName).append(".POCType\" content=\"ICD-710\" />\n");
-		}
-		html.append("<meta name=\"").append(pocName).append(".classification\" content=\"U\" />\n");
-		html.append("<meta name=\"").append(pocName).append(".ownerProducer\" content=\"USA\" />\n");
+		html.append(getEntityFixture().toHTML("pointOfContact."));
+		if (version.isAtLeast("4.0"))
+			html.append("<meta name=\"pointOfContact.POCType\" content=\"ICD-710\" />\n");
+		html.append("<meta name=\"pointOfContact.classification\" content=\"U\" />\n");
+		html.append("<meta name=\"pointOfContact.ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -128,14 +117,12 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String pocName = PointOfContact.getName(DDMSVersion.getCurrentVersion());
 		StringBuffer text = new StringBuffer();
-		text.append(getEntityFixture().toText(pocName + " "));
-		if (version.isAtLeast("4.0")) {
+		text.append(getEntityFixture().toText("pointOfContact "));
+		if (version.isAtLeast("4.0"))
 			text.append("POCType: ICD-710\n");
-		}
-		text.append(pocName).append(" classification: U\n");
-		text.append(pocName).append(" ownerProducer: USA\n");
+		text.append("pointOfContact classification: U\n");
+		text.append("pointOfContact ownerProducer: USA\n");
 		return (text.toString());
 	}
 
@@ -147,12 +134,9 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:pointOfContact xmlns:ddms=\"").append(version.getNamespace())
-			.append("\" ");
-		xml.append("xmlns:ISM=\"").append(version.getIsmNamespace()).append("\"");
-		if (version.isAtLeast("4.0")) {
+		xml.append("<ddms:pointOfContact ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
+		if (version.isAtLeast("4.0"))
 			xml.append(" ddms:POCType=\"ICD-710\"");
-		}
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t");
 		if ("2.0".equals(version.getVersion())) {
 			xml.append("<ddms:").append(Service.getName(version)).append(">\n");
@@ -237,7 +221,8 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			PointOfContact elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			PointOfContact dataComponent = testConstructor(WILL_SUCCEED, getEntityFixture(), getPOCTypeFixture());
+			PointOfContact dataComponent = testConstructor(WILL_SUCCEED, getEntityFixture(),
+				ProducerEntityTest.getPOCType());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -269,7 +254,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 			PointOfContact component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, getEntityFixture(), getPOCTypeFixture());
+			component = testConstructor(WILL_SUCCEED, getEntityFixture(), ProducerEntityTest.getPOCType());
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		}
 	}
@@ -280,7 +265,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 			PointOfContact component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getEntityFixture(), getPOCTypeFixture());
+			component = testConstructor(WILL_SUCCEED, getEntityFixture(), ProducerEntityTest.getPOCType());
 			assertEquals(getExpectedTextOutput(), component.toText());
 		}
 	}
@@ -291,7 +276,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 			PointOfContact component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getEntityFixture(), getPOCTypeFixture());
+			component = testConstructor(WILL_SUCCEED, getEntityFixture(), ProducerEntityTest.getPOCType());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -308,7 +293,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	public void testPOCTypeWrongVersion() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new PointOfContact(getEntityFixture(), TEST_POC_TYPE, SecurityAttributesTest.getFixture(false));
+			new PointOfContact(getEntityFixture(), "ICD-710", SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
 		} catch (InvalidDDMSException e) {
 			// Good

@@ -22,7 +22,6 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -128,9 +127,9 @@ public class TypeTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:type xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
+		xml.append("<ddms:type ").append(getXmlnsDDMS()).append(" ");
 		if (version.isAtLeast("4.0")) {
-			xml.append("xmlns:ISM=\"").append(version.getIsmNamespace()).append("\" ");
+			xml.append(getXmlnsISM()).append(" ");
 		}
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
 			.append("\"");
@@ -209,19 +208,17 @@ public class TypeTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A qualifier has been set without an accompanying value attribute.", component
-				.getValidationWarnings().get(0).getText());
-			assertEquals("/ddms:type", component.getValidationWarnings().get(0).getLocator());
+			String text = "A qualifier has been set without an accompanying value attribute.";
+			String locator = "ddms:type";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
 			// Neither attribute
 			element = Util.buildDDMSElement(Type.getName(version), null);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("Neither a qualifier nor a value was set on this type.", component.getValidationWarnings()
-				.get(0).getText());
-			assertEquals("/ddms:type", component.getValidationWarnings().get(0).getLocator());
+			text = "Neither a qualifier nor a value was set on this type.";
+			locator = "ddms:type";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 

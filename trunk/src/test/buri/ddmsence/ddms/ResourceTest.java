@@ -192,6 +192,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 	/**
 	 * Creates a stub resource element that is otherwise correct, but leaves resource header attributes off.
+	 * 
 	 * @return the element
 	 * @throws InvalidDDMSException
 	 */
@@ -204,9 +205,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 		element.appendChild(TEST_SECURITY.getXOMElementCopy());
 		return (element);
 	}
-	
+
 	/**
 	 * Creates a stub resource element that is otherwise correct, but leaves resource components out.
+	 * 
 	 * @return the element
 	 * @throws InvalidDDMSException
 	 */
@@ -214,17 +216,16 @@ public class ResourceTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String ismPrefix = PropertyReader.getProperty("ism.prefix");
 		String icNamespace = version.getIsmNamespace();
-		
+
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
 		Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
 			String.valueOf(TEST_RESOURCE_ELEMENT));
 		Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-			String.valueOf(getDESVersion()));
+		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace, String.valueOf(getDESVersion()));
 		SecurityAttributesTest.getFixture(false).addTo(element);
 		return (element);
 	}
-	
+
 	/**
 	 * Returns an acceptable DESVersion for the version of DDMS
 	 * 
@@ -427,23 +428,24 @@ public class ResourceTest extends AbstractComponentTestCase {
 			text.append("name: Brian\n");
 			text.append("surname: Uri\n");
 		}
-		
+
 		String formatPrefix = (version.isAtLeast("4.0") ? "format." : "format.Media.");
 		String subjectPrefix = (version.isAtLeast("4.0") ? "subjectCoverage." : "subjectCoverage.Subject.");
 		String temporalPrefix = (version.isAtLeast("4.0") ? "temporalCoverage." : "temporalCoverage.TimePeriod.");
 		String geospatialPrefix = version.isAtLeast("4.0") ? "geospatialCoverage."
 			: "geospatialCoverage.GeospatialExtent.";
-		
+
 		text.append(formatPrefix).append("mimeType: text/xml\n");
 		text.append(subjectPrefix).append("keyword: DDMSence\n");
 		text.append("virtual address: 123.456.789.0\n");
 		text.append("virtual protocol: IP\n");
 		text.append(temporalPrefix).append("name: Unknown\n");
 		text.append(temporalPrefix).append("start: 1979-09-15\n");
-		text.append(temporalPrefix).append("end: Not Applicable\n");	
+		text.append(temporalPrefix).append("end: Not Applicable\n");
 		text.append(geospatialPrefix).append("boundingGeometry.id: IDValue\n");
 		text.append(geospatialPrefix).append("boundingGeometry.type: Point\n");
-		text.append(geospatialPrefix).append("boundingGeometry.srsName: http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\n");
+		text.append(geospatialPrefix).append(
+			"boundingGeometry.srsName: http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\n");
 		text.append(geospatialPrefix).append("boundingGeometry.srsDimension: 10\n");
 		text.append(geospatialPrefix).append("boundingGeometry.axisLabels: A B C\n");
 		text.append(geospatialPrefix).append("boundingGeometry.uomLabels: Meter Meter Meter\n");
@@ -473,9 +475,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:Resource xmlns:ddms=\"").append(version.getNamespace())
-			.append("\" xmlns:ISM=\"");
-		xml.append(version.getIsmNamespace()).append("\"");
+		xml.append("<ddms:Resource ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
 		if (version.isAtLeast("3.0"))
 			xml.append(" ISM:resourceElement=\"true\"");
 		// Adding DESVersion in DDMS 2.0 allows the namespace declaration to definitely be in the Resource element.
@@ -532,8 +532,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("\t<ddms:subjectCoverage>\n");
 		if (version.isAtLeast("4.0")) {
 			xml.append("\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
-		}
-		else {
+		} else {
 			xml.append("\t\t<ddms:Subject>\n");
 			xml.append("\t\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
 			xml.append("\t\t</ddms:Subject>\n");
@@ -554,19 +553,16 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("\t<ddms:geospatialCoverage>\n");
 		if (version.isAtLeast("4.0")) {
 			xml.append("\t\t<ddms:boundingGeometry>\n");
-			xml.append("\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace())
-				.append("\" ");
+			xml.append("\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace()).append("\" ");
 			xml.append("srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ").append(
 				"axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\" gml:id=\"IDValue\">\n");
 			xml.append("\t\t\t\t<gml:pos>32.1 40.1</gml:pos>\n");
 			xml.append("\t\t\t</gml:Point>\n");
 			xml.append("\t\t</ddms:boundingGeometry>\n");
-		}
-		else {
+		} else {
 			xml.append("\t\t<ddms:GeospatialExtent>\n");
 			xml.append("\t\t\t<ddms:boundingGeometry>\n");
-			xml.append("\t\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace())
-				.append("\" ");
+			xml.append("\t\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace()).append("\" ");
 			xml.append("srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ").append(
 				"axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\" gml:id=\"IDValue\">\n");
 			xml.append("\t\t\t\t\t<gml:pos>32.1 40.1</gml:pos>\n");
@@ -623,7 +619,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
 			element.appendChild(TEST_SECURITY.getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
-			
+
 			// More than 1 subjectCoverage
 			if (version.isAtLeast("4.0")) {
 				element = getResourceWithoutBodyElement();
@@ -653,8 +649,6 @@ public class ResourceTest extends AbstractComponentTestCase {
 		}
 	}
 
-
-	
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
@@ -915,10 +909,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 					+ "on the ddms:Resource itself.";
 				String locator = "ddms:Resource";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-				
+
 				text = "A qualifier has been set without an accompanying value attribute.";
 				locator = "ddms:Resource/ddms:format/ddms:Media/ddms:extent";
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));				
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));
 			} else {
 				String text = "A qualifier has been set without an accompanying value attribute.";
 				String locator = (version.isAtLeast("4.0")) ? "ddms:Resource/ddms:format/ddms:extent"
@@ -940,15 +934,15 @@ public class ResourceTest extends AbstractComponentTestCase {
 					+ "on the ddms:Resource itself.";
 				String locator = "ddms:Resource";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-				
+
 				text = "A completely empty ddms:postalAddress element was found.";
 				locator = "ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));							
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));
 			} else {
 				String text = "A completely empty ddms:postalAddress element was found.";
 				String locator = (version.isAtLeast("4.0")) ? "ddms:Resource/ddms:geospatialCoverage/ddms:postalAddress"
 					: "ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));				
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
 		}
 	}
@@ -1095,7 +1089,6 @@ public class ResourceTest extends AbstractComponentTestCase {
 			if (version.isAtLeast("3.1"))
 				continue;
 			createComponents();
-
 
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("USA");
@@ -1377,9 +1370,12 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			// Equality with ExtensibleElement
 			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
-			builder.getExtensibleElements().get(0).setXml(
-				"<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">"
-				+ "This is an extensible element.</ddmsence:extension>");
+			builder
+				.getExtensibleElements()
+				.get(0)
+				.setXml(
+					"<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">"
+						+ "This is an extensible element.</ddmsence:extension>");
 			component = builder.commit();
 			builder = new Resource.Builder(component);
 			assertEquals(builder.commit(), component);
