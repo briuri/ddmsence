@@ -555,7 +555,9 @@ public class Escort {
 						extent = (VerticalExtent) inputLoop(VerticalExtent.class);
 					}
 				}
-				return (new GeospatialCoverage(geoId, box, geo, address, extent,
+				String precedence = readString("the precedence [Primary]");
+				int order = readInt("the order []");
+				return (new GeospatialCoverage(geoId, box, geo, address, extent, precedence, order,
 					buildSecurityAttributes("geospatialCoverage")));
 			}
 		});
