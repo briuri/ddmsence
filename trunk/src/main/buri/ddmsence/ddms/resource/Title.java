@@ -73,7 +73,7 @@ public final class Title extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Title(String title, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(Title.getName(DDMSVersion.getCurrentVersion()), title, securityAttributes);
+		super(Title.getName(DDMSVersion.getCurrentVersion()), title, securityAttributes, true);
 	}
 		
 	/**

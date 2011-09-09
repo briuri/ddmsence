@@ -5,4 +5,5 @@
 	<ddms:keyword ddms:value="Uri"/>
 	<ddms:category ddms:qualifier="urn:buri:ddmsence:categories" ddms:code="DDMS" ddms:label="DDMS"/>
 	<ddms:productionMetric ddms:subject="FOOD" ddms:coverage="AFG" ISM:classification="U" ISM:ownerProducer="USA" />
+	<ddms:nonStateActor ISM:classification="U" ISM:ownerProducer="USA" ddms:order="1">Laotian Monks</ddms:nonStateActor>
 </ddms:subjectCoverage>

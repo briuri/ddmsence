@@ -73,7 +73,7 @@ public final class Description extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Description(String description, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(Description.getName(DDMSVersion.getCurrentVersion()), description, securityAttributes);
+		super(Description.getName(DDMSVersion.getCurrentVersion()), description, securityAttributes, true);
 	}
 		
 	/**
@@ -101,7 +101,7 @@ public final class Description extends AbstractSimpleString {
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))
-			addWarning("A ddms:description element was found with no description value.");
+			addWarning("A ddms:" + Description.getName(getDDMSVersion()) + " element was found with no description value.");
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	

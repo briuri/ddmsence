@@ -17,7 +17,7 @@
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
 */
-package buri.ddmsence.ddms.resource;
+package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
@@ -29,23 +29,24 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of ddms:subOrganization.
+ * An immutable implementation of ddms:nonStateActor.
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
- * <p>DDMSence is stricter than the specification in the following ways:</p>
+ * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>The subOrganization child text must not be empty.</li>
+ * <li>A nonStateActor element can be used without any child text.</li>
  * </ul>
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * <u>ddms:order</u>: specifies a user-defined order of an element within the given document (optional)<br />
  * This class is decorated with ISM {@link SecurityAttributes}. The classification and
- * ownerProducer attributes are required.
+ * ownerProducer attributes are optional.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#subOrganization<br />
- * <u>Description</u>: TBD<br />
+ * <u>Link</u>: TBD<br />
+ * <u>Description</u>: Non-state actors that are within the scope of coverage for the described item.<br />
  * <u>Obligation</u>: Optional<br />
  * <u>Schema Modification Date</u>: 2004-11-16<br />
  * </td></tr></table>
@@ -53,27 +54,39 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 2.0.0
  */
-public final class SubOrganization extends AbstractSimpleString {
-
+public final class NonStateActor extends AbstractSimpleString {
+	
+	private static final String ORDER_NAME = "order";
+	
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 *  
 	 * @param element the XOM element representing this 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public SubOrganization(Element element) throws InvalidDDMSException {
+	public NonStateActor(Element element) throws InvalidDDMSException {
 		super(element);
+		
 	}
 	
 	/**
 	 * Constructor for creating a component from raw data
 	 *  
-	 * @param value the value of the subOrganization child text
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
+	 * @param value the value of the description child text
+	 * @param order the order of this actor
+	 * @param securityAttributes any security attributes (classification and ownerProducer are optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public SubOrganization(String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(SubOrganization.getName(DDMSVersion.getCurrentVersion()), value, securityAttributes, true);
+	public NonStateActor(String value, Integer order, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		super(NonStateActor.getName(DDMSVersion.getCurrentVersion()), value, securityAttributes, false);
+		try {
+			if (order != null)
+				Util.addDDMSAttribute(getXOMElement(), ORDER_NAME, order.toString());
+			validate();
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 		
 	/**
@@ -81,22 +94,20 @@ public final class SubOrganization extends AbstractSimpleString {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The child text exists and is not empty.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>This component cannot be used until DDMS 4.0 or later.</li>
+	 * <li>Does not validate the value of the order attribute (this is done at the Resource level).</li>
 	 * </td></tr></table>
-	 * 
+	 *  
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
-		Util.requireDDMSQName(getXOMElement(), SubOrganization.getName(getDDMSVersion()));
-		Util.requireDDMSValue("subOrganization value", getValue());
+		// Do not call super.validate(), because securityAttributes are optional.
+		Util.requireDDMSQName(getXOMElement(), NonStateActor.getName(getDDMSVersion()));
+		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0"))
-			throw new InvalidDDMSException("The ddms:" + SubOrganization.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
-
+			throw new InvalidDDMSException("The ddms:" + NonStateActor.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
+		
 		validateWarnings();
 	}
 	
@@ -104,13 +115,16 @@ public final class SubOrganization extends AbstractSimpleString {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A ddms:nonStateActor element was found with no value.</li>
 	 * <li>Include any validation warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
+		if (Util.isEmpty(getValue()))
+			addWarning("A ddms:" + NonStateActor.getName(getDDMSVersion()) + " element was found with no value.");
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
-			
+	
 	/**
 	 * @see AbstractBaseComponent#toHTML()
 	 */
@@ -132,9 +146,12 @@ public final class SubOrganization extends AbstractSimpleString {
 	 * @return the HTML output
 	 */
 	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName();
 		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(getName(), getValue(), false));
-		html.append(getSecurityAttributes().toHTML(getName()));
+		html.append(buildHTMLMeta(prefix + ".value", getValue(), true));
+		html.append(buildHTMLMeta(prefix + "." + ORDER_NAME, String.valueOf(getOrder()), false));
+		html.append(getSecurityAttributes().toHTML(prefix));
+		
 		return (html.toString());
 	}
 	
@@ -145,19 +162,31 @@ public final class SubOrganization extends AbstractSimpleString {
 	 * @return the Text output
 	 */
 	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName();
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(getName(), getValue(), false));
-		text.append(getSecurityAttributes().toText(getName()));
+		text.append(buildTextLine(prefix + ".value", getValue(), true));
+		text.append(buildTextLine(prefix + "." + ORDER_NAME, String.valueOf(getOrder()), false));
+		text.append(getSecurityAttributes().toText(prefix));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof SubOrganization))
+		if (!super.equals(obj) || !(obj instanceof NonStateActor))
 			return (false);
-		return (true);
+		NonStateActor test = (NonStateActor) obj;
+		return (getOrder().equals(test.getOrder()));		
+	}
+	
+	/**
+	 * @see Object#hashCode()
+	 */
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 7 * result + getOrder().hashCode();
+		return (result);
 	}
 	
 	/**
@@ -168,7 +197,15 @@ public final class SubOrganization extends AbstractSimpleString {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return ("subOrganization");
+		return ("nonStateActor");
+	}
+	
+	/**
+	 * Accessor for the order attribute.
+	 */
+	public Integer getOrder() {
+		String order = getAttributeValue(ORDER_NAME);
+		return (Util.isEmpty(order) ? null : Integer.valueOf(order));
 	}
 	
 	/**
@@ -179,7 +216,8 @@ public final class SubOrganization extends AbstractSimpleString {
 	 * @since 2.0.0
 	 */
 	public static class Builder extends AbstractSimpleString.Builder {
-		private static final long serialVersionUID = -7348511606867959470L;
+		private static final long serialVersionUID = 7750664735441105296L;
+		private Integer _order;
 		
 		/**
 		 * Empty constructor
@@ -191,15 +229,30 @@ public final class SubOrganization extends AbstractSimpleString {
 		/**
 		 * Constructor which starts from an existing component.
 		 */
-		public Builder(SubOrganization value) {
-			super(value);
+		public Builder(NonStateActor actor) {
+			super(actor);
+			setOrder(actor.getOrder());
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
-		public SubOrganization commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new SubOrganization(getValue(), getSecurityAttributes().commit()));
+		public NonStateActor commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new NonStateActor(getValue(), getOrder(), getSecurityAttributes().commit()));
+		}
+
+		/**
+		 * Builder accessor for the order
+		 */
+		public Integer getOrder() {
+			return _order;
+		}
+
+		/**
+		 * Builder accessor for the order
+		 */
+		public void setOrder(Integer order) {
+			_order = order;
 		}
 	}
 } 

@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.summary;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -34,16 +35,16 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class ProductionMetricTest extends AbstractComponentTestCase {
+public class NonStateActorTest extends AbstractComponentTestCase {
 
-	private static final String TEST_SUBJECT = "FOOD";
-	private static final String TEST_COVERAGE = "AFG";
+	private static final String TEST_VALUE = "Laotian Monks";
+	private static final Integer TEST_ORDER = new Integer(1);
 
 	/**
 	 * Constructor
 	 */
-	public ProductionMetricTest() {
-		super("productionMetric.xml");
+	public NonStateActorTest() {
+		super("nonStateActor.xml");
 	}
 
 	/**
@@ -54,10 +55,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	 * 
 	 * @return a valid object
 	 */
-	private ProductionMetric testConstructor(boolean expectFailure, Element element) {
-		ProductionMetric component = null;
+	private NonStateActor testConstructor(boolean expectFailure, Element element) {
+		NonStateActor component = null;
 		try {
-			component = new ProductionMetric(element);
+			component = new NonStateActor(element);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -69,15 +70,14 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param expectFailure true if this operation is expected to succeed, false otherwise
-	 * @param subject a method of categorizing the subject of a document in a fashion understandable by DDNI-A (required)
-	 * @param coverage a method of categorizing the coverage of a document in a fashion understandable by DDNI-A (required)
-	 * @param label the label (required)
+	 * @param value the value of the actor (optional)
+	 * @param order the order of the actor (optional)
 	 * @return a valid object
 	 */
-	private ProductionMetric testConstructor(boolean expectFailure, String subject, String coverage) {
-		ProductionMetric component = null;
+	private NonStateActor testConstructor(boolean expectFailure, String value, Integer order) {
+		NonStateActor component = null;
 		try {
-			component = new ProductionMetric(subject, coverage, SecurityAttributesTest.getFixture(false));
+			component = new NonStateActor(value, order, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -90,10 +90,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"productionMetric.subject\" content=\"").append(TEST_SUBJECT).append("\" />\n");
-		html.append("<meta name=\"productionMetric.coverage\" content=\"").append(TEST_COVERAGE).append("\" />\n");
-		html.append("<meta name=\"productionMetric.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"productionMetric.ownerProducer\" content=\"USA\" />\n");
+		html.append("<meta name=\"nonStateActor.value\" content=\"").append(TEST_VALUE).append("\" />\n");
+		html.append("<meta name=\"nonStateActor.order\" content=\"").append(TEST_ORDER).append("\" />\n");
+		html.append("<meta name=\"nonStateActor.classification\" content=\"U\" />\n");
+		html.append("<meta name=\"nonStateActor.ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -102,10 +102,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("productionMetric.subject: ").append(TEST_SUBJECT).append("\n");
-		text.append("productionMetric.coverage: ").append(TEST_COVERAGE).append("\n");
-		text.append("productionMetric classification: U\n");
-		text.append("productionMetric ownerProducer: USA\n");
+		text.append("nonStateActor.value: ").append(TEST_VALUE).append("\n");
+		text.append("nonStateActor.order: ").append(TEST_ORDER).append("\n");
+		text.append("nonStateActor classification: U\n");
+		text.append("nonStateActor ownerProducer: USA\n");
 		return (text.toString());
 	}
 
@@ -114,12 +114,11 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:productionMetric xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
+		xml.append("<ddms:nonStateActor xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
 		xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
-		xml.append("ddms:subject=\"").append(TEST_SUBJECT).append("\" ");
-		xml.append("ddms:coverage=\"").append(TEST_COVERAGE).append("\" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
-		xml.append(" />");
+		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ");
+		xml.append("ddms:order=\"").append(TEST_ORDER).append("\"");
+		xml.append(">").append(TEST_VALUE).append("</ddms:nonStateActor>");
 		return (xml.toString());
 	}
 
@@ -130,10 +129,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(ProductionMetric.getName(version), component.getName());
+			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			assertEquals(NonStateActor.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + ProductionMetric.getName(version),
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + NonStateActor.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -151,6 +150,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			
+			// No optional fields
+			Element element = Util.buildDDMSElement(NonStateActor.getName(version),	null);
+			testConstructor(WILL_SUCCEED, element);
 		}
 	}
 
@@ -162,7 +165,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 				continue;
 			
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
+			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ORDER);
+			
+			// No optional fields
+			testConstructor(WILL_SUCCEED, null, null);
 		}
 	}
 
@@ -173,15 +179,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			// Missing subject
-			Element element = Util.buildDDMSElement(ProductionMetric.getName(version), null);
-			element.addAttribute(Util.buildDDMSAttribute("coverage", TEST_COVERAGE));
-			testConstructor(WILL_FAIL, element);
-			
-			// Missing coverage
-			element = Util.buildDDMSElement(ProductionMetric.getName(version), null);
-			element.addAttribute(Util.buildDDMSAttribute("subject", TEST_SUBJECT));
-			testConstructor(WILL_FAIL, element);
+			// There are no invalid constructors right now -- every field is optional.
 		}
 	}
 
@@ -192,11 +190,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			// Missing subject
-			testConstructor(WILL_FAIL, null, TEST_COVERAGE);
-
-			// Missing coverage
-			testConstructor(WILL_FAIL, TEST_SUBJECT, null);
+			// There are no invalid constructors right now -- every field is optional.
 		}
 	}
 
@@ -208,8 +202,16 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 				continue;
 			
 			// No warnings
-			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
+			
+			// Empty value
+			Element element = Util.buildDDMSElement(NonStateActor.getName(version), null);
+			component = testConstructor(WILL_SUCCEED, element);
+			assertEquals(1, component.getValidationWarnings().size());
+			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+			assertEquals("A ddms:nonStateActor element was found with no value.", component.getValidationWarnings().get(0).getText());
+			assertEquals("/ddms:nonStateActor", component.getValidationWarnings().get(0).getLocator());
 		}
 	}
 
@@ -220,8 +222,9 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProductionMetric elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			ProductionMetric dataComponent = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
+			NonStateActor elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			NonStateActor dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ORDER);
+
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -234,11 +237,11 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProductionMetric elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			ProductionMetric dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_COVERAGE);
+			NonStateActor elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			NonStateActor dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_ORDER);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_SUBJECT, DIFFERENT_VALUE);
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -250,7 +253,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProductionMetric elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			NonStateActor elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -263,10 +266,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
+			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ORDER);
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		}
 	}
@@ -278,10 +281,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
+			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ORDER);
 			assertEquals(getExpectedTextOutput(), component.toText());
 		}
 	}
@@ -293,10 +296,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
+			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ORDER);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -304,7 +307,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
-			new ProductionMetric(TEST_SUBJECT, TEST_COVERAGE, null);
+			new NonStateActor(TEST_VALUE, TEST_ORDER, null);
 			fail("Allowed invalid data.");
 		} catch (InvalidDDMSException e) {
 			// Good
@@ -318,24 +321,14 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-
-			// Equality after Building
-			ProductionMetric.Builder builder = new ProductionMetric.Builder(component);
-			assertEquals(builder.commit(), component);
-
-			// Validation
-			builder = new ProductionMetric.Builder();
+			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			
+			NonStateActor.Builder builder = new NonStateActor.Builder();
 			assertNull(builder.commit());
-			builder.setCoverage(TEST_COVERAGE);
-			try {
-				builder.commit();
-				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
-				// Good
-			}
-			builder.setSubject(TEST_SUBJECT);			
-			builder.commit();
+			
+			// Equality after Building
+			builder = new NonStateActor.Builder(component);
+			assertEquals(builder.commit(), component);
 		}
 	}
 }

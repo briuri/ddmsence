@@ -83,8 +83,10 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	/**
 	 * Creates a test fixture
 	 */
-	private List<String> getActorFixture() throws InvalidDDMSException {
-		List<String> actors = new ArrayList<String>();
+	private List<NonStateActor> getActorFixture() throws InvalidDDMSException {
+		List<NonStateActor> actors = new ArrayList<NonStateActor>();
+		if (isDDMS40OrGreater())
+			actors.add(new NonStateActor("Laotian Monks", new Integer(1), SecurityAttributesTest.getFixture(false)));
 		return (actors);
 	}
 	
@@ -118,7 +120,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 * @return a valid object
 	 */
 	private SubjectCoverage testConstructor(boolean expectFailure, List<Keyword> keywords, List<Category> categories,
-		List<ProductionMetric> metrics, List<String> actors) {
+		List<ProductionMetric> metrics, List<NonStateActor> actors) {
 		SubjectCoverage component = null;
 		try {
 			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) ? null
@@ -149,6 +151,10 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			html.append("<meta name=\"").append(prefix).append("productionMetric.coverage\" content=\"AFG\" />\n");
 			html.append("<meta name=\"").append(prefix).append("productionMetric.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"").append(prefix).append("productionMetric.ownerProducer\" content=\"USA\" />\n");
+			html.append("<meta name=\"").append(prefix).append("nonStateActor.value\" content=\"Laotian Monks\" />\n");
+			html.append("<meta name=\"").append(prefix).append("nonStateActor.order\" content=\"1\" />\n");
+			html.append("<meta name=\"").append(prefix).append("nonStateActor.classification\" content=\"U\" />\n");
+			html.append("<meta name=\"").append(prefix).append("nonStateActor.ownerProducer\" content=\"USA\" />\n");
 		}
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			html.append("<meta name=\"subjectCoverage.classification\" content=\"U\" />\n");
@@ -175,6 +181,10 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			text.append(prefix).append("productionMetric.coverage: AFG\n");
 			text.append(prefix).append("productionMetric classification: U\n");
 			text.append(prefix).append("productionMetric ownerProducer: USA\n");
+			text.append(prefix).append("nonStateActor.value: Laotian Monks\n");
+			text.append(prefix).append("nonStateActor.order: 1\n");
+			text.append(prefix).append("nonStateActor classification: U\n");
+			text.append(prefix).append("nonStateActor ownerProducer: USA\n");
 		}
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			text.append("subjectCoverage classification: U\n");
@@ -203,6 +213,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			xml.append("\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ").append(
 				"ddms:label=\"DDMS\" />\n");
 			xml.append("\t<ddms:productionMetric ddms:subject=\"FOOD\" ddms:coverage=\"AFG\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" />\n");
+			xml.append("\t<ddms:nonStateActor ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ddms:order=\"1\">Laotian Monks</ddms:nonStateActor>\n");
 		} else {
 			xml.append("\t<ddms:Subject>\n");
 			xml.append("\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
@@ -391,8 +402,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 				dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), null, getActorFixture());
 				assertFalse(elementComponent.equals(dataComponent));
 				
-//				dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(), null);
-//				assertFalse(elementComponent.equals(dataComponent));
+				dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(), null);
+				assertFalse(elementComponent.equals(dataComponent));
 			}
 		}
 	}
@@ -466,6 +477,14 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		}
 	}
 	
+	public void testActorReuse() throws InvalidDDMSException {
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			List<NonStateActor> actors = getActorFixture();
+			testConstructor(WILL_SUCCEED, getKeywords(), null, null, actors);
+			testConstructor(WILL_SUCCEED, getKeywords(), null, null, actors);
+		}
+	}
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
@@ -541,8 +560,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			builder.getCategories().add(fullCategoryBuilder);
 			assertEquals(1, builder.commit().getCategories().size());
 			
-			// Skip empty metrics
 			if (isDDMS40OrGreater()) {
+				// Skip empty metrics
 				builder = new SubjectCoverage.Builder();
 				ProductionMetric.Builder emptyProductionMetricBuilder = new ProductionMetric.Builder();
 				ProductionMetric.Builder fullProductionMetricBuilder = new ProductionMetric.Builder();
@@ -552,6 +571,16 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 				builder.getProductionMetrics().add(emptyProductionMetricBuilder);
 				builder.getProductionMetrics().add(fullProductionMetricBuilder);
 				assertEquals(1, builder.commit().getProductionMetrics().size());
+				
+				// Skip empty actors
+				builder = new SubjectCoverage.Builder();
+				NonStateActor.Builder emptyNonStateActorBuilder = new NonStateActor.Builder();
+				NonStateActor.Builder fullNonStateActorBuilder = new NonStateActor.Builder();
+				fullNonStateActorBuilder.setValue("Laotian Monks");
+				builder.getKeywords().get(0).setValue("test");
+				builder.getNonStateActors().add(emptyNonStateActorBuilder);
+				builder.getNonStateActors().add(fullNonStateActorBuilder);
+				assertEquals(1, builder.commit().getNonStateActors().size());
 			}
 		}
 	}

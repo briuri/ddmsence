@@ -242,7 +242,7 @@ public final class ProductionMetric extends AbstractBaseComponent {
 	 * 
 	 * @see IBuilder
 	 * @author Brian Uri!
-	 * @since 1.8.0
+	 * @since 2.0.0
 	 */
 	public static class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = -9012648230977148516L;
