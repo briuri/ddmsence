@@ -20,6 +20,8 @@
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
@@ -61,6 +63,10 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * <u>ddms:precedence</u>: priority claimed or received as a result of preeminence. Used with country codes (optional, 
+ * starting in DDMS 4.0)
+ * <u>ddms:order</u>: specifies a user-defined order of an element within the given document (optional, starting in 
+ * DDMS 4.0)<br />
  * This class is decorated with ISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
  * ownerProducer attributes are optional.
  * </td></tr></table>
@@ -86,6 +92,14 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	
 	private static final String GEOSPATIAL_EXTENT_NAME = "GeospatialExtent";
+	private static final String PRECEDENCE_NAME = "precedence";
+	private static final String ORDER_NAME = "order";
+	
+	private static final List<String> VALID_PRECEDENCE_VALUES = new ArrayList<String>();
+	static {
+		VALID_PRECEDENCE_VALUES.add("Primary");
+		VALID_PRECEDENCE_VALUES.add("Secondary");
+	}
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -127,10 +141,11 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
 	 *  
+	 * @deprecated This constructor is provided for backwards compatibility with pre-DDMS 4.0 elements.
 	 * @param geographicIdentifier an identifier (0-1 optional)
 	 * @param boundingBox a bounding box (0-1 optional)
 	 * @param boundingGeometry a set of bounding geometry (0-1 optional)
@@ -142,6 +157,26 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	public GeospatialCoverage(GeographicIdentifier geographicIdentifier, BoundingBox boundingBox,
 		BoundingGeometry boundingGeometry, PostalAddress postalAddress, VerticalExtent verticalExtent,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		this(geographicIdentifier, boundingBox, boundingGeometry, postalAddress, verticalExtent, null, null,
+			securityAttributes);
+	}
+	
+	/**
+	 * Constructor for creating a component from raw data
+	 *  
+	 * @param geographicIdentifier an identifier (0-1 optional)
+	 * @param boundingBox a bounding box (0-1 optional)
+	 * @param boundingGeometry a set of bounding geometry (0-1 optional)
+	 * @param postalAddress an address (0-1 optional)
+	 * @param verticalExtent an extent (0-1 optional)
+	 * @param precedence the precedence attribute (optional, starting in DDMS 4.0)
+	 * @param order the order attribute (optional, starting in DDMS 4.0)
+	 * @param securityAttributes any security attributes (optional)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public GeospatialCoverage(GeographicIdentifier geographicIdentifier, BoundingBox boundingBox,
+		BoundingGeometry boundingGeometry, PostalAddress postalAddress, VerticalExtent verticalExtent,
+		String precedence, Integer order, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			Element coverageElement = Util.buildDDMSElement(GeospatialCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			
@@ -156,7 +191,11 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 				element.appendChild(postalAddress.getXOMElementCopy());
 			if (verticalExtent != null)
 				element.appendChild(verticalExtent.getXOMElementCopy());
-			
+			if (!Util.isEmpty(precedence))
+				Util.addDDMSAttribute(element, PRECEDENCE_NAME, precedence);
+			if (order != null)
+				Util.addDDMSAttribute(element, ORDER_NAME, order.toString());
+
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				coverageElement.appendChild(element);
 			
@@ -185,6 +224,10 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * <li>No more than 1 geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent can 
 	 * be used.</li>
 	 * <li>If a geographicIdentifer is used and contains a facilityIdentifier, no other subcomponents can be used.</li>
+	 * <li>The order and precedence cannot be used until DDMS 4.0 or later.</li>
+	 * <li>If set, the precedence must be "Primary" or "Secondary".</li>
+	 * <li>If a precedence is set, this coverage must contain a geographicIdentifier with a countryCode.</li>
+	 * <li>Does not validate the value of the order attribute (this is done at the Resource level).</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
@@ -234,9 +277,25 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		}	
 		
 		// Should be reviewed as additional versions of DDMS are supported.
+		if (!getDDMSVersion().isAtLeast("4.0") && !Util.isEmpty(getPrecedence())) {
+			throw new InvalidDDMSException("The ddms:precedence attribute cannot be used until DDMS 4.0 or later.");
+		}
+		if (!getDDMSVersion().isAtLeast("4.0") && getOrder() != null) {
+			throw new InvalidDDMSException("The ddms:order attribute cannot be used until DDMS 4.0 or later.");
+		}
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
 				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
+		}
+		if (!Util.isEmpty(getPrecedence())) {
+			if (!VALID_PRECEDENCE_VALUES.contains(getPrecedence())) {
+				throw new InvalidDDMSException("The ddms:precedence attribute must have a value from: "
+					+ VALID_PRECEDENCE_VALUES);
+			}
+			if (getGeographicIdentifier() == null || getGeographicIdentifier().getCountryCode() == null) {
+				throw new InvalidDDMSException("The ddms:precedence attribute should only be applied to a "
+					+ "geospatialCoverage containing a country code.");
+			}				
 		}
 		
 		validateWarnings();
@@ -288,6 +347,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			html.append(getPostalAddress().toHTML(prefix));
 		if (getVerticalExtent() != null)
 			html.append(getVerticalExtent().toHTML(prefix));
+		html.append(buildHTMLMeta(prefix + PRECEDENCE_NAME, getPrecedence(), false));
+		html.append(buildHTMLMeta(prefix + ORDER_NAME, String.valueOf(getOrder()), false));
 		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}
@@ -310,6 +371,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			text.append(getPostalAddress().toText(prefix));
 		if (getVerticalExtent() != null)
 			text.append(getVerticalExtent().toText(prefix));
+		text.append(buildTextLine(prefix + PRECEDENCE_NAME, getPrecedence(), false));
+		text.append(buildTextLine(prefix + ORDER_NAME, String.valueOf(getOrder()), false));
 		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
 	}
@@ -326,6 +389,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			&& Util.nullEquals(getBoundingGeometry(), test.getBoundingGeometry())
 			&& Util.nullEquals(getPostalAddress(), test.getPostalAddress())
 			&& Util.nullEquals(getVerticalExtent(), test.getVerticalExtent())
+			&& getPrecedence().equals(test.getPrecedence())
+			&& Util.nullEquals(getOrder(), test.getOrder())
 			&& getSecurityAttributes().equals(test.getSecurityAttributes());
 		return (isEqual);
 	}
@@ -345,6 +410,9 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			result = 7 * result + getPostalAddress().hashCode();
 		if (getVerticalExtent() != null)
 			result = 7 * result + getVerticalExtent().hashCode();
+		result = 7 * result + getPrecedence().hashCode();
+		if (getOrder() != null)
+			result = 7 * result + getOrder().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
@@ -366,6 +434,21 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 */
 	private Element getExtentElement() {
 		return (getDDMSVersion().isAtLeast("4.0") ? getXOMElement() : getChild(GEOSPATIAL_EXTENT_NAME));
+	}
+	
+	/**
+	 * Accessor for the precedence attribute.
+	 */
+	public String getPrecedence() {
+		return (getAttributeValue(PRECEDENCE_NAME));
+	}
+	
+	/**
+	 * Accessor for the order attribute.
+	 */
+	public Integer getOrder() {
+		String order = getAttributeValue(ORDER_NAME);
+		return (Util.isEmpty(order) ? null : Integer.valueOf(order));
 	}
 	
 	/**
@@ -431,6 +514,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		private GeographicIdentifier.Builder _geographicIdentifier;
 		private PostalAddress.Builder _postalAddress;
 		private VerticalExtent.Builder _verticalExtent;
+		private String _precedence;
+		private Integer _order;
 		private SecurityAttributes.Builder _securityAttributes;	
 		
 		/**
@@ -452,6 +537,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 				setPostalAddress(new PostalAddress.Builder(coverage.getPostalAddress()));
 			if (coverage.getVerticalExtent() != null)
 				setVerticalExtent(new VerticalExtent.Builder(coverage.getVerticalExtent()));
+			setPrecedence(coverage.getPrecedence());
+			setOrder(coverage.getOrder());
 			setSecurityAttributes(new SecurityAttributes.Builder(coverage.getSecurityAttributes()));
 		}
 		
@@ -461,7 +548,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		public GeospatialCoverage commit() throws InvalidDDMSException {
 			return (isEmpty() ? null : new GeospatialCoverage(getGeographicIdentifier().commit(), 
 				getBoundingBox().commit(), getBoundingGeometry().commit(), getPostalAddress().commit(), 
-				getVerticalExtent().commit(), getSecurityAttributes().commit()));
+				getVerticalExtent().commit(), getPrecedence(), getOrder(), getSecurityAttributes().commit()));
 		}
 
 		/**
@@ -473,6 +560,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 				&& getBoundingGeometry().isEmpty()
 				&& getPostalAddress().isEmpty()
 				&& getVerticalExtent().isEmpty()
+				&& Util.isEmpty(getPrecedence())
+				&& getOrder() != null
 				&& getSecurityAttributes().isEmpty());
 		}
 		
@@ -556,6 +645,34 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			_verticalExtent = verticalExtent;
 		}
 
+		/**
+		 * Builder accessor for the precedence
+		 */
+		public String getPrecedence() {
+			return _precedence;
+		}
+
+		/**
+		 * Builder accessor for the precedence
+		 */
+		public void setPrecedence(String precedence) {
+			_precedence = precedence;
+		}
+
+		/**
+		 * Builder accessor for the order
+		 */
+		public Integer getOrder() {
+			return _order;
+		}
+
+		/**
+		 * Builder accessor for the order
+		 */
+		public void setOrder(Integer order) {
+			_order = order;
+		}
+		
 		/**
 		 * Builder accessor for the Security Attributes
 		 */
