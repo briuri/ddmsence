@@ -140,17 +140,14 @@ public class PolygonTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
+		SRSAttributes attr = SRSAttributesTest.getFixture();
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"id\" content=\"").append(TEST_ID).append("\" />\n");
 		html.append("<meta name=\"type\" content=\"Polygon\" />\n");
-		html.append("<meta name=\"srsName\" content=\"").append(SRSAttributesTest.getFixture().getSrsName())
-			.append("\" />\n");
-		html.append("<meta name=\"srsDimension\" content=\"").append(SRSAttributesTest.getFixture().getSrsDimension())
-			.append("\" />\n");
-		html.append("<meta name=\"axisLabels\" content=\"")
-			.append(SRSAttributesTest.getFixture().getAxisLabelsAsXsList()).append("\" />\n");
-		html.append("<meta name=\"uomLabels\" content=\"")
-			.append(SRSAttributesTest.getFixture().getUomLabelsAsXsList()).append("\" />\n");
+		html.append("<meta name=\"srsName\" content=\"").append(attr.getSrsName()).append("\" />\n");
+		html.append("<meta name=\"srsDimension\" content=\"").append(attr.getSrsDimension()).append("\" />\n");
+		html.append("<meta name=\"axisLabels\" content=\"").append(attr.getAxisLabelsAsXsList()).append("\" />\n");
+		html.append("<meta name=\"uomLabels\" content=\"").append(attr.getUomLabelsAsXsList()).append("\" />\n");
 		for (Position pos : getPositions()) {
 			html.append(pos.toHTML());
 		}
@@ -161,13 +158,14 @@ public class PolygonTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() throws InvalidDDMSException {
+		SRSAttributes attr = SRSAttributesTest.getFixture();
 		StringBuffer text = new StringBuffer();
 		text.append("id: ").append(TEST_ID).append("\n");
 		text.append("type: Polygon\n");
-		text.append("srsName: ").append(SRSAttributesTest.getFixture().getSrsName()).append("\n");
-		text.append("srsDimension: ").append(SRSAttributesTest.getFixture().getSrsDimension()).append("\n");
-		text.append("axisLabels: ").append(SRSAttributesTest.getFixture().getAxisLabelsAsXsList()).append("\n");
-		text.append("uomLabels: ").append(SRSAttributesTest.getFixture().getUomLabelsAsXsList()).append("\n");
+		text.append("srsName: ").append(attr.getSrsName()).append("\n");
+		text.append("srsDimension: ").append(attr.getSrsDimension()).append("\n");
+		text.append("axisLabels: ").append(attr.getAxisLabelsAsXsList()).append("\n");
+		text.append("uomLabels: ").append(attr.getUomLabelsAsXsList()).append("\n");
 		for (Position pos : getPositions()) {
 			text.append(pos.toText());
 		}
@@ -182,7 +180,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) throws InvalidDDMSException {
 		SRSAttributes attr = SRSAttributesTest.getFixture();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<gml:Polygon xmlns:gml=\"").append(DDMSVersion.getCurrentVersion().getGmlNamespace()).append("\" ");
+		xml.append("<gml:Polygon ").append(getXmlnsGML()).append(" ");
 		xml.append("srsName=\"").append(attr.getSrsName()).append("\" ");
 		xml.append("srsDimension=\"").append(attr.getSrsDimension()).append("\" ");
 		xml.append("axisLabels=\"").append(attr.getAxisLabelsAsXsList()).append("\" ");

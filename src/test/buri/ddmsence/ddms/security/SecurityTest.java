@@ -110,8 +110,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:security xmlns:ddms=\"").append(version.getNamespace()).append("\" xmlns:ISM=\"")
-			.append(version.getIsmNamespace()).append("\" ");
+		xml.append("<ddms:security ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 		if (version.isAtLeast("3.0"))
 			xml.append("ISM:excludeFromRollup=\"true\" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" />");

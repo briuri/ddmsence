@@ -99,17 +99,14 @@ public class PointTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
+		SRSAttributes attr = SRSAttributesTest.getFixture();
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"id\" content=\"").append(TEST_ID).append("\" />\n");
 		html.append("<meta name=\"type\" content=\"Point\" />\n");
-		html.append("<meta name=\"srsName\" content=\"").append(SRSAttributesTest.getFixture().getSrsName())
-			.append("\" />\n");
-		html.append("<meta name=\"srsDimension\" content=\"").append(SRSAttributesTest.getFixture().getSrsDimension())
-			.append("\" />\n");
-		html.append("<meta name=\"axisLabels\" content=\"")
-			.append(SRSAttributesTest.getFixture().getAxisLabelsAsXsList()).append("\" />\n");
-		html.append("<meta name=\"uomLabels\" content=\"")
-			.append(SRSAttributesTest.getFixture().getUomLabelsAsXsList()).append("\" />\n");
+		html.append("<meta name=\"srsName\" content=\"").append(attr.getSrsName()).append("\" />\n");
+		html.append("<meta name=\"srsDimension\" content=\"").append(attr.getSrsDimension()).append("\" />\n");
+		html.append("<meta name=\"axisLabels\" content=\"").append(attr.getAxisLabelsAsXsList()).append("\" />\n");
+		html.append("<meta name=\"uomLabels\" content=\"").append(attr.getUomLabelsAsXsList()).append("\" />\n");
 		html.append(getPosition().toHTML());
 		return (html.toString());
 	}
@@ -118,13 +115,14 @@ public class PointTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() throws InvalidDDMSException {
+		SRSAttributes attr = SRSAttributesTest.getFixture();
 		StringBuffer text = new StringBuffer();
 		text.append("id: ").append(TEST_ID).append("\n");
 		text.append("type: Point\n");
-		text.append("srsName: ").append(SRSAttributesTest.getFixture().getSrsName()).append("\n");
-		text.append("srsDimension: ").append(SRSAttributesTest.getFixture().getSrsDimension()).append("\n");
-		text.append("axisLabels: ").append(SRSAttributesTest.getFixture().getAxisLabelsAsXsList()).append("\n");
-		text.append("uomLabels: ").append(SRSAttributesTest.getFixture().getUomLabelsAsXsList()).append("\n");
+		text.append("srsName: ").append(attr.getSrsName()).append("\n");
+		text.append("srsDimension: ").append(attr.getSrsDimension()).append("\n");
+		text.append("axisLabels: ").append(attr.getAxisLabelsAsXsList()).append("\n");
+		text.append("uomLabels: ").append(attr.getUomLabelsAsXsList()).append("\n");
 		text.append(getPosition().toText());
 		return (text.toString());
 	}
@@ -137,7 +135,7 @@ public class PointTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) throws InvalidDDMSException {
 		SRSAttributes attr = SRSAttributesTest.getFixture();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<gml:Point xmlns:gml=\"").append(DDMSVersion.getCurrentVersion().getGmlNamespace()).append("\" ");
+		xml.append("<gml:Point ").append(getXmlnsGML()).append(" ");
 		xml.append("srsName=\"").append(attr.getSrsName()).append("\" ");
 		xml.append("srsDimension=\"").append(attr.getSrsDimension()).append("\" ");
 		xml.append("axisLabels=\"").append(attr.getAxisLabelsAsXsList()).append("\" ");

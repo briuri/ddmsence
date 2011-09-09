@@ -115,12 +115,9 @@ public class PositionTest extends AbstractComponentTestCase {
 		StringBuffer text = new StringBuffer();
 		text.append("position: ").append(TEST_XS_LIST).append("\n");
 		text.append("position.srsName: ").append(SRSAttributesTest.TEST_SRS_NAME).append("\n");
-		text.append("position.srsDimension: ").append(SRSAttributesTest.TEST_SRS_DIMENSION)
-			.append("\n");
-		text.append("position.axisLabels: ")
-			.append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\n");
-		text.append("position.uomLabels: ").append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS))
-			.append("\n");
+		text.append("position.srsDimension: ").append(SRSAttributesTest.TEST_SRS_DIMENSION).append("\n");
+		text.append("position.axisLabels: ").append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\n");
+		text.append("position.uomLabels: ").append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\n");
 		return (text.toString());
 	}
 
@@ -131,7 +128,7 @@ public class PositionTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<gml:pos xmlns:gml=\"").append(DDMSVersion.getCurrentVersion().getGmlNamespace()).append("\" ");
+		xml.append("<gml:pos ").append(getXmlnsGML()).append(" ");
 		xml.append("srsName=\"").append(SRSAttributesTest.TEST_SRS_NAME).append("\" ");
 		xml.append("srsDimension=\"").append(SRSAttributesTest.TEST_SRS_DIMENSION).append("\" ");
 		xml.append("axisLabels=\"").append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\" ");
