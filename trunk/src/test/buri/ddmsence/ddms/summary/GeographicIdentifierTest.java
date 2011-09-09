@@ -61,10 +61,17 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	/**
 	 * Returns a geo id fixture
 	 */
-	protected static GeographicIdentifier getFixture() throws InvalidDDMSException {
-		return (new GeographicIdentifier(FacilityIdentifierTest.getFixture()));
+	protected static GeographicIdentifier getCountryCodeBasedFixture() throws InvalidDDMSException {
+		return new GeographicIdentifier(null, null, new CountryCode("urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1", "LAO"), null);
 	}
 
+	/**
+	 * Returns a geo id fixture
+	 */
+	protected static GeographicIdentifier getFacIdBasedFixture() throws InvalidDDMSException {
+		return (new GeographicIdentifier(FacilityIdentifierTest.getFixture()));
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -352,6 +359,17 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testHTMLFacIdOutput() throws InvalidDDMSException {
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			GeographicIdentifier component = getFacIdBasedFixture();
+			StringBuffer facIdOutput = new StringBuffer();
+			facIdOutput.append("<meta name=\"geographicIdentifier.facilityIdentifier.beNumber\" content=\"1234DD56789\" />\n");
+			facIdOutput.append("<meta name=\"geographicIdentifier.facilityIdentifier.osuffix\" content=\"DD123\" />\n");
+			assertEquals(facIdOutput.toString(), component.toHTML());
+		}
+	}
+	
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
@@ -366,6 +384,17 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testTextFacIdOutput() throws InvalidDDMSException {
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			GeographicIdentifier component = getFacIdBasedFixture();
+			StringBuffer facIdOutput = new StringBuffer();
+			facIdOutput.append("geographicIdentifier.facilityIdentifier.beNumber: 1234DD56789\n");
+			facIdOutput.append("geographicIdentifier.facilityIdentifier.osuffix: DD123\n");
+			assertEquals(facIdOutput.toString(), component.toText());
+		}
+	}
+	
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);

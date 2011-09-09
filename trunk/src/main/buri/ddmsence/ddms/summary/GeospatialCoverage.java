@@ -192,9 +192,9 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			if (verticalExtent != null)
 				element.appendChild(verticalExtent.getXOMElementCopy());
 			if (!Util.isEmpty(precedence))
-				Util.addDDMSAttribute(element, PRECEDENCE_NAME, precedence);
+				Util.addDDMSAttribute(coverageElement, PRECEDENCE_NAME, precedence);
 			if (order != null)
-				Util.addDDMSAttribute(element, ORDER_NAME, order.toString());
+				Util.addDDMSAttribute(coverageElement, ORDER_NAME, order.toString());
 
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				coverageElement.appendChild(element);
@@ -348,7 +348,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		if (getVerticalExtent() != null)
 			html.append(getVerticalExtent().toHTML(prefix));
 		html.append(buildHTMLMeta(prefix + PRECEDENCE_NAME, getPrecedence(), false));
-		html.append(buildHTMLMeta(prefix + ORDER_NAME, String.valueOf(getOrder()), false));
+		if (getOrder() != null)
+			html.append(buildHTMLMeta(prefix + ORDER_NAME, String.valueOf(getOrder()), false));
 		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}
@@ -372,7 +373,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		if (getVerticalExtent() != null)
 			text.append(getVerticalExtent().toText(prefix));
 		text.append(buildTextLine(prefix + PRECEDENCE_NAME, getPrecedence(), false));
-		text.append(buildTextLine(prefix + ORDER_NAME, String.valueOf(getOrder()), false));
+		if (getOrder() != null)
+			text.append(buildTextLine(prefix + ORDER_NAME, String.valueOf(getOrder()), false));
 		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
 	}
@@ -561,7 +563,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 				&& getPostalAddress().isEmpty()
 				&& getVerticalExtent().isEmpty()
 				&& Util.isEmpty(getPrecedence())
-				&& getOrder() != null
+				&& getOrder() == null
 				&& getSecurityAttributes().isEmpty());
 		}
 		

@@ -606,21 +606,22 @@ public class JavaConvertor {
 		int count = getVariableCount();
 		java.append("\n// ddms:geospatialCoverage\n");
 		convert(java, coverage.getSecurityAttributes());
-		
+
 		java.append("GeographicIdentifier geoId").append(count).append(" = null;\n");
 		java.append("BoundingBox boundingBox").append(count).append(" = null;\n");
 		java.append("BoundingGeometry boundingGeo").append(count).append(" = null;\n");
 		java.append("PostalAddress postalAddress").append(count).append(" = null;\n");
 		java.append("VerticalExtent vertExtent").append(count).append(" = null;\n");
-		
+
 		if (coverage.getGeographicIdentifier() != null) {
 			convert(java, count, coverage.getGeographicIdentifier());
 		}
 		if (coverage.getBoundingBox() != null) {
 			BoundingBox box = coverage.getBoundingBox();
-			java.append("boundingBox").append(count).append(" = new BoundingBox(").append(box.getWestBL().doubleValue())
-				.append(", ").append(box.getEastBL().doubleValue()).append(", ").append(box.getSouthBL().doubleValue())
-				.append(", ").append(box.getNorthBL().doubleValue()).append(");\n");
+			java.append("boundingBox").append(count).append(" = new BoundingBox(")
+				.append(box.getWestBL().doubleValue()).append(", ").append(box.getEastBL().doubleValue()).append(", ")
+				.append(box.getSouthBL().doubleValue()).append(", ").append(box.getNorthBL().doubleValue())
+				.append(");\n");
 		}
 		if (coverage.getBoundingGeometry() != null) {
 			convert(java, count, coverage.getBoundingGeometry());
@@ -635,11 +636,15 @@ public class JavaConvertor {
 				.append(vert.getMaxVerticalExtent().doubleValue()).append(", \"").append(vert.getUnitOfMeasure())
 				.append("\", \"").append(vert.getDatum()).append("\");\n");
 		}
-	java.append("GeospatialCoverage geospatialCoverage").append(count).append(" = new GeospatialCoverage(geoId")
-		.append(count).append(", boundingBox").append(count).append(", boundingGeo").append(count)
-		.append(", postalAddress").append(count).append(", vertExtent").append(count)
-		.append(", securityAttributes);\n");
-	java.append("topLevelComponents.add(geospatialCoverage").append(count).append(");\n");		
+		if (coverage.getOrder() != null)
+			java.append("Integer order").append(count).append(" = new Integer(").append(coverage.getOrder()).append(");\n");
+		else
+			java.append("Integer order").append(count).append(" = null;\n");
+		java.append("GeospatialCoverage geospatialCoverage").append(count).append(" = new GeospatialCoverage(geoId")
+			.append(count).append(", boundingBox").append(count).append(", boundingGeo").append(count)
+			.append(", postalAddress").append(count).append(", vertExtent").append(count)
+			.append(", \"").append(coverage.getPrecedence()).append("\", order, securityAttributes);\n");
+		java.append("topLevelComponents.add(geospatialCoverage").append(count).append(");\n");
 	}
 	
 	/**
