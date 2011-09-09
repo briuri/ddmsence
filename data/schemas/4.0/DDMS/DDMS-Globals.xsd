@@ -187,6 +187,23 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 			<xs:documentation>A categorization scheme whose values and use are defined by DDNI-A.</xs:documentation>
 		</xs:annotation>
 	</xs:element>
+	<xs:element name="nonStateActor" type="NonStateActorCoverageType">
+		<xs:annotation>
+			<xs:documentation>Non-state actors that are within the scope of coverage for the described item.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="NonStateActorCoverageType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="order" type="xs:int" use="optional">
+					<xs:annotation>
+						<xs:appinfo xml:lang="en">Specifies a user-defined order of an element within the given document. All elements in the document which specify the order attribute should be interpreted as entries in a single, ordered list even though they may appear on different elements.Values must be sequential, starting at 1, and may not contain duplicates.</xs:appinfo>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
 	<xs:complexType name="ProductionMetricType">
 		<xs:attribute name="subject" type="xs:string" use="required">
 			<xs:annotation>
@@ -691,6 +708,7 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 			<xs:element ref="category"/>
 			<xs:element ref="keyword"/>
 			<xs:element ref="productionMetric"/>
+			<xs:element ref="nonStateActor"/>
 		</xs:choice>
 		<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
 	</xs:complexType>

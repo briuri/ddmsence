@@ -71,6 +71,7 @@ import buri.ddmsence.ddms.summary.GeographicIdentifier;
 import buri.ddmsence.ddms.summary.GeospatialCoverage;
 import buri.ddmsence.ddms.summary.Keyword;
 import buri.ddmsence.ddms.summary.Link;
+import buri.ddmsence.ddms.summary.NonStateActor;
 import buri.ddmsence.ddms.summary.PostalAddress;
 import buri.ddmsence.ddms.summary.ProductionMetric;
 import buri.ddmsence.ddms.summary.RelatedResource;
@@ -343,6 +344,16 @@ public class Escort {
 				return (new ProductionMetric(subject, coverage, attr));
 			}
 		});
+		BUILDERS.put(NonStateActor.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String value = readString("the value [testValue]");
+				int order = readInt("the order [1]");
+				String classification = readString("the nonStateActor's classification [U]");
+				String ownerProducers = readString("the nonStateActor's ownerProducers as a space-delimited string [USA]");
+				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				return (new NonStateActor(value, Integer.valueOf(order), attr));
+			}
+		});
 		BUILDERS.put(SubjectCoverage.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				int numKeywords = readInt("the number of keywords to include [1]");
@@ -367,10 +378,15 @@ public class Escort {
 					println("* ProductionMetric #" + (i + 1));
 					metrics.add((ProductionMetric) inputLoop(ProductionMetric.class));
 				}
+				List<NonStateActor> actors = new ArrayList<NonStateActor>();
+				for (int i = 0; i < numMetrics; i++) {
+					println("* NonStateActor #" + (i + 1));
+					actors.add((NonStateActor) inputLoop(NonStateActor.class));
+				}
 				String classification = readString("the subject classification [U]");
 				String ownerProducers = readString("the subject's ownerProducers as a space-delimited string [USA]");
 				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new SubjectCoverage(keywords, categories, metrics, null, attr));
+				return (new SubjectCoverage(keywords, categories, metrics, actors, attr));
 			}		
 		});
 		BUILDERS.put(TemporalCoverage.class, new IComponentBuilder() {

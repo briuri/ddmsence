@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 09/08/2011</p>
+<p align="right"><b>Last Update:</b> 09/09/2011</p>
 
 <a name="top"></a><h1>Relational Database Model for DDMS</h1>
 
@@ -81,6 +81,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsGeospatialCoverage">ddmsGeospatialCoverage</a></li>
 				<li><a href="#ddmsKeyword">ddmsKeyword</a></li>
 				<li><a href="#ddmsLink">ddmsLink</a></li>
+				<li><a href="#ddmsNonStateActor">ddmsNonStateActor</a></li>
 				<li><a href="#ddmsPostalAddress">ddmsPostalAddress</a></li>
 				<li><a href="#ddmsProductionMetric">ddmsProductionMetric</a></li>
 				<li><a href="#ddmsRelatedResource">ddmsRelatedResource</a></li>
@@ -1436,6 +1437,57 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>
 </table>
 
+<a name="ddmsNonStateActor"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsNonStateActor</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#subjectCoverage_Subject_nonStateActor"><code>ddms:nonStateActor</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/summary/NonStateActor.html">NonStateActor</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			No other notes.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent subjectCoverage element</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the value of the child text</td>
+	</tr>
+<tr class="relRow">
+		<td class="relField">order</td><td class="relRules">integer</td><td>the order of this nonStateActor</td>
+	</tr>
+</table>
+
 <a name="ddmsPostalAddress"></a><table class="rel">
 	<tr>
 		<th class="relName" colspan="3">ddmsPostalAddress</th>
@@ -1785,9 +1837,10 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsCategory">ddmsCategory</a> or
-			<a href="#ddmsKeyword">ddmsKeyword</a> or
-			<a href="#ddmsProductionMetric">ddmsProductionMetric</a>
+			<a href="#ddmsCategory">ddmsCategory</a>,
+			<a href="#ddmsKeyword">ddmsKeyword</a>,
+			<a href="#ddmsProductionMetric">ddmsProductionMetric</a>, or
+			<a href="#ddmsNonStateActor">ddmsNonStateActor</a>
 		</td>
 	</tr>
 	<tr class="relRow">

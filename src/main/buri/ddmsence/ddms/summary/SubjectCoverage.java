@@ -58,6 +58,8 @@ import buri.ddmsence.util.Util;
  * <u>ddms:keyword</u>: a keyword (0-many optional), implemented as a {@link Keyword}<br />
  * <u>ddms:productionMetric</u>: a categorization scheme whose values and use are defined by DDNI-A. (0-many optional,
  * starting in DDMS 4.0), implemented as a {@link ProductionMetric}<br />
+ * <u>ddms:nonStateActor</u>: a non-state actor within the scope of this coverage (0-many optional, starting in DDMS 
+ * 4.0), implemented as a {@link NonStateActor}<br />
  * <p>At least 1 of category or keyword must be used.</p>
  * </td></tr></table>
  * 
@@ -82,6 +84,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	private List<Keyword> _cachedKeywords;
 	private List<Category> _cachedCategories;
 	private List<ProductionMetric> _cachedProductionMetrics;
+	private List<NonStateActor> _cachedNonStateActors;
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	
 	private static final String SUBJECT_NAME = "Subject";
@@ -100,6 +103,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			_cachedKeywords = new ArrayList<Keyword>();
 			_cachedCategories = new ArrayList<Category>();
 			_cachedProductionMetrics = new ArrayList<ProductionMetric>();
+			_cachedNonStateActors = new ArrayList<NonStateActor>();
 			if (subjectElement != null) {
 				Elements keywords = subjectElement.getChildElements(Keyword.getName(getDDMSVersion()),
 					subjectElement.getNamespaceURI());
@@ -115,6 +119,11 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 					subjectElement.getNamespaceURI());
 				for (int i = 0; i < metrics.size(); i++) {
 					_cachedProductionMetrics.add(new ProductionMetric(metrics.get(i)));
+				}
+				Elements actors = subjectElement.getChildElements(NonStateActor.getName(getDDMSVersion()),
+					subjectElement.getNamespaceURI());
+				for (int i = 0; i < actors.size(); i++) {
+					_cachedNonStateActors.add(new NonStateActor(actors.get(i)));
 				}
 			}
 			_cachedSecurityAttributes = new SecurityAttributes(element);
@@ -150,7 +159,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public SubjectCoverage(List<Keyword> keywords, List<Category> categories, List<ProductionMetric> productionMetrics,
-		List<String> nonStateActors, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		List<NonStateActor> nonStateActors, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			if (keywords == null)
 				keywords = Collections.emptyList();
@@ -173,6 +182,9 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			for (ProductionMetric metric : productionMetrics) {
 				subjectElement.appendChild(metric.getXOMElementCopy());
 			}
+			for (NonStateActor actor : nonStateActors) {
+				subjectElement.appendChild(actor.getXOMElementCopy());
+			}
 
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				element.appendChild(subjectElement);
@@ -180,6 +192,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			_cachedKeywords = keywords;
 			_cachedCategories = categories;
 			_cachedProductionMetrics = productionMetrics;
+			_cachedNonStateActors = nonStateActors;
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
 			_cachedSecurityAttributes.addTo(element);
@@ -196,7 +209,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 of "Keyword" or "Category" must exist.</li>
-	 * <li>The DDMS Version of the Keywords and Categories is the same as the SubjectCoverage.</li>
+	 * <li>The DDMS Version of the Keywords, Categories, ProductionMetrics, and NonStateActors is the same as the 
+	 * SubjectCoverage.</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
@@ -217,6 +231,10 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			Util.requireCompatibleVersion(this, keyword);
 		for (Category category : getCategories())
 			Util.requireCompatibleVersion(this, category);
+		for (ProductionMetric metric : getProductionMetrics())
+			Util.requireCompatibleVersion(this, metric);
+		for (NonStateActor actor : getNonStateActors())
+			Util.requireCompatibleVersion(this, actor);
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
@@ -233,7 +251,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * <li>1 or more keywords have the same value.</li>
 	 * <li>1 or more categories have the same value.</li>
 	 * <li>1 or more productionMetrics have the same value.</li>
-	 * <li>Include any validation warnings from the security attributes, keywords, metrics, or categories.</li>
+	 * <li>Include any validation warnings from the security attributes, keywords, categories, metrics, or actors.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
@@ -253,6 +271,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			addWarnings(category.getValidationWarnings(), false);
 		for (ProductionMetric metric : getProductionMetrics())
 			addWarnings(metric.getValidationWarnings(), false);
+		for (NonStateActor actor : getNonStateActors())
+			addWarnings(actor.getValidationWarnings(), false);
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	
@@ -278,6 +298,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			html.append(category.toHTML(prefix));
 		for (ProductionMetric metric : getProductionMetrics())
 			html.append(metric.toHTML(prefix));
+		for (NonStateActor actor : getNonStateActors())
+			html.append(actor.toHTML(prefix));
 		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 
@@ -297,6 +319,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			text.append(category.toText(prefix));
 		for (ProductionMetric metric : getProductionMetrics())
 			text.append(metric.toText(prefix));
+		for (NonStateActor actor : getNonStateActors())
+			text.append(actor.toText(prefix));
 		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
 	}
@@ -310,7 +334,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		SubjectCoverage test = (SubjectCoverage) obj;
 		return (Util.listEquals(getKeywords(), test.getKeywords())
 			&& Util.listEquals(getCategories(), test.getCategories())
-			&& Util.listEquals(getProductionMetrics(), test.getProductionMetrics()) 
+			&& Util.listEquals(getProductionMetrics(), test.getProductionMetrics())
+			&& Util.listEquals(getNonStateActors(), test.getNonStateActors())
 			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
 	}
 
@@ -322,6 +347,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		result = 7 * result + getKeywords().hashCode();
 		result = 7 * result + getCategories().hashCode();
 		result = 7 * result + getProductionMetrics().hashCode();
+		result = 7 * result + getNonStateActors().hashCode();
 		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
@@ -373,6 +399,15 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
+	 * Accessor for the non-state actors (0 to many).
+	 * 
+	 * @return unmodifiable List
+	 */
+	public List<NonStateActor> getNonStateActors() {
+		return (Collections.unmodifiableList(_cachedNonStateActors));
+	}
+	
+	/**
 	 * Accessor for the Security Attributes.  Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
@@ -391,6 +426,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		private List<Keyword.Builder> _keywords;
 		private List<Category.Builder> _categories;
 		private List<ProductionMetric.Builder> _productionMetrics;
+		private List<NonStateActor.Builder> _nonStateActors;
 		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
@@ -408,6 +444,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 				getCategories().add(new Category.Builder(category));
 			for (ProductionMetric metric : coverage.getProductionMetrics())
 				getProductionMetrics().add(new ProductionMetric.Builder(metric));
+			for (NonStateActor actor : coverage.getNonStateActors())
+				getNonStateActors().add(new NonStateActor.Builder(actor));
 			setSecurityAttributes(new SecurityAttributes.Builder(coverage.getSecurityAttributes()));
 		}
 		
@@ -435,7 +473,13 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 				if (metric != null)
 					metrics.add(metric);
 			}
-			return (new SubjectCoverage(keywords, categories, metrics, null, getSecurityAttributes().commit()));
+			List<NonStateActor> actors = new ArrayList<NonStateActor>();
+			for (NonStateActor.Builder builder : getNonStateActors()) {
+				NonStateActor actor = builder.commit();
+				if (actor != null)
+					actors.add(actor);
+			}
+			return (new SubjectCoverage(keywords, categories, metrics, actors, getSecurityAttributes().commit()));
 		}
 		
 		/**
@@ -459,6 +503,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			list.addAll(getKeywords());
 			list.addAll(getCategories());
 			list.addAll(getProductionMetrics());
+			list.addAll(getNonStateActors());
 			return (list);
 		}
 		
@@ -487,6 +532,15 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			if (_productionMetrics == null)
 				_productionMetrics = new LazyList(ProductionMetric.Builder.class);			
 			return _productionMetrics;
+		}
+		
+		/**
+		 * Builder accessor for the non-state actors in this coverage.
+		 */
+		public List<NonStateActor.Builder> getNonStateActors() {
+			if (_nonStateActors == null)
+				_nonStateActors = new LazyList(NonStateActor.Builder.class);			
+			return _nonStateActors;
 		}
 		
 		/**

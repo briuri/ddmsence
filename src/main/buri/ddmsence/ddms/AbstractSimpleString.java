@@ -63,15 +63,16 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	 * @param name the name of the element without a prefix
 	 * @param value the value of the element's child text
 	 * @param attributes the security attributes
+	 * @param validateNow true if the component should be validated here
 	 */
-	protected AbstractSimpleString(String name, String value, SecurityAttributes attributes)
+	protected AbstractSimpleString(String name, String value, SecurityAttributes attributes, boolean validateNow)
 		throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(name, value);
 			_cachedSecurityAttributes = attributes;
 			if (attributes != null)
 				attributes.addTo(element);
-			setXOMElement(element, true);
+			setXOMElement(element, validateNow);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);

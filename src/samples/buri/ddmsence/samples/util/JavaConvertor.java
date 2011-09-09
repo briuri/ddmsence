@@ -50,6 +50,7 @@ import buri.ddmsence.ddms.summary.GeographicIdentifier;
 import buri.ddmsence.ddms.summary.GeospatialCoverage;
 import buri.ddmsence.ddms.summary.Keyword;
 import buri.ddmsence.ddms.summary.Link;
+import buri.ddmsence.ddms.summary.NonStateActor;
 import buri.ddmsence.ddms.summary.PostalAddress;
 import buri.ddmsence.ddms.summary.ProductionMetric;
 import buri.ddmsence.ddms.summary.RelatedResource;
@@ -549,6 +550,13 @@ public class JavaConvertor {
 			convert(java, metric.getSecurityAttributes());
 			java.append("metrics").append(count).append(".add(new ProductionMetric(\"").append(metric.getSubject())
 				.append("\", \"").append(metric.getCoverage()).append("\", securityAttributes));\n");
+		}
+		java.append("List<NonStateActor> actors").append(count).append(" = new ArrayList<NonStateActor>();\n");
+		for (NonStateActor actor : subjectCoverage.getNonStateActors()) {
+			convert(java, actor.getSecurityAttributes());
+			String order = (actor.getOrder() ==  null ? "null" : "new Integer(\"" + actor.getOrder() + "\")");
+			java.append("actors").append(count).append(".add(new NonStateActor(\"").append(actor.getValue())
+				.append("\", ").append(order).append(", securityAttributes));\n");
 		}
 		convert(java, subjectCoverage.getSecurityAttributes());
 		java.append("SubjectCoverage subjectCoverage").append(count)

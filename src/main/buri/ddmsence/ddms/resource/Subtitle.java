@@ -74,7 +74,7 @@ public final class Subtitle extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Subtitle(String subtitle, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(Subtitle.getName(DDMSVersion.getCurrentVersion()), subtitle, securityAttributes);
+		super(Subtitle.getName(DDMSVersion.getCurrentVersion()), subtitle, securityAttributes, true);
 	}
 
 	/**

@@ -169,7 +169,7 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 	 * 
 	 * @see IBuilder
 	 * @author Brian Uri!
-	 * @since 1.8.0
+	 * @since 2.0.0
 	 */
 	public static class Builder extends AbstractQualifierValue.Builder {
 		private static final long serialVersionUID = 2136329013144660166L;
