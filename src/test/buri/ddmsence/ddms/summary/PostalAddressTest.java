@@ -25,7 +25,6 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -155,8 +154,7 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting, boolean hasState) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:postalAddress xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
-			.append("\">\n\t");
+		xml.append("<ddms:postalAddress ").append(getXmlnsDDMS()).append(">\n\t");
 		xml.append("<ddms:street>1600 Pennsylvania Avenue, NW</ddms:street>\n\t");
 		xml.append("<ddms:city>Washington</ddms:city>\n\t");
 		if (hasState)
@@ -284,10 +282,9 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(PostalAddress.getName(version), null);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A completely empty ddms:postalAddress element was found.", component.getValidationWarnings()
-				.get(0).getText());
-			assertEquals("/ddms:postalAddress", component.getValidationWarnings().get(0).getLocator());
+			String text = "A completely empty ddms:postalAddress element was found.";
+			String locator = "ddms:postalAddress";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 

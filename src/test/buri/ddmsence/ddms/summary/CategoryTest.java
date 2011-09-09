@@ -137,7 +137,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:category ").append(getXmlnsDDMS()).append(" ");
 		if (version.isAtLeast("4.0")) {
-			xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
+			xml.append(getXmlnsISM()).append(" ");
 		}
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ");
 		xml.append("ddms:code=\"").append(TEST_CODE).append("\" ");

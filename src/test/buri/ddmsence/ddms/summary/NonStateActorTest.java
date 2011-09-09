@@ -22,7 +22,6 @@ package buri.ddmsence.ddms.summary;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -115,8 +114,7 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:nonStateActor ").append(getXmlnsDDMS()).append(" ");
-		xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ");
+		xml.append(getXmlnsISM()).append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ");
 		xml.append("ddms:order=\"").append(TEST_ORDER).append("\"");
 		xml.append(">").append(TEST_VALUE).append("</ddms:nonStateActor>");
 		return (xml.toString());
@@ -209,9 +207,9 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(NonStateActor.getName(version), null);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-			assertEquals("A ddms:nonStateActor element was found with no value.", component.getValidationWarnings().get(0).getText());
-			assertEquals("/ddms:nonStateActor", component.getValidationWarnings().get(0).getLocator());
+			String text = "A ddms:nonStateActor element was found with no value.";
+			String locator = "ddms:nonStateActor";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 

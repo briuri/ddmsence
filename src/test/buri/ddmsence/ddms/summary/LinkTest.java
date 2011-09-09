@@ -144,9 +144,9 @@ public class LinkTest extends AbstractComponentTestCase {
 	 * Returns the expected XML output for this unit test
 	 */
 	private String getExpectedXMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:link xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
-			.append("\" xmlns:xlink=\"").append(DDMSVersion.getCurrentVersion().getXlinkNamespace()).append("\" ");
+		xml.append("<ddms:link ").append(getXmlnsDDMS()).append(" xmlns:xlink=\"").append(version.getXlinkNamespace()).append("\" ");
 		xml.append("xlink:type=\"").append(TEST_TYPE).append("\" ");
 		xml.append("xlink:href=\"").append(TEST_HREF).append("\" ");
 		xml.append("xlink:role=\"").append(TEST_ROLE).append("\" ");

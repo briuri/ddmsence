@@ -158,8 +158,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:boundingBox xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
-			.append("\">\n\t");
+		xml.append("<ddms:boundingBox ").append(getXmlnsDDMS()).append(">\n\t");
 		xml.append("<ddms:").append(getWestBLName()).append(">").append(TEST_WEST).append("</ddms:")
 			.append(getWestBLName()).append(">\n\t");
 		xml.append("<ddms:").append(getEastBLName()).append(">").append(TEST_EAST).append("</ddms:")

@@ -120,16 +120,13 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 			return ("geospatialCoverage classification: U\ngeospatialCoverage ownerProducer: USA\n");
 		return ("");
 	}
-
+	
 	/**
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();		
-		String prefix = "geospatialCoverage.";
-		if (!version.isAtLeast("4.0"))
-			prefix += "GeospatialExtent.";
-		
+		String prefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		StringBuffer html = new StringBuffer();
 		html.append(GeographicIdentifierTest.getCountryCodeBasedFixture().toHTML(prefix));
 		if (version.isAtLeast("4.0")) {
@@ -146,10 +143,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String prefix = "geospatialCoverage.";
-		if (!version.isAtLeast("4.0"))
-			prefix += "GeospatialExtent.";
-		
+		String prefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";		
 		StringBuffer text = new StringBuffer();
 		text.append(GeographicIdentifierTest.getCountryCodeBasedFixture().toText(prefix));
 		if (version.isAtLeast("4.0")) {
@@ -169,12 +163,11 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:geospatialCoverage xmlns:ddms=\"").append(version.getNamespace()).append("\"");
+		xml.append("<ddms:geospatialCoverage ").append(getXmlnsDDMS());
 		if (version.isAtLeast("3.0")) {
-			xml.append(" xmlns:ISM=\"").append(version.getIsmNamespace()).append("\" ");
-			if (version.isAtLeast("4.0")) {
+			xml.append(" ").append(getXmlnsISM()).append(" ");
+			if (version.isAtLeast("4.0"))
 				xml.append("ddms:precedence=\"Primary\" ddms:order=\"1\" ");
-			}
 			xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n\t");

@@ -140,8 +140,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:verticalExtent xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
-			.append("\" ");
+		xml.append("<ddms:verticalExtent ").append(getXmlnsDDMS()).append(" ");
 		xml.append("ddms:unitOfMeasure=\"").append(TEST_UOM).append("\" ");
 		xml.append("ddms:datum=\"").append(TEST_DATUM).append("\">\n\t");
 		xml.append("<ddms:").append(getMinVerticalExtentName()).append(">").append(TEST_MIN).append("</ddms:")
