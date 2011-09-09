@@ -1325,6 +1325,12 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
 	</tr>
+	<tr class="relRow">
+		<td class="relField">precedence</td><td class="relRules">string</td><td>the precedence of this geospatial coverage, related to country codes (DDMS 4.0)</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">order</td><td class="relRules">integer</td><td>the order of this coverage (DDMS 4.0)</td>
+	</tr>
 </table>
 
 <a name="ddmsKeyword"></a><table class="rel">
@@ -1483,8 +1489,8 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the value of the child text</td>
 	</tr>
-<tr class="relRow">
-		<td class="relField">order</td><td class="relRules">integer</td><td>the order of this nonStateActor</td>
+	<tr class="relRow">
+		<td class="relField">order</td><td class="relRules">integer</td><td>the order of this nonStateActor (DDMS 4.0)</td>
 	</tr>
 </table>
 

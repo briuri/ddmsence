@@ -40,6 +40,16 @@
       <xs:element ref="postalAddress" />
       <xs:element ref="verticalExtent" />
     </xs:choice>
+	<xs:attribute name="precedence" type="xs:string" use="optional">
+		<xs:annotation>
+			<xs:documentation>Priority claimed or received as a result of preeminence.  When used on the element CountryCode, this attribute is used to distinguish the primary focus when an intelligence product covers two or more countries. Permissible values are Primary, Secondary.</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="order" type="xs:int" use="optional">
+		<xs:annotation>
+			<xs:documentation>Specifies a user-defined order of an element within the given document. All elements in the document which specify the order attribute should be interpreted as entries in a single, ordered list even though they may appear on different elements.Values must be sequential, starting at 1, and may not contain duplicates.</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
     <xs:attributeGroup ref="SecurityAttributesOptionGroup" />
   </xs:complexType>
   <!-- =====================================================================
