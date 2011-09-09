@@ -49,7 +49,7 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	 * Returns a subDivisionCode fixture
 	 */
 	protected static SubDivisionCode getFixture() throws InvalidDDMSException {
-		return (new SubDivisionCode("ISO-3166", "USA"));
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new SubDivisionCode("ISO-3166", "USA") : null);
 	}
 
 	/**
@@ -115,10 +115,8 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subDivisionCode xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
-			.append("\" ");
-		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
-			.append("\" />");
+		xml.append("<ddms:subDivisionCode ").append(getXmlnsDDMS()).append(" ddms:qualifier=\"").append(TEST_QUALIFIER)
+			.append("\" ddms:value=\"").append(TEST_VALUE).append("\" />");
 		return (xml.toString());
 	}
 
