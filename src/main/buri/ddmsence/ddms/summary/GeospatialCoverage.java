@@ -326,7 +326,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		return (ValidationMessage.ELEMENT_PREFIX + getXOMElement().getNamespacePrefix() + ":" + GEOSPATIAL_EXTENT_NAME);
+		return (getDDMSVersion().isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX
+			+ getXOMElement().getNamespacePrefix() + ":" + GEOSPATIAL_EXTENT_NAME);
 	}
 	
 	/**
