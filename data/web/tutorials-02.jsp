@@ -41,11 +41,13 @@ However, this is not a default value (hitting Enter will answer the question wit
 In FAST mode, Escort will only ask you to create top-level components which are required for a valid 
 Resource.
 In COMPLETE mode, Escort will let you create all of the top-level components.
-Would you like to run in FAST mode? [Y/N]:</pre>
+Would you like to run in FAST mode? [Y/N]:
+Would you like to use dummy security attributes, Unclassified/USA, throughout the resource? [Y/N]</pre>
 <p class="figure">Figure 1. Starting the Wizard</p>
 
 <p>The wizard will walk you through each top-level component of a DDMS Resource. Each component you create must be valid before you can proceed to the
-next one. This process could be lengthy, so I suggest that you do your first run-through in FAST mode.</p>
+next one. This process could be lengthy, so I suggest that you do your first run-through in FAST mode. The second question gives you the option of filling in a
+dummy security classification and ownerProducer instead of prompting you for a value on each component.</p>
 
 <p>First, let's try creating an invalid Identifier. The DDMS specification states that the qualifier must be a valid URI. Type in "<code>:::::</code>" as
 a qualifier and "<code>test</code>" as a value.</p>
