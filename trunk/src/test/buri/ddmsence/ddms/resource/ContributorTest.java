@@ -69,7 +69,8 @@ public class ContributorTest extends AbstractComponentTestCase {
 	 * Helper methdo to insert a POCType when testing 4.0.
 	 */
 	private String getPOCTypeFixture() {
-		return (isDDMS40OrGreater() ? TEST_POC_TYPE : "");
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		return (version.isAtLeast("4.0") ? TEST_POC_TYPE : "");
 	}
 
 	/**
@@ -107,10 +108,11 @@ public class ContributorTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String contributorName = Contributor.getName(DDMSVersion.getCurrentVersion());
 		StringBuffer html = new StringBuffer();
 		html.append(getEntityFixture().toHTML(contributorName + "."));
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			html.append("<meta name=\"").append(contributorName).append(".POCType\" content=\"ICD-710\" />\n");
 		}
 		html.append("<meta name=\"").append(contributorName).append(".classification\" content=\"U\" />\n");
@@ -122,10 +124,11 @@ public class ContributorTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String contributorName = Contributor.getName(DDMSVersion.getCurrentVersion());
 		StringBuffer text = new StringBuffer();
 		text.append(getEntityFixture().toText(contributorName + " "));
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			text.append("POCType: ICD-710\n");
 		}
 		text.append(contributorName).append(" classification: U\n");
@@ -143,7 +146,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:contributor xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
 		xml.append("xmlns:ISM=\"").append(version.getIsmNamespace()).append("\"");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			xml.append(" ddms:POCType=\"ICD-710\"");
 		}
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:")

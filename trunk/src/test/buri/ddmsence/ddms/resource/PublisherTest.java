@@ -69,7 +69,8 @@ public class PublisherTest extends AbstractComponentTestCase {
 	 * Helper methdo to insert a POCType when testing 4.0.
 	 */
 	private String getPOCTypeFixture() {
-		return (isDDMS40OrGreater() ? TEST_POC_TYPE : "");
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		return (version.isAtLeast("4.0") ? TEST_POC_TYPE : "");
 	}
 
 	/**
@@ -111,7 +112,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 		String pubName = Publisher.getName(version);
 		StringBuffer html = new StringBuffer();
 		html.append(getEntityFixture().toHTML(pubName + "."));
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			html.append("<meta name=\"").append(pubName).append(".POCType\" content=\"ICD-710\" />\n");
 		}
 		html.append("<meta name=\"").append(pubName).append(".classification\" content=\"U\" />\n");
@@ -127,7 +128,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 		String pubName = Publisher.getName(version);
 		StringBuffer text = new StringBuffer();
 		text.append(getEntityFixture().toText(pubName + " "));
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			text.append("POCType: ICD-710\n");
 		}
 		text.append(pubName).append(" classification: U\n");
@@ -145,7 +146,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		xml.append("<ddms:publisher xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
 		xml.append("xmlns:ISM=\"").append(version.getIsmNamespace()).append("\"");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			xml.append(" ddms:POCType=\"ICD-710\"");
 		}
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(Service.getName(version)).append(">\n");

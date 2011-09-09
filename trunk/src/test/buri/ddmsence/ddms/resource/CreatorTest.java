@@ -69,7 +69,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 	 * Helper methdo to insert a POCType when testing 4.0.
 	 */
 	private String getPOCTypeFixture() {
-		return (isDDMS40OrGreater() ? TEST_POC_TYPE : "");
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		return (version.isAtLeast("4.0") ? TEST_POC_TYPE : "");
 	}
 
 	/**
@@ -107,10 +108,11 @@ public class CreatorTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String creatorName = Creator.getName(DDMSVersion.getCurrentVersion());
 		StringBuffer html = new StringBuffer();
 		html.append(getEntityFixture().toHTML(creatorName + "."));
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			html.append("<meta name=\"").append(creatorName).append(".POCType\" content=\"ICD-710\" />\n");
 		}
 		html.append("<meta name=\"").append(creatorName).append(".classification\" content=\"U\" />\n");
@@ -122,10 +124,11 @@ public class CreatorTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String creatorName = Creator.getName(DDMSVersion.getCurrentVersion());
 		StringBuffer text = new StringBuffer();
 		text.append(getEntityFixture().toText(creatorName + " "));
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			text.append("POCType: ICD-710\n");
 		}
 		text.append(creatorName).append(" classification: U\n");
@@ -143,7 +146,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:creator xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
 		xml.append("xmlns:ISM=\"").append(version.getIsmNamespace()).append("\"");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			xml.append(" ddms:POCType=\"ICD-710\"");
 		}
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:")
@@ -151,7 +154,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 		xml.append("\t\t<ddms:name>Brian</ddms:name>\n");
 		xml.append("\t\t<ddms:name>BU</ddms:name>\n");
 		xml.append("\t\t<ddms:surname>Uri</ddms:surname>\n");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			xml.append("\t\t<ddms:phone>703-885-1000</ddms:phone>\n");
 			xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
 			xml.append("\t\t<ddms:userID>123</ddms:userID>\n");

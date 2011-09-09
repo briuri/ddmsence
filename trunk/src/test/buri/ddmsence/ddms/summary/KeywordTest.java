@@ -78,9 +78,10 @@ public class KeywordTest extends AbstractComponentTestCase {
 	 * @return a valid object
 	 */
 	private Keyword testConstructor(boolean expectFailure, String value) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Keyword component = null;
 		try {
-			component = new Keyword(value, isDDMS40OrGreater() ? SecurityAttributesTest.getFixture(false) : null);
+			component = new Keyword(value, version.isAtLeast("4.0") ? SecurityAttributesTest.getFixture(false) : null);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -92,9 +93,10 @@ public class KeywordTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"keyword\" content=\"").append(TEST_VALUE).append("\" />\n");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			html.append("<meta name=\"keyword.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"keyword.ownerProducer\" content=\"USA\" />\n");
 		}
@@ -105,9 +107,10 @@ public class KeywordTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
 		text.append("keyword: ").append(TEST_VALUE).append("\n");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			text.append("keyword classification: U\n");
 			text.append("keyword ownerProducer: USA\n");
 		}
@@ -118,13 +121,14 @@ public class KeywordTest extends AbstractComponentTestCase {
 	 * Returns the expected XML output for this unit test
 	 */
 	private String getExpectedXMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:keyword xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
 		}
 		xml.append("ddms:value=\"").append(TEST_VALUE).append("\"");
-		if (isDDMS40OrGreater()) {
+		if (version.isAtLeast("4.0")) {
 			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		}
 		xml.append(" />");

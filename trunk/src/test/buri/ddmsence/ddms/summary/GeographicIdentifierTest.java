@@ -121,12 +121,13 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML output for this unit test
 	 */
 	private String getExpectedHTMLOutput() throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer html = new StringBuffer();
 		html.append("<meta name=\"geographicIdentifier.name\" content=\"").append(TEST_NAMES.get(0)).append("\" />\n");
 		html.append("<meta name=\"geographicIdentifier.region\" content=\"").append(TEST_REGIONS.get(0))
 			.append("\" />\n");
 		html.append(CountryCodeTest.getFixture().toHTML("geographicIdentifier."));
-		if (isDDMS40OrGreater())
+		if (version.isAtLeast("4.0"))
 			html.append(SubDivisionCodeTest.getFixture().toHTML("geographicIdentifier."));
 		return (html.toString());
 	}
@@ -135,11 +136,12 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	 * Returns the expected Text output for this unit test
 	 */
 	private String getExpectedTextOutput() throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
 		text.append("geographicIdentifier.name: ").append(TEST_NAMES.get(0)).append("\n");
 		text.append("geographicIdentifier.region: ").append(TEST_REGIONS.get(0)).append("\n");
 		text.append(CountryCodeTest.getFixture().toText("geographicIdentifier."));
-		if (isDDMS40OrGreater())
+		if (version.isAtLeast("4.0"))
 			text.append(SubDivisionCodeTest.getFixture().toText("geographicIdentifier."));
 		return (text.toString());
 	}
@@ -150,13 +152,14 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:geographicIdentifier xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace())
 			.append("\">\n\t");
 		xml.append("<ddms:name>The White House</ddms:name>\n\t");
 		xml.append("<ddms:region>Mid-Atlantic States</ddms:region>\n\t");
 		xml.append("<ddms:countryCode ddms:qualifier=\"ISO-3166\" ddms:value=\"USA\" />\n");
-		if (isDDMS40OrGreater())
+		if (version.isAtLeast("4.0"))
 			xml.append("\t<ddms:subDivisionCode ddms:qualifier=\"ISO-3166\" ddms:value=\"USA\" />\n");
 		xml.append("</ddms:geographicIdentifier>");
 		return (formatXml(xml.toString(), preserveFormatting));
@@ -198,7 +201,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			element.appendChild(CountryCodeTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 
-			if (isDDMS40OrGreater()) {
+			if (version.isAtLeast("4.0")) {
 				element = Util.buildDDMSElement(geoIdName, null);
 				element.appendChild(SubDivisionCodeTest.getFixture().getXOMElementCopy());
 				testConstructor(WILL_SUCCEED, element);
@@ -212,8 +215,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			SubDivisionCode subCode = isDDMS40OrGreater() ? SubDivisionCodeTest.getFixture() : null;
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			SubDivisionCode subCode = version.isAtLeast("4.0") ? SubDivisionCodeTest.getFixture() : null;
 
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS,
@@ -224,7 +227,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, null, TEST_REGIONS, null, null, null);
 			testConstructor(WILL_SUCCEED, null, null,
 				CountryCodeTest.getFixture(), null, null);
-			if (isDDMS40OrGreater())
+			if (version.isAtLeast("4.0"))
 				testConstructor(WILL_SUCCEED, null, null, null, subCode, null);
 			testConstructor(WILL_SUCCEED, null, null, null, null, FacilityIdentifierTest.getFixture());
 		}
@@ -246,7 +249,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 subDivisionCode
-			if (isDDMS40OrGreater()) {
+			if (version.isAtLeast("4.0")) {
 				element = Util.buildDDMSElement(geoIdName, null);
 				element.appendChild(SubDivisionCodeTest.getFixture().getXOMElementCopy());
 				element.appendChild(SubDivisionCodeTest.getFixture().getXOMElementCopy());
@@ -287,7 +290,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			SubDivisionCode subCode = isDDMS40OrGreater() ? SubDivisionCodeTest.getFixture() : null;
+			SubDivisionCode subCode = version.isAtLeast("4.0") ? SubDivisionCodeTest.getFixture() : null;
 
 			GeographicIdentifier elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			GeographicIdentifier dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS,
@@ -310,8 +313,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			SubDivisionCode subCode = isDDMS40OrGreater() ? SubDivisionCodeTest.getFixture() : null;
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			SubDivisionCode subCode = version.isAtLeast("4.0") ? SubDivisionCodeTest.getFixture() : null;
 
 			GeographicIdentifier elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			GeographicIdentifier dataComponent = testConstructor(WILL_SUCCEED, null, TEST_REGIONS,
@@ -325,7 +328,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, null, subCode, null);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			if (isDDMS40OrGreater()) {
+			if (version.isAtLeast("4.0")) {
 				dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS,
 					CountryCodeTest.getFixture(), null, null);
 				assertFalse(elementComponent.equals(dataComponent));
@@ -347,8 +350,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			SubDivisionCode subCode = isDDMS40OrGreater() ? SubDivisionCodeTest.getFixture() : null;
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			SubDivisionCode subCode = version.isAtLeast("4.0") ? SubDivisionCodeTest.getFixture() : null;
 
 			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
@@ -372,8 +375,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			SubDivisionCode subCode = isDDMS40OrGreater() ? SubDivisionCodeTest.getFixture() : null;
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			SubDivisionCode subCode = version.isAtLeast("4.0") ? SubDivisionCodeTest.getFixture() : null;
 
 			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
@@ -397,8 +400,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			SubDivisionCode subCode = isDDMS40OrGreater() ? SubDivisionCodeTest.getFixture() : null;
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			SubDivisionCode subCode = version.isAtLeast("4.0") ? SubDivisionCodeTest.getFixture() : null;
 
 			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
@@ -420,9 +423,9 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 
 	public void testSubDivisionCodeReuse() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
-			if (!isDDMS40OrGreater())
+			if (!version.isAtLeast("4.0"))
 				continue;
 
 			SubDivisionCode code = SubDivisionCodeTest.getFixture();
