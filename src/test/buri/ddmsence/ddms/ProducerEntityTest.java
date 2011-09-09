@@ -39,6 +39,15 @@ import buri.ddmsence.util.Util;
  */
 public class ProducerEntityTest extends TestCase {
 
+	private static final String TEST_POC_TYPE = "ICD-710";
+
+	/**
+	 * Helper method to generate a POCType for producers
+	 */
+	public static String getPOCType() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? TEST_POC_TYPE : "");
+	}
+
 	public void testSameVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		Organization org = new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null);

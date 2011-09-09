@@ -26,8 +26,6 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ValidationMessage;
-import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -59,26 +57,12 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Generates a set of suborganizations for testing.
-	 */
-	private List<SubOrganization> getSubOrganizationFixture() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		if (!version.isAtLeast("4.0"))
-			return (null);
-		List<SubOrganization> subOrgs = new ArrayList<SubOrganization>();
-		subOrgs.add(new SubOrganization("sub1", SecurityAttributesTest.getFixture(false)));
-		subOrgs.add(new SubOrganization("sub2", SecurityAttributesTest.getFixture(false)));
-		return (subOrgs);
-	}
-	
-	/**
 	 * Generates an acronym for testing.
 	 */
-	private String getAcronymFixture() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		return (version.isAtLeast("4.0") ? "DISA" : "");
+	private String getAcronym() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "DISA" : "");
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -178,11 +162,9 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:").append(Organization.getName(version)).append(" xmlns:ddms=\"")
-			.append(version.getNamespace()).append("\"");
-		if (version.isAtLeast("4.0")) {
+		xml.append("<ddms:").append(Organization.getName(version)).append(" ").append(getXmlnsDDMS());
+		if (version.isAtLeast("4.0"))
 			xml.append(" ddms:acronym=\"DISA\"");
-		}
 		xml.append(">\n");
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
@@ -191,12 +173,10 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		for (String email : TEST_EMAILS)
 			xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
 		if (version.isAtLeast("4.0")) {
-			xml.append("\t<ddms:subOrganization xmlns:ISM=\"")
-				.append(DDMSVersion.getCurrentVersion().getIsmNamespace())
-				.append("\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">sub1</ddms:subOrganization>\n");
-			xml.append("\t<ddms:subOrganization xmlns:ISM=\"")
-				.append(DDMSVersion.getCurrentVersion().getIsmNamespace())
-				.append("\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">sub2</ddms:subOrganization>\n");
+			xml.append("\t<ddms:subOrganization ").append(getXmlnsISM())
+				.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">sub1</ddms:subOrganization>\n");
+			xml.append("\t<ddms:subOrganization ").append(getXmlnsISM())
+				.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">sub2</ddms:subOrganization>\n");
 		}
 		xml.append("</ddms:").append(Organization.getName(version)).append(">");
 		return (formatXml(xml.toString(), preserveFormatting));
@@ -234,10 +214,11 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, getSubOrganizationFixture(), getAcronymFixture());
+			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, SubOrganizationTest.getFixtureList(),
+				getAcronym());
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, TEST_NAMES, null, null, getSubOrganizationFixture(), getAcronymFixture());
+			testConstructor(WILL_SUCCEED, TEST_NAMES, null, null, SubOrganizationTest.getFixtureList(), getAcronym());
 		}
 	}
 
@@ -259,12 +240,14 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			// Missing name		
-			testConstructor(WILL_FAIL, null, TEST_PHONES, TEST_EMAILS, getSubOrganizationFixture(), getAcronymFixture());
+			testConstructor(WILL_FAIL, null, TEST_PHONES, TEST_EMAILS, SubOrganizationTest.getFixtureList(),
+				getAcronym());
 
 			// Empty name
 			List<String> names = new ArrayList<String>();
 			names.add("");
-			testConstructor(WILL_FAIL, names, TEST_PHONES, TEST_EMAILS, getSubOrganizationFixture(), getAcronymFixture());
+			testConstructor(WILL_FAIL, names, TEST_PHONES, TEST_EMAILS, SubOrganizationTest.getFixtureList(),
+				getAcronym());
 		}
 	}
 
@@ -274,7 +257,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			// No warnings
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
-			
+
 			// Empty acronym in DDMS 4.0
 			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(Organization.getName(version), null);
@@ -282,10 +265,9 @@ public class OrganizationTest extends AbstractComponentTestCase {
 				element.addAttribute(new Attribute("ddms:acronym", version.getNamespace(), ""));
 				component = testConstructor(WILL_SUCCEED, element);
 				assertEquals(1, component.getValidationWarnings().size());
-				assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-				assertEquals("A ddms:acronym attribute was found with no value.", component.getValidationWarnings().get(0)
-					.getText());
-				assertEquals("/ddms:organization", component.getValidationWarnings().get(0).getLocator());
+				String text = "A ddms:acronym attribute was found with no value.";
+				String locator = "ddms:organization";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
 		}
 	}
@@ -294,12 +276,14 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Organization elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Organization dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, getSubOrganizationFixture(), getAcronymFixture());
+			Organization dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS,
+				SubOrganizationTest.getFixtureList(), getAcronym());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-			
+
 			// Backwards compatible constructors
-			assertEquals(new Organization(TEST_NAMES, TEST_PHONES, TEST_EMAILS), new Organization(TEST_NAMES, TEST_PHONES, TEST_EMAILS, null, null, null));
+			assertEquals(new Organization(TEST_NAMES, TEST_PHONES, TEST_EMAILS), new Organization(TEST_NAMES,
+				TEST_PHONES, TEST_EMAILS, null, null, null));
 		}
 	}
 
@@ -307,17 +291,20 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Organization elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Organization dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, null, TEST_EMAILS, getSubOrganizationFixture(), getAcronymFixture());
+			Organization dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, null, TEST_EMAILS,
+				SubOrganizationTest.getFixtureList(), getAcronym());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, null, getSubOrganizationFixture(), getAcronymFixture());
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, null,
+				SubOrganizationTest.getFixtureList(), getAcronym());
 			assertFalse(elementComponent.equals(dataComponent));
-			
+
 			if (version.isAtLeast("4.0")) {
-				dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, null, getAcronymFixture());
+				dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, null, getAcronym());
 				assertFalse(elementComponent.equals(dataComponent));
-			
-				dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, getSubOrganizationFixture(), "NewACRONYM");
+
+				dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS,
+					SubOrganizationTest.getFixtureList(), "NewACRONYM");
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 		}
@@ -338,7 +325,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, getSubOrganizationFixture(), getAcronymFixture());
+			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS,
+				SubOrganizationTest.getFixtureList(), getAcronym());
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		}
 	}
@@ -349,7 +337,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, getSubOrganizationFixture(), getAcronymFixture());
+			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS,
+				SubOrganizationTest.getFixtureList(), getAcronym());
 			assertEquals(getExpectedTextOutput(), component.toText());
 		}
 	}
@@ -360,7 +349,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, getSubOrganizationFixture(), getAcronymFixture());
+			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS,
+				SubOrganizationTest.getFixtureList(), getAcronym());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -368,12 +358,12 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	public void testSubOrganizationReuse() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
-			List<SubOrganization> subOrgs = getSubOrganizationFixture();
-			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, subOrgs, getAcronymFixture());
-			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, subOrgs, getAcronymFixture());
+			List<SubOrganization> subOrgs = SubOrganizationTest.getFixtureList();
+			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, subOrgs, getAcronym());
+			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, subOrgs, getAcronym());
 		}
 	}
-	
+
 	public void testAcronymWrongVersion() {
 		DDMSVersion.setCurrentVersion("4.0");
 		Organization component = testConstructor(WILL_SUCCEED, getValidElement("4.0"));
@@ -385,13 +375,13 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			fail("Builder allowed invalid data.");
 		} catch (InvalidDDMSException e) {
 			// Good
-		}			
+		}
 	}
-	
+
 	public void testSubOrgWrongVersion() {
 		// This test is implicit -- SubOrganization cannot even be instantiated except in DDMS 4.0 or later.
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);

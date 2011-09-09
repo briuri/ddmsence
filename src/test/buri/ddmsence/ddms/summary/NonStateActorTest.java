@@ -114,7 +114,7 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:nonStateActor xmlns:ddms=\"").append(DDMSVersion.getCurrentVersion().getNamespace()).append("\" ");
+		xml.append("<ddms:nonStateActor ").append(getXmlnsDDMS()).append(" ");
 		xml.append("xmlns:ISM=\"").append(DDMSVersion.getCurrentVersion().getIsmNamespace()).append("\" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ");
 		xml.append("ddms:order=\"").append(TEST_ORDER).append("\"");

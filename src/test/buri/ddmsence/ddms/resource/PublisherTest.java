@@ -23,6 +23,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.IProducerEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ProducerEntityTest;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -35,8 +36,6 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public class PublisherTest extends AbstractComponentTestCase {
-
-	private static final String TEST_POC_TYPE = "ICD-710";
 
 	/**
 	 * Constructor
@@ -63,14 +62,6 @@ public class PublisherTest extends AbstractComponentTestCase {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
-	}
-
-	/**
-	 * Helper methdo to insert a POCType when testing 4.0.
-	 */
-	private String getPOCTypeFixture() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		return (version.isAtLeast("4.0") ? TEST_POC_TYPE : "");
 	}
 
 	/**
@@ -109,14 +100,12 @@ public class PublisherTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String pubName = Publisher.getName(version);
 		StringBuffer html = new StringBuffer();
-		html.append(getEntityFixture().toHTML(pubName + "."));
-		if (version.isAtLeast("4.0")) {
-			html.append("<meta name=\"").append(pubName).append(".POCType\" content=\"ICD-710\" />\n");
-		}
-		html.append("<meta name=\"").append(pubName).append(".classification\" content=\"U\" />\n");
-		html.append("<meta name=\"").append(pubName).append(".ownerProducer\" content=\"USA\" />\n");
+		html.append(getEntityFixture().toHTML("publisher."));
+		if (version.isAtLeast("4.0"))
+			html.append("<meta name=\"publisher.POCType\" content=\"ICD-710\" />\n");
+		html.append("<meta name=\"publisher.classification\" content=\"U\" />\n");
+		html.append("<meta name=\"publisher.ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -125,14 +114,12 @@ public class PublisherTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String pubName = Publisher.getName(version);
 		StringBuffer text = new StringBuffer();
-		text.append(getEntityFixture().toText(pubName + " "));
-		if (version.isAtLeast("4.0")) {
+		text.append(getEntityFixture().toText("publisher" + " "));
+		if (version.isAtLeast("4.0"))
 			text.append("POCType: ICD-710\n");
-		}
-		text.append(pubName).append(" classification: U\n");
-		text.append(pubName).append(" ownerProducer: USA\n");
+		text.append("publisher classification: U\n");
+		text.append("publisher ownerProducer: USA\n");
 		return (text.toString());
 	}
 
@@ -142,14 +129,13 @@ public class PublisherTest extends AbstractComponentTestCase {
 	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
-		StringBuffer xml = new StringBuffer();
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		xml.append("<ddms:publisher xmlns:ddms=\"").append(version.getNamespace()).append("\" ");
-		xml.append("xmlns:ISM=\"").append(version.getIsmNamespace()).append("\"");
-		if (version.isAtLeast("4.0")) {
+		StringBuffer xml = new StringBuffer();
+		xml.append("<ddms:publisher ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
+		if (version.isAtLeast("4.0"))
 			xml.append(" ddms:POCType=\"ICD-710\"");
-		}
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(Service.getName(version)).append(">\n");
+		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(Service.getName(version))
+			.append(">\n");
 		xml.append("\t\t<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>\n");
 		xml.append("\t\t<ddms:phone>703-882-1000</ddms:phone>\n");
 		xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
@@ -223,7 +209,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Publisher elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Publisher dataComponent = testConstructor(WILL_SUCCEED, getEntityFixture(), getPOCTypeFixture());
+			Publisher dataComponent = testConstructor(WILL_SUCCEED, getEntityFixture(), ProducerEntityTest.getPOCType());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -254,7 +240,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, getEntityFixture(), getPOCTypeFixture());
+			component = testConstructor(WILL_SUCCEED, getEntityFixture(), ProducerEntityTest.getPOCType());
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		}
 	}
@@ -265,7 +251,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getEntityFixture(), getPOCTypeFixture());
+			component = testConstructor(WILL_SUCCEED, getEntityFixture(), ProducerEntityTest.getPOCType());
 			assertEquals(getExpectedTextOutput(), component.toText());
 		}
 	}
@@ -276,7 +262,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getEntityFixture(), getPOCTypeFixture());
+			component = testConstructor(WILL_SUCCEED, getEntityFixture(), ProducerEntityTest.getPOCType());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -292,7 +278,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 	public void testPOCTypeWrongVersion() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new Publisher(getEntityFixture(), TEST_POC_TYPE, SecurityAttributesTest.getFixture(false));
+			new Publisher(getEntityFixture(), "ICD-710", SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
 		} catch (InvalidDDMSException e) {
 			// Good
