@@ -112,12 +112,11 @@ import buri.ddmsence.util.Util;
  */
 public class Escort {
 	
+	private boolean _useDummySecurityAttributes = false;
 	private List<IDDMSComponent> _topLevelComponents = new ArrayList<IDDMSComponent>();
 
 	private static final BufferedReader INPUT_STREAM = new BufferedReader(new InputStreamReader(System.in));
-	
 	private static final Map<Class<?>, IComponentBuilder> BUILDERS = new HashMap<Class<?>, IComponentBuilder>();
-
 	private static final Set<String> GEOSPATIAL_TYPES = new HashSet<String>();
 	static {
 		GEOSPATIAL_TYPES.add("geographicIdentifier");
@@ -157,25 +156,19 @@ public class Escort {
 		BUILDERS.put(Title.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String text = readString("the title text [testTitle]");
-				String classification = readString("the title classification [U]");
-				String ownerProducers = readString("the title's ownerProducers as a space-delimited string [USA]");
-				return (new Title(text, buildSecurityAttributes(classification, ownerProducers)));
+				return (new Title(text, buildSecurityAttributes("title")));
 			}		
 		});
 		BUILDERS.put(Subtitle.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String text = readString("the subtitle text [testSubtitle]");
-				String classification = readString("the subtitle classification [U]");
-				String ownerProducers = readString("the subtitle's ownerProducers as a space-delimited string [USA]");
-				return (new Subtitle(text, buildSecurityAttributes(classification, ownerProducers)));
+				return (new Subtitle(text, buildSecurityAttributes("subtitle")));
 			}		
 		});
 		BUILDERS.put(Description.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String text = readString("the description text [testDescription]");
-				String classification = readString("the description classification [U]");
-				String ownerProducers = readString("the description's ownerProducers as a space-delimited string [USA]");
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				SecurityAttributes attr = buildSecurityAttributes("description");
 				return (new Description(text, attr));
 			}		
 		});
@@ -211,10 +204,7 @@ public class Escort {
 				String value = readString("the value [testValue]");
 				String schemaQualifier = readString("the schema qualifier [testQualifier]");
 				String schemHref = readString("the schema href [testValue]");
-				String classification = readString("the source classification [U]");
-				String ownerProducers = readString("the source's ownerProducers as a space-delimited string [USA]");
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new Source(qualifier, value, schemaQualifier, schemHref, attr));
+				return (new Source(qualifier, value, schemaQualifier, schemHref, buildSecurityAttributes("source")));
 			}		
 		});
 		BUILDERS.put(Type.class, new IComponentBuilder() {
@@ -222,9 +212,7 @@ public class Escort {
 				String description = readString("the description child text [testDescription]");
 				String qualifier = readString("the qualifier [testQualifier]");
 				String value = readString("the value [testValue]");
-				String classification = readString("the type classification [U]");
-				String ownerProducers = readString("the type's ownerProducers as a space-delimited string [USA]");
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				SecurityAttributes attr = buildSecurityAttributes("type");
 				return (new Type(description, qualifier, value, attr));
 			}		
 		});
@@ -263,16 +251,14 @@ public class Escort {
 					affiliation = readString("the Person affiliation [testOrg]");
 				}
 				if (Organization.getName(version).equals(entityType)) {
-					int numSubs = readInt("the number of suborganizations to include [1]");
+					int numSubs = readInt("the number of suborganizations to include [0]");
 					for (int i = 0; i < numSubs; i++) {
 						println("* SubOrganization #" + (i + 1));
 						subOrgs.add((SubOrganization) inputLoop(SubOrganization.class));
 					}					
 					acronym = readString("the Organization acronym [testAcronym]");
 				}
-				String classification = readString("the producer classification [U]");
-				String ownerProducers = readString("the producer's ownerProducers as a space-delimited string [USA]");
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				SecurityAttributes attr = buildSecurityAttributes("producer");
 								
 				IProducerEntity entity = null;
 				if (Person.getName(version).equals(entityType))
@@ -298,9 +284,7 @@ public class Escort {
 		BUILDERS.put(SubOrganization.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String value = readString("the value [testSubOrganization]");
-				String classification = readString("the suborganization's classification [U]");
-				String ownerProducers = readString("the suborganization's ownerProducers as a space-delimited string [USA]");
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				SecurityAttributes attr = buildSecurityAttributes("suborganization");
 				return (new SubOrganization(value, attr));
 			}
 		});
@@ -317,9 +301,7 @@ public class Escort {
 		BUILDERS.put(Keyword.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String keyword = readString("the keyword value [testValue]");
-				String classification = readString("the keyword's classification [U]");
-				String ownerProducers = readString("the keyword's ownerProducers as a space-delimited string [USA]");
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				SecurityAttributes attr = buildSecurityAttributes("keyword");
 				return (new Keyword(keyword, attr));
 			}
 		});
@@ -328,29 +310,21 @@ public class Escort {
 				String qualifier = readString("the qualifier [testQualifier]");
 				String code = readString("the code [testCode]");
 				String label = readString("the label [testLabel]");
-				String classification = readString("the category's classification [U]");
-				String ownerProducers = readString("the category's ownerProducers as a space-delimited string [USA]");
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new Category(qualifier, code, label, attr));
+				return (new Category(qualifier, code, label, buildSecurityAttributes("category")));
 			}
 		});
 		BUILDERS.put(ProductionMetric.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String subject = readString("the subject [testSubject]");
 				String coverage = readString("the coverage [testCoverage]");
-				String classification = readString("the productionMetric's classification [U]");
-				String ownerProducers = readString("the productionMetric's ownerProducers as a space-delimited string [USA]");
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new ProductionMetric(subject, coverage, attr));
+				return (new ProductionMetric(subject, coverage, buildSecurityAttributes("productionMetric")));
 			}
 		});
 		BUILDERS.put(NonStateActor.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String value = readString("the value [testValue]");
 				int order = readInt("the order [1]");
-				String classification = readString("the nonStateActor's classification [U]");
-				String ownerProducers = readString("the nonStateActor's ownerProducers as a space-delimited string [USA]");
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
+				SecurityAttributes attr = buildSecurityAttributes("nonStateActor");
 				return (new NonStateActor(value, Integer.valueOf(order), attr));
 			}
 		});
@@ -359,6 +333,7 @@ public class Escort {
 				int numKeywords = readInt("the number of keywords to include [1]");
 				int numCategories = readInt("the number of categories to include [0]");
 				int numMetrics = readInt("the number of productionMetrics to include [0]");
+				int numActors = readInt("the number of nonStateActors to include [0]");
 				if (numKeywords + numCategories == 0) {
 					println("At least 1 keyword or category is required. Defaulting to 1 keyword.");
 					numKeywords = 1;
@@ -379,14 +354,11 @@ public class Escort {
 					metrics.add((ProductionMetric) inputLoop(ProductionMetric.class));
 				}
 				List<NonStateActor> actors = new ArrayList<NonStateActor>();
-				for (int i = 0; i < numMetrics; i++) {
+				for (int i = 0; i < numActors; i++) {
 					println("* NonStateActor #" + (i + 1));
 					actors.add((NonStateActor) inputLoop(NonStateActor.class));
 				}
-				String classification = readString("the subject classification [U]");
-				String ownerProducers = readString("the subject's ownerProducers as a space-delimited string [USA]");
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new SubjectCoverage(keywords, categories, metrics, actors, attr));
+				return (new SubjectCoverage(keywords, categories, metrics, actors, buildSecurityAttributes("subject")));
 			}		
 		});
 		BUILDERS.put(TemporalCoverage.class, new IComponentBuilder() {
@@ -394,22 +366,14 @@ public class Escort {
 				String timePeriodName = readString("the time period name [testName]");
 				String start = readString("the start date [1950]");
 				String end = readString("the end date [1959]");
-				String classification = readString("the temporalCoverage classification [U]");
-				String ownerProducers = 
-					readString("the temporalCoverage's ownerProducers as a space-delimited string [USA]");
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);			
-				return (new TemporalCoverage(timePeriodName, start, end, attr));
+				return (new TemporalCoverage(timePeriodName, start, end, buildSecurityAttributes("temporalCoverage")));
 			}		
 		});
 		BUILDERS.put(VirtualCoverage.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String address = readString("the address [123.456.789.0]");
 				String protocol = readString("the protocol [IP]");
-				String classification = readString("the virtualCoverage classification [U]");
-				String ownerProducers = 
-					readString("the virtualCoverage's ownerProducers as a space-delimited string [USA]");
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new VirtualCoverage(address, protocol, attr));
+				return (new VirtualCoverage(address, protocol, buildSecurityAttributes("virtualCoverage")));
 			}		
 		});
 		BUILDERS.put(FacilityIdentifier.class, new IComponentBuilder() {
@@ -560,9 +524,9 @@ public class Escort {
 				String max = readString("the maximum vertical extent [15]");
 				String uom = readString("the unit of measure [Meter]");
 				String datum = readString("the datum [MSL]");
-				return (new VerticalExtent(Double.valueOf(min).doubleValue(), Double.valueOf(max).doubleValue(), uom, 
-					datum)); 
-			}		
+				return (new VerticalExtent(Double.valueOf(min).doubleValue(), Double.valueOf(max).doubleValue(), uom,
+					datum));
+			}
 		});
 		BUILDERS.put(GeospatialCoverage.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
@@ -572,9 +536,8 @@ public class Escort {
 				PostalAddress address = null;
 				VerticalExtent extent = null;
 				if (confirm("Should the geospatialCoverage be defined in terms of a facilityIdentifier?")) {
-					geoId = new GeographicIdentifier((FacilityIdentifier) inputLoop(FacilityIdentifier.class));					
-				}
-				else {
+					geoId = new GeographicIdentifier((FacilityIdentifier) inputLoop(FacilityIdentifier.class));
+				} else {
 					String type = null;
 					while (!GEOSPATIAL_TYPES.contains(type)) {
 						type = readString("the coverage element type [geographicIdentifier, boundingBox, "
@@ -582,26 +545,19 @@ public class Escort {
 					}
 					if ("geographicIdentifier".equals(type)) {
 						geoId = (GeographicIdentifier) inputLoop(GeographicIdentifier.class);
-					}
-					else if ("boundingBox".equals(type)) {
+					} else if ("boundingBox".equals(type)) {
 						box = (BoundingBox) inputLoop(BoundingBox.class);
-					}
-					else if ("boundingGeometry".equals(type)) {
+					} else if ("boundingGeometry".equals(type)) {
 						geo = (BoundingGeometry) inputLoop(BoundingGeometry.class);
-					}
-					else if ("postalAddress".equals(type)) {
+					} else if ("postalAddress".equals(type)) {
 						address = (PostalAddress) inputLoop(PostalAddress.class);
-					}
-					else if ("verticalExtent".equals(type)) {
+					} else if ("verticalExtent".equals(type)) {
 						extent = (VerticalExtent) inputLoop(VerticalExtent.class);
 					}
 				}
-				String classification = readString("the geospatialCoverage classification [U]");
-				String ownerProducers = 
-					readString("the geospatialCoverage's ownerProducers as a space-delimited string [USA]");	
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new GeospatialCoverage(geoId, box, geo, address, extent, attr));
-			}		
+				return (new GeospatialCoverage(geoId, box, geo, address, extent,
+					buildSecurityAttributes("geospatialCoverage")));
+			}
 		});
 		BUILDERS.put(Link.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
@@ -643,19 +599,12 @@ public class Escort {
 				}
 				String relationship = readString("the relatedResources relationship [testQualifier]");
 				String direction = readString("the relatedResources direction [outbound]");
-				String classification = readString("the relatedResources classification [U]");
-				String ownerProducers = 
-					readString("the relatedResources ownerProducers as a space-delimited string [USA]");	
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new RelatedResources(resources, relationship, direction, attr));
+				return (new RelatedResources(resources, relationship, direction, buildSecurityAttributes("relatedResources")));
 			}		
 		});
 		BUILDERS.put(Security.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				String classification = readString("the classification [U]");
-				String ownerProducers = readString("the ownerProducers as a space-delimited string [USA]");	
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
-				return (new Security(attr));
+				return (new Security(buildSecurityAttributes("security element")));
 			}		
 		});
 		BUILDERS.put(Resource.class, new IComponentBuilder() {
@@ -663,11 +612,8 @@ public class Escort {
 				boolean resourceElement = confirm("Does this tag set the classification for the resource as a whole?");
 				String createDate = readString("Resource createDate [2010-04-01]");
 				int desVersion = readInt("the Resource DESVersion [2]");
-				String classification = readString("the Resource classification [U]");
-				String ownerProducers = readString("the Resource's ownerProducers as a space-delimited string [USA]");
-				SecurityAttributes attr = buildSecurityAttributes(classification, ownerProducers);
 				return (new Resource(getTopLevelComponents(), resourceElement, createDate, new Integer(desVersion), 
-					attr));
+					buildSecurityAttributes("resource")));
 			}		
 		});
 	}
@@ -686,6 +632,7 @@ public class Escort {
 			+ "valid Resource.");
 		println("In COMPLETE mode, Escort will let you create all of the top-level components.");
 		boolean onlyRequiredComponents = confirm("Would you like to run in FAST mode?");
+		_useDummySecurityAttributes = confirm("Would you like to use dummy security attributes, Unclassified/USA, throughout the resource?");
 				
 		DDMSVersion.setCurrentVersion("4.0");
 		
@@ -880,13 +827,15 @@ public class Escort {
 	/**
 	 * Helper method to build a security attributes object
 	 * 
-	 * @param classification the classification
-	 * @param ownerProducers a space-delimited list of ownerProducers
+	 * @param elementName the name of the element being decorated
 	 * @return a valid SecurityAttributes
 	 * @throws InvalidDDMSException
 	 */
-	private SecurityAttributes buildSecurityAttributes(String classification, String ownerProducers)
-		throws InvalidDDMSException {
+	private SecurityAttributes buildSecurityAttributes(String elementName) throws IOException, InvalidDDMSException {
+		String classification = getUseDummySecurityAttributes() ? "U" : readString("the " + elementName
+			+ "'s classification [U]");
+		String ownerProducers = getUseDummySecurityAttributes() ? "USA" : readString("the " + elementName
+			+ "'s ownerProducers as a space-delimited string [USA]");
 		return (new SecurityAttributes(classification, Util.getXsListAsList(ownerProducers), null));
 	}
 
@@ -965,7 +914,7 @@ public class Escort {
 	 * @param e the exception
 	 */
 	private void printError(Exception e) {
-		e.printStackTrace();
+		//e.printStackTrace();
 		if (e instanceof InvalidDDMSException) {
 			InvalidDDMSException ide = (InvalidDDMSException) e;
 			String prefix = (Util.isEmpty(ide.getLocator()) ? "" : ide.getLocator() + ": ");
@@ -998,5 +947,12 @@ public class Escort {
 	 */
 	private List<IDDMSComponent> getTopLevelComponents() {
 		return _topLevelComponents;
+	}
+
+	/**
+	 * Accessor for the useDummySecurityAttributes flag
+	 */
+	public boolean getUseDummySecurityAttributes() {
+		return _useDummySecurityAttributes;
 	}
 }
