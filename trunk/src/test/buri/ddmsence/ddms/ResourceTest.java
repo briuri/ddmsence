@@ -130,13 +130,15 @@ public class ResourceTest extends AbstractComponentTestCase {
 		TEST_RIGHTS = new Rights(true, true, true);
 		TEST_SOURCE = new Source(null, "http://www.xmethods.com", null, null, null);
 		TEST_TYPE = new Type(null, "DCMITYPE", "http://purl.org/dc/dcmitype/Text", null);
-		TEST_CREATOR = new Creator(new Organization(getAsList("DISA"), null, null, null, null, null), null, null);
-		TEST_PUBLISHER = new Publisher(new Person(getAsList("Brian"), "Uri", null, null, null, null), null, null);
-		TEST_CONTRIBUTOR = new Contributor(new Service(getAsList("https://metadata.dod.mil/ebxmlquery/soap"), null,
-			null), null, null);
+		TEST_CREATOR = new Creator(new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null), null,
+			null);
+		TEST_PUBLISHER = new Publisher(new Person(Util.getXsListAsList("Brian"), "Uri", null, null, null, null), null,
+			null);
+		TEST_CONTRIBUTOR = new Contributor(new Service(
+			Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), null, null), null, null);
 		TEST_POC = new PointOfContact(DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? new Unknown(
-			getAsList("UnknownEntity"), null, null) : new Person(getAsList("Brian"), "Uri", null, null, null, null),
-			null, null);
+			Util.getXsListAsList("UnknownEntity"), null, null) : new Person(Util.getXsListAsList("Brian"), "Uri", null,
+			null, null, null), null, null);
 		TEST_FORMAT = new Format("text/xml", null, null);
 
 		List<Keyword> keywords = new ArrayList<Keyword>();
@@ -148,7 +150,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		TEST_SRS_ATTRIBUTES = SRSAttributesTest.getFixture();
 		List<Point> points = new ArrayList<Point>();
 		points.add(new Point(new Position(PositionTest.TEST_COORDS, null), TEST_SRS_ATTRIBUTES, TEST_ID));
-		TEST_GEOSPATIAL = new GeospatialCoverage(null, null, new BoundingGeometry(null, points), null, null, null);
+		TEST_GEOSPATIAL = new GeospatialCoverage(null, null, new BoundingGeometry(null, points), null, null, null,
+			null, null);
 
 		List<Link> links = new ArrayList<Link>();
 		links.add(new Link("http://en.wikipedia.org/wiki/Tank", null, null, null));
@@ -188,6 +191,41 @@ public class ResourceTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Creates a stub resource element that is otherwise correct, but leaves resource header attributes off.
+	 * @return the element
+	 * @throws InvalidDDMSException
+	 */
+	private Element getResourceWithoutHeaderElement() throws InvalidDDMSException {
+		Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
+		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
+		element.appendChild(TEST_TITLE.getXOMElementCopy());
+		element.appendChild(TEST_CREATOR.getXOMElementCopy());
+		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+		element.appendChild(TEST_SECURITY.getXOMElementCopy());
+		return (element);
+	}
+	
+	/**
+	 * Creates a stub resource element that is otherwise correct, but leaves resource components out.
+	 * @return the element
+	 * @throws InvalidDDMSException
+	 */
+	private Element getResourceWithoutBodyElement() throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		String ismPrefix = PropertyReader.getProperty("ism.prefix");
+		String icNamespace = version.getIsmNamespace();
+		
+		Element element = Util.buildDDMSElement(Resource.getName(version), null);
+		Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
+			String.valueOf(TEST_RESOURCE_ELEMENT));
+		Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
+		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
+			String.valueOf(getDESVersion()));
+		SecurityAttributesTest.getFixture(false).addTo(element);
+		return (element);
+	}
+	
+	/**
 	 * Returns an acceptable DESVersion for the version of DDMS
 	 * 
 	 * @return a DESVersion
@@ -196,18 +234,6 @@ public class ResourceTest extends AbstractComponentTestCase {
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("3.1"))
 			return (new Integer(2));
 		return (new Integer(5));
-	}
-
-	/**
-	 * Helper method to wrap a string in a list, to quickly make lists consisting of only 1 item.
-	 * 
-	 * @param string the string
-	 * @return the list
-	 */
-	private List<String> getAsList(String string) {
-		List<String> list = new ArrayList<String>();
-		list.add(string);
-		return (list);
 	}
 
 	/**
@@ -262,12 +288,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 		if (version.isAtLeast("3.0")) {
 			html.append("<meta name=\"security.resourceElement\" content=\"true\" />\n");
 			html.append("<meta name=\"security.createDate\" content=\"2010-01-21\" />\n");
-			html.append("<meta name=\"security.DESVersion\" content=\"").append(getDESVersion()).append("\" />\n");
+		}
+		html.append("<meta name=\"security.DESVersion\" content=\"").append(getDESVersion()).append("\" />\n");
+		if (version.isAtLeast("3.0")) {
 			html.append("<meta name=\"security.classification\" content=\"U\" />\n");
 			html.append("<meta name=\"security.ownerProducer\" content=\"USA\" />\n");
-		} else {
-			// Adding the optional ISM tag allows the namespace declaration to definitely be in the Resource element.
-			html.append("<meta name=\"security.DESVersion\" content=\"2\" />\n");
 		}
 		html.append("<meta name=\"identifier.qualifier\" content=\"URI\" />\n");
 		html.append("<meta name=\"identifier.value\" content=\"urn:buri:ddmsence:testIdentifier\" />\n");
@@ -289,54 +314,51 @@ public class ResourceTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"source.value\" content=\"http://www.xmethods.com\" />\n");
 		html.append("<meta name=\"type.qualifier\" content=\"DCMITYPE\" />\n");
 		html.append("<meta name=\"type.value\" content=\"http://purl.org/dc/dcmitype/Text\" />\n");
-		html.append("<meta name=\"creator.entityType\" content=\"").append(Organization.getName(version)).append("\" />\n");
+		html.append("<meta name=\"creator.entityType\" content=\"").append(Organization.getName(version))
+			.append("\" />\n");
 		html.append("<meta name=\"creator.name\" content=\"DISA\" />\n");
 		html.append("<meta name=\"publisher.entityType\" content=\"").append(Person.getName(version)).append("\" />\n");
 		html.append("<meta name=\"publisher.name\" content=\"Brian\" />\n");
 		html.append("<meta name=\"publisher.surname\" content=\"Uri\" />\n");
-		html.append("<meta name=\"contributor.entityType\" content=\"").append(Service.getName(version)).append("\" />\n");
+		html.append("<meta name=\"contributor.entityType\" content=\"").append(Service.getName(version))
+			.append("\" />\n");
 		html.append("<meta name=\"contributor.name\" content=\"https://metadata.dod.mil/ebxmlquery/soap\" />\n");
 		if (version.isAtLeast("3.0")) {
-			html.append("<meta name=\"pointOfContact.entityType\" content=\"").append(Unknown.getName(version)).append("\" />\n");
+			html.append("<meta name=\"pointOfContact.entityType\" content=\"").append(Unknown.getName(version))
+				.append("\" />\n");
 			html.append("<meta name=\"pointOfContact.name\" content=\"UnknownEntity\" />\n");
 		} else {
-			html.append("<meta name=\"pointOfContact.entityType\" content=\"").append(Person.getName(version)).append("\" />\n");
+			html.append("<meta name=\"pointOfContact.entityType\" content=\"").append(Person.getName(version))
+				.append("\" />\n");
 			html.append("<meta name=\"pointOfContact.name\" content=\"Brian\" />\n");
 			html.append("<meta name=\"pointOfContact.surname\" content=\"Uri\" />\n");
 		}
-		if (version.isAtLeast("4.0")) {
-			html.append("<meta name=\"format.mimeType\" content=\"text/xml\" />\n");
-		}
-		else {
-			html.append("<meta name=\"format.Media.mimeType\" content=\"text/xml\" />\n");
-		}
-		if (version.isAtLeast("4.0")) {
-			html.append("<meta name=\"subjectCoverage.keyword\" content=\"DDMSence\" />\n");
-		}
-		else {
-			html.append("<meta name=\"subjectCoverage.Subject.keyword\" content=\"DDMSence\" />\n");
-		}
+
+		String formatPrefix = (version.isAtLeast("4.0") ? "format." : "format.Media.");
+		String subjectPrefix = (version.isAtLeast("4.0") ? "subjectCoverage." : "subjectCoverage.Subject.");
+		String temporalPrefix = (version.isAtLeast("4.0") ? "temporalCoverage." : "temporalCoverage.TimePeriod.");
+		String geospatialPrefix = version.isAtLeast("4.0") ? "geospatialCoverage."
+			: "geospatialCoverage.GeospatialExtent.";
+
+		html.append("<meta name=\"").append(formatPrefix).append("mimeType\" content=\"text/xml\" />\n");
+		html.append("<meta name=\"").append(subjectPrefix).append("keyword\" content=\"DDMSence\" />\n");
 		html.append("<meta name=\"virtual.address\" content=\"123.456.789.0\" />\n");
 		html.append("<meta name=\"virtual.protocol\" content=\"IP\" />\n");
-		if (version.isAtLeast("4.0")) {
-			html.append("<meta name=\"temporalCoverage.name\" content=\"Unknown\" />\n");
-			html.append("<meta name=\"temporalCoverage.start\" content=\"1979-09-15\" />\n");
-			html.append("<meta name=\"temporalCoverage.end\" content=\"Not Applicable\" />\n");
-		}
-		else {
-			html.append("<meta name=\"temporalCoverage.TimePeriod.name\" content=\"Unknown\" />\n");
-			html.append("<meta name=\"temporalCoverage.TimePeriod.start\" content=\"1979-09-15\" />\n");
-			html.append("<meta name=\"temporalCoverage.TimePeriod.end\" content=\"Not Applicable\" />\n");			
-		}
-		String geospatialPrefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
+		html.append("<meta name=\"").append(temporalPrefix).append("name\" content=\"Unknown\" />\n");
+		html.append("<meta name=\"").append(temporalPrefix).append("start\" content=\"1979-09-15\" />\n");
+		html.append("<meta name=\"").append(temporalPrefix).append("end\" content=\"Not Applicable\" />\n");
 		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.id\" content=\"IDValue\" />\n");
 		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.type\" content=\"Point\" />\n");
-		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.srsName\" ").append(
-			"content=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" />\n");
-		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.srsDimension\" content=\"10\" />\n");
-		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.axisLabels\" content=\"A B C\" />\n");
-		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.uomLabels\" content=\"Meter Meter Meter\" />\n");
-		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.position\" content=\"32.1 40.1\" />\n");
+		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.srsName\" ")
+			.append("content=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" />\n");
+		html.append("<meta name=\"").append(geospatialPrefix)
+			.append("boundingGeometry.srsDimension\" content=\"10\" />\n");
+		html.append("<meta name=\"").append(geospatialPrefix)
+			.append("boundingGeometry.axisLabels\" content=\"A B C\" />\n");
+		html.append("<meta name=\"").append(geospatialPrefix)
+			.append("boundingGeometry.uomLabels\" content=\"Meter Meter Meter\" />\n");
+		html.append("<meta name=\"").append(geospatialPrefix)
+			.append("boundingGeometry.position\" content=\"32.1 40.1\" />\n");
 		html.append("<meta name=\"relatedResources.relationship\" ").append(
 			"content=\"http://purl.org/dc/terms/references\" />\n");
 		html.append("<meta name=\"relatedResources.direction\" content=\"outbound\" />\n");
@@ -364,12 +386,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 		if (version.isAtLeast("3.0")) {
 			text.append("resourceElement: true\n");
 			text.append("createDate: 2010-01-21\n");
-			text.append("DESVersion: ").append(getDESVersion()).append("\n");
+		}
+		text.append("DESVersion: ").append(getDESVersion()).append("\n");
+		if (version.isAtLeast("3.0")) {
 			text.append("classification: U\n");
 			text.append("ownerProducer: USA\n");
-		} else {
-			// Adding the optional ISM tag allows the namespace declaration to definitely be in the Resource element.
-			text.append("DESVersion: 2\n");
 		}
 		text.append("identifier qualifier: URI\n");
 		text.append("identifier value: urn:buri:ddmsence:testIdentifier\n");
@@ -406,31 +427,20 @@ public class ResourceTest extends AbstractComponentTestCase {
 			text.append("name: Brian\n");
 			text.append("surname: Uri\n");
 		}
-		if (version.isAtLeast("4.0")) {
-			text.append("format.mimeType: text/xml\n");
-		}
-		else {
-			text.append("format.Media.mimeType: text/xml\n");
-		}
-		if (version.isAtLeast("4.0")) {
-			text.append("subjectCoverage.keyword: DDMSence\n");
-		}
-		else {
-			text.append("subjectCoverage.Subject.keyword: DDMSence\n");
-		}
+		
+		String formatPrefix = (version.isAtLeast("4.0") ? "format." : "format.Media.");
+		String subjectPrefix = (version.isAtLeast("4.0") ? "subjectCoverage." : "subjectCoverage.Subject.");
+		String temporalPrefix = (version.isAtLeast("4.0") ? "temporalCoverage." : "temporalCoverage.TimePeriod.");
+		String geospatialPrefix = version.isAtLeast("4.0") ? "geospatialCoverage."
+			: "geospatialCoverage.GeospatialExtent.";
+		
+		text.append(formatPrefix).append("mimeType: text/xml\n");
+		text.append(subjectPrefix).append("keyword: DDMSence\n");
 		text.append("virtual address: 123.456.789.0\n");
 		text.append("virtual protocol: IP\n");
-		if (isDDMS40OrGreater()) {
-			text.append("temporalCoverage.name: Unknown\n");
-			text.append("temporalCoverage.start: 1979-09-15\n");
-			text.append("temporalCoverage.end: Not Applicable\n");	
-		}
-		else {
-			text.append("temporalCoverage.TimePeriod.name: Unknown\n");
-			text.append("temporalCoverage.TimePeriod.start: 1979-09-15\n");
-			text.append("temporalCoverage.TimePeriod.end: Not Applicable\n");			
-		}
-		String geospatialPrefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
+		text.append(temporalPrefix).append("name: Unknown\n");
+		text.append(temporalPrefix).append("start: 1979-09-15\n");
+		text.append(temporalPrefix).append("end: Not Applicable\n");	
 		text.append(geospatialPrefix).append("boundingGeometry.id: IDValue\n");
 		text.append(geospatialPrefix).append("boundingGeometry.type: Point\n");
 		text.append(geospatialPrefix).append("boundingGeometry.srsName: http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\n");
@@ -466,14 +476,12 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("<ddms:Resource xmlns:ddms=\"").append(version.getNamespace())
 			.append("\" xmlns:ISM=\"");
 		xml.append(version.getIsmNamespace()).append("\"");
-		if (version.isAtLeast("3.0")) {
-			xml.append(" ISM:resourceElement=\"true\" ISM:DESVersion=\"").append(getDESVersion())
-				.append("\" ISM:createDate=\"2010-01-21\" ")
-				.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
-		} else {
-			// Adding the optional ISM tag allows the namespace declaration to definitely be in the Resource element.
-			xml.append(" ISM:DESVersion=\"2\"");
-		}
+		if (version.isAtLeast("3.0"))
+			xml.append(" ISM:resourceElement=\"true\"");
+		// Adding DESVersion in DDMS 2.0 allows the namespace declaration to definitely be in the Resource element.
+		xml.append(" ISM:DESVersion=\"").append(getDESVersion()).append("\"");
+		if (version.isAtLeast("3.0"))
+			xml.append(" ISM:createDate=\"2010-01-21\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		xml.append(">\n");
 		xml.append("\t<ddms:identifier ddms:qualifier=\"URI\" ddms:value=\"urn:buri:ddmsence:testIdentifier\" />\n");
 		xml.append("\t<ddms:title ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DDMSence</ddms:title>\n");
@@ -603,20 +611,12 @@ public class ResourceTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
-			String ismPrefix = PropertyReader.getProperty("ism.prefix");
-			String icNamespace = version.getIsmNamespace();
 
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			Element element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(TEST_CREATOR.getXOMElementCopy());
@@ -626,13 +626,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			
 			// More than 1 subjectCoverage
 			if (version.isAtLeast("4.0")) {
-				element = Util.buildDDMSElement(Resource.getName(version), null);
-				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-					String.valueOf(TEST_RESOURCE_ELEMENT));
-				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-					String.valueOf(getDESVersion()));
-				SecurityAttributesTest.getFixture(false).addTo(element);
+				element = getResourceWithoutBodyElement();
 				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 				element.appendChild(TEST_TITLE.getXOMElementCopy());
 				element.appendChild(TEST_CREATOR.getXOMElementCopy());
@@ -659,6 +653,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		}
 	}
 
+
+	
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
@@ -668,111 +664,70 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			if (version.isAtLeast("3.0")) {
 				// Missing resourceElement
-				Element element = Util.buildDDMSElement(Resource.getName(version), null);
+				Element element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
 					String.valueOf(getDESVersion()));
 				SecurityAttributesTest.getFixture(false).addTo(element);
-				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-				element.appendChild(TEST_TITLE.getXOMElementCopy());
-				element.appendChild(TEST_CREATOR.getXOMElementCopy());
-				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-				element.appendChild(TEST_SECURITY.getXOMElementCopy());
 				testConstructor(WILL_FAIL, element);
 
 				// Empty resourceElement
-				element = Util.buildDDMSElement(Resource.getName(version), null);
+				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, "");
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
 					String.valueOf(getDESVersion()));
 				SecurityAttributesTest.getFixture(false).addTo(element);
-				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-				element.appendChild(TEST_TITLE.getXOMElementCopy());
-				element.appendChild(TEST_CREATOR.getXOMElementCopy());
-				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-				element.appendChild(TEST_SECURITY.getXOMElementCopy());
 				testConstructor(WILL_FAIL, element);
 
 				// Invalid resourceElement
-				element = Util.buildDDMSElement(Resource.getName(version), null);
+				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace, "aardvark");
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
 					String.valueOf(getDESVersion()));
 				SecurityAttributesTest.getFixture(false).addTo(element);
-				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-				element.appendChild(TEST_TITLE.getXOMElementCopy());
-				element.appendChild(TEST_CREATOR.getXOMElementCopy());
-				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-				element.appendChild(TEST_SECURITY.getXOMElementCopy());
 				testConstructor(WILL_FAIL, element);
 
 				// Missing createDate
-				element = Util.buildDDMSElement(Resource.getName(version), null);
+				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
 					String.valueOf(TEST_RESOURCE_ELEMENT));
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
 					String.valueOf(getDESVersion()));
 				SecurityAttributesTest.getFixture(false).addTo(element);
-				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-				element.appendChild(TEST_TITLE.getXOMElementCopy());
-				element.appendChild(TEST_CREATOR.getXOMElementCopy());
-				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-				element.appendChild(TEST_SECURITY.getXOMElementCopy());
 				testConstructor(WILL_FAIL, element);
 
 				// Invalid createDate
-				element = Util.buildDDMSElement(Resource.getName(version), null);
+				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
 					String.valueOf(TEST_RESOURCE_ELEMENT));
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, "2004");
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
 					String.valueOf(getDESVersion()));
 				SecurityAttributesTest.getFixture(false).addTo(element);
-				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-				element.appendChild(TEST_TITLE.getXOMElementCopy());
-				element.appendChild(TEST_CREATOR.getXOMElementCopy());
-				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-				element.appendChild(TEST_SECURITY.getXOMElementCopy());
 				testConstructor(WILL_FAIL, element);
 
 				// Missing desVersion
-				element = Util.buildDDMSElement(Resource.getName(version), null);
+				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
 					String.valueOf(TEST_RESOURCE_ELEMENT));
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 				SecurityAttributesTest.getFixture(false).addTo(element);
-				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-				element.appendChild(TEST_TITLE.getXOMElementCopy());
-				element.appendChild(TEST_CREATOR.getXOMElementCopy());
-				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-				element.appendChild(TEST_SECURITY.getXOMElementCopy());
 				testConstructor(WILL_FAIL, element);
 
 				// desVersion not an integer
-				element = Util.buildDDMSElement(Resource.getName(version), null);
+				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
 					String.valueOf(TEST_RESOURCE_ELEMENT));
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace, "one");
 				SecurityAttributesTest.getFixture(false).addTo(element);
-				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-				element.appendChild(TEST_TITLE.getXOMElementCopy());
-				element.appendChild(TEST_CREATOR.getXOMElementCopy());
-				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-				element.appendChild(TEST_SECURITY.getXOMElementCopy());
 				testConstructor(WILL_FAIL, element);
 			}
 
 			// At least 1 producer
-			Element element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			Element element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
@@ -780,13 +735,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// At least 1 identifier
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(TEST_CREATOR.getXOMElementCopy());
 			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
@@ -794,13 +743,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// At least 1 title
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_CREATOR.getXOMElementCopy());
 			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
@@ -808,13 +751,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 description
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(TEST_DESCRIPTION.getXOMElementCopy());
@@ -825,13 +762,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 dates
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(TEST_DATES.getXOMElementCopy());
@@ -842,13 +773,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 rights
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(TEST_RIGHTS.getXOMElementCopy());
@@ -859,13 +784,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 formats
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(TEST_CREATOR.getXOMElementCopy());
@@ -876,13 +795,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// At least 1 subjectCoverage
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(TEST_CREATOR.getXOMElementCopy());
@@ -891,13 +804,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			// No more than 1 subjectCoverage
 			if (!version.isAtLeast("4.0")) {
-				element = Util.buildDDMSElement(Resource.getName(version), null);
-				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-					String.valueOf(TEST_RESOURCE_ELEMENT));
-				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-					String.valueOf(getDESVersion()));
-				SecurityAttributesTest.getFixture(false).addTo(element);
+				element = getResourceWithoutBodyElement();
 				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 				element.appendChild(TEST_TITLE.getXOMElementCopy());
 				element.appendChild(TEST_CREATOR.getXOMElementCopy());
@@ -908,13 +815,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			}
 
 			// At least 1 security
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(TEST_CREATOR.getXOMElementCopy());
@@ -922,13 +823,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 security
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(TEST_CREATOR.getXOMElementCopy());
@@ -938,13 +833,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No top level components
-			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			element = getResourceWithoutBodyElement();
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -1041,7 +930,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(PostalAddress.getName(version), null);
 			PostalAddress address = new PostalAddress(element);
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
-			components.add(new GeospatialCoverage(null, null, null, address, null, null));
+			components.add(new GeospatialCoverage(null, null, null, address, null, null, null, null));
 			component = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
 				getDESVersion());
 			warnings = version.isAtLeast("3.0") ? 1 : 2;
@@ -1057,8 +946,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 			} else {
 				assertEquals("A completely empty ddms:postalAddress element was found.", component
 					.getValidationWarnings().get(0).getText());
-				assertEquals("/ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress",
-					component.getValidationWarnings().get(0).getLocator());
+				String locatorSuffix = (version.isAtLeast("4.0")) ? "/ddms:Resource/ddms:geospatialCoverage/ddms:postalAddress"
+					: "/ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
+				assertEquals(locatorSuffix, component.getValidationWarnings().get(0).getLocator());
 			}
 		}
 	}
@@ -1162,22 +1052,15 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 	public void testRollupTooRestrictive() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
-			String ismPrefix = PropertyReader.getProperty("ism.prefix");
-			String icNamespace = version.getIsmNamespace();
 
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("USA");
-			Organization org = new Organization(getAsList("DISA"), null, null, null, null, null);
+			Organization org = new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null);
 			Creator creator = new Creator(org, null, new SecurityAttributes("TS", ownerProducers, null));
 
-			Element element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
+			Element element = getResourceWithoutHeaderElement();
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -1194,7 +1077,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 		List<String> ownerProducers = new ArrayList<String>();
 		ownerProducers.add("USA");
-		Organization org = new Organization(getAsList("DISA"), null, null, null, null, null);
+		Organization org = new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null);
 		Creator creator = new Creator(org, null, new SecurityAttributes("TS", ownerProducers, null));
 
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
@@ -1211,23 +1094,15 @@ public class ResourceTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			if (version.isAtLeast("3.1"))
 				continue;
-
 			createComponents();
-			String ismPrefix = PropertyReader.getProperty("ism.prefix");
-			String icNamespace = version.getIsmNamespace();
+
 
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("USA");
-			Organization org = new Organization(getAsList("DISA"), null, null, null, null, null);
+			Organization org = new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null);
 			Creator creator = new Creator(org, null, new SecurityAttributes("CTSA", ownerProducers, null));
 
-			Element element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			Element element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(creator.getXOMElementCopy());
@@ -1269,39 +1144,24 @@ public class ResourceTest extends AbstractComponentTestCase {
 		String ismPrefix = PropertyReader.getProperty("ism.prefix");
 
 		// ISM:DESVersion in element
-		Element element = Util.buildDDMSElement(Resource.getName(version), null);
+		Element element = getResourceWithoutHeaderElement();
 		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, version.getIsmNamespace(),
 			String.valueOf(getDESVersion()));
-		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-		element.appendChild(TEST_TITLE.getXOMElementCopy());
-		element.appendChild(TEST_CREATOR.getXOMElementCopy());
-		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-		element.appendChild(TEST_SECURITY.getXOMElementCopy());
 		Resource component = new Resource(element);
 		assertEquals(getDESVersion(), component.getDESVersion());
 		assertTrue(component.getSecurityAttributes().isEmpty());
 		assertEquals(0, component.getExtensibleAttributes().getAttributes().size());
 
 		// ISM:classification in element
-		element = Util.buildDDMSElement(Resource.getName(version), null);
+		element = getResourceWithoutHeaderElement();
 		Util.addAttribute(element, ismPrefix, SecurityAttributes.CLASSIFICATION_NAME, version.getIsmNamespace(), "U");
-		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-		element.appendChild(TEST_TITLE.getXOMElementCopy());
-		element.appendChild(TEST_CREATOR.getXOMElementCopy());
-		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-		element.appendChild(TEST_SECURITY.getXOMElementCopy());
 		component = new Resource(element);
 		assertFalse(component.getSecurityAttributes().isEmpty());
 		assertEquals(0, component.getExtensibleAttributes().getAttributes().size());
 
 		// ddmsence:confidence in element
-		element = Util.buildDDMSElement(Resource.getName(version), null);
+		element = getResourceWithoutHeaderElement();
 		Util.addAttribute(element, "ddmsence", "confidence", "http://ddmsence.urizone.net/", "95");
-		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-		element.appendChild(TEST_TITLE.getXOMElementCopy());
-		element.appendChild(TEST_CREATOR.getXOMElementCopy());
-		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-		element.appendChild(TEST_SECURITY.getXOMElementCopy());
 		component = new Resource(element);
 		assertTrue(component.getSecurityAttributes().isEmpty());
 		assertEquals(1, component.getExtensibleAttributes().getAttributes().size());
@@ -1432,20 +1292,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 	public void testExtensibleElementElementConstructor() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
-			String ismPrefix = PropertyReader.getProperty("ism.prefix");
-			String icNamespace = version.getIsmNamespace();
 
 			ExtensibleElement component = new ExtensibleElement(ExtensibleElementTest.getElementFixture());
-
-			Element element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
-				String.valueOf(TEST_RESOURCE_ELEMENT));
-			Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
-			Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace,
-				String.valueOf(getDESVersion()));
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			Element element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(TEST_CREATOR.getXOMElementCopy());
@@ -1487,7 +1338,6 @@ public class ResourceTest extends AbstractComponentTestCase {
 		List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 		components.add(new ExtensibleElement(ExtensibleElementTest.getElementFixture()));
 		components.add(new ExtensibleElement(ExtensibleElementTest.getElementFixture()));
-
 		testConstructor(WILL_FAIL, components, null, null, null);
 	}
 
@@ -1498,7 +1348,6 @@ public class ResourceTest extends AbstractComponentTestCase {
 		List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 		components.add(new ExtensibleElement(ExtensibleElementTest.getElementFixture()));
 		components.add(new ExtensibleElement(ExtensibleElementTest.getElementFixture()));
-
 		testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getDESVersion());
 	}
 
@@ -1507,15 +1356,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 		createComponents();
 		String icNamespace = version.getIsmNamespace();
 
-		Element element = Util.buildDDMSElement(Resource.getName(version), null);
+		Element element = getResourceWithoutHeaderElement();
 		Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"),
 			SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, icNamespace, "true");
 		SecurityAttributesTest.getFixture(false).addTo(element);
-		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-		element.appendChild(TEST_TITLE.getXOMElementCopy());
-		element.appendChild(TEST_CREATOR.getXOMElementCopy());
-		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-		element.appendChild(TEST_SECURITY.getXOMElementCopy());
 		Resource resource = testConstructor(WILL_SUCCEED, element);
 
 		// ISM:declassManualReview should not get picked up as an extensible attribute
@@ -1533,12 +1377,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			// Equality with ExtensibleElement
 			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
-			builder
-				.getExtensibleElements()
-				.get(0)
-				.setXml(
-					"<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">"
-						+ "This is an extensible element.</ddmsence:extension>");
+			builder.getExtensibleElements().get(0).setXml(
+				"<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">"
+				+ "This is an extensible element.</ddmsence:extension>");
 			component = builder.commit();
 			builder = new Resource.Builder(component);
 			assertEquals(builder.commit(), component);
