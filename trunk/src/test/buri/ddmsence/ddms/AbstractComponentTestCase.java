@@ -169,6 +169,13 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	}
 
 	/**
+	 * Returns a namespace declaration for GML
+	 */
+	protected static String getXmlnsGML() {
+		return ("xmlns:gml=\"" + DDMSVersion.getCurrentVersion().getGmlNamespace() + "\"");
+	}
+	
+	/**
 	 * Accessor for a valid DDMS XOM Element constructed from the root element of an XML file, which can be used in
 	 * testing as a "correct base case".
 	 */
