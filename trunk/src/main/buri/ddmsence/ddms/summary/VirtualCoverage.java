@@ -53,10 +53,9 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#virtualCoverage<br />
  * <u>Description</u>: The subject-matter coverage of a publication in terms of one or more virtual addresses.<br />
  * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2003-05-06<br />
+ * <u>Schema Modification Date</u>: 2010-01-26<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!

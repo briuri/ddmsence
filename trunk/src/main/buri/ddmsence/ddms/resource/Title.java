@@ -44,7 +44,6 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Title<br />
  * <u>Description</u>: A name, or names, given to the resource.<br />
  * <u>Obligation</u>: Mandatory<br />
  * <u>Schema Modification Date</u>: 2004-11-16<br />

@@ -51,7 +51,6 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_postalAddress<br />
  * <u>Description</u>: A wrapper for postal address elements including street, city, state or province, postal code and 
  * country code.<br />
  * <u>Obligation</u>: Optional in a geospatialCoverage element<br />

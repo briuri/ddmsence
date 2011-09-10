@@ -36,16 +36,15 @@ import buri.ddmsence.util.Util;
  * required)<br />
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#creator<br />
- * <u>Description</u>: Information about the entity responsible for generating the resource.<br />
- * <u>Obligation</u>: At least one of the four producerTypes is required.<br />
- * <u>Schema Modification Date</u>: 2010-01-26<br />
- * </td></tr></table>
- * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * This class is decorated with ISM {@link SecurityAttributes}. The classification and
  * ownerProducer attributes are optional.
+ * </td></tr></table>
+ * 
+ * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
+ * <u>Description</u>: Information about the entity responsible for generating the resource.<br />
+ * <u>Obligation</u>: At least one of the four producerTypes is required.<br />
+ * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!

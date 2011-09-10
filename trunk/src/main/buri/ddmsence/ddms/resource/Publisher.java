@@ -37,12 +37,12 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#publisher<br />
  * <u>Description</u>: This category is used to tag the identification of the entity responsible for releasing the data 
  * asset---the entity primarily responsible for the intellectual content of the product. It is intended that this category 
  * apply whenever applicable to an organization, as opposed to a person.<br />
- * <u>Obligation</u>: At least one of the four producerTypes is required.<br />
- * <u>Schema Modification Date</u>: 2010-01-26<br />
+ * <u>Obligation</u>: At least one of the four producerTypes is required. A publisher is also required in 
+ * metacardInfo.<br />
+ * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">

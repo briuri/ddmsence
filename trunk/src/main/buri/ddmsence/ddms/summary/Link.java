@@ -54,10 +54,9 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#relatedResources_RelatedResource_link<br />
  * <u>Description</u>: An XLink locator element for the resource being related.<br />
  * <u>Obligation</u>: At least 1 link is required in a RelatedResource.<br />
- * <u>Schema Modification Date</u>: 2010-01-26<br />
+ * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
