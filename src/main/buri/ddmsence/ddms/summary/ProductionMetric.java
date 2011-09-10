@@ -47,10 +47,9 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: TBD<br />
  * <u>Description</u>: A categorization scheme whose values and use are defined by DDNI-A.<br />
  * <u>Obligation</u>: Optional in a SubjectCoverage.<br />
- * <u>Schema Modification Date</u>: 2010-01-26<br />
+ * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!

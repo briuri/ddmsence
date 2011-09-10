@@ -56,10 +56,9 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#dates<br />
  * <u>Description</u>: Calendar dates associated with an event in the life cycle of the resource.<br />
  * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2004-11-23<br />
+ * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
