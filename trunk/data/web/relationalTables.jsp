@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 09/09/2011</p>
+<p align="right"><b>Last Update:</b> 09/10/2011</p>
 
 <a name="top"></a><h1>Relational Database Model for DDMS</h1>
 
@@ -48,6 +48,16 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		</td>
 	</tr><tr>
 		<td class="relOverviewLayer">
+			<a href="#tables-format">Format Set</a>
+			<ul>
+				<li><a href="#ddmsFormat">ddmsFormat</a></li>
+				<li><a href="#ddmsExtent">ddmsExtent</a></li>
+			</ul>
+			
+			<a href="#tables-metacard">Metacard Info Set</a>
+			<ul>
+			</ul>
+			
 			<a href="#tables-resource">Resource Set</a>
 			<ul>
 				<li><a href="#ddmsDates">ddmsDates</a></li>
@@ -63,12 +73,13 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsType">ddmsType</a></li>				
 			</ul>
 					
-			<a href="#tables-format">Format Set</a>
-			<ul>
-				<li><a href="#ddmsFormat">ddmsFormat</a></li>
-				<li><a href="#ddmsExtent">ddmsExtent</a></li>
-			</ul>
 		</td><td class="relOverviewLayer">
+			<a href="#tables-security">Security Set</a>
+			<ul>
+				<li><a href="#ddmsSecurity">ddmsSecurity</a></li>
+				<li><a href="#ismSecurityAttribute">ismSecurityAttribute</a></li>
+			</ul>
+			
 			<a href="#tables-summary">Summary Set</a>
 			<ul>
 				<li><a href="#ddmsBoundingBox">ddmsBoundingBox</a></li>
@@ -95,12 +106,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#gmlPoint">gmlPoint</a></li>
 				<li><a href="#gmlPolygon">gmlPolygon</a></li>
 				<li><a href="#gmlPosition">gmlPosition</a></li>
-			</ul>		
-			<a href="#tables-security">Security Set</a>
-			<ul>
-				<li><a href="#ddmsSecurity">ddmsSecurity</a></li>
-				<li><a href="#ismSecurityAttribute">ismSecurityAttribute</a></li>
-			</ul>			
+			</ul>					
 				
 		</td><td class="relOverviewLayer">
 			<a href="#tables-extensible">Extensible Layer</a>
@@ -190,6 +196,112 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<td class="relField">ddmsVersion</td><td class="relRules">char(8)</td><td>the version of DDMS used.</td>
 	</tr>
 </table>
+
+<a name="tables-format"></a><h4>The Format Set</h4>
+
+<a name="ddmsFormat"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsFormat</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#format"><code>ddms:format</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/format/Format.html">Format</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsExtent">ddmsExtent</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			No other notes.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">mimeType</td><td class="relRules">char(64), not null</td><td>the mime type, exactly 1 required</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">medium</td><td class="relRules">char(64)</td><td>the medium, 0-1 optional</td>
+	</tr>
+</table>
+
+<a name="ddmsExtent"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsExtent</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#format_Media_extent"><code>ddms:extent</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/format/Extent.html">Extent</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			A qualifier is required when a value is present, but this constraint is not enforced here.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">formatId</td><td class="relRules">integer</td><td>foreign key to the parent ddms:format element</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">qualifier</td><td class="relRules">char(2048)</td><td>the qualifier URI</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(256)</td><td>the value</td>
+	</tr>
+</table>
+
+<a name="tables-metacard"></a><h4>The Metacard Info Set</h4>
 
 <a name="tables-resource"></a><h4>The Resource Set</h4>
 
@@ -807,35 +919,34 @@ may be useful when integrating DDMSence with an existing persistence framework l
 
 
 
+<a name="tables-security"></a><h4>The Security Set</h4>
 
-<a name="tables-format"></a><h4>The Format Set</h4>
-
-<a name="ddmsFormat"></a><table class="rel">
+<a name="ddmsSecurity"></a><table class="rel">
 	<tr>
-		<th class="relName" colspan="3">ddmsFormat</th>
+		<th class="relName" colspan="3">ddmsSecurity</th>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#format"><code>ddms:format</code></a>
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#security"><code>ddms:security</code></a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/format/Format.html">Format</a>
+			<a href="/docs/buri/ddmsence/ddms/security/Security.html">Security</a>
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsExtent">ddmsExtent</a>
+			No other tables.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			No other tables.
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -846,7 +957,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
-	</tr>	
+	</tr>		
 	<tr class="relRow">
 		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
@@ -854,27 +965,25 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">mimeType</td><td class="relRules">char(64), not null</td><td>the mime type, exactly 1 required</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">medium</td><td class="relRules">char(64)</td><td>the medium, 0-1 optional</td>
+		<td class="relField">excludeFromRollup</td><td class="relRules">boolean</td><td>has a fixed value of "true" in DDMS 3.0. This attribute does not exist in DDMS 2.0, 
+			so its value there is irrelevant (a DDMS 2.0 Security object will return a <code>null</code> value for this attribute).</td>
 	</tr>
 </table>
 
-<a name="ddmsExtent"></a><table class="rel">
+<a name="ismSecurityAttribute"></a><table class="rel">
 	<tr>
-		<th class="relName" colspan="3">ddmsExtent</th>
+		<th class="relName" colspan="3">ismSecurityAttribute</th>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMS:</td>
 		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#format_Media_extent"><code>ddms:extent</code></a>
+			ISM Security Attributes
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">In DDMSence:</td>
 		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/format/Extent.html">Extent</a>
+			<a href="/docs/buri/ddmsence/ddms/security/ism/SecurityAttributes.html">SecurityAttributes</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -884,33 +993,45 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relHeader">Augmented By:</td>
+		<td class="relHeader">Augments:</td>
 		<td class="relInfo" colspan="2">
-			No other tables.
+			<a href="#ddmsDescription">ddmsDescription</a>,
+			<a href="#ddmsGeospatialCoverage">ddmsGeospatialCoverage</a> (DDMS 3.0 only),
+			<a href="#ddmsProducer">ddmsProducer</a>,
+			<a href="#ddmsRelatedResources">ddmsRelatedResources</a>,
+			<a href="#ddmsResource">ddmsResource</a>,
+			<a href="#ddmsSecurity">ddmsSecurity</a>, 
+			<a href="#ddmsSource">ddmsSource</a> (DDMS 3.0 only),
+			<a href="#ddmsSubjectCoverage">ddmsSubjectCoverage</a> (DDMS 3.0 only), 
+			<a href="#ddmsSubtitle">ddmsSubtitle</a>, 
+			<a href="#ddmsTemporalCoverage">ddmsTemporalCoverage</a> (DDMS 3.0 only),
+			<a href="#ddmsTitle">ddmsTitle</a>, and
+			<a href="#ddmsVirtualCoverage">ddmsVirtualCoverage</a> (DDMS 3.0 only)
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
-			A qualifier is required when a value is present, but this constraint is not enforced here.
+			Each row in this table represents a single ISM attribute, because the "complete" set of attributes is subject to change, and most values are optional.
 		</td>
 	</tr>
 	<tr class="relRow">
 		<td class="relHeader" colspan="3">Columns:</td>
-	</tr>		
+	</tr>	
 	<tr class="relRow">
 		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">formatId</td><td class="relRules">integer</td><td>foreign key to the parent ddms:format element</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">qualifier</td><td class="relRules">char(2048)</td><td>the qualifier URI</td>
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent component of this attribute</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">value</td><td class="relRules">char(256)</td><td>the value</td>
+		<td class="relField">name</td><td class="relRules">char(64), not null</td><td>the unique attribute name, i.e. "classification" or "SCIcontrols"</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the attribute value as a string</td>
 	</tr>
 </table>
+
 
 
 
@@ -2192,122 +2313,6 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<td class="relField">heightAboveEllipsoid</td><td class="relRules">number</td><td>optional third coordinate</td>
 	</tr>
 </table>
-
-<a name="tables-security"></a><h4>The Security Set</h4>
-
-<a name="ddmsSecurity"></a><table class="rel">
-	<tr>
-		<th class="relName" colspan="3">ddmsSecurity</th>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMS:</td>
-		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#security"><code>ddms:security</code></a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMSence:</td>
-		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/security/Security.html">Security</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Parent Of:</td>
-		<td class="relInfo" colspan="2">
-			No other tables.
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Augmented By:</td>
-		<td class="relInfo" colspan="2">
-			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Additional Notes:</td>
-		<td class="relInfo" colspan="2">
-			No other notes.
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader" colspan="3">Columns:</td>
-	</tr>		
-	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">excludeFromRollup</td><td class="relRules">boolean</td><td>has a fixed value of "true" in DDMS 3.0. This attribute does not exist in DDMS 2.0, 
-			so its value there is irrelevant (a DDMS 2.0 Security object will return a <code>null</code> value for this attribute).</td>
-	</tr>
-</table>
-
-<a name="ismSecurityAttribute"></a><table class="rel">
-	<tr>
-		<th class="relName" colspan="3">ismSecurityAttribute</th>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMS:</td>
-		<td class="relName" colspan="2">
-			ISM Security Attributes
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMSence:</td>
-		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/security/ism/SecurityAttributes.html">SecurityAttributes</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Parent Of:</td>
-		<td class="relInfo" colspan="2">
-			No other tables.
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Augments:</td>
-		<td class="relInfo" colspan="2">
-			<a href="#ddmsDescription">ddmsDescription</a>,
-			<a href="#ddmsGeospatialCoverage">ddmsGeospatialCoverage</a> (DDMS 3.0 only),
-			<a href="#ddmsProducer">ddmsProducer</a>,
-			<a href="#ddmsRelatedResources">ddmsRelatedResources</a>,
-			<a href="#ddmsResource">ddmsResource</a>,
-			<a href="#ddmsSecurity">ddmsSecurity</a>, 
-			<a href="#ddmsSource">ddmsSource</a> (DDMS 3.0 only),
-			<a href="#ddmsSubjectCoverage">ddmsSubjectCoverage</a> (DDMS 3.0 only), 
-			<a href="#ddmsSubtitle">ddmsSubtitle</a>, 
-			<a href="#ddmsTemporalCoverage">ddmsTemporalCoverage</a> (DDMS 3.0 only),
-			<a href="#ddmsTitle">ddmsTitle</a>, and
-			<a href="#ddmsVirtualCoverage">ddmsVirtualCoverage</a> (DDMS 3.0 only)
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Additional Notes:</td>
-		<td class="relInfo" colspan="2">
-			Each row in this table represents a single ISM attribute, because the "complete" set of attributes is subject to change, and most values are optional.
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader" colspan="3">Columns:</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent component of this attribute</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">name</td><td class="relRules">char(64), not null</td><td>the unique attribute name, i.e. "classification" or "SCIcontrols"</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the attribute value as a string</td>
-	</tr>
-</table>
-
-
-
 
 <a name="tables-extensible"></a><h4>The Extensible Layer</h4>
 
