@@ -730,10 +730,13 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
 	</tr>
 	<tr class="relRow">
+		<td class="relField">producerType</td><td class="relRules">char(64)</td><td>the producer type (contributor, creator, pointOfContact, publisher, recordKeeeper)</td>
+	</tr>
+	<tr class="relRow">
 		<td class="relField">producerId</td><td class="relRules">integer</td><td>foreign key to the parent producer role fulfilled by this entity</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">entityType</td><td class="relRules">char(24)</td><td>the type of this entity, i.e. "Organization", "Person", "Service" or "Unknown"</td>
+		<td class="relField">entityType</td><td class="relRules">char(24)</td><td>the type of this entity, i.e. "organization", "person", "service" or "unknown"</td>
 	</tr>	
 	<tr class="relRow">
 		<td class="relField">name</td><td class="relRules">char(256), not null</td><td>a delimited string-list of names for this producer. At least one is required.</td>
@@ -759,6 +762,54 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<td class="relField">acronym</td><td class="relRules">char(64)</td><td>This is an Organization-specific column, containing an organizational acronym. 
 			Optional.</td>
 	</tr>	
+</table>
+
+<a name="ddmsRecordKeeper"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsRecordKeeper</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code>ddms:recordKeeper</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/resource/RecordKeeper.html">RecordKeeper</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsProducerEntity">ddmsProducerEntity</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			This component will always contain an organization, which can be stored in the ddmsProducerEntity table.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent recordsManagementInfo component</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">recordKeeperID</td><td class="relRules">char(64)</td><td>the unique ID of this record keeper</td>
+	</tr>
 </table>
 
 <a name="ddmsRights"></a><table class="rel">

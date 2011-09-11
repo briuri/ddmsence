@@ -103,9 +103,9 @@ public class CreatorTest extends AbstractComponentTestCase {
 		StringBuffer html = new StringBuffer();
 		html.append(getEntityFixture().toHTML("creator."));
 		if (version.isAtLeast("4.0"))
-			html.append("<meta name=\"").append("creator.POCType\" content=\"ICD-710\" />\n");
-		html.append("<meta name=\"").append("creator.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"").append("creator.ownerProducer\" content=\"USA\" />\n");
+			html.append("<meta name=\"creator.POCType\" content=\"ICD-710\" />\n");
+		html.append("<meta name=\"creator.classification\" content=\"U\" />\n");
+		html.append("<meta name=\"creator.ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -118,8 +118,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 		text.append(getEntityFixture().toText("creator" + " "));
 		if (version.isAtLeast("4.0"))
 			text.append("POCType: ICD-710\n");
-		text.append("creator").append(" classification: U\n");
-		text.append("creator").append(" ownerProducer: USA\n");
+		text.append("creator classification: U\n");
+		text.append("creator ownerProducer: USA\n");
 		return (text.toString());
 	}
 
