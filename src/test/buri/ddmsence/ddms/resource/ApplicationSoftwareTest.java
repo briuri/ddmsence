@@ -22,6 +22,7 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -29,20 +30,38 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:subtitle elements</p>
+ * <p>Tests related to ddms:applicationSoftware elements</p>
+ * 
+ * <p> Because a ddms:applicationSoftware is a local component, we cannot load a valid document from a unit test data file. We have to
+ * build the well-formed Element ourselves. </p>
  * 
  * @author Brian Uri!
- * @since 0.9.b
+ * @since 2.0.0
  */
-public class SubtitleTest extends AbstractComponentTestCase {
-
-	private static final String TEST_VALUE = "Version 0.1";
+public class ApplicationSoftwareTest extends AbstractComponentTestCase {
+	
+	
+	private static final String TEST_VALUE = "IRM Generator 2L-9";
 
 	/**
 	 * Constructor
 	 */
-	public SubtitleTest() {
-		super("subtitle.xml");
+	public ApplicationSoftwareTest() {
+		super(null);
+	}
+	
+	/**
+	 * Returns a canned fixed value applicationSoftware for testing.
+	 * 
+	 * @return a XOM element representing a valid applicationSoftware
+	 */
+	protected static Element getFixtureElement() throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		Element element = Util.buildDDMSElement(ApplicationSoftware.getName(version), TEST_VALUE);
+		element.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), version.getNamespace());
+		element.addNamespaceDeclaration(PropertyReader.getProperty("ism.prefix"), version.getIsmNamespace());
+		SecurityAttributesTest.getFixture(false).addTo(element);
+		return (element);
 	}
 
 	/**
@@ -53,10 +72,10 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	 * 
 	 * @return a valid object
 	 */
-	private Subtitle testConstructor(boolean expectFailure, Element element) {
-		Subtitle component = null;
+	private ApplicationSoftware testConstructor(boolean expectFailure, Element element) {
+		ApplicationSoftware component = null;
 		try {
-			component = new Subtitle(element);
+			component = new ApplicationSoftware(element);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -71,10 +90,10 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	 * @param value the child text
 	 * @return a valid object
 	 */
-	private Subtitle testConstructor(boolean expectFailure, String value) {
-		Subtitle component = null;
+	private ApplicationSoftware testConstructor(boolean expectFailure, String value) {
+		ApplicationSoftware component = null;
 		try {
-			component = new Subtitle(value, SecurityAttributesTest.getFixture(false));
+			component = new ApplicationSoftware(value, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -87,9 +106,9 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"subtitle\" content=\"").append(TEST_VALUE).append("\" />\n");
-		html.append("<meta name=\"subtitle.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"subtitle.ownerProducer\" content=\"USA\" />\n");
+		html.append("<meta name=\"applicationSoftware\" content=\"").append(TEST_VALUE).append("\" />\n");
+		html.append("<meta name=\"applicationSoftware.classification\" content=\"U\" />\n");
+		html.append("<meta name=\"applicationSoftware.ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
 	}
 
@@ -98,9 +117,9 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("subtitle: ").append(TEST_VALUE).append("\n");
-		text.append("subtitle classification: U\n");
-		text.append("subtitle ownerProducer: USA\n");
+		text.append("applicationSoftware: ").append(TEST_VALUE).append("\n");
+		text.append("applicationSoftware classification: U\n");
+		text.append("applicationSoftware ownerProducer: USA\n");
 		return (text.toString());
 	}
 
@@ -109,19 +128,23 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subtitle ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM())
+		xml.append("<ddms:applicationSoftware ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM())
 			.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append(TEST_VALUE).append("</ddms:subtitle>");
+		xml.append(TEST_VALUE).append("</ddms:applicationSoftware>");
 		return (xml.toString());
 	}
 
-	public void testNameAndNamespace() {
+	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			Subtitle component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(Subtitle.getName(version), component.getName());
+			
+			if (!version.isAtLeast("4.0"))
+				continue;
+			
+			ApplicationSoftware component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			assertEquals(ApplicationSoftware.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Subtitle.getName(version),
+			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + ApplicationSoftware.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -133,11 +156,15 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			if (!version.isAtLeast("4.0"))
+				continue;
+			
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			testConstructor(WILL_SUCCEED, getFixtureElement());
 
 			// No optional fields
-			Element element = Util.buildDDMSElement(Subtitle.getName(version), null);
+			Element element = Util.buildDDMSElement(ApplicationSoftware.getName(version), null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -145,7 +172,11 @@ public class SubtitleTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			if (!version.isAtLeast("4.0"))
+				continue;
+			
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_VALUE);
 
@@ -156,7 +187,11 @@ public class SubtitleTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			if (!version.isAtLeast("4.0"))
+				continue;
+			
 			// Wrong name
 			Element element = Util.buildDDMSElement("unknownName", null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
@@ -166,10 +201,14 @@ public class SubtitleTest extends AbstractComponentTestCase {
 
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			if (!version.isAtLeast("4.0"))
+				continue;
+			
 			// Bad security attributes
 			try {
-				new Subtitle(TEST_VALUE, (SecurityAttributes) null);
+				new ApplicationSoftware(TEST_VALUE, (SecurityAttributes) null);
 				fail("Allowed invalid data.");
 			} catch (InvalidDDMSException e) {
 				// Good
@@ -180,53 +219,73 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	public void testWarnings() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			if (!version.isAtLeast("4.0"))
+				continue;
+			
 			// No warnings
-			Subtitle component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			ApplicationSoftware component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// No value
-			Element element = Util.buildDDMSElement(Subtitle.getName(version), null);
+			Element element = Util.buildDDMSElement(ApplicationSoftware.getName(version), null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
-			String text = "A ddms:subtitle element was found with no subtitle value.";
-			String locator = "ddms:subtitle";
+			String text = "A ddms:applicationSoftware element was found with no value.";
+			String locator = "ddms:applicationSoftware";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Subtitle elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Subtitle dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			if (!version.isAtLeast("4.0"))
+				continue;
+			
+			ApplicationSoftware elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
+			ApplicationSoftware dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() {
+	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Subtitle elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Subtitle dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			if (!version.isAtLeast("4.0"))
+				continue;
+			
+			ApplicationSoftware elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
+			ApplicationSoftware dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Subtitle elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			if (!version.isAtLeast("4.0"))
+				continue;
+			
+			ApplicationSoftware elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Subtitle component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			if (!version.isAtLeast("4.0"))
+				continue;
+			
+			ApplicationSoftware component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
@@ -234,10 +293,14 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Subtitle component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			if (!version.isAtLeast("4.0"))
+				continue;
+			
+			ApplicationSoftware component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedTextOutput(), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
@@ -245,10 +308,14 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testXMLOutput() {
+	public void testXMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Subtitle component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			if (!version.isAtLeast("4.0"))
+				continue;
+			
+			ApplicationSoftware component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
@@ -256,21 +323,35 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void test20Usage() {
+		try {
+			DDMSVersion.setCurrentVersion("2.0");
+			new ApplicationSoftware(TEST_VALUE, SecurityAttributesTest.getFixture(false));
+			fail("Allowed invalid data.");
+		} catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Subtitle component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			if (!version.isAtLeast("4.0"))
+				continue;
+			
+			ApplicationSoftware component = testConstructor(WILL_SUCCEED, getFixtureElement());
 
 			// Equality after Building
-			Subtitle.Builder builder = new Subtitle.Builder(component);
+			ApplicationSoftware.Builder builder = new ApplicationSoftware.Builder(component);
 			assertEquals(builder.commit(), component);
 
 			// Empty case
-			builder = new Subtitle.Builder();
+			builder = new ApplicationSoftware.Builder();
 			assertNull(builder.commit());
 
 			// Validation
-			builder = new Subtitle.Builder();
+			builder = new ApplicationSoftware.Builder();
 			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();
