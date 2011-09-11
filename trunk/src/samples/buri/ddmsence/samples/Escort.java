@@ -46,6 +46,7 @@ import buri.ddmsence.ddms.resource.ApplicationSoftware;
 import buri.ddmsence.ddms.resource.Contributor;
 import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Dates;
+import buri.ddmsence.ddms.resource.Details;
 import buri.ddmsence.ddms.resource.Identifier;
 import buri.ddmsence.ddms.resource.Language;
 import buri.ddmsence.ddms.resource.Organization;
@@ -220,7 +221,13 @@ public class Escort {
 		BUILDERS.put(ApplicationSoftware.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String text = readString("the applicationSoftware text [testSoftware]");
-				return (new Subtitle(text, buildSecurityAttributes("applicationSoftware")));
+				return (new ApplicationSoftware(text, buildSecurityAttributes("applicationSoftware")));
+			}		
+		});
+		BUILDERS.put(Details.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String text = readString("the revision recall details text [testDetails]");
+				return (new Details(text, buildSecurityAttributes("details")));
 			}		
 		});
 		BUILDERS.put(AbstractProducerRole.class, new IComponentBuilder() {
