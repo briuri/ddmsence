@@ -19,6 +19,9 @@
 */
 package buri.ddmsence.ddms.resource;
 
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractSimpleString;
@@ -29,23 +32,24 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of ddms:applicationSoftware.
+ * An immutable implementation of ddms:processingInfo.
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>An applicationSoftware element can be used without any child text.</li>
+ * <li>A processingInfo element can be used without any child text.</li>
  * </ul>
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * <u>ddms:dateProcessed</u>: date when this processing occurred (required)<br />
  * This class is decorated with ISM {@link SecurityAttributes}. The classification and
  * ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: The name or description of the software application(s) used to create the object or product to 
- * which this metadata applies.<br />
+ * <u>Description</u>: Information about when and/or how a product was transformed post-publication, 
+ * including adding metadata to a published product.<br />
  * <u>Obligation</u>: Optional<br />
  * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
@@ -53,27 +57,57 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 2.0.0
  */
-public final class ApplicationSoftware extends AbstractSimpleString {
+public final class ProcessingInfo extends AbstractSimpleString {
 
+	// Values are cached upon instantiation, so Calendars do not have to be built when calling getters.
+	private XMLGregorianCalendar _cachedDateProcessed = null;
+	
+	private static final String DATE_PROCESSED_NAME = "dateProcessed";
+	
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 *  
 	 * @param element the XOM element representing this 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public ApplicationSoftware(Element element) throws InvalidDDMSException {
-		super(element, true);
+	public ProcessingInfo(Element element) throws InvalidDDMSException {
+		super(element, false);
+		try {
+			String processed = getAttributeValue(DATE_PROCESSED_NAME);
+			if (!Util.isEmpty(processed))
+				_cachedDateProcessed = getFactory().newXMLGregorianCalendar(processed);
+			validate();
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 	
 	/**
 	 * Constructor for creating a component from raw data
 	 *  
 	 * @param value the value of the child text
+	 * @param dateProcessed the processing date (required)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public ApplicationSoftware(String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(ApplicationSoftware.getName(DDMSVersion.getCurrentVersion()), value, securityAttributes, true);
+	public ProcessingInfo(String value, String dateProcessed, SecurityAttributes securityAttributes)
+		throws InvalidDDMSException {
+		super(ProcessingInfo.getName(DDMSVersion.getCurrentVersion()), value, securityAttributes, false);
+		try {
+			try {
+				if (!Util.isEmpty(dateProcessed)) {
+					_cachedDateProcessed = getFactory().newXMLGregorianCalendar(dateProcessed);
+					Util.addDDMSAttribute(getXOMElement(), DATE_PROCESSED_NAME, getDateProcessed().toXMLFormat());
+				}
+			} catch (IllegalArgumentException e) {
+				throw new InvalidDDMSException("The ddms:dateProcessed attribute is not in a valid date format.");
+			}
+			validate();
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
 	}
 		
 	/**
@@ -82,6 +116,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A classification is required.</li>
+	 * <li>The dateProcessed exists, and is an acceptable date format.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>This component cannot be used until DDMS 4.0 or later.</li>
 	 * </td></tr></table>
@@ -90,12 +125,14 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), ApplicationSoftware.getName(getDDMSVersion()));
+		Util.requireDDMSQName(getXOMElement(), ProcessingInfo.getName(getDDMSVersion()));
+		Util.requireDDMSValue("dateProcessed", getDateProcessed());
+		if (getDateProcessed() != null)
+			Util.requireDDMSDateFormat(getDateProcessed().getXMLSchemaType());
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0"))
-			throw new InvalidDDMSException("The ddms:" + ApplicationSoftware.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
-
+			throw new InvalidDDMSException("The ddms:" + ProcessingInfo.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
 		
 		validateWarnings();
 	}
@@ -104,13 +141,13 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A ddms:applicationSoftware element was found with no child text.</li>
+	 * <li>A ddms:processingInfo element was found with no child text.</li>
 	 * <li>Include any warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))
-			addWarning("A ddms:applicationSoftware element was found with no value.");
+			addWarning("A ddms:processingInfo element was found with no value.");
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 			
@@ -120,6 +157,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	public String toHTML() {
 		StringBuffer html = new StringBuffer();
 		html.append(buildHTMLMeta(getName(), getValue(), false));
+		html.append(buildHTMLMeta(getName() + "." + DATE_PROCESSED_NAME, getDateProcessed().toXMLFormat(), true));
 		html.append(getSecurityAttributes().toHTML(getName()));
 		return (html.toString());
 	}
@@ -130,6 +168,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	public String toText() {
 		StringBuffer text = new StringBuffer();
 		text.append(buildTextLine(getName(), getValue(), false));
+		text.append(buildTextLine(getName() + "." + DATE_PROCESSED_NAME, getDateProcessed().toXMLFormat(), true));
 		text.append(getSecurityAttributes().toText(getName()));
 		return (text.toString());
 	}
@@ -138,9 +177,10 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof ApplicationSoftware))
+		if (!super.equals(obj) || !(obj instanceof ProcessingInfo))
 			return (false);
-		return (true);
+		ProcessingInfo test = (ProcessingInfo) obj;
+		return (Util.nullEquals(getDateProcessed(), test.getDateProcessed()));
 	}
 	
 	/**
@@ -151,7 +191,22 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return ("applicationSoftware");
+		return ("processingInfo");
+	}
+	
+	/**
+	 * Accessor for the processing date (required). Returns a copy.
+	 */
+	public XMLGregorianCalendar getDateProcessed() {
+		return (_cachedDateProcessed == null ? null : getFactory().newXMLGregorianCalendar(
+			_cachedDateProcessed.toXMLFormat()));
+	}
+	
+	/**
+	 * Accesor for the datatype factory
+	 */
+	private static DatatypeFactory getFactory() {
+		return (Util.getDataTypeFactory());
 	}
 	
 	/**
@@ -163,6 +218,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 */
 	public static class Builder extends AbstractSimpleString.Builder {
 		private static final long serialVersionUID = -7348511606867959470L;
+		private String _dateProcessed;
 		
 		/**
 		 * Empty constructor
@@ -174,15 +230,39 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 		/**
 		 * Constructor which starts from an existing component.
 		 */
-		public Builder(ApplicationSoftware software) {
-			super(software);
+		public Builder(ProcessingInfo info) {
+			super(info);
+			if (info.getDateProcessed() != null)
+				setDateProcessed(info.getDateProcessed().toXMLFormat());
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
-		public ApplicationSoftware commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new ApplicationSoftware(getValue(), getSecurityAttributes().commit()));
+		public ProcessingInfo commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new ProcessingInfo(getValue(), getDateProcessed(), getSecurityAttributes()
+				.commit()));
+		}
+
+		/**
+		 * @see IBuilder#isEmpty()
+		 */
+		public boolean isEmpty() {
+			return (super.isEmpty() && Util.isEmpty(getDateProcessed()));
+		}
+		
+		/**
+		 * Builder accessor for the dateProcessed
+		 */
+		public String getDateProcessed() {
+			return _dateProcessed;
+		}
+
+		/**
+		 * Builder accessor for the dateProcessed
+		 */
+		public void setDateProcessed(String dateProcessed) {
+			_dateProcessed = dateProcessed;
 		}
 	}
 } 

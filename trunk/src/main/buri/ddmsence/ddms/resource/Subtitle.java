@@ -62,7 +62,7 @@ public final class Subtitle extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Subtitle(Element element) throws InvalidDDMSException {
-		super(element);
+		super(element, true);
 	}
 	
 	/**

@@ -52,6 +52,7 @@ import buri.ddmsence.ddms.resource.Language;
 import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.PointOfContact;
+import buri.ddmsence.ddms.resource.ProcessingInfo;
 import buri.ddmsence.ddms.resource.Publisher;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.resource.Service;
@@ -228,6 +229,13 @@ public class Escort {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String text = readString("the revision recall details text [testDetails]");
 				return (new Details(text, buildSecurityAttributes("details")));
+			}		
+		});
+		BUILDERS.put(ProcessingInfo.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String text = readString("the processingInfo text [testText]");
+				String posted = readString("the processing date [2010]");
+				return (new ProcessingInfo(text, posted, buildSecurityAttributes("processingInfo")));
 			}		
 		});
 		BUILDERS.put(AbstractProducerRole.class, new IComponentBuilder() {

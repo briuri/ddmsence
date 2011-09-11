@@ -61,7 +61,7 @@ public final class Title extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Title(Element element) throws InvalidDDMSException {
-		super(element);
+		super(element, true);
 	}
 	
 	/**

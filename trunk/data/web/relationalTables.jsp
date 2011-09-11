@@ -65,6 +65,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsDetails">ddmsDetails</a></li>
 				<li><a href="#ddmsIdentifier">ddmsIdentifier</a></li>
 				<li><a href="#ddmsLanguage">ddmsLanguage</a></li>
+				<li><a href="#ddmsProcessingInfo">ddmsProcessingInfo</a></li>
 				<li><a href="#ddmsProducer">ddmsProducer</a></li>
 				<li><a href="#ddmsProducerEntity">ddmsProducerEntity</a></li>
 				<li><a href="#ddmsRights">ddmsRights</a></li>
@@ -72,7 +73,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsSubOrganization">ddmsSubOrganization</a></li>
 				<li><a href="#ddmsSubtitle">ddmsSubtitle</a></li>
 				<li><a href="#ddmsTitle">ddmsTitle</a></li>
-				<li><a href="#ddmsType">ddmsType</a></li>				
+				<li><a href="#ddmsType">ddmsType</a></li>
 			</ul>
 					
 		</td><td class="relOverviewLayer">
@@ -565,6 +566,57 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>
 	<tr class="relRow">
 		<td class="relField">value</td><td class="relRules">char(256)</td><td>the value</td>
+	</tr>
+</table>
+
+<a name="ddmsProcessingInfo"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsProcessingInfo</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#processingInfo"><code>ddms:processingInfo</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/resource/ProcessingInfo.html">ProcessingInfo</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			No other notes.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent resourceManagement element</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the text of this element</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">dateProcessed</td><td class="relRules">char(32)</td><td>the processing date</td>
 	</tr>
 </table>
 

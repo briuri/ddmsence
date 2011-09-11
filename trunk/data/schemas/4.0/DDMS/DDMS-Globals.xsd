@@ -27,6 +27,19 @@
 	<xs:include schemaLocation="DDMS-Includes.xsd"/>
 	<xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="DDMS-XLink-Profile.xsd"/>
 	<!-- Start Global Elements -->
+	<xs:element name="processingInfo" type="ProcessingInfoType">
+		<xs:annotation>
+			<xs:appinfo xml:lang="en">Information about when and/or how a product was transformed post-publication, including adding metadata to a published product. The type and version information about the transformation must be included as the element text. </xs:appinfo>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="ProcessingInfoType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="dateProcessed" type="CombinedDateType" use="required"/>
+				<xs:attributeGroup ref="SecurityAttributesGroup"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
 	<xs:element name="identifier" type="CompoundResourceIdentifierType">
 		<xs:annotation>
 			<xs:appinfo>

@@ -61,7 +61,7 @@ public final class Description extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Description(Element element) throws InvalidDDMSException {
-		super(element);
+		super(element, true);
 	}
 	
 	/**

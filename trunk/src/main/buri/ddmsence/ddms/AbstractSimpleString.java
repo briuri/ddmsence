@@ -46,11 +46,14 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	
 	/**
 	 * Base constructor which works from a XOM element.
+	 * 
+	 * @param element the XOM element
+	 * @param validateNow true if the component should be validated here
 	 */
-	protected AbstractSimpleString(Element element) throws InvalidDDMSException {
+	protected AbstractSimpleString(Element element, boolean validateNow) throws InvalidDDMSException {
 		try {
 			_cachedSecurityAttributes = new SecurityAttributes(element);
-			setXOMElement(element, true);
+			setXOMElement(element, validateNow);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
