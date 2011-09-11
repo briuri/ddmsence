@@ -302,10 +302,6 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			dataComponent = testConstructor(WILL_SUCCEED, null, null, null, null, FacilityIdentifierTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-
-			// Backwards compatible constructors
-			assertEquals(new GeographicIdentifier(TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture()),
-				new GeographicIdentifier(TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(), null));
 		}
 	}
 
@@ -446,7 +442,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		CountryCode code = CountryCodeTest.getFixture();
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
-			new GeographicIdentifier(TEST_NAMES, TEST_REGIONS, code);
+			new GeographicIdentifier(TEST_NAMES, TEST_REGIONS, code, null);
 			fail("Allowed different versions.");
 		} catch (InvalidDDMSException e) {
 			// Good

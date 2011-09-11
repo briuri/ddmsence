@@ -349,10 +349,6 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 				getMetricFixture(), getActorFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-
-			// Backwards compatible constructors
-			assertEquals(new SubjectCoverage(getKeywords(), getCategories(), null), new SubjectCoverage(getKeywords(),
-				getCategories(), null, null, null));
 		}
 	}
 

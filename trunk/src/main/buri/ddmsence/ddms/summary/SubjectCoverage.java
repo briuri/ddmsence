@@ -132,20 +132,6 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-
-	/**
-	 * Constructor for creating a component from raw data
-	 * 
-	 * @deprecated This constructor is provided for backwards compatibility with pre-DDMS 4.0 elements.
-	 * @param keywords list of keywords
-	 * @param categories list of categories
-	 * @param securityAttributes any security attributes (optional)
-	 * @throws InvalidDDMSException if any required information is missing or malformed
-	 */
-	public SubjectCoverage(List<Keyword> keywords, List<Category> categories, SecurityAttributes securityAttributes)
-		throws InvalidDDMSException {
-		this(keywords, categories, null, null, securityAttributes);
-	}
 	
 	/**
 	 * Constructor for creating a component from raw data

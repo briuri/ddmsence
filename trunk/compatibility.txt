@@ -68,6 +68,25 @@ FIX:
 	Now no longer have a parentType:
 	
 	new CountryCode(element);
+
+#########################################################################################################
+Method signatures have changed (multiple issues)
+
+SEVERITY: Minor
+DETAILS:
+	- Category: The constructor has additional parameters for optional attributes. (Issue #155)
+	- Dates: The constructor has additional parameters for optional dates. (Issue #117)
+	- DDMSVersion: getIcismNamespace() became getIsmNamespace() (Issue #95).
+	- GeographicIdentifier: The constructor has an additional parameter for optional subDivisionCode. (Issue #122)
+	- ISMVocabulary: setIsmVersion() became setDDMSVersion() (Issue #95).
+	- Keyword: The constructor has an additional parameter for optional attributes. (Issue #156)
+	- Organization: The constructor has additional parameters for optional subOrganization and acronym. (Issue #113)
+	- Person: The order of the constructor parameters has been reordered to match the DDMS 4.0 schema (Issue #114)
+	- Resource: getSubjectCoverage() became getSubjectCoverages() and now returns a list of SubjectCoverage components (Issue #126)
+	- SubjectCoverage: The constructor has additional parameters for productionMetrics and nonStateActors.  (Issue #126)
+	- Type: The constructor has an additional parameter for optional description. (Issue #118)
+FIX:
+	Update method signatures in your code if you ever called them.	
 	
 #########################################################################################################
 Components no longer have a publicly-accessible constant, NAME (Issue #152)
@@ -106,17 +125,7 @@ DETAILS:
 FIX:
 	Update property names if you used these custom properties.
 
-#########################################################################################################
-Method signatures have changed (Issue #95, #114, #126)
 
-SEVERITY: Minor
-DETAILS:
-	- DDMSVersion: getIcismNamespace() became getIsmNamespace() (Issue #95).
-	- ISMVocabulary: setIsmVersion() became setDDMSVersion() (Issue #95).
-	- Person: The order of the constructor parameters has been reordered to match the DDMS 4.0 schema (Issue #114)
-	- Resource: getSubjectCoverage() became getSubjectCoverages() and now returns a list of SubjectCoverage components (Issue #126)
-FIX:
-	Update method signatures in your code if you ever called them.	
 #########################################################################################################
 MediaExtent class renamed as Extent
 

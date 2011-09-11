@@ -202,9 +202,6 @@ public class KeywordTest extends AbstractComponentTestCase {
 			Keyword dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-
-			// Backwards compatible constructors
-			assertEquals(new Keyword(TEST_VALUE), new Keyword(TEST_VALUE, null));
 		}
 	}
 
