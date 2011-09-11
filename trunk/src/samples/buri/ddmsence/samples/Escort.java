@@ -54,6 +54,7 @@ import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.PointOfContact;
 import buri.ddmsence.ddms.resource.ProcessingInfo;
 import buri.ddmsence.ddms.resource.Publisher;
+import buri.ddmsence.ddms.resource.RecordKeeper;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Source;
@@ -236,6 +237,41 @@ public class Escort {
 				String text = readString("the processingInfo text [testText]");
 				String posted = readString("the processing date [2010]");
 				return (new ProcessingInfo(text, posted, buildSecurityAttributes("processingInfo")));
+			}		
+		});
+		BUILDERS.put(RecordKeeper.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String id = readString("the recordKeeperID [testID]");
+				int numNames = readInt("the number of names this record keeper has [1]");
+				int numPhones = readInt("the number of phone numbers this record keeper has [0]");
+				int numEmails = readInt("the number of email addresses this record keeper has [0]");
+				if (numNames == 0) {
+					println("At least 1 name is required. Defaulting to 1 name.");
+					numNames = 1;
+				}
+				List<String> names = new ArrayList<String>();
+				for (int i = 0; i < numNames; i++) {
+					names.add(readString("recordKeeper name #" + (i + 1) + " [testName" + (i + 1) + "]"));
+				}
+				List<String> phones = new ArrayList<String>();
+				for (int i = 0; i < numPhones; i++) {
+					phones.add(readString("recordKeeper phone number #" + (i + 1) + " [testPhone" + (i + 1) + "]"));
+				}
+				List<String> emails = new ArrayList<String>();
+				for (int i = 0; i < numEmails; i++) {
+					emails.add(readString("recordKeeper email #" + (i + 1) + " [testEmail" + (i + 1) + "]"));
+				}
+				List<SubOrganization> subOrgs = new ArrayList<SubOrganization>();
+				String acronym = null;
+				int numSubs = readInt("the number of suborganizations to include [0]");
+				for (int i = 0; i < numSubs; i++) {
+					println("* SubOrganization #" + (i + 1));
+					subOrgs.add((SubOrganization) inputLoop(SubOrganization.class));
+				}					
+				acronym = readString("the recordKeeper acronym [testAcronym]");
+								
+				Organization org = new Organization(names, phones, emails, subOrgs, acronym, null);
+				return (new RecordKeeper(id, org));
 			}		
 		});
 		BUILDERS.put(AbstractProducerRole.class, new IComponentBuilder() {

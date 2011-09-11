@@ -110,6 +110,21 @@ public final class Organization extends AbstractProducerEntity {
 	 * @param emails an ordered list of email addresses
 	 * @param subOrganizations an ordered list of suborganizations
 	 * @param acronym the organization's acronym
+	 */
+	public Organization(List<String> names, List<String> phones, List<String> emails,
+		List<SubOrganization> subOrganizations, String acronym)
+		throws InvalidDDMSException {
+		this(names, phones, emails, subOrganizations, acronym, null);
+	}
+	
+	/**
+	 * Constructor for creating a component from raw data.
+	 * 
+	 * @param names an ordered list of names
+	 * @param phones an ordered list of phone numbers
+	 * @param emails an ordered list of email addresses
+	 * @param subOrganizations an ordered list of suborganizations
+	 * @param acronym the organization's acronym
 	 * @param extensions extensible attributes (optional)
 	 */
 	public Organization(List<String> names, List<String> phones, List<String> emails,
@@ -195,7 +210,7 @@ public final class Organization extends AbstractProducerEntity {
 		StringBuffer text = new StringBuffer(super.toText(prefix));
 		for (SubOrganization subOrg : getSubOrganizations())
 			text.append(subOrg.toText(prefix));	
-		text.append(buildTextLine(ACRONYM_NAME, getAcronym(), false));
+		text.append(buildTextLine(prefix + ACRONYM_NAME, getAcronym(), false));
 		return (text.toString());
 	}
 	
