@@ -42,6 +42,7 @@ import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.format.Extent;
+import buri.ddmsence.ddms.resource.ApplicationSoftware;
 import buri.ddmsence.ddms.resource.Contributor;
 import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Dates;
@@ -214,6 +215,12 @@ public class Escort {
 				String value = readString("the value [testValue]");
 				SecurityAttributes attr = buildSecurityAttributes("type");
 				return (new Type(description, qualifier, value, attr));
+			}		
+		});
+		BUILDERS.put(ApplicationSoftware.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				String text = readString("the applicationSoftware text [testSoftware]");
+				return (new Subtitle(text, buildSecurityAttributes("applicationSoftware")));
 			}		
 		});
 		BUILDERS.put(AbstractProducerRole.class, new IComponentBuilder() {
