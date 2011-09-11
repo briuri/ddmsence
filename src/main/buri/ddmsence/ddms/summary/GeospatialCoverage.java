@@ -140,25 +140,6 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-
-	/**
-	 * Constructor for creating a component from raw data
-	 *  
-	 * @deprecated This constructor is provided for backwards compatibility with pre-DDMS 4.0 elements.
-	 * @param geographicIdentifier an identifier (0-1 optional)
-	 * @param boundingBox a bounding box (0-1 optional)
-	 * @param boundingGeometry a set of bounding geometry (0-1 optional)
-	 * @param postalAddress an address (0-1 optional)
-	 * @param verticalExtent an extent (0-1 optional)
-	 * @param securityAttributes any security attributes (optional)
-	 * @throws InvalidDDMSException if any required information is missing or malformed
-	 */
-	public GeospatialCoverage(GeographicIdentifier geographicIdentifier, BoundingBox boundingBox,
-		BoundingGeometry boundingGeometry, PostalAddress postalAddress, VerticalExtent verticalExtent,
-		SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		this(geographicIdentifier, boundingBox, boundingGeometry, postalAddress, verticalExtent, null, null,
-			securityAttributes);
-	}
 	
 	/**
 	 * Constructor for creating a component from raw data
@@ -179,7 +160,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		try {
 			Element coverageElement = Util.buildDDMSElement(GeospatialCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			
-			Element element = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? coverageElement : Util.buildDDMSElement(GEOSPATIAL_EXTENT_NAME, null);
+			Element element = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? coverageElement
+				: Util.buildDDMSElement(GEOSPATIAL_EXTENT_NAME, null);
 			if (geographicIdentifier != null)
 				element.appendChild(geographicIdentifier.getXOMElementCopy());
 			if (boundingBox != null)

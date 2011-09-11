@@ -560,7 +560,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture(false));
 			GeospatialCoverage component = new GeospatialCoverage(GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null,
-				null, null, attr);
+				null, null, null, null, attr);
 			if (!version.isAtLeast("3.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());
 			else
@@ -571,7 +571,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	public void test20Usage() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
-			new GeospatialCoverage(GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null,
+			new GeospatialCoverage(GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null, null, null,
 				SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
 		} catch (InvalidDDMSException e) {
@@ -584,7 +584,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		BoundingBox box = BoundingBoxTest.getFixture();
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
-			new GeospatialCoverage(null, box, null, null, null, SecurityAttributesTest.getFixture(false));
+			new GeospatialCoverage(null, box, null, null, null, null, null,SecurityAttributesTest.getFixture(false));
 			fail("Allowed different versions.");
 		} catch (InvalidDDMSException e) {
 			// Good
@@ -594,7 +594,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		BoundingGeometry geo = BoundingGeometryTest.getFixture();
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
-			new GeospatialCoverage(null, null, geo, null, null, SecurityAttributesTest.getFixture(false));
+			new GeospatialCoverage(null, null, geo, null, null, null, null,SecurityAttributesTest.getFixture(false));
 			fail("Allowed different versions.");
 		} catch (InvalidDDMSException e) {
 			// Good
@@ -604,7 +604,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		GeographicIdentifier geoId = GeographicIdentifierTest.getCountryCodeBasedFixture();
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
-			new GeospatialCoverage(geoId, null, null, null, null, SecurityAttributesTest.getFixture(false));
+			new GeospatialCoverage(geoId, null, null, null, null, null, null,SecurityAttributesTest.getFixture(false));
 			fail("Allowed different versions.");
 		} catch (InvalidDDMSException e) {
 			// Good
@@ -614,7 +614,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		PostalAddress address = PostalAddressTest.getFixture();
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
-			new GeospatialCoverage(null, null, null, address, null, SecurityAttributesTest.getFixture(false));
+			new GeospatialCoverage(null, null, null, address, null, null, null,SecurityAttributesTest.getFixture(false));
 			fail("Allowed different versions.");
 		} catch (InvalidDDMSException e) {
 			// Good
@@ -624,7 +624,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		VerticalExtent extent = VerticalExtentTest.getFixture();
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
-			new GeospatialCoverage(null, null, null, null, extent, SecurityAttributesTest.getFixture(false));
+			new GeospatialCoverage(null, null, null, null, extent, null, null,SecurityAttributesTest.getFixture(false));
 			fail("Allowed different versions.");
 		} catch (InvalidDDMSException e) {
 			// Good

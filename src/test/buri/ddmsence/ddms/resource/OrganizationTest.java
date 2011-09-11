@@ -280,10 +280,6 @@ public class OrganizationTest extends AbstractComponentTestCase {
 				SubOrganizationTest.getFixtureList(), getAcronym());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-
-			// Backwards compatible constructors
-			assertEquals(new Organization(TEST_NAMES, TEST_PHONES, TEST_EMAILS), new Organization(TEST_NAMES,
-				TEST_PHONES, TEST_EMAILS, null, null, null));
 		}
 	}
 

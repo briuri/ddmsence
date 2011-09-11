@@ -224,10 +224,6 @@ public class CategoryTest extends AbstractComponentTestCase {
 			Category dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-
-			// Backwards compatible constructors
-			assertEquals(new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL), new Category(TEST_QUALIFIER, TEST_CODE,
-				TEST_LABEL, null));
 		}
 	}
 

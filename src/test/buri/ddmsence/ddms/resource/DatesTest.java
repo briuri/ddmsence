@@ -243,10 +243,6 @@ public class DatesTest extends AbstractComponentTestCase {
 				getApprovedOn(), getReceivedOn());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-
-			// Backwards compatible constructors
-			assertEquals(new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn()), new Dates(
-				TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(), null));
 		}
 	}
 

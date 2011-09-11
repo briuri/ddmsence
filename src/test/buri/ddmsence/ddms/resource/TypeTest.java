@@ -230,9 +230,6 @@ public class TypeTest extends AbstractComponentTestCase {
 				TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-
-			// Backwards compatible constructors
-			assertEquals(new Type(TEST_QUALIFIER, TEST_VALUE), new Type(null, TEST_QUALIFIER, TEST_VALUE, null));
 		}
 	}
 
