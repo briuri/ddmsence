@@ -64,7 +64,7 @@ public final class NonStateActor extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public NonStateActor(Element element) throws InvalidDDMSException {
-		super(element);
+		super(element, true);
 		
 	}
 	

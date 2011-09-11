@@ -61,7 +61,7 @@ public final class Details extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Details(Element element) throws InvalidDDMSException {
-		super(element);
+		super(element, true);
 	}
 	
 	/**
@@ -173,8 +173,8 @@ public final class Details extends AbstractSimpleString {
 		/**
 		 * Constructor which starts from an existing component.
 		 */
-		public Builder(Details title) {
-			super(title);
+		public Builder(Details details) {
+			super(details);
 		}
 		
 		/**

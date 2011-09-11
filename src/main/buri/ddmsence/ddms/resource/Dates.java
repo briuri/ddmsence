@@ -108,7 +108,7 @@ public final class Dates extends AbstractBaseComponent {
 			String receivedOn = getAttributeValue(RECEIVED_ON_NAME);
 			if (!Util.isEmpty(receivedOn))
 				_cachedReceivedOn = getFactory().newXMLGregorianCalendar(receivedOn);
-			setXOMElement(element, true);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
