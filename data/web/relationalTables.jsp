@@ -62,6 +62,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 			<ul>
 				<li><a href="#ddmsApplicationSoftware">ddmsApplicationSoftware</a></li>
 				<li><a href="#ddmsDates">ddmsDates</a></li>
+				<li><a href="#ddmsDetails">ddmsDetails</a></li>
 				<li><a href="#ddmsIdentifier">ddmsIdentifier</a></li>
 				<li><a href="#ddmsLanguage">ddmsLanguage</a></li>
 				<li><a href="#ddmsProducer">ddmsProducer</a></li>
@@ -414,6 +415,54 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>
 		<tr class="relRow">
 		<td class="relField">receivedOn</td><td class="relRules">char(32)</td><td>the received on date (DDMS 4.0)</td>
+	</tr>
+</table>
+
+<a name="ddmsDetails"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsDetails</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Title_subtitle"><code>ddms:details</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/resource/Details.html">Details</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			No other notes.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent revisionRecall element</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(2048)</td><td>the text of this element</td>
 	</tr>
 </table>
 

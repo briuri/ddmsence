@@ -29,12 +29,12 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of ddms:applicationSoftware.
+ * An immutable implementation of ddms:details.
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>An applicationSoftware element can be used without any child text.</li>
+ * <li>A details element can be used without any child text.</li>
  * </ul>
  * </td></tr></table>
  * 
@@ -44,8 +44,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: The name or description of the software application(s) used to create the object or product to 
- * which this metadata applies.<br />
+ * <u>Description</u>: The details surrounding a revision recall.<br />
  * <u>Obligation</u>: Optional<br />
  * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
@@ -53,7 +52,7 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 2.0.0
  */
-public final class ApplicationSoftware extends AbstractSimpleString {
+public final class Details extends AbstractSimpleString {
 
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -61,7 +60,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 * @param element the XOM element representing this 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public ApplicationSoftware(Element element) throws InvalidDDMSException {
+	public Details(Element element) throws InvalidDDMSException {
 		super(element);
 	}
 	
@@ -72,8 +71,8 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public ApplicationSoftware(String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(ApplicationSoftware.getName(DDMSVersion.getCurrentVersion()), value, securityAttributes, true);
+	public Details(String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		super(Details.getName(DDMSVersion.getCurrentVersion()), value, securityAttributes, true);
 	}
 		
 	/**
@@ -90,11 +89,11 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), ApplicationSoftware.getName(getDDMSVersion()));
+		Util.requireDDMSQName(getXOMElement(), Details.getName(getDDMSVersion()));
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0"))
-			throw new InvalidDDMSException("The ddms:" + ApplicationSoftware.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
+			throw new InvalidDDMSException("The ddms:" + Details.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
 
 		
 		validateWarnings();
@@ -104,13 +103,13 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A ddms:applicationSoftware element was found with no child text.</li>
+	 * <li>A ddms:details element was found with no child text.</li>
 	 * <li>Include any warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))
-			addWarning("A ddms:applicationSoftware element was found with no value.");
+			addWarning("A ddms:details element was found with no value.");
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 			
@@ -138,7 +137,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof ApplicationSoftware))
+		if (!super.equals(obj) || !(obj instanceof Details))
 			return (false);
 		return (true);
 	}
@@ -151,7 +150,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return ("applicationSoftware");
+		return ("details");
 	}
 	
 	/**
@@ -174,15 +173,15 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 		/**
 		 * Constructor which starts from an existing component.
 		 */
-		public Builder(ApplicationSoftware title) {
+		public Builder(Details title) {
 			super(title);
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
-		public ApplicationSoftware commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new ApplicationSoftware(getValue(), getSecurityAttributes().commit()));
+		public Details commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new Details(getValue(), getSecurityAttributes().commit()));
 		}
 	}
 } 
