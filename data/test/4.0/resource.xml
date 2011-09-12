@@ -51,7 +51,7 @@
 	</ddms:geospatialCoverage>
 	<ddms:relatedResources ddms:relationship="http://purl.org/dc/terms/references" ddms:direction="outbound">
 		<ddms:RelatedResource ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://en.wikipedia.org/wiki/Tank">
-			<ddms:link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="locator" xlink:href="http://en.wikipedia.org/wiki/Tank"/>
+			<ddms:link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="locator" xlink:href="http://en.wikipedia.org/wiki/Tank" xlink:role="role"/>
 		</ddms:RelatedResource>
 	</ddms:relatedResources>
 	<ddms:security ISM:excludeFromRollup="true" ISM:classification="U" ISM:ownerProducer="USA" />

@@ -26,6 +26,7 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -221,6 +222,14 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
+			
+			// Security Attributes
+			Link link = new Link("http://test.com/", "role", "title", "label", SecurityAttributesTest.getFixture(false));
+			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
+			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
+			Util.addDDMSAttribute(element, "value", TEST_VALUE);
+			element.appendChild(link.getXOMElementCopy());
+			testConstructor(WILL_FAIL, element);			
 		}
 	}
 
@@ -238,6 +247,18 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 			// Missing link
 			testConstructor(WILL_FAIL, null, TEST_QUALIFIER, TEST_VALUE);
+			
+			// Security Attributes
+			try {
+				Link link = new Link("http://test.com/", "role", "title", "label", SecurityAttributesTest.getFixture(false));
+				List<Link> links = new ArrayList<Link>();
+				links.add(link);
+				new RelatedResource(links, TEST_QUALIFIER, TEST_VALUE);
+				fail("Allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
 		}
 	}
 
@@ -271,7 +292,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			assertFalse(elementComponent.equals(dataComponent));
 
 			List<Link> differentLinks = new ArrayList<Link>();
-			differentLinks.add(new Link("http://different.com", null, null, null));
+			differentLinks.add(new Link("http://different.com", "role", null, null));
 			dataComponent = testConstructor(WILL_SUCCEED, differentLinks, TEST_QUALIFIER, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
@@ -370,6 +391,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			Link.Builder emptyBuilder = new Link.Builder();
 			Link.Builder fullBuilder = new Link.Builder();
 			fullBuilder.setHref("http://ddmsence.urizone.net/");
+			fullBuilder.setRole("role");
 			builder.getLinks().add(emptyBuilder);
 			builder.getLinks().add(fullBuilder);
 			assertEquals(1, builder.commit().getLinks().size());

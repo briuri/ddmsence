@@ -114,15 +114,15 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedHTMLOutput() {
 		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"").append(TEST_TYPE)
+		html.append("<meta name=\"link.type\" content=\"").append(TEST_TYPE)
 			.append("\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"").append(TEST_HREF)
+		html.append("<meta name=\"link.href\" content=\"").append(TEST_HREF)
 			.append("\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.role\" content=\"").append(TEST_ROLE)
+		html.append("<meta name=\"link.role\" content=\"").append(TEST_ROLE)
 			.append("\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.title\" content=\"").append(TEST_TITLE)
+		html.append("<meta name=\"link.title\" content=\"").append(TEST_TITLE)
 			.append("\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.label\" content=\"").append(TEST_LABEL)
+		html.append("<meta name=\"link.label\" content=\"").append(TEST_LABEL)
 			.append("\" />\n");
 		return (html.toString());
 	}
@@ -132,11 +132,11 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedTextOutput() {
 		StringBuffer text = new StringBuffer();
-		text.append("Related Resource link type: ").append(TEST_TYPE).append("\n");
-		text.append("Related Resource link href: ").append(TEST_HREF).append("\n");
-		text.append("Related Resource link role: ").append(TEST_ROLE).append("\n");
-		text.append("Related Resource link title: ").append(TEST_TITLE).append("\n");
-		text.append("Related Resource link label: ").append(TEST_LABEL).append("\n");
+		text.append("link type: ").append(TEST_TYPE).append("\n");
+		text.append("link href: ").append(TEST_HREF).append("\n");
+		text.append("link role: ").append(TEST_ROLE).append("\n");
+		text.append("link title: ").append(TEST_TITLE).append("\n");
+		text.append("link label: ").append(TEST_LABEL).append("\n");
 		return (text.toString());
 	}
 
@@ -171,6 +171,7 @@ public class LinkTest extends AbstractComponentTestCase {
 			element.addAttribute(Util.buildAttribute(xlinkPrefix, "type", xlinkNamespace, type));
 		if (href != null)
 			element.addAttribute(Util.buildAttribute(xlinkPrefix, "href", xlinkNamespace, href));
+		element.addAttribute(Util.buildAttribute(xlinkPrefix, "role", xlinkNamespace, TEST_ROLE));
 		return (element);
 	}
 
@@ -208,7 +209,7 @@ public class LinkTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, TEST_HREF, null, null, null);
+			testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, null, null);
 		}
 	}
 

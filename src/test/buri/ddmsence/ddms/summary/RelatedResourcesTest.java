@@ -57,7 +57,7 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	 */
 	private static List<Link> getLinks() throws InvalidDDMSException {
 		List<Link> links = new ArrayList<Link>();
-		links.add(new Link("http://en.wikipedia.org/wiki/Tank", null, null, null));
+		links.add(new Link("http://en.wikipedia.org/wiki/Tank", "role", null, null));
 		return (links);
 	}
 
@@ -123,6 +123,7 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"relatedResources.RelatedResource.value\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
 		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"locator\" />\n");
 		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.role\" content=\"role\" />\n");
 		html.append("<meta name=\"relatedResources.classification\" content=\"U\" />\n");
 		html.append("<meta name=\"relatedResources.ownerProducer\" content=\"USA\" />\n");
 		return (html.toString());
@@ -139,6 +140,7 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 		text.append("Related Resource value: http://en.wikipedia.org/wiki/Tank\n");
 		text.append("Related Resource link type: locator\n");
 		text.append("Related Resource link href: http://en.wikipedia.org/wiki/Tank\n");
+		text.append("Related Resource link role: role\n");
 		text.append("relatedResources classification: U\n");
 		text.append("relatedResources ownerProducer: USA\n");
 
@@ -159,7 +161,7 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 		xml.append("<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ").append(
 			"ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n\t\t");
 		xml.append("<ddms:link xmlns:xlink=\"").append(version.getXlinkNamespace())
-			.append("\" xlink:type=\"locator\" xlink:href=\"http://en.wikipedia.org/wiki/Tank\" />\n\t");
+			.append("\" xlink:type=\"locator\" xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"role\" />\n\t");
 		xml.append("</ddms:RelatedResource>\n");
 		xml.append("</ddms:relatedResources>");
 		return (formatXml(xml.toString(), preserveFormatting));
@@ -394,6 +396,7 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 			fullBuilder.setValue("http://en.wikipedia.org/wiki/Tank");
 			Link.Builder fullLinkBuilder = new Link.Builder();
 			fullLinkBuilder.setHref("http://ddmsence.urizone.net/");
+			fullLinkBuilder.setRole("role");
 			fullBuilder.getLinks().add(fullLinkBuilder);
 			builder.getRelatedResources().add(emptyBuilder);
 			builder.getRelatedResources().add(fullBuilder);

@@ -154,7 +154,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			null, null);
 
 		List<Link> links = new ArrayList<Link>();
-		links.add(new Link("http://en.wikipedia.org/wiki/Tank", null, null, null));
+		links.add(new Link("http://en.wikipedia.org/wiki/Tank", "role", null, null));
 		List<RelatedResource> resources = new ArrayList<RelatedResource>();
 		resources.add(new RelatedResource(links, "http://purl.org/dc/terms/URI", "http://en.wikipedia.org/wiki/Tank"));
 		TEST_RELATED = new RelatedResources(resources, "http://purl.org/dc/terms/references", "outbound", null);
@@ -367,6 +367,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		html.append("<meta name=\"relatedResources.RelatedResource.value\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
 		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"locator\" />\n");
 		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
+		html.append("<meta name=\"relatedResources.RelatedResource.link.role\" content=\"role\" />\n");
+
 		if (version.isAtLeast("3.0"))
 			html.append("<meta name=\"security.excludeFromRollup\" content=\"true\" />\n");
 		html.append("<meta name=\"security.classification\" content=\"U\" />\n");
@@ -456,6 +458,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		text.append("Related Resource value: http://en.wikipedia.org/wiki/Tank\n");
 		text.append("Related Resource link type: locator\n");
 		text.append("Related Resource link href: http://en.wikipedia.org/wiki/Tank\n");
+		text.append("Related Resource link role: role\n");
 		if (version.isAtLeast("3.0")) {
 			text.append("excludeFromRollup: true\n");
 		}
@@ -576,7 +579,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("\t\t<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ").append(
 			"ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n");
 		xml.append("\t\t\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ").append(
-			"xlink:href=\"http://en.wikipedia.org/wiki/Tank\" />\n");
+			"xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"role\" />\n");
 		xml.append("\t\t</ddms:RelatedResource>\n");
 		xml.append("\t</ddms:relatedResources>\n");
 		xml.append("\t<ddms:security ");
