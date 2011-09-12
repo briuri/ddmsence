@@ -40,16 +40,18 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
  * 
  * <p>
  * The ddmsence.properties file has a property, <code>ddms.supportedVersions</code> which can be a comma-separated list of version
- * numbers. Each of these token values then has a set of six properties which identify the namespace and schema locations 
+ * numbers. Each of these token values then has a set of properties which identify the namespace and schema locations 
  * for each DDMS version:
  * </p>
  * 
- * <li><code>&lt;versionNumber&gt;.ddms.xmlNamespace</code>: i.e. "http://metadata.dod.mil/mdr/ns/DDMS/2.0/"</li>
- * <li><code>&lt;versionNumber&gt;.ddms.xsdLocation</code>: i.e. "/schemas/2.0/DDMS/DDMS-v2_0.xsd"</li>
- * <li><code>&lt;versionNumber&gt;.gml.xmlNamespace</code>: i.e. "http://www.opengis.net/gml"</li>
- * <li><code>&lt;versionNumber&gt;.gml.xsdLocation</code>: i.e. "/schemas/2.0/DDMS/DDMS-GML-Profile.xsd"</li>
- * <li><code>&lt;versionNumber&gt;.ism.cveLocation</code>: i.e. "/schemas/2.0/ISM/CVE/"</li>
- * <li><code>&lt;versionNumber&gt;.ism.xmlNamespace</code>: i.e. "urn:us:gov:ic:ism:v2"</li>
+ * <li><code>&lt;versionNumber&gt;.common.xmlNamespace</code>: i.e. "urn:us:gov:ic:common"</li>
+ * <li><code>&lt;versionNumber&gt;.common.xsdLocation</code>: i.e. "/schemas/4.0/IC-COMMON/IC-Common.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.ddms.xmlNamespace</code>: i.e. "urn:us:mil:ces:metadata:ddms:4"</li>
+ * <li><code>&lt;versionNumber&gt;.ddms.xsdLocation</code>: i.e. "/schemas/4.0/DDMS/DDMS-v4_0.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.gml.xmlNamespace</code>: i.e. "http://www.opengis.net/gml/3.2"</li>
+ * <li><code>&lt;versionNumber&gt;.gml.xsdLocation</code>: i.e. "/schemas/4.0/DDMS/DDMS-GML-Profile.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.ism.cveLocation</code>: i.e. "/schemas/4.0/ISM/CVE/"</li>
+ * <li><code>&lt;versionNumber&gt;.ism.xmlNamespace</code>: i.e. "urn:us:gov:ic:ism"</li>
  * <li><code>&lt;versionNumber&gt;.xlink.xmlNamespace</code>: i.e. "http://www.w3.org/1999/xlink"</li>
  * 
  * <p>
@@ -75,6 +77,8 @@ public class DDMSVersion {
 	private String _version;
 	private String _namespace;
 	private String _schema;
+	
+	private String _commonNamespace;
 	private String _gmlNamespace;
 	private String _gmlSchema;
 	private String _ismCveLocation;
@@ -101,6 +105,7 @@ public class DDMSVersion {
 		_version = version;
 		_namespace = getSupportedDDMSNamespacesProperty().get(index);
 		_schema = PropertyReader.getProperty(version + ".ddms.xsdLocation");
+		_commonNamespace = PropertyReader.getProperty(version + ".common.xmlNamespace");
 		_gmlNamespace = PropertyReader.getProperty(version + ".gml.xmlNamespace");
 		_gmlSchema = PropertyReader.getProperty(version + ".gml.xsdLocation");
 		_ismCveLocation = PropertyReader.getProperty(version + ".ism.cveLocation");
@@ -292,6 +297,13 @@ public class DDMSVersion {
 		return _schema;
 	}
 
+	/**
+	 * Accessor for the common namespace
+	 */
+	public String getCommonNamespace() {
+		return _commonNamespace;
+	}
+	
 	/**
 	 * Accessor for the gml namespace
 	 */
