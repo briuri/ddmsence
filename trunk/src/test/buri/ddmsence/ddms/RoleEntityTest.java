@@ -37,7 +37,7 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class ProducerEntityTest extends TestCase {
+public class RoleEntityTest extends TestCase {
 
 	private static final String TEST_POC_TYPE = "ICD-710";
 

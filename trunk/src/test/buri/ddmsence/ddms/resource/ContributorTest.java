@@ -21,9 +21,9 @@ package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
-import buri.ddmsence.ddms.IProducerEntity;
+import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ProducerEntityTest;
+import buri.ddmsence.ddms.RoleEntityTest;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -67,7 +67,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create a fixture organization to act as an entity
 	 */
-	private IProducerEntity getEntityFixture() {
+	private IRoleEntity getEntityFixture() {
 		try {
 			return (new Organization(Util.getXsListAsList("DISA PEO-GES"),
 				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com"), null, null,
@@ -85,7 +85,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 	 * @param entity the producer entity
 	 * @param pocType the POCType (DDMS 4.0 or later)
 	 */
-	private Contributor testConstructor(boolean expectFailure, IProducerEntity entity, String pocType) {
+	private Contributor testConstructor(boolean expectFailure, IRoleEntity entity, String pocType) {
 		Contributor component = null;
 		try {
 			component = new Contributor(entity, pocType, SecurityAttributesTest.getFixture(false));
@@ -195,7 +195,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			// Missing entity		
-			testConstructor(WILL_FAIL, (IProducerEntity) null, null);
+			testConstructor(WILL_FAIL, (IRoleEntity) null, null);
 		}
 	}
 
@@ -213,7 +213,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(versionString);
 			Contributor elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Contributor dataComponent = testConstructor(WILL_SUCCEED, getEntityFixture(),
-				ProducerEntityTest.getPOCType());
+				RoleEntityTest.getPOCType());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -244,7 +244,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 			Contributor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, getEntityFixture(), ProducerEntityTest.getPOCType());
+			component = testConstructor(WILL_SUCCEED, getEntityFixture(), RoleEntityTest.getPOCType());
 			assertEquals(getExpectedHTMLOutput(), component.toHTML());
 		}
 	}
@@ -255,7 +255,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 			Contributor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedTextOutput(), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getEntityFixture(), ProducerEntityTest.getPOCType());
+			component = testConstructor(WILL_SUCCEED, getEntityFixture(), RoleEntityTest.getPOCType());
 			assertEquals(getExpectedTextOutput(), component.toText());
 		}
 	}
@@ -266,7 +266,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 			Contributor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getEntityFixture(), ProducerEntityTest.getPOCType());
+			component = testConstructor(WILL_SUCCEED, getEntityFixture(), RoleEntityTest.getPOCType());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}

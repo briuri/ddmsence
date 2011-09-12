@@ -22,7 +22,7 @@ package buri.ddmsence.ddms.resource;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.AbstractProducerEntity;
+import buri.ddmsence.ddms.AbstractRoleEntity;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
@@ -72,7 +72,7 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public final class Person extends AbstractProducerEntity {
+public final class Person extends AbstractRoleEntity {
 	
 	private static final String AFFILIATION_NAME = "affiliation";
 	private static final String USERID_NAME = "userID";
@@ -127,7 +127,7 @@ public final class Person extends AbstractProducerEntity {
 	}
 
 	/**
-	 * Inserts additional elements into the existing ProducerEntity. Because the personType contains a sequence,
+	 * Inserts additional elements into the existing entity. Because the personType contains a sequence,
 	 * additional fields must be inserted among the name, phone, and email elements.
 	 * 
 	 * @param insertIndex the index of the position after the last names element
@@ -166,7 +166,7 @@ public final class Person extends AbstractProducerEntity {
 	 * <li>Exactly 1 surname, 0-1 userIDs, 0-1 affiliations exist.</li>
 	 * </td></tr></table>
 	 * 
-	 * @see AbstractProducerEntity#validate()
+	 * @see AbstractRoleEntity#validate()
 	 * @throws InvalidDDMSException
 	 *             if any required information is missing or malformed
 	 */
@@ -289,7 +289,7 @@ public final class Person extends AbstractProducerEntity {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder extends AbstractProducerEntity.Builder {
+	public static class Builder extends AbstractRoleEntity.Builder {
 		private static final long serialVersionUID = -2933889158864177338L;
 		private String _surname;
 		private String _userID;

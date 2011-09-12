@@ -22,7 +22,7 @@ package buri.ddmsence.ddms.resource;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.AbstractProducerEntity;
+import buri.ddmsence.ddms.AbstractRoleEntity;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
@@ -67,7 +67,7 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public final class Unknown extends AbstractProducerEntity {
+public final class Unknown extends AbstractRoleEntity {
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -112,7 +112,7 @@ public final class Unknown extends AbstractProducerEntity {
 	 * <li>This component cannot be used until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
-	 * @see AbstractProducerEntity#validate()
+	 * @see AbstractRoleEntity#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
@@ -148,7 +148,7 @@ public final class Unknown extends AbstractProducerEntity {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder extends AbstractProducerEntity.Builder {
+	public static class Builder extends AbstractRoleEntity.Builder {
 		private static final long serialVersionUID = -2278534009019179572L;
 
 		/**

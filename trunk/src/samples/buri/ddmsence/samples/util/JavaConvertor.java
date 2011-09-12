@@ -455,14 +455,14 @@ public class JavaConvertor {
 		java.append("\n// ddms:").append(producerType).append("\n");
 		convert(java, producer.getSecurityAttributes());
 		String entityVariable = null;
-		if (Person.getName(DDMSVersion.getCurrentVersion()).equals(producer.getProducerEntity().getName()))
-			entityVariable = convert(java, producerType, (Person) producer.getProducerEntity());
-		if (Organization.getName(DDMSVersion.getCurrentVersion()).equals(producer.getProducerEntity().getName()))
-			entityVariable = convert(java, producerType, (Organization) producer.getProducerEntity());
-		if (Service.getName(DDMSVersion.getCurrentVersion()).equals(producer.getProducerEntity().getName()))
-			entityVariable = convert(java, producerType, (Service) producer.getProducerEntity());
-		if (Unknown.getName(DDMSVersion.getCurrentVersion()).equals(producer.getProducerEntity().getName()))
-			entityVariable = convert(java, producerType, (Unknown) producer.getProducerEntity());
+		if (Person.getName(DDMSVersion.getCurrentVersion()).equals(producer.getEntity().getName()))
+			entityVariable = convert(java, producerType, (Person) producer.getEntity());
+		if (Organization.getName(DDMSVersion.getCurrentVersion()).equals(producer.getEntity().getName()))
+			entityVariable = convert(java, producerType, (Organization) producer.getEntity());
+		if (Service.getName(DDMSVersion.getCurrentVersion()).equals(producer.getEntity().getName()))
+			entityVariable = convert(java, producerType, (Service) producer.getEntity());
+		if (Unknown.getName(DDMSVersion.getCurrentVersion()).equals(producer.getEntity().getName()))
+			entityVariable = convert(java, producerType, (Unknown) producer.getEntity());
 
 		java.append(producerClass).append(" ").append(producerType).append(count).append(" = new ");
 		java.append(producerClass).append("(").append(entityVariable).append(", \"").append(producer.getPOCType())

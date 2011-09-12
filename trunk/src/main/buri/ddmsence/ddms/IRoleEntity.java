@@ -24,12 +24,13 @@ import java.util.List;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 
 /**
- * Identifying interface for a producer entity element (person, organization, service, unknown)
+ * Identifying interface for an entity element (person, organization, service, unknown) which may be used to fulfill
+ * some role (creator, contributor, pointOfContact, publisher, addressee, requestorInfo, recordKeeper).
  *  
  * @author Brian Uri!
  * @since 2.0.0
  */
-public interface IProducerEntity extends IDDMSComponent {
+public interface IRoleEntity extends IDDMSComponent {
 	
 	/**
 	 * Accessor for the names of the entity (1 to many).

@@ -53,7 +53,7 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	
-	private IProducerEntity _entity;
+	private IRoleEntity _entity;
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	
 	/**
@@ -88,7 +88,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	 * @param entity the actual entity fulfilling this role
 	 * @param securityAttributes any security attributes (optional)
 	 */
-	protected AbstractTaskingRole(String roleType, IProducerEntity entity, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	protected AbstractTaskingRole(String roleType, IRoleEntity entity, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("entity", entity);
 			_entity = entity;
@@ -212,7 +212,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	/**
 	 * Accessor for the producer entity
 	 */
-	public IProducerEntity getEntity() {
+	public IRoleEntity getEntity() {
 		return _entity;
 	}
 
@@ -262,7 +262,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 		 * Commits the entity which is active in this builder, based on the entityType.
 		 * @return the entity
 		 */
-		protected IProducerEntity commitSelectedEntity() throws InvalidDDMSException {
+		protected IRoleEntity commitSelectedEntity() throws InvalidDDMSException {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			if (Organization.getName(version).equals(getEntityType()))
 				return (getOrganization().commit());
