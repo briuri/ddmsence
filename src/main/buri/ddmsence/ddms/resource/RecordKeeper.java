@@ -46,7 +46,7 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Description</u>: The administrative entity, unit, office, responsible for the custody and ongoing 
- * management of the records during their active business use,<br />
+ * management of the records during their active business use.<br />
  * <u>Obligation</u>: Optional.<br />
  * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>

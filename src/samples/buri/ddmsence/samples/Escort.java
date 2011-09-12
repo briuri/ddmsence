@@ -55,6 +55,7 @@ import buri.ddmsence.ddms.resource.PointOfContact;
 import buri.ddmsence.ddms.resource.ProcessingInfo;
 import buri.ddmsence.ddms.resource.Publisher;
 import buri.ddmsence.ddms.resource.RecordKeeper;
+import buri.ddmsence.ddms.resource.RequestorInfo;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Source;
@@ -242,36 +243,20 @@ public class Escort {
 		BUILDERS.put(RecordKeeper.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String id = readString("the recordKeeperID [testID]");
-				int numNames = readInt("the number of names this record keeper has [1]");
-				int numPhones = readInt("the number of phone numbers this record keeper has [0]");
-				int numEmails = readInt("the number of email addresses this record keeper has [0]");
-				if (numNames == 0) {
-					println("At least 1 name is required. Defaulting to 1 name.");
-					numNames = 1;
-				}
-				List<String> names = new ArrayList<String>();
-				for (int i = 0; i < numNames; i++) {
-					names.add(readString("recordKeeper name #" + (i + 1) + " [testName" + (i + 1) + "]"));
-				}
-				List<String> phones = new ArrayList<String>();
-				for (int i = 0; i < numPhones; i++) {
-					phones.add(readString("recordKeeper phone number #" + (i + 1) + " [testPhone" + (i + 1) + "]"));
-				}
-				List<String> emails = new ArrayList<String>();
-				for (int i = 0; i < numEmails; i++) {
-					emails.add(readString("recordKeeper email #" + (i + 1) + " [testEmail" + (i + 1) + "]"));
-				}
-				List<SubOrganization> subOrgs = new ArrayList<SubOrganization>();
-				String acronym = null;
-				int numSubs = readInt("the number of suborganizations to include [0]");
-				for (int i = 0; i < numSubs; i++) {
-					println("* SubOrganization #" + (i + 1));
-					subOrgs.add((SubOrganization) inputLoop(SubOrganization.class));
-				}					
-				acronym = readString("the recordKeeper acronym [testAcronym]");
-								
-				Organization org = new Organization(names, phones, emails, subOrgs, acronym, null);
+				Organization org = (Organization) inputLoop(Organization.class);
 				return (new RecordKeeper(id, org));
+			}		
+		});
+		BUILDERS.put(RequestorInfo.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				DDMSVersion version = DDMSVersion.getCurrentVersion();
+				String entityType = readString("the entity type [organization]");
+				IProducerEntity entity = null;
+				if (Person.getName(version).equals(entityType))
+					entity = (Person) inputLoop(Person.class);
+				else if (Organization.getName(version).equals(entityType))
+					entity = (Organization) inputLoop(Organization.class);
+				return (new RequestorInfo(entity, buildSecurityAttributes("details")));
 			}		
 		});
 		BUILDERS.put(AbstractProducerRole.class, new IComponentBuilder() {
@@ -279,13 +264,39 @@ public class Escort {
 				DDMSVersion version = DDMSVersion.getCurrentVersion();
 				String producerType = readString("the producer type [creator]");
 				String entityType = readString("the entity type [organization]");
-				int numNames = readInt("the number of names this producer has [1]");
-				int numPhones = readInt("the number of phone numbers this producer has [0]");
-				int numEmails = readInt("the number of email addresses this producer has [0]");
+				SecurityAttributes attr = buildSecurityAttributes("producer");
+								
+				IProducerEntity entity = null;
+				if (Person.getName(version).equals(entityType))
+					entity = (Person) inputLoop(Person.class);
+				else if (Organization.getName(version).equals(entityType))
+					entity = (Organization) inputLoop(Organization.class);
+				else if (Service.getName(version).equals(entityType))
+					entity = (Service) inputLoop(Service.class);
+				else if (Unknown.getName(version).equals(entityType)) 
+					entity = (Unknown) inputLoop(Unknown.class);
+				
+				if (Creator.getName(version).equals(producerType))
+					return (new Creator(entity, null, attr));
+				if (Contributor.getName(version).equals(producerType))
+					return (new Creator(entity, null, attr));
+				if (Publisher.getName(version).equals(producerType))
+					return (new Publisher(entity, null, attr));
+				if (PointOfContact.getName(version).equals(producerType))
+					return (new PointOfContact(entity, null, attr));
+				throw new InvalidDDMSException("Unknown producerType: " + producerType);
+			}		
+		});	
+		BUILDERS.put(Person.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				int numNames = readInt("the number of names this person has [1]");
 				if (numNames == 0) {
 					println("At least 1 name is required. Defaulting to 1 name.");
 					numNames = 1;
 				}
+				int numPhones = readInt("the number of phone numbers this person has [0]");
+				int numEmails = readInt("the number of email addresses this person has [0]");
+
 				List<String> names = new ArrayList<String>();
 				for (int i = 0; i < numNames; i++) {
 					names.add(readString("entity name #" + (i + 1) + " [testName" + (i + 1) + "]"));
@@ -298,47 +309,43 @@ public class Escort {
 				for (int i = 0; i < numEmails; i++) {
 					emails.add(readString("entity email #" + (i + 1) + " [testEmail" + (i + 1) + "]"));
 				}
-				String surname = null;
-				String userID = null;
-				String affiliation = null;
-				List<SubOrganization> subOrgs = new ArrayList<SubOrganization>();
-				String acronym = null;
-				if (Person.getName(version).equals(entityType)) {
-					surname = readString("the Person surname [testSurname]");
-					userID = readString("the Person userID [testID]");
-					affiliation = readString("the Person affiliation [testOrg]");
-				}
-				if (Organization.getName(version).equals(entityType)) {
-					int numSubs = readInt("the number of suborganizations to include [0]");
-					for (int i = 0; i < numSubs; i++) {
-						println("* SubOrganization #" + (i + 1));
-						subOrgs.add((SubOrganization) inputLoop(SubOrganization.class));
-					}					
-					acronym = readString("the Organization acronym [testAcronym]");
-				}
-				SecurityAttributes attr = buildSecurityAttributes("producer");
-								
-				IProducerEntity entity = null;
-				if (Person.getName(version).equals(entityType))
-					entity = new Person(names, surname, phones, emails, userID, affiliation);
-				else if (Organization.getName(version).equals(entityType))
-					entity = new Organization(names, phones, emails, subOrgs, acronym, null);
-				else if (Service.getName(version).equals(entityType))
-					entity = new Service(names, phones, emails);
-				else 
-					entity = new Unknown(names, phones, emails);
-				
-				if (Creator.getName(version).equals(producerType))
-					return (new Creator(entity, null, attr));
-				if (Contributor.getName(version).equals(producerType))
-					return (new Creator(entity, null, attr));
-				if (Publisher.getName(version).equals(producerType))
-					return (new Publisher(entity, null, attr));
-				if (PointOfContact.getName(version).equals(producerType))
-					return (new PointOfContact(entity, null, attr));
-				throw new InvalidDDMSException("Unknown producerType: " + producerType);
+				String surname = readString("the person surname [testSurname]");
+				String userID = readString("the person userID [testID]");
+				String affiliation = readString("the person affiliation [testOrg]");
+				return (new Person(names, surname, phones, emails, userID, affiliation));
 			}		
-		});		
+		});	
+		BUILDERS.put(Organization.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				int numNames = readInt("the number of names this organization has [1]");
+				if (numNames == 0) {
+					println("At least 1 name is required. Defaulting to 1 name.");
+					numNames = 1;
+				}
+				int numPhones = readInt("the number of phone numbers this organization has [0]");
+				int numEmails = readInt("the number of email addresses this organization has [0]");
+				int numSubs = readInt("the number of suborganizations to include [0]");
+				List<String> names = new ArrayList<String>();
+				for (int i = 0; i < numNames; i++) {
+					names.add(readString("entity name #" + (i + 1) + " [testName" + (i + 1) + "]"));
+				}
+				List<String> phones = new ArrayList<String>();
+				for (int i = 0; i < numPhones; i++) {
+					phones.add(readString("entity phone number #" + (i + 1) + " [testPhone" + (i + 1) + "]"));
+				}
+				List<String> emails = new ArrayList<String>();
+				for (int i = 0; i < numEmails; i++) {
+					emails.add(readString("entity email #" + (i + 1) + " [testEmail" + (i + 1) + "]"));
+				}
+				List<SubOrganization> subOrgs = new ArrayList<SubOrganization>();
+				for (int i = 0; i < numSubs; i++) {
+					println("* SubOrganization #" + (i + 1));
+					subOrgs.add((SubOrganization) inputLoop(SubOrganization.class));
+				}		
+				String acronym = readString("the Organization acronym [testAcronym]");
+				return (new Organization(names, phones, emails, subOrgs, acronym));
+			}		
+		});	
 		BUILDERS.put(SubOrganization.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String value = readString("the value [testSubOrganization]");
@@ -346,6 +353,54 @@ public class Escort {
 				return (new SubOrganization(value, attr));
 			}
 		});
+		BUILDERS.put(Service.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				int numNames = readInt("the number of names this service has [1]");
+				if (numNames == 0) {
+					println("At least 1 name is required. Defaulting to 1 name.");
+					numNames = 1;
+				}
+				int numPhones = readInt("the number of phone numbers this service has [0]");
+				int numEmails = readInt("the number of email addresses this service has [0]");
+				List<String> names = new ArrayList<String>();
+				for (int i = 0; i < numNames; i++) {
+					names.add(readString("entity name #" + (i + 1) + " [testName" + (i + 1) + "]"));
+				}
+				List<String> phones = new ArrayList<String>();
+				for (int i = 0; i < numPhones; i++) {
+					phones.add(readString("entity phone number #" + (i + 1) + " [testPhone" + (i + 1) + "]"));
+				}
+				List<String> emails = new ArrayList<String>();
+				for (int i = 0; i < numEmails; i++) {
+					emails.add(readString("entity email #" + (i + 1) + " [testEmail" + (i + 1) + "]"));
+				}
+				return (new Service(names, phones, emails));
+			}		
+		});
+		BUILDERS.put(Unknown.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				int numNames = readInt("the number of names this unknown entity has [1]");
+				if (numNames == 0) {
+					println("At least 1 name is required. Defaulting to 1 name.");
+					numNames = 1;
+				}
+				int numPhones = readInt("the number of phone numbers this unknown entity has [0]");
+				int numEmails = readInt("the number of email addresses this unknown entity has [0]");
+				List<String> names = new ArrayList<String>();
+				for (int i = 0; i < numNames; i++) {
+					names.add(readString("entity name #" + (i + 1) + " [testName" + (i + 1) + "]"));
+				}
+				List<String> phones = new ArrayList<String>();
+				for (int i = 0; i < numPhones; i++) {
+					phones.add(readString("entity phone number #" + (i + 1) + " [testPhone" + (i + 1) + "]"));
+				}
+				List<String> emails = new ArrayList<String>();
+				for (int i = 0; i < numEmails; i++) {
+					emails.add(readString("entity email #" + (i + 1) + " [testEmail" + (i + 1) + "]"));
+				}
+				return (new Unknown(names, phones, emails));
+			}		
+		});	
 		BUILDERS.put(Format.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String mimeType = readString("the mimeType [testType]");

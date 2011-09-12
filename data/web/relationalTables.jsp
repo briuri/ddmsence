@@ -68,6 +68,8 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsProcessingInfo">ddmsProcessingInfo</a></li>
 				<li><a href="#ddmsProducer">ddmsProducer</a></li>
 				<li><a href="#ddmsProducerEntity">ddmsProducerEntity</a></li>
+				<li><a href="#ddmsRecordKeeper">ddmsRecordKeeper</a></li>
+				<li><a href="#ddmsRequestorInfo">ddmsRequestorInfo</a></li>
 				<li><a href="#ddmsRights">ddmsRights</a></li>
 				<li><a href="#ddmsSource">ddmsSource</a></li>
 				<li><a href="#ddmsSubOrganization">ddmsSubOrganization</a></li>
@@ -809,6 +811,51 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>
 	<tr class="relRow">
 		<td class="relField">recordKeeperID</td><td class="relRules">char(64)</td><td>the unique ID of this record keeper</td>
+	</tr>
+</table>
+
+<a name="ddmsRequestorInfo"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsRequestorInfo</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code>ddms:requestorInfo</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/resource/RequestorInfo.html">RequestorInfo</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsProducerEntity">ddmsProducerEntity</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			This component will contain either a person or an organization, which can be stored in the ddmsProducerEntity table.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent taskingInfo component</td>
 	</tr>
 </table>
 
