@@ -126,6 +126,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * <li>A value exists and is not empty.</li>
 	 * <li>The qualifier is a valid URI.</li>
 	 * <li>At least 1 link exists.</li>
+	 * <li>No link contains security attributes.</li>
 	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
 	 * </td></tr></table>
 	 * 
@@ -142,6 +143,8 @@ public final class RelatedResource extends AbstractQualifierValue {
 			throw new InvalidDDMSException("At least 1 link must exist.");
 		for (Link link : getLinks()) {
 			Util.requireCompatibleVersion(this, link);
+			if (!link.getSecurityAttributes().isEmpty())
+				throw new InvalidDDMSException("Security attributes cannot be applied to links in a related resource.");
 		}
 		
 		validateWarnings();
@@ -164,12 +167,12 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
-		StringBuffer html = new StringBuffer();
 		String prefix = RelatedResources.getName(getDDMSVersion()) + "." + getName() + ".";
+		StringBuffer html = new StringBuffer();
 		html.append(buildHTMLMeta(prefix + QUALIFIER_NAME, getQualifier(), true));
 		html.append(buildHTMLMeta(prefix + VALUE_NAME, getValue(), true));
 		for (Link link : getLinks()) {
-			html.append(link.toHTML());
+			html.append(link.toHTML(prefix));
 		}
 		return (html.toString());
 	}
@@ -178,11 +181,12 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
+		String prefix = "Related Resource ";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("Related Resource " + QUALIFIER_NAME, getQualifier(), true));
-		text.append(buildTextLine("Related Resource " + VALUE_NAME, getValue(), true));
+		text.append(buildTextLine(prefix + QUALIFIER_NAME, getQualifier(), true));
+		text.append(buildTextLine(prefix + VALUE_NAME, getValue(), true));
 		for (Link link : getLinks()) {
-			text.append(link.toText());
+			text.append(link.toText(prefix));
 		}
 		return (text.toString());
 	}
