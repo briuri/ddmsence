@@ -877,7 +877,14 @@
 		<xsd:attributeGroup ref="SecurityAttributesOptionGroup"/>
 	</xsd:attributeGroup>
 	
-	
+	<xsd:simpleType name="ShortStringType">
+		<xsd:annotation>
+			<xsd:documentation>A short string, less than 256 characters.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="256"/>
+		</xsd:restriction>
+	</xsd:simpleType>
 	<!-- **************************************************************
                             CHANGE HISTORY
      **************************************************************
