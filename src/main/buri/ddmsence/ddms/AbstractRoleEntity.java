@@ -31,11 +31,11 @@ import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
- * Base class for entities which fulfill a producer role, such as ddms:person and ddms:organization.
+ * Base class for entities which fulfill some role, such as ddms:person and ddms:organization.
  * 
- * <p> The HTML output of this class depends on the producer type which the producer entity is associated with. For
- * example, if the producer entity represented by this class is a "pointOfContact", the HTML meta tags will prefix each
- * field with "pointOfContact.".</p>
+ * <p> The HTML output of this class depends on the role type which the entity is associated with. For
+ * example, if this entity's role is a "pointOfContact", the HTML meta tags will prefix each
+ * field with "pointOfContact."</p>
  * 
  * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
  * before the component is used. </p>
@@ -43,7 +43,7 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 2.0.0
  */
-public abstract class AbstractProducerEntity extends AbstractBaseComponent implements IProducerEntity {
+public abstract class AbstractRoleEntity extends AbstractBaseComponent implements IRoleEntity {
 
 	private ExtensibleAttributes _cachedExtensibleAttributes = null;
 	
@@ -68,9 +68,9 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	 * @param validateNow true to validate the component immediately. Because Person and Organization entities have
 	 * additional fields they should not be validated in the superconstructor.
 	 */
-	protected AbstractProducerEntity(Element element, boolean validateNow) throws InvalidDDMSException {
+	protected AbstractRoleEntity(Element element, boolean validateNow) throws InvalidDDMSException {
 		try {
-			Util.requireDDMSValue("producerEntity element", element);
+			Util.requireDDMSValue("entity element", element);
 			_cachedNames = Util.getDDMSChildValues(element, NAME_NAME);
 			_cachedPhones = Util.getDDMSChildValues(element, PHONE_NAME);
 			_cachedEmails = Util.getDDMSChildValues(element, EMAIL_NAME);
@@ -93,7 +93,7 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	 * @param validateNow true to validate the component immediately. Because Person and Organization entities have
 	 * additional fields they should not be validated in the superconstructor.
 	 */
-	protected AbstractProducerEntity(String entityName, List<String> names, List<String> phones,
+	protected AbstractRoleEntity(String entityName, List<String> names, List<String> phones,
 		List<String> emails, ExtensibleAttributes extensions, boolean validateNow)
 		throws InvalidDDMSException {
 		try {
@@ -182,9 +182,9 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof AbstractProducerEntity))
+		if (!super.equals(obj) || !(obj instanceof AbstractRoleEntity))
 			return (false);
-		AbstractProducerEntity test = (AbstractProducerEntity) obj;
+		AbstractRoleEntity test = (AbstractRoleEntity) obj;
 		return (Util.listEquals(getNames(), test.getNames())
 			&& Util.listEquals(getPhones(), test.getPhones())
 			&& Util.listEquals(getEmails(), test.getEmails())
@@ -322,7 +322,7 @@ public abstract class AbstractProducerEntity extends AbstractBaseComponent imple
 		/**
 		 * Constructor which starts from an existing component.
 		 */
-		protected Builder(AbstractProducerEntity entity) {
+		protected Builder(AbstractRoleEntity entity) {
 			setNames(entity.getNames());
 			setPhones(entity.getPhones());
 			setEmails(entity.getEmails());

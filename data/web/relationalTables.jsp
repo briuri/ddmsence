@@ -68,10 +68,10 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsLanguage">ddmsLanguage</a></li>
 				<li><a href="#ddmsProcessingInfo">ddmsProcessingInfo</a></li>
 				<li><a href="#ddmsProducer">ddmsProducer</a></li>
-				<li><a href="#ddmsProducerEntity">ddmsProducerEntity</a></li>
 				<li><a href="#ddmsRecordKeeper">ddmsRecordKeeper</a></li>
 				<li><a href="#ddmsRequestorInfo">ddmsRequestorInfo</a></li>
 				<li><a href="#ddmsRights">ddmsRights</a></li>
+				<li><a href="#ddmsRoleEntity">ddmsRoleEntity</a></li>
 				<li><a href="#ddmsSource">ddmsSource</a></li>
 				<li><a href="#ddmsSubOrganization">ddmsSubOrganization</a></li>
 				<li><a href="#ddmsSubtitle">ddmsSubtitle</a></li>
@@ -330,7 +330,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsProducerEntity">ddmsProducerEntity</a>
+			<a href="#ddmsRoleEntity">ddmsRoleEntity</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -342,7 +342,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
-			This component will contain either a person or an organization, which can be stored in the ddmsProducerEntity table.
+			This component will contain either a person or an organization, which can be stored in the ddmsRoleEntity table.
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -693,7 +693,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsProducerEntity">ddmsProducerEntity</a>
+			<a href="#ddmsRoleEntity">ddmsRoleEntity</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -727,91 +727,6 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>	
 </table>
 
-<a name="ddmsProducerEntity"></a><table class="rel">
-	<tr>
-		<th class="relName" colspan="3">ddmsProducerEntity</th>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMS:</td>
-		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Organization"><code>ddms:organization</code></a>,
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Person"><code>ddms:person</code></a>,
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Service"><code>ddms:service</code></a>, and
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Unknown"><code>ddms:unknown</code></a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMSence:</td>
-		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/resource/Organization.html">Organization</a>,
-			<a href="/docs/buri/ddmsence/ddms/resource/Person.html">Person</a>,
-			<a href="/docs/buri/ddmsence/ddms/resource/Service.html">Service</a>, and
-			<a href="/docs/buri/ddmsence/ddms/resource/Unknown.html">Unknown</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Parent Of:</td>
-		<td class="relInfo" colspan="2">
-			<a href="#ddmsSubOrganization">ddmsSubOrganization</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Augmented By:</td>
-		<td class="relInfo" colspan="2">
-			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Additional Notes:</td>
-		<td class="relInfo" colspan="2">
-			All four producer entities share similar characteristics (at least one name, and optional phone numbers and email addresses), so 
-			they are grouped into a single table, rather than a separate table for each producer entity type. The latter approach is equally viable.<br /><br />
-			This modeling also assumes that there is no reuse of entities between various roles. So, while the person named "Brian Uri" might have a creator 
-			role and a contributor role, and while Brian's details might be identical in each XML element, each set of details would have a separate 
-			row in this table.
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader" colspan="3">Columns:</td>
-	</tr>		
-	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">producerType</td><td class="relRules">char(64)</td><td>the producer type (contributor, creator, pointOfContact, publisher, recordKeeeper)</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">producerId</td><td class="relRules">integer</td><td>foreign key to the parent producer role fulfilled by this entity</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">entityType</td><td class="relRules">char(24)</td><td>the type of this entity, i.e. "organization", "person", "service" or "unknown"</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">name</td><td class="relRules">char(256), not null</td><td>a delimited string-list of names for this producer. At least one is required.</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">phone</td><td class="relRules">char(256)</td><td>a delimited string-list of phone numbers for this producer. Optional.</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">email</td><td class="relRules">char(2048)</td><td>a delimited string-list of email addresses for this producer. Optional.</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">surname</td><td class="relRules">char(256)</td><td>This is a Person-specific column, containing a surname. Exactly one surname is required for 
-			Person records.</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">userId</td><td class="relRules">char(64)</td><td>This is a Person-specific column, containing an ID for a user.</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">affiliation</td><td class="relRules">char(256)</td><td>This is a Person-specific column, containing an organizational affiliation for a user. 
-			Optional.</td>
-	</tr>	
-	<tr class="relRow">
-		<td class="relField">acronym</td><td class="relRules">char(64)</td><td>This is an Organization-specific column, containing an organizational acronym. 
-			Optional.</td>
-	</tr>	
-</table>
-
 <a name="ddmsRecordKeeper"></a><table class="rel">
 	<tr>
 		<th class="relName" colspan="3">ddmsRecordKeeper</th>
@@ -831,7 +746,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsProducerEntity">ddmsProducerEntity</a>
+			<a href="#ddmsRoleEntity">ddmsRoleEntity</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -843,7 +758,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
-			This component will always contain an organization, which can be stored in the ddmsProducerEntity table.
+			This component will always contain an organization, which can be stored in the ddmsRoleEntity table.
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -879,7 +794,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Parent Of:</td>
 		<td class="relInfo" colspan="2">
-			<a href="#ddmsProducerEntity">ddmsProducerEntity</a>
+			<a href="#ddmsRoleEntity">ddmsRoleEntity</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -891,7 +806,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
-			This component will contain either a person or an organization, which can be stored in the ddmsProducerEntity table.
+			This component will contain either a person or an organization, which can be stored in the ddmsRoleEntity table.
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -956,6 +871,91 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>
 	<tr class="relRow">
 		<td class="relField">copyright</td><td class="relRules">boolean, default to "false"</td><td>whether the resource has a copyright owner</td>
+	</tr>	
+</table>
+
+<a name="ddmsRoleEntity"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsRoleEntity</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Organization"><code>ddms:organization</code></a>,
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Person"><code>ddms:person</code></a>,
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Service"><code>ddms:service</code></a>, and
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#Unknown"><code>ddms:unknown</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/resource/Organization.html">Organization</a>,
+			<a href="/docs/buri/ddmsence/ddms/resource/Person.html">Person</a>,
+			<a href="/docs/buri/ddmsence/ddms/resource/Service.html">Service</a>, and
+			<a href="/docs/buri/ddmsence/ddms/resource/Unknown.html">Unknown</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsSubOrganization">ddmsSubOrganization</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsExtensibleAttribute">ddmsExtensibleAttribute</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			All four entities share similar characteristics (at least one name, and optional phone numbers and email addresses), so 
+			they are grouped into a single table, rather than a separate table for each entity type. The latter approach is equally viable.<br /><br />
+			This modeling also assumes that there is no reuse of entities between various roles. So, while the person named "Brian Uri" might have a creator 
+			role and an addressee role, and while Brian's details might be identical in each XML element, each set of details would have a separate 
+			row in this table.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">producerType</td><td class="relRules">char(64)</td><td>the producer type (contributor, creator, pointOfContact, publisher, recordKeeeper)</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">producerId</td><td class="relRules">integer</td><td>foreign key to the parent producer role fulfilled by this entity</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">entityType</td><td class="relRules">char(24)</td><td>the type of this entity, i.e. "organization", "person", "service" or "unknown"</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">name</td><td class="relRules">char(256), not null</td><td>a delimited string-list of names for this producer. At least one is required.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">phone</td><td class="relRules">char(256)</td><td>a delimited string-list of phone numbers for this producer. Optional.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">email</td><td class="relRules">char(2048)</td><td>a delimited string-list of email addresses for this producer. Optional.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">surname</td><td class="relRules">char(256)</td><td>This is a Person-specific column, containing a surname. Exactly one surname is required for 
+			Person records.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">userId</td><td class="relRules">char(64)</td><td>This is a Person-specific column, containing an ID for a user.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">affiliation</td><td class="relRules">char(256)</td><td>This is a Person-specific column, containing an organizational affiliation for a user. 
+			Optional.</td>
+	</tr>	
+	<tr class="relRow">
+		<td class="relField">acronym</td><td class="relRules">char(64)</td><td>This is an Organization-specific column, containing an organizational acronym. 
+			Optional.</td>
 	</tr>	
 </table>
 

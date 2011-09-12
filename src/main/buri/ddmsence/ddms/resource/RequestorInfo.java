@@ -22,7 +22,7 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractTaskingRole;
 import buri.ddmsence.ddms.IBuilder;
-import buri.ddmsence.ddms.IProducerEntity;
+import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
@@ -69,7 +69,7 @@ public class RequestorInfo extends AbstractTaskingRole {
 	 * @param entity the actual entity who is the requestor (required)
 	 * @param securityAttributes any security attributes (required)
 	 */
-	public RequestorInfo(IProducerEntity entity, SecurityAttributes securityAttributes)
+	public RequestorInfo(IRoleEntity entity, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
 		super(RequestorInfo.getName(DDMSVersion.getCurrentVersion()), entity, securityAttributes);
 	}

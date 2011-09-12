@@ -25,7 +25,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import nu.xom.Elements;
-import buri.ddmsence.ddms.AbstractProducerEntity;
+import buri.ddmsence.ddms.AbstractRoleEntity;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
@@ -73,7 +73,7 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public final class Organization extends AbstractProducerEntity {
+public final class Organization extends AbstractRoleEntity {
 	
 	private List<SubOrganization> _cachedSubOrganizations;
 	
@@ -155,7 +155,7 @@ public final class Organization extends AbstractProducerEntity {
 	 * <li>Acronyms cannot exist until DDMS 4.0 or later.</li>
 	 * </td></tr></table>
 	 * 
-	 * @see AbstractProducerEntity#validate()
+	 * @see AbstractRoleEntity#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
@@ -268,7 +268,7 @@ public final class Organization extends AbstractProducerEntity {
 	 * @author Brian Uri!
 	 * @since 1.8.0
 	 */
-	public static class Builder extends AbstractProducerEntity.Builder {
+	public static class Builder extends AbstractRoleEntity.Builder {
 		private static final long serialVersionUID = 4565840434345629470L;
 		private List<SubOrganization.Builder> _subOrganizations;
 		private String _acronym;

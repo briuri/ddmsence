@@ -21,7 +21,7 @@ package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
-import buri.ddmsence.ddms.IProducerEntity;
+import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -114,7 +114,7 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 	 * @param entity the person or organization in this role
 	 * @param org the organization
 	 */
-	private RequestorInfo testConstructor(boolean expectFailure, IProducerEntity entity) {
+	private RequestorInfo testConstructor(boolean expectFailure, IRoleEntity entity) {
 		RequestorInfo component = null;
 		try {
 			component = new RequestorInfo(entity, SecurityAttributesTest.getFixture(false));
@@ -242,7 +242,7 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 				continue;
 			
 			// Missing entity		
-			testConstructor(WILL_FAIL, (IProducerEntity) null);
+			testConstructor(WILL_FAIL, (IRoleEntity) null);
 			
 			// Wrong entity
 			testConstructor(WILL_FAIL, new Service(Util.getXsListAsList(TEST_NAME), null, null));

@@ -36,7 +36,7 @@ import nu.xom.Document;
 import nu.xom.Serializer;
 import buri.ddmsence.ddms.AbstractProducerRole;
 import buri.ddmsence.ddms.IDDMSComponent;
-import buri.ddmsence.ddms.IProducerEntity;
+import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
@@ -252,7 +252,7 @@ public class Escort {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				DDMSVersion version = DDMSVersion.getCurrentVersion();
 				String entityType = readString("the entity type [organization]");
-				IProducerEntity entity = null;
+				IRoleEntity entity = null;
 				if (Person.getName(version).equals(entityType))
 					entity = (Person) inputLoop(Person.class);
 				else if (Organization.getName(version).equals(entityType))
@@ -264,7 +264,7 @@ public class Escort {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				DDMSVersion version = DDMSVersion.getCurrentVersion();
 				String entityType = readString("the entity type [organization]");
-				IProducerEntity entity = null;
+				IRoleEntity entity = null;
 				if (Person.getName(version).equals(entityType))
 					entity = (Person) inputLoop(Person.class);
 				else if (Organization.getName(version).equals(entityType))
@@ -279,7 +279,7 @@ public class Escort {
 				String entityType = readString("the entity type [organization]");
 				SecurityAttributes attr = buildSecurityAttributes("producer");
 								
-				IProducerEntity entity = null;
+				IRoleEntity entity = null;
 				if (Person.getName(version).equals(entityType))
 					entity = (Person) inputLoop(Person.class);
 				else if (Organization.getName(version).equals(entityType))

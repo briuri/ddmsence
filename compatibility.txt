@@ -17,22 +17,22 @@ DETAILS:
 	This creator element was modeled in DDMSence as "An instance of Organization has the role of creator" 
 	and the Organization class contained this entire construct. With DDMS 4.0, Organizations and Persons 
 	can now appear in other elements (Addressee and RecordKeeper) besides the classic producers, and the 
-	old approach became fragile. Producers and producer entities are now consistent with the schema -- 
+	old approach became fragile. Producers and entities are now consistent with the schema -- 
 	the above construct is modeled as "An instance of Creator contains an instance of Organization".
 	
 	Specifically, there is a new class for Creator, Contributor, Publisher, and PointOfContact, and the 
-	old producer entities, Organization Person, Service, and Unknown are no longer top-level components.
+	old entities, Organization Person, Service, and Unknown are no longer top-level components.
 FIX:
-	The four producer entity classes must now be wrapped into a producer role class. As an example, if you 
-	previously had code that worked with an "Organization that was a creator":
+	The four entity classes must now be wrapped into a producer role class. As an example, if you 
+	previously had code that worked with an "Service that was a creator":
 	
-	Organization org =
-		new Organization(Organization.CREATOR_NAME, names, phones, emails, securityAttributes, extensibleAttributes);
+	Service service =
+		new Service(Service.CREATOR_NAME, names, phones, emails);
 	
-	You would now deal with a "Creator that contains an Organization":
+	You would now deal with a "Creator that contains a Service":
 	
-	Organization org = new Organization(names, phones, emails, extensibleAttributes);
-	Creator creator = new Creator(org, null, securityAttributes);
+	Service service = new Service(names, phones, emails);
+	Creator creator = new Creator(service, null, securityAttributes);
 		
 	See Issue #153 for a description of the OLD class hierarchy and the NEW class hierarchy. I will also 
 	be glad to review your code and provide feedback on how it can be upgraded.
@@ -127,13 +127,14 @@ FIX:
 
 
 #########################################################################################################
-MediaExtent class renamed as Extent
+Renamed classes (multiple issues)
 
 SEVERITY: Minor
 DETAILS:
-	Because the Media wrapper was removed in DDMS 4.0, the name, MediaExtent, no longer made sense.
+	- MediaExtent renamed to Extent: Because the Media wrapper was removed in DDMS 4.0, the name no longer made sense. (Issue #127).
+	- IProducerEntity: Because Entities can now fulfill non-producer roles, the name no longer made sense (Issue #163)
 FIX:
-	Rename any references to MediaExtent as Extent.
+	Change the class names of the affected classes.
 	
 #########################################################################################################
 Mechanism for version comparison changed (Issue #159)
@@ -152,4 +153,4 @@ FIX:
 	
 	You can accomplish the same thing with:
 	
-	boolean isCompatible = "3.0".equals(DDMSVersion.getVersionForDDMSNamespace(xomElement.getNamespaceURI()).getVersion());	
+	boolean isCompatible = DDMSVersion.getVersionForDDMSNamespace(xomElement.getNamespaceURI()).isAtLeast("3.0");	
