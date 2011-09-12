@@ -189,7 +189,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @return attribute value, or an empty string if it does not exist
 	 */
 	protected String getAttributeValue(String name) {
-		return (getAttributeValue(name, getXOMElement().getNamespaceURI()));
+		return (getAttributeValue(name, getNamespace()));
 	}
 	
 	/**
@@ -213,7 +213,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 */
 	protected Element getChild(String name) {
 		Util.requireValue("name", name);
-		return (getXOMElement().getFirstChildElement(name, getXOMElement().getNamespaceURI()));
+		return (getXOMElement().getFirstChildElement(name, getNamespace()));
 	}
 
 	/**
@@ -249,8 +249,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 */
 	protected DDMSVersion getDDMSVersion() {
 		boolean isGML = (this instanceof Point || this instanceof Polygon || this instanceof Position);
-		String namespace = getXOMElement().getNamespaceURI();		
-		return (isGML ? DDMSVersion.getVersionForGMLNamespace(namespace) : DDMSVersion.getVersionForDDMSNamespace(getXOMElement().getNamespaceURI()));	
+		return (isGML ? DDMSVersion.getVersionForGMLNamespace(getNamespace()) : DDMSVersion.getVersionForDDMSNamespace(getNamespace()));	
 	}
 	
 	/**
@@ -268,7 +267,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 			return (false);
 		AbstractBaseComponent test = (AbstractBaseComponent) obj;
 		return (getName().equals(test.getName())
-			&& getXOMElement().getNamespaceURI().equals(test.getXOMElement().getNamespaceURI()));
+			&& getNamespace().equals(test.getNamespace()));
 	}
 	
 	/**
@@ -278,7 +277,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 */
 	public int hashCode() {
 		int result = getName().hashCode();
-		result = 7 * result + getXOMElement().getNamespaceURI().hashCode();
+		result = 7 * result + getNamespace().hashCode();
 		return (result);
 	}
 	

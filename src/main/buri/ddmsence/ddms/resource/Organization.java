@@ -179,7 +179,7 @@ public final class Organization extends AbstractProducerEntity {
 	protected void validateWarnings() {
 		if (getDDMSVersion().isAtLeast("4.0")) {
 			if (Util.isEmpty(getAcronym())
-				&& getXOMElement().getAttribute(ACRONYM_NAME, getXOMElement().getNamespaceURI()) != null)
+				&& getXOMElement().getAttribute(ACRONYM_NAME, getNamespace()) != null)
 			addWarning("A ddms:acronym attribute was found with no value.");
 		}
 	}
