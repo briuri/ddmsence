@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="urn:us:mil:ces:metadata:ddms:4" xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" xmlns:ICISM="urn:us:gov:ic:ism" xmlns:ntk="urn:us:gov:ic:ntk" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:common="urn:us:gov:ic:common" targetNamespace="urn:us:mil:ces:metadata:ddms:4" elementFormDefault="qualified" attributeFormDefault="qualified" version="4">
+	<xs:annotation>
+		<xs:documentation>
+This schema file is intended to simplify importation of IC-ISM Schema files.  The supported version of ISM is version 7 public.
+		</xs:documentation>
+		<xs:documentation>
+			Change Log:
+			6/05/2011 (E. Hughes) -- Created DDMS 3.1.  Implemented CR 2011-1 to create DDMS-Includes.xsd wherein all IC-ISM references are consolidated.
+			8/05/2011 (E. Hughes) -- Implemented CR 2011-15 to update DDMS 4 to ISM 7.  Updated documentation.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:import namespace="urn:us:gov:ic:ntk" schemaLocation="../NTK/IC-NTK.xsd"/>
+	<xs:import namespace="urn:us:gov:ic:common" schemaLocation="../IC-COMMON/IC-Common.xsd"/>
+	<xs:include schemaLocation="DDMS-GeospatialCoverage.xsd"/>
+
+	<!--The following section of code supports IC-ISM 7, as per CR2011-15 (EH)-->
+	<xs:import namespace="urn:us:gov:ic:ism" schemaLocation="../../ISM/IC-ISM.xsd"/>
+	<xs:attributeGroup name="RootSecurityAttributesGroup">
+		<xs:attributeGroup ref="ICISM:ISMRootNodeAttributeGroup"/>
+<!-- Temporarily removed until NTK is hooked up.		
+		<xs:attributeGroup ref="ntk:NTKRootNodeAttributeGroup"/>
+-->		
+	</xs:attributeGroup>
+	<xs:attributeGroup name="MetacardSecurityAttributesGroup">
+		<!-- Added for metacardInfo element (EH) -->
+		<xs:attributeGroup ref="ICISM:ResourceNodeAttributeGroup"/>
+	</xs:attributeGroup>
+	<!-- Currently (to v7) compatible with all versions of ISM: -->
+	<xs:attributeGroup name="SecurityAttributesOptionGroup">
+		<xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="SecurityAttributesGroup">
+		<xs:attributeGroup ref="ICISM:SecurityAttributesGroup"/>
+	</xs:attributeGroup>
+	<xs:complexType name="SecurityType">
+		<xs:sequence>
+			<xs:element name="noticeList" type="NoticeListType" minOccurs="0" maxOccurs="1"/>
+<!-- Temporarily removed until NTK is hooked up.		
+			<xs:element ref="ntk:Access" minOccurs="0"/>
+-->			
+		</xs:sequence>
+		<xs:attribute ref="ICISM:excludeFromRollup" use="required" fixed="true"/>
+		<xs:attributeGroup ref="SecurityAttributesGroup"/>
+	</xs:complexType>
+	<xs:complexType name="NoticeListType" />
+<!-- Temporarily removed until ISM is hooked up.
+		<xs:sequence>
+ 			<xs:element ref="ICISM:Notice" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="SecurityAttributesGroup"/>
+	</xs:complexType>
+-->
+	<!--  IC-Common wrapping -->
+	<xs:attributeGroup name="SimpleLinkAttributesGroup">
+		<xs:attributeGroup ref="common:SimpleLinkAttributesGroup"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="OptionalResourceLinkAttributesGroup">
+		<xs:attributeGroup ref="common:OptionalResourceLinkAttributesGroup"/>
+	</xs:attributeGroup>
+</xs:schema>
