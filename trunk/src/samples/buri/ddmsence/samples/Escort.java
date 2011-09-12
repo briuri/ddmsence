@@ -42,6 +42,7 @@ import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.format.Extent;
+import buri.ddmsence.ddms.resource.Addressee;
 import buri.ddmsence.ddms.resource.ApplicationSoftware;
 import buri.ddmsence.ddms.resource.Contributor;
 import buri.ddmsence.ddms.resource.Creator;
@@ -247,6 +248,18 @@ public class Escort {
 				return (new RecordKeeper(id, org));
 			}		
 		});
+		BUILDERS.put(Addressee.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				DDMSVersion version = DDMSVersion.getCurrentVersion();
+				String entityType = readString("the entity type [organization]");
+				IProducerEntity entity = null;
+				if (Person.getName(version).equals(entityType))
+					entity = (Person) inputLoop(Person.class);
+				else if (Organization.getName(version).equals(entityType))
+					entity = (Organization) inputLoop(Organization.class);
+				return (new Addressee(entity, buildSecurityAttributes("addressee")));
+			}		
+		});
 		BUILDERS.put(RequestorInfo.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				DDMSVersion version = DDMSVersion.getCurrentVersion();
@@ -256,7 +269,7 @@ public class Escort {
 					entity = (Person) inputLoop(Person.class);
 				else if (Organization.getName(version).equals(entityType))
 					entity = (Organization) inputLoop(Organization.class);
-				return (new RequestorInfo(entity, buildSecurityAttributes("details")));
+				return (new RequestorInfo(entity, buildSecurityAttributes("requestorInfo")));
 			}		
 		});
 		BUILDERS.put(AbstractProducerRole.class, new IComponentBuilder() {
