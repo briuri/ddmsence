@@ -212,11 +212,11 @@ public final class Polygon extends AbstractBaseComponent {
 		Util.requireDDMSValue(ID_NAME, getId());
 		Util.requireValidNCName(getId());
 		
-		Element extElement = getXOMElement().getFirstChildElement(EXTERIOR_NAME, getXOMElement().getNamespaceURI());
+		Element extElement = getXOMElement().getFirstChildElement(EXTERIOR_NAME, getNamespace());
 		Util.requireDDMSValue("exterior element", extElement);
 		if (extElement != null) {
 			Util.requireDDMSValue("LinearRing element", extElement.getFirstChildElement(LINEAR_RING_NAME,
-				getXOMElement().getNamespaceURI()));
+				getNamespace()));
 		}
 		List<Position> positions = getPositions();
 		for (Position pos : positions) {
@@ -364,7 +364,7 @@ public final class Polygon extends AbstractBaseComponent {
 	 * Accessor for the ID
 	 */
 	public String getId() {
-		return (getAttributeValue(ID_NAME, getXOMElement().getNamespaceURI()));
+		return (getAttributeValue(ID_NAME, getNamespace()));
 	}
 	
 	/**

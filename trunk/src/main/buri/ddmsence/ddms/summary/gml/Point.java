@@ -307,7 +307,7 @@ public final class Point extends AbstractBaseComponent {
 	 * Accessor for the ID
 	 */
 	public String getId() {
-		return (getAttributeValue(ID_NAME, getXOMElement().getNamespaceURI()));
+		return (getAttributeValue(ID_NAME, getNamespace()));
 	}
 	
 	/**
