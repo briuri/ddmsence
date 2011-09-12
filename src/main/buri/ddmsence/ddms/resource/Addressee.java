@@ -29,12 +29,12 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of a ddms:requestorInfo element.
+ * An immutable implementation of a ddms:addressee element.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:person</u>: the person who requested the production of this resource (0-1, optional)<br />
- * <u>ddms:organization</u>: The organization who requested the production of this resource (0-1, optional)<br />
- * Only one of the nested entities can appear in a requestorInfo element.
+ * <u>ddms:person</u>: the person who is the addressee (0-1, optional)<br />
+ * <u>ddms:organization</u>: The organization who is the addressee (0-1, optional)<br />
+ * Only one of the nested entities can appear in an addressee element.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -43,15 +43,15 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: The person or organization who requested the production of this resource.<br />
- * <u>Obligation</u>: At least 1 requestorInfo is mandatory.<br />
+ * <u>Description</u>: The addressee associated with tasking info for a resource.<br />
+ * <u>Obligation</u>: At least 1 addressee is mandatory.<br />
  * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class RequestorInfo extends AbstractTaskingRole {
+public class Addressee extends AbstractTaskingRole {
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -59,7 +59,7 @@ public class RequestorInfo extends AbstractTaskingRole {
 	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public RequestorInfo(Element element) throws InvalidDDMSException {
+	public Addressee(Element element) throws InvalidDDMSException {
 		super(element);
 	}
 	
@@ -69,9 +69,9 @@ public class RequestorInfo extends AbstractTaskingRole {
 	 * @param entity the actual entity who is the requestor (required)
 	 * @param securityAttributes any security attributes (required)
 	 */
-	public RequestorInfo(IProducerEntity entity, SecurityAttributes securityAttributes)
+	public Addressee(IProducerEntity entity, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
-		super(RequestorInfo.getName(DDMSVersion.getCurrentVersion()), entity, securityAttributes);
+		super(Addressee.getName(DDMSVersion.getCurrentVersion()), entity, securityAttributes);
 	}
 	
 	/**
@@ -86,18 +86,18 @@ public class RequestorInfo extends AbstractTaskingRole {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		super.validate();
-		Util.requireDDMSQName(getXOMElement(), RequestorInfo.getName(getDDMSVersion()));
+		Util.requireDDMSQName(getXOMElement(), Addressee.getName(getDDMSVersion()));
 	}
 	
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof RequestorInfo))
+		if (!super.equals(obj) || !(obj instanceof Addressee))
 			return (false);
 		return (true);
 	}	
-	
+		
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 
@@ -106,7 +106,7 @@ public class RequestorInfo extends AbstractTaskingRole {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return ("requestorInfo");
+		return ("addressee");
 	}
 		
 	/**
@@ -118,7 +118,7 @@ public class RequestorInfo extends AbstractTaskingRole {
 	 */
 	public static class Builder extends AbstractTaskingRole.Builder {
 		private static final long serialVersionUID = 4565840434345629470L;
-		
+			
 		/**
 		 * Empty constructor
 		 */
@@ -129,15 +129,15 @@ public class RequestorInfo extends AbstractTaskingRole {
 		/**
 		 * Constructor which starts from an existing component.
 		 */
-		public Builder(RequestorInfo info) {
+		public Builder(Addressee info) {
 			super(info);		
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
-		public RequestorInfo commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new RequestorInfo(commitSelectedEntity(), getSecurityAttributes().commit()));
+		public Addressee commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new Addressee(commitSelectedEntity(), getSecurityAttributes().commit()));
 		}
 	}
 }

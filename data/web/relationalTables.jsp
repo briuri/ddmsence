@@ -60,6 +60,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 			
 			<a href="#tables-resource">Resource Set</a>
 			<ul>
+				<li><a href="#ddmsAddressee">ddmsAddressee</a></li>
 				<li><a href="#ddmsApplicationSoftware">ddmsApplicationSoftware</a></li>
 				<li><a href="#ddmsDates">ddmsDates</a></li>
 				<li><a href="#ddmsDetails">ddmsDetails</a></li>
@@ -309,6 +310,51 @@ may be useful when integrating DDMSence with an existing persistence framework l
 <a name="tables-metacard"></a><h4>The Metacard Info Set</h4>
 
 <a name="tables-resource"></a><h4>The Resource Set</h4>
+
+<a name="ddmsAddressee"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsAddressee</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code>ddms:addressee</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/resource/Addressee.html">Addressee</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsProducerEntity">ddmsProducerEntity</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			This component will contain either a person or an organization, which can be stored in the ddmsProducerEntity table.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent taskingInfo component</td>
+	</tr>
+</table>
 
 <a name="ddmsApplicationSoftware"></a><table class="rel">
 	<tr>
