@@ -181,6 +181,8 @@ public final class Organization extends AbstractRoleEntity {
 			if (Util.isEmpty(getAcronym())
 				&& getXOMElement().getAttribute(ACRONYM_NAME, getNamespace()) != null)
 			addWarning("A ddms:acronym attribute was found with no value.");
+			for (SubOrganization subOrg : getSubOrganizations())
+				addWarnings(subOrg.getValidationWarnings(), false);
 		}
 	}
 

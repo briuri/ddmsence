@@ -129,6 +129,20 @@ public class RecordKeeper extends AbstractBaseComponent {
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			throw new InvalidDDMSException("The ddms:" + RecordKeeper.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
+		
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Include any validation warnings from the organization.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		if (getOrganization() != null)
+			addWarnings(getOrganization().getValidationWarnings(), false);
 	}
 	
 	/**

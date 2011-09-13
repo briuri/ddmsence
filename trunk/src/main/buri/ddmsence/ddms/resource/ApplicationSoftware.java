@@ -95,7 +95,6 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			throw new InvalidDDMSException("The ddms:" + ApplicationSoftware.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
-
 		
 		validateWarnings();
 	}

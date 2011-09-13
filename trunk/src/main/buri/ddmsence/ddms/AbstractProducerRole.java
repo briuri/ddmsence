@@ -142,10 +142,12 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Include any validation warnings from the entity.</li>
 	 * <li>Include any validation warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateSharedWarnings() {
+		addWarnings(getEntity().getValidationWarnings(), false);
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 			
