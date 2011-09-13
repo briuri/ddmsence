@@ -153,59 +153,32 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 	
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String prefix = version.isAtLeast("4.0") ? "subjectCoverage." : "subjectCoverage.Subject.";
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"").append(prefix).append("keyword\" content=\"DDMSence\" />\n");
-		html.append("<meta name=\"").append(prefix).append("keyword\" content=\"Uri\" />\n");
-		html.append("<meta name=\"").append(prefix).append("category.qualifier\" content=\"urn:buri:ddmsence:categories\" />\n");
-		html.append("<meta name=\"").append(prefix).append("category.code\" content=\"DDMS\" />\n");
-		html.append("<meta name=\"").append(prefix).append("category.label\" content=\"DDMS\" />\n");
-		if (version.isAtLeast("4.0")) {
-			html.append("<meta name=\"").append(prefix).append("productionMetric.subject\" content=\"FOOD\" />\n");
-			html.append("<meta name=\"").append(prefix).append("productionMetric.coverage\" content=\"AFG\" />\n");
-			html.append("<meta name=\"").append(prefix).append("productionMetric.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"").append(prefix).append("productionMetric.ownerProducer\" content=\"USA\" />\n");
-			html.append("<meta name=\"").append(prefix).append("nonStateActor.value\" content=\"Laotian Monks\" />\n");
-			html.append("<meta name=\"").append(prefix).append("nonStateActor.order\" content=\"1\" />\n");
-			html.append("<meta name=\"").append(prefix).append("nonStateActor.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"").append(prefix).append("nonStateActor.ownerProducer\" content=\"USA\" />\n");
-		}
-		if (version.isAtLeast("3.0")) {
-			html.append("<meta name=\"subjectCoverage.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"subjectCoverage.ownerProducer\" content=\"USA\" />\n");
-		}
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0") ? "subjectCoverage." : "subjectCoverage.Subject.";
 		StringBuffer text = new StringBuffer();
-		text.append(prefix).append("keyword: DDMSence\n");
-		text.append(prefix).append("keyword: Uri\n");
-		text.append(prefix).append("category qualifier: urn:buri:ddmsence:categories\n");
-		text.append(prefix).append("category code: DDMS\n");
-		text.append(prefix).append("category label: DDMS\n");
+		text.append(buildOutput(isHTML, prefix + "keyword", "DDMSence"));
+		text.append(buildOutput(isHTML, prefix + "keyword", "Uri"));
+		text.append(buildOutput(isHTML, prefix + "category.qualifier", "urn:buri:ddmsence:categories"));
+		text.append(buildOutput(isHTML, prefix + "category.code", "DDMS"));
+		text.append(buildOutput(isHTML, prefix + "category.label", "DDMS"));
+		
 		if (version.isAtLeast("4.0")) {
-			text.append(prefix).append("productionMetric.subject: FOOD\n");
-			text.append(prefix).append("productionMetric.coverage: AFG\n");
-			text.append(prefix).append("productionMetric classification: U\n");
-			text.append(prefix).append("productionMetric ownerProducer: USA\n");
-			text.append(prefix).append("nonStateActor.value: Laotian Monks\n");
-			text.append(prefix).append("nonStateActor.order: 1\n");
-			text.append(prefix).append("nonStateActor classification: U\n");
-			text.append(prefix).append("nonStateActor ownerProducer: USA\n");
+			text.append(buildOutput(isHTML, prefix + "productionMetric.subject", "FOOD"));
+			text.append(buildOutput(isHTML, prefix + "productionMetric.coverage", "AFG"));
+			text.append(buildOutput(isHTML, prefix + "productionMetric.classification", "U"));
+			text.append(buildOutput(isHTML, prefix + "productionMetric.ownerProducer", "USA"));
+			text.append(buildOutput(isHTML, prefix + "nonStateActor.value", "Laotian Monks"));
+			text.append(buildOutput(isHTML, prefix + "nonStateActor.order", "1"));
+			text.append(buildOutput(isHTML, prefix + "nonStateActor.classification", "U"));
+			text.append(buildOutput(isHTML, prefix + "nonStateActor.ownerProducer", "USA"));
+			
 		}
 		if (version.isAtLeast("3.0")) {
-			text.append("subjectCoverage classification: U\n");
-			text.append("subjectCoverage ownerProducer: USA\n");
+			text.append(buildOutput(isHTML, prefix +  "classification", "U"));
+			text.append(buildOutput(isHTML, prefix +  "ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}
@@ -385,10 +358,10 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(), getActorFixture());
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
@@ -396,10 +369,10 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(), getActorFixture());
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

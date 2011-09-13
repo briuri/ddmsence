@@ -234,48 +234,15 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix + UOM_NAME, getUnitOfMeasure(), true));
-		html.append(buildHTMLMeta(prefix + DATUM_NAME, getDatum(), true));
-		html.append(buildHTMLMeta(prefix + "minimum", String.valueOf(getMinVerticalExtent()), true));
-		html.append(buildHTMLMeta(prefix + "maximum", String.valueOf(getMaxVerticalExtent()), true));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix + UOM_NAME, getUnitOfMeasure(), true));
-		text.append(buildTextLine(prefix + DATUM_NAME, getDatum(), true));
-		text.append(buildTextLine(prefix + "minimum", String.valueOf(getMinVerticalExtent()), true));
-		text.append(buildTextLine(prefix + "maximum", String.valueOf(getMaxVerticalExtent()), true));
+		text.append(buildOutput(isHTML, prefix + UOM_NAME, getUnitOfMeasure(), true));
+		text.append(buildOutput(isHTML, prefix + DATUM_NAME, getDatum(), true));
+		text.append(buildOutput(isHTML, prefix + "minimum", String.valueOf(getMinVerticalExtent()), true));
+		text.append(buildOutput(isHTML, prefix + "maximum", String.valueOf(getMaxVerticalExtent()), true));
 		return (text.toString());
 	}
 	

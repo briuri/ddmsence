@@ -155,7 +155,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
@@ -163,7 +163,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());

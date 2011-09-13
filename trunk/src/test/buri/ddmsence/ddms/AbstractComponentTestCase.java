@@ -28,6 +28,7 @@ import nu.xom.Element;
 import buri.ddmsence.util.DDMSReader;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
+import buri.ddmsence.util.Util;
 
 /**
  * Base class for test cases involving components.
@@ -138,6 +139,24 @@ public abstract class AbstractComponentTestCase extends TestCase {
 		assertEquals(ValidationMessage.newError(text, locator), message);
 	}
 
+	/**
+	 * Convenience method to build a meta tag for HTML output or a text line for Text output.
+	 * 
+	 * @param isHTML true for HTML, false for Text
+	 * @param name the name value of the meta tag (will be escaped in HTML)
+	 * @param content the content value of the meta tag (will be escaped in HTML)
+	 * @return a string containing the output
+	 */
+	public static String buildOutput(boolean isHTML, String name, String content) {
+		StringBuffer tag = new StringBuffer();
+		tag.append(isHTML ? "<meta name=\"" : "");
+		tag.append(isHTML ? Util.xmlEscape(name) : name);
+		tag.append(isHTML ? "\" content=\"" : ": ");
+		tag.append(isHTML ? Util.xmlEscape(content) : content);
+		tag.append(isHTML ? "\" />\n" : "\n");
+		return (tag.toString());
+	}
+	
 	/**
 	 * Strips tabs and new lines from XML output where appropriate. The unit test samples in the XML files have tabs and
 	 * new lines, but the default implementation of XOM toXML() returns XML on a single line.

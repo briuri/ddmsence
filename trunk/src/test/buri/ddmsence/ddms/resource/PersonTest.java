@@ -100,40 +100,21 @@ public class PersonTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"entityType\" content=\"").append(Person.getName(version)).append("\" />\n");
-		for (String name : TEST_NAMES)
-			html.append("<meta name=\"name\" content=\"").append(name).append("\" />\n");
-		for (String phone : TEST_PHONES)
-			html.append("<meta name=\"phone\" content=\"").append(phone).append("\" />\n");
-		for (String email : TEST_EMAILS)
-			html.append("<meta name=\"email\" content=\"").append(email).append("\" />\n");
-		html.append("<meta name=\"surname\" content=\"").append(TEST_SURNAME).append("\" />\n");
-		html.append("<meta name=\"userID\" content=\"").append(TEST_USERID).append("\" />\n");
-		html.append("<meta name=\"affiliation\" content=\"").append(TEST_AFFILIATION).append("\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append("EntityType: ").append(Person.getName(version)).append("\n");
+		text.append(buildOutput(isHTML, "entityType", Person.getName(version)));
 		for (String name : TEST_NAMES)
-			text.append("name: ").append(name).append("\n");
+			text.append(buildOutput(isHTML, "name", name));
 		for (String phone : TEST_PHONES)
-			text.append("phone: ").append(phone).append("\n");
+			text.append(buildOutput(isHTML, "phone", phone));
 		for (String email : TEST_EMAILS)
-			text.append("email: ").append(email).append("\n");
-		text.append("surname: ").append(TEST_SURNAME).append("\n");
-		text.append("userID: ").append(TEST_USERID).append("\n");
-		text.append("affiliation: ").append(TEST_AFFILIATION).append("\n");
+			text.append(buildOutput(isHTML, "email", email));
+		text.append(buildOutput(isHTML, "surname", TEST_SURNAME));
+		text.append(buildOutput(isHTML, "userID", TEST_USERID));
+		text.append(buildOutput(isHTML, "affiliation", TEST_AFFILIATION));
 		return (text.toString());
 	}
 
@@ -360,27 +341,27 @@ public class PersonTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Person component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
 				TEST_PHONES, TEST_EMAILS);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Person component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
 				TEST_PHONES, TEST_EMAILS);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

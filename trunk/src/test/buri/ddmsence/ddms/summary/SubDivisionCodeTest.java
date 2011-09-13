@@ -91,25 +91,15 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"subDivisionCode.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"subDivisionCode.value\" content=\"").append(TEST_VALUE).append("\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("subDivisionCode.qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append("subDivisionCode.value: ").append(TEST_VALUE).append("\n");
+		text.append(buildOutput(isHTML, "subDivisionCode.qualifier", TEST_QUALIFIER));
+		text.append(buildOutput(isHTML, "subDivisionCode.value", TEST_VALUE));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -269,7 +259,7 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
@@ -277,14 +267,14 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 				continue;
 
 			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
@@ -292,10 +282,10 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 				continue;
 
 			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

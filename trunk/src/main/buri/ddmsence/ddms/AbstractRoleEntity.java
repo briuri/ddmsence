@@ -204,63 +204,20 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	}
 	
 	/**
-	 * The DDMS website examples are not clear on what to do if there are multiple names, phone numbers, or emails. This
-	 * method merely creates a separate HTML meta tag for each value.
-	 * 
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-
-	/**
-	 * The DDMS website examples are not clear on what to do if there are multiple names, phone numbers, or emails. This
-	 * method merely creates a separate Text line for each value.
-	 * 
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-	
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix);
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix + "entityType", getName(), true));
-		for (String name : getNames())
-			html.append(buildHTMLMeta(prefix + NAME_NAME, name, true));
-		for (String phone : getPhones())
-			html.append(buildHTMLMeta(prefix + PHONE_NAME, phone, true));
-		for (String email : getEmails())
-			html.append(buildHTMLMeta(prefix + EMAIL_NAME, email, true));
-		html.append(getExtensibleAttributes().toHTML(prefix));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix + "EntityType", getName(), true));
+		text.append(buildOutput(isHTML, prefix + "entityType", getName(), true));
 		for (String name : getNames())
-			text.append(buildTextLine(NAME_NAME, name, true));
+			text.append(buildOutput(isHTML, prefix + NAME_NAME, name, true));
 		for (String phone : getPhones())
-			text.append(buildTextLine(PHONE_NAME, phone, true));
+			text.append(buildOutput(isHTML, prefix + PHONE_NAME, phone, true));
 		for (String email : getEmails())
-			text.append(buildTextLine(EMAIL_NAME, email, true));
-		text.append(getExtensibleAttributes().toText(prefix));
-		return (text.toString());	
+			text.append(buildOutput(isHTML, prefix + EMAIL_NAME, email, true));
+		text.append(getExtensibleAttributes().getOutput(isHTML, prefix));
+		return (text.toString());
 	}
 	
 	/**

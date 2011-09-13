@@ -96,33 +96,19 @@ public class CreatorTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		StringBuffer html = new StringBuffer();
-		html.append(getEntityFixture().toHTML("creator."));
-		if (version.isAtLeast("4.0"))
-			html.append("<meta name=\"creator.POCType\" content=\"ICD-710\" />\n");
-		html.append("<meta name=\"creator.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"creator.ownerProducer\" content=\"USA\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(getEntityFixture().toText("creator" + " "));
+		text.append(getEntityFixture().getOutput(isHTML, "creator."));
 		if (version.isAtLeast("4.0"))
-			text.append("POCType: ICD-710\n");
-		text.append("creator classification: U\n");
-		text.append("creator ownerProducer: USA\n");
+			text.append(buildOutput(isHTML, "creator.POCType", "ICD-710"));
+		text.append(buildOutput(isHTML, "creator.classification", "U"));
+		text.append(buildOutput(isHTML, "creator.ownerProducer", "USA"));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -245,25 +231,25 @@ public class CreatorTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Creator component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, getEntityFixture(), RoleEntityTest.getPOCType());
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Creator component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, getEntityFixture(), RoleEntityTest.getPOCType());
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

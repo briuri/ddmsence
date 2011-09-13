@@ -153,53 +153,19 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-	
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
-		StringBuffer html = new StringBuffer();
-		if (getRecordKeeper() != null)
-			html.append(getRecordKeeper().toHTML(prefix));
-		if (getApplicationSoftware() != null)
-			html.append(getApplicationSoftware().toHTML(prefix));
-		html.append(buildHTMLMeta(prefix + VITAL_RECORD_INDICATOR_NAME, String.valueOf(getVitalRecordIndicator()), true));		
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		if (getRecordKeeper() != null)
-			text.append(getRecordKeeper().toText(prefix));
+			text.append(getRecordKeeper().getOutput(isHTML, prefix));
 		if (getApplicationSoftware() != null)
-			text.append(getApplicationSoftware().toText(prefix));
-		text.append(buildTextLine(prefix + VITAL_RECORD_INDICATOR_NAME, String.valueOf(getVitalRecordIndicator()), true));				
-		return (text.toString());	
+			text.append(getApplicationSoftware().getOutput(isHTML, prefix));
+		text.append(buildOutput(isHTML, prefix + VITAL_RECORD_INDICATOR_NAME, String.valueOf(getVitalRecordIndicator()), true));
+		return (text.toString());
 	}
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

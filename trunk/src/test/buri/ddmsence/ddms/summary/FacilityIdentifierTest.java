@@ -90,25 +90,15 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"facilityIdentifier.beNumber\" content=\"").append(TEST_BENUMBER).append("\" />\n");
-		html.append("<meta name=\"facilityIdentifier.osuffix\" content=\"").append(TEST_OSUFFIX).append("\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("facilityIdentifier.beNumber: ").append(TEST_BENUMBER).append("\n");
-		text.append("facilityIdentifier.osuffix: ").append(TEST_OSUFFIX).append("\n");
+		text.append(buildOutput(isHTML, "facilityIdentifier.beNumber", TEST_BENUMBER));
+		text.append(buildOutput(isHTML, "facilityIdentifier.osuffix", TEST_OSUFFIX));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -235,25 +225,25 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			FacilityIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_BENUMBER, TEST_OSUFFIX);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			FacilityIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_BENUMBER, TEST_OSUFFIX);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

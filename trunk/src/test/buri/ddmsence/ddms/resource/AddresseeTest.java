@@ -125,31 +125,18 @@ public class AddresseeTest extends AbstractComponentTestCase {
 		return (component);
 	}
 
-
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"addressee.entityType\" content=\"organization\" />\n");
-		html.append("<meta name=\"addressee.name\" content=\"").append(TEST_NAME).append("\" />\n");
-		html.append("<meta name=\"addressee.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"addressee.ownerProducer\" content=\"USA\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("addressee.EntityType: organization\n");
-		text.append("name: ").append(TEST_NAME).append("\n");
-		text.append("addressee classification: U\n");
-		text.append("addressee ownerProducer: USA\n");
+		text.append(buildOutput(isHTML, "addressee.entityType", "organization"));
+		text.append(buildOutput(isHTML, "addressee.name", TEST_NAME));
+		text.append(buildOutput(isHTML, "addressee.classification", "U"));
+		text.append(buildOutput(isHTML, "addressee.ownerProducer", "USA"));
 		return (text.toString());
 	}
-	
+		
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -319,10 +306,10 @@ public class AddresseeTest extends AbstractComponentTestCase {
 				continue;
 			
 			Addressee component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, getOrgFixture());
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
@@ -334,10 +321,10 @@ public class AddresseeTest extends AbstractComponentTestCase {
 				continue;
 			
 			Addressee component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, getOrgFixture());
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

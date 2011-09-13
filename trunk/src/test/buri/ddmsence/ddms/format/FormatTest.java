@@ -105,32 +105,18 @@ public class FormatTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String prefix = version.isAtLeast("4.0") ? "format." : "format.Media.";
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"").append(prefix).append("mimeType\" content=\"").append(TEST_MIME_TYPE)
-			.append("\" />\n");
-		html.append(ExtentTest.getFixture().toHTML(prefix));
-		html.append("<meta name=\"").append(prefix).append("medium\" content=\"").append(TEST_MEDIUM).append("\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() throws InvalidDDMSException {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0") ? "format." : "format.Media.";
 		StringBuffer text = new StringBuffer();
-		text.append(prefix).append("mimeType: ").append(TEST_MIME_TYPE).append("\n");
-		text.append(ExtentTest.getFixture().toText(prefix));
-		text.append(prefix).append("medium: ").append(TEST_MEDIUM).append("\n");
+		text.append(buildOutput(isHTML, prefix + "mimeType", TEST_MIME_TYPE));
+		text.append(ExtentTest.getFixture().getOutput(isHTML, prefix));
+		text.append(buildOutput(isHTML, prefix + "medium", TEST_MEDIUM));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -314,10 +300,10 @@ public class FormatTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Format component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, ExtentTest.getFixture(), TEST_MEDIUM);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
@@ -325,10 +311,10 @@ public class FormatTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Format component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_MIME_TYPE, ExtentTest.getFixture(), TEST_MEDIUM);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

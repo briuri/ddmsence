@@ -111,6 +111,18 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Returns the expected HTML or Text output for this unit test
+	 */
+	private String getExpectedOutput(boolean isHTML) {
+		StringBuffer text = new StringBuffer();
+		text.append(buildOutput(isHTML, "srsName", TEST_SRS_NAME));
+		text.append(buildOutput(isHTML, "srsDimension", String.valueOf(TEST_SRS_DIMENSION)));
+		text.append(buildOutput(isHTML, "axisLabels", Util.getXsList(TEST_AXIS_LABELS)));
+		text.append(buildOutput(isHTML, "uomLabels", Util.getXsList(TEST_UOM_LABELS)));
+		return (text.toString());
+	}
+	
+	/**
 	 * Helper method to add srs attributes to a XOM element. The element is not validated.
 	 * 
 	 * @param element element
@@ -296,6 +308,40 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testHTMLOutput() throws InvalidDDMSException {
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.getName(version),
+				version.getGmlNamespace(), null);
+			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
+				Util.getXsList(TEST_UOM_LABELS));
+			SRSAttributes attributes = new SRSAttributes(element);			
+			assertEquals(getExpectedOutput(true), attributes.toHTML());
+
+			SRSAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_SRS_NAME, TEST_SRS_DIMENSION,
+				TEST_AXIS_LABELS, TEST_UOM_LABELS);
+			assertEquals(getExpectedOutput(true), dataAttributes.toHTML());
+		}
+	}
+
+	public void testTextOutput() throws InvalidDDMSException {
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			
+			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.getName(version),
+				version.getGmlNamespace(), null);
+			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
+				Util.getXsList(TEST_UOM_LABELS));
+			SRSAttributes attributes = new SRSAttributes(element);
+			assertEquals(getExpectedOutput(false), attributes.toText());
+
+			SRSAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_SRS_NAME, TEST_SRS_DIMENSION,
+				TEST_AXIS_LABELS, TEST_UOM_LABELS);
+			assertEquals(getExpectedOutput(false), dataAttributes.toText());
+		}
+	}
+	
 	public void testWrongVersionAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		SRSAttributes attr = getFixture();

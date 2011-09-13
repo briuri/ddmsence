@@ -129,23 +129,14 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() throws InvalidDDMSException {
-		StringBuffer html = new StringBuffer();
-		html.append(getPoints().get(0).toHTML("boundingGeometry."));
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() throws InvalidDDMSException {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(getPoints().get(0).toText("boundingGeometry."));
+		text.append(getPoints().get(0).getOutput(isHTML, "boundingGeometry."));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -272,13 +263,13 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, null, getPoints());
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, getPolygons(), null);
-			assertEquals(getPolygons().get(0).toHTML("boundingGeometry."), component.toHTML());
+			assertEquals(getPolygons().get(0).getOutput(true, "boundingGeometry."), component.toHTML());
 		}
 	}
 
@@ -286,13 +277,13 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, null, getPoints());
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, getPolygons(), null);
-			assertEquals(getPolygons().get(0).toText("boundingGeometry."), component.toText());
+			assertEquals(getPolygons().get(0).getOutput(false, "boundingGeometry."), component.toText());
 		}
 	}
 

@@ -112,41 +112,22 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"relatedResources.relationship\" content=\"").append(TEST_RELATIONSHIP)
-			.append("\" />\n");
-		html.append("<meta name=\"relatedResources.direction\" content=\"").append(TEST_DIRECTION).append("\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.qualifier\" content=\"http://purl.org/dc/terms/URI\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.value\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"locator\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.role\" content=\"role\" />\n");
-		html.append("<meta name=\"relatedResources.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"relatedResources.ownerProducer\" content=\"USA\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("relatedResources relationship: ").append(TEST_RELATIONSHIP).append("\n");
-		text.append("relatedResources direction: ").append(TEST_DIRECTION).append("\n");
-		text.append("Related Resource qualifier: http://purl.org/dc/terms/URI\n");
-		text.append("Related Resource value: http://en.wikipedia.org/wiki/Tank\n");
-		text.append("Related Resource link type: locator\n");
-		text.append("Related Resource link href: http://en.wikipedia.org/wiki/Tank\n");
-		text.append("Related Resource link role: role\n");
-		text.append("relatedResources classification: U\n");
-		text.append("relatedResources ownerProducer: USA\n");
-
+		text.append(buildOutput(isHTML, "relatedResources.relationship", TEST_RELATIONSHIP));
+		text.append(buildOutput(isHTML, "relatedResources.direction", TEST_DIRECTION));
+		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.qualifier", "http://purl.org/dc/terms/URI"));
+		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.value", "http://en.wikipedia.org/wiki/Tank"));
+		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.link.type", "locator"));
+		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.link.href", "http://en.wikipedia.org/wiki/Tank"));
+		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.link.role", "role"));		
+		text.append(buildOutput(isHTML, "relatedResources.classification", "U"));
+		text.append(buildOutput(isHTML, "relatedResources.ownerProducer", "USA"));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -304,10 +285,10 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			RelatedResources component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, getResources(), TEST_RELATIONSHIP, TEST_DIRECTION);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
@@ -315,10 +296,10 @@ public class RelatedResourcesTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			RelatedResources component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, getResources(), TEST_RELATIONSHIP, TEST_DIRECTION);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

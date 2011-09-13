@@ -106,39 +106,22 @@ public class DatesTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"dates.created\" content=\"").append(TEST_CREATED).append("\" />\n");
-		html.append("<meta name=\"dates.posted\" content=\"").append(TEST_POSTED).append("\" />\n");
-		html.append("<meta name=\"dates.validTil\" content=\"").append(TEST_VALID).append("\" />\n");
-		html.append("<meta name=\"dates.infoCutOff\" content=\"").append(TEST_CUTOFF).append("\" />\n");
-		if (version.isAtLeast("3.1"))
-			html.append("<meta name=\"dates.approvedOn\" content=\"").append(TEST_APPROVED).append("\" />\n");
-		if (version.isAtLeast("4.0"))
-			html.append("<meta name=\"dates.receivedOn\" content=\"").append(TEST_RECEIVED).append("\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append("created: ").append(TEST_CREATED).append("\n");
-		text.append("posted: ").append(TEST_POSTED).append("\n");
-		text.append("validTil: ").append(TEST_VALID).append("\n");
-		text.append("infoCutOff: ").append(TEST_CUTOFF).append("\n");
+		text.append(buildOutput(isHTML, "dates.created", TEST_CREATED));
+		text.append(buildOutput(isHTML, "dates.posted", TEST_POSTED));
+		text.append(buildOutput(isHTML, "dates.validTil", TEST_VALID));
+		text.append(buildOutput(isHTML, "dates.infoCutOff", TEST_CUTOFF));
 		if (version.isAtLeast("3.1"))
-			text.append("approvedOn: ").append(TEST_APPROVED).append("\n");
+			text.append(buildOutput(isHTML, "dates.approvedOn", TEST_APPROVED));
 		if (version.isAtLeast("4.0"))
-			text.append("receivedOn: ").append(TEST_RECEIVED).append("\n");
+			text.append(buildOutput(isHTML, "dates.receivedOn", TEST_RECEIVED));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -290,29 +273,29 @@ public class DatesTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 
 			Dates component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
 				getApprovedOn(), getReceivedOn());
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 
 			Dates component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
 				getApprovedOn(), getReceivedOn());
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

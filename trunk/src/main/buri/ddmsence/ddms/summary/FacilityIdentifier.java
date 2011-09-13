@@ -107,44 +107,13 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix + BE_NUMBER_NAME, getBeNumber(), true));
-		html.append(buildHTMLMeta(prefix + OSUFFIX_NAME, getOsuffix(), true));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix + BE_NUMBER_NAME, getBeNumber(), true));
-		text.append(buildTextLine(prefix + OSUFFIX_NAME, getOsuffix(), true));
+		text.append(buildOutput(isHTML, prefix + BE_NUMBER_NAME, getBeNumber(), true));
+		text.append(buildOutput(isHTML, prefix + OSUFFIX_NAME, getOsuffix(), true));
 		return (text.toString());
 	}
 

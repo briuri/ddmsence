@@ -194,32 +194,17 @@ public final class Format extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		String prefix = getName() + ".";
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		if (!getDDMSVersion().isAtLeast("4.0"))
-			prefix += MEDIA_NAME + ".";
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix + MIME_TYPE_NAME, getMimeType(), true));
-		if (getExtent() != null)
-			html.append(getExtent().toHTML(prefix));
-		html.append(buildHTMLMeta(prefix + MEDIUM_NAME, getMedium(), false));
-		return (html.toString());
-	}
-		
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		String prefix = getName() + ".";
-		if (!getDDMSVersion().isAtLeast("4.0"))
-			prefix += MEDIA_NAME + ".";
+			prefix += MEDIA_NAME + ".";		
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix + MIME_TYPE_NAME, getMimeType(), true));
+		text.append(buildOutput(isHTML, prefix + MIME_TYPE_NAME, getMimeType(), true));
 		if (getExtent() != null)
-			text.append(getExtent().toText(prefix));
-		text.append(buildTextLine(prefix + MEDIUM_NAME, getMedium(), false));
+			text.append(getExtent().getOutput(isHTML, prefix));
+		text.append(buildOutput(isHTML, prefix + MEDIUM_NAME, getMedium(), false));
 		return (text.toString());
 	}
 	

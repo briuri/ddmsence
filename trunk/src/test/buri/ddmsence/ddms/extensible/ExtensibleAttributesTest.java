@@ -99,20 +99,11 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"ddmsence.relevance\" content=\"95\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) {
 		StringBuffer text = new StringBuffer();
-		text.append("ddmsence:relevance: 95\n");
+		text.append(buildOutput(isHTML, "ddmsence.relevance", "95"));
 		return (text.toString());
 	}
 
@@ -234,12 +225,12 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
-			assertEquals(getExpectedHTMLOutput(), elementAttributes.toHTML(""));
+			assertEquals(getExpectedOutput(true), elementAttributes.toHTML());
 
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(new Attribute(TEST_ATTRIBUTE));
 			elementAttributes = testConstructor(WILL_SUCCEED, attributes);
-			assertEquals(getExpectedHTMLOutput(), elementAttributes.toHTML(""));
+			assertEquals(getExpectedOutput(true), elementAttributes.toHTML());
 		}
 	}
 
@@ -249,12 +240,12 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
-			assertEquals(getExpectedTextOutput(), elementAttributes.toText(""));
+			assertEquals(getExpectedOutput(false), elementAttributes.toText());
 
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(new Attribute(TEST_ATTRIBUTE));
 			elementAttributes = testConstructor(WILL_SUCCEED, attributes);
-			assertEquals(getExpectedTextOutput(), elementAttributes.toText(""));
+			assertEquals(getExpectedOutput(false), elementAttributes.toText());
 		}
 	}
 

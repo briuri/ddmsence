@@ -148,24 +148,14 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta("virtual." + ADDRESS_NAME, getAddress(), false));
-		html.append(buildHTMLMeta("virtual." + PROTOCOL_NAME, getProtocol(), false));
-		html.append(getSecurityAttributes().toHTML("virtual"));
-		return (html.toString());
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine("virtual " + ADDRESS_NAME, getAddress(), false));
-		text.append(buildTextLine("virtual " + PROTOCOL_NAME, getProtocol(), false));
-		text.append(getSecurityAttributes().toText("virtual"));
+		text.append(buildOutput(isHTML, prefix + ADDRESS_NAME, getAddress(), false));
+		text.append(buildOutput(isHTML, prefix + PROTOCOL_NAME, getProtocol(), false));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 	

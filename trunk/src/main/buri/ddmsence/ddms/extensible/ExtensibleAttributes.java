@@ -31,6 +31,7 @@ import javax.xml.namespace.QName;
 import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractAttributeGroup;
+import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
@@ -188,39 +189,18 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
-	 * Creates an HTML representation of these attributes.
-	 * 
-	 * @param prefix the parent prefix to place in each Meta tag
-	 * @return a string representation of the HTML.
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML(String prefix) {
-		if (!Util.isEmpty(prefix))
-			prefix = prefix + ".";
-		StringBuffer html = new StringBuffer();
-		for (Attribute attribute : getAttributes()) {
-			html.append(Resource.buildHTMLMeta(prefix + attribute.getNamespacePrefix() + "." + attribute.getLocalName(), 
-				attribute.getValue(), false));	
-		}
-		return (html.toString());
-	}
-
-	/**
-	 * Creates a Text representation of these attributes.
-	 * 
-	 * @param prefix the parent prefix to place in each line of text
-	 * @return a string representation of the Text
-	 */
-	public String toText(String prefix) {
-		if (!Util.isEmpty(prefix))
-			prefix = prefix + " ";
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
 		for (Attribute attribute : getAttributes()) {
-			text.append(Resource.buildTextLine(prefix + attribute.getNamespacePrefix() + ":"
-				+ attribute.getLocalName(), attribute.getValue(), false));	
+			text.append(Resource.buildOutput(isHTML, prefix + attribute.getNamespacePrefix() + "." + attribute.getLocalName(), 
+				attribute.getValue(), false));	
 		}
 		return (text.toString());
 	}
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

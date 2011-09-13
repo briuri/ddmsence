@@ -75,7 +75,6 @@ public interface IDDMSComponent {
 	 * @return the namespace
 	 */
 	public String getNamespace();
-
 	
 	/**
 	 * Accessor for the name of the component, including the prefix

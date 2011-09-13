@@ -202,56 +202,19 @@ public final class PostalAddress extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
-		StringBuffer html = new StringBuffer();
-		for (String street : getStreets())
-			html.append(buildHTMLMeta(prefix + STREET_NAME, street, false));
-		html.append(buildHTMLMeta(prefix + CITY_NAME, getCity(), false));
-		html.append(buildHTMLMeta(prefix + STATE_NAME, getState(), false));
-		html.append(buildHTMLMeta(prefix + PROVINCE_NAME, getProvince(), false));
-		html.append(buildHTMLMeta(prefix + POSTAL_CODE_NAME, getPostalCode(), false));
-		if (getCountryCode() != null)
-			html.append(getCountryCode().toHTML(prefix));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		for (String street : getStreets())
-			text.append(buildTextLine(prefix + STREET_NAME, street, false));
-		text.append(buildTextLine(prefix + CITY_NAME, getCity(), false));
-		text.append(buildTextLine(prefix + STATE_NAME, getState(), false));
-		text.append(buildTextLine(prefix + PROVINCE_NAME, getProvince(), false));
-		text.append(buildTextLine(prefix + POSTAL_CODE_NAME, getPostalCode(), false));
+			text.append(buildOutput(isHTML, prefix + STREET_NAME, street, false));
+		text.append(buildOutput(isHTML, prefix + CITY_NAME, getCity(), false));
+		text.append(buildOutput(isHTML, prefix + STATE_NAME, getState(), false));
+		text.append(buildOutput(isHTML, prefix + PROVINCE_NAME, getProvince(), false));
+		text.append(buildOutput(isHTML, prefix + POSTAL_CODE_NAME, getPostalCode(), false));
 		if (getCountryCode() != null)
-			text.append(getCountryCode().toText(prefix));
+			text.append(getCountryCode().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 	

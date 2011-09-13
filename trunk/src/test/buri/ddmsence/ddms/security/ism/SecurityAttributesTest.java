@@ -509,18 +509,16 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Map<String, String> others = new HashMap<String, String>();
 			others.put(SecurityAttributes.DECLASS_DATE_NAME, "2005-10-10");
 			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
-			assertEquals("<meta name=\"declassDate\" content=\"2005-10-10\" />\n", dataAttributes.toHTML(""));
-			assertEquals("declassDate: 2005-10-10\n", dataAttributes.toText(""));
+			assertEquals(buildOutput(true, "declassDate", "2005-10-10"), dataAttributes.toHTML());
+			assertEquals(buildOutput(false, "declassDate", "2005-10-10"), dataAttributes.toText());
 
 			if (!version.isAtLeast("3.1")) {
 				others = new HashMap<String, String>();
 				others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-10");
 				dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
-				assertEquals("<meta name=\"dateOfExemptedSource\" content=\"2005-10-10\" />\n",
-					dataAttributes.toHTML(""));
-				assertEquals("dateOfExemptedSource: 2005-10-10\n", dataAttributes.toText(""));
+				assertEquals(buildOutput(true, "dateOfExemptedSource", "2005-10-10"), dataAttributes.toHTML());
+				assertEquals(buildOutput(false, "dateOfExemptedSource", "2005-10-10"), dataAttributes.toText());
 			}
-
 		}
 	}
 
@@ -559,8 +557,8 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		DDMSVersion.setCurrentVersion("2.0");
 		map.remove(SecurityAttributes.COMPILATION_REASON_NAME);
 		SecurityAttributes attr = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
-		assertTrue(attr.toHTML("").contains("<meta name=\"declassManualReview\" content=\"true\" />"));
-		assertTrue(attr.toText("").contains("declassManualReview: true"));
+		assertTrue(attr.toHTML().contains(buildOutput(true, "declassManualReview", "true")));
+		assertTrue(attr.toText().contains(buildOutput(false, "declassManualReview", "true")));
 	}
 
 	public void testMultipleDeclassException() throws InvalidDDMSException {
@@ -580,9 +578,9 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, "true");
 		SecurityAttributes attributes = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
-		assertEquals("<meta name=\"classification\" content=\"U\" />\n"
-			+ "<meta name=\"declassManualReview\" content=\"true\" />\n"
-			+ "<meta name=\"ownerProducer\" content=\"USA\" />\n", attributes.toHTML(""));
+		assertEquals(buildOutput(true, "classification", "U")
+			+ buildOutput(true, "declassManualReview", "true")
+			+ buildOutput(true, "ownerProducer", "USA"), attributes.toHTML());
 	}
 
 	public void testCVEErrorsByDefault() {

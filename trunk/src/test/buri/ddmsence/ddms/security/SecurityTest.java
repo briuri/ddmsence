@@ -81,29 +81,19 @@ public class SecurityTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-			html.append("<meta name=\"security.excludeFromRollup\" content=\"true\" />\n");
-		html.append("<meta name=\"security.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"security.ownerProducer\" content=\"USA\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		String prefix = "security.";
 		StringBuffer text = new StringBuffer();
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-			text.append("excludeFromRollup: true\n");
-		text.append("classification: U\n");
-		text.append("ownerProducer: USA\n");
+		if (version.isAtLeast("3.0"))
+			text.append(buildOutput(isHTML, prefix + "excludeFromRollup", "true"));
+		text.append(buildOutput(isHTML, prefix + "classification", "U"));
+		text.append(buildOutput(isHTML, prefix + "ownerProducer", "USA"));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -217,25 +207,25 @@ public class SecurityTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Security component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Security component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

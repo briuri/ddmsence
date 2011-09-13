@@ -167,47 +167,16 @@ public class RecordKeeper extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-	
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix + RECORD_KEEPER_ID_NAME, getRecordKeeperID(), true));
-		html.append(getOrganization().toHTML(prefix));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix + RECORD_KEEPER_ID_NAME, getRecordKeeperID(), true));
-		text.append(getOrganization().toText(prefix));
-		return (text.toString());	
+		text.append(buildOutput(isHTML, prefix + RECORD_KEEPER_ID_NAME, getRecordKeeperID(), true));
+		text.append(getOrganization().getOutput(isHTML, prefix));
+		return (text.toString());
 	}
-	
+		
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 

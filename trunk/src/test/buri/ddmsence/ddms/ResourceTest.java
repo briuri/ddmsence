@@ -280,155 +280,57 @@ public class ResourceTest extends AbstractComponentTestCase {
 		return (component);
 	}
 
-	/**
-	 * Returns the expected HTML output for this unit test
-	 */
-	private String getExpectedHTMLOutput() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		StringBuffer html = new StringBuffer();
-		if (version.isAtLeast("3.0")) {
-			html.append("<meta name=\"security.resourceElement\" content=\"true\" />\n");
-			html.append("<meta name=\"security.createDate\" content=\"2010-01-21\" />\n");
-		}
-		html.append("<meta name=\"security.DESVersion\" content=\"").append(getDESVersion()).append("\" />\n");
-		if (version.isAtLeast("3.0")) {
-			html.append("<meta name=\"security.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"security.ownerProducer\" content=\"USA\" />\n");
-		}
-		html.append("<meta name=\"identifier.qualifier\" content=\"URI\" />\n");
-		html.append("<meta name=\"identifier.value\" content=\"urn:buri:ddmsence:testIdentifier\" />\n");
-		html.append("<meta name=\"title\" content=\"DDMSence\" />\n");
-		html.append("<meta name=\"title.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"title.ownerProducer\" content=\"USA\" />\n");
-		html.append("<meta name=\"subtitle\" content=\"Version 0.1\" />\n");
-		html.append("<meta name=\"subtitle.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"subtitle.ownerProducer\" content=\"USA\" />\n");
-		html.append("<meta name=\"description\" content=\"A transformation service.\" />\n");
-		html.append("<meta name=\"description.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"description.ownerProducer\" content=\"USA\" />\n");
-		html.append("<meta name=\"language.qualifier\" content=\"http://purl.org/dc/elements/1.1/language\" />\n");
-		html.append("<meta name=\"language.value\" content=\"en\" />\n");
-		html.append("<meta name=\"dates.created\" content=\"2003\" />\n");
-		html.append("<meta name=\"rights.privacyAct\" content=\"true\" />\n");
-		html.append("<meta name=\"rights.intellectualProperty\" content=\"true\" />\n");
-		html.append("<meta name=\"rights.copyright\" content=\"true\" />\n");
-		html.append("<meta name=\"source.value\" content=\"http://www.xmethods.com\" />\n");
-		html.append("<meta name=\"type.qualifier\" content=\"DCMITYPE\" />\n");
-		html.append("<meta name=\"type.value\" content=\"http://purl.org/dc/dcmitype/Text\" />\n");
-		html.append("<meta name=\"creator.entityType\" content=\"").append(Organization.getName(version))
-			.append("\" />\n");
-		html.append("<meta name=\"creator.name\" content=\"DISA\" />\n");
-		html.append("<meta name=\"publisher.entityType\" content=\"").append(Person.getName(version)).append("\" />\n");
-		html.append("<meta name=\"publisher.name\" content=\"Brian\" />\n");
-		html.append("<meta name=\"publisher.surname\" content=\"Uri\" />\n");
-		html.append("<meta name=\"contributor.entityType\" content=\"").append(Service.getName(version))
-			.append("\" />\n");
-		html.append("<meta name=\"contributor.name\" content=\"https://metadata.dod.mil/ebxmlquery/soap\" />\n");
-		if (version.isAtLeast("3.0")) {
-			html.append("<meta name=\"pointOfContact.entityType\" content=\"").append(Unknown.getName(version))
-				.append("\" />\n");
-			html.append("<meta name=\"pointOfContact.name\" content=\"UnknownEntity\" />\n");
-		} else {
-			html.append("<meta name=\"pointOfContact.entityType\" content=\"").append(Person.getName(version))
-				.append("\" />\n");
-			html.append("<meta name=\"pointOfContact.name\" content=\"Brian\" />\n");
-			html.append("<meta name=\"pointOfContact.surname\" content=\"Uri\" />\n");
-		}
-
-		String formatPrefix = (version.isAtLeast("4.0") ? "format." : "format.Media.");
-		String subjectPrefix = (version.isAtLeast("4.0") ? "subjectCoverage." : "subjectCoverage.Subject.");
-		String temporalPrefix = (version.isAtLeast("4.0") ? "temporalCoverage." : "temporalCoverage.TimePeriod.");
-		String geospatialPrefix = version.isAtLeast("4.0") ? "geospatialCoverage."
-			: "geospatialCoverage.GeospatialExtent.";
-
-		html.append("<meta name=\"").append(formatPrefix).append("mimeType\" content=\"text/xml\" />\n");
-		html.append("<meta name=\"").append(subjectPrefix).append("keyword\" content=\"DDMSence\" />\n");
-		html.append("<meta name=\"virtual.address\" content=\"123.456.789.0\" />\n");
-		html.append("<meta name=\"virtual.protocol\" content=\"IP\" />\n");
-		html.append("<meta name=\"").append(temporalPrefix).append("name\" content=\"Unknown\" />\n");
-		html.append("<meta name=\"").append(temporalPrefix).append("start\" content=\"1979-09-15\" />\n");
-		html.append("<meta name=\"").append(temporalPrefix).append("end\" content=\"Not Applicable\" />\n");
-		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.id\" content=\"IDValue\" />\n");
-		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.type\" content=\"Point\" />\n");
-		html.append("<meta name=\"").append(geospatialPrefix).append("boundingGeometry.srsName\" ")
-			.append("content=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" />\n");
-		html.append("<meta name=\"").append(geospatialPrefix)
-			.append("boundingGeometry.srsDimension\" content=\"10\" />\n");
-		html.append("<meta name=\"").append(geospatialPrefix)
-			.append("boundingGeometry.axisLabels\" content=\"A B C\" />\n");
-		html.append("<meta name=\"").append(geospatialPrefix)
-			.append("boundingGeometry.uomLabels\" content=\"Meter Meter Meter\" />\n");
-		html.append("<meta name=\"").append(geospatialPrefix)
-			.append("boundingGeometry.position\" content=\"32.1 40.1\" />\n");
-		html.append("<meta name=\"relatedResources.relationship\" ").append(
-			"content=\"http://purl.org/dc/terms/references\" />\n");
-		html.append("<meta name=\"relatedResources.direction\" content=\"outbound\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.qualifier\" content=\"http://purl.org/dc/terms/URI\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.value\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"locator\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"http://en.wikipedia.org/wiki/Tank\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.role\" content=\"role\" />\n");
-
-		if (version.isAtLeast("3.0"))
-			html.append("<meta name=\"security.excludeFromRollup\" content=\"true\" />\n");
-		html.append("<meta name=\"security.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"security.ownerProducer\" content=\"USA\" />\n");
-		html.append("<meta name=\"extensible.layer\" content=\"false\" />\n");
-		html.append("<meta name=\"ddms.generator\" content=\"DDMSence ").append(PropertyReader.getProperty("version"))
-			.append("\" />\n");
-		html.append("<meta name=\"ddms.version\" content=\"").append(version).append("\" />\n");
-		return (html.toString());
-	}
 
 	/**
-	 * Returns the expected Text output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
+		String resourcePrefix = Resource.getName(version);
 		if (version.isAtLeast("3.0")) {
-			text.append("resourceElement: true\n");
-			text.append("createDate: 2010-01-21\n");
+			text.append(buildOutput(isHTML, resourcePrefix + ".resourceElement", "true"));
+			text.append(buildOutput(isHTML, resourcePrefix + ".createDate", "2010-01-21"));
 		}
-		text.append("DESVersion: ").append(getDESVersion()).append("\n");
+		text.append(buildOutput(isHTML, resourcePrefix + ".ism.DESVersion", String.valueOf(getDESVersion())));
 		if (version.isAtLeast("3.0")) {
-			text.append("classification: U\n");
-			text.append("ownerProducer: USA\n");
+			text.append(buildOutput(isHTML, resourcePrefix + ".classification", "U"));
+			text.append(buildOutput(isHTML, resourcePrefix + ".ownerProducer", "USA"));
 		}
-		text.append("identifier qualifier: URI\n");
-		text.append("identifier value: urn:buri:ddmsence:testIdentifier\n");
-		text.append("title: DDMSence\n");
-		text.append("title classification: U\n");
-		text.append("title ownerProducer: USA\n");
-		text.append("subtitle: Version 0.1\n");
-		text.append("subtitle classification: U\n");
-		text.append("subtitle ownerProducer: USA\n");
-		text.append("description: A transformation service.\n");
-		text.append("description classification: U\n");
-		text.append("description ownerProducer: USA\n");
-		text.append("language qualifier: http://purl.org/dc/elements/1.1/language\n");
-		text.append("language value: en\n");
-		text.append("created: 2003\n");
-		text.append("privacyAct: true\n");
-		text.append("intellectualProperty: true\n");
-		text.append("copyright: true\n");
-		text.append("source value: http://www.xmethods.com\n");
-		text.append("type qualifier: DCMITYPE\n");
-		text.append("type value: http://purl.org/dc/dcmitype/Text\n");
-		text.append("creator EntityType: ").append(Organization.getName(version)).append("\n");
-		text.append("name: DISA\n");
-		text.append("publisher EntityType: ").append(Person.getName(version)).append("\n");
-		text.append("name: Brian\n");
-		text.append("surname: Uri\n");
-		text.append("contributor EntityType: ").append(Service.getName(version)).append("\n");
-		text.append("name: https://metadata.dod.mil/ebxmlquery/soap\n");
+		text.append(buildOutput(isHTML, "identifier.qualifier", "URI"));
+		text.append(buildOutput(isHTML, "identifier.value", "urn:buri:ddmsence:testIdentifier"));
+		text.append(buildOutput(isHTML, "title", "DDMSence"));
+		text.append(buildOutput(isHTML, "title.classification", "U"));
+		text.append(buildOutput(isHTML, "title.ownerProducer", "USA"));
+		text.append(buildOutput(isHTML, "subtitle", "Version 0.1"));
+		text.append(buildOutput(isHTML, "subtitle.classification", "U"));
+		text.append(buildOutput(isHTML, "subtitle.ownerProducer", "USA"));
+		text.append(buildOutput(isHTML, "description", "A transformation service."));
+		text.append(buildOutput(isHTML, "description.classification", "U"));
+		text.append(buildOutput(isHTML, "description.ownerProducer", "USA"));
+		text.append(buildOutput(isHTML, "language.qualifier", "http://purl.org/dc/elements/1.1/language"));
+		text.append(buildOutput(isHTML, "language.value", "en"));
+		text.append(buildOutput(isHTML, "dates.created", "2003"));
+		text.append(buildOutput(isHTML, "rights.privacyAct", "true"));
+		text.append(buildOutput(isHTML, "rights.intellectualProperty", "true"));
+		text.append(buildOutput(isHTML, "rights.copyright", "true"));
+		text.append(buildOutput(isHTML, "source.value", "http://www.xmethods.com"));
+		text.append(buildOutput(isHTML, "type.qualifier", "DCMITYPE"));
+		text.append(buildOutput(isHTML, "type.value", "http://purl.org/dc/dcmitype/Text"));
+		text.append(buildOutput(isHTML, "creator.entityType", Organization.getName(version)));
+		text.append(buildOutput(isHTML, "creator.name", "DISA"));
+		text.append(buildOutput(isHTML, "publisher.entityType", Person.getName(version)));
+		text.append(buildOutput(isHTML, "publisher.name", "Brian"));
+		text.append(buildOutput(isHTML, "publisher.surname", "Uri"));
+		text.append(buildOutput(isHTML, "contributor.entityType", Service.getName(version)));
+		text.append(buildOutput(isHTML, "contributor.name", "https://metadata.dod.mil/ebxmlquery/soap"));
 		if (version.isAtLeast("3.0")) {
-			text.append("pointOfContact EntityType: ").append(Unknown.getName(version)).append("\n");
-			text.append("name: UnknownEntity\n");
+			text.append(buildOutput(isHTML, "pointOfContact.entityType", Unknown.getName(version)));
+			text.append(buildOutput(isHTML, "pointOfContact.name", "UnknownEntity"));
 		} else {
-			text.append("pointOfContact EntityType: ").append(Person.getName(version)).append("\n");
-			text.append("name: Brian\n");
-			text.append("surname: Uri\n");
+			text.append(buildOutput(isHTML, "pointOfContact.entityType", Person.getName(version)));
+			text.append(buildOutput(isHTML, "pointOfContact.name", "Brian"));
+			text.append(buildOutput(isHTML, "pointOfContact.surname", "Uri"));
 		}
 
 		String formatPrefix = (version.isAtLeast("4.0") ? "format." : "format.Media.");
@@ -437,36 +339,35 @@ public class ResourceTest extends AbstractComponentTestCase {
 		String geospatialPrefix = version.isAtLeast("4.0") ? "geospatialCoverage."
 			: "geospatialCoverage.GeospatialExtent.";
 
-		text.append(formatPrefix).append("mimeType: text/xml\n");
-		text.append(subjectPrefix).append("keyword: DDMSence\n");
-		text.append("virtual address: 123.456.789.0\n");
-		text.append("virtual protocol: IP\n");
-		text.append(temporalPrefix).append("name: Unknown\n");
-		text.append(temporalPrefix).append("start: 1979-09-15\n");
-		text.append(temporalPrefix).append("end: Not Applicable\n");
-		text.append(geospatialPrefix).append("boundingGeometry.id: IDValue\n");
-		text.append(geospatialPrefix).append("boundingGeometry.type: Point\n");
-		text.append(geospatialPrefix).append(
-			"boundingGeometry.srsName: http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\n");
-		text.append(geospatialPrefix).append("boundingGeometry.srsDimension: 10\n");
-		text.append(geospatialPrefix).append("boundingGeometry.axisLabels: A B C\n");
-		text.append(geospatialPrefix).append("boundingGeometry.uomLabels: Meter Meter Meter\n");
-		text.append(geospatialPrefix).append("boundingGeometry.position: 32.1 40.1\n");
-		text.append("relatedResources relationship: http://purl.org/dc/terms/references\n");
-		text.append("relatedResources direction: outbound\n");
-		text.append("Related Resource qualifier: http://purl.org/dc/terms/URI\n");
-		text.append("Related Resource value: http://en.wikipedia.org/wiki/Tank\n");
-		text.append("Related Resource link type: locator\n");
-		text.append("Related Resource link href: http://en.wikipedia.org/wiki/Tank\n");
-		text.append("Related Resource link role: role\n");
-		if (version.isAtLeast("3.0")) {
-			text.append("excludeFromRollup: true\n");
-		}
-		text.append("classification: U\n");
-		text.append("ownerProducer: USA\n");
-		text.append("extensibleLayer: false\n");
-		text.append("DDMSGenerator: DDMSence ").append(PropertyReader.getProperty("version")).append("\n");
-		text.append("DDMSVersion: ").append(version).append("\n");
+		text.append(buildOutput(isHTML, formatPrefix + "mimeType", "text/xml"));
+		text.append(buildOutput(isHTML, subjectPrefix + "keyword", "DDMSence"));
+		text.append(buildOutput(isHTML, "virtualCoverage.address", "123.456.789.0"));
+		text.append(buildOutput(isHTML, "virtualCoverage.protocol", "IP"));
+		text.append(buildOutput(isHTML, temporalPrefix + "name", "Unknown"));
+		text.append(buildOutput(isHTML, temporalPrefix + "start", "1979-09-15"));
+		text.append(buildOutput(isHTML, temporalPrefix + "end", "Not Applicable"));
+		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.id", "IDValue"));
+		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.srsName", "http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D"));
+		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.srsDimension", "10"));
+		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.axisLabels", "A B C"));
+		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.uomLabels", "Meter Meter Meter"));
+		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.pos", "32.1 40.1"));
+		text.append(buildOutput(isHTML, "relatedResources.relationship", "http://purl.org/dc/terms/references"));
+		text.append(buildOutput(isHTML, "relatedResources.direction", "outbound"));
+		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.qualifier", "http://purl.org/dc/terms/URI"));
+		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.value", "http://en.wikipedia.org/wiki/Tank"));
+		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.link.type", "locator"));
+		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.link.href", "http://en.wikipedia.org/wiki/Tank"));
+		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.link.role", "role"));
+
+		if (version.isAtLeast("3.0"))
+			text.append(buildOutput(isHTML, "security.excludeFromRollup", "true"));
+		text.append(buildOutput(isHTML, "security.classification", "U"));
+		text.append(buildOutput(isHTML, "security.ownerProducer", "USA"));
+		text.append(buildOutput(isHTML, "extensible.layer", "false"));
+		text.append(buildOutput(isHTML, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version")));
+		text.append(buildOutput(isHTML, "ddms.version", version.getVersion()));
+		System.out.println(text.toString());
 		return (text.toString());
 	}
 
@@ -1008,12 +909,12 @@ public class ResourceTest extends AbstractComponentTestCase {
 			createComponents();
 
 			Resource component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = (!version.isAtLeast("3.0") ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null,
 				null, getDESVersion()) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS,
 				TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getDESVersion()));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
@@ -1023,12 +924,12 @@ public class ResourceTest extends AbstractComponentTestCase {
 			createComponents();
 
 			Resource component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = (!version.isAtLeast("3.0") ? testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS, null,
 				null, getDESVersion()) : testConstructor(WILL_SUCCEED, TEST_TOP_LEVEL_COMPONENTS,
 				TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getDESVersion()));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 
@@ -1312,8 +1213,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		components.add(component);
 		Resource resource = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
 			getDESVersion());
-		assertTrue(resource.toHTML().indexOf("<meta name=\"extensible.layer\" content=\"true\" />") != -1);
-		assertTrue(resource.toText().indexOf("extensibleLayer: true\n") != -1);
+		assertTrue(resource.toHTML().indexOf(buildOutput(true, "extensible.layer", "true")) != -1);
+		assertTrue(resource.toText().indexOf(buildOutput(false, "extensible.layer", "true")) != -1);
 	}
 
 	public void testWrongVersionExtensibleElementAllowed() throws InvalidDDMSException {
@@ -1373,10 +1274,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			// Equality with ExtensibleElement
 			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
-			builder
-				.getExtensibleElements()
-				.get(0)
-				.setXml(
+			builder.getExtensibleElements().get(0).setXml(
 					"<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">"
 						+ "This is an extensible element.</ddmsence:extension>");
 			component = builder.commit();

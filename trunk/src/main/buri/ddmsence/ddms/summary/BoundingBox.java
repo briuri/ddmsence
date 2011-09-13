@@ -31,23 +31,6 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:boundingBox.
  *
- * <p>The DDMS documentation has no Text/HTML examples for the output of this component, so a best guess was taken:</p>
- * <ul>
- * <p><b>Suggested Text Output</b><br /><code>
- * boundingBox.westBL: value<br />
- * boundingBox.eastBL: value<br />
- * boundingBox.southBL: value<br />
- * boundingBox.northBL: value<br />
- * </code></p>
- * 
- * <p><b>Suggested HTML Output</b><br /><code>
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.westBL" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.eastBL" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.southBL" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingBox.northBL" content="value" /&gt;<br />
- * </code>
- * </ul></p>
- *
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:westBL</u>: westbound longitude (required)<br />
  * <u>ddms:eastBL</u>: eastbound longitude (required)<br />
@@ -153,51 +136,18 @@ public final class BoundingBox extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix + getWestBLName(), String.valueOf(getWestBL()), true));
-		html.append(buildHTMLMeta(prefix + getEastBLName(), String.valueOf(getEastBL()), true));
-		html.append(buildHTMLMeta(prefix + getSouthBLName(), String.valueOf(getSouthBL()), true));
-		html.append(buildHTMLMeta(prefix + getNorthBLName(), String.valueOf(getNorthBL()), true));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix + getWestBLName(), String.valueOf(getWestBL()), true));
-		text.append(buildTextLine(prefix + getEastBLName(), String.valueOf(getEastBL()), true));
-		text.append(buildTextLine(prefix + getSouthBLName(), String.valueOf(getSouthBL()), true));
-		text.append(buildTextLine(prefix + getNorthBLName(), String.valueOf(getNorthBL()), true));
+		text.append(buildOutput(isHTML, prefix + getWestBLName(), String.valueOf(getWestBL()), true));
+		text.append(buildOutput(isHTML, prefix + getEastBLName(), String.valueOf(getEastBL()), true));
+		text.append(buildOutput(isHTML, prefix + getSouthBLName(), String.valueOf(getSouthBL()), true));
+		text.append(buildOutput(isHTML, prefix + getNorthBLName(), String.valueOf(getNorthBL()), true));
 		return (text.toString());
 	}
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

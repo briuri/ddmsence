@@ -660,51 +660,29 @@ public final class Resource extends AbstractBaseComponent {
 	}
 		
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		StringBuffer html = new StringBuffer();
-		String securityName = Security.getName(getDDMSVersion());
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		StringBuffer text = new StringBuffer();	
 		if (isResourceElement() != null)
-			html.append(buildHTMLMeta(securityName + "." + RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement()),
+			text.append(buildOutput(isHTML, prefix + RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement()),
 				true));
 		if (getCreateDate() != null)
-			html.append(buildHTMLMeta(securityName + "." + CREATE_DATE_NAME, getCreateDate().toXMLFormat(), true));
+			text.append(buildOutput(isHTML, prefix + CREATE_DATE_NAME, getCreateDate().toXMLFormat(), true));
 		if (getDESVersion() != null)
-			html.append(buildHTMLMeta(securityName + "." + DES_VERSION_NAME, String.valueOf(getDESVersion()), true));
-		html.append(getSecurityAttributes().toHTML(securityName));
-		html.append(getExtensibleAttributes().toHTML(""));
+			text.append(buildOutput(isHTML, prefix + "ism." + DES_VERSION_NAME, String.valueOf(getDESVersion()), true));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		text.append(getExtensibleAttributes().getOutput(isHTML, prefix));
 		for (IDDMSComponent component : getTopLevelComponents())
-			html.append(component.toHTML());
-		html.append(buildHTMLMeta("extensible.layer", String.valueOf(!getExtensibleElements().isEmpty()), true));
-		html.append(buildHTMLMeta("ddms.generator", "DDMSence " + PropertyReader.getProperty("version"), true));
-		html.append(buildHTMLMeta("ddms.version", DDMSVersion.getVersionForDDMSNamespace(getNamespace()).getVersion(),
-			true));
-		return (html.toString());
-	}
-
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		StringBuffer text = new StringBuffer();
-		if (isResourceElement() != null)
-			text.append(buildTextLine(RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement()), true));
-		if (getCreateDate() != null)
-			text.append(buildTextLine(CREATE_DATE_NAME, getCreateDate().toXMLFormat(), true));
-		if (getDESVersion() != null)
-			text.append(buildTextLine(DES_VERSION_NAME, String.valueOf(getDESVersion()), true));
-		text.append(getSecurityAttributes().toText(""));
-		text.append(getExtensibleAttributes().toText(""));
-		for (IDDMSComponent component : getTopLevelComponents())
-			text.append(component.toText());
-		text.append(buildTextLine("extensibleLayer", String.valueOf(!getExtensibleElements().isEmpty()), true));
-		text.append(buildTextLine("DDMSGenerator", "DDMSence " + PropertyReader.getProperty("version"), true));
-		text.append(buildTextLine("DDMSVersion", DDMSVersion.getVersionForDDMSNamespace(getNamespace()).getVersion(),
+			text.append(isHTML ? component.toHTML() : component.toText());
+		text.append(buildOutput(isHTML, "extensible.layer", String.valueOf(!getExtensibleElements().isEmpty()), true));
+		text.append(buildOutput(isHTML, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version"), true));
+		text.append(buildOutput(isHTML, "ddms.version", getDDMSVersion().getVersion(),
 			true));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * @see Object#equals(Object)
 	 */

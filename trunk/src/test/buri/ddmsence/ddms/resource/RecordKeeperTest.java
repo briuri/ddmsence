@@ -111,29 +111,17 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 		return (component);
 	}
 
-
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"recordKeeper.recordKeeperID\" content=\"").append(TEST_ID).append("\" />\n");
-		html.append("<meta name=\"recordKeeper.entityType\" content=\"organization\" />\n");
-		html.append("<meta name=\"recordKeeper.name\" content=\"").append(TEST_NAME).append("\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("recordKeeper.recordKeeperID: ").append(TEST_ID).append("\n");
-		text.append("recordKeeper.EntityType: organization\n");
-		text.append("name: ").append(TEST_NAME).append("\n");
+		text.append(buildOutput(isHTML, "recordKeeper.recordKeeperID", TEST_ID));
+		text.append(buildOutput(isHTML, "recordKeeper.entityType", "organization"));
+		text.append(buildOutput(isHTML, "recordKeeper.name", TEST_NAME));
 		return (text.toString());
 	}
-	
+		
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -297,10 +285,10 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 				continue;
 			
 			RecordKeeper component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_ID, getOrgFixture());
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
@@ -312,10 +300,10 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 				continue;
 			
 			RecordKeeper component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_ID, getOrgFixture());
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

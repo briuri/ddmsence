@@ -111,34 +111,18 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		return (component);
 	}
 
-
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"recordsManagementInfo.recordKeeper.recordKeeperID\" content=\"#289-99202.9\" />\n");
-		html.append("<meta name=\"recordsManagementInfo.recordKeeper.entityType\" content=\"organization\" />\n");
-		html.append("<meta name=\"recordsManagementInfo.recordKeeper.name\" content=\"AgencyZ\" />\n");
-		html.append("<meta name=\"recordsManagementInfo.applicationSoftware\" content=\"IRM Generator 2L-9\" />\n");
-		html.append("<meta name=\"recordsManagementInfo.applicationSoftware.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"recordsManagementInfo.applicationSoftware.ownerProducer\" content=\"USA\" />\n");
-		html.append("<meta name=\"recordsManagementInfo.vitalRecordIndicator\" content=\"true\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("recordsManagementInfo.recordKeeper.recordKeeperID: #289-99202.9\n");
-		text.append("recordsManagementInfo.recordKeeper.EntityType: organization\n");
-		text.append("name: AgencyZ\n");
-		text.append("recordsManagementInfo.applicationSoftware: IRM Generator 2L-9\n");
-		text.append("recordsManagementInfo.applicationSoftware classification: U\n");
-		text.append("recordsManagementInfo.applicationSoftware ownerProducer: USA\n");
-		text.append("recordsManagementInfo.vitalRecordIndicator: true\n");
+		text.append(buildOutput(isHTML, "recordsManagementInfo.recordKeeper.recordKeeperID", "#289-99202.9"));
+		text.append(buildOutput(isHTML, "recordsManagementInfo.recordKeeper.entityType", "organization"));
+		text.append(buildOutput(isHTML, "recordsManagementInfo.recordKeeper.name", "AgencyZ"));
+		text.append(buildOutput(isHTML, "recordsManagementInfo.applicationSoftware", "IRM Generator 2L-9"));
+		text.append(buildOutput(isHTML, "recordsManagementInfo.applicationSoftware.classification", "U"));
+		text.append(buildOutput(isHTML, "recordsManagementInfo.applicationSoftware.ownerProducer", "USA"));
+		text.append(buildOutput(isHTML, "recordsManagementInfo.vitalRecordIndicator", "true"));
 		return (text.toString());
 	}
 	
@@ -302,10 +286,10 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 				continue;
 			
 			RecordsManagementInfo component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, getRecordKeeperFixture(), getApplicationSoftwareFixture(), TEST_VITAL);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
@@ -317,10 +301,10 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 				continue;
 			
 			RecordsManagementInfo component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, getRecordKeeperFixture(), getApplicationSoftwareFixture(), TEST_VITAL);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

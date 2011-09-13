@@ -108,44 +108,22 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
-	 * 
-	 * @boolean whether this address has a state or a province
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput(boolean hasState) {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"postalAddress.street\" content=\"").append(TEST_STREETS.get(0)).append("\" />\n");
-		html.append("<meta name=\"postalAddress.city\" content=\"").append(TEST_CITY).append("\" />\n");
-		if (hasState)
-			html.append("<meta name=\"postalAddress.state\" content=\"").append(TEST_STATE).append("\" />\n");
-		else {
-			html.append("<meta name=\"postalAddress.province\" content=\"").append(TEST_PROVINCE).append("\" />\n");
-		}
-		html.append("<meta name=\"postalAddress.postalCode\" content=\"").append(TEST_POSTAL_CODE).append("\" />\n");
-		html.append("<meta name=\"postalAddress.countryCode.qualifier\" content=\"ISO-3166\" />\n");
-		html.append("<meta name=\"postalAddress.countryCode.value\" content=\"USA\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 * 
-	 * @boolean whether this address has a state or a province
-	 */
-	private String getExpectedTextOutput(boolean hasState) {
+	private String getExpectedOutput(boolean isHTML, boolean hasState) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("postalAddress.street: ").append(TEST_STREETS.get(0)).append("\n");
-		text.append("postalAddress.city: ").append(TEST_CITY).append("\n");
+		text.append(buildOutput(isHTML, "postalAddress.street", TEST_STREETS.get(0)));
+		text.append(buildOutput(isHTML, "postalAddress.city", TEST_CITY));
 		if (hasState)
-			text.append("postalAddress.state: ").append(TEST_STATE).append("\n");
+			text.append(buildOutput(isHTML, "postalAddress.state", TEST_STATE));
 		else
-			text.append("postalAddress.province: ").append(TEST_PROVINCE).append("\n");
-		text.append("postalAddress.postalCode: ").append(TEST_POSTAL_CODE).append("\n");
-		text.append("postalAddress.countryCode qualifier: ISO-3166\n");
-		text.append("postalAddress.countryCode value: USA\n");
+			text.append(buildOutput(isHTML, "postalAddress.province", TEST_PROVINCE));
+		text.append(buildOutput(isHTML, "postalAddress.postalCode", TEST_POSTAL_CODE));
+		text.append(buildOutput(isHTML, "postalAddress.countryCode.qualifier", "ISO-3166"));
+		text.append(buildOutput(isHTML, "postalAddress.countryCode.value", "USA"));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -344,15 +322,15 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(versionString);
 
 			PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(true), component.toHTML());
+			assertEquals(getExpectedOutput(true, true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE,
 				CountryCodeTest.getFixture(), true);
-			assertEquals(getExpectedHTMLOutput(true), component.toHTML());
+			assertEquals(getExpectedOutput(true, true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE,
 				CountryCodeTest.getFixture(), false);
-			assertEquals(getExpectedHTMLOutput(false), component.toHTML());
+			assertEquals(getExpectedOutput(true, false), component.toHTML());
 		}
 	}
 
@@ -361,15 +339,15 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(versionString);
 
 			PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(true), component.toText());
+			assertEquals(getExpectedOutput(false, true), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE,
 				CountryCodeTest.getFixture(), true);
-			assertEquals(getExpectedTextOutput(true), component.toText());
+			assertEquals(getExpectedOutput(false, true), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE,
 				CountryCodeTest.getFixture(), false);
-			assertEquals(getExpectedTextOutput(false), component.toText());
+			assertEquals(getExpectedOutput(false, false), component.toText());
 		}
 	}
 

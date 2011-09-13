@@ -90,33 +90,19 @@ public class KeywordTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"keyword\" content=\"").append(TEST_VALUE).append("\" />\n");
-		if (version.isAtLeast("4.0")) {
-			html.append("<meta name=\"keyword.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"keyword.ownerProducer\" content=\"USA\" />\n");
-		}
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append("keyword: ").append(TEST_VALUE).append("\n");
+		text.append(buildOutput(isHTML, "keyword", TEST_VALUE));
 		if (version.isAtLeast("4.0")) {
-			text.append("keyword classification: U\n");
-			text.append("keyword ownerProducer: USA\n");
+			text.append(buildOutput(isHTML, "keyword.classification", "U"));
+			text.append(buildOutput(isHTML, "keyword.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -223,25 +209,25 @@ public class KeywordTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Keyword component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Keyword component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

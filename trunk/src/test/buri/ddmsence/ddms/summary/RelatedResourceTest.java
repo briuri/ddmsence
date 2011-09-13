@@ -115,38 +115,20 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"relatedResources.RelatedResource.qualifier\" content=\"").append(TEST_QUALIFIER)
-			.append("\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.value\" content=\"").append(TEST_VALUE)
-			.append("\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.type\" content=\"locator\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.href\" content=\"").append(TEST_VALUE)
-			.append("\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.role\" content=\"tank\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.title\" content=\"Tank Page\" />\n");
-		html.append("<meta name=\"relatedResources.RelatedResource.link.label\" content=\"tank\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("Related Resource qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append("Related Resource value: ").append(TEST_VALUE).append("\n");
-		text.append("Related Resource link type: locator\n");
-		text.append("Related Resource link href: ").append(TEST_VALUE).append("\n");
-		text.append("Related Resource link role: tank\n");
-		text.append("Related Resource link title: Tank Page\n");
-		text.append("Related Resource link label: tank\n");
+		text.append(buildOutput(isHTML, "RelatedResource.qualifier", TEST_QUALIFIER));
+		text.append(buildOutput(isHTML, "RelatedResource.value", TEST_VALUE));
+		text.append(buildOutput(isHTML, "RelatedResource.link.type", "locator"));
+		text.append(buildOutput(isHTML, "RelatedResource.link.href", TEST_VALUE));
+		text.append(buildOutput(isHTML, "RelatedResource.link.role", "tank"));
+		text.append(buildOutput(isHTML, "RelatedResource.link.title", "Tank Page"));
+		text.append(buildOutput(isHTML, "RelatedResource.link.label", "tank"));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -311,10 +293,10 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			RelatedResource component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, getLinks(), TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
@@ -322,10 +304,10 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			RelatedResource component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, getLinks(), TEST_QUALIFIER, TEST_VALUE);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

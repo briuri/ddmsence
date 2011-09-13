@@ -95,40 +95,21 @@ public class CategoryTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"category.qualifier\" content=\"").append(TEST_QUALIFIER)
-			.append("\" />\n");
-		html.append("<meta name=\"category.code\" content=\"").append(TEST_CODE)
-			.append("\" />\n");
-		html.append("<meta name=\"category.label\" content=\"").append(TEST_LABEL)
-			.append("\" />\n");
-		if (version.isAtLeast("4.0")) {
-			html.append("<meta name=\"category.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"category.ownerProducer\" content=\"USA\" />\n");
-		}
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append("category qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append("category code: ").append(TEST_CODE).append("\n");
-		text.append("category label: ").append(TEST_LABEL).append("\n");
+		text.append(buildOutput(isHTML, "category.qualifier", TEST_QUALIFIER));
+		text.append(buildOutput(isHTML, "category.code", TEST_CODE));
+		text.append(buildOutput(isHTML, "category.label", TEST_LABEL));
 		if (version.isAtLeast("4.0")) {
-			text.append("category classification: U\n");
-			text.append("category ownerProducer: USA\n");
+			text.append(buildOutput(isHTML, "category.classification", "U"));
+			text.append(buildOutput(isHTML, "category.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -251,25 +232,25 @@ public class CategoryTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Category component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Category component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

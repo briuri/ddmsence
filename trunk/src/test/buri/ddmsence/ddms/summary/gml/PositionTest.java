@@ -92,32 +92,12 @@ public class PositionTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"position\" content=\"").append(TEST_XS_LIST).append("\" />\n");
-		html.append("<meta name=\"position.srsName\" content=\"").append(SRSAttributesTest.TEST_SRS_NAME)
-			.append("\" />\n");
-		html.append("<meta name=\"position.srsDimension\" content=\"").append(SRSAttributesTest.TEST_SRS_DIMENSION)
-			.append("\" />\n");
-		html.append("<meta name=\"position.axisLabels\" content=\"")
-			.append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\" />\n");
-		html.append("<meta name=\"position.uomLabels\" content=\"")
-			.append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
-		StringBuffer text = new StringBuffer();
-		text.append("position: ").append(TEST_XS_LIST).append("\n");
-		text.append("position.srsName: ").append(SRSAttributesTest.TEST_SRS_NAME).append("\n");
-		text.append("position.srsDimension: ").append(SRSAttributesTest.TEST_SRS_DIMENSION).append("\n");
-		text.append("position.axisLabels: ").append(Util.getXsList(SRSAttributesTest.TEST_AXIS_LABELS)).append("\n");
-		text.append("position.uomLabels: ").append(Util.getXsList(SRSAttributesTest.TEST_UOM_LABELS)).append("\n");
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+		StringBuffer text = new StringBuffer();		
+		text.append(buildOutput(isHTML, "pos", TEST_XS_LIST));
+		text.append(SRSAttributesTest.getFixture().getOutput(isHTML, "pos."));
 		return (text.toString());
 	}
 
@@ -305,10 +285,10 @@ public class PositionTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Position component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_COORDS, SRSAttributesTest.getFixture());
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
@@ -316,10 +296,10 @@ public class PositionTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Position component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_COORDS, SRSAttributesTest.getFixture());
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 
