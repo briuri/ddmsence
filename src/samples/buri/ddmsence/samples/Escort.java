@@ -56,6 +56,7 @@ import buri.ddmsence.ddms.resource.PointOfContact;
 import buri.ddmsence.ddms.resource.ProcessingInfo;
 import buri.ddmsence.ddms.resource.Publisher;
 import buri.ddmsence.ddms.resource.RecordKeeper;
+import buri.ddmsence.ddms.resource.RecordsManagementInfo;
 import buri.ddmsence.ddms.resource.RequestorInfo;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.resource.Service;
@@ -246,6 +247,14 @@ public class Escort {
 				String id = readString("the recordKeeperID [testID]");
 				Organization org = (Organization) inputLoop(Organization.class);
 				return (new RecordKeeper(id, org));
+			}		
+		});
+		BUILDERS.put(RecordsManagementInfo.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				RecordKeeper recordKeeper = (RecordKeeper) inputLoop(RecordKeeper.class);
+				ApplicationSoftware applicationSoftware = (ApplicationSoftware) inputLoop(ApplicationSoftware.class);
+				boolean vitalRecordIndicator = confirm("Is this publication categorized as a vital record?");
+				return (new RecordsManagementInfo(recordKeeper, applicationSoftware, vitalRecordIndicator));
 			}		
 		});
 		BUILDERS.put(Addressee.class, new IComponentBuilder() {

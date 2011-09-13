@@ -69,6 +69,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsProcessingInfo">ddmsProcessingInfo</a></li>
 				<li><a href="#ddmsProducer">ddmsProducer</a></li>
 				<li><a href="#ddmsRecordKeeper">ddmsRecordKeeper</a></li>
+				<li><a href="#ddmsRecordsManagementInfo">ddmsRecordsManagementInfo</a></li>
 				<li><a href="#ddmsRequestorInfo">ddmsRequestorInfo</a></li>
 				<li><a href="#ddmsRights">ddmsRights</a></li>
 				<li><a href="#ddmsRoleEntity">ddmsRoleEntity</a></li>
@@ -772,6 +773,55 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	</tr>
 	<tr class="relRow">
 		<td class="relField">recordKeeperID</td><td class="relRules">char(64)</td><td>the unique ID of this record keeper</td>
+	</tr>
+</table>
+
+<a name="ddmsRecordsManagementInfo"></a><table class="rel">
+	<tr>
+		<th class="relName" colspan="3">ddmsRecordsManagementInfo</th>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMS:</td>
+		<td class="relName" colspan="2">
+			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#"><code>ddms:recordsManagementInfo</code></a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">In DDMSence:</td>
+		<td class="relName" colspan="2">	
+			<a href="/docs/buri/ddmsence/ddms/resource/RecordsManagementInfo.html">RecordsManagementInfo</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Parent Of:</td>
+		<td class="relInfo" colspan="2">
+			<a href="#ddmsRoleEntity">ddmsRecordKeeper</a>, and
+			<a href="#ddmsRoleEntity">ddmsApplicationSoftware</a>
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Augmented By:</td>
+		<td class="relInfo" colspan="2">
+			No other tables.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader">Additional Notes:</td>
+		<td class="relInfo" colspan="2">
+			No other notes.
+		</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relHeader" colspan="3">Columns:</td>
+	</tr>		
+	<tr class="relRow">
+		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent resourceManagement component</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">vitalRecordIndicator</td><td class="relRules">boolean</td><td>Whether this is a vital record</td>
 	</tr>
 </table>
 

@@ -1,0 +1,353 @@
+/* Copyright 2010 - 2011 by Brian Uri!
+   
+   This file is part of DDMSence.
+   
+   This library is free software; you can redistribute it and/or modify
+   it under the terms of version 3.0 of the GNU Lesser General Public 
+   License as published by the Free Software Foundation.
+   
+   This library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+   GNU Lesser General Public License for more details.
+   
+   You should have received a copy of the GNU Lesser General Public 
+   License along with DDMSence. If not, see <http://www.gnu.org/licenses/>.
+
+   You can contact the author at ddmsence@urizone.net. The DDMSence
+   home page is located at http://ddmsence.urizone.net/
+*/
+package buri.ddmsence.ddms.resource;
+
+import java.io.Serializable;
+
+import nu.xom.Element;
+import buri.ddmsence.ddms.AbstractBaseComponent;
+import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.Util;
+
+/**
+ * An immutable implementation of ddms:recordsManagementInfo.
+ * 
+ * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * <u>ddms:recordKeeper</u>: The organization responsible for the custody and ongoing management of the records 
+ * (0-1 optional), implemented as a {@link RecordKeeper}<br />
+ * <u>ddms:applicationSoftware.</u>: The software used to create the object to which this metadata applies (0-1 
+ * optional), implemented as an {@link ApplicationSoftware}<br />
+ * </td></tr></table>
+ * 
+ * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * <u>ddms:vitalRecordIndicator</u>: An indication that a publication is categorized a vital record by the originating 
+ * agency (defaults to false)<br />
+ * </td></tr></table>
+ *  
+ * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
+ * <u>Description</u>: A container for information about the format of the publication file and the authoring 
+ * software used to produce the publication.<br />
+ * <u>Obligation</u>: Optional<br />
+ * <u>Schema Modification Date</u>: 2011-08-31<br />
+ * </td></tr></table>
+ * 
+ * @author Brian Uri!
+ * @since 2.0.0
+ */
+public final class RecordsManagementInfo extends AbstractBaseComponent {
+	
+	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
+	private RecordKeeper _cachedRecordKeeper;
+	private ApplicationSoftware _cachedApplicationSoftware;
+	
+	private static final String VITAL_RECORD_INDICATOR_NAME = "vitalRecordIndicator";
+	/**
+	 * Constructor for creating a component from a XOM Element
+	 *  
+	 * @param element the XOM element representing this 
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public RecordsManagementInfo(Element element) throws InvalidDDMSException {
+		try {
+			Util.requireDDMSValue("element", element);
+			setXOMElement(element, false);
+			Element recordKeeper = element.getFirstChildElement(RecordKeeper.getName(getDDMSVersion()), getNamespace());
+			if (recordKeeper != null)
+				_cachedRecordKeeper = new RecordKeeper(recordKeeper);
+			Element applicationSoftware = element.getFirstChildElement(ApplicationSoftware.getName(getDDMSVersion()), getNamespace());
+			if (applicationSoftware != null)
+				_cachedApplicationSoftware = new ApplicationSoftware(applicationSoftware);
+			validate();
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
+	}
+	
+	/**
+	 * Constructor for creating a component from raw data
+	 *  
+	 * @param recordKeeper the record keeper (optional)
+	 * @param applicationSoftware the software (optional)
+	 * @param vitalRecordIndicator whether this is a vital record (optional, defaults to false)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public RecordsManagementInfo(RecordKeeper recordKeeper, ApplicationSoftware applicationSoftware, Boolean vitalRecordIndicator) throws InvalidDDMSException {
+		try {
+			Element element = Util.buildDDMSElement(RecordsManagementInfo.getName(DDMSVersion.getCurrentVersion()), null);
+			setXOMElement(element, false);
+			if (recordKeeper != null)
+				element.appendChild(recordKeeper.getXOMElementCopy());
+			if (applicationSoftware != null)
+				element.appendChild(applicationSoftware.getXOMElementCopy());
+			if (vitalRecordIndicator != null)
+				Util.addDDMSAttribute(element, VITAL_RECORD_INDICATOR_NAME, String.valueOf(vitalRecordIndicator));
+			_cachedRecordKeeper = recordKeeper;
+			_cachedApplicationSoftware = applicationSoftware;
+			validate();
+		} catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}
+	}
+			
+	/**
+	 * Validates the component.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>The qualified name of the element is correct.</li>
+	 * <li>If a recordKeeper or applicationSoftware exists, it is using the same version of DDMS.</li>
+	 * <li>This component cannot exist until DDMS 4.0 or later.</li>
+	 * </td></tr></table>
+	 * 
+	 * @see AbstractBaseComponent#validate()
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	protected void validate() throws InvalidDDMSException {
+		super.validate();
+		Util.requireDDMSQName(getXOMElement(), RecordsManagementInfo.getName(getDDMSVersion()));
+		if (getRecordKeeper() != null)
+			Util.requireCompatibleVersion(this, getRecordKeeper());
+		if (getApplicationSoftware() != null)
+			Util.requireCompatibleVersion(this, getApplicationSoftware());
+		
+		// Should be reviewed as additional versions of DDMS are supported.
+		if (!getDDMSVersion().isAtLeast("4.0"))
+			throw new InvalidDDMSException("The ddms:" + RecordsManagementInfo.getName(getDDMSVersion())
+				+ " element cannot be used until DDMS 4.0 or later.");
+
+		validateWarnings();
+	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Include any validation warnings from the child components.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		if (getRecordKeeper() != null)
+			addWarnings(getRecordKeeper().getValidationWarnings(), false);
+		if (getApplicationSoftware() != null)
+			addWarnings(getApplicationSoftware().getValidationWarnings(), false);
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#toHTML()
+	 */
+	public String toHTML() {
+		return (toHTML(""));
+	}
+
+	/**
+	 * @see AbstractBaseComponent#toText()
+	 */
+	public String toText() {
+		return (toText(""));
+	}
+	
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		StringBuffer html = new StringBuffer();
+		if (getRecordKeeper() != null)
+			html.append(getRecordKeeper().toHTML(prefix));
+		if (getApplicationSoftware() != null)
+			html.append(getApplicationSoftware().toHTML(prefix));
+		html.append(buildHTMLMeta(prefix + VITAL_RECORD_INDICATOR_NAME, String.valueOf(getVitalRecordIndicator()), true));		
+		return (html.toString());
+	}
+	
+	/**
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
+	 */
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		StringBuffer text = new StringBuffer();
+		if (getRecordKeeper() != null)
+			text.append(getRecordKeeper().toText(prefix));
+		if (getApplicationSoftware() != null)
+			text.append(getApplicationSoftware().toText(prefix));
+		text.append(buildTextLine(prefix + VITAL_RECORD_INDICATOR_NAME, String.valueOf(getVitalRecordIndicator()), true));				
+		return (text.toString());	
+	}
+	
+	/**
+	 * @see Object#equals(Object)
+	 */
+	public boolean equals(Object obj) {
+		if (!super.equals(obj) || !(obj instanceof RecordsManagementInfo))
+			return (false);
+		RecordsManagementInfo test = (RecordsManagementInfo) obj;
+		return (getVitalRecordIndicator().equals(test.getVitalRecordIndicator())
+			&& Util.nullEquals(getRecordKeeper(), test.getRecordKeeper())
+			&& Util.nullEquals(getApplicationSoftware(), test.getApplicationSoftware()));		
+	}
+
+	/**
+	 * @see Object#hashCode()
+	 */
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 7 *  result + getVitalRecordIndicator().hashCode();
+		if (getRecordKeeper() != null)
+			result = 7 * result + getRecordKeeper().hashCode();
+		if (getApplicationSoftware() != null)
+			result = 7 * result + getApplicationSoftware().hashCode();
+		return (result);
+	}
+
+	/**
+	 * Accessor for the element name of this component, based on the version of DDMS used
+	 * 
+	 * @param version the DDMSVersion
+	 * @return an element name
+	 */
+	public static String getName(DDMSVersion version) {
+		Util.requireValue("version", version);
+		return ("recordsManagementInfo");
+	}
+	
+	/**
+	 * Accessor for the recordKeeper
+	 */
+	public RecordKeeper getRecordKeeper() {
+		return _cachedRecordKeeper;
+	}
+
+	/**
+	 * Accessor for the applicationSoftware
+	 */
+	public ApplicationSoftware getApplicationSoftware() {
+		return _cachedApplicationSoftware;
+	}	
+	
+	/**
+	 * Accessor for the vitalRecordIndicator attribute. This defaults to false if not found.
+	 */
+	public Boolean getVitalRecordIndicator() {
+		String value = getAttributeValue(VITAL_RECORD_INDICATOR_NAME, getNamespace());
+		if ("true".equals(value))
+			return (Boolean.TRUE);
+		return (Boolean.FALSE);
+	}
+	
+	/**
+	 * Builder for this DDMS component.
+	 * 
+	 * @see IBuilder
+	 * @author Brian Uri!
+	 * @since 2.0.0
+	 */
+	public static class Builder implements IBuilder, Serializable {
+		private static final long serialVersionUID = 7851044806424206976L;
+		private RecordKeeper.Builder _recordKeeper;
+		private ApplicationSoftware.Builder _applicationSoftware;
+		private Boolean _vitalRecordIndicator;
+		
+		/**
+		 * Empty constructor
+		 */
+		public Builder() {}
+		
+		/**
+		 * Constructor which starts from an existing component.
+		 */
+		public Builder(RecordsManagementInfo info) {
+			if (info.getRecordKeeper() != null)
+				setRecordKeeper(new RecordKeeper.Builder(info.getRecordKeeper()));
+			if (info.getApplicationSoftware() != null)
+				setApplicationSoftware(new ApplicationSoftware.Builder(info.getApplicationSoftware()));
+			setVitalRecordIndicator(info.getVitalRecordIndicator());
+		}
+		
+		/**
+		 * @see IBuilder#commit()
+		 */
+		public RecordsManagementInfo commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new RecordsManagementInfo(getRecordKeeper().commit(), getApplicationSoftware()
+				.commit(), getVitalRecordIndicator()));
+		}
+
+		/**
+		 * @see IBuilder#isEmpty()
+		 */
+		public boolean isEmpty() {
+			return (getRecordKeeper().isEmpty() && getApplicationSoftware().isEmpty() && getVitalRecordIndicator() == null);
+		}
+		
+		/**
+		 * Builder accessor for the recordKeeper
+		 */
+		public RecordKeeper.Builder getRecordKeeper() {
+			if (_recordKeeper == null)
+				_recordKeeper = new RecordKeeper.Builder();
+			return _recordKeeper;
+		}
+
+		/**
+		 * Builder accessor for the recordKeeper
+		 */
+		public void setRecordKeeper(RecordKeeper.Builder recordKeeper) {
+			_recordKeeper = recordKeeper;
+		}
+
+		/**
+		 * Builder accessor for the applicationSoftware
+		 */
+		public ApplicationSoftware.Builder getApplicationSoftware() {
+			if (_applicationSoftware == null)
+				_applicationSoftware = new ApplicationSoftware.Builder();
+			return _applicationSoftware;
+		}
+
+		/**
+		 * Builder accessor for the applicationSoftware
+		 */
+		public void setApplicationSoftware(ApplicationSoftware.Builder applicationSoftware) {
+			_applicationSoftware = applicationSoftware;
+		}
+
+		/**
+		 * Builder accessor for the vitalRecordIndicator flag
+		 */
+		public Boolean getVitalRecordIndicator() {
+			return _vitalRecordIndicator;
+		}
+		
+		/**
+		 * Builder accessor for the vitalRecordIndicator flag
+		 */
+		public void setVitalRecordIndicator(Boolean vitalRecordIndicator) {
+			_vitalRecordIndicator = vitalRecordIndicator;
+		}
+	}
+} 
