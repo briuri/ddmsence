@@ -117,19 +117,41 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 * @see AbstractBaseComponent#toHTML()
 	 */
 	public String toHTML() {
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(getName(), getValue(), false));
-		html.append(getSecurityAttributes().toHTML(getName()));
-		return (html.toString());
+		return (toHTML(""));
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#toText()
 	 */
 	public String toText() {
+		return (toText(""));
+	}
+	
+	/**
+	 * Outputs to HTML with a prefix at the beginning of each meta tag.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public String toHTML(String prefix) {
+		prefix = Util.getNonNullString(prefix)  + getName();
+		StringBuffer html = new StringBuffer();
+		html.append(buildHTMLMeta(prefix, getValue(), false));
+		html.append(getSecurityAttributes().toHTML(prefix));
+		return (html.toString());
+	}
+	
+	/**
+	 * Outputs to Text with a prefix at the beginning of each line.
+	 * 
+	 * @param prefix the prefix to add
+	 * @return the Text output
+	 */
+	public String toText(String prefix) {
+		prefix = Util.getNonNullString(prefix)  + getName();
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(getName(), getValue(), false));
-		text.append(getSecurityAttributes().toText(getName()));
+		text.append(buildTextLine(prefix, getValue(), false));
+		text.append(getSecurityAttributes().toText(prefix));
 		return (text.toString());
 	}
 	
