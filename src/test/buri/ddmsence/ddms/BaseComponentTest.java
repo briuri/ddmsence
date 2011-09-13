@@ -19,6 +19,9 @@
  */
 package buri.ddmsence.ddms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import junit.framework.TestCase;
 import nu.xom.Element;
 import buri.ddmsence.ddms.resource.Language;
@@ -70,5 +73,33 @@ public class BaseComponentTest extends TestCase {
 		Util.addAttribute(element, "customPrefix", "qualifier", namespace, "testQualifier");
 		Util.addAttribute(element, "customPrefix", "value", namespace, "en");
 		new Language(element);
+	}
+	
+	public void testNullChecks() throws InvalidDDMSException {
+		AbstractBaseComponent component = new AbstractBaseComponent() {
+			public String getOutput(boolean isHTML, String prefix) {
+				return null;
+			}
+		};
+		assertEquals("", component.getName());
+		assertEquals("", component.getNamespace());
+		assertEquals("", component.getPrefix());
+		assertEquals("", component.toXML());
+	}
+	
+	public void testAttributeWarnings() throws InvalidDDMSException {
+		AbstractBaseComponent component = new AbstractBaseComponent() {
+			public String getOutput(boolean isHTML, String prefix) {
+				return null;
+			}
+			protected String getLocatorSuffix() {
+				return ("locatorSuffix");
+			}
+		};
+		List<ValidationMessage> warnings = new ArrayList<ValidationMessage>();
+		warnings.add(ValidationMessage.newWarning("test", "locator"));
+		component.addWarnings(warnings, true);
+		assertEquals("//locator", component.getValidationWarnings().get(0).getLocator());
+		
 	}
 }

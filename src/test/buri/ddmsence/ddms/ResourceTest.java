@@ -367,7 +367,6 @@ public class ResourceTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "extensible.layer", "false"));
 		text.append(buildOutput(isHTML, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version")));
 		text.append(buildOutput(isHTML, "ddms.version", version.getVersion()));
-		System.out.println(text.toString());
 		return (text.toString());
 	}
 
