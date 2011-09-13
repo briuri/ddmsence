@@ -137,41 +137,18 @@ public class PolygonTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() throws InvalidDDMSException {
-		SRSAttributes attr = SRSAttributesTest.getFixture();
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"id\" content=\"").append(TEST_ID).append("\" />\n");
-		html.append("<meta name=\"type\" content=\"Polygon\" />\n");
-		html.append("<meta name=\"srsName\" content=\"").append(attr.getSrsName()).append("\" />\n");
-		html.append("<meta name=\"srsDimension\" content=\"").append(attr.getSrsDimension()).append("\" />\n");
-		html.append("<meta name=\"axisLabels\" content=\"").append(attr.getAxisLabelsAsXsList()).append("\" />\n");
-		html.append("<meta name=\"uomLabels\" content=\"").append(attr.getUomLabelsAsXsList()).append("\" />\n");
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+		StringBuffer text = new StringBuffer();		
+		text.append(buildOutput(isHTML, "Polygon.id", TEST_ID));
+		text.append(SRSAttributesTest.getFixture().getOutput(isHTML, "Polygon."));
 		for (Position pos : getPositions()) {
-			html.append(pos.toHTML());
-		}
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() throws InvalidDDMSException {
-		SRSAttributes attr = SRSAttributesTest.getFixture();
-		StringBuffer text = new StringBuffer();
-		text.append("id: ").append(TEST_ID).append("\n");
-		text.append("type: Polygon\n");
-		text.append("srsName: ").append(attr.getSrsName()).append("\n");
-		text.append("srsDimension: ").append(attr.getSrsDimension()).append("\n");
-		text.append("axisLabels: ").append(attr.getAxisLabelsAsXsList()).append("\n");
-		text.append("uomLabels: ").append(attr.getUomLabelsAsXsList()).append("\n");
-		for (Position pos : getPositions()) {
-			text.append(pos.toText());
+			text.append(pos.getOutput(isHTML, "Polygon."));
 		}
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -454,10 +431,10 @@ public class PolygonTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, getPositions(), SRSAttributesTest.getFixture(), TEST_ID);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
@@ -465,10 +442,10 @@ public class PolygonTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, getPositions(), SRSAttributesTest.getFixture(), TEST_ID);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

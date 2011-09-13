@@ -171,47 +171,16 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-	
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName();
-		StringBuffer html = new StringBuffer();
-		html.append(getEntity().toHTML(prefix + "."));
-		html.append(getSecurityAttributes().toHTML(prefix));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName();
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(getEntity().toText(prefix + "."));
-		text.append(getSecurityAttributes().toText(prefix));
-		return (text.toString());	
+		text.append(getEntity().getOutput(isHTML, prefix));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		return (text.toString());
 	}
-		
+			
 	/**
 	 * Accessor for the producer entity
 	 */

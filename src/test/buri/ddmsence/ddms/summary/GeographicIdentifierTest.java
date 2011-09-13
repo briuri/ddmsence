@@ -119,34 +119,19 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"geographicIdentifier.name\" content=\"").append(TEST_NAMES.get(0)).append("\" />\n");
-		html.append("<meta name=\"geographicIdentifier.region\" content=\"").append(TEST_REGIONS.get(0))
-			.append("\" />\n");
-		html.append(CountryCodeTest.getFixture().toHTML("geographicIdentifier."));
-		if (version.isAtLeast("4.0"))
-			html.append(SubDivisionCodeTest.getFixture().toHTML("geographicIdentifier."));
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() throws InvalidDDMSException {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append("geographicIdentifier.name: ").append(TEST_NAMES.get(0)).append("\n");
-		text.append("geographicIdentifier.region: ").append(TEST_REGIONS.get(0)).append("\n");
-		text.append(CountryCodeTest.getFixture().toText("geographicIdentifier."));
+		text.append(buildOutput(isHTML, "geographicIdentifier.name", TEST_NAMES.get(0)));
+		text.append(buildOutput(isHTML, "geographicIdentifier.region", TEST_REGIONS.get(0)));
+		text.append(CountryCodeTest.getFixture().getOutput(isHTML, "geographicIdentifier."));
 		if (version.isAtLeast("4.0"))
-			text.append(SubDivisionCodeTest.getFixture().toText("geographicIdentifier."));
+			text.append(SubDivisionCodeTest.getFixture().getOutput(isHTML, "geographicIdentifier."));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -347,11 +332,11 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
 			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(), subCode,
 				null);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
@@ -373,11 +358,11 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
 			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(), subCode,
 				null);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

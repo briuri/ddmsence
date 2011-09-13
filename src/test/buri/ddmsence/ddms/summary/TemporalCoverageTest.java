@@ -109,43 +109,24 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 	
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String prefix = "temporalCoverage.";
-		if (!version.isAtLeast("4.0"))
-			prefix += "TimePeriod.";
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"").append(prefix).append("name\" content=\"").append(TEST_NAME).append("\" />\n");
-		html.append("<meta name=\"").append(prefix).append("start\" content=\"").append(TEST_START).append("\" />\n");
-		html.append("<meta name=\"").append(prefix).append("end\" content=\"").append(TEST_END).append("\" />\n");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			html.append("<meta name=\"temporalCoverage.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"temporalCoverage.ownerProducer\" content=\"USA\" />\n");
-		}
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = "temporalCoverage.";
 		if (!version.isAtLeast("4.0"))
 			prefix += "TimePeriod.";
 		StringBuffer text = new StringBuffer();
-		text.append(prefix).append("name: ").append(TEST_NAME).append("\n");
-		text.append(prefix).append("start: ").append(TEST_START).append("\n");
-		text.append(prefix).append("end: ").append(TEST_END).append("\n");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			text.append("temporalCoverage classification: U\n");
-			text.append("temporalCoverage ownerProducer: USA\n");
+		text.append(buildOutput(isHTML, prefix + "name", TEST_NAME));
+		text.append(buildOutput(isHTML, prefix + "start", TEST_START));
+		text.append(buildOutput(isHTML, prefix + "end", TEST_END));
+		if (version.isAtLeast("3.0")) {
+			text.append(buildOutput(isHTML, prefix + "classification", "U"));
+			text.append(buildOutput(isHTML, prefix + "ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -323,25 +304,25 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			TemporalCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_NAME, TEST_START, TEST_END);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			TemporalCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_NAME, TEST_START, TEST_END);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

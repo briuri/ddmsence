@@ -85,29 +85,17 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"nonStateActor.value\" content=\"").append(TEST_VALUE).append("\" />\n");
-		html.append("<meta name=\"nonStateActor.order\" content=\"").append(TEST_ORDER).append("\" />\n");
-		html.append("<meta name=\"nonStateActor.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"nonStateActor.ownerProducer\" content=\"USA\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("nonStateActor.value: ").append(TEST_VALUE).append("\n");
-		text.append("nonStateActor.order: ").append(TEST_ORDER).append("\n");
-		text.append("nonStateActor classification: U\n");
-		text.append("nonStateActor ownerProducer: USA\n");
+		text.append(buildOutput(isHTML, "nonStateActor.value", TEST_VALUE));
+		text.append(buildOutput(isHTML, "nonStateActor.order", String.valueOf(TEST_ORDER)));
+		text.append(buildOutput(isHTML, "nonStateActor.classification", "U"));
+		text.append(buildOutput(isHTML, "nonStateActor.ownerProducer", "USA"));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -257,7 +245,7 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
@@ -265,14 +253,14 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 				continue;
 			
 			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ORDER);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
@@ -280,10 +268,10 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 				continue;
 			
 			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ORDER);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

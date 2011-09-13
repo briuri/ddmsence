@@ -110,36 +110,18 @@ public class LinkTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"link.type\" content=\"").append(TEST_TYPE)
-			.append("\" />\n");
-		html.append("<meta name=\"link.href\" content=\"").append(TEST_HREF)
-			.append("\" />\n");
-		html.append("<meta name=\"link.role\" content=\"").append(TEST_ROLE)
-			.append("\" />\n");
-		html.append("<meta name=\"link.title\" content=\"").append(TEST_TITLE)
-			.append("\" />\n");
-		html.append("<meta name=\"link.label\" content=\"").append(TEST_LABEL)
-			.append("\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("link type: ").append(TEST_TYPE).append("\n");
-		text.append("link href: ").append(TEST_HREF).append("\n");
-		text.append("link role: ").append(TEST_ROLE).append("\n");
-		text.append("link title: ").append(TEST_TITLE).append("\n");
-		text.append("link label: ").append(TEST_LABEL).append("\n");
+		text.append(buildOutput(isHTML, "link.type", TEST_TYPE));
+		text.append(buildOutput(isHTML, "link.href", TEST_HREF));
+		text.append(buildOutput(isHTML, "link.role", TEST_ROLE));
+		text.append(buildOutput(isHTML, "link.title", TEST_TITLE));
+		text.append(buildOutput(isHTML, "link.label", TEST_LABEL));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -291,10 +273,10 @@ public class LinkTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
@@ -302,10 +284,10 @@ public class LinkTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

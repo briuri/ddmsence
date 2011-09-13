@@ -33,7 +33,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
-import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -96,18 +95,12 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 		if (DDMSVersion.isSupportedDDMSNamespace(getNamespace()))
 			throw new InvalidDDMSException("Extensible elements cannot be defined in the DDMS namespace.");
 	}
+	
 
 	/**
-	 * @see IDDMSComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return ("");
-	}
-
-	/**
-	 * @see IDDMSComponent#toText()
-	 */
-	public String toText() {
+	public String getOutput(boolean isHTML, String prefix) {
 		return ("");
 	}
 	

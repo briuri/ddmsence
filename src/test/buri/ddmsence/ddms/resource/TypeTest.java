@@ -88,39 +88,22 @@ public class TypeTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		StringBuffer html = new StringBuffer();
-		if (version.isAtLeast("4.0"))
-			html.append("<meta name=\"type.description\" content=\"").append(TEST_DESCRIPTION).append("\" />\n");
-		html.append("<meta name=\"type.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"type.value\" content=\"").append(TEST_VALUE).append("\" />\n");
-		if (version.isAtLeast("4.0")) {
-			html.append("<meta name=\"type.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"type.ownerProducer\" content=\"USA\" />\n");
-		}
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
 		if (version.isAtLeast("4.0"))
-			text.append("type description: ").append(TEST_DESCRIPTION).append("\n");
-		text.append("type qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append("type value: ").append(TEST_VALUE).append("\n");
+			text.append(buildOutput(isHTML, "type.description", TEST_DESCRIPTION));
+		text.append(buildOutput(isHTML, "type.qualifier", TEST_QUALIFIER));
+		text.append(buildOutput(isHTML, "type.value", TEST_VALUE));
 		if (version.isAtLeast("4.0")) {
-			text.append("type classification: U\n");
-			text.append("type ownerProducer: USA\n");
+			text.append(buildOutput(isHTML, "type.classification", "U"));
+			text.append(buildOutput(isHTML, "type.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -256,27 +239,27 @@ public class TypeTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Type component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
 				TEST_VALUE);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Type component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
 				TEST_VALUE);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

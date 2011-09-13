@@ -94,37 +94,21 @@ public class SourceTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"source.qualifier\" content=\"").append(TEST_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"source.value\" content=\"").append(TEST_VALUE).append("\" />\n");
-		html.append("<meta name=\"source.schemaQualifier\" content=\"").append(TEST_SCHEMA_QUALIFIER).append("\" />\n");
-		html.append("<meta name=\"source.schemaHref\" content=\"").append(TEST_SCHEMA_HREF).append("\" />\n");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			html.append("<meta name=\"source.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"source.ownerProducer\" content=\"USA\" />\n");
-		}
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("source qualifier: ").append(TEST_QUALIFIER).append("\n");
-		text.append("source value: ").append(TEST_VALUE).append("\n");
-		text.append("source schemaQualifier: ").append(TEST_SCHEMA_QUALIFIER).append("\n");
-		text.append("source schemaHref: ").append(TEST_SCHEMA_HREF).append("\n");
+		text.append(buildOutput(isHTML, "source.qualifier", TEST_QUALIFIER));
+		text.append(buildOutput(isHTML, "source.value", TEST_VALUE));
+		text.append(buildOutput(isHTML, "source.schemaQualifier", TEST_SCHEMA_QUALIFIER));
+		text.append(buildOutput(isHTML, "source.schemaHref", TEST_SCHEMA_HREF));
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			text.append("source classification: U\n");
-			text.append("source ownerProducer: USA\n");
+			text.append(buildOutput(isHTML, "source.classification", "U"));
+			text.append(buildOutput(isHTML, "source.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -260,27 +244,27 @@ public class SourceTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Source component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
 				TEST_SCHEMA_HREF);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Source component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
 				TEST_SCHEMA_HREF);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

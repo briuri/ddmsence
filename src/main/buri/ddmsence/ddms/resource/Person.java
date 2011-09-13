@@ -198,32 +198,14 @@ public final class Person extends AbstractRoleEntity {
 	}
 
 	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix);
-		StringBuffer html = new StringBuffer(super.toHTML(prefix));
-		html.append(buildHTMLMeta(prefix + SURNAME_NAME, getSurname(), true));
-		html.append(buildHTMLMeta(prefix + USERID_NAME, getUserID(), false));
-		html.append(buildHTMLMeta(prefix + AFFILIATION_NAME, getAffiliation(), false));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
-		prefix = Util.getNonNullString(prefix);
-		StringBuffer text = new StringBuffer(super.toText(prefix));
-		text.append(buildTextLine(SURNAME_NAME, getSurname(), true));
-		text.append(buildTextLine(USERID_NAME, getUserID(), false));
-		text.append(buildTextLine(AFFILIATION_NAME, getAffiliation(), false));
+		StringBuffer text = new StringBuffer(super.getOutput(isHTML, prefix));
+		text.append(buildOutput(isHTML, prefix + SURNAME_NAME, getSurname(), true));
+		text.append(buildOutput(isHTML, prefix + USERID_NAME, getUserID(), false));
+		text.append(buildOutput(isHTML, prefix + AFFILIATION_NAME, getAffiliation(), false));
 		return (text.toString());
 	}
 	

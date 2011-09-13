@@ -175,33 +175,15 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * The DDMS website examples are not clear on what to do if there are multiple names, phone numbers, or emails. This
-	 * method merely creates a separate HTML meta tag for each value.
-	 * 
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		String prefix = getName() + ".";
-		StringBuffer html = new StringBuffer();
-		html.append(getEntity().toHTML(prefix));
-		html.append(buildHTMLMeta(prefix + POC_TYPE_NAME, getPOCType(), false));
-		html.append(getSecurityAttributes().toHTML(getName()));
-		return (html.toString());
-	}
-
-	/**
-	 * The DDMS website examples are not clear on what to do if there are multiple names, phone numbers, or emails. This
-	 * method merely creates a separate Text line for each value.
-	 * 
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		String prefix = getName() + " ";
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(getEntity().toText(prefix));
-		text.append(buildTextLine(POC_TYPE_NAME, getPOCType(), false));
-		text.append(getSecurityAttributes().toText(getName()));
-		return (text.toString());		
+		text.append(getEntity().getOutput(isHTML, prefix));
+		text.append(buildOutput(isHTML, prefix + POC_TYPE_NAME, getPOCType(), false));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		return (text.toString());
 	}
 		
 	/**

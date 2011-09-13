@@ -44,48 +44,6 @@ import buri.ddmsence.util.Util;
  * Because DDMS does not decorate these elements with any special attributes, they are not implemented as Java objects.
  * </p>
  * 
- * <p>
- * The DDMS documentation has no Text/HTML examples for the output of this component, so a best guess was taken
- * (suggestions are welcome, as this is probably not an optimal solution):
- * </p>
- * <ul>
- * <p>
- * <b>Suggested Text Output</b><br />
- * <code>
- * boundingGeometry.id: value<br />
- * boundingGeometry.type: Polygon<br />
- * boundingGeometry.srsName: value<br />
- * boundingGeometry.srsDimension: value<br />
- * boundingGeometry.axisLabels: value<br />
- * boundingGeometry.uomLabels: value<br />
- * boundingGeometry.position: value<br />
- * boundingGeometry.position.srsName: value<br />
- * boundingGeometry.position.srsDimension: value<br />
- * boundingGeometry.position.axisLabels: value<br />
- * boundingGeometry.position.uomLabels: value<br />
- * </code><br />
- * (followed by a complete set of position properties for each Position composing the Polygon)
- * </p>
- * 
- * <p>
- * <b>Suggested HTML Output</b><br />
- * <code>
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.id" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.type" content="Polygon" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.srsName" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.srsDimension" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.axisLabels" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.uomLabels" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsName" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsDimension" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.axisLabels" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.uomLabels" content="value" /&gt;<br />
- * </code><br />
- * (followed by a complete set of position properties for each Position composing the Polygon)
- * </p>
- * </ul>
- * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
@@ -260,62 +218,15 @@ public final class Polygon extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix);
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix + ID_NAME, getId(), true));
-		html.append(buildHTMLMeta(prefix + "type", getName(), true));
-		html.append(buildHTMLMeta(prefix + "srsName", getSRSAttributes().getSrsName(), true));
-		if (getSRSAttributes().getSrsDimension() != null) {
-			html.append(buildHTMLMeta(prefix + "srsDimension", String.valueOf(getSRSAttributes().getSrsDimension()),
-				false));
-		}
-		html.append(buildHTMLMeta(prefix + "axisLabels", getSRSAttributes().getAxisLabelsAsXsList(), false));
-		html.append(buildHTMLMeta(prefix + "uomLabels", getSRSAttributes().getUomLabelsAsXsList(), false));
-		for (Position pos : getPositions())
-			html.append(pos.toHTML(prefix));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
-		prefix = Util.getNonNullString(prefix);
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix + ID_NAME, getId(), true));
-		text.append(buildTextLine(prefix + "type", getName(), true));
-		text.append(buildTextLine(prefix + "srsName", getSRSAttributes().getSrsName(), true));
-		if (getSRSAttributes().getSrsDimension() != null) {
-			text.append(buildTextLine(prefix + "srsDimension", String.valueOf(getSRSAttributes().getSrsDimension()),
-				false));
-		}
-		text.append(buildTextLine(prefix + "axisLabels", getSRSAttributes().getAxisLabelsAsXsList(), false));
-		text.append(buildTextLine(prefix + "uomLabels", getSRSAttributes().getUomLabelsAsXsList(), false));
+		text.append(buildOutput(isHTML, prefix + ID_NAME, getId(), true));
+		text.append(getSRSAttributes().getOutput(isHTML, prefix));
 		for (Position pos : getPositions())
-			text.append(pos.toText(prefix));
+			text.append(pos.getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 	

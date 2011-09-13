@@ -117,25 +117,16 @@ public final class Language extends AbstractQualifierValue {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(getName() + "." + QUALIFIER_NAME, getQualifier(), false));
-		html.append(buildHTMLMeta(getName() + "." + VALUE_NAME, getValue(), false));
-		return (html.toString());
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(getName() + " " + QUALIFIER_NAME, getQualifier(), false));
-		text.append(buildTextLine(getName() + " " + VALUE_NAME, getValue(), false));
-		return (text.toString());		
+		text.append(buildOutput(isHTML, prefix + QUALIFIER_NAME, getQualifier(), false));
+		text.append(buildOutput(isHTML, prefix + VALUE_NAME, getValue(), false));
+		return (text.toString());
 	}
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

@@ -104,47 +104,16 @@ public final class CountryCode extends AbstractQualifierValue {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-	
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix + QUALIFIER_NAME, getQualifier(), true));
-		html.append(buildHTMLMeta(prefix + VALUE_NAME, getValue(), true));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName() + " ";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix + QUALIFIER_NAME, getQualifier(), true));
-		text.append(buildTextLine(prefix + VALUE_NAME, getValue(), true));
+		text.append(buildOutput(isHTML, prefix + QUALIFIER_NAME, getQualifier(), true));
+		text.append(buildOutput(isHTML, prefix + VALUE_NAME, getValue(), true));
 		return (text.toString());
 	}
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

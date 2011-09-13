@@ -86,29 +86,17 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"productionMetric.subject\" content=\"").append(TEST_SUBJECT).append("\" />\n");
-		html.append("<meta name=\"productionMetric.coverage\" content=\"").append(TEST_COVERAGE).append("\" />\n");
-		html.append("<meta name=\"productionMetric.classification\" content=\"U\" />\n");
-		html.append("<meta name=\"productionMetric.ownerProducer\" content=\"USA\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("productionMetric.subject: ").append(TEST_SUBJECT).append("\n");
-		text.append("productionMetric.coverage: ").append(TEST_COVERAGE).append("\n");
-		text.append("productionMetric classification: U\n");
-		text.append("productionMetric ownerProducer: USA\n");
+		text.append(buildOutput(isHTML, "productionMetric.subject", TEST_SUBJECT));
+		text.append(buildOutput(isHTML, "productionMetric.coverage", TEST_COVERAGE));
+		text.append(buildOutput(isHTML, "productionMetric.classification", "U"));
+		text.append(buildOutput(isHTML, "productionMetric.ownerProducer", "USA"));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -255,7 +243,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
@@ -263,14 +251,14 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 				continue;
 			
 			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
@@ -278,10 +266,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 				continue;
 			
 			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

@@ -161,48 +161,15 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
-		StringBuffer html = new StringBuffer();
-		for (Polygon polygon : getPolygons())
-			html.append(polygon.toHTML(prefix));
-		for (Point point : getPoints())
-			html.append(point.toHTML(prefix));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		for (Polygon polygon : getPolygons())
-			text.append(polygon.toText(prefix));
+			text.append(polygon.getOutput(isHTML, prefix));
 		for (Point point : getPoints())
-			text.append(point.toText(prefix));
+			text.append(point.getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 	

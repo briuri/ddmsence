@@ -219,45 +219,26 @@ public final class Dates extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		StringBuffer html = new StringBuffer();
-		if (getCreated() != null)
-			html.append(buildHTMLMeta(getName() + "." + CREATED_NAME, getCreated().toXMLFormat(), true));
-		if (getPosted() != null)
-			html.append(buildHTMLMeta(getName() + "." + POSTED_NAME, getPosted().toXMLFormat(), true));
-		if (getValidTil() != null)
-			html.append(buildHTMLMeta(getName() + "." + VALID_TIL_NAME, getValidTil().toXMLFormat(), true));
-		if (getInfoCutOff() != null)
-			html.append(buildHTMLMeta(getName() + "." + INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat(), true));
-		if (getApprovedOn() != null)
-			html.append(buildHTMLMeta(getName() + "." + APPROVED_ON_NAME, getApprovedOn().toXMLFormat(), true));
-		if (getReceivedOn() != null)
-			html.append(buildHTMLMeta(getName() + "." + RECEIVED_ON_NAME, getReceivedOn().toXMLFormat(), true));
-		return (html.toString());
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		if (getCreated() != null)
-			text.append(buildTextLine(CREATED_NAME, getCreated().toXMLFormat(), true));
+			text.append(buildOutput(isHTML, prefix + CREATED_NAME, getCreated().toXMLFormat(), true));
 		if (getPosted() != null)
-			text.append(buildTextLine(POSTED_NAME, getPosted().toXMLFormat(), true));
+			text.append(buildOutput(isHTML, prefix + POSTED_NAME, getPosted().toXMLFormat(), true));
 		if (getValidTil() != null)
-			text.append(buildTextLine(VALID_TIL_NAME, getValidTil().toXMLFormat(), true));
+			text.append(buildOutput(isHTML, prefix + VALID_TIL_NAME, getValidTil().toXMLFormat(), true));
 		if (getInfoCutOff() != null)
-			text.append(buildTextLine(INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat(), true));
+			text.append(buildOutput(isHTML, prefix + INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat(), true));
 		if (getApprovedOn() != null)
-			text.append(buildTextLine(APPROVED_ON_NAME, getApprovedOn().toXMLFormat(), true));
+			text.append(buildOutput(isHTML, prefix + APPROVED_ON_NAME, getApprovedOn().toXMLFormat(), true));
 		if (getReceivedOn() != null)
-			text.append(buildTextLine(RECEIVED_ON_NAME, getReceivedOn().toXMLFormat(), true));
+			text.append(buildOutput(isHTML, prefix + RECEIVED_ON_NAME, getReceivedOn().toXMLFormat(), true));
 		return (text.toString());
 	}
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

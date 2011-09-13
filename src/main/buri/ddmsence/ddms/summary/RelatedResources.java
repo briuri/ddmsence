@@ -205,33 +205,20 @@ public final class RelatedResources extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(getName() + "." + RELATIONSHIP_NAME, getRelationship(), true));
-		html.append(buildHTMLMeta(getName() + "." + DIRECTION_NAME, getDirection(), false));
-		for (RelatedResource resource : getRelatedResources()) {
-			html.append(resource.toHTML());
-		}
-		html.append(getSecurityAttributes().toHTML("relatedResources"));
-		return (html.toString());
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(getName() + " " + RELATIONSHIP_NAME, getRelationship(), true));
-		text.append(buildTextLine(getName() + " " + DIRECTION_NAME, getDirection(), false));
+		text.append(buildOutput(isHTML, prefix + RELATIONSHIP_NAME, getRelationship(), true));
+		text.append(buildOutput(isHTML, prefix + DIRECTION_NAME, getDirection(), false));
 		for (RelatedResource resource : getRelatedResources()) {
-			text.append(resource.toText());
+			text.append(resource.getOutput(isHTML, prefix));
 		}
-		text.append(getSecurityAttributes().toText("relatedResources"));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
-			 
+	
 	/**
 	 * @see Object#equals(Object)
 	 */

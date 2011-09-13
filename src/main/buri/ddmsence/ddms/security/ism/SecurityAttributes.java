@@ -33,10 +33,11 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractAttributeGroup;
+import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
-import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
@@ -579,98 +580,53 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
-	 * Creates an HTML representation of these attributes.
-	 * 
-	 * @param prefix the parent prefix to place in each Meta tag
-	 * @return a string representation of the HTML.
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML(String prefix) {
-		if (!Util.isEmpty(prefix))
-			prefix = prefix + ".";
-		StringBuffer html = new StringBuffer();
-		html.append(Security.buildHTMLMeta(prefix + ATOMIC_ENERGY_MARKINGS_NAME,
-			Util.getXsList(getAtomicEnergyMarkings()), false));
-		html.append(Security.buildHTMLMeta(prefix + CLASSIFICATION_NAME, getClassification(), false));
-		html.append(Security.buildHTMLMeta(prefix + CLASSIFICATION_REASON_NAME, getClassificationReason(), false));
-		html.append(Security.buildHTMLMeta(prefix + CLASSIFIED_BY_NAME, getClassifiedBy(), false));
-		html.append(Security.buildHTMLMeta(prefix + COMPILATION_REASON_NAME, getCompilationReason(), false));
-		html.append(Security.buildHTMLMeta(prefix + COMPLIES_WITH_NAME, Util.getXsList(getCompliesWith()), false));
-		if (getDateOfExemptedSource() != null) {
-			html.append(Security.buildHTMLMeta(prefix + DATE_OF_EXEMPTED_SOURCE_NAME, 
-				getDateOfExemptedSource().toXMLFormat(), false));
-		}		
-		if (getDeclassDate() != null)
-			html.append(Security.buildHTMLMeta(prefix + DECLASS_DATE_NAME, getDeclassDate().toXMLFormat(), false));
-		html.append(Security.buildHTMLMeta(prefix + DECLASS_EVENT_NAME, getDeclassEvent(), false));
-		html.append(Security.buildHTMLMeta(prefix + DECLASS_EXCEPTION_NAME, getDeclassException(), false));
-		if (getDeclassManualReview() != null) {
-			html.append(Security.buildHTMLMeta(prefix + DECLASS_MANUAL_REVIEW_NAME, 
-				getDeclassManualReview().toString(), false));
-		}
-		html.append(Security.buildHTMLMeta(prefix + DERIVATIVELY_CLASSIFIED_BY_NAME, getDerivativelyClassifiedBy(),
-			false));
-		html.append(Security.buildHTMLMeta(prefix + DERIVED_FROM_NAME, getDerivedFrom(), false));
-		html.append(Security.buildHTMLMeta(prefix + DISPLAY_ONLY_TO_NAME, Util.getXsList(getDisplayOnlyTo()), false));
-		html.append(Security.buildHTMLMeta(prefix + DISSEMINATION_CONTROLS_NAME, 
-			Util.getXsList(getDisseminationControls()), false));
-		html.append(Security.buildHTMLMeta(prefix + FGI_SOURCE_OPEN_NAME, Util.getXsList(getFGIsourceOpen()), false));
-		html.append(Security.buildHTMLMeta(prefix + FGI_SOURCE_PROTECTED_NAME, Util.getXsList(getFGIsourceProtected()),
-			false));
-		html.append(Security.buildHTMLMeta(prefix + NON_IC_MARKINGS_NAME, Util.getXsList(getNonICmarkings()), false));
-		html.append(Security.buildHTMLMeta(prefix + NON_US_CONTROLS_NAME, Util.getXsList(getNonUSControls()), false));
-		html.append(Security.buildHTMLMeta(prefix + OWNER_PRODUCER_NAME, Util.getXsList(getOwnerProducers()), false));
-		html.append(Security.buildHTMLMeta(prefix + RELEASABLE_TO_NAME, Util.getXsList(getReleasableTo()), false));
-		html.append(Security.buildHTMLMeta(prefix + SAR_IDENTIFIER_NAME, Util.getXsList(getSARIdentifier()), false));
-		html.append(Security.buildHTMLMeta(prefix + SCI_CONTROLS_NAME, Util.getXsList(getSCIcontrols()), false));
-		html.append(Security.buildHTMLMeta(prefix + TYPE_OF_EXEMPTED_SOURCE_NAME, getTypeOfExemptedSource(), false));
-		return (html.toString());
-	}
-
-	/**
-	 * Creates a Text representation of these attributes.
-	 * 
-	 * @param prefix the parent prefix to place in each line of text
-	 * @return a string representation of the Text
-	 */
-	public String toText(String prefix) {
-		if (!Util.isEmpty(prefix))
-			prefix = prefix + " ";
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
-		text.append(Security.buildTextLine(prefix + ATOMIC_ENERGY_MARKINGS_NAME,
+		text.append(Resource.buildOutput(isHTML, prefix + ATOMIC_ENERGY_MARKINGS_NAME,
 			Util.getXsList(getAtomicEnergyMarkings()), false));
-		text.append(Security.buildTextLine(prefix + CLASSIFICATION_NAME, getClassification(), false));
-		text.append(Security.buildTextLine(prefix + CLASSIFICATION_REASON_NAME, getClassificationReason(), false));
-		text.append(Security.buildTextLine(prefix + CLASSIFIED_BY_NAME, getClassifiedBy(), false));
-		text.append(Security.buildTextLine(prefix + COMPILATION_REASON_NAME, getCompilationReason(), false));
-		text.append(Security.buildTextLine(prefix + COMPLIES_WITH_NAME, Util.getXsList(getCompliesWith()), false));
+		text.append(Resource.buildOutput(isHTML, prefix + CLASSIFICATION_NAME, getClassification(), false));
+		text.append(Resource.buildOutput(isHTML, prefix + CLASSIFICATION_REASON_NAME, getClassificationReason(), false));
+		text.append(Resource.buildOutput(isHTML, prefix + CLASSIFIED_BY_NAME, getClassifiedBy(), false));
+		text.append(Resource.buildOutput(isHTML, prefix + COMPILATION_REASON_NAME, getCompilationReason(), false));
+		text.append(Resource.buildOutput(isHTML, prefix + COMPLIES_WITH_NAME, Util.getXsList(getCompliesWith()), false));
 		if (getDateOfExemptedSource() != null) {
-			text.append(Security.buildTextLine(prefix + DATE_OF_EXEMPTED_SOURCE_NAME, 
-				getDateOfExemptedSource().toXMLFormat(), false));
+			text.append(Resource.buildOutput(isHTML, prefix + DATE_OF_EXEMPTED_SOURCE_NAME, getDateOfExemptedSource()
+				.toXMLFormat(), false));
 		}
 		if (getDeclassDate() != null)
-			text.append(Security.buildTextLine(prefix + DECLASS_DATE_NAME, getDeclassDate().toXMLFormat(), false));
-		text.append(Security.buildTextLine(prefix + DECLASS_EVENT_NAME, getDeclassEvent(), false));
-		text.append(Security.buildTextLine(prefix + DECLASS_EXCEPTION_NAME, getDeclassException(), false));
+			text.append(Resource.buildOutput(isHTML, prefix + DECLASS_DATE_NAME, getDeclassDate().toXMLFormat(), false));
+		text.append(Resource.buildOutput(isHTML, prefix + DECLASS_EVENT_NAME, getDeclassEvent(), false));
+		text.append(Resource.buildOutput(isHTML, prefix + DECLASS_EXCEPTION_NAME, getDeclassException(), false));
 		if (getDeclassManualReview() != null) {
-			text.append(Security.buildTextLine(prefix + DECLASS_MANUAL_REVIEW_NAME, getDeclassManualReview().toString(),
-				false));
+			text.append(Resource.buildOutput(isHTML, prefix + DECLASS_MANUAL_REVIEW_NAME, getDeclassManualReview()
+				.toString(), false));
 		}
-		text.append(Security.buildTextLine(prefix + DERIVATIVELY_CLASSIFIED_BY_NAME, getDerivativelyClassifiedBy(), 
+		text.append(Resource.buildOutput(isHTML, prefix + DERIVATIVELY_CLASSIFIED_BY_NAME,
+			getDerivativelyClassifiedBy(), false));
+		text.append(Resource.buildOutput(isHTML, prefix + DERIVED_FROM_NAME, getDerivedFrom(), false));
+		text.append(Resource.buildOutput(isHTML, prefix + DISPLAY_ONLY_TO_NAME, Util.getXsList(getDisplayOnlyTo()),
 			false));
-		text.append(Security.buildTextLine(prefix + DERIVED_FROM_NAME, getDerivedFrom(), false));
-		text.append(Security.buildTextLine(prefix + DISPLAY_ONLY_TO_NAME, Util.getXsList(getDisplayOnlyTo()), false));
-		text.append(Security.buildTextLine(prefix + DISSEMINATION_CONTROLS_NAME, 
+		text.append(Resource.buildOutput(isHTML, prefix + DISSEMINATION_CONTROLS_NAME,
 			Util.getXsList(getDisseminationControls()), false));
-		text.append(Security.buildTextLine(prefix + FGI_SOURCE_OPEN_NAME, Util.getXsList(getFGIsourceOpen()), false));
-		text.append(Security.buildTextLine(prefix + FGI_SOURCE_PROTECTED_NAME, Util.getXsList(getFGIsourceProtected()),
+		text.append(Resource.buildOutput(isHTML, prefix + FGI_SOURCE_OPEN_NAME, Util.getXsList(getFGIsourceOpen()),
 			false));
-		text.append(Security.buildTextLine(prefix + NON_IC_MARKINGS_NAME, Util.getXsList(getNonICmarkings()), false));
-		text.append(Security.buildTextLine(prefix + NON_US_CONTROLS_NAME, Util.getXsList(getNonUSControls()), false));
-		text.append(Security.buildTextLine(prefix + OWNER_PRODUCER_NAME, Util.getXsList(getOwnerProducers()), false));
-		text.append(Security.buildTextLine(prefix + RELEASABLE_TO_NAME, Util.getXsList(getReleasableTo()), false));
-		text.append(Security.buildTextLine(prefix + SAR_IDENTIFIER_NAME, Util.getXsList(getSARIdentifier()), false));
-		text.append(Security.buildTextLine(prefix + SCI_CONTROLS_NAME, Util.getXsList(getSCIcontrols()), false));
-		text.append(Security.buildTextLine(prefix + TYPE_OF_EXEMPTED_SOURCE_NAME, getTypeOfExemptedSource(), false));
+		text.append(Resource.buildOutput(isHTML, prefix + FGI_SOURCE_PROTECTED_NAME,
+			Util.getXsList(getFGIsourceProtected()), false));
+		text.append(Resource.buildOutput(isHTML, prefix + NON_IC_MARKINGS_NAME, Util.getXsList(getNonICmarkings()),
+			false));
+		text.append(Resource.buildOutput(isHTML, prefix + NON_US_CONTROLS_NAME, Util.getXsList(getNonUSControls()),
+			false));
+		text.append(Resource.buildOutput(isHTML, prefix + OWNER_PRODUCER_NAME, Util.getXsList(getOwnerProducers()),
+			false));
+		text.append(Resource.buildOutput(isHTML, prefix + RELEASABLE_TO_NAME, Util.getXsList(getReleasableTo()), false));
+		text.append(Resource.buildOutput(isHTML, prefix + SAR_IDENTIFIER_NAME, Util.getXsList(getSARIdentifier()),
+			false));
+		text.append(Resource.buildOutput(isHTML, prefix + SCI_CONTROLS_NAME, Util.getXsList(getSCIcontrols()), false));
+		text.append(Resource.buildOutput(isHTML, prefix + TYPE_OF_EXEMPTED_SOURCE_NAME, getTypeOfExemptedSource(),
+			false));
 		return (text.toString());
 	}
 	

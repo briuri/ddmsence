@@ -164,33 +164,19 @@ public final class RelatedResource extends AbstractQualifierValue {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		String prefix = RelatedResources.getName(getDDMSVersion()) + "." + getName() + ".";
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix + QUALIFIER_NAME, getQualifier(), true));
-		html.append(buildHTMLMeta(prefix + VALUE_NAME, getValue(), true));
-		for (Link link : getLinks()) {
-			html.append(link.toHTML(prefix));
-		}
-		return (html.toString());
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		String prefix = "Related Resource ";
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix + QUALIFIER_NAME, getQualifier(), true));
-		text.append(buildTextLine(prefix + VALUE_NAME, getValue(), true));
+		text.append(buildOutput(isHTML, prefix + QUALIFIER_NAME, getQualifier(), true));
+		text.append(buildOutput(isHTML, prefix + VALUE_NAME, getValue(), true));
 		for (Link link : getLinks()) {
-			text.append(link.toText(prefix));
+			text.append(link.getOutput(isHTML, prefix));
 		}
 		return (text.toString());
 	}
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

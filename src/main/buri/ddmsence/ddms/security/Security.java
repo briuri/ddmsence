@@ -138,27 +138,17 @@ public final class Security extends AbstractBaseComponent {
 	protected void validateWarnings() {
 		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
-		
-	/**
-	 * @see AbstractBaseComponent#toHTML()
-	 */
-	public String toHTML() {
-		StringBuffer html = new StringBuffer();
-		if (getExcludeFromRollup() != null)
-			html.append(buildHTMLMeta(getName() + "." + EXCLUDE_FROM_ROLLUP_NAME,
-				String.valueOf(getExcludeFromRollup()), true));
-		html.append(getSecurityAttributes().toHTML(getName()));
-		return (html.toString());
-	}
 	
 	/**
-	 * @see AbstractBaseComponent#toText()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toText() {
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		if (getExcludeFromRollup() != null)
-			text.append(buildTextLine(EXCLUDE_FROM_ROLLUP_NAME, String.valueOf(getExcludeFromRollup()), true));
-		text.append(getSecurityAttributes().toText(""));
+			text.append(buildOutput(isHTML, prefix + EXCLUDE_FROM_ROLLUP_NAME, String.valueOf(getExcludeFromRollup()),
+				true));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 	

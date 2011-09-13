@@ -96,29 +96,17 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"verticalExtent.unitOfMeasure\" content=\"").append(TEST_UOM).append("\" />\n");
-		html.append("<meta name=\"verticalExtent.datum\" content=\"").append(TEST_DATUM).append("\" />\n");
-		html.append("<meta name=\"verticalExtent.minimum\" content=\"").append(TEST_MIN).append("\" />\n");
-		html.append("<meta name=\"verticalExtent.maximum\" content=\"").append(TEST_MAX).append("\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("verticalExtent.unitOfMeasure: ").append(TEST_UOM).append("\n");
-		text.append("verticalExtent.datum: ").append(TEST_DATUM).append("\n");
-		text.append("verticalExtent.minimum: ").append(TEST_MIN).append("\n");
-		text.append("verticalExtent.maximum: ").append(TEST_MAX).append("\n");
+		text.append(buildOutput(isHTML, "verticalExtent.unitOfMeasure", String.valueOf(TEST_UOM)));
+		text.append(buildOutput(isHTML, "verticalExtent.datum", String.valueOf(TEST_DATUM)));
+		text.append(buildOutput(isHTML, "verticalExtent.minimum", String.valueOf(TEST_MIN)));
+		text.append(buildOutput(isHTML, "verticalExtent.maximum", String.valueOf(TEST_MAX)));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Helper method to get the correct-case of the minVerticalExtent eleemnt.
 	 */
@@ -352,25 +340,25 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			VerticalExtent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_MIN, TEST_MAX, TEST_UOM, TEST_DATUM);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			VerticalExtent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_MIN, TEST_MAX, TEST_UOM, TEST_DATUM);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

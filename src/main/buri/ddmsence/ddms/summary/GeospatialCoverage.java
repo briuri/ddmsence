@@ -312,55 +312,30 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		String prefix = getName() + ".";
-		if (!getDDMSVersion().isAtLeast("4.0"))
-			prefix += GEOSPATIAL_EXTENT_NAME + ".";
-		StringBuffer html = new StringBuffer();
-		if (getGeographicIdentifier() != null)
-			html.append(getGeographicIdentifier().toHTML(prefix));
-		if (getBoundingBox() != null)
-			html.append(getBoundingBox().toHTML(prefix));
-		if (getBoundingGeometry() != null)
-			html.append(getBoundingGeometry().toHTML(prefix));
-		if (getPostalAddress() != null)
-			html.append(getPostalAddress().toHTML(prefix));
-		if (getVerticalExtent() != null)
-			html.append(getVerticalExtent().toHTML(prefix));
-		html.append(buildHTMLMeta(prefix + PRECEDENCE_NAME, getPrecedence(), false));
-		if (getOrder() != null)
-			html.append(buildHTMLMeta(prefix + ORDER_NAME, String.valueOf(getOrder()), false));
-		html.append(getSecurityAttributes().toHTML(getName()));
-		return (html.toString());
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		String prefix = getName() + ".";
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			prefix += GEOSPATIAL_EXTENT_NAME + ".";
 		StringBuffer text = new StringBuffer();
 		if (getGeographicIdentifier() != null)
-			text.append(getGeographicIdentifier().toText(prefix));
+			text.append(getGeographicIdentifier().getOutput(isHTML, prefix));
 		if (getBoundingBox() != null)
-			text.append(getBoundingBox().toText(prefix));
+			text.append(getBoundingBox().getOutput(isHTML, prefix));
 		if (getBoundingGeometry() != null)
-			text.append(getBoundingGeometry().toText(prefix));
+			text.append(getBoundingGeometry().getOutput(isHTML, prefix));
 		if (getPostalAddress() != null)
-			text.append(getPostalAddress().toText(prefix));
+			text.append(getPostalAddress().getOutput(isHTML, prefix));
 		if (getVerticalExtent() != null)
-			text.append(getVerticalExtent().toText(prefix));
-		text.append(buildTextLine(prefix + PRECEDENCE_NAME, getPrecedence(), false));
+			text.append(getVerticalExtent().getOutput(isHTML, prefix));
+		text.append(buildOutput(isHTML, prefix + PRECEDENCE_NAME, getPrecedence(), false));
 		if (getOrder() != null)
-			text.append(buildTextLine(prefix + ORDER_NAME, String.valueOf(getOrder()), false));
-		text.append(getSecurityAttributes().toText(getName()));
+			text.append(buildOutput(isHTML, prefix + ORDER_NAME, String.valueOf(getOrder()), false));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * @see Object#equals(Object)
 	 */

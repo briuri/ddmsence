@@ -36,34 +36,6 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of gml:pos.
  * 
- * <p>
- * The DDMS documentation has no Text/HTML examples for the output of this component, so a best guess was taken
- * (suggestions are welcome, as this is probably not an optimal solution):
- * </p>
- * <ul>
- * <p>
- * <b>Suggested Text Output</b><br />
- * <code>
- * boundingGeometry.position: value<br />
- * boundingGeometry.position.srsName: value<br />
- * boundingGeometry.position.srsDimension: value<br />
- * boundingGeometry.position.axisLabels: value<br />
- * boundingGeometry.position.uomLabels: value<br />
- * </code>
- * </p>
- * 
- * <p>
- * <b>Suggested HTML Output</b><br />
- * <code>
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsName" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.srsDimension" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.axisLabels" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.boundingGeometry.position.uomLabels" content="value" /&gt;<br />
- * </code>
- * </p>
- * </ul>
- * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
@@ -200,59 +172,13 @@ public final class Position extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix) + "position";
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix, getCoordinatesAsXsList(), true));
-		html.append(buildHTMLMeta(prefix + ".srsName", getSRSAttributes().getSrsName(), false));
-		if (getSRSAttributes().getSrsDimension() != null) {
-			html.append(buildHTMLMeta(prefix + ".srsDimension", String.valueOf(getSRSAttributes().getSrsDimension()),
-				false));
-		}
-		html.append(buildHTMLMeta(prefix + ".axisLabels", getSRSAttributes().getAxisLabelsAsXsList(), false));
-		html.append(buildHTMLMeta(prefix + ".uomLabels", getSRSAttributes().getUomLabelsAsXsList(), false));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
-		prefix = Util.getNonNullString(prefix) + "position";
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName();
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix, getCoordinatesAsXsList(), true));
-		text.append(buildTextLine(prefix + ".srsName", 
-			getSRSAttributes().getSrsName(), false));
-		if (getSRSAttributes().getSrsDimension() != null) {
-			text.append(buildTextLine(prefix + ".srsDimension", 
-				String.valueOf(getSRSAttributes().getSrsDimension()), false));
-		}
-		text.append(buildTextLine(prefix + ".axisLabels", 
-			getSRSAttributes().getAxisLabelsAsXsList(), false));
-		text.append(buildTextLine(prefix + ".uomLabels", 
-			getSRSAttributes().getUomLabelsAsXsList(), false));
+		text.append(buildOutput(isHTML, prefix, getCoordinatesAsXsList(), true));
+		text.append(getSRSAttributes().getOutput(isHTML, prefix + "."));
 		return (text.toString());
 	}
 	

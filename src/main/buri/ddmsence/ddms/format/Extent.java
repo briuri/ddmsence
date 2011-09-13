@@ -120,46 +120,15 @@ public final class Extent extends AbstractQualifierValue {
 		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))
 			addWarning("A completely empty ddms:extent element was found.");
 	}
-	
-	/**
-	 * @see AbstractBaseComponent#toHTML()
-	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
 
 	/**
-	 * @see AbstractBaseComponent#toText()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toText() {
-		return (toText(""));
-	}
-
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix + QUALIFIER_NAME, getQualifier(), false));
-		html.append(buildHTMLMeta(prefix + VALUE_NAME, getValue(), false));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix + QUALIFIER_NAME, getQualifier(), false));
-		text.append(buildTextLine(prefix + VALUE_NAME, getValue(), false));
+		text.append(buildOutput(isHTML, prefix + QUALIFIER_NAME, getQualifier(), false));
+		text.append(buildOutput(isHTML, prefix + VALUE_NAME, getValue(), false));
 		return (text.toString());
 	}
 	

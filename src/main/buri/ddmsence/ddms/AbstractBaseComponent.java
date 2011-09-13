@@ -132,12 +132,46 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	/**
 	 * @see IDDMSComponent#toHTML()
 	 */
-	public abstract String toHTML();
+	public String toHTML() {
+		return (getOutput(true, ""));
+	}
 	
 	/**
 	 * @see IDDMSComponent#toText()
 	 */
-	public abstract String toText();
+	public String toText() {
+		return (getOutput(false, ""));
+	}
+
+	/**
+	 * Outputs a component to HTML or Text with a prefix at the beginning of each meta tag or line.
+	 * 
+	 * @param isHTML true for HTML, false for Text
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public abstract String getOutput(boolean isHTML, String prefix);
+	
+	/**
+	 * Convenience method to build a meta tag for HTML output or a text line for Text output.
+	 * 
+	 * @param isHTML true for HTML, false for Text
+	 * @param name the name value of the meta tag (will be escaped in HTML)
+	 * @param content the content value of the meta tag (will be escaped in HTML)
+	 * @param alwaysPrint if true, will print the tag even if the content is empty or null.
+	 * @return a string containing the output
+	 */
+	public static String buildOutput(boolean isHTML, String name, String content, boolean alwaysPrint) {
+		if (Util.isEmpty(content) && !alwaysPrint)
+			return ("");
+		StringBuffer tag = new StringBuffer();
+		tag.append(isHTML ? "<meta name=\"" : "");
+		tag.append(isHTML ? Util.xmlEscape(name) : name);
+		tag.append(isHTML ? "\" content=\"" : ": ");
+		tag.append(isHTML ? Util.xmlEscape(content) : content);
+		tag.append(isHTML ? "\" />\n" : "\n");
+		return (tag.toString());
+	}
 	
 	/**
 	 * Will return an empty string if the name is not set, but this cannot occur after
@@ -148,40 +182,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	public String toXML() {
 		return (getXOMElement() == null ? "" : getXOMElement().toXML());
 	}
-	
-	/**
-	 * Convenience method to build a meta tag for HTML output
-	 * 
-	 * @param name the name value of the meta tag (will be escaped)
-	 * @param content the content value of the meta tag (will be escaped)
-	 * @param alwaysPrint if true, will print the tag even if the content is empty or null.
-	 * @return an HTML meta tag as a String
-	 */
-	public static String buildHTMLMeta(String name, String content, boolean alwaysPrint) {
-		if (Util.isEmpty(content) && !alwaysPrint)
-			return ("");
-		StringBuffer tag = new StringBuffer();
-		tag.append("<meta name=\"").append(Util.xmlEscape(name)).append("\" content=\"")
-			.append(Util.xmlEscape(content)).append("\" />\n");
-		return (tag.toString());
-	}
-
-	/**
-	 * Convenience method to build a DDMS text line, used to output a component as plain-text. Text is not escaped.
-	 * 
-	 * @param name the name value of the text line
-	 * @param content the content value of the text line
-	 * @param alwaysPrint if true, will print the tag even if the content is empty or null.
-	 * @return text output of a DDMS element
-	 */
-	public static String buildTextLine(String name, String content, boolean alwaysPrint) {
-		if (Util.isEmpty(content) && !alwaysPrint)
-			return ("");
-		StringBuffer tag = new StringBuffer();
-		tag.append(name).append(": ").append(content).append("\n");
-		return (tag.toString());		
-	}
-	
+		
 	/**
 	 * Convenience method to look up an attribute which is in the same namespace as the enclosing element
 	 * 

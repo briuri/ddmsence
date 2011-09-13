@@ -151,31 +151,19 @@ public final class Source extends AbstractQualifierValue {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(getName() + "." + QUALIFIER_NAME, getQualifier(), false));
-		html.append(buildHTMLMeta(getName() + "." + VALUE_NAME, getValue(), false));
-		html.append(buildHTMLMeta(getName() + "." + SCHEMA_QUALIFIER_NAME, getSchemaQualifier(), false));
-		html.append(buildHTMLMeta(getName() + "." + SCHEMA_HREF_NAME, getSchemaHref(), false));
-		html.append(getSecurityAttributes().toHTML(getName()));
-		return (html.toString());
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(getName() + " " + QUALIFIER_NAME, getQualifier(), false));
-		text.append(buildTextLine(getName() + " " + VALUE_NAME, getValue(), false));
-		text.append(buildTextLine(getName() + " " + SCHEMA_QUALIFIER_NAME, getSchemaQualifier(), false));
-		text.append(buildTextLine(getName() + " " + SCHEMA_HREF_NAME, getSchemaHref(), false));
-		text.append(getSecurityAttributes().toText(getName()));
+		text.append(buildOutput(isHTML, prefix + QUALIFIER_NAME, getQualifier(), false));
+		text.append(buildOutput(isHTML, prefix + VALUE_NAME, getValue(), false));
+		text.append(buildOutput(isHTML, prefix + SCHEMA_QUALIFIER_NAME, getSchemaQualifier(), false));
+		text.append(buildOutput(isHTML, prefix + SCHEMA_HREF_NAME, getSchemaHref(), false));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
-		
+			
 	/**
 	 * @see Object#equals(Object)
 	 */

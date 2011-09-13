@@ -81,4 +81,27 @@ public abstract class AbstractAttributeGroup {
 			_warnings = new ArrayList<ValidationMessage>();
 		return (_warnings);
 	}	
+	
+	/**
+	 * @see IDDMSComponent#toHTML()
+	 */
+	public String toHTML() {
+		return (getOutput(true, ""));
+	}
+	
+	/**
+	 * @see IDDMSComponent#toText()
+	 */
+	public String toText() {
+		return (getOutput(false, ""));
+	}
+
+	/**
+	 * Outputs to HTML or Text with a prefix at the beginning of each meta tag or line.
+	 * 
+	 * @param isHTML true for HTML, false for Text
+	 * @param prefix the prefix to add
+	 * @return the HTML output
+	 */
+	public abstract String getOutput(boolean isHTML, String prefix);
 }

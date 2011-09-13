@@ -26,8 +26,10 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractAttributeGroup;
+import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
@@ -168,6 +170,22 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 			throw new InvalidDDMSException("The uomLabels attribute can only be used in tandem with axisLabels.");
 		Util.requireValidNCNames(getAxisLabels());
 		Util.requireValidNCNames(getUomLabels());
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 */
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix);		
+		StringBuffer text = new StringBuffer();
+		text.append(Resource.buildOutput(isHTML, prefix + "srsName", getSrsName(), false));
+		if (getSrsDimension() != null) {
+			text.append(Resource.buildOutput(isHTML, prefix + "srsDimension",
+				String.valueOf(getSrsDimension()), false));
+		}
+		text.append(Resource.buildOutput(isHTML, prefix + "axisLabels", getAxisLabelsAsXsList(), false));
+		text.append(Resource.buildOutput(isHTML, prefix + "uomLabels", getUomLabelsAsXsList(), false));
+		return (text.toString());
 	}
 	
 	/**

@@ -88,29 +88,15 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"virtual.address\" content=\"").append(TEST_ADDRESS).append("\" />\n");
-		html.append("<meta name=\"virtual.protocol\" content=\"").append(TEST_PROTOCOL).append("\" />\n");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			html.append("<meta name=\"virtual.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"virtual.ownerProducer\" content=\"USA\" />\n");
-		}
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("virtual address: ").append(TEST_ADDRESS).append("\n");
-		text.append("virtual protocol: ").append(TEST_PROTOCOL).append("\n");
+		text.append(buildOutput(isHTML, "virtualCoverage.address", TEST_ADDRESS));
+		text.append(buildOutput(isHTML, "virtualCoverage.protocol", TEST_PROTOCOL));
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
-			text.append("virtual classification: U\n");
-			text.append("virtual ownerProducer: USA\n");
+			text.append(buildOutput(isHTML, "virtualCoverage.classification", "U"));
+			text.append(buildOutput(isHTML, "virtualCoverage.ownerProducer", "USA"));
 		}
 		return (text.toString());
 	}
@@ -235,25 +221,25 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			VirtualCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_ADDRESS, TEST_PROTOCOL);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			VirtualCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_ADDRESS, TEST_PROTOCOL);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

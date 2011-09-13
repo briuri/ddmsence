@@ -190,55 +190,20 @@ public final class Link extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-	
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix + TYPE_NAME, getType(), true));
-		html.append(buildHTMLMeta(prefix + HREF_NAME, getHref(), true));
-		html.append(buildHTMLMeta(prefix + ROLE_NAME, getRole(), false));
-		html.append(buildHTMLMeta(prefix + TITLE_NAME, getTitle(), false));
-		html.append(buildHTMLMeta(prefix + LABEL_NAME, getLabel(), false));
-		html.append(getSecurityAttributes().toHTML(prefix));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName() + " ";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix + TYPE_NAME, getType(), true));
-		text.append(buildTextLine(prefix + HREF_NAME, getHref(), true));
-		text.append(buildTextLine(prefix + ROLE_NAME, getRole(), false));
-		text.append(buildTextLine(prefix + TITLE_NAME, getTitle(), false));
-		text.append(buildTextLine(prefix + LABEL_NAME, getLabel(), false));
-		text.append(getSecurityAttributes().toText(prefix));
+		text.append(buildOutput(isHTML, prefix + TYPE_NAME, getType(), true));
+		text.append(buildOutput(isHTML, prefix + HREF_NAME, getHref(), true));
+		text.append(buildOutput(isHTML, prefix + ROLE_NAME, getRole(), false));
+		text.append(buildOutput(isHTML, prefix + TITLE_NAME, getTitle(), false));
+		text.append(buildOutput(isHTML, prefix + LABEL_NAME, getLabel(), false));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

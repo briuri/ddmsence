@@ -270,46 +270,25 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		String prefix = getName() + ".";
-		if (!getDDMSVersion().isAtLeast("4.0"))
-			prefix += SUBJECT_NAME + ".";
-		StringBuffer html = new StringBuffer();
-		for (Keyword keyword : getKeywords())
-			html.append(keyword.toHTML(prefix));
-		for (Category category : getCategories())
-			html.append(category.toHTML(prefix));
-		for (ProductionMetric metric : getProductionMetrics())
-			html.append(metric.toHTML(prefix));
-		for (NonStateActor actor : getNonStateActors())
-			html.append(actor.toHTML(prefix));
-		html.append(getSecurityAttributes().toHTML(getName()));
-		return (html.toString());
-
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		String prefix = getName() + ".";
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			prefix += SUBJECT_NAME + ".";
 		StringBuffer text = new StringBuffer();
 		for (Keyword keyword : getKeywords())
-			text.append(keyword.toText(prefix));
+			text.append(keyword.getOutput(isHTML, prefix));
 		for (Category category : getCategories())
-			text.append(category.toText(prefix));
+			text.append(category.getOutput(isHTML, prefix));
 		for (ProductionMetric metric : getProductionMetrics())
-			text.append(metric.toText(prefix));
+			text.append(metric.getOutput(isHTML, prefix));
 		for (NonStateActor actor : getNonStateActors())
-			text.append(actor.toText(prefix));
-		text.append(getSecurityAttributes().toText(getName()));
+			text.append(actor.getOutput(isHTML, prefix));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

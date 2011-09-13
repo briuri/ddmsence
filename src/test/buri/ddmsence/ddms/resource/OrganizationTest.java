@@ -105,55 +105,30 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"entityType\" content=\"").append(Organization.getName(version)).append("\" />\n");
-		for (String name : TEST_NAMES)
-			html.append("<meta name=\"name\" content=\"").append(name).append("\" />\n");
-		for (String phone : TEST_PHONES)
-			html.append("<meta name=\"phone\" content=\"").append(phone).append("\" />\n");
-		for (String email : TEST_EMAILS)
-			html.append("<meta name=\"email\" content=\"").append(email).append("\" />\n");
-		if (version.isAtLeast("4.0")) {
-			html.append("<meta name=\"subOrganization\" content=\"sub1\" />\n");
-			html.append("<meta name=\"subOrganization.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"subOrganization.ownerProducer\" content=\"USA\" />\n");
-			html.append("<meta name=\"subOrganization\" content=\"sub2\" />\n");
-			html.append("<meta name=\"subOrganization.classification\" content=\"U\" />\n");
-			html.append("<meta name=\"subOrganization.ownerProducer\" content=\"USA\" />\n");
-			html.append("<meta name=\"acronym\" content=\"DISA\" />\n");
-		}
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append("EntityType: ").append(Organization.getName(version)).append("\n");
+		text.append(buildOutput(isHTML, "entityType", Organization.getName(version)));
 		for (String name : TEST_NAMES)
-			text.append("name: ").append(name).append("\n");
+			text.append(buildOutput(isHTML, "name", name));
 		for (String phone : TEST_PHONES)
-			text.append("phone: ").append(phone).append("\n");
+			text.append(buildOutput(isHTML, "phone", phone));
 		for (String email : TEST_EMAILS)
-			text.append("email: ").append(email).append("\n");
+			text.append(buildOutput(isHTML, "email", email));
 		if (version.isAtLeast("4.0")) {
-			text.append("subOrganization: sub1\n");
-			text.append("subOrganization classification: U\n");
-			text.append("subOrganization ownerProducer: USA\n");
-			text.append("subOrganization: sub2\n");
-			text.append("subOrganization classification: U\n");
-			text.append("subOrganization ownerProducer: USA\n");
-			text.append("acronym: DISA\n");
+			text.append(buildOutput(isHTML, "subOrganization", "sub1"));
+			text.append(buildOutput(isHTML, "subOrganization.classification", "U"));
+			text.append(buildOutput(isHTML, "subOrganization.ownerProducer", "USA"));
+			text.append(buildOutput(isHTML, "subOrganization", "sub2"));
+			text.append(buildOutput(isHTML, "subOrganization.classification", "U"));
+			text.append(buildOutput(isHTML, "subOrganization.ownerProducer", "USA"));
+			text.append(buildOutput(isHTML, "acronym", "DISA"));
 		}
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -319,11 +294,11 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS,
 				SubOrganizationTest.getFixtureList(), getAcronym());
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
@@ -331,11 +306,11 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS,
 				SubOrganizationTest.getFixtureList(), getAcronym());
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

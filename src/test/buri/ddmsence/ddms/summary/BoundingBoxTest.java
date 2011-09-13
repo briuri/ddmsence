@@ -124,33 +124,17 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() {
-		StringBuffer html = new StringBuffer();
-		html.append("<meta name=\"boundingBox.").append(getWestBLName())
-			.append("\" content=\"").append(TEST_WEST).append("\" />\n");
-		html.append("<meta name=\"boundingBox.").append(getEastBLName())
-			.append("\" content=\"").append(TEST_EAST).append("\" />\n");
-		html.append("<meta name=\"boundingBox.").append(getSouthBLName())
-			.append("\" content=\"").append(TEST_SOUTH).append("\" />\n");
-		html.append("<meta name=\"boundingBox.").append(getNorthBLName())
-			.append("\" content=\"").append(TEST_NORTH).append("\" />\n");
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append("boundingBox.").append(getWestBLName()).append(": ").append(TEST_WEST).append("\n");
-		text.append("boundingBox.").append(getEastBLName()).append(": ").append(TEST_EAST).append("\n");
-		text.append("boundingBox.").append(getSouthBLName()).append(": ").append(TEST_SOUTH).append("\n");
-		text.append("boundingBox.").append(getNorthBLName()).append(": ").append(TEST_NORTH).append("\n");
+		text.append(buildOutput(isHTML, "boundingBox." + getWestBLName(), String.valueOf(TEST_WEST)));
+		text.append(buildOutput(isHTML, "boundingBox." + getEastBLName(), String.valueOf(TEST_EAST)));
+		text.append(buildOutput(isHTML, "boundingBox." + getSouthBLName(), String.valueOf(TEST_SOUTH)));
+		text.append(buildOutput(isHTML, "boundingBox." + getNorthBLName(), String.valueOf(TEST_NORTH)));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -321,25 +305,25 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() {
+	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
 
-	public void testTextOutput() {
+	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

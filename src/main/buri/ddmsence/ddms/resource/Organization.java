@@ -187,35 +187,17 @@ public final class Organization extends AbstractRoleEntity {
 	}
 
 	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix);
-		StringBuffer html = new StringBuffer(super.toHTML(prefix));
+		StringBuffer text = new StringBuffer(super.getOutput(isHTML, prefix));
 		for (SubOrganization subOrg : getSubOrganizations())
-			html.append(subOrg.toHTML(prefix));
-		html.append(buildHTMLMeta(prefix + ACRONYM_NAME, getAcronym(), false));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
-		prefix = Util.getNonNullString(prefix);
-		StringBuffer text = new StringBuffer(super.toText(prefix));
-		for (SubOrganization subOrg : getSubOrganizations())
-			text.append(subOrg.toText(prefix));	
-		text.append(buildTextLine(prefix + ACRONYM_NAME, getAcronym(), false));
+			text.append(subOrg.getOutput(isHTML, prefix));	
+		text.append(buildOutput(isHTML, prefix + ACRONYM_NAME, getAcronym(), false));
 		return (text.toString());
 	}
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

@@ -106,9 +106,11 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	 * Returns the ISM attributes HTML output, if the DDMS Version supports it.
 	 */
 	private String getHtmlIcism() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();		
+		String prefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-			return ("<meta name=\"geospatialCoverage.classification\" content=\"U\" />\n"
-				+ "<meta name=\"geospatialCoverage.ownerProducer\" content=\"USA\" />\n");
+			return (buildOutput(true, prefix + "classification", "U")
+				+ buildOutput(true, prefix + "ownerProducer", "USA"));
 		return ("");
 	}
 
@@ -116,45 +118,33 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 	 * Returns the ISM attributes Text output, if the DDMS Version supports it.
 	 */
 	private String getTextIcism() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();		
+		String prefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-			return ("geospatialCoverage classification: U\ngeospatialCoverage ownerProducer: USA\n");
+			return (buildOutput(false, prefix + "classification", "U")
+				+ buildOutput(false, prefix + "ownerProducer", "USA"));
 		return ("");
 	}
 	
 	/**
-	 * Returns the expected HTML output for this unit test
+	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedHTMLOutput() throws InvalidDDMSException {
+	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();		
 		String prefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
-		StringBuffer html = new StringBuffer();
-		html.append(GeographicIdentifierTest.getCountryCodeBasedFixture().toHTML(prefix));
-		if (version.isAtLeast("4.0")) {
-			html.append("<meta name=\"geospatialCoverage.precedence\" content=\"Primary\" />\n");
-			html.append("<meta name=\"geospatialCoverage.order\" content=\"1\" />\n");
-		}
-		if (version.isAtLeast("3.0"))
-			html.append(getHtmlIcism());
-		return (html.toString());
-	}
-
-	/**
-	 * Returns the expected Text output for this unit test
-	 */
-	private String getExpectedTextOutput() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String prefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";		
 		StringBuffer text = new StringBuffer();
-		text.append(GeographicIdentifierTest.getCountryCodeBasedFixture().toText(prefix));
+		text.append(GeographicIdentifierTest.getCountryCodeBasedFixture().getOutput(isHTML, prefix));
 		if (version.isAtLeast("4.0")) {
-			text.append("geospatialCoverage.precedence: Primary\n");
-			text.append("geospatialCoverage.order: 1\n");
+			text.append(buildOutput(isHTML, prefix + "precedence", "Primary"));
+			text.append(buildOutput(isHTML, prefix + "order", "1"));
 		}
-		if (version.isAtLeast("3.0"))
-			text.append(getTextIcism());
+		if (version.isAtLeast("3.0")) {
+			text.append(buildOutput(isHTML, prefix + "classification", "U"));
+			text.append(buildOutput(isHTML, prefix + "ownerProducer", "USA"));
+		}
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -448,22 +438,22 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 			Integer order = version.isAtLeast("4.0") ? TEST_ORDER : null;
 			
 			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null, precedence, order);
-			assertEquals(getExpectedHTMLOutput(), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-			assertEquals(BoundingBoxTest.getFixture().toHTML(prefix) + getHtmlIcism(), component.toHTML());
+			assertEquals(BoundingBoxTest.getFixture().getOutput(true, prefix) + getHtmlIcism(), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
-			assertEquals(BoundingGeometryTest.getFixture().toHTML(prefix) + getHtmlIcism(), component.toHTML());
+			assertEquals(BoundingGeometryTest.getFixture().getOutput(true, prefix) + getHtmlIcism(), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, null, null, null, PostalAddressTest.getFixture(), null, null, null);
-			assertEquals(PostalAddressTest.getFixture().toHTML(prefix) + getHtmlIcism(), component.toHTML());
+			assertEquals(PostalAddressTest.getFixture().getOutput(true, prefix) + getHtmlIcism(), component.toHTML());
 
 			component = testConstructor(WILL_SUCCEED, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
-			assertEquals(VerticalExtentTest.getFixture().toHTML(prefix) + getHtmlIcism(), component.toHTML());
+			assertEquals(VerticalExtentTest.getFixture().getOutput(true, prefix) + getHtmlIcism(), component.toHTML());
 		}
 	}
 
@@ -477,22 +467,22 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 			Integer order = version.isAtLeast("4.0") ? TEST_ORDER : null;
 			
 			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null, precedence, order);
-			assertEquals(getExpectedTextOutput(), component.toText());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-			assertEquals(BoundingBoxTest.getFixture().toText(prefix) + getTextIcism(), component.toText());
+			assertEquals(BoundingBoxTest.getFixture().getOutput(false, prefix) + getTextIcism(), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
-			assertEquals(BoundingGeometryTest.getFixture().toText(prefix) + getTextIcism(), component.toText());
+			assertEquals(BoundingGeometryTest.getFixture().getOutput(false, prefix) + getTextIcism(), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, null, null, null, PostalAddressTest.getFixture(), null, null, null);
-			assertEquals(PostalAddressTest.getFixture().toText(prefix) + getTextIcism(), component.toText());
+			assertEquals(PostalAddressTest.getFixture().getOutput(false, prefix) + getTextIcism(), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
-			assertEquals(VerticalExtentTest.getFixture().toText(prefix) + getTextIcism(), component.toText());
+			assertEquals(VerticalExtentTest.getFixture().getOutput(false, prefix) + getTextIcism(), component.toText());
 		}
 	}
 

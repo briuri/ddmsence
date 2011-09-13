@@ -61,18 +61,12 @@ public interface IRoleEntity extends IDDMSComponent {
 	public ExtensibleAttributes getExtensibleAttributes();
 	
 	/**
-	 * Extended HTML output method which adds a prefix to each line.
+	 * Renders this entity as HTML or Text
 	 * 
-	 * @param prefix the text to add
-	 * @return HTML output
+	 * @param isHTML true for HTML, false for Text
+	 * @param prefix a prefix to attach to each field name
+	 * @return a string containing the entity details
 	 */
-	public String toHTML(String prefix);
+	public String getOutput(boolean isHTML, String prefix);
 	
-	/**
-	 * Extended Text output method which adds a prefix to each line.
-	 * 
-	 * @param prefix the text to add
-	 * @return Text output
-	 */
-	public String toText(String prefix);
 }

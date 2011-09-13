@@ -218,63 +218,24 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		return (toHTML(""));
-	}
-	
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		return (toText(""));
-	}
-
-	/**
-	 * Outputs to HTML with a prefix at the beginning of each meta tag.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the HTML output
-	 */
-	public String toHTML(String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
-		StringBuffer html = new StringBuffer();
-		for (String name : getNames())
-			html.append(buildHTMLMeta(prefix + NAME_NAME, name, false));
-		for (String region : getRegions())
-			html.append(buildHTMLMeta(prefix + REGION_NAME, region, false));
-		if (getCountryCode() != null)
-			html.append(getCountryCode().toHTML(prefix));
-		if (getSubDivisionCode() != null)
-			html.append(getSubDivisionCode().toHTML(prefix));
-		if (hasFacilityIdentifier())
-			html.append(getFacilityIdentifier().toHTML(prefix));
-		return (html.toString());
-	}
-	
-	/**
-	 * Outputs to Text with a prefix at the beginning of each line.
-	 * 
-	 * @param prefix the prefix to add
-	 * @return the Text output
-	 */
-	public String toText(String prefix) {
+	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		for (String name : getNames())
-			text.append(buildTextLine(prefix + NAME_NAME, name, false));
+			text.append(buildOutput(isHTML, prefix + NAME_NAME, name, false));
 		for (String region : getRegions())
-			text.append(buildTextLine(prefix + REGION_NAME, region, false));
+			text.append(buildOutput(isHTML, prefix + REGION_NAME, region, false));
 		if (getCountryCode() != null)
-			text.append(getCountryCode().toText(prefix));
+			text.append(getCountryCode().getOutput(isHTML, prefix));
 		if (getSubDivisionCode() != null)
-			text.append(getSubDivisionCode().toText(prefix));
+			text.append(getSubDivisionCode().getOutput(isHTML, prefix));
 		if (hasFacilityIdentifier())
-			text.append(getFacilityIdentifier().toText(prefix));
+			text.append(getFacilityIdentifier().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
-	
+		
 	/**
 	 * @see Object#equals(Object)
 	 */

@@ -291,32 +291,17 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#toHTML()
+	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
-	public String toHTML() {
-		String prefix = getName() + ".";
-		if (!getDDMSVersion().isAtLeast("4.0"))
-			prefix += TIME_PERIOD_NAME + ".";
-		StringBuffer html = new StringBuffer();
-		html.append(buildHTMLMeta(prefix + TIME_PERIOD_NAME_NAME, getTimePeriodName(), false));
-		html.append(buildHTMLMeta(prefix + START_NAME, getStartString(), true));
-		html.append(buildHTMLMeta(prefix + END_NAME, getEndString(), true));
-		html.append(getSecurityAttributes().toHTML(getName()));
-		return (html.toString());
-	}
-		
-	/**
-	 * @see AbstractBaseComponent#toText()
-	 */
-	public String toText() {
-		String prefix = getName() + ".";
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			prefix += TIME_PERIOD_NAME + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildTextLine(prefix + TIME_PERIOD_NAME_NAME, getTimePeriodName(), false));
-		text.append(buildTextLine(prefix + START_NAME, getStartString(), true));
-		text.append(buildTextLine(prefix + END_NAME, getEndString(), true));
-		text.append(getSecurityAttributes().toText(getName()));
+		text.append(buildOutput(isHTML, prefix + TIME_PERIOD_NAME_NAME, getTimePeriodName(), false));
+		text.append(buildOutput(isHTML, prefix + START_NAME, getStartString(), true));
+		text.append(buildOutput(isHTML, prefix + END_NAME, getEndString(), true));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 	 
