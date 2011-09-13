@@ -159,26 +159,19 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0") ? "subjectCoverage." : "subjectCoverage.Subject.";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + "keyword", "DDMSence"));
-		text.append(buildOutput(isHTML, prefix + "keyword", "Uri"));
-		text.append(buildOutput(isHTML, prefix + "category.qualifier", "urn:buri:ddmsence:categories"));
-		text.append(buildOutput(isHTML, prefix + "category.code", "DDMS"));
-		text.append(buildOutput(isHTML, prefix + "category.label", "DDMS"));
+		for (Keyword keyword : getKeywords())
+			text.append(keyword.getOutput(isHTML, prefix));
+		for (Category category : getCategories())
+			text.append(category.getOutput(isHTML, prefix));
 		
 		if (version.isAtLeast("4.0")) {
-			text.append(buildOutput(isHTML, prefix + "productionMetric.subject", "FOOD"));
-			text.append(buildOutput(isHTML, prefix + "productionMetric.coverage", "AFG"));
-			text.append(buildOutput(isHTML, prefix + "productionMetric.classification", "U"));
-			text.append(buildOutput(isHTML, prefix + "productionMetric.ownerProducer", "USA"));
-			text.append(buildOutput(isHTML, prefix + "nonStateActor.value", "Laotian Monks"));
-			text.append(buildOutput(isHTML, prefix + "nonStateActor.order", "1"));
-			text.append(buildOutput(isHTML, prefix + "nonStateActor.classification", "U"));
-			text.append(buildOutput(isHTML, prefix + "nonStateActor.ownerProducer", "USA"));
-			
+			for (ProductionMetric metric : getMetricFixture())
+				text.append(metric.getOutput(isHTML, prefix));
+			for (NonStateActor actor : getActorFixture())
+				text.append(actor.getOutput(isHTML, prefix));				
 		}
 		if (version.isAtLeast("3.0")) {
-			text.append(buildOutput(isHTML, prefix +  "classification", "U"));
-			text.append(buildOutput(isHTML, prefix +  "ownerProducer", "USA"));
+			text.append(SecurityAttributesTest.getFixture(false).getOutput(isHTML, prefix));
 		}
 		return (text.toString());
 	}

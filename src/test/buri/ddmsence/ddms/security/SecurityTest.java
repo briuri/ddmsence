@@ -89,8 +89,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 		StringBuffer text = new StringBuffer();
 		if (version.isAtLeast("3.0"))
 			text.append(buildOutput(isHTML, prefix + "excludeFromRollup", "true"));
-		text.append(buildOutput(isHTML, prefix + "classification", "U"));
-		text.append(buildOutput(isHTML, prefix + "ownerProducer", "USA"));
+		text.append(SecurityAttributesTest.getFixture(false).getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 	
