@@ -138,10 +138,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 			text.append(buildOutput(isHTML, prefix + "precedence", "Primary"));
 			text.append(buildOutput(isHTML, prefix + "order", "1"));
 		}
-		if (version.isAtLeast("3.0")) {
-			text.append(buildOutput(isHTML, prefix + "classification", "U"));
-			text.append(buildOutput(isHTML, prefix + "ownerProducer", "USA"));
-		}
+		if (version.isAtLeast("3.0"))
+			text.append(SecurityAttributesTest.getFixture(false).getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 	

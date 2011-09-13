@@ -120,10 +120,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, prefix + "name", TEST_NAME));
 		text.append(buildOutput(isHTML, prefix + "start", TEST_START));
 		text.append(buildOutput(isHTML, prefix + "end", TEST_END));
-		if (version.isAtLeast("3.0")) {
-			text.append(buildOutput(isHTML, prefix + "classification", "U"));
-			text.append(buildOutput(isHTML, prefix + "ownerProducer", "USA"));
-		}
+		if (version.isAtLeast("3.0"))
+			text.append(SecurityAttributesTest.getFixture(false).getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 	

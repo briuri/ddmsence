@@ -116,12 +116,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "recordsManagementInfo.recordKeeper.recordKeeperID", "#289-99202.9"));
-		text.append(buildOutput(isHTML, "recordsManagementInfo.recordKeeper.entityType", "organization"));
-		text.append(buildOutput(isHTML, "recordsManagementInfo.recordKeeper.name", "AgencyZ"));
-		text.append(buildOutput(isHTML, "recordsManagementInfo.applicationSoftware", "IRM Generator 2L-9"));
-		text.append(buildOutput(isHTML, "recordsManagementInfo.applicationSoftware.classification", "U"));
-		text.append(buildOutput(isHTML, "recordsManagementInfo.applicationSoftware.ownerProducer", "USA"));
+		text.append(getRecordKeeperFixture().getOutput(isHTML, "recordsManagementInfo."));
+		text.append(getApplicationSoftwareFixture().getOutput(isHTML, "recordsManagementInfo."));
 		text.append(buildOutput(isHTML, "recordsManagementInfo.vitalRecordIndicator", "true"));
 		return (text.toString());
 	}
