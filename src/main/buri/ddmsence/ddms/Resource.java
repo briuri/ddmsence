@@ -900,7 +900,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * Accessor for the resourceElement attribute. This may be null for v2.0 Resource components.
 	 */
 	public Boolean isResourceElement() {
-		String value = getAttributeValue(RESOURCE_ELEMENT_NAME, DDMSVersion.getCurrentVersion().getIsmNamespace());
+		String value = getAttributeValue(RESOURCE_ELEMENT_NAME, getDDMSVersion().getIsmNamespace());
 		if ("true".equals(value))
 			return (Boolean.TRUE);
 		if ("false".equals(value))
