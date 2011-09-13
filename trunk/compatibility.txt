@@ -132,7 +132,7 @@ Renamed classes (multiple issues)
 SEVERITY: Minor
 DETAILS:
 	- MediaExtent renamed to Extent: Because the Media wrapper was removed in DDMS 4.0, the name no longer made sense. (Issue #127).
-	- IProducerEntity: Because Entities can now fulfill non-producer roles, the name no longer made sense (Issue #163)
+	- IProducerEntity renamed to IRoleEntity: Because Entities can now fulfill non-producer roles, the name no longer made sense (Issue #163)
 FIX:
 	Change the class names of the affected classes.
 	
