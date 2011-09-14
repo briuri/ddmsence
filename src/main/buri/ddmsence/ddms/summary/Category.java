@@ -149,7 +149,6 @@ public final class Category extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Category.getName(getDDMSVersion()));
 		Util.requireDDMSValue("label attribute", getLabel());
 		if (!Util.isEmpty(getQualifier())) {
@@ -164,18 +163,7 @@ public final class Category extends AbstractBaseComponent {
 			throw new InvalidDDMSException(
 				"xs:anyAttribute cannot be applied to ddms:category until DDMS 3.0 or later.");
 		
-		validateWarnings();
-	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the security attributes.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validate();
 	}
 	
 	/**
@@ -202,7 +190,6 @@ public final class Category extends AbstractBaseComponent {
 		return (getQualifier().equals(test.getQualifier()) 
 			&& getCode().equals(test.getCode()) 
 			&& getLabel().equals(test.getLabel())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes())
 			&& getExtensibleAttributes().equals(test.getExtensibleAttributes()));
 	}
 
@@ -214,7 +201,6 @@ public final class Category extends AbstractBaseComponent {
 		result = 7 * result + getQualifier().hashCode();
 		result = 7 * result + getCode().hashCode();
 		result = 7 * result + getLabel().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
 		result = 7 * result + getExtensibleAttributes().hashCode();
 		return (result);
 	}

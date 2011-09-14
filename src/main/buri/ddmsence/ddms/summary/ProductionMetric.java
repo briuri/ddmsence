@@ -114,7 +114,6 @@ public final class ProductionMetric extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), ProductionMetric.getName(getDDMSVersion()));
 		Util.requireDDMSValue("subject attribute", getSubject());
 		Util.requireDDMSValue("coverage attribute", getCoverage());
@@ -122,20 +121,9 @@ public final class ProductionMetric extends AbstractBaseComponent {
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			throw new InvalidDDMSException("The ddms:" + ProductionMetric.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
 		
-		validateWarnings();
+		super.validate();
 	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the security attributes.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
-	}
-	
+		
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
@@ -156,8 +144,7 @@ public final class ProductionMetric extends AbstractBaseComponent {
 			return (false);
 		ProductionMetric test = (ProductionMetric) obj;
 		return (getSubject().equals(test.getSubject()) 
-			&& getCoverage().equals(test.getCoverage())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
+			&& getCoverage().equals(test.getCoverage()));
 	}
 
 	/**
@@ -167,7 +154,6 @@ public final class ProductionMetric extends AbstractBaseComponent {
 		int result = super.hashCode();
 		result = 7 * result + getSubject().hashCode();
 		result = 7 * result + getCoverage().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
 	

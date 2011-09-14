@@ -20,10 +20,13 @@
 package buri.ddmsence.ddms.resource;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -115,7 +118,6 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>If a recordKeeper or applicationSoftware exists, it is using the same version of DDMS.</li>
 	 * <li>This component cannot exist until DDMS 4.0 or later.</li>
 	 * </td></tr></table>
 	 * 
@@ -123,35 +125,16 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), RecordsManagementInfo.getName(getDDMSVersion()));
-		if (getRecordKeeper() != null)
-			Util.requireCompatibleVersion(this, getRecordKeeper());
-		if (getApplicationSoftware() != null)
-			Util.requireCompatibleVersion(this, getApplicationSoftware());
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			throw new InvalidDDMSException("The ddms:" + RecordsManagementInfo.getName(getDDMSVersion())
 				+ " element cannot be used until DDMS 4.0 or later.");
 
-		validateWarnings();
+		super.validate();
 	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the child components.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		if (getRecordKeeper() != null)
-			addWarnings(getRecordKeeper().getValidationWarnings(), false);
-		if (getApplicationSoftware() != null)
-			addWarnings(getApplicationSoftware().getValidationWarnings(), false);
-	}
-	
+		
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
@@ -167,15 +150,23 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	}
 		
 	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.add(getRecordKeeper());
+		list.add(getApplicationSoftware());
+		return (list);
+	}
+	
+	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof RecordsManagementInfo))
 			return (false);
 		RecordsManagementInfo test = (RecordsManagementInfo) obj;
-		return (getVitalRecordIndicator().equals(test.getVitalRecordIndicator())
-			&& Util.nullEquals(getRecordKeeper(), test.getRecordKeeper())
-			&& Util.nullEquals(getApplicationSoftware(), test.getApplicationSoftware()));		
+		return (getVitalRecordIndicator().equals(test.getVitalRecordIndicator()));		
 	}
 
 	/**
@@ -184,10 +175,6 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 7 *  result + getVitalRecordIndicator().hashCode();
-		if (getRecordKeeper() != null)
-			result = 7 * result + getRecordKeeper().hashCode();
-		if (getApplicationSoftware() != null)
-			result = 7 * result + getApplicationSoftware().hashCode();
 		return (result);
 	}
 

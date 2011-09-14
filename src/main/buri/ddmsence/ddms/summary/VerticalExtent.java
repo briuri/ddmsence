@@ -201,7 +201,6 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), VerticalExtent.getName(getDDMSVersion()));
 		Util.requireDDMSValue(getMinVerticalExtentName(), getMinVerticalExtent());
 		Util.requireDDMSValue(getMaxVerticalExtentName(), getMaxVerticalExtent());
@@ -213,6 +212,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		validateInheritedAttributes(getChild(getMaxVerticalExtentName()));
 		if (getMaxVerticalExtent().compareTo(getMinVerticalExtent()) < 0)
 			throw new InvalidDDMSException("Minimum vertical extent must be less than maximum vertical extent.");
+		super.validate();
 	}
 	
 	/**

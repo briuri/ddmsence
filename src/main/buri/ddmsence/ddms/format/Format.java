@@ -20,10 +20,13 @@
 package buri.ddmsence.ddms.format;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
@@ -146,14 +149,12 @@ public final class Format extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A mimeType exists, and is not empty.</li>
 	 * <li>Exactly 1 mimeType, 0-1 extents, and 0-1 mediums exist.</li>
-	 * <li>If an extent exists, it is using the same version of DDMS.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Format.getName(getDDMSVersion()));
 		Element mediaElement = getMediaElement();
 		Util.requireDDMSValue("Media element", mediaElement);
@@ -161,10 +162,8 @@ public final class Format extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(mediaElement, MIME_TYPE_NAME, 1, 1);
 		Util.requireBoundedDDMSChildCount(mediaElement, Extent.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(mediaElement, MEDIUM_NAME, 0, 1);
-		if (getExtent() != null)
-			Util.requireCompatibleVersion(this, getExtent());
 
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -172,7 +171,6 @@ public final class Format extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A ddms:medium element was found with no value.</li>
-	 * <li>Include any validation warnings from the Extent child.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
@@ -180,9 +178,7 @@ public final class Format extends AbstractBaseComponent {
 		if (Util.isEmpty(getMedium())
 				&& mediaElement.getChildElements(MEDIUM_NAME, mediaElement.getNamespaceURI()).size() == 1)
 			addWarning("A ddms:medium element was found with no value.");
-		if (getExtent() != null) {
-			addWarnings(getExtent().getValidationWarnings(), false);
-		}
+		super.validateWarnings();
 	}
 	
 	/**
@@ -209,6 +205,15 @@ public final class Format extends AbstractBaseComponent {
 	}
 	
 	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.add(getExtent());
+		return (list);
+	}
+	
+	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
@@ -216,7 +221,6 @@ public final class Format extends AbstractBaseComponent {
 			return (false);
 		Format test = (Format) obj;
 		boolean isEqual = getMimeType().equals(test.getMimeType()) 
-			&& Util.nullEquals(getExtent(), test.getExtent())
 			&& getMedium().equals(test.getMedium());
 		return (isEqual);
 	}
@@ -227,8 +231,6 @@ public final class Format extends AbstractBaseComponent {
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 7 * result + getMimeType().hashCode();
-		if (getExtent() != null)
-			result = 7 * result + getExtent().hashCode();
 		result = 7 * result + getMedium().hashCode();
 		return (result);
 	}

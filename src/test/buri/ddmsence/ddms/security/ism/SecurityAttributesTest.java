@@ -509,15 +509,15 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Map<String, String> others = new HashMap<String, String>();
 			others.put(SecurityAttributes.DECLASS_DATE_NAME, "2005-10-10");
 			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
-			assertEquals(buildOutput(true, "declassDate", "2005-10-10"), dataAttributes.toHTML());
-			assertEquals(buildOutput(false, "declassDate", "2005-10-10"), dataAttributes.toText());
+			assertEquals(buildOutput(true, "declassDate", "2005-10-10"), dataAttributes.getOutput(true, ""));
+			assertEquals(buildOutput(false, "declassDate", "2005-10-10"), dataAttributes.getOutput(false, ""));
 
 			if (!version.isAtLeast("3.1")) {
 				others = new HashMap<String, String>();
 				others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-10");
 				dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
-				assertEquals(buildOutput(true, "dateOfExemptedSource", "2005-10-10"), dataAttributes.toHTML());
-				assertEquals(buildOutput(false, "dateOfExemptedSource", "2005-10-10"), dataAttributes.toText());
+				assertEquals(buildOutput(true, "dateOfExemptedSource", "2005-10-10"), dataAttributes.getOutput(true, ""));
+				assertEquals(buildOutput(false, "dateOfExemptedSource", "2005-10-10"), dataAttributes.getOutput(false, ""));
 			}
 		}
 	}
@@ -557,8 +557,8 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		DDMSVersion.setCurrentVersion("2.0");
 		map.remove(SecurityAttributes.COMPILATION_REASON_NAME);
 		SecurityAttributes attr = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
-		assertTrue(attr.toHTML().contains(buildOutput(true, "declassManualReview", "true")));
-		assertTrue(attr.toText().contains(buildOutput(false, "declassManualReview", "true")));
+		assertTrue(attr.getOutput(true, "").contains(buildOutput(true, "declassManualReview", "true")));
+		assertTrue(attr.getOutput(false, "").contains(buildOutput(false, "declassManualReview", "true")));
 	}
 
 	public void testMultipleDeclassException() throws InvalidDDMSException {
@@ -580,7 +580,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		SecurityAttributes attributes = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
 		assertEquals(buildOutput(true, "classification", "U")
 			+ buildOutput(true, "declassManualReview", "true")
-			+ buildOutput(true, "ownerProducer", "USA"), attributes.toHTML());
+			+ buildOutput(true, "ownerProducer", "USA"), attributes.getOutput(true, ""));
 	}
 
 	public void testCVEErrorsByDefault() {

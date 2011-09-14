@@ -135,7 +135,6 @@ public final class Keyword extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Keyword.getName(getDDMSVersion()));
 		Util.requireDDMSValue("value attribute", getValue());
 		// Should be reviewed as additional versions of DDMS are supported.
@@ -146,20 +145,9 @@ public final class Keyword extends AbstractBaseComponent {
 		if (!getDDMSVersion().isAtLeast("3.0") && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("xs:anyAttribute cannot be applied to ddms:keyword until DDMS 3.0 or later.");
 
-		validateWarnings();
+		super.validate();
 	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the security attributes.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
-	}
-	
+		
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
@@ -180,7 +168,6 @@ public final class Keyword extends AbstractBaseComponent {
 			return (false);
 		Keyword test = (Keyword) obj;
 		return (getValue().equals(test.getValue())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes())
 			&& getExtensibleAttributes().equals(test.getExtensibleAttributes()));
 	}
 
@@ -190,7 +177,6 @@ public final class Keyword extends AbstractBaseComponent {
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 7 * result + getValue().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
 		result = 7 * result + getExtensibleAttributes().hashCode();
 		return (result);
 	}

@@ -317,11 +317,11 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
 				Util.getXsList(TEST_UOM_LABELS));
 			SRSAttributes attributes = new SRSAttributes(element);			
-			assertEquals(getExpectedOutput(true), attributes.toHTML());
+			assertEquals(getExpectedOutput(true), attributes.getOutput(true, ""));
 
 			SRSAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_SRS_NAME, TEST_SRS_DIMENSION,
 				TEST_AXIS_LABELS, TEST_UOM_LABELS);
-			assertEquals(getExpectedOutput(true), dataAttributes.toHTML());
+			assertEquals(getExpectedOutput(true), dataAttributes.getOutput(true, ""));
 		}
 	}
 
@@ -334,11 +334,11 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
 				Util.getXsList(TEST_UOM_LABELS));
 			SRSAttributes attributes = new SRSAttributes(element);
-			assertEquals(getExpectedOutput(false), attributes.toText());
+			assertEquals(getExpectedOutput(false), attributes.getOutput(false, ""));
 
 			SRSAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_SRS_NAME, TEST_SRS_DIMENSION,
 				TEST_AXIS_LABELS, TEST_UOM_LABELS);
-			assertEquals(getExpectedOutput(false), dataAttributes.toText());
+			assertEquals(getExpectedOutput(false), dataAttributes.getOutput(false, ""));
 		}
 	}
 	

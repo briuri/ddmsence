@@ -93,9 +93,9 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
+		super.validate();
 	}
 	
 	/**
@@ -105,8 +105,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof AbstractSimpleString))
 			return (false);
 		AbstractSimpleString test = (AbstractSimpleString) obj;
-		return (getValue().equals(test.getValue())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
+		return (getValue().equals(test.getValue()));
 	}
 
 	/**
@@ -115,7 +114,6 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 7 * result + getValue().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
 	

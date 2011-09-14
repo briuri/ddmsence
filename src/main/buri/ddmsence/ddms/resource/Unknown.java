@@ -116,11 +116,11 @@ public final class Unknown extends AbstractRoleEntity {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Unknown.getName(getDDMSVersion()));
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.0"))
 			throw new InvalidDDMSException("The ddms:" + Unknown.getName(getDDMSVersion()) + " element cannot be used until DDMS 3.0 or later.");
+		super.validate();
 	}
 		
 	/**

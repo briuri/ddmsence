@@ -89,27 +89,15 @@ public final class SubOrganization extends AbstractSimpleString {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), SubOrganization.getName(getDDMSVersion()));
 		Util.requireDDMSValue("subOrganization value", getValue());
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			throw new InvalidDDMSException("The ddms:" + SubOrganization.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
 
-		validateWarnings();
+		super.validate();
 	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the security attributes.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
-	}
-			
+				
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */

@@ -132,14 +132,13 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>The producer entity has at least 1 non-empty name.</li>
+	 * <li>The entity has at least 1 non-empty name.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();	
 		if (getXOMElement().getChildElements(NAME_NAME, getNamespace()).size() == 0)
 			throw new InvalidDDMSException("At least 1 name element must exist.");
 		
@@ -150,7 +149,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 		if (!foundNonEmptyName)
 			throw new InvalidDDMSException("At least 1 name element must have a non-empty value.");
 
-		validateSharedWarnings();
+		super.validate();	
 	}
 	
 	/**
@@ -161,7 +160,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	 * <li>A ddms:email element was found with no value.</li>
 	 * </td></tr></table>
 	 */
-	protected void validateSharedWarnings() {
+	protected void validateWarnings() {
 		Elements phoneElements = getXOMElement().getChildElements(PHONE_NAME, getNamespace());
 		for (int i = 0; i < phoneElements.size(); i++) {
 			if (Util.isEmpty(phoneElements.get(i).getValue())) {
@@ -176,6 +175,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 				break;
 			}
 		}
+		super.validateWarnings();
 	}
 			
 	/**

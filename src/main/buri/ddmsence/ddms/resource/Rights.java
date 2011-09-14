@@ -90,8 +90,8 @@ public final class Rights extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Rights.getName(getDDMSVersion()));
+		super.validate();
 	}
 	
 	/**

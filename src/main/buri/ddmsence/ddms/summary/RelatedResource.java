@@ -28,6 +28,7 @@ import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
@@ -134,7 +135,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException  if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
+
 		Util.requireDDMSQName(getXOMElement(), RelatedResource.getName(getDDMSVersion()));
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
 		Util.requireDDMSValue("value attribute", getValue());
@@ -142,27 +143,13 @@ public final class RelatedResource extends AbstractQualifierValue {
 		if (getChild(Link.getName(getDDMSVersion())) == null)
 			throw new InvalidDDMSException("At least 1 link must exist.");
 		for (Link link : getLinks()) {
-			Util.requireCompatibleVersion(this, link);
 			if (!link.getSecurityAttributes().isEmpty())
 				throw new InvalidDDMSException("Security attributes cannot be applied to links in a related resource.");
 		}
 		
-		validateWarnings();
+		super.validate();
 	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the links.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		for (Link link : getLinks()) {
-			addWarnings(link.getValidationWarnings(), false);
-		}
-	}
-	
+		
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
@@ -178,24 +165,23 @@ public final class RelatedResource extends AbstractQualifierValue {
 	}
 		
 	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.addAll(getLinks());
+		return (list);
+	}
+	
+	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof RelatedResource))
 			return (false);
-		RelatedResource test = (RelatedResource) obj;
-		return (Util.listEquals(getLinks(), test.getLinks()));
+		return (true);
 	}
-	
-	/**
-	 * @see Object#hashCode()
-	 */
-	public int hashCode() {
-		int result = super.hashCode();
-		result = 7 * result + getLinks().hashCode();
-		return (result);
-	}
-	
+
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 

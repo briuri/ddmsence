@@ -109,7 +109,6 @@ public final class Security extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Security.getName(getDDMSVersion()));
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (getDDMSVersion().isAtLeast("3.0")) {
@@ -125,18 +124,7 @@ public final class Security extends AbstractBaseComponent {
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 
-		validateWarnings();
-	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the security attributes.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validate();
 	}
 	
 	/**
@@ -158,19 +146,8 @@ public final class Security extends AbstractBaseComponent {
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof Security))
 			return (false);
-		Security test = (Security) obj;
-		// ExcludeFromRollup is not included in equality, because it is fixed at TRUE.
-		return (getSecurityAttributes().equals(test.getSecurityAttributes()));
-	}
-
-	/**
-	 * @see Object#hashCode()
-	 */
-	public int hashCode() {
-		int result = super.hashCode();
-		// ExcludeFromRollup is not included in hashCode, because it is fixed at TRUE.
-		result = 7 * result + getSecurityAttributes().hashCode();
-		return (result);
+		return (true);
+		// ExcludeFromRollup is not included in equality or hashCode, because it is fixed at TRUE.
 	}
 	
 	/**

@@ -20,6 +20,8 @@
 package buri.ddmsence.ddms;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.resource.Organization;
@@ -120,7 +122,6 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A producer entity exists.</li>
-	 * <li>The producer entity is using the same version of DDMS as this producer role.</li>
 	 * <li>The POCType cannot be used before DDMS 4.0.</li>
 	 * </td></tr></table>
 	 * 
@@ -128,29 +129,14 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();	
 		Util.requireDDMSValue("entity", getEntity());
-		Util.requireCompatibleVersion(this, getEntity());
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0") && !Util.isEmpty(getPOCType())) {
 			throw new InvalidDDMSException("This component cannot have a POCType until DDMS 4.0 or later.");
 		}
-		validateSharedWarnings();
+		super.validate();	
 	}
 	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the entity.</li>
-	 * <li>Include any validation warnings from the security attributes.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateSharedWarnings() {
-		addWarnings(getEntity().getValidationWarnings(), false);
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
-	}
-			
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -158,9 +144,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof AbstractProducerRole))
 			return (false);
 		AbstractProducerRole test = (AbstractProducerRole) obj;
-		return (getEntity().equals(test.getEntity())
-			&& getPOCType().equals(test.getPOCType())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
+		return (getPOCType().equals(test.getPOCType()));
 	}
 
 	/**
@@ -168,9 +152,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 7 * result + getEntity().hashCode();
 		result = 7 * result + getPOCType().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
 	
@@ -186,6 +168,15 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		return (text.toString());
 	}
 		
+	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.add(getEntity());
+		return (list);
+	}
+	
 	/**
 	 * Accessor for the entity fulfilling this producer role
 	 */

@@ -20,11 +20,14 @@
 package buri.ddmsence.ddms.resource;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractProducerRole;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -112,7 +115,6 @@ public class RecordKeeper extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The recordKeeperID exists.</li>
 	 * <li>The organization exists.</li>
-	 * <li>The organization uses the same version of DDMS as this element.</li>
 	 * <li>This component cannot exist until DDMS 4.0 or later.</li>
 	 * </td></tr></table>
 	 * 
@@ -120,29 +122,15 @@ public class RecordKeeper extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), RecordKeeper.getName(getDDMSVersion()));
 		Util.requireDDMSValue("record keeper ID", getRecordKeeperID());
 		Util.requireDDMSValue("organization", getOrganization());
-		Util.requireCompatibleVersion(this, getOrganization());
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			throw new InvalidDDMSException("The ddms:" + RecordKeeper.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
 		
-		validateWarnings();
-	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the organization.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		if (getOrganization() != null)
-			addWarnings(getOrganization().getValidationWarnings(), false);
+		super.validate();
 	}
 	
 	/**
@@ -152,8 +140,7 @@ public class RecordKeeper extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof RecordKeeper))
 			return (false);
 		RecordKeeper test = (RecordKeeper) obj;
-		return (getRecordKeeperID().equals(test.getRecordKeeperID())
-			&& getOrganization().equals(test.getOrganization()));		
+		return (getRecordKeeperID().equals(test.getRecordKeeperID()));
 	}	
 	
 	/**
@@ -162,7 +149,6 @@ public class RecordKeeper extends AbstractBaseComponent {
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 7 * result + getRecordKeeperID().hashCode();
-		result = 7 * result + getOrganization().hashCode();
 		return (result);
 	}
 	
@@ -177,6 +163,15 @@ public class RecordKeeper extends AbstractBaseComponent {
 		return (text.toString());
 	}
 		
+	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.add(getOrganization());
+		return (list);
+	}
+	
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 

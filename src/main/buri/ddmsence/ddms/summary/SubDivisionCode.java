@@ -90,7 +90,6 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), SubDivisionCode.getName(getDDMSVersion()));
 		Util.requireDDMSValue("qualifier attribute", getQualifier());
 		Util.requireDDMSValue("value attribute", getValue());
@@ -98,6 +97,7 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			throw new InvalidDDMSException("The ddms:" + SubDivisionCode.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
+		super.validate();
 	}
 	
 	/**

@@ -95,7 +95,6 @@ public final class Extent extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Extent.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
@@ -103,7 +102,7 @@ public final class Extent extends AbstractQualifierValue {
 			Util.requireDDMSValidURI(getQualifier());
 		}
 		
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -119,6 +118,8 @@ public final class Extent extends AbstractQualifierValue {
 			addWarning("A qualifier has been set without an accompanying value attribute.");
 		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))
 			addWarning("A completely empty ddms:extent element was found.");
+		
+		super.validateWarnings();
 	}
 
 	/**

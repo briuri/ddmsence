@@ -148,7 +148,6 @@ public final class Position extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireQName(getXOMElement(), getNamespace(), Position.getName(getDDMSVersion()));
 		for (Double coordinate : getCoordinates())
 			Util.requireDDMSValue("coordinate", coordinate);
@@ -157,7 +156,7 @@ public final class Position extends AbstractBaseComponent {
 		Util.requireValidLatitude(getCoordinates().get(0));
 		Util.requireValidLongitude(getCoordinates().get(1));
 		
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -169,6 +168,7 @@ public final class Position extends AbstractBaseComponent {
 	 */
 	protected void validateWarnings() {
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
 	}
 	
 	/**

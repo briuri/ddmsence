@@ -469,7 +469,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		// Should be reviewed as additional versions of DDMS are supported.
 		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(getDDMSNamespace());
 		boolean isDDMS20 = "2.0".equals(version.getVersion());
@@ -545,6 +544,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 				throw new InvalidDDMSException("The typeOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0.");
 			}
 		}
+		super.validate();
 	}
 	
 	/**

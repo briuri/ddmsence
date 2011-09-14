@@ -120,7 +120,6 @@ public final class Source extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Source.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getSchemaHref())) {
 			Util.requireDDMSValidURI(getSchemaHref());
@@ -131,7 +130,7 @@ public final class Source extends AbstractQualifierValue {
 				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 		
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -139,7 +138,6 @@ public final class Source extends AbstractQualifierValue {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A completely empty ddms:source element was found.</li>
-	 * <li>Include any validation warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
@@ -147,7 +145,7 @@ public final class Source extends AbstractQualifierValue {
 			&& Util.isEmpty(getSchemaHref())) {
 			addWarning("A completely empty ddms:source element was found.");
 		}
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
 	}
 	
 	/**
@@ -172,8 +170,7 @@ public final class Source extends AbstractQualifierValue {
 			return (false);
 		Source test = (Source) obj;
 		return (getSchemaQualifier().equals(test.getSchemaQualifier()) 
-			&& getSchemaHref().equals(test.getSchemaHref()) 
-			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
+			&& getSchemaHref().equals(test.getSchemaHref()));
 	}
 	
 	/**
@@ -183,7 +180,6 @@ public final class Source extends AbstractQualifierValue {
 		int result = super.hashCode();
 		result = 7 * result + getSchemaQualifier().hashCode();
 		result = 7 * result + getSchemaHref().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
 	

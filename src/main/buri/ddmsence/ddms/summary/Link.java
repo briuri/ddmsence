@@ -160,7 +160,6 @@ public final class Link extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Link.getName(getDDMSVersion()));
 		Util.requireDDMSValue("type attribute", getType());
 		Util.requireDDMSValue("href attribute", getHref());
@@ -175,18 +174,7 @@ public final class Link extends AbstractBaseComponent {
 				Util.requireValidNCName(getLabel());
 		}
 		
-		validateWarnings();
-	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the security attributes.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validate();
 	}
 	
 	/**
@@ -215,8 +203,7 @@ public final class Link extends AbstractBaseComponent {
 			&& getHref().equals(test.getHref())
 			&& getRole().equals(test.getRole()) 
 			&& getTitle().equals(test.getTitle()) 
-			&& getLabel().equals(test.getLabel())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
+			&& getLabel().equals(test.getLabel()));
 	}
 
 	/**
@@ -229,7 +216,6 @@ public final class Link extends AbstractBaseComponent {
 		result = 7 * result + getRole().hashCode();
 		result = 7 * result + getTitle().hashCode();
 		result = 7 * result + getLabel().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
 	

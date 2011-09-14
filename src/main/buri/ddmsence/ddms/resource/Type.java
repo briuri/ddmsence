@@ -126,7 +126,6 @@ public final class Type extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Type.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
@@ -140,7 +139,7 @@ public final class Type extends AbstractQualifierValue {
 				"Security attributes cannot be applied to this component until DDMS 4.0 or later.");
 		}
 
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -149,7 +148,6 @@ public final class Type extends AbstractQualifierValue {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A qualifier has been set without an accompanying value attribute.</li>
 	 * <li>Neither a qualifier nor a value was set on this type.</li>
-	 * <li>Include any validation warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
@@ -157,7 +155,7 @@ public final class Type extends AbstractQualifierValue {
 			addWarning("A qualifier has been set without an accompanying value attribute.");
 		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))
 			addWarning("Neither a qualifier nor a value was set on this type.");
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
 	}
 	
 	/**
@@ -180,8 +178,7 @@ public final class Type extends AbstractQualifierValue {
 		if (!super.equals(obj) || !(obj instanceof Type))
 			return (false);
 		Type test = (Type) obj;
-		return (getDescription().equals(test.getDescription())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
+		return (getDescription().equals(test.getDescription()));
 	}
 	
 	/**
@@ -190,7 +187,6 @@ public final class Type extends AbstractQualifierValue {
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 7 * result + getDescription().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
 

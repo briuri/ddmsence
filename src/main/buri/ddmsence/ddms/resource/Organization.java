@@ -25,8 +25,10 @@ import java.util.List;
 
 import nu.xom.Element;
 import nu.xom.Elements;
+import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.AbstractRoleEntity;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.util.DDMSVersion;
@@ -159,14 +161,13 @@ public final class Organization extends AbstractRoleEntity {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Organization.getName(getDDMSVersion()));
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0")) {
 			if (!Util.isEmpty(getAcronym()))
 				throw new InvalidDDMSException("An organization cannot have an acronym until DDMS 4.0 or later.");
 		}
-		validateWarnings();
+		super.validate();
 	}
 		
 	/**
@@ -181,9 +182,8 @@ public final class Organization extends AbstractRoleEntity {
 			if (Util.isEmpty(getAcronym())
 				&& getXOMElement().getAttribute(ACRONYM_NAME, getNamespace()) != null)
 			addWarning("A ddms:acronym attribute was found with no value.");
-			for (SubOrganization subOrg : getSubOrganizations())
-				addWarnings(subOrg.getValidationWarnings(), false);
 		}
+		super.validateWarnings();
 	}
 
 	/**
@@ -199,14 +199,22 @@ public final class Organization extends AbstractRoleEntity {
 	}
 		
 	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.addAll(getSubOrganizations());
+		return (list);
+	}
+	
+	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof Organization))
 			return (false);
 		Organization test = (Organization) obj;
-		return (Util.listEquals(getSubOrganizations(), test.getSubOrganizations())
-			&& getAcronym().equals(test.getAcronym()));
+		return (getAcronym().equals(test.getAcronym()));
 	}
 	
 	/**
@@ -214,8 +222,6 @@ public final class Organization extends AbstractRoleEntity {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		for (SubOrganization subOrg : getSubOrganizations())
-			result = 7 * result + subOrg.hashCode();
 		result = 7 * result + getAcronym().hashCode();
 		return (result);
 	}

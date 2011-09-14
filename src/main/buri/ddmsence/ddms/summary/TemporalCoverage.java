@@ -235,7 +235,6 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException  if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), TemporalCoverage.getName(getDDMSVersion()));
 		Element periodElement = getTimePeriodElement();
 		Util.requireDDMSValue("TimePeriod element", periodElement);
@@ -262,7 +261,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 		
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -270,7 +269,6 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A ddms:name element was found with no value.</li>
-	 * <li>Include any validation warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
@@ -279,7 +277,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			periodElement.getNamespaceURI());
 		if (timePeriodName != null && Util.isEmpty(timePeriodName.getValue()))
 			addWarning("A ddms:name element was found with no value. Defaulting to \"" + DEFAULT_VALUE + "\".");
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
 	}
 	
 	/**
@@ -314,8 +312,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		TemporalCoverage test = (TemporalCoverage) obj;
 		return (getTimePeriodName().equals(test.getTimePeriodName()) 
 			&& getStartString().equals(test.getStartString())
-			&& getEndString().equals(test.getEndString()) 
-			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
+			&& getEndString().equals(test.getEndString()));
 	}
 
 	/**
@@ -326,7 +323,6 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		result = 7 * result + getTimePeriodName().hashCode();
 		result = 7 * result + getStartString().hashCode();
 		result = 7 * result + getEndString().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
 	

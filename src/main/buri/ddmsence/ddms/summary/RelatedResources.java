@@ -30,6 +30,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
@@ -177,7 +178,6 @@ public final class RelatedResources extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), RelatedResources.getName(getDDMSVersion()));
 		Util.requireDDMSValue("relationship attribute", getRelationship());
 		Util.requireDDMSValidURI(getRelationship());
@@ -185,25 +185,9 @@ public final class RelatedResources extends AbstractBaseComponent {
 			validateRelationshipDirection(getDirection());
 		if (getChild(RelatedResource.getName(getDDMSVersion())) == null)
 			throw new InvalidDDMSException("At least 1 RelatedResource must exist.");
-		for (RelatedResource related : getRelatedResources())
-			Util.requireCompatibleVersion(this, related);
-
-		validateWarnings();
+		super.validate();
 	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the related resources or the security attributes.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		for (RelatedResource related : getRelatedResources())
-			addWarnings(related.getValidationWarnings(), false);
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
-	}
-	
+		
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
@@ -220,6 +204,15 @@ public final class RelatedResources extends AbstractBaseComponent {
 	}
 	
 	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.addAll(getRelatedResources());
+		return (list);
+	}
+	
+	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
@@ -227,9 +220,7 @@ public final class RelatedResources extends AbstractBaseComponent {
 			return (false);
 		RelatedResources test = (RelatedResources) obj;
 		return (getRelationship().equals(test.getRelationship()) 
-			&& getDirection().equals(test.getDirection())
-			&& Util.listEquals(getRelatedResources(), test.getRelatedResources()) 
-			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
+			&& getDirection().equals(test.getDirection()));
 	}
 	
 	/**
@@ -239,8 +230,6 @@ public final class RelatedResources extends AbstractBaseComponent {
 		int result = super.hashCode();
 		result = 7 * result + getRelationship().hashCode();
 		result = 7 * result + getDirection().hashCode();
-		result = 7 * result + getRelatedResources().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
 	
