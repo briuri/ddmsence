@@ -19,15 +19,12 @@
 */
 package buri.ddmsence.ddms.extensible;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
 
 import nu.xom.Document;
 import nu.xom.Element;
-import nu.xom.ParsingException;
 
-import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
@@ -157,14 +154,8 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 				Document doc = builder.build(new StringReader(getXml()));
 				return (new ExtensibleElement(doc.getRootElement()));
 			}
-			catch (ParsingException e) {
+			catch (Exception e) {
 				throw new InvalidDDMSException("Could not create a valid element from XML string: " + e.getMessage());
-			}
-			catch (SAXException e) {
-				throw new InvalidDDMSException("Could not initialize XML conversion for commit: " + e.getMessage());
-			}
-			catch (IOException e) {
-				throw new InvalidDDMSException("Could not read XML string for commit: " + e.getMessage());
 			}
 		}
 

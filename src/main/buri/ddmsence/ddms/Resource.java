@@ -306,8 +306,9 @@ public final class Resource extends AbstractBaseComponent {
 				// to fail validation anyhow, so we skip the extensible layer.
 				int index = 0;
 				Elements allElements = element.getChildElements();
-				while (allElements.get(index) != component)
+				while (allElements.get(index) != component) {
 					index++;
+				}
 				for (int i = index + 1; i < allElements.size(); i++) {
 					_cachedExtensibleElements.add(new ExtensibleElement(allElements.get(i)));
 				}	
