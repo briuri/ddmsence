@@ -957,8 +957,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			Organization org = new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null);
 			Creator creator = new Creator(org, null, new SecurityAttributes("TS", ownerProducers, null));
 
-			Element element = getResourceWithoutHeaderElement();
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			Element element = getResourceWithoutBodyElement();
 			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 			element.appendChild(TEST_TITLE.getXOMElementCopy());
 			element.appendChild(creator.getXOMElementCopy());
