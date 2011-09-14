@@ -926,8 +926,24 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 	</xs:complexType>
 	<xs:complexType name="TaskingInfoType">
 		<xs:sequence>
-			<xs:element name="requestorInfoList" type="RequestorInfoListType" minOccurs="0"/>
-			<xs:element name="addresseeList" type="AddresseeListType" minOccurs="0"/>
+			<xs:element name="requestorInfo" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element ref="person"/>
+						<xs:element ref="organization"/>
+					</xs:choice>
+					<xs:attributeGroup ref="SecurityAttributesGroup"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="addressee" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element ref="person"/>
+						<xs:element ref="organization"/>
+					</xs:choice>
+					<xs:attributeGroup ref="SecurityAttributesGroup"/>
+				</xs:complexType>
+			</xs:element>
 			<xs:element ref="description" minOccurs="0"/>
 			<xs:element name="taskID">
 				<xs:annotation>
@@ -944,32 +960,6 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 			</xs:element>
 		</xs:sequence>
 		<xs:attributeGroup ref="SecurityAttributesGroup"/>
-	</xs:complexType>
-	<xs:complexType name="RequestorInfoListType">
-		<xs:sequence>
-			<xs:element name="requestorInfo" maxOccurs="unbounded">
-				<xs:complexType>
-					<xs:choice>
-						<xs:element ref="person"/>
-						<xs:element ref="organization"/>
-					</xs:choice>
-					<xs:attributeGroup ref="SecurityAttributesGroup"/>
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-	</xs:complexType>
-	<xs:complexType name="AddresseeListType">
-		<xs:sequence>
-			<xs:element name="addressee" maxOccurs="unbounded">
-				<xs:complexType>
-					<xs:choice>
-						<xs:element ref="person"/>
-						<xs:element ref="organization"/>
-					</xs:choice>
-					<xs:attributeGroup ref="SecurityAttributesGroup"/>
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="NonStateActorCoverageType">
 		<xs:simpleContent>
