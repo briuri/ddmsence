@@ -114,8 +114,8 @@ public final class Service extends AbstractRoleEntity {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Service.getName(getDDMSVersion()));
+		super.validate();
 	}
 		
 	/**

@@ -123,7 +123,6 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */	
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), BoundingBox.getName(getDDMSVersion()));
 		Util.requireDDMSValue("westbound longitude", getWestBL());
 		Util.requireDDMSValue("eastbound longitude", getEastBL());
@@ -133,6 +132,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 		Util.requireValidLongitude(getEastBL());
 		Util.requireValidLatitude(getSouthBL());
 		Util.requireValidLatitude(getNorthBL());
+		super.validate();
 	}
 	
 	/**

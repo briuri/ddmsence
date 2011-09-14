@@ -86,8 +86,8 @@ public class PointOfContact extends AbstractProducerRole {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), PointOfContact.getName(getDDMSVersion()));
+		super.validate();
 	}
 	
 	/**

@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
+import buri.ddmsence.ddms.extensible.ExtensibleElement;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.gml.Point;
 import buri.ddmsence.ddms.summary.gml.Polygon;
@@ -123,10 +124,36 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A name exists and is not empty.</li>
+	 * <li>All child components use the same version of DDMS as this component.</li>
 	 * </td></tr></table>
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSValue("name", getName());
+		for (IDDMSComponent nested : getNestedComponents()) {
+			if (nested instanceof ExtensibleElement || nested == null)
+				continue;
+			Util.requireCompatibleVersion(this, nested);
+		}
+		validateWarnings();
+	}
+	
+	/**
+	 * Base case for warnings. This method can be overridden for more in-depth validation. It is always assumed
+	 * that the subcomponents of a component are already valid.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Adds any warnings from any nested components.</li>
+	 * <li>Adds any warnings from any security attributes.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		for (IDDMSComponent nested : getNestedComponents()) {
+			if (nested == null)
+				continue;
+			addWarnings(nested.getValidationWarnings(), false);
+		}
+		if (getSecurityAttributes() != null)
+			addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
 	
 	/**
@@ -151,6 +178,14 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @return the HTML output
 	 */
 	public abstract String getOutput(boolean isHTML, String prefix);
+		
+	/**
+	 * Accessor for a collection of nested components. A list such as this is useful for bulk actions, such as
+	 * checking emptiness, equality, generating hash codes, or applying mass validation.
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		return (Collections.EMPTY_LIST);
+	}
 	
 	/**
 	 * Convenience method to build a meta tag for HTML output or a text line for Text output.
@@ -257,7 +292,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * Test for logical equality.
 	 * 
 	 * <p> The base case tests against the name value and namespaceURI. Extending classes may require additional rules
-	 * for equality. </p>
+	 * for equality. This case automatically includes any nested components or security attributes.</p>
 	 * 
 	 * @see Object#equals(Object)
 	 */
@@ -268,17 +303,28 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 			return (false);
 		AbstractBaseComponent test = (AbstractBaseComponent) obj;
 		return (getName().equals(test.getName())
-			&& getNamespace().equals(test.getNamespace()));
+			&& getNamespace().equals(test.getNamespace())
+			&& Util.listEquals(getNestedComponents(), test.getNestedComponents())
+			&& Util.nullEquals(getSecurityAttributes(), test.getSecurityAttributes()));
 	}
 	
 	/**
 	 * Returns a hashcode for the component.
+	 * 
+	 * <p>This automatically includes any nested components or security attributes.</p>
 	 * 
 	 * @see Object#hashCode()
 	 */
 	public int hashCode() {
 		int result = getName().hashCode();
 		result = 7 * result + getNamespace().hashCode();
+		for (IDDMSComponent nested : getNestedComponents()) {
+			if (nested == null)
+				continue;
+			result = 7 * result + nested.hashCode();
+		}
+		if (getSecurityAttributes() != null)
+			result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
 	

@@ -30,6 +30,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
@@ -194,15 +195,13 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 of "Keyword" or "Category" must exist.</li>
-	 * <li>The DDMS Version of the Keywords, Categories, ProductionMetrics, and NonStateActors is the same as the 
-	 * SubjectCoverage.</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
+
 		Util.requireDDMSQName(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()));
 		Element subjectElement = getSubjectElement();
 		Util.requireDDMSValue("Subject element", subjectElement);
@@ -212,21 +211,13 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			+ subjectElement.getChildElements(Category.getName(getDDMSVersion()), namespace).size();
 		if (count < 1)
 			throw new InvalidDDMSException("At least 1 keyword or category must exist.");
-		for (Keyword keyword : getKeywords())
-			Util.requireCompatibleVersion(this, keyword);
-		for (Category category : getCategories())
-			Util.requireCompatibleVersion(this, category);
-		for (ProductionMetric metric : getProductionMetrics())
-			Util.requireCompatibleVersion(this, metric);
-		for (NonStateActor actor : getNonStateActors())
-			Util.requireCompatibleVersion(this, actor);
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
 				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -236,7 +227,6 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * <li>1 or more keywords have the same value.</li>
 	 * <li>1 or more categories have the same value.</li>
 	 * <li>1 or more productionMetrics have the same value.</li>
-	 * <li>Include any validation warnings from the security attributes, keywords, categories, metrics, or actors.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
@@ -249,16 +239,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 		Set<ProductionMetric> uniqueMetrics = new HashSet<ProductionMetric>(getProductionMetrics());
 		if (uniqueMetrics.size() != getProductionMetrics().size())
 			addWarning("1 or more productionMetrics have the same value.");
-		
-		for (Keyword keyword : getKeywords())
-			addWarnings(keyword.getValidationWarnings(), false);
-		for (Category category : getCategories())
-			addWarnings(category.getValidationWarnings(), false);
-		for (ProductionMetric metric : getProductionMetrics())
-			addWarnings(metric.getValidationWarnings(), false);
-		for (NonStateActor actor : getNonStateActors())
-			addWarnings(actor.getValidationWarnings(), false);
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
 	}
 	
 	/**
@@ -290,30 +271,24 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	}
 		
 	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.addAll(getKeywords());
+		list.addAll(getCategories());
+		list.addAll(getProductionMetrics());
+		list.addAll(getNonStateActors());
+		return (list);
+	}
+	
+	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof SubjectCoverage))
 			return (false);
-		SubjectCoverage test = (SubjectCoverage) obj;
-		return (Util.listEquals(getKeywords(), test.getKeywords())
-			&& Util.listEquals(getCategories(), test.getCategories())
-			&& Util.listEquals(getProductionMetrics(), test.getProductionMetrics())
-			&& Util.listEquals(getNonStateActors(), test.getNonStateActors())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
-	}
-
-	/**
-	 * @see Object#hashCode()
-	 */
-	public int hashCode() {
-		int result = super.hashCode();
-		result = 7 * result + getKeywords().hashCode();
-		result = 7 * result + getCategories().hashCode();
-		result = 7 * result + getProductionMetrics().hashCode();
-		result = 7 * result + getNonStateActors().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
-		return (result);
+		return (true);
 	}
 	
 	/**

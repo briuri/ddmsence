@@ -88,23 +88,11 @@ public final class Title extends AbstractSimpleString {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Title.getName(getDDMSVersion()));
 		Util.requireDDMSValue("title value", getValue());		
-		validateWarnings();
+		super.validate();
 	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the security attributes.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
-	}
-			
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */

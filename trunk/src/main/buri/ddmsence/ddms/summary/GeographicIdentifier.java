@@ -20,12 +20,14 @@
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
@@ -171,14 +173,12 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * <li>At least 1 of name, region, countryCode, subDivisionCode or facilityIdentifier must exist.</li>
 	 * <li>No more than 1 countryCode, subDivisionCode or facilityIdentifier can exist.</li>
 	 * <li>If facilityIdentifier is used, no other components can exist.</li>
-	 * <li>If a countryCode, subDivisionCode or facilityIdentifier exists, it is using the same version of DDMS.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), GeographicIdentifier.getName(getDDMSVersion()));
 		if (getNames().isEmpty() && getRegions().isEmpty() && getCountryCode() == null && getSubDivisionCode() == null
 			&& getFacilityIdentifier() == null) {
@@ -189,32 +189,11 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), SubDivisionCode.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), FacilityIdentifier.getName(getDDMSVersion()), 0, 1);
 		if (hasFacilityIdentifier()) {
-			Util.requireCompatibleVersion(this, getFacilityIdentifier());
 			if (!getNames().isEmpty() || !getRegions().isEmpty() || getCountryCode() != null
 				|| getSubDivisionCode() != null)
 				throw new InvalidDDMSException("facilityIdentifier cannot be used in tandem with other components.");
 		}
-		if (getCountryCode() != null)
-			Util.requireCompatibleVersion(this, getCountryCode());
-		if (getSubDivisionCode() != null)
-			Util.requireCompatibleVersion(this, getSubDivisionCode());
-		validateWarnings();
-	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the facility identifier, country code, or subdivision code.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		if (getCountryCode() != null)
-			addWarnings(getCountryCode().getValidationWarnings(), false);
-		if (getSubDivisionCode() != null)
-			addWarnings(getSubDivisionCode().getValidationWarnings(), false);
-		if (hasFacilityIdentifier())
-			addWarnings(getFacilityIdentifier().getValidationWarnings(), false);
+		super.validate();
 	}
 	
 	/**
@@ -237,18 +216,25 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	}
 		
 	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.add(getCountryCode());
+		list.add(getSubDivisionCode());
+		list.add(getFacilityIdentifier());
+		return (list);
+	}
+	
+	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof GeographicIdentifier))
 			return (false);
 		GeographicIdentifier test = (GeographicIdentifier) obj;
-		boolean isEqual = Util.listEquals(getNames(), test.getNames())
-			&& Util.listEquals(getRegions(), test.getRegions())
-			&& Util.nullEquals(getCountryCode(), test.getCountryCode())
-			&& Util.nullEquals(getSubDivisionCode(), test.getSubDivisionCode())
-			&& Util.nullEquals(getFacilityIdentifier(), test.getFacilityIdentifier());
-		return (isEqual);
+		return (Util.listEquals(getNames(), test.getNames())
+			&& Util.listEquals(getRegions(), test.getRegions()));
 	}
 
 	/**
@@ -258,12 +244,6 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		int result = super.hashCode();
 		result = 7 * result + getNames().hashCode();
 		result = 7 * result + getRegions().hashCode();
-		if (getCountryCode() != null)
-			result = 7 * result + getCountryCode().hashCode();
-		if (getSubDivisionCode() != null)
-			result = 7 * result + getSubDivisionCode().hashCode();
-		if (hasFacilityIdentifier())
-			result = 7 * result + getFacilityIdentifier().hashCode();
 		return (result);
 	}
 	

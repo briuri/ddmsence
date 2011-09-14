@@ -88,15 +88,13 @@ public final class Details extends AbstractSimpleString {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Details.getName(getDDMSVersion()));
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			throw new InvalidDDMSException("The ddms:" + Details.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
 
-		
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -104,13 +102,12 @@ public final class Details extends AbstractSimpleString {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A ddms:details element was found with no child text.</li>
-	 * <li>Include any warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))
 			addWarning("A ddms:details element was found with no value.");
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
 	}
 			
 	/**

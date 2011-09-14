@@ -26,6 +26,7 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
@@ -216,7 +217,6 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), GeospatialCoverage.getName(getDDMSVersion()));
 		Element extElement = getExtentElement();
 		Util.requireDDMSValue("GeospatialExtent element", extElement);
@@ -228,26 +228,16 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(extElement, VerticalExtent.getName(getDDMSVersion()), 0, 1);
 			
 		int validComponents = 0;
-		if (getGeographicIdentifier() != null) {
-			Util.requireCompatibleVersion(this, getGeographicIdentifier());
+		if (getGeographicIdentifier() != null)
 			validComponents++;
-		}
-		if (getBoundingBox() != null) {
-			Util.requireCompatibleVersion(this, getBoundingBox());
+		if (getBoundingBox() != null)
 			validComponents++;
-		}
-		if (getBoundingGeometry() != null) {
-			Util.requireCompatibleVersion(this, getBoundingGeometry());
+		if (getBoundingGeometry() != null)
 			validComponents++;
-		}
-		if (getPostalAddress() != null) {
-			Util.requireCompatibleVersion(this, getPostalAddress());
+		if (getPostalAddress() != null)
 			validComponents++;
-		}
-		if (getVerticalExtent() != null) {
-			Util.requireCompatibleVersion(this, getVerticalExtent());
+		if (getVerticalExtent() != null)
 			validComponents++;
-		}
 		if (validComponents == 0) {
 			throw new InvalidDDMSException("At least 1 of geographicIdentifier, boundingBox, boundingGeometry, "
 				+ "postalAddress, or verticalExtent must be used.");
@@ -279,28 +269,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			}				
 		}
 		
-		validateWarnings();
-	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the security attributes and any child components.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		if (getGeographicIdentifier() != null)
-			addWarnings(getGeographicIdentifier().getValidationWarnings(), false);
-		if (getBoundingBox() != null)
-			addWarnings(getBoundingBox().getValidationWarnings(), false);
-		if (getBoundingGeometry() != null)
-			addWarnings(getBoundingGeometry().getValidationWarnings(), false);
-		if (getPostalAddress() != null)
-			addWarnings(getPostalAddress().getValidationWarnings(), false);
-		if (getVerticalExtent() != null)
-			addWarnings(getVerticalExtent().getValidationWarnings(), false);
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validate();
 	}
 	
 	/**
@@ -337,21 +306,27 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	}
 
 	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.add(getBoundingBox());
+		list.add(getBoundingGeometry());
+		list.add(getGeographicIdentifier());
+		list.add(getPostalAddress());
+		list.add(getVerticalExtent());		
+		return (list);
+	}
+	
+	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof GeospatialCoverage))
 			return (false);
 		GeospatialCoverage test = (GeospatialCoverage) obj;
-		boolean isEqual = Util.nullEquals(getGeographicIdentifier(), test.getGeographicIdentifier())
-			&& Util.nullEquals(getBoundingBox(), test.getBoundingBox())
-			&& Util.nullEquals(getBoundingGeometry(), test.getBoundingGeometry())
-			&& Util.nullEquals(getPostalAddress(), test.getPostalAddress())
-			&& Util.nullEquals(getVerticalExtent(), test.getVerticalExtent())
-			&& getPrecedence().equals(test.getPrecedence())
-			&& Util.nullEquals(getOrder(), test.getOrder())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes());
-		return (isEqual);
+		return (getPrecedence().equals(test.getPrecedence())
+			&& Util.nullEquals(getOrder(), test.getOrder()));
 	}
 
 	/**
@@ -359,20 +334,9 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		if (getGeographicIdentifier() != null)
-			result = 7 * result + getGeographicIdentifier().hashCode();
-		if (getBoundingBox() != null)
-			result = 7 * result + getBoundingBox().hashCode();
-		if (getBoundingGeometry() != null)
-			result = 7 * result + getBoundingGeometry().hashCode();
-		if (getPostalAddress() != null)
-			result = 7 * result + getPostalAddress().hashCode();
-		if (getVerticalExtent() != null)
-			result = 7 * result + getVerticalExtent().hashCode();
 		result = 7 * result + getPrecedence().hashCode();
 		if (getOrder() != null)
 			result = 7 * result + getOrder().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
 

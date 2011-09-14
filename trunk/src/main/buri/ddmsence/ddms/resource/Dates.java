@@ -181,7 +181,6 @@ public final class Dates extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Dates.getName(getDDMSVersion()));
 		if (getCreated() != null)
 			Util.requireDDMSDateFormat(getCreated().getXMLSchemaType());
@@ -201,7 +200,8 @@ public final class Dates extends AbstractBaseComponent {
 		if (!getDDMSVersion().isAtLeast("4.0") && getReceivedOn() != null) {
 			throw new InvalidDDMSException("This component cannot have a receivedOn date until DDMS 4.0 or later.");
 		}
-		validateWarnings();
+
+		super.validate();
 	}
 	
 	/**
@@ -216,6 +216,7 @@ public final class Dates extends AbstractBaseComponent {
 			&& getApprovedOn() == null && getReceivedOn() == null) {
 			addWarning("A completely empty ddms:dates element was found.");
 		}
+		super.validateWarnings();
 	}
 	
 	/**

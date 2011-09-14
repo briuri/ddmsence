@@ -28,6 +28,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.summary.gml.Point;
 import buri.ddmsence.ddms.summary.gml.Polygon;
@@ -129,35 +130,12 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */	
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), BoundingGeometry.getName(getDDMSVersion()));
 		if (getPolygons().size() + getPoints().size() == 0) {
 			throw new InvalidDDMSException("At least 1 of Polygon or Point must be used.");
 		}
-		for (Polygon polygon : getPolygons()) {
-			Util.requireCompatibleVersion(this, polygon);
-		}
-		for (Point point : getPoints()) {
-			Util.requireCompatibleVersion(this, point);
-		}
 		
-		validateWarnings();
-	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from child polygons or points.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		for (Polygon polygon : getPolygons()) {
-			addWarnings(polygon.getValidationWarnings(), false);
-		}
-		for (Point point : getPoints()) {
-			addWarnings(point.getValidationWarnings(), false);
-		}
+		super.validate();
 	}
 	
 	/**
@@ -174,24 +152,22 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	}
 	
 	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.addAll(getPoints());
+		list.addAll(getPolygons());
+		return (list);
+	}
+	
+	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof BoundingGeometry))
 			return (false);
-		BoundingGeometry test = (BoundingGeometry) obj;
-		return (Util.listEquals(getPolygons(), test.getPolygons())) 
-			&& Util.listEquals(getPoints(), test.getPoints());
-	}
-
-	/**
-	 * @see Object#hashCode()
-	 */
-	public int hashCode() {
-		int result = super.hashCode();
-		result = 7 * result + getPolygons().hashCode();
-		result = 7 * result + getPoints().hashCode();
-		return (result);
+		return (true);
 	}
 	
 	/**

@@ -124,7 +124,6 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), ProcessingInfo.getName(getDDMSVersion()));
 		Util.requireDDMSValue("dateProcessed", getDateProcessed());
 		if (getDateProcessed() != null)
@@ -134,7 +133,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			throw new InvalidDDMSException("The ddms:" + ProcessingInfo.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
 		
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -148,7 +147,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))
 			addWarning("A ddms:processingInfo element was found with no value.");
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
 	}
 			
 	/**

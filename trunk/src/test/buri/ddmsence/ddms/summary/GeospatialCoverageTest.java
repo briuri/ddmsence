@@ -400,9 +400,27 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			GeospatialCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			GeospatialCoverage dataComponent = testConstructor(WILL_SUCCEED, null, BoundingBoxTest.getFixture(), null,
+			GeospatialCoverage dataComponent = null;
+			if (version.isAtLeast("4.0")) {
+				dataComponent = testConstructor(WILL_SUCCEED, GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null,
+					null, null, TEST_PRECEDENCE, null);
+				assertFalse(elementComponent.equals(dataComponent));
+				
+				dataComponent = testConstructor(WILL_SUCCEED, GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null,
+					null, null, null, TEST_ORDER);
+				assertFalse(elementComponent.equals(dataComponent));		
+			}
+			dataComponent = testConstructor(WILL_SUCCEED, null, BoundingBoxTest.getFixture(), null,
+				null, null, null, null);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, null, BoundingBoxTest.getFixture(), null,
+				null, null, null, null);
+			assertFalse(elementComponent.equals(dataComponent));
+			
+			dataComponent = testConstructor(WILL_SUCCEED, null, BoundingBoxTest.getFixture(), null,
 				null, null, null, null);
 			assertFalse(elementComponent.equals(dataComponent));
 
@@ -414,6 +432,8 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 
 			dataComponent = testConstructor(WILL_SUCCEED, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
 			assertFalse(elementComponent.equals(dataComponent));
+			
+			
 		}
 	}
 

@@ -28,6 +28,7 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
@@ -163,7 +164,6 @@ public final class Polygon extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireQName(getXOMElement(), getNamespace(), Polygon.getName(getDDMSVersion()));
 		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
@@ -178,7 +178,6 @@ public final class Polygon extends AbstractBaseComponent {
 		}
 		List<Position> positions = getPositions();
 		for (Position pos : positions) {
-			Util.requireCompatibleVersion(this, pos);
 			if (pos.getSRSAttributes() != null) {
 				String srsName = pos.getSRSAttributes().getSrsName();
 				if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))
@@ -191,21 +190,19 @@ public final class Polygon extends AbstractBaseComponent {
 			throw new InvalidDDMSException("The first and last position in the Polygon must be the same.");
 		}
 
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the SRS attributes and the child position.</li>
+	 * <li>Include any validation warnings from the SRS attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		for (Position pos : getPositions()) {
-			addWarnings(pos.getValidationWarnings(), false);
-		}
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
 	}
 	
 	/**
@@ -231,6 +228,15 @@ public final class Polygon extends AbstractBaseComponent {
 	}
 	
 	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.addAll(getPositions());
+		return (list);
+	}
+	
+	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
@@ -238,7 +244,6 @@ public final class Polygon extends AbstractBaseComponent {
 			return (false);
 		Polygon test = (Polygon) obj;
 		return (getSRSAttributes().equals(test.getSRSAttributes())
-			&& Util.listEquals(getPositions(), test.getPositions()) 
 			&& getId().equals(test.getId()));
 	}
 
@@ -249,7 +254,6 @@ public final class Polygon extends AbstractBaseComponent {
 		int result = super.hashCode();
 		result = 7 * result + getSRSAttributes().hashCode();
 		result = 7 * result + getId().hashCode();
-		result = 7 * result + getPositions().hashCode();
 		return (result);
 	}
 	

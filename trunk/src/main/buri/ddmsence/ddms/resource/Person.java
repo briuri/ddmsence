@@ -171,14 +171,13 @@ public final class Person extends AbstractRoleEntity {
 	 *             if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Person.getName(getDDMSVersion()));
 		Util.requireDDMSValue(SURNAME_NAME, getSurname());
 		Util.requireBoundedDDMSChildCount(getXOMElement(), SURNAME_NAME, 1, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), USERID_NAME, 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), AFFILIATION_NAME, 0, 1);
 		
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -195,6 +194,7 @@ public final class Person extends AbstractRoleEntity {
 		if (Util.isEmpty(getAffiliation())
 			&& getXOMElement().getChildElements(AFFILIATION_NAME, getNamespace()).size() == 1)
 			addWarning("A ddms:affiliation element was found with no value.");
+		super.validateWarnings();
 	}
 
 	/**

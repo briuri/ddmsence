@@ -159,7 +159,6 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		if (!Util.isEmpty(getSrsName()))
 			Util.requireDDMSValidURI(getSrsName());
 		if (getSrsDimension() != null && getSrsDimension().intValue() < 0)
@@ -170,6 +169,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 			throw new InvalidDDMSException("The uomLabels attribute can only be used in tandem with axisLabels.");
 		Util.requireValidNCNames(getAxisLabels());
 		Util.requireValidNCNames(getUomLabels());
+		super.validate();
 	}
 	
 	/**

@@ -20,10 +20,13 @@
 package buri.ddmsence.ddms.summary.gml;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -136,31 +139,29 @@ public final class Point extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireQName(getXOMElement(), getNamespace(), Point.getName(getDDMSVersion()));
 		Util.requireDDMSValue("srsAttributes", getSRSAttributes());
 		Util.requireDDMSValue("srsName", getSRSAttributes().getSrsName());
 		Util.requireDDMSValue(ID_NAME, getId());
 		Util.requireValidNCName(getId());
 		Util.requireDDMSValue("position", getPosition());
-		Util.requireCompatibleVersion(this, getPosition());
 		String srsName = getPosition().getSRSAttributes().getSrsName();
 		if (!Util.isEmpty(srsName) && !srsName.equals(getSRSAttributes().getSrsName()))
 			throw new InvalidDDMSException("The srsName of the position must match the srsName of the Point.");
 		
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the SRS attributes and the child position.</li>
+	 * <li>Include any validation warnings from the SRS attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		addWarnings(getPosition().getValidationWarnings(), false);
 		addWarnings(getSRSAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
 	}
 	
 	/**
@@ -176,6 +177,15 @@ public final class Point extends AbstractBaseComponent {
 	}
 
 	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.add(getPosition());
+		return (list);
+	}
+	
+	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
@@ -183,7 +193,6 @@ public final class Point extends AbstractBaseComponent {
 			return (false);
 		Point test = (Point) obj;
 		return (getSRSAttributes().equals(test.getSRSAttributes()) 
-			&& getPosition().equals(test.getPosition())
 			&& getId().equals(test.getId()));
 	}
 
@@ -194,7 +203,6 @@ public final class Point extends AbstractBaseComponent {
 		int result = super.hashCode();
 		result = 7 * result + getSRSAttributes().hashCode();
 		result = 7 * result + getId().hashCode();
-		result = 7 * result + getPosition().hashCode();
 		return (result);
 	}
 	

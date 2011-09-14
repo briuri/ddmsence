@@ -120,7 +120,6 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), VirtualCoverage.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getAddress()))
 			Util.requireDDMSValue(PROTOCOL_NAME, getProtocol());
@@ -130,7 +129,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -138,13 +137,12 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A completely empty ddms:virtualCoverage element was found.</li>
-	 * <li>Include any validation warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getAddress()) && Util.isEmpty(getProtocol()))
 			addWarning("A completely empty ddms:virtualCoverage element was found.");
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
 	}
 	
 	/**
@@ -167,8 +165,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 			return (false);
 		VirtualCoverage test = (VirtualCoverage) obj;
 		return (getAddress().equals(test.getAddress()) 
-			&& getProtocol().equals(test.getProtocol()) 
-			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
+			&& getProtocol().equals(test.getProtocol()));
 	}
 
 	/**
@@ -178,7 +175,6 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		int result = super.hashCode();
 		result = 7 * result + getAddress().hashCode();
 		result = 7 * result + getProtocol().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
 	

@@ -93,12 +93,11 @@ public final class Language extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Language.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
 		
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -114,6 +113,7 @@ public final class Language extends AbstractQualifierValue {
 			addWarning("A qualifier has been set without an accompanying value attribute.");
 		if (Util.isEmpty(getQualifier()) && Util.isEmpty(getValue()))
 			addWarning("Neither a qualifier nor a value was set on this language.");
+		super.validateWarnings();
 	}
 	
 	/**

@@ -586,7 +586,6 @@ public final class Resource extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Resource.getName(getDDMSVersion()));
 
 		if (getIdentifiers().size() < 1)
@@ -615,11 +614,6 @@ public final class Resource extends AbstractBaseComponent {
 			}
 			ISMVocabulary.validateRollup(getSecurityAttributes(), childAttributes);
 		}
-		for (IDDMSComponent component : getTopLevelComponents()) {
-			if (component instanceof ExtensibleElement)
-				continue;
-			Util.requireCompatibleVersion(this, component);
-		}
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if ("3.1".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getDESVersion())))
@@ -637,7 +631,7 @@ public final class Resource extends AbstractBaseComponent {
 				throw new InvalidDDMSException("The createDate must be in the xs:date format (YYYY-MM-DD).");
 		}
 		
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -645,7 +639,6 @@ public final class Resource extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>If ddms:Resource has no classification, warn about ignoring rollup validation.</li>
-	 * <li>Include all child component validation warnings, and any warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
@@ -653,10 +646,7 @@ public final class Resource extends AbstractBaseComponent {
 			addWarning("Security rollup validation is being skipped, because no classification exists "
 				+ "on the ddms:Resource itself.");
 		}
-		for (IDDMSComponent component : getTopLevelComponents()) {
-			addWarnings(component.getValidationWarnings(), false);
-		}
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
 	}
 		
 	/**
@@ -693,9 +683,7 @@ public final class Resource extends AbstractBaseComponent {
 		return (Util.nullEquals(isResourceElement(), test.isResourceElement())
 			&& Util.nullEquals(getCreateDate(), test.getCreateDate())
 			&& Util.nullEquals(getDESVersion(), test.getDESVersion())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes())
-			&& getExtensibleAttributes().equals(test.getExtensibleAttributes())
-			&& Util.listEquals(getTopLevelComponents(),	test.getTopLevelComponents()));
+			&& getExtensibleAttributes().equals(test.getExtensibleAttributes()));
 	}
 
 	/**
@@ -709,10 +697,7 @@ public final class Resource extends AbstractBaseComponent {
 			result = 7 * result + getCreateDate().hashCode();
 		if (getDESVersion() != null)
 			result = 7 * result + getDESVersion().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
 		result = 7 * result + getExtensibleAttributes().hashCode();
-		for (IDDMSComponent component : getTopLevelComponents())
-			result = 7 * result + component.hashCode();
 		return (result);
 	}
 
@@ -909,6 +894,13 @@ public final class Resource extends AbstractBaseComponent {
 	public List<IDDMSComponent> getTopLevelComponents() {
 		return (Collections.unmodifiableList(_orderedList));
 	}
+	
+	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		return (getTopLevelComponents());
+	}
 
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
@@ -978,8 +970,6 @@ public final class Resource extends AbstractBaseComponent {
 		 */
 		public Builder(Resource resource) {
 			for (IDDMSComponent component : resource.getTopLevelComponents()) {
-				if (component == null)
-					continue;
 				// Resource Set
 				if (component instanceof Identifier)
 					getIdentifiers().add(new Identifier.Builder((Identifier) component));

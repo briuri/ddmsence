@@ -85,9 +85,8 @@ public final class Description extends AbstractSimpleString {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Description.getName(getDDMSVersion()));			
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -95,13 +94,12 @@ public final class Description extends AbstractSimpleString {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A ddms:description element was found with no description value.</li>
-	 * <li>Include any validation warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))
 			addWarning("A ddms:" + Description.getName(getDDMSVersion()) + " element was found with no description value.");
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
 	}
 	
 	/**

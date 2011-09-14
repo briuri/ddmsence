@@ -20,6 +20,8 @@
 package buri.ddmsence.ddms;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.resource.Organization;
@@ -109,7 +111,6 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The entity exists and is either a Person or an Organization.</li>
-	 * <li>The entity uses the same version of DDMS as this element.</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>This component cannot exist until DDMS 4.0 or later.</li>
@@ -118,13 +119,11 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSValue("entity", getEntity());
 		if (!(getEntity() instanceof Organization)
 			&& !(getEntity() instanceof Person)) {
 			throw new InvalidDDMSException("The entity must be a person or an organization.");
 		}
-		Util.requireCompatibleVersion(this, getEntity());
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 		
@@ -132,21 +131,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			throw new InvalidDDMSException("The ddms:" + RequestorInfo.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
 		
-		validateSharedWarnings();
-	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Include any validation warnings from the person or organization.</li>
-	 * <li>Include any validation warnings from the security attributes.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateSharedWarnings() {
-		if (getEntity() != null)
-			addWarnings(getEntity().getValidationWarnings(), false);
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validate();
 	}
 			
 	/**
@@ -155,19 +140,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof AbstractTaskingRole))
 			return (false);
-		AbstractTaskingRole test = (AbstractTaskingRole) obj;
-		return (getEntity().equals(test.getEntity())
-			&& getSecurityAttributes().equals(test.getSecurityAttributes()));
-	}
-
-	/**
-	 * @see Object#hashCode()
-	 */
-	public int hashCode() {
-		int result = super.hashCode();
-		result = 7 * result + getEntity().hashCode();
-		result = 7 * result + getSecurityAttributes().hashCode();
-		return (result);
+		return (true);
 	}
 	
 	/**
@@ -180,7 +153,17 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
-			
+	
+	
+	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.add(getEntity());
+		return (list);
+	}
+	
 	/**
 	 * Accessor for the producer entity
 	 */

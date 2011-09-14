@@ -85,8 +85,8 @@ public class Addressee extends AbstractTaskingRole {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Addressee.getName(getDDMSVersion()));
+		super.validate();
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class Addressee extends AbstractTaskingRole {
 			return (false);
 		return (true);
 	}	
-		
+	
 	/**
 	 * Accessor for the element name of this component, based on the version of DDMS used
 	 * 

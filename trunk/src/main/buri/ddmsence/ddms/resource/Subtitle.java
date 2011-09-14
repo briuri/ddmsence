@@ -88,9 +88,8 @@ public final class Subtitle extends AbstractSimpleString {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		super.validate();
 		Util.requireDDMSQName(getXOMElement(), Subtitle.getName(getDDMSVersion()));
-		validateWarnings();
+		super.validate();
 	}
 	
 	/**
@@ -98,13 +97,12 @@ public final class Subtitle extends AbstractSimpleString {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A ddms:subtitle element was found with no subtitle value.</li>
-	 * <li>Include any warnings from the security attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))
 			addWarning("A ddms:subtitle element was found with no subtitle value.");
-		addWarnings(getSecurityAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
 	}
 		
 	/**

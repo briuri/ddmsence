@@ -282,6 +282,17 @@ public class CreatorTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testEntityWrongVersion() {
+		DDMSVersion.setCurrentVersion("3.0");
+		try {
+			IRoleEntity entity = getEntityFixture();
+			DDMSVersion.setCurrentVersion("4.0");
+			new Creator(entity, "ICD-710", SecurityAttributesTest.getFixture(false));
+			fail("Allowed invalid data.");
+		} catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);

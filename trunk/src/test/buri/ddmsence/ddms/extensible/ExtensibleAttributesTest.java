@@ -225,12 +225,12 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
-			assertEquals(getExpectedOutput(true), elementAttributes.toHTML());
+			assertEquals(getExpectedOutput(true), elementAttributes.getOutput(true, ""));
 
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(new Attribute(TEST_ATTRIBUTE));
 			elementAttributes = testConstructor(WILL_SUCCEED, attributes);
-			assertEquals(getExpectedOutput(true), elementAttributes.toHTML());
+			assertEquals(getExpectedOutput(true), elementAttributes.getOutput(true, ""));
 		}
 	}
 
@@ -240,12 +240,12 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
-			assertEquals(getExpectedOutput(false), elementAttributes.toText());
+			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, ""));
 
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(new Attribute(TEST_ATTRIBUTE));
 			elementAttributes = testConstructor(WILL_SUCCEED, attributes);
-			assertEquals(getExpectedOutput(false), elementAttributes.toText());
+			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false,""));
 		}
 	}
 
