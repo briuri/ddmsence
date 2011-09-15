@@ -77,7 +77,8 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	 * @param qualifier an NTK qualifier (optional)
 	 * @return a valid object
 	 */
-	private GroupValue testConstructor(boolean expectFailure, String value, String id, String idReference, String qualifier) {
+	private GroupValue testConstructor(boolean expectFailure, String value, String id, String idReference,
+		String qualifier) {
 		GroupValue component = null;
 		try {
 			component = new GroupValue(value, id, idReference, qualifier, SecurityAttributesTest.getFixture(false));
@@ -101,7 +102,7 @@ public class GroupValueTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "groupValue.ownerProducer", "USA"));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -117,10 +118,10 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	public void testNameAndNamespace() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			GroupValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(GroupValue.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ntk.prefix"), component.getPrefix());
@@ -140,12 +141,13 @@ public class GroupValueTest extends AbstractComponentTestCase {
 
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element element = Util.buildElement(ntkPrefix, GroupValue.getName(version), version.getNtkNamespace(), TEST_VALUE);
+			Element element = Util.buildElement(ntkPrefix, GroupValue.getName(version), version.getNtkNamespace(),
+				TEST_VALUE);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -154,10 +156,10 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
 
@@ -170,23 +172,24 @@ public class GroupValueTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-						
+
 			// Missing security attributes
-			Element element = Util.buildElement(ntkPrefix, GroupValue.getName(version), version.getNtkNamespace(), TEST_VALUE);
+			Element element = Util.buildElement(ntkPrefix, GroupValue.getName(version), version.getNtkNamespace(),
+				TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
 		}
 	}
-	
+
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-						
+
 			// Missing security attributes
 			try {
 				new GroupValue(TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER, null);
@@ -200,14 +203,14 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	public void testWarnings() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// No warnings
 			GroupValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
-			
+
 			// No value
 			component = testConstructor(WILL_SUCCEED, null, null, null, null);
 			assertEquals(1, component.getValidationWarnings().size());
@@ -220,12 +223,13 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			GroupValue elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			GroupValue dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
+			GroupValue dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE,
+				TEST_QUALIFIER);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -234,32 +238,34 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			GroupValue elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			GroupValue dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
+			GroupValue dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_ID, TEST_ID_REFERENCE,
+				TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
-			
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, DIFFERENT_VALUE, TEST_ID_REFERENCE, TEST_QUALIFIER);
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, DIFFERENT_VALUE, TEST_ID_REFERENCE,
+				TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
-			
+
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, DIFFERENT_VALUE, TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
-			
+
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));			
+			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			GroupValue elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -269,10 +275,10 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			GroupValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
@@ -284,10 +290,10 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			GroupValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(false), component.toText());
 
@@ -299,10 +305,10 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			GroupValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
@@ -314,10 +320,10 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			GroupValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// Equality after Building
