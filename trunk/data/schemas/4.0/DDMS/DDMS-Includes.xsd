@@ -18,9 +18,9 @@ This schema file is intended to simplify importation of IC-ISM Schema files.  Th
 	<xs:import namespace="urn:us:gov:ic:ism" schemaLocation="../../ISM/IC-ISM.xsd"/>
 	<xs:attributeGroup name="RootSecurityAttributesGroup">
 		<xs:attributeGroup ref="ICISM:ISMRootNodeAttributeGroup"/>
-<!-- Temporarily removed until NTK is hooked up.		
+<!-- Temporarily removed until ready to work on this.		
 		<xs:attributeGroup ref="ntk:NTKRootNodeAttributeGroup"/>
--->		
+-->
 	</xs:attributeGroup>
 	<xs:attributeGroup name="MetacardSecurityAttributesGroup">
 		<!-- Added for metacardInfo element (EH) -->
@@ -36,9 +36,7 @@ This schema file is intended to simplify importation of IC-ISM Schema files.  Th
 	<xs:complexType name="SecurityType">
 		<xs:sequence>
 			<xs:element name="noticeList" type="NoticeListType" minOccurs="0" maxOccurs="1"/>
-<!-- Temporarily removed until NTK is hooked up.		
 			<xs:element ref="ntk:Access" minOccurs="0"/>
--->			
 		</xs:sequence>
 		<xs:attribute ref="ICISM:excludeFromRollup" use="required" fixed="true"/>
 		<xs:attributeGroup ref="SecurityAttributesGroup"/>
