@@ -19,6 +19,9 @@
  */
 package buri.ddmsence.ddms.security.ntk;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -29,24 +32,45 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ntk:AccessProfileValue elements</p>
+ * <p>Tests related to ntk:AccessProfile elements</p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class ProfileValueTest extends AbstractComponentTestCase {
-
-	private static final String TEST_VALUE = "profile";
-	private static final String TEST_VOCABULARY = "vocabulary";
-	private static final String TEST_ID = "ID";
-	private static final String TEST_ID_REFERENCE = "ID";
-	private static final String TEST_QUALIFIER = "qualifier";
+public class ProfileTest extends AbstractComponentTestCase {
 
 	/**
 	 * Constructor
 	 */
-	public ProfileValueTest() {
-		super("accessProfileValue.xml");
+	public ProfileTest() {
+		super("accessProfile.xml");
+	}
+
+	/**
+	 * Helper method to create a fixture
+	 */
+	private static SystemName getSystemNameFixture() {
+		try {
+			return (new SystemName("DIAS", null, null, null, SecurityAttributesTest.getFixture(false)));
+		} catch (InvalidDDMSException e) {
+			fail("Failed to create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+
+	/**
+	 * Helper method to create a fixture
+	 */
+	private static List<ProfileValue> getProfileValueFixture() {
+		List<ProfileValue> list = new ArrayList<ProfileValue>();
+		try {
+			list.add(new ProfileValue("profile", "vocabulary", null, null, null, SecurityAttributesTest
+				.getFixture(false)));
+			return (list);
+		} catch (InvalidDDMSException e) {
+			fail("Failed to create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**
@@ -57,10 +81,10 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 	 * 
 	 * @return a valid object
 	 */
-	private ProfileValue testConstructor(boolean expectFailure, Element element) {
-		ProfileValue component = null;
+	private Profile testConstructor(boolean expectFailure, Element element) {
+		Profile component = null;
 		try {
-			component = new ProfileValue(element);
+			component = new Profile(element);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -72,19 +96,13 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param expectFailure true if this operation is expected to succeed, false otherwise
-	 * @param value the value of the element's child text
-	 * @param vocabulary the vocabulary (required)
-	 * @param id the NTK ID (optional)
-	 * @param idReference a reference to an NTK ID (optional)
-	 * @param qualifier an NTK qualifier (optional)
-	 * @return a valid object
+	 * @param systemName the system (required)
+	 * @param values the values (1 required)
 	 */
-	private ProfileValue testConstructor(boolean expectFailure, String value, String vocabulary, String id,
-		String idReference, String qualifier) {
-		ProfileValue component = null;
+	private Profile testConstructor(boolean expectFailure, SystemName systemName, List<ProfileValue> values) {
+		Profile component = null;
 		try {
-			component = new ProfileValue(value, vocabulary, id, idReference, qualifier,
-				SecurityAttributesTest.getFixture(false));
+			component = new Profile(systemName, values, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -97,39 +115,39 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "profileValue", TEST_VALUE));
-		text.append(buildOutput(isHTML, "profileValue.vocabulary", TEST_VOCABULARY));
-		text.append(buildOutput(isHTML, "profileValue.id", TEST_ID));
-		text.append(buildOutput(isHTML, "profileValue.idReference", TEST_ID_REFERENCE));
-		text.append(buildOutput(isHTML, "profileValue.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(isHTML, "profileValue.classification", "U"));
-		text.append(buildOutput(isHTML, "profileValue.ownerProducer", "USA"));
+		text.append(getSystemNameFixture().getOutput(isHTML, "profile."));
+		text.append(getProfileValueFixture().get(0).getOutput(isHTML, "profile."));
+		text.append(buildOutput(isHTML, "profile.classification", "U"));
+		text.append(buildOutput(isHTML, "profile.ownerProducer", "USA"));
 		return (text.toString());
 	}
 
 	/**
 	 * Returns the expected XML output for this unit test
+	 * 
+	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput() {
+	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ntk:AccessProfileValue ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM());
-		xml.append(" ntk:id=\"ID\" ntk:IDReference=\"ID\" ntk:qualifier=\"qualifier\"");
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">");
-		xml.append(TEST_VALUE).append("</ntk:AccessProfileValue>");
-		return (xml.toString());
+		xml.append("<ntk:AccessProfile ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
+		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
+		xml.append("\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml.append("\t<ntk:AccessProfileValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>\n");
+		xml.append("</ntk:AccessProfile>\n");
+		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
-	public void testNameAndNamespace() {
+	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			ProfileValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(ProfileValue.getName(version), component.getName());
+			Profile component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			assertEquals(Profile.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ntk.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ntk.prefix") + ":" + ProfileValue.getName(version),
+			assertEquals(PropertyReader.getProperty("ntk.prefix") + ":" + Profile.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -141,24 +159,16 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
-
-			// No optional fields
-			Element element = Util.buildElement(ntkPrefix, ProfileValue.getName(version), version.getNtkNamespace(),
-				TEST_VALUE);
-			Util.addAttribute(element, ntkPrefix, "vocabulary", version.getNtkNamespace(), TEST_VOCABULARY);
-			SecurityAttributesTest.getFixture(false).addTo(element);
-			testConstructor(WILL_SUCCEED, element);
 		}
 	}
 
-	public void testDataConstructorValid() {
+	public void testDataConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
@@ -166,10 +176,7 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 				continue;
 
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
-
-			// No optional fields
-			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_VOCABULARY, null, null, null);
+			testConstructor(WILL_SUCCEED, getSystemNameFixture(), getProfileValueFixture());
 		}
 	}
 
@@ -181,31 +188,44 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			// Missing vocabulary
-			Element element = Util.buildElement(ntkPrefix, ProfileValue.getName(version), version.getNtkNamespace(),
-				TEST_VALUE);
+			// Missing systemName
+			Element element = Util.buildElement(ntkPrefix, Profile.getName(version), version.getNtkNamespace(), null);
+			for (ProfileValue value : getProfileValueFixture())
+				element.appendChild(value.getXOMElementCopy());
+			SecurityAttributesTest.getFixture(false).addTo(element);
+			testConstructor(WILL_FAIL, element);
+
+			// Missing profileValue
+			element = Util.buildElement(ntkPrefix, Profile.getName(version), version.getNtkNamespace(), null);
+			element.appendChild(getSystemNameFixture().getXOMElementCopy());
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing security attributes
-			element = Util
-				.buildElement(ntkPrefix, ProfileValue.getName(version), version.getNtkNamespace(), TEST_VALUE);
+			element = Util.buildElement(ntkPrefix, Profile.getName(version), version.getNtkNamespace(), null);
+			element.appendChild(getSystemNameFixture().getXOMElementCopy());
+			for (ProfileValue value : getProfileValueFixture())
+				element.appendChild(value.getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
 	}
 
-	public void testDataConstructorInvalid() {
+	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			// Missing vocabulary
-			testConstructor(WILL_FAIL, TEST_VALUE, null, null, null, null);
+			// Missing systemName
+			testConstructor(WILL_FAIL, null, getProfileValueFixture());
+
+			// Missing profileValue
+			testConstructor(WILL_FAIL, getSystemNameFixture(), null);
+
 			// Missing security attributes
 			try {
-				new ProfileValue(TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER, null);
+				new Profile(getSystemNameFixture(), getProfileValueFixture(), null);
 				fail("Allowed invalid data.");
 			} catch (InvalidDDMSException e) {
 				// Good
@@ -221,59 +241,41 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 				continue;
 
 			// No warnings
-			ProfileValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Profile component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
-
-			// No value
-			component = testConstructor(WILL_SUCCEED, null, TEST_VOCABULARY, null, null, null);
-			assertEquals(1, component.getValidationWarnings().size());
-			String text = "A ntk:AccessProfileValue element was found with no value.";
-			String locator = "ntk:AccessProfileValue";
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			ProfileValue elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			ProfileValue dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_VOCABULARY, TEST_ID,
-				TEST_ID_REFERENCE, TEST_QUALIFIER);
+			Profile elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Profile dataComponent = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getProfileValueFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() {
+	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			ProfileValue elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			ProfileValue dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_VOCABULARY, TEST_ID,
-				TEST_ID_REFERENCE, TEST_QUALIFIER);
+			Profile elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Profile dataComponent = testConstructor(WILL_SUCCEED, new SystemName("MDR", null, null, null,
+				SecurityAttributesTest.getFixture(false)), getProfileValueFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, DIFFERENT_VALUE, TEST_ID, TEST_ID_REFERENCE,
-				TEST_QUALIFIER);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_VOCABULARY, DIFFERENT_VALUE,
-				TEST_ID_REFERENCE, TEST_QUALIFIER);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_VOCABULARY, TEST_ID, DIFFERENT_VALUE,
-				TEST_QUALIFIER);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE,
-				DIFFERENT_VALUE);
+			List<ProfileValue> list = new ArrayList<ProfileValue>();
+			list.add(new ProfileValue("newProfile", "vocabulary", null, null, null, SecurityAttributesTest
+				.getFixture(false)));
+			dataComponent = testConstructor(WILL_SUCCEED, getSystemNameFixture(), list);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -285,7 +287,7 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			ProfileValue elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Profile elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -298,11 +300,10 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			ProfileValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Profile component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE,
-				TEST_QUALIFIER);
+			component = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getProfileValueFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
@@ -314,28 +315,26 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			ProfileValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Profile component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE,
-				TEST_QUALIFIER);
+			component = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getProfileValueFixture());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 
-	public void testXMLOutput() {
+	public void testXMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			ProfileValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
+			Profile component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE,
-				TEST_QUALIFIER);
-			assertEquals(getExpectedXMLOutput(), component.toXML());
+			component = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getProfileValueFixture());
+			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
 
@@ -346,27 +345,46 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			ProfileValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Profile component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// Equality after Building
-			ProfileValue.Builder builder = new ProfileValue.Builder(component);
+			Profile.Builder builder = new Profile.Builder(component);
 			assertEquals(builder.commit(), component);
 
 			// Empty case
-			builder = new ProfileValue.Builder();
+			builder = new Profile.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.getProfileValues().get(0);
+			assertTrue(builder.isEmpty());
+			builder.getProfileValues().get(1).setValue("TEST");
+			assertFalse(builder.isEmpty());
 
 			// Validation
-			builder = new ProfileValue.Builder();
-			builder.setValue(TEST_VALUE);
+			builder = new Profile.Builder();
+			builder.getSecurityAttributes().setClassification("U");
+			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.getSystemName().setValue("value");
+			builder.getSystemName().getSecurityAttributes().setClassification("U");
+			builder.getSystemName().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
 			} catch (InvalidDDMSException e) {
 				// Good
 			}
-			builder.getSecurityAttributes().setClassification("U");
-			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+
+			// Skip empty builders
+
+		}
+	}
+
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			Profile.Builder builder = new Profile.Builder();
+			assertNotNull(builder.getProfileValues().get(1));
 		}
 	}
 }

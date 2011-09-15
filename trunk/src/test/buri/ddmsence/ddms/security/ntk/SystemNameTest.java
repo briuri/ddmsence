@@ -77,7 +77,8 @@ public class SystemNameTest extends AbstractComponentTestCase {
 	 * @param qualifier an NTK qualifier (optional)
 	 * @return a valid object
 	 */
-	private SystemName testConstructor(boolean expectFailure, String value, String id, String idReference, String qualifier) {
+	private SystemName testConstructor(boolean expectFailure, String value, String id, String idReference,
+		String qualifier) {
 		SystemName component = null;
 		try {
 			component = new SystemName(value, id, idReference, qualifier, SecurityAttributesTest.getFixture(false));
@@ -101,7 +102,7 @@ public class SystemNameTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "systemName.ownerProducer", "USA"));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -117,10 +118,10 @@ public class SystemNameTest extends AbstractComponentTestCase {
 	public void testNameAndNamespace() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SystemName component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(SystemName.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ntk.prefix"), component.getPrefix());
@@ -140,12 +141,13 @@ public class SystemNameTest extends AbstractComponentTestCase {
 
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element element = Util.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(), TEST_VALUE);
+			Element element = Util.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(),
+				TEST_VALUE);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -154,10 +156,10 @@ public class SystemNameTest extends AbstractComponentTestCase {
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
 
@@ -170,31 +172,32 @@ public class SystemNameTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-						
+
 			// Missing value
-			Element element = Util.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(), null);
+			Element element = Util
+				.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(), null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
-			
+
 			// Missing security attributes
 			element = Util.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(), TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
 		}
 	}
-	
+
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// Missing value
 			testConstructor(WILL_FAIL, null, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
-			
+
 			// Missing security attributes
 			try {
 				new SystemName(TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER, null);
@@ -208,10 +211,10 @@ public class SystemNameTest extends AbstractComponentTestCase {
 	public void testWarnings() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// No warnings
 			SystemName component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
@@ -221,12 +224,13 @@ public class SystemNameTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SystemName elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			SystemName dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
+			SystemName dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE,
+				TEST_QUALIFIER);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -235,32 +239,34 @@ public class SystemNameTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SystemName elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			SystemName dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
+			SystemName dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_ID, TEST_ID_REFERENCE,
+				TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
-			
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, DIFFERENT_VALUE, TEST_ID_REFERENCE, TEST_QUALIFIER);
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, DIFFERENT_VALUE, TEST_ID_REFERENCE,
+				TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
-			
+
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, DIFFERENT_VALUE, TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
-			
+
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));			
+			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SystemName elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -270,10 +276,10 @@ public class SystemNameTest extends AbstractComponentTestCase {
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SystemName component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
@@ -285,10 +291,10 @@ public class SystemNameTest extends AbstractComponentTestCase {
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SystemName component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(false), component.toText());
 
@@ -300,10 +306,10 @@ public class SystemNameTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SystemName component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
@@ -315,10 +321,10 @@ public class SystemNameTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			SystemName component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// Equality after Building
