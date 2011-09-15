@@ -173,14 +173,9 @@ public class SystemNameTest extends AbstractComponentTestCase {
 			
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
-			// Wrong name
-			Element element = Util.buildDDMSElement("unknownName", null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
-			testConstructor(WILL_FAIL, element);
-			
+						
 			// Missing value
-			element = Util.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(), null);
+			Element element = Util.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(), null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
 			

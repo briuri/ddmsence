@@ -179,14 +179,9 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 			
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
-			// Wrong name
-			Element element = Util.buildDDMSElement("unknownName", null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
-			testConstructor(WILL_FAIL, element);
-			
+						
 			// Missing vocabulary
-			element = Util.buildElement(ntkPrefix, ProfileValue.getName(version), version.getNtkNamespace(), TEST_VALUE);
+			Element element = Util.buildElement(ntkPrefix, ProfileValue.getName(version), version.getNtkNamespace(), TEST_VALUE);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
 			

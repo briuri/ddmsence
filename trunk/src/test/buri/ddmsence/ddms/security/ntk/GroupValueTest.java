@@ -173,14 +173,9 @@ public class GroupValueTest extends AbstractComponentTestCase {
 			
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
-			// Wrong name
-			Element element = Util.buildDDMSElement("unknownName", null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
-			testConstructor(WILL_FAIL, element);
-			
+						
 			// Missing security attributes
-			element = Util.buildElement(ntkPrefix, GroupValue.getName(version), version.getNtkNamespace(), TEST_VALUE);
+			Element element = Util.buildElement(ntkPrefix, GroupValue.getName(version), version.getNtkNamespace(), TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
 		}
 	}

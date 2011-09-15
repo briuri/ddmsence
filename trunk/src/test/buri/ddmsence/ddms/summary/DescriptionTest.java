@@ -145,10 +145,10 @@ public class DescriptionTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			// Wrong name
-			Element element = Util.buildDDMSElement("unknownName", null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+
+			// Missing security attributes
+			Element element = Util.buildDDMSElement(Description.getName(version), null);
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -156,7 +156,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
-			// Bad security attributes
+			// Missing security attributes
 			try {
 				new Description(TEST_VALUE, null);
 				fail("Allowed invalid data.");
