@@ -103,7 +103,6 @@ may be useful when integrating DDMSence with an existing persistence framework l
 				<li><a href="#ddmsPostalAddress">ddmsPostalAddress</a></li>
 				<li><a href="#ddmsProductionMetric">ddmsProductionMetric</a></li>
 				<li><a href="#ddmsRelatedResource">ddmsRelatedResource</a></li>
-				<li><a href="#ddmsRelatedResources">ddmsRelatedResources</a></li>
 				<li><a href="#ddmsSrsAttributes">ddmsSrsAttributes</a></li>
 				<li><a href="#ddmsSubDivisionCode">ddmsSubDivisionCode</a></li>
 				<li><a href="#ddmsSubjectCoverage">ddmsSubjectCoverage</a></li>
@@ -156,7 +155,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 			<a href="#ddmsIdentifier">ddmsIdentifier</a>, 
 			<a href="#ddmsLanguage">ddmsLanguage</a>, 
 			<a href="#ddmsProducer">ddmsProducer</a>, 
-			<a href="#ddmsRelatedResources">ddmsRelatedResources</a>, 
+			<a href="#ddmsRelatedResource">ddmsRelatedResource</a>, 
 			<a href="#ddmsRights">ddmsRights</a>, 
 			<a href="#ddmsSecurity">ddmsSecurity</a>, 
 			<a href="#ddmsSource">ddmsSource</a>, 
@@ -1339,18 +1338,30 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augments:</td>
 		<td class="relInfo" colspan="2">
+			<a href="#ddmsAddressee">ddmsAddressee</a>,
+			<a href="#ddmsApplicationSoftware">ddmsApplicationSoftware</a>,
+			<a href="#ddmsCategory">ddmsCategory</a>,
 			<a href="#ddmsDescription">ddmsDescription</a>,
-			<a href="#ddmsGeospatialCoverage">ddmsGeospatialCoverage</a> (DDMS 3.0 only),
+			<a href="#ddmsDetails">ddmsDetails</a>,
+			<a href="#ddmsGeospatialCoverage">ddmsGeospatialCoverage</a>,
+			<a href="#ddmsKeyword">ddmsKeyword</a>,
+			<a href="#ddmsLink">ddmsLink</a>,
+			<a href="#ddmsNonStateActor">ddmsNonStateActor</a>,
+			<a href="#ddmsProcessingInfo">ddmsProcessingInfo</a>,
 			<a href="#ddmsProducer">ddmsProducer</a>,
-			<a href="#ddmsRelatedResources">ddmsRelatedResources</a>,
+			<a href="#ddmsProductionMetric">ddmsProductionMetric</a>,
+			<a href="#ddmsRelatedResource">ddmsRelatedResource</a>,
+			<a href="#ddmsRequestorInfo">ddmsRequestorInfo</a>,
 			<a href="#ddmsResource">ddmsResource</a>,
 			<a href="#ddmsSecurity">ddmsSecurity</a>, 
-			<a href="#ddmsSource">ddmsSource</a> (DDMS 3.0 only),
-			<a href="#ddmsSubjectCoverage">ddmsSubjectCoverage</a> (DDMS 3.0 only), 
+			<a href="#ddmsSource">ddmsSource</a>,
+			<a href="#ddmsSubjectCoverage">ddmsSubjectCoverage</a>,
+			<a href="#ddmsSubOrganization">ddmsSubOrganization</a>, 
 			<a href="#ddmsSubtitle">ddmsSubtitle</a>, 
-			<a href="#ddmsTemporalCoverage">ddmsTemporalCoverage</a> (DDMS 3.0 only),
-			<a href="#ddmsTitle">ddmsTitle</a>, and
-			<a href="#ddmsVirtualCoverage">ddmsVirtualCoverage</a> (DDMS 3.0 only)
+			<a href="#ddmsTemporalCoverage">ddmsTemporalCoverage</a>,
+			<a href="#ddmsTitle">ddmsTitle</a>,
+			<a href="#ddmsType">ddmsType</a>, and
+			<a href="#ddmsVirtualCoverage">ddmsVirtualCoverage</a>
 		</td>
 	</tr>
 	<tr class="relRow">
@@ -2095,57 +2106,6 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Augmented By:</td>
 		<td class="relInfo" colspan="2">
-			No other tables.
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Additional Notes:</td>
-		<td class="relInfo" colspan="2">
-			No other notes.
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader" colspan="3">Columns:</td>
-	</tr>		
-	<tr class="relRow">
-		<td class="relField">id</td><td class="relRules">integer, not null, sequenced</td><td>primary key of this row</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">parentId</td><td class="relRules">integer</td><td>foreign key to the parent RelatedResources element</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">qualifier</td><td class="relRules">char(2048), not null</td><td>the qualifier URI</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relField">value</td><td class="relRules">char(256), not null</td><td>the value which describes the RelatedResource</td>
-	</tr>	
-</table>
-
-<a name="ddmsRelatedResources"></a><table class="rel">
-	<tr>
-		<th class="relName" colspan="3">ddmsRelatedResources</th>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMS:</td>
-		<td class="relName" colspan="2">
-			<a href="http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#relatedResources"><code>ddms:relatedResources</code></a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">In DDMSence:</td>
-		<td class="relName" colspan="2">	
-			<a href="/docs/buri/ddmsence/ddms/summary/RelatedResources.html">RelatedResources</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Parent Of:</td>
-		<td class="relInfo" colspan="2">
-			<a href="#ddmsRelatedResource">ddmsRelatedResource</a>
-		</td>
-	</tr>
-	<tr class="relRow">
-		<td class="relHeader">Augmented By:</td>
-		<td class="relInfo" colspan="2">
 			<a href="#ismSecurityAttribute">ismSecurityAttribute</a>
 		</td>
 	</tr>
@@ -2171,6 +2131,12 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relField">direction</td><td class="relRules">char(64)</td><td>the direction of the relationship, which must have a value of 
 			"inbound", "outbound", or "bidirectional"</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">qualifier</td><td class="relRules">char(2048), not null</td><td>the qualifier URI</td>
+	</tr>
+	<tr class="relRow">
+		<td class="relField">value</td><td class="relRules">char(256), not null</td><td>the value which describes the RelatedResource</td>
 	</tr>	
 </table>
 

@@ -54,7 +54,6 @@ import buri.ddmsence.ddms.summary.NonStateActor;
 import buri.ddmsence.ddms.summary.PostalAddress;
 import buri.ddmsence.ddms.summary.ProductionMetric;
 import buri.ddmsence.ddms.summary.RelatedResource;
-import buri.ddmsence.ddms.summary.RelatedResources;
 import buri.ddmsence.ddms.summary.SubjectCoverage;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
 import buri.ddmsence.ddms.summary.VerticalExtent;
@@ -150,8 +149,8 @@ public class JavaConvertor {
 				convert(java, (TemporalCoverage) component);
 			else if (component instanceof GeospatialCoverage)
 				convert(java, (GeospatialCoverage) component);
-			else if (component instanceof RelatedResources)
-				convert(java, (RelatedResources) component);
+			else if (component instanceof RelatedResource)
+				convert(java, (RelatedResource) component);
 			
 			// Security Set
 			else if (component instanceof Security)
@@ -744,33 +743,27 @@ public class JavaConvertor {
 	}
 	
 	/**
-	 * Helper method to convert a relatedResources into Java code
+	 * Helper method to convert a relatedResource into Java code
 	 * 
 	 * @param java the buffer to add to
-	 * @param resources the relatedResources
+	 * @param resource the relatedResource
 	 */
-	public static void convert(StringBuffer java, RelatedResources resources) {
+	public static void convert(StringBuffer java, RelatedResource resource) {
 		int count = getVariableCount();
-		java.append("\n// ddms:relatedResources\n");
-		convert(java, resources.getSecurityAttributes());
-		java.append("List<RelatedResource> resources").append(count).append(" = new ArrayList<RelatedResource>();\n");
-		
-		for (RelatedResource singleResource : resources.getRelatedResources()) {
-			int resCount = getVariableCount();
-			java.append("List<Link> links").append(resCount).append(" = new ArrayList<Link>();\n");
-			for (Link link : singleResource.getLinks()) {
-				java.append("links").append(resCount).append(".add(new Link(\"").append(link.getHref()).append("\", \"")
-					.append(link.getRole()).append("\", \"").append(link.getTitle()).append("\", \"")
-					.append(link.getLabel()).append("\"));\n");
-			}
-			java.append("resources").append(count).append(".add(new RelatedResource(links").append(resCount)
-				.append(", \"").append(singleResource.getQualifier()).append("\", \"")
-				.append(singleResource.getValue()).append("\"));\n");
-		}		
-		java.append("RelatedResources relatedResources").append(count).append(" = new RelatedResources(resources")
-			.append(count).append(", \"").append(resources.getRelationship()).append("\", \"")
-			.append(resources.getDirection()).append("\", securityAttributes);\n");
-		java.append("topLevelComponents.add(relatedResources").append(count).append(");\n");
+		java.append("\n// ddms:relatedResource\n");
+		convert(java, resource.getSecurityAttributes());
+
+		java.append("List<Link> links").append(count).append(" = new ArrayList<Link>();\n");
+		for (Link link : resource.getLinks()) {
+			java.append("links").append(count).append(".add(new Link(\"").append(link.getHref()).append("\", \"")
+				.append(link.getRole()).append("\", \"").append(link.getTitle()).append("\", \"")
+				.append(link.getLabel()).append("\"));\n");
+		}
+		java.append("RelatedResource relatedResource").append(count).append(" = new RelatedResource(links")
+			.append(count).append(", \"").append(resource.getRelationship()).append("\", \"")
+			.append(resource.getDirection()).append("\", \"").append(resource.getQualifier()).append("\", \"")
+			.append(resource.getValue()).append("\", securityAttributes);\n");
+		java.append("topLevelComponents.add(relatedResource").append(count).append(");\n");
 	}
 		
 	/**

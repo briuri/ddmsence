@@ -40,8 +40,8 @@ import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
-import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.format.Extent;
+import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.resource.Addressee;
 import buri.ddmsence.ddms.resource.ApplicationSoftware;
 import buri.ddmsence.ddms.resource.Contributor;
@@ -82,7 +82,6 @@ import buri.ddmsence.ddms.summary.NonStateActor;
 import buri.ddmsence.ddms.summary.PostalAddress;
 import buri.ddmsence.ddms.summary.ProductionMetric;
 import buri.ddmsence.ddms.summary.RelatedResource;
-import buri.ddmsence.ddms.summary.RelatedResources;
 import buri.ddmsence.ddms.summary.SubDivisionCode;
 import buri.ddmsence.ddms.summary.SubjectCoverage;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
@@ -707,7 +706,7 @@ public class Escort {
 		});
 		BUILDERS.put(RelatedResource.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				int numLinks = readInt("the number of links on this RelatedResource [1]");
+				int numLinks = readInt("the number of links on this relatedResource [1]");
 				if (numLinks == 0) {
 					println("At least 1 link is required. Defaulting to 1.");
 					numLinks = 1;
@@ -717,26 +716,11 @@ public class Escort {
 					println("** Link #" + (i + 1));
 					links.add((Link) inputLoop(Link.class));
 				}
-				String qualifier = readString("the RelatedResource qualifier [testQualifier]");
-				String value = readString("the RelatedResource value [testValue]");
-				return (new RelatedResource(links, qualifier, value));
-			}		
-		});
-		BUILDERS.put(RelatedResources.class, new IComponentBuilder() {
-			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				int numRelated = readInt("the number of separate RelatedResource elements to include [1]");
-				if (numRelated == 0) {
-					println("At least 1 resource is required. Defaulting to 1.");
-					numRelated = 1;
-				}
-				List<RelatedResource> resources = new ArrayList<RelatedResource>();
-				for (int i = 0; i < numRelated; i++) {
-					println("** RelatedResource #" + (i + 1));
-					resources.add((RelatedResource) inputLoop(RelatedResource.class));
-				}
-				String relationship = readString("the relatedResources relationship [testQualifier]");
-				String direction = readString("the relatedResources direction [outbound]");
-				return (new RelatedResources(resources, relationship, direction, buildSecurityAttributes("relatedResources")));
+				String relationship = readString("the relatedResource relationship [testQualifier]");
+				String direction = readString("the relatedResource direction [outbound]");
+				String qualifier = readString("the relatedResource qualifier [testQualifier]");
+				String value = readString("the relatedResource value [testValue]");
+				return (new RelatedResource(links, relationship, direction, qualifier, value,buildSecurityAttributes("relatedResource")));
 			}		
 		});
 		BUILDERS.put(Security.class, new IComponentBuilder() {
@@ -878,11 +862,11 @@ public class Escort {
 				}
 			}
 			
-			printHead("ddms:relatedResources (any number allowed)");
+			printHead("ddms:relatedResource (any number allowed)");
 			if (confirm("Include this component?")) {
-				getTopLevelComponents().add(inputLoop(RelatedResources.class));	
-				while (confirm("Add another ddms:relatedResources?")) {
-					getTopLevelComponents().add(inputLoop(RelatedResources.class));	
+				getTopLevelComponents().add(inputLoop(RelatedResource.class));	
+				while (confirm("Add another ddms:relatedResource?")) {
+					getTopLevelComponents().add(inputLoop(RelatedResource.class));	
 				}
 			}
 		}

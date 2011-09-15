@@ -1,5 +1,20 @@
 This is a draft list of the changes which break backwards compatibility between v1.11.0 and v2.0.0.
 I will create an official ticket once all of the changes are complete and the dust has settled.
+	
+#########################################################################################################
+The ability to point at custom CVEs with the "icism.cve.customEnumLocation" property has been removed (Issue #95). 
+
+SEVERITY: Major 
+DETAILS:
+	The selection of CVE is now based upon the current DDMSVersion and uses bundled Public Release CVEs all 
+	of the time. Because V5 and above of ISM.XML validate vocabularies directly from the schemas (with 
+	generated CVE schemas), changing the vocabulary without changing the schema no longer made sense. 
+	Issue #154 tracks future work to reintroduce this general concept of swappable ISM, but at the schema 
+	level and not just the vocabulary level. You can still toggle CVEs between warnings and errors with the 
+	"ism.cve.validationAsErrors" custom property.
+FIX:
+	There is no workaround at this time. Please contact me with feedback on how you used this feature previously 
+	so I can support your use case in the future.
 
 #########################################################################################################
 Producers and producer entities are now modeled exactly as they appear in the schemas (Issue #153).
@@ -36,21 +51,74 @@ FIX:
 		
 	See Issue #153 for a description of the OLD class hierarchy and the NEW class hierarchy. I will also 
 	be glad to review your code and provide feedback on how it can be upgraded.
-	
-#########################################################################################################
-The ability to point at custom CVEs with the "icism.cve.customEnumLocation" property has been removed (Issue #95). 
 
-SEVERITY: Major 
+#########################################################################################################
+The RelatedResources hierarchy has changed (Issue #130)
+
+SEVERITY: Major
 DETAILS:
-	The selection of CVE is now based upon the current DDMSVersion and uses bundled Public Release CVEs all 
-	of the time. Because V5 and above of ISM.XML validate vocabularies directly from the schemas (with 
-	generated CVE schemas), changing the vocabulary without changing the schema no longer made sense. 
-	Issue #154 tracks future work to reintroduce this general concept of swappable ISM, but at the schema 
-	level and not just the vocabulary level. You can still toggle CVEs between warnings and errors with the 
-	"ism.cve.validationAsErrors" custom property.
+	The hierarchy for related resources was previously:
+	
+	ddms:relatedResources (0-many in a ddms:Resource)
+		@ddms:relationship
+		@ddms:direction
+		@<ismAttributesOptional>
+		ddms:relatedResource (1-many)
+			@ddms:qualifier
+			@ddms:value
+			ddms:link (1-many)
+		
+	DDMS 4.0  has flattened this to one level:
+	
+	ddms:relatedResource (0-many in a ddms:Resource)
+		@ddms:qualifier
+		@ddms:value
+		@ddms:relationship
+		@ddms:direction
+		@<ismAttributesOptional>
+		ddms:link (1-many)
+	
+	To support this, the RelatedResources class has been completely removed. The remaining RelatedResource class now 
+	contains all of the required information (including the relationship and direction attributes). The element-based
+	constructor for RelatedResource expects a construct that describes a single related resource. For example:
+	
+	Pre-DDMS 4.0:
+	<ddms:relatedResources ddms:relationship="http://purl.org/dc/terms/references" ddms:direction="outbound" 
+		ISM:classification="U" ISM:ownerProducer="USA">
+		<ddms:RelatedResource ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://en.wikipedia.org/wiki/Tank">
+			<ddms:link [...] />
+		</ddms:RelatedResource>
+	</ddms:relatedResources>
+	
+	DDMS 4.0:
+	<ddms:relatedResource ddms:relationship="http://purl.org/dc/terms/references" ddms:direction="outbound" 
+		ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://en.wikipedia.org/wiki/Tank" 
+		ISM:classification="U" ISM:ownerProducer="USA">
+		<ddms:link [...] />
+	</ddms:relatedResource>
+	
+	In earlier versions of DDMS, having multiple resources with the same relationship and direction was allowed:
+	
+	Pre-DDMS 4.0:
+	<ddms:relatedResources ddms:relationship="http://purl.org/dc/terms/references" ddms:direction="outbound" 
+		ISM:classification="U" ISM:ownerProducer="USA">
+		<ddms:RelatedResource ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://en.wikipedia.org/wiki/Tank">
+			<ddms:link [...] />
+		</ddms:RelatedResource>
+		<ddms:RelatedResource ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://en.wikipedia.org/wiki/Fish">
+			<ddms:link [...] />
+		</ddms:RelatedResource>
+	</ddms:relatedResources>
+
+	If the element-based constructor of RelatedResource encounters this case of multiples, it will only process the first
+	related resource and provide a validation warning message. However, the element-based constructor for the entire Resource
+	has been updated to mediate this case automatically.
+
 FIX:
-	There is no workaround at this time. Please contact me with feedback on how you used this feature previously 
-	so I can support your use case in the future.
+	If you are working at the Resource level, you don't need to do a thing. The Resource constructors can handle all legal
+	ddms:relatedResources or ddms:relatedResource elements. However, if you were instantiating RelatedResources or 
+	RelatedResource classes directly, you will need to update your code to stop using the removed class. I will also 
+	be glad to review your code and provide feedback on how it can be upgraded. 
 
 #########################################################################################################
 Producer entities and country codes no longer have a parentType (Issue #162)
@@ -82,6 +150,7 @@ DETAILS:
 	- Keyword: The constructor has an additional parameter for optional attributes. (Issue #156)
 	- Organization: The constructor has additional parameters for optional subOrganization and acronym. (Issue #113)
 	- Person: The order of the constructor parameters has been reordered to match the DDMS 4.0 schema (Issue #114)
+	- RelatedResource: The constructor has additional parameters for new attributes. (Issue #130)
 	- Resource: getSubjectCoverage() became getSubjectCoverages() and now returns a list of SubjectCoverage components (Issue #126)
 	- SubjectCoverage: The constructor has additional parameters for productionMetrics and nonStateActors.  (Issue #126)
 	- Type: The constructor has an additional parameter for optional description. (Issue #118)

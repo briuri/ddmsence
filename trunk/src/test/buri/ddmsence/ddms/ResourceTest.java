@@ -60,7 +60,6 @@ import buri.ddmsence.ddms.summary.Keyword;
 import buri.ddmsence.ddms.summary.Link;
 import buri.ddmsence.ddms.summary.PostalAddress;
 import buri.ddmsence.ddms.summary.RelatedResource;
-import buri.ddmsence.ddms.summary.RelatedResources;
 import buri.ddmsence.ddms.summary.SubjectCoverage;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
 import buri.ddmsence.ddms.summary.VirtualCoverage;
@@ -101,7 +100,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 	private VirtualCoverage TEST_VIRTUAL;
 	private TemporalCoverage TEST_TEMPORAL;
 	private GeospatialCoverage TEST_GEOSPATIAL;
-	private RelatedResources TEST_RELATED;
+	private RelatedResource TEST_RELATED;
 	private Security TEST_SECURITY;
 	private SRSAttributes TEST_SRS_ATTRIBUTES;
 	private List<IDDMSComponent> TEST_TOP_LEVEL_COMPONENTS;
@@ -155,9 +154,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 		List<Link> links = new ArrayList<Link>();
 		links.add(new Link("http://en.wikipedia.org/wiki/Tank", "role", null, null));
-		List<RelatedResource> resources = new ArrayList<RelatedResource>();
-		resources.add(new RelatedResource(links, "http://purl.org/dc/terms/URI", "http://en.wikipedia.org/wiki/Tank"));
-		TEST_RELATED = new RelatedResources(resources, "http://purl.org/dc/terms/references", "outbound", null);
+		TEST_RELATED = new RelatedResource(links, "http://purl.org/dc/terms/references", "outbound", "http://purl.org/dc/terms/URI", "http://en.wikipedia.org/wiki/Tank", null);
 		TEST_SECURITY = new Security(SecurityAttributesTest.getFixture(false));
 
 		TEST_TOP_LEVEL_COMPONENTS = new ArrayList<IDDMSComponent>();
@@ -223,6 +220,66 @@ public class ResourceTest extends AbstractComponentTestCase {
 		Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
 		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace, String.valueOf(getDESVersion()));
 		SecurityAttributesTest.getFixture(false).addTo(element);
+		return (element);
+	}
+	
+	/**
+	 * Creates a stub resource element that contains a bunch of pre-DDMS 4.0 relatedResources in different configurations.
+	 * 
+	 * @return the element
+	 * @throws InvalidDDMSException
+	 */
+	private Element getResourceWithMultipleRelated() throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		if (version.isAtLeast("4.0"))
+			return null;
+		String ismPrefix = PropertyReader.getProperty("ism.prefix");
+		String icNamespace = version.getIsmNamespace();
+
+		Element element = Util.buildDDMSElement(Resource.getName(version), null);
+		Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, icNamespace,
+			String.valueOf(TEST_RESOURCE_ELEMENT));
+		Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, icNamespace, TEST_CREATE_DATE);
+		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, icNamespace, String.valueOf(getDESVersion()));
+		SecurityAttributesTest.getFixture(false).addTo(element);
+		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
+		element.appendChild(TEST_TITLE.getXOMElementCopy());
+		element.appendChild(TEST_CREATOR.getXOMElementCopy());
+		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+		
+		Link link = new Link("http://en.wikipedia.org/wiki/Tank", "role", null, null);
+		
+		// #1: a ddms:relatedResources containing 1 ddms:RelatedResource
+		Element rel1 = Util.buildDDMSElement(RelatedResource.getName(version), null);
+		Util.addDDMSAttribute(rel1, "relationship", "http://purl.org/dc/terms/references");
+		Element innerElement = Util.buildDDMSElement("RelatedResource", null);
+		Util.addDDMSAttribute(innerElement, "qualifier", "http://purl.org/dc/terms/URI");
+		Util.addDDMSAttribute(innerElement, "value", "http://en.wikipedia.org/wiki/Tank1");
+		innerElement.appendChild(link.getXOMElementCopy());
+		rel1.appendChild(innerElement);
+		element.appendChild(rel1);
+		
+		// #2: a ddms:relatedResources containing 3 ddms:RelatedResources
+		Element rel2 = Util.buildDDMSElement(RelatedResource.getName(version), null);
+		Util.addDDMSAttribute(rel2, "relationship", "http://purl.org/dc/terms/references");
+		Element innerElement1 = Util.buildDDMSElement("RelatedResource", null);
+		Util.addDDMSAttribute(innerElement1, "qualifier", "http://purl.org/dc/terms/URI");
+		Util.addDDMSAttribute(innerElement1, "value", "http://en.wikipedia.org/wiki/Tank2");
+		innerElement1.appendChild(link.getXOMElementCopy());
+		Element innerElement2 = Util.buildDDMSElement("RelatedResource", null);
+		Util.addDDMSAttribute(innerElement2, "qualifier", "http://purl.org/dc/terms/URI");
+		Util.addDDMSAttribute(innerElement2, "value", "http://en.wikipedia.org/wiki/Tank3");
+		innerElement2.appendChild(link.getXOMElementCopy());
+		Element innerElement3 = Util.buildDDMSElement("RelatedResource", null);
+		Util.addDDMSAttribute(innerElement3, "qualifier", "http://purl.org/dc/terms/URI");
+		Util.addDDMSAttribute(innerElement3, "value", "http://en.wikipedia.org/wiki/Tank4");
+		innerElement3.appendChild(link.getXOMElementCopy());
+		rel2.appendChild(innerElement1);
+		rel2.appendChild(innerElement2);
+		rel2.appendChild(innerElement3);
+		element.appendChild(rel2);
+		
+		element.appendChild(TEST_SECURITY.getXOMElementCopy());
 		return (element);
 	}
 
@@ -338,6 +395,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		String temporalPrefix = (version.isAtLeast("4.0") ? "temporalCoverage." : "temporalCoverage.TimePeriod.");
 		String geospatialPrefix = version.isAtLeast("4.0") ? "geospatialCoverage."
 			: "geospatialCoverage.GeospatialExtent.";
+		String relatedPrefix = (version.isAtLeast("4.0") ? "relatedResource." : "relatedResources.RelatedResource.");
 
 		text.append(buildOutput(isHTML, formatPrefix + "mimeType", "text/xml"));
 		text.append(buildOutput(isHTML, subjectPrefix + "keyword", "DDMSence"));
@@ -352,13 +410,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.axisLabels", "A B C"));
 		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.uomLabels", "Meter Meter Meter"));
 		text.append(buildOutput(isHTML, geospatialPrefix + "boundingGeometry.Point.pos", "32.1 40.1"));
-		text.append(buildOutput(isHTML, "relatedResources.relationship", "http://purl.org/dc/terms/references"));
-		text.append(buildOutput(isHTML, "relatedResources.direction", "outbound"));
-		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.qualifier", "http://purl.org/dc/terms/URI"));
-		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.value", "http://en.wikipedia.org/wiki/Tank"));
-		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.link.type", "locator"));
-		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.link.href", "http://en.wikipedia.org/wiki/Tank"));
-		text.append(buildOutput(isHTML, "relatedResources.RelatedResource.link.role", "role"));
+		text.append(buildOutput(isHTML, relatedPrefix + "relationship", "http://purl.org/dc/terms/references"));
+		text.append(buildOutput(isHTML, relatedPrefix + "direction", "outbound"));
+		text.append(buildOutput(isHTML, relatedPrefix + "qualifier", "http://purl.org/dc/terms/URI"));
+		text.append(buildOutput(isHTML, relatedPrefix + "value", "http://en.wikipedia.org/wiki/Tank"));
+		text.append(buildOutput(isHTML, relatedPrefix + "link.type", "locator"));
+		text.append(buildOutput(isHTML, relatedPrefix + "link.href", "http://en.wikipedia.org/wiki/Tank"));
+		text.append(buildOutput(isHTML, relatedPrefix + "link.role", "role"));
 
 		if (version.isAtLeast("3.0"))
 			text.append(buildOutput(isHTML, "security.excludeFromRollup", "true"));
@@ -474,14 +532,23 @@ public class ResourceTest extends AbstractComponentTestCase {
 			xml.append("\t\t</ddms:GeospatialExtent>\n");
 		}
 		xml.append("\t</ddms:geospatialCoverage>\n");
-		xml.append("\t<ddms:relatedResources ddms:relationship=\"http://purl.org/dc/terms/references\" ").append(
-			"ddms:direction=\"outbound\">\n");
-		xml.append("\t\t<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ").append(
-			"ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n");
-		xml.append("\t\t\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ").append(
-			"xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"role\" />\n");
-		xml.append("\t\t</ddms:RelatedResource>\n");
-		xml.append("\t</ddms:relatedResources>\n");
+		if (version.isAtLeast("4.0")) {
+			xml.append("\t<ddms:relatedResource ddms:relationship=\"http://purl.org/dc/terms/references\" ")
+				.append("ddms:direction=\"outbound\" ddms:qualifier=\"http://purl.org/dc/terms/URI\" ")
+				.append("ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n");
+			xml.append("\t\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ").append(
+				"xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"role\" />\n");
+			xml.append("\t</ddms:relatedResource>\n");
+		} else {
+			xml.append("\t<ddms:relatedResources ddms:relationship=\"http://purl.org/dc/terms/references\" ").append(
+				"ddms:direction=\"outbound\">\n");
+			xml.append("\t\t<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ").append(
+				"ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n");
+			xml.append("\t\t\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ").append(
+				"xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"role\" />\n");
+			xml.append("\t\t</ddms:RelatedResource>\n");
+			xml.append("\t</ddms:relatedResources>\n");
+		}
 		xml.append("\t<ddms:security ");
 		if (version.isAtLeast("3.0"))
 			xml.append("ISM:excludeFromRollup=\"true\" ");
@@ -1261,6 +1328,23 @@ public class ResourceTest extends AbstractComponentTestCase {
 		assertEquals(0, resource.getExtensibleAttributes().getAttributes().size());
 	}
 
+	public void testRelatedResourcesMediation() throws InvalidDDMSException {
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			createComponents();
+			if (version.isAtLeast("4.0"))
+				continue;
+			
+			Element element = getResourceWithMultipleRelated();
+			Resource resource = testConstructor(WILL_SUCCEED, element);
+			assertEquals(4, resource.getRelatedResources().size());
+			assertEquals("http://en.wikipedia.org/wiki/Tank1", resource.getRelatedResources().get(0).getValue());
+			assertEquals("http://en.wikipedia.org/wiki/Tank2", resource.getRelatedResources().get(1).getValue());
+			assertEquals("http://en.wikipedia.org/wiki/Tank3", resource.getRelatedResources().get(2).getValue());
+			assertEquals("http://en.wikipedia.org/wiki/Tank4", resource.getRelatedResources().get(3).getValue());
+		}
+	}
+	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
@@ -1461,7 +1545,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertTrue(builder.isEmpty());
 			builder.getGeospatialCoverages().add(new GeospatialCoverage.Builder());
 			assertTrue(builder.isEmpty());
-			builder.getRelatedResources().add(new RelatedResources.Builder());
+			builder.getRelatedResources().add(new RelatedResource.Builder());
 			assertTrue(builder.isEmpty());
 			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
 			assertTrue(builder.isEmpty());
