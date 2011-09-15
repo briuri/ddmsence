@@ -55,15 +55,15 @@ public class DDMSVersionTest extends TestCase {
 
 	public void testGetVersionForDDMSNamespace() {
 		assertEquals(DDMSVersion.getVersionFor("2.0"),
-			DDMSVersion.getVersionForDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
+			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
 		assertEquals(DDMSVersion.getVersionFor("3.0"),
-			DDMSVersion.getVersionForDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/"));
+			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/"));
 		assertEquals(DDMSVersion.getVersionFor("3.1"),
-			DDMSVersion.getVersionForDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.1/"));
+			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.1/"));
 		assertEquals(DDMSVersion.getVersionFor("4.0"),
-			DDMSVersion.getVersionForDDMSNamespace("urn:us:mil:ces:metadata:ddms:4"));
+			DDMSVersion.getVersionForNamespace("urn:us:mil:ces:metadata:ddms:4"));
 		try {
-			DDMSVersion.getVersionForDDMSNamespace("http://metadata.dod.mil/mdr/ns/DDMS/1.4/");
+			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/1.4/");
 			fail("Allowed unsupported version.");
 		} catch (UnsupportedVersionException e) {
 			// Good
@@ -72,11 +72,22 @@ public class DDMSVersionTest extends TestCase {
 			
 	public void testGetVersionForGMLNamespace() {
 		assertEquals(DDMSVersion.getVersionFor("2.0"),
-			DDMSVersion.getVersionForGMLNamespace("http://www.opengis.net/gml"));
+			DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml"));
 		assertEquals(DDMSVersion.getVersionFor("4.0"),
-			DDMSVersion.getVersionForGMLNamespace("http://www.opengis.net/gml/3.2"));
+			DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml/3.2"));
 		try {
-			DDMSVersion.getVersionForGMLNamespace("http://www.opengis.net/gml/3.2.1");
+			DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml/3.2.1");
+			fail("Allowed unsupported version.");
+		} catch (UnsupportedVersionException e) {
+			// Good
+		}
+	}
+	
+	public void testGetVersionForNTKNamespace() {
+		assertEquals(DDMSVersion.getVersionFor("4.0"),
+			DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk"));
+		try {
+			DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk:v2");
 			fail("Allowed unsupported version.");
 		} catch (UnsupportedVersionException e) {
 			// Good
@@ -136,6 +147,10 @@ public class DDMSVersionTest extends TestCase {
 		assertEquals("/schemas/3.0/DDMS/DDMS-GML-Profile.xsd", version.getGmlSchema());
 		assertEquals("urn:us:gov:ic:ism", version.getIsmNamespace());
 		assertEquals("/schemas/3.0/ISM/CVE/", version.getIsmCveLocation());
+		
+		version = DDMSVersion.setCurrentVersion("4.0");
+		assertEquals("urn:us:gov:ic:ntk", version.getNtkNamespace());
+		assertEquals("/schemas/4.0/NTK/IC-NTK.xsd", version.getNtkSchema());
 	}
 
 	public void testAliasVersion() {

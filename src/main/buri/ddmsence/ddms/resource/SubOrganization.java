@@ -92,8 +92,7 @@ public final class SubOrganization extends AbstractSimpleString {
 		Util.requireDDMSQName(getXOMElement(), SubOrganization.getName(getDDMSVersion()));
 		Util.requireDDMSValue("subOrganization value", getValue());
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0"))
-			throw new InvalidDDMSException("The ddms:" + SubOrganization.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
+		requireVersion("4.0");
 
 		super.validate();
 	}

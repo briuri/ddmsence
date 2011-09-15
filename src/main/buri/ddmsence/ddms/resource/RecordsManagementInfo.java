@@ -128,9 +128,7 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), RecordsManagementInfo.getName(getDDMSVersion()));
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0"))
-			throw new InvalidDDMSException("The ddms:" + RecordsManagementInfo.getName(getDDMSVersion())
-				+ " element cannot be used until DDMS 4.0 or later.");
+		requireVersion("4.0");
 
 		super.validate();
 	}

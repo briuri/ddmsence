@@ -17,11 +17,11 @@
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
 */
-package buri.ddmsence.ddms.resource;
+package buri.ddmsence.ddms.security.ntk;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractBaseComponent;
-import buri.ddmsence.ddms.AbstractSimpleString;
+import buri.ddmsence.ddms.AbstractNtkString;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
@@ -29,50 +29,51 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of ddms:details.
- * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
- * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
- * <ul>
- * <li>A details element can be used without any child text.</li>
- * </ul>
- * </td></tr></table>
+ * An immutable implementation of ntk:AccessSystemName.
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * <u>ntk:id</u>: A unique XML identifier (optional)<br />
+ * <u>ntk:IDReference</u>: A cross-reference to a unique identifier (optional)<br />
+ * <u>ntk:qualifier</u>: A user-defined property within an element for general purpose processing used with block 
+ * objects to provide supplemental information over and above that conveyed by the element name (optional)<br />
  * This class is decorated with ISM {@link SecurityAttributes}. The classification and
  * ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: The details surrounding a revision recall.<br />
- * <u>Obligation</u>: Optional<br />
+ * <u>Description</u>: The system for which access information is being provided.<br />
+ * <u>Obligation</u>: Mandatory in NTK access components<br />
  * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public final class Details extends AbstractSimpleString {
-
+public final class SystemName extends AbstractNtkString {
+	
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 *  
 	 * @param element the XOM element representing this 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Details(Element element) throws InvalidDDMSException {
-		super(element, true);
+	public SystemName(Element element) throws InvalidDDMSException {
+		super(true, element);
 	}
 	
 	/**
-	 * Constructor for creating a component from raw data
-	 *  
-	 * @param value the value of the child text
-	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
-	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 * Constructor which builds from raw data.
+	 * 
+	 * @param value the value of the element's child text
+	 * @param id the NTK ID (optional)
+	 * @param idReference a reference to an NTK ID (optional)
+	 * @param qualifier an NTK qualifier (optional)
+	 * @param attributes the security attributes
 	 */
-	public Details(String value, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(Details.getName(DDMSVersion.getCurrentVersion()), value, securityAttributes, true);
+	public SystemName(String value, String id, String idReference, String qualifier,
+		SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		super(true, SystemName.getName(DDMSVersion.getCurrentVersion()), value, id, idReference, qualifier,
+			securityAttributes, true);
 	}
 		
 	/**
@@ -80,53 +81,27 @@ public final class Details extends AbstractSimpleString {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot be used until DDMS 4.0 or later.</li>
 	 * </td></tr></table>
-	 * 
+	 *  
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		Util.requireDDMSQName(getXOMElement(), Details.getName(getDDMSVersion()));
-		
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0");
-
+		Util.requireQName(getXOMElement(), getNamespace(), SystemName.getName(getDDMSVersion()));
 		super.validate();
 	}
-	
-	/**
-	 * Validates any conditions that might result in a warning.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A ddms:details element was found with no child text.</li>
-	 * </td></tr></table>
-	 */
-	protected void validateWarnings() {
-		if (Util.isEmpty(getValue()))
-			addWarning("A ddms:details element was found with no value.");
-		super.validateWarnings();
-	}
-			
+		
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix) {
-		prefix = Util.getNonNullString(prefix) + getName();
+		prefix = Util.getNonNullString(prefix) + "systemName";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix, getValue(), false));
+		text.append(buildOutput(isHTML, prefix + ".id", getID(), false));
+		text.append(buildOutput(isHTML, prefix + ".idReference", getIDReference(), false));
+		text.append(buildOutput(isHTML, prefix + ".qualifier", getQualifier(), false));
 		text.append(getSecurityAttributes().getOutput(isHTML, prefix + "."));
 		return (text.toString());
-	}
-	
-	/**
-	 * @see Object#equals(Object)
-	 */
-	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof Details))
-			return (false);
-		return (true);
 	}
 	
 	/**
@@ -137,7 +112,16 @@ public final class Details extends AbstractSimpleString {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return ("details");
+		return ("AccessSystemName");
+	}
+	
+	/**
+	 * @see Object#equals(Object)
+	 */
+	public boolean equals(Object obj) {
+		if (!super.equals(obj) || !(obj instanceof SystemName))
+			return (false);
+		return (true);
 	}
 	
 	/**
@@ -147,8 +131,8 @@ public final class Details extends AbstractSimpleString {
 	 * @author Brian Uri!
 	 * @since 2.0.0
 	 */
-	public static class Builder extends AbstractSimpleString.Builder {
-		private static final long serialVersionUID = -7348511606867959470L;
+	public static class Builder extends AbstractNtkString.Builder {
+		private static final long serialVersionUID = 7750664735441105296L;
 		
 		/**
 		 * Empty constructor
@@ -160,15 +144,16 @@ public final class Details extends AbstractSimpleString {
 		/**
 		 * Constructor which starts from an existing component.
 		 */
-		public Builder(Details details) {
-			super(details);
+		public Builder(SystemName systemName) {
+			super(systemName);
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
-		public Details commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Details(getValue(), getSecurityAttributes().commit()));
+		public SystemName commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new SystemName(getValue(), getID(), getIDReference(), getQualifier(),
+				getSecurityAttributes().commit()));
 		}
 	}
 } 

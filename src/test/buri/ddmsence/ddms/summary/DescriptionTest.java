@@ -143,6 +143,16 @@ public class DescriptionTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testElementConstructorInvalid() throws InvalidDDMSException {
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			// Wrong name
+			Element element = Util.buildDDMSElement("unknownName", null);
+			SecurityAttributesTest.getFixture(false).addTo(element);
+			testConstructor(WILL_FAIL, element);
+		}
+	}
+	
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);

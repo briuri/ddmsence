@@ -222,4 +222,4 @@ FIX:
 	
 	You can accomplish the same thing with:
 	
-	boolean isCompatible = DDMSVersion.getVersionForDDMSNamespace(xomElement.getNamespaceURI()).isAtLeast("3.0");	
+	boolean isCompatible = DDMSVersion.getVersionForNamespace(xomElement.getNamespaceURI()).isAtLeast("3.0");	

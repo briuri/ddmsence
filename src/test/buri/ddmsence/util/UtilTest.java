@@ -538,6 +538,28 @@ public class UtilTest extends TestCase {
 		Util.requireValidNCName("name");
 	}
 
+
+	public void testRequireValidNMTokenNull() {
+		try {
+			Util.requireValidNMToken(null);
+			fail("Allowed invalid data.");
+		} catch (InvalidDDMSException e) {
+			// Good
+		}
+	}
+
+	public void testRequireValidNMTokenValidName() throws InvalidDDMSException {
+		Util.requireValidNMToken("1TEST");
+	}
+
+	public void testRequireValidNMTokenValidNamespace() throws InvalidDDMSException {
+		Util.requireValidNMToken("xmlns:TEST");
+	}
+
+	public void testRequireValidNMTokenValid() throws InvalidDDMSException {
+		Util.requireValidNMToken("name");
+	}	
+	
 	public void testRequireDDMSValidURIValid() throws InvalidDDMSException {
 		Util.requireDDMSValidURI("test");
 	}

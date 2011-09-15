@@ -104,8 +104,7 @@ public final class NonStateActor extends AbstractSimpleString {
 		Util.requireDDMSQName(getXOMElement(), NonStateActor.getName(getDDMSVersion()));
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0"))
-			throw new InvalidDDMSException("The ddms:" + NonStateActor.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
+		requireVersion("4.0");
 		
 		validateWarnings();
 	}
@@ -120,7 +119,7 @@ public final class NonStateActor extends AbstractSimpleString {
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))
-			addWarning("A ddms:" + NonStateActor.getName(getDDMSVersion()) + " element was found with no value.");
+			addWarning("A ddms:" + getName() + " element was found with no value.");
 		super.validateWarnings();		
 	}
 	

@@ -52,6 +52,8 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
  * <li><code>&lt;versionNumber&gt;.gml.xsdLocation</code>: i.e. "/schemas/4.0/DDMS/DDMS-GML-Profile.xsd"</li>
  * <li><code>&lt;versionNumber&gt;.ism.cveLocation</code>: i.e. "/schemas/4.0/ISM/CVE/"</li>
  * <li><code>&lt;versionNumber&gt;.ism.xmlNamespace</code>: i.e. "urn:us:gov:ic:ism"</li>
+ * <li><code>&lt;versionNumber&gt;.ntk.xmlNamespace</code>: i.e. "urn:us:gov:ic:ntk"</li>
+ * <li><code>&lt;versionNumber&gt;.ntk.xsdLocation</code>: i.e. "/schemas/4.0/NTK/IC-NTK.xsd"</li>
  * <li><code>&lt;versionNumber&gt;.xlink.xmlNamespace</code>: i.e. "http://www.w3.org/1999/xlink"</li>
  * 
  * <p>
@@ -83,6 +85,8 @@ public class DDMSVersion {
 	private String _gmlSchema;
 	private String _ismCveLocation;
 	private String _ismNamespace;
+	private String _ntkNamespace;
+	private String _ntkSchema;
 	private String _xlinkNamespace;
 	
 	private static DDMSVersion _currentVersion;
@@ -110,6 +114,8 @@ public class DDMSVersion {
 		_gmlSchema = PropertyReader.getProperty(version + ".gml.xsdLocation");
 		_ismCveLocation = PropertyReader.getProperty(version + ".ism.cveLocation");
 		_ismNamespace = PropertyReader.getProperty(version + ".ism.xmlNamespace");
+		_ntkNamespace = PropertyReader.getProperty(version + ".ntk.xmlNamespace");
+		_ntkSchema = PropertyReader.getProperty(version + ".ntk.xsdLocation");
 		_xlinkNamespace = PropertyReader.getProperty(version + ".xlink.xmlNamespace");
 	}
 	
@@ -185,43 +191,25 @@ public class DDMSVersion {
 			throw new UnsupportedVersionException(version);
 		return (VERSIONS_TO_DETAILS.get(version));
 	}
-		
-	/**
-	 * Returns the DDMSVersion instance mapped to a particular GML XML namespace. If the
-	 * namespace is shared by multiple versions of DDMS, the most recent will be
-	 * returned.
-	 * 
-	 * @param namespace the GML XML namespace
-	 * @return the instance
-	 * @throws UnsupportedVersionException if the version number is not supported
-	 */
-	public static DDMSVersion getVersionForGMLNamespace(String namespace) {
-		List<DDMSVersion> versions = new ArrayList<DDMSVersion>(VERSIONS_TO_DETAILS.values());
-		Collections.reverse(versions);
-		for (DDMSVersion version : versions) {
-			if (version.getGmlNamespace().equals(namespace))
-				return (version);
-		}
-		throw new UnsupportedVersionException("for GML XML namespace " + namespace);
-	}
-	
+			
 	/**
 	 * Returns the DDMSVersion instance mapped to a particular XML namespace. If the
 	 * namespace is shared by multiple versions of DDMS, the most recent will be
 	 * returned.
 	 * 
-	 * @param namespace the DDMS XML namespace
+	 * @param namespace the XML namespace
 	 * @return the instance
 	 * @throws UnsupportedVersionException if the version number is not supported
 	 */
-	public static DDMSVersion getVersionForDDMSNamespace(String namespace) {
+	public static DDMSVersion getVersionForNamespace(String namespace) {
 		List<DDMSVersion> versions = new ArrayList<DDMSVersion>(VERSIONS_TO_DETAILS.values());
 		Collections.reverse(versions);
 		for (DDMSVersion version : versions) {
-			if (version.getNamespace().equals(namespace))
+			if (version.getNamespace().equals(namespace) || version.getIsmNamespace().equals(namespace)
+				|| version.getNtkNamespace().equals(namespace) || version.getGmlNamespace().equals(namespace))
 				return (version);
 		}
-		throw new UnsupportedVersionException("for DDMS XML namespace " + namespace);
+		throw new UnsupportedVersionException("for XML namespace " + namespace);
 	}
 	
 	/**
@@ -330,6 +318,20 @@ public class DDMSVersion {
 	 */
 	public String getIsmNamespace() {
 		return _ismNamespace;
+	}
+	
+	/**
+	 * Accessor for the NTK namespace
+	 */
+	public String getNtkNamespace() {
+		return _ntkNamespace;
+	}
+	
+	/**
+	 * Accessor for the NTK schema location
+	 */
+	public String getNtkSchema() {
+		return _ntkSchema;
 	}
 	
 	/**

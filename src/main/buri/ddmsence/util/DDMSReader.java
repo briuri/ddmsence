@@ -74,12 +74,16 @@ public class DDMSReader {
 		StringBuffer schemas = new StringBuffer();
 		List<String> versions = new ArrayList<String>(DDMSVersion.getSupportedVersions());
 		Collections.reverse(versions);
-		for (String version : versions) {
-			DDMSVersion ddmsVersion = DDMSVersion.getVersionFor(version);
-			String xsd = getLocalSchemaLocation(ddmsVersion.getSchema());
-			schemas.append(ddmsVersion.getNamespace()).append(" ").append(xsd).append(" ");
-			xsd = getLocalSchemaLocation(ddmsVersion.getGmlSchema());
-			schemas.append(ddmsVersion.getGmlNamespace()).append(" ").append(xsd).append(" ");
+		for (String versionString : versions) {
+			DDMSVersion version = DDMSVersion.getVersionFor(versionString);
+			String xsd = getLocalSchemaLocation(version.getSchema());
+			schemas.append(version.getNamespace()).append(" ").append(xsd).append(" ");
+			xsd = getLocalSchemaLocation(version.getGmlSchema());
+			schemas.append(version.getGmlNamespace()).append(" ").append(xsd).append(" ");
+			if (!Util.isEmpty(version.getNtkSchema())) {
+				xsd = getLocalSchemaLocation(version.getNtkSchema());
+				schemas.append(version.getNtkNamespace()).append(" ").append(xsd).append(" ");
+			}
 		}
 		getReader().setFeature(PROP_XERCES_VALIDATION, true);
 		getReader().setFeature(PROP_XERCES_SCHEMA_VALIDATION, true);
@@ -216,7 +220,7 @@ public class DDMSReader {
 	 * @throws InvalidDDMSException if the component could not be built
 	 */
 	protected Resource buildResource(Element xomElement) throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion(DDMSVersion.getVersionForDDMSNamespace(xomElement.getNamespaceURI())
+		DDMSVersion.setCurrentVersion(DDMSVersion.getVersionForNamespace(xomElement.getNamespaceURI())
 			.getVersion());
 		return (new Resource(xomElement));
 	}

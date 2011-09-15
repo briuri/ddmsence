@@ -26,9 +26,6 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.extensible.ExtensibleElement;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
-import buri.ddmsence.ddms.summary.gml.Point;
-import buri.ddmsence.ddms.summary.gml.Polygon;
-import buri.ddmsence.ddms.summary.gml.Position;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -274,18 +271,26 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		}
 	}
 	
+	/** 
+	 * Helper method to validate that a specific version of DDMS (or higher) is being used.
+	 * 
+	 * @param version the threshold version
+	 * @throws InvalidDDMSException if the version is not high enough
+	 */
+	protected void requireVersion(String version) throws InvalidDDMSException {
+		if (!getDDMSVersion().isAtLeast(version))
+			throw new InvalidDDMSException("The ddms:" + getName() + " element cannot be used until DDMS " + version + " or later.");
+	}
+	
 	/**
 	 * Returns the most recent compatible DDMSVersion for this component, based on the XML Namespace. Depends on the XOM
 	 * Element being set.
-	 * 
-	 * This is mainly a convenience method intended for use on components in the DDMS namespace.
 	 * 
 	 * @return a version
 	 * @throws UnsupportedVersionException if the XML namespace is not one of the supported DDMS namespaces.
 	 */
 	protected DDMSVersion getDDMSVersion() {
-		boolean isGML = (this instanceof Point || this instanceof Polygon || this instanceof Position);
-		return (isGML ? DDMSVersion.getVersionForGMLNamespace(getNamespace()) : DDMSVersion.getVersionForDDMSNamespace(getNamespace()));	
+		return (DDMSVersion.getVersionForNamespace(getNamespace()));	
 	}
 	
 	/**

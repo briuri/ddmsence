@@ -106,7 +106,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			if (element.getNamespaceURI().equals(attribute.getNamespaceURI()))
 				continue;
 			// Skip reserved ISM attributes on Resource and Category
-			DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI());
+			DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
 			if (Resource.getName(version).equals(element.getLocalName())
 				|| Category.getName(version).equals(element.getLocalName())
 				|| Keyword.getName(version).equals(element.getLocalName())) {
@@ -144,7 +144,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @param parentNamespace the namespace of the element which owns these attributes
 	 */
 	private void buildReservedNames(String parentNamespace) {
-		DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(parentNamespace);
+		DDMSVersion version = DDMSVersion.getVersionForNamespace(parentNamespace);
 		RESERVED_RESOURCE_NAMES.clear();
 		String ismPrefix = PropertyReader.getProperty("ism.prefix");
 		for (String reservedName : Resource.NON_EXTENSIBLE_NAMES) {
