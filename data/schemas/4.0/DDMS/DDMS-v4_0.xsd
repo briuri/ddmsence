@@ -109,9 +109,8 @@ JJP
 			<xs:element ref="virtualCoverage" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element ref="temporalCoverage" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element ref="geospatialCoverage" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element ref="relatedResources" minOccurs="0" maxOccurs="unbounded"/>
-<!-- 		<xs:element ref="relatedResource" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element ref="resourceManagement" minOccurs="0" maxOccurs="1"/>
+	 		<xs:element ref="relatedResource" minOccurs="0" maxOccurs="unbounded"/>
+<!-- 		<xs:element ref="resourceManagement" minOccurs="0" maxOccurs="1"/>
 -->			
 			
 			<xs:element ref="security"/>

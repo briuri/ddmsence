@@ -60,7 +60,7 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.Description;
 import buri.ddmsence.ddms.summary.GeospatialCoverage;
-import buri.ddmsence.ddms.summary.RelatedResources;
+import buri.ddmsence.ddms.summary.RelatedResource;
 import buri.ddmsence.ddms.summary.SubjectCoverage;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
 import buri.ddmsence.ddms.summary.VirtualCoverage;
@@ -159,7 +159,7 @@ public final class Resource extends AbstractBaseComponent {
 	private List<VirtualCoverage> _cachedVirtualCoverages = new ArrayList<VirtualCoverage>();
 	private List<TemporalCoverage> _cachedTemporalCoverages = new ArrayList<TemporalCoverage>();
 	private List<GeospatialCoverage> _cachedGeospatialCoverages = new ArrayList<GeospatialCoverage>();
-	private List<RelatedResources> _cachedRelatedResources = new ArrayList<RelatedResources>();
+	private List<RelatedResource> _cachedRelatedResources = new ArrayList<RelatedResource>();
 	private Security _cachedSecurity = null;
 	private List<ExtensibleElement> _cachedExtensibleElements = new ArrayList<ExtensibleElement>();
 	private List<IDDMSComponent> _orderedList = new ArrayList<IDDMSComponent>();
@@ -290,9 +290,9 @@ public final class Resource extends AbstractBaseComponent {
 			for (int i = 0; i < components.size(); i++) {
 				_cachedGeospatialCoverages.add(new GeospatialCoverage(components.get(i)));
 			}
-			components = element.getChildElements(RelatedResources.getName(version), namespace);
+			components = element.getChildElements(RelatedResource.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++) {
-				_cachedRelatedResources.add(new RelatedResources(components.get(i)));
+				loadRelatedResource(components.get(i));
 			}
 
 			// Security Set
@@ -321,6 +321,29 @@ public final class Resource extends AbstractBaseComponent {
 		}
 	}
 
+	/**
+	 * Helper method to convert element-based related resources into components. In DDMS 4.0, there is a
+	 * one-to-one correlation between the two. In DDMS 2.0, 3.0, or 3.1, the top-level ddms:RelatedResources
+	 * element might contain more than 1 ddms:relatedResource. In the latter case, each ddms:relatedResource
+	 * must be mediated into a separate RelatedResource instance.
+	 * 
+	 * @param resource the top-level element
+	 */
+	private void loadRelatedResource(Element resource) throws InvalidDDMSException {
+		Elements children = resource.getChildElements(RelatedResource.OLD_INNER_NAME, getNamespace());
+		if (children.size() <= 1) {
+			_cachedRelatedResources.add(new RelatedResource(resource));
+		}
+		else {
+			for (int i = 0; i < children.size(); i++) {
+				Element copy = new Element(resource);
+				copy.removeChildren();
+				copy.appendChild(new Element(children.get(i)));
+				_cachedRelatedResources.add(new RelatedResource(copy));
+			}
+		}
+	}
+	
 	/**
 	 * Constructor for creating a DDMS 2.0 Resource from raw data.
 	 * 
@@ -466,8 +489,8 @@ public final class Resource extends AbstractBaseComponent {
 					_cachedTemporalCoverages.add((TemporalCoverage) component);
 				else if (component instanceof GeospatialCoverage)
 					_cachedGeospatialCoverages.add((GeospatialCoverage) component);
-				else if (component instanceof RelatedResources)
-					_cachedRelatedResources.add((RelatedResources) component);
+				else if (component instanceof RelatedResource)
+					_cachedRelatedResources.add((RelatedResource) component);
 				// Security Set
 				else if (component instanceof Security)
 					_cachedSecurity = (Security) component;
@@ -840,9 +863,9 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the RelatedResources component (0-many)
+	 * Accessor for the RelatedResource components (0-many)
 	 */
-	public List<RelatedResources> getRelatedResources() {
+	public List<RelatedResource> getRelatedResources() {
 		return (Collections.unmodifiableList(_cachedRelatedResources));
 	}
 
@@ -951,7 +974,7 @@ public final class Resource extends AbstractBaseComponent {
 		private List<VirtualCoverage.Builder> _virtualCoverages;
 		private List<TemporalCoverage.Builder> _temporalCoverages;
 		private List<GeospatialCoverage.Builder> _geospatialCoverages;
-		private List<RelatedResources.Builder> _relatedResources;
+		private List<RelatedResource.Builder> _relatedResources;
 		private Security.Builder _security;
 		private List<ExtensibleElement.Builder> _extensibleElements;
 
@@ -1011,8 +1034,8 @@ public final class Resource extends AbstractBaseComponent {
 					getTemporalCoverages().add(new TemporalCoverage.Builder((TemporalCoverage) component));
 				else if (component instanceof GeospatialCoverage)
 					getGeospatialCoverages().add(new GeospatialCoverage.Builder((GeospatialCoverage) component));
-				else if (component instanceof RelatedResources)
-					getRelatedResources().add(new RelatedResources.Builder((RelatedResources) component));
+				else if (component instanceof RelatedResource)
+					getRelatedResources().add(new RelatedResource.Builder((RelatedResource) component));
 				// Security Set
 				else if (component instanceof Security)
 					setSecurity(new Security.Builder((Security) component));
@@ -1294,9 +1317,9 @@ public final class Resource extends AbstractBaseComponent {
 		/**
 		 * Builder accessor for the relatedResources
 		 */
-		public List<RelatedResources.Builder> getRelatedResources() {
+		public List<RelatedResource.Builder> getRelatedResources() {
 			if (_relatedResources == null)
-				_relatedResources = new LazyList(RelatedResources.Builder.class);
+				_relatedResources = new LazyList(RelatedResource.Builder.class);
 			return _relatedResources;
 		}
 		
