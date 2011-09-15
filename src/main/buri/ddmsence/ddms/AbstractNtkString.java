@@ -90,7 +90,7 @@ public abstract class AbstractNtkString extends AbstractBaseComponent {
 		try {
 			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
 			String ntkNamespace = DDMSVersion.getCurrentVersion().getNtkNamespace();
-
+			
 			Element element = Util.buildElement(ntkPrefix, name, ntkNamespace, value);
 			_isTokenBased = isTokenBased;
 			_cachedSecurityAttributes = attributes;

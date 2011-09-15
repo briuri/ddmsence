@@ -9,7 +9,7 @@
    This library is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-   GNU Lesser General Public License for more processingInfo.
+   GNU Lesser General Public License for more details.
    
    You should have received a copy of the GNU Lesser General Public 
    License along with DDMSence. If not, see <http://www.gnu.org/licenses/>.
@@ -17,34 +17,61 @@
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
  */
-package buri.ddmsence.ddms.resource;
+package buri.ddmsence.ddms.security.ntk;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.ddms.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:processingInfo elements</p>
+ * <p>Tests related to ntk:AccessIndividual elements</p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class ProcessingInfoTest extends AbstractComponentTestCase {
-		
-	private static final String TEST_VALUE = "XSLT Transformation to convert DDMS 2.0 to DDMS 3.1.";
-	private static final String TEST_DATE_PROCESSED = "2011-08-19";
+public class IndividualTest extends AbstractComponentTestCase {
 
 	/**
 	 * Constructor
 	 */
-	public ProcessingInfoTest() {
-		super("processingInfo.xml");
+	public IndividualTest() {
+		super("accessIndividual.xml");
 	}
 
+	/**
+	 * Helper method to create a fixture
+	 */
+	private static SystemName getSystemNameFixture() {
+		try {
+			return (new SystemName("DIAS", null, null, null, SecurityAttributesTest.getFixture(false)));
+		} catch (InvalidDDMSException e) {
+			fail("Failed to create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
+	 * Helper method to create a fixture
+	 */
+	private static List<IndividualValue> getIndividualValueFixture() {
+		List<IndividualValue> list = new ArrayList<IndividualValue>();
+		try {
+			list.add(new IndividualValue("user_2321889:Doe_John_H", null, null, null, SecurityAttributesTest.getFixture(false)));
+			return (list);
+		} catch (InvalidDDMSException e) {
+			fail("Failed to create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -53,10 +80,10 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 	 * 
 	 * @return a valid object
 	 */
-	private ProcessingInfo testConstructor(boolean expectFailure, Element element) {
-		ProcessingInfo component = null;
+	private Individual testConstructor(boolean expectFailure, Element element) {
+		Individual component = null;
 		try {
-			component = new ProcessingInfo(element);
+			component = new Individual(element);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -68,14 +95,13 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param expectFailure true if this operation is expected to succeed, false otherwise
-	 * @param value the child text
-	 * @param dateProcessed the processing date
-	 * @return a valid object
+	 * @param systemName the system (required)
+	 * @param values the values (1 required)
 	 */
-	private ProcessingInfo testConstructor(boolean expectFailure, String value, String dateProcessed) {
-		ProcessingInfo component = null;
+	private Individual testConstructor(boolean expectFailure, SystemName systemName, List<IndividualValue> values) {
+		Individual component = null;
 		try {
-			component = new ProcessingInfo(value, dateProcessed, SecurityAttributesTest.getFixture(false));
+			component = new Individual(systemName, values, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -88,23 +114,26 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "processingInfo", TEST_VALUE));
-		text.append(buildOutput(isHTML, "processingInfo.dateProcessed", TEST_DATE_PROCESSED));
-		text.append(buildOutput(isHTML, "processingInfo.classification", "U"));
-		text.append(buildOutput(isHTML, "processingInfo.ownerProducer", "USA"));
+		text.append(getSystemNameFixture().getOutput(isHTML, "individual."));
+		text.append(getIndividualValueFixture().get(0).getOutput(isHTML, "individual."));
+		text.append(buildOutput(isHTML, "individual.classification", "U"));
+		text.append(buildOutput(isHTML, "individual.ownerProducer", "USA"));
 		return (text.toString());
 	}
 	
 	/**
 	 * Returns the expected XML output for this unit test
+	 * 
+	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput() {
+	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:processingInfo ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ");
-		xml.append("ddms:dateProcessed=\"").append(TEST_DATE_PROCESSED).append("\">");
-		xml.append(TEST_VALUE).append("</ddms:processingInfo>");
-		return (xml.toString());
+		xml.append("<ntk:AccessIndividual ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
+		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
+		xml.append("\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml.append("\t<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">user_2321889:Doe_John_H</ntk:AccessIndividualValue>\n");
+		xml.append("</ntk:AccessIndividual>\n");
+		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
@@ -114,10 +143,10 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProcessingInfo component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(ProcessingInfo.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + ProcessingInfo.getName(version),
+			Individual component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			assertEquals(Individual.getName(version), component.getName());
+			assertEquals(PropertyReader.getProperty("ntk.prefix"), component.getPrefix());
+			assertEquals(PropertyReader.getProperty("ntk.prefix") + ":" + Individual.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -135,16 +164,10 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
-
-			// No optional fields
-			Element element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
-			Util.addDDMSAttribute(element, "dateProcessed", TEST_DATE_PROCESSED);
-			SecurityAttributesTest.getFixture(false).addTo(element);
-			testConstructor(WILL_SUCCEED, element);
 		}
 	}
 
-	public void testDataConstructorValid() {
+	public void testDataConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
@@ -152,57 +175,56 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 				continue;
 			
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_DATE_PROCESSED);
-
-			// No optional fields
-			testConstructor(WILL_SUCCEED, "", TEST_DATE_PROCESSED);
+			testConstructor(WILL_SUCCEED, getSystemNameFixture(), getIndividualValueFixture());
 		}
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
 			
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			// Wrong name
-			Element element = Util.buildDDMSElement("unknownName", null);
+			// Missing systemName
+			Element element = Util.buildElement(ntkPrefix, Individual.getName(version), version.getNtkNamespace(), null);
+			for (IndividualValue value : getIndividualValueFixture())
+				element.appendChild(value.getXOMElementCopy());
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
 			
-			// Missing date
-			element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
+			// Missing individualValue
+			element = Util.buildElement(ntkPrefix, Individual.getName(version), version.getNtkNamespace(), null);
+			element.appendChild(getSystemNameFixture().getXOMElementCopy());
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
-						
-			// Wrong date format (using xs:gDay here)
-			element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
-			Util.addDDMSAttribute(element, "dateProcessed", "---31");
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			
+			// Missing security attributes
+			element = Util.buildElement(ntkPrefix, Individual.getName(version), version.getNtkNamespace(), null);
+			element.appendChild(getSystemNameFixture().getXOMElementCopy());
+			for (IndividualValue value : getIndividualValueFixture())
+				element.appendChild(value.getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
 	}
 
-	public void testDataConstructorInvalid() {
+	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			// Missing date
-			testConstructor(WILL_FAIL, TEST_VALUE, null);
+			// Missing systemName
+			testConstructor(WILL_FAIL, null, getIndividualValueFixture());
 			
-			// Invalid date format
-			testConstructor(WILL_FAIL, TEST_VALUE, "baboon");
+			// Missing individualValue
+			testConstructor(WILL_FAIL, getSystemNameFixture(), null);
 			
-			// Wrong date format (using xs:gDay here)
-			testConstructor(WILL_FAIL, TEST_VALUE, "---31");
-
-			// Bad security attributes
+			// Missing security attributes
 			try {
-				new ProcessingInfo(TEST_VALUE, TEST_DATE_PROCESSED, null);
+				new Individual(getSystemNameFixture(), getIndividualValueFixture(), null);
 				fail("Allowed invalid data.");
 			} catch (InvalidDDMSException e) {
 				// Good
@@ -218,18 +240,8 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 				continue;
 			
 			// No warnings
-			ProcessingInfo component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Individual component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
-
-			// No value
-			Element element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
-			Util.addDDMSAttribute(element, "dateProcessed", TEST_DATE_PROCESSED);
-			SecurityAttributesTest.getFixture(false).addTo(element);
-			component = testConstructor(WILL_SUCCEED, element);
-			assertEquals(1, component.getValidationWarnings().size());
-			String text = "A ddms:processingInfo element was found with no value.";
-			String locator = "ddms:processingInfo";
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 
@@ -237,11 +249,11 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			
-			if (!version.isAtLeast("4.0"))
+			if (!version.isAtLeast("4.0"))				
 				continue;
 			
-			ProcessingInfo elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			ProcessingInfo dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_DATE_PROCESSED);
+			Individual elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Individual dataComponent = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getIndividualValueFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -254,12 +266,14 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProcessingInfo elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			ProcessingInfo dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_DATE_PROCESSED);
+			Individual elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Individual dataComponent = testConstructor(WILL_SUCCEED, new SystemName("MDR", null, null, null, SecurityAttributesTest.getFixture(false)), getIndividualValueFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 			
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, "2011");
-			assertFalse(elementComponent.equals(dataComponent));
+			List<IndividualValue> list = new ArrayList<IndividualValue>();
+			list.add(new IndividualValue("newUser", null, null, null, SecurityAttributesTest.getFixture(false)));
+			dataComponent = testConstructor(WILL_SUCCEED, getSystemNameFixture(), list);
+			assertFalse(elementComponent.equals(dataComponent));				
 		}
 	}
 
@@ -270,7 +284,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProcessingInfo elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Individual elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -283,10 +297,10 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProcessingInfo component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Individual component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_DATE_PROCESSED);
+			component = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getIndividualValueFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
@@ -298,10 +312,10 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProcessingInfo component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Individual component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_DATE_PROCESSED);
+			component = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getIndividualValueFixture());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
@@ -313,50 +327,62 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 			
-			ProcessingInfo component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedXMLOutput(), component.toXML());
+			Individual component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_DATE_PROCESSED);
-			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void test20Usage() {
-		try {
-			DDMSVersion.setCurrentVersion("2.0");
-			new ProcessingInfo(TEST_VALUE, TEST_DATE_PROCESSED, SecurityAttributesTest.getFixture(false));
-			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
-			// Good
+			component = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getIndividualValueFixture());
+			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
 	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
-			ProcessingInfo component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
+			Individual component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			
 			// Equality after Building
-			ProcessingInfo.Builder builder = new ProcessingInfo.Builder(component);
+			Individual.Builder builder = new Individual.Builder(component);
 			assertEquals(builder.commit(), component);
 
 			// Empty case
-			builder = new ProcessingInfo.Builder();
+			builder = new Individual.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.getIndividualValues().get(0);
+			assertTrue(builder.isEmpty());
+			builder.getIndividualValues().get(1).setValue("TEST");
+			assertFalse(builder.isEmpty());
 
 			// Validation
-			builder = new ProcessingInfo.Builder();
-			builder.setValue(TEST_VALUE);
+			builder = new Individual.Builder();
+			builder.getSecurityAttributes().setClassification("U");
+			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.getSystemName().setValue("value");
+			builder.getSystemName().getSecurityAttributes().setClassification("U");
+			builder.getSystemName().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
 			} catch (InvalidDDMSException e) {
 				// Good
 			}
+			
+			// Skip empty builders
+			
+		}
+	}
+	
+
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			Individual.Builder builder = new Individual.Builder();
+			assertNotNull(builder.getIndividualValues().get(1));
 		}
 	}
 }
