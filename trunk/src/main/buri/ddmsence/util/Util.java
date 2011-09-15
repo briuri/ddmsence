@@ -41,13 +41,12 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.namespace.QName;
 
+import net.sf.saxon.om.Name10Checker;
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
-import nu.xom.IllegalNameException;
-import nu.xom.NamespaceConflictException;
 import nu.xom.Nodes;
 import nu.xom.ParsingException;
 import nu.xom.xslt.XSLException;
@@ -371,7 +370,7 @@ public class Util {
 		// Cover acceptable case where parent (BoundingGeometry) has different XML namespace than child.
 		String parentNamespace = parent.getNamespace();
 		if (child instanceof Polygon || child instanceof Point) {
-			parentNamespace = DDMSVersion.getVersionForDDMSNamespace(parentNamespace).getGmlNamespace();
+			parentNamespace = DDMSVersion.getVersionForNamespace(parentNamespace).getGmlNamespace();
 		}		
 		String childNamespace = child.getNamespace();
 		if (!parentNamespace.equals(childNamespace)) {
@@ -381,23 +380,27 @@ public class Util {
 	}
 	
 	/**
-	 * Validates that a string is an NCName. This method uses the built-in Verifier in XOM by attempting to
-	 * create a new Element with the test string as a local name (Local names must be NCNames).
+	 * Validates that a string is an NCName. This method relies on Saxon's library
+	 * methods.
 	 * 
 	 * @param name the name to check
 	 * @throws InvalidDDMSException if the name is not an NCName.
 	 */
 	public static void requireValidNCName(String name) throws InvalidDDMSException {
-		try {
-			Util.requireDDMSValue("test NCName", name);
-			new Element(name);
-		}
-		catch (IllegalNameException e) {
+		if (!(new Name10Checker().isValidNCName(getNonNullString(name))))
 			throw new InvalidDDMSException("\"" + name + "\" is not a valid NCName.");
-		}
-		catch (NamespaceConflictException e) {
-			throw new InvalidDDMSException("\"" + name + "\" is not a valid NCName.");
-		}
+	}
+	
+	/**
+	 * Validates that a string is an NMTOKEN. This method relies on Saxon's library
+	 * methods.
+	 * 
+	 * @param name the name to check
+	 * @throws InvalidDDMSException if the name is not an NMTOKEN.
+	 */
+	public static void requireValidNMToken(String name) throws InvalidDDMSException {
+		if (!(new Name10Checker().isValidNmtoken(getNonNullString(name))))
+			throw new InvalidDDMSException("\"" + name + "\" is not a valid NMTOKEN.");
 	}
 	
 	/**

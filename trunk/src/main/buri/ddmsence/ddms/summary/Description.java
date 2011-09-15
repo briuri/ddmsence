@@ -98,7 +98,7 @@ public final class Description extends AbstractSimpleString {
 	 */
 	protected void validateWarnings() {
 		if (Util.isEmpty(getValue()))
-			addWarning("A ddms:" + Description.getName(getDDMSVersion()) + " element was found with no description value.");
+			addWarning("A ddms:" + getName() + " element was found with no description value.");
 		super.validateWarnings();
 	}
 	

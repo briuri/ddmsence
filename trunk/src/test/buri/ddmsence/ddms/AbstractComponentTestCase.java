@@ -195,6 +195,13 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	}
 	
 	/**
+	 * Returns a namespace declaration for NTK
+	 */
+	protected static String getXmlnsNTK() {
+		return ("xmlns:ntk=\"" + DDMSVersion.getCurrentVersion().getNtkNamespace() + "\"");
+	}
+	
+	/**
 	 * Accessor for a valid DDMS XOM Element constructed from the root element of an XML file, which can be used in
 	 * testing as a "correct base case".
 	 */

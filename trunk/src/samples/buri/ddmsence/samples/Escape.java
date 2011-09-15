@@ -252,7 +252,7 @@ public class Escape extends AbstractSample {
 	private URL buildVersionGraph() throws IOException {
 		Distribution distribution = new Distribution();
 		for (Resource resource : getResources()) {
-			distribution.incrementCount(DDMSVersion.getVersionForDDMSNamespace(resource.getNamespace()).getVersion());
+			distribution.incrementCount(DDMSVersion.getVersionForNamespace(resource.getNamespace()).getVersion());
 		}
 		return (buildPieGraphURL("DDMS%20Version%20Distribution", distribution, PIE_GRAPH));
 	}	

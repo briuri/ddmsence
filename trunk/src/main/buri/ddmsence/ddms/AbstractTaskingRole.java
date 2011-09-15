@@ -26,7 +26,6 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.ddms.resource.Person;
-import buri.ddmsence.ddms.resource.RequestorInfo;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -128,8 +127,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 		getSecurityAttributes().requireClassification();
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0"))
-			throw new InvalidDDMSException("The ddms:" + RequestorInfo.getName(getDDMSVersion()) + " element cannot be used until DDMS 4.0 or later.");
+		requireVersion("4.0");
 		
 		super.validate();
 	}

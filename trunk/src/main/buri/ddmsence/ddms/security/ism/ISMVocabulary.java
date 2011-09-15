@@ -394,7 +394,7 @@ public class ISMVocabulary {
 	public static void validateRollup(SecurityAttributes parentAttributes, Set<SecurityAttributes> childAttributes)
 		throws InvalidDDMSException {
 		Util.requireValue("parent classification", parentAttributes.getClassification());
-		setDDMSVersion(DDMSVersion.getVersionForDDMSNamespace(parentAttributes.getDDMSNamespace()));
+		setDDMSVersion(parentAttributes.getDDMSVersion());
 
 		String parentClass = parentAttributes.getClassification();
 		boolean isParentUS = enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, parentClass);

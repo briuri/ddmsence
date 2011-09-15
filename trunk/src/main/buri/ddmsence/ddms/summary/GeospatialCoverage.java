@@ -114,7 +114,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			String namespace = element.getNamespaceURI();
 			Element extElement = getExtentElement();
 			if (extElement != null) {
-				DDMSVersion version = DDMSVersion.getVersionForDDMSNamespace(element.getNamespaceURI());
+				DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
 				Element geographicIdentifierElement = extElement.getFirstChildElement(
 					GeographicIdentifier.getName(version), namespace);
 				if (geographicIdentifierElement != null)
