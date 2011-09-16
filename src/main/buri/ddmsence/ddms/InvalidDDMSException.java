@@ -21,6 +21,7 @@ package buri.ddmsence.ddms;
 
 import java.net.URISyntaxException;
 
+
 /**
  * Exception class for attempts to generate invalid DDMS components.
  * 

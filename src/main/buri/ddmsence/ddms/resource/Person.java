@@ -22,8 +22,8 @@ package buri.ddmsence.ddms.resource;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.AbstractBaseComponent;
-import buri.ddmsence.ddms.AbstractRoleEntity;
+import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.AbstractRoleEntity;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;

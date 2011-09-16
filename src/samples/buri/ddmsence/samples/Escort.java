@@ -34,7 +34,7 @@ import java.util.Set;
 import nu.xom.Comment;
 import nu.xom.Document;
 import nu.xom.Serializer;
-import buri.ddmsence.ddms.AbstractProducerRole;
+import buri.ddmsence.AbstractProducerRole;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;

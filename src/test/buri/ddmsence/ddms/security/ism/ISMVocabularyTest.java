@@ -19,7 +19,7 @@
  */
 package buri.ddmsence.ddms.security.ism;
 
-import buri.ddmsence.ddms.AbstractComponentTestCase;
+import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.util.DDMSVersion;
 
 /**

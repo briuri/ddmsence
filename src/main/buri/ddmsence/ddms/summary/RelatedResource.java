@@ -27,8 +27,8 @@ import java.util.Set;
 
 import nu.xom.Element;
 import nu.xom.Elements;
-import buri.ddmsence.ddms.AbstractBaseComponent;
-import buri.ddmsence.ddms.AbstractQualifierValue;
+import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;

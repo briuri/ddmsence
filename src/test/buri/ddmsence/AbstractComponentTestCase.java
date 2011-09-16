@@ -17,7 +17,7 @@
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
  */
-package buri.ddmsence.ddms;
+package buri.ddmsence;
 
 import java.io.File;
 import java.util.HashMap;
@@ -25,6 +25,8 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 import nu.xom.Element;
+import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSReader;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;

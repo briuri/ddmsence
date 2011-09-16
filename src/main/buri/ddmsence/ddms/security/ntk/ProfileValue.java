@@ -20,8 +20,8 @@
 package buri.ddmsence.ddms.security.ntk;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.AbstractBaseComponent;
-import buri.ddmsence.ddms.AbstractNtkString;
+import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.AbstractNtkString;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
@@ -80,7 +80,7 @@ public final class ProfileValue extends AbstractNtkString {
 	 * @param id the NTK ID (optional)
 	 * @param idReference a reference to an NTK ID (optional)
 	 * @param qualifier an NTK qualifier (optional)
-	 * @param attributes the security attributes
+	 * @param securityAttributes the security attributes
 	 */
 	public ProfileValue(String value, String vocabulary, String id, String idReference, String qualifier,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {

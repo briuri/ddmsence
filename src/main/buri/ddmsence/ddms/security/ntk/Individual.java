@@ -19,21 +19,20 @@
 */
 package buri.ddmsence.ddms.security.ntk;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
 import nu.xom.Elements;
-import buri.ddmsence.ddms.AbstractBaseComponent;
+import buri.ddmsence.AbstractAccessEntity;
+import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
-import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -58,12 +57,10 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 2.0.0
  */
-public final class Individual extends AbstractBaseComponent {
+public final class Individual extends AbstractAccessEntity {
 	
 	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
-	private SystemName _cachedSystemName;
 	private List<IndividualValue> _cachedIndividualValues;
-	private SecurityAttributes _cachedSecurityAttributes = null;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -72,18 +69,13 @@ public final class Individual extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Individual(Element element) throws InvalidDDMSException {
+		super(element);
 		try {
-			Util.requireDDMSValue("element", element);
-			setXOMElement(element, false);
-			Element systemElement = element.getFirstChildElement(SystemName.getName(getDDMSVersion()), getNamespace());
-			if (systemElement != null)
-				_cachedSystemName = new SystemName(systemElement);
 			Elements values = element.getChildElements(IndividualValue.getName(getDDMSVersion()), getNamespace());
 			_cachedIndividualValues = new ArrayList<IndividualValue>();
 			for (int i = 0; i < values.size(); i++) {
 				_cachedIndividualValues.add(new IndividualValue(values.get(i)));
-			}			
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			}
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -96,29 +88,19 @@ public final class Individual extends AbstractBaseComponent {
 	 *  
 	 * @param systemName the system name (required)
 	 * @param individualValues the list of values (at least 1 required)
-	 * @param attributes security attributes (required)
+	 * @param securityAttributes security attributes (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Individual(SystemName systemName, List<IndividualValue> individualValues,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		super(Individual.getName(DDMSVersion.getCurrentVersion()), systemName, securityAttributes);
 		try {
 			if (individualValues == null)
 				individualValues = Collections.emptyList();
-			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			Element element = Util.buildElement(PropertyReader.getProperty("ntk.prefix"), Individual.getName(version),
-				version.getNtkNamespace(), null);
-			setXOMElement(element, false);
-			if (systemName != null)
-				element.appendChild(systemName.getXOMElementCopy());
 			for (IndividualValue value : individualValues) {
-				element.appendChild(value.getXOMElementCopy());
+				getXOMElement().appendChild(value.getXOMElementCopy());
 			}
-
-			_cachedSystemName = systemName;
 			_cachedIndividualValues = individualValues;
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -131,11 +113,7 @@ public final class Individual extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A systemName is required.</li>
 	 * <li>At least 1 individual value is required.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot exist until DDMS 4.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -143,14 +121,8 @@ public final class Individual extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireQName(getXOMElement(), getNamespace(), Individual.getName(getDDMSVersion()));
-		Util.requireDDMSValue("systemName", getSystemName());
 		if (getIndividualValues().isEmpty())
 			throw new InvalidDDMSException("At least one individual value is required.");
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
-		getSecurityAttributes().requireClassification();
-		
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0");
 
 		super.validate();
 	}
@@ -173,8 +145,7 @@ public final class Individual extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
 	protected List<IDDMSComponent> getNestedComponents() {
-		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
-		list.add(getSystemName());
+		List<IDDMSComponent> list = super.getNestedComponents();
 		list.addAll(getIndividualValues());
 		return (list);
 	}
@@ -200,25 +171,11 @@ public final class Individual extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the system name
-	 */
-	public SystemName getSystemName() {
-		return _cachedSystemName;
-	}
-
-	/**
 	 * Accessor for the list of individual values (1-many)
 	 */
 	public List<IndividualValue> getIndividualValues() {
 		return (Collections.unmodifiableList(_cachedIndividualValues));
 	}	
-	
-	/**
-	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
-	 */
-	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
-	}
 		
 	/**
 	 * Builder for this DDMS component.
@@ -227,26 +184,24 @@ public final class Individual extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 2.0.0
 	 */
-	public static class Builder implements IBuilder, Serializable {
+	public static class Builder extends AbstractAccessEntity.Builder {
 		private static final long serialVersionUID = 7851044806424206976L;
-		private SystemName.Builder _systemName;
 		private List<IndividualValue.Builder> _individualValues;
-		private SecurityAttributes.Builder _securityAttributes;		
 		
 		/**
 		 * Empty constructor
 		 */
-		public Builder() {}
+		public Builder() {
+			super();
+		}
 		
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Individual individual) {
-			if (individual.getSystemName() != null)
-				setSystemName(new SystemName.Builder(individual.getSystemName()));
+			super(individual);
 			for (IndividualValue value : individual.getIndividualValues())
 				getIndividualValues().add(new IndividualValue.Builder(value));
-			setSecurityAttributes(new SecurityAttributes.Builder(individual.getSecurityAttributes()));
 		}
 		
 		/**
@@ -271,25 +226,9 @@ public final class Individual extends AbstractBaseComponent {
 			boolean hasValueInList = false;
 			for (IBuilder builder : getIndividualValues())
 				hasValueInList = hasValueInList || !builder.isEmpty();
-			return (!hasValueInList && getSystemName().isEmpty() && getSecurityAttributes().isEmpty());
+			return (!hasValueInList && super.isEmpty());
 		}
 		
-		/**
-		 * Builder accessor for the systemName
-		 */
-		public SystemName.Builder getSystemName() {
-			if (_systemName == null)
-				_systemName = new SystemName.Builder();
-			return _systemName;
-		}
-
-		/**
-		 * Builder accessor for the systemName
-		 */
-		public void setSystemName(SystemName.Builder systemName) {
-			_systemName = systemName;
-		}
-
 		/**
 		 * Builder accessor for the values
 		 */
@@ -297,22 +236,6 @@ public final class Individual extends AbstractBaseComponent {
 			if (_individualValues == null)
 				_individualValues = new LazyList(IndividualValue.Builder.class);
 			return _individualValues;
-		}
-		
-		/**
-		 * Builder accessor for the securityAttributes
-		 */
-		public SecurityAttributes.Builder getSecurityAttributes() {
-			if (_securityAttributes == null)
-				_securityAttributes = new SecurityAttributes.Builder();
-			return _securityAttributes;
-		}
-		
-		/**
-		 * Builder accessor for the securityAttributes
-		 */
-		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
-			_securityAttributes = securityAttributes;
 		}
 	}
 } 

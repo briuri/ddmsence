@@ -26,7 +26,7 @@ import java.util.List;
 
 import nu.xom.Element;
 import nu.xom.Elements;
-import buri.ddmsence.ddms.AbstractBaseComponent;
+import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;

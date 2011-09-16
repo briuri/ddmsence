@@ -20,7 +20,7 @@
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.AbstractTaskingRole;
+import buri.ddmsence.AbstractTaskingRole;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;

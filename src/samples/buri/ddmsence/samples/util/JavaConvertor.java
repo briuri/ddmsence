@@ -21,7 +21,7 @@ package buri.ddmsence.samples.util;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
-import buri.ddmsence.ddms.AbstractProducerRole;
+import buri.ddmsence.AbstractProducerRole;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
