@@ -41,7 +41,7 @@ in the directory, which is used in the <u>Essentials</u> application. <u>Escape<
 <p>With a collection of Resources in hand, <u>Escape</u> examines the data in each Resource and builds frequency distribution charts based on various metrics. The
 chart that appears initially shows the distribution of MIME Types in the resources (the <code>ddms:mimeType</code> element nested inside of <code>ddms:Media</code>).</p>
 
-<img src="./images/escape-01.png" width="400" height="264" title="First Screen" />
+<img src="./images/escape-01.png" width="400" height="267" title="First Screen" />
 <p class="figure">Figure 1. The MIME Types Distribution</p>
 
 <p>The text field below the chart contains the URL used to generate it. You can paste this URL into your web browser to view the same graph.</p>
@@ -71,7 +71,7 @@ a List of DDMS components. The name of the getter will be a capitalized version 
 
 <p>Next, let's click on the "Keyword" tab to see a pie graph of keyword usage.</p>
 
-<img src="./images/escape-02.png" width="400" height="268" title="Second Screen" />
+<img src="./images/escape-02.png" width="400" height="267" title="Second Screen" />
 <p class="figure">Figure 3. The Keyword Distribution</p>
  
 <pre class="brush: java">Distribution distribution = new Distribution();
@@ -100,7 +100,7 @@ up into single words (to make the visualization more exciting).</p>
 
 <p>The next visualization can be seen in the "Dates" tab.</p>
 
-<img src="./images/escape-03.png" width="400" height="266" title="Third Screen" />
+<img src="./images/escape-03.png" width="400" height="267" title="Third Screen" />
 <p class="figure">Figure 5. The Dates Distribution</p>
 
 <p>The source code for this visualization can be found in the <code>buildDateGraph()</code> method. Dates can appear in a DDMS Resource in multiple locations:</p>
@@ -150,6 +150,9 @@ dates to provide more examples of traversing a Resource, and to make the visuali
 
 <p>The final distribution in "DDMS Versions" tab shows the DDMS versions of the loaded Resources, based on the XML namespaces in the files. If you would like to add new Resources to the dataset, simply copy your XML files into the <code>data/samples/</code> directory, or use the <u>Escort</u> wizard
 application to generate Resources. When you open up <u>Escape</u> again, your new files will be included in the metrics.</p>
+
+<img src="./images/escape-04.png" width="400" height="267" title="Fourth Screen" />
+<p class="figure">Figure 6. The Version Distribution</p>
 
 <h3>Conclusion</h3>
 
