@@ -32,8 +32,8 @@ import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.AbstractAttributeGroup;
-import buri.ddmsence.ddms.AbstractBaseComponent;
+import buri.ddmsence.AbstractAttributeGroup;
+import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;

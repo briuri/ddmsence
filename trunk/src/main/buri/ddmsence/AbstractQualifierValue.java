@@ -17,11 +17,13 @@
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
 */
-package buri.ddmsence.ddms;
+package buri.ddmsence;
 
 import java.io.Serializable;
 
 import nu.xom.Element;
+import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.Util;
 
 /**

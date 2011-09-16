@@ -179,6 +179,7 @@ Non-DDMS classes have been moved into new packages (Issue #148).
 
 SEVERITY: Minor
 DETAILS:
+	- Abstract classes and Exception classes have moved up to buri.ddmsence.
 	- GML classes (Point, Polygon, Position, and SRSAttributes) have moved into buri.ddmsence.ddms.summary.gml.
 	- ISM classes (ISMVocabulary, and SecurityAttributes) have moved into buri.ddmsence.ddms.security.ism.
 FIX:

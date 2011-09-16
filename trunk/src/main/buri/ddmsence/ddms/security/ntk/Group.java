@@ -19,21 +19,20 @@
 */
 package buri.ddmsence.ddms.security.ntk;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
 import nu.xom.Elements;
-import buri.ddmsence.ddms.AbstractBaseComponent;
+import buri.ddmsence.AbstractAccessEntity;
+import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
-import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -58,12 +57,10 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 2.0.0
  */
-public final class Group extends AbstractBaseComponent {
+public final class Group extends AbstractAccessEntity {
 	
 	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
-	private SystemName _cachedSystemName;
 	private List<GroupValue> _cachedGroupValues;
-	private SecurityAttributes _cachedSecurityAttributes = null;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -72,18 +69,13 @@ public final class Group extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Group(Element element) throws InvalidDDMSException {
+		super(element);
 		try {
-			Util.requireDDMSValue("element", element);
-			setXOMElement(element, false);
-			Element systemElement = element.getFirstChildElement(SystemName.getName(getDDMSVersion()), getNamespace());
-			if (systemElement != null)
-				_cachedSystemName = new SystemName(systemElement);
 			Elements values = element.getChildElements(GroupValue.getName(getDDMSVersion()), getNamespace());
 			_cachedGroupValues = new ArrayList<GroupValue>();
 			for (int i = 0; i < values.size(); i++) {
 				_cachedGroupValues.add(new GroupValue(values.get(i)));
 			}			
-			_cachedSecurityAttributes = new SecurityAttributes(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -96,29 +88,19 @@ public final class Group extends AbstractBaseComponent {
 	 *  
 	 * @param systemName the system name (required)
 	 * @param groupValues the list of values (at least 1 required)
-	 * @param attributes security attributes (required)
+	 * @param securityAttributes security attributes (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Group(SystemName systemName, List<GroupValue> groupValues,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		super(Group.getName(DDMSVersion.getCurrentVersion()), systemName, securityAttributes);
 		try {
 			if (groupValues == null)
 				groupValues = Collections.emptyList();
-			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			Element element = Util.buildElement(PropertyReader.getProperty("ntk.prefix"), Group.getName(version),
-				version.getNtkNamespace(), null);
-			setXOMElement(element, false);
-			if (systemName != null)
-				element.appendChild(systemName.getXOMElementCopy());
 			for (GroupValue value : groupValues) {
-				element.appendChild(value.getXOMElementCopy());
+				getXOMElement().appendChild(value.getXOMElementCopy());
 			}
-
-			_cachedSystemName = systemName;
 			_cachedGroupValues = groupValues;
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -131,11 +113,7 @@ public final class Group extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>A systemName is required.</li>
 	 * <li>At least 1 group value is required.</li>
-	 * <li>A classification is required.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot exist until DDMS 4.0 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -143,15 +121,9 @@ public final class Group extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireQName(getXOMElement(), getNamespace(), Group.getName(getDDMSVersion()));
-		Util.requireDDMSValue("systemName", getSystemName());
 		if (getGroupValues().isEmpty())
 			throw new InvalidDDMSException("At least one group value is required.");
-		Util.requireDDMSValue("security attributes", getSecurityAttributes());
-		getSecurityAttributes().requireClassification();
 		
-		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0");
-
 		super.validate();
 	}
 		
@@ -173,8 +145,7 @@ public final class Group extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getNestedComponents()
 	 */
 	protected List<IDDMSComponent> getNestedComponents() {
-		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
-		list.add(getSystemName());
+		List<IDDMSComponent> list = super.getNestedComponents();
 		list.addAll(getGroupValues());
 		return (list);
 	}
@@ -198,28 +169,14 @@ public final class Group extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("AccessGroup");
 	}
-	
-	/**
-	 * Accessor for the system name
-	 */
-	public SystemName getSystemName() {
-		return _cachedSystemName;
-	}
 
 	/**
 	 * Accessor for the list of group values (1-many)
 	 */
 	public List<GroupValue> getGroupValues() {
 		return (Collections.unmodifiableList(_cachedGroupValues));
-	}	
-	
-	/**
-	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
-	 */
-	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
 	}
-		
+			
 	/**
 	 * Builder for this DDMS component.
 	 * 
@@ -227,26 +184,24 @@ public final class Group extends AbstractBaseComponent {
 	 * @author Brian Uri!
 	 * @since 2.0.0
 	 */
-	public static class Builder implements IBuilder, Serializable {
+	public static class Builder extends AbstractAccessEntity.Builder {
 		private static final long serialVersionUID = 7851044806424206976L;
-		private SystemName.Builder _systemName;
 		private List<GroupValue.Builder> _groupValues;
-		private SecurityAttributes.Builder _securityAttributes;		
 		
 		/**
 		 * Empty constructor
 		 */
-		public Builder() {}
+		public Builder() {
+			super();			
+		}
 		
 		/**
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Group group) {
-			if (group.getSystemName() != null)
-				setSystemName(new SystemName.Builder(group.getSystemName()));
+			super(group);
 			for (GroupValue value : group.getGroupValues())
 				getGroupValues().add(new GroupValue.Builder(value));
-			setSecurityAttributes(new SecurityAttributes.Builder(group.getSecurityAttributes()));
 		}
 		
 		/**
@@ -271,23 +226,7 @@ public final class Group extends AbstractBaseComponent {
 			boolean hasValueInList = false;
 			for (IBuilder builder : getGroupValues())
 				hasValueInList = hasValueInList || !builder.isEmpty();
-			return (!hasValueInList && getSystemName().isEmpty() && getSecurityAttributes().isEmpty());
-		}
-		
-		/**
-		 * Builder accessor for the systemName
-		 */
-		public SystemName.Builder getSystemName() {
-			if (_systemName == null)
-				_systemName = new SystemName.Builder();
-			return _systemName;
-		}
-
-		/**
-		 * Builder accessor for the systemName
-		 */
-		public void setSystemName(SystemName.Builder systemName) {
-			_systemName = systemName;
+			return (!hasValueInList && super.isEmpty());
 		}
 
 		/**
@@ -297,22 +236,6 @@ public final class Group extends AbstractBaseComponent {
 			if (_groupValues == null)
 				_groupValues = new LazyList(GroupValue.Builder.class);
 			return _groupValues;
-		}
-		
-		/**
-		 * Builder accessor for the securityAttributes
-		 */
-		public SecurityAttributes.Builder getSecurityAttributes() {
-			if (_securityAttributes == null)
-				_securityAttributes = new SecurityAttributes.Builder();
-			return _securityAttributes;
-		}
-		
-		/**
-		 * Builder accessor for the securityAttributes
-		 */
-		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
-			_securityAttributes = securityAttributes;
 		}
 	}
 } 

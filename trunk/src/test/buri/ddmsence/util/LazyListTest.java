@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
-import buri.ddmsence.ddms.AbstractBaseComponent;
+import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.resource.Dates;

@@ -24,7 +24,7 @@ import java.util.List;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
-import buri.ddmsence.ddms.AbstractComponentTestCase;
+import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;

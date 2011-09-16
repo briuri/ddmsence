@@ -40,6 +40,7 @@ import nu.xom.Nodes;
 import nu.xom.XPathContext;
 import nu.xom.xslt.XSLException;
 import nu.xom.xslt.XSLTransform;
+import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleElement;
 import buri.ddmsence.ddms.format.Format;
@@ -107,7 +108,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:virtualCoverage</u>: (0-many optional), implemented as a {@link VirtualCoverage}<br />
  * <u>ddms:temporalCoverage</u>: (0-many optional), implemented as a {@link TemporalCoverage}<br />
  * <u>ddms:geospatialCoverage</u>: (0-many optional), implemented as a {@link GeospatialCoverage}<br />
- * <u>ddms:relatedResources</u>: (0-many optional), implemented as a {@link RelatedResources}<br />
+ * <u>ddms:relatedResources</u>: (0-many optional), implemented as a {@link RelatedResource}<br />
  * <u>ddms:security</u>: (exactly 1 required), implemented as a {@link Security}<br />
  * <u>Extensible Layer</u>: (0-many optional), implemented as a {@link ExtensibleElement}<br />
  * </td></tr></table>

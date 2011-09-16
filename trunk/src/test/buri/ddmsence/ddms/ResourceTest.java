@@ -28,6 +28,7 @@ import java.util.List;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
+import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.extensible.ExtensibleElement;

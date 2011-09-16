@@ -20,8 +20,8 @@
 package buri.ddmsence.ddms.format;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.AbstractBaseComponent;
-import buri.ddmsence.ddms.AbstractQualifierValue;
+import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.AbstractQualifierValue;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;

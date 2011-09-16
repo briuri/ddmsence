@@ -20,7 +20,7 @@
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
-import buri.ddmsence.ddms.AbstractComponentTestCase;
+import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
