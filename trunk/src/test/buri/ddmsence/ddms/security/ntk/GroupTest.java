@@ -47,29 +47,24 @@ public class GroupTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Helper method to create a fixture
+	 * Creates a Group fixture
 	 */
-	private static SystemName getSystemNameFixture() {
+	public static Group getFixture() {
 		try {
-			return (new SystemName("DIAS", null, null, null, SecurityAttributesTest.getFixture(false)));
+			return (new Group(SystemNameTest.getFixture(), getGroupValueList(), SecurityAttributesTest.getFixture(false)));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
-	}
-
+	}	
+	
 	/**
 	 * Helper method to create a fixture
 	 */
-	private static List<GroupValue> getGroupValueFixture() {
+	private static List<GroupValue> getGroupValueList() {
 		List<GroupValue> list = new ArrayList<GroupValue>();
-		try {
-			list.add(new GroupValue("WISE/RODCA", null, null, null, SecurityAttributesTest.getFixture(false)));
-			return (list);
-		} catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
-		}
-		return (null);
+		list.add(GroupValueTest.getFixture());
+		return (list);
 	}
 
 	/**
@@ -114,8 +109,8 @@ public class GroupTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(getSystemNameFixture().getOutput(isHTML, "group."));
-		text.append(getGroupValueFixture().get(0).getOutput(isHTML, "group."));
+		text.append(SystemNameTest.getFixture().getOutput(isHTML, "group."));
+		text.append(getGroupValueList().get(0).getOutput(isHTML, "group."));
 		text.append(buildOutput(isHTML, "group.classification", "U"));
 		text.append(buildOutput(isHTML, "group.ownerProducer", "USA"));
 		return (text.toString());
@@ -175,7 +170,7 @@ public class GroupTest extends AbstractComponentTestCase {
 				continue;
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getSystemNameFixture(), getGroupValueFixture());
+			testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), getGroupValueList());
 		}
 	}
 
@@ -189,21 +184,21 @@ public class GroupTest extends AbstractComponentTestCase {
 
 			// Missing systemName
 			Element element = Util.buildElement(ntkPrefix, Group.getName(version), version.getNtkNamespace(), null);
-			for (GroupValue value : getGroupValueFixture())
+			for (GroupValue value : getGroupValueList())
 				element.appendChild(value.getXOMElementCopy());
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing groupValue
 			element = Util.buildElement(ntkPrefix, Group.getName(version), version.getNtkNamespace(), null);
-			element.appendChild(getSystemNameFixture().getXOMElementCopy());
+			element.appendChild(SystemNameTest.getFixture().getXOMElementCopy());
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing security attributes
 			element = Util.buildElement(ntkPrefix, Group.getName(version), version.getNtkNamespace(), null);
-			element.appendChild(getSystemNameFixture().getXOMElementCopy());
-			for (GroupValue value : getGroupValueFixture())
+			element.appendChild(SystemNameTest.getFixture().getXOMElementCopy());
+			for (GroupValue value : getGroupValueList())
 				element.appendChild(value.getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
@@ -217,14 +212,14 @@ public class GroupTest extends AbstractComponentTestCase {
 				continue;
 
 			// Missing systemName
-			testConstructor(WILL_FAIL, null, getGroupValueFixture());
+			testConstructor(WILL_FAIL, null, getGroupValueList());
 
 			// Missing groupValue
-			testConstructor(WILL_FAIL, getSystemNameFixture(), null);
+			testConstructor(WILL_FAIL, SystemNameTest.getFixture(), null);
 
 			// Missing security attributes
 			try {
-				new Group(getSystemNameFixture(), getGroupValueFixture(), null);
+				new Group(SystemNameTest.getFixture(), getGroupValueList(), null);
 				fail("Allowed invalid data.");
 			} catch (InvalidDDMSException e) {
 				// Good
@@ -253,7 +248,7 @@ public class GroupTest extends AbstractComponentTestCase {
 				continue;
 
 			Group elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Group dataComponent = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getGroupValueFixture());
+			Group dataComponent = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), getGroupValueList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -268,12 +263,12 @@ public class GroupTest extends AbstractComponentTestCase {
 
 			Group elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Group dataComponent = testConstructor(WILL_SUCCEED, new SystemName("MDR", null, null, null,
-				SecurityAttributesTest.getFixture(false)), getGroupValueFixture());
+				SecurityAttributesTest.getFixture(false)), getGroupValueList());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			List<GroupValue> list = new ArrayList<GroupValue>();
 			list.add(new GroupValue("newUser", null, null, null, SecurityAttributesTest.getFixture(false)));
-			dataComponent = testConstructor(WILL_SUCCEED, getSystemNameFixture(), list);
+			dataComponent = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), list);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -301,7 +296,7 @@ public class GroupTest extends AbstractComponentTestCase {
 			Group component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getGroupValueFixture());
+			component = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), getGroupValueList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
@@ -316,7 +311,7 @@ public class GroupTest extends AbstractComponentTestCase {
 			Group component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getGroupValueFixture());
+			component = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), getGroupValueList());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
@@ -331,7 +326,7 @@ public class GroupTest extends AbstractComponentTestCase {
 			Group component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getGroupValueFixture());
+			component = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), getGroupValueList());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}

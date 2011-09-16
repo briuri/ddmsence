@@ -49,6 +49,18 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Creates a GroupValue fixture
+	 */
+	public static GroupValue getFixture() {
+		try {
+			return (new GroupValue(TEST_VALUE, null, null, null, SecurityAttributesTest.getFixture(false)));
+		} catch (InvalidDDMSException e) {
+			fail("Failed to create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
 	 * @param expectFailure true if this operation is expected to fail, false otherwise

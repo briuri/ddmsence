@@ -42,7 +42,7 @@ import buri.ddmsence.util.Util;
  * <p>Unlike ntk:AccessIndividualList and ntk:AccessGroupList, this element is implemented in DDMSence because it has security attributes.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ntk:AccessProfile</u>: A system access record matching a profile (1-to-many required), implemented as an {@link Profile}<br />
+ * <u>ntk:AccessProfile</u>: A system access record matching a profile (1-to-many required), implemented as a {@link Profile}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">

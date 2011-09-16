@@ -47,30 +47,25 @@ public class ProfileTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Helper method to create a fixture
+	 * Creates a Profile fixture
 	 */
-	private static SystemName getSystemNameFixture() {
+	public static Profile getFixture() {
 		try {
-			return (new SystemName("DIAS", null, null, null, SecurityAttributesTest.getFixture(false)));
+			return (new Profile(SystemNameTest.getFixture(), getProfileValueList(), SecurityAttributesTest.getFixture(false)));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
-
+	
+	
 	/**
 	 * Helper method to create a fixture
 	 */
-	private static List<ProfileValue> getProfileValueFixture() {
+	private static List<ProfileValue> getProfileValueList() {
 		List<ProfileValue> list = new ArrayList<ProfileValue>();
-		try {
-			list.add(new ProfileValue("profile", "vocabulary", null, null, null, SecurityAttributesTest
-				.getFixture(false)));
-			return (list);
-		} catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
-		}
-		return (null);
+		list.add(ProfileValueTest.getFixture("profile"));
+		return (list);
 	}
 
 	/**
@@ -115,8 +110,8 @@ public class ProfileTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(getSystemNameFixture().getOutput(isHTML, "profile."));
-		text.append(getProfileValueFixture().get(0).getOutput(isHTML, "profile."));
+		text.append(SystemNameTest.getFixture().getOutput(isHTML, "profile."));
+		text.append(getProfileValueList().get(0).getOutput(isHTML, "profile."));
 		text.append(buildOutput(isHTML, "profile.classification", "U"));
 		text.append(buildOutput(isHTML, "profile.ownerProducer", "USA"));
 		return (text.toString());
@@ -176,7 +171,7 @@ public class ProfileTest extends AbstractComponentTestCase {
 				continue;
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getSystemNameFixture(), getProfileValueFixture());
+			testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), getProfileValueList());
 		}
 	}
 
@@ -190,21 +185,21 @@ public class ProfileTest extends AbstractComponentTestCase {
 
 			// Missing systemName
 			Element element = Util.buildElement(ntkPrefix, Profile.getName(version), version.getNtkNamespace(), null);
-			for (ProfileValue value : getProfileValueFixture())
+			for (ProfileValue value : getProfileValueList())
 				element.appendChild(value.getXOMElementCopy());
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing profileValue
 			element = Util.buildElement(ntkPrefix, Profile.getName(version), version.getNtkNamespace(), null);
-			element.appendChild(getSystemNameFixture().getXOMElementCopy());
+			element.appendChild(SystemNameTest.getFixture().getXOMElementCopy());
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing security attributes
 			element = Util.buildElement(ntkPrefix, Profile.getName(version), version.getNtkNamespace(), null);
-			element.appendChild(getSystemNameFixture().getXOMElementCopy());
-			for (ProfileValue value : getProfileValueFixture())
+			element.appendChild(SystemNameTest.getFixture().getXOMElementCopy());
+			for (ProfileValue value : getProfileValueList())
 				element.appendChild(value.getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
@@ -218,14 +213,14 @@ public class ProfileTest extends AbstractComponentTestCase {
 				continue;
 
 			// Missing systemName
-			testConstructor(WILL_FAIL, null, getProfileValueFixture());
+			testConstructor(WILL_FAIL, null, getProfileValueList());
 
 			// Missing profileValue
-			testConstructor(WILL_FAIL, getSystemNameFixture(), null);
+			testConstructor(WILL_FAIL, SystemNameTest.getFixture(), null);
 
 			// Missing security attributes
 			try {
-				new Profile(getSystemNameFixture(), getProfileValueFixture(), null);
+				new Profile(SystemNameTest.getFixture(), getProfileValueList(), null);
 				fail("Allowed invalid data.");
 			} catch (InvalidDDMSException e) {
 				// Good
@@ -254,7 +249,7 @@ public class ProfileTest extends AbstractComponentTestCase {
 				continue;
 
 			Profile elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Profile dataComponent = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getProfileValueFixture());
+			Profile dataComponent = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), getProfileValueList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -269,13 +264,12 @@ public class ProfileTest extends AbstractComponentTestCase {
 
 			Profile elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Profile dataComponent = testConstructor(WILL_SUCCEED, new SystemName("MDR", null, null, null,
-				SecurityAttributesTest.getFixture(false)), getProfileValueFixture());
+				SecurityAttributesTest.getFixture(false)), getProfileValueList());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			List<ProfileValue> list = new ArrayList<ProfileValue>();
-			list.add(new ProfileValue("newProfile", "vocabulary", null, null, null, SecurityAttributesTest
-				.getFixture(false)));
-			dataComponent = testConstructor(WILL_SUCCEED, getSystemNameFixture(), list);
+			list.add(ProfileValueTest.getFixture("newProfile"));
+			dataComponent = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), list);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -303,7 +297,7 @@ public class ProfileTest extends AbstractComponentTestCase {
 			Profile component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getProfileValueFixture());
+			component = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), getProfileValueList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
@@ -318,7 +312,7 @@ public class ProfileTest extends AbstractComponentTestCase {
 			Profile component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getProfileValueFixture());
+			component = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), getProfileValueList());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
@@ -333,7 +327,7 @@ public class ProfileTest extends AbstractComponentTestCase {
 			Profile component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getSystemNameFixture(), getProfileValueFixture());
+			component = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), getProfileValueList());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
