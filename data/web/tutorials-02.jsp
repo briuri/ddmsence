@@ -11,15 +11,13 @@
 
 <p>
 <img src="./images/escort-flow.png" width="400" height="150" title="Escort Workflow" align="right" />
-<u>Escort</u> is a step-by-step wizard for building a DDMS Resource from scratch, and then saving it to a file. The source code for this application
+<u>Escort</u> is a step-by-step wizard for building a simple DDMS Resource from scratch, and then saving it to a file. The source code for this application
 shows an example of how the Java object model can be built with basic data types (possibly mapped from a database table or some other pre-existing entity).</p>
 
 <p>I have implemented this wizard as a series of textual prompts, to avoid the overhead of having a full-fledged MVC Swing application (or implementing it as a web application and
 requiring a server to run). It is not as flashy, but this should make it easier to focus on the important sections of the source code.</p>
 
-<p>The only limitations on this application are that it will not ask you for the "Additional" ISM security attributes, 
-such as "SCIcontrols" or "SARIdentifier", the SRS Attributes on individual gml:pos elements, or any custom components in the Extensible Layer. 
-There is no good reason for these limitations, other than to make the wizard a little shorter.</p>
+<p>This wizard only focuses on small representative subset of the DDMS components, such as Identifier and SubjectCoverage.</p>
 
 <h2>Getting Started</h2>
 
@@ -34,20 +32,17 @@ command line parameters.</p>
 
 <pre class="brush: xml">Escort: a DDMSence Sample
 
-This program allows you to build a DDMS 3.1 resource from scratch.
-If you do not know how to answer a question, a suggested valid answer is provided in square brackets.
-However, this is not a default value (hitting Enter will answer the question with an empty string).
+This program allows you to build a DDMS 4.0 resource from scratch using a
+representative subset of possible components. Suggested valid examples are
+provided in square brackets for each prompt. However, this is not a default
+value (hitting Enter will answer the prompt with an empty string).
 
-In FAST mode, Escort will only ask you to create top-level components which are required for a valid 
-Resource.
-In COMPLETE mode, Escort will let you create all of the top-level components.
-Would you like to run in FAST mode? [Y/N]:
-Would you like to use dummy security attributes, Unclassified/USA, throughout the resource? [Y/N]</pre>
+Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the resource? [Y/N]:</pre>
 <p class="figure">Figure 1. Starting the Wizard</p>
 
-<p>The wizard will walk you through each top-level component of a DDMS Resource. Each component you create must be valid before you can proceed to the
-next one. This process could be lengthy, so I suggest that you do your first run-through in FAST mode. The second question gives you the option of filling in a
-dummy security classification and ownerProducer instead of prompting you for a value on each component.</p>
+<p>The wizard will walk you through various components of a DDMS Resource in the order that they are found in the schema. 
+Each component you create must be valid before you can proceed to the next one. You can optionally use dummy values
+for the security classification and ownerProducer attributes to save time while walking through the wizard.</p>
 
 <p>First, let's try creating an invalid Identifier. The DDMS specification states that the qualifier must be a valid URI. Type in "<code>:::::</code>" as
 a qualifier and "<code>test</code>" as a value.</p>
@@ -68,12 +63,8 @@ of the exception).</p>
 <p>Now, let's take a look at the source code in <code>/src/samples/buri/ddmsence/samples/Escort.java</code> to see how this was accomplished. The <code>run()</code>
 method defines the control flow for the program, and uses the helper method, <code>inputLoop()</code>, to ask for user input until a valid component can be created:</p>
 
-
 <pre class="brush: java">printHead("ddms:identifier (at least 1 required)");
-getTopLevelComponents().add(inputLoop(Identifier.class));
-while (!onlyRequiredComponents && confirm("Add another ddms:identifier?")) {
-   getTopLevelComponents().add(inputLoop(Identifier.class));	
-}</pre>
+getTopLevelComponents().add(inputLoop(Identifier.class));</pre>
 <p class="figure">Figure 3. Excerpt from the run() method</p>
 		
 <pre class="brush: java">private IDDMSComponent inputLoop(Class theClass) throws IOException {
@@ -104,52 +95,50 @@ is responsible for one top-level component. For example, here is the definition 
 
 <p>As soon as <code>inputLoop()</code> receives a valid component from a Builder, it returns that component to the main wizard method, <code>run()</code>. The main
 wizard saves the component in a list and moves on to the next component type. You can examine the constructor to see the code needed to build each type of
-component. You can also see similar code by loading an XML file into the <u>Essentials</u> application and viewing its generated Java code.</p>
+component.</p>
 
 <p>Let's use the wizard to create a valid Resource. You should be able to follow the prompts to the end, but if not, the output below is one possible
 road to a valid Resource.</p>
 
-<pre class="brush: xml">=== ddms:identifier (at least 1 required) ===
+<pre class="brush: xml">Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the resource? [Y/N]: Y
+
+=== ddms:identifier (at least 1 required) ===
 Please enter the qualifier [testQualifier]: testQualifier
 Please enter the value [testValue]: testValue
 
 === ddms:title (at least 1 required) ===
 Please enter the title text [testTitle]: testTitle
-Please enter the title classification [U]: U
-Please enter the title's ownerProducers as a space-delimited string [USA]: USA
+
+=== ddms:description (only 1 allowed) ===
+Include this component? [Y/N]: N
+
+=== ddms:dates (only 1 allowed) ===
+Include this component? [Y/N]: N
 
 === Producers: creator, publisher, contributor, and pointOfContact (at least 1 required) ===
 Please enter the producer type [creator]: creator
-Please enter the entity type [Organization]: Organization
-Please enter the number of names this producer has [1]: 1
-Please enter the number of phone numbers this producer has [0]: 1
-Please enter the number of email addresses this producer has [0]: 1
-Please enter entity name #1 [testName1]: DISA
-Please enter entity phone number #1 [testPhone1]: 703-885-1000
-Please enter entity email #1 [testEmail1]: disa@disa.disa
-Please enter the producer classification [U]: U
-Please enter the producer's ownerProducers as a space-delimited string [USA]: USA
+Please enter the entity type [organization]: organization
+Please enter the number of names this organization has [1]: 1
+Please enter the number of phone numbers this organization has [0]: 0
+Please enter the number of email addresses this organization has [0]: 0
+Please enter the number of suborganizations to include [0]: 0
+Please enter entity name #1 [testName1]: testName
+Please enter the Organization acronym [testAcronym]: testAcronym
 
-=== ddms:subjectCoverage (exactly 1 required) ===
-Please enter the number of keywords to include [1]: 2
+=== ddms:subjectCoverage (at least 1 required) ===
+Please enter the number of keywords to include [1]: 1
 Please enter the number of categories to include [0]: 0
+Please enter the number of productionMetrics to include [0]: 0
+Please enter the number of nonStateActors to include [0]: 0
 * Keyword #1
-Please enter the keyword value [testValue]: ddms
-* Keyword #2
-Please enter the keyword value [testValue]: xml
-Please enter the subject classification [U]: U
-Please enter the subject's ownerProducers as a space-delimited string [USA]: USA
+Please enter the keyword value [testValue]: testValue
 
 === ddms:security (exactly 1 required) ===
-Please enter the classification [U]: U
-Please enter the ownerProducers as a space-delimited string [USA]: USA
 
-=== ddms:Resource Attributes (all required) ===
+=== ddms:resource Attributes (all required) ===
 Does this tag set the classification for the resource as a whole? [Y/N]: Y
-Please enter Resource createDate [2010-03-24]: 2010-03-24
-Please enter the Resource DESVersion [2]: 2
-Please enter the Resource classification [U]: U
-Please enter the Resource's ownerProducers as a space-delimited string [USA]: USA
+Please enter Resource createDate [2010-04-01]: 2010-04-01
+Please enter the Resource DESVersion [2]: 5
 The DDMS Resource is valid!
 No warnings were recorded.</pre>
 <p class="figure">Figure 6. Successful run of the Escort Wizard</p>
@@ -160,10 +149,10 @@ the messages of that component and any subcomponents. In this run-through, no wa
 <p>The final step is to save your valid Resource as an XML file. Enter a filename, and the Resource will be saved in the <code>data/sample/</code> directory.</p>
 
 <pre class="brush: xml">=== Saving the Resource ===
-Would you like to save this file? [Y/N]: y
+Would you like to save this file? [Y/N]: Y
 This Resource will be saved as XML in the data/sample/ directory.
-Please enter a filename: myResource.xml
-File saved at "C:\ddmsence-bin-@ddmsence.version@\data\sample\myResource.xml".
+Please enter a filename: test.xml
+File saved at "D:\projects\ddmsence\data\sample\test.xml".
 
 You can now open your saved file with the Essentials application.
 The Escort wizard is now finished.</pre>
@@ -172,7 +161,7 @@ The Escort wizard is now finished.</pre>
 <p>Once the file is saved, you can open it with the <u>Essentials</u> application to view the Resource in different formats. You can also use the wizard
 to generate additional data files for the <u>Escape</U> application.</p>
 
-<p>If you were to run <u>Escort</u> again in COMPLETE mode, and then create an empty <code>ddms:dates</code> component, you would see a warning message when the Resource
+<p>If you were to run <u>Escort</u> again, and then create an empty <code>ddms:dates</code> component, you would see a warning message when the Resource
 was generated:</p>
 
 <pre class="brush: xml">=== ddms:dates (only 1 allowed) ===
@@ -186,8 +175,8 @@ Please enter the approvedOn date [2010]:
 [...]
 
 The DDMS Resource is valid!
-[WARNING] /ddms:Resource/ddms:dates: A completely empty ddms:dates element was found.
-</pre>
+The following warnings were recorded:
+   [WARNING] /ddms:Resource/ddms:dates: A completely empty ddms:dates element was found.</pre>
 <p class="figure">Figure 8. Triggering a Warning Condition</p>
 
 <p>As you can see, the locator information on warnings is in the same format as the information on errors. Because parent components claim the warnings of their children,
@@ -195,14 +184,14 @@ a more detailed locator can be created. In this case, calling <code>getValidatio
 you called <code>getValidationWarnings()</code> on the Dates component itself, the locator would be "<code>/ddms:dates</code>".</p>
 
 <p>If a parent-child hierarchy has some DDMS elements which are not <a href="documentation.jsp#design">implemented as Java objects</a>, the locator string will
-include every element in the hierarchy. For example, a warning in a <code>ddms:medium</code> element will have a locator value of "<code>/ddms:Resource/ddms:format/ddms:Media/ddms:medium</code>"
+include every element in the hierarchy. For example, a warning in a <code>ddms:medium</code> element (in DDMS 2.0, 3.0, or 3.1) will have a locator value of "<code>/ddms:Resource/ddms:format/ddms:Media/ddms:medium</code>"
 even though <code>ddms:Media</code> is not an implemented component (the medium is a property on the Format object in the Java implementation).</p>
   
 <h3>Conclusion</h3>
 
-<p>In this tutorial, you have seen how DDMS Resources can be built from scratch. You have also seen further examples of component validation. This tutorial did not
-cover the fully-implemented Builder framework, which offers more flexibility in the building process, and can also be used to edit existing DDMS Resources. Please
-see the Power Tip on <a href="documentation.jsp#tips-builders">Using Component Builders</a> for details on using the Builder framework.</p>
+<p>In this tutorial, you have seen how DDMS Resources can be built from scratch. You have also seen further examples of component validation. In practice, the data-based
+constructor approach for building components is somewhat inflexible. The Component Builder framework offers more flexibility in the building process, and can also
+be used to edit existing DDMS Resources. More about this framework can be found in the Power Tip on <a href="documentation.jsp#tips-builders">Using Component Builders</a>.</p>
 
 <p>The next tutorial, covering the Escape application, will show how a DDMS Resource can be traversed and used in other contexts.</p>
 

@@ -185,7 +185,7 @@ public class Escape extends AbstractSample {
 		for (Resource resource : getResources()) {
 			// Check any records that have a keyword (subjectCoverage is required)
 			for (SubjectCoverage subjectCoverage : resource.getSubjectCoverages()) {
-				if (subjectCoverage.getKeywords().isEmpty()) {
+				if (!subjectCoverage.getKeywords().isEmpty()) {
 					List<Keyword> keywords = subjectCoverage.getKeywords();
 					// Record the counts for each keyword's usage
 					for (Keyword keyword : keywords) {

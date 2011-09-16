@@ -44,13 +44,7 @@ import buri.ddmsence.util.Util;
  * <li>The original XML</li>
  * <li>HTML, as defined by the DDMS Specification</li>
  * <li>Text, as defined by the DDMS Specification</li>
- * <li>Java code</li>
  * </ol>
- * 
- * <p>
- * The Java code is intended to be a cut-and-paste example that you can use as a template for building your own
- * components from scratch.
- * </p>
  * 
  * <p>
  * For additional details about this application, please see the tutorial on the Documentation page of the DDMSence
