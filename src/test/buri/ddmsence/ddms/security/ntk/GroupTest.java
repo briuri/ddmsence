@@ -372,9 +372,6 @@ public class GroupTest extends AbstractComponentTestCase {
 			} catch (InvalidDDMSException e) {
 				// Good
 			}
-
-			// Skip empty builders
-
 		}
 	}
 

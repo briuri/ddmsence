@@ -375,9 +375,6 @@ public class IndividualTest extends AbstractComponentTestCase {
 			} catch (InvalidDDMSException e) {
 				// Good
 			}
-
-			// Skip empty builders
-
 		}
 	}
 
