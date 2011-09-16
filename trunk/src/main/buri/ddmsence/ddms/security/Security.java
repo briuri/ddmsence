@@ -20,18 +20,26 @@
 package buri.ddmsence.ddms.security;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.ddms.security.ntk.Access;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
  * An immutable implementation of ddms:security.
+ * 
+ * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * <u>ntk:Access</u>: Need-To-Know access information (optional, starting in DDMS 4.0)<br />
+ * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ISM:excludeFromRollup</u>: (required, fixed as "true", starting in DDMS 3.0)<br />
@@ -51,6 +59,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Security extends AbstractBaseComponent {
 
+	private Access _cachedAccess = null;
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	
 	private static final String FIXED_ROLLUP = "true";
@@ -66,8 +75,12 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	public Security(Element element) throws InvalidDDMSException {
 		try {
+			setXOMElement(element, false);
+			Element accessElement = element.getFirstChildElement(Access.getName(getDDMSVersion()), getDDMSVersion().getNtkNamespace());
+			if (accessElement != null)
+				_cachedAccess = new Access(accessElement);
 			_cachedSecurityAttributes = new SecurityAttributes(element);
-			setXOMElement(element, true);
+			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
@@ -77,15 +90,21 @@ public final class Security extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 *  
+	 * @param access NTK access information (optional)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Security(SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public Security(Access access, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(Security.getName(DDMSVersion.getCurrentVersion()), null);
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			
+			Element element = Util.buildDDMSElement(Security.getName(version), null);
+			if (access != null)
+				element.appendChild(access.getXOMElementCopy());
 			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), EXCLUDE_FROM_ROLLUP_NAME, 
 					DDMSVersion.getCurrentVersion().getIsmNamespace(), FIXED_ROLLUP);
+			_cachedAccess = access;
 			_cachedSecurityAttributes = securityAttributes;
 			if (securityAttributes != null)
 				securityAttributes.addTo(element);
@@ -126,7 +145,7 @@ public final class Security extends AbstractBaseComponent {
 
 		super.validate();
 	}
-	
+
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
@@ -136,8 +155,19 @@ public final class Security extends AbstractBaseComponent {
 		if (getExcludeFromRollup() != null)
 			text.append(buildOutput(isHTML, prefix + EXCLUDE_FROM_ROLLUP_NAME, String.valueOf(getExcludeFromRollup()),
 				true));
+		if (getAccess() != null)
+			text.append(getAccess().getOutput(isHTML, prefix));
 		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
+	}
+	
+	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.add(getAccess());
+		return (list);
 	}
 	
 	/**
@@ -174,6 +204,12 @@ public final class Security extends AbstractBaseComponent {
 	}
 	
 	/**
+	 * Accessor for the Access. May be null.
+	 */
+	public Access getAccess() {
+		return (_cachedAccess);
+	}
+	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
@@ -189,6 +225,7 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	public static class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = -7744353774641616270L;
+		private Access.Builder _access;
 		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
@@ -200,6 +237,8 @@ public final class Security extends AbstractBaseComponent {
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Security security) {
+			if (security.getAccess() != null)
+				setAccess(new Access.Builder(security.getAccess()));
 			setSecurityAttributes(new SecurityAttributes.Builder(security.getSecurityAttributes()));
 		}
 		
@@ -207,14 +246,30 @@ public final class Security extends AbstractBaseComponent {
 		 * @see IBuilder#commit()
 		 */
 		public Security commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Security(getSecurityAttributes().commit()));
+			return (isEmpty() ? null : new Security(getAccess().commit(), getSecurityAttributes().commit()));
 		}
 		
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			return (getSecurityAttributes().isEmpty());
+			return (getAccess().isEmpty() && getSecurityAttributes().isEmpty());
+		}
+
+		/**
+		 * Builder accessor for the access
+		 */
+		public Access.Builder getAccess() {
+			if (_access == null)
+				_access = new Access.Builder();
+			return _access;
+		}
+
+		/**
+		 * Accessor for the access
+		 */
+		public void setAccess(Access.Builder access) {
+			_access = access;
 		}
 		
 		/**

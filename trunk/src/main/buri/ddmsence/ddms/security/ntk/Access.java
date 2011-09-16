@@ -308,7 +308,8 @@ public final class Access extends AbstractBaseComponent {
 				getIndividuals().add(new Individual.Builder(individual));
 			for (Group group : access.getGroups())
 				getGroups().add(new Group.Builder(group));
-			setProfileList(new ProfileList.Builder(access.getProfileList()));
+			if (access.getProfileList() != null)
+				setProfileList(new ProfileList.Builder(access.getProfileList()));
 			setSecurityAttributes(new SecurityAttributes.Builder(access.getSecurityAttributes()));
 		}
 		

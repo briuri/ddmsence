@@ -51,7 +51,7 @@ public class AccessTest extends AbstractComponentTestCase {
 	 */
 	public static Access getFixture() {
 		try {
-			return (new Access(getIndividualList(), getGroupList(), ProfileListTest.getFixture(), SecurityAttributesTest.getFixture(false)));
+			return (new Access(getIndividualList(), null, null, SecurityAttributesTest.getFixture(false)));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}

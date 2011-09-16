@@ -36,13 +36,13 @@ minor bug fixes. This release is backwards compatible with v1.10.0.</p>
 
 <p>DDMSence will follow a "major.minor.patch" versioning system for as long as it makes sense to do so:</p>
 <ul>
-	<li>A change in major version will generally include major architecture changes and will likely break backwards compatibility.</li>
-	<li>A change in minor version can include new features and bug fixes. On rare occasions, minor releases may break backwards compatibility.</li>
+	<li>A change in major version will generally include major architecture changes and may break backwards compatibility in non-trivial ways.</li>
+	<li>A change in minor version can include new features and bug fixes. On rare occasions, minor releases may break backwards compatibility, but the changes will require minimal upgrade effort.</li>
 	<li>A change in patch version will be limited to bug fixes.</li>
 </ul>
 
 <p>If a new version is listed as "backwards compatible", it means that you can update to the new version without changing any of your code that worked with the old version.  
-All changes which are not backwards compatible will be linked from this page.</p> 
+All changes which are not backwards compatible will be linked from this page with information on how to upgrade your old code.</p> 
 
 <h3>Older Releases</h3>
 
