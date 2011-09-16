@@ -53,6 +53,7 @@ import nu.xom.xslt.XSLException;
 import nu.xom.xslt.XSLTransform;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.security.ntk.Access;
 import buri.ddmsence.ddms.summary.gml.Point;
 import buri.ddmsence.ddms.summary.gml.Polygon;
 
@@ -372,6 +373,9 @@ public class Util {
 		if (child instanceof Polygon || child instanceof Point) {
 			parentNamespace = DDMSVersion.getVersionForNamespace(parentNamespace).getGmlNamespace();
 		}		
+		if (child instanceof Access) {
+			parentNamespace = DDMSVersion.getVersionForNamespace(parentNamespace).getNtkNamespace();
+		}
 		String childNamespace = child.getNamespace();
 		if (!parentNamespace.equals(childNamespace)) {
 			throw new InvalidDDMSException("A child component, " + child.getQualifiedName()
