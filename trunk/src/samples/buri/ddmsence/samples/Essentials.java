@@ -34,7 +34,6 @@ import org.xml.sax.SAXException;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.samples.util.AbstractSample;
-import buri.ddmsence.samples.util.JavaConvertor;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -120,7 +119,6 @@ public class Essentials extends AbstractSample {
 			String xmlFormat = getResource().toXML();
 			String htmlFormat = getResource().toHTML();
 			String textFormat = getResource().toText();
-			String javaFormat = JavaConvertor.toJavaCode(getResource());
 					
 			// Render the formats in the Swing GUI
 			JPanel htmlTextPanel = new JPanel(new GridLayout(1, 0));
@@ -129,7 +127,6 @@ public class Essentials extends AbstractSample {
 			resultPanel = new JPanel(new GridLayout(0, 1));
 			resultPanel.add(buildLabelledPanel(file.getName() + " in XML", xmlFormat));
 			resultPanel.add(htmlTextPanel);
-			resultPanel.add(buildLabelledPanel(file.getName() + " in Java", javaFormat));
 		}
 		catch (InvalidDDMSException e) {
 			resultPanel = buildErrorPanel("Could not create the DDMS Resource: ", e);
