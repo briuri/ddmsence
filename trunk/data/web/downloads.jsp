@@ -9,27 +9,28 @@
 
 <h1>Downloads</h1>
 
-<p>Before you begin, you will need a <a href="http://java.sun.com/javase/downloads/index.jsp" target="_new">JRE or JDK</a> which supports Java 1.5 or higher. Downloads come in two flavors:</p>
+<p>Downloads come in two flavors:</p>
 
 <p><b><code>ddmsence-bin-version.zip</code></b>: This download is intended for end users who wish to use DDMSence in their own projects. It contains the compiled DDMSence JAR files,
 the complete API documentation (which is also available <a href="/docs/">online</a>), source code for the sample applications,
 and supporting 3rd-party JAR files. Sample applications can be run from the <a href="documentation.jsp#started">command line</a>.</p>
 
 <p><b><code>ddmsence-src-version.zip</code></b>: This download is intended for developers who wish to see what DDMSence is doing under the hood. It contains source 
-code for the main library, unit tests, and the sample applications, as well as supporting 3rd-party JAR files. This download contains a <code>build.xml</code> 
-file which will allow you to compile source code, run unit tests, generate API documentation, or even generate the "bin"-flavored archive with <a href="http://ant.apache.org/">Apache Ant</a>. 
-I have included the <code>.project</code> file if you wish to import the project into Eclipse.</p>
+code for the main library, unit tests, and the sample applications, as well as supporting 3rd-party JAR files. The included <code>build.xml</code> 
+file allows you to compile source code, run unit tests, generate API documentation, or even generate the "bin"-flavored archive with <a href="http://ant.apache.org/">Apache Ant</a>. 
+I have also included the <code>.project</code> file if you wish to import the project into Eclipse.</p>
 
-<h1>Latest Release: v1.11.0</h1>
+<p>Regardless of your choice, you will need a <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_new">JRE or JDK</a> which supports Java 1.5 or higher.</p>
 
-<p>Version <b>1.11.0</b> (07/17/2011) is a stable release, which adds support for 
-<a href="documentation.jsp#tips-schematron">XSLT2-based Schematron validation</a> (<a href="http://code.google.com/p/ddmsence/issues/detail?id=79">Issue #79</a>),
-improved performance when using multiple Controlled Vocabularies (<a href="http://code.google.com/p/ddmsence/issues/detail?id=90">Issue #90</a>), and a few 
-minor bug fixes. This release is backwards compatible with v1.10.0.</p>
+<h1>Latest Release: v2.0.0</h1>
+
+<p>Version <b>2.0.0</b> (MM/DD/2011) is a stable, major release, which adds support for DDMS 4.0. It is <i>not</i> backwards compatible with previous versions. Upgrading your existing
+code to use this version should be straightforward, but may require a non-trivial effort. An upgrade guide is linked below, and I will be glad to assist you as well.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.11.0.zip"><code>ddmsence-bin-1.11.0.zip</code></a></b> (4.9 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.11.0.zip"><code>ddmsence-src-1.11.0.zip</code></a></b> (4.9 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.0.0.zip"><code>ddmsence-bin-2.0.0.zip</code></a></b> (X.X MB, compiled with JDK1.6.0_25, source level 1.5)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-2.0.0.zip"><code>ddmsence-src-2.0.0.zip</code></a></b> (X.X MB)</li>
+<li><a href="downloads-2.0.0-compatibility.jsp">Upgrade Guide: Version 1.x to 2.0.0</a></li>
 </ul>
 
 <h3>Versioning</h3>
@@ -45,6 +46,16 @@ minor bug fixes. This release is backwards compatible with v1.10.0.</p>
 All changes which are not backwards compatible will be linked from this page with information on how to upgrade your old code.</p> 
 
 <h3>Older Releases</h3>
+
+<p>Version <b>1.11.0</b> (07/17/2011) is a stable release, which adds support for 
+<a href="documentation.jsp#tips-schematron">XSLT2-based Schematron validation</a> (<a href="http://code.google.com/p/ddmsence/issues/detail?id=79">Issue #79</a>),
+improved performance when using multiple Controlled Vocabularies (<a href="http://code.google.com/p/ddmsence/issues/detail?id=90">Issue #90</a>), and a few 
+minor bug fixes. This release is backwards compatible with v1.10.0.</p>
+
+<ul>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.11.0.zip"><code>ddmsence-bin-1.11.0.zip</code></a></b> (4.9 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.11.0.zip"><code>ddmsence-src-1.11.0.zip</code></a></b> (4.9 MB)</li>
+</ul>
 
 <p>Version <b>1.10.0</b> (07/05/2011) is a stable release, which adds support for <a href="documentation.jsp#tips-version">DDMS 3.1</a> (<a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.10.0">Issue #82 - 85</a>).
 It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=88">backwards compatible</a> with earlier versions.</p>
@@ -188,13 +199,13 @@ It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=31">backwa
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.1.0.zip"><code>ddmsence-src-1.1.0.zip</code></a></b> (2.4 MB)</li>
 </ul>
 
-<p>Version <b>1.0.0</b> (4/1/2010) is the first official stable release of DDMSence. It is backwards compatible with v0.9.d and v0.9.c.</p>
+<p>Version <b>1.0.0</b> (4/1/2010) is the first official stable release of DDMSence. <!--  It is backwards compatible with v0.9.d and v0.9.c. --></p>
 
 <ul>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.0.0.zip"><code>ddmsence-bin-1.0.0.zip</code></a></b> (1.7 MB, compiled with JDK1.5.0_22)</li>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.0.0.zip"><code>ddmsence-src-1.0.0.zip</code></a></b> (2.3 MB)</li>
 </ul>
-
+<!-- 
 <p>Version <b>0.9.d</b> (3/29/2010) includes further validation improvements. This version is believed to be stable, and is intended to be the test candidate
 for v1.0.0. It is backwards compatible with v0.9.c.</p>
 
@@ -217,7 +228,7 @@ for early feedback. It is not <a href="http://code.google.com/p/ddmsence/issues/
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.b.zip"><code>ddmsence-bin-0.9.b.zip</code></a></b> (1.8 MB, compiled with JDK1.6.0_16)</li>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.b.zip"><code>ddmsence-src-0.9.b.zip</code></a></b> (2.5 MB)</li>
 </ul>
-
+ -->
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>
 </body>

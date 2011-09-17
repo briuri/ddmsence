@@ -180,6 +180,7 @@ label.error {
 	margin: 0;
 }
 td {
+	background-color: #eeeeee;
 	border-color: #adb3b5;
 	border-style: dotted;
 	border-width: 1px;
@@ -196,7 +197,7 @@ table {
 	font-size: 10pt;
 }
 th {
-	background-color: #f0f0f0;
+	background-color: #e0e0e0;
 	border-color: #bdc3c5;
 	border-style: dotted;
 	border-width: 1px;
