@@ -71,6 +71,6 @@ public class PropertyReaderTest extends TestCase {
 
 	public void testSetPropertyValid() {
 		PropertyReader.setProperty("ddms.prefix", "DDMS");
-		assertEquals("DDMS", PropertyReader.getProperty("ddms.prefix"));
+		assertEquals("DDMS", PropertyReader.getPrefix("ddms"));
 	}
 }

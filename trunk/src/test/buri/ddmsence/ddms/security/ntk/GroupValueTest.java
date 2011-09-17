@@ -136,8 +136,8 @@ public class GroupValueTest extends AbstractComponentTestCase {
 
 			GroupValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(GroupValue.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ntk.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ntk.prefix") + ":" + GroupValue.getName(version),
+			assertEquals(PropertyReader.getPrefix("ntk"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ntk") + ":" + GroupValue.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -149,7 +149,7 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
+			String ntkPrefix = PropertyReader.getPrefix("ntk");
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -183,7 +183,7 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
+			String ntkPrefix = PropertyReader.getPrefix("ntk");
 
 			if (!version.isAtLeast("4.0"))
 				continue;

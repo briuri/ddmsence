@@ -128,8 +128,8 @@ public class TypeTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Type component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Type.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Type.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Type.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

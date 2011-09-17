@@ -140,8 +140,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Security component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Security.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Security.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Security.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -159,7 +159,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 			// No optional fields
 			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(Security.getName(version), null);
-				Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), "excludeFromRollup",
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
 					version.getIsmNamespace(), "true");
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				testConstructor(WILL_SUCCEED, element);
@@ -187,13 +187,13 @@ public class SecurityTest extends AbstractComponentTestCase {
 
 			// Incorrect excludeFromRollup
 			element = Util.buildDDMSElement(Security.getName(version), null);
-			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), "excludeFromRollup",
+			Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
 				version.getIsmNamespace(), "false");
 			testConstructor(WILL_FAIL, element);
 
 			// Invalid excludeFromRollup
 			element = Util.buildDDMSElement(Security.getName(version), null);
-			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), "excludeFromRollup",
+			Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
 				version.getIsmNamespace(), "aardvark");
 			testConstructor(WILL_FAIL, element);
 		}
@@ -222,9 +222,9 @@ public class SecurityTest extends AbstractComponentTestCase {
 			// Nested warnings
 			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(Security.getName(version), null);
-				Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), "excludeFromRollup",
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
 					version.getIsmNamespace(), "true");
-				Element accessElement = Util.buildElement(PropertyReader.getProperty("ntk.prefix"),
+				Element accessElement = Util.buildElement(PropertyReader.getPrefix("ntk"),
 					Access.getName(version), version.getNtkNamespace(), null);
 				SecurityAttributesTest.getFixture(false).addTo(accessElement);
 				element.appendChild(accessElement);
@@ -304,7 +304,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 
 	public void test20Usage() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
-		String icPrefix = PropertyReader.getProperty("ism.prefix");
+		String icPrefix = PropertyReader.getPrefix("ism");
 		String icNamespace = version.getIsmNamespace();
 
 		Element element = Util.buildDDMSElement("security", null);

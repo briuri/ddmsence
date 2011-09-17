@@ -145,8 +145,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Creator component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Creator.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Creator.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Creator.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

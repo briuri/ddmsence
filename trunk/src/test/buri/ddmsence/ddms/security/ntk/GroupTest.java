@@ -141,8 +141,8 @@ public class GroupTest extends AbstractComponentTestCase {
 
 			Group component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Group.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ntk.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ntk.prefix") + ":" + Group.getName(version),
+			assertEquals(PropertyReader.getPrefix("ntk"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ntk") + ":" + Group.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -178,7 +178,7 @@ public class GroupTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
+			String ntkPrefix = PropertyReader.getPrefix("ntk");
 
 			if (!version.isAtLeast("4.0"))
 				continue;

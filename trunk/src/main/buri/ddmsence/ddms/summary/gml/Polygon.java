@@ -129,7 +129,7 @@ public final class Polygon extends AbstractBaseComponent {
 			_cachedPositions = positions;
 			_cachedSrsAttributes = srsAttributes;
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
+			String gmlPrefix = PropertyReader.getPrefix("gml");
 			String gmlNamespace = version.getGmlNamespace();
 			Element ringElement = Util.buildElement(gmlPrefix, LINEAR_RING_NAME, gmlNamespace, null);
 			for (Position pos : positions) {
@@ -209,7 +209,7 @@ public final class Polygon extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		String gmlPrefix = PropertyReader.getProperty("gml.prefix");
+		String gmlPrefix = PropertyReader.getPrefix("gml");
 		return (ValidationMessage.ELEMENT_PREFIX + gmlPrefix + ":" + EXTERIOR_NAME
 			+ ValidationMessage.ELEMENT_PREFIX + gmlPrefix + ":" + LINEAR_RING_NAME);
 	}

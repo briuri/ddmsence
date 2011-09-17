@@ -159,8 +159,8 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(BoundingGeometry.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + BoundingGeometry.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + BoundingGeometry.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

@@ -56,7 +56,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	 */
 	protected static Element getFixtureElement() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String ismPrefix = PropertyReader.getProperty("ism.prefix");
+		String ismPrefix = PropertyReader.getPrefix("ism");
 		String ismNs = version.getIsmNamespace();
 		
 		Element element = Util.buildElement(ismPrefix, NoticeText.getName(version), ismNs, TEST_VALUE);
@@ -136,8 +136,8 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 
 			NoticeText component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(NoticeText.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ism.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ism.prefix") + ":" + NoticeText.getName(version),
+			assertEquals(PropertyReader.getPrefix("ism"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ism") + ":" + NoticeText.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -149,7 +149,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String ismPrefix = PropertyReader.getProperty("ism.prefix");
+			String ismPrefix = PropertyReader.getPrefix("ism");
 			
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -204,7 +204,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	public void testWarnings() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String ismPrefix = PropertyReader.getProperty("ism.prefix");
+			String ismPrefix = PropertyReader.getPrefix("ism");
 			
 			if (!version.isAtLeast("4.0"))
 				continue;

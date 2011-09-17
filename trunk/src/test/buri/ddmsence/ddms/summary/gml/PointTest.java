@@ -135,8 +135,8 @@ public class PointTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Point component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Point.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("gml.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Point.getName(version),
+			assertEquals(PropertyReader.getPrefix("gml"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("gml") + ":" + Point.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -159,11 +159,11 @@ public class PointTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// No optional fields
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Point.getName(version),
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Point.getName(version),
 				version.getGmlNamespace(), null);
 			Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE,
 				SRSAttributesTest.getFixture().getSrsName());
-			Util.addAttribute(element, PropertyReader.getProperty("gml.prefix"), "id", version.getGmlNamespace(),
+			Util.addAttribute(element, PropertyReader.getPrefix("gml"), "id", version.getGmlNamespace(),
 				TEST_ID);
 			element.appendChild(getPosition().getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
@@ -181,7 +181,7 @@ public class PointTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
+			String gmlPrefix = PropertyReader.getPrefix("gml");
 			String gmlNamespace = version.getGmlNamespace();
 
 			// Missing SRS Name

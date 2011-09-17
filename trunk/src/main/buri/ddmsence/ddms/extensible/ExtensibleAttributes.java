@@ -147,8 +147,8 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	private void buildReservedNames(String parentNamespace) {
 		DDMSVersion version = DDMSVersion.getVersionForNamespace(parentNamespace);
 		RESERVED_RESOURCE_NAMES.clear();
-		String ismPrefix = PropertyReader.getProperty("ism.prefix");
-		String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
+		String ismPrefix = PropertyReader.getPrefix("ism");
+		String ntkPrefix = PropertyReader.getPrefix("ntk");
 		for (String reservedName : Resource.NON_EXTENSIBLE_NAMES) {
 			RESERVED_RESOURCE_NAMES.add(new QName(version.getIsmNamespace(), reservedName, ismPrefix));
 		}

@@ -56,8 +56,8 @@ public class DetailsTest extends AbstractComponentTestCase {
 	protected static Element getFixtureElement() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Element element = Util.buildDDMSElement(Details.getName(version), TEST_VALUE);
-		element.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), version.getNamespace());
-		element.addNamespaceDeclaration(PropertyReader.getProperty("ism.prefix"), version.getIsmNamespace());
+		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
+		element.addNamespaceDeclaration(PropertyReader.getPrefix("ism"), version.getIsmNamespace());
 		SecurityAttributesTest.getFixture(false).addTo(element);
 		return (element);
 	}
@@ -130,8 +130,8 @@ public class DetailsTest extends AbstractComponentTestCase {
 
 			Details component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(Details.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Details.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Details.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

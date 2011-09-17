@@ -46,7 +46,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ISM:pocType</u>: indicates that the element specifies a POC for particular notice type. (optional)<br />
  * This class is decorated with ISM {@link SecurityAttributes}. The classification and
- * ownerProducer attributes are optional.
+ * ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
@@ -92,13 +92,13 @@ public final class NoticeText extends AbstractSimpleString {
 	 */
 	public NoticeText(String value, List<String> pocTypes, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
-		super(PropertyReader.getProperty("ism.prefix"), DDMSVersion.getCurrentVersion().getIsmNamespace(), NoticeText
+		super(PropertyReader.getPrefix("ism"), DDMSVersion.getCurrentVersion().getIsmNamespace(), NoticeText
 			.getName(DDMSVersion.getCurrentVersion()), value, securityAttributes, false);
 		try {
 			if (pocTypes == null)
 				pocTypes = Collections.emptyList();
 			if (!pocTypes.isEmpty())
-				Util.addAttribute(getXOMElement(), PropertyReader.getProperty("ism.prefix"), POC_TYPE_NAME, DDMSVersion
+				Util.addAttribute(getXOMElement(), PropertyReader.getPrefix("ism"), POC_TYPE_NAME, DDMSVersion
 					.getCurrentVersion().getIsmNamespace(), Util.getXsList(pocTypes));
 			_cachedPocTypes = pocTypes;
 			validate();

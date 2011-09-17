@@ -90,7 +90,7 @@ public abstract class AbstractNtkString extends AbstractBaseComponent {
 	protected AbstractNtkString(boolean isTokenBased, String name, String value, String id, String idReference,
 		String qualifier, SecurityAttributes attributes, boolean validateNow) throws InvalidDDMSException {
 		try {
-			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
+			String ntkPrefix = PropertyReader.getPrefix("ntk");
 			String ntkNamespace = DDMSVersion.getCurrentVersion().getNtkNamespace();
 			
 			Element element = Util.buildElement(ntkPrefix, name, ntkNamespace, value);

@@ -155,8 +155,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			RelatedResource component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(RelatedResource.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + RelatedResource.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + RelatedResource.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

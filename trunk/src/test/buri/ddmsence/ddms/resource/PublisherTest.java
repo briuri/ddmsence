@@ -134,8 +134,8 @@ public class PublisherTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Publisher.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Publisher.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Publisher.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

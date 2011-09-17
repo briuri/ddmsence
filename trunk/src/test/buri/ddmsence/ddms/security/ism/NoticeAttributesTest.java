@@ -137,7 +137,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String ismPrefix = PropertyReader.getProperty("ism.prefix");
+			String ismPrefix = PropertyReader.getPrefix("ism");
 			String icNamespace = version.getIsmNamespace();
 
 			if (!version.isAtLeast("4.0"))
@@ -225,7 +225,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 				continue;
 
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), Security.EXCLUDE_FROM_ROLLUP_NAME,
+			Util.addAttribute(element, PropertyReader.getPrefix("ism"), Security.EXCLUDE_FROM_ROLLUP_NAME,
 				icNamespace, "true");
 			getFixture().addTo(element);
 			NoticeAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
@@ -284,7 +284,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	public void testWrongVersion() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
-		Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), NoticeAttributes.NOTICE_DATE_NAME,
+		Util.addAttribute(element, PropertyReader.getPrefix("ism"), NoticeAttributes.NOTICE_DATE_NAME,
 			version.getIsmNamespace(), "2011-09-15");
 		testConstructor(WILL_FAIL, element);
 

@@ -220,7 +220,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String ismPrefix = PropertyReader.getProperty("ism.prefix");
+			String ismPrefix = PropertyReader.getPrefix("ism");
 			String icNamespace = version.getIsmNamespace();
 
 			// All fields
@@ -257,7 +257,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String ismPrefix = PropertyReader.getProperty("ism.prefix");
+			String ismPrefix = PropertyReader.getPrefix("ism");
 			String icNamespace = version.getIsmNamespace();
 
 			// invalid declassDate
@@ -310,7 +310,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 
 			// No warnings
 			Element element = Util.buildDDMSElement(Security.getName(version), null);
-			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), Security.EXCLUDE_FROM_ROLLUP_NAME,
+			Util.addAttribute(element, PropertyReader.getPrefix("ism"), Security.EXCLUDE_FROM_ROLLUP_NAME,
 				icNamespace, "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes attr = testConstructor(WILL_SUCCEED, element);
@@ -324,7 +324,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			String icNamespace = version.getIsmNamespace();
 
 			Element element = Util.buildDDMSElement(Security.getName(version), null);
-			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), Security.EXCLUDE_FROM_ROLLUP_NAME,
+			Util.addAttribute(element, PropertyReader.getPrefix("ism"), Security.EXCLUDE_FROM_ROLLUP_NAME,
 				icNamespace, "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
@@ -343,7 +343,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			String icNamespace = version.getIsmNamespace();
 
 			Element element = Util.buildDDMSElement(Security.getName(version), null);
-			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), Security.EXCLUDE_FROM_ROLLUP_NAME,
+			Util.addAttribute(element, PropertyReader.getPrefix("ism"), Security.EXCLUDE_FROM_ROLLUP_NAME,
 				icNamespace, "true");
 			getFixture(true).addTo(element);
 			SecurityAttributes expected = testConstructor(WILL_SUCCEED, element);

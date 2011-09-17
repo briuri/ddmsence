@@ -107,8 +107,8 @@ public class RightsTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Rights component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Rights.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Rights.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Rights.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

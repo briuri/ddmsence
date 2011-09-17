@@ -102,7 +102,7 @@ public final class Security extends AbstractBaseComponent {
 			if (access != null)
 				element.appendChild(access.getXOMElementCopy());
 			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-				Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), EXCLUDE_FROM_ROLLUP_NAME, 
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), EXCLUDE_FROM_ROLLUP_NAME, 
 					DDMSVersion.getCurrentVersion().getIsmNamespace(), FIXED_ROLLUP);
 			_cachedAccess = access;
 			_cachedSecurityAttributes = securityAttributes;

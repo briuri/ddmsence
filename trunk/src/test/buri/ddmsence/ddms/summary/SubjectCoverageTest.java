@@ -213,8 +213,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(SubjectCoverage.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + SubjectCoverage.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + SubjectCoverage.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

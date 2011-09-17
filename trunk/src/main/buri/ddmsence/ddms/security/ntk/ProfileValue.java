@@ -88,7 +88,7 @@ public final class ProfileValue extends AbstractNtkString {
 			securityAttributes, false);
 		try {
 			if (!Util.isEmpty(vocabulary))
-				Util.addAttribute(getXOMElement(), PropertyReader.getProperty("ntk.prefix"), VOCABULARY_NAME,
+				Util.addAttribute(getXOMElement(), PropertyReader.getPrefix("ntk"), VOCABULARY_NAME,
 					DDMSVersion.getCurrentVersion().getNtkNamespace(), vocabulary);
 			validate();
 		} catch (InvalidDDMSException e) {

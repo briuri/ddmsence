@@ -128,7 +128,7 @@ public final class Access extends AbstractBaseComponent {
 	public Access(List<Individual> individuals, List<Group> groups, ProfileList profileList, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
+			String ntkPrefix = PropertyReader.getPrefix("ntk");
 			String ntkNamespace = version.getNtkNamespace();
 			
 			Element element = Util.buildElement(ntkPrefix, Access.getName(version),

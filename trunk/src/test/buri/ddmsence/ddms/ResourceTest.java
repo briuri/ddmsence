@@ -215,9 +215,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 	 */
 	private Element getResourceWithoutBodyElement() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String ismPrefix = PropertyReader.getProperty("ism.prefix");
+		String ismPrefix = PropertyReader.getPrefix("ism");
 		String ismNamespace = version.getIsmNamespace();
-		String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
+		String ntkPrefix = PropertyReader.getPrefix("ntk");
 		String ntkNamespace = version.getNtkNamespace();
 
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
@@ -244,7 +244,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		if (version.isAtLeast("4.0"))
 			return null;
-		String ismPrefix = PropertyReader.getProperty("ism.prefix");
+		String ismPrefix = PropertyReader.getPrefix("ism");
 		String ismNamespace = version.getIsmNamespace();
 
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
@@ -607,8 +607,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			Resource component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Resource.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Resource.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Resource.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -667,9 +667,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			createComponents();
-			String ismPrefix = PropertyReader.getProperty("ism.prefix");
+			String ismPrefix = PropertyReader.getPrefix("ism");
 			String ismNamespace = version.getIsmNamespace();
-			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
+			String ntkPrefix = PropertyReader.getPrefix("ntk");
 			String ntkNamespace = version.getNtkNamespace();
 			
 			if (version.isAtLeast("3.0")) {
@@ -1182,7 +1182,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 	public void test20ExtensibleElementSize() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		createComponents();
-		String ismPrefix = PropertyReader.getProperty("ism.prefix");
+		String ismPrefix = PropertyReader.getPrefix("ism");
 
 		// ISM:DESVersion in element
 		Element element = getResourceWithoutHeaderElement();
@@ -1400,7 +1400,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		String ismNamespace = version.getIsmNamespace();
 
 		Element element = getResourceWithoutHeaderElement();
-		Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"),
+		Util.addAttribute(element, PropertyReader.getPrefix("ism"),
 			SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, ismNamespace, "true");
 		SecurityAttributesTest.getFixture(false).addTo(element);
 		Resource resource = testConstructor(WILL_SUCCEED, element);

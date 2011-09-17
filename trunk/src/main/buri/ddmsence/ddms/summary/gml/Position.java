@@ -105,7 +105,7 @@ public final class Position extends AbstractBaseComponent {
 			_cachedSrsAttributes = (srsAttributes == null ? new SRSAttributes(null, null, null, null) : srsAttributes);
 			_cachedCoordinates = coordinates;
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.getName(version),
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
 				version.getGmlNamespace(), Util.getXsList(coordinates));
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);

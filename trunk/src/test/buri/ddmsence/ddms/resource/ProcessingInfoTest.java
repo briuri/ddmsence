@@ -116,8 +116,8 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 
 			ProcessingInfo component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(ProcessingInfo.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + ProcessingInfo.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + ProcessingInfo.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
