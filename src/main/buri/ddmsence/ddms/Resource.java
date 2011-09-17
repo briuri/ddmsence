@@ -72,7 +72,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of ddms:Resource (the top-level element of a DDMS record).
+ * An immutable implementation of ddms:resource (the top-level element of a DDMS record).
  * 
  * <p>
  * Starting in DDMS 3.0, resources have additional ISM attributes which did not exist in 2.0. However, the 2.0 schema still allows 
@@ -89,6 +89,8 @@ import buri.ddmsence.util.Util;
  * &lt;meta name="ddms.generator" content="DDMSence 1.0.0" /&gt;<br />
  * &lt;meta name="ddms.version" content="3.0" /&gt;<br />
  * </code></ul></p>
+ * 
+ * <p>The name of this component was changed from "Resource" to "resource" in DDMS 4.0.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:identifier</u>: (1-many required), implemented as an {@link Identifier}<br />
@@ -424,9 +426,10 @@ public final class Resource extends AbstractBaseComponent {
 		Integer desVersion, SecurityAttributes securityAttributes, NoticeAttributes noticeAttributes,
 		ExtensibleAttributes extensions) throws InvalidDDMSException {
 		try {
+			String name = Resource.getName(DDMSVersion.getCurrentVersion());
 			if (topLevelComponents == null)
 				topLevelComponents = Collections.emptyList();
-			Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(name, null);
 			String ismPrefix = PropertyReader.getProperty("ism.prefix");
 			// Attributes
 			if (resourceElement != null) {
@@ -508,7 +511,7 @@ public final class Resource extends AbstractBaseComponent {
 					_cachedExtensibleElements.add((ExtensibleElement) component);
 				else
 					throw new InvalidDDMSException(component.getName()
-						+ " is not a valid top-level component in a ddms:Resource.");
+						+ " is not a valid top-level component in a ddms:" + name + ".");
 			}
 			populatedOrderedList();
 			for (IDDMSComponent component : getTopLevelComponents()) {
@@ -671,7 +674,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>If ddms:Resource has no classification, warn about ignoring rollup validation.</li>
+	 * <li>If ddms:resource has no classification, warn about ignoring rollup validation.</li>
 	 * <li>Add any warnings from the notice attributes.</li>
 	 * </td></tr></table>
 	 */
@@ -681,7 +684,7 @@ public final class Resource extends AbstractBaseComponent {
 		}
 		if (getSecurityAttributes().isEmpty()) {
 			addWarning("Security rollup validation is being skipped, because no classification exists "
-				+ "on the ddms:Resource itself.");
+				+ "on the ddms:" + getName() + " itself.");
 		}
 		super.validateWarnings();
 	}
@@ -749,7 +752,7 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return ("Resource");
+		return (version.isAtLeast("4.0") ? "resource" : "Resource");
 	}
 	
 	/**

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ddms:Resource xsi:schemaLocation="urn:us:mil:ces:metadata:ddms:4 DDMS-v4_0.xsd" 
+<ddms:resource xsi:schemaLocation="urn:us:mil:ces:metadata:ddms:4 DDMS-v4_0.xsd" 
 	xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:ICISM="urn:us:gov:ic:ism" 
@@ -53,4 +53,4 @@
 		<ddms:end>Not Applicable</ddms:end>
 	</ddms:temporalCoverage>
 	<ddms:security ICISM:ownerProducer="USA" ICISM:classification="U" ICISM:excludeFromRollup="true"/>
-</ddms:Resource>
+</ddms:resource>

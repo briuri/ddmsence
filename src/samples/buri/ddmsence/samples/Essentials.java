@@ -158,7 +158,7 @@ public class Essentials extends AbstractSample {
 	}
 	
 	/**
-	 * Accessor for the currently loaded ddms:Resource
+	 * Accessor for the currently loaded ddms:resource
 	 */
 	private Resource getResource() {
 		return (_resource);

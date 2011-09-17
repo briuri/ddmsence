@@ -31,7 +31,7 @@ import buri.ddmsence.util.Util;
  * <p> The locator string provides additional information about the context of the error or warning. This string is
  * implemented as an XPath string right now: if the error was coming from a ddms:identifier component, the locator would
  * be "/ddms:identifier". Should a parent component choose to report the warnings/errors of a child component, the
- * locator string could be expanded with parent information, such as "/ddms:Resource/ddms:identifier". </p>
+ * locator string could be expanded with parent information, such as "/ddms:resource/ddms:identifier". </p>
  * 
  * <p> Please note that the XPath string is not intended to drill all the way down to the offending element or
  * attribute. It should merely provide enough context so that the source of the message can be discovered. <p>

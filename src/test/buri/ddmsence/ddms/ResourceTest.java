@@ -76,7 +76,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:Resource elements</p>
+ * <p>Tests related to ddms:resource elements</p>
  * 
  * <p>Assumes that unit testing on individual components is done separately.
  * 
@@ -449,7 +449,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:Resource ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
+		xml.append("<ddms:").append(Resource.getName(version)).append(" ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
 		if (version.isAtLeast("3.0"))
 			xml.append(" ISM:resourceElement=\"true\"");
 		// Adding DESVersion in DDMS 2.0 allows the namespace declaration to definitely be in the Resource element.
@@ -570,7 +570,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		if (version.isAtLeast("3.0"))
 			xml.append("ISM:excludeFromRollup=\"true\" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" />\n");
-		xml.append("</ddms:Resource>");
+		xml.append("</ddms:").append(Resource.getName(version)).append(">");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
@@ -891,19 +891,20 @@ public class ResourceTest extends AbstractComponentTestCase {
 			warnings = version.isAtLeast("3.0") ? 1 : 2;
 			assertEquals(warnings, component.getValidationWarnings().size());
 
+			String resourceName = Resource.getName(version);
 			if (!version.isAtLeast("3.0")) {
 				String text = "Security rollup validation is being skipped, because no classification exists "
-					+ "on the ddms:Resource itself.";
-				String locator = "ddms:Resource";
+					+ "on the ddms:" + resourceName + " itself.";
+				String locator = "ddms:" + resourceName;
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
 				text = "A qualifier has been set without an accompanying value attribute.";
-				locator = "ddms:Resource/ddms:format/ddms:Media/ddms:extent";
+				locator = "ddms:" + resourceName + "/ddms:format/ddms:Media/ddms:extent";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));
 			} else {
 				String text = "A qualifier has been set without an accompanying value attribute.";
-				String locator = (version.isAtLeast("4.0")) ? "ddms:Resource/ddms:format/ddms:extent"
-					: "ddms:Resource/ddms:format/ddms:Media/ddms:extent";
+				String locator = (version.isAtLeast("4.0")) ? "ddms:" + resourceName + "/ddms:format/ddms:extent"
+					: "ddms:" + resourceName + "/ddms:format/ddms:Media/ddms:extent";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
 
@@ -918,17 +919,17 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertEquals(warnings, component.getValidationWarnings().size());
 			if (!version.isAtLeast("3.0")) {
 				String text = "Security rollup validation is being skipped, because no classification exists "
-					+ "on the ddms:Resource itself.";
-				String locator = "ddms:Resource";
+					+ "on the ddms:" + resourceName + " itself.";
+				String locator = "ddms:" + resourceName;
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
 				text = "A completely empty ddms:postalAddress element was found.";
-				locator = "ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
+				locator = "ddms:" + resourceName + "/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));
 			} else {
 				String text = "A completely empty ddms:postalAddress element was found.";
-				String locator = (version.isAtLeast("4.0")) ? "ddms:Resource/ddms:geospatialCoverage/ddms:postalAddress"
-					: "ddms:Resource/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
+				String locator = (version.isAtLeast("4.0")) ? "ddms:" + resourceName + "/ddms:geospatialCoverage/ddms:postalAddress"
+					: "ddms:" + resourceName + "/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
 		}
