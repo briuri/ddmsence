@@ -385,7 +385,7 @@ Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 <p>
 ISM security attributes are defined in the Intelligence Community's "XML Data Encoding Specification for Information Security Marking Metadata" document (DES) and
 implemented in the <a href="/docs/index.html?buri/ddmsence/ddms/security/ism/SecurityAttributes.html">SecurityAttributes</a> class. This class encapsulates
-the ISM attributes which can decorate various DDMS components, such as <code>ddms:Resource</code> or <code>ddms:security</code>. The constructor which builds
+the ISM attributes which can decorate various DDMS components, such as <code>ddms:resource</code> or <code>ddms:security</code>. The constructor which builds
 the attributes from a XOM element will simply load these attributes from the element itself. The constructor which builds the attributes from raw data is defined as:
 
 <pre class="brush: java">public SecurityAttributes(String classification, List&lt;String&gt; ownerProducers, Map&lt;String,String&gt; otherAttributes)</pre>
@@ -637,7 +637,7 @@ for (ValidationMessage message : messages) {
 in the DES states that <code>ISM:ownerProducer</code> token values must be in alphabetical order (ISM-ID-00100). If you edit this attribute on the root node
 of the DDMS resource file so the value is <code>"USA AUS"</code> and then run the code again, you should get the following output.</p>
 
-<pre class="brush: xml">Location: //*:Resource[namespace-uri()='urn:us:mil:ces:metadata:ddms:4'][1]
+<pre class="brush: xml">Location: //*:resource[namespace-uri()='urn:us:mil:ces:metadata:ddms:4'][1]
    /*:title[namespace-uri()='urn:us:mil:ces:metadata:ddms:4'][1]
 Message: [ISM-ID-00100][Error] If ISM-CAPCO-RESOURCE and attribute ownerProducer is specified, then each of its values must 
    be ordered in accordance with CVEnumISMOwnerProducer.xml. The following values are out of order [AUS] for [USA AUS]</pre>
@@ -691,7 +691,7 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 <a name="tips-extensible"></a><h4>The Extensible Layer</h4>
 
 <p>DDMS is composed of five Core Sets (Metacard Info, Security, Resource, Summary Content, and Format) and the Extensible Layer. This layer supports extensibility
-by providing space for custom attributes and elements within a <code>ddms:Resource</code>. Specifically, custom attributes can be added to any producer
+by providing space for custom attributes and elements within a <code>ddms:resource</code>. Specifically, custom attributes can be added to any producer
 (Organization, Person, Service, and Unknown), a Keyword, a Category, and the Resource itself. A Resource can also have an unlimited number of custom
 elements after the <code>ddms:security</code> element. These extensions are identified by the <code>xs:any</code> and <code>xs:anyAttribute</code>
 definitions in the schema. The main restriction on content is that custom elements and attributes must belong to an XML namespace other than the
@@ -706,7 +706,7 @@ XOM Elements and Attributes. Any business logic to be performed on this Layer is
 
 <h5>ExtensibleElements</h5>
 
-<p>An unlimited number of elements from any XML namespace other than the DDMS namespace can appear at the end of a <code>ddms:Resource</code>. (In DDMS 2.0,
+<p>An unlimited number of elements from any XML namespace other than the DDMS namespace can appear at the end of a <code>ddms:resource</code>. (In DDMS 2.0,
 only 1 can appear). These elements are implemented with the <a href="/docs/index.html?buri/ddmsence/ddms/extensible/ExtensibleElement.html">ExtensibleElement</a> class,
 which acts like any other IDDMSComponent and exposes <code>getXOMElementCopy()</code> to return a copy of the underlying XOM Element. Below is an
 example of an extensible element as it might appear in an XML file.</p> 
@@ -717,8 +717,8 @@ example of an extensible element as it might appear in an XML file.</p>
    &lt;ddmsence:extension xmlns:ddmsence="http://ddmsence.urizone.net/"&gt;
       This is an extensible element.
    &lt;/ddmsence:extension&gt;
-&lt;/ddms:Resource&gt;</pre>
-<p class="figure">Figure 26. An extensible element as it would appear in a ddms:Resource</p>
+&lt;/ddms:resource&gt;</pre>
+<p class="figure">Figure 26. An extensible element as it would appear in a ddms:resource</p>
 
 <p>Unlike most DDMS components, which have a constructor for XOM elements and a constructor for raw data, ExtensibleElement only has one constructor
 (since the raw data is, itself, a XOM element). If you are using a DDMSReader instance to load data from an XML file, the ExtensibleElements will be created automatically,

@@ -176,15 +176,15 @@ Please enter the approvedOn date [2010]:
 
 The DDMS Resource is valid!
 The following warnings were recorded:
-   [WARNING] /ddms:Resource/ddms:dates: A completely empty ddms:dates element was found.</pre>
+   [WARNING] /ddms:resource/ddms:dates: A completely empty ddms:dates element was found.</pre>
 <p class="figure">Figure 8. Triggering a Warning Condition</p>
 
 <p>As you can see, the locator information on warnings is in the same format as the information on errors. Because parent components claim the warnings of their children,
-a more detailed locator can be created. In this case, calling <code>getValidationWarnings()</code> on the Resource shows the full path of "<code>/ddms:Resource/ddms:dates</code>". If 
+a more detailed locator can be created. In this case, calling <code>getValidationWarnings()</code> on the Resource shows the full path of "<code>/ddms:resource/ddms:dates</code>". If 
 you called <code>getValidationWarnings()</code> on the Dates component itself, the locator would be "<code>/ddms:dates</code>".</p>
 
 <p>If a parent-child hierarchy has some DDMS elements which are not <a href="documentation.jsp#design">implemented as Java objects</a>, the locator string will
-include every element in the hierarchy. For example, a warning in a <code>ddms:medium</code> element (in DDMS 2.0, 3.0, or 3.1) will have a locator value of "<code>/ddms:Resource/ddms:format/ddms:Media/ddms:medium</code>"
+include every element in the hierarchy. For example, a warning in a <code>ddms:medium</code> element (in DDMS 2.0, 3.0, or 3.1) will have a locator value of "<code>/ddms:resource/ddms:format/ddms:Media/ddms:medium</code>"
 even though <code>ddms:Media</code> is not an implemented component (the medium is a property on the Format object in the Java implementation).</p>
   
 <h3>Conclusion</h3>

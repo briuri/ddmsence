@@ -10,7 +10,7 @@
 	<iso:ns prefix='xlink' uri='http://www.w3.org/1999/xlink' />
 	
 	<iso:pattern title="Sample Failure">
-		<iso:rule context="ddms:Resource">
+		<iso:rule context="ddms:resource">
 			<iso:assert test="unknownElement">A DDMS Resource must have an unknownElement child. This will always fail.</iso:assert>
 		</iso:rule>
 	</iso:pattern>

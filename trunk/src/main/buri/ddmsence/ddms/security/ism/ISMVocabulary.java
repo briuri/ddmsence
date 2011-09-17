@@ -43,6 +43,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -408,11 +409,11 @@ public class ISMVocabulary {
 			int childIndex = getClassificationIndex(childClass);
 			if (isParentUS != isChildUS) {
 				throw new InvalidDDMSException("The security classification of a nested component is using a "
-					+ "different marking system than the ddms:Resource itself.");
+					+ "different marking system than the ddms:" + Resource.getName(getDDMSVersion()) + " itself.");
 			}
 			if (childIndex > parentIndex) {
 				throw new InvalidDDMSException("The security classification of a nested component is more "
-					+ "restrictive than the ddms:Resource itself.");
+					+ "restrictive than the ddms:" + Resource.getName(getDDMSVersion()) + " itself.");
 			}			
 		}
 	}

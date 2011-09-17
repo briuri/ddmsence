@@ -59,7 +59,7 @@ SEVERITY: Major
 DETAILS:
 	The hierarchy for related resources was previously:
 	
-	ddms:relatedResources (0-many in a ddms:Resource)
+	ddms:relatedResources (0-many in a ddms:resource)
 		@ddms:relationship
 		@ddms:direction
 		@<ismAttributesOptional>
@@ -70,7 +70,7 @@ DETAILS:
 		
 	DDMS 4.0  has flattened this to one level:
 	
-	ddms:relatedResource (0-many in a ddms:Resource)
+	ddms:relatedResource (0-many in a ddms:resource)
 		@ddms:qualifier
 		@ddms:value
 		@ddms:relationship

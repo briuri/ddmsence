@@ -64,16 +64,17 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 				DDMSVersion version = DDMSVersion.getVersionFor(versionString);
 				Resource resource = versionToResourceMap.get(versionString);
 				String ddmsNamespace = resource.getNamespace();
+				String resourceName = Resource.getName(version);
 				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/"
 					+ versionString + "/testSchematronXslt1.sch"));
 				assertEquals(2, messages.size());
 
 				String text = "A DDMS Resource must have an unknownElement child. This will always fail.";
-				String locator = "/*[local-name()='Resource' and namespace-uri()='" + ddmsNamespace + "']";
+				String locator = "/*[local-name()='" + resourceName + "' and namespace-uri()='" + ddmsNamespace + "']";
 				assertErrorEquality(text, locator, messages.get(0));
 
 				text = "Members of the Uri family cannot be publishers.";
-				locator = "/*[local-name()='Resource' and namespace-uri()='" + ddmsNamespace + "']"
+				locator = "/*[local-name()='" + resourceName + "' and namespace-uri()='" + ddmsNamespace + "']"
 					+ "/*[local-name()='publisher' and namespace-uri()='" + ddmsNamespace + "']" + "/*[local-name()='"
 					+ Person.getName(version) + "' and namespace-uri()='" + ddmsNamespace + "']"
 					+ "/*[local-name()='surname' and namespace-uri()='" + ddmsNamespace + "']";
@@ -98,7 +99,8 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 				String text = "The second coordinate in a gml:pos element must be 40.2 degrees.";
 				String extent = version.isAtLeast("4.0") ? ""
 					: "/*:GeospatialExtent[namespace-uri()='" + ddmsNamespace + "'][1]";
-				String locator = "/*:Resource[namespace-uri()='" + ddmsNamespace + "'][1]"
+				String resourceName = Resource.getName(version);
+				String locator = "/*:" + resourceName + "[namespace-uri()='" + ddmsNamespace + "'][1]"
 					+ "/*:geospatialCoverage[namespace-uri()='" + ddmsNamespace + "'][1]" + extent
 					+ "/*:boundingGeometry[namespace-uri()='" + ddmsNamespace + "'][1]" + "/*:Point[namespace-uri()='"
 					+ gmlNamespace + "'][1]" + "/*:pos[namespace-uri()='" + gmlNamespace + "'][1]";
