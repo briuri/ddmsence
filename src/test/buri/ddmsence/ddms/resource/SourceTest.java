@@ -132,8 +132,8 @@ public class SourceTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Source component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Source.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Source.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Source.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

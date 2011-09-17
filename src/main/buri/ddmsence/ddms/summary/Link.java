@@ -126,7 +126,7 @@ public final class Link extends AbstractBaseComponent {
 		throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Link.getName(DDMSVersion.getCurrentVersion()), null);
-			String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
+			String xlinkPrefix = PropertyReader.getPrefix("xlink");
 			_xlinkNamespace = DDMSVersion.getCurrentVersion().getXlinkNamespace();
 			Util.addAttribute(element, xlinkPrefix, TYPE_NAME, getXlinkNamespace(), FIXED_TYPE);
 			Util.addAttribute(element, xlinkPrefix, HREF_NAME, getXlinkNamespace(), href);

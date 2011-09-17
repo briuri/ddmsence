@@ -122,8 +122,8 @@ public class PositionTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Position component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Position.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("gml.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Position.getName(version),
+			assertEquals(PropertyReader.getPrefix("gml"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("gml") + ":" + Position.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -142,7 +142,7 @@ public class PositionTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
+			String gmlPrefix = PropertyReader.getPrefix("gml");
 			String gmlNamespace = version.getGmlNamespace();
 
 			// All fields
@@ -173,7 +173,7 @@ public class PositionTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
+			String gmlPrefix = PropertyReader.getPrefix("gml");
 			String gmlNamespace = version.getGmlNamespace();
 			// Missing coordinates
 			Element element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, null);
@@ -241,7 +241,7 @@ public class PositionTest extends AbstractComponentTestCase {
 	public void testEqualityWhitespace() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
+			String gmlPrefix = PropertyReader.getPrefix("gml");
 			String gmlNamespace = version.getGmlNamespace();
 			Position position = new Position(Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace,
 				TEST_XS_LIST));

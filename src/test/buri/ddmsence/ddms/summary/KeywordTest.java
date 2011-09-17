@@ -124,8 +124,8 @@ public class KeywordTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Keyword component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Keyword.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Keyword.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Keyword.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

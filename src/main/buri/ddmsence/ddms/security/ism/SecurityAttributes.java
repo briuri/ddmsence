@@ -358,7 +358,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 				+ " a different DDMS version.");
 		}			
 		String icNamespace = DDMSVersion.getVersionForNamespace(element.getNamespaceURI()).getIsmNamespace();
-		String icPrefix = PropertyReader.getProperty("ism.prefix");
+		String icPrefix = PropertyReader.getPrefix("ism");
 		
 		Util.addAttribute(element, icPrefix, ATOMIC_ENERGY_MARKINGS_NAME, icNamespace,
 			Util.getXsList(getAtomicEnergyMarkings()));

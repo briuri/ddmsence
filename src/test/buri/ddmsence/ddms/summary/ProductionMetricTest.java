@@ -121,8 +121,8 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 
 			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(ProductionMetric.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + ProductionMetric.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + ProductionMetric.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

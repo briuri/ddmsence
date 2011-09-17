@@ -135,8 +135,8 @@ public class CategoryTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Category component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Category.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Category.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Category.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

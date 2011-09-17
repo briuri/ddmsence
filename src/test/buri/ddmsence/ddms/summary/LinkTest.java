@@ -58,10 +58,10 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	protected static Element getFixtureElement() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
+		String xlinkPrefix = PropertyReader.getPrefix("xlink");
 		String xlinkNamespace = version.getXlinkNamespace();
 		Element linkElement = Util.buildDDMSElement(Link.getName(version), null);
-		linkElement.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), version.getNamespace());
+		linkElement.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 		linkElement.addNamespaceDeclaration(xlinkPrefix, xlinkNamespace);
 		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "type", xlinkNamespace, TEST_TYPE));
 		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "href", xlinkNamespace, TEST_HREF));
@@ -148,7 +148,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	private Element buildComponentElement(String type, String href) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Element element = Util.buildDDMSElement(Link.getName(version), null);
-		String xlinkPrefix = PropertyReader.getProperty("xlink.prefix");
+		String xlinkPrefix = PropertyReader.getPrefix("xlink");
 		String xlinkNamespace = version.getXlinkNamespace();
 		if (type != null)
 			element.addAttribute(Util.buildAttribute(xlinkPrefix, "type", xlinkNamespace, type));
@@ -163,8 +163,8 @@ public class LinkTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(Link.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Link.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Link.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

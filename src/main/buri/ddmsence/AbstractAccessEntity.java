@@ -78,7 +78,7 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 	public AbstractAccessEntity(String name, SystemName systemName, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		Element element = Util.buildElement(PropertyReader.getProperty("ntk.prefix"), name,
+		Element element = Util.buildElement(PropertyReader.getPrefix("ntk"), name,
 			version.getNtkNamespace(), null);
 		setXOMElement(element, false);
 		if (systemName != null)

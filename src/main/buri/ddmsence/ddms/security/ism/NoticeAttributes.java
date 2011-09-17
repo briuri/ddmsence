@@ -142,7 +142,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 				+ " a different DDMS version.");
 		}
 		String icNamespace = DDMSVersion.getVersionForNamespace(element.getNamespaceURI()).getIsmNamespace();
-		String icPrefix = PropertyReader.getProperty("ism.prefix");
+		String icPrefix = PropertyReader.getPrefix("ism");
 
 		Util.addAttribute(element, icPrefix, NOTICE_TYPE_NAME, icNamespace, getNoticeType());
 		Util.addAttribute(element, icPrefix, NOTICE_REASON_NAME, icNamespace, getNoticeReason());

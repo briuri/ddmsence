@@ -759,7 +759,7 @@ public class UtilTest extends TestCase {
 		assertNotNull(element);
 		assertEquals("test", element.getLocalName());
 		assertEquals(TEST_NAMESPACE, element.getNamespaceURI());
-		assertEquals(PropertyReader.getProperty("ddms.prefix"), element.getNamespacePrefix());
+		assertEquals(PropertyReader.getPrefix("ddms"), element.getNamespacePrefix());
 	}
 
 	public void testBuildDDMSElementNullName() {
@@ -777,7 +777,7 @@ public class UtilTest extends TestCase {
 		assertEquals("test", element.getLocalName());
 		assertEquals("testValue", element.getValue());
 		assertEquals(TEST_NAMESPACE, element.getNamespaceURI());
-		assertEquals(PropertyReader.getProperty("ddms.prefix"), element.getNamespacePrefix());
+		assertEquals(PropertyReader.getPrefix("ddms"), element.getNamespacePrefix());
 	}
 
 	public void testBuildDDMSElementNoChildText() {
@@ -786,7 +786,7 @@ public class UtilTest extends TestCase {
 		assertEquals("test", element.getLocalName());
 		assertEquals("", element.getValue());
 		assertEquals(TEST_NAMESPACE, element.getNamespaceURI());
-		assertEquals(PropertyReader.getProperty("ddms.prefix"), element.getNamespacePrefix());
+		assertEquals(PropertyReader.getPrefix("ddms"), element.getNamespacePrefix());
 	}
 
 	public void testBuildAttribute() {
@@ -796,7 +796,7 @@ public class UtilTest extends TestCase {
 		assertEquals("test", attribute.getLocalName());
 		assertEquals("testValue", attribute.getValue());
 		assertEquals(TEST_NAMESPACE, attribute.getNamespaceURI());
-		assertEquals(PropertyReader.getProperty("ddms.prefix"), attribute.getNamespacePrefix());
+		assertEquals(PropertyReader.getPrefix("ddms"), attribute.getNamespacePrefix());
 	}
 
 	public void testBuildAttributeEmptyValues() {
@@ -814,7 +814,7 @@ public class UtilTest extends TestCase {
 		assertEquals("test", attribute.getLocalName());
 		assertEquals("testValue", attribute.getValue());
 		assertEquals(TEST_NAMESPACE, attribute.getNamespaceURI());
-		assertEquals(PropertyReader.getProperty("ddms.prefix"), attribute.getNamespacePrefix());
+		assertEquals(PropertyReader.getPrefix("ddms"), attribute.getNamespacePrefix());
 	}
 
 	public void testBuildDDMSAttributeNullName() {

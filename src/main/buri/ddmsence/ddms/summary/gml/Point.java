@@ -109,14 +109,14 @@ public final class Point extends AbstractBaseComponent {
 			_cachedPosition = position;
 			_cachedSrsAttributes = srsAttributes;
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Point.getName(version),
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Point.getName(version),
 				version.getGmlNamespace(), null);
 			if (position != null) {
 				element.appendChild(position.getXOMElementCopy());
 			}
 			if (srsAttributes != null)
 				srsAttributes.addTo(element);
-			Util.addAttribute(element, PropertyReader.getProperty("gml.prefix"), ID_NAME, DDMSVersion
+			Util.addAttribute(element, PropertyReader.getPrefix("gml"), ID_NAME, DDMSVersion
 				.getCurrentVersion().getGmlNamespace(), id);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {

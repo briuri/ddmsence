@@ -146,8 +146,8 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			PointOfContact component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(PointOfContact.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + PointOfContact.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + PointOfContact.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

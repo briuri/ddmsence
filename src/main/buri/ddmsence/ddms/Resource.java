@@ -445,8 +445,8 @@ public final class Resource extends AbstractBaseComponent {
 			if (topLevelComponents == null)
 				topLevelComponents = Collections.emptyList();
 			Element element = Util.buildDDMSElement(name, null);
-			String ismPrefix = PropertyReader.getProperty("ism.prefix");
-			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
+			String ismPrefix = PropertyReader.getPrefix("ism");
+			String ntkPrefix = PropertyReader.getPrefix("ntk");
 			// Attributes
 			if (ntkDESVersion != null) {
 				_cachedNtkDESVersion = ntkDESVersion;

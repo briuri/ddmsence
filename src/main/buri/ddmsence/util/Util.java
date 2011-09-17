@@ -535,7 +535,7 @@ public class Util {
 	 * @param attributeValue the value of the attribute
 	 */
 	public static void addDDMSAttribute(Element element, String attributeName, String attributeValue) {
-		addAttribute(element, PropertyReader.getProperty("ddms.prefix"), attributeName, 
+		addAttribute(element, PropertyReader.getPrefix("ddms"), attributeName, 
 			DDMSVersion.getCurrentVersion().getNamespace(), attributeValue);
 	}
 	
@@ -576,7 +576,7 @@ public class Util {
 	 * @param childText the text of the element (optional)
 	 */
 	public static Element buildDDMSElement(String name, String childText) {
-		return (buildElement(PropertyReader.getProperty("ddms.prefix"), name, 
+		return (buildElement(PropertyReader.getPrefix("ddms"), name, 
 			DDMSVersion.getCurrentVersion().getNamespace(), childText));
 	}
 	
@@ -606,7 +606,7 @@ public class Util {
 	 * @param value the value of the attribute
 	 */
 	public static Attribute buildDDMSAttribute(String name, String value) {
-		return (buildAttribute(PropertyReader.getProperty("ddms.prefix"), name, 
+		return (buildAttribute(PropertyReader.getPrefix("ddms"), name, 
 			DDMSVersion.getCurrentVersion().getNamespace(), value));
 	} 
 	

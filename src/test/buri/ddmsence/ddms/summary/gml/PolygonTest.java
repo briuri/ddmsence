@@ -125,13 +125,13 @@ public class PolygonTest extends AbstractComponentTestCase {
 	 */
 	private Element wrapPositions(List<Position> positions) {
 		String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
-		Element ringElement = Util.buildElement(PropertyReader.getProperty("gml.prefix"), "LinearRing", gmlNamespace,
+		Element ringElement = Util.buildElement(PropertyReader.getPrefix("gml"), "LinearRing", gmlNamespace,
 			null);
 		for (Position pos : positions) {
 			ringElement.appendChild(pos.getXOMElementCopy());
 		}
 		Element extElement = Util
-			.buildElement(PropertyReader.getProperty("gml.prefix"), "exterior", gmlNamespace, null);
+			.buildElement(PropertyReader.getPrefix("gml"), "exterior", gmlNamespace, null);
 		extElement.appendChild(ringElement);
 		return (extElement);
 	}
@@ -200,8 +200,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Polygon.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("gml.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Polygon.getName(version),
+			assertEquals(PropertyReader.getPrefix("gml"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("gml") + ":" + Polygon.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -220,7 +220,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
+			String gmlPrefix = PropertyReader.getPrefix("gml");
 			String gmlNamespace = version.getGmlNamespace();
 
 			// All fields
@@ -261,7 +261,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
+			String gmlPrefix = PropertyReader.getPrefix("gml");
 			String gmlNamespace = version.getGmlNamespace();
 			// Missing SRS Name
 			Element element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);

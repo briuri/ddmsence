@@ -119,8 +119,8 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 
 			SubDivisionCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(SubDivisionCode.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + SubDivisionCode.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + SubDivisionCode.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

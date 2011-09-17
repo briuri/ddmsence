@@ -120,8 +120,8 @@ public class ExtentTest extends AbstractComponentTestCase {
 			String extentName = Extent.getName(version);
 			Extent component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(extentName, component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + extentName, component.getQualifiedName());
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + extentName, component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);

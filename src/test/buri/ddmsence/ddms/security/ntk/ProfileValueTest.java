@@ -140,8 +140,8 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 
 			ProfileValue component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(ProfileValue.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ntk.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ntk.prefix") + ":" + ProfileValue.getName(version),
+			assertEquals(PropertyReader.getPrefix("ntk"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ntk") + ":" + ProfileValue.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -153,7 +153,7 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
+			String ntkPrefix = PropertyReader.getPrefix("ntk");
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -188,7 +188,7 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
+			String ntkPrefix = PropertyReader.getPrefix("ntk");
 
 			if (!version.isAtLeast("4.0"))
 				continue;

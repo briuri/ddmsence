@@ -137,8 +137,8 @@ public class ContributorTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Contributor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Contributor.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Contributor.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Contributor.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

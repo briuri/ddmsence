@@ -97,7 +97,7 @@ public final class ProfileList extends AbstractBaseComponent {
 	public ProfileList(List<Profile> profiles, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			Element element = Util.buildElement(PropertyReader.getProperty("ntk.prefix"), ProfileList.getName(version),
+			Element element = Util.buildElement(PropertyReader.getPrefix("ntk"), ProfileList.getName(version),
 				version.getNtkNamespace(), null);
 			setXOMElement(element, false);
 			if (profiles == null)

@@ -58,7 +58,7 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 	protected static Element getFixtureElement(boolean useOrg) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Element element = Util.buildDDMSElement(RequestorInfo.getName(version), null);
-		element.addNamespaceDeclaration(PropertyReader.getProperty("ddms.prefix"), version.getNamespace());
+		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 		element.appendChild(useOrg ? getOrgFixture().getXOMElementCopy() : getPersonFixture().getXOMElementCopy());
 		SecurityAttributesTest.getFixture(false).addTo(element);
 		return (element);
@@ -162,8 +162,8 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 
 			RequestorInfo component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			assertEquals(RequestorInfo.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + RequestorInfo.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + RequestorInfo.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

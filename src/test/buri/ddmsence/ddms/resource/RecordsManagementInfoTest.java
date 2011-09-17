@@ -153,8 +153,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 
 			RecordsManagementInfo component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(RecordsManagementInfo.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + RecordsManagementInfo.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + RecordsManagementInfo.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

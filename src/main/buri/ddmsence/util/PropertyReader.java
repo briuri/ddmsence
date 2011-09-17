@@ -83,7 +83,15 @@ public class PropertyReader {
 			throw new RuntimeException("Could not load the properties file: " + e.getMessage());
 		}
 	}
-		
+	
+	/**
+	 * Convenience method to look up an XML prefix
+	 * @param key the schema key, such as ddms, ism, or ntk.
+	 */
+	public static String getPrefix(String key) {
+		return (getProperty(key + ".prefix"));
+	}
+	
 	/**
 	 * Locates a property and returns it. Assumes that the property is required.
 	 * 

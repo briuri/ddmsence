@@ -131,8 +131,8 @@ public class ServiceTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Service component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Service.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Service.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Service.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace

@@ -74,7 +74,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	 */
 	protected AbstractSimpleString(String name, String value, SecurityAttributes attributes, boolean validateNow)
 		throws InvalidDDMSException {
-		this(PropertyReader.getProperty("ddms.prefix"), DDMSVersion.getCurrentVersion().getNamespace(), name, value,
+		this(PropertyReader.getPrefix("ddms"), DDMSVersion.getCurrentVersion().getNamespace(), name, value,
 			attributes, validateNow);
 	}
 	

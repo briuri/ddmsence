@@ -154,8 +154,8 @@ public class PersonTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			Person component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Person.getName(version), component.getName());
-			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("ddms.prefix") + ":" + Person.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Person.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
