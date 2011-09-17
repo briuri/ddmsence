@@ -107,9 +107,11 @@
 		<div class="newsUpdate"><u>04/01/2010</u>: v1.0.0 released. DDMSence information posted on the
 			<a href="https://metadata.ces.mil/mdr/topic.htm?topicId=4662" target="_new">DoD Metadata Registry Community Forum</a> and on 
 			<a href="http://freshmeat.net/projects/ddmsence" target="_new">freshmeat</a>.</div>
+	<!-- 
 		<div class="newsUpdate"><u>03/29/2010</u>: v0.9.d released.</div>
 		<div class="newsUpdate"><u>03/25/2010</u>: v0.9.c released.</div>
 		<div class="newsUpdate"><u>03/24/2010</u>: v0.9.b released.</div>
+	-->
 	</div><br /><br />
 	
 	<div class="feed">New Release Feed: <a href="http://code.google.com/feeds/p/ddmsence/downloads/basic"><img border="0" src="./images/atom.png" width="14" height="14" title="Atom Feed" /></a></div>	
@@ -123,23 +125,21 @@
 <p>
 DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
 <a href="http://metadata.ces.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
-It can transform XML DDMS Resource records into a Java object model (using XOM and Xerces), allowing them to be manipulated or traversed within the context of a Java environment. 
-DDMSence also performs logical validation of rules which are not coded into the DDMS schema (such as the validation of longitude/latitude values).</p>
+It transforms XML DDMS Resource records into a Java object model (using XOM and Xerces), allowing them to be manipulated or traversed within the context of a Java environment. 
+</p>
 
 <ul>
-	<li>Provides a complete implementation of the DDMS specification (including the Extensible Layer) using DDMS 2.0, 3.0, or 3.1.</li>
-	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types. Components can automatically transform into valid, well-formed XML, HTML, and Text records, according to the DDMS specification.</li>
-	<li>Adds an additional level of validation to all components, including the Controlled Vocabulary Enumerations for ISM attributes, as defined by the Intelligence Community. Custom validation rules can also be defined with <a href="documentation.jsp#tips-schematron">ISO Schematron</a>.</li>
+	<li>Provides a complete implementation of the DDMS specification (including the Extensible Layer) using DDMS 2.0, 3.0, 3.1, or 4.0.</li>
+	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types. Components automatically transform into valid, well-formed XML, HTML, and Text records.</li>
+	<li>Validates resources against the complete specification, not just the schemas. Integrated with the Controlled Vocabulary Enumerations for ISM attributes, as defined by the Intelligence Community, and supports Schematron-based custom validation rules.</li>
 	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
 		and <a href="documentation.jsp#tips">Power Tips</a> are available for more experienced users.</li>
 </ul>
 
 <img src="./images/chart.png" width="800" height="300" title="DDMSence Flow Chart"  />
 
-
 <p>Components created with this library maintain an underlying XOM element structure, which provides latent avenues for future 
-improvement, based on XOM's support of XPath, XInclude, and XSLT. However, you do not need to have any experience with XOM to get started
-with this library.</p>
+improvement, based on XOM's support of XPath, XInclude, and XSLT. However, you do not need to have any experience with XOM to get started.</p>
 
 <p>DDMSence comes with a complete set of JUnit tests, and code coverage was aided by <a href="http://www.eclemma.org/" target="_new">EclEmma</a>.
 It is being released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
