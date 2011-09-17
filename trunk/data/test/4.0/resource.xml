@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ddms:Resource xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" xmlns:ISM="urn:us:gov:ic:ism"
-	ISM:resourceElement="true" ISM:DESVersion="5" ISM:createDate="2010-01-21" ISM:classification="U" ISM:ownerProducer="USA">
+	ISM:resourceElement="true" ISM:DESVersion="5" ISM:createDate="2010-01-21"
+	ISM:noticeType="noticeType" ISM:noticeReason="noticeReason" ISM:noticeDate="2011-09-15" ISM:unregisteredNoticeType="unregisteredNoticeType"
+	ISM:classification="U" ISM:ownerProducer="USA">
 	<ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence:testIdentifier" />
 	<ddms:title ISM:classification="U" ISM:ownerProducer="USA">DDMSence</ddms:title>
 	<ddms:subtitle ISM:classification="U" ISM:ownerProducer="USA">Version 0.1</ddms:subtitle>

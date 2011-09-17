@@ -35,6 +35,7 @@ import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
+import buri.ddmsence.ddms.security.ism.NoticeAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.Category;
 import buri.ddmsence.ddms.summary.Keyword;
@@ -151,6 +152,10 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			RESERVED_RESOURCE_NAMES.add(new QName(version.getIsmNamespace(), reservedName, ismPrefix));
 		}
 		for (String reservedName : SecurityAttributes.NON_EXTENSIBLE_NAMES) {
+			RESERVED_RESOURCE_NAMES.add(new QName(version.getIsmNamespace(), reservedName, ismPrefix));
+		}
+		if (version.isAtLeast("4.0"))
+		for (String reservedName : NoticeAttributes.NON_EXTENSIBLE_NAMES) {
 			RESERVED_RESOURCE_NAMES.add(new QName(version.getIsmNamespace(), reservedName, ismPrefix));
 		}
 	}

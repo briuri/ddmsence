@@ -58,6 +58,7 @@ import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
 import buri.ddmsence.ddms.security.Security;
 import buri.ddmsence.ddms.security.ism.ISMVocabulary;
+import buri.ddmsence.ddms.security.ism.NoticeAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.Description;
 import buri.ddmsence.ddms.summary.GeospatialCoverage;
@@ -121,7 +122,8 @@ import buri.ddmsence.util.Util;
  * <u>ISM:DESVersion</u>: Specifies the version of the Digital Encryption Schema used for the security
  * markings on this record. (required, starting in DDMS 3.0)<br />
  * This class is also decorated with ISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
- * ownerProducer attributes are required. Optional {@link ExtensibleAttributes} can also be applied.<br /><br />
+ * ownerProducer attributes are required. Optional {@link ExtensibleAttributes} can also be applied in any version,
+ * and optional {@link NoticeAttributes} can be applied in DDMS 4.0 or later.<br /><br />
  * Starting in DDMS 3.0, the ISM attributes explicitly defined in the schema should appear in the SecurityAttributes, not
  * the ExtensibleAttributes. Attempts to load them as ExtensibleAttributes will throw an InvalidDDMSException.
  * <br /><br />
@@ -167,6 +169,7 @@ public final class Resource extends AbstractBaseComponent {
 
 	private XMLGregorianCalendar _cachedCreateDate = null;
 	private Integer _cachedDESVersion = null;
+	private NoticeAttributes _cachedNoticeAttributes = null;
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	private ExtensibleAttributes _cachedExtensibleAttributes = null;
 	
@@ -214,6 +217,7 @@ public final class Resource extends AbstractBaseComponent {
 					// 	This will be thrown as an InvalidDDMSException during validation
 				}
 			}
+			_cachedNoticeAttributes = new NoticeAttributes(element);
 			_cachedSecurityAttributes = new SecurityAttributes(element);
 			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
 			
@@ -354,7 +358,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param topLevelComponents a list of top level components
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents) throws InvalidDDMSException {
-		this(topLevelComponents, null, null, null, null, null);
+		this(topLevelComponents, null, null, null, null, null, null);
 	}
 	
 	/**
@@ -368,7 +372,7 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, ExtensibleAttributes extensions)
 		throws InvalidDDMSException {
-		this(topLevelComponents, null, null, null, null, extensions);
+		this(topLevelComponents, null, null, null, null, null, extensions);
 	}
 
 	/**
@@ -385,13 +389,13 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
 		Integer desVersion, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		this(topLevelComponents, resourceElement, createDate, desVersion, securityAttributes, null);
+		this(topLevelComponents, resourceElement, createDate, desVersion, securityAttributes, null, null);
 	}
 
 	/**
 	 * Constructor for creating a DDMS resource of any version from raw data.
 	 * 
-	 * <p>The other two data-driven constructors call this one.</p>
+	 * <p>The other data-driven constructors call this one.</p>
 	 * 
 	 * <p> Passing the top-level components in as a list is a compromise between a constructor with over twenty
 	 * parameters, and the added complexity of a step-by-step factory/builder approach. If any component is not a
@@ -411,13 +415,14 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param desVersion the DES Version as an Integer (required, starting in DDMS 3.0)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
 	 * DDMS 3.0)
+	 * @param noticeAttributes any notice attributes (optional, starting in DDMS 4.0)
 	 * @param extensions any extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
 	 * does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
-		Integer desVersion, SecurityAttributes securityAttributes, ExtensibleAttributes extensions)
-		throws InvalidDDMSException {
+		Integer desVersion, SecurityAttributes securityAttributes, NoticeAttributes noticeAttributes,
+		ExtensibleAttributes extensions) throws InvalidDDMSException {
 		try {
 			if (topLevelComponents == null)
 				topLevelComponents = Collections.emptyList();
@@ -443,6 +448,9 @@ public final class Resource extends AbstractBaseComponent {
 				Util.addAttribute(element, ismPrefix, CREATE_DATE_NAME, 
 					DDMSVersion.getCurrentVersion().getIsmNamespace(), getCreateDate().toXMLFormat());
 			}
+			_cachedNoticeAttributes = (noticeAttributes == null ? new NoticeAttributes(null, null, null, null)
+				: noticeAttributes);
+			_cachedNoticeAttributes.addTo(element);
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
 			_cachedSecurityAttributes.addTo(element);
@@ -664,9 +672,13 @@ public final class Resource extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>If ddms:Resource has no classification, warn about ignoring rollup validation.</li>
+	 * <li>Add any warnings from the notice attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
+		if (!getNoticeAttributes().isEmpty()) {
+			addWarnings(getNoticeAttributes().getValidationWarnings(), true);
+		}
 		if (getSecurityAttributes().isEmpty()) {
 			addWarning("Security rollup validation is being skipped, because no classification exists "
 				+ "on the ddms:Resource itself.");
@@ -688,6 +700,7 @@ public final class Resource extends AbstractBaseComponent {
 		if (getDESVersion() != null)
 			text.append(buildOutput(isHTML, prefix + "ism." + DES_VERSION_NAME, String.valueOf(getDESVersion()), true));
 		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		text.append(getNoticeAttributes().getOutput(isHTML, prefix));
 		text.append(getExtensibleAttributes().getOutput(isHTML, prefix));
 		for (IDDMSComponent component : getTopLevelComponents())
 			text.append(isHTML ? component.toHTML() : component.toText());
@@ -708,6 +721,7 @@ public final class Resource extends AbstractBaseComponent {
 		return (Util.nullEquals(isResourceElement(), test.isResourceElement())
 			&& Util.nullEquals(getCreateDate(), test.getCreateDate())
 			&& Util.nullEquals(getDESVersion(), test.getDESVersion())
+			&& getNoticeAttributes().equals(test.getNoticeAttributes())
 			&& getExtensibleAttributes().equals(test.getExtensibleAttributes()));
 	}
 
@@ -722,6 +736,7 @@ public final class Resource extends AbstractBaseComponent {
 			result = 7 * result + getCreateDate().hashCode();
 		if (getDESVersion() != null)
 			result = 7 * result + getDESVersion().hashCode();
+		result = 7 * result + getNoticeAttributes().hashCode();
 		result = 7 * result + getExtensibleAttributes().hashCode();
 		return (result);
 	}
@@ -935,6 +950,13 @@ public final class Resource extends AbstractBaseComponent {
 	}
 	
 	/**
+	 * Accessor for the Notice Attributes. Will always be non-null even if the attributes are not set.
+	 */
+	public NoticeAttributes getNoticeAttributes() {
+		return (_cachedNoticeAttributes);
+	}
+	
+	/**
 	 * Accessor for the extensible attributes. Will always be non-null, even if not set.
 	 */
 	public ExtensibleAttributes getExtensibleAttributes() {
@@ -982,6 +1004,7 @@ public final class Resource extends AbstractBaseComponent {
 		private String _createDate;
 		private Boolean _resourceElement;
 		private Integer _DESVersion;
+		private NoticeAttributes.Builder _noticeAttributes;
 		private SecurityAttributes.Builder _securityAttributes;
 		private ExtensibleAttributes.Builder _extensibleAttributes;
 		
@@ -1049,6 +1072,7 @@ public final class Resource extends AbstractBaseComponent {
 			setResourceElement(resource.isResourceElement());
 			setDESVersion(resource.getDESVersion());
 			setSecurityAttributes(new SecurityAttributes.Builder(resource.getSecurityAttributes()));
+			setNoticeAttributes(new NoticeAttributes.Builder(resource.getNoticeAttributes()));
 			setExtensibleAttributes(new ExtensibleAttributes.Builder(resource.getExtensibleAttributes()));
 		}
 		
@@ -1065,7 +1089,7 @@ public final class Resource extends AbstractBaseComponent {
 					topLevelComponents.add(component);
 			}
 			return (new Resource(topLevelComponents, getResourceElement(), getCreateDate(), getDESVersion(),
-				getSecurityAttributes().commit(), getExtensibleAttributes().commit()));
+				getSecurityAttributes().commit(), getNoticeAttributes().commit(), getExtensibleAttributes().commit()));
 		}
 
 		/**
@@ -1080,6 +1104,7 @@ public final class Resource extends AbstractBaseComponent {
 				&& getResourceElement() == null
 				&& getDESVersion() == null
 				&& getSecurityAttributes().isEmpty()
+				&& getNoticeAttributes().isEmpty()
 				&& getExtensibleAttributes().isEmpty());
 		}
 		
@@ -1406,6 +1431,22 @@ public final class Resource extends AbstractBaseComponent {
 		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
 			_securityAttributes = securityAttributes;
 		}
+		
+		/**
+		 * Builder accessor for the noticeAttributes
+		 */
+		public NoticeAttributes.Builder getNoticeAttributes() {
+			if (_noticeAttributes == null)
+				_noticeAttributes = new NoticeAttributes.Builder();
+			return _noticeAttributes;
+		}
+		
+		/**
+		 * Builder accessor for the noticeAttributes
+		 */
+		public void setNoticeAttributes(NoticeAttributes.Builder noticeAttributes) {
+			_noticeAttributes = noticeAttributes;
+		}	
 		
 		/**
 		 * Builder accessor for the extensibleAttributes
