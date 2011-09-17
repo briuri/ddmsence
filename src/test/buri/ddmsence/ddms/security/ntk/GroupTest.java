@@ -51,13 +51,14 @@ public class GroupTest extends AbstractComponentTestCase {
 	 */
 	public static Group getFixture() {
 		try {
-			return (new Group(SystemNameTest.getFixture(), getGroupValueList(), SecurityAttributesTest.getFixture(false)));
+			return (new Group(SystemNameTest.getFixture(), getGroupValueList(),
+				SecurityAttributesTest.getFixture(false)));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
-	}	
-	
+	}
+
 	/**
 	 * Helper method to create a fixture
 	 */

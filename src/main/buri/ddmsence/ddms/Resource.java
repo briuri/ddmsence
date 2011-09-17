@@ -121,8 +121,10 @@ import buri.ddmsence.util.Util;
  * (required, starting in DDMS 3.0)<br />
  * <u>ISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in 
  * DDMS 3.0)<br />
- * <u>ISM:DESVersion</u>: Specifies the version of the Digital Encryption Schema used for the security
+ * <u>ISM:DESVersion</u>: Specifies the version of the Data Encoding Specification used for the security
  * markings on this record. (required, starting in DDMS 3.0)<br />
+ * <u>ntk:DESVersion</u>: Specifies the version of the Data Encoding Specification used for Need-To-Know markings
+ * on this record. (required, starting in DDMS 4.0 with a fixed value)<br />
  * This class is also decorated with ISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
  * ownerProducer attributes are required. Optional {@link ExtensibleAttributes} can also be applied in any version,
  * and optional {@link NoticeAttributes} can be applied in DDMS 4.0 or later.<br /><br />
@@ -170,7 +172,8 @@ public final class Resource extends AbstractBaseComponent {
 	private List<IDDMSComponent> _orderedList = new ArrayList<IDDMSComponent>();
 
 	private XMLGregorianCalendar _cachedCreateDate = null;
-	private Integer _cachedDESVersion = null;
+	private Integer _cachedIsmDESVersion = null;
+	private Integer _cachedNtkDESVersion = null;
 	private NoticeAttributes _cachedNoticeAttributes = null;
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	private ExtensibleAttributes _cachedExtensibleAttributes = null;
@@ -207,16 +210,27 @@ public final class Resource extends AbstractBaseComponent {
 		try {
 			setXOMElement(element, false);
 			String namespace = element.getNamespaceURI();
-			String createDate = getAttributeValue(CREATE_DATE_NAME, DDMSVersion.getCurrentVersion().getIsmNamespace());
+			String createDate = getAttributeValue(CREATE_DATE_NAME, getDDMSVersion().getIsmNamespace());
 			if (!Util.isEmpty(createDate))
 				_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
-			String desVersion = element.getAttributeValue(DES_VERSION_NAME, 
-				DDMSVersion.getCurrentVersion().getIsmNamespace());
-			if (!Util.isEmpty(desVersion)) {
+			String ismDESVersion = element.getAttributeValue(DES_VERSION_NAME, 
+				getDDMSVersion().getIsmNamespace());
+			if (!Util.isEmpty(ismDESVersion)) {
 				try {
-					_cachedDESVersion = Integer.valueOf(desVersion);
+					_cachedIsmDESVersion = Integer.valueOf(ismDESVersion);
 				} catch (NumberFormatException e) {
 					// 	This will be thrown as an InvalidDDMSException during validation
+				}
+			}
+			if (getDDMSVersion().isAtLeast("4.0")) {
+				String ntkDESVersion = element.getAttributeValue(DES_VERSION_NAME, 
+					getDDMSVersion().getNtkNamespace());
+				if (!Util.isEmpty(ntkDESVersion)) {
+					try {
+						_cachedNtkDESVersion = Integer.valueOf(ntkDESVersion);
+					} catch (NumberFormatException e) {
+						// This will be thrown as an InvalidDDMSException during validation
+					}
 				}
 			}
 			_cachedNoticeAttributes = new NoticeAttributes(element);
@@ -360,7 +374,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param topLevelComponents a list of top level components
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents) throws InvalidDDMSException {
-		this(topLevelComponents, null, null, null, null, null, null);
+		this(topLevelComponents, null, null, null, null, null, null, null);
 	}
 	
 	/**
@@ -374,7 +388,7 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, ExtensibleAttributes extensions)
 		throws InvalidDDMSException {
-		this(topLevelComponents, null, null, null, null, null, extensions);
+		this(topLevelComponents, null, null, null, null, null, null, extensions);
 	}
 
 	/**
@@ -391,7 +405,7 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
 		Integer desVersion, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		this(topLevelComponents, resourceElement, createDate, desVersion, securityAttributes, null, null);
+		this(topLevelComponents, resourceElement, createDate, desVersion, null, securityAttributes, null, null);
 	}
 
 	/**
@@ -414,7 +428,8 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param topLevelComponents a list of top level components
 	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
 	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
-	 * @param desVersion the DES Version as an Integer (required, starting in DDMS 3.0)
+	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
+	 * @param ntkDESVersion the DES Version as an Integer (required, starting in DDMS 4.0)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
 	 * DDMS 3.0)
 	 * @param noticeAttributes any notice attributes (optional, starting in DDMS 4.0)
@@ -423,7 +438,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
-		Integer desVersion, SecurityAttributes securityAttributes, NoticeAttributes noticeAttributes,
+		Integer ismDESVersion, Integer ntkDESVersion, SecurityAttributes securityAttributes, NoticeAttributes noticeAttributes,
 		ExtensibleAttributes extensions) throws InvalidDDMSException {
 		try {
 			String name = Resource.getName(DDMSVersion.getCurrentVersion());
@@ -431,15 +446,21 @@ public final class Resource extends AbstractBaseComponent {
 				topLevelComponents = Collections.emptyList();
 			Element element = Util.buildDDMSElement(name, null);
 			String ismPrefix = PropertyReader.getProperty("ism.prefix");
+			String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
 			// Attributes
+			if (ntkDESVersion != null) {
+				_cachedNtkDESVersion = ntkDESVersion;
+				Util.addAttribute(element, ntkPrefix, DES_VERSION_NAME, 
+					DDMSVersion.getCurrentVersion().getNtkNamespace(), ntkDESVersion.toString());
+			}
 			if (resourceElement != null) {
 				Util.addAttribute(element, ismPrefix, RESOURCE_ELEMENT_NAME, 
 					DDMSVersion.getCurrentVersion().getIsmNamespace(), String.valueOf(resourceElement));
 			}
-			if (desVersion != null) {
-				_cachedDESVersion = desVersion;
+			if (ismDESVersion != null) {
+				_cachedIsmDESVersion = ismDESVersion;
 				Util.addAttribute(element, ismPrefix, DES_VERSION_NAME, 
-					DDMSVersion.getCurrentVersion().getIsmNamespace(), desVersion.toString());
+					DDMSVersion.getCurrentVersion().getIsmNamespace(), ismDESVersion.toString());
 			}
 			if (!Util.isEmpty(createDate)) {
 				try {
@@ -610,8 +631,10 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>All child components are using the same version of DDMS.</li>
 	 * <li>resourceElement attribute must exist, starting in DDMS 3.0.</li>
 	 * <li>createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD), starting in DDMS 3.0.</li>
-	 * <li>DESVersion must exist and be a valid Integer, starting in DDMS 3.0.</li>
-	 * <li>DESVersion must exist and be "5" in DDMS 3.1.</li>
+	 * <li>ISM DESVersion must exist and be a valid Integer, starting in DDMS 3.0.</li>
+	 * <li>ISM DESVersion must exist and be "5" in DDMS 3.1.</li>
+	 * <li>NTK DESVersion must exist and be a valid Integer, starting in DDMS 4.0.</li>
+	 * <li>NTK DESVersion must exist and be "5" in DDMS 4.0.</li>
 	 * <li>A classification is required, starting in DDMS 3.0.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty, starting in DDMS 3.0y.</li>
 	 * <li>Only 1 extensible element can exist in DDMS 2.0.</li>
@@ -652,15 +675,17 @@ public final class Resource extends AbstractBaseComponent {
 		}
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if ("3.1".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getDESVersion())))
-			throw new InvalidDDMSException("The DESVersion must be 5 in DDMS 3.1 resources.");	
+		if ("3.1".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getIsmDESVersion())))
+			throw new InvalidDDMSException("The ISM:DESVersion must be 5 in DDMS 3.1 resources.");
+		if ("4.0".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getNtkDESVersion())))
+			throw new InvalidDDMSException("The ntk:DESVersion must be 5 in DDMS 4.0 resources.");
 		if (!getDDMSVersion().isAtLeast("3.0") && getExtensibleElements().size() > 1) {
 			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
 		}
 		if (getDDMSVersion().isAtLeast("3.0")) {
 			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
 			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
-			Util.requireDDMSValue(DES_VERSION_NAME, getDESVersion());
+			Util.requireDDMSValue(DES_VERSION_NAME, getIsmDESVersion());
 			Util.requireDDMSValue("security attributes", getSecurityAttributes());
 			getSecurityAttributes().requireClassification();
 			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
@@ -700,8 +725,10 @@ public final class Resource extends AbstractBaseComponent {
 				true));
 		if (getCreateDate() != null)
 			text.append(buildOutput(isHTML, prefix + CREATE_DATE_NAME, getCreateDate().toXMLFormat(), true));
-		if (getDESVersion() != null)
-			text.append(buildOutput(isHTML, prefix + "ism." + DES_VERSION_NAME, String.valueOf(getDESVersion()), true));
+		if (getIsmDESVersion() != null)
+			text.append(buildOutput(isHTML, prefix + "ism." + DES_VERSION_NAME, String.valueOf(getIsmDESVersion()), true));
+		if (getNtkDESVersion() != null)
+			text.append(buildOutput(isHTML, prefix + "ntk." + DES_VERSION_NAME, String.valueOf(getNtkDESVersion()), true));
 		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		text.append(getNoticeAttributes().getOutput(isHTML, prefix));
 		text.append(getExtensibleAttributes().getOutput(isHTML, prefix));
@@ -723,7 +750,8 @@ public final class Resource extends AbstractBaseComponent {
 		Resource test = (Resource) obj;
 		return (Util.nullEquals(isResourceElement(), test.isResourceElement())
 			&& Util.nullEquals(getCreateDate(), test.getCreateDate())
-			&& Util.nullEquals(getDESVersion(), test.getDESVersion())
+			&& Util.nullEquals(getIsmDESVersion(), test.getIsmDESVersion())
+			&& Util.nullEquals(getNtkDESVersion(), test.getNtkDESVersion())
 			&& getNoticeAttributes().equals(test.getNoticeAttributes())
 			&& getExtensibleAttributes().equals(test.getExtensibleAttributes()));
 	}
@@ -737,8 +765,10 @@ public final class Resource extends AbstractBaseComponent {
 			result = 7 * result + isResourceElement().hashCode();
 		if (getCreateDate() != null)
 			result = 7 * result + getCreateDate().hashCode();
-		if (getDESVersion() != null)
-			result = 7 * result + getDESVersion().hashCode();
+		if (getIsmDESVersion() != null)
+			result = 7 * result + getIsmDESVersion().hashCode();
+		if (getNtkDESVersion() != null)
+			result = 7 * result + getNtkDESVersion().hashCode();
 		result = 7 * result + getNoticeAttributes().hashCode();
 		result = 7 * result + getExtensibleAttributes().hashCode();
 		return (result);
@@ -923,11 +953,18 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the DESVersion attribute. Because this attribute does not exist in DDMS 2.0, the accessor
+	 * Accessor for the ISM DESVersion attribute. Because this attribute does not exist before DDMS 3.0, the accessor
 	 * will return null for v2.0 Resource elements.
 	 */
-	public Integer getDESVersion() {
-		return (_cachedDESVersion);
+	public Integer getIsmDESVersion() {
+		return (_cachedIsmDESVersion);
+	}
+	
+	/**
+	 * Accessor for the NTK DESVersion attribute.
+	 */
+	public Integer getNtkDESVersion() {
+		return (_cachedNtkDESVersion);
 	}
 
 	/**
@@ -1006,7 +1043,8 @@ public final class Resource extends AbstractBaseComponent {
 
 		private String _createDate;
 		private Boolean _resourceElement;
-		private Integer _DESVersion;
+		private Integer _ismDESVersion;
+		private Integer _ntkDESVersion;
 		private NoticeAttributes.Builder _noticeAttributes;
 		private SecurityAttributes.Builder _securityAttributes;
 		private ExtensibleAttributes.Builder _extensibleAttributes;
@@ -1073,7 +1111,8 @@ public final class Resource extends AbstractBaseComponent {
 			if (resource.getCreateDate() != null)
 				setCreateDate(resource.getCreateDate().toXMLFormat());
 			setResourceElement(resource.isResourceElement());
-			setDESVersion(resource.getDESVersion());
+			setIsmDESVersion(resource.getIsmDESVersion());
+			setNtkDESVersion(resource.getNtkDESVersion());
 			setSecurityAttributes(new SecurityAttributes.Builder(resource.getSecurityAttributes()));
 			setNoticeAttributes(new NoticeAttributes.Builder(resource.getNoticeAttributes()));
 			setExtensibleAttributes(new ExtensibleAttributes.Builder(resource.getExtensibleAttributes()));
@@ -1091,7 +1130,7 @@ public final class Resource extends AbstractBaseComponent {
 				if (component != null)
 					topLevelComponents.add(component);
 			}
-			return (new Resource(topLevelComponents, getResourceElement(), getCreateDate(), getDESVersion(),
+			return (new Resource(topLevelComponents, getResourceElement(), getCreateDate(), getIsmDESVersion(), getNtkDESVersion(),
 				getSecurityAttributes().commit(), getNoticeAttributes().commit(), getExtensibleAttributes().commit()));
 		}
 
@@ -1105,7 +1144,8 @@ public final class Resource extends AbstractBaseComponent {
 			return (!hasValueInList
 				&& Util.isEmpty(getCreateDate())
 				&& getResourceElement() == null
-				&& getDESVersion() == null
+				&& getIsmDESVersion() == null
+				&& getNtkDESVersion() == null
 				&& getSecurityAttributes().isEmpty()
 				&& getNoticeAttributes().isEmpty()
 				&& getExtensibleAttributes().isEmpty());
@@ -1406,17 +1446,31 @@ public final class Resource extends AbstractBaseComponent {
 		}
 		
 		/**
-		 * Builder accessor for the DESVersion
+		 * Builder accessor for the NTK DESVersion
 		 */
-		public Integer getDESVersion() {
-			return _DESVersion;
+		public Integer getNtkDESVersion() {
+			return _ntkDESVersion;
 		}
 		
 		/**
-		 * Builder accessor for the DESVersion
+		 * Builder accessor for the NTK DESVersion
 		 */
-		public void setDESVersion(Integer desVersion) {
-			_DESVersion = desVersion;
+		public void setNtkDESVersion(Integer desVersion) {
+			_ntkDESVersion = desVersion;
+		}
+		
+		/**
+		 * Builder accessor for the ISM DESVersion
+		 */
+		public Integer getIsmDESVersion() {
+			return _ismDESVersion;
+		}
+		
+		/**
+		 * Builder accessor for the ISM DESVersion
+		 */
+		public void setIsmDESVersion(Integer desVersion) {
+			_ismDESVersion = desVersion;
 		}
 		
 		/**

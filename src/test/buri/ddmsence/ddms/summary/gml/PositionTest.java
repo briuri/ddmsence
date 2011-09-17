@@ -95,7 +95,7 @@ public class PositionTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML or Text output for this unit test
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
-		StringBuffer text = new StringBuffer();		
+		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "pos", TEST_XS_LIST));
 		text.append(SRSAttributesTest.getFixture().getOutput(isHTML, "pos."));
 		return (text.toString());
@@ -123,7 +123,8 @@ public class PositionTest extends AbstractComponentTestCase {
 			Position component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Position.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("gml.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Position.getName(version), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Position.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildElement("gml", "wrongName", version.getGmlNamespace(), null);
@@ -132,8 +133,7 @@ public class PositionTest extends AbstractComponentTestCase {
 				element = Util.buildElement("gml", Position.getName(version), "http://wrongNs/", null);
 				new Position(element);
 				fail("Allowed invalid data.");
-			}
-			catch (UnsupportedVersionException e) {
+			} catch (UnsupportedVersionException e) {
 				// Good
 			}
 		}
@@ -186,7 +186,8 @@ public class PositionTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 3 coordinates
-			element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, TEST_XS_LIST + " 25.0 35.0");
+			element = Util
+				.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, TEST_XS_LIST + " 25.0 35.0");
 			SRSAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
@@ -242,15 +243,16 @@ public class PositionTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			String gmlPrefix = PropertyReader.getProperty("gml.prefix");
 			String gmlNamespace = version.getGmlNamespace();
-			Position position = new Position(Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, TEST_XS_LIST));
+			Position position = new Position(Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace,
+				TEST_XS_LIST));
 			Position positionEqual = new Position(Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace,
 				TEST_XS_LIST));
-			Position positionEqualWhitespace = new Position(Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace,
-				TEST_XS_LIST + "   "));
-			Position positionUnequal2d = new Position(Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace,
-				"32.1 40.0"));
-			Position positionUnequal3d = new Position(Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace,
-				TEST_XS_LIST + " 40.0"));
+			Position positionEqualWhitespace = new Position(Util.buildElement(gmlPrefix, Position.getName(version),
+				gmlNamespace, TEST_XS_LIST + "   "));
+			Position positionUnequal2d = new Position(Util.buildElement(gmlPrefix, Position.getName(version),
+				gmlNamespace, "32.1 40.0"));
+			Position positionUnequal3d = new Position(Util.buildElement(gmlPrefix, Position.getName(version),
+				gmlNamespace, TEST_XS_LIST + " 40.0"));
 			assertEquals(position, positionEqual);
 			assertEquals(position, positionEqualWhitespace);
 			assertFalse(position.equals(positionUnequal2d));

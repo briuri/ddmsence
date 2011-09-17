@@ -106,7 +106,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 			text.append(buildOutput(isHTML, "email", email));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 

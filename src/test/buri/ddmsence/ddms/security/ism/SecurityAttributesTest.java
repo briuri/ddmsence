@@ -516,8 +516,10 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 				others = new HashMap<String, String>();
 				others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-10");
 				dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
-				assertEquals(buildOutput(true, "dateOfExemptedSource", "2005-10-10"), dataAttributes.getOutput(true, ""));
-				assertEquals(buildOutput(false, "dateOfExemptedSource", "2005-10-10"), dataAttributes.getOutput(false, ""));
+				assertEquals(buildOutput(true, "dateOfExemptedSource", "2005-10-10"),
+					dataAttributes.getOutput(true, ""));
+				assertEquals(buildOutput(false, "dateOfExemptedSource", "2005-10-10"),
+					dataAttributes.getOutput(false, ""));
 			}
 		}
 	}
@@ -578,8 +580,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put(SecurityAttributes.DECLASS_MANUAL_REVIEW_NAME, "true");
 		SecurityAttributes attributes = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
-		assertEquals(buildOutput(true, "classification", "U")
-			+ buildOutput(true, "declassManualReview", "true")
+		assertEquals(buildOutput(true, "classification", "U") + buildOutput(true, "declassManualReview", "true")
 			+ buildOutput(true, "ownerProducer", "USA"), attributes.getOutput(true, ""));
 	}
 

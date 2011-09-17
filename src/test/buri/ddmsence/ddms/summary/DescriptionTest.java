@@ -92,7 +92,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "description.ownerProducer", "USA"));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -152,7 +152,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 		}
 	}
-	
+
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);

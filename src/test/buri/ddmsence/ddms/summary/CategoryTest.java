@@ -109,7 +109,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 		}
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */

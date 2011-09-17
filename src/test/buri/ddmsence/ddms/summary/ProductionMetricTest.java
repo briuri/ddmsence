@@ -69,8 +69,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param expectFailure true if this operation is expected to succeed, false otherwise
-	 * @param subject a method of categorizing the subject of a document in a fashion understandable by DDNI-A (required)
-	 * @param coverage a method of categorizing the coverage of a document in a fashion understandable by DDNI-A (required)
+	 * @param subject a method of categorizing the subject of a document in a fashion understandable by DDNI-A
+	 * (required)
+	 * @param coverage a method of categorizing the coverage of a document in a fashion understandable by DDNI-A
+	 * (required)
 	 * @param label the label (required)
 	 * @return a valid object
 	 */
@@ -96,7 +98,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "productionMetric.ownerProducer", "USA"));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -113,10 +115,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testNameAndNamespace() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(ProductionMetric.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
@@ -132,10 +134,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
 		}
@@ -144,10 +146,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
 		}
@@ -156,15 +158,15 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// Missing subject
 			Element element = Util.buildDDMSElement(ProductionMetric.getName(version), null);
 			element.addAttribute(Util.buildDDMSAttribute("coverage", TEST_COVERAGE));
 			testConstructor(WILL_FAIL, element);
-			
+
 			// Missing coverage
 			element = Util.buildDDMSElement(ProductionMetric.getName(version), null);
 			element.addAttribute(Util.buildDDMSAttribute("subject", TEST_SUBJECT));
@@ -175,10 +177,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// Missing subject
 			testConstructor(WILL_FAIL, null, TEST_COVERAGE);
 
@@ -190,10 +192,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testWarnings() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// No warnings
 			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
@@ -203,10 +205,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			ProductionMetric elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			ProductionMetric dataComponent = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
 			assertEquals(elementComponent, dataComponent);
@@ -217,10 +219,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			ProductionMetric elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			ProductionMetric dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_COVERAGE);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -233,10 +235,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			ProductionMetric elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -246,10 +248,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
@@ -261,10 +263,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(false), component.toText());
 
@@ -276,10 +278,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
@@ -301,10 +303,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 
 			// Equality after Building
@@ -321,7 +323,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			} catch (InvalidDDMSException e) {
 				// Good
 			}
-			builder.setSubject(TEST_SUBJECT);			
+			builder.setSubject(TEST_SUBJECT);
 			builder.commit();
 		}
 	}

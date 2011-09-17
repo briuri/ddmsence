@@ -131,7 +131,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			text.append(SubDivisionCodeTest.getFixture().getOutput(isHTML, "geographicIdentifier."));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 

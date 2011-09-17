@@ -71,7 +71,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 	private Access getAccess() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? AccessTest.getFixture() : null);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
@@ -99,12 +99,12 @@ public class SecurityTest extends AbstractComponentTestCase {
 		StringBuffer text = new StringBuffer();
 		if (version.isAtLeast("3.0"))
 			text.append(buildOutput(isHTML, prefix + "excludeFromRollup", "true"));
-		if (version.isAtLeast("4.0")) 
+		if (version.isAtLeast("4.0"))
 			text.append(AccessTest.getFixture().getOutput(isHTML, "security."));
 		text.append(SecurityAttributesTest.getFixture(false).getOutput(isHTML, prefix));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -134,7 +134,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 		}
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
-			
+
 	public void testNameAndNamespace() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
@@ -155,7 +155,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// No optional fields
 			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(Security.getName(version), null);
@@ -172,7 +172,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
 			testConstructor(WILL_SUCCEED, getAccess());
-			
+
 			// No optional fields
 			testConstructor(WILL_SUCCEED, (Access) null);
 		}
@@ -218,13 +218,14 @@ public class SecurityTest extends AbstractComponentTestCase {
 			// No warnings
 			Security component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
-			
+
 			// Nested warnings
 			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(Security.getName(version), null);
 				Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), "excludeFromRollup",
 					version.getIsmNamespace(), "true");
-				Element accessElement = Util.buildElement(PropertyReader.getProperty("ntk.prefix"), Access.getName(version), version.getNtkNamespace(), null);
+				Element accessElement = Util.buildElement(PropertyReader.getProperty("ntk.prefix"),
+					Access.getName(version), version.getNtkNamespace(), null);
 				SecurityAttributesTest.getFixture(false).addTo(accessElement);
 				element.appendChild(accessElement);
 				SecurityAttributesTest.getFixture(false).addTo(element);
@@ -255,7 +256,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 				Security elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 				Security dataComponent = testConstructor(WILL_SUCCEED, (Access) null);
 				assertFalse(elementComponent.equals(dataComponent));
-			}			
+			}
 		}
 	}
 

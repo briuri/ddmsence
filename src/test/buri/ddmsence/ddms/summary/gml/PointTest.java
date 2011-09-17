@@ -99,13 +99,13 @@ public class PointTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML or Text output for this unit test
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
-		StringBuffer text = new StringBuffer();		
+		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "Point.id", TEST_ID));
 		text.append(SRSAttributesTest.getFixture().getOutput(isHTML, "Point."));
 		text.append(getPosition().getOutput(isHTML, "Point."));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -136,7 +136,8 @@ public class PointTest extends AbstractComponentTestCase {
 			Point component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Point.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("gml.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Point.getName(version), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Point.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildElement("gml", "wrongName", version.getGmlNamespace(), null);
@@ -145,8 +146,7 @@ public class PointTest extends AbstractComponentTestCase {
 				element = Util.buildElement("gml", Point.getName(version), "http://wrongNs/", null);
 				new Point(element);
 				fail("Allowed invalid data.");
-			}
-			catch (UnsupportedVersionException e) {
+			} catch (UnsupportedVersionException e) {
 				// Good
 			}
 		}

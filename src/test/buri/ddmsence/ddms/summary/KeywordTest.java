@@ -102,7 +102,7 @@ public class KeywordTest extends AbstractComponentTestCase {
 		}
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */

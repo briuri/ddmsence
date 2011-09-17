@@ -106,7 +106,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "verticalExtent.maximum", String.valueOf(TEST_MAX)));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Helper method to get the correct-case of the minVerticalExtent eleemnt.
 	 */

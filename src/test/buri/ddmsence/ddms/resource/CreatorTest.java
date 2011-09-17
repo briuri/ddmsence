@@ -108,7 +108,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "creator.ownerProducer", "USA"));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -293,6 +293,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);

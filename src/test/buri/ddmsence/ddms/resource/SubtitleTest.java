@@ -92,7 +92,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "subtitle.ownerProducer", "USA"));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */

@@ -152,6 +152,7 @@ DETAILS:
 	- Person: The order of the constructor parameters has been reordered to match the DDMS 4.0 schema (Issue #114)
 	- RelatedResource: The constructor has additional parameters for new attributes. (Issue #130)
 	- Resource: getSubjectCoverage() became getSubjectCoverages() and now returns a list of SubjectCoverage components (Issue #126)
+	- Resource: getDESVersion() became getIsmDESVersion() to avoid conflict with ntk:DESVersion (Issue #131)
 	- Security: The constructor has additional parametesr for access and noticeList. (Issue #111)
 	- SubjectCoverage: The constructor has additional parameters for productionMetrics and nonStateActors.  (Issue #126)
 	- Type: The constructor has an additional parameter for optional description. (Issue #118)

@@ -105,7 +105,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML or Text output for this unit test
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
-		String prefix = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "relatedResource." : "relatedResources.RelatedResource.";
+		String prefix = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "relatedResource."
+			: "relatedResources.RelatedResource.";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix + "relationship", TEST_RELATIONSHIP));
 		text.append(buildOutput(isHTML, prefix + "direction", TEST_DIRECTION));
@@ -372,8 +373,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 				TEST_QUALIFIER, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getLinks(), TEST_RELATIONSHIP, "inbound",
-				TEST_QUALIFIER, TEST_VALUE);
+			dataComponent = testConstructor(WILL_SUCCEED, getLinks(), TEST_RELATIONSHIP, "inbound", TEST_QUALIFIER,
+				TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, getLinks(), TEST_RELATIONSHIP, TEST_DIRECTION,

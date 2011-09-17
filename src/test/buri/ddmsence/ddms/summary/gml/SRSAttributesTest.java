@@ -121,7 +121,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "uomLabels", Util.getXsList(TEST_UOM_LABELS)));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Helper method to add srs attributes to a XOM element. The element is not validated.
 	 * 
@@ -311,12 +311,12 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.getName(version),
 				version.getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
 				Util.getXsList(TEST_UOM_LABELS));
-			SRSAttributes attributes = new SRSAttributes(element);			
+			SRSAttributes attributes = new SRSAttributes(element);
 			assertEquals(getExpectedOutput(true), attributes.getOutput(true, ""));
 
 			SRSAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_SRS_NAME, TEST_SRS_DIMENSION,
@@ -328,7 +328,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			Element element = Util.buildElement(PropertyReader.getProperty("gml.prefix"), Position.getName(version),
 				version.getGmlNamespace(), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
@@ -341,7 +341,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(false), dataAttributes.getOutput(false, ""));
 		}
 	}
-	
+
 	public void testWrongVersionAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		SRSAttributes attr = getFixture();

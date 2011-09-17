@@ -18,9 +18,7 @@ This schema file is intended to simplify importation of IC-ISM Schema files.  Th
 	<xs:import namespace="urn:us:gov:ic:ism" schemaLocation="../../ISM/IC-ISM.xsd"/>
 	<xs:attributeGroup name="RootSecurityAttributesGroup">
 		<xs:attributeGroup ref="ICISM:ISMRootNodeAttributeGroup"/>
-<!-- Temporarily removed until ready to work on this.		
 		<xs:attributeGroup ref="ntk:NTKRootNodeAttributeGroup"/>
--->
 	</xs:attributeGroup>
 	<xs:attributeGroup name="MetacardSecurityAttributesGroup">
 		<!-- Added for metacardInfo element (EH) -->

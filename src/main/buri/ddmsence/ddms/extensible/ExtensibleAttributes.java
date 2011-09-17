@@ -148,15 +148,18 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		DDMSVersion version = DDMSVersion.getVersionForNamespace(parentNamespace);
 		RESERVED_RESOURCE_NAMES.clear();
 		String ismPrefix = PropertyReader.getProperty("ism.prefix");
+		String ntkPrefix = PropertyReader.getProperty("ntk.prefix");
 		for (String reservedName : Resource.NON_EXTENSIBLE_NAMES) {
 			RESERVED_RESOURCE_NAMES.add(new QName(version.getIsmNamespace(), reservedName, ismPrefix));
 		}
 		for (String reservedName : SecurityAttributes.NON_EXTENSIBLE_NAMES) {
 			RESERVED_RESOURCE_NAMES.add(new QName(version.getIsmNamespace(), reservedName, ismPrefix));
 		}
-		if (version.isAtLeast("4.0"))
-		for (String reservedName : NoticeAttributes.NON_EXTENSIBLE_NAMES) {
-			RESERVED_RESOURCE_NAMES.add(new QName(version.getIsmNamespace(), reservedName, ismPrefix));
+		if (version.isAtLeast("4.0")) {
+			for (String reservedName : NoticeAttributes.NON_EXTENSIBLE_NAMES) {
+				RESERVED_RESOURCE_NAMES.add(new QName(version.getIsmNamespace(), reservedName, ismPrefix));
+			}
+			RESERVED_RESOURCE_NAMES.add(new QName(version.getNtkNamespace(), Resource.DES_VERSION_NAME, ntkPrefix));
 		}
 	}
 	

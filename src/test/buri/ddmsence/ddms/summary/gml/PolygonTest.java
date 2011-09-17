@@ -140,7 +140,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 	 * Returns the expected HTML or Text output for this unit test
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
-		StringBuffer text = new StringBuffer();		
+		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "Polygon.id", TEST_ID));
 		text.append(SRSAttributesTest.getFixture().getOutput(isHTML, "Polygon."));
 		for (Position pos : getPositions()) {
@@ -148,7 +148,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 		}
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -201,7 +201,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(Polygon.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("gml.prefix"), component.getPrefix());
-			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Polygon.getName(version), component.getQualifiedName());
+			assertEquals(PropertyReader.getProperty("gml.prefix") + ":" + Polygon.getName(version),
+				component.getQualifiedName());
 
 			// Wrong name/namespace
 			Element element = Util.buildElement("gml", "wrongName", version.getGmlNamespace(), null);
@@ -210,8 +211,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 				element = Util.buildElement("gml", Polygon.getName(version), "http://wrongNs/", null);
 				new Polygon(element);
 				fail("Allowed invalid data.");
-			}
-			catch (UnsupportedVersionException e) {
+			} catch (UnsupportedVersionException e) {
 				// Good
 			}
 		}
@@ -240,7 +240,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			List<Position> newPositions = new ArrayList<Position>(getPositions());
 			newPositions.add(getPositions().get(1));
-			Element posElement = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, "32.1         40.1");
+			Element posElement = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace,
+				"32.1         40.1");
 			SRSAttributesTest.getFixture().addTo(posElement);
 			Position positionWhitespace = new Position(posElement);
 			newPositions.add(positionWhitespace);

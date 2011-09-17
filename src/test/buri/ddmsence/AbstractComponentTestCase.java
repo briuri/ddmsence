@@ -158,7 +158,7 @@ public abstract class AbstractComponentTestCase extends TestCase {
 		tag.append(isHTML ? "\" />\n" : "\n");
 		return (tag.toString());
 	}
-	
+
 	/**
 	 * Strips tabs and new lines from XML output where appropriate. The unit test samples in the XML files have tabs and
 	 * new lines, but the default implementation of XOM toXML() returns XML on a single line.
@@ -195,14 +195,14 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	protected static String getXmlnsGML() {
 		return ("xmlns:gml=\"" + DDMSVersion.getCurrentVersion().getGmlNamespace() + "\"");
 	}
-	
+
 	/**
 	 * Returns a namespace declaration for NTK
 	 */
 	protected static String getXmlnsNTK() {
 		return ("xmlns:ntk=\"" + DDMSVersion.getCurrentVersion().getNtkNamespace() + "\"");
 	}
-	
+
 	/**
 	 * Accessor for a valid DDMS XOM Element constructed from the root element of an XML file, which can be used in
 	 * testing as a "correct base case".

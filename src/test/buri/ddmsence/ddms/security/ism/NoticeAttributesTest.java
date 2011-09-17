@@ -41,7 +41,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	private static final String TEST_NOTICE_REASON = "noticeReason";
 	private static final String TEST_NOTICE_DATE = "2011-09-15";
 	private static final String TEST_UNREGISTERED_NOTICE_TYPE = "unregisteredNoticeType";
-	
+
 	/**
 	 * Constructor
 	 */
@@ -49,14 +49,14 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 		super(null);
 	}
 
-
 	/**
 	 * Returns a canned fixed value attributes object for testing higher-level components.
 	 * 
 	 * @return NoticeAttributes
 	 */
 	public static NoticeAttributes getFixture() throws InvalidDDMSException {
-		return (new NoticeAttributes(TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE));
+		return (new NoticeAttributes(TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE,
+			TEST_UNREGISTERED_NOTICE_TYPE));
 	}
 
 	/**
@@ -88,7 +88,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	 * @param unregisteredNoticeType a notice type not in the CVE
 	 * @return a valid object
 	 */
-	private NoticeAttributes testConstructor(boolean expectFailure, String noticeType, String noticeReason, String noticeDate, String unregisteredNoticeType) {
+	private NoticeAttributes testConstructor(boolean expectFailure, String noticeType, String noticeReason,
+		String noticeDate, String unregisteredNoticeType) {
 		NoticeAttributes attributes = null;
 		try {
 			attributes = new NoticeAttributes(noticeType, noticeReason, noticeDate, unregisteredNoticeType);
@@ -105,7 +106,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 			getFixture().addTo(element);
@@ -123,9 +124,10 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
+			testConstructor(WILL_SUCCEED, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE,
+				TEST_UNREGISTERED_NOTICE_TYPE);
 
 			// No optional fields
 			testConstructor(WILL_SUCCEED, null, null, null, null);
@@ -140,10 +142,10 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// invalid noticeType
 			// TBD
-						
+
 			// invalid noticeDate
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_DATE_NAME, icNamespace, "2001");
@@ -156,12 +158,14 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 
 			// too long noticeReason
 			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_REASON_NAME, icNamespace, longString.toString());
+			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_REASON_NAME, icNamespace,
+				longString.toString());
 			testConstructor(WILL_FAIL, element);
 
 			// too long unregisteredNoticeType
 			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, NoticeAttributes.UNREGISTERED_NOTICE_TYPE_NAME, icNamespace, longString.toString());
+			Util.addAttribute(element, ismPrefix, NoticeAttributes.UNREGISTERED_NOTICE_TYPE_NAME, icNamespace,
+				longString.toString());
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -172,14 +176,13 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// invalid noticeType
 			// TBD
-			
-			
+
 			// horribly invalid noticeDate
 			testConstructor(WILL_FAIL, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, "baboon", TEST_UNREGISTERED_NOTICE_TYPE);
-			
+
 			// invalid noticeDate
 			testConstructor(WILL_FAIL, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, "2001", TEST_UNREGISTERED_NOTICE_TYPE);
 
@@ -187,9 +190,10 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 			for (int i = 0; i < NoticeAttributes.MAX_LENGTH / 10 + 1; i++) {
 				longString.append("0123456789");
 			}
-			
+
 			// too long noticeReason
-			testConstructor(WILL_FAIL, TEST_NOTICE_TYPE, longString.toString(), TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
+			testConstructor(WILL_FAIL, TEST_NOTICE_TYPE, longString.toString(), TEST_NOTICE_DATE,
+				TEST_UNREGISTERED_NOTICE_TYPE);
 
 			// too long unregisteredNoticeType
 			testConstructor(WILL_FAIL, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, longString.toString());
@@ -202,7 +206,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// No warnings
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 
@@ -219,13 +223,14 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), Security.EXCLUDE_FROM_ROLLUP_NAME,
 				icNamespace, "true");
 			getFixture().addTo(element);
 			NoticeAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
-			NoticeAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
+			NoticeAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_NOTICE_TYPE, TEST_NOTICE_REASON,
+				TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
 
 			assertEquals(elementAttributes, elementAttributes);
 			assertEquals(elementAttributes, dataAttributes);
@@ -239,33 +244,37 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 			getFixture().addTo(element);
 			NoticeAttributes expected = testConstructor(WILL_SUCCEED, element);
 
-			NoticeAttributes test = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
+			NoticeAttributes test = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_NOTICE_REASON,
+				TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
 			assertFalse(expected.equals(test));
-			
-			test = testConstructor(WILL_SUCCEED, TEST_NOTICE_TYPE, DIFFERENT_VALUE, TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
+
+			test = testConstructor(WILL_SUCCEED, TEST_NOTICE_TYPE, DIFFERENT_VALUE, TEST_NOTICE_DATE,
+				TEST_UNREGISTERED_NOTICE_TYPE);
 			assertFalse(expected.equals(test));
-			
-			test = testConstructor(WILL_SUCCEED, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, "2011-08-15", TEST_UNREGISTERED_NOTICE_TYPE);
+
+			test = testConstructor(WILL_SUCCEED, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, "2011-08-15",
+				TEST_UNREGISTERED_NOTICE_TYPE);
 			assertFalse(expected.equals(test));
-			
-			test = testConstructor(WILL_SUCCEED, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, DIFFERENT_VALUE);
+
+			test = testConstructor(WILL_SUCCEED, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE,
+				DIFFERENT_VALUE);
 			assertFalse(expected.equals(test));
 		}
-			
+
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			NoticeAttributes elementAttributes = getFixture();
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementAttributes.equals(wrongComponent));
@@ -275,16 +284,16 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	public void testWrongVersion() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
-		Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), NoticeAttributes.NOTICE_DATE_NAME, version.getIsmNamespace(), "2011-09-15");
+		Util.addAttribute(element, PropertyReader.getProperty("ism.prefix"), NoticeAttributes.NOTICE_DATE_NAME,
+			version.getIsmNamespace(), "2011-09-15");
 		testConstructor(WILL_FAIL, element);
-		
+
 		DDMSVersion.setCurrentVersion("4.0");
 		NoticeAttributes attributes = getFixture();
 		try {
 			attributes.addTo(element);
 			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
+		} catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -295,21 +304,21 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			NoticeAttributes dataAttributes = testConstructor(WILL_SUCCEED, null, null, null, null);
 			assertTrue(dataAttributes.isEmpty());
 			dataAttributes = testConstructor(WILL_SUCCEED, null, null, null, TEST_UNREGISTERED_NOTICE_TYPE);
 			assertFalse(dataAttributes.isEmpty());
-		}		
+		}
 	}
-	
+
 	public void testDateOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			NoticeAttributes dataAttributes = testConstructor(WILL_SUCCEED, null, null, "2005-10-10", null);
 			assertEquals(buildOutput(true, "noticeDate", "2005-10-10"), dataAttributes.getOutput(true, ""));
 			assertEquals(buildOutput(false, "noticeDate", "2005-10-10"), dataAttributes.getOutput(false, ""));
@@ -319,10 +328,10 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			NoticeAttributes component = getFixture();
 
 			// Equality after Building

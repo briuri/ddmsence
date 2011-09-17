@@ -91,7 +91,7 @@ public class TitleTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "title.ownerProducer", "USA"));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */

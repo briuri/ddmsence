@@ -99,7 +99,7 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "countryCode.value", TEST_VALUE));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */

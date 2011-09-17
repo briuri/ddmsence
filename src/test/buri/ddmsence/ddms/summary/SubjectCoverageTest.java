@@ -90,7 +90,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			actors.add(new NonStateActor("Laotian Monks", new Integer(1), SecurityAttributesTest.getFixture(false)));
 		return (actors);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
@@ -151,7 +151,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		element.appendChild(innerElement);
 		return (element);
 	}
-	
+
 	/**
 	 * Returns the expected HTML or Text output for this unit test
 	 */
@@ -163,12 +163,12 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			text.append(keyword.getOutput(isHTML, prefix));
 		for (Category category : getCategories())
 			text.append(category.getOutput(isHTML, prefix));
-		
+
 		if (version.isAtLeast("4.0")) {
 			for (ProductionMetric metric : getMetricFixture())
 				text.append(metric.getOutput(isHTML, prefix));
 			for (NonStateActor actor : getActorFixture())
-				text.append(actor.getOutput(isHTML, prefix));				
+				text.append(actor.getOutput(isHTML, prefix));
 		}
 		if (version.isAtLeast("3.0")) {
 			text.append(SecurityAttributesTest.getFixture(false).getOutput(isHTML, prefix));
@@ -290,8 +290,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			text = "1 or more categories have the same value.";
 			locator = version.isAtLeast("4.0") ? "ddms:subjectCoverage" : "ddms:subjectCoverage/ddms:Subject";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-			
-			
+
 			// Identical productionMetrics
 			if (version.isAtLeast("4.0")) {
 				subjectElement = Util.buildDDMSElement("Subject", null);
@@ -299,7 +298,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 				subjectElement.appendChild(getMetricFixture().get(0).getXOMElementCopy());
 				subjectElement.appendChild(getMetricFixture().get(0).getXOMElementCopy());
 				component = testConstructor(WILL_SUCCEED, wrapInnerElement(subjectElement));
-				assertEquals(1, component.getValidationWarnings().size());		
+				assertEquals(1, component.getValidationWarnings().size());
 				text = "1 or more productionMetrics have the same value.";
 				locator = "ddms:subjectCoverage";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
@@ -322,16 +321,17 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			SubjectCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			SubjectCoverage dataComponent = testConstructor(WILL_SUCCEED, null, getCategories(), getMetricFixture(), getActorFixture());
+			SubjectCoverage dataComponent = testConstructor(WILL_SUCCEED, null, getCategories(), getMetricFixture(),
+				getActorFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), null, getMetricFixture(), getActorFixture());
 			assertFalse(elementComponent.equals(dataComponent));
-			
+
 			if (version.isAtLeast("4.0")) {
 				dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), null, getActorFixture());
 				assertFalse(elementComponent.equals(dataComponent));
-				
+
 				dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(), null);
 				assertFalse(elementComponent.equals(dataComponent));
 			}
@@ -353,7 +353,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(), getActorFixture());
+			component = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(),
+				getActorFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
@@ -364,7 +365,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(), getActorFixture());
+			component = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(),
+				getActorFixture());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
@@ -375,7 +377,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(), getActorFixture());
+			component = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(),
+				getActorFixture());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -406,7 +409,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getKeywords(), null, metrics, null);
 		}
 	}
-	
+
 	public void testActorReuse() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
@@ -415,6 +418,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getKeywords(), null, null, actors);
 		}
 	}
+
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
@@ -489,7 +493,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			builder.getCategories().add(emptyCategoryBuilder);
 			builder.getCategories().add(fullCategoryBuilder);
 			assertEquals(1, builder.commit().getCategories().size());
-			
+
 			if (version.isAtLeast("4.0")) {
 				// Skip empty metrics
 				builder = new SubjectCoverage.Builder();
@@ -501,7 +505,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 				builder.getProductionMetrics().add(emptyProductionMetricBuilder);
 				builder.getProductionMetrics().add(fullProductionMetricBuilder);
 				assertEquals(1, builder.commit().getProductionMetrics().size());
-				
+
 				// Skip empty actors
 				builder = new SubjectCoverage.Builder();
 				NonStateActor.Builder emptyNonStateActorBuilder = new NonStateActor.Builder();

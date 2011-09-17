@@ -77,7 +77,7 @@ public class BaseComponentTest extends TestCase {
 		Util.addAttribute(element, "customPrefix", "value", namespace, "en");
 		new Language(element);
 	}
-	
+
 	public void testNullChecks() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
 			public String getOutput(boolean isHTML, String prefix) {
@@ -89,12 +89,13 @@ public class BaseComponentTest extends TestCase {
 		assertEquals("", component.getPrefix());
 		assertEquals("", component.toXML());
 	}
-	
+
 	public void testAttributeWarnings() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
 			public String getOutput(boolean isHTML, String prefix) {
 				return null;
 			}
+
 			protected String getLocatorSuffix() {
 				return ("locatorSuffix");
 			}
@@ -103,6 +104,6 @@ public class BaseComponentTest extends TestCase {
 		warnings.add(ValidationMessage.newWarning("test", "locator"));
 		component.addWarnings(warnings, true);
 		assertEquals("//locator", component.getValidationWarnings().get(0).getLocator());
-		
+
 	}
 }
