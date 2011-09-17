@@ -39,14 +39,12 @@ This schema file is intended to simplify importation of IC-ISM Schema files.  Th
 		<xs:attribute ref="ICISM:excludeFromRollup" use="required" fixed="true"/>
 		<xs:attributeGroup ref="SecurityAttributesGroup"/>
 	</xs:complexType>
-	<xs:complexType name="NoticeListType" />
-<!-- Temporarily removed until ISM is hooked up.
+	<xs:complexType name="NoticeListType">
 		<xs:sequence>
  			<xs:element ref="ICISM:Notice" minOccurs="1" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="SecurityAttributesGroup"/>
 	</xs:complexType>
--->
 	<!--  IC-Common wrapping -->
 	<xs:attributeGroup name="SimpleLinkAttributesGroup">
 		<xs:attributeGroup ref="common:SimpleLinkAttributesGroup"/>
