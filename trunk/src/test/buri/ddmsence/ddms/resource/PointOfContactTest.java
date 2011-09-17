@@ -111,7 +111,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "pointOfContact.ownerProducer", "USA"));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 

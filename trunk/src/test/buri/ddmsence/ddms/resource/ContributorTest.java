@@ -109,7 +109,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "contributor.ownerProducer", "USA"));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -198,8 +198,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Contributor elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Contributor dataComponent = testConstructor(WILL_SUCCEED, getEntityFixture(),
-				RoleEntityTest.getPOCType());
+			Contributor dataComponent = testConstructor(WILL_SUCCEED, getEntityFixture(), RoleEntityTest.getPOCType());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}

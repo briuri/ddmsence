@@ -51,14 +51,14 @@ public class ProfileTest extends AbstractComponentTestCase {
 	 */
 	public static Profile getFixture() {
 		try {
-			return (new Profile(SystemNameTest.getFixture(), getProfileValueList(), SecurityAttributesTest.getFixture(false)));
+			return (new Profile(SystemNameTest.getFixture(), getProfileValueList(),
+				SecurityAttributesTest.getFixture(false)));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
-	
-	
+
 	/**
 	 * Helper method to create a fixture
 	 */

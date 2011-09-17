@@ -245,7 +245,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(new Attribute(TEST_ATTRIBUTE));
 			elementAttributes = testConstructor(WILL_SUCCEED, attributes);
-			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false,""));
+			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, ""));
 		}
 	}
 

@@ -91,7 +91,7 @@ public class LanguageTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "language.value", TEST_VALUE));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */

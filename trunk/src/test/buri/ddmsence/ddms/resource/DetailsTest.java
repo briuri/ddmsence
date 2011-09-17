@@ -31,14 +31,14 @@ import buri.ddmsence.util.Util;
 /**
  * <p>Tests related to ddms:details elements</p>
  * 
- * <p> Because a ddms:details is a local component, we cannot load a valid document from a unit test data file. We have to
- * build the well-formed Element ourselves. </p>
+ * <p> Because a ddms:details is a local component, we cannot load a valid document from a unit test data file. We have
+ * to build the well-formed Element ourselves. </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public class DetailsTest extends AbstractComponentTestCase {
-		
+
 	private static final String TEST_VALUE = "This is a revision recall.";
 
 	/**
@@ -47,7 +47,7 @@ public class DetailsTest extends AbstractComponentTestCase {
 	public DetailsTest() {
 		super(null);
 	}
-	
+
 	/**
 	 * Returns a canned fixed value details for testing.
 	 * 
@@ -109,7 +109,7 @@ public class DetailsTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "details.ownerProducer", "USA"));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -124,10 +124,10 @@ public class DetailsTest extends AbstractComponentTestCase {
 	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Details component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(Details.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
@@ -143,10 +143,10 @@ public class DetailsTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields
 			testConstructor(WILL_SUCCEED, getFixtureElement());
 
@@ -160,10 +160,10 @@ public class DetailsTest extends AbstractComponentTestCase {
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_VALUE);
 
@@ -175,10 +175,10 @@ public class DetailsTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// Wrong name
 			Element element = Util.buildDDMSElement("unknownName", null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
@@ -189,10 +189,10 @@ public class DetailsTest extends AbstractComponentTestCase {
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// Bad security attributes
 			try {
 				new Details(TEST_VALUE, (SecurityAttributes) null);
@@ -206,10 +206,10 @@ public class DetailsTest extends AbstractComponentTestCase {
 	public void testWarnings() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// No warnings
 			Details component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(0, component.getValidationWarnings().size());
@@ -228,10 +228,10 @@ public class DetailsTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Details elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			Details dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
@@ -242,10 +242,10 @@ public class DetailsTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Details elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			Details dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -255,10 +255,10 @@ public class DetailsTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Details elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -268,10 +268,10 @@ public class DetailsTest extends AbstractComponentTestCase {
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Details component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
@@ -283,10 +283,10 @@ public class DetailsTest extends AbstractComponentTestCase {
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Details component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedOutput(false), component.toText());
 
@@ -298,10 +298,10 @@ public class DetailsTest extends AbstractComponentTestCase {
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Details component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
@@ -319,14 +319,14 @@ public class DetailsTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Details component = testConstructor(WILL_SUCCEED, getFixtureElement());
 
 			// Equality after Building

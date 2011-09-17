@@ -95,7 +95,7 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "nonStateActor.ownerProducer", "USA"));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
@@ -111,10 +111,10 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public void testNameAndNamespace() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(NonStateActor.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
@@ -130,15 +130,15 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			// No optional fields
-			Element element = Util.buildDDMSElement(NonStateActor.getName(version),	null);
+			Element element = Util.buildDDMSElement(NonStateActor.getName(version), null);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -146,13 +146,13 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public void testDataConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ORDER);
-			
+
 			// No optional fields
 			testConstructor(WILL_SUCCEED, null, null);
 		}
@@ -161,10 +161,10 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// There are no invalid constructors right now -- every field is optional.
 		}
 	}
@@ -172,10 +172,10 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public void testDataConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// There are no invalid constructors right now -- every field is optional.
 		}
 	}
@@ -183,14 +183,14 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public void testWarnings() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// No warnings
 			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(0, component.getValidationWarnings().size());
-			
+
 			// Empty value
 			Element element = Util.buildDDMSElement(NonStateActor.getName(version), null);
 			component = testConstructor(WILL_SUCCEED, element);
@@ -204,10 +204,10 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			NonStateActor elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			NonStateActor dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ORDER);
 
@@ -219,10 +219,10 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			NonStateActor elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			NonStateActor dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_ORDER);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -235,10 +235,10 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			NonStateActor elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -248,10 +248,10 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
@@ -263,10 +263,10 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(false), component.toText());
 
@@ -278,10 +278,10 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
@@ -303,15 +303,15 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			
+
 			NonStateActor.Builder builder = new NonStateActor.Builder();
 			assertNull(builder.commit());
-			
+
 			// Equality after Building
 			builder = new NonStateActor.Builder(component);
 			assertEquals(builder.commit(), component);

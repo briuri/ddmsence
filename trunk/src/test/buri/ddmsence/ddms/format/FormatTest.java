@@ -116,7 +116,7 @@ public class FormatTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, prefix + "medium", TEST_MEDIUM));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 

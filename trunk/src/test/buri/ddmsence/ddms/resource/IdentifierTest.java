@@ -91,7 +91,7 @@ public class IdentifierTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "identifier.value", TEST_VALUE));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */

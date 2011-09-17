@@ -54,14 +54,13 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 	 */
 	public static ProfileValue getFixture(String value) {
 		try {
-			return (new ProfileValue(value, TEST_VOCABULARY, null, null, null,
-				SecurityAttributesTest.getFixture(false)));
+			return (new ProfileValue(value, TEST_VOCABULARY, null, null, null, SecurityAttributesTest.getFixture(false)));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 

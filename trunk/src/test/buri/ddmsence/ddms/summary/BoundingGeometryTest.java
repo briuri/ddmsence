@@ -136,7 +136,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		text.append(getPoints().get(0).getOutput(isHTML, "boundingGeometry."));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 

@@ -1,24 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
-
-
-
-
-
-
-
-
-<!--  This is the V4 Public Release of NTK. It is being used to facilitate development until V5 Public Release of NTK is available. -->
-
-
-
-
-
-
-
-
-
 <xsd:schema 
     xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
     xmlns:ntk="urn:us:gov:ic:ntk"
@@ -27,19 +7,13 @@
     attributeFormDefault="qualified" 
     elementFormDefault="qualified"
     targetNamespace="urn:us:gov:ic:ntk">
-    
-    <!-- ************************************************************* -->
-    <!-- IMPORT IC INFORMATION SECURITY MARKING ATTRIBUTES ........... -->
-    <!-- ************************************************************* -->
     <xsd:import namespace="urn:us:gov:ic:ism" schemaLocation="../ISM/IC-ISM.xsd"/>
+
+
+<!--  This is a stripped version of the V4 Public Release of NTK. It is being used to facilitate development 
+		until V5 Public Release of NTK is available. -->
     
     <xsd:element name="Access">
-        <xsd:annotation>
-            <xsd:documentation>A way of describing a formalized Need to Know required for a
-                document. NTK requires being inside a schema that implements ISM therefore some element in the implementing schema MUST have 
-                ism:ISMRootNodeAttributeGroup and ism:ResourceNodeAttributeGroup since both of those are required for a valid ISM implementation. In addition the root node of the 
-                implementing schema must have ntk:NTKRootNodeAttributeGroup specified.</xsd:documentation>
-        </xsd:annotation>
         <xsd:complexType>
             <xsd:all>
                 <xsd:element ref="ntk:AccessIndividualList" minOccurs="0" maxOccurs="1"/>
@@ -51,10 +25,7 @@
     </xsd:element>
     
     <xsd:attributeGroup name="NTKRootNodeAttributeGroup">
-        <xsd:attribute name="DESVersion" use="required" type="xsd:int" fixed="4" form="qualified">
-            <xsd:annotation>
-                <xsd:documentation xml:lang="en"> The version number of the DES </xsd:documentation>
-            </xsd:annotation>
+        <xsd:attribute name="DESVersion" use="required" type="xsd:int" fixed="5" form="qualified">
         </xsd:attribute>
     </xsd:attributeGroup>
     
@@ -67,11 +38,6 @@
     </xsd:element>
     
     <xsd:element name="AccessIndividual">
-        <xsd:annotation>
-            <xsd:documentation> A system name followed by 1 or more Individual values representing
-                the people that a user wanting access to the document must be a member of.
-            </xsd:documentation>
-        </xsd:annotation>
         <xsd:complexType>
             <xsd:sequence minOccurs="1" maxOccurs="1">
                 <xsd:element ref="ntk:AccessSystemName" minOccurs="1" maxOccurs="1"/>
@@ -93,11 +59,6 @@
     </xsd:element>
     
     <xsd:element name="AccessGroup">
-        <xsd:annotation>
-            <xsd:documentation> A system name followed by 1 or more group values representing the
-                groups that a user wanting access to the document must be a member of. Logic for the
-                group list being boolean AND vs OR is System defined. </xsd:documentation>
-        </xsd:annotation>
         <xsd:complexType>
             <xsd:sequence minOccurs="1" maxOccurs="1">
                 <xsd:element ref="ntk:AccessSystemName" minOccurs="1" maxOccurs="1"/>
@@ -118,13 +79,7 @@
         </xsd:complexType>
     </xsd:element>
     
-    <xsd:element name="AccessProfile">
-        <xsd:annotation>
-            <xsd:documentation> A system name followed by 1 or more values representing a profile
-                that a user wanting access to the document must meet. Logic for the profile list
-                being boolean AND vs OR is System defined. </xsd:documentation>
-        </xsd:annotation>
-        
+    <xsd:element name="AccessProfile">      
         <xsd:complexType>
             <xsd:sequence minOccurs="1" maxOccurs="1">
                 <xsd:element ref="ntk:AccessSystemName" minOccurs="1" maxOccurs="1"/>
@@ -139,11 +94,6 @@
             <xsd:complexContent>
                 <xsd:extension base="ntk:StringWithSecurityType">
                     <xsd:attribute name="vocabulary" type="xsd:NMTOKEN" use="required">
-                        <xsd:annotation>
-                            <xsd:documentation xml:lang="en">
-                                A list of words, codes and/or phrases: a lexicon.
-                            </xsd:documentation>
-                        </xsd:annotation>
                     </xsd:attribute>
                 </xsd:extension>
             </xsd:complexContent>
@@ -183,43 +133,12 @@
     <!-- Common Attributes Group -->
     <xsd:attributeGroup name="CommonAttributesGroup">
         <xsd:attribute name="id" type="xsd:ID" use="optional">
-            <xsd:annotation>
-                <xsd:documentation xml:lang="en"> A unique XML identifier used to assign an XML
-                    unique identifier to an element, such as a paragraph, note or table.
-                </xsd:documentation>
-            </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="IDReference" type="xsd:IDREFS" use="optional">
-            <xsd:annotation>
-                <xsd:documentation xml:lang="en"> A cross-reference to a unique identifier used to
-                    point from one element to one or more other elements. The value of the attribute
-                    must be one or more XML unique identifiers that are the value(s) of id
-                    attribute(s) elsewhere in the document. </xsd:documentation>
-            </xsd:annotation>
         </xsd:attribute>
         <xsd:attribute name="qualifier" type="xsd:string" use="optional">
-            <xsd:annotation>
-                <xsd:documentation xml:lang="en"> A user-defined property within an element for
-                    general purpose processing used with block objects to provide supplemental
-                    information over and above that conveyed by the element name. This attribute is
-                    analogous to HTML's "class" attribute. </xsd:documentation>
-            </xsd:annotation>
         </xsd:attribute>
     </xsd:attributeGroup>
-<!-- **************************************************************** -->
-<!--                     Formal Change List                           -->
-<!-- **************************************************************** -->
-<!-- For all changes, provide:
-    version, date, modified by, and purpose information.             -->
-<!-- **************************************************************** -->
-<!-- Version 4, 2011-01-31, modified by:
-     Sun, Booz Allen Hamilton    
-     - (CR 2011-01) Remove unused ddms namespace declaration
--->    
-<!-- **************************************************************** -->
-<!--                 End of NTK.XML Schema                      -->
-<!-- **************************************************************** -->
-<!--                        UNCLASSIFIED                              -->    
 </xsd:schema>
 
 

@@ -57,6 +57,7 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
+
 	/**
 	 * Helper method to create a fixture
 	 */
@@ -182,7 +183,8 @@ public class ProfileListTest extends AbstractComponentTestCase {
 				continue;
 
 			// Missing profile
-			Element element = Util.buildElement(ntkPrefix, ProfileList.getName(version), version.getNtkNamespace(), null);
+			Element element = Util.buildElement(ntkPrefix, ProfileList.getName(version), version.getNtkNamespace(),
+				null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
 

@@ -69,10 +69,9 @@ public class DDMSVersionTest extends TestCase {
 			// Good
 		}
 	}
-			
+
 	public void testGetVersionForGMLNamespace() {
-		assertEquals(DDMSVersion.getVersionFor("2.0"),
-			DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml"));
+		assertEquals(DDMSVersion.getVersionFor("2.0"), DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml"));
 		assertEquals(DDMSVersion.getVersionFor("4.0"),
 			DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml/3.2"));
 		try {
@@ -82,10 +81,9 @@ public class DDMSVersionTest extends TestCase {
 			// Good
 		}
 	}
-	
+
 	public void testGetVersionForNTKNamespace() {
-		assertEquals(DDMSVersion.getVersionFor("4.0"),
-			DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk"));
+		assertEquals(DDMSVersion.getVersionFor("4.0"), DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk"));
 		try {
 			DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk:v2");
 			fail("Allowed unsupported version.");
@@ -93,7 +91,7 @@ public class DDMSVersionTest extends TestCase {
 			// Good
 		}
 	}
-	
+
 	public void testGetSupportedVersions() {
 		assertFalse(DDMSVersion.getSupportedVersions().isEmpty());
 		assertTrue(DDMSVersion.getSupportedVersions().contains("3.0"));
@@ -147,7 +145,7 @@ public class DDMSVersionTest extends TestCase {
 		assertEquals("/schemas/3.0/DDMS/DDMS-GML-Profile.xsd", version.getGmlSchema());
 		assertEquals("urn:us:gov:ic:ism", version.getIsmNamespace());
 		assertEquals("/schemas/3.0/ISM/CVE/", version.getIsmCveLocation());
-		
+
 		version = DDMSVersion.setCurrentVersion("4.0");
 		assertEquals("urn:us:gov:ic:ntk", version.getNtkNamespace());
 		assertEquals("/schemas/4.0/NTK/IC-NTK.xsd", version.getNtkSchema());

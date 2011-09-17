@@ -51,13 +51,14 @@ public class IndividualTest extends AbstractComponentTestCase {
 	 */
 	public static Individual getFixture() {
 		try {
-			return (new Individual(SystemNameTest.getFixture(), getIndividualValueList(), SecurityAttributesTest.getFixture(false)));
+			return (new Individual(SystemNameTest.getFixture(), getIndividualValueList(),
+				SecurityAttributesTest.getFixture(false)));
 		} catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
-	}	
-	
+	}
+
 	/**
 	 * Helper method to create a fixture
 	 */

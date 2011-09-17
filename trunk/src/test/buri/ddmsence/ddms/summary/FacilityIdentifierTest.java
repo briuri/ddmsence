@@ -98,7 +98,7 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "facilityIdentifier.osuffix", TEST_OSUFFIX));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 

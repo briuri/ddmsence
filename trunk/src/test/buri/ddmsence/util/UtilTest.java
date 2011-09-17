@@ -538,7 +538,6 @@ public class UtilTest extends TestCase {
 		Util.requireValidNCName("name");
 	}
 
-
 	public void testRequireValidNMTokenNull() {
 		try {
 			Util.requireValidNMToken(null);
@@ -558,8 +557,8 @@ public class UtilTest extends TestCase {
 
 	public void testRequireValidNMTokenValid() throws InvalidDDMSException {
 		Util.requireValidNMToken("name");
-	}	
-	
+	}
+
 	public void testRequireDDMSValidURIValid() throws InvalidDDMSException {
 		Util.requireDDMSValidURI("test");
 	}

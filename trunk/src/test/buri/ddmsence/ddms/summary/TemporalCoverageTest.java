@@ -107,7 +107,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		element.appendChild(innerElement);
 		return (element);
 	}
-	
+
 	/**
 	 * Returns the expected HTML or Text output for this unit test
 	 */
@@ -124,7 +124,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 			text.append(SecurityAttributesTest.getFixture(false).getOutput(isHTML, prefix));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -179,7 +179,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 			periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
 			periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
 			testConstructor(WILL_SUCCEED, wrapInnerElement(periodElement));
-			
+
 			// No optional fields, empty name element rather than no name element
 			periodElement = Util.buildDDMSElement("TimePeriod", null);
 			periodElement.appendChild(Util.buildDDMSElement("name", ""));
@@ -208,7 +208,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 			Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 			periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
 			testConstructor(WILL_FAIL, wrapInnerElement(periodElement));
-			
+
 			periodElement = Util.buildDDMSElement("TimePeriod", null);
 			periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
 			testConstructor(WILL_FAIL, wrapInnerElement(periodElement));
@@ -261,9 +261,10 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 			periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
 			periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
 			component = testConstructor(WILL_SUCCEED, wrapInnerElement(periodElement));
-			assertEquals(1, component.getValidationWarnings().size());				
+			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A ddms:name element was found with no value. Defaulting to \"Unknown\".";
-			String locator = version.isAtLeast("4.0") ? "ddms:temporalCoverage" : "ddms:temporalCoverage/ddms:TimePeriod";
+			String locator = version.isAtLeast("4.0") ? "ddms:temporalCoverage"
+				: "ddms:temporalCoverage/ddms:TimePeriod";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}

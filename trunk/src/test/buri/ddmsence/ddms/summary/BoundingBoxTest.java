@@ -134,7 +134,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "boundingBox." + getNorthBLName(), String.valueOf(TEST_NORTH)));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 

@@ -122,7 +122,7 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "subOrganization.ownerProducer", "USA"));
 		return (text.toString());
 	}
-	 
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */

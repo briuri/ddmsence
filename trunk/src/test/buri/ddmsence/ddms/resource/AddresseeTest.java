@@ -31,8 +31,8 @@ import buri.ddmsence.util.Util;
 /**
  * <p>Tests related to ddms:addressee elements</p>
  * 
- * <p> Because a ddms:addressee is a local component, we cannot load a valid document from a unit test data file. We have to
- * build the well-formed Element ourselves. </p>
+ * <p> Because a ddms:addressee is a local component, we cannot load a valid document from a unit test data file. We
+ * have to build the well-formed Element ourselves. </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -41,7 +41,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 
 	private static final String TEST_NAME = "Name";
 	private static final String TEST_SURNAME = "Surname";
-	
+
 	/**
 	 * Constructor
 	 */
@@ -63,7 +63,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 		SecurityAttributesTest.getFixture(false).addTo(element);
 		return (element);
 	}
-	
+
 	/**
 	 * Helper method to create a fixture organization to act as an entity
 	 */
@@ -75,7 +75,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Helper method to create a fixture person to act as an entity
 	 */
@@ -87,7 +87,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -136,7 +136,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "addressee.ownerProducer", "USA"));
 		return (text.toString());
 	}
-		
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -156,10 +156,10 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	public void testNameAndNamespace() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Addressee component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			assertEquals(Addressee.getName(version), component.getName());
 			assertEquals(PropertyReader.getProperty("ddms.prefix"), component.getPrefix());
@@ -175,13 +175,13 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields, organization
 			testConstructor(WILL_SUCCEED, getFixtureElement(true));
-			
+
 			// All fields, person
 			testConstructor(WILL_SUCCEED, getFixtureElement(false));
 		}
@@ -190,13 +190,13 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	public void testDataConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// All fields, organization
 			testConstructor(WILL_SUCCEED, getOrgFixture());
-			
+
 			// All fields, person
 			testConstructor(WILL_SUCCEED, getPersonFixture());
 		}
@@ -205,15 +205,15 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// Missing entity
 			Element element = Util.buildDDMSElement(Addressee.getName(version), null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
-			
+
 			// Missing security attributes
 			element = Util.buildDDMSElement(Addressee.getName(version), null);
 			element.appendChild(getOrgFixture().getXOMElementCopy());
@@ -224,22 +224,21 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// Missing entity		
 			testConstructor(WILL_FAIL, (IRoleEntity) null);
-			
+
 			// Wrong entity
 			testConstructor(WILL_FAIL, new Service(Util.getXsListAsList(TEST_NAME), null, null));
-			
+
 			// Missing security attributes
 			try {
 				new Addressee(getOrgFixture(), null);
 				fail("Allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -248,10 +247,10 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	public void testWarnings() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// No warnings
 			Addressee component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			assertEquals(0, component.getValidationWarnings().size());
@@ -261,10 +260,10 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
-			if (!version.isAtLeast("4.0"))				
+
+			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Addressee elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			Addressee dataComponent = testConstructor(WILL_SUCCEED, getOrgFixture());
 			assertEquals(elementComponent, dataComponent);
@@ -275,10 +274,10 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Addressee elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			Addressee dataComponent = testConstructor(WILL_SUCCEED, getPersonFixture());
 			assertFalse(elementComponent.equals(dataComponent));
@@ -288,10 +287,10 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Addressee elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
@@ -301,10 +300,10 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	public void testHTMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Addressee component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
@@ -316,10 +315,10 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	public void testTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Addressee component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			assertEquals(getExpectedOutput(false), component.toText());
 
@@ -331,10 +330,10 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			Addressee component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
@@ -352,14 +351,14 @@ public class AddresseeTest extends AbstractComponentTestCase {
 			// Good
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
-			
+
 			// Equality after Building, organization
 			Addressee component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			Addressee.Builder builder = new Addressee.Builder(component);
@@ -369,7 +368,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, getFixtureElement(false));
 			builder = new Addressee.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Empty case
 			builder = new Addressee.Builder();
 			assertNull(builder.commit());

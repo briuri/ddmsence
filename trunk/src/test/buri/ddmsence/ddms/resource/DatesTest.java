@@ -121,7 +121,7 @@ public class DatesTest extends AbstractComponentTestCase {
 			text.append(buildOutput(isHTML, "dates.receivedOn", TEST_RECEIVED));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 */

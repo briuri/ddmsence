@@ -123,7 +123,7 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "postalAddress.countryCode.value", "USA"));
 		return (text.toString());
 	}
-	
+
 	/**
 	 * Returns the expected XML output for this unit test
 	 * 
@@ -231,8 +231,7 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			// Too many country codes
 			element = Util.buildDDMSElement(postalName, null);
 			for (int i = 0; i < 2; i++)
-				element.appendChild(new CountryCode("ISO-123" + i, "US" + i)
-					.getXOMElementCopy());
+				element.appendChild(new CountryCode("ISO-123" + i, "US" + i).getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
 	}

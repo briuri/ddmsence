@@ -97,8 +97,8 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 				assertEquals(1, messages.size());
 
 				String text = "The second coordinate in a gml:pos element must be 40.2 degrees.";
-				String extent = version.isAtLeast("4.0") ? ""
-					: "/*:GeospatialExtent[namespace-uri()='" + ddmsNamespace + "'][1]";
+				String extent = version.isAtLeast("4.0") ? "" : "/*:GeospatialExtent[namespace-uri()='" + ddmsNamespace
+					+ "'][1]";
 				String resourceName = Resource.getName(version);
 				String locator = "/*:" + resourceName + "[namespace-uri()='" + ddmsNamespace + "'][1]"
 					+ "/*:geospatialCoverage[namespace-uri()='" + ddmsNamespace + "'][1]" + extent
