@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
-
-
-<!--  This is the V5 Public Release of ISM. Development on many ISM notice concepts cannot proceed without V7. -->
-
-
-
-
-
-
 <xsd:schema 
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
 	xmlns="urn:us:gov:ic:ism" 
@@ -17,24 +6,41 @@
 	targetNamespace="urn:us:gov:ic:ism" 
 	elementFormDefault="qualified" 
 	xml:lang="en">
-	<xsd:annotation>
-		<xsd:documentation>
-      W3C XML Schema for the Intelligence Community Metadata Standard for Information Security Marking (IC-ISM), which is part of the XML DATA ENCODING SPECIFICATION FOR INFORMATION SECURITY MARKING METADATA.
-          </xsd:documentation>
-	</xsd:annotation>
-	
-	<!-- **************************************************************** -->
-	<!--        IMPORT CVE-Generated schema types                         -->
-	<!-- **************************************************************** -->
-	<xsd:import namespace="urn:us:gov:ic:ism-cvenum" 
-	schemaLocation="./CVEGeneratedTypes.xsd"/>
 
-	<!-- ************************************************************* -->
-	<!-- ATTRIBUTE GROUP DEFINITIONS ................................. -->
-	<!-- ************************************************************* -->
-	<!-- ************************************************************* -->
-	<!-- SecurityAttributesGroup ..................................... -->
-	<!-- ************************************************************* -->
+	<xsd:import namespace="urn:us:gov:ic:ism-cvenum" schemaLocation="./CVEGeneratedTypes.xsd"/>
+
+
+<!--  This is the V5 Public Release of ISM. Development on many ISM notice concepts cannot proceed without V7. -->
+
+	<!--  Stubs created to aid development -->
+	<xsd:element name="Notice">
+		<xsd:complexType>
+			<xsd:sequence minOccurs="1" maxOccurs="1">
+				<xsd:element ref="NoticeText" minOccurs="1" maxOccurs="unbounded"/>
+			</xsd:sequence>
+			<xsd:attributeGroup ref="NoticeAttributesOptionGroup"/>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="NoticeText">
+		<xsd:complexType>
+			<xsd:simpleContent>
+				<xsd:extension base="xsd:string">
+					<xsd:attribute ref="pocType" />
+					<xsd:attributeGroup ref="SecurityAttributesGroup"/>
+				</xsd:extension>
+			</xsd:simpleContent>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:attribute name="pocType" />
+
+	
+	
+	
+	
+	
+	
+	
+
 	<xsd:attributeGroup name="SecurityAttributesGroup">
 		<xsd:annotation>
 			<xsd:documentation xml:lang="en">
@@ -801,97 +807,4 @@
 			<xsd:maxLength value="256"/>
 		</xsd:restriction>
 	</xsd:simpleType>
-	<!-- **************************************************************
-                            CHANGE HISTORY
-     **************************************************************
-*
-* VERSION: 1.0
-* DATE:    2002-07-05
-* BY:      IC MWG
-* PURPOSE: Released as a registered, production XML entity set.
-*
-* VERSION: 2.0
-* DATE:    2004-04-30
-* BY:      IC MWG
-* PURPOSE: Updated to support changes to the CAPCO Register and
-           Implementation Manual.
-*
-*     - Added "ownerProducer" as a required attribute for entity
-*       "SecurityAttributes" and as an optional attribute for entity
-*       "SecurityAttributesOption."  Purpose is to provide a single method
-*       for specification of US, non-US, and joint classifications.
-*
-*     - Changed the enumerated list that is the declared value of attribute
-*       "classification" in order to accommodate non-US classifications.
-*
-*     - Added optional attribute "SARIdentifier" as a separate container for
-*       DoD/DoE special-access-required nicknames, codewords, or trigraph/
-*       digraph to support elevation of SAR to the same level as SCI controls.
-*
-*     - Added optional attributes "classifiedBy" and "classificationReason"
-*       to support generation of EO 12958 classification/declassification
-*       blocks.
-*
-*     - Changed the declared value of "derivedFrom" to CDATA to allow the titles
-*       and dates of source documents or classification guides to be specified.
-*
-*     - Replaced the single attribute "declassification" with distinct attri-
-*       butes for date-determined and event-determined declassification and
-*       for the 25X declassification exceptions.
-*
-*     - Added attributes "typeOfExemptedSource" and "dateOfExemptedSource" for
-*       use in specifying that one or more sources was marked OADR, X1 through
-*       X8, or X-Foreign Relations.
-*
-*     - Added attribute "declassManualReview" for use in forcing "MR" to
-*       appear in header and footer banners (regardless of whether any
-*       caveats in the portions would necessitate manual review).
-*
-*
-* VERSION: 2.1
-* DATE:    2008-08-19
-* BY:      ODNI OCIO ICIS
-* PURPOSE: Updated to support IC Standard for Information Security Marking Metadata (2007-500-2)
-*
-*     - Added "DerivativelyClassifiedBy" to allow capturing information about
-*       a derivative classifier separate from an original classifer
-*
-* DATE:    2009-12-01
-* BY:      ODNI OCIO ICIS
-*
-*     - (CR 2009-09) Added "compilationReason" to allow capturing information about
-*       the reason that the document or portion bears a more restrictive classification
-*       than the data would appear to support.
-*     - (CR 2009-07) Point to CVE files for enumeration values.
-*     - (CR 2009-22) Change declassException and typeOfExemptedSource to NMTOKEN.
-*     - (CR 2009-16) Add ability to specify DES Version.
-*     - (CR 2009-05) Add createDate, excludeFromRollup, resourceElement to allow ISM rules
-*       to be independant of implementing schema.
-*     - (CR 2009-05) Add ISMRootNodeAttributeGroup and ResourceNodeAttributeGroup.
-*
-* DATE:    2010-01-22
-* BY:      ODNI OCIO ICIS
-*
-*     - (CR 2010-02) Add notice attribute, NoticeAttributesGroup and NoticeAttributesOptionGroup
-* Final review before signature 2010-06-06
-*     - Remove comment about LES not being in the Register since it is now in the register.
-*     - Correct NoticeAttributesOptionGroup to have SecurityAttributesOptionGroup so that NoteInline in PUBS works correctly. 
-*
-* Date     2010-06-01
-* By:      ODNI OCIO ICIS
-*       - Add DoD Distro statements
-*       - Add NATO refactor
-*       - Add Use of Generated CVE schema types.
-*
-* Date     2010-09-25
-* By:      ODNI OCIO ICEA
-*       - Add atomicEnergyMarkings
-*       - Remove typeOfExemptedSource and dateOfExemptedSource
-*       - Add ResourceNodeAttributeOptionGroup
-*       - Add ISMRootNodeAttributeOptionGroup
-
-******************************** END CHANGE HISTORY ************************ -->
-	<!-- *********************************************************************** -->
-	<!--                                                                         -->
-	<!-- *********************************************************************** -->
 </xsd:schema>

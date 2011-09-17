@@ -25,6 +25,8 @@ import nu.xom.Element;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -72,8 +74,24 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	 */
 	protected AbstractSimpleString(String name, String value, SecurityAttributes attributes, boolean validateNow)
 		throws InvalidDDMSException {
+		this(PropertyReader.getProperty("ddms.prefix"), DDMSVersion.getCurrentVersion().getNamespace(), name, value,
+			attributes, validateNow);
+	}
+	
+	/**
+	 * Constructor which builds from raw data.
+	 * 
+	 * @param prefix the XML prefix
+	 * @param namespace the namespace of the element
+	 * @param name the name of the element without a prefix
+	 * @param value the value of the element's child text
+	 * @param attributes the security attributes
+	 * @param validateNow true if the component should be validated here
+	 */
+	protected AbstractSimpleString(String prefix, String namespace, String name, String value,
+		SecurityAttributes attributes, boolean validateNow) throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(name, value);
+			Element element = Util.buildElement(prefix, name, namespace, value);
 			_cachedSecurityAttributes = attributes;
 			if (attributes != null)
 				attributes.addTo(element);

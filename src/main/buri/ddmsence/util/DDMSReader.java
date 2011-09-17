@@ -29,7 +29,9 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import nu.xom.Builder;
 import nu.xom.Document;
@@ -74,20 +76,34 @@ public class DDMSReader {
 		StringBuffer schemas = new StringBuffer();
 		List<String> versions = new ArrayList<String>(DDMSVersion.getSupportedVersions());
 		Collections.reverse(versions);
+		Set<String> processedNamespaces = new HashSet<String>();
 		for (String versionString : versions) {
 			DDMSVersion version = DDMSVersion.getVersionFor(versionString);
-			String xsd = getLocalSchemaLocation(version.getSchema());
-			schemas.append(version.getNamespace()).append(" ").append(xsd).append(" ");
-			xsd = getLocalSchemaLocation(version.getGmlSchema());
-			schemas.append(version.getGmlNamespace()).append(" ").append(xsd).append(" ");
-			if (!Util.isEmpty(version.getNtkSchema())) {
-				xsd = getLocalSchemaLocation(version.getNtkSchema());
-				schemas.append(version.getNtkNamespace()).append(" ").append(xsd).append(" ");
-			}
+			loadSchema(version.getNamespace(), version.getSchema(), schemas, processedNamespaces);
+			loadSchema(version.getGmlNamespace(), version.getGmlSchema(), schemas, processedNamespaces);
+			loadSchema(version.getNtkNamespace(), version.getNtkSchema(), schemas, processedNamespaces);
 		}
 		getReader().setFeature(PROP_XERCES_VALIDATION, true);
 		getReader().setFeature(PROP_XERCES_SCHEMA_VALIDATION, true);
 		getReader().setProperty(PROP_XERCES_EXTERNAL_LOCATION, schemas.toString().trim());
+	}
+	
+	/**
+	 * Helper method to load schemas into the property for the XML Reader
+	 * 
+	 * @param namespace the XML namespace
+	 * @param schemaLocation the schema location
+	 * @param schemas the buffer to add the schema location to
+	 * @param processedNamespaces namespaces which have already been loaded
+	 */
+	private void loadSchema(String namespace, String schemaLocation, StringBuffer schemas, Set processedNamespaces) {
+		if (!processedNamespaces.contains(namespace)) {
+			if (!Util.isEmpty(schemaLocation)) {
+				String xsd = getLocalSchemaLocation(schemaLocation);
+				schemas.append(namespace).append(" ").append(xsd).append(" ");
+			}
+			processedNamespaces.add(namespace);
+		}
 	}
 	
 	/**
