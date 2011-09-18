@@ -103,7 +103,7 @@ public final class Link extends AbstractBaseComponent {
 		throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Link.getName(DDMSVersion.getCurrentVersion()), null);
-			_cachedXLinkAttributes = (xlinkAttributes == null ? new XLinkAttributes(null, null, null, null, null)
+			_cachedXLinkAttributes = (xlinkAttributes == null ? new XLinkAttributes(null, null, null, null)
 				: xlinkAttributes);
 			_cachedXLinkAttributes.addTo(element);
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)

@@ -58,7 +58,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	 */
 	private static List<Link> getLinks() throws InvalidDDMSException {
 		List<Link> links = new ArrayList<Link>();
-		links.add(new Link(new XLinkAttributes("locator", TEST_VALUE, "role", null, null)));
+		links.add(new Link(new XLinkAttributes(TEST_VALUE, "role", null, null)));
 		return (links);
 	}
 
@@ -285,7 +285,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
-			Link link = new Link(XLinkAttributesTest.getFixture(), SecurityAttributesTest.getFixture(false));
+			Link link = new Link(XLinkAttributesTest.getLocatorFixture(), SecurityAttributesTest.getFixture(false));
 			innerElement.appendChild(link.getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
@@ -318,7 +318,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 			// Security Attributes
 			try {
-				Link link = new Link(XLinkAttributesTest.getFixture(),
+				Link link = new Link(XLinkAttributesTest.getLocatorFixture(),
 					SecurityAttributesTest.getFixture(false));
 				List<Link> links = new ArrayList<Link>();
 				links.add(link);
@@ -388,8 +388,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			assertFalse(elementComponent.equals(dataComponent));
 
 			List<Link> differentLinks = new ArrayList<Link>();
-			differentLinks.add(new Link(XLinkAttributesTest.getFixture()));
-			differentLinks.add(new Link(XLinkAttributesTest.getFixture()));
+			differentLinks.add(new Link(XLinkAttributesTest.getLocatorFixture()));
+			differentLinks.add(new Link(XLinkAttributesTest.getLocatorFixture()));
 			dataComponent = testConstructor(WILL_SUCCEED, differentLinks, TEST_RELATIONSHIP, TEST_DIRECTION,
 				TEST_QUALIFIER, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
