@@ -53,6 +53,7 @@ import nu.xom.xslt.XSLException;
 import nu.xom.xslt.XSLTransform;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.security.ism.Notice;
 import buri.ddmsence.ddms.security.ntk.Access;
 import buri.ddmsence.ddms.summary.gml.Point;
 import buri.ddmsence.ddms.summary.gml.Polygon;
@@ -368,13 +369,16 @@ public class Util {
 	public static void requireCompatibleVersion(IDDMSComponent parent, IDDMSComponent child) throws InvalidDDMSException {
 		Util.requireValue("parent", parent);
 		Util.requireValue("child", child);
-		// Cover acceptable case where parent (BoundingGeometry) has different XML namespace than child.
+		// Cover acceptable case where parent (e.g. BoundingGeometry) has different XML namespace than child.
 		String parentNamespace = parent.getNamespace();
 		if (child instanceof Polygon || child instanceof Point) {
 			parentNamespace = DDMSVersion.getVersionForNamespace(parentNamespace).getGmlNamespace();
-		}		
+		}
 		if (child instanceof Access) {
 			parentNamespace = DDMSVersion.getVersionForNamespace(parentNamespace).getNtkNamespace();
+		}
+		if (child instanceof Notice) {
+			parentNamespace = DDMSVersion.getVersionForNamespace(parentNamespace).getIsmNamespace();
 		}
 		String childNamespace = child.getNamespace();
 		if (!parentNamespace.equals(childNamespace)) {
