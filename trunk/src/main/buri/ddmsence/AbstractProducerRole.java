@@ -46,12 +46,8 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:POCType</u>: Indicates that the element specifies a point-of-contact (POC) and the methods with which
- * to contact them (optional, starting in DDMS 4.0).
- * </td></tr></table>
- * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * This class is decorated with ISM {@link SecurityAttributes}. The classification and
- * ownerProducer attributes are optional.
+ * to contact them (optional, starting in DDMS 4.0).<br />
+ * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are optional.
  * </td></tr></table>
  * 
  * @author Brian Uri!

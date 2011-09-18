@@ -25,14 +25,11 @@ import java.util.List;
 
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
-import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
-import buri.ddmsence.ddms.summary.gml.SRSAttributes;
 import buri.ddmsence.util.DDMSVersion;
 
 /**
- * Top-level base class for attribute groups, specifically {@link SRSAttributes}, {@link SecurityAttributes}, and
- * {@link ExtensibleAttributes}.
+ * Top-level base class for attribute groups, such as {@link SecurityAttributes}.
  * 
  * <p>Extensions of this class are generally expected to be immutable. It is assumed that after the constructor on 
  * a component has been called, the component will be well-formed and valid.</p>

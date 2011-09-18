@@ -40,8 +40,7 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:order</u>: specifies a user-defined order of an element within the given document (optional)<br />
- * This class is decorated with ISM {@link SecurityAttributes}. The classification and
- * ownerProducer attributes are optional.
+ * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are optional.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
