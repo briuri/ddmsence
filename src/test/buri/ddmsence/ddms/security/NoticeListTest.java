@@ -17,7 +17,7 @@
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
  */
-package buri.ddmsence.ddms.security.ism;
+package buri.ddmsence.ddms.security;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,27 +26,31 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.ddms.security.ism.Notice;
+import buri.ddmsence.ddms.security.ism.NoticeTest;
+import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ISM:Notice elements</p>
+ * <p>Tests related to ddms:noticeList elements</p>
  * 
- * <p> The valid instance of ISM:Notice is generated, rather than relying on the ISM schemas to validate an XML file.</p>
+ * <p> Because a ddms:noticeList is a local component, we cannot load a valid document from a unit test data file.
+ * We have to build the well-formed Element ourselves. </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class NoticeTest extends AbstractComponentTestCase {
+public class NoticeListTest extends AbstractComponentTestCase {
 
 	/**
 	 * Constructor
 	 */
-	public NoticeTest() {
+	public NoticeListTest() {
 		super(null);
 	}
-	
+			
 	/**
 	 * Returns a canned fixed value for testing.
 	 * 
@@ -54,23 +58,20 @@ public class NoticeTest extends AbstractComponentTestCase {
 	 */
 	public static Element getFixtureElement() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String ismPrefix = PropertyReader.getPrefix("ism");
-		String ismNs = version.getIsmNamespace();
 		
-		Element element = Util.buildElement(ismPrefix, Notice.getName(version), ismNs, null);
-		element.addNamespaceDeclaration(ismPrefix, version.getIsmNamespace());
-		NoticeAttributesTest.getFixture().addTo(element);
+		Element element = Util.buildDDMSElement(NoticeList.getName(version), null);	
+		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 		SecurityAttributesTest.getFixture(false).addTo(element);
-		element.appendChild(NoticeTextTest.getFixtureElement());
+		element.appendChild(NoticeTest.getFixtureElement());
 		return (element);
 	}
-
+	
 	/**
-	 * Helper method to create a list of noticeTexts
+	 * Helper method to create a list of notices
 	 */
-	private List<NoticeText> getNoticeTextList() throws InvalidDDMSException {
-		List<NoticeText> list = new ArrayList<NoticeText>();
-		list.add(new NoticeText(NoticeTextTest.getFixtureElement()));
+	private List<Notice> getNoticeList() throws InvalidDDMSException {
+		List<Notice> list = new ArrayList<Notice>();
+		list.add(new Notice(NoticeTest.getFixtureElement()));
 		return (list);		
 	}
 	
@@ -82,10 +83,10 @@ public class NoticeTest extends AbstractComponentTestCase {
 	 * 
 	 * @return a valid object
 	 */
-	private Notice testConstructor(boolean expectFailure, Element element) {
-		Notice component = null;
+	private NoticeList testConstructor(boolean expectFailure, Element element) {
+		NoticeList component = null;
 		try {
-			component = new Notice(element);
+			component = new NoticeList(element);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -97,13 +98,13 @@ public class NoticeTest extends AbstractComponentTestCase {
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param expectFailure true if this operation is expected to succeed, false otherwise
-	 * @param noticeTexts the notice texts (at least 1 required)
+	 * @param notices the notices (at least 1 required)
 	 * @return a valid object
 	 */
-	private Notice testConstructor(boolean expectFailure, List<NoticeText> noticeTexts) {
-		Notice component = null;
+	private NoticeList testConstructor(boolean expectFailure, List<Notice> notices) {
+		NoticeList component = null;
 		try {
-			component = new Notice(noticeTexts, SecurityAttributesTest.getFixture(false), NoticeAttributesTest.getFixture());
+			component = new NoticeList(notices, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -116,28 +117,33 @@ public class NoticeTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "notice.noticeText", "noticeText"));
-		text.append(buildOutput(isHTML, "notice.noticeText.pocType", "DoD-Dist-B"));
-		text.append(buildOutput(isHTML, "notice.noticeText.classification", "U"));
-		text.append(buildOutput(isHTML, "notice.noticeText.ownerProducer", "USA"));
-		text.append(buildOutput(isHTML, "notice.classification", "U"));
-		text.append(buildOutput(isHTML, "notice.ownerProducer", "USA"));
-		text.append(buildOutput(isHTML, "notice.noticeType", "noticeType"));
-		text.append(buildOutput(isHTML, "notice.noticeReason", "noticeReason"));
-		text.append(buildOutput(isHTML, "notice.noticeDate", "2011-09-15"));
-		text.append(buildOutput(isHTML, "notice.unregisteredNoticeType", "unregisteredNoticeType"));
+		text.append(buildOutput(isHTML, "noticeList.notice.noticeText", "noticeText"));
+		text.append(buildOutput(isHTML, "noticeList.notice.noticeText.pocType", "DoD-Dist-B"));
+		text.append(buildOutput(isHTML, "noticeList.notice.noticeText.classification", "U"));
+		text.append(buildOutput(isHTML, "noticeList.notice.noticeText.ownerProducer", "USA"));
+		text.append(buildOutput(isHTML, "noticeList.notice.classification", "U"));
+		text.append(buildOutput(isHTML, "noticeList.notice.ownerProducer", "USA"));
+		text.append(buildOutput(isHTML, "noticeList.notice.noticeType", "noticeType"));
+		text.append(buildOutput(isHTML, "noticeList.notice.noticeReason", "noticeReason"));
+		text.append(buildOutput(isHTML, "noticeList.notice.noticeDate", "2011-09-15"));
+		text.append(buildOutput(isHTML, "noticeList.notice.unregisteredNoticeType", "unregisteredNoticeType"));
+		text.append(buildOutput(isHTML, "noticeList.classification", "U"));
+		text.append(buildOutput(isHTML, "noticeList.ownerProducer", "USA"));
 		return (text.toString());
 	}
-
+	
 	/**
 	 * Returns the expected XML output for this unit test
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ISM:Notice ").append(getXmlnsISM()).append(" ");
-		xml.append("ISM:noticeType=\"noticeType\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
+		xml.append("<ddms:noticeList ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
+		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ISM:Notice ISM:noticeType=\"noticeType\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
 		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText></ISM:Notice>");
+		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>");
+		xml.append("</ISM:Notice>");
+		xml.append("</ddms:noticeList>");
 		return (xml.toString());
 	}
 	
@@ -148,10 +154,10 @@ public class NoticeTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			Notice component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(Notice.getName(version), component.getName());
-			assertEquals(PropertyReader.getPrefix("ism"), component.getPrefix());
-			assertEquals(PropertyReader.getPrefix("ism") + ":" + Notice.getName(version),
+			NoticeList component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			assertEquals(NoticeList.getName(version), component.getName());
+			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + NoticeList.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -180,15 +186,7 @@ public class NoticeTest extends AbstractComponentTestCase {
 				continue;
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getNoticeTextList());
-			
-			// No attributes
-			try {
-				new Notice(getNoticeTextList(), null, null);
-			}
-			catch (InvalidDDMSException e) {
-				fail("Prevented valid data.");
-			}
+			testConstructor(WILL_SUCCEED, getNoticeList());			
 		}
 	}
 
@@ -199,10 +197,10 @@ public class NoticeTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			// No NoticeTexts
+			// No Notices
 			Element element = new Element(getFixtureElement());
 			element.removeChildren();
-			testConstructor(WILL_FAIL, element);
+			testConstructor(WILL_FAIL, element);			
 		}
 	}
 
@@ -213,8 +211,17 @@ public class NoticeTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			// No NoticeTexts
+			// No Notices
 			testConstructor(WILL_FAIL, (List) null);
+			
+			// No attributes
+			try {
+				new NoticeList(getNoticeList(), null);
+				fail("Allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				// Good
+			}
 		}
 	}
 
@@ -226,7 +233,7 @@ public class NoticeTest extends AbstractComponentTestCase {
 				continue;
 
 			// No warnings
-			Notice component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeList component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -238,8 +245,8 @@ public class NoticeTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			Notice elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			Notice dataComponent = testConstructor(WILL_SUCCEED, getNoticeTextList());
+			NoticeList elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeList dataComponent = testConstructor(WILL_SUCCEED, getNoticeList());
 
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -253,10 +260,10 @@ public class NoticeTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			List<NoticeText> list = getNoticeTextList();
-			list.add(new NoticeText(NoticeTextTest.getFixtureElement()));
-			Notice elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			Notice dataComponent = testConstructor(WILL_SUCCEED, list);
+			List<Notice> list = getNoticeList();
+			list.add(new Notice(NoticeTest.getFixtureElement()));
+			NoticeList elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeList dataComponent = testConstructor(WILL_SUCCEED, list);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -268,7 +275,7 @@ public class NoticeTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			Notice elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeList elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -281,10 +288,10 @@ public class NoticeTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			Notice component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeList component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, getNoticeTextList());
+			component = testConstructor(WILL_SUCCEED, getNoticeList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
@@ -296,10 +303,10 @@ public class NoticeTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			Notice component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeList component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getNoticeTextList());
+			component = testConstructor(WILL_SUCCEED, getNoticeList());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
@@ -311,10 +318,10 @@ public class NoticeTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			Notice component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeList component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getNoticeTextList());
+			component = testConstructor(WILL_SUCCEED, getNoticeList());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -322,7 +329,7 @@ public class NoticeTest extends AbstractComponentTestCase {
 	public void testWrongVersion() throws InvalidDDMSException {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
-			new Notice(getNoticeTextList(),SecurityAttributesTest.getFixture(false), null);
+			new NoticeList(getNoticeList(),SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
 		} catch (InvalidDDMSException e) {
 			// Good
@@ -336,15 +343,15 @@ public class NoticeTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			Notice component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeList component = testConstructor(WILL_SUCCEED, getFixtureElement());
 
-			Notice.Builder builder = new Notice.Builder();
+			NoticeList.Builder builder = new NoticeList.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
-			builder.getNoticeTexts().get(1).setValue("TEST");
+			builder.getNotices().get(1).getNoticeTexts().get(1).setValue("TEST");
 			assertFalse(builder.isEmpty());
 			// Equality after Building
-			builder = new Notice.Builder(component);
+			builder = new NoticeList.Builder(component);
 			assertEquals(builder.commit(), component);
 		}
 	}
@@ -352,8 +359,8 @@ public class NoticeTest extends AbstractComponentTestCase {
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
-			Notice.Builder builder = new Notice.Builder();
-			assertNotNull(builder.getNoticeTexts().get(1));
+			NoticeList.Builder builder = new NoticeList.Builder();
+			assertNotNull(builder.getNotices().get(1));
 		}
 	}
 }
