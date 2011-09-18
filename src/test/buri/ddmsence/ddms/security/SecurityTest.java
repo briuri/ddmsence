@@ -64,7 +64,14 @@ public class SecurityTest extends AbstractComponentTestCase {
 		}
 		return (component);
 	}
-
+	
+	/**
+	 * Generates a NoticeList for testing.
+	 */
+	private NoticeList getNoticeList() throws InvalidDDMSException {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new NoticeList(NoticeListTest.getFixtureElement()) : null);
+	}
+	
 	/**
 	 * Generates an Access for testing.
 	 */
@@ -76,13 +83,14 @@ public class SecurityTest extends AbstractComponentTestCase {
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param expectFailure true if this operation is expected to succeed, false otherwise
-	 * @param access NTK access information
+	 * @param noticeList the notice list (optional)
+	 * @param access NTK access information (optional)
 	 * @return a valid object
 	 */
-	private Security testConstructor(boolean expectFailure, Access access) {
+	private Security testConstructor(boolean expectFailure, NoticeList noticeList, Access access) {
 		Security component = null;
 		try {
-			component = new Security(access, SecurityAttributesTest.getFixture(false));
+			component = new Security(noticeList, access, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -99,8 +107,21 @@ public class SecurityTest extends AbstractComponentTestCase {
 		StringBuffer text = new StringBuffer();
 		if (version.isAtLeast("3.0"))
 			text.append(buildOutput(isHTML, prefix + "excludeFromRollup", "true"));
-		if (version.isAtLeast("4.0"))
+		if (version.isAtLeast("4.0")) {
+			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText", "noticeText"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText.pocType", "DoD-Dist-B"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText.classification", "U"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText.ownerProducer", "USA"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.notice.classification", "U"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.notice.ownerProducer", "USA"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeType", "noticeType"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeReason", "noticeReason"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeDate", "2011-09-15"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.notice.unregisteredNoticeType", "unregisteredNoticeType"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.classification", "U"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.ownerProducer", "USA"));
 			text.append(AccessTest.getFixture().getOutput(isHTML, "security."));
+		}
 		text.append(SecurityAttributesTest.getFixture(false).getOutput(isHTML, prefix));
 		return (text.toString());
 	}
@@ -121,6 +142,11 @@ public class SecurityTest extends AbstractComponentTestCase {
 			xml.append(" />");
 		else {
 			xml.append(">\n");
+			xml.append("\t<ddms:noticeList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
+			xml.append("\t\t<ISM:Notice ISM:noticeType=\"noticeType\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
+			xml.append("\t\t\t<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>\n");
+			xml.append("\t\t</ISM:Notice>\n");
+			xml.append("\t</ddms:noticeList>\n");
 			xml.append("\t<ntk:Access xmlns:ntk=\"urn:us:gov:ic:ntk\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
 			xml.append("\t\t<ntk:AccessIndividualList>\n");
 			xml.append("\t\t\t<ntk:AccessIndividual ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
@@ -167,14 +193,14 @@ public class SecurityTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testDataConstructorValid() {
+	public void testDataConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
-			testConstructor(WILL_SUCCEED, getAccess());
+			testConstructor(WILL_SUCCEED, getNoticeList(), getAccess());
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, (Access) null);
+			testConstructor(WILL_SUCCEED, null, null);
 		}
 	}
 
@@ -204,7 +230,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(versionString);
 			// Bad security attributes
 			try {
-				new Security(null, (SecurityAttributes) null);
+				new Security(null, null, (SecurityAttributes) null);
 				fail("Allowed invalid data.");
 			} catch (InvalidDDMSException e) {
 				// Good
@@ -238,23 +264,26 @@ public class SecurityTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testConstructorEquality() {
+	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Security elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Security dataComponent = testConstructor(WILL_SUCCEED, getAccess());
+			Security dataComponent = testConstructor(WILL_SUCCEED, getNoticeList(), getAccess());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() {
+	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
 			if (version.isAtLeast("4.0")) {
 				Security elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-				Security dataComponent = testConstructor(WILL_SUCCEED, (Access) null);
+				Security dataComponent = testConstructor(WILL_SUCCEED, getNoticeList(), null);
+				assertFalse(elementComponent.equals(dataComponent));
+				
+				dataComponent = testConstructor(WILL_SUCCEED, null, getAccess());
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 		}
@@ -275,7 +304,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 			Security component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, getAccess());
+			component = testConstructor(WILL_SUCCEED, getNoticeList(), getAccess());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
@@ -286,18 +315,18 @@ public class SecurityTest extends AbstractComponentTestCase {
 			Security component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getAccess());
+			component = testConstructor(WILL_SUCCEED, getNoticeList(), getAccess());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 
-	public void testXMLOutput() {
+	public void testXMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Security component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getAccess());
+			component = testConstructor(WILL_SUCCEED, getNoticeList(), getAccess());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}

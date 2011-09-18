@@ -349,7 +349,7 @@ public class Escort {
 		});
 		BUILDERS.put(Security.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				return (new Security(null, buildSecurityAttributes("security element")));
+				return (new Security(null, null, buildSecurityAttributes("security element")));
 			}		
 		});
 		BUILDERS.put(Resource.class, new IComponentBuilder() {

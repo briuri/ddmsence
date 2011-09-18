@@ -159,7 +159,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		links.add(new Link("http://en.wikipedia.org/wiki/Tank", "role", null, null));
 		TEST_RELATED = new RelatedResource(links, "http://purl.org/dc/terms/references", "outbound",
 			"http://purl.org/dc/terms/URI", "http://en.wikipedia.org/wiki/Tank", null);
-		TEST_SECURITY = new Security(null, SecurityAttributesTest.getFixture(false));
+		TEST_SECURITY = new Security(null, null, SecurityAttributesTest.getFixture(false));
 
 		TEST_TOP_LEVEL_COMPONENTS = new ArrayList<IDDMSComponent>();
 		TEST_TOP_LEVEL_COMPONENTS.add(TEST_SECURITY);

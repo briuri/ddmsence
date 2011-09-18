@@ -32,6 +32,22 @@
 		</xsd:complexType>
 	</xsd:element>
 	<xsd:attribute name="pocType" />
+	<xsd:attributeGroup name="NoticeAttributesOptionGroup">
+		<xsd:attribute ref="noticeType" use="optional"/>
+		<xsd:attribute ref="noticeReason" use="optional"/>
+		<xsd:attribute ref="noticeDate" use="optional"/>
+		<xsd:attribute ref="unregisteredNoticeType" use="optional"/>
+		<xsd:attributeGroup ref="SecurityAttributesOptionGroup"/>
+	</xsd:attributeGroup>
+	<xsd:attribute name="noticeType">
+	</xsd:attribute>
+	<xsd:attribute name="unregisteredNoticeType">
+		<xsd:simpleType>
+			<xsd:restriction base="xsd:string">
+				<xsd:maxLength value="2048"/>
+			</xsd:restriction>
+		</xsd:simpleType>
+	</xsd:attribute>
 
 	
 	
@@ -119,21 +135,6 @@
 		<xsd:attributeGroup ref="SecurityAttributesGroup"/>
 	</xsd:attributeGroup>
 	
-	<!-- ************************************************************* -->
-	<!-- NoticeAttributesOptionGroup ..................................... -->
-	<!-- ************************************************************* -->
-	<xsd:attributeGroup name="NoticeAttributesOptionGroup">
-		<xsd:annotation>
-			<xsd:documentation xml:lang="en">
-				The group of Information Security Marking attributes for use on a notice element in which the use of Security on the notice is optional.
-			</xsd:documentation>
-		</xsd:annotation>
-		<xsd:attribute ref="notice" use="optional"/>
-		<xsd:attribute ref="noticePOC" use="optional"/>
-		<xsd:attribute ref="noticeReason" use="optional"/>
-		<xsd:attribute ref="noticeDate" use="optional"/>
-		<xsd:attributeGroup ref="SecurityAttributesOptionGroup"/>
-	</xsd:attributeGroup>
 	
 	<!-- ************************************************************* -->
 	<!-- GLOBAL ATTRIBUTE DECLARATIONS ............................... -->
