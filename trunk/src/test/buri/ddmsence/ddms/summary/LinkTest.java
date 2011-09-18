@@ -23,6 +23,8 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
+import buri.ddmsence.ddms.summary.xlink.XLinkAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -43,7 +45,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	private static final String TEST_ROLE = "tank";
 	private static final String TEST_TITLE = "Tank Page";
 	private static final String TEST_LABEL = "tank";
-
+	
 	/**
 	 * Constructor
 	 */
@@ -58,16 +60,9 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	protected static Element getFixtureElement() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String xlinkPrefix = PropertyReader.getPrefix("xlink");
-		String xlinkNamespace = version.getXlinkNamespace();
 		Element linkElement = Util.buildDDMSElement(Link.getName(version), null);
 		linkElement.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
-		linkElement.addNamespaceDeclaration(xlinkPrefix, xlinkNamespace);
-		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "type", xlinkNamespace, TEST_TYPE));
-		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "href", xlinkNamespace, TEST_HREF));
-		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "role", xlinkNamespace, TEST_ROLE));
-		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "title", xlinkNamespace, TEST_TITLE));
-		linkElement.addAttribute(Util.buildAttribute(xlinkPrefix, "label", xlinkNamespace, TEST_LABEL));
+		XLinkAttributesTest.getFixture().addTo(linkElement);
 		return (linkElement);
 	}
 
@@ -92,16 +87,13 @@ public class LinkTest extends AbstractComponentTestCase {
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param expectFailure true if this operation is expected to succeed, false otherwise
-	 * @param href the link href (required)
-	 * @param role the role attribute (optional)
-	 * @param title the link title (optional)
-	 * @param label the name of the link (optional)
+	 * @param attributes the XLink Attributes
 	 * @return a valid object
 	 */
-	private Link testConstructor(boolean expectFailure, String href, String role, String title, String label) {
+	private Link testConstructor(boolean expectFailure, XLinkAttributes attributes) {
 		Link component = null;
 		try {
-			component = new Link(href, role, title, label);
+			component = new Link(attributes);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -114,11 +106,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "link.type", TEST_TYPE));
-		text.append(buildOutput(isHTML, "link.href", TEST_HREF));
-		text.append(buildOutput(isHTML, "link.role", TEST_ROLE));
-		text.append(buildOutput(isHTML, "link.title", TEST_TITLE));
-		text.append(buildOutput(isHTML, "link.label", TEST_LABEL));
+		text.append(XLinkAttributesTest.getFixture().getOutput(isHTML, "link."));
 		return (text.toString());
 	}
 
@@ -130,11 +118,8 @@ public class LinkTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:link ").append(getXmlnsDDMS()).append(" xmlns:xlink=\"").append(version.getXlinkNamespace())
 			.append("\" ");
-		xml.append("xlink:type=\"").append(TEST_TYPE).append("\" ");
-		xml.append("xlink:href=\"").append(TEST_HREF).append("\" ");
-		xml.append("xlink:role=\"").append(TEST_ROLE).append("\" ");
-		xml.append("xlink:title=\"").append(TEST_TITLE).append("\" ");
-		xml.append("xlink:label=\"").append(TEST_LABEL).append("\" />");
+		xml.append("xlink:type=\"locator\" xlink:href=\"http://en.wikipedia.org/wiki/Tank\" ");
+		xml.append("xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" />");
 		return (xml.toString());
 	}
 
@@ -185,14 +170,14 @@ public class LinkTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testDataConstructorValid() {
+	public void testDataConstructorValid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			testConstructor(WILL_SUCCEED, XLinkAttributesTest.getFixture());
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, null, null);
+			testConstructor(WILL_SUCCEED, new XLinkAttributes(TEST_TYPE, TEST_HREF, null, null, null));
 		}
 	}
 
@@ -203,24 +188,20 @@ public class LinkTest extends AbstractComponentTestCase {
 			Element element = buildComponentElement(TEST_TYPE, null);
 			testConstructor(WILL_FAIL, element);
 
-			// href not URI
-			element = buildComponentElement(TEST_TYPE, INVALID_URI);
-			testConstructor(WILL_FAIL, element);
-
 			// invalid type
-			element = buildComponentElement("type", TEST_HREF);
+			element = buildComponentElement("type", "simple");
 			testConstructor(WILL_FAIL, element);
 		}
 	}
 
-	public void testDataConstructorInvalid() {
+	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			// Missing href
-			testConstructor(WILL_FAIL, "", TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			testConstructor(WILL_FAIL, new XLinkAttributes(TEST_TYPE, "", TEST_ROLE, TEST_TITLE, TEST_LABEL));
 
-			// href not URI
-			testConstructor(WILL_FAIL, INVALID_URI, TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			// invalid type
+			testConstructor(WILL_FAIL, new XLinkAttributes("simple", TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL));
 		}
 	}
 
@@ -237,7 +218,7 @@ public class LinkTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Link elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			Link dataComponent = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			Link dataComponent = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -247,16 +228,7 @@ public class LinkTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Link elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			Link dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_ROLE, TEST_TITLE, TEST_LABEL);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_HREF, DIFFERENT_VALUE, TEST_TITLE, TEST_LABEL);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, DIFFERENT_VALUE, TEST_LABEL);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, DIFFERENT_VALUE);
+			Link dataComponent = testConstructor(WILL_SUCCEED, new XLinkAttributes(TEST_TYPE, DIFFERENT_VALUE, TEST_ROLE, TEST_TITLE, TEST_LABEL));
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -276,7 +248,7 @@ public class LinkTest extends AbstractComponentTestCase {
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			component = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
@@ -287,7 +259,7 @@ public class LinkTest extends AbstractComponentTestCase {
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			component = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getFixture());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
@@ -298,7 +270,7 @@ public class LinkTest extends AbstractComponentTestCase {
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			component = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getFixture());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -318,7 +290,7 @@ public class LinkTest extends AbstractComponentTestCase {
 
 			// Validation
 			builder = new Link.Builder();
-			builder.setRole(TEST_ROLE);
+			builder.getXLinkAttributes().setRole(TEST_ROLE);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");

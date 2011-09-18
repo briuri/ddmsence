@@ -54,8 +54,6 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public final class NoticeAttributes extends AbstractAttributeGroup {
-	
-	private String _xmlNamespace = null;
 	private String _cachedNoticeType = null;
 	private String _cachedNoticeReason = null;
 	private XMLGregorianCalendar _cachedNoticeDate = null;
@@ -93,7 +91,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public NoticeAttributes(Element element) throws InvalidDDMSException {
-		_xmlNamespace = element.getNamespaceURI();
+		super(element.getNamespaceURI());
 		String icNamespace = getDDMSVersion().getIsmNamespace();
 
 		_cachedNoticeType = element.getAttributeValue(NOTICE_TYPE_NAME, icNamespace);;
@@ -116,7 +114,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 */
 	public NoticeAttributes(String noticeType, String noticeReason, String noticeDate, String unregisteredNoticeType)
 		throws InvalidDDMSException {
-		_xmlNamespace = DDMSVersion.getCurrentVersion().getNamespace();
+		super(DDMSVersion.getCurrentVersion().getNamespace());
 		_cachedNoticeType = noticeType;
 		_cachedNoticeReason = noticeReason;
 		_cachedUnregisteredNoticeType = unregisteredNoticeType;
@@ -137,11 +135,9 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 * @param element the element to decorate
 	 */
 	public void addTo(Element element) throws InvalidDDMSException {
-		if (!getDDMSVersion().equals(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()))) {
-			throw new InvalidDDMSException("These notice attributes cannot decorate a DDMS component with"
-				+ " a different DDMS version.");
-		}
-		String icNamespace = DDMSVersion.getVersionForNamespace(element.getNamespaceURI()).getIsmNamespace();
+		DDMSVersion elementVersion = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
+		validateSameVersion(elementVersion);
+		String icNamespace = elementVersion.getIsmNamespace();
 		String icPrefix = PropertyReader.getPrefix("ism");
 
 		Util.addAttribute(element, icPrefix, NOTICE_TYPE_NAME, icNamespace, getNoticeType());
@@ -243,13 +239,6 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 			result = 7 * result + getNoticeDate().hashCode();
 		return (result);
 	}	
-	
-	/**
-	 * Accessor for the DDMS namespace on the enclosing element.
-	 */
-	protected DDMSVersion getDDMSVersion() {
-		return (DDMSVersion.getVersionForNamespace(_xmlNamespace));
-	}
 	
 	/**
 	 * Accessor for the noticeType attribute.

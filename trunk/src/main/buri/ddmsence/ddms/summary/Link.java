@@ -21,14 +21,13 @@ package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
 
-import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.util.DDMSVersion;
-import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -44,14 +43,8 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>xlink:type</u>: (required, fixed as "locator")<br />
- * <u>xlink:href</u>: A URL to the target related resource. (required, must be a URI)<br />
- * <u>xlink:role</u>: The URI reference identifies some resource that describes the intended property. When no value is
- * supplied, no particular role value is to be inferred. (optional)<br />
- * <u>xlink:title</u>: Used to describe the meaning of a link or resource in a human-readable fashion, along the same
- * lines as the role or arcrole attribute.(optional)<br />
- * <u>xlink:label</u>: The label attribute provides a name for the locator link providing a way for an XLink arc-type
- * element to refer to it in creating a traversal arc.(optional)<br />
+ * This class is decorated with {@link XLinkAttributes). The xlink:type attribute is required and must have a fixed
+ * value of "locator". The xlink:href attribute is also required.<br />
  * This class is also decorated with ISM {@link SecurityAttributes}, starting in DDMS 4.0 when used in the context
  * of a {@link RevisionRecall}. The classification and ownerProducer attributes are required.
  * </td></tr></table>
@@ -67,16 +60,10 @@ import buri.ddmsence.util.Util;
  */
 public final class Link extends AbstractBaseComponent {
 
-	private String _xlinkNamespace;
+	private XLinkAttributes _cachedXLinkAttributes = null;
 	private SecurityAttributes _cachedSecurityAttributes = null;
-	
+		
 	private static final String FIXED_TYPE = "locator";
-	
-	private static final String TYPE_NAME = "type";
-	private static final String HREF_NAME = "href";
-	private static final String ROLE_NAME = "role";
-	private static final String TITLE_NAME = "title";
-	private static final String LABEL_NAME = "label";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -86,13 +73,7 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	public Link(Element element) throws InvalidDDMSException {
 		try {
-			for (int i = 0; i < element.getAttributeCount(); i++) {
-				Attribute attr = element.getAttribute(i);
-				if (TYPE_NAME.equals(attr.getLocalName()))
-					_xlinkNamespace = attr.getNamespaceURI();
-			}
-			if (Util.isEmpty(getXlinkNamespace()))
-				throw new InvalidDDMSException("Could not find the xlink namespace URI on this ddms:link element.");
+			_cachedXLinkAttributes = new XLinkAttributes(element);
 			_cachedSecurityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
@@ -104,37 +85,27 @@ public final class Link extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 *  
-	 * @param href	the link href (required)
-	 * @param role	the role attribute (optional)
-	 * @param title the link title (optional)
-	 * @param label the name of the link (optional)
+	 * @param xlinkAttributes the xlink attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Link(String href, String role, String title, String label) throws InvalidDDMSException {
-		this(href, role, title, label, null);
+	public Link(XLinkAttributes xlinkAttributes) throws InvalidDDMSException {
+		this(xlinkAttributes, null);
 	}
 
 	/**
 	 * Constructor for creating a component from raw data
 	 *  
-	 * @param href	the link href (required)
-	 * @param role	the role attribute (optional)
-	 * @param title the link title (optional)
-	 * @param label the name of the link (optional)
+	 * @param xlinkAttributes the xlink attributes
 	 * @param securityAttributes attributes, which are only allowed on links within a ddms:revisionRecall
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Link(String href, String role, String title, String label, SecurityAttributes securityAttributes)
+	public Link(XLinkAttributes xlinkAttributes, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Link.getName(DDMSVersion.getCurrentVersion()), null);
-			String xlinkPrefix = PropertyReader.getPrefix("xlink");
-			_xlinkNamespace = DDMSVersion.getCurrentVersion().getXlinkNamespace();
-			Util.addAttribute(element, xlinkPrefix, TYPE_NAME, getXlinkNamespace(), FIXED_TYPE);
-			Util.addAttribute(element, xlinkPrefix, HREF_NAME, getXlinkNamespace(), href);
-			Util.addAttribute(element, xlinkPrefix, ROLE_NAME, getXlinkNamespace(), role);
-			Util.addAttribute(element, xlinkPrefix, TITLE_NAME, getXlinkNamespace(), title);
-			Util.addAttribute(element, xlinkPrefix, LABEL_NAME, getXlinkNamespace(), label);
+			_cachedXLinkAttributes = (xlinkAttributes == null ? new XLinkAttributes(null, null, null, null, null)
+				: xlinkAttributes);
+			_cachedXLinkAttributes.addTo(element);
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);
 			_cachedSecurityAttributes.addTo(element);
@@ -150,11 +121,8 @@ public final class Link extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The type is set and has a value of "locator"</li>
-	 * <li>The href is set and non-empty.</li>
-	 * <li>The href is a valid URI.</li>
-	 * <li>If set, the role is a valid URI, starting in DDMS 4.0</li>
-	 * <li>The label is a valid NCName, starting in DDMS 4.0.</li>
+	 * <li>The xlink:type is set and has a value of "locator".</li>
+	 * <li>The xlink:href is set and non-empty.</li>
 	 * <li>Does not validate the security attributes. It is the parent class' responsibility
 	 * to do that.
 	 * </td></tr></table>
@@ -163,20 +131,12 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Link.getName(getDDMSVersion()));
-		Util.requireDDMSValue("type attribute", getType());
-		Util.requireDDMSValue("href attribute", getHref());
-		Util.requireDDMSValidURI(getHref());
-		if (!getType().equals(FIXED_TYPE))
+		Util.requireDDMSValue("type attribute", getXLinkAttributes().getType());
+		Util.requireDDMSValue("href attribute", getXLinkAttributes().getHref());
+
+		if (!getXLinkAttributes().getType().equals(FIXED_TYPE))
 			throw new InvalidDDMSException("The type attribute must have a fixed value of \"" + FIXED_TYPE + "\".");
-		
-		// Should be reviewed as additional versions of DDMS are supported.
-		if (getDDMSVersion().isAtLeast("4.0")) {
-			if (!Util.isEmpty(getRole()))
-				Util.requireDDMSValidURI(getRole());
-			if (!Util.isEmpty(getLabel()))
-				Util.requireValidNCName(getLabel());
-		}
-		
+				
 		super.validate();
 	}
 	
@@ -186,11 +146,7 @@ public final class Link extends AbstractBaseComponent {
 	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + TYPE_NAME, getType(), true));
-		text.append(buildOutput(isHTML, prefix + HREF_NAME, getHref(), true));
-		text.append(buildOutput(isHTML, prefix + ROLE_NAME, getRole(), false));
-		text.append(buildOutput(isHTML, prefix + TITLE_NAME, getTitle(), false));
-		text.append(buildOutput(isHTML, prefix + LABEL_NAME, getLabel(), false));
+		text.append(getXLinkAttributes().getOutput(isHTML, prefix));
 		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
@@ -202,11 +158,7 @@ public final class Link extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Link))
 			return (false);
 		Link test = (Link) obj;
-		return (getType().equals(test.getType()) 
-			&& getHref().equals(test.getHref())
-			&& getRole().equals(test.getRole()) 
-			&& getTitle().equals(test.getTitle()) 
-			&& getLabel().equals(test.getLabel()));
+		return (getXLinkAttributes().equals(test.getXLinkAttributes()));
 	}
 
 	/**
@@ -214,11 +166,7 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 7 * result + getType().hashCode();
-		result = 7 * result + getHref().hashCode();
-		result = 7 * result + getRole().hashCode();
-		result = 7 * result + getTitle().hashCode();
-		result = 7 * result + getLabel().hashCode();
+		result = 7 * result + getXLinkAttributes().hashCode();
 		return (result);
 	}
 	
@@ -232,47 +180,12 @@ public final class Link extends AbstractBaseComponent {
 		Util.requireValue("version", version);
 		return ("link");
 	}
-	
+		
 	/**
-	 * Accessor for the type attribute.
+	 * Accessor for the XLink Attributes. Will always be non-null, even if it has no values set.
 	 */
-	public String getType() {
-		return (getAttributeValue(TYPE_NAME, getXlinkNamespace()));
-	}
-	
-	/**
-	 * Accessor for the href attribute.
-	 */
-	public String getHref() {
-		return (getAttributeValue(HREF_NAME, getXlinkNamespace()));
-	}
-	
-	/**
-	 * Accessor for the role attribute.
-	 */
-	public String getRole() {
-		return (getAttributeValue(ROLE_NAME, getXlinkNamespace()));
-	}
-	
-	/**
-	 * Accessor for the title attribute.
-	 */
-	public String getTitle() {
-		return (getAttributeValue(TITLE_NAME, getXlinkNamespace()));
-	}
-	
-	/**
-	 * Accessor for the label attribute.
-	 */
-	public String getLabel() {
-		return (getAttributeValue(LABEL_NAME, getXlinkNamespace()));
-	}
-	
-	/**
-	 * Accessor for the xlink namespace
-	 */
-	private String getXlinkNamespace() {
-		return _xlinkNamespace;
+	public XLinkAttributes getXLinkAttributes() {
+		return (_cachedXLinkAttributes);
 	}
 	
 	/**
@@ -291,10 +204,8 @@ public final class Link extends AbstractBaseComponent {
 	 */
 	public static class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = 4325950371570699184L;
-		private String _href;
-		private String _role;
-		private String _title;
-		private String _label;
+		private XLinkAttributes.Builder _xlinkAttributes;
+		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
 		 * Empty constructor
@@ -305,83 +216,55 @@ public final class Link extends AbstractBaseComponent {
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Link link) {
-			setHref(link.getHref());
-			setRole(link.getRole());
-			setTitle(link.getTitle());
-			setLabel(link.getLabel());
+			setXLinkAttributes(new XLinkAttributes.Builder(link.getXLinkAttributes()));
+			setSecurityAttributes(new SecurityAttributes.Builder(link.getSecurityAttributes()));
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public Link commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Link(getHref(), getRole(), getTitle(), getLabel()));
+			return (isEmpty() ? null : new Link(getXLinkAttributes().commit(), getSecurityAttributes().commit()));
 		}
 
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			return (Util.isEmpty(getHref())
-				&& Util.isEmpty(getRole())
-				&& Util.isEmpty(getTitle())
-				&& Util.isEmpty(getLabel()));				
+			return (getXLinkAttributes().isEmpty() && getSecurityAttributes().isEmpty());				
 		}
 		
 		/**
-		 * Builder accessor for the href
+		 * Builder accessor for the XLink Attributes
 		 */
-		public String getHref() {
-			return _href;
+		public XLinkAttributes.Builder getXLinkAttributes() {
+			if (_xlinkAttributes == null)
+				_xlinkAttributes = new XLinkAttributes.Builder();
+			return _xlinkAttributes;
 		}
-
+		
 		/**
-		 * Builder accessor for the href
+		 * Builder accessor for the XLink Attributes
 		 */
-		public void setHref(String href) {
-			_href = href;
+		public void setXLinkAttributes(XLinkAttributes.Builder xlinkAttributes) {
+			_xlinkAttributes = xlinkAttributes;
 		}
-
+		
 		/**
-		 * Builder accessor for the role
+		 * Builder accessor for the Security Attributes
 		 */
-		public String getRole() {
-			return _role;
+		public SecurityAttributes.Builder getSecurityAttributes() {
+			if (_securityAttributes == null)
+				_securityAttributes = new SecurityAttributes.Builder();
+			return _securityAttributes;
 		}
-
+		
 		/**
-		 * Builder accessor for the role
+		 * Builder accessor for the Security Attributes
 		 */
-		public void setRole(String role) {
-			_role = role;
+		public void setSecurityAttributes(SecurityAttributes.Builder securityAttributes) {
+			_securityAttributes = securityAttributes;
 		}
-
-		/**
-		 * Builder accessor for the title
-		 */
-		public String getTitle() {
-			return _title;
-		}
-
-		/**
-		 * Builder accessor for the title
-		 */
-		public void setTitle(String title) {
-			_title = title;
-		}
-
-		/**
-		 * Builder accessor for the label
-		 */
-		public String getLabel() {
-			return _label;
-		}
-
-		/**
-		 * Builder accessor for the label
-		 */
-		public void setLabel(String label) {
-			_label = label;
-		}
+		
 	}
 } 
