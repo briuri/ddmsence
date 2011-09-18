@@ -52,6 +52,8 @@ import buri.ddmsence.util.Util;
  * lines as the role or arcrole attribute.(optional)<br />
  * <u>xlink:label</u>: The label attribute provides a name for the locator link providing a way for an XLink arc-type
  * element to refer to it in creating a traversal arc.(optional)<br />
+ * This class is also decorated with ISM {@link SecurityAttributes}, starting in DDMS 4.0 when used in the context
+ * of a {@link RevisionRecall}. The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
