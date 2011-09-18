@@ -144,7 +144,6 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>");
 		xml.append("</ISM:Notice>");
 		xml.append("</ddms:noticeList>");
-		System.out.println(xml.toString());
 		return (xml.toString());
 	}
 	

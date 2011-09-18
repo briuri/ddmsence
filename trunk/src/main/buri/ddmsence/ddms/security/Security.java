@@ -38,6 +38,7 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:security.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * <u>ddms:noticeList</u>: A collection of IC notices (optional, starting in DDMS 4.0)<br />
  * <u>ntk:Access</u>: Need-To-Know access information (optional, starting in DDMS 4.0)<br />
  * </td></tr></table>
  * 
@@ -59,6 +60,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Security extends AbstractBaseComponent {
 
+	private NoticeList _cachedNoticeList = null;
 	private Access _cachedAccess = null;
 	private SecurityAttributes _cachedSecurityAttributes = null;
 	
@@ -76,6 +78,10 @@ public final class Security extends AbstractBaseComponent {
 	public Security(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
+			Element noticeListElement = element.getFirstChildElement(NoticeList.getName(getDDMSVersion()), getNamespace());
+			if (noticeListElement != null)
+				_cachedNoticeList = new NoticeList(noticeListElement);
+
 			Element accessElement = element.getFirstChildElement(Access.getName(getDDMSVersion()), getDDMSVersion().getNtkNamespace());
 			if (accessElement != null)
 				_cachedAccess = new Access(accessElement);
@@ -90,20 +96,24 @@ public final class Security extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 *  
+	 * @param noticeList notice list (optional)
 	 * @param access NTK access information (optional)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Security(Access access, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public Security(NoticeList noticeList, Access access, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			
 			Element element = Util.buildDDMSElement(Security.getName(version), null);
+			if (noticeList != null)
+				element.appendChild(noticeList.getXOMElementCopy());
 			if (access != null)
 				element.appendChild(access.getXOMElementCopy());
 			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 				Util.addAttribute(element, PropertyReader.getPrefix("ism"), EXCLUDE_FROM_ROLLUP_NAME, 
 					DDMSVersion.getCurrentVersion().getIsmNamespace(), FIXED_ROLLUP);
+			_cachedNoticeList = noticeList;
 			_cachedAccess = access;
 			_cachedSecurityAttributes = securityAttributes;
 			if (securityAttributes != null)
@@ -155,6 +165,8 @@ public final class Security extends AbstractBaseComponent {
 		if (getExcludeFromRollup() != null)
 			text.append(buildOutput(isHTML, prefix + EXCLUDE_FROM_ROLLUP_NAME, String.valueOf(getExcludeFromRollup()),
 				true));
+		if (getNoticeList() != null)
+			text.append(getNoticeList().getOutput(isHTML, prefix));
 		if (getAccess() != null)
 			text.append(getAccess().getOutput(isHTML, prefix));
 		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
@@ -166,6 +178,7 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	protected List<IDDMSComponent> getNestedComponents() {
 		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.add(getNoticeList());
 		list.add(getAccess());
 		return (list);
 	}
@@ -204,11 +217,19 @@ public final class Security extends AbstractBaseComponent {
 	}
 	
 	/**
+	 * Accessor for the NoticeList. May be null.
+	 */
+	public NoticeList getNoticeList() {
+		return (_cachedNoticeList);
+	}
+	
+	/**
 	 * Accessor for the Access. May be null.
 	 */
 	public Access getAccess() {
 		return (_cachedAccess);
 	}
+	
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
@@ -225,6 +246,7 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	public static class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = -7744353774641616270L;
+		private NoticeList.Builder _noticeList;
 		private Access.Builder _access;
 		private SecurityAttributes.Builder _securityAttributes;
 		
@@ -237,6 +259,8 @@ public final class Security extends AbstractBaseComponent {
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Security security) {
+			if (security.getNoticeList() != null)
+				setNoticeList(new NoticeList.Builder(security.getNoticeList()));
 			if (security.getAccess() != null)
 				setAccess(new Access.Builder(security.getAccess()));
 			setSecurityAttributes(new SecurityAttributes.Builder(security.getSecurityAttributes()));
@@ -246,16 +270,32 @@ public final class Security extends AbstractBaseComponent {
 		 * @see IBuilder#commit()
 		 */
 		public Security commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Security(getAccess().commit(), getSecurityAttributes().commit()));
+			return (isEmpty() ? null : new Security(getNoticeList().commit(), getAccess().commit(), getSecurityAttributes().commit()));
 		}
 		
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			return (getAccess().isEmpty() && getSecurityAttributes().isEmpty());
+			return (getNoticeList().isEmpty() && getAccess().isEmpty() && getSecurityAttributes().isEmpty());
 		}
 
+		/**
+		 * Builder accessor for the noticeList
+		 */
+		public NoticeList.Builder getNoticeList() {
+			if (_noticeList == null)
+				_noticeList = new NoticeList.Builder();
+			return _noticeList;
+		}
+
+		/**
+		 * Builder accessor for the noticeList
+		 */
+		public void setNoticeList(NoticeList.Builder noticeList) {
+			_noticeList = noticeList;
+		}
+		
 		/**
 		 * Builder accessor for the access
 		 */
