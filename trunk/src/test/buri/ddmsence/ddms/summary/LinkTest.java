@@ -184,6 +184,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	public void testElementConstructorInvalid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
+			
 			// Missing href
 			Element element = buildComponentElement(TEST_TYPE, null);
 			testConstructor(WILL_FAIL, element);
@@ -197,6 +198,10 @@ public class LinkTest extends AbstractComponentTestCase {
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
+			
+			// Missing attributes
+			testConstructor(WILL_FAIL, (XLinkAttributes) null);
+			
 			// Missing href
 			testConstructor(WILL_FAIL, new XLinkAttributes(TEST_TYPE, "", TEST_ROLE, TEST_TITLE, TEST_LABEL));
 
