@@ -172,8 +172,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 				element.appendChild(postalAddress.getXOMElementCopy());
 			if (verticalExtent != null)
 				element.appendChild(verticalExtent.getXOMElementCopy());
-			if (!Util.isEmpty(precedence))
-				Util.addDDMSAttribute(coverageElement, PRECEDENCE_NAME, precedence);
+			Util.addDDMSAttribute(coverageElement, PRECEDENCE_NAME, precedence);
 			if (order != null)
 				Util.addDDMSAttribute(coverageElement, ORDER_NAME, order.toString());
 

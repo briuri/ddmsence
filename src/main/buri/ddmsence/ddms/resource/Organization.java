@@ -136,8 +136,7 @@ public final class Organization extends AbstractRoleEntity {
 		try {
 			if (subOrganizations == null)
 				subOrganizations = Collections.emptyList();
-			if (!Util.isEmpty(acronym))
-				Util.addDDMSAttribute(getXOMElement(), ACRONYM_NAME, acronym);
+			Util.addDDMSAttribute(getXOMElement(), ACRONYM_NAME, acronym);
 			for (SubOrganization subOrganization : subOrganizations) {
 				getXOMElement().appendChild(subOrganization.getXOMElementCopy());
 			}

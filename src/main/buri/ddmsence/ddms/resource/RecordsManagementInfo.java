@@ -102,8 +102,7 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 				element.appendChild(recordKeeper.getXOMElementCopy());
 			if (applicationSoftware != null)
 				element.appendChild(applicationSoftware.getXOMElementCopy());
-			if (vitalRecordIndicator != null)
-				Util.addDDMSAttribute(element, VITAL_RECORD_INDICATOR_NAME, String.valueOf(vitalRecordIndicator));
+			Util.addDDMSAttribute(element, VITAL_RECORD_INDICATOR_NAME, String.valueOf(vitalRecordIndicator));
 			_cachedRecordKeeper = recordKeeper;
 			_cachedApplicationSoftware = applicationSoftware;
 			validate();

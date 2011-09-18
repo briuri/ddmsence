@@ -139,6 +139,18 @@ public class ISMVocabulary {
 	/** Filename for the enumerations allowed in a typeOfExemptedSource attribute */
 	public static final String CVE_TYPE_EXEMPTED_SOURCE = "CVEnumISMSourceMarked.xml";
 	
+	private static Set<String> COMMON_NETWORK_TYPES = new HashSet<String>();
+	static {
+		COMMON_NETWORK_TYPES.add("NIPRNet");
+		COMMON_NETWORK_TYPES.add("SIPRNet");
+		COMMON_NETWORK_TYPES.add("JWICS");
+		COMMON_NETWORK_TYPES.add("ADSN");
+		COMMON_NETWORK_TYPES.add("StoneGhost");
+		COMMON_NETWORK_TYPES.add("LOCE");
+		COMMON_NETWORK_TYPES.add("CRONOS");
+		COMMON_NETWORK_TYPES.add("other");
+	}
+	
 	private static final List<String> ALL_ENUMS = new ArrayList<String>();
 	static {
 		ALL_ENUMS.add(CVE_DECLASS_EXCEPTION);
@@ -416,6 +428,17 @@ public class ISMVocabulary {
 					+ "restrictive than the ddms:" + Resource.getName(getDDMSVersion()) + " itself.");
 			}			
 		}
+	}
+	
+	/**
+	 * Validates the value of a common:network attribute.
+	 * 
+	 * @param network the network token to test
+	 * @throws InvalidDDMSException if the network is not a valid token
+	 */
+	public static void requireValidNetwork(String network) throws InvalidDDMSException {
+		if (!COMMON_NETWORK_TYPES.contains(network))
+			throw new InvalidDDMSException("The network attribute must be one of " + COMMON_NETWORK_TYPES);
 	}
 	
 	/**
