@@ -267,6 +267,14 @@ public class LinkTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
+	
+	public void testWrongLinkType() throws InvalidDDMSException {
+		for (String versionString : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(versionString);
+			
+			testConstructor(WILL_FAIL, XLinkAttributesTest.getSimpleFixture());
+		}
+	}
 
 	public void testBuilder() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
