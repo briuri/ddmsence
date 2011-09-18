@@ -40,8 +40,7 @@ import buri.ddmsence.util.Util;
  * before the component is used. </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * This class is decorated with ISM {@link SecurityAttributes}. The classification and
- * ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!

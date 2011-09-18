@@ -36,6 +36,11 @@ import buri.ddmsence.util.Util;
  * required)<br />
  * </td></tr></table>
  * 
+ * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * <u>{@link SecurityAttributes}</u>:  The classification and
+ * ownerProducer attributes are optional.
+ * </td></tr></table>
+ *  
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Description</u>: This category is used to tag the identification of the entity responsible for releasing the data 
  * asset---the entity primarily responsible for the intellectual content of the product. It is intended that this category 
@@ -43,11 +48,6 @@ import buri.ddmsence.util.Util;
  * <u>Obligation</u>: At least one of the four producerTypes is required. A publisher is also required in 
  * metacardInfo.<br />
  * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * This class is decorated with ISM {@link SecurityAttributes}. The classification and
- * ownerProducer attributes are optional.
  * </td></tr></table>
  * 
  * @author Brian Uri!

@@ -44,8 +44,7 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ISM:excludeFromRollup</u>: (required, fixed as "true", starting in DDMS 3.0)<br />
- * This class is also decorated with ISM {@link SecurityAttributes}. The classification and
- * ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">

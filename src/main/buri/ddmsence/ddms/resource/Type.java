@@ -51,8 +51,8 @@ import buri.ddmsence.util.Util;
  * <u>ddms:qualifier</u>: a URI-based qualifier (required if value is set)<br />
  * <u>ddms:value</u>: includes terms describing general categories, functions, genres, or aggregation levels 
  * (optional)<br />
- * This class is also decorated with ISM {@link SecurityAttributes}, starting in DDMS 4.0. The classification and
- * ownerProducer attributes are optional.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. 
+ * (starting in DDMS 4.0)
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">

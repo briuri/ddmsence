@@ -43,8 +43,8 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * This class is decorated with ISM {@link SecurityAttributes} and ISM {@link NoticeAttributes}. The classification and
- * ownerProducer attributes are optional.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.<br />
+ * <u>{@link NoticeAttributes}</u>
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">

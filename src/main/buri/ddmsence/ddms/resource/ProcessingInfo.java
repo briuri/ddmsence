@@ -43,7 +43,7 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:dateProcessed</u>: date when this processing occurred (required)<br />
- * This class is decorated with ISM {@link SecurityAttributes}. The classification and
+ * <u>{@link SecurityAttributes}</u>:  The classification and
  * ownerProducer attributes are required.
  * </td></tr></table>
  * 

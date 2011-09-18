@@ -77,8 +77,7 @@ import buri.ddmsence.util.Util;
  * value is to be interpreted. (required)<br />
  * <u>ddms:value</u>: an unambiguous reference to the resource within a given context. An internal, external, and/or
  * universal identification number for a data asset or resource. (required)<br />
- * This class is also decorated with ISM {@link SecurityAttributes}. The classification and
- * ownerProducer attributes are optional.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">

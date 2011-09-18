@@ -40,12 +40,12 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ntk:vocabulary: A lexicon associated with the profile (required)<br />
+ * <u>ntk:vocabulary</u>: A lexicon associated with the profile (required)<br />
  * <u>ntk:id</u>: A unique XML identifier (optional)<br />
  * <u>ntk:IDReference</u>: A cross-reference to a unique identifier (optional)<br />
  * <u>ntk:qualifier</u>: A user-defined property within an element for general purpose processing used with block 
  * objects to provide supplemental information over and above that conveyed by the element name (optional)<br />
- * This class is decorated with ISM {@link SecurityAttributes}. The classification and
+ * <u>{@link SecurityAttributes}</u>:  The classification and
  * ownerProducer attributes are required.
  * </td></tr></table>
  * 

@@ -125,12 +125,12 @@ import buri.ddmsence.util.Util;
  * markings on this record. (required, starting in DDMS 3.0)<br />
  * <u>ntk:DESVersion</u>: Specifies the version of the Data Encoding Specification used for Need-To-Know markings
  * on this record. (required, starting in DDMS 4.0 with a fixed value)<br />
- * This class is also decorated with ISM {@link SecurityAttributes}, starting in DDMS 3.0. The classification and
- * ownerProducer attributes are required. Optional {@link ExtensibleAttributes} can also be applied in any version,
- * and optional {@link NoticeAttributes} can be applied in DDMS 4.0 or later.<br /><br />
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required. (starting in DDMS 3.0)<br />
+ * <u>{@link NoticeAttributes}</u>: (optional, starting in DDMS 4.0)<br /><br />
+ * <u>{@link ExtensibleAttributes}</u>: (optional)<br />
+ * 
  * Starting in DDMS 3.0, the ISM attributes explicitly defined in the schema should appear in the SecurityAttributes, not
  * the ExtensibleAttributes. Attempts to load them as ExtensibleAttributes will throw an InvalidDDMSException.
- * <br /><br />
  * In DDMS 2.0, there are no ISM attributes explicitly defined in the schema, so you can load them in any way you 
  * want. It is recommended that you load them as SecurityAttributes anyhow, for consistency with newer DDMS resources. 
  * Please see the "Power Tips" on the Extensible Layer (on the DDMSence home page) for details. 

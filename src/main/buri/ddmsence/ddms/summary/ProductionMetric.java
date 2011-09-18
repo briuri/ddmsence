@@ -42,8 +42,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:subject</u>: A method of categorizing the subject of a document in a fashion understandable by DDNI-A. (required)<br />
  * <u>ddms:coverage</u>: A method of categorizing the coverage of a document in a fashion understandable by DDNI-A (required)<br />
- * This class is also decorated with ISM {@link SecurityAttributes}, starting in DDMS 4.0. The classification and
- * ownerProducer attributes are optional.
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">

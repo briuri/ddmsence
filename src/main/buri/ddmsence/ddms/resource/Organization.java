@@ -63,7 +63,7 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:acronym</u>: an acronym for the organization (optional, starting in DDMS 4.0)<br />
- * This component can be decorated with optional {@link ExtensibleAttributes}.
+ * <u>{@link ExtensibleAttributes}</u>
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">

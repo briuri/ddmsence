@@ -48,13 +48,8 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>srsName</u>: A URI-based name (required)<br />
- * <u>srsDimension</u>: A positive integer dimension (optional)<br />
- * <u>axisLabels</u>: Ordered list of labels for the axes, as a space-delimited list of NCNames (valid XML names without
- * colons) (optional, but if no srsName is set, this should be omitted too)<br />
- * <u>uomLabels</u>: Ordered list of unit of measure (uom) labels for all the axes, as a space-delimited list of NCNames
- * (valid XML names without colons) (required when axisLabels is set)<br />
  * <u>gml:id</u>: unique ID (required)<br />
+ * <u>{@link SRSAttributes}</u>
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
