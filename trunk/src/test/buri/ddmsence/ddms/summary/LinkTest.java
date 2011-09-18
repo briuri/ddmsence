@@ -62,7 +62,7 @@ public class LinkTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Element linkElement = Util.buildDDMSElement(Link.getName(version), null);
 		linkElement.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
-		XLinkAttributesTest.getFixture().addTo(linkElement);
+		XLinkAttributesTest.getLocatorFixture().addTo(linkElement);
 		return (linkElement);
 	}
 
@@ -106,7 +106,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(XLinkAttributesTest.getFixture().getOutput(isHTML, "link."));
+		text.append(XLinkAttributesTest.getLocatorFixture().getOutput(isHTML, "link."));
 		return (text.toString());
 	}
 
@@ -174,10 +174,10 @@ public class LinkTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			// All fields
-			testConstructor(WILL_SUCCEED, XLinkAttributesTest.getFixture());
+			testConstructor(WILL_SUCCEED, XLinkAttributesTest.getLocatorFixture());
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, new XLinkAttributes(TEST_TYPE, TEST_HREF, null, null, null));
+			testConstructor(WILL_SUCCEED, new XLinkAttributes(TEST_HREF, null, null, null));
 		}
 	}
 
@@ -190,7 +190,7 @@ public class LinkTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// invalid type
-			element = buildComponentElement("type", "simple");
+			element = buildComponentElement("simple", TEST_HREF);
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -203,10 +203,7 @@ public class LinkTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, (XLinkAttributes) null);
 			
 			// Missing href
-			testConstructor(WILL_FAIL, new XLinkAttributes(TEST_TYPE, "", TEST_ROLE, TEST_TITLE, TEST_LABEL));
-
-			// invalid type
-			testConstructor(WILL_FAIL, new XLinkAttributes("simple", TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL));
+			testConstructor(WILL_FAIL, new XLinkAttributes("", TEST_ROLE, TEST_TITLE, TEST_LABEL));
 		}
 	}
 
@@ -223,7 +220,7 @@ public class LinkTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Link elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			Link dataComponent = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getFixture());
+			Link dataComponent = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getLocatorFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -233,7 +230,7 @@ public class LinkTest extends AbstractComponentTestCase {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Link elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			Link dataComponent = testConstructor(WILL_SUCCEED, new XLinkAttributes(TEST_TYPE, DIFFERENT_VALUE, TEST_ROLE, TEST_TITLE, TEST_LABEL));
+			Link dataComponent = testConstructor(WILL_SUCCEED, new XLinkAttributes(DIFFERENT_VALUE, TEST_ROLE, TEST_TITLE, TEST_LABEL));
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -253,7 +250,7 @@ public class LinkTest extends AbstractComponentTestCase {
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 
-			component = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getFixture());
+			component = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getLocatorFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 		}
 	}
@@ -264,7 +261,7 @@ public class LinkTest extends AbstractComponentTestCase {
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getFixture());
+			component = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getLocatorFixture());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
@@ -275,7 +272,7 @@ public class LinkTest extends AbstractComponentTestCase {
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getFixture());
+			component = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getLocatorFixture());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}

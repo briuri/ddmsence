@@ -157,7 +157,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			null, null);
 
 		List<Link> links = new ArrayList<Link>();
-		links.add(new Link(new XLinkAttributes("locator", "http://en.wikipedia.org/wiki/Tank", "role", null, null)));
+		links.add(new Link(new XLinkAttributes("http://en.wikipedia.org/wiki/Tank", "role", null, null)));
 		TEST_RELATED = new RelatedResource(links, "http://purl.org/dc/terms/references", "outbound",
 			"http://purl.org/dc/terms/URI", "http://en.wikipedia.org/wiki/Tank", null);
 		TEST_SECURITY = new Security(null, null, SecurityAttributesTest.getFixture(false));
@@ -260,7 +260,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		element.appendChild(TEST_CREATOR.getXOMElementCopy());
 		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
 
-		Link link = new Link(new XLinkAttributes("locator", "http://en.wikipedia.org/wiki/Tank", "role", null, null));
+		Link link = new Link(new XLinkAttributes("http://en.wikipedia.org/wiki/Tank", "role", null, null));
 
 		// #1: a ddms:relatedResources containing 1 ddms:RelatedResource
 		Element rel1 = Util.buildDDMSElement(RelatedResource.getName(version), null);
