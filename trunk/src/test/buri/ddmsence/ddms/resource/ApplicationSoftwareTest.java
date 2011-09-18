@@ -265,7 +265,7 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() throws InvalidDDMSException {
+	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
@@ -274,23 +274,10 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 
 			ApplicationSoftware component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedOutput(true), component.toHTML());
-
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
-			assertEquals(getExpectedOutput(true), component.toHTML());
-		}
-	}
-
-	public void testTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
-
-			ApplicationSoftware component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedOutput(false), component.toText());
-
+			
 			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
+			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}

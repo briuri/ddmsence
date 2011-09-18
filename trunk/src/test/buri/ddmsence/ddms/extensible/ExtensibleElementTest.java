@@ -155,18 +155,11 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() throws InvalidDDMSException {
+	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
 			assertEquals("", component.toHTML());
-		}
-	}
-
-	public void testTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
 			assertEquals("", component.toText());
 		}
 	}

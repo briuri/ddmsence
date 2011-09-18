@@ -326,17 +326,19 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() throws InvalidDDMSException {
+	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
 			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
-
+			assertEquals(getExpectedOutput(false), component.toText());
+			
 			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(), subCode,
 				null);
 			assertEquals(getExpectedOutput(true), component.toHTML());
+			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 
@@ -349,20 +351,6 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 				.append("<meta name=\"geographicIdentifier.facilityIdentifier.beNumber\" content=\"1234DD56789\" />\n");
 			facIdOutput.append("<meta name=\"geographicIdentifier.facilityIdentifier.osuffix\" content=\"DD123\" />\n");
 			assertEquals(facIdOutput.toString(), component.toHTML());
-		}
-	}
-
-	public void testTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
-
-			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(), subCode,
-				null);
-			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 

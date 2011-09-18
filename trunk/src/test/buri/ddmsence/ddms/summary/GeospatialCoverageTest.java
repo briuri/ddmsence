@@ -454,7 +454,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() throws InvalidDDMSException {
+	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 			String prefix = "geospatialCoverage.";
@@ -465,58 +465,31 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 
 			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
-
+			assertEquals(getExpectedOutput(false), component.toText());
+			
 			component = testConstructor(WILL_SUCCEED, GeographicIdentifierTest.getCountryCodeBasedFixture(), null,
 				null, null, null, precedence, order);
 			assertEquals(getExpectedOutput(true), component.toHTML());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
 			assertEquals(BoundingBoxTest.getFixture().getOutput(true, prefix) + getHtmlIcism(), component.toHTML());
-
+			assertEquals(BoundingBoxTest.getFixture().getOutput(false, prefix) + getTextIcism(), component.toText());
+			
 			component = testConstructor(WILL_SUCCEED, null, null, BoundingGeometryTest.getFixture(), null, null, null,
 				null);
 			assertEquals(BoundingGeometryTest.getFixture().getOutput(true, prefix) + getHtmlIcism(), component.toHTML());
-
+			assertEquals(BoundingGeometryTest.getFixture().getOutput(false, prefix) + getTextIcism(),
+				component.toText());
+			
 			component = testConstructor(WILL_SUCCEED, null, null, null, PostalAddressTest.getFixture(), null, null,
 				null);
 			assertEquals(PostalAddressTest.getFixture().getOutput(true, prefix) + getHtmlIcism(), component.toHTML());
-
-			component = testConstructor(WILL_SUCCEED, null, null, null, null, VerticalExtentTest.getFixture(), null,
-				null);
-			assertEquals(VerticalExtentTest.getFixture().getOutput(true, prefix) + getHtmlIcism(), component.toHTML());
-		}
-	}
-
-	public void testTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			String prefix = "geospatialCoverage.";
-			if (!version.isAtLeast("4.0"))
-				prefix += "GeospatialExtent.";
-			String precedence = version.isAtLeast("4.0") ? TEST_PRECEDENCE : null;
-			Integer order = version.isAtLeast("4.0") ? TEST_ORDER : null;
-
-			GeospatialCoverage component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = testConstructor(WILL_SUCCEED, GeographicIdentifierTest.getCountryCodeBasedFixture(), null,
-				null, null, null, precedence, order);
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = testConstructor(WILL_SUCCEED, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-			assertEquals(BoundingBoxTest.getFixture().getOutput(false, prefix) + getTextIcism(), component.toText());
-
-			component = testConstructor(WILL_SUCCEED, null, null, BoundingGeometryTest.getFixture(), null, null, null,
-				null);
-			assertEquals(BoundingGeometryTest.getFixture().getOutput(false, prefix) + getTextIcism(),
-				component.toText());
-
-			component = testConstructor(WILL_SUCCEED, null, null, null, PostalAddressTest.getFixture(), null, null,
-				null);
 			assertEquals(PostalAddressTest.getFixture().getOutput(false, prefix) + getTextIcism(), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, null, null, null, null, VerticalExtentTest.getFixture(), null,
 				null);
+			assertEquals(VerticalExtentTest.getFixture().getOutput(true, prefix) + getHtmlIcism(), component.toHTML());
 			assertEquals(VerticalExtentTest.getFixture().getOutput(false, prefix) + getTextIcism(), component.toText());
 		}
 	}
