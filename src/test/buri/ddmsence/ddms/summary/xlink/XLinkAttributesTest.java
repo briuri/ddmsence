@@ -382,7 +382,7 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() throws InvalidDDMSException {
+	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 
@@ -390,40 +390,21 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 			addAttributes(element, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
 			XLinkAttributes attributes = new XLinkAttributes(element);
 			assertEquals(getExpectedOutput(true, true), attributes.getOutput(true, ""));
+			assertEquals(getExpectedOutput(false, true), attributes.getOutput(false, ""));
 			
 			XLinkAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE,
 				TEST_LABEL);
 			assertEquals(getExpectedOutput(true, true), dataAttributes.getOutput(true, ""));
-			
-			element = Util.buildDDMSElement("link", null);
-			addAttributes(element, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, TEST_ACTUATE);
-			attributes = new XLinkAttributes(element);
-			assertEquals(getExpectedOutput(true, false), attributes.getOutput(true, ""));
-			
-			dataAttributes = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, TEST_ACTUATE);
-			assertEquals(getExpectedOutput(true, false), dataAttributes.getOutput(true, ""));
-		}
-	}
-
-	public void testTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-
-			Element element = Util.buildDDMSElement("link", null);
-			addAttributes(element, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
-			XLinkAttributes attributes = new XLinkAttributes(element);
-			assertEquals(getExpectedOutput(false, true), attributes.getOutput(false, ""));
-
-			XLinkAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE,
-				TEST_LABEL);
 			assertEquals(getExpectedOutput(false, true), dataAttributes.getOutput(false, ""));
 			
 			element = Util.buildDDMSElement("link", null);
 			addAttributes(element, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, TEST_ACTUATE);
 			attributes = new XLinkAttributes(element);
+			assertEquals(getExpectedOutput(true, false), attributes.getOutput(true, ""));
 			assertEquals(getExpectedOutput(false, false), attributes.getOutput(false, ""));
 			
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, TEST_ACTUATE);
+			assertEquals(getExpectedOutput(true, false), dataAttributes.getOutput(true, ""));
 			assertEquals(getExpectedOutput(false, false), dataAttributes.getOutput(false, ""));
 		}
 	}

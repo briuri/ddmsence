@@ -244,28 +244,19 @@ public class LinkTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() throws InvalidDDMSException {
+	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedOutput(true), component.toHTML());
-
+			assertEquals(getExpectedOutput(false), component.toText());
+			
 			component = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getLocatorFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
-		}
-	}
-
-	public void testTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Link component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = testConstructor(WILL_SUCCEED, XLinkAttributesTest.getLocatorFixture());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
-
+	
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);

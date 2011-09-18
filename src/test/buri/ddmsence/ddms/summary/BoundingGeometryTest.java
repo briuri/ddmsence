@@ -259,30 +259,19 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() throws InvalidDDMSException {
+	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
 			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
-
+			assertEquals(getExpectedOutput(false), component.toText());
+			
 			component = testConstructor(WILL_SUCCEED, null, getPoints());
 			assertEquals(getExpectedOutput(true), component.toHTML());
+			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, getPolygons(), null);
 			assertEquals(getPolygons().get(0).getOutput(true, "boundingGeometry."), component.toHTML());
-		}
-	}
-
-	public void testTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = testConstructor(WILL_SUCCEED, null, getPoints());
-			assertEquals(getExpectedOutput(false), component.toText());
-
-			component = testConstructor(WILL_SUCCEED, getPolygons(), null);
 			assertEquals(getPolygons().get(0).getOutput(false, "boundingGeometry."), component.toText());
 		}
 	}

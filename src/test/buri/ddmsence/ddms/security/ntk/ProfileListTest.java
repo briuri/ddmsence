@@ -273,7 +273,7 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testHTMLOutput() throws InvalidDDMSException {
+	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
 
@@ -282,23 +282,10 @@ public class ProfileListTest extends AbstractComponentTestCase {
 
 			ProfileList component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(true), component.toHTML());
-
-			component = testConstructor(WILL_SUCCEED, getProfileList());
-			assertEquals(getExpectedOutput(true), component.toHTML());
-		}
-	}
-
-	public void testTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
-
-			ProfileList component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
 			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, getProfileList());
+			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
