@@ -47,7 +47,7 @@ import buri.ddmsence.util.Util;
  * <u>xlink:type</u>: (required, fixed as "locator")<br />
  * <u>xlink:href</u>: A URL to the target related resource. (required, must be a URI)<br />
  * <u>xlink:role</u>: The URI reference identifies some resource that describes the intended property. When no value is
- * supplied, no particular role value is to be inferred. (optional, required starting in DDMS 4.0)<br />
+ * supplied, no particular role value is to be inferred. (optional)<br />
  * <u>xlink:title</u>: Used to describe the meaning of a link or resource in a human-readable fashion, along the same
  * lines as the role or arcrole attribute.(optional)<br />
  * <u>xlink:label</u>: The label attribute provides a name for the locator link providing a way for an XLink arc-type
@@ -151,7 +151,7 @@ public final class Link extends AbstractBaseComponent {
 	 * <li>The type is set and has a value of "locator"</li>
 	 * <li>The href is set and non-empty.</li>
 	 * <li>The href is a valid URI.</li>
-	 * <li>The role is non-empty and a valid URI, starting in DDMS 4.0.</li>
+	 * <li>If set, the role is a valid URI, starting in DDMS 4.0</li>
 	 * <li>The label is a valid NCName, starting in DDMS 4.0.</li>
 	 * <li>Does not validate the security attributes. It is the parent class' responsibility
 	 * to do that.
@@ -169,7 +169,8 @@ public final class Link extends AbstractBaseComponent {
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (getDDMSVersion().isAtLeast("4.0")) {
-			Util.requireDDMSValidURI(getRole());
+			if (!Util.isEmpty(getRole()))
+				Util.requireDDMSValidURI(getRole());
 			if (!Util.isEmpty(getLabel()))
 				Util.requireValidNCName(getLabel());
 		}
