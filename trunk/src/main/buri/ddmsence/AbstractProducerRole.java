@@ -105,8 +105,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 			_entity = entity;
 			Element element = Util.buildDDMSElement(producerType, null);
 			element.appendChild(entity.getXOMElementCopy());
-			if (!Util.isEmpty(pocType))
-				Util.addDDMSAttribute(element, POC_TYPE_NAME, pocType);
+			Util.addDDMSAttribute(element, POC_TYPE_NAME, pocType);
 			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
 				: securityAttributes);			
 			_cachedSecurityAttributes.addTo(element);

@@ -43,7 +43,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * This class is decorated with {@link XLinkAttributes}. The xlink:type attribute is required and must have a fixed
+ * <u>{@link XLinkAttributes}</u>: The xlink:type attribute is required and must have a fixed
  * value of "locator". The xlink:href attribute is also required.<br />
  * <u>{@link SecurityAttributes}</u>: Only allowed when used in the context of a {@link RevisionRecall} 
  * (starting in DDMS 4.0). The classification and ownerProducer attributes are required.
