@@ -59,9 +59,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class SRSAttributes extends AbstractAttributeGroup {
-
-	private String _gmlNamespace = null;
-	
 	private String _cachedSrsName;
 	private Integer _cachedSrsDimension;
 	private List<String> _cachedAxisLabels;
@@ -84,7 +81,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public SRSAttributes(Element element) throws InvalidDDMSException {
-		_gmlNamespace = element.getNamespaceURI();
+		super(element.getNamespaceURI());
 		_cachedSrsName = element.getAttributeValue(SRS_NAME_NAME, NO_NAMESPACE);
 		String srsDimension = element.getAttributeValue(SRS_DIMENSION_NAME, NO_NAMESPACE);
 		if (!Util.isEmpty(srsDimension)) {
@@ -114,7 +111,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 */
 	public SRSAttributes(String srsName, Integer srsDimension, List<String> axisLabels, List<String> uomLabels)
 		throws InvalidDDMSException {
-		_gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
+		super(DDMSVersion.getCurrentVersion().getGmlNamespace());
 		if (axisLabels == null)
 			axisLabels = Collections.emptyList();
 		if (uomLabels == null)
@@ -133,10 +130,8 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if the DDMS version of the element is different
 	 */
 	protected void addTo(Element element) throws InvalidDDMSException {
-		if (!getGmlNamespace().equals(element.getNamespaceURI())) {
-			throw new InvalidDDMSException("These SRS attributes cannot decorate a DDMS component with"
-				+ " a different DDMS version.");
-		}	
+		DDMSVersion elementVersion = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
+		validateSameVersion(elementVersion);
 		Util.addAttribute(element, NO_PREFIX, SRS_NAME_NAME, NO_NAMESPACE, getSrsName());
 		if (getSrsDimension() != null)
 			Util.addAttribute(element, NO_PREFIX, SRS_DIMENSION_NAME, NO_NAMESPACE, String.valueOf(getSrsDimension()));
@@ -212,13 +207,6 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		result = 7 * result + getAxisLabels().hashCode();
 		result = 7 * result + getUomLabels().hashCode();
 		return (result);
-	}
-		
-	/**
-	 * Accessor for the GML namespace on the enclosing element.
-	 */
-	public String getGmlNamespace() {
-		return (Util.getNonNullString(_gmlNamespace));
 	}
 	
 	/**

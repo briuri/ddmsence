@@ -98,6 +98,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public ExtensibleAttributes(Element element) throws InvalidDDMSException {
+		super(element.getNamespaceURI());
 		buildReservedNames(element.getNamespaceURI());
 		
 		_cachedAttributes = new ArrayList<Attribute>();
@@ -130,6 +131,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ExtensibleAttributes(List<Attribute> attributes) throws InvalidDDMSException {
+		super(DDMSVersion.getCurrentVersion().getNamespace());
 		if (attributes == null)
 			attributes = Collections.emptyList();
 		_cachedAttributes = new ArrayList<Attribute>(attributes);

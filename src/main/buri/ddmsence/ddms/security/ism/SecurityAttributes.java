@@ -98,9 +98,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class SecurityAttributes extends AbstractAttributeGroup {
-	
-	private String _xmlNamespace = null;
-
 	private List<String> _cachedAtomicEnergyMarkings = null;
 	private String _cachedClassification = null;
 	private String _cachedClassificationReason = null;
@@ -235,7 +232,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public SecurityAttributes(Element element) throws InvalidDDMSException {
-		_xmlNamespace = element.getNamespaceURI();
+		super(element.getNamespaceURI());
 		String icNamespace = getDDMSVersion().getIsmNamespace();
 		_cachedAtomicEnergyMarkings = Util.getXsListAsList(element.getAttributeValue(ATOMIC_ENERGY_MARKINGS_NAME,
 			icNamespace));
@@ -296,7 +293,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 */
 	public SecurityAttributes(String classification, List<String> ownerProducers, Map<String, String> otherAttributes)
 		throws InvalidDDMSException {
-		_xmlNamespace = DDMSVersion.getCurrentVersion().getNamespace();
+		super(DDMSVersion.getCurrentVersion().getNamespace());
 		if (ownerProducers == null)
 			ownerProducers = Collections.emptyList();
 		if (otherAttributes == null)
@@ -352,12 +349,10 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * 
 	 * @param element the element to decorate
 	 */
-	public void addTo(Element element) throws InvalidDDMSException {		
-		if (!getDDMSVersion().equals(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()))) {
-			throw new InvalidDDMSException("These security attributes cannot decorate a DDMS component with"
-				+ " a different DDMS version.");
-		}			
-		String icNamespace = DDMSVersion.getVersionForNamespace(element.getNamespaceURI()).getIsmNamespace();
+	public void addTo(Element element) throws InvalidDDMSException {
+		DDMSVersion elementVersion = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
+		validateSameVersion(elementVersion);
+		String icNamespace = elementVersion.getIsmNamespace();
 		String icPrefix = PropertyReader.getPrefix("ism");
 		
 		Util.addAttribute(element, icPrefix, ATOMIC_ENERGY_MARKINGS_NAME, icNamespace,
@@ -697,14 +692,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		result = 7 * result + getTypeOfExemptedSource().hashCode();
 		return (result);
 	}	
-	
-	/**
-	 * Accessor for the DDMS namespace on the enclosing element.
-	 */
-	public DDMSVersion getDDMSVersion() {
-		return (DDMSVersion.getVersionForNamespace(_xmlNamespace));
-	}
-	
+		
 	/**
 	 * Accessor for the atomicEnergyMarkings attribute. Returns a copy.
 	 */

@@ -158,7 +158,24 @@ DETAILS:
 	- Type: The constructor has an additional parameter for optional description. (Issue #118)
 FIX:
 	Update method signatures in your code if you ever called them.	
+
+#########################################################################################################
+XLink attributes are now a standalone attribute group (Issue #166)
+
+SEVERITY: Minor
+DETAILS:
+	The XLink attributes which decorate a ddms:link element have been extracted into a standalone attribute
+	group.
+FIX:
+	Old link code:
 	
+	Link link = new Link(href, role, title, label);
+	
+	New link code:
+	
+	XLinkAttributes attributes = new XLinkAttributes("locator", href, role, title, label);
+	Link link = new Link(attributes);
+		
 #########################################################################################################
 Components no longer have a publicly-accessible constant, NAME (Issue #152)
 

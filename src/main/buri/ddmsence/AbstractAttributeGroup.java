@@ -28,6 +28,7 @@ import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.gml.SRSAttributes;
+import buri.ddmsence.util.DDMSVersion;
 
 /**
  * Top-level base class for attribute groups, specifically {@link SRSAttributes}, {@link SecurityAttributes}, and
@@ -41,12 +42,22 @@ import buri.ddmsence.ddms.summary.gml.SRSAttributes;
  */
 public abstract class AbstractAttributeGroup {
 
+	private String _xmlNamespace;
 	private List<ValidationMessage> _warnings;
 	
 	/**
-	 * Empty constructor
+	 * Stores the XML namespace of the enclosing element
 	 */
-	public AbstractAttributeGroup() {}
+	public AbstractAttributeGroup(String xmlNamespace) {
+		_xmlNamespace = xmlNamespace;
+	}
+	
+	/**
+	 * Accessor for the DDMS namespace on the enclosing element.
+	 */
+	public DDMSVersion getDDMSVersion() {
+		return (DDMSVersion.getVersionForNamespace(_xmlNamespace));
+	}
 	
 	/**
 	 * Base validation case for attribute groups.
@@ -58,7 +69,20 @@ public abstract class AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {}
-			
+		
+	/**
+	 * Compares the DDMS version of these attributes to another DDMS version
+	 * 
+	 * @param version the version to test
+	 * @throws InvalidDDMSException if the versions do not match
+	 */
+	protected void validateSameVersion(DDMSVersion version) throws InvalidDDMSException {
+		if (!getDDMSVersion().equals(version)) {
+			throw new InvalidDDMSException("These attributes cannot decorate a component with"
+				+ " a different DDMS version.");
+		}	
+	}
+	
 	/**
 	 * Returns a list of any warning messages that occurred during validation. Warnings do not prevent a valid component
 	 * from being formed.
