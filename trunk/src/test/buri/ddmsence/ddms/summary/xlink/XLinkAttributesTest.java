@@ -420,6 +420,7 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 
 			// Validation
 			builder = new XLinkAttributes.Builder();
+			builder.setType("locator");
 			builder.setHref(INVALID_URI);
 			try {
 				builder.commit();

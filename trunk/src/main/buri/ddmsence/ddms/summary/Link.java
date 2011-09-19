@@ -141,6 +141,19 @@ public final class Link extends AbstractBaseComponent {
 	}
 	
 	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>Include any warnings from the XLink attributes.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		if (getXLinkAttributes() != null)
+			addWarnings(getXLinkAttributes().getValidationWarnings(), true);
+		super.validateWarnings();
+	}
+	
+	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix) {

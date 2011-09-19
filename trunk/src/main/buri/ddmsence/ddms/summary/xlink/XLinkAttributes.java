@@ -131,6 +131,22 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
+	 * Constructor which builds from raw data for an unknown type.
+	 * 
+	 * @param href	the link href (optional)
+	 * @param role	the role attribute (optional)
+	 * @param title the link title (optional)
+	 * @param arcrole the arcrole (optional)
+	 * @param show the show token (optional)
+	 * @param actuate the actuate token (optional)
+	 * @throws InvalidDDMSException
+	 */
+	public XLinkAttributes() throws InvalidDDMSException {
+		super(DDMSVersion.getCurrentVersion().getNamespace());
+		validate();
+	}
+	
+	/**
 	 * Constructor which builds from raw data for a locator link.
 	 * 
 	 * @param href	the link href (optional)
@@ -159,7 +175,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * @param arcrole the arcrole (optional)
 	 * @param show the show token (optional)
 	 * @param actuate the actuate token (optional)
-	 * @throws InvalidDDMSException
+	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public XLinkAttributes(String href, String role, String title, String arcrole, String show, String actuate)
 	throws InvalidDDMSException {
@@ -390,7 +406,8 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 				return (new XLinkAttributes(getHref(), getRole(), getTitle(), getLabel()));
 			if (TYPE_SIMPLE.equals(getType()))
 				return (new XLinkAttributes(getHref(), getRole(), getTitle(), getArcrole(), getShow(), getActuate()));
-			throw new InvalidDDMSException("The type attribute must be one of " + TYPE_TYPES);
+			else
+				return (new XLinkAttributes());
 		}
 		
 		/**
