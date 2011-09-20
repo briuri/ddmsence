@@ -38,14 +38,24 @@ import buri.ddmsence.util.Util;
  * Attribute group for the XLINK attributes.
  * 
  * <p>
- * This class only models the subset of attributes and values that are employed by the DDMS specification. Determinations
- * about whether an attribute is optional or required depend on the decorated class ({@link Link} or {@link TaskID}).
+ * This class only models the subset of attributes and values that are employed by the DDMS specification. 
+ * Determinations about whether an attribute is optional or required depend on the decorated class 
+ * ({@link Link}, {@link RevisionRecall}, or {@link TaskID}).
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Locator Attributes (for ddms:link)</th></tr><tr><td class="infoBody">
  * <u>xlink:type</u>: the type of link (optional, but fixed as "locator" if set)<br />
  * <u>xlink:href</u>: A target URL (optional)<br />
  * <u>xlink:role</u>: The URI reference identifies some resource that describes the intended property. (optional)<br />
+ * <u>xlink:title</u>: Used to describe the meaning of a link or resource in a human-readable fashion, along the same
+ * lines as the role or arcrole attribute. (optional)<br />
+ * <u>xlink:label</u>: The label attribute provides a name for the link (optional)<br />
+ * </td></tr></table>
+ * 
+ * <table class="info"><tr class="infoHeader"><th>Resource Attributes (for ddms:revisionRecall)</th></tr><tr><td class="infoBody">
+ * <u>xlink:type</u>: (optional, but fixed as "resource" if set)<br />
+ * <u>xlink:role</u>: The URI reference identifies some resource that describes the intended property. When no value is
+ * supplied, no particular role value is to be inferred. (optional, but must be non-empty if set)<br />
  * <u>xlink:title</u>: Used to describe the meaning of a link or resource in a human-readable fashion, along the same
  * lines as the role or arcrole attribute. (optional)<br />
  * <u>xlink:label</u>: The label attribute provides a name for the link (optional)<br />
@@ -88,11 +98,13 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	
 	private static final String TYPE_LOCATOR = "locator";
 	private static final String TYPE_SIMPLE = "simple";
+	private static final String TYPE_RESOURCE = "resource";
 	
 	private static Set<String> TYPE_TYPES = new HashSet<String>();
 	static {
 		TYPE_TYPES.add(TYPE_LOCATOR);
-		TYPE_TYPES.add(TYPE_SIMPLE);	
+		TYPE_TYPES.add(TYPE_SIMPLE);
+		TYPE_TYPES.add(TYPE_RESOURCE);
 	}
 	private static Set<String> SHOW_TYPES = new HashSet<String>();
 	static {
@@ -133,12 +145,6 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	/**
 	 * Constructor which builds from raw data for an unknown type.
 	 * 
-	 * @param href	the link href (optional)
-	 * @param role	the role attribute (optional)
-	 * @param title the link title (optional)
-	 * @param arcrole the arcrole (optional)
-	 * @param show the show token (optional)
-	 * @param actuate the actuate token (optional)
 	 * @throws InvalidDDMSException
 	 */
 	public XLinkAttributes() throws InvalidDDMSException {
@@ -147,16 +153,32 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
-	 * Constructor which builds from raw data for a locator link.
+	 * Constructor which builds from raw data for a resource link.
 	 * 
-	 * @param href	the link href (optional)
 	 * @param role	the role attribute (optional)
 	 * @param title the link title (optional)
 	 * @param label the name of the link (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public XLinkAttributes(String href, String role, String title, String label)
-		throws InvalidDDMSException {
+	public XLinkAttributes(String role, String title, String label) throws InvalidDDMSException {
+		super(DDMSVersion.getCurrentVersion().getNamespace());
+		_type = TYPE_RESOURCE;
+		_role = role;
+		_title = title;
+		_label = label;
+		validate();
+	}
+
+	/**
+	 * Constructor which builds from raw data for a locator link.
+	 * 
+	 * @param href the link href (optional)
+	 * @param role the role attribute (optional)
+	 * @param title the link title (optional)
+	 * @param label the name of the link (optional)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public XLinkAttributes(String href, String role, String title, String label) throws InvalidDDMSException {
 		super(DDMSVersion.getCurrentVersion().getNamespace());
 		_type = TYPE_LOCATOR;
 		_href = href;
@@ -178,7 +200,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public XLinkAttributes(String href, String role, String title, String arcrole, String show, String actuate)
-	throws InvalidDDMSException {
+		throws InvalidDDMSException {
 		super(DDMSVersion.getCurrentVersion().getNamespace());
 		_type = TYPE_SIMPLE;
 		_href = href;
@@ -406,6 +428,8 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 				return (new XLinkAttributes(getHref(), getRole(), getTitle(), getLabel()));
 			if (TYPE_SIMPLE.equals(getType()))
 				return (new XLinkAttributes(getHref(), getRole(), getTitle(), getArcrole(), getShow(), getActuate()));
+			if (TYPE_RESOURCE.equals(getType()))
+				return (new XLinkAttributes(getRole(), getTitle(), getLabel()));
 			else
 				return (new XLinkAttributes());
 		}
