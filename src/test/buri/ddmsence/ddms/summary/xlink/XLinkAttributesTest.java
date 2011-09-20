@@ -69,6 +69,15 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 	}
 	
 	/**
+	 * Returns a canned fixed value attributes object for testing higher-level components.
+	 * 
+	 * @return XLinkAttributes
+	 */
+	public static XLinkAttributes getResourceFixture() throws InvalidDDMSException {
+		return (new XLinkAttributes(TEST_ROLE, TEST_TITLE, TEST_LABEL));
+	}
+	
+	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
 	 * @param expectFailure true if this operation is expected to fail, false otherwise
@@ -87,6 +96,26 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 		return (attributes);
 	}
 
+	/**
+	 * Helper method to create an object which is expected to be valid.
+	 * 
+	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param role the role attribute (optional)
+	 * @param title the link title (optional)
+	 * @param label the name of the link (optional)
+	 * @return a valid object
+	 */
+	private XLinkAttributes testConstructor(boolean expectFailure, String role, String title, String label) {
+		XLinkAttributes attributes = null;
+		try {
+			attributes = new XLinkAttributes(role, title, label);
+			checkConstructorSuccess(expectFailure);
+		} catch (InvalidDDMSException e) {
+			checkConstructorFailure(expectFailure, e);
+		}
+		return (attributes);
+	}
+	
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
@@ -135,15 +164,16 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 	/**
 	 * Returns the expected HTML or Text output for this unit test
 	 */
-	private String getExpectedOutput(boolean isHTML, boolean isLocator) {
+	private String getExpectedOutput(boolean isHTML, String type) {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "type", isLocator ? "locator" : "simple"));
-		text.append(buildOutput(isHTML, "href", TEST_HREF));
+		text.append(buildOutput(isHTML, "type", type));
+		if (!"resource".equals(type))
+			text.append(buildOutput(isHTML, "href", TEST_HREF));
 		text.append(buildOutput(isHTML, "role", TEST_ROLE));
 		text.append(buildOutput(isHTML, "title", TEST_TITLE));
-		if (isLocator)
+		if (!"simple".equals(type))
 			text.append(buildOutput(isHTML, "label", TEST_LABEL));
-		else {
+		if ("simple".equals(type)) {
 			text.append(buildOutput(isHTML, "arcrole", TEST_ARCROLE));
 			text.append(buildOutput(isHTML, "show", TEST_SHOW));
 			text.append(buildOutput(isHTML, "actuate", TEST_ACTUATE));
@@ -193,6 +223,24 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 		Util.addAttribute(element, xlinkPrefix, "label", xlinkNamespace, label);
 	}
 		
+	/**
+	 * Helper method to add attributes to a XOM element. The element is not validated.
+	 * 
+	 * @param element element
+	 * @param href the link href (optional)
+	 * @param role the role attribute (optional)
+	 * @param title the link title (optional)
+	 * @param label the name of the link (optional)
+	 */
+	private void addAttributes(Element element, String role, String title, String label) {
+		String xlinkPrefix = PropertyReader.getPrefix("xlink");
+		String xlinkNamespace = DDMSVersion.getCurrentVersion().getXlinkNamespace();
+		Util.addAttribute(element, xlinkPrefix, "type", xlinkNamespace, "resource");
+		Util.addAttribute(element, xlinkPrefix, "role", xlinkNamespace, role);
+		Util.addAttribute(element, xlinkPrefix, "title", xlinkNamespace, title);
+		Util.addAttribute(element, xlinkPrefix, "label", xlinkNamespace, label);
+	}
+	
 	public void testElementConstructorValid() {
 		for (String versionString : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(versionString);
@@ -207,7 +255,12 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 			addAttributes(element, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, TEST_ACTUATE);
 			testConstructor(WILL_SUCCEED, element);
 			
-			// No optional fields (both)
+			// All fields (resource)
+			element = Util.buildDDMSElement("link", null);
+			addAttributes(element,  TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			testConstructor(WILL_SUCCEED, element);
+			
+			// No optional fields (all)
 			element = Util.buildDDMSElement("link", null);
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -222,7 +275,10 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 			// All fields (simple)
 			testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, TEST_ACTUATE);
 			
-			// No optional fields (both)
+			// All fields (resource)
+			testConstructor(WILL_SUCCEED, TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			
+			// No optional fields (all)
 			testConstructor(WILL_SUCCEED, null, null, null, null);
 		}
 	}
@@ -324,6 +380,15 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, TEST_ACTUATE);
 			assertEquals(elementAttributes, dataAttributes);
 			assertEquals(elementAttributes.hashCode(), dataAttributes.hashCode());
+			
+			// resource version
+			element = Util.buildDDMSElement("link", null);
+			addAttributes(element, TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			elementAttributes = testConstructor(WILL_SUCCEED, element);
+			dataAttributes = testConstructor(WILL_SUCCEED, TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			assertEquals(elementAttributes, dataAttributes);
+			assertEquals(elementAttributes.hashCode(), dataAttributes.hashCode());
+			
 		}
 	}
 
@@ -367,7 +432,21 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 			assertFalse(elementAttributes.equals(dataAttributes));
 			
 			dataAttributes = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, "onRequest");
-			assertFalse(elementAttributes.equals(dataAttributes));			
+			assertFalse(elementAttributes.equals(dataAttributes));		
+			
+			// resource version
+			element = Util.buildDDMSElement("link", null);
+			addAttributes(element, TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			elementAttributes = testConstructor(WILL_SUCCEED, element);
+			dataAttributes = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_TITLE, TEST_LABEL);
+			assertFalse(elementAttributes.equals(dataAttributes));
+			
+			dataAttributes = testConstructor(WILL_SUCCEED, TEST_ROLE, DIFFERENT_VALUE, TEST_LABEL);
+			assertFalse(elementAttributes.equals(dataAttributes));
+			
+			dataAttributes = testConstructor(WILL_SUCCEED, TEST_ROLE, TEST_TITLE, DIFFERENT_VALUE);
+			assertFalse(elementAttributes.equals(dataAttributes));
+			
 		}
 	}
 
@@ -389,23 +468,33 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement("link", null);
 			addAttributes(element, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
 			XLinkAttributes attributes = new XLinkAttributes(element);
-			assertEquals(getExpectedOutput(true, true), attributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false, true), attributes.getOutput(false, ""));
-			
-			XLinkAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE,
-				TEST_LABEL);
-			assertEquals(getExpectedOutput(true, true), dataAttributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false, true), dataAttributes.getOutput(false, ""));
-			
+			assertEquals(getExpectedOutput(true, "locator"), attributes.getOutput(true, ""));
+			assertEquals(getExpectedOutput(false, "locator"), attributes.getOutput(false, ""));
+
+			XLinkAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			assertEquals(getExpectedOutput(true, "locator"), dataAttributes.getOutput(true, ""));
+			assertEquals(getExpectedOutput(false, "locator"), dataAttributes.getOutput(false, ""));
+
 			element = Util.buildDDMSElement("link", null);
 			addAttributes(element, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, TEST_ACTUATE);
 			attributes = new XLinkAttributes(element);
-			assertEquals(getExpectedOutput(true, false), attributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false, false), attributes.getOutput(false, ""));
-			
-			dataAttributes = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, TEST_ACTUATE);
-			assertEquals(getExpectedOutput(true, false), dataAttributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false, false), dataAttributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(true, "simple"), attributes.getOutput(true, ""));
+			assertEquals(getExpectedOutput(false, "simple"), attributes.getOutput(false, ""));
+
+			dataAttributes = testConstructor(WILL_SUCCEED, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW,
+				TEST_ACTUATE);
+			assertEquals(getExpectedOutput(true, "simple"), dataAttributes.getOutput(true, ""));
+			assertEquals(getExpectedOutput(false, "simple"), dataAttributes.getOutput(false, ""));
+
+			element = Util.buildDDMSElement("link", null);
+			addAttributes(element, TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			attributes = new XLinkAttributes(element);
+			assertEquals(getExpectedOutput(true, "resource"), attributes.getOutput(true, ""));
+			assertEquals(getExpectedOutput(false, "resource"), attributes.getOutput(false, ""));
+
+			dataAttributes = testConstructor(WILL_SUCCEED, TEST_ROLE, TEST_TITLE, TEST_LABEL);
+			assertEquals(getExpectedOutput(true, "resource"), dataAttributes.getOutput(true, ""));
+			assertEquals(getExpectedOutput(false, "resource"), dataAttributes.getOutput(false, ""));
 		}
 	}
 
@@ -432,6 +521,8 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 			builder.setHref(TEST_HREF);
 			builder.commit();
 			builder.setType("simple");
+			builder.commit();
+			builder.setType("resource");
 			builder.commit();
 
 			// Empty Tests
