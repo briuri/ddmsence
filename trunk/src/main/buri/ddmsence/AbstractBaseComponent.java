@@ -308,8 +308,8 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return (true);
-		if (!(obj instanceof AbstractBaseComponent))
-			return (false);
+		if (!(obj instanceof AbstractBaseComponent) || !(getClass().equals(obj.getClass())))
+			return (false);		
 		AbstractBaseComponent test = (AbstractBaseComponent) obj;
 		return (getName().equals(test.getName())
 			&& getNamespace().equals(test.getNamespace())

@@ -85,8 +85,8 @@ public class RoleEntityTest extends TestCase {
 	}
 
 	public void testExtensibleSuccess() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
 			List<String> names = new ArrayList<String>();

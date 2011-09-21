@@ -24,7 +24,6 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -32,7 +31,8 @@ import buri.ddmsence.util.Util;
 /**
  * <p>Tests related to ISM:NoticeText elements</p>
  * 
- * <p> The valid instance of ISM:NoticeText is generated, rather than relying on the ISM schemas to validate an XML file.</p>
+ * <p> The valid instance of ISM:NoticeText is generated, rather than relying on the ISM schemas to validate an XML
+ * file.</p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -48,7 +48,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	public NoticeTextTest() {
 		super(null);
 	}
-		
+
 	/**
 	 * Returns a canned fixed value recordKeeper for testing.
 	 * 
@@ -58,7 +58,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String ismPrefix = PropertyReader.getPrefix("ism");
 		String ismNs = version.getIsmNamespace();
-		
+
 		Element element = Util.buildElement(ismPrefix, NoticeText.getName(version), ismNs, TEST_VALUE);
 		element.addNamespaceDeclaration(ismPrefix, version.getIsmNamespace());
 		SecurityAttributesTest.getFixture(false).addTo(element);
@@ -127,30 +127,24 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		return (xml.toString());
 	}
 
-	public void testNameAndNamespace() throws InvalidDDMSException  {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+	public void testNameAndNamespace() throws InvalidDDMSException {
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			NoticeText component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(NoticeText.getName(version), component.getName());
-			assertEquals(PropertyReader.getPrefix("ism"), component.getPrefix());
-			assertEquals(PropertyReader.getPrefix("ism") + ":" + NoticeText.getName(version),
-				component.getQualifiedName());
-
-			// Wrong name/namespace
-			Element element = Util.buildDDMSElement("wrongName", null);
-			testConstructor(WILL_FAIL, element);
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_ISM_PREFIX,
+				NoticeText.getName(version));
+			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String ismPrefix = PropertyReader.getPrefix("ism");
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
 
@@ -158,15 +152,16 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getFixtureElement());
 
 			// No optional fields
-			Element element = Util.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
+			Element element = Util
+				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
 
 	public void testDataConstructorValid() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -180,8 +175,8 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -191,8 +186,8 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -202,10 +197,10 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String ismPrefix = PropertyReader.getPrefix("ism");
-			
+
 			if (!version.isAtLeast("4.0"))
 				continue;
 
@@ -214,7 +209,8 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty value
-			Element element = Util.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
+			Element element = Util
+				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
@@ -225,8 +221,8 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -240,8 +236,8 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -255,22 +251,9 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
-
-			NoticeText elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			Rights wrongComponent = new Rights(true, true, true);
-			assertFalse(elementComponent.equals(wrongComponent));
-		}
-	}
-
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -286,8 +269,8 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -311,8 +294,8 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -327,10 +310,10 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			assertEquals(builder.commit(), component);
 		}
 	}
-	
+
 	public void testBuilderLazyList() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			NoticeText.Builder builder = new NoticeText.Builder();
 			assertNotNull(builder.getPocTypes().get(1));
 		}

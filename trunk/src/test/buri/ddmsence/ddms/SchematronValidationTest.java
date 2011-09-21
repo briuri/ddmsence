@@ -48,8 +48,8 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 	public SchematronValidationTest() throws InvalidDDMSException {
 		super("resource.xml");
 		versionToResourceMap = new HashMap<String, Resource>();
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			versionToResourceMap.put(versionString, new Resource(getValidElement(versionString)));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			versionToResourceMap.put(sVersion, new Resource(getValidElement(sVersion)));
 		}
 	}
 
@@ -60,13 +60,13 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 		supportedXslt1Processors.add("net.sf.saxon.TransformerFactoryImpl");
 		for (String processor : supportedXslt1Processors) {
 			PropertyReader.setProperty("xml.transform.TransformerFactory", processor);
-			for (String versionString : DDMSVersion.getSupportedVersions()) {
-				DDMSVersion version = DDMSVersion.getVersionFor(versionString);
-				Resource resource = versionToResourceMap.get(versionString);
+			for (String sVersion : DDMSVersion.getSupportedVersions()) {
+				DDMSVersion version = DDMSVersion.getVersionFor(sVersion);
+				Resource resource = versionToResourceMap.get(sVersion);
 				String ddmsNamespace = resource.getNamespace();
 				String resourceName = Resource.getName(version);
-				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/"
-					+ versionString + "/testSchematronXslt1.sch"));
+				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/" + sVersion
+					+ "/testSchematronXslt1.sch"));
 				assertEquals(2, messages.size());
 
 				String text = "A DDMS Resource must have an unknownElement child. This will always fail.";
@@ -87,13 +87,13 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 		String[] supportedXslt1Processors = new String[] { "net.sf.saxon.TransformerFactoryImpl" };
 		for (String processor : supportedXslt1Processors) {
 			PropertyReader.setProperty("xml.transform.TransformerFactory", processor);
-			for (String versionString : DDMSVersion.getSupportedVersions()) {
-				DDMSVersion version = DDMSVersion.getVersionFor(versionString);
-				Resource resource = versionToResourceMap.get(versionString);
+			for (String sVersion : DDMSVersion.getSupportedVersions()) {
+				DDMSVersion version = DDMSVersion.getVersionFor(sVersion);
+				Resource resource = versionToResourceMap.get(sVersion);
 				String ddmsNamespace = resource.getNamespace();
 				String gmlNamespace = version.getGmlNamespace();
-				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/"
-					+ versionString + "/testSchematronXslt2.sch"));
+				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/" + sVersion
+					+ "/testSchematronXslt2.sch"));
 				assertEquals(1, messages.size());
 
 				String text = "The second coordinate in a gml:pos element must be 40.2 degrees.";

@@ -49,7 +49,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	public TaskingInfoTest() {
 		super(null);
 	}
-	
+
 	/**
 	 * Returns a canned fixed value for testing.
 	 * 
@@ -81,7 +81,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Helper method to create a fixture
 	 */
@@ -95,7 +95,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Helper method to create a fixture
 	 */
@@ -152,7 +152,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		List<Addressee> addressees, Description description, TaskID taskID) {
 		TaskingInfo component = null;
 		try {
-			component = new TaskingInfo(requesterInfos, addressees, description, taskID, SecurityAttributesTest.getFixture(false));
+			component = new TaskingInfo(requesterInfos, addressees, description, taskID,
+				SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -192,54 +193,42 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:taskingInfo ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t<ddms:requesterInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t\t<ddms:organization>\n");
-		xml.append("\t\t\t<ddms:name>Name</ddms:name>\n");
-		xml.append("\t\t</ddms:organization>\n");
-		xml.append("\t</ddms:requesterInfo>\n");
-		xml.append("\t<ddms:addressee ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t\t<ddms:organization>\n");
-		xml.append("\t\t\t<ddms:name>Name</ddms:name>\n");
-		xml.append("\t\t</ddms:organization>\n");
-		xml.append("\t</ddms:addressee>\n");
-		xml.append("\t<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Tasking Info</ddms:description>\n");
-		xml.append("\t<ddms:taskID xmlns:common=\"urn:us:gov:ic:common\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:requesterInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:organization><ddms:name>Name</ddms:name></ddms:organization>");
+		xml.append("</ddms:requesterInfo>");
+		xml.append("<ddms:addressee ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:organization><ddms:name>Name</ddms:name></ddms:organization>");
+		xml.append("</ddms:addressee>");
+		xml.append("<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Tasking Info</ddms:description>");
+		xml.append("<ddms:taskID xmlns:common=\"urn:us:gov:ic:common\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
 		xml.append("ddms:taskingSystem=\"MDR\" common:network=\"NIPRNet\" common:otherNetwork=\"PBS\" xlink:type=\"simple\" ");
 		xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:arcrole=\"arcrole\" ");
-		xml.append("xlink:show=\"new\" xlink:actuate=\"onLoad\">Task #12345</ddms:taskID>\n");
-		xml.append("</ddms:taskingInfo>\n");
-		return (formatXml(xml.toString(), preserveFormatting));
+		xml.append("xlink:show=\"new\" xlink:actuate=\"onLoad\">Task #12345</ddms:taskID>");
+		xml.append("</ddms:taskingInfo>");
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			TaskingInfo component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(TaskingInfo.getName(version), component.getName());
-			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
-			assertEquals(PropertyReader.getPrefix("ddms") + ":" + TaskingInfo.getName(version),
-				component.getQualifiedName());
-
-			// Wrong name/namespace
-			Element element = Util.buildDDMSElement("wrongName", null);
-			testConstructor(WILL_FAIL, element);
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_DDMS_PREFIX,
+				TaskingInfo.getName(version));
+			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -256,14 +245,15 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(), getTaskIDFixture());
+			testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(),
+				getTaskIDFixture());
 
 			// No optional fields
 			testConstructor(WILL_SUCCEED, null, null, null, getTaskIDFixture());
@@ -271,8 +261,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -290,29 +280,28 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			// Missing taskID
 			testConstructor(WILL_FAIL, null, null, null, null);
-						
+
 			// Missing security attributes
 			try {
 				new TaskingInfo(null, null, null, new TaskID("test", null, null, null, null), null);
 				fail("Allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
+			} catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
 	}
 
 	public void testWarnings() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -324,58 +313,50 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			TaskingInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			TaskingInfo dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(), getTaskIDFixture());
+			TaskingInfo dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(),
+				getDescriptionFixture(), getTaskIDFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			TaskingInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			TaskingInfo dataComponent = testConstructor(WILL_SUCCEED, null, getAddresseeList(), getDescriptionFixture(), getTaskIDFixture());
+			TaskingInfo dataComponent = testConstructor(WILL_SUCCEED, null, getAddresseeList(),
+				getDescriptionFixture(), getTaskIDFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), null, getDescriptionFixture(), getTaskIDFixture());
+			dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), null, getDescriptionFixture(),
+				getTaskIDFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), null, getTaskIDFixture());
+			dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), null,
+				getTaskIDFixture());
 			assertFalse(elementComponent.equals(dataComponent));
-			
+
 			TaskID taskID = new TaskID("Test", null, null, null, null);
-			dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(), taskID);
+			dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(),
+				getDescriptionFixture(), taskID);
 			assertFalse(elementComponent.equals(dataComponent));
-		}
-	}
-
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
-
-			TaskingInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			Rights wrongComponent = new Rights(true, true, true);
-			assertFalse(elementComponent.equals(wrongComponent));
 		}
 	}
 
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -383,25 +364,27 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			TaskingInfo component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-			
-			component = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(), getTaskIDFixture());
+
+			component = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(),
+				getTaskIDFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			TaskingInfo component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
+			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(), getTaskIDFixture());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
+			component = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(),
+				getTaskIDFixture());
+			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
 
@@ -418,8 +401,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -439,7 +422,6 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			builder = new TaskingInfo.Builder();
 			builder.getAddressees().get(1).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
-			
 
 			// Validation
 			builder = new TaskingInfo.Builder();

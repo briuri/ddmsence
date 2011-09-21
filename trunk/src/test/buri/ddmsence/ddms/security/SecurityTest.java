@@ -22,7 +22,6 @@ package buri.ddmsence.ddms.security;
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.security.ntk.Access;
@@ -64,14 +63,15 @@ public class SecurityTest extends AbstractComponentTestCase {
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Generates a NoticeList for testing.
 	 */
 	private NoticeList getNoticeList() throws InvalidDDMSException {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new NoticeList(NoticeListTest.getFixtureElement()) : null);
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new NoticeList(NoticeListTest.getFixtureElement())
+			: null);
 	}
-	
+
 	/**
 	 * Generates an Access for testing.
 	 */
@@ -117,7 +117,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeType", "noticeType"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeReason", "noticeReason"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeDate", "2011-09-15"));
-			text.append(buildOutput(isHTML, prefix + "noticeList.notice.unregisteredNoticeType", "unregisteredNoticeType"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.notice.unregisteredNoticeType",
+				"unregisteredNoticeType"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.classification", "U"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.ownerProducer", "USA"));
 			text.append(AccessTest.getFixture().getOutput(isHTML, "security."));
@@ -162,25 +163,20 @@ public class SecurityTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			Security component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(Security.getName(version), component.getName());
-			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
-			assertEquals(PropertyReader.getPrefix("ddms") + ":" + Security.getName(version),
-				component.getQualifiedName());
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// Wrong name/namespace
-			Element element = Util.buildDDMSElement("wrongName", null);
-			testConstructor(WILL_FAIL, element);
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				Security.getName(version));
+			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 
 			// No optional fields
 			if (version.isAtLeast("4.0")) {
@@ -194,8 +190,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
 			testConstructor(WILL_SUCCEED, getNoticeList(), getAccess());
 
@@ -205,29 +201,29 @@ public class SecurityTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// Missing excludeFromRollup
 			Element element = Util.buildDDMSElement(Security.getName(version), null);
 			testConstructor(WILL_FAIL, element);
 
 			// Incorrect excludeFromRollup
 			element = Util.buildDDMSElement(Security.getName(version), null);
-			Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
-				version.getIsmNamespace(), "false");
+			Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version.getIsmNamespace(),
+				"false");
 			testConstructor(WILL_FAIL, element);
 
 			// Invalid excludeFromRollup
 			element = Util.buildDDMSElement(Security.getName(version), null);
-			Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
-				version.getIsmNamespace(), "aardvark");
+			Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version.getIsmNamespace(),
+				"aardvark");
 			testConstructor(WILL_FAIL, element);
 		}
 	}
 
 	public void testDataConstructorInvalid() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			// Bad security attributes
 			try {
 				new Security(null, null, (SecurityAttributes) null);
@@ -239,10 +235,10 @@ public class SecurityTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Security component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Security component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Nested warnings
@@ -250,8 +246,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 				Element element = Util.buildDDMSElement(Security.getName(version), null);
 				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
 					version.getIsmNamespace(), "true");
-				Element accessElement = Util.buildElement(PropertyReader.getPrefix("ntk"),
-					Access.getName(version), version.getNtkNamespace(), null);
+				Element accessElement = Util.buildElement(PropertyReader.getPrefix("ntk"), Access.getName(version),
+					version.getNtkNamespace(), null);
 				SecurityAttributesTest.getFixture(false).addTo(accessElement);
 				element.appendChild(accessElement);
 				SecurityAttributesTest.getFixture(false).addTo(element);
@@ -265,9 +261,9 @@ public class SecurityTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Security elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Security elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			Security dataComponent = testConstructor(WILL_SUCCEED, getNoticeList(), getAccess());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -275,36 +271,27 @@ public class SecurityTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (version.isAtLeast("4.0")) {
-				Security elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+				Security elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 				Security dataComponent = testConstructor(WILL_SUCCEED, getNoticeList(), null);
 				assertFalse(elementComponent.equals(dataComponent));
-				
+
 				dataComponent = testConstructor(WILL_SUCCEED, null, getAccess());
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 		}
 	}
 
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Security elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Rights wrongComponent = new Rights(true, true, true);
-			assertFalse(elementComponent.equals(wrongComponent));
-		}
-	}
-
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Security component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Security component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-			
+
 			component = testConstructor(WILL_SUCCEED, getNoticeList(), getAccess());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -312,9 +299,9 @@ public class SecurityTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Security component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Security component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, getNoticeList(), getAccess());
@@ -340,9 +327,9 @@ public class SecurityTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Security component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Security component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 
 			// Equality after Building
 			Security.Builder builder = new Security.Builder(component);

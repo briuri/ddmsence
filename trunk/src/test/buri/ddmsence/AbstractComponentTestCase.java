@@ -25,6 +25,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 import nu.xom.Element;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSReader;
@@ -50,6 +51,10 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	protected static final boolean WILL_FAIL = true;
 	protected static final String INVALID_URI = ":::::";
 	protected static final String DIFFERENT_VALUE = "Different";
+	protected static final String DEFAULT_DDMS_PREFIX = PropertyReader.getPrefix("ddms");
+	protected static final String DEFAULT_GML_PREFIX = PropertyReader.getPrefix("gml");
+	protected static final String DEFAULT_ISM_PREFIX = PropertyReader.getPrefix("ism");
+	protected static final String DEFAULT_NTK_PREFIX = PropertyReader.getPrefix("ntk");
 
 	/**
 	 * Resets the in-use version of DDMS.
@@ -76,16 +81,15 @@ public abstract class AbstractComponentTestCase extends TestCase {
 			return;
 		try {
 			DDMSReader reader = null;
-			for (String versionString : DDMSVersion.getSupportedVersions()) {
-				if (getValidElement(versionString) == null) {
+			for (String sVersion : DDMSVersion.getSupportedVersions()) {
+				if (getValidElement(sVersion) == null) {
 					if (reader == null)
 						reader = new DDMSReader();
-					File file = new File(PropertyReader.getProperty("test.unit.data") + versionString,
-						validDocumentFile);
+					File file = new File(PropertyReader.getProperty("test.unit.data") + sVersion, validDocumentFile);
 					if (file.exists()) {
 						Element element = reader.getElement(file);
 						synchronized (_elementMap) {
-							_elementMap.put(getType() + ":" + versionString, element);
+							_elementMap.put(getType() + ":" + sVersion, element);
 						}
 					}
 				}
@@ -94,6 +98,13 @@ public abstract class AbstractComponentTestCase extends TestCase {
 			throw new RuntimeException("Cannot run tests without valid DDMSReader and valid unit test object.", e);
 		}
 
+	}
+	
+	/**
+	 * Convenience method to create a XOM element which is not a valid DDMS component because of an incorrect name.
+	 */
+	protected static Element getWrongNameElementFixture() {
+		return (Util.buildDDMSElement("wrongName", null));
 	}
 
 	/**
@@ -139,6 +150,19 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	 */
 	protected void assertErrorEquality(String text, String locator, ValidationMessage message) {
 		assertEquals(ValidationMessage.newError(text, locator), message);
+	}
+
+	/**
+	 * Shared method for testing the name and namespace of a created component.
+	 * 
+	 * @param component the component to test
+	 * @param prefix the expected XML prefix
+	 * @param name the expected XML local name
+	 */
+	protected void assertNameAndNamespace(IDDMSComponent component, String prefix, String name) {
+		assertEquals(name, component.getName());
+		assertEquals(prefix, component.getPrefix());
+		assertEquals(prefix + ":" + name, component.getQualifiedName());
 	}
 
 	/**

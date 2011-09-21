@@ -24,7 +24,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import nu.xom.Element;
-import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Language;
