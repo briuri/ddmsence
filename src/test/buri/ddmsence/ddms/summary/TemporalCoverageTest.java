@@ -152,9 +152,9 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				TemporalCoverage.getName(version));
 			testConstructor(WILL_FAIL, getWrongNameElementFixture());
@@ -162,7 +162,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorValid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
@@ -184,7 +184,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_NAME, TEST_START, TEST_END);
@@ -195,7 +195,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing start
@@ -228,7 +228,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Wrong date format (using xs:gDay here)
 			testConstructor(WILL_FAIL, TEST_NAME, "---31", TEST_END);
@@ -242,7 +242,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
@@ -264,7 +264,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			TemporalCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			TemporalCoverage dataComponent = testConstructor(WILL_SUCCEED, TEST_NAME, TEST_START, TEST_END);
@@ -274,7 +274,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			TemporalCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			TemporalCoverage dataComponent = testConstructor(WILL_SUCCEED, "", TEST_START, TEST_END);
@@ -289,7 +289,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			TemporalCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			Rights wrongComponent = new Rights(true, true, true);
@@ -298,12 +298,12 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			TemporalCoverage component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-			
+
 			component = testConstructor(WILL_SUCCEED, TEST_NAME, TEST_START, TEST_END);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -311,7 +311,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			TemporalCoverage component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
@@ -322,7 +322,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testValidateExtendedDateTypeSuccess() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			try {
 				TemporalCoverage.validateExtendedDateType("Not Applicable");
@@ -333,7 +333,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testValidateExtendedDateTypeFailure() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			try {
 				TemporalCoverage.validateExtendedDateType("N/A");
@@ -345,7 +345,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testDefaultValues() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			TemporalCoverage component = testConstructor(WILL_SUCCEED, "", "", "");
 			assertEquals("Unknown", component.getTimePeriodName());
@@ -355,7 +355,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testDateEquality() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			TemporalCoverage component = testConstructor(WILL_SUCCEED, TEST_NAME, TEST_START, "2050");
 			assertEquals(component.getStart().toXMLFormat(), component.getStartString());
@@ -364,7 +364,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testSecurityAttributes() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture(false));
 			TemporalCoverage component = new TemporalCoverage(TEST_NAME, TEST_START, TEST_END, attr);
@@ -386,7 +386,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			TemporalCoverage component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 

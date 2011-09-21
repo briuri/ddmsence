@@ -86,7 +86,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getElementFixture()), TEST_PREFIX, TEST_NAME);
@@ -94,7 +94,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorValid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
 			testConstructor(WILL_SUCCEED, getElementFixture());
@@ -102,7 +102,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Using the DDMS namespace
 			Element element = Util.buildDDMSElement("name", null);
@@ -111,7 +111,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
 			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
@@ -120,7 +120,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			ExtensibleElement elementComponent = testConstructor(WILL_SUCCEED, getElementFixture());
 
@@ -133,7 +133,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			ExtensibleElement elementComponent = testConstructor(WILL_SUCCEED, getElementFixture());
 			Element element = Util.buildElement(TEST_PREFIX, "newName", TEST_NAMESPACE,
@@ -144,7 +144,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	}
 
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
 			assertEquals("", component.toHTML());
@@ -153,7 +153,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
@@ -161,7 +161,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws SAXException, IOException, InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
 

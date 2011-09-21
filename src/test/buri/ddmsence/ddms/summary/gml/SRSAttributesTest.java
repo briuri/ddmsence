@@ -143,7 +143,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorValid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
 			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
@@ -160,7 +160,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS, TEST_UOM_LABELS);
@@ -171,7 +171,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// srsName not a URI
 			Element element = Util.buildDDMSElement(Position.getName(version), null);
@@ -214,7 +214,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// srsName not a URI
 			testConstructor(WILL_FAIL, INVALID_URI, TEST_SRS_DIMENSION, TEST_AXIS_LABELS, TEST_UOM_LABELS);
@@ -241,7 +241,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
 			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
@@ -254,7 +254,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
 				version.getGmlNamespace(), null);
@@ -270,7 +270,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
 				version.getGmlNamespace(), null);
@@ -294,9 +294,9 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			assertFalse(elementAttributes.equals(dataAttributes));
 		}
 	}
-	
+
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
 				version.getGmlNamespace(), null);
@@ -309,7 +309,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
@@ -340,7 +340,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SRSAttributes component = getFixture();
 
@@ -378,7 +378,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilderLazyList() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SRSAttributes.Builder builder = new SRSAttributes.Builder();
 			assertNotNull(builder.getUomLabels().get(1));

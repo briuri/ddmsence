@@ -47,6 +47,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	 */
 	public AddresseeTest() {
 		super(null);
+		removeSupportedVersions("2.0 3.0 3.1");
 	}
 
 	/**
@@ -150,11 +151,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
 
 			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement(true)), DEFAULT_DDMS_PREFIX,
 				Addressee.getName(version));
@@ -163,11 +161,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields, organization
 			testConstructor(WILL_SUCCEED, getFixtureElement(true));
@@ -178,11 +173,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields, organization
 			testConstructor(WILL_SUCCEED, getOrgFixture());
@@ -193,11 +185,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
 
 			// Missing entity
 			Element element = Util.buildDDMSElement(Addressee.getName(version), null);
@@ -212,11 +201,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing entity		
 			testConstructor(WILL_FAIL, (IRoleEntity) null);
@@ -235,11 +221,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
 			Addressee component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
@@ -248,11 +231,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			Addressee elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			Addressee dataComponent = testConstructor(WILL_SUCCEED, getOrgFixture());
@@ -262,11 +242,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			Addressee elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			Addressee dataComponent = testConstructor(WILL_SUCCEED, getPersonFixture());
@@ -275,11 +252,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	}
 
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			Addressee component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			assertEquals(getExpectedOutput(true), component.toHTML());
@@ -292,11 +266,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			Addressee component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
@@ -317,11 +288,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Equality after Building, organization
 			Addressee component = testConstructor(WILL_SUCCEED, getFixtureElement(true));

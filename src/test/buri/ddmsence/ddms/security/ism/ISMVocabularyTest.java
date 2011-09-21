@@ -47,7 +47,7 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 	}
 
 	public void testEnumerationTokens() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			ISMVocabulary.setDDMSVersion(version);
 			assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, "C"));
@@ -99,7 +99,7 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 	}
 
 	public void testEnumerationPatterns() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			ISMVocabulary.setDDMSVersion(version);
 			assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_SCI_CONTROLS, "SI-G-ABCD"));

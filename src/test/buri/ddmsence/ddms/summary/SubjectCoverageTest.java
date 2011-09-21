@@ -205,7 +205,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
@@ -215,7 +215,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
@@ -228,7 +228,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
 			testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(), getActorFixture());
@@ -239,7 +239,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No keywords or categories
 			Element subjectElement = Util.buildDDMSElement("Subject", null);
@@ -248,7 +248,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No keywords or categories
 			testConstructor(WILL_FAIL, null, null, null, null);
@@ -256,7 +256,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
@@ -298,7 +298,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SubjectCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			SubjectCoverage dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(),
@@ -309,7 +309,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			SubjectCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			SubjectCoverage dataComponent = testConstructor(WILL_SUCCEED, null, getCategories(), getMetricFixture(),
@@ -330,7 +330,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
@@ -344,7 +344,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
@@ -356,7 +356,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testCategoryReuse() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			List<Category> categories = getCategories();
 			testConstructor(WILL_SUCCEED, null, categories, null, null);
@@ -365,7 +365,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testKeywordReuse() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			List<Keyword> keywords = getKeywords();
 			testConstructor(WILL_SUCCEED, keywords, null, null, null);
@@ -374,7 +374,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testMetricReuse() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			List<ProductionMetric> metrics = getMetricFixture();
 			testConstructor(WILL_SUCCEED, getKeywords(), null, metrics, null);
@@ -383,7 +383,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testActorReuse() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			List<NonStateActor> actors = getActorFixture();
 			testConstructor(WILL_SUCCEED, getKeywords(), null, null, actors);
@@ -392,7 +392,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testSecurityAttributes() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture(false));
 			SubjectCoverage component = new SubjectCoverage(getKeywords(), getCategories(), null, null, attr);
@@ -436,7 +436,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 
@@ -492,7 +492,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilderLazyList() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SubjectCoverage.Builder builder = new SubjectCoverage.Builder();
 			assertNotNull(builder.getKeywords().get(1));

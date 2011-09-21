@@ -45,6 +45,7 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	 */
 	public IndividualValueTest() {
 		super("accessIndividualValue.xml");
+		removeSupportedVersions("2.0 3.0 3.1");
 	}
 
 	/**
@@ -127,11 +128,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
 
 			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
 				IndividualValue.getName(version));
@@ -140,12 +138,9 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
-
-			if (!version.isAtLeast("4.0"))
-				continue;
 
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
@@ -159,11 +154,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
@@ -174,12 +166,9 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
-
-			if (!version.isAtLeast("4.0"))
-				continue;
 
 			// Missing security attributes
 			Element element = Util.buildElement(ntkPrefix, IndividualValue.getName(version), version.getNtkNamespace(),
@@ -189,11 +178,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing security attributes
 			try {
@@ -206,11 +192,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
 			IndividualValue component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
@@ -226,11 +209,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			IndividualValue elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			IndividualValue dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE,
@@ -241,11 +221,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			IndividualValue elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			IndividualValue dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_ID, TEST_ID_REFERENCE,
@@ -265,11 +242,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	}
 
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			IndividualValue component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
@@ -282,11 +256,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			IndividualValue component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
@@ -297,11 +268,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			IndividualValue component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 

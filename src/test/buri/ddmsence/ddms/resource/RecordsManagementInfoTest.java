@@ -44,6 +44,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	 */
 	public RecordsManagementInfoTest() {
 		super("recordsManagementInfo.xml");
+		removeSupportedVersions("2.0 3.0 3.1");
 	}
 
 	/**
@@ -144,11 +145,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
 
 			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				RecordsManagementInfo.getName(version));
@@ -157,11 +155,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
 
 			// All fields
 			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
@@ -173,11 +168,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
 			testConstructor(WILL_SUCCEED, getRecordKeeperFixture(), getApplicationSoftwareFixture(), TEST_VITAL);
@@ -188,33 +180,24 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No invalid cases.
 		}
 	}
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No invalid cases.
 		}
 	}
 
 	public void testWarnings() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
 			RecordsManagementInfo component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
@@ -223,11 +206,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			RecordsManagementInfo elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			RecordsManagementInfo dataComponent = testConstructor(WILL_SUCCEED, getRecordKeeperFixture(),
@@ -238,11 +218,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			RecordsManagementInfo elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			RecordsManagementInfo dataComponent = testConstructor(WILL_SUCCEED, getRecordKeeperFixture(),
@@ -258,11 +235,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			RecordsManagementInfo component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
@@ -276,11 +250,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			RecordsManagementInfo component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
@@ -302,11 +273,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
-			if (!version.isAtLeast("4.0"))
-				continue;
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			RecordsManagementInfo component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 

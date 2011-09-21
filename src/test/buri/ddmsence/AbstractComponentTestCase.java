@@ -20,7 +20,9 @@
 package buri.ddmsence;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -42,6 +44,7 @@ import buri.ddmsence.util.Util;
 public abstract class AbstractComponentTestCase extends TestCase {
 
 	private String _type;
+	private List<String> _supportedVersions = new ArrayList<String>(DDMSVersion.getSupportedVersions());
 
 	private static Map<String, Element> _elementMap = new HashMap<String, Element>();
 
@@ -81,7 +84,7 @@ public abstract class AbstractComponentTestCase extends TestCase {
 			return;
 		try {
 			DDMSReader reader = null;
-			for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			for (String sVersion : getSupportedVersions()) {
 				if (getValidElement(sVersion) == null) {
 					if (reader == null)
 						reader = new DDMSReader();
@@ -99,7 +102,7 @@ public abstract class AbstractComponentTestCase extends TestCase {
 		}
 
 	}
-	
+
 	/**
 	 * Convenience method to create a XOM element which is not a valid DDMS component because of an incorrect name.
 	 */
@@ -235,10 +238,22 @@ public abstract class AbstractComponentTestCase extends TestCase {
 		return (_elementMap.get(getType() + ":" + version));
 	}
 
+	protected void removeSupportedVersions(String xsList) {
+		List<String> unsupportedVersions = Util.getXsListAsList(xsList);
+		getSupportedVersions().removeAll(unsupportedVersions);
+	}
+
 	/**
 	 * Accessor for the local identifier for the type of component being tested
 	 */
 	private String getType() {
 		return (_type);
+	}
+
+	/**
+	 * Accessor for the supported versions for this specific component
+	 */
+	protected List<String> getSupportedVersions() {
+		return (_supportedVersions);
 	}
 }

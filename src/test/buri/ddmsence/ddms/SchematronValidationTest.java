@@ -48,7 +48,7 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 	public SchematronValidationTest() throws InvalidDDMSException {
 		super("resource.xml");
 		versionToResourceMap = new HashMap<String, Resource>();
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			versionToResourceMap.put(sVersion, new Resource(getValidElement(sVersion)));
 		}
 	}
@@ -60,7 +60,7 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 		supportedXslt1Processors.add("net.sf.saxon.TransformerFactoryImpl");
 		for (String processor : supportedXslt1Processors) {
 			PropertyReader.setProperty("xml.transform.TransformerFactory", processor);
-			for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			for (String sVersion : getSupportedVersions()) {
 				DDMSVersion version = DDMSVersion.getVersionFor(sVersion);
 				Resource resource = versionToResourceMap.get(sVersion);
 				String ddmsNamespace = resource.getNamespace();
@@ -87,7 +87,7 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 		String[] supportedXslt1Processors = new String[] { "net.sf.saxon.TransformerFactoryImpl" };
 		for (String processor : supportedXslt1Processors) {
 			PropertyReader.setProperty("xml.transform.TransformerFactory", processor);
-			for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			for (String sVersion : getSupportedVersions()) {
 				DDMSVersion version = DDMSVersion.getVersionFor(sVersion);
 				Resource resource = versionToResourceMap.get(sVersion);
 				String ddmsNamespace = resource.getNamespace();

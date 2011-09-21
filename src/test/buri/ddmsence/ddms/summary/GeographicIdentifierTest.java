@@ -146,7 +146,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
@@ -156,7 +156,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String geoIdName = GeographicIdentifier.getName(version);
 
@@ -189,7 +189,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
@@ -207,7 +207,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String geoIdName = GeographicIdentifier.getName(version);
 
@@ -244,7 +244,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// At least 1 name, region, countryCode, subDivisionCode or facilityIdentifier must exist.
 			testConstructor(WILL_FAIL, null, null, null, null, null);
@@ -252,7 +252,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
 			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
@@ -261,7 +261,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
@@ -281,7 +281,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
@@ -308,7 +308,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
@@ -324,7 +324,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testHTMLFacIdOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			GeographicIdentifier component = getFacIdBasedFixture();
 			StringBuffer facIdOutput = new StringBuffer();
@@ -336,7 +336,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testTextFacIdOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			GeographicIdentifier component = getFacIdBasedFixture();
 			StringBuffer facIdOutput = new StringBuffer();
@@ -347,7 +347,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
@@ -361,7 +361,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testCountryCodeReuse() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			CountryCode code = CountryCodeTest.getFixture();
 			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, code, null, null);
@@ -370,7 +370,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testSubDivisionCodeReuse() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
@@ -383,7 +383,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testFacilityIdentifierReuse() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			FacilityIdentifier facId = FacilityIdentifierTest.getFixture();
 			testConstructor(WILL_SUCCEED, null, null, null, null, facId);
@@ -420,7 +420,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 
@@ -459,7 +459,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilderLazyList() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			GeographicIdentifier.Builder builder = new GeographicIdentifier.Builder();
 			assertNotNull(builder.getNames().get(1));
