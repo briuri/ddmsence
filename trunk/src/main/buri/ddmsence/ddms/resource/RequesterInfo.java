@@ -29,12 +29,12 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of a ddms:requestorInfo element.
+ * An immutable implementation of a ddms:requesterInfo element.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:person</u>: the person who requested the production of this resource (0-1, optional)<br />
  * <u>ddms:organization</u>: The organization who requested the production of this resource (0-1, optional)<br />
- * Only one of the nested entities can appear in a requestorInfo element.
+ * Only one of the nested entities can appear in a requesterInfo element.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -44,14 +44,14 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
  * <u>Description</u>: The person or organization who requested the production of this resource.<br />
- * <u>Obligation</u>: At least 1 requestorInfo is mandatory.<br />
+ * <u>Obligation</u>: At least 1 requesterInfo is mandatory.<br />
  * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class RequestorInfo extends AbstractTaskingRole {
+public class RequesterInfo extends AbstractTaskingRole {
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -59,19 +59,19 @@ public class RequestorInfo extends AbstractTaskingRole {
 	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public RequestorInfo(Element element) throws InvalidDDMSException {
+	public RequesterInfo(Element element) throws InvalidDDMSException {
 		super(element);
 	}
 	
 	/**
 	 * Constructor which builds from raw data.
 	 * 
-	 * @param entity the actual entity who is the requestor (required)
+	 * @param entity the actual entity who is the requester (required)
 	 * @param securityAttributes any security attributes (required)
 	 */
-	public RequestorInfo(IRoleEntity entity, SecurityAttributes securityAttributes)
+	public RequesterInfo(IRoleEntity entity, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
-		super(RequestorInfo.getName(DDMSVersion.getCurrentVersion()), entity, securityAttributes);
+		super(RequesterInfo.getName(DDMSVersion.getCurrentVersion()), entity, securityAttributes);
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class RequestorInfo extends AbstractTaskingRole {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
-		Util.requireDDMSQName(getXOMElement(), RequestorInfo.getName(getDDMSVersion()));
+		Util.requireDDMSQName(getXOMElement(), RequesterInfo.getName(getDDMSVersion()));
 		super.validate();
 	}
 	
@@ -93,7 +93,7 @@ public class RequestorInfo extends AbstractTaskingRole {
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof RequestorInfo))
+		if (!super.equals(obj) || !(obj instanceof RequesterInfo))
 			return (false);
 		return (true);
 	}	
@@ -106,7 +106,7 @@ public class RequestorInfo extends AbstractTaskingRole {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return ("requestorInfo");
+		return ("requesterInfo");
 	}
 		
 	/**
@@ -129,15 +129,15 @@ public class RequestorInfo extends AbstractTaskingRole {
 		/**
 		 * Constructor which starts from an existing component.
 		 */
-		public Builder(RequestorInfo info) {
+		public Builder(RequesterInfo info) {
 			super(info);		
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
-		public RequestorInfo commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new RequestorInfo(commitSelectedEntity(), getSecurityAttributes().commit()));
+		public RequesterInfo commit() throws InvalidDDMSException {
+			return (isEmpty() ? null : new RequesterInfo(commitSelectedEntity(), getSecurityAttributes().commit()));
 		}
 	}
 }

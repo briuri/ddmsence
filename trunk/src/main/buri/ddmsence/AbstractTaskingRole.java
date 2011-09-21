@@ -35,7 +35,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * Base class for DDMS tasking role elements, including ddms:requestorInfo and ddms:addressee.
+ * Base class for DDMS tasking role elements, including ddms:requesterInfo and ddms:addressee.
  * 
  * <p>
  * Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set before
