@@ -66,7 +66,7 @@ public class Addressee extends AbstractTaskingRole {
 	/**
 	 * Constructor which builds from raw data.
 	 * 
-	 * @param entity the actual entity who is the requestor (required)
+	 * @param entity the actual entity who is the addressee (required)
 	 * @param securityAttributes any security attributes (required)
 	 */
 	public Addressee(IRoleEntity entity, SecurityAttributes securityAttributes)

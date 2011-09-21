@@ -883,7 +883,7 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 	</xs:complexType>
 	<xs:complexType name="TaskingInfoType">
 		<xs:sequence>
-			<xs:element name="requestorInfo" minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="requesterInfo" minOccurs="0" maxOccurs="unbounded">
 				<xs:complexType>
 					<xs:choice>
 						<xs:element ref="person"/>

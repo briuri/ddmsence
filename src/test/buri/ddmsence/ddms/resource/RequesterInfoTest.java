@@ -29,15 +29,15 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:requestorInfo elements</p>
+ * <p>Tests related to ddms:requesterInfo elements</p>
  * 
- * <p> Because a ddms:requestorInfo is a local component, we cannot load a valid document from a unit test data file. We
+ * <p> Because a ddms:requesterInfo is a local component, we cannot load a valid document from a unit test data file. We
  * have to build the well-formed Element ourselves. </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class RequestorInfoTest extends AbstractComponentTestCase {
+public class RequesterInfoTest extends AbstractComponentTestCase {
 
 	private static final String TEST_NAME = "Name";
 	private static final String TEST_SURNAME = "Surname";
@@ -45,19 +45,19 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 	/**
 	 * Constructor
 	 */
-	public RequestorInfoTest() {
+	public RequesterInfoTest() {
 		super(null);
 	}
 
 	/**
-	 * Returns a canned fixed value requestorInfo for testing.
+	 * Returns a canned fixed value requesterInfo for testing.
 	 * 
 	 * @param useOrg true to put an organization in, false for a person
 	 * @return a XOM element representing a valid applicationSoftware
 	 */
 	protected static Element getFixtureElement(boolean useOrg) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		Element element = Util.buildDDMSElement(RequestorInfo.getName(version), null);
+		Element element = Util.buildDDMSElement(RequesterInfo.getName(version), null);
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 		element.appendChild(useOrg ? getOrgFixture().getXOMElementCopy() : getPersonFixture().getXOMElementCopy());
 		SecurityAttributesTest.getFixture(false).addTo(element);
@@ -96,10 +96,10 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 	 * 
 	 * @return a valid object
 	 */
-	private RequestorInfo testConstructor(boolean expectFailure, Element element) {
-		RequestorInfo component = null;
+	private RequesterInfo testConstructor(boolean expectFailure, Element element) {
+		RequesterInfo component = null;
 		try {
-			component = new RequestorInfo(element);
+			component = new RequesterInfo(element);
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -114,10 +114,10 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 	 * @param entity the person or organization in this role
 	 * @param org the organization
 	 */
-	private RequestorInfo testConstructor(boolean expectFailure, IRoleEntity entity) {
-		RequestorInfo component = null;
+	private RequesterInfo testConstructor(boolean expectFailure, IRoleEntity entity) {
+		RequesterInfo component = null;
 		try {
-			component = new RequestorInfo(entity, SecurityAttributesTest.getFixture(false));
+			component = new RequesterInfo(entity, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
 		} catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
@@ -130,10 +130,10 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "requestorInfo.entityType", "organization"));
-		text.append(buildOutput(isHTML, "requestorInfo.name", TEST_NAME));
-		text.append(buildOutput(isHTML, "requestorInfo.classification", "U"));
-		text.append(buildOutput(isHTML, "requestorInfo.ownerProducer", "USA"));
+		text.append(buildOutput(isHTML, "requesterInfo.entityType", "organization"));
+		text.append(buildOutput(isHTML, "requesterInfo.name", TEST_NAME));
+		text.append(buildOutput(isHTML, "requesterInfo.classification", "U"));
+		text.append(buildOutput(isHTML, "requesterInfo.ownerProducer", "USA"));
 		return (text.toString());
 	}
 
@@ -144,12 +144,12 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:requestorInfo ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
+		xml.append("<ddms:requesterInfo ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
 		xml.append("\t<ddms:organization>\n");
 		xml.append("\t\t<ddms:name>").append(TEST_NAME).append("</ddms:name>\n");
 		xml.append("\t</ddms:organization>\n");
-		xml.append("</ddms:requestorInfo>\n");
+		xml.append("</ddms:requesterInfo>\n");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
@@ -160,10 +160,10 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			RequestorInfo component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
-			assertEquals(RequestorInfo.getName(version), component.getName());
+			RequesterInfo component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
+			assertEquals(RequesterInfo.getName(version), component.getName());
 			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
-			assertEquals(PropertyReader.getPrefix("ddms") + ":" + RequestorInfo.getName(version),
+			assertEquals(PropertyReader.getPrefix("ddms") + ":" + RequesterInfo.getName(version),
 				component.getQualifiedName());
 
 			// Wrong name/namespace
@@ -210,12 +210,12 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 				continue;
 
 			// Missing entity
-			Element element = Util.buildDDMSElement(RequestorInfo.getName(version), null);
+			Element element = Util.buildDDMSElement(RequesterInfo.getName(version), null);
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing security attributes
-			element = Util.buildDDMSElement(RequestorInfo.getName(version), null);
+			element = Util.buildDDMSElement(RequesterInfo.getName(version), null);
 			element.appendChild(getOrgFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
@@ -236,7 +236,7 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 
 			// Missing security attributes
 			try {
-				new RequestorInfo(getOrgFixture(), null);
+				new RequesterInfo(getOrgFixture(), null);
 				fail("Allowed invalid data.");
 			} catch (InvalidDDMSException e) {
 				// Good
@@ -252,7 +252,7 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 				continue;
 
 			// No warnings
-			RequestorInfo component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
+			RequesterInfo component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -264,8 +264,8 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			RequestorInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement(true));
-			RequestorInfo dataComponent = testConstructor(WILL_SUCCEED, getOrgFixture());
+			RequesterInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement(true));
+			RequesterInfo dataComponent = testConstructor(WILL_SUCCEED, getOrgFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -278,8 +278,8 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			RequestorInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement(true));
-			RequestorInfo dataComponent = testConstructor(WILL_SUCCEED, getPersonFixture());
+			RequesterInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement(true));
+			RequesterInfo dataComponent = testConstructor(WILL_SUCCEED, getPersonFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -291,7 +291,7 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			RequestorInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement(true));
+			RequesterInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -304,7 +304,7 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			RequestorInfo component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
+			RequesterInfo component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
@@ -321,7 +321,7 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			RequestorInfo component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
+			RequesterInfo component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, getOrgFixture());
@@ -332,7 +332,7 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 	public void test20Usage() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
-			new RequestorInfo(getOrgFixture(), SecurityAttributesTest.getFixture(false));
+			new RequesterInfo(getOrgFixture(), SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
 		} catch (InvalidDDMSException e) {
 			// Good
@@ -347,21 +347,21 @@ public class RequestorInfoTest extends AbstractComponentTestCase {
 				continue;
 
 			// Equality after Building, organization
-			RequestorInfo component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
-			RequestorInfo.Builder builder = new RequestorInfo.Builder(component);
+			RequesterInfo component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
+			RequesterInfo.Builder builder = new RequesterInfo.Builder(component);
 			assertEquals(builder.commit(), component);
 
 			// Equality after Building, person
 			component = testConstructor(WILL_SUCCEED, getFixtureElement(false));
-			builder = new RequestorInfo.Builder(component);
+			builder = new RequesterInfo.Builder(component);
 			assertEquals(builder.commit(), component);
 
 			// Empty case
-			builder = new RequestorInfo.Builder();
+			builder = new RequesterInfo.Builder();
 			assertNull(builder.commit());
 
 			// Validation
-			builder = new RequestorInfo.Builder();
+			builder = new RequesterInfo.Builder();
 			builder.getPerson().setNames(Util.getXsListAsList(TEST_NAME));
 			builder.getPerson().setSurname(TEST_SURNAME);
 			try {
