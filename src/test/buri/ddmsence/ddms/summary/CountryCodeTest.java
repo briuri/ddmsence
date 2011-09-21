@@ -22,9 +22,7 @@ package buri.ddmsence.ddms.summary;
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
-import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -111,37 +109,32 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			CountryCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(CountryCode.getName(version), component.getName());
-			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
-			assertEquals(PropertyReader.getPrefix("ddms") + ":" + CountryCode.getName(version),
-				component.getQualifiedName());
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// Wrong name/namespace
-			Element element = Util.buildDDMSElement("wrongName", null);
-			testConstructor(WILL_FAIL, element);
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				CountryCode.getName(version));
+			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
 
 	public void testElementConstructorValid() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 		}
 	}
 
 	public void testDataConstructorValid() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
 		}
 	}
 
 	public void testElementConstructorInvalid() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String countryCodeName = CountryCode.getName(version);
 			// Missing qualifier
 			Element element = Util.buildDDMSElement(countryCodeName, null);
@@ -168,8 +161,8 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing qualifier
 			testConstructor(WILL_FAIL, null, TEST_VALUE);
 
@@ -185,18 +178,18 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			CountryCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			CountryCode component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
 	public void testConstructorEquality() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			CountryCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			CountryCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			CountryCode dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -204,9 +197,9 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			CountryCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			CountryCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			CountryCode dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
@@ -215,22 +208,13 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			CountryCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Rights wrongComponent = new Rights(true, true, true);
-			assertFalse(elementComponent.equals(wrongComponent));
-		}
-	}
-
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			CountryCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			CountryCode component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-			
+
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -238,9 +222,9 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			CountryCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			CountryCode component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
@@ -249,9 +233,9 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			CountryCode component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			CountryCode component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 
 			// Equality after Building
 			CountryCode.Builder builder = new CountryCode.Builder(component);

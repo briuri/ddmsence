@@ -101,8 +101,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -119,8 +119,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -135,8 +135,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String ismPrefix = PropertyReader.getPrefix("ism");
 			String icNamespace = version.getIsmNamespace();
 
@@ -171,8 +171,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -201,8 +201,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -217,16 +217,16 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String icNamespace = version.getIsmNamespace();
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, PropertyReader.getPrefix("ism"), Security.EXCLUDE_FROM_ROLLUP_NAME,
-				icNamespace, "true");
+			Util.addAttribute(element, PropertyReader.getPrefix("ism"), Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace,
+				"true");
 			getFixture().addTo(element);
 			NoticeAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
 			NoticeAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_NOTICE_TYPE, TEST_NOTICE_REASON,
@@ -239,8 +239,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -269,8 +269,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -280,7 +280,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 			assertFalse(elementAttributes.equals(wrongComponent));
 		}
 	}
-
+	
 	public void testWrongVersion() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
@@ -299,8 +299,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testEmptiness() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -313,8 +313,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testDateOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -326,8 +326,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;

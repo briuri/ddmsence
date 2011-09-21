@@ -25,7 +25,6 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.UnsupportedVersionException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -125,13 +124,11 @@ public class PolygonTest extends AbstractComponentTestCase {
 	 */
 	private Element wrapPositions(List<Position> positions) {
 		String gmlNamespace = DDMSVersion.getCurrentVersion().getGmlNamespace();
-		Element ringElement = Util.buildElement(PropertyReader.getPrefix("gml"), "LinearRing", gmlNamespace,
-			null);
+		Element ringElement = Util.buildElement(PropertyReader.getPrefix("gml"), "LinearRing", gmlNamespace, null);
 		for (Position pos : positions) {
 			ringElement.appendChild(pos.getXOMElementCopy());
 		}
-		Element extElement = Util
-			.buildElement(PropertyReader.getPrefix("gml"), "exterior", gmlNamespace, null);
+		Element extElement = Util.buildElement(PropertyReader.getPrefix("gml"), "exterior", gmlNamespace, null);
 		extElement.appendChild(ringElement);
 		return (extElement);
 	}
@@ -196,35 +193,23 @@ public class PolygonTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(Polygon.getName(version), component.getName());
-			assertEquals(PropertyReader.getPrefix("gml"), component.getPrefix());
-			assertEquals(PropertyReader.getPrefix("gml") + ":" + Polygon.getName(version),
-				component.getQualifiedName());
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// Wrong name/namespace
-			Element element = Util.buildElement("gml", "wrongName", version.getGmlNamespace(), null);
-			testConstructor(WILL_FAIL, element);
-			try {
-				element = Util.buildElement("gml", Polygon.getName(version), "http://wrongNs/", null);
-				new Polygon(element);
-				fail("Allowed invalid data.");
-			} catch (UnsupportedVersionException e) {
-				// Good
-			}
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_GML_PREFIX,
+				Polygon.getName(version));
+			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String gmlPrefix = PropertyReader.getPrefix("gml");
 			String gmlNamespace = version.getGmlNamespace();
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
@@ -251,16 +236,16 @@ public class PolygonTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
 			testConstructor(WILL_SUCCEED, getPositions(), SRSAttributesTest.getFixture(), TEST_ID);
 		}
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String gmlPrefix = PropertyReader.getPrefix("gml");
 			String gmlNamespace = version.getGmlNamespace();
 			// Missing SRS Name
@@ -338,8 +323,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing SRS Name
 			SRSAttributes attr = new SRSAttributes(null, SRSAttributesTest.getFixture().getSrsDimension(), null, null);
 			testConstructor(WILL_FAIL, getPositions(), attr, TEST_ID);
@@ -378,18 +363,18 @@ public class PolygonTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Polygon elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Polygon elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			Polygon dataComponent = testConstructor(WILL_SUCCEED, getPositions(), SRSAttributesTest.getFixture(),
 				TEST_ID);
 			assertEquals(elementComponent, dataComponent);
@@ -398,11 +383,11 @@ public class PolygonTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			SRSAttributes attr = new SRSAttributes(SRSAttributesTest.getFixture().getSrsName(), new Integer(11),
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
-			Polygon elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Polygon elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			Polygon dataComponent = testConstructor(WILL_SUCCEED, getPositions(), attr, TEST_ID);
 			assertFalse(elementComponent.equals(dataComponent));
 
@@ -420,21 +405,21 @@ public class PolygonTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Polygon elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Polygon elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
 	}
-
+	
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-			
+
 			component = testConstructor(WILL_SUCCEED, getPositions(), SRSAttributesTest.getFixture(), TEST_ID);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -442,9 +427,9 @@ public class PolygonTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, getPositions(), SRSAttributesTest.getFixture(), TEST_ID);
@@ -453,8 +438,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 	}
 
 	public void testPositionReuse() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			List<Position> positions = getPositions();
 			testConstructor(WILL_SUCCEED, positions, SRSAttributesTest.getFixture(), TEST_ID);
 			testConstructor(WILL_SUCCEED, positions, SRSAttributesTest.getFixture(), TEST_ID);
@@ -462,10 +447,10 @@ public class PolygonTest extends AbstractComponentTestCase {
 	}
 
 	public void testGetLocatorSuffix() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			// Because Positions don't have any ValidationWarnings, no existing code uses this locator method right now.
-			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals("/gml:exterior/gml:LinearRing", component.getLocatorSuffix());
 		}
 	}
@@ -483,9 +468,9 @@ public class PolygonTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 
 			// Equality after Building
 			Polygon.Builder builder = new Polygon.Builder(component);
@@ -529,8 +514,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilderLazyList() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			Polygon.Builder builder = new Polygon.Builder();
 			assertNotNull(builder.getPositions().get(1));
 		}

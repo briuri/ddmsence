@@ -139,42 +139,32 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:requesterInfo ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t<ddms:organization>\n");
-		xml.append("\t\t<ddms:name>").append(TEST_NAME).append("</ddms:name>\n");
-		xml.append("\t</ddms:organization>\n");
-		xml.append("</ddms:requesterInfo>\n");
-		return (formatXml(xml.toString(), preserveFormatting));
+		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:organization><ddms:name>").append(TEST_NAME).append("</ddms:name></ddms:organization>");
+		xml.append("</ddms:requesterInfo>");
+		return (xml.toString());
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			RequesterInfo component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
-			assertEquals(RequesterInfo.getName(version), component.getName());
-			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
-			assertEquals(PropertyReader.getPrefix("ddms") + ":" + RequesterInfo.getName(version),
-				component.getQualifiedName());
-
-			// Wrong name/namespace
-			Element element = Util.buildDDMSElement("wrongName", null);
-			testConstructor(WILL_FAIL, element);
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement(true)), DEFAULT_DDMS_PREFIX,
+				RequesterInfo.getName(version));
+			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -188,8 +178,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -203,8 +193,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -222,8 +212,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -245,8 +235,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -258,8 +248,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -272,8 +262,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -285,8 +275,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -296,10 +286,10 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
 	}
-
+	
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -315,17 +305,17 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			RequesterInfo component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
+			assertEquals(getExpectedXMLOutput(), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, getOrgFixture());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
+			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
 
@@ -340,8 +330,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;

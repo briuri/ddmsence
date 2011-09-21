@@ -25,7 +25,6 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.UnsupportedVersionException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -131,56 +130,43 @@ public class PointTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			Point component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(Point.getName(version), component.getName());
-			assertEquals(PropertyReader.getPrefix("gml"), component.getPrefix());
-			assertEquals(PropertyReader.getPrefix("gml") + ":" + Point.getName(version),
-				component.getQualifiedName());
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// Wrong name/namespace
-			Element element = Util.buildElement("gml", "wrongName", version.getGmlNamespace(), null);
-			testConstructor(WILL_FAIL, element);
-			try {
-				element = Util.buildElement("gml", Point.getName(version), "http://wrongNs/", null);
-				new Point(element);
-				fail("Allowed invalid data.");
-			} catch (UnsupportedVersionException e) {
-				// Good
-			}
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_GML_PREFIX,
+				Point.getName(version));
+			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Point.getName(version),
 				version.getGmlNamespace(), null);
 			Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE,
 				SRSAttributesTest.getFixture().getSrsName());
-			Util.addAttribute(element, PropertyReader.getPrefix("gml"), "id", version.getGmlNamespace(),
-				TEST_ID);
+			Util.addAttribute(element, PropertyReader.getPrefix("gml"), "id", version.getGmlNamespace(), TEST_ID);
 			element.appendChild(getPosition().getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
 			testConstructor(WILL_SUCCEED, getPosition(), SRSAttributesTest.getFixture(), TEST_ID);
 		}
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String gmlPrefix = PropertyReader.getPrefix("gml");
 			String gmlNamespace = version.getGmlNamespace();
 
@@ -238,8 +224,8 @@ public class PointTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing SRS Name
 			SRSAttributes attr = new SRSAttributes(null, SRSAttributesTest.getFixture().getSrsDimension(), null, null);
 			testConstructor(WILL_FAIL, getPosition(), attr, TEST_ID);
@@ -268,18 +254,18 @@ public class PointTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Point component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Point component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Point elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Point elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			Point dataComponent = testConstructor(WILL_SUCCEED, getPosition(), SRSAttributesTest.getFixture(), TEST_ID);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -287,11 +273,11 @@ public class PointTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			SRSAttributes attr = new SRSAttributes(SRSAttributesTest.getFixture().getSrsName(), new Integer(11),
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
-			Point elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			Point elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			Point dataComponent = testConstructor(WILL_SUCCEED, getPosition(), attr, TEST_ID);
 			assertFalse(elementComponent.equals(dataComponent));
 
@@ -309,23 +295,23 @@ public class PointTest extends AbstractComponentTestCase {
 
 		}
 	}
-
+	
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Point elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Rights wrongComponent = new Rights(true, true, true);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Point elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Rights wrongComponent = new Rights(true, true, true);			
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
 	}
 
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Point component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Point component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-			
+
 			component = testConstructor(WILL_SUCCEED, getPosition(), SRSAttributesTest.getFixture(), TEST_ID);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -333,9 +319,9 @@ public class PointTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Point component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Point component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, getPosition(), SRSAttributesTest.getFixture(), TEST_ID);
@@ -344,8 +330,8 @@ public class PointTest extends AbstractComponentTestCase {
 	}
 
 	public void testPositionReuse() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			Position pos = getPosition();
 			testConstructor(WILL_SUCCEED, pos, SRSAttributesTest.getFixture(), TEST_ID);
 			testConstructor(WILL_SUCCEED, pos, SRSAttributesTest.getFixture(), TEST_ID);
@@ -368,9 +354,9 @@ public class PointTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			Point component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Point component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 
 			// Equality after Building
 			Point.Builder builder = new Point.Builder(component);

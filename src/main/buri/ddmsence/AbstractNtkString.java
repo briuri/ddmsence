@@ -139,7 +139,7 @@ public abstract class AbstractNtkString extends AbstractBaseComponent {
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		if (!super.equals(obj) || !(obj instanceof AbstractNtkString))
+		if (!super.equals(obj))
 			return (false);
 		AbstractNtkString test = (AbstractNtkString) obj;
 		return (getValue().equals(test.getValue())

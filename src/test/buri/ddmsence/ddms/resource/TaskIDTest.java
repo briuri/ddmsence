@@ -31,8 +31,8 @@ import buri.ddmsence.util.Util;
 /**
  * <p>Tests related to ddms:taskID elements</p>
  * 
- * <p> Because a ddms:taskID is a local component, we cannot load a valid document from a unit test data file. We
- * have to build the well-formed Element ourselves. </p>
+ * <p> Because a ddms:taskID is a local component, we cannot load a valid document from a unit test data file. We have
+ * to build the well-formed Element ourselves. </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -43,7 +43,7 @@ public class TaskIDTest extends AbstractComponentTestCase {
 	private static final String TEST_VALUE = "Task #12345";
 	private static final String TEST_NETWORK = "NIPRNet";
 	private static final String TEST_OTHER_NETWORK = "PBS";
-		
+
 	/**
 	 * Constructor
 	 */
@@ -60,7 +60,7 @@ public class TaskIDTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String commonPrefix = PropertyReader.getPrefix("common");
 		String commonNamespace = version.getCommonNamespace();
-		
+
 		Element element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("common"), version.getCommonNamespace());
@@ -95,13 +95,14 @@ public class TaskIDTest extends AbstractComponentTestCase {
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param expectFailure true if this operation is expected to succeed, false otherwise
-	 * @param value	the child text (optional) link href (required)
+	 * @param value the child text (optional) link href (required)
 	 * @param taskingSystem the tasking system (optional)
 	 * @param network the network (optional)
 	 * @param otherNetwork another network (optional)
 	 * @param attributes the xlink attributes (optional)
 	 */
-	private TaskID testConstructor(boolean expectFailure, String value, String taskingSystem, String network, String otherNetwork, XLinkAttributes attributes) {
+	private TaskID testConstructor(boolean expectFailure, String value, String taskingSystem, String network,
+		String otherNetwork, XLinkAttributes attributes) {
 		TaskID component = null;
 		try {
 			component = new TaskID(value, taskingSystem, network, otherNetwork, attributes);
@@ -127,50 +128,40 @@ public class TaskIDTest extends AbstractComponentTestCase {
 
 	/**
 	 * Returns the expected XML output for this unit test
-	 * 
-	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
-	private String getExpectedXMLOutput(boolean preserveFormatting) {
+	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:taskID ").append(getXmlnsDDMS()).append(" xmlns:common=\"urn:us:gov:ic:common\" ");
 		xml.append("xmlns:xlink=\"http://www.w3.org/1999/xlink\" ddms:taskingSystem=\"MDR\" ");
 		xml.append("common:network=\"NIPRNet\" common:otherNetwork=\"PBS\" xlink:type=\"simple\" ");
 		xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" ");
 		xml.append("xlink:arcrole=\"arcrole\" xlink:show=\"new\" xlink:actuate=\"onLoad\">Task #12345</ddms:taskID>");
-		return (formatXml(xml.toString(), preserveFormatting));
+		return (xml.toString());
 	}
-	
-
 
 	public void testNameAndNamespace() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
-			TaskID component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(TaskID.getName(version), component.getName());
-			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
-			assertEquals(PropertyReader.getPrefix("ddms") + ":" + TaskID.getName(version),
-				component.getQualifiedName());
-
-			// Wrong name/namespace
-			Element element = Util.buildDDMSElement("wrongName", null);
-			testConstructor(WILL_FAIL, element);
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_DDMS_PREFIX,
+				TaskID.getName(version));
+			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			// All fields
 			testConstructor(WILL_SUCCEED, getFixtureElement());
-			
+
 			// No optional fields
 			Element element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
 			testConstructor(WILL_SUCCEED, element);
@@ -178,23 +169,24 @@ public class TaskIDTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
-			
+			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK,
+				XLinkAttributesTest.getSimpleFixture());
+
 			// No optional fields
 			testConstructor(WILL_SUCCEED, TEST_VALUE, null, null, null, null);
 		}
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -203,40 +195,41 @@ public class TaskIDTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
 			XLinkAttributesTest.getLocatorFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
-			
+
 			// Missing value
 			element = Util.buildDDMSElement(TaskID.getName(version), null);
 			testConstructor(WILL_FAIL, element);
-			
+
 			// Bad network
 			element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
-			Util.addAttribute(element, PropertyReader.getPrefix("common"), "network", version.getCommonNamespace(), "PBS");
+			Util.addAttribute(element, PropertyReader.getPrefix("common"), "network", version.getCommonNamespace(),
+				"PBS");
 			testConstructor(WILL_FAIL, element);
-			
+
 		}
 	}
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			// Wrong type of XLinkAttributes
 			testConstructor(WILL_FAIL, TEST_VALUE, null, null, null, XLinkAttributesTest.getLocatorFixture());
-			
+
 			// Missing value
 			testConstructor(WILL_FAIL, null, null, null, null, null);
-			
+
 			// Bad network
 			testConstructor(WILL_FAIL, TEST_VALUE, null, "PBS", null, null);
 		}
 	}
 
 	public void testWarnings() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -248,47 +241,53 @@ public class TaskIDTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			TaskID elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			TaskID dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
+			TaskID dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
+				TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			TaskID elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			TaskID dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
+			TaskID dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
+				TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, DIFFERENT_VALUE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, DIFFERENT_VALUE, TEST_NETWORK,
+				TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
 			assertFalse(elementComponent.equals(dataComponent));
-			
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, "SIPRNet", TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, "SIPRNet",
+				TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
 			assertFalse(elementComponent.equals(dataComponent));
-			
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, DIFFERENT_VALUE, XLinkAttributesTest.getSimpleFixture());
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
+				DIFFERENT_VALUE, XLinkAttributesTest.getSimpleFixture());
 			assertFalse(elementComponent.equals(dataComponent));
-			
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK, null);
+
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
+				TEST_OTHER_NETWORK, null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -298,10 +297,10 @@ public class TaskIDTest extends AbstractComponentTestCase {
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
 	}
-
+	
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
@@ -309,25 +308,27 @@ public class TaskIDTest extends AbstractComponentTestCase {
 			TaskID component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-			
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
+
+			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
+				TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;
 
 			TaskID component = testConstructor(WILL_SUCCEED, getFixtureElement());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
+			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
-			assertEquals(getExpectedXMLOutput(false), component.toXML());
+			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
+				TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
+			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
 
@@ -344,8 +345,8 @@ public class TaskIDTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			if (!version.isAtLeast("4.0"))
 				continue;

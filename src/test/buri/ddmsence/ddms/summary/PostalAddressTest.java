@@ -25,15 +25,11 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
-import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
  * <p>Tests related to ddms:postalAddress elements</p>
- * 
- * <p>Assumes that unit testing on individual components of the ddms:countryCode tag is done separately.</p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -146,25 +142,20 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	}
 
 	public void testNameAndNamespace() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
-			PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			assertEquals(PostalAddress.getName(version), component.getName());
-			assertEquals(PropertyReader.getPrefix("ddms"), component.getPrefix());
-			assertEquals(PropertyReader.getPrefix("ddms") + ":" + PostalAddress.getName(version),
-				component.getQualifiedName());
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// Wrong name/namespace
-			Element element = Util.buildDDMSElement("wrongName", null);
-			testConstructor(WILL_FAIL, element);
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				PostalAddress.getName(version));
+			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
 
 	public void testElementConstructorValid() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(PostalAddress.getName(version), null);
@@ -173,8 +164,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorValid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
 			testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE,
 				CountryCodeTest.getFixture(), true);
@@ -189,8 +180,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	}
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String postalName = PostalAddress.getName(version);
 			// Either a state or a province but not both.
 			Element element = Util.buildDDMSElement(postalName, null);
@@ -237,8 +228,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	}
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			// Too many streets
 			List<String> streets = new ArrayList<String>();
 			for (int i = 0; i < 7; i++)
@@ -249,10 +240,10 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	}
 
 	public void testWarnings() {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty element
@@ -266,9 +257,9 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			PostalAddress elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			PostalAddress elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			PostalAddress dataComponent = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE,
 				TEST_POSTAL_CODE, CountryCodeTest.getFixture(), true);
 			assertEquals(elementComponent, dataComponent);
@@ -277,10 +268,10 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	}
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
-			PostalAddress elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			PostalAddress elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			PostalAddress dataComponent = testConstructor(WILL_SUCCEED, null, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE,
 				CountryCodeTest.getFixture(), true);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -307,28 +298,19 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			PostalAddress elementComponent = testConstructor(WILL_SUCCEED, getValidElement(versionString));
-			Rights wrongComponent = new Rights(true, true, true);
-			assertFalse(elementComponent.equals(wrongComponent));
-		}
-	}
-
 	public void testHTMLTextOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
-			PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true, true), component.toHTML());
 			assertEquals(getExpectedOutput(false, true), component.toText());
-			
+
 			component = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE,
 				CountryCodeTest.getFixture(), true);
 			assertEquals(getExpectedOutput(true, true), component.toHTML());
 			assertEquals(getExpectedOutput(false, true), component.toText());
-			
+
 			component = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE,
 				CountryCodeTest.getFixture(), false);
 			assertEquals(getExpectedOutput(true, false), component.toHTML());
@@ -337,10 +319,10 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	}
 
 	public void testXMLOutput() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
-			PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+			PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true, true), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE,
@@ -354,8 +336,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	}
 
 	public void testCountryCodeReuse() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			CountryCode code = CountryCodeTest.getFixture();
 			testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, code, true);
 			testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, code, true);
@@ -375,9 +357,9 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
-			PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement(versionString));
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			PostalAddress component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 
 			// Equality after Building
 			PostalAddress.Builder builder = new PostalAddress.Builder(component);
@@ -416,8 +398,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	}
 
 	public void testBuilderLazyList() throws InvalidDDMSException {
-		for (String versionString : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(versionString);
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 			PostalAddress.Builder builder = new PostalAddress.Builder();
 			assertNotNull(builder.getStreets().get(1));
 		}
