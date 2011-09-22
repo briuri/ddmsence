@@ -90,6 +90,18 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	private final Set<QName> RESERVED_RESOURCE_NAMES = new HashSet<QName>();
 	
 	/**
+	 * Returns a non-null instance of extensible attributes. If the instance passed in is not null, it will be returned.
+	 * 
+	 * @param extensibleAttributes the attributes to return by default
+	 * @return a non-null attributes instance
+	 * @throws InvalidDDMSException if there are problems creating the empty attributes instance
+	 */
+	public static ExtensibleAttributes getNonNullInstance(ExtensibleAttributes extensibleAttributes)
+		throws InvalidDDMSException {
+		return (extensibleAttributes == null ? new ExtensibleAttributes((List<Attribute>) null) : extensibleAttributes);
+	}
+	
+	/**
 	 * Base constructor
 	 * 
 	 * <p>Will only load attributes from a different namespace than DDMS (##other)

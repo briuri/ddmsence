@@ -63,7 +63,7 @@ public final class ProfileList extends AbstractBaseComponent {
 	
 	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
 	private List<Profile> _cachedProfiles;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -79,7 +79,7 @@ public final class ProfileList extends AbstractBaseComponent {
 			for (int i = 0; i < values.size(); i++) {
 				_cachedProfiles.add(new Profile(values.get(i)));
 			}			
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -106,9 +106,8 @@ public final class ProfileList extends AbstractBaseComponent {
 				getXOMElement().appendChild(profile.getXOMElementCopy());
 			}
 			_cachedProfiles = profiles;
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -195,7 +194,7 @@ public final class ProfileList extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

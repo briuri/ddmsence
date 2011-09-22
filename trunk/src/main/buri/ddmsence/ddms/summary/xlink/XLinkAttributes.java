@@ -29,6 +29,7 @@ import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
+import buri.ddmsence.ddms.resource.TaskID;
 import buri.ddmsence.ddms.summary.Link;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;

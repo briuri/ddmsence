@@ -94,7 +94,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	private String _cachedEndString;
 	private XMLGregorianCalendar _cachedStart = null;
 	private XMLGregorianCalendar _cachedEnd = null;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	
 	private static final String DEFAULT_VALUE = "Unknown";
 		
@@ -135,7 +135,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 				String endString = (endElement == null ? "" : endElement.getValue());
 				loadDateCaches(startString, endString);
 			}
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -171,9 +171,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				element.appendChild(periodElement);
 
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -393,7 +392,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes.  Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

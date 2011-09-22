@@ -76,7 +76,7 @@ public final class Access extends AbstractBaseComponent {
 	private List<Individual> _cachedIndividuals;
 	private List<Group> _cachedGroups;
 	private ProfileList _cachedProfileList;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	
 	private static final String INDIVIDUAL_LIST_NAME = "AccessIndividualList";
 	private static final String GROUP_LIST_NAME = "AccessGroupList";
@@ -109,7 +109,7 @@ public final class Access extends AbstractBaseComponent {
 			Element profileList = element.getFirstChildElement(ProfileList.getName(getDDMSVersion()), getNamespace());
 			if (profileList != null)
 				_cachedProfileList = new ProfileList(profileList);
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -159,9 +159,8 @@ public final class Access extends AbstractBaseComponent {
 			_cachedIndividuals = individuals;
 			_cachedGroups = groups;
 			_cachedProfileList = profileList;
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -278,7 +277,7 @@ public final class Access extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

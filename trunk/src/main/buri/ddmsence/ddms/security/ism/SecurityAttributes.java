@@ -227,6 +227,17 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	public static final Set<String> NON_EXTENSIBLE_NAMES = Collections.unmodifiableSet(ALL_NAMES);
 	
 	/**
+	 * Returns a non-null instance of security attributes. If the instance passed in is not null, it will be returned.
+	 * 
+	 * @param securityAttributes the attributes to return by default
+	 * @return a non-null attributes instance
+	 * @throws InvalidDDMSException if there are problems creating the empty attributes instance
+	 */
+	public static SecurityAttributes getNonNullInstance(SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		return (securityAttributes == null ? new SecurityAttributes(null, null, null) : securityAttributes);
+	}
+	
+	/**
 	 * Base constructor
 	 * 
 	 * @param element the XOM element which is decorated with these attributes.

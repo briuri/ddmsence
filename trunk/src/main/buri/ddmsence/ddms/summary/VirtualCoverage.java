@@ -62,7 +62,7 @@ import buri.ddmsence.util.Util;
  */
 public final class VirtualCoverage extends AbstractBaseComponent {
 
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	
 	private static final String ADDRESS_NAME = "address";
 	private static final String PROTOCOL_NAME = "protocol";
@@ -75,7 +75,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 */
 	public VirtualCoverage(Element element) throws InvalidDDMSException {
 		try {
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -97,9 +97,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 			Element element = Util.buildDDMSElement(VirtualCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, ADDRESS_NAME, address);
 			Util.addDDMSAttribute(element, PROTOCOL_NAME, protocol);
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -206,7 +205,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes.  Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

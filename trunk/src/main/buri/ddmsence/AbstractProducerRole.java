@@ -44,6 +44,14 @@ import buri.ddmsence.util.Util;
  * the component is used.
  * </p>
  * 
+ * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * <u>ddms:organization</u>: The organization who is in this role (0-1, optional)<br />
+ * <u>ddms:person</u>: the person who is in this role (0-1, optional)<br />
+ * <u>ddms:service</u>: The web service who is in this role (0-1, optional)<br />
+ * <u>ddms:unknown</u>: The unknown entity who is in this role (0-1, optional)<br />
+ * Only one of the nested entities can appear in this element.
+ * </td></tr></table>
+ * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:POCType</u>: Indicates that the element specifies a point-of-contact (POC) and the methods with which
  * to contact them (optional, starting in DDMS 4.0).<br />
@@ -56,7 +64,7 @@ import buri.ddmsence.util.Util;
 public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	
 	private IRoleEntity _entity;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 
 	private static final String POC_TYPE_NAME = "POCType";
 	
@@ -67,7 +75,6 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 */
 	protected AbstractProducerRole(Element element) throws InvalidDDMSException {
 		try {
-			Util.requireDDMSValue("producer element", element);
 			setXOMElement(element, false);
 			if (element.getChildElements().size() > 0) {
 				Element entityElement = element.getChildElements().get(0);
@@ -81,9 +88,10 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 				if (Unknown.getName(getDDMSVersion()).equals(entityType))
 					_entity = new Unknown(entityElement);
 			}
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}		
@@ -102,15 +110,15 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		try {
 			Util.requireDDMSValue("producer type", producerType);
 			Util.requireDDMSValue("entity", entity);
-			_entity = entity;
 			Element element = Util.buildDDMSElement(producerType, null);
 			element.appendChild(entity.getXOMElementCopy());
 			Util.addDDMSAttribute(element, POC_TYPE_NAME, pocType);
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);			
-			_cachedSecurityAttributes.addTo(element);
+			_entity = entity;
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -129,10 +137,12 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSValue("entity", getEntity());
+		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0") && !Util.isEmpty(getPOCType())) {
 			throw new InvalidDDMSException("This component cannot have a POCType until DDMS 4.0 or later.");
 		}
+		
 		super.validate();	
 	}
 	
@@ -194,7 +204,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

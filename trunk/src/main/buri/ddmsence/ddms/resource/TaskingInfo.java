@@ -68,7 +68,7 @@ public final class TaskingInfo extends AbstractBaseComponent {
 	private List<Addressee> _cachedAddressees;
 	private Description _cachedDescription;
 	private TaskID _cachedTaskID;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -97,7 +97,7 @@ public final class TaskingInfo extends AbstractBaseComponent {
 			Element taskID = element.getFirstChildElement(TaskID.getName(getDDMSVersion()), getNamespace());
 			if (taskID != null)
 				_cachedTaskID = new TaskID(taskID);
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -137,9 +137,8 @@ public final class TaskingInfo extends AbstractBaseComponent {
 			_cachedAddressees = addressees;
 			_cachedDescription = description;
 			_cachedTaskID = taskID;
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -257,7 +256,7 @@ public final class TaskingInfo extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

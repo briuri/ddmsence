@@ -32,7 +32,6 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
 import nu.xom.Elements;
@@ -175,8 +174,8 @@ public final class Resource extends AbstractBaseComponent {
 	private Integer _cachedIsmDESVersion = null;
 	private Integer _cachedNtkDESVersion = null;
 	private NoticeAttributes _cachedNoticeAttributes = null;
-	private SecurityAttributes _cachedSecurityAttributes = null;
-	private ExtensibleAttributes _cachedExtensibleAttributes = null;
+	private SecurityAttributes _securityAttributes;
+	private ExtensibleAttributes _extensibleAttributes = null;
 	
 	/** The attribute name for resource element flag */
 	public static final String RESOURCE_ELEMENT_NAME = "resourceElement";
@@ -234,8 +233,8 @@ public final class Resource extends AbstractBaseComponent {
 				}
 			}
 			_cachedNoticeAttributes = new NoticeAttributes(element);
-			_cachedSecurityAttributes = new SecurityAttributes(element);
-			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
+			_extensibleAttributes = new ExtensibleAttributes(element);
 			
 			DDMSVersion version = getDDMSVersion();
 			// Resource Set
@@ -433,13 +432,13 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
 	 * DDMS 3.0)
 	 * @param noticeAttributes any notice attributes (optional, starting in DDMS 4.0)
-	 * @param extensions any extensible attributes (optional)
+	 * @param extensibleAttributes any extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
 	 * does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
 		Integer ismDESVersion, Integer ntkDESVersion, SecurityAttributes securityAttributes, NoticeAttributes noticeAttributes,
-		ExtensibleAttributes extensions) throws InvalidDDMSException {
+		ExtensibleAttributes extensibleAttributes) throws InvalidDDMSException {
 		try {
 			String name = Resource.getName(DDMSVersion.getCurrentVersion());
 			if (topLevelComponents == null)
@@ -475,12 +474,10 @@ public final class Resource extends AbstractBaseComponent {
 			_cachedNoticeAttributes = (noticeAttributes == null ? new NoticeAttributes(null, null, null, null)
 				: noticeAttributes);
 			_cachedNoticeAttributes.addTo(element);
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
-			_cachedExtensibleAttributes = (extensions == null ? new ExtensibleAttributes((List<Attribute>) null)
-				: extensions);
-			_cachedExtensibleAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
+			_extensibleAttributes = ExtensibleAttributes.getNonNullInstance(extensibleAttributes);
+			_extensibleAttributes.addTo(element);
 
 			for (IDDMSComponent component : topLevelComponents) {
 				// Resource Set
@@ -986,7 +983,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**
@@ -1000,7 +997,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * Accessor for the extensible attributes. Will always be non-null, even if not set.
 	 */
 	public ExtensibleAttributes getExtensibleAttributes() {
-		return (_cachedExtensibleAttributes);
+		return (_extensibleAttributes);
 	}
 	
 	/**

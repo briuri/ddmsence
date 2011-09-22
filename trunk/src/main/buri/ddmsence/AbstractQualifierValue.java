@@ -43,8 +43,7 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 	/**
 	 * This implicit superconstructor does nothing.
 	 */
-	protected AbstractQualifierValue() throws InvalidDDMSException {
-	}
+	protected AbstractQualifierValue() throws InvalidDDMSException {}
 
 	/**
 	 * Base constructor
@@ -52,14 +51,9 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 	 * @param element the XOM element representing this component
 	 */
 	protected AbstractQualifierValue(Element element) throws InvalidDDMSException {
-		try {
-			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
-			e.setLocator(getQualifiedName());
-			throw (e);
-		}
+		super(element);
 	}
-	
+
 	/**
 	 * Constructor which builds from raw data.
 	 * 
@@ -69,13 +63,15 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 	 * @param validateNow true to validate the component immediately. Because Source entities have additional fields
 	 * they should not be validated in the superconstructor.
 	 */
-	protected AbstractQualifierValue(String name, String qualifier, String value, boolean validateNow) throws InvalidDDMSException {
+	protected AbstractQualifierValue(String name, String qualifier, String value, boolean validateNow)
+		throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(name, null);
 			Util.addDDMSAttribute(element, QUALIFIER_NAME, qualifier);
 			Util.addDDMSAttribute(element, VALUE_NAME, value);
 			setXOMElement(element, validateNow);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -118,8 +114,8 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 	/**
 	 * Abstract Builder for this DDMS component.
 	 * 
-	 * <p>Builders which are based upon this abstract class should implement the commit() method, returning the appropriate
-	 * concrete object type.</p>
+	 * <p>Builders which are based upon this abstract class should implement the commit() method, returning the
+	 * appropriate concrete object type.</p>
 	 * 
 	 * @see IBuilder
 	 * @author Brian Uri!

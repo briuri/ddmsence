@@ -56,7 +56,7 @@ import buri.ddmsence.util.Util;
  */
 public final class ProductionMetric extends AbstractBaseComponent {
 
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	
 	private static final String SUBJECT_NAME = "subject";
 	private static final String COVERAGE_NAME = "coverage";
@@ -69,7 +69,7 @@ public final class ProductionMetric extends AbstractBaseComponent {
 	 */
 	public ProductionMetric(Element element) throws InvalidDDMSException {
 		try {
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -90,9 +90,8 @@ public final class ProductionMetric extends AbstractBaseComponent {
 			Element element = Util.buildDDMSElement(ProductionMetric.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, SUBJECT_NAME, subject);
 			Util.addDDMSAttribute(element, COVERAGE_NAME, coverage);
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -184,7 +183,7 @@ public final class ProductionMetric extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 		
 	/**

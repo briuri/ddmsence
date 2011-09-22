@@ -20,9 +20,7 @@
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
-import java.util.List;
 
-import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
@@ -63,8 +61,8 @@ import buri.ddmsence.util.Util;
  */
 public final class Category extends AbstractBaseComponent {
 
-	private SecurityAttributes _cachedSecurityAttributes = null;
-	private ExtensibleAttributes _cachedExtensibleAttributes = null;
+	private SecurityAttributes _securityAttributes;
+	private ExtensibleAttributes _extensibleAttributes = null;
 	
 	private static final String QUALIFIER_NAME = "qualifier";
 	private static final String CODE_NAME = "code";
@@ -78,8 +76,8 @@ public final class Category extends AbstractBaseComponent {
 	 */
 	public Category(Element element) throws InvalidDDMSException {
 		try {
-			_cachedSecurityAttributes = new SecurityAttributes(element);
-			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
+			_extensibleAttributes = new ExtensibleAttributes(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -111,22 +109,20 @@ public final class Category extends AbstractBaseComponent {
 	 * @param code the code (optional)
 	 * @param label the label (required)
 	 * @param securityAttributes any security attributes (optional)
-	 * @param extensions extensible attributes (optional)
+	 * @param extensibleAttributes extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Category(String qualifier, String code, String label, SecurityAttributes securityAttributes,
-		ExtensibleAttributes extensions) throws InvalidDDMSException {
+		ExtensibleAttributes extensibleAttributes) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Category.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, QUALIFIER_NAME, qualifier);
 			Util.addDDMSAttribute(element, CODE_NAME, code);
 			Util.addDDMSAttribute(element, LABEL_NAME, label);
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
-			_cachedExtensibleAttributes = (extensions == null ? new ExtensibleAttributes((List<Attribute>) null)
-				: extensions);
-			_cachedExtensibleAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
+			_extensibleAttributes = ExtensibleAttributes.getNonNullInstance(extensibleAttributes);
+			_extensibleAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -240,14 +236,14 @@ public final class Category extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**
 	 * Accessor for the extensible attributes. Will always be non-null, even if not set.
 	 */
 	public ExtensibleAttributes getExtensibleAttributes() {
-		return (_cachedExtensibleAttributes);
+		return (_extensibleAttributes);
 	}
 	
 	/**
