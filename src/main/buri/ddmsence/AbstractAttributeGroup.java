@@ -43,7 +43,7 @@ public abstract class AbstractAttributeGroup {
 	private List<ValidationMessage> _warnings;
 	
 	/**
-	 * Stores the XML namespace of the enclosing element
+	 * Constructor which stores the XML namespace of the enclosing element
 	 */
 	public AbstractAttributeGroup(String xmlNamespace) {
 		_xmlNamespace = xmlNamespace;
@@ -75,9 +75,9 @@ public abstract class AbstractAttributeGroup {
 	 */
 	protected void validateSameVersion(DDMSVersion version) throws InvalidDDMSException {
 		if (!getDDMSVersion().equals(version)) {
-			throw new InvalidDDMSException("These attributes cannot decorate a component with"
-				+ " a different DDMS version.");
-		}	
+			throw new InvalidDDMSException(
+				"These attributes cannot decorate a component with a different DDMS version.");
+		}
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public abstract class AbstractAttributeGroup {
 	 * 
 	 * @param isHTML true for HTML, false for Text
 	 * @param prefix the prefix to add
-	 * @return the HTML output
+	 * @return the HTML or Text output
 	 */
 	public abstract String getOutput(boolean isHTML, String prefix);
 }

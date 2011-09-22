@@ -61,7 +61,7 @@ public final class Security extends AbstractBaseComponent {
 
 	private NoticeList _cachedNoticeList = null;
 	private Access _cachedAccess = null;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	
 	private static final String FIXED_ROLLUP = "true";
 	
@@ -84,7 +84,7 @@ public final class Security extends AbstractBaseComponent {
 			Element accessElement = element.getFirstChildElement(Access.getName(getDDMSVersion()), getDDMSVersion().getNtkNamespace());
 			if (accessElement != null)
 				_cachedAccess = new Access(accessElement);
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -114,7 +114,7 @@ public final class Security extends AbstractBaseComponent {
 					DDMSVersion.getCurrentVersion().getIsmNamespace(), FIXED_ROLLUP);
 			_cachedNoticeList = noticeList;
 			_cachedAccess = access;
-			_cachedSecurityAttributes = securityAttributes;
+			_securityAttributes = securityAttributes;
 			if (securityAttributes != null)
 				securityAttributes.addTo(element);
 			setXOMElement(element, true);
@@ -233,7 +233,7 @@ public final class Security extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

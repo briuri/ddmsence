@@ -84,7 +84,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	private List<Category> _cachedCategories;
 	private List<ProductionMetric> _cachedProductionMetrics;
 	private List<NonStateActor> _cachedNonStateActors;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	
 	private static final String SUBJECT_NAME = "Subject";
 
@@ -125,7 +125,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 					_cachedNonStateActors.add(new NonStateActor(actors.get(i)));
 				}
 			}
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -178,9 +178,8 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			_cachedCategories = categories;
 			_cachedProductionMetrics = productionMetrics;
 			_cachedNonStateActors = nonStateActors;
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -349,7 +348,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes.  Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

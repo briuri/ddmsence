@@ -88,7 +88,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	private BoundingGeometry _cachedBoundingGeometry;
 	private PostalAddress _cachedPostalAddress;
 	private VerticalExtent _cachedVerticalExtent;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	
 	private static final String GEOSPATIAL_EXTENT_NAME = "GeospatialExtent";
 	private static final String PRECEDENCE_NAME = "precedence";
@@ -133,7 +133,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 				if (verticalExtentElement != null)
 					_cachedVerticalExtent = new VerticalExtent(verticalExtentElement);
 			}
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -184,9 +184,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			_cachedBoundingGeometry = boundingGeometry;
 			_cachedPostalAddress = postalAddress;
 			_cachedVerticalExtent = verticalExtent;
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(coverageElement);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(coverageElement);
 			setXOMElement(coverageElement, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -418,7 +417,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes.  Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

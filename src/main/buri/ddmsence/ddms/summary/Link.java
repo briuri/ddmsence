@@ -61,7 +61,7 @@ import buri.ddmsence.util.Util;
 public final class Link extends AbstractBaseComponent {
 
 	private XLinkAttributes _cachedXLinkAttributes = null;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 		
 	private static final String FIXED_TYPE = "locator";
 	
@@ -74,7 +74,7 @@ public final class Link extends AbstractBaseComponent {
 	public Link(Element element) throws InvalidDDMSException {
 		try {
 			_cachedXLinkAttributes = new XLinkAttributes(element);
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -106,9 +106,8 @@ public final class Link extends AbstractBaseComponent {
 			_cachedXLinkAttributes = (xlinkAttributes == null ? new XLinkAttributes(null, null, null, null)
 				: xlinkAttributes);
 			_cachedXLinkAttributes.addTo(element);
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -205,7 +204,7 @@ public final class Link extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

@@ -39,6 +39,11 @@ import buri.ddmsence.util.Util;
  * <p> Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
  * before the component is used. </p>
  * 
+ * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a 
+ * {@link SystemName}<br />
+ * </td></tr></table>
+ * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
  * </td></tr></table>
@@ -48,9 +53,8 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 	
-	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
-	private SystemName _cachedSystemName;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SystemName _systemName;
+	private SecurityAttributes _securityAttributes;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element. Does not validate.
@@ -59,12 +63,11 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public AbstractAccessEntity(Element element) throws InvalidDDMSException {
-		Util.requireDDMSValue("element", element);
 		setXOMElement(element, false);
 		Element systemElement = element.getFirstChildElement(SystemName.getName(getDDMSVersion()), getNamespace());
 		if (systemElement != null)
-			_cachedSystemName = new SystemName(systemElement);
-		_cachedSecurityAttributes = new SecurityAttributes(element);
+			_systemName = new SystemName(systemElement);
+		_securityAttributes = new SecurityAttributes(element);
 	}
 	
 	/**
@@ -77,15 +80,13 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 	public AbstractAccessEntity(String name, SystemName systemName, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		Element element = Util.buildElement(PropertyReader.getPrefix("ntk"), name,
-			version.getNtkNamespace(), null);
+		Element element = Util.buildElement(PropertyReader.getPrefix("ntk"), name, version.getNtkNamespace(), null);
 		setXOMElement(element, false);
 		if (systemName != null)
 			element.appendChild(systemName.getXOMElementCopy());
-		_cachedSystemName = systemName;
-		_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-			: securityAttributes);
-		_cachedSecurityAttributes.addTo(element);
+		_systemName = systemName;
+		_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+		_securityAttributes.addTo(element);
 	}
 			
 	/**
@@ -134,14 +135,14 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 	 * Accessor for the system name
 	 */
 	public SystemName getSystemName() {
-		return _cachedSystemName;
+		return _systemName;
 	}
 	
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 		
 	/**
@@ -154,13 +155,13 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 	public abstract static class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = 7851044806424206976L;
 		private SystemName.Builder _systemName;
-		private SecurityAttributes.Builder _securityAttributes;		
-		
+		private SecurityAttributes.Builder _securityAttributes;
+
 		/**
 		 * Empty constructor
 		 */
 		public Builder() {}
-		
+
 		/**
 		 * Constructor which starts from an existing component.
 		 */
@@ -169,14 +170,14 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 				setSystemName(new SystemName.Builder(group.getSystemName()));
 			setSecurityAttributes(new SecurityAttributes.Builder(group.getSecurityAttributes()));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
 			return (getSystemName().isEmpty() && getSecurityAttributes().isEmpty());
 		}
-		
+
 		/**
 		 * Builder accessor for the systemName
 		 */
@@ -192,7 +193,7 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 		public void setSystemName(SystemName.Builder systemName) {
 			_systemName = systemName;
 		}
-		
+
 		/**
 		 * Builder accessor for the securityAttributes
 		 */
@@ -201,7 +202,7 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 				_securityAttributes = new SecurityAttributes.Builder();
 			return _securityAttributes;
 		}
-		
+
 		/**
 		 * Builder accessor for the securityAttributes
 		 */

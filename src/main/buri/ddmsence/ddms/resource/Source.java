@@ -58,7 +58,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Source extends AbstractQualifierValue {
 
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	
 	private static final String SCHEMA_QUALIFIER_NAME = "schemaQualifier";
 	private static final String SCHEMA_HREF_NAME = "schemaHref";
@@ -71,7 +71,7 @@ public final class Source extends AbstractQualifierValue {
 	 */
 	public Source(Element element) throws InvalidDDMSException {
 		try {
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -96,9 +96,8 @@ public final class Source extends AbstractQualifierValue {
 			Element element = getXOMElement();
 			Util.addDDMSAttribute(element, SCHEMA_QUALIFIER_NAME, schemaQualifier);
 			Util.addDDMSAttribute(element, SCHEMA_HREF_NAME, schemaHref);
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -211,7 +210,7 @@ public final class Source extends AbstractQualifierValue {
 	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

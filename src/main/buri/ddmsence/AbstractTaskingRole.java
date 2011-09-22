@@ -43,8 +43,8 @@ import buri.ddmsence.util.Util;
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:person</u>: the person entity in this role (0-1, optional)<br />
  * <u>ddms:organization</u>: The organization entity in this role (0-1, optional)<br />
+ * <u>ddms:person</u>: the person entity in this role (0-1, optional)<br />
  * Only one of the nested entities can appear.
  * </td></tr></table>
  * 
@@ -59,7 +59,7 @@ import buri.ddmsence.util.Util;
 public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	
 	private IRoleEntity _entity;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	
 	/**
 	 * Base constructor
@@ -67,8 +67,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	 * @param element the XOM element representing this component
 	 */
 	protected AbstractTaskingRole(Element element) throws InvalidDDMSException {
-		try {
-			Util.requireDDMSValue("producer element", element);
+		try {		
 			setXOMElement(element, false);
 			if (element.getChildElements().size() > 0) {
 				Element entityElement = element.getChildElements().get(0);
@@ -78,12 +77,13 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 				if (Person.getName(getDDMSVersion()).equals(entityType))
 					_entity = new Person(entityElement);
 			}
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
-		}		
+		}
 	}
 	
 	/**
@@ -96,12 +96,11 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	protected AbstractTaskingRole(String roleType, IRoleEntity entity, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("entity", entity);
-			_entity = entity;
 			Element element = Util.buildDDMSElement(roleType, null);
 			element.appendChild(entity.getXOMElementCopy());
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);			
-			_cachedSecurityAttributes.addTo(element);
+			_entity = entity;
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);		
+			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -177,7 +176,7 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

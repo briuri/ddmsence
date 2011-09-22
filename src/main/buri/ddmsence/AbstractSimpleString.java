@@ -46,7 +46,7 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	
 	/**
 	 * Base constructor which works from a XOM element.
@@ -56,9 +56,10 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	 */
 	protected AbstractSimpleString(Element element, boolean validateNow) throws InvalidDDMSException {
 		try {
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, validateNow);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -74,8 +75,8 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	 */
 	protected AbstractSimpleString(String name, String value, SecurityAttributes attributes, boolean validateNow)
 		throws InvalidDDMSException {
-		this(PropertyReader.getPrefix("ddms"), DDMSVersion.getCurrentVersion().getNamespace(), name, value,
-			attributes, validateNow);
+		this(PropertyReader.getPrefix("ddms"), DDMSVersion.getCurrentVersion().getNamespace(), name, value, attributes,
+			validateNow);
 	}
 	
 	/**
@@ -92,11 +93,12 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		SecurityAttributes attributes, boolean validateNow) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildElement(prefix, name, namespace, value);
-			_cachedSecurityAttributes = attributes;
+			_securityAttributes = attributes;
 			if (attributes != null)
 				attributes.addTo(element);
 			setXOMElement(element, validateNow);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -149,7 +151,7 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

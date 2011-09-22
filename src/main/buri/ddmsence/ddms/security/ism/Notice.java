@@ -59,7 +59,7 @@ import buri.ddmsence.util.Util;
 public final class Notice extends AbstractBaseComponent {
 	
 	private List<NoticeText> _cachedNoticeTexts;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	private NoticeAttributes _cachedNoticeAttributes = null;
 	
 	/**
@@ -77,7 +77,7 @@ public final class Notice extends AbstractBaseComponent {
 				_cachedNoticeTexts.add(new NoticeText(noticeTexts.get(i)));
 			}
 			_cachedNoticeAttributes = new NoticeAttributes(element);
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -106,9 +106,8 @@ public final class Notice extends AbstractBaseComponent {
 			_cachedNoticeAttributes = (noticeAttributes == null ? new NoticeAttributes(null, null, null, null)
 				: noticeAttributes);
 			_cachedNoticeAttributes.addTo(element);
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -216,7 +215,7 @@ public final class Notice extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

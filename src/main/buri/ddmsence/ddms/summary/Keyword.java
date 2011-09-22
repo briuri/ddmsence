@@ -20,9 +20,7 @@
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
-import java.util.List;
 
-import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
@@ -59,8 +57,8 @@ import buri.ddmsence.util.Util;
  */
 public final class Keyword extends AbstractBaseComponent {
 
-	private SecurityAttributes _cachedSecurityAttributes = null;
-	private ExtensibleAttributes _cachedExtensibleAttributes = null;
+	private SecurityAttributes _securityAttributes;
+	private ExtensibleAttributes _extensibleAttributes = null;
 	
 	private static final String VALUE_NAME = "value";
 	
@@ -72,8 +70,8 @@ public final class Keyword extends AbstractBaseComponent {
 	 */
 	public Keyword(Element element) throws InvalidDDMSException {
 		try {
-			_cachedSecurityAttributes = new SecurityAttributes(element);
-			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
+			_extensibleAttributes = new ExtensibleAttributes(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -100,20 +98,18 @@ public final class Keyword extends AbstractBaseComponent {
 	 *  
 	 * @param value the value attribute (required)
 	 * @param securityAttributes any security attributes (optional)
-	 * @param extensions extensible attributes (optional)
+	 * @param extensibleAttributes extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Keyword(String value, SecurityAttributes securityAttributes, ExtensibleAttributes extensions)
+	public Keyword(String value, SecurityAttributes securityAttributes, ExtensibleAttributes extensibleAttributes)
 		throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Keyword.getName(DDMSVersion.getCurrentVersion()), null);
 			Util.addDDMSAttribute(element, VALUE_NAME, value);
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
-			_cachedExtensibleAttributes = (extensions == null ? new ExtensibleAttributes((List<Attribute>) null)
-				: extensions);
-			_cachedExtensibleAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
+			_extensibleAttributes = ExtensibleAttributes.getNonNullInstance(extensibleAttributes);
+			_extensibleAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -202,14 +198,14 @@ public final class Keyword extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**
 	 * Accessor for the extensible attributes. Will always be non-null, even if not set.
 	 */
 	public ExtensibleAttributes getExtensibleAttributes() {
-		return (_cachedExtensibleAttributes);
+		return (_extensibleAttributes);
 	}
 	
 	/**

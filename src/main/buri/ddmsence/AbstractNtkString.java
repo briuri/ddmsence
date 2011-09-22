@@ -49,8 +49,8 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractNtkString extends AbstractBaseComponent {
 	
-	private boolean _isTokenBased;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private boolean _tokenBased;
+	private SecurityAttributes _securityAttributes;
 		
 	private static final String ID_NAME = "id";
 	private static final String ID_REFERENCE_NAME = "IDReference";
@@ -59,14 +59,14 @@ public abstract class AbstractNtkString extends AbstractBaseComponent {
 	/**
 	 * Base constructor which works from a XOM element.
 	 * 
-	 * @param isTokenBased true if the child text is an NMTOKEN, false if it's just a string
+	 * @param tokenBased true if the child text is an NMTOKEN, false if it's just a string
 	 * @param element the XOM element
 	 */
-	protected AbstractNtkString(boolean isTokenBased, Element element) throws InvalidDDMSException {
+	protected AbstractNtkString(boolean tokenBased, Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			_isTokenBased = isTokenBased;
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_tokenBased = tokenBased;
+			_securityAttributes = new SecurityAttributes(element);
 			validate();
 		}
 		catch (InvalidDDMSException e) {
@@ -78,34 +78,30 @@ public abstract class AbstractNtkString extends AbstractBaseComponent {
 	/**
 	 * Constructor which builds from raw data.
 	 * 
-	 * @param isTokenBased true if the child text is an NMTOKEN, false if it's just a string
+	 * @param tokenBased true if the child text is an NMTOKEN, false if it's just a string
 	 * @param name the name of the element without a prefix
 	 * @param value the value of the element's child text
 	 * @param id the NTK ID (optional)
 	 * @param idReference a reference to an NTK ID (optional)
 	 * @param qualifier an NTK qualifier (optional)
-	 * @param attributes the security attributes
+	 * @param securityAttributes the security attributes
 	 * @param validateNow whether to validate immediately
 	 */
-	protected AbstractNtkString(boolean isTokenBased, String name, String value, String id, String idReference,
-		String qualifier, SecurityAttributes attributes, boolean validateNow) throws InvalidDDMSException {
+	protected AbstractNtkString(boolean tokenBased, String name, String value, String id, String idReference,
+		String qualifier, SecurityAttributes securityAttributes, boolean validateNow) throws InvalidDDMSException {
 		try {
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
 			String ntkNamespace = DDMSVersion.getCurrentVersion().getNtkNamespace();
-			
 			Element element = Util.buildElement(ntkPrefix, name, ntkNamespace, value);
-			_isTokenBased = isTokenBased;
-			_cachedSecurityAttributes = attributes;
-			if (!Util.isEmpty(id))
-				Util.addAttribute(element, ntkPrefix, ID_NAME, ntkNamespace, id);
-			if (!Util.isEmpty(idReference))
-				Util.addAttribute(element, ntkPrefix, ID_REFERENCE_NAME, ntkNamespace, idReference);
-			if (!Util.isEmpty(qualifier))
-				Util.addAttribute(element, ntkPrefix, QUALIFIER_NAME, ntkNamespace, qualifier);
-			if (attributes != null)
-				attributes.addTo(element);
+			Util.addAttribute(element, ntkPrefix, ID_NAME, ntkNamespace, id);
+			Util.addAttribute(element, ntkPrefix, ID_REFERENCE_NAME, ntkNamespace, idReference);
+			Util.addAttribute(element, ntkPrefix, QUALIFIER_NAME, ntkNamespace, qualifier);
+			_tokenBased = tokenBased;
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			setXOMElement(element, validateNow);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -193,14 +189,14 @@ public abstract class AbstractNtkString extends AbstractBaseComponent {
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**
 	 * Accessor for whether this is an NMTOKEN-based string
 	 */
 	private boolean isTokenBased() {
-		return (_isTokenBased);
+		return (_tokenBased);
 	}
 	
 	/**

@@ -94,7 +94,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 
 	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
 	private List<Link> _cachedLinks;
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 	
 	/** The value for an inbound direction. */
 	public static final String INBOUND_DIRECTION = "inbound";
@@ -135,7 +135,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 				for (int i = 0; i < links.size(); i++)
 					_cachedLinks.add(new Link(links.get(i)));
 			}
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -174,9 +174,8 @@ public final class RelatedResource extends AbstractQualifierValue {
 			if (!version.isAtLeast("4.0"))
 				element.appendChild(innerElement);
 			_cachedLinks = links;
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -367,7 +366,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**

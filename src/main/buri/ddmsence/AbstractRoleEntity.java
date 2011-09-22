@@ -23,7 +23,6 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Elements;
 import buri.ddmsence.ddms.IBuilder;
@@ -47,22 +46,15 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public abstract class AbstractRoleEntity extends AbstractBaseComponent implements IRoleEntity {
-
-	private ExtensibleAttributes _cachedExtensibleAttributes = null;
 	
-	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
-	private List<String> _cachedNames;
-	private List<String> _cachedPhones;
-	private List<String> _cachedEmails;
+	private List<String> _names;
+	private List<String> _phones;
+	private List<String> _emails;
+	private ExtensibleAttributes _extensibleAttributes = null;
 	
-	/** The element name for ddms:name */
-	protected static final String NAME_NAME = "name";
-	
-	/** The element name for phone numbers */
-	protected static final String PHONE_NAME = "phone";
-	
-	/** The element name for email addresses */
-	protected static final String EMAIL_NAME = "email";	
+	private static final String NAME_NAME = "name";
+	private static final String PHONE_NAME = "phone";
+	private static final String EMAIL_NAME = "email";	
 	
 	/**
 	 * Base constructor
@@ -73,16 +65,16 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	 */
 	protected AbstractRoleEntity(Element element, boolean validateNow) throws InvalidDDMSException {
 		try {
-			Util.requireDDMSValue("entity element", element);
-			_cachedNames = Util.getDDMSChildValues(element, NAME_NAME);
-			_cachedPhones = Util.getDDMSChildValues(element, PHONE_NAME);
-			_cachedEmails = Util.getDDMSChildValues(element, EMAIL_NAME);
-			_cachedExtensibleAttributes = new ExtensibleAttributes(element);
+			_names = Util.getDDMSChildValues(element, NAME_NAME);
+			_phones = Util.getDDMSChildValues(element, PHONE_NAME);
+			_emails = Util.getDDMSChildValues(element, EMAIL_NAME);
+			_extensibleAttributes = new ExtensibleAttributes(element);
 			setXOMElement(element, validateNow);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
-		}		
+		}
 	}
 	
 	/**
@@ -92,13 +84,12 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
-	 * @param extensions extensible attributes (optional)
+	 * @param extensibleAttributes extensible attributes (optional)
 	 * @param validateNow true to validate the component immediately. Because Person and Organization entities have
 	 * additional fields they should not be validated in the superconstructor.
 	 */
-	protected AbstractRoleEntity(String entityName, List<String> names, List<String> phones,
-		List<String> emails, ExtensibleAttributes extensions, boolean validateNow)
-		throws InvalidDDMSException {
+	protected AbstractRoleEntity(String entityName, List<String> names, List<String> phones, List<String> emails,
+		ExtensibleAttributes extensibleAttributes, boolean validateNow) throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("entityName", entityName);
 			if (names == null)
@@ -107,25 +98,23 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 				phones = Collections.emptyList();
 			if (emails == null)
 				emails = Collections.emptyList();
+			
 			Element element = Util.buildDDMSElement(entityName, null);
-			for (String name : names) {
+			for (String name : names)
 				element.appendChild(Util.buildDDMSElement(NAME_NAME, name));
-			}
-			for (String phone : phones) {
+			for (String phone : phones)
 				element.appendChild(Util.buildDDMSElement(PHONE_NAME, phone));
-			}
-			for (String email : emails) {
+			for (String email : emails)
 				element.appendChild(Util.buildDDMSElement(EMAIL_NAME, email));
-			}
 
-			_cachedNames = names;
-			_cachedPhones = phones;
-			_cachedEmails = emails;
-			_cachedExtensibleAttributes = (extensions == null ? new ExtensibleAttributes((List<Attribute>) null)
-				: extensions);
-			_cachedExtensibleAttributes.addTo(element);
+			_names = names;
+			_phones = phones;
+			_emails = emails;
+			_extensibleAttributes = ExtensibleAttributes.getNonNullInstance(extensibleAttributes);
+			_extensibleAttributes.addTo(element);
 			setXOMElement(element, validateNow);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -145,11 +134,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 		if (getXOMElement().getChildElements(NAME_NAME, getNamespace()).size() == 0)
 			throw new InvalidDDMSException("At least 1 name element must exist.");
 		
-		boolean foundNonEmptyName = false;
-		for (String name : getNames()) {
-			foundNonEmptyName = foundNonEmptyName || !Util.isEmpty(name);
-		}
-		if (!foundNonEmptyName)
+		if (Util.containsOnlyEmptyValues(getNames()))
 			throw new InvalidDDMSException("At least 1 name element must have a non-empty value.");
 
 		super.validate();	
@@ -229,7 +214,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	 * @return unmodifiable List
 	 */
 	public List<String> getNames() {
-		return (Collections.unmodifiableList(_cachedNames));
+		return (Collections.unmodifiableList(_names));
 	}
 	
 	/**
@@ -238,7 +223,7 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	 * @return unmodifiable List
 	 */
 	public List<String> getPhones() {
-		return (Collections.unmodifiableList(_cachedPhones));
+		return (Collections.unmodifiableList(_phones));
 	}
 	
 	/**
@@ -247,14 +232,14 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	 * @return unmodifiable List
 	 */
 	public List<String> getEmails() {
-		return (Collections.unmodifiableList(_cachedEmails));
+		return (Collections.unmodifiableList(_emails));
 	}
 	
 	/**
 	 * Accessor for the extensible attributes. Will always be non-null, even if not set.
 	 */
 	public ExtensibleAttributes getExtensibleAttributes() {
-		return (_cachedExtensibleAttributes);
+		return (_extensibleAttributes);
 	}
 	
 	/**

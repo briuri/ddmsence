@@ -66,7 +66,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Type extends AbstractQualifierValue {
 
-	private SecurityAttributes _cachedSecurityAttributes = null;
+	private SecurityAttributes _securityAttributes;
 		
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -76,7 +76,7 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	public Type(Element element) throws InvalidDDMSException {
 		try {
-			_cachedSecurityAttributes = new SecurityAttributes(element);
+			_securityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -101,9 +101,8 @@ public final class Type extends AbstractQualifierValue {
 			Element element = getXOMElement();
 			if (!Util.isEmpty(description))
 				element.appendChild(description);
-			_cachedSecurityAttributes = (securityAttributes == null ? new SecurityAttributes(null, null, null)
-				: securityAttributes);
-			_cachedSecurityAttributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
+			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -213,7 +212,7 @@ public final class Type extends AbstractQualifierValue {
 	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
-		return (_cachedSecurityAttributes);
+		return (_securityAttributes);
 	}
 	
 	/**
