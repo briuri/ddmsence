@@ -52,29 +52,39 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Generates a list of suborganizations for testing.
+	 * Returns a fixture object for testing.
 	 */
-	public static List<SubOrganization> getFixtureList() throws InvalidDDMSException {
-		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
-			return (null);
-		List<SubOrganization> subOrgs = new ArrayList<SubOrganization>();
-		subOrgs.add(new SubOrganization("sub1", SecurityAttributesTest.getFixture()));
-		subOrgs.add(new SubOrganization("sub2", SecurityAttributesTest.getFixture()));
-		return (subOrgs);
+	public static List<SubOrganization> getFixtureList()  {
+		try {
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
+				return (null);
+			List<SubOrganization> subOrgs = new ArrayList<SubOrganization>();
+			subOrgs.add(new SubOrganization("sub1", SecurityAttributesTest.getFixture()));
+			subOrgs.add(new SubOrganization("sub2", SecurityAttributesTest.getFixture()));
+			return (subOrgs);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**
 	 * Returns a fixture object for testing.
-	 * 
-	 * @return a XOM element representing a valid resource
 	 */
-	private static Element getFixtureElement() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		Element element = Util.buildDDMSElement(SubOrganization.getName(version), TEST_VALUE);
-		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
-		element.addNamespaceDeclaration(PropertyReader.getPrefix("ism"), version.getIsmNamespace());
-		SecurityAttributesTest.getFixture().addTo(element);
-		return (element);
+	public static Element getFixtureElement() {
+		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			Element element = Util.buildDDMSElement(SubOrganization.getName(version), TEST_VALUE);
+			element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
+			element.addNamespaceDeclaration(PropertyReader.getPrefix("ism"), version.getIsmNamespace());
+			SecurityAttributesTest.getFixture().addTo(element);
+			return (element);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

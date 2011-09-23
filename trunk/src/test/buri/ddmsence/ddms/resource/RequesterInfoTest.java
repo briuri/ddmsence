@@ -54,15 +54,20 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	 * Returns a fixture object for testing.
 	 * 
 	 * @param useOrg true to put an organization in, false for a person
-	 * @return a XOM element representing a valid applicationSoftware
 	 */
-	protected static Element getFixtureElement(boolean useOrg) throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		Element element = Util.buildDDMSElement(RequesterInfo.getName(version), null);
-		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
-		element.appendChild(useOrg ? getOrgFixture().getXOMElementCopy() : getPersonFixture().getXOMElementCopy());
-		SecurityAttributesTest.getFixture().addTo(element);
-		return (element);
+	public static Element getFixtureElement(boolean useOrg) {
+		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			Element element = Util.buildDDMSElement(RequesterInfo.getName(version), null);
+			element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
+			element.appendChild(useOrg ? getOrgFixture().getXOMElementCopy() : getPersonFixture().getXOMElementCopy());
+			SecurityAttributesTest.getFixture().addTo(element);
+			return (element);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**
