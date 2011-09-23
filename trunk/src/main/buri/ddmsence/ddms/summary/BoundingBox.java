@@ -36,8 +36,8 @@ import buri.ddmsence.util.Util;
  * <u>ddms:eastBL</u>: eastbound longitude (required)<br />
  * <u>ddms:southBL</u>: northbound latitude (required)<br />
  * <u>ddms:northBL</u>: southbound latitude (required)<br />
- * Please note that the case of the nested elements changed starting in DDMS 4.0. Previously, the first letter
- * of each element was capitalized (i.e. WestBL/EastBL/SouthBL/NorthBL).
+ * Please note that the case of the nested elements changed starting in DDMS 4.0. Previously, the first letter of 
+ * each element was capitalized (i.e. WestBL/EastBL/SouthBL/NorthBL).
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -45,10 +45,10 @@ import buri.ddmsence.util.Util;
  */
 public final class BoundingBox extends AbstractBaseComponent {
 
-	private Double _cachedWestBL = null;
-	private Double _cachedEastBL = null;
-	private Double _cachedSouthBL = null;
-	private Double _cachedNorthBL = null;
+	private Double _westBL = null;
+	private Double _eastBL = null;
+	private Double _southBL = null;
+	private Double _northBL = null;
 					
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -60,12 +60,13 @@ public final class BoundingBox extends AbstractBaseComponent {
 		try {
 			Util.requireDDMSValue("boundingBox element", element);
 			setXOMElement(element, false);
-			_cachedWestBL = getChildTextAsDouble(element, getWestBLName());
-			_cachedEastBL = getChildTextAsDouble(element, getEastBLName());
-			_cachedSouthBL = getChildTextAsDouble(element, getSouthBLName());
-			_cachedNorthBL = getChildTextAsDouble(element, getNorthBLName());
+			_westBL = getChildTextAsDouble(element, getWestBLName());
+			_eastBL = getChildTextAsDouble(element, getEastBLName());
+			_southBL = getChildTextAsDouble(element, getSouthBLName());
+			_northBL = getChildTextAsDouble(element, getNorthBLName());
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -88,12 +89,13 @@ public final class BoundingBox extends AbstractBaseComponent {
 			element.appendChild(Util.buildDDMSElement(getEastBLName(), String.valueOf(eastBL)));
 			element.appendChild(Util.buildDDMSElement(getSouthBLName(), String.valueOf(southBL)));
 			element.appendChild(Util.buildDDMSElement(getNorthBLName(), String.valueOf(northBL)));
-			_cachedWestBL = Double.valueOf(westBL);
-			_cachedEastBL = Double.valueOf(eastBL);
-			_cachedSouthBL = Double.valueOf(southBL);
-			_cachedNorthBL = Double.valueOf(northBL);
+			_westBL = Double.valueOf(westBL);
+			_eastBL = Double.valueOf(eastBL);
+			_southBL = Double.valueOf(southBL);
+			_northBL = Double.valueOf(northBL);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -208,28 +210,28 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 * Accessor for the westbound longitude.
 	 */
 	public Double getWestBL() {
-		return (_cachedWestBL); 
+		return (_westBL); 
 	}
 	
 	/**
 	 * Accessor for the eastbound longitude.
 	 */
 	public Double getEastBL() {
-		return (_cachedEastBL); 
+		return (_eastBL); 
 	}
 	
 	/**
 	 * Accessor for the southbound latitude.
 	 */
 	public Double getSouthBL() {
-		return (_cachedSouthBL); 
+		return (_southBL); 
 	}
 	
 	/**
 	 * Accessor for the northbound latitude.
 	 */
 	public Double getNorthBL() {
-		return (_cachedNorthBL); 
+		return (_northBL); 
 	}
 	
 	/**

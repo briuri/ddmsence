@@ -53,8 +53,8 @@ import buri.ddmsence.util.Util;
  */
 public final class BoundingGeometry extends AbstractBaseComponent {
 
-	private List<Polygon> _cachedPolygons;
-	private List<Point> _cachedPoints;
+	private List<Polygon> _polygons = null;
+	private List<Point> _points = null;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -67,18 +67,19 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 			Util.requireDDMSValue("boundingGeometry element", element);
 			setXOMElement(element, false);
 			String gmlNamespace = getDDMSVersion().getGmlNamespace();
-			_cachedPolygons = new ArrayList<Polygon>();
-			_cachedPoints = new ArrayList<Point>();
+			_polygons = new ArrayList<Polygon>();
+			_points = new ArrayList<Point>();
 			Elements polygons = element.getChildElements(Polygon.getName(getDDMSVersion()), gmlNamespace);
 			for (int i = 0; i < polygons.size(); i++) {
-				_cachedPolygons.add(new Polygon(polygons.get(i)));
+				_polygons.add(new Polygon(polygons.get(i)));
 			}
 			Elements points = element.getChildElements(Point.getName(getDDMSVersion()), gmlNamespace);
 			for (int i = 0; i < points.size(); i++) {
-				_cachedPoints.add(new Point(points.get(i)));
+				_points.add(new Point(points.get(i)));
 			}
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -102,10 +103,11 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 				element.appendChild(polygon.getXOMElementCopy());
 			for (Point point : points)
 				element.appendChild(point.getXOMElementCopy());
-			_cachedPolygons = polygons;
-			_cachedPoints = points;
+			_polygons = polygons;
+			_points = points;
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -177,14 +179,14 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 * Accessor for the polygons in this geometry.
 	 */
 	public List<Polygon> getPolygons() {
-		return (Collections.unmodifiableList(_cachedPolygons)); 
+		return (Collections.unmodifiableList(_polygons)); 
 	}
 	
 	/**
 	 * Accessor for the points in this geometry.
 	 */
 	public List<Point> getPoints() {
-		return (Collections.unmodifiableList(_cachedPoints)); 
+		return (Collections.unmodifiableList(_points)); 
 	}
 	
 	/**

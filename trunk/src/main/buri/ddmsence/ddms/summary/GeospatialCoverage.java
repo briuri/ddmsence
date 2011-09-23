@@ -76,11 +76,11 @@ import buri.ddmsence.util.Util;
  */
 public final class GeospatialCoverage extends AbstractBaseComponent {
 	
-	private GeographicIdentifier _cachedGeographicIdentifier;
-	private BoundingBox _cachedBoundingBox;
-	private BoundingGeometry _cachedBoundingGeometry;
-	private PostalAddress _cachedPostalAddress;
-	private VerticalExtent _cachedVerticalExtent;
+	private GeographicIdentifier _geographicIdentifier = null;
+	private BoundingBox _boundingBox = null;
+	private BoundingGeometry _boundingGeometry = null;
+	private PostalAddress _postalAddress = null;
+	private VerticalExtent _verticalExtent = null;
 	private SecurityAttributes _securityAttributes = null;
 	
 	private static final String GEOSPATIAL_EXTENT_NAME = "GeospatialExtent";
@@ -103,32 +103,34 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		try {
 			Util.requireDDMSValue("geographicIdentifier element", element);
 			setXOMElement(element, false);
-			String namespace = element.getNamespaceURI();
 			Element extElement = getExtentElement();
 			if (extElement != null) {
-				DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
-				Element geographicIdentifierElement = extElement.getFirstChildElement(
-					GeographicIdentifier.getName(version), namespace);
+				DDMSVersion version = DDMSVersion.getVersionForNamespace(getNamespace());
+				Element geographicIdentifierElement = extElement.getFirstChildElement(GeographicIdentifier
+					.getName(version), getNamespace());
 				if (geographicIdentifierElement != null)
-					_cachedGeographicIdentifier = new GeographicIdentifier(geographicIdentifierElement);
-				Element boundingBoxElement = extElement.getFirstChildElement(BoundingBox.getName(version), namespace);
+					_geographicIdentifier = new GeographicIdentifier(geographicIdentifierElement);
+				Element boundingBoxElement = extElement.getFirstChildElement(BoundingBox.getName(version),
+					getNamespace());
 				if (boundingBoxElement != null)
-					_cachedBoundingBox = new BoundingBox(boundingBoxElement);
-				Element boundingGeometryElement = extElement.getFirstChildElement(BoundingGeometry.getName(version), namespace);
+					_boundingBox = new BoundingBox(boundingBoxElement);
+				Element boundingGeometryElement = extElement.getFirstChildElement(BoundingGeometry.getName(version),
+					getNamespace());
 				if (boundingGeometryElement != null)
-					_cachedBoundingGeometry = new BoundingGeometry(boundingGeometryElement);
+					_boundingGeometry = new BoundingGeometry(boundingGeometryElement);
 				Element postalAddressElement = extElement.getFirstChildElement(PostalAddress.getName(version),
-					namespace);
+					getNamespace());
 				if (postalAddressElement != null)
-					_cachedPostalAddress = new PostalAddress(postalAddressElement);
+					_postalAddress = new PostalAddress(postalAddressElement);
 				Element verticalExtentElement = extElement.getFirstChildElement(VerticalExtent.getName(version),
-					namespace);
+					getNamespace());
 				if (verticalExtentElement != null)
-					_cachedVerticalExtent = new VerticalExtent(verticalExtentElement);
+					_verticalExtent = new VerticalExtent(verticalExtentElement);
 			}
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -151,10 +153,11 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		BoundingGeometry boundingGeometry, PostalAddress postalAddress, VerticalExtent verticalExtent,
 		String precedence, Integer order, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
-			Element coverageElement = Util.buildDDMSElement(GeospatialCoverage.getName(DDMSVersion.getCurrentVersion()), null);
-			
-			Element element = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? coverageElement
-				: Util.buildDDMSElement(GEOSPATIAL_EXTENT_NAME, null);
+			Element coverageElement = Util.buildDDMSElement(
+				GeospatialCoverage.getName(DDMSVersion.getCurrentVersion()), null);
+
+			Element element = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? coverageElement : Util
+				.buildDDMSElement(GEOSPATIAL_EXTENT_NAME, null);
 			if (geographicIdentifier != null)
 				element.appendChild(geographicIdentifier.getXOMElementCopy());
 			if (boundingBox != null)
@@ -171,16 +174,17 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				coverageElement.appendChild(element);
-			
-			_cachedGeographicIdentifier = geographicIdentifier;
-			_cachedBoundingBox = boundingBox;
-			_cachedBoundingGeometry = boundingGeometry;
-			_cachedPostalAddress = postalAddress;
-			_cachedVerticalExtent = verticalExtent;
+
+			_geographicIdentifier = geographicIdentifier;
+			_boundingBox = boundingBox;
+			_boundingGeometry = boundingGeometry;
+			_postalAddress = postalAddress;
+			_verticalExtent = verticalExtent;
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(coverageElement);
 			setXOMElement(coverageElement, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -375,35 +379,35 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * Accessor for the geographicIdentifier. May return null if not used.
 	 */
 	public GeographicIdentifier getGeographicIdentifier() {
-		return _cachedGeographicIdentifier;
+		return _geographicIdentifier;
 	}
 
 	/**
 	 * Accessor for the boundingBox. May return null if not used.
 	 */
 	public BoundingBox getBoundingBox() {
-		return _cachedBoundingBox;
+		return _boundingBox;
 	}
 
 	/**
 	 * Accessor for the boundingGeometry. May return null if not used.
 	 */
 	public BoundingGeometry getBoundingGeometry() {
-		return _cachedBoundingGeometry;
+		return _boundingGeometry;
 	}
 
 	/**
 	 * Accessor for the postalAddress. May return null if not used.
 	 */
 	public PostalAddress getPostalAddress() {
-		return (_cachedPostalAddress);
+		return (_postalAddress);
 	}
 
 	/**
 	 * Accessor for the verticalExtent. May return null if not used.
 	 */
 	public VerticalExtent getVerticalExtent() {
-		return (_cachedVerticalExtent);
+		return (_verticalExtent);
 	}
 	
 	/**

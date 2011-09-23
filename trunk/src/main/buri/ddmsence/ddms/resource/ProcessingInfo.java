@@ -69,7 +69,8 @@ public final class ProcessingInfo extends AbstractSimpleString {
 			if (!Util.isEmpty(processed))
 				_dateProcessed = getFactory().newXMLGregorianCalendar(processed);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -92,11 +93,13 @@ public final class ProcessingInfo extends AbstractSimpleString {
 					_dateProcessed = getFactory().newXMLGregorianCalendar(dateProcessed);
 					Util.addDDMSAttribute(getXOMElement(), DATE_PROCESSED_NAME, getDateProcessed().toXMLFormat());
 				}
-			} catch (IllegalArgumentException e) {
+			}
+			catch (IllegalArgumentException e) {
 				throw new InvalidDDMSException("The ddms:dateProcessed attribute is not in a valid date format.");
 			}
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}

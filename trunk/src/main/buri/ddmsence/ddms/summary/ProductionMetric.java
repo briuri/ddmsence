@@ -57,25 +57,28 @@ public final class ProductionMetric extends AbstractBaseComponent {
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ProductionMetric(Element element) throws InvalidDDMSException {
 		try {
 			_securityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data.
-	 *  
-	 * @param subject a method of categorizing the subject of a document in a fashion understandable by DDNI-A (required)
-	 * @param coverage a method of categorizing the coverage of a document in a fashion understandable by DDNI-A (required)
+	 * 
+	 * @param subject a method of categorizing the subject of a document in a fashion understandable by DDNI-A
+	 * (required)
+	 * @param coverage a method of categorizing the coverage of a document in a fashion understandable by DDNI-A
+	 * (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ProductionMetric(String subject, String coverage, SecurityAttributes securityAttributes)
@@ -87,7 +90,8 @@ public final class ProductionMetric extends AbstractBaseComponent {
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -109,6 +113,7 @@ public final class ProductionMetric extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), ProductionMetric.getName(getDDMSVersion()));
 		Util.requireDDMSValue("subject attribute", getSubject());
 		Util.requireDDMSValue("coverage attribute", getCoverage());
+		
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0");
 		

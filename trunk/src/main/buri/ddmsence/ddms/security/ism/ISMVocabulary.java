@@ -239,11 +239,13 @@ public class ISMVocabulary {
 					for (String cve : ALL_ENUMS) {
 						try {
 							loadEnumeration(enumLocation, builder, cve);
-						} catch (Exception e) {
+						}
+						catch (Exception e) {
 							continue;
 						}
 					}
-				} catch (SAXException e) {
+				}
+				catch (SAXException e) {
 					throw new RuntimeException("Could not load controlled vocabularies: " + e.getMessage());
 				}
 			}

@@ -85,7 +85,7 @@ import buri.ddmsence.util.Util;
  */
 public final class RelatedResource extends AbstractQualifierValue {
 
-	private List<Link> _cachedLinks;
+	private List<Link> _links = null;
 	private SecurityAttributes _securityAttributes = null;
 	
 	/** The value for an inbound direction. */
@@ -122,14 +122,15 @@ public final class RelatedResource extends AbstractQualifierValue {
 			setXOMElement(element, false);
 			Element innerElement = getInnerElement();
 			if (innerElement != null) {
-				_cachedLinks = new ArrayList<Link>();
+				_links = new ArrayList<Link>();
 				Elements links = innerElement.getChildElements(Link.getName(getDDMSVersion()), getNamespace());
 				for (int i = 0; i < links.size(); i++)
-					_cachedLinks.add(new Link(links.get(i)));
+					_links.add(new Link(links.get(i)));
 			}
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -155,21 +156,21 @@ public final class RelatedResource extends AbstractQualifierValue {
 			Element element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, RELATIONSHIP_NAME, relationship);
 			Util.addDDMSAttribute(element, DIRECTION_NAME, direction);
-			Element innerElement = (version.isAtLeast("4.0") ? element
-				: Util.buildDDMSElement(OLD_INNER_NAME, null));
+			Element innerElement = (version.isAtLeast("4.0") ? element : Util.buildDDMSElement(OLD_INNER_NAME, null));
 			Util.addDDMSAttribute(innerElement, QUALIFIER_NAME, qualifier);
-			Util.addDDMSAttribute(innerElement, VALUE_NAME, value);	
+			Util.addDDMSAttribute(innerElement, VALUE_NAME, value);
 			for (Link link : links) {
 				innerElement.appendChild(link.getXOMElementCopy());
 			}
-			
+
 			if (!version.isAtLeast("4.0"))
 				element.appendChild(innerElement);
-			_cachedLinks = links;
+			_links = links;
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -319,7 +320,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * @return unmodifiable List
 	 */
 	public List<Link> getLinks() {
-		return (Collections.unmodifiableList(_cachedLinks));
+		return (Collections.unmodifiableList(_links));
 	}
 	
 	/**

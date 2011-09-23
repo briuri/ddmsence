@@ -82,11 +82,11 @@ import buri.ddmsence.util.Util;
  */
 public final class TemporalCoverage extends AbstractBaseComponent {
 	
-	private String _cachedName = DEFAULT_VALUE;
-	private String _cachedStartString;
-	private String _cachedEndString;
-	private XMLGregorianCalendar _cachedStart = null;
-	private XMLGregorianCalendar _cachedEnd = null;
+	private String _name = DEFAULT_VALUE;
+	private String _startString = null;
+	private String _endString = null;
+	private XMLGregorianCalendar _start = null;
+	private XMLGregorianCalendar _end = null;
 	private SecurityAttributes _securityAttributes = null;
 	
 	private static final String DEFAULT_VALUE = "Unknown";
@@ -114,23 +114,22 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	public TemporalCoverage(Element element) throws InvalidDDMSException {
 		try {
-			Util.requireDDMSValue("temporalCoverage element", element);
 			setXOMElement(element, false);
 			Element periodElement = getTimePeriodElement();
 			if (periodElement != null) {
-				Element nameElement = periodElement.getFirstChildElement(TIME_PERIOD_NAME_NAME, element
-					.getNamespaceURI());
+				Element nameElement = periodElement.getFirstChildElement(TIME_PERIOD_NAME_NAME, getNamespace());
 				if (nameElement != null && !Util.isEmpty(nameElement.getValue()))
-					_cachedName = nameElement.getValue();
-				Element startElement = periodElement.getFirstChildElement(START_NAME, element.getNamespaceURI());
-				Element endElement = periodElement.getFirstChildElement("end", element.getNamespaceURI());
+					_name = nameElement.getValue();
+				Element startElement = periodElement.getFirstChildElement(START_NAME, getNamespace());
+				Element endElement = periodElement.getFirstChildElement("end", getNamespace());
 				String startString = (startElement == null ? "" : startElement.getValue());
 				String endString = (endElement == null ? "" : endElement.getValue());
 				loadDateCaches(startString, endString);
 			}
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -149,11 +148,11 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(TemporalCoverage.getName(DDMSVersion.getCurrentVersion()), null);
-			
-			Element periodElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? element 
-				: Util.buildDDMSElement(TIME_PERIOD_NAME, null);
+
+			Element periodElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? element : Util.buildDDMSElement(
+				TIME_PERIOD_NAME, null);
 			if (!Util.isEmpty(timePeriodName))
-				_cachedName = timePeriodName;
+				_name = timePeriodName;
 			startString = (Util.isEmpty(startString) ? DEFAULT_VALUE : startString);
 			endString = (Util.isEmpty(endString) ? DEFAULT_VALUE : endString);
 			Util.addDDMSChildElement(periodElement, TIME_PERIOD_NAME_NAME, timePeriodName);
@@ -167,7 +166,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -180,17 +180,17 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * @param endString the end string. Defaults to "Unknown" if empty.
 	 */
 	private void loadDateCaches(String startString, String endString) {
-		_cachedStartString = startString;
+		_startString = startString;
 		try {
-			_cachedStart = getFactory().newXMLGregorianCalendar(_cachedStartString);
+			_start = getFactory().newXMLGregorianCalendar(_startString);
 		}
 		catch (IllegalArgumentException e) {
 			// Was not a valid date. validate() will catch this later. If we throw an InvalidDDMSException,
 			// we will prevent the use of the extended date types like Unknown.
 		}
-		_cachedEndString = endString;
+		_endString = endString;
 		try {
-			_cachedEnd = getFactory().newXMLGregorianCalendar(_cachedEndString);
+			_end = getFactory().newXMLGregorianCalendar(_endString);
 		}
 		catch (IllegalArgumentException e) {
 			// Was not a valid date. validate() will catch this later. If we throw an InvalidDDMSException,
@@ -342,7 +342,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * return the local name of the temporal coverage element (temporalCoverage).
 	 */
 	public String getTimePeriodName() {
-		return (_cachedName);
+		return (_name);
 	}
 	
 	/**
@@ -350,7 +350,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * will return null. Use <code>getStartString</code> to retrieve the string representation.
 	 */
 	public XMLGregorianCalendar getStart() {
-		return (_cachedStart == null ? null : getFactory().newXMLGregorianCalendar(_cachedStart.toXMLFormat()));
+		return (_start == null ? null : getFactory().newXMLGregorianCalendar(_start.toXMLFormat()));
 	}
 
 	/**
@@ -360,7 +360,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	public String getStartString() {
 		if (getStart() != null)
 			return (getStart().toXMLFormat());
-		return (_cachedStartString);
+		return (_startString);
 	}
 	
 	/**
@@ -368,7 +368,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * will return null. Use <code>getEndString</code> to retrieve the string representation.
 	 */
 	public XMLGregorianCalendar getEnd() {
-		return (_cachedEnd == null ? null : getFactory().newXMLGregorianCalendar(_cachedEnd.toXMLFormat()));
+		return (_end == null ? null : getFactory().newXMLGregorianCalendar(_end.toXMLFormat()));
 	}
 
 	/**
@@ -378,7 +378,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	public String getEndString() {
 		if (getEnd() != null)
 			return (getEnd().toXMLFormat());
-		return (_cachedEndString);
+		return (_endString);
 	}
 	
 	/**

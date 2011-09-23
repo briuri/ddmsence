@@ -82,8 +82,8 @@ import buri.ddmsence.util.Util;
  */
 public final class VerticalExtent extends AbstractBaseComponent {
 
-	private Double _cachedMin;
-	private Double _cachedMax;
+	private Double _min = null;
+	private Double _max = null;
 		
 	private static Set<String> VERTICAL_DATUM_TYPES = new HashSet<String>();
 	static {
@@ -116,10 +116,11 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		try {
 			Util.requireDDMSValue("verticalExtent element", element);
 			setXOMElement(element, false);
-			_cachedMin = getChildTextAsDouble(element, getMinVerticalExtentName());
-			_cachedMax = getChildTextAsDouble(element, getMaxVerticalExtentName());
+			_min = getChildTextAsDouble(element, getMinVerticalExtentName());
+			_max = getChildTextAsDouble(element, getMaxVerticalExtentName());
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -143,10 +144,11 @@ public final class VerticalExtent extends AbstractBaseComponent {
 			Util.addDDMSAttribute(element, DATUM_NAME, datum);
 			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(minVerticalExtent)));
 			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(maxVerticalExtent)));
-			_cachedMin = Double.valueOf(minVerticalExtent);
-			_cachedMax = Double.valueOf(maxVerticalExtent);
+			_min = Double.valueOf(minVerticalExtent);
+			_max = Double.valueOf(maxVerticalExtent);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -306,14 +308,14 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 * Accessor for the minimum extent
 	 */
 	public Double getMinVerticalExtent() {
-		return (_cachedMin); 
+		return (_min); 
 	}
 	
 	/**
 	 * Accessor for the maximum extent
 	 */
 	public Double getMaxVerticalExtent() {
-		return (_cachedMax); 
+		return (_max); 
 	}
 	
 	/**

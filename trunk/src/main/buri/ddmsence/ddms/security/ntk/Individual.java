@@ -72,15 +72,16 @@ public final class Individual extends AbstractAccessEntity {
 				_individualValues.add(new IndividualValue(values.get(i)));
 			}
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param systemName the system name (required)
 	 * @param individualValues the list of values (at least 1 required)
 	 * @param securityAttributes security attributes (required)
@@ -97,7 +98,8 @@ public final class Individual extends AbstractAccessEntity {
 			}
 			_individualValues = individualValues;
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
