@@ -5,12 +5,13 @@
 	<meta name="keywords" content="DDMSence,DDMS,Metadata,Discovery,Java,DoD,XML,DDMEssence,DDMSense,Essence" />
 
 	<!-- DDMS Resource Record --> 	
-	<meta name="security.resourceElement" content="true" />
-	<meta name="security.createDate" content="2010-03-21" />
-	<meta name="security.DESVersion" content="2" />
-	<meta name="security.classification" content="U" />
-	<meta name="security.ownerProducer" content="USA" />
-	<meta name="identifier.qualifier" content="http://purl.org/dc/terms/URI" />
+	<meta name="resource.resourceElement" content="true" />
+	<meta name="resource.createDate" content="2010-01-21" />
+	<meta name="resource.ism.DESVersion" content="5" />
+	<meta name="resource.ntk.DESVersion" content="5" />
+	<meta name="resource.classification" content="U" />
+	<meta name="resource.ownerProducer" content="USA" />
+	<meta name="identifier.qualifier" content="URI" />
 	<meta name="identifier.value" content="urn:buri:ddmsence:website" />
 	<meta name="title" content="DDMSence Home Page" />
 	<meta name="title.classification" content="U" />
@@ -19,50 +20,51 @@
 	<meta name="description.classification" content="U" />
 	<meta name="description.ownerProducer" content="USA" />
 	<meta name="language.qualifier" content="http://purl.org/dc/elements/1.1/language" />
-	<meta name="language" content="en" />
+	<meta name="language.value" content="en" />
 	<meta name="dates.created" content="2010-03-13" />
 	<meta name="dates.posted" content="2003-03-13" />
-	<meta name="rights.privacy" content="false" />
+	<meta name="dates.approvedOn" content="2010-04-01" />
+	<meta name="rights.privacyAct" content="false" />
 	<meta name="rights.intellectualProperty" content="true" />
-	<meta name="rights.copy" content="true" />
+	<meta name="rights.copyright" content="true" />
 	<meta name="type.qualifier" content="DCMITYPE" />
-	<meta name="type.value" content="http://purl.org/dc/dcmitype/Text" />
-	<meta name="creator.entityType" content="Person" />
+	<meta name="type.value" content="http://purl.org/dc/dcmitype/Text" />	
+	<meta name="creator.entityType" content="person" />
+	<meta name="creator.name" content="Brian Uri" />
 	<meta name="creator.name" content="Brian" />
-	<meta name="creator.name" content="BU" />
 	<meta name="creator.surname" content="Uri" />
-	<meta name="publisher.entityType" content="Person" />
+	<meta name="creator.classification" content="U" />
+	<meta name="creator.ownerProducer" content="USA" />
+	<meta name="publisher.entityType" content="person" />
+	<meta name="publisher.name" content="Brian Uri" />
 	<meta name="publisher.name" content="Brian" />
-	<meta name="publisher.name" content="BU" />
 	<meta name="publisher.surname" content="Uri" />
-	<meta name="pointOfContact.entityType" content="Person" />
+	<meta name="publisher.classification" content="U" />
+	<meta name="publisher.ownerProducer" content="USA" />
+	<meta name="pointOfContact.entityType" content="person" />
+	<meta name="pointOfContact.name" content="Brian Uri" />
 	<meta name="pointOfContact.name" content="Brian" />
-	<meta name="pointOfContact.name" content="BU" />
 	<meta name="pointOfContact.surname" content="Uri" />
 	<meta name="format.media" content="text/html" />
 	<meta name="format.medium" content="digital" />
-	<meta name="subjectCoverage.Subject.keyword" content="DDMSence" />
-	<meta name="subjectCoverage.Subject.keyword" content="DDMS" />
-	<meta name="subjectCoverage.Subject.keyword" content="Metadata" />
-	<meta name="subjectCoverage.Subject.keyword" content="Discovery" />
-	<meta name="subjectCoverage.Subject.keyword" content="Java" />
-	<meta name="subjectCoverage.Subject.keyword" content="DoD" />
-	<meta name="subjectCoverage.Subject.keyword" content="XML" />
-	<meta name="subjectCoverage.Subject.keyword" content="DDMEssence" />
-	<meta name="subjectCoverage.Subject.keyword" content="DDMSense" />
-	<meta name="subjectCoverage.Subject.keyword" content="Essence" />
-	<meta name="virtual.address" content="http://ddmsence.urizone.net/" />
-	<meta name="virtual.networkProtocol" content="URL" />
-	<meta name="temporal.TimePeriod" content="Unknown" />
-	<meta name="temporal.DateStart" content="2010-03-13" />
-	<meta name="temporal.DateEnd" content="Unknown" />
-	<meta name="security.excludeFromRollup" content="true" />
-	<meta name="security.classification" content="U" />
-	<meta name="security.ownerProducer" content="USA" />
-	<meta name="extensible.layer" content="false" />
-	<meta name="ddms.generator" content="DDMSence @ddmsence.version@" />
-	<meta name="ddms.version" content="3.1" />
-	
+	<meta name="subjectCoverage.keyword" content="DDMSence" />
+	<meta name="subjectCoverage.keyword" content="DDMS" />
+	<meta name="subjectCoverage.keyword" content="Metadata" />
+	<meta name="subjectCoverage.keyword" content="Discovery" />
+	<meta name="subjectCoverage.keyword" content="Java" />
+	<meta name="subjectCoverage.keyword" content="DoD" />
+	<meta name="subjectCoverage.keyword" content="XML" />
+	<meta name="subjectCoverage.keyword" content="DDMEssence" />
+	<meta name="subjectCoverage.keyword" content="DDMSense" />
+	<meta name="subjectCoverage.keyword" content="Essence" />
+	<meta name="virtualCoverage.address" content="http://ddmsence.urizone.net/" />
+	<meta name="virtualCoverage.networkProtocol" content="URL" />
+	<meta name="temporalCoverage.name" content="Unknown" />
+	<meta name="temporalCoverage.start" content="2010-03-24T12:00:00Z" />
+	<meta name="temporalCoverage.end" content="Not Applicable" />
+	<meta name="ddms.generator" content="DDMSence 2.0.0" />
+	<meta name="ddms.version" content="4.0" />
+		
 	<script type="text/javascript" src="./shared/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript">
 
@@ -84,11 +86,11 @@
 	<div class="newsUpdate"><u>07/05/2011</u>: v1.10.0 released, adding <a href="documentation.jsp#tips-version">support for DDMS 3.1</a>.</div>
 	<div class="newsUpdate"><u>06/06/2011</u>: <a href="schematron.jsp">Schematron Implementation for DDMS</a> published.</div>
 	<div class="newsUpdate"><u>06/02/2011</u>: v1.9.1 released. Example code for <a href="validator.uri">DDMS Validator</a> and <a href="builder.uri">DDMS Builder</a> posted.</div>
-	<div class="newsUpdate"><u>05/24/2011</u>: v1.9.0 released.</div>
-	<div class="newsUpdate"><u>05/13/2011</u>: v1.8.0 released, introducing the <a href="documentation.jsp#tips-builders">Component Builder</a> framework.</div>
-	<div class="newsUpdate"><u>03/10/2011</u>: v1.7.2 released.</div>
 	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
 	<div id="oldNews" class="divHidden">
+		<div class="newsUpdate"><u>05/24/2011</u>: v1.9.0 released.</div>
+		<div class="newsUpdate"><u>05/13/2011</u>: v1.8.0 released, introducing the <a href="documentation.jsp#tips-builders">Component Builder</a> framework.</div>
+		<div class="newsUpdate"><u>03/10/2011</u>: v1.7.2 released.</div>
 		<div class="newsUpdate"><u>11/26/2010</u>: <a href="relationalTables.jsp">Relational Database Model for DDMS</a> published.</div>
 		<div class="newsUpdate"><u>11/16/2010</u>: v1.7.1 released.</div>
 		<div class="newsUpdate"><u>09/18/2010</u>: v1.7.0 released.</div>	
