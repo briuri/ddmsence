@@ -42,8 +42,9 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:value</u>: The keyword itself (required)<br />
- * Starting in DDMS 3.0, this component can also be decorated with optional {@link ExtensibleAttributes}.<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS 4.0)
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS 
+ * 4.0)<br />
+ * <u>{@link ExtensibleAttributes}</u>: (optional, starting in DDMS 3.0).
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -67,7 +68,8 @@ public final class Keyword extends AbstractBaseComponent {
 			_securityAttributes = new SecurityAttributes(element);
 			_extensibleAttributes = new ExtensibleAttributes(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -105,7 +107,8 @@ public final class Keyword extends AbstractBaseComponent {
 			_extensibleAttributes = ExtensibleAttributes.getNonNullInstance(extensibleAttributes);
 			_extensibleAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}

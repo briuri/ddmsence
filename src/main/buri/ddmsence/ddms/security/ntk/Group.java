@@ -71,7 +71,8 @@ public final class Group extends AbstractAccessEntity {
 				_groupValues.add(new GroupValue(values.get(i)));
 			}			
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -96,7 +97,8 @@ public final class Group extends AbstractAccessEntity {
 			}
 			_groupValues = groupValues;
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}

@@ -772,7 +772,8 @@ public class Util {
 				svrlStylesheet.setBaseURI(svrlUri.toString());
 
 				_schematronSvrlTransforms.put(resourceName, new XSLTransform(svrlStylesheet));
-			} catch (URISyntaxException e) {
+			}
+			catch (URISyntaxException e) {
 				throw new IOException(e.getMessage());
 			}
 		}

@@ -72,8 +72,8 @@ public final class Position extends AbstractBaseComponent {
 			}
 			_srsAttributes = new SRSAttributes(element);
 			setXOMElement(element, true);
-
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -98,7 +98,8 @@ public final class Position extends AbstractBaseComponent {
 			_srsAttributes = SRSAttributes.getNonNullInstance(srsAttributes);
 			_srsAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}

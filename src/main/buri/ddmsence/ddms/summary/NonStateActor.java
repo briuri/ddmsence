@@ -69,13 +69,15 @@ public final class NonStateActor extends AbstractSimpleString {
 	 * @param securityAttributes any security attributes (classification and ownerProducer are optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public NonStateActor(String value, Integer order, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public NonStateActor(String value, Integer order, SecurityAttributes securityAttributes)
+		throws InvalidDDMSException {
 		super(NonStateActor.getName(DDMSVersion.getCurrentVersion()), value, securityAttributes, false);
 		try {
 			if (order != null)
 				Util.addDDMSAttribute(getXOMElement(), ORDER_NAME, order.toString());
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}

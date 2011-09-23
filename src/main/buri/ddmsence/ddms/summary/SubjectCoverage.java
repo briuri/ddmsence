@@ -73,10 +73,10 @@ import buri.ddmsence.util.Util;
  */
 public final class SubjectCoverage extends AbstractBaseComponent {
 	
-	private List<Keyword> _cachedKeywords;
-	private List<Category> _cachedCategories;
-	private List<ProductionMetric> _cachedProductionMetrics;
-	private List<NonStateActor> _cachedNonStateActors;
+	private List<Keyword> _keywords = null;
+	private List<Category> _categories = null;
+	private List<ProductionMetric> _productionMetrics = null;
+	private List<NonStateActor> _nonStateActors = null;
 	private SecurityAttributes _securityAttributes = null;
 	
 	private static final String SUBJECT_NAME = "Subject";
@@ -92,35 +92,36 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 			Util.requireDDMSValue("subjectCoverage element", element);
 			setXOMElement(element, false);
 			Element subjectElement = getSubjectElement();
-			_cachedKeywords = new ArrayList<Keyword>();
-			_cachedCategories = new ArrayList<Category>();
-			_cachedProductionMetrics = new ArrayList<ProductionMetric>();
-			_cachedNonStateActors = new ArrayList<NonStateActor>();
+			_keywords = new ArrayList<Keyword>();
+			_categories = new ArrayList<Category>();
+			_productionMetrics = new ArrayList<ProductionMetric>();
+			_nonStateActors = new ArrayList<NonStateActor>();
 			if (subjectElement != null) {
 				Elements keywords = subjectElement.getChildElements(Keyword.getName(getDDMSVersion()),
-					subjectElement.getNamespaceURI());
+					getNamespace());
 				for (int i = 0; i < keywords.size(); i++) {
-					_cachedKeywords.add(new Keyword(keywords.get(i)));
+					_keywords.add(new Keyword(keywords.get(i)));
 				}
 				Elements categories = subjectElement.getChildElements(Category.getName(getDDMSVersion()),
-					subjectElement.getNamespaceURI());
+					getNamespace());
 				for (int i = 0; i < categories.size(); i++) {
-					_cachedCategories.add(new Category(categories.get(i)));
+					_categories.add(new Category(categories.get(i)));
 				}
 				Elements metrics = subjectElement.getChildElements(ProductionMetric.getName(getDDMSVersion()),
-					subjectElement.getNamespaceURI());
+					getNamespace());
 				for (int i = 0; i < metrics.size(); i++) {
-					_cachedProductionMetrics.add(new ProductionMetric(metrics.get(i)));
+					_productionMetrics.add(new ProductionMetric(metrics.get(i)));
 				}
 				Elements actors = subjectElement.getChildElements(NonStateActor.getName(getDDMSVersion()),
-					subjectElement.getNamespaceURI());
+					getNamespace());
 				for (int i = 0; i < actors.size(); i++) {
-					_cachedNonStateActors.add(new NonStateActor(actors.get(i)));
+					_nonStateActors.add(new NonStateActor(actors.get(i)));
 				}
 			}
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -151,30 +152,27 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 
 			Element subjectElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? element : Util
 				.buildDDMSElement(SUBJECT_NAME, null);
-			for (Keyword keyword : keywords) {
+			for (Keyword keyword : keywords)
 				subjectElement.appendChild(keyword.getXOMElementCopy());
-			}
-			for (Category category : categories) {
+			for (Category category : categories)
 				subjectElement.appendChild(category.getXOMElementCopy());
-			}
-			for (ProductionMetric metric : productionMetrics) {
+			for (ProductionMetric metric : productionMetrics)
 				subjectElement.appendChild(metric.getXOMElementCopy());
-			}
-			for (NonStateActor actor : nonStateActors) {
+			for (NonStateActor actor : nonStateActors)
 				subjectElement.appendChild(actor.getXOMElementCopy());
-			}
 
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				element.appendChild(subjectElement);
 
-			_cachedKeywords = keywords;
-			_cachedCategories = categories;
-			_cachedProductionMetrics = productionMetrics;
-			_cachedNonStateActors = nonStateActors;
+			_keywords = keywords;
+			_categories = categories;
+			_productionMetrics = productionMetrics;
+			_nonStateActors = nonStateActors;
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -192,13 +190,11 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-
 		Util.requireDDMSQName(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()));
 		Element subjectElement = getSubjectElement();
 		Util.requireDDMSValue("Subject element", subjectElement);
 		String namespace = subjectElement.getNamespaceURI();
-		int count = 
-			subjectElement.getChildElements(Keyword.getName(getDDMSVersion()), namespace).size()
+		int count = subjectElement.getChildElements(Keyword.getName(getDDMSVersion()), namespace).size()
 			+ subjectElement.getChildElements(Category.getName(getDDMSVersion()), namespace).size();
 		if (count < 1)
 			throw new InvalidDDMSException("At least 1 keyword or category must exist.");
@@ -307,7 +303,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @return unmodifiable List
 	 */
 	public List<Keyword> getKeywords() {
-		return (Collections.unmodifiableList(_cachedKeywords));
+		return (Collections.unmodifiableList(_keywords));
 	}
 	
 	/**
@@ -316,7 +312,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @return unmodifiable List
 	 */
 	public List<Category> getCategories() {
-		return (Collections.unmodifiableList(_cachedCategories));
+		return (Collections.unmodifiableList(_categories));
 	}
 	
 	/**
@@ -325,7 +321,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @return unmodifiable List
 	 */
 	public List<ProductionMetric> getProductionMetrics() {
-		return (Collections.unmodifiableList(_cachedProductionMetrics));
+		return (Collections.unmodifiableList(_productionMetrics));
 	}
 	
 	/**
@@ -334,7 +330,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	 * @return unmodifiable List
 	 */
 	public List<NonStateActor> getNonStateActors() {
-		return (Collections.unmodifiableList(_cachedNonStateActors));
+		return (Collections.unmodifiableList(_nonStateActors));
 	}
 	
 	/**

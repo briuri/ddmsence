@@ -57,12 +57,12 @@ import buri.ddmsence.util.Util;
  */
 public final class PostalAddress extends AbstractBaseComponent {
 	
-	private List<String> _cachedStreets;
-	private String _cachedCity;
-	private String _cachedState;
-	private String _cachedProvince;
-	private String _cachedPostalCode;
-	private CountryCode _cachedCountryCode;
+	private List<String> _streets = null;
+	private String _city = null;
+	private String _state = null;
+	private String _province = null;
+	private String _postalCode = null;
+	private CountryCode _countryCode = null;
 	
 	private static final String STREET_NAME = "street";
 	private static final String CITY_NAME = "city";
@@ -78,27 +78,27 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 */
 	public PostalAddress(Element element) throws InvalidDDMSException {
 		try {
-			Util.requireDDMSValue("postalAddress element", element);
 			setXOMElement(element, false);
-			String namespace = element.getNamespaceURI();
-			_cachedStreets = Util.getDDMSChildValues(element, STREET_NAME);
-			Element cityElement = element.getFirstChildElement(CITY_NAME, namespace);
+			_streets = Util.getDDMSChildValues(element, STREET_NAME);
+			Element cityElement = element.getFirstChildElement(CITY_NAME, getNamespace());
 			if (cityElement != null)
-				_cachedCity = cityElement.getValue();
-			Element stateElement = element.getFirstChildElement(STATE_NAME, namespace);
+				_city = cityElement.getValue();
+			Element stateElement = element.getFirstChildElement(STATE_NAME, getNamespace());
 			if (stateElement != null)
-				_cachedState = stateElement.getValue();
-			Element provinceElement = element.getFirstChildElement(PROVINCE_NAME, namespace);
+				_state = stateElement.getValue();
+			Element provinceElement = element.getFirstChildElement(PROVINCE_NAME, getNamespace());
 			if (provinceElement != null)
-				_cachedProvince = provinceElement.getValue();
-			Element postalCodeElement = element.getFirstChildElement(POSTAL_CODE_NAME, namespace);
+				_province = provinceElement.getValue();
+			Element postalCodeElement = element.getFirstChildElement(POSTAL_CODE_NAME, getNamespace());
 			if (postalCodeElement != null)
-				_cachedPostalCode = postalCodeElement.getValue();
-			Element countryCodeElement = element.getFirstChildElement(CountryCode.getName(getDDMSVersion()), namespace);
+				_postalCode = postalCodeElement.getValue();
+			Element countryCodeElement = element.getFirstChildElement(CountryCode.getName(getDDMSVersion()),
+				getNamespace());
 			if (countryCodeElement != null)
-				_cachedCountryCode = new CountryCode(countryCodeElement);
+				_countryCode = new CountryCode(countryCodeElement);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -133,14 +133,15 @@ public final class PostalAddress extends AbstractBaseComponent {
 			Util.addDDMSChildElement(element, POSTAL_CODE_NAME, postalCode);
 			if (countryCode != null)
 				element.appendChild(countryCode.getXOMElementCopy());
-			_cachedStreets = streets;
-			_cachedCity = city;
-			_cachedState = hasState ? stateOrProvince : "";
-			_cachedProvince = hasState ? "" : stateOrProvince;
-			_cachedPostalCode = postalCode;
-			_cachedCountryCode = countryCode;
+			_streets = streets;
+			_city = city;
+			_state = hasState ? stateOrProvince : "";
+			_province = hasState ? "" : stateOrProvince;
+			_postalCode = postalCode;
+			_countryCode = countryCode;
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -256,42 +257,42 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * Accessor for the street addresses (max 6)
 	 */
 	public List<String> getStreets() {
-		return (Collections.unmodifiableList(_cachedStreets));
+		return (Collections.unmodifiableList(_streets));
 	}
 	
 	/**
 	 * Accessor for the city
 	 */
 	public String getCity() {
-		return (Util.getNonNullString(_cachedCity));
+		return (Util.getNonNullString(_city));
 	}
 	
 	/**
 	 * Accessor for the state
 	 */
 	public String getState() {
-		return (Util.getNonNullString(_cachedState));
+		return (Util.getNonNullString(_state));
 	}
 	
 	/**
 	 * Accessor for the province
 	 */
 	public String getProvince() {
-		return (Util.getNonNullString(_cachedProvince));
+		return (Util.getNonNullString(_province));
 	}
 	
 	/**
 	 * Accessor for the postalCode
 	 */
 	public String getPostalCode() {
-		return (Util.getNonNullString(_cachedPostalCode));
+		return (Util.getNonNullString(_postalCode));
 	}
 
 	/**
 	 * Accessor for the country code
 	 */
 	public CountryCode getCountryCode() {
-		return (_cachedCountryCode);
+		return (_countryCode);
 	}
 	
 	/**

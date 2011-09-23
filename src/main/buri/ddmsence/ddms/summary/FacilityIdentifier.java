@@ -75,7 +75,8 @@ public final class FacilityIdentifier extends AbstractBaseComponent {
 			Util.addDDMSAttribute(element, BE_NUMBER_NAME, beNumber);
 			Util.addDDMSAttribute(element, OSUFFIX_NAME, osuffix);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}

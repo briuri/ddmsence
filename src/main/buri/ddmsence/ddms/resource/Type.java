@@ -72,7 +72,8 @@ public final class Type extends AbstractQualifierValue {
 		try {
 			_securityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -98,7 +99,8 @@ public final class Type extends AbstractQualifierValue {
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}

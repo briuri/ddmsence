@@ -143,10 +143,12 @@ public class LazyList implements List, Serializable {
 				add(getInstantiatingClass().newInstance());
 			}
 			return (getList().get(index));
-		} catch (IllegalAccessException e) {
+		}
+		catch (IllegalAccessException e) {
 			throw new IllegalArgumentException("Cannot instantiate list item because instantiatingClass is invalid: "
 				+ e.getMessage());
-		} catch (InstantiationException e) {
+		}
+		catch (InstantiationException e) {
 			throw new IllegalArgumentException("Cannot instantiate list item because instantiatingClass is invalid: "
 				+ e.getMessage());
 		}

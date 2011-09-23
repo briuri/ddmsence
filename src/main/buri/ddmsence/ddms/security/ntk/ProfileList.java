@@ -72,18 +72,19 @@ public final class ProfileList extends AbstractBaseComponent {
 			_profiles = new ArrayList<Profile>();
 			for (int i = 0; i < values.size(); i++) {
 				_profiles.add(new Profile(values.get(i)));
-			}			
+			}
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Constructor for creating a component from raw data
-	 *  
+	 * 
 	 * @param profiles the list of profiles (at least 1 required)
 	 * @param securityAttributes security attributes (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
@@ -91,8 +92,8 @@ public final class ProfileList extends AbstractBaseComponent {
 	public ProfileList(List<Profile> profiles, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			Element element = Util.buildElement(PropertyReader.getPrefix("ntk"), ProfileList.getName(version),
-				version.getNtkNamespace(), null);
+			Element element = Util.buildElement(PropertyReader.getPrefix("ntk"), ProfileList.getName(version), version
+				.getNtkNamespace(), null);
 			setXOMElement(element, false);
 			if (profiles == null)
 				profiles = Collections.emptyList();
@@ -103,7 +104,8 @@ public final class ProfileList extends AbstractBaseComponent {
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}

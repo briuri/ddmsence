@@ -71,7 +71,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		try {
 			_securityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -94,7 +95,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}

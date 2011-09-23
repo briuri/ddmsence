@@ -73,7 +73,8 @@ public final class TaskID extends AbstractBaseComponent {
 		try {
 			_xlinkAttributes = new XLinkAttributes(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
