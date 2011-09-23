@@ -114,11 +114,11 @@ public class PointTest extends AbstractComponentTestCase {
 		SRSAttributes attr = SRSAttributesTest.getFixture();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<gml:Point ").append(getXmlnsGML()).append(" ");
+		xml.append("gml:id=\"").append(TEST_ID).append("\" ");
 		xml.append("srsName=\"").append(attr.getSrsName()).append("\" ");
 		xml.append("srsDimension=\"").append(attr.getSrsDimension()).append("\" ");
 		xml.append("axisLabels=\"").append(attr.getAxisLabelsAsXsList()).append("\" ");
-		xml.append("uomLabels=\"").append(attr.getUomLabelsAsXsList()).append("\" ");
-		xml.append("gml:id=\"").append(TEST_ID).append("\">\n\t");
+		xml.append("uomLabels=\"").append(attr.getUomLabelsAsXsList()).append("\">\n\t");
 		xml.append("<gml:pos ");
 		xml.append("srsName=\"").append(attr.getSrsName()).append("\" ");
 		xml.append("srsDimension=\"").append(attr.getSrsDimension()).append("\" ");

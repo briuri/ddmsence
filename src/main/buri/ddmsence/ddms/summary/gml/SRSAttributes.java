@@ -59,10 +59,10 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public final class SRSAttributes extends AbstractAttributeGroup {
-	private String _cachedSrsName;
-	private Integer _cachedSrsDimension;
-	private List<String> _cachedAxisLabels;
-	private List<String> _cachedUomLabels;
+	private String _srsName = null;
+	private Integer _srsDimension = null;
+	private List<String> _axisLabels = null;
+	private List<String> _uomLabels = null;
 	
 	/** The prefix of the shared attributes */
 	public static final String NO_PREFIX = "";
@@ -76,26 +76,37 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	private static final String UOM_LABELS_NAME = "uomLabels";
 	
 	/**
+	 * Returns a non-null instance of SRS attributes. If the instance passed in is not null, it will be returned.
+	 * 
+	 * @param srsAttributes the attributes to return by default
+	 * @return a non-null attributes instance
+	 * @throws InvalidDDMSException if there are problems creating the empty attributes instance
+	 */
+	public static SRSAttributes getNonNullInstance(SRSAttributes srsAttributes) throws InvalidDDMSException {
+		return (srsAttributes == null ? new SRSAttributes(null, null, null, null) : srsAttributes);
+	}
+	
+	/**
 	 * Base constructor
 	 * 
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public SRSAttributes(Element element) throws InvalidDDMSException {
 		super(element.getNamespaceURI());
-		_cachedSrsName = element.getAttributeValue(SRS_NAME_NAME, NO_NAMESPACE);
+		_srsName = element.getAttributeValue(SRS_NAME_NAME, NO_NAMESPACE);
 		String srsDimension = element.getAttributeValue(SRS_DIMENSION_NAME, NO_NAMESPACE);
 		if (!Util.isEmpty(srsDimension)) {
-			_cachedSrsDimension = Integer.valueOf(srsDimension);
+			_srsDimension = Integer.valueOf(srsDimension);
 		}
 		String axisLabels = element.getAttributeValue(AXIS_LABELS_NAME, NO_NAMESPACE);
-		_cachedAxisLabels = new ArrayList<String>();
+		_axisLabels = new ArrayList<String>();
 		if (!Util.isEmpty(axisLabels)) {
-			_cachedAxisLabels.addAll(Util.getXsListAsList(axisLabels));
+			_axisLabels.addAll(Util.getXsListAsList(axisLabels));
 		}
 		String uomLabels = element.getAttributeValue(UOM_LABELS_NAME, NO_NAMESPACE);
-		_cachedUomLabels = new ArrayList<String>();
+		_uomLabels = new ArrayList<String>();
 		if (!Util.isEmpty(uomLabels)) {
-			_cachedUomLabels.addAll(Util.getXsListAsList(uomLabels));
+			_uomLabels.addAll(Util.getXsListAsList(uomLabels));
 		}
 		validate();
 	}
@@ -116,10 +127,10 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 			axisLabels = Collections.emptyList();
 		if (uomLabels == null)
 			uomLabels = Collections.emptyList();
-		_cachedSrsName = srsName;
-		_cachedSrsDimension = srsDimension;
-		_cachedAxisLabels = axisLabels;
-		_cachedUomLabels = uomLabels;
+		_srsName = srsName;
+		_srsDimension = srsDimension;
+		_axisLabels = axisLabels;
+		_uomLabels = uomLabels;
 		validate();
 	}
 	
@@ -213,21 +224,21 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * Accessor for the srsName.
 	 */
 	public String getSrsName() {
-		return (Util.getNonNullString(_cachedSrsName));
+		return (Util.getNonNullString(_srsName));
 	}
 	
 	/**
 	 * Accessor for the srsDimension. May return null if not set.
 	 */
 	public Integer getSrsDimension() {
-		return (_cachedSrsDimension);
+		return (_srsDimension);
 	}
 	
 	/**
 	 * Accessor for the axisLabels. Will return an empty list if not set.
 	 */
 	public List<String> getAxisLabels() {
-		return (Collections.unmodifiableList(_cachedAxisLabels));
+		return (Collections.unmodifiableList(_axisLabels));
 	}
 	
 	/**
@@ -241,7 +252,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * Accessor for the uomLabels. Will return an empty list if not set.
 	 */
 	public List<String> getUomLabels() {
-		return (Collections.unmodifiableList(_cachedUomLabels));
+		return (Collections.unmodifiableList(_uomLabels));
 	}
 	
 	/**

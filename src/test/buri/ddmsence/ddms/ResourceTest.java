@@ -558,8 +558,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		if (version.isAtLeast("4.0")) {
 			xml.append("\t\t<ddms:boundingGeometry>\n");
 			xml.append("\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace()).append("\" ");
-			xml.append("srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ").append(
-				"axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\" gml:id=\"IDValue\">\n");
+			xml.append("gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ").append(
+				"axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n");
 			xml.append("\t\t\t\t<gml:pos>32.1 40.1</gml:pos>\n");
 			xml.append("\t\t\t</gml:Point>\n");
 			xml.append("\t\t</ddms:boundingGeometry>\n");
@@ -567,8 +567,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 			xml.append("\t\t<ddms:GeospatialExtent>\n");
 			xml.append("\t\t\t<ddms:boundingGeometry>\n");
 			xml.append("\t\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace()).append("\" ");
-			xml.append("srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ").append(
-				"axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\" gml:id=\"IDValue\">\n");
+			xml.append("gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ").append(
+				"axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n");
 			xml.append("\t\t\t\t\t<gml:pos>32.1 40.1</gml:pos>\n");
 			xml.append("\t\t\t\t</gml:Point>\n");
 			xml.append("\t\t\t</ddms:boundingGeometry>\n");

@@ -66,8 +66,8 @@ import buri.ddmsence.util.Util;
  */
 public final class Polygon extends AbstractBaseComponent {
 
-	private SRSAttributes _cachedSrsAttributes;
-	private List<Position> _cachedPositions;
+	private List<Position> _positions;
+	private SRSAttributes _srsAttributes;
 	
 	private static final String EXTERIOR_NAME = "exterior";
 	private static final String LINEAR_RING_NAME = "LinearRing";
@@ -82,20 +82,22 @@ public final class Polygon extends AbstractBaseComponent {
 	public Polygon(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			_cachedPositions = new ArrayList<Position>();
-			Element extElement = element.getFirstChildElement(EXTERIOR_NAME, element.getNamespaceURI());
+			_positions = new ArrayList<Position>();
+			Element extElement = element.getFirstChildElement(EXTERIOR_NAME, getNamespace());
 			if (extElement != null) {
-				Element ringElement = extElement.getFirstChildElement(LINEAR_RING_NAME, element.getNamespaceURI());
+				Element ringElement = extElement.getFirstChildElement(LINEAR_RING_NAME, getNamespace());
 				if (ringElement != null) {
-					Elements positions = ringElement.getChildElements(Position.getName(getDDMSVersion()), element.getNamespaceURI());
+					Elements positions = ringElement.getChildElements(Position.getName(getDDMSVersion()),
+						getNamespace());
 					for (int i = 0; i < positions.size(); i++) {
-						_cachedPositions.add(new Position(positions.get(i)));
+						_positions.add(new Position(positions.get(i)));
 					}
 				}
 			}
-			_cachedSrsAttributes = new SRSAttributes(element);
+			_srsAttributes = new SRSAttributes(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -114,8 +116,6 @@ public final class Polygon extends AbstractBaseComponent {
 		try {
 			if (positions == null)
 				positions = Collections.emptyList();
-			_cachedPositions = positions;
-			_cachedSrsAttributes = srsAttributes;
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			String gmlPrefix = PropertyReader.getPrefix("gml");
 			String gmlNamespace = version.getGmlNamespace();
@@ -126,10 +126,12 @@ public final class Polygon extends AbstractBaseComponent {
 			Element extElement = Util.buildElement(gmlPrefix, EXTERIOR_NAME, gmlNamespace, null);
 			extElement.appendChild(ringElement);
 			Element element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
-			if (srsAttributes != null)
-				srsAttributes.addTo(element);
-			Util.addAttribute(element, gmlPrefix, ID_NAME, gmlNamespace, id);
 			element.appendChild(extElement);
+			Util.addAttribute(element, gmlPrefix, ID_NAME, gmlNamespace, id);
+			
+			_positions = positions;
+			_srsAttributes = SRSAttributes.getNonNullInstance(srsAttributes);
+			_srsAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -260,7 +262,7 @@ public final class Polygon extends AbstractBaseComponent {
 	 * Accessor for the SRS Attributes. Will always be non-null.
 	 */
 	public SRSAttributes getSRSAttributes() {
-		return (_cachedSrsAttributes);
+		return (_srsAttributes);
 	}
 	
 	/**
@@ -274,7 +276,7 @@ public final class Polygon extends AbstractBaseComponent {
 	 * Accessor for the coordinates. May return null, but cannot happen after instantiation.
 	 */
 	public List<Position> getPositions() {
-		return (Collections.unmodifiableList(_cachedPositions));
+		return (Collections.unmodifiableList(_positions));
 	}
 	
 	/**

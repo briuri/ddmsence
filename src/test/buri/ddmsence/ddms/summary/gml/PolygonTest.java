@@ -155,11 +155,11 @@ public class PolygonTest extends AbstractComponentTestCase {
 		SRSAttributes attr = SRSAttributesTest.getFixture();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<gml:Polygon ").append(getXmlnsGML()).append(" ");
+		xml.append("gml:id=\"").append(TEST_ID).append("\" ");
 		xml.append("srsName=\"").append(attr.getSrsName()).append("\" ");
 		xml.append("srsDimension=\"").append(attr.getSrsDimension()).append("\" ");
 		xml.append("axisLabels=\"").append(attr.getAxisLabelsAsXsList()).append("\" ");
-		xml.append("uomLabels=\"").append(attr.getUomLabelsAsXsList()).append("\" ");
-		xml.append("gml:id=\"").append(TEST_ID).append("\">\n\t");
+		xml.append("uomLabels=\"").append(attr.getUomLabelsAsXsList()).append("\">\n\t");
 		xml.append("<gml:exterior>\n\t\t");
 		xml.append("<gml:LinearRing>\n\t\t\t");
 		xml.append("<gml:pos ");
