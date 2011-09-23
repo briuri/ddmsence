@@ -215,11 +215,11 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		Element extElement = getExtentElement();
 		Util.requireDDMSValue("GeospatialExtent element", extElement);
 		
-		Util.requireBoundedDDMSChildCount(extElement, GeographicIdentifier.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedDDMSChildCount(extElement, BoundingBox.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedDDMSChildCount(extElement, BoundingGeometry.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedDDMSChildCount(extElement, PostalAddress.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedDDMSChildCount(extElement, VerticalExtent.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(extElement, GeographicIdentifier.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(extElement, BoundingBox.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(extElement, BoundingGeometry.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(extElement, PostalAddress.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(extElement, VerticalExtent.getName(getDDMSVersion()), 0, 1);
 			
 		int validComponents = 0;
 		if (getGeographicIdentifier() != null)

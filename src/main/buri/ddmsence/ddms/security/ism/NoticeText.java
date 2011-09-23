@@ -27,7 +27,6 @@ import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractSimpleString;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;

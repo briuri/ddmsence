@@ -46,24 +46,6 @@ import buri.ddmsence.util.Util;
  * <p>The above design decision dictates that VerticalDistance (the type behind minVerticalExtent and maxVerticalExtent) 
  * does not need to be implemented as a Java class.</p>
  * 
- * <p>The DDMS documentation has no Text/HTML examples for the output of this component, so a best guess was taken:</p>
- * <ul>
- * <p><b>Suggested Text Output</b><br /><code>
- * verticalExtent unitOfMeasure: value<br />
- * verticalExtent datum: value<br />
- * verticalExtent minimum: value<br />
- * verticalExtent maximum: value<br />
- * </code></p>
- * 
- * <p><b>Suggested HTML Output</b><br /><code>
- * &lt;meta name="geospatialCoverage.GeospatialExtent.verticalExtent.unitOfMeasure" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.verticalExtent.datum" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.verticalExtent.minimum" content="value" /&gt;<br />
- * &lt;meta name="geospatialCoverage.GeospatialExtent.verticalExtent.maximum" content="value" /&gt;<br />
- * </code>
- * </ul>
- * </p>
- * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:minVerticalExtent</u>: minimum extent (required)<br />
  * <u>ddms:maxVerticalExtent</u>: maximum extent (required)<br />

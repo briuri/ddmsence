@@ -32,10 +32,10 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:publisher.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:organization</u>: The organization who is in this role (0-1, optional)<br />
- * <u>ddms:person</u>: the person who is in this role (0-1, optional)<br />
- * <u>ddms:service</u>: The web service who is in this role (0-1, optional)<br />
- * <u>ddms:unknown</u>: The unknown entity who is in this role (0-1, optional)<br />
+ * <u>ddms:organization</u>: The organization who is in this role (0-1, optional), implemented as an {@link Organization}<br />
+ * <u>ddms:person</u>: the person who is in this role (0-1, optional), implemented as a {@link Person}<br />
+ * <u>ddms:service</u>: The web service who is in this role (0-1, optional), implemented as a {@link Service}<br />
+ * <u>ddms:unknown</u>: The unknown entity who is in this role (0-1, optional), implemented as an {@link Unknown}<br />
  * Only one of the nested entities can appear in this element.
  * </td></tr></table>
  * 

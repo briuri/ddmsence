@@ -229,9 +229,9 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), TemporalCoverage.getName(getDDMSVersion()));
 		Element periodElement = getTimePeriodElement();
 		Util.requireDDMSValue("TimePeriod element", periodElement);
-		Util.requireBoundedDDMSChildCount(periodElement, TIME_PERIOD_NAME_NAME, 0, 1);
-		Util.requireBoundedDDMSChildCount(periodElement, START_NAME, 1, 1);
-		Util.requireBoundedDDMSChildCount(periodElement, END_NAME, 1, 1);
+		Util.requireBoundedChildCount(periodElement, TIME_PERIOD_NAME_NAME, 0, 1);
+		Util.requireBoundedChildCount(periodElement, START_NAME, 1, 1);
+		Util.requireBoundedChildCount(periodElement, END_NAME, 1, 1);
 		if (getStart() != null)
 			Util.requireDDMSDateFormat(getStart().getXMLSchemaType());
 		else

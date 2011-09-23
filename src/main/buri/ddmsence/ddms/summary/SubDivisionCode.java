@@ -40,7 +40,7 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:qualifier</u>: a domain vocabulary (required)<br />
- * <u>ddms:value</u>: a permissable value (required)<br />
+ * <u>ddms:value</u>: a permissible value (required)<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!

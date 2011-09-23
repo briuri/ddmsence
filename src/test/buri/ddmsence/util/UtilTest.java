@@ -400,7 +400,7 @@ public class UtilTest extends TestCase {
 
 	public void testRequireBoundedDDMSChildCountNullParent() {
 		try {
-			Util.requireBoundedDDMSChildCount(null, "test", 0, 1);
+			Util.requireBoundedChildCount(null, "test", 0, 1);
 			fail("Allowed illegal argument data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -413,7 +413,7 @@ public class UtilTest extends TestCase {
 
 	public void testRequireBoundedDDMSChildCountNullChild() {
 		try {
-			Util.requireBoundedDDMSChildCount(Util.buildDDMSElement("test", null), null, 0, 1);
+			Util.requireBoundedChildCount(Util.buildDDMSElement("test", null), null, 0, 1);
 			fail("Allowed illegal argument data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -428,7 +428,7 @@ public class UtilTest extends TestCase {
 		Element element = Util.buildDDMSElement("test", null);
 		element.appendChild(Util.buildDDMSElement("name", "nameValue"));
 		try {
-			Util.requireBoundedDDMSChildCount(element, "name", 0, 2);
+			Util.requireBoundedChildCount(element, "name", 0, 2);
 		}
 		catch (InvalidDDMSException e) {
 			fail("Prevented valid data.");
@@ -439,7 +439,7 @@ public class UtilTest extends TestCase {
 		Element element = Util.buildDDMSElement("test", null);
 		element.appendChild(Util.buildDDMSElement("name", "nameValue"));
 		try {
-			Util.requireBoundedDDMSChildCount(element, "phone", 1, 1);
+			Util.requireBoundedChildCount(element, "phone", 1, 1);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -451,7 +451,7 @@ public class UtilTest extends TestCase {
 		Element element = Util.buildDDMSElement("test", null);
 		element.appendChild(Util.buildDDMSElement("name", "nameValue"));
 		try {
-			Util.requireBoundedDDMSChildCount(element, "phone", 2, 2);
+			Util.requireBoundedChildCount(element, "phone", 2, 2);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -464,7 +464,7 @@ public class UtilTest extends TestCase {
 		element.appendChild(Util.buildDDMSElement("phone", "phoneValue"));
 		element.appendChild(Util.buildDDMSElement("phone", "phoneValue"));
 		try {
-			Util.requireBoundedDDMSChildCount(element, "phone", 0, 1);
+			Util.requireBoundedChildCount(element, "phone", 0, 1);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -478,7 +478,7 @@ public class UtilTest extends TestCase {
 		element.appendChild(Util.buildDDMSElement("phone", "phoneValue"));
 		element.appendChild(Util.buildDDMSElement("phone", "phoneValue"));
 		try {
-			Util.requireBoundedDDMSChildCount(element, "phone", 0, 2);
+			Util.requireBoundedChildCount(element, "phone", 0, 2);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -489,7 +489,7 @@ public class UtilTest extends TestCase {
 	public void testRequireBoundedDDMSChildCountGenericUnbounded() {
 		Element element = Util.buildDDMSElement("test", null);
 		try {
-			Util.requireBoundedDDMSChildCount(element, "phone", 1, 5);
+			Util.requireBoundedChildCount(element, "phone", 1, 5);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -497,26 +497,12 @@ public class UtilTest extends TestCase {
 		}
 	}
 
-	public void testRequireBoundedDDMSChildCountWrongNamespace() {
-		Element element = Util.buildElement("ddmsence", "test", "http://ddmsence.urizone.net/", null);
-		try {
-			Util.requireBoundedDDMSChildCount(element, "child", 0, 0);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			fail("Allowed processing of invalid data.");
-		}
-		catch (IllegalArgumentException e) {
-			// Good
-		}
-	}
-
-	public void testRequireBoundedDDMSChildCountIndependentOfCurrentVersion() throws InvalidDDMSException {
+	public void testRequireBoundedChildCountIndependentOfCurrentVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		Element element = Util.buildDDMSElement("test", null);
 		element.appendChild(Util.buildDDMSElement("phone", "phoneValue"));
 		DDMSVersion.setCurrentVersion("2.0");
-		Util.requireBoundedDDMSChildCount(element, "phone", 1, 1);
+		Util.requireBoundedChildCount(element, "phone", 1, 1);
 	}
 
 	public void testRequireValidNCNamesNull() throws InvalidDDMSException {

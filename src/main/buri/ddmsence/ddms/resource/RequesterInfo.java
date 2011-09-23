@@ -32,8 +32,9 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:requesterInfo.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:person</u>: the person who requested the production of this resource (0-1, optional)<br />
- * <u>ddms:organization</u>: The organization who requested the production of this resource (0-1, optional)<br />
+ * <u>ddms:organization</u>: The organization who is the addressee (0-1, optional), implemented as an 
+ * {@link Organization}<br />
+ * <u>ddms:person</u>: the person who is the addressee (0-1, optional), implemented as a {@link Person}<br />
  * Only one of the nested entities can appear in a requesterInfo element.
  * </td></tr></table>
  * 

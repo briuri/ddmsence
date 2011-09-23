@@ -53,7 +53,8 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  *  
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>gml:pos</u>: the positions which comprise the LinearRing in this Polygon (at least 4 required)<br />
+ * <u>gml:pos</u>: the positions which comprise the LinearRing in this Polygon (at least 4 required), implemented as 
+ * a {@link Position}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">

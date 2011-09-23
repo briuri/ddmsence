@@ -114,6 +114,7 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
+	 * <li>Only 0-1 record keepers or applicationSoftwares exist.</li>
 	 * <li>This component cannot exist until DDMS 4.0 or later.</li>
 	 * </td></tr></table>
 	 * 
@@ -122,6 +123,8 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), RecordsManagementInfo.getName(getDDMSVersion()));
+		Util.requireBoundedChildCount(getXOMElement(), RecordKeeper.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), ApplicationSoftware.getName(getDDMSVersion()), 0, 1);
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0");

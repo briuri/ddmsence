@@ -94,6 +94,7 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A systemName is required.</li>
+	 * <li>Exactly 1 systemName exists.</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>This component cannot exist until DDMS 4.0 or later.</li>
@@ -104,6 +105,7 @@ public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSValue("systemName", getSystemName());
+		Util.requireBoundedChildCount(getXOMElement(), SystemName.getName(getDDMSVersion()), 1, 1);
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 		

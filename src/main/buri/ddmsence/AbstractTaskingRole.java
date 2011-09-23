@@ -43,8 +43,9 @@ import buri.ddmsence.util.Util;
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:organization</u>: The organization entity in this role (0-1, optional)<br />
- * <u>ddms:person</u>: the person entity in this role (0-1, optional)<br />
+ * <u>ddms:organization</u>: The organization who is the addressee (0-1, optional), implemented as an 
+ * {@link Organization}<br />
+ * <u>ddms:person</u>: the person who is the addressee (0-1, optional), implemented as a {@link Person}<br />
  * Only one of the nested entities can appear.
  * </td></tr></table>
  * 
@@ -127,6 +128,8 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 		if (!(getEntity() instanceof Organization) && !(getEntity() instanceof Person)) {
 			throw new InvalidDDMSException("The entity must be a person or an organization.");
 		}
+		Util.requireBoundedChildCount(getXOMElement(), Organization.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), Person.getName(getDDMSVersion()), 0, 1);
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 

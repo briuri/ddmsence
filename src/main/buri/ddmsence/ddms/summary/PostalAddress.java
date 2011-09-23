@@ -164,12 +164,12 @@ public final class PostalAddress extends AbstractBaseComponent {
 		if (!Util.isEmpty(getState()) && !Util.isEmpty(getProvince())) {
 			throw new InvalidDDMSException("Only 1 of state or province can be used.");
 		}
-		Util.requireBoundedDDMSChildCount(getXOMElement(), STREET_NAME, 0, 6);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), CITY_NAME, 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), STATE_NAME, 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), PROVINCE_NAME, 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), POSTAL_CODE_NAME, 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), CountryCode.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), STREET_NAME, 0, 6);
+		Util.requireBoundedChildCount(getXOMElement(), CITY_NAME, 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), STATE_NAME, 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), PROVINCE_NAME, 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), POSTAL_CODE_NAME, 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), CountryCode.getName(getDDMSVersion()), 0, 1);
 		
 		super.validate();
 	}

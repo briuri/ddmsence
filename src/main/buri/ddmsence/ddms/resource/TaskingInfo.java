@@ -42,10 +42,10 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:requesterInfo</u>: Information about the requester of the production of this resource (0-many optional), 
  * implemented as a {@link RequesterInfo}.<br />
- * <u>ddms:addressee</u>: The addressee for this tasking (0-many optional), implemented as a {@link Addressee}.
+ * <u>ddms:addressee</u>: The addressee for this tasking (0-many optional), implemented as a {@link Addressee}
  * <br />
- * <u>ddms:description</u>: A description of this tasking (0-1, optional)<br />
- * <u>ddms:taskID</u>: The task ID for this tasking (required) 
+ * <u>ddms:description</u>: A description of this tasking (0-1, optional), implemented as a {@link Description}<br />
+ * <u>ddms:taskID</u>: The task ID for this tasking (required), implemented as a {@link TaskID}<br /> 
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -160,8 +160,8 @@ public final class TaskingInfo extends AbstractBaseComponent {
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), TaskingInfo.getName(getDDMSVersion()));
 		Util.requireDDMSValue("taskID", getTaskID());		
-		Util.requireBoundedDDMSChildCount(getXOMElement(), Description.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), TaskID.getName(getDDMSVersion()), 1, 1);
+		Util.requireBoundedChildCount(getXOMElement(), Description.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), TaskID.getName(getDDMSVersion()), 1, 1);
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 		

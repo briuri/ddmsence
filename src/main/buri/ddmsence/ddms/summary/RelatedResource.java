@@ -65,7 +65,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:link</u>: a link for the resource (1-many required)<br />
+ * <u>ddms:link</u>: a link for the resource (1-many required), implemented as a {@link Link}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
