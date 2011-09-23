@@ -53,22 +53,26 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 
 	/**
 	 * Returns a fixture object for testing.
-	 * 
-	 * @return a XOM element representing a valid taskingInfo
 	 */
-	protected static Element getFixtureElement() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		Element element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
-		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
-		element.addNamespaceDeclaration(PropertyReader.getPrefix("ism"), version.getIsmNamespace());
-		SecurityAttributesTest.getFixture().addTo(element);
-		element.appendChild(RequesterInfoTest.getFixtureElement(true));
-		element.appendChild(AddresseeTest.getFixtureElement(true));
-		element.appendChild(getDescriptionFixture().getXOMElementCopy());
-		element.appendChild(TaskIDTest.getFixtureElement());
-		return (element);
+	public static Element getFixtureElement() {
+		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			Element element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
+			element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
+			element.addNamespaceDeclaration(PropertyReader.getPrefix("ism"), version.getIsmNamespace());
+			SecurityAttributesTest.getFixture().addTo(element);
+			element.appendChild(RequesterInfoTest.getFixtureElement(true));
+			element.appendChild(AddresseeTest.getFixtureElement(true));
+			element.appendChild(getDescriptionFixture().getXOMElementCopy());
+			element.appendChild(TaskIDTest.getFixtureElement());
+			return (element);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
-
+	
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -112,18 +116,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		return (null);
 	}
 
-	/**
-	 * Returns a fixture object for testing.
-	 */
-	private static TaskID getTaskIDFixture() {
-		try {
-			return (new TaskID(TaskIDTest.getFixtureElement()));
-		}
-		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
-		}
-		return (null);
-	}
+
 
 	/**
 	 * Attempts to build a component from a XOM element.
@@ -240,7 +233,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			// No optional fields
 			Element element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			element.appendChild(getTaskIDFixture().getXOMElementCopy());
+			element.appendChild(TaskIDTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -251,10 +244,10 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 
 			// All fields
 			testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(),
-				getTaskIDFixture());
+				TaskIDTest.getFixture());
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, null, null, null, getTaskIDFixture());
+			testConstructor(WILL_SUCCEED, null, null, null, TaskIDTest.getFixture());
 		}
 	}
 
@@ -269,7 +262,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 
 			// Missing security attributes
 			element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
-			element.appendChild(getTaskIDFixture().getXOMElementCopy());
+			element.appendChild(TaskIDTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -308,7 +301,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 
 			TaskingInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			TaskingInfo dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(),
-				getDescriptionFixture(), getTaskIDFixture());
+				getDescriptionFixture(), TaskIDTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -320,15 +313,15 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 
 			TaskingInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			TaskingInfo dataComponent = testConstructor(WILL_SUCCEED, null, getAddresseeList(),
-				getDescriptionFixture(), getTaskIDFixture());
+				getDescriptionFixture(), TaskIDTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), null, getDescriptionFixture(),
-				getTaskIDFixture());
+				TaskIDTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), null,
-				getTaskIDFixture());
+				TaskIDTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			TaskID taskID = new TaskID("Test", null, null, null, null);
@@ -347,7 +340,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(),
-				getTaskIDFixture());
+				TaskIDTest.getFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -361,7 +354,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
 			component = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(),
-				getTaskIDFixture());
+				TaskIDTest.getFixture());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}

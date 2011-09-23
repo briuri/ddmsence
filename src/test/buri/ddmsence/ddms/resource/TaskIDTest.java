@@ -54,20 +54,37 @@ public class TaskIDTest extends AbstractComponentTestCase {
 
 	/**
 	 * Returns a fixture object for testing.
-	 * 
-	 * @return a XOM element representing a valid applicationSoftware
 	 */
-	protected static Element getFixtureElement() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
+	public static Element getFixtureElement() {
+		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
 
-		Element element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
-		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
-		element.addNamespaceDeclaration(PropertyReader.getPrefix("xlink"), version.getXlinkNamespace());
-		Util.addDDMSAttribute(element, "taskingSystem", TEST_TASKING_SYSTEM);
-		Util.addAttribute(element, "", "network", "", TEST_NETWORK);
-		Util.addAttribute(element, "", "otherNetwork", "", TEST_OTHER_NETWORK);
-		XLinkAttributesTest.getSimpleFixture().addTo(element);
-		return (element);
+			Element element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
+			element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
+			element.addNamespaceDeclaration(PropertyReader.getPrefix("xlink"), version.getXlinkNamespace());
+			Util.addDDMSAttribute(element, "taskingSystem", TEST_TASKING_SYSTEM);
+			Util.addAttribute(element, "", "network", "", TEST_NETWORK);
+			Util.addAttribute(element, "", "otherNetwork", "", TEST_OTHER_NETWORK);
+			XLinkAttributesTest.getSimpleFixture().addTo(element);
+			return (element);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static TaskID getFixture() {
+		try {
+			return (new TaskID(TaskIDTest.getFixtureElement()));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Failed to create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**
