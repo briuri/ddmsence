@@ -42,7 +42,20 @@ public class DescriptionTest extends AbstractComponentTestCase {
 	public DescriptionTest() {
 		super("description.xml");
 	}
-
+	
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static Description getFixture() {
+		try {
+			return (new Description("Tasking Info", SecurityAttributesTest.getFixture()));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 

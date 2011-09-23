@@ -54,6 +54,19 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	public OrganizationTest() {
 		super("organization.xml");
 	}
+	
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static Organization getFixture() {
+		try {
+			return (new Organization(Util.getXsListAsList("Name"), null, null, null, null, null));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
 
 	/**
 	 * Generates an acronym for testing.

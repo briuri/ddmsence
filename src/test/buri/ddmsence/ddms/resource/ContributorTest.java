@@ -44,6 +44,20 @@ public class ContributorTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Returns a fixture object for testing. organization to act as an entity
+	 */
+	private IRoleEntity getEntityFixture() {
+		try {
+			return (new Organization(Util.getXsListAsList("DISA PEO-GES"), Util
+				.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com"), null, null, null));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
 	 * @param expectFailure true if this operation is expected to fail, false otherwise
@@ -62,20 +76,6 @@ public class ContributorTest extends AbstractComponentTestCase {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
-	}
-
-	/**
-	 * Returns a fixture object for testing. organization to act as an entity
-	 */
-	private IRoleEntity getEntityFixture() {
-		try {
-			return (new Organization(Util.getXsListAsList("DISA PEO-GES"), Util
-				.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com"), null, null, null));
-		}
-		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
-		}
-		return (null);
 	}
 
 	/**

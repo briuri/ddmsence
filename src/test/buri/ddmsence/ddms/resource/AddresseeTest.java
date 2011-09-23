@@ -19,6 +19,9 @@
  */
 package buri.ddmsence.ddms.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.IRoleEntity;
@@ -39,9 +42,6 @@ import buri.ddmsence.util.Util;
  */
 public class AddresseeTest extends AbstractComponentTestCase {
 
-	private static final String TEST_NAME = "Name";
-	private static final String TEST_SURNAME = "Surname";
-
 	/**
 	 * Constructor
 	 */
@@ -54,42 +54,39 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	 * Returns a fixture object for testing.
 	 * 
 	 * @param useOrg true to put an organization in, false for a person
-	 * @return a XOM element representing a valid applicationSoftware
 	 */
-	protected static Element getFixtureElement(boolean useOrg) throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		Element element = Util.buildDDMSElement(Addressee.getName(version), null);
-		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
-		element.appendChild(useOrg ? getOrgFixture().getXOMElementCopy() : getPersonFixture().getXOMElementCopy());
-		SecurityAttributesTest.getFixture().addTo(element);
-		return (element);
-	}
-
-	/**
-	 * Returns a fixture object for testing. organization to act as an entity
-	 */
-	private static Organization getOrgFixture() {
+	public static Element getFixtureElement(boolean useOrg) {
 		try {
-			return (new Organization(Util.getXsListAsList(TEST_NAME), null, null, null, null, null));
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			Element element = Util.buildDDMSElement(Addressee.getName(version), null);
+			element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
+			element.appendChild(useOrg ? OrganizationTest.getFixture().getXOMElementCopy() : PersonTest.getFixture().getXOMElementCopy());
+			SecurityAttributesTest.getFixture().addTo(element);
+			return (element);
 		}
 		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static List<Addressee> getFixtureList() {
+		try {
+			List<Addressee> list = new ArrayList<Addressee>();
+			list.add(new Addressee(getFixtureElement(true)));
+			return (list);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
 
-	/**
-	 * Returns a fixture object for testing. person to act as an entity
-	 */
-	private static Person getPersonFixture() {
-		try {
-			return (new Person(Util.getXsListAsList(TEST_NAME), TEST_SURNAME, null, null, null, null, null));
-		}
-		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
-		}
-		return (null);
-	}
+	
 
 	/**
 	 * Attempts to build a component from a XOM element.
@@ -136,7 +133,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "addressee.entityType", "organization"));
-		text.append(buildOutput(isHTML, "addressee.name", TEST_NAME));
+		text.append(buildOutput(isHTML, "addressee.name", "Name"));
 		text.append(buildOutput(isHTML, "addressee.classification", "U"));
 		text.append(buildOutput(isHTML, "addressee.ownerProducer", "USA"));
 		return (text.toString());
@@ -149,7 +146,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:addressee ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ddms:organization><ddms:name>").append(TEST_NAME).append("</ddms:name></ddms:organization>");
+		xml.append("<ddms:organization><ddms:name>Name</ddms:name></ddms:organization>");
 		xml.append("</ddms:addressee>");
 		return (xml.toString());
 	}
@@ -181,10 +178,10 @@ public class AddresseeTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields, organization
-			testConstructor(WILL_SUCCEED, getOrgFixture());
+			testConstructor(WILL_SUCCEED, OrganizationTest.getFixture());
 
 			// All fields, person
-			testConstructor(WILL_SUCCEED, getPersonFixture());
+			testConstructor(WILL_SUCCEED, PersonTest.getFixture());
 		}
 	}
 
@@ -199,7 +196,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 
 			// Missing security attributes
 			element = Util.buildDDMSElement(Addressee.getName(version), null);
-			element.appendChild(getOrgFixture().getXOMElementCopy());
+			element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -212,11 +209,11 @@ public class AddresseeTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, (IRoleEntity) null);
 
 			// Wrong entity
-			testConstructor(WILL_FAIL, new Service(Util.getXsListAsList(TEST_NAME), null, null));
+			testConstructor(WILL_FAIL, new Service(Util.getXsListAsList("Name"), null, null));
 
 			// Missing security attributes
 			try {
-				new Addressee(getOrgFixture(), null);
+				new Addressee(OrganizationTest.getFixture(), null);
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
@@ -240,7 +237,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Addressee elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement(true));
-			Addressee dataComponent = testConstructor(WILL_SUCCEED, getOrgFixture());
+			Addressee dataComponent = testConstructor(WILL_SUCCEED, OrganizationTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -251,7 +248,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Addressee elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement(true));
-			Addressee dataComponent = testConstructor(WILL_SUCCEED, getPersonFixture());
+			Addressee dataComponent = testConstructor(WILL_SUCCEED, PersonTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -264,7 +261,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getOrgFixture());
+			component = testConstructor(WILL_SUCCEED, OrganizationTest.getFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -277,7 +274,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 			Addressee component = testConstructor(WILL_SUCCEED, getFixtureElement(true));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getOrgFixture());
+			component = testConstructor(WILL_SUCCEED, OrganizationTest.getFixture());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -285,7 +282,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	public void test20Usage() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
-			new Addressee(getOrgFixture(), SecurityAttributesTest.getFixture());
+			new Addressee(OrganizationTest.getFixture(), SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -313,8 +310,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 
 			// Validation
 			builder = new Addressee.Builder();
-			builder.getPerson().setNames(Util.getXsListAsList(TEST_NAME));
-			builder.getPerson().setSurname(TEST_SURNAME);
+			builder.getPerson().setNames(Util.getXsListAsList("Name"));
+			builder.getPerson().setSurname("Surname");
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");

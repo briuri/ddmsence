@@ -82,7 +82,7 @@ public class TaskIDTest extends AbstractComponentTestCase {
 			return (new TaskID(TaskIDTest.getFixtureElement()));
 		}
 		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
+			fail("Could not create fixture: " + e.getMessage());
 		}
 		return (null);
 	}

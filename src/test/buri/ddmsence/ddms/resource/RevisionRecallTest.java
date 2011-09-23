@@ -27,6 +27,7 @@ import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.summary.Link;
+import buri.ddmsence.ddms.summary.LinkTest;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -56,69 +57,13 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 
 	/**
 	 * Returns a fixture object for testing.
-	 * 
-	 * @return a XOM element representing a valid element
 	 */
-	protected Element getTextFixtureElement() throws InvalidDDMSException {
+	public Element getTextFixtureElement() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Element element = new Element(getValidElement(version.getVersion()));
 		element.removeChildren();
 		element.appendChild(TEST_VALUE);
 		return (element);
-	}
-
-	/**
-	 * Returns a fixture object for testing.
-	 * 
-	 * @return a XOM element representing a valid element
-	 */
-	protected List<Link> getLinkList() {
-		List<Link> links = new ArrayList<Link>();
-		links.add(getLinkFixture());
-		return (links);
-	}
-
-	/**
-	 * Returns a fixture object for testing.
-	 * 
-	 * @return a XOM element representing a valid element
-	 */
-	protected Link getLinkFixture() {
-		try {
-			return (new Link(XLinkAttributesTest.getLocatorFixture(), SecurityAttributesTest.getFixture()));
-		}
-		catch (InvalidDDMSException e) {
-			e.printStackTrace();
-			fail("Could not create fixture.");
-		}
-		return (null);
-	}
-
-	/**
-	 * Returns a canned fixed value for testing.
-	 * 
-	 * @return a XOM element representing a valid element
-	 */
-	protected List<Details> getDetailsList() {
-		List<Details> links = new ArrayList<Details>();
-		links.add(getDetailsFixture());
-		return (links);
-	}
-
-	/**
-	 * Returns a canned fixed value for testing.
-	 * 
-	 * @return a XOM element representing a valid element
-	 */
-	protected Details getDetailsFixture() {
-		try {
-			return (new Details("Details", SecurityAttributesTest.getFixture()));
-		}
-		catch (InvalidDDMSException e) {
-			e.printStackTrace();
-			fail("Could not create fixture.");
-		}
-		return (null);
 	}
 
 	/**
@@ -271,7 +216,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
 			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
 			SecurityAttributesTest.getFixture().addTo(element);
-			element.appendChild(getLinkFixture().getXOMElementCopy());
+			element.appendChild(LinkTest.getLocatorFixture(true).getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 
 			// No optional fields (text)
@@ -288,7 +233,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields (links)
-			testConstructor(WILL_SUCCEED, getLinkList(), getDetailsList(), TEST_REVISION_ID, TEST_REVISION_TYPE,
+			testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE,
 				TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 
 			// All fields (text)
@@ -317,7 +262,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
 			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
 			SecurityAttributesTest.getFixture().addTo(element);
-			element.appendChild(getLinkFixture().getXOMElementCopy());
+			element.appendChild(LinkTest.getLocatorFixture(true).getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// Both text AND links/details, text last
@@ -325,7 +270,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
 			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
 			SecurityAttributesTest.getFixture().addTo(element);
-			element.appendChild(getLinkFixture().getXOMElementCopy());
+			element.appendChild(LinkTest.getLocatorFixture(true).getXOMElementCopy());
 			element.appendChild(TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
 
@@ -379,30 +324,30 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Wrong type of XLinkAttributes (locator)
-			testConstructor(WILL_FAIL, getLinkList(), getDetailsList(), TEST_REVISION_ID, TEST_REVISION_TYPE,
+			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE,
 				TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getLocatorFixture());
 
 			// Links without security attributes
 			Link link = new Link(XLinkAttributesTest.getLocatorFixture(), null);
 			List<Link> linkList = new ArrayList<Link>();
 			linkList.add(link);
-			testConstructor(WILL_FAIL, linkList, getDetailsList(), TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
+			testConstructor(WILL_FAIL, linkList, DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
 				TEST_OTHER_NETWORK, XLinkAttributesTest.getLocatorFixture());
 
 			// Missing revisionID
-			testConstructor(WILL_FAIL, getLinkList(), getDetailsList(), null, TEST_REVISION_TYPE, TEST_NETWORK,
+			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), null, TEST_REVISION_TYPE, TEST_NETWORK,
 				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 
 			// Missing revisionType
-			testConstructor(WILL_FAIL, getLinkList(), getDetailsList(), TEST_REVISION_ID, null, TEST_NETWORK,
+			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID, null, TEST_NETWORK,
 				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 
 			// Bad revisionType
-			testConstructor(WILL_FAIL, getLinkList(), getDetailsList(), TEST_REVISION_ID, "MISTAKE", TEST_NETWORK,
+			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID, "MISTAKE", TEST_NETWORK,
 				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 
 			// Bad network
-			testConstructor(WILL_FAIL, getLinkList(), getDetailsList(), TEST_REVISION_ID, TEST_REVISION_TYPE, "PBS",
+			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, "PBS",
 				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 		}
 	}
@@ -423,7 +368,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 
 			// links
 			RevisionRecall elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			RevisionRecall dataComponent = testConstructor(WILL_SUCCEED, getLinkList(), getDetailsList(),
+			RevisionRecall dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
 				TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest
 					.getResourceFixture());
 			assertEquals(elementComponent, dataComponent);
@@ -444,31 +389,31 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 
 			// links
 			RevisionRecall elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			RevisionRecall dataComponent = testConstructor(WILL_SUCCEED, null, getDetailsList(), TEST_REVISION_ID,
+			RevisionRecall dataComponent = testConstructor(WILL_SUCCEED, null, DetailsTest.getFixtureList(), TEST_REVISION_ID,
 				TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getLinkList(), null, TEST_REVISION_ID, TEST_REVISION_TYPE,
+			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(true), null, TEST_REVISION_ID, TEST_REVISION_TYPE,
 				TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getLinkList(), getDetailsList(), new Integer(2),
+			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), new Integer(2),
 				TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getLinkList(), getDetailsList(), TEST_REVISION_ID,
+			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID,
 				"ADMINISTRATIVE REVISION", TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getLinkList(), getDetailsList(), TEST_REVISION_ID,
+			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID,
 				TEST_REVISION_TYPE, "SIPRNet", TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getLinkList(), getDetailsList(), TEST_REVISION_ID,
+			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID,
 				TEST_REVISION_TYPE, TEST_NETWORK, "ABC", XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getLinkList(), getDetailsList(), TEST_REVISION_ID,
+			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID,
 				TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, null);
 			assertFalse(elementComponent.equals(dataComponent));
 
@@ -520,7 +465,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true, true), component.toHTML());
 			assertEquals(getExpectedOutput(true, false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getLinkList(), getDetailsList(), TEST_REVISION_ID,
+			component = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID,
 				TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 			assertEquals(getExpectedOutput(true, true), component.toHTML());
 			assertEquals(getExpectedOutput(true, false), component.toText());
@@ -545,7 +490,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			RevisionRecall component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getLinkList(), getDetailsList(), TEST_REVISION_ID,
+			component = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID,
 				TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
