@@ -22,7 +22,6 @@ package buri.ddmsence.ddms.resource;
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -35,9 +34,6 @@ import buri.ddmsence.util.Util;
 public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 
 	private static final Boolean TEST_VITAL = Boolean.TRUE;
-	private static final String TEST_ID = "#289-99202.9";
-	private static final String TEST_NAME = "AgencyZ";
-	private static final String TEST_SOFTWARE = "IRM Generator 2L-9";
 
 	/**
 	 * Constructor
@@ -45,33 +41,6 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	public RecordsManagementInfoTest() {
 		super("recordsManagementInfo.xml");
 		removeSupportedVersions("2.0 3.0 3.1");
-	}
-
-	/**
-	 * Returns a fixture object for testing.
-	 */
-	private static RecordKeeper getRecordKeeperFixture() {
-		try {
-			return (new RecordKeeper(TEST_ID, new Organization(Util.getXsListAsList(TEST_NAME), null, null, null, null,
-				null)));
-		}
-		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
-		}
-		return (null);
-	}
-
-	/**
-	 * Returns a fixture object for testing.
-	 */
-	private static ApplicationSoftware getApplicationSoftwareFixture() {
-		try {
-			return (new ApplicationSoftware(TEST_SOFTWARE, SecurityAttributesTest.getFixture()));
-		}
-		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
-		}
-		return (null);
 	}
 
 	/**
@@ -121,8 +90,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(getRecordKeeperFixture().getOutput(isHTML, "recordsManagementInfo."));
-		text.append(getApplicationSoftwareFixture().getOutput(isHTML, "recordsManagementInfo."));
+		text.append(RecordKeeperTest.getFixture().getOutput(isHTML, "recordsManagementInfo."));
+		text.append(ApplicationSoftwareTest.getFixture().getOutput(isHTML, "recordsManagementInfo."));
 		text.append(buildOutput(isHTML, "recordsManagementInfo.vitalRecordIndicator", "true"));
 		return (text.toString());
 	}
@@ -139,7 +108,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		xml.append("\t<ddms:recordKeeper>\n");
 		xml.append("\t\t<ddms:recordKeeperID>#289-99202.9</ddms:recordKeeperID>\n");
 		xml.append("\t\t<ddms:organization>\n");
-		xml.append("\t\t\t<ddms:name>AgencyZ</ddms:name>\n");
+		xml.append("\t\t\t<ddms:name>Name</ddms:name>\n");
 		xml.append("\t\t</ddms:organization>\n");
 		xml.append("\t</ddms:recordKeeper>\n");
 		xml.append("\t<ddms:applicationSoftware ").append(getXmlnsISM());
@@ -176,7 +145,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getRecordKeeperFixture(), getApplicationSoftwareFixture(), TEST_VITAL);
+			testConstructor(WILL_SUCCEED, RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(), TEST_VITAL);
 
 			// No optional fields
 			testConstructor(WILL_SUCCEED, null, null, null);
@@ -214,8 +183,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			RecordsManagementInfo elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			RecordsManagementInfo dataComponent = testConstructor(WILL_SUCCEED, getRecordKeeperFixture(),
-				getApplicationSoftwareFixture(), TEST_VITAL);
+			RecordsManagementInfo dataComponent = testConstructor(WILL_SUCCEED, RecordKeeperTest.getFixture(),
+				ApplicationSoftwareTest.getFixture(), TEST_VITAL);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -226,14 +195,14 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			RecordsManagementInfo elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			RecordsManagementInfo dataComponent = testConstructor(WILL_SUCCEED, getRecordKeeperFixture(),
-				getApplicationSoftwareFixture(), null);
+			RecordsManagementInfo dataComponent = testConstructor(WILL_SUCCEED, RecordKeeperTest.getFixture(),
+				ApplicationSoftwareTest.getFixture(), null);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getRecordKeeperFixture(), null, TEST_VITAL);
+			dataComponent = testConstructor(WILL_SUCCEED, RecordKeeperTest.getFixture(), null, TEST_VITAL);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, null, getApplicationSoftwareFixture(), TEST_VITAL);
+			dataComponent = testConstructor(WILL_SUCCEED, null, ApplicationSoftwareTest.getFixture(), TEST_VITAL);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -246,7 +215,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getRecordKeeperFixture(), getApplicationSoftwareFixture(),
+			component = testConstructor(WILL_SUCCEED, RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(),
 				TEST_VITAL);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -260,7 +229,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 			RecordsManagementInfo component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getRecordKeeperFixture(), getApplicationSoftwareFixture(),
+			component = testConstructor(WILL_SUCCEED, RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(),
 				TEST_VITAL);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}

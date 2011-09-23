@@ -19,6 +19,9 @@
  */
 package buri.ddmsence.ddms.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -67,6 +70,28 @@ public class DetailsTest extends AbstractComponentTestCase {
 		return (null);
 	}
 
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static List<Details> getFixtureList() {
+		List<Details> links = new ArrayList<Details>();
+		links.add(getFixture());
+		return (links);
+	}
+
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static Details getFixture() {
+		try {
+			return (new Details("Details", SecurityAttributesTest.getFixture()));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture.");
+		}
+		return (null);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 

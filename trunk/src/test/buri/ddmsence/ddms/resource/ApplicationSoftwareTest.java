@@ -66,6 +66,20 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
+	
+
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static ApplicationSoftware getFixture() {
+		try {
+			return (new ApplicationSoftware(getFixtureElement()));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
 
 	/**
 	 * Attempts to build a component from a XOM element.

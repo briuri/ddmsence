@@ -38,7 +38,7 @@ import buri.ddmsence.util.Util;
 public class RecordKeeperTest extends AbstractComponentTestCase {
 
 	private static final String TEST_ID = "#289-99202.9";
-	private static final String TEST_NAME = "AgencyZ";
+	private static final String TEST_NAME = "Name";
 
 	/**
 	 * Constructor
@@ -50,8 +50,6 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 
 	/**
 	 * Returns a fixture object for testing.
-	 * 
-	 * @return a XOM element representing a valid applicationSoftware
 	 */
 	public static Element getFixtureElement() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
@@ -59,19 +57,20 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 		Element idElement = Util.buildDDMSElement("recordKeeperID", TEST_ID);
 		element.appendChild(idElement);
-		element.appendChild(getOrgFixture().getXOMElementCopy());
+		element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
 		return (element);
 	}
+	
 
 	/**
-	 * Returns a fixture object for testing. organization to act as an entity
+	 * Returns a fixture object for testing.
 	 */
-	private static Organization getOrgFixture() {
+	public static RecordKeeper getFixture() {
 		try {
-			return (new Organization(Util.getXsListAsList(TEST_NAME), null, null, null, null, null));
+			return (new RecordKeeper(getFixtureElement()));
 		}
 		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
+			fail("Could not create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
@@ -164,7 +163,7 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_ID, getOrgFixture());
+			testConstructor(WILL_SUCCEED, TEST_ID, OrganizationTest.getFixture());
 		}
 	}
 
@@ -174,13 +173,13 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 
 			// Missing recordKeeperID
 			Element element = Util.buildDDMSElement(RecordKeeper.getName(version), null);
-			element.appendChild(getOrgFixture().getXOMElementCopy());
+			element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// Empty recordKeeperID
 			element = Util.buildDDMSElement(RecordKeeper.getName(version), null);
 			element.appendChild(Util.buildDDMSElement("recordKeeperID", null));
-			element.appendChild(getOrgFixture().getXOMElementCopy());
+			element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// Missing organization
@@ -195,7 +194,7 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing recordKeeperID		
-			testConstructor(WILL_FAIL, null, getOrgFixture());
+			testConstructor(WILL_FAIL, null, OrganizationTest.getFixture());
 
 			// Missing organization
 			testConstructor(WILL_FAIL, TEST_ID, null);
@@ -217,7 +216,7 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			RecordKeeper elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			RecordKeeper dataComponent = testConstructor(WILL_SUCCEED, TEST_ID, getOrgFixture());
+			RecordKeeper dataComponent = testConstructor(WILL_SUCCEED, TEST_ID, OrganizationTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -228,7 +227,7 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			RecordKeeper elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			RecordKeeper dataComponent = testConstructor(WILL_SUCCEED, "newID", getOrgFixture());
+			RecordKeeper dataComponent = testConstructor(WILL_SUCCEED, "newID", OrganizationTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_ID, new Organization(Util.getXsListAsList("DISA"), null,
@@ -245,7 +244,7 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_ID, getOrgFixture());
+			component = testConstructor(WILL_SUCCEED, TEST_ID, OrganizationTest.getFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -258,7 +257,7 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 			RecordKeeper component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_ID, getOrgFixture());
+			component = testConstructor(WILL_SUCCEED, TEST_ID, OrganizationTest.getFixture());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -266,7 +265,7 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 	public void test20Usage() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
-			new RecordKeeper(TEST_ID, getOrgFixture());
+			new RecordKeeper(TEST_ID, OrganizationTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

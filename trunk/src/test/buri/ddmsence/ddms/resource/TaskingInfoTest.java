@@ -19,7 +19,6 @@
  */
 package buri.ddmsence.ddms.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
@@ -28,6 +27,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.summary.Description;
+import buri.ddmsence.ddms.summary.DescriptionTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -63,7 +63,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			SecurityAttributesTest.getFixture().addTo(element);
 			element.appendChild(RequesterInfoTest.getFixtureElement(true));
 			element.appendChild(AddresseeTest.getFixtureElement(true));
-			element.appendChild(getDescriptionFixture().getXOMElementCopy());
+			element.appendChild(DescriptionTest.getFixture().getXOMElementCopy());
 			element.appendChild(TaskIDTest.getFixtureElement());
 			return (element);
 		}
@@ -72,51 +72,6 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
-	/**
-	 * Returns a fixture object for testing.
-	 */
-	private static List<RequesterInfo> getRequesterList() {
-		try {
-			List<RequesterInfo> list = new ArrayList<RequesterInfo>();
-			list.add(new RequesterInfo(RequesterInfoTest.getFixtureElement(true)));
-			return (list);
-		}
-		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
-		}
-		return (null);
-	}
-
-	/**
-	 * Returns a fixture object for testing.
-	 */
-	private static List<Addressee> getAddresseeList() {
-		try {
-			List<Addressee> list = new ArrayList<Addressee>();
-			list.add(new Addressee(AddresseeTest.getFixtureElement(true)));
-			return (list);
-		}
-		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
-		}
-		return (null);
-	}
-
-	/**
-	 * Returns a fixture object for testing.
-	 */
-	private static Description getDescriptionFixture() {
-		try {
-			return (new Description("Tasking Info", SecurityAttributesTest.getFixture()));
-		}
-		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
-		}
-		return (null);
-	}
-
-
 
 	/**
 	 * Attempts to build a component from a XOM element.
@@ -243,7 +198,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(),
+			testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),
 				TaskIDTest.getFixture());
 
 			// No optional fields
@@ -300,8 +255,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			TaskingInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			TaskingInfo dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(),
-				getDescriptionFixture(), TaskIDTest.getFixture());
+			TaskingInfo dataComponent = testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
+				DescriptionTest.getFixture(), TaskIDTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -312,21 +267,21 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			TaskingInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			TaskingInfo dataComponent = testConstructor(WILL_SUCCEED, null, getAddresseeList(),
-				getDescriptionFixture(), TaskIDTest.getFixture());
+			TaskingInfo dataComponent = testConstructor(WILL_SUCCEED, null, AddresseeTest.getFixtureList(),
+				DescriptionTest.getFixture(), TaskIDTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), null, getDescriptionFixture(),
+			dataComponent = testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), null, DescriptionTest.getFixture(),
 				TaskIDTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), null,
+			dataComponent = testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), null,
 				TaskIDTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			TaskID taskID = new TaskID("Test", null, null, null, null);
-			dataComponent = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(),
-				getDescriptionFixture(), taskID);
+			dataComponent = testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
+				DescriptionTest.getFixture(), taskID);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -339,7 +294,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(),
+			component = testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),
 				TaskIDTest.getFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -353,7 +308,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			TaskingInfo component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getRequesterList(), getAddresseeList(), getDescriptionFixture(),
+			component = testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),
 				TaskIDTest.getFixture());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}

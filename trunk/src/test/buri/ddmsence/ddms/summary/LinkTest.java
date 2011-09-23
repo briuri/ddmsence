@@ -26,6 +26,7 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -75,15 +76,27 @@ public class LinkTest extends AbstractComponentTestCase {
 
 	/**
 	 * Returns a fixture object for testing.
+	 * 
+	 * @param hasSecurity true for security attributes
 	 */
-	public static List<Link> getFixtureList() {
+	public static List<Link> getLocatorFixtureList(boolean hasSecurity) {
+		List<Link> links = new ArrayList<Link>();
+		links.add(getLocatorFixture(hasSecurity));
+		return (links);
+	}
+
+	/**
+	 * Returns a fixture object for testing.
+	 * 
+	 * @param hasSecurity true for security attributes
+	 */
+	public static Link getLocatorFixture(boolean hasSecurity) {
 		try {
-			List<Link> links = new ArrayList<Link>();
-			links.add(new Link(new XLinkAttributes(TEST_HREF, "role", null, null)));
-			return (links);
+			return (new Link(XLinkAttributesTest.getLocatorFixture(), hasSecurity ? SecurityAttributesTest.getFixture() : null));
 		}
 		catch (InvalidDDMSException e) {
-			fail("Could not create fixture: " + e.getMessage());
+			e.printStackTrace();
+			fail("Could not create fixture.");
 		}
 		return (null);
 	}

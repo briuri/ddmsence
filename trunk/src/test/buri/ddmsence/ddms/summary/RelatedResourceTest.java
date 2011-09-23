@@ -178,11 +178,11 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
+			testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
 				TEST_VALUE);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, null, TEST_QUALIFIER,
+			testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, null, TEST_QUALIFIER,
 				TEST_VALUE);
 		}
 	}
@@ -284,25 +284,25 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing relationship
-			testConstructor(WILL_FAIL, LinkTest.getFixtureList(), null, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
+			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(false), null, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 
 			// Invalid direction
-			testConstructor(WILL_FAIL, LinkTest.getFixtureList(), TEST_RELATIONSHIP, "veeringLeft", TEST_QUALIFIER,
+			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, "veeringLeft", TEST_QUALIFIER,
 				TEST_VALUE);
 
 			// Relationship not URI
-			testConstructor(WILL_FAIL, LinkTest.getFixtureList(), INVALID_URI, TEST_DIRECTION, TEST_QUALIFIER,
+			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(false), INVALID_URI, TEST_DIRECTION, TEST_QUALIFIER,
 				TEST_VALUE);
 
 			// Missing qualifier
-			testConstructor(WILL_FAIL, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION, null, TEST_VALUE);
+			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, null, TEST_VALUE);
 
 			// Qualifier not URI
-			testConstructor(WILL_FAIL, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION, INVALID_URI,
+			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, INVALID_URI,
 				TEST_VALUE);
 
 			// Missing value
-			testConstructor(WILL_FAIL, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
+			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
 				null);
 
 			// Missing link
@@ -352,7 +352,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			RelatedResource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			RelatedResource dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP,
+			RelatedResource dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP,
 				TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -363,19 +363,19 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			RelatedResource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			RelatedResource dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), DIFFERENT_VALUE,
+			RelatedResource dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), DIFFERENT_VALUE,
 				TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, "inbound",
+			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, "inbound",
 				TEST_QUALIFIER, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION,
+			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
 				DIFFERENT_VALUE, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION,
+			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
 				TEST_QUALIFIER, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
@@ -395,7 +395,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION,
+			component = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
 				TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -408,7 +408,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			RelatedResource component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION,
+			component = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
 				TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
@@ -417,7 +417,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	public void testLinkReuse() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			List<Link> links = LinkTest.getFixtureList();
+			List<Link> links = LinkTest.getLocatorFixtureList(false);
 			testConstructor(WILL_SUCCEED, links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 			testConstructor(WILL_SUCCEED, links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 		}
@@ -425,7 +425,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 	public void testWrongVersions() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		List<Link> links = LinkTest.getFixtureList();
+		List<Link> links = LinkTest.getLocatorFixtureList(false);
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
 			new RelatedResource(links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE, null);
