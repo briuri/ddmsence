@@ -2,15 +2,17 @@
 <ddms:resource xsi:schemaLocation="urn:us:mil:ces:metadata:ddms:4 DDMS-v4_0.xsd" 
 	xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:ICISM="urn:us:gov:ic:ism" 
-	ICISM:resourceElement="true" ICISM:DESVersion="5" ICISM:createDate="2010-01-21" ICISM:classification="U" ICISM:ownerProducer="USA">
+	xmlns:ISM="urn:us:gov:ic:ism" 
+	xmlns:ntk="urn:us:gov:ic:ntk"
+	ntk:DESVersion="5"
+	ISM:resourceElement="true" ISM:DESVersion="5" ISM:createDate="2010-01-21" ISM:classification="U" ISM:ownerProducer="USA">
 	<ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence"/>
-	<ddms:title ICISM:ownerProducer="USA" ICISM:classification="U">DDMSence</ddms:title>
-	<ddms:description ICISM:ownerProducer="USA" ICISM:classification="U">An open source Java API for DDMS</ddms:description>
+	<ddms:title ISM:ownerProducer="USA" ISM:classification="U">DDMSence</ddms:title>
+	<ddms:description ISM:ownerProducer="USA" ISM:classification="U">An open source Java API for DDMS</ddms:description>
 	<ddms:language ddms:qualifier="http://purl.org/dc/elements/1.1/language" ddms:value="en"/>
 	<ddms:dates ddms:created="2010-03-24" ddms:posted="2010-03-24" ddms:approvedOn="2010-04-01" />
 	<ddms:rights ddms:copyright="true" ddms:privacyAct="false" ddms:intellectualProperty="true"/>
-	<ddms:creator ICISM:ownerProducer="USA" ICISM:classification="U">
+	<ddms:creator ISM:ownerProducer="USA" ISM:classification="U">
 		<ddms:person>
 			<ddms:name>Brian Uri</ddms:name>
 			<ddms:name>Brian</ddms:name>
@@ -18,7 +20,7 @@
 			<ddms:email>ddmsence@urizone.net</ddms:email>
 		</ddms:person>
 	</ddms:creator>
-	<ddms:publisher ICISM:classification="U" ICISM:ownerProducer="USA">
+	<ddms:publisher ISM:classification="U" ISM:ownerProducer="USA">
 		<ddms:person>
 			<ddms:name>Brian Uri</ddms:name>
 			<ddms:name>Brian</ddms:name>
@@ -52,5 +54,5 @@
 		<ddms:start>2010-03-24T12:00:00Z</ddms:start>
 		<ddms:end>Not Applicable</ddms:end>
 	</ddms:temporalCoverage>
-	<ddms:security ICISM:ownerProducer="USA" ICISM:classification="U" ICISM:excludeFromRollup="true"/>
+	<ddms:security ISM:ownerProducer="USA" ISM:classification="U" ISM:excludeFromRollup="true"/>
 </ddms:resource>
