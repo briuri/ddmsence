@@ -86,7 +86,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 		Category component = null;
 		try {
 			component = new Category(qualifier, code, label, version.isAtLeast("4.0") ? SecurityAttributesTest
-				.getFixture(false) : null);
+				.getFixture() : null);
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -324,7 +324,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 	public void testSecurityAttributesWrongVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, SecurityAttributesTest.getFixture(false));
+			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

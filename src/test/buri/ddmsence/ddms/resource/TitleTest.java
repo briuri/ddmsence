@@ -73,7 +73,7 @@ public class TitleTest extends AbstractComponentTestCase {
 	private Title testConstructor(boolean expectFailure, String title) {
 		Title component = null;
 		try {
-			component = new Title(title, SecurityAttributesTest.getFixture(false));
+			component = new Title(title, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {

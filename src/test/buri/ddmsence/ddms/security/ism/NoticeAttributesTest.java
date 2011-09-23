@@ -51,13 +51,17 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value attributes object for testing higher-level components.
-	 * 
-	 * @return NoticeAttributes
+	 * Returns a fixture object for testing.
 	 */
-	public static NoticeAttributes getFixture() throws InvalidDDMSException {
-		return (new NoticeAttributes(TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE,
-			TEST_UNREGISTERED_NOTICE_TYPE));
+	public static NoticeAttributes getFixture() {
+		try {
+			return (new NoticeAttributes(TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE,
+				TEST_UNREGISTERED_NOTICE_TYPE));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

@@ -43,8 +43,19 @@ public class PositionTest extends AbstractComponentTestCase {
 		TEST_COORDS.add(new Double(32.1));
 		TEST_COORDS.add(new Double(40.1));
 	}
-	protected static final String TEST_XS_LIST = "32.1 40.1";
+	protected static final String TEST_XS_LIST = Util.getXsList(TEST_COORDS);
 
+	public static final List<Double> TEST_COORDS_2 = new ArrayList<Double>();
+	static {
+		TEST_COORDS_2.add(new Double(42.1));
+		TEST_COORDS_2.add(new Double(40.1));
+	}
+	public static final List<Double> TEST_COORDS_3 = new ArrayList<Double>();
+	static {
+		TEST_COORDS_3.add(new Double(42.1));
+		TEST_COORDS_3.add(new Double(50.1));
+	}
+	
 	/**
 	 * Constructor
 	 */
@@ -52,6 +63,37 @@ public class PositionTest extends AbstractComponentTestCase {
 		super("position.xml");
 	}
 
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static Position getFixture() {
+		try {
+			return (new Position(PositionTest.TEST_COORDS, SRSAttributesTest.getFixture()));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);		
+	}
+	
+	/**
+	 * Returns a fixture object for testing. This list of positions represents a closed polygon.
+	 */
+	public static List<Position> getFixtureList() {
+		try {
+			List<Position> positions = new ArrayList<Position>();
+			positions.add(new Position(TEST_COORDS, SRSAttributesTest.getFixture()));
+			positions.add(new Position(TEST_COORDS_2, SRSAttributesTest.getFixture()));
+			positions.add(new Position(TEST_COORDS_3, SRSAttributesTest.getFixture()));
+			positions.add(new Position(TEST_COORDS, SRSAttributesTest.getFixture()));
+			return (positions);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);		
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 

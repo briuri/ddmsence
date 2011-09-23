@@ -51,30 +51,42 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value attributes object for testing higher-level components.
-	 * 
-	 * @return XLinkAttributes
+	 * Returns a fixture object for testing. The type will be "locator".
 	 */
-	public static XLinkAttributes getLocatorFixture() throws InvalidDDMSException {
-		return (new XLinkAttributes(TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL));
+	public static XLinkAttributes getLocatorFixture() {
+		try {
+			return (new XLinkAttributes(TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**
-	 * Returns a canned fixed value attributes object for testing higher-level components.
-	 * 
-	 * @return XLinkAttributes
+	 * Returns a fixture object for testing. The type will be "simple".
 	 */
-	public static XLinkAttributes getSimpleFixture() throws InvalidDDMSException {
-		return (new XLinkAttributes(TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, TEST_ACTUATE));
+	public static XLinkAttributes getSimpleFixture() {
+		try {
+			return (new XLinkAttributes(TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, TEST_ACTUATE));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**
-	 * Returns a canned fixed value attributes object for testing higher-level components.
-	 * 
-	 * @return XLinkAttributes
+	 * Returns a fixture object for testing. The type will be "resource".
 	 */
-	public static XLinkAttributes getResourceFixture() throws InvalidDDMSException {
-		return (new XLinkAttributes(TEST_ROLE, TEST_TITLE, TEST_LABEL));
+	public static XLinkAttributes getResourceFixture() {
+		try {
+			return (new XLinkAttributes(TEST_ROLE, TEST_TITLE, TEST_LABEL));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

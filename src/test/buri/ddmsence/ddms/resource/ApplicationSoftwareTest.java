@@ -50,7 +50,7 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value applicationSoftware for testing.
+	 * Returns a fixture object for testing.
 	 * 
 	 * @return a XOM element representing a valid applicationSoftware
 	 */
@@ -59,7 +59,7 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 		Element element = Util.buildDDMSElement(ApplicationSoftware.getName(version), TEST_VALUE);
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ism"), version.getIsmNamespace());
-		SecurityAttributesTest.getFixture(false).addTo(element);
+		SecurityAttributesTest.getFixture().addTo(element);
 		return (element);
 	}
 
@@ -93,7 +93,7 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 	private ApplicationSoftware testConstructor(boolean expectFailure, String value) {
 		ApplicationSoftware component = null;
 		try {
-			component = new ApplicationSoftware(value, SecurityAttributesTest.getFixture(false));
+			component = new ApplicationSoftware(value, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -143,7 +143,7 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(ApplicationSoftware.getName(version), null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -166,7 +166,7 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 
 			// Wrong name
 			Element element = Util.buildDDMSElement("unknownName", null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -196,7 +196,7 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 
 			// No value
 			Element element = Util.buildDDMSElement(ApplicationSoftware.getName(version), null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A ddms:applicationSoftware element was found with no value.";
@@ -255,7 +255,7 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 	public void test20Usage() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
-			new ApplicationSoftware(TEST_VALUE, SecurityAttributesTest.getFixture(false));
+			new ApplicationSoftware(TEST_VALUE, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

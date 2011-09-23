@@ -53,7 +53,7 @@ public class TaskIDTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value taskID for testing.
+	 * Returns a fixture object for testing.
 	 * 
 	 * @return a XOM element representing a valid applicationSoftware
 	 */

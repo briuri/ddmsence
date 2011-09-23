@@ -48,7 +48,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Helper method to create a fixture
+	 * Returns a fixture object for testing.
 	 */
 	private static RecordKeeper getRecordKeeperFixture() {
 		try {
@@ -62,11 +62,11 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Helper method to create a fixture
+	 * Returns a fixture object for testing.
 	 */
 	private static ApplicationSoftware getApplicationSoftwareFixture() {
 		try {
-			return (new ApplicationSoftware(TEST_SOFTWARE, SecurityAttributesTest.getFixture(false)));
+			return (new ApplicationSoftware(TEST_SOFTWARE, SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());

@@ -79,7 +79,7 @@ public class TypeTest extends AbstractComponentTestCase {
 		Type component = null;
 		try {
 			component = new Type(description, qualifier, value, version.isAtLeast("4.0") ? SecurityAttributesTest
-				.getFixture(false) : null);
+				.getFixture() : null);
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -256,7 +256,7 @@ public class TypeTest extends AbstractComponentTestCase {
 	public void testSecurityAttributesWrongVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new Type(null, TEST_QUALIFIER, TEST_VALUE, SecurityAttributesTest.getFixture(false));
+			new Type(null, TEST_QUALIFIER, TEST_VALUE, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

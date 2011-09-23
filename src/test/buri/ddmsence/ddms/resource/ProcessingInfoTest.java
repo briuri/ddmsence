@@ -76,7 +76,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 	private ProcessingInfo testConstructor(boolean expectFailure, String value, String dateProcessed) {
 		ProcessingInfo component = null;
 		try {
-			component = new ProcessingInfo(value, dateProcessed, SecurityAttributesTest.getFixture(false));
+			component = new ProcessingInfo(value, dateProcessed, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -129,7 +129,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			// No optional fields
 			Element element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
 			Util.addDDMSAttribute(element, "dateProcessed", TEST_DATE_PROCESSED);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -152,18 +152,18 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 
 			// Wrong name
 			Element element = Util.buildDDMSElement("unknownName", null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing date
 			element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Wrong date format (using xs:gDay here)
 			element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
 			Util.addDDMSAttribute(element, "dateProcessed", "---31");
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -203,7 +203,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			// No value
 			Element element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
 			Util.addDDMSAttribute(element, "dateProcessed", TEST_DATE_PROCESSED);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A ddms:processingInfo element was found with no value.";
@@ -265,7 +265,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 	public void test20Usage() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
-			new ProcessingInfo(TEST_VALUE, TEST_DATE_PROCESSED, SecurityAttributesTest.getFixture(false));
+			new ProcessingInfo(TEST_VALUE, TEST_DATE_PROCESSED, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

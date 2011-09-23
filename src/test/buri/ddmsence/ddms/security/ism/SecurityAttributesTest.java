@@ -44,10 +44,8 @@ import buri.ddmsence.util.Util;
 public class SecurityAttributesTest extends AbstractComponentTestCase {
 
 	private static final String TEST_CLASS = "U";
-	private static final List<String> TEST_OWNERS = new ArrayList<String>();
-	static {
-		TEST_OWNERS.add("USA");
-	}
+	private static final List<String> TEST_OWNERS = Util.getXsListAsList("USA");
+
 	private static final Map<String, String> TEST_OTHERS_31 = new HashMap<String, String>();
 	static {
 		TEST_OTHERS_31.put(SecurityAttributes.ATOMIC_ENERGY_MARKINGS_NAME, "RD");
@@ -127,6 +125,33 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Returns a fixture object for testing. These attributes will only contain the basic required attributes
+	 * (classification and ownerProducer).
+	 */
+	public static SecurityAttributes getFixture() {
+		try {
+			return (new SecurityAttributes(TEST_CLASS, TEST_OWNERS, null));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+
+	/**
+	 * Returns a fixture object for testing. These attributes will be a full set, including optional attributes.
+	 */
+	public static SecurityAttributes getFullFixture() {
+		try {
+			return (new SecurityAttributes(TEST_CLASS, TEST_OWNERS, getOtherAttributes()));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
 	 * Returns a set of attributes for a specific version of DDMS.
 	 * 
 	 * @return an attribute group
@@ -163,17 +188,6 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	private void assertAttributeChangeAffectsEquality(SecurityAttributes expected, String key, String value) {
 		Map<String, String> others = getOtherAttributes(key, value);
 		assertFalse(expected.equals(testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, others)));
-	}
-
-	/**
-	 * Returns a canned fixed value attributes object for testing higher-level components.
-	 * 
-	 * @param includeAll true if all attributes should be included.
-	 * @return SecurityAttributes
-	 */
-	public static SecurityAttributes getFixture(boolean includeAll) throws InvalidDDMSException {
-		Map<String, String> others = getOtherAttributes();
-		return (new SecurityAttributes(TEST_CLASS, TEST_OWNERS, includeAll ? others : null));
 	}
 
 	/**
@@ -228,7 +242,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			// All fields
 			Element element = Util.buildDDMSElement(Security.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
-			getFixture(true).addTo(element);
+			getFullFixture().addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 
 			// No optional fields
@@ -314,7 +328,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(Security.getName(version), null);
 			Util.addAttribute(element, PropertyReader.getPrefix("ism"), Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace,
 				"true");
-			getFixture(true).addTo(element);
+			getFullFixture().addTo(element);
 			SecurityAttributes attr = testConstructor(WILL_SUCCEED, element);
 			assertEquals(0, attr.getValidationWarnings().size());
 		}
@@ -328,7 +342,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(Security.getName(version), null);
 			Util.addAttribute(element, PropertyReader.getPrefix("ism"), Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace,
 				"true");
-			getFixture(true).addTo(element);
+			getFullFixture().addTo(element);
 			SecurityAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
 			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS,
 				getOtherAttributes());
@@ -347,7 +361,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(Security.getName(version), null);
 			Util.addAttribute(element, PropertyReader.getPrefix("ism"), Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace,
 				"true");
-			getFixture(true).addTo(element);
+			getFullFixture().addTo(element);
 			SecurityAttributes expected = testConstructor(WILL_SUCCEED, element);
 
 			if (version.isAtLeast("3.1"))
@@ -391,7 +405,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			SecurityAttributes elementAttributes = getFixture(true);
+			SecurityAttributes elementAttributes = getFullFixture();
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementAttributes.equals(wrongComponent));
 		}
@@ -632,7 +646,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			SecurityAttributes component = getFixture(true);
+			SecurityAttributes component = getFullFixture();
 
 			// Equality after Building
 			SecurityAttributes.Builder builder = new SecurityAttributes.Builder(component);

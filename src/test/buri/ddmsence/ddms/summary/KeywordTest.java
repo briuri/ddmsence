@@ -81,7 +81,7 @@ public class KeywordTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Keyword component = null;
 		try {
-			component = new Keyword(value, version.isAtLeast("4.0") ? SecurityAttributesTest.getFixture(false) : null);
+			component = new Keyword(value, version.isAtLeast("4.0") ? SecurityAttributesTest.getFixture() : null);
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -267,7 +267,7 @@ public class KeywordTest extends AbstractComponentTestCase {
 	public void testSecurityAttributesWrongVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new Keyword(TEST_VALUE, SecurityAttributesTest.getFixture(false));
+			new Keyword(TEST_VALUE, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

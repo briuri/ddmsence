@@ -54,7 +54,7 @@ public class LinkTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value link for testing.
+	 * Returns a fixture object for testing.
 	 * 
 	 * @return a XOM element representing a valid link
 	 */

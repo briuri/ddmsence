@@ -54,7 +54,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	private PointOfContact testConstructor(boolean expectFailure, Element element) {
 		PointOfContact component = null;
 		try {
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			component = new PointOfContact(element);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -65,7 +65,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Helper method to create a fixture organization to act as an entity
+	 * Returns a fixture object for testing. organization to act as an entity
 	 */
 	private IRoleEntity getEntityFixture() {
 		try {
@@ -91,7 +91,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	private PointOfContact testConstructor(boolean expectFailure, IRoleEntity entity, String pocType) {
 		PointOfContact component = null;
 		try {
-			component = new PointOfContact(entity, pocType, SecurityAttributesTest.getFixture(false));
+			component = new PointOfContact(entity, pocType, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -251,15 +251,15 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			PointOfContact component = new PointOfContact(getEntityFixture(), null, SecurityAttributesTest
-				.getFixture(false));
-			assertEquals(SecurityAttributesTest.getFixture(false), component.getSecurityAttributes());
+				.getFixture());
+			assertEquals(SecurityAttributesTest.getFixture(), component.getSecurityAttributes());
 		}
 	}
 
 	public void testPOCTypeWrongVersion() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new PointOfContact(getEntityFixture(), "ICD-710", SecurityAttributesTest.getFixture(false));
+			new PointOfContact(getEntityFixture(), "ICD-710", SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

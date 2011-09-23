@@ -52,7 +52,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value for testing.
+	 * Returns a fixture object for testing.
 	 * 
 	 * @return a XOM element representing a valid taskingInfo
 	 */
@@ -61,7 +61,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		Element element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ism"), version.getIsmNamespace());
-		SecurityAttributesTest.getFixture(false).addTo(element);
+		SecurityAttributesTest.getFixture().addTo(element);
 		element.appendChild(RequesterInfoTest.getFixtureElement(true));
 		element.appendChild(AddresseeTest.getFixtureElement(true));
 		element.appendChild(getDescriptionFixture().getXOMElementCopy());
@@ -70,7 +70,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Helper method to create a fixture
+	 * Returns a fixture object for testing.
 	 */
 	private static List<RequesterInfo> getRequesterList() {
 		try {
@@ -85,7 +85,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Helper method to create a fixture
+	 * Returns a fixture object for testing.
 	 */
 	private static List<Addressee> getAddresseeList() {
 		try {
@@ -100,11 +100,11 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Helper method to create a fixture
+	 * Returns a fixture object for testing.
 	 */
 	private static Description getDescriptionFixture() {
 		try {
-			return (new Description("Tasking Info", SecurityAttributesTest.getFixture(false)));
+			return (new Description("Tasking Info", SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
@@ -113,7 +113,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Helper method to create a fixture
+	 * Returns a fixture object for testing.
 	 */
 	private static TaskID getTaskIDFixture() {
 		try {
@@ -159,7 +159,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		TaskingInfo component = null;
 		try {
 			component = new TaskingInfo(requesterInfos, addressees, description, taskID, SecurityAttributesTest
-				.getFixture(false));
+				.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -239,7 +239,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			element.appendChild(getTaskIDFixture().getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 		}
@@ -264,7 +264,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 
 			// Missing taskID
 			Element element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing security attributes
@@ -369,7 +369,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	public void test20Usage() {
 		try {
 			DDMSVersion.setCurrentVersion("4.0");
-			SecurityAttributes attr = SecurityAttributesTest.getFixture(false);
+			SecurityAttributes attr = SecurityAttributesTest.getFixture();
 			DDMSVersion.setCurrentVersion("2.0");
 			new TaskingInfo(null, null, null, new TaskID("test", null, null, null, null), attr);
 			fail("Allowed invalid data.");

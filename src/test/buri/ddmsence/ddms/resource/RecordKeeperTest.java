@@ -49,7 +49,7 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value recordKeeper for testing.
+	 * Returns a fixture object for testing.
 	 * 
 	 * @return a XOM element representing a valid applicationSoftware
 	 */
@@ -64,7 +64,7 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Helper method to create a fixture organization to act as an entity
+	 * Returns a fixture object for testing. organization to act as an entity
 	 */
 	private static Organization getOrgFixture() {
 		try {

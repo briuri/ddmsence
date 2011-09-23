@@ -80,7 +80,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	private ProductionMetric testConstructor(boolean expectFailure, String subject, String coverage) {
 		ProductionMetric component = null;
 		try {
-			component = new ProductionMetric(subject, coverage, SecurityAttributesTest.getFixture(false));
+			component = new ProductionMetric(subject, coverage, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {

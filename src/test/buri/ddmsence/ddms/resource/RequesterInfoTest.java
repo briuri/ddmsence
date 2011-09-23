@@ -51,7 +51,7 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value requesterInfo for testing.
+	 * Returns a fixture object for testing.
 	 * 
 	 * @param useOrg true to put an organization in, false for a person
 	 * @return a XOM element representing a valid applicationSoftware
@@ -61,12 +61,12 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 		Element element = Util.buildDDMSElement(RequesterInfo.getName(version), null);
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 		element.appendChild(useOrg ? getOrgFixture().getXOMElementCopy() : getPersonFixture().getXOMElementCopy());
-		SecurityAttributesTest.getFixture(false).addTo(element);
+		SecurityAttributesTest.getFixture().addTo(element);
 		return (element);
 	}
 
 	/**
-	 * Helper method to create a fixture organization to act as an entity
+	 * Returns a fixture object for testing. organization to act as an entity
 	 */
 	private static Organization getOrgFixture() {
 		try {
@@ -79,7 +79,7 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Helper method to create a fixture person to act as an entity
+	 * Returns a fixture object for testing. person to act as an entity
 	 */
 	private static Person getPersonFixture() {
 		try {
@@ -121,7 +121,7 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	private RequesterInfo testConstructor(boolean expectFailure, IRoleEntity entity) {
 		RequesterInfo component = null;
 		try {
-			component = new RequesterInfo(entity, SecurityAttributesTest.getFixture(false));
+			component = new RequesterInfo(entity, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -194,7 +194,7 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 
 			// Missing entity
 			Element element = Util.buildDDMSElement(RequesterInfo.getName(version), null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing security attributes
@@ -295,7 +295,7 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	public void test20Usage() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
-			new RequesterInfo(getOrgFixture(), SecurityAttributesTest.getFixture(false));
+			new RequesterInfo(getOrgFixture(), SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

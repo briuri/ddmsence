@@ -19,6 +19,9 @@
  */
 package buri.ddmsence.ddms.security.ntk;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -49,18 +52,27 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Creates an IndividualValue fixture
+	 * Returns a fixture object for testing.
 	 */
 	public static IndividualValue getFixture() {
 		try {
-			return (new IndividualValue(TEST_VALUE, null, null, null, SecurityAttributesTest.getFixture(false)));
+			return (new IndividualValue(TEST_VALUE, null, null, null, SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
+			fail("Could not create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
 
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static List<IndividualValue> getFixtureList() {
+		List<IndividualValue> list = new ArrayList<IndividualValue>();
+		list.add(IndividualValueTest.getFixture());
+		return (list);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -95,7 +107,7 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 		String qualifier) {
 		IndividualValue component = null;
 		try {
-			component = new IndividualValue(value, id, idReference, qualifier, SecurityAttributesTest.getFixture(false));
+			component = new IndividualValue(value, id, idReference, qualifier, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -151,7 +163,7 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 			// No optional fields
 			Element element = Util.buildElement(ntkPrefix, IndividualValue.getName(version), version.getNtkNamespace(),
 				TEST_VALUE);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}

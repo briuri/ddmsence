@@ -58,13 +58,13 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 			return (null);
 		List<SubOrganization> subOrgs = new ArrayList<SubOrganization>();
-		subOrgs.add(new SubOrganization("sub1", SecurityAttributesTest.getFixture(false)));
-		subOrgs.add(new SubOrganization("sub2", SecurityAttributesTest.getFixture(false)));
+		subOrgs.add(new SubOrganization("sub1", SecurityAttributesTest.getFixture()));
+		subOrgs.add(new SubOrganization("sub2", SecurityAttributesTest.getFixture()));
 		return (subOrgs);
 	}
 
 	/**
-	 * Returns a canned fixed value resource for testing.
+	 * Returns a fixture object for testing.
 	 * 
 	 * @return a XOM element representing a valid resource
 	 */
@@ -73,7 +73,7 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 		Element element = Util.buildDDMSElement(SubOrganization.getName(version), TEST_VALUE);
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ism"), version.getIsmNamespace());
-		SecurityAttributesTest.getFixture(false).addTo(element);
+		SecurityAttributesTest.getFixture().addTo(element);
 		return (element);
 	}
 
@@ -105,7 +105,7 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	private SubOrganization testConstructor(boolean expectFailure, String value) {
 		SubOrganization component = null;
 		try {
-			component = new SubOrganization(value, SecurityAttributesTest.getFixture(false));
+			component = new SubOrganization(value, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -250,7 +250,7 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	public void test20Usage() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
-			new SubOrganization(TEST_VALUE, SecurityAttributesTest.getFixture(false));
+			new SubOrganization(TEST_VALUE, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

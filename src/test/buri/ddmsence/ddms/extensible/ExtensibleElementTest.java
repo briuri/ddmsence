@@ -50,9 +50,9 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a data fixture that can be used to create an ExtensibleElement.
+	 * Returns a fixture object for testing.
 	 */
-	public static Element getElementFixture() {
+	public static Element getFixtureElement() {
 		return (Util.buildElement(TEST_PREFIX, TEST_NAME, TEST_NAMESPACE, "This is an extensible element."));
 	}
 
@@ -90,7 +90,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getElementFixture()), TEST_PREFIX, TEST_NAME);
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), TEST_PREFIX, TEST_NAME);
 		}
 	}
 
@@ -98,7 +98,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getElementFixture());
+			testConstructor(WILL_SUCCEED, getFixtureElement());
 		}
 	}
 
@@ -115,7 +115,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
+			ExtensibleElement component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -123,7 +123,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement elementComponent = testConstructor(WILL_SUCCEED, getElementFixture());
+			ExtensibleElement elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 
 			Element element = Util.buildElement(TEST_PREFIX, TEST_NAME, TEST_NAMESPACE,
 				"This is an extensible element.");
@@ -136,7 +136,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement elementComponent = testConstructor(WILL_SUCCEED, getElementFixture());
+			ExtensibleElement elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			Element element = Util.buildElement(TEST_PREFIX, "newName", TEST_NAMESPACE,
 				"This is an extensible element.");
 			ExtensibleElement dataComponent = testConstructor(WILL_SUCCEED, element);
@@ -147,7 +147,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
+			ExtensibleElement component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals("", component.toHTML());
 			assertEquals("", component.toText());
 		}
@@ -156,7 +156,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
+			ExtensibleElement component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -164,13 +164,13 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	public void testBuilder() throws SAXException, IOException, InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement component = testConstructor(WILL_SUCCEED, getElementFixture());
+			ExtensibleElement component = testConstructor(WILL_SUCCEED, getFixtureElement());
 
 			// Equality after Building
 			ExtensibleElement.Builder builder = new ExtensibleElement.Builder(component);
 			assertEquals(builder.commit(), component);
 			builder = new ExtensibleElement.Builder();
-			builder.setXml(getElementFixture().toXML());
+			builder.setXml(getFixtureElement().toXML());
 			assertEquals(builder.commit(), component);
 
 			// Empty case

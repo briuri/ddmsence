@@ -19,6 +19,9 @@
  */
 package buri.ddmsence.ddms.security.ntk;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -50,18 +53,29 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Creates a ProfileValue fixture
+	 * Returns a fixture object for testing.
+	 * 
+	 * @param value the value for this component
 	 */
 	public static ProfileValue getFixture(String value) {
 		try {
-			return (new ProfileValue(value, TEST_VOCABULARY, null, null, null, SecurityAttributesTest.getFixture(false)));
+			return (new ProfileValue(value, TEST_VOCABULARY, null, null, null, SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
+			fail("Could not create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
-
+	
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static List<ProfileValue> getFixtureList() {
+		List<ProfileValue> list = new ArrayList<ProfileValue>();
+		list.add(ProfileValueTest.getFixture("profile"));
+		return (list);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -98,7 +112,7 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 		ProfileValue component = null;
 		try {
 			component = new ProfileValue(value, vocabulary, id, idReference, qualifier, SecurityAttributesTest
-				.getFixture(false));
+				.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -156,7 +170,7 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 			Element element = Util.buildElement(ntkPrefix, ProfileValue.getName(version), version.getNtkNamespace(),
 				TEST_VALUE);
 			Util.addAttribute(element, ntkPrefix, "vocabulary", version.getNtkNamespace(), TEST_VOCABULARY);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -181,7 +195,7 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 			// Missing vocabulary
 			Element element = Util.buildElement(ntkPrefix, ProfileValue.getName(version), version.getNtkNamespace(),
 				TEST_VALUE);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing security attributes

@@ -26,6 +26,7 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.summary.gml.Point;
+import buri.ddmsence.ddms.summary.gml.PointTest;
 import buri.ddmsence.ddms.summary.gml.Polygon;
 import buri.ddmsence.ddms.summary.gml.PolygonTest;
 import buri.ddmsence.ddms.summary.gml.Position;
@@ -51,41 +52,16 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a bounding box fixture
+	 * Returns a fixture object for testing.
 	 */
-	protected static BoundingGeometry getFixture() throws InvalidDDMSException {
-		List<Point> points = new ArrayList<Point>();
-		points.add(new Point(new Position(PositionTest.TEST_COORDS, SRSAttributesTest.getFixture()), SRSAttributesTest
-			.getFixture(), TEST_ID));
-		return (new BoundingGeometry(null, points));
-	}
-
-	/**
-	 * Gets a test instance of a list of polygons
-	 * 
-	 * @return list of points
-	 */
-	private List<Polygon> getPolygons() throws InvalidDDMSException {
-		List<Position> positions = new ArrayList<Position>();
-		positions.add(new Position(PolygonTest.TEST_COORDS_1, null));
-		positions.add(new Position(PolygonTest.TEST_COORDS_2, null));
-		positions.add(new Position(PolygonTest.TEST_COORDS_3, null));
-		positions.add(new Position(PolygonTest.TEST_COORDS_1, null));
-
-		List<Polygon> polygons = new ArrayList<Polygon>();
-		polygons.add(new Polygon(positions, SRSAttributesTest.getFixture(), TEST_ID));
-		return (polygons);
-	}
-
-	/**
-	 * Gets a test instance of a list of points
-	 * 
-	 * @return list of points
-	 */
-	private List<Point> getPoints() throws InvalidDDMSException {
-		List<Point> points = new ArrayList<Point>();
-		points.add(new Point(new Position(PositionTest.TEST_COORDS, null), SRSAttributesTest.getFixture(), TEST_ID));
-		return (points);
+	public static BoundingGeometry getFixture() {
+		try {
+			return (new BoundingGeometry(null, PointTest.getFixtureList()));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**
@@ -131,7 +107,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(getPoints().get(0).getOutput(isHTML, "boundingGeometry."));
+		text.append(PointTest.getFixtureList().get(0).getOutput(isHTML, "boundingGeometry."));
 		return (text.toString());
 	}
 
@@ -171,13 +147,13 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 			// Polygon
 			Element element = Util.buildDDMSElement(BoundingGeometry.getName(version), null);
-			element.appendChild(getPolygons().get(0).getXOMElementCopy());
+			element.appendChild(PolygonTest.getFixtureList().get(0).getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 
 			// Both
 			element = Util.buildDDMSElement(BoundingGeometry.getName(version), null);
-			element.appendChild(getPolygons().get(0).getXOMElementCopy());
-			element.appendChild(getPoints().get(0).getXOMElementCopy());
+			element.appendChild(PolygonTest.getFixtureList().get(0).getXOMElementCopy());
+			element.appendChild(PointTest.getFixtureList().get(0).getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -186,13 +162,13 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Point
-			testConstructor(WILL_SUCCEED, null, getPoints());
+			testConstructor(WILL_SUCCEED, null, PointTest.getFixtureList());
 
 			// Polygon
-			testConstructor(WILL_SUCCEED, getPolygons(), null);
+			testConstructor(WILL_SUCCEED, PolygonTest.getFixtureList(), null);
 
 			// Both
-			testConstructor(WILL_SUCCEED, getPolygons(), getPoints());
+			testConstructor(WILL_SUCCEED, PolygonTest.getFixtureList(), PointTest.getFixtureList());
 		}
 	}
 
@@ -226,7 +202,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			BoundingGeometry elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			BoundingGeometry dataComponent = testConstructor(WILL_SUCCEED, null, getPoints());
+			BoundingGeometry dataComponent = testConstructor(WILL_SUCCEED, null, PointTest.getFixtureList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -236,10 +212,10 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			BoundingGeometry elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			BoundingGeometry dataComponent = testConstructor(WILL_SUCCEED, getPolygons(), getPoints());
+			BoundingGeometry dataComponent = testConstructor(WILL_SUCCEED, PolygonTest.getFixtureList(), PointTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getPolygons(), null);
+			dataComponent = testConstructor(WILL_SUCCEED, PolygonTest.getFixtureList(), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -251,13 +227,13 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, null, getPoints());
+			component = testConstructor(WILL_SUCCEED, null, PointTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getPolygons(), null);
-			assertEquals(getPolygons().get(0).getOutput(true, "boundingGeometry."), component.toHTML());
-			assertEquals(getPolygons().get(0).getOutput(false, "boundingGeometry."), component.toText());
+			component = testConstructor(WILL_SUCCEED, PolygonTest.getFixtureList(), null);
+			assertEquals(PolygonTest.getFixtureList().get(0).getOutput(true, "boundingGeometry."), component.toHTML());
+			assertEquals(PolygonTest.getFixtureList().get(0).getOutput(false, "boundingGeometry."), component.toText());
 		}
 	}
 
@@ -267,7 +243,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			BoundingGeometry component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, null, getPoints());
+			component = testConstructor(WILL_SUCCEED, null, PointTest.getFixtureList());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -275,10 +251,10 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 	public void testWrongVersions() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		List<Position> positions = new ArrayList<Position>();
-		positions.add(new Position(PolygonTest.TEST_COORDS_1, null));
-		positions.add(new Position(PolygonTest.TEST_COORDS_2, null));
-		positions.add(new Position(PolygonTest.TEST_COORDS_3, null));
-		positions.add(new Position(PolygonTest.TEST_COORDS_1, null));
+		positions.add(new Position(PositionTest.TEST_COORDS, null));
+		positions.add(new Position(PositionTest.TEST_COORDS_2, null));
+		positions.add(new Position(PositionTest.TEST_COORDS_3, null));
+		positions.add(new Position(PositionTest.TEST_COORDS, null));
 		List<Polygon> polygons = new ArrayList<Polygon>();
 		polygons.add(new Polygon(positions, SRSAttributesTest.getFixture(), TEST_ID));
 		DDMSVersion.setCurrentVersion("3.0");
@@ -313,7 +289,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			assertEquals(builder.commit(), component);
 
 			// Equality after Building (Polygon-based)
-			component = new BoundingGeometry(getPolygons(), null);
+			component = new BoundingGeometry(PolygonTest.getFixtureList(), null);
 			builder = new BoundingGeometry.Builder(component);
 			assertEquals(builder.commit(), component);
 
@@ -323,7 +299,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 			// Validation
 			builder = new BoundingGeometry.Builder();
-			for (Point point : getPoints()) {
+			for (Point point : PointTest.getFixtureList()) {
 				Point.Builder pointBuilder = new Point.Builder(point);
 				pointBuilder.setId("");
 				builder.getPoints().add(pointBuilder);
@@ -336,7 +312,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 				// Good
 			}
 			builder = new BoundingGeometry.Builder();
-			for (Polygon polygon : getPolygons()) {
+			for (Polygon polygon : PolygonTest.getFixtureList()) {
 				builder.getPolygons().add(new Polygon.Builder(polygon));
 			}
 			builder.commit();
@@ -363,17 +339,17 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			fullPolygonBuilder.getPositions().add(new Position.Builder());
 			fullPolygonBuilder.getPositions().add(new Position.Builder());
 			fullPolygonBuilder.getPositions().add(new Position.Builder());
-			fullPolygonBuilder.getPositions().get(0).getCoordinates().get(0).setValue(PolygonTest.TEST_COORDS_1.get(0));
-			fullPolygonBuilder.getPositions().get(0).getCoordinates().get(1).setValue(PolygonTest.TEST_COORDS_1.get(1));
+			fullPolygonBuilder.getPositions().get(0).getCoordinates().get(0).setValue(PositionTest.TEST_COORDS.get(0));
+			fullPolygonBuilder.getPositions().get(0).getCoordinates().get(1).setValue(PositionTest.TEST_COORDS.get(1));
 
-			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(0).setValue(PolygonTest.TEST_COORDS_2.get(0));
-			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(1).setValue(PolygonTest.TEST_COORDS_2.get(1));
+			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(0).setValue(PositionTest.TEST_COORDS_2.get(0));
+			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(1).setValue(PositionTest.TEST_COORDS_2.get(1));
 
-			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(0).setValue(PolygonTest.TEST_COORDS_3.get(0));
-			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(1).setValue(PolygonTest.TEST_COORDS_3.get(1));
+			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(0).setValue(PositionTest.TEST_COORDS_3.get(0));
+			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(1).setValue(PositionTest.TEST_COORDS_3.get(1));
 
-			fullPolygonBuilder.getPositions().get(3).getCoordinates().get(0).setValue(PolygonTest.TEST_COORDS_1.get(0));
-			fullPolygonBuilder.getPositions().get(3).getCoordinates().get(1).setValue(PolygonTest.TEST_COORDS_1.get(1));
+			fullPolygonBuilder.getPositions().get(3).getCoordinates().get(0).setValue(PositionTest.TEST_COORDS.get(0));
+			fullPolygonBuilder.getPositions().get(3).getCoordinates().get(1).setValue(PositionTest.TEST_COORDS.get(1));
 
 			builder.getPolygons().add(emptyPolygonBuilder);
 			builder.getPolygons().add(fullPolygonBuilder);

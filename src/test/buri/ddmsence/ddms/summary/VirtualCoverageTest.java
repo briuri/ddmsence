@@ -56,7 +56,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		VirtualCoverage component = null;
 		try {
 			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-				SecurityAttributesTest.getFixture(false).addTo(element);
+				SecurityAttributesTest.getFixture().addTo(element);
 			component = new VirtualCoverage(element);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -78,7 +78,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		VirtualCoverage component = null;
 		try {
 			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) ? null
-				: SecurityAttributesTest.getFixture(false);
+				: SecurityAttributesTest.getFixture();
 			component = new VirtualCoverage(address, protocol, attr);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -244,7 +244,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture(false));
+			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture());
 			VirtualCoverage component = new VirtualCoverage(TEST_ADDRESS, TEST_PROTOCOL, attr);
 			if (!version.isAtLeast("3.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());
@@ -256,7 +256,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	public void test20Usage() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
-			new VirtualCoverage(TEST_ADDRESS, TEST_PROTOCOL, SecurityAttributesTest.getFixture(false));
+			new VirtualCoverage(TEST_ADDRESS, TEST_PROTOCOL, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

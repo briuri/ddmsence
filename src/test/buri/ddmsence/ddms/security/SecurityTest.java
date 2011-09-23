@@ -66,21 +66,6 @@ public class SecurityTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Generates a NoticeList for testing.
-	 */
-	private NoticeList getNoticeList() throws InvalidDDMSException {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new NoticeList(NoticeListTest.getFixtureElement())
-			: null);
-	}
-
-	/**
-	 * Generates an Access for testing.
-	 */
-	private Access getAccess() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? AccessTest.getFixture() : null);
-	}
-
-	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param expectFailure true if this operation is expected to succeed, false otherwise
@@ -91,7 +76,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 	private Security testConstructor(boolean expectFailure, NoticeList noticeList, Access access) {
 		Security component = null;
 		try {
-			component = new Security(noticeList, access, SecurityAttributesTest.getFixture(false));
+			component = new Security(noticeList, access, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -125,7 +110,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 			text.append(buildOutput(isHTML, prefix + "noticeList.ownerProducer", "USA"));
 			text.append(AccessTest.getFixture().getOutput(isHTML, "security."));
 		}
-		text.append(SecurityAttributesTest.getFixture(false).getOutput(isHTML, prefix));
+		text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 
@@ -185,7 +170,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 				Element element = Util.buildDDMSElement(Security.getName(version), null);
 				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version
 					.getIsmNamespace(), "true");
-				SecurityAttributesTest.getFixture(false).addTo(element);
+				SecurityAttributesTest.getFixture().addTo(element);
 				testConstructor(WILL_SUCCEED, element);
 			}
 		}
@@ -195,7 +180,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getNoticeList(), getAccess());
+			testConstructor(WILL_SUCCEED, NoticeListTest.getFixture(), AccessTest.getFixture());
 
 			// No optional fields
 			testConstructor(WILL_SUCCEED, null, null);
@@ -251,9 +236,9 @@ public class SecurityTest extends AbstractComponentTestCase {
 					.getIsmNamespace(), "true");
 				Element accessElement = Util.buildElement(PropertyReader.getPrefix("ntk"), Access.getName(version),
 					version.getNtkNamespace(), null);
-				SecurityAttributesTest.getFixture(false).addTo(accessElement);
+				SecurityAttributesTest.getFixture().addTo(accessElement);
 				element.appendChild(accessElement);
-				SecurityAttributesTest.getFixture(false).addTo(element);
+				SecurityAttributesTest.getFixture().addTo(element);
 				component = testConstructor(WILL_SUCCEED, element);
 				assertEquals(1, component.getValidationWarnings().size());
 				String text = "An ntk:Access element was found with no individual, group, or profile information.";
@@ -267,7 +252,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Security elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Security dataComponent = testConstructor(WILL_SUCCEED, getNoticeList(), getAccess());
+			Security dataComponent = testConstructor(WILL_SUCCEED, NoticeListTest.getFixture(), AccessTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -279,10 +264,10 @@ public class SecurityTest extends AbstractComponentTestCase {
 
 			if (version.isAtLeast("4.0")) {
 				Security elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-				Security dataComponent = testConstructor(WILL_SUCCEED, getNoticeList(), null);
+				Security dataComponent = testConstructor(WILL_SUCCEED, NoticeListTest.getFixture(), null);
 				assertFalse(elementComponent.equals(dataComponent));
 
-				dataComponent = testConstructor(WILL_SUCCEED, null, getAccess());
+				dataComponent = testConstructor(WILL_SUCCEED, null, AccessTest.getFixture());
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 		}
@@ -295,7 +280,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getNoticeList(), getAccess());
+			component = testConstructor(WILL_SUCCEED, NoticeListTest.getFixture(), AccessTest.getFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -307,7 +292,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 			Security component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getNoticeList(), getAccess());
+			component = testConstructor(WILL_SUCCEED, NoticeListTest.getFixture(), AccessTest.getFixture());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}

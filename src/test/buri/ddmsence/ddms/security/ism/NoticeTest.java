@@ -49,32 +49,36 @@ public class NoticeTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value for testing.
-	 * 
-	 * @return a XOM element representing a valid applicationSoftware
+	 * Returns a fixture object for testing.
 	 */
-	public static Element getFixtureElement() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String ismPrefix = PropertyReader.getPrefix("ism");
-		String ismNs = version.getIsmNamespace();
+	public static Element getFixtureElement() {
+		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			String ismPrefix = PropertyReader.getPrefix("ism");
+			String ismNs = version.getIsmNamespace();
 
-		Element element = Util.buildElement(ismPrefix, Notice.getName(version), ismNs, null);
-		element.addNamespaceDeclaration(ismPrefix, version.getIsmNamespace());
-		NoticeAttributesTest.getFixture().addTo(element);
-		SecurityAttributesTest.getFixture(false).addTo(element);
-		element.appendChild(NoticeTextTest.getFixtureElement());
-		return (element);
+			Element element = Util.buildElement(ismPrefix, Notice.getName(version), ismNs, null);
+			element.addNamespaceDeclaration(ismPrefix, version.getIsmNamespace());
+			NoticeAttributesTest.getFixture().addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
+			element.appendChild(NoticeTextTest.getFixtureElement());
+			return (element);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**
-	 * Helper method to create a list of noticeTexts
+	 * Returns a fixture object for testing.
 	 */
-	private List<NoticeText> getNoticeTextList() throws InvalidDDMSException {
-		List<NoticeText> list = new ArrayList<NoticeText>();
-		list.add(new NoticeText(NoticeTextTest.getFixtureElement()));
+	public static List<Notice> getFixtureList() throws InvalidDDMSException {
+		List<Notice> list = new ArrayList<Notice>();
+		list.add(new Notice(NoticeTest.getFixtureElement()));
 		return (list);
 	}
-
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -105,7 +109,7 @@ public class NoticeTest extends AbstractComponentTestCase {
 	private Notice testConstructor(boolean expectFailure, List<NoticeText> noticeTexts) {
 		Notice component = null;
 		try {
-			component = new Notice(noticeTexts, SecurityAttributesTest.getFixture(false), NoticeAttributesTest
+			component = new Notice(noticeTexts, SecurityAttributesTest.getFixture(), NoticeAttributesTest
 				.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
@@ -169,11 +173,11 @@ public class NoticeTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getNoticeTextList());
+			testConstructor(WILL_SUCCEED, NoticeTextTest.getFixtureList());
 
 			// No attributes
 			try {
-				new Notice(getNoticeTextList(), null, null);
+				new Notice(NoticeTextTest.getFixtureList(), null, null);
 			}
 			catch (InvalidDDMSException e) {
 				fail("Prevented valid data.");
@@ -216,7 +220,7 @@ public class NoticeTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Notice elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			Notice dataComponent = testConstructor(WILL_SUCCEED, getNoticeTextList());
+			Notice dataComponent = testConstructor(WILL_SUCCEED, NoticeTextTest.getFixtureList());
 
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -227,7 +231,7 @@ public class NoticeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			List<NoticeText> list = getNoticeTextList();
+			List<NoticeText> list = NoticeTextTest.getFixtureList();
 			list.add(new NoticeText(NoticeTextTest.getFixtureElement()));
 			Notice elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
 			Notice dataComponent = testConstructor(WILL_SUCCEED, list);
@@ -243,7 +247,7 @@ public class NoticeTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getNoticeTextList());
+			component = testConstructor(WILL_SUCCEED, NoticeTextTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -256,19 +260,8 @@ public class NoticeTest extends AbstractComponentTestCase {
 			Notice component = testConstructor(WILL_SUCCEED, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getNoticeTextList());
+			component = testConstructor(WILL_SUCCEED, NoticeTextTest.getFixtureList());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
-		}
-	}
-
-	public void testWrongVersion() throws InvalidDDMSException {
-		try {
-			DDMSVersion.setCurrentVersion("2.0");
-			new Notice(getNoticeTextList(), SecurityAttributesTest.getFixture(false), null);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			// Good
 		}
 	}
 

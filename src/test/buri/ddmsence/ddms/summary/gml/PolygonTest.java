@@ -38,44 +38,28 @@ import buri.ddmsence.util.Util;
  */
 public class PolygonTest extends AbstractComponentTestCase {
 
-	public static final List<Double> TEST_COORDS_1 = new ArrayList<Double>();
-	static {
-		TEST_COORDS_1.add(new Double(32.1));
-		TEST_COORDS_1.add(new Double(40.1));
-	}
-	public static final List<Double> TEST_COORDS_2 = new ArrayList<Double>();
-	static {
-		TEST_COORDS_2.add(new Double(42.1));
-		TEST_COORDS_2.add(new Double(40.1));
-	}
-	public static final List<Double> TEST_COORDS_3 = new ArrayList<Double>();
-	static {
-		TEST_COORDS_3.add(new Double(42.1));
-		TEST_COORDS_3.add(new Double(50.1));
-	}
-
 	/**
 	 * Constructor
 	 */
 	public PolygonTest() throws InvalidDDMSException {
 		super("polygon.xml");
 	}
-
+	
 	/**
-	 * Returns a test fixture of positions
-	 * 
-	 * @return List of positions
-	 * @throws InvalidDDMSException
+	 * Returns a fixture object for testing.
 	 */
-	private List<Position> getPositions() throws InvalidDDMSException {
-		List<Position> positions = new ArrayList<Position>();
-		positions.add(new Position(TEST_COORDS_1, SRSAttributesTest.getFixture()));
-		positions.add(new Position(TEST_COORDS_2, SRSAttributesTest.getFixture()));
-		positions.add(new Position(TEST_COORDS_3, SRSAttributesTest.getFixture()));
-		positions.add(new Position(TEST_COORDS_1, SRSAttributesTest.getFixture()));
-		return (positions);
+	public static List<Polygon> getFixtureList() throws InvalidDDMSException {
+		try {
+			List<Polygon> polygons = new ArrayList<Polygon>();
+			polygons.add(new Polygon(PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), TEST_ID));
+			return (polygons);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
-
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -142,7 +126,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "Polygon.id", TEST_ID));
 		text.append(SRSAttributesTest.getFixture().getOutput(isHTML, "Polygon."));
-		for (Position pos : getPositions()) {
+		for (Position pos : PositionTest.getFixtureList()) {
 			text.append(pos.getOutput(isHTML, "Polygon."));
 		}
 		return (text.toString());
@@ -169,25 +153,25 @@ public class PolygonTest extends AbstractComponentTestCase {
 		xml.append("srsDimension=\"").append(attr.getSrsDimension()).append("\" ");
 		xml.append("axisLabels=\"").append(attr.getAxisLabelsAsXsList()).append("\" ");
 		xml.append("uomLabels=\"").append(attr.getUomLabelsAsXsList()).append("\">");
-		xml.append(Util.getXsList(TEST_COORDS_1)).append("</gml:pos>\n\t\t\t");
+		xml.append(Util.getXsList(PositionTest.TEST_COORDS)).append("</gml:pos>\n\t\t\t");
 		xml.append("<gml:pos ");
 		xml.append("srsName=\"").append(attr.getSrsName()).append("\" ");
 		xml.append("srsDimension=\"").append(attr.getSrsDimension()).append("\" ");
 		xml.append("axisLabels=\"").append(attr.getAxisLabelsAsXsList()).append("\" ");
 		xml.append("uomLabels=\"").append(attr.getUomLabelsAsXsList()).append("\">");
-		xml.append(Util.getXsList(TEST_COORDS_2)).append("</gml:pos>\n\t\t\t");
+		xml.append(Util.getXsList(PositionTest.TEST_COORDS_2)).append("</gml:pos>\n\t\t\t");
 		xml.append("<gml:pos ");
 		xml.append("srsName=\"").append(attr.getSrsName()).append("\" ");
 		xml.append("srsDimension=\"").append(attr.getSrsDimension()).append("\" ");
 		xml.append("axisLabels=\"").append(attr.getAxisLabelsAsXsList()).append("\" ");
 		xml.append("uomLabels=\"").append(attr.getUomLabelsAsXsList()).append("\">");
-		xml.append(Util.getXsList(TEST_COORDS_3)).append("</gml:pos>\n\t\t\t");
+		xml.append(Util.getXsList(PositionTest.TEST_COORDS_3)).append("</gml:pos>\n\t\t\t");
 		xml.append("<gml:pos ");
 		xml.append("srsName=\"").append(attr.getSrsName()).append("\" ");
 		xml.append("srsDimension=\"").append(attr.getSrsDimension()).append("\" ");
 		xml.append("axisLabels=\"").append(attr.getAxisLabelsAsXsList()).append("\" ");
 		xml.append("uomLabels=\"").append(attr.getUomLabelsAsXsList()).append("\">");
-		xml.append(Util.getXsList(TEST_COORDS_1)).append("</gml:pos>\n\t\t");
+		xml.append(Util.getXsList(PositionTest.TEST_COORDS)).append("</gml:pos>\n\t\t");
 		xml.append("</gml:LinearRing>\n\t");
 		xml.append("</gml:exterior>\n");
 		xml.append("</gml:Polygon>");
@@ -218,15 +202,15 @@ public class PolygonTest extends AbstractComponentTestCase {
 			Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE,
 				SRSAttributesTest.getFixture().getSrsName());
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
-			element.appendChild(wrapPositions(getPositions()));
+			element.appendChild(wrapPositions(PositionTest.getFixtureList()));
 			testConstructor(WILL_SUCCEED, element);
 
 			// First position matches last position but has extra whitespace.
 			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
-			List<Position> newPositions = new ArrayList<Position>(getPositions());
-			newPositions.add(getPositions().get(1));
+			List<Position> newPositions = new ArrayList<Position>(PositionTest.getFixtureList());
+			newPositions.add(PositionTest.getFixtureList().get(1));
 			Element posElement = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace,
 				"32.1         40.1");
 			SRSAttributesTest.getFixture().addTo(posElement);
@@ -241,7 +225,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getPositions(), SRSAttributesTest.getFixture(), TEST_ID);
+			testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), TEST_ID);
 		}
 	}
 
@@ -255,7 +239,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			SRSAttributes attr = new SRSAttributes(null, SRSAttributesTest.getFixture().getSrsDimension(), null, null);
 			attr.addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
-			element.appendChild(wrapPositions(getPositions()));
+			element.appendChild(wrapPositions(PositionTest.getFixtureList()));
 			testConstructor(WILL_FAIL, element);
 
 			// Empty SRS Name
@@ -263,7 +247,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			attr = new SRSAttributes("", SRSAttributesTest.getFixture().getSrsDimension(), null, null);
 			attr.addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
-			element.appendChild(wrapPositions(getPositions()));
+			element.appendChild(wrapPositions(PositionTest.getFixtureList()));
 			testConstructor(WILL_FAIL, element);
 
 			// Polygon SRS Name doesn't match pos SRS Name
@@ -272,27 +256,27 @@ public class PolygonTest extends AbstractComponentTestCase {
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
 			attr.addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
-			element.appendChild(wrapPositions(getPositions()));
+			element.appendChild(wrapPositions(PositionTest.getFixtureList()));
 			testConstructor(WILL_FAIL, element);
 
 			// Missing ID
 			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
-			element.appendChild(wrapPositions(getPositions()));
+			element.appendChild(wrapPositions(PositionTest.getFixtureList()));
 			testConstructor(WILL_FAIL, element);
 
 			// Empty ID
 			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, "");
-			element.appendChild(wrapPositions(getPositions()));
+			element.appendChild(wrapPositions(PositionTest.getFixtureList()));
 			testConstructor(WILL_FAIL, element);
 
 			// ID not NCName
 			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, "1TEST");
-			element.appendChild(wrapPositions(getPositions()));
+			element.appendChild(wrapPositions(PositionTest.getFixtureList()));
 			testConstructor(WILL_FAIL, element);
 
 			// Missing Positions
@@ -306,8 +290,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
-			List<Position> newPositions = new ArrayList<Position>(getPositions());
-			newPositions.add(getPositions().get(1));
+			List<Position> newPositions = new ArrayList<Position>(PositionTest.getFixtureList());
+			newPositions.add(PositionTest.getFixtureList().get(1));
 			element.appendChild(wrapPositions(newPositions));
 			testConstructor(WILL_FAIL, element);
 
@@ -316,7 +300,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			newPositions = new ArrayList<Position>();
-			newPositions.add(getPositions().get(0));
+			newPositions.add(PositionTest.getFixtureList().get(0));
 			element.appendChild(wrapPositions(newPositions));
 			testConstructor(WILL_FAIL, element);
 
@@ -329,37 +313,37 @@ public class PolygonTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing SRS Name
 			SRSAttributes attr = new SRSAttributes(null, SRSAttributesTest.getFixture().getSrsDimension(), null, null);
-			testConstructor(WILL_FAIL, getPositions(), attr, TEST_ID);
+			testConstructor(WILL_FAIL, PositionTest.getFixtureList(), attr, TEST_ID);
 
 			// Empty SRS Name
 			attr = new SRSAttributes("", SRSAttributesTest.getFixture().getSrsDimension(), null, null);
-			testConstructor(WILL_FAIL, getPositions(), attr, TEST_ID);
+			testConstructor(WILL_FAIL, PositionTest.getFixtureList(), attr, TEST_ID);
 
 			// Polygon SRS Name doesn't match pos SRS Name
 			attr = new SRSAttributes(DIFFERENT_VALUE, SRSAttributesTest.getFixture().getSrsDimension(),
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
-			testConstructor(WILL_FAIL, getPositions(), attr, TEST_ID);
+			testConstructor(WILL_FAIL, PositionTest.getFixtureList(), attr, TEST_ID);
 
 			// Missing ID
-			testConstructor(WILL_FAIL, getPositions(), SRSAttributesTest.getFixture(), null);
+			testConstructor(WILL_FAIL, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), null);
 
 			// Empty ID
-			testConstructor(WILL_FAIL, getPositions(), SRSAttributesTest.getFixture(), "");
+			testConstructor(WILL_FAIL, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), "");
 
 			// ID not NCName
-			testConstructor(WILL_FAIL, getPositions(), SRSAttributesTest.getFixture(), "1TEST");
+			testConstructor(WILL_FAIL, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), "1TEST");
 
 			// Missing Positions
 			testConstructor(WILL_FAIL, null, SRSAttributesTest.getFixture(), TEST_ID);
 
 			// First position doesn't match last position.
-			List<Position> newPositions = new ArrayList<Position>(getPositions());
-			newPositions.add(getPositions().get(1));
+			List<Position> newPositions = new ArrayList<Position>(PositionTest.getFixtureList());
+			newPositions.add(PositionTest.getFixtureList().get(1));
 			testConstructor(WILL_FAIL, newPositions, SRSAttributesTest.getFixture(), TEST_ID);
 
 			// Not enough positions
 			newPositions = new ArrayList<Position>();
-			newPositions.add(getPositions().get(0));
+			newPositions.add(PositionTest.getFixtureList().get(0));
 			testConstructor(WILL_FAIL, newPositions, SRSAttributesTest.getFixture(), TEST_ID);
 		}
 	}
@@ -377,7 +361,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Polygon elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Polygon dataComponent = testConstructor(WILL_SUCCEED, getPositions(), SRSAttributesTest.getFixture(),
+			Polygon dataComponent = testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(),
 				TEST_ID);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -390,16 +374,16 @@ public class PolygonTest extends AbstractComponentTestCase {
 			SRSAttributes attr = new SRSAttributes(SRSAttributesTest.getFixture().getSrsName(), new Integer(11),
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
 			Polygon elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Polygon dataComponent = testConstructor(WILL_SUCCEED, getPositions(), attr, TEST_ID);
+			Polygon dataComponent = testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(), attr, TEST_ID);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			List<Position> newPositions = new ArrayList<Position>(getPositions());
-			newPositions.add(getPositions().get(1));
-			newPositions.add(getPositions().get(0));
+			List<Position> newPositions = new ArrayList<Position>(PositionTest.getFixtureList());
+			newPositions.add(PositionTest.getFixtureList().get(1));
+			newPositions.add(PositionTest.getFixtureList().get(0));
 			dataComponent = testConstructor(WILL_SUCCEED, newPositions, SRSAttributesTest.getFixture(), TEST_ID);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getPositions(), SRSAttributesTest.getFixture(),
+			dataComponent = testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(),
 				DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
@@ -422,7 +406,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getPositions(), SRSAttributesTest.getFixture(), TEST_ID);
+			component = testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), TEST_ID);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -434,7 +418,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getPositions(), SRSAttributesTest.getFixture(), TEST_ID);
+			component = testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), TEST_ID);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -442,7 +426,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 	public void testPositionReuse() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			List<Position> positions = getPositions();
+			List<Position> positions = PositionTest.getFixtureList();
 			testConstructor(WILL_SUCCEED, positions, SRSAttributesTest.getFixture(), TEST_ID);
 			testConstructor(WILL_SUCCEED, positions, SRSAttributesTest.getFixture(), TEST_ID);
 		}
@@ -459,7 +443,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 
 	public void testWrongVersionPosition() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		List<Position> positions = getPositions();
+		List<Position> positions = PositionTest.getFixtureList();
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
 			new Polygon(positions, SRSAttributesTest.getFixture(), TEST_ID);

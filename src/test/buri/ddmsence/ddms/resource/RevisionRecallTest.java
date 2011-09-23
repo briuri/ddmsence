@@ -55,7 +55,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value for testing.
+	 * Returns a fixture object for testing.
 	 * 
 	 * @return a XOM element representing a valid element
 	 */
@@ -68,7 +68,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value for testing.
+	 * Returns a fixture object for testing.
 	 * 
 	 * @return a XOM element representing a valid element
 	 */
@@ -79,13 +79,13 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 	}
 	
 	/**
-	 * Returns a canned fixed value for testing.
+	 * Returns a fixture object for testing.
 	 * 
 	 * @return a XOM element representing a valid element
 	 */
 	protected Link getLinkFixture() {
 		try {
-			return (new Link(XLinkAttributesTest.getLocatorFixture(), SecurityAttributesTest.getFixture(false)));
+			return (new Link(XLinkAttributesTest.getLocatorFixture(), SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
 			e.printStackTrace();
@@ -113,7 +113,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 	 */
 	protected Details getDetailsFixture() {
 		try {
-			return (new Details("Details", SecurityAttributesTest.getFixture(false)));
+			return (new Details("Details", SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
 			e.printStackTrace();
@@ -160,7 +160,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 		RevisionRecall component = null;
 		try {
 			component = new RevisionRecall(links, details, revisionID, revisionType, network, otherNetwork,
-				xlinkAttributes, SecurityAttributesTest.getFixture(false));
+				xlinkAttributes, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -185,7 +185,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 		RevisionRecall component = null;
 		try {
 			component = new RevisionRecall(value, revisionID, revisionType, network, otherNetwork, xlinkAttributes,
-				SecurityAttributesTest.getFixture(false));
+				SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -218,7 +218,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			text.append(buildOutput(isHTML, "revisionRecall.details.ownerProducer", "USA"));
 		}
 		text.append(XLinkAttributesTest.getResourceFixture().getOutput(isHTML, "revisionRecall."));
-		text.append(SecurityAttributesTest.getFixture(false).getOutput(isHTML, "revisionRecall."));
+		text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, "revisionRecall."));
 		return (text.toString());
 	}
 
@@ -271,7 +271,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(RevisionRecall.getName(version), null);
 			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
 			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			element.appendChild(getLinkFixture().getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 			
@@ -279,7 +279,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			element = Util.buildDDMSElement(RevisionRecall.getName(version), null);
 			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
 			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -317,7 +317,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
 			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
 			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			element.appendChild(getLinkFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
@@ -325,7 +325,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			element = Util.buildDDMSElement(RevisionRecall.getName(version), null);
 			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
 			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			element.appendChild(getLinkFixture().getXOMElementCopy());
 			element.appendChild(TEST_VALUE);
 			testConstructor(WILL_FAIL, element);
@@ -334,7 +334,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			element = Util.buildDDMSElement(RevisionRecall.getName(version), null);
 			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
 			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			Link link = new Link(XLinkAttributesTest.getLocatorFixture(), null);
 			element.appendChild(link.getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
@@ -343,26 +343,26 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
 			Util.addDDMSAttribute(element, "revisionID", "one");
 			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 			
 			// Missing revisionID
 			element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
 			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 			
 			// Missing revisionType
 			element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
 			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Bad revisionType
 			element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
 			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
 			Util.addDDMSAttribute(element, "revisionType", "MISTAKE");
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 			
 			// Bad network
@@ -370,7 +370,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			Util.addAttribute(element, "", "network", "", "PBS");
 			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
 			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -565,7 +565,7 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("4.0");
 			XLinkAttributes attr = XLinkAttributesTest.getSimpleFixture();
 			DDMSVersion.setCurrentVersion("2.0");
-			new RevisionRecall(TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, attr, SecurityAttributesTest.getFixture(false));
+			new RevisionRecall(TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, attr, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

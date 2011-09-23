@@ -94,7 +94,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		RelatedResource component = null;
 		try {
 			component = new RelatedResource(links, relationship, direction, qualifier, value, SecurityAttributesTest
-				.getFixture(false));
+				.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -281,7 +281,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
-			Link link = new Link(XLinkAttributesTest.getLocatorFixture(), SecurityAttributesTest.getFixture(false));
+			Link link = new Link(XLinkAttributesTest.getLocatorFixture(), SecurityAttributesTest.getFixture());
 			innerElement.appendChild(link.getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
@@ -314,7 +314,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 			// Security Attributes
 			try {
-				Link link = new Link(XLinkAttributesTest.getLocatorFixture(), SecurityAttributesTest.getFixture(false));
+				Link link = new Link(XLinkAttributesTest.getLocatorFixture(), SecurityAttributesTest.getFixture());
 				List<Link> links = new ArrayList<Link>();
 				links.add(link);
 				new RelatedResource(links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE, null);
