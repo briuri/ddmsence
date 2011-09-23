@@ -54,7 +54,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 	private Creator testConstructor(boolean expectFailure, Element element) {
 		Creator component = null;
 		try {
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			component = new Creator(element);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -65,7 +65,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Helper method to create a fixture organization to act as an entity
+	 * Returns a fixture object for testing. organization to act as an entity
 	 */
 	private IRoleEntity getEntityFixture() {
 		try {
@@ -88,7 +88,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 	private Creator testConstructor(boolean expectFailure, IRoleEntity entity, String pocType) {
 		Creator component = null;
 		try {
-			component = new Creator(entity, pocType, SecurityAttributesTest.getFixture(false));
+			component = new Creator(entity, pocType, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -247,15 +247,15 @@ public class CreatorTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Creator component = new Creator(getEntityFixture(), null, SecurityAttributesTest.getFixture(false));
-			assertEquals(SecurityAttributesTest.getFixture(false), component.getSecurityAttributes());
+			Creator component = new Creator(getEntityFixture(), null, SecurityAttributesTest.getFixture());
+			assertEquals(SecurityAttributesTest.getFixture(), component.getSecurityAttributes());
 		}
 	}
 
 	public void testPOCTypeWrongVersion() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new Creator(getEntityFixture(), "ICD-710", SecurityAttributesTest.getFixture(false));
+			new Creator(getEntityFixture(), "ICD-710", SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -268,7 +268,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 		try {
 			IRoleEntity entity = getEntityFixture();
 			DDMSVersion.setCurrentVersion("4.0");
-			new Creator(entity, "ICD-710", SecurityAttributesTest.getFixture(false));
+			new Creator(entity, "ICD-710", SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

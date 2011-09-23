@@ -73,7 +73,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 	private Description testConstructor(boolean expectFailure, String value) {
 		Description component = null;
 		try {
-			component = new Description(value, SecurityAttributesTest.getFixture(false));
+			component = new Description(value, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -122,7 +122,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(Description.getName(version), null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -171,7 +171,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 
 			// No value
 			Element element = Util.buildDDMSElement(Description.getName(version), null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A ddms:description element was found with no description value.";

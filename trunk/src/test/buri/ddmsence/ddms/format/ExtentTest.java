@@ -44,13 +44,16 @@ public class ExtentTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a valid test fixture.
-	 * 
-	 * @return Extent
-	 * @throws InvalidDDMSException
+	 * Returns a fixture object for testing.
 	 */
-	protected static Extent getFixture() throws InvalidDDMSException {
-		return (new Extent(TEST_QUALIFIER, TEST_VALUE));
+	public static Extent getFixture() {
+		try {
+			return (new Extent(TEST_QUALIFIER, TEST_VALUE));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

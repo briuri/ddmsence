@@ -72,7 +72,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		List<ProductionMetric> metrics = new ArrayList<ProductionMetric>();
 		if (version.isAtLeast("4.0"))
-			metrics.add(new ProductionMetric("FOOD", "AFG", SecurityAttributesTest.getFixture(false)));
+			metrics.add(new ProductionMetric("FOOD", "AFG", SecurityAttributesTest.getFixture()));
 		return (metrics);
 	}
 
@@ -83,7 +83,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		List<NonStateActor> actors = new ArrayList<NonStateActor>();
 		if (version.isAtLeast("4.0"))
-			actors.add(new NonStateActor("Laotian Monks", new Integer(1), SecurityAttributesTest.getFixture(false)));
+			actors.add(new NonStateActor("Laotian Monks", new Integer(1), SecurityAttributesTest.getFixture()));
 		return (actors);
 	}
 
@@ -97,7 +97,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		SubjectCoverage component = null;
 		try {
 			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-				SecurityAttributesTest.getFixture(false).addTo(element);
+				SecurityAttributesTest.getFixture().addTo(element);
 			component = new SubjectCoverage(element);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -122,7 +122,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		SubjectCoverage component = null;
 		try {
 			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) ? null
-				: SecurityAttributesTest.getFixture(false);
+				: SecurityAttributesTest.getFixture();
 			component = new SubjectCoverage(keywords, categories, metrics, actors, attr);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -169,7 +169,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 				text.append(actor.getOutput(isHTML, prefix));
 		}
 		if (version.isAtLeast("3.0")) {
-			text.append(SecurityAttributesTest.getFixture(false).getOutput(isHTML, prefix));
+			text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix));
 		}
 		return (text.toString());
 	}
@@ -397,7 +397,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture(false));
+			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture());
 			SubjectCoverage component = new SubjectCoverage(getKeywords(), getCategories(), null, null, attr);
 			if (!version.isAtLeast("3.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());
@@ -409,7 +409,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	public void testWrongVersionSecurityAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
-			new SubjectCoverage(getKeywords(), getCategories(), null, null, SecurityAttributesTest.getFixture(false));
+			new SubjectCoverage(getKeywords(), getCategories(), null, null, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -422,7 +422,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		List<Keyword> keywords = getKeywords();
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
-			new SubjectCoverage(keywords, null, null, null, SecurityAttributesTest.getFixture(false));
+			new SubjectCoverage(keywords, null, null, null, SecurityAttributesTest.getFixture());
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
@@ -433,7 +433,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		List<Category> categories = getCategories();
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
-			new SubjectCoverage(null, categories, null, null, SecurityAttributesTest.getFixture(false));
+			new SubjectCoverage(null, categories, null, null, SecurityAttributesTest.getFixture());
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {

@@ -61,12 +61,16 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value attributes object for testing higher-level components.
-	 * 
-	 * @return SRSAttributes
+	 * Returns a fixture object for testing.
 	 */
-	public static SRSAttributes getFixture() throws InvalidDDMSException {
-		return (new SRSAttributes(TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS, TEST_UOM_LABELS));
+	public static SRSAttributes getFixture() {
+		try {
+			return (new SRSAttributes(TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS, TEST_UOM_LABELS));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

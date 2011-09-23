@@ -49,18 +49,18 @@ public class SystemNameTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Creates a SystemName fixture
+	 * Returns a fixture object for testing.
 	 */
 	public static SystemName getFixture() {
 		try {
-			return (new SystemName(TEST_VALUE, null, null, null, SecurityAttributesTest.getFixture(false)));
+			return (new SystemName(TEST_VALUE, null, null, null, SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
+			fail("Could not create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
-
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -95,7 +95,7 @@ public class SystemNameTest extends AbstractComponentTestCase {
 		String qualifier) {
 		SystemName component = null;
 		try {
-			component = new SystemName(value, id, idReference, qualifier, SecurityAttributesTest.getFixture(false));
+			component = new SystemName(value, id, idReference, qualifier, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -151,7 +151,7 @@ public class SystemNameTest extends AbstractComponentTestCase {
 			// No optional fields
 			Element element = Util.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(),
 				TEST_VALUE);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -176,7 +176,7 @@ public class SystemNameTest extends AbstractComponentTestCase {
 			// Missing value
 			Element element = Util
 				.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(), null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing security attributes

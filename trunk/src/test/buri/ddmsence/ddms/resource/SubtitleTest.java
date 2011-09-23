@@ -74,7 +74,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	private Subtitle testConstructor(boolean expectFailure, String value) {
 		Subtitle component = null;
 		try {
-			component = new Subtitle(value, SecurityAttributesTest.getFixture(false));
+			component = new Subtitle(value, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -123,7 +123,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(Subtitle.getName(version), null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -144,7 +144,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Wrong name
 			Element element = Util.buildDDMSElement("unknownName", null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -172,7 +172,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 
 			// No value
 			Element element = Util.buildDDMSElement(Subtitle.getName(version), null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A ddms:subtitle element was found with no subtitle value.";

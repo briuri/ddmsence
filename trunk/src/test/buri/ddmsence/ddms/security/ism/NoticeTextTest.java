@@ -19,6 +19,7 @@
  */
 package buri.ddmsence.ddms.security.ism;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
@@ -51,22 +52,41 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value recordKeeper for testing.
-	 * 
-	 * @return a XOM element representing a valid applicationSoftware
+	 * Returns a fixture object for testing.
 	 */
-	protected static Element getFixtureElement() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String ismPrefix = PropertyReader.getPrefix("ism");
-		String ismNs = version.getIsmNamespace();
+	public static Element getFixtureElement() {
+		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			String ismPrefix = PropertyReader.getPrefix("ism");
+			String ismNs = version.getIsmNamespace();
 
-		Element element = Util.buildElement(ismPrefix, NoticeText.getName(version), ismNs, TEST_VALUE);
-		element.addNamespaceDeclaration(ismPrefix, version.getIsmNamespace());
-		SecurityAttributesTest.getFixture(false).addTo(element);
-		Util.addAttribute(element, ismPrefix, "pocType", ismNs, "DoD-Dist-B");
-		return (element);
+			Element element = Util.buildElement(ismPrefix, NoticeText.getName(version), ismNs, TEST_VALUE);
+			element.addNamespaceDeclaration(ismPrefix, version.getIsmNamespace());
+			SecurityAttributesTest.getFixture().addTo(element);
+			Util.addAttribute(element, ismPrefix, "pocType", ismNs, "DoD-Dist-B");
+			return (element);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static List<NoticeText> getFixtureList() {
+		try {
+			List<NoticeText> list = new ArrayList<NoticeText>();
+			list.add(new NoticeText(getFixtureElement()));
+			return (list);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -98,7 +118,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	private NoticeText testConstructor(boolean expectFailure, String value, List<String> pocTypes) {
 		NoticeText component = null;
 		try {
-			component = new NoticeText(value, pocTypes, SecurityAttributesTest.getFixture(false));
+			component = new NoticeText(value, pocTypes, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -151,7 +171,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			// No optional fields
 			Element element = Util
 				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -196,7 +216,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			// Empty value
 			Element element = Util
 				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			component = testConstructor(WILL_SUCCEED, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "An ISM:NoticeText element was found with no value.";

@@ -19,6 +19,9 @@
  */
 package buri.ddmsence.ddms.security.ntk;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -50,18 +53,27 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Creates a GroupValue fixture
+	 * Returns a fixture object for testing.
 	 */
 	public static GroupValue getFixture() {
 		try {
-			return (new GroupValue(TEST_VALUE, null, null, null, SecurityAttributesTest.getFixture(false)));
+			return (new GroupValue(TEST_VALUE, null, null, null, SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
+			fail("Could not create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
 
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static List<GroupValue> getFixtureList() {
+		List<GroupValue> list = new ArrayList<GroupValue>();
+		list.add(GroupValueTest.getFixture());
+		return (list);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -96,7 +108,7 @@ public class GroupValueTest extends AbstractComponentTestCase {
 		String qualifier) {
 		GroupValue component = null;
 		try {
-			component = new GroupValue(value, id, idReference, qualifier, SecurityAttributesTest.getFixture(false));
+			component = new GroupValue(value, id, idReference, qualifier, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -152,7 +164,7 @@ public class GroupValueTest extends AbstractComponentTestCase {
 			// No optional fields
 			Element element = Util.buildElement(ntkPrefix, GroupValue.getName(version), version.getNtkNamespace(),
 				TEST_VALUE);
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}

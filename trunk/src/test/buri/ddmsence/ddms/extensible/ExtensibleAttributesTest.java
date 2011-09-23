@@ -51,14 +51,18 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a canned fixed value attributes object for testing higher-level components.
-	 * 
-	 * @return ExtensibleAttributes
+	 * Returns a fixture object for testing.
 	 */
-	public static ExtensibleAttributes getFixture() throws InvalidDDMSException {
-		List<Attribute> attributes = new ArrayList<Attribute>();
-		attributes.add(new Attribute(TEST_ATTRIBUTE));
-		return (new ExtensibleAttributes(attributes));
+	public static ExtensibleAttributes getFixture() {
+		try {
+			List<Attribute> attributes = new ArrayList<Attribute>();
+			attributes.add(new Attribute(TEST_ATTRIBUTE));
+			return (new ExtensibleAttributes(attributes));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

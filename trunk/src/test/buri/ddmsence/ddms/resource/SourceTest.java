@@ -59,7 +59,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		Source component = null;
 		try {
 			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-				SecurityAttributesTest.getFixture(false).addTo(element);
+				SecurityAttributesTest.getFixture().addTo(element);
 			component = new Source(element);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -84,7 +84,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		Source component = null;
 		try {
 			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? null
-				: SecurityAttributesTest.getFixture(false));
+				: SecurityAttributesTest.getFixture());
 			component = new Source(qualifier, value, schemaQualifier, schemaHref, attr);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -260,7 +260,7 @@ public class SourceTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture(false));
+			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture());
 			Source component = new Source(TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF, attr);
 			if (!version.isAtLeast("3.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());
@@ -273,7 +273,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
 			new Source(TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF, SecurityAttributesTest
-				.getFixture(false));
+				.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

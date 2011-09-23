@@ -54,7 +54,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 	private Contributor testConstructor(boolean expectFailure, Element element) {
 		Contributor component = null;
 		try {
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			component = new Contributor(element);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -65,7 +65,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Helper method to create a fixture organization to act as an entity
+	 * Returns a fixture object for testing. organization to act as an entity
 	 */
 	private IRoleEntity getEntityFixture() {
 		try {
@@ -88,7 +88,7 @@ public class ContributorTest extends AbstractComponentTestCase {
 	private Contributor testConstructor(boolean expectFailure, IRoleEntity entity, String pocType) {
 		Contributor component = null;
 		try {
-			component = new Contributor(entity, pocType, SecurityAttributesTest.getFixture(false));
+			component = new Contributor(entity, pocType, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -237,15 +237,15 @@ public class ContributorTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Contributor component = new Contributor(getEntityFixture(), null, SecurityAttributesTest.getFixture(false));
-			assertEquals(SecurityAttributesTest.getFixture(false), component.getSecurityAttributes());
+			Contributor component = new Contributor(getEntityFixture(), null, SecurityAttributesTest.getFixture());
+			assertEquals(SecurityAttributesTest.getFixture(), component.getSecurityAttributes());
 		}
 	}
 
 	public void testPOCTypeWrongVersion() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new Contributor(getEntityFixture(), "ICD-710", SecurityAttributesTest.getFixture(false));
+			new Contributor(getEntityFixture(), "ICD-710", SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

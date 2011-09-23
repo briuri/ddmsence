@@ -47,28 +47,28 @@ public class IndividualTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Creates an Individual fixture
+	 * Returns a fixture object for testing.
 	 */
 	public static Individual getFixture() {
 		try {
-			return (new Individual(SystemNameTest.getFixture(), getIndividualValueList(), SecurityAttributesTest
-				.getFixture(false)));
+			return (new Individual(SystemNameTest.getFixture(), IndividualValueTest.getFixtureList(), SecurityAttributesTest
+				.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
-			fail("Failed to create fixture: " + e.getMessage());
+			fail("Could not create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
 
 	/**
-	 * Helper method to create a fixture
+	 * Returns a fixture object for testing.
 	 */
-	private static List<IndividualValue> getIndividualValueList() {
-		List<IndividualValue> list = new ArrayList<IndividualValue>();
-		list.add(IndividualValueTest.getFixture());
+	public static List<Individual> getFixtureList() {
+		List<Individual> list = new ArrayList<Individual>();
+		list.add(IndividualTest.getFixture());
 		return (list);
 	}
-
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -99,7 +99,7 @@ public class IndividualTest extends AbstractComponentTestCase {
 	private Individual testConstructor(boolean expectFailure, SystemName systemName, List<IndividualValue> values) {
 		Individual component = null;
 		try {
-			component = new Individual(systemName, values, SecurityAttributesTest.getFixture(false));
+			component = new Individual(systemName, values, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -114,7 +114,7 @@ public class IndividualTest extends AbstractComponentTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		text.append(SystemNameTest.getFixture().getOutput(isHTML, "individual."));
-		text.append(getIndividualValueList().get(0).getOutput(isHTML, "individual."));
+		text.append(IndividualValueTest.getFixtureList().get(0).getOutput(isHTML, "individual."));
 		text.append(buildOutput(isHTML, "individual.classification", "U"));
 		text.append(buildOutput(isHTML, "individual.ownerProducer", "USA"));
 		return (text.toString());
@@ -159,7 +159,7 @@ public class IndividualTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), getIndividualValueList());
+			testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), IndividualValueTest.getFixtureList());
 		}
 	}
 
@@ -171,21 +171,21 @@ public class IndividualTest extends AbstractComponentTestCase {
 			// Missing systemName
 			Element element = Util
 				.buildElement(ntkPrefix, Individual.getName(version), version.getNtkNamespace(), null);
-			for (IndividualValue value : getIndividualValueList())
+			for (IndividualValue value : IndividualValueTest.getFixtureList())
 				element.appendChild(value.getXOMElementCopy());
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing individualValue
 			element = Util.buildElement(ntkPrefix, Individual.getName(version), version.getNtkNamespace(), null);
 			element.appendChild(SystemNameTest.getFixture().getXOMElementCopy());
-			SecurityAttributesTest.getFixture(false).addTo(element);
+			SecurityAttributesTest.getFixture().addTo(element);
 			testConstructor(WILL_FAIL, element);
 
 			// Missing security attributes
 			element = Util.buildElement(ntkPrefix, Individual.getName(version), version.getNtkNamespace(), null);
 			element.appendChild(SystemNameTest.getFixture().getXOMElementCopy());
-			for (IndividualValue value : getIndividualValueList())
+			for (IndividualValue value : IndividualValueTest.getFixtureList())
 				element.appendChild(value.getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
@@ -196,14 +196,14 @@ public class IndividualTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing systemName
-			testConstructor(WILL_FAIL, null, getIndividualValueList());
+			testConstructor(WILL_FAIL, null, IndividualValueTest.getFixtureList());
 
 			// Missing individualValue
 			testConstructor(WILL_FAIL, SystemNameTest.getFixture(), null);
 
 			// Missing security attributes
 			try {
-				new Individual(SystemNameTest.getFixture(), getIndividualValueList(), null);
+				new Individual(SystemNameTest.getFixture(), IndividualValueTest.getFixtureList(), null);
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
@@ -228,7 +228,7 @@ public class IndividualTest extends AbstractComponentTestCase {
 
 			Individual elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			Individual dataComponent = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(),
-				getIndividualValueList());
+				IndividualValueTest.getFixtureList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -240,7 +240,7 @@ public class IndividualTest extends AbstractComponentTestCase {
 
 			Individual elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			Individual dataComponent = testConstructor(WILL_SUCCEED, new SystemName("MDR", null, null, null,
-				SecurityAttributesTest.getFixture(false)), getIndividualValueList());
+				SecurityAttributesTest.getFixture()), IndividualValueTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			List<IndividualValue> list = new ArrayList<IndividualValue>();
@@ -259,7 +259,7 @@ public class IndividualTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), getIndividualValueList());
+			component = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), IndividualValueTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -272,7 +272,7 @@ public class IndividualTest extends AbstractComponentTestCase {
 			Individual component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), getIndividualValueList());
+			component = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), IndividualValueTest.getFixtureList());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}

@@ -76,7 +76,7 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	private NonStateActor testConstructor(boolean expectFailure, String value, Integer order) {
 		NonStateActor component = null;
 		try {
-			component = new NonStateActor(value, order, SecurityAttributesTest.getFixture(false));
+			component = new NonStateActor(value, order, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {

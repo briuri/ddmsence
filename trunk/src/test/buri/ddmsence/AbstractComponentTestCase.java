@@ -239,6 +239,11 @@ public abstract class AbstractComponentTestCase extends TestCase {
 		return (_elementMap.get(getType() + ":" + version));
 	}
 
+	/**
+	 * Removes specific versions, so that components will only be tested in supported versions.
+	 * 
+	 * @param xsList an xs:list containing the unsupported version numbers
+	 */
 	protected void removeSupportedVersions(String xsList) {
 		List<String> unsupportedVersions = Util.getXsListAsList(xsList);
 		getSupportedVersions().removeAll(unsupportedVersions);
