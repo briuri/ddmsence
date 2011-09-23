@@ -51,8 +51,8 @@ public class IndividualTest extends AbstractComponentTestCase {
 	 */
 	public static Individual getFixture() {
 		try {
-			return (new Individual(SystemNameTest.getFixture(), IndividualValueTest.getFixtureList(), SecurityAttributesTest
-				.getFixture()));
+			return (new Individual(SystemNameTest.getFixture(), IndividualValueTest.getFixtureList(),
+				SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -68,7 +68,7 @@ public class IndividualTest extends AbstractComponentTestCase {
 		list.add(IndividualTest.getFixture());
 		return (list);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -227,8 +227,8 @@ public class IndividualTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Individual elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Individual dataComponent = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(),
-				IndividualValueTest.getFixtureList());
+			Individual dataComponent = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), IndividualValueTest
+				.getFixtureList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}

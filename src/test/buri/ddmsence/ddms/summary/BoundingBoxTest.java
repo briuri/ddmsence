@@ -47,10 +47,16 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a bounding box fixture
+	 * Returns a fixture object for testing.
 	 */
-	protected static BoundingBox getFixture() throws InvalidDDMSException {
-		return (new BoundingBox(1.1, 2.2, 3.3, 4.4));
+	public static BoundingBox getFixture() {
+		try {
+			return (new BoundingBox(1.1, 2.2, 3.3, 4.4));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

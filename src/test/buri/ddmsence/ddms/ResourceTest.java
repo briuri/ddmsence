@@ -1228,8 +1228,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		// secAttribute as securityAttribute, uniqueAttribute as extensibleAttribute
 		exAttr.clear();
 		exAttr.add(new Attribute(uniqueAttribute));
-		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null, SecurityAttributesTest
-			.getFixture(), null, new ExtensibleAttributes(exAttr));
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null,
+			SecurityAttributesTest.getFixture(), null, new ExtensibleAttributes(exAttr));
 		assertNull(component.getIsmDESVersion());
 		assertFalse(component.getSecurityAttributes().isEmpty());
 		assertEquals(1, component.getExtensibleAttributes().getAttributes().size());
@@ -1266,8 +1266,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		exAttr.clear();
 		exAttr.add(new Attribute(icAttribute));
 		exAttr.add(new Attribute(uniqueAttribute));
-		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null, SecurityAttributesTest
-			.getFixture(), null, new ExtensibleAttributes(exAttr));
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null,
+			SecurityAttributesTest.getFixture(), null, new ExtensibleAttributes(exAttr));
 		assertNull(component.getIsmDESVersion());
 		assertFalse(component.getSecurityAttributes().isEmpty());
 		assertEquals(2, component.getExtensibleAttributes().getAttributes().size());
@@ -1304,8 +1304,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 			try {
 				List<Attribute> exAttr = new ArrayList<Attribute>();
 				exAttr.add(new Attribute("ISM:classification", version.getIsmNamespace(), "U"));
-				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null, SecurityAttributesTest
-					.getFixture(), null, new ExtensibleAttributes(exAttr));
+				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null, SecurityAttributesTest.getFixture(),
+					null, new ExtensibleAttributes(exAttr));
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {

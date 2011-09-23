@@ -51,15 +51,16 @@ public class PointTest extends AbstractComponentTestCase {
 	public static List<Point> getFixtureList() {
 		try {
 			List<Point> points = new ArrayList<Point>();
-			points.add(new Point(new Position(PositionTest.TEST_COORDS, null), SRSAttributesTest.getFixture(), TEST_ID));
+			points
+				.add(new Point(new Position(PositionTest.TEST_COORDS, null), SRSAttributesTest.getFixture(), TEST_ID));
 			return (points);
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
 		}
-		return (null);		
+		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -273,7 +274,8 @@ public class PointTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Point elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Point dataComponent = testConstructor(WILL_SUCCEED, PositionTest.getFixture(), SRSAttributesTest.getFixture(), TEST_ID);
+			Point dataComponent = testConstructor(WILL_SUCCEED, PositionTest.getFixture(), SRSAttributesTest
+				.getFixture(), TEST_ID);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -319,7 +321,8 @@ public class PointTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, PositionTest.getFixture(), SRSAttributesTest.getFixture(), TEST_ID);
+			component = testConstructor(WILL_SUCCEED, PositionTest.getFixture(), SRSAttributesTest.getFixture(),
+				TEST_ID);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -331,7 +334,8 @@ public class PointTest extends AbstractComponentTestCase {
 			Point component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, PositionTest.getFixture(), SRSAttributesTest.getFixture(), TEST_ID);
+			component = testConstructor(WILL_SUCCEED, PositionTest.getFixture(), SRSAttributesTest.getFixture(),
+				TEST_ID);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}

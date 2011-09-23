@@ -19,7 +19,6 @@
  */
 package buri.ddmsence.ddms.summary;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
@@ -43,48 +42,6 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	 */
 	public SubjectCoverageTest() throws InvalidDDMSException {
 		super("subjectCoverage.xml");
-
-	}
-
-	/**
-	 * Creates a test fixture
-	 */
-	private List<Keyword> getKeywords() throws InvalidDDMSException {
-		List<Keyword> keywords = new ArrayList<Keyword>();
-		keywords.add(new Keyword("DDMSence", null));
-		keywords.add(new Keyword("Uri", null));
-		return (keywords);
-	}
-
-	/**
-	 * Creates a test fixture
-	 */
-	private List<Category> getCategories() throws InvalidDDMSException {
-		List<Category> categories = new ArrayList<Category>();
-		categories.add(new Category("urn:buri:ddmsence:categories", "DDMS", "DDMS", null));
-		return (categories);
-	}
-
-	/**
-	 * Creates a test fixture
-	 */
-	private List<ProductionMetric> getMetricFixture() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		List<ProductionMetric> metrics = new ArrayList<ProductionMetric>();
-		if (version.isAtLeast("4.0"))
-			metrics.add(new ProductionMetric("FOOD", "AFG", SecurityAttributesTest.getFixture()));
-		return (metrics);
-	}
-
-	/**
-	 * Creates a test fixture
-	 */
-	private List<NonStateActor> getActorFixture() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		List<NonStateActor> actors = new ArrayList<NonStateActor>();
-		if (version.isAtLeast("4.0"))
-			actors.add(new NonStateActor("Laotian Monks", new Integer(1), SecurityAttributesTest.getFixture()));
-		return (actors);
 	}
 
 	/**
@@ -157,15 +114,15 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0") ? "subjectCoverage." : "subjectCoverage.Subject.";
 		StringBuffer text = new StringBuffer();
-		for (Keyword keyword : getKeywords())
+		for (Keyword keyword : KeywordTest.getFixtureList())
 			text.append(keyword.getOutput(isHTML, prefix));
-		for (Category category : getCategories())
+		for (Category category : CategoryTest.getFixtureList())
 			text.append(category.getOutput(isHTML, prefix));
 
 		if (version.isAtLeast("4.0")) {
-			for (ProductionMetric metric : getMetricFixture())
+			for (ProductionMetric metric : ProductionMetricTest.getFixtureList())
 				text.append(metric.getOutput(isHTML, prefix));
-			for (NonStateActor actor : getActorFixture())
+			for (NonStateActor actor : NonStateActorTest.getFixtureList())
 				text.append(actor.getOutput(isHTML, prefix));
 		}
 		if (version.isAtLeast("3.0")) {
@@ -225,7 +182,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 			// No optional fields
 			Element subjectElement = Util.buildDDMSElement("Subject", null);
-			subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
+			subjectElement.appendChild(KeywordTest.getFixtureList().get(0).getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, wrapInnerElement(subjectElement));
 		}
 	}
@@ -234,10 +191,11 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(), getActorFixture());
+			testConstructor(WILL_SUCCEED, KeywordTest.getFixtureList(), CategoryTest.getFixtureList(),
+				ProductionMetricTest.getFixtureList(), NonStateActorTest.getFixtureList());
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, getKeywords(), null, null, null);
+			testConstructor(WILL_SUCCEED, KeywordTest.getFixtureList(), null, null, null);
 		}
 	}
 
@@ -267,8 +225,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 			// Identical keywords
 			Element subjectElement = Util.buildDDMSElement("Subject", null);
-			subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
-			subjectElement.appendChild(getKeywords().get(0).getXOMElementCopy());
+			subjectElement.appendChild(KeywordTest.getFixtureList().get(0).getXOMElementCopy());
+			subjectElement.appendChild(KeywordTest.getFixtureList().get(0).getXOMElementCopy());
 			component = testConstructor(WILL_SUCCEED, wrapInnerElement(subjectElement));
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "1 or more keywords have the same value.";
@@ -277,8 +235,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 			// Identical categories
 			subjectElement = Util.buildDDMSElement("Subject", null);
-			subjectElement.appendChild(getCategories().get(0).getXOMElementCopy());
-			subjectElement.appendChild(getCategories().get(0).getXOMElementCopy());
+			subjectElement.appendChild(CategoryTest.getFixtureList().get(0).getXOMElementCopy());
+			subjectElement.appendChild(CategoryTest.getFixtureList().get(0).getXOMElementCopy());
 			component = testConstructor(WILL_SUCCEED, wrapInnerElement(subjectElement));
 			assertEquals(1, component.getValidationWarnings().size());
 			text = "1 or more categories have the same value.";
@@ -288,9 +246,9 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			// Identical productionMetrics
 			if (version.isAtLeast("4.0")) {
 				subjectElement = Util.buildDDMSElement("Subject", null);
-				subjectElement.appendChild(getCategories().get(0).getXOMElementCopy());
-				subjectElement.appendChild(getMetricFixture().get(0).getXOMElementCopy());
-				subjectElement.appendChild(getMetricFixture().get(0).getXOMElementCopy());
+				subjectElement.appendChild(CategoryTest.getFixtureList().get(0).getXOMElementCopy());
+				subjectElement.appendChild(ProductionMetricTest.getFixtureList().get(0).getXOMElementCopy());
+				subjectElement.appendChild(ProductionMetricTest.getFixtureList().get(0).getXOMElementCopy());
 				component = testConstructor(WILL_SUCCEED, wrapInnerElement(subjectElement));
 				assertEquals(1, component.getValidationWarnings().size());
 				text = "1 or more productionMetrics have the same value.";
@@ -304,8 +262,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SubjectCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			SubjectCoverage dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(),
-				getMetricFixture(), getActorFixture());
+			SubjectCoverage dataComponent = testConstructor(WILL_SUCCEED, KeywordTest.getFixtureList(), CategoryTest
+				.getFixtureList(), ProductionMetricTest.getFixtureList(), NonStateActorTest.getFixtureList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -315,18 +273,21 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			SubjectCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			SubjectCoverage dataComponent = testConstructor(WILL_SUCCEED, null, getCategories(), getMetricFixture(),
-				getActorFixture());
+			SubjectCoverage dataComponent = testConstructor(WILL_SUCCEED, null, CategoryTest.getFixtureList(),
+				ProductionMetricTest.getFixtureList(), NonStateActorTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), null, getMetricFixture(), getActorFixture());
+			dataComponent = testConstructor(WILL_SUCCEED, KeywordTest.getFixtureList(), null, ProductionMetricTest
+				.getFixtureList(), NonStateActorTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			if (version.isAtLeast("4.0")) {
-				dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), null, getActorFixture());
+				dataComponent = testConstructor(WILL_SUCCEED, KeywordTest.getFixtureList(), CategoryTest
+					.getFixtureList(), null, NonStateActorTest.getFixtureList());
 				assertFalse(elementComponent.equals(dataComponent));
 
-				dataComponent = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(), null);
+				dataComponent = testConstructor(WILL_SUCCEED, KeywordTest.getFixtureList(), CategoryTest
+					.getFixtureList(), ProductionMetricTest.getFixtureList(), null);
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 		}
@@ -339,8 +300,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(),
-				getActorFixture());
+			component = testConstructor(WILL_SUCCEED, KeywordTest.getFixtureList(), CategoryTest.getFixtureList(),
+				ProductionMetricTest.getFixtureList(), NonStateActorTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -352,8 +313,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			SubjectCoverage component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getKeywords(), getCategories(), getMetricFixture(),
-				getActorFixture());
+			component = testConstructor(WILL_SUCCEED, KeywordTest.getFixtureList(), CategoryTest.getFixtureList(),
+				ProductionMetricTest.getFixtureList(), NonStateActorTest.getFixtureList());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -361,7 +322,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	public void testCategoryReuse() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			List<Category> categories = getCategories();
+			List<Category> categories = CategoryTest.getFixtureList();
 			testConstructor(WILL_SUCCEED, null, categories, null, null);
 			testConstructor(WILL_SUCCEED, null, categories, null, null);
 		}
@@ -370,7 +331,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	public void testKeywordReuse() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			List<Keyword> keywords = getKeywords();
+			List<Keyword> keywords = KeywordTest.getFixtureList();
 			testConstructor(WILL_SUCCEED, keywords, null, null, null);
 			testConstructor(WILL_SUCCEED, keywords, null, null, null);
 		}
@@ -379,18 +340,18 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	public void testMetricReuse() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			List<ProductionMetric> metrics = getMetricFixture();
-			testConstructor(WILL_SUCCEED, getKeywords(), null, metrics, null);
-			testConstructor(WILL_SUCCEED, getKeywords(), null, metrics, null);
+			List<ProductionMetric> metrics = ProductionMetricTest.getFixtureList();
+			testConstructor(WILL_SUCCEED, KeywordTest.getFixtureList(), null, metrics, null);
+			testConstructor(WILL_SUCCEED, KeywordTest.getFixtureList(), null, metrics, null);
 		}
 	}
 
 	public void testActorReuse() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			List<NonStateActor> actors = getActorFixture();
-			testConstructor(WILL_SUCCEED, getKeywords(), null, null, actors);
-			testConstructor(WILL_SUCCEED, getKeywords(), null, null, actors);
+			List<NonStateActor> actors = NonStateActorTest.getFixtureList();
+			testConstructor(WILL_SUCCEED, KeywordTest.getFixtureList(), null, null, actors);
+			testConstructor(WILL_SUCCEED, KeywordTest.getFixtureList(), null, null, actors);
 		}
 	}
 
@@ -398,7 +359,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture());
-			SubjectCoverage component = new SubjectCoverage(getKeywords(), getCategories(), null, null, attr);
+			SubjectCoverage component = new SubjectCoverage(KeywordTest.getFixtureList(),
+				CategoryTest.getFixtureList(), null, null, attr);
 			if (!version.isAtLeast("3.0"))
 				assertTrue(component.getSecurityAttributes().isEmpty());
 			else
@@ -409,7 +371,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 	public void testWrongVersionSecurityAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
-			new SubjectCoverage(getKeywords(), getCategories(), null, null, SecurityAttributesTest.getFixture());
+			new SubjectCoverage(KeywordTest.getFixtureList(), CategoryTest.getFixtureList(), null, null,
+				SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -419,7 +382,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	public void testWrongVersions() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		List<Keyword> keywords = getKeywords();
+		List<Keyword> keywords = KeywordTest.getFixtureList();
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
 			new SubjectCoverage(keywords, null, null, null, SecurityAttributesTest.getFixture());
@@ -430,7 +393,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		}
 
 		DDMSVersion.setCurrentVersion("2.0");
-		List<Category> categories = getCategories();
+		List<Category> categories = CategoryTest.getFixtureList();
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
 			new SubjectCoverage(null, categories, null, null, SecurityAttributesTest.getFixture());

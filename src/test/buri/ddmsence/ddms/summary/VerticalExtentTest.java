@@ -47,10 +47,16 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a verticalExtent fixture
+	 * Returns a fixture object for testing.
 	 */
-	protected static VerticalExtent getFixture() throws InvalidDDMSException {
-		return (new VerticalExtent(1.1, 2.2, "Meter", "HAE"));
+	public static VerticalExtent getFixture() {
+		try {
+			return (new VerticalExtent(1.1, 2.2, "Meter", "HAE"));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

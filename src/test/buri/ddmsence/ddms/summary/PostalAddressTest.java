@@ -53,10 +53,16 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a postal address fixture
+	 * Returns a fixture object for testing.
 	 */
-	protected static PostalAddress getFixture() throws InvalidDDMSException {
-		return (new PostalAddress(null, null, "VA", null, null, true));
+	public static PostalAddress getFixture() {
+		try {
+			return (new PostalAddress(null, null, "VA", null, null, true));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

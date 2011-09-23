@@ -72,7 +72,7 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 		list.add(IndividualValueTest.getFixture());
 		return (list);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 

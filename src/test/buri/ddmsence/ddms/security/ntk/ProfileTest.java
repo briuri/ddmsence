@@ -68,7 +68,7 @@ public class ProfileTest extends AbstractComponentTestCase {
 		profiles.add(ProfileTest.getFixture());
 		return (profiles);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -226,7 +226,8 @@ public class ProfileTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Profile elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Profile dataComponent = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), ProfileValueTest.getFixtureList());
+			Profile dataComponent = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), ProfileValueTest
+				.getFixtureList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}

@@ -54,18 +54,30 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a geo id fixture
+	 * Returns a fixture object for testing. This object will be based on a country code.
 	 */
-	protected static GeographicIdentifier getCountryCodeBasedFixture() throws InvalidDDMSException {
-		return new GeographicIdentifier(null, null, new CountryCode(
-			"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1", "LAO"), null);
+	public static GeographicIdentifier getCountryCodeBasedFixture() throws InvalidDDMSException {
+		try {
+			return new GeographicIdentifier(null, null, new CountryCode(
+				"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1", "LAO"), null);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**
-	 * Returns a geo id fixture
+	 * Returns a fixture object for testing. This object will be based on a facility ID
 	 */
-	protected static GeographicIdentifier getFacIdBasedFixture() throws InvalidDDMSException {
-		return (new GeographicIdentifier(FacilityIdentifierTest.getFixture()));
+	public static GeographicIdentifier getFacIdBasedFixture() throws InvalidDDMSException {
+		try {
+			return (new GeographicIdentifier(FacilityIdentifierTest.getFixture()));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

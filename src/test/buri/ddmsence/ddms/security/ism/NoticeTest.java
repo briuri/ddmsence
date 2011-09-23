@@ -78,7 +78,7 @@ public class NoticeTest extends AbstractComponentTestCase {
 		list.add(new Notice(NoticeTest.getFixtureElement()));
 		return (list);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -109,8 +109,7 @@ public class NoticeTest extends AbstractComponentTestCase {
 	private Notice testConstructor(boolean expectFailure, List<NoticeText> noticeTexts) {
 		Notice component = null;
 		try {
-			component = new Notice(noticeTexts, SecurityAttributesTest.getFixture(), NoticeAttributesTest
-				.getFixture());
+			component = new Notice(noticeTexts, SecurityAttributesTest.getFixture(), NoticeAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {

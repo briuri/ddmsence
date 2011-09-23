@@ -250,8 +250,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			PointOfContact component = new PointOfContact(getEntityFixture(), null, SecurityAttributesTest
-				.getFixture());
+			PointOfContact component = new PointOfContact(getEntityFixture(), null, SecurityAttributesTest.getFixture());
 			assertEquals(SecurityAttributesTest.getFixture(), component.getSecurityAttributes());
 		}
 	}

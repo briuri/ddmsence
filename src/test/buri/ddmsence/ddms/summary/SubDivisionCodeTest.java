@@ -45,10 +45,16 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a subDivisionCode fixture
+	 * Returns a fixture object for testing.
 	 */
-	protected static SubDivisionCode getFixture() throws InvalidDDMSException {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new SubDivisionCode("ISO-3166", "USA") : null);
+	public static SubDivisionCode getFixture() {
+		try {
+			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new SubDivisionCode("ISO-3166", "USA") : null);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**
