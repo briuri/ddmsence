@@ -44,14 +44,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and
- * ownerProducer attributes are required.
- * </td></tr></table>
- *  
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: An access record describing system access for groups.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
+ * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -59,8 +52,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Group extends AbstractAccessEntity {
 	
-	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
-	private List<GroupValue> _cachedGroupValues;
+	private List<GroupValue> _groupValues;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -72,9 +64,9 @@ public final class Group extends AbstractAccessEntity {
 		super(element);
 		try {
 			Elements values = element.getChildElements(GroupValue.getName(getDDMSVersion()), getNamespace());
-			_cachedGroupValues = new ArrayList<GroupValue>();
+			_groupValues = new ArrayList<GroupValue>();
 			for (int i = 0; i < values.size(); i++) {
-				_cachedGroupValues.add(new GroupValue(values.get(i)));
+				_groupValues.add(new GroupValue(values.get(i)));
 			}			
 			validate();
 		} catch (InvalidDDMSException e) {
@@ -100,7 +92,7 @@ public final class Group extends AbstractAccessEntity {
 			for (GroupValue value : groupValues) {
 				getXOMElement().appendChild(value.getXOMElementCopy());
 			}
-			_cachedGroupValues = groupValues;
+			_groupValues = groupValues;
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -174,7 +166,7 @@ public final class Group extends AbstractAccessEntity {
 	 * Accessor for the list of group values (1-many)
 	 */
 	public List<GroupValue> getGroupValues() {
-		return (Collections.unmodifiableList(_cachedGroupValues));
+		return (Collections.unmodifiableList(_groupValues));
 	}
 			
 	/**

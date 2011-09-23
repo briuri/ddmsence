@@ -31,7 +31,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of a ddms:person element.
+ * An immutable implementation of ddms:person.
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
@@ -62,12 +62,6 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>{@link ExtensibleAttributes}</u>
- * </td></tr></table>
- * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: Information about a person.<br />
- * <u>Obligation</u>: At least one of the four producerTypes is required.<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -113,15 +107,15 @@ public final class Person extends AbstractRoleEntity {
 	 * @param affiliation organizational affiliation of the person
 	 * @param extensions extensible attributes (optional)
 	 */
-	public Person(List<String> names, String surname, List<String> phones, List<String> emails,
-		String userID, String affiliation, ExtensibleAttributes extensions)
-		throws InvalidDDMSException {
+	public Person(List<String> names, String surname, List<String> phones, List<String> emails, String userID,
+		String affiliation, ExtensibleAttributes extensions) throws InvalidDDMSException {
 		super(Person.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions, false);
 		try {
 			int insertIndex = (names == null ? 0 : names.size());
 			addExtraElements(insertIndex, surname, userID, affiliation);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -168,8 +162,7 @@ public final class Person extends AbstractRoleEntity {
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractRoleEntity#validate()
-	 * @throws InvalidDDMSException
-	 *             if any required information is missing or malformed
+	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Person.getName(getDDMSVersion()));

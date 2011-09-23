@@ -40,19 +40,11 @@ import buri.ddmsence.util.Util;
  * of each element was capitalized (i.e. WestBL/EastBL/SouthBL/NorthBL).
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: A wrapper for elements containing the bounding longitudes and latitudes for describing a 
- * geographic extent.<br />
- * <u>Obligation</u>: Optional in a geospatialCoverage element<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class BoundingBox extends AbstractBaseComponent {
 
-	// Values are cached upon instantiation, so doubles are only generated once.
 	private Double _cachedWestBL = null;
 	private Double _cachedEastBL = null;
 	private Double _cachedSouthBL = null;

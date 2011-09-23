@@ -33,7 +33,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of a ddms:recordKeeper element.
+ * An immutable implementation of ddms:recordKeeper.
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
@@ -47,20 +47,12 @@ import buri.ddmsence.util.Util;
  * <u>ddms:organization</u>: The organization which acts as the record keeper (exactly 1 required)<br />
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: The administrative entity, unit, office, responsible for the custody and ongoing 
- * management of the records during their active business use.<br />
- * <u>Obligation</u>: Optional.<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public class RecordKeeper extends AbstractBaseComponent {
 
-	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
-	private Organization _cachedOrganization;
+	private Organization _organization = null;
 	
 	private static final String RECORD_KEEPER_ID_NAME = "recordKeeperID";
 	
@@ -76,7 +68,7 @@ public class RecordKeeper extends AbstractBaseComponent {
 			if (element.getChildElements().size() > 1) {
 				Element organizationElement = element.getChildElements().get(1);
 				if (organizationElement != null)
-					_cachedOrganization = new Organization(organizationElement);
+					_organization = new Organization(organizationElement);
 			}
 			setXOMElement(element, true);
 		}
@@ -92,17 +84,17 @@ public class RecordKeeper extends AbstractBaseComponent {
 	 * @param recordKeeperID a unique ID for the organization (required)
 	 * @param organization the organization acting as record keeper (required)
 	 */
-	public RecordKeeper(String recordKeeperID, Organization organization)
-		throws InvalidDDMSException {
+	public RecordKeeper(String recordKeeperID, Organization organization) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(RecordKeeper.getName(DDMSVersion.getCurrentVersion()), null);
 			if (!Util.isEmpty(recordKeeperID))
 				element.appendChild(Util.buildDDMSElement(RECORD_KEEPER_ID_NAME, recordKeeperID));
 			if (organization != null)
 				element.appendChild(organization.getXOMElementCopy());
-			_cachedOrganization = organization;
+			_organization = organization;
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -193,7 +185,7 @@ public class RecordKeeper extends AbstractBaseComponent {
 	 * Accessor for the organization
 	 */
 	public Organization getOrganization() {
-		return (_cachedOrganization);
+		return (_organization);
 	}
 	
 	/**

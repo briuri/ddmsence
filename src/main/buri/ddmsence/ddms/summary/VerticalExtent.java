@@ -77,19 +77,11 @@ import buri.ddmsence.util.Util;
  * <u>ddms:datum</u>: vertical datum (MSL, AGL, HAE) (required)<br />
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: A wrapper for child elements used to describe the vertical extent applicable to the 
- * resource.<br />
- * <u>Obligation</u>: Optional in a geospatialCoverage element<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class VerticalExtent extends AbstractBaseComponent {
 
-	// Values are cached upon instantiation, so doubles are only generated once.
 	private Double _cachedMin;
 	private Double _cachedMax;
 		

@@ -29,7 +29,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of a ddms:requesterInfo element.
+ * An immutable implementation of ddms:requesterInfo.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:person</u>: the person who requested the production of this resource (0-1, optional)<br />
@@ -39,12 +39,6 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
- * </td></tr></table>
- * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: The person or organization who requested the production of this resource.<br />
- * <u>Obligation</u>: At least 1 requesterInfo is mandatory.<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!

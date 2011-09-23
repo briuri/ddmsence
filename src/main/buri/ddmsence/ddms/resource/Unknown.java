@@ -58,12 +58,6 @@ import buri.ddmsence.util.Util;
  * <u>{@link ExtensibleAttributes}</u>
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: Information about an unknown producer entity fulfilling some producer role.<br />
- * <u>Obligation</u>: At least one of the four producerTypes is required.<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */
@@ -117,8 +111,10 @@ public final class Unknown extends AbstractRoleEntity {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Unknown.getName(getDDMSVersion()));
+		
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("3.0");
+		
 		super.validate();
 	}
 		

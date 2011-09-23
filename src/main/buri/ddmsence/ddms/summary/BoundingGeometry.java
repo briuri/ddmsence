@@ -48,19 +48,11 @@ import buri.ddmsence.util.Util;
  * <p>At least 1 of Polygon or Point must be used.</p>
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Link</u>: http://metadata.ces.mil/mdr/irs/DDMS/ddms_categories.htm#geospatialCoverage_GeospatialExtent_boundingGeometry<br />
- * <u>Description</u>: A wrapper for child elements used to express a geographic location as a point or polygon.<br />
- * <u>Obligation</u>: Optional in a geospatialCoverage element<br />
- * <u>Schema Modification Date</u>: 2010-01-25<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class BoundingGeometry extends AbstractBaseComponent {
 
-	// Values are cached upon instantiation, so objects are only created once
 	private List<Polygon> _cachedPolygons;
 	private List<Point> _cachedPoints;
 	

@@ -68,18 +68,11 @@ import buri.ddmsence.util.Util;
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS 3.0)
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: Subject keyword(s)/categories that characterize the subject matter of a resource.<br />
- * <u>Obligation</u>: Mandatory<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class SubjectCoverage extends AbstractBaseComponent {
 	
-	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
 	private List<Keyword> _cachedKeywords;
 	private List<Category> _cachedCategories;
 	private List<ProductionMetric> _cachedProductionMetrics;

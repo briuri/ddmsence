@@ -39,14 +39,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and
- * ownerProducer attributes are required.
- * </td></tr></table>
- * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: A further refinement of the organization.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2011-08-31 (parent ddms:organization element)<br />
+ * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -91,6 +84,7 @@ public final class SubOrganization extends AbstractSimpleString {
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), SubOrganization.getName(getDDMSVersion()));
 		Util.requireDDMSValue("subOrganization value", getValue());
+		
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0");
 

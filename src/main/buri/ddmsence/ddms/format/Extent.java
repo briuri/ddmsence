@@ -47,13 +47,6 @@ import buri.ddmsence.util.Util;
  * <u>ddms:qualifier</u>: a URI-based vocabulary (required if value is set)<br />
  * <u>ddms:value</u>: a related data size, compression rate, or pixel size (optional)<br />
  * </td></tr></table>
- *  
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: An extent provides further details about the format of a resource, such as sizes or 
- * dimensions.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2011-08-31 (parent ddms:Format element)<br />
- * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -98,10 +91,9 @@ public final class Extent extends AbstractQualifierValue {
 		Util.requireDDMSQName(getXOMElement(), Extent.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
-		if (!Util.isEmpty(getQualifier())) {
+		if (!Util.isEmpty(getQualifier()))
 			Util.requireDDMSValidURI(getQualifier());
-		}
-		
+
 		super.validate();
 	}
 	

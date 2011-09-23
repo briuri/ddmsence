@@ -44,13 +44,8 @@ import buri.ddmsence.util.Util;
  * (optional)<br />
  * <u>ddms:schemaQualifier</u>: the schema type (optional)<br />
  * <u>ddms:schemaHref</u>: a resolvable reference to the schema (optional)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS 3.0)
- * </td></tr></table>
- * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: References to assets or resources from which the tagged data asset is derived.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2004-07-01<br />
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting 
+ * in DDMS 3.0)
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -58,7 +53,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Source extends AbstractQualifierValue {
 
-	private SecurityAttributes _securityAttributes;
+	private SecurityAttributes _securityAttributes = null;
 	
 	private static final String SCHEMA_QUALIFIER_NAME = "schemaQualifier";
 	private static final String SCHEMA_HREF_NAME = "schemaHref";
@@ -73,7 +68,8 @@ public final class Source extends AbstractQualifierValue {
 		try {
 			_securityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -99,7 +95,8 @@ public final class Source extends AbstractQualifierValue {
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}

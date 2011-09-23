@@ -47,13 +47,6 @@ import buri.ddmsence.util.Util;
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: The highest level of classification, dissemination controls, and declassification rules 
- * applicable to a data asset.<br />
- * <u>Obligation</u>: Mandatory<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */

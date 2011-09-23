@@ -29,23 +29,18 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of a ddms:pointOfContact element.
+ * An immutable implementation of ddms:pointOfContact.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:organization, ddms:person, ddms:service, or ddms:unknown</u>: the entity which fulfills this role (exactly 1 
- * required)<br />
+ * <u>ddms:organization</u>: The organization who is in this role (0-1, optional)<br />
+ * <u>ddms:person</u>: the person who is in this role (0-1, optional)<br />
+ * <u>ddms:service</u>: The web service who is in this role (0-1, optional)<br />
+ * <u>ddms:unknown</u>: The unknown entity who is in this role (0-1, optional)<br />
+ * Only one of the nested entities can appear in this element.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and
- * ownerProducer attributes are optional.
- * </td></tr></table>
- * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: Information about an organization, person, or other entity associated with a resource, other than 
- * the creating or publishing organization.<br />
- * <u>Obligation</u>: At least one of the four producerTypes is required.<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
+ * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are optional.
  * </td></tr></table>
  * 
  * @author Brian Uri!

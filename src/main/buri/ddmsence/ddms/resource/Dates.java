@@ -55,24 +55,17 @@ import buri.ddmsence.util.Util;
  * <u>ddms:receivedOn</u>: received date (optional, starting in DDMS 4.0)<br />
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: Calendar dates associated with an event in the life cycle of the resource.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class Dates extends AbstractBaseComponent {
 
-	// Values are cached upon instantiation, so Calendars do not have to be built when calling getters.
-	private XMLGregorianCalendar _cachedCreated = null;
-	private XMLGregorianCalendar _cachedPosted = null;
-	private XMLGregorianCalendar _cachedValidTil = null;
-	private XMLGregorianCalendar _cachedInfoCutOff = null;
-	private XMLGregorianCalendar _cachedApprovedOn = null;
-	private XMLGregorianCalendar _cachedReceivedOn = null;
+	private XMLGregorianCalendar _created = null;
+	private XMLGregorianCalendar _posted = null;
+	private XMLGregorianCalendar _validTil = null;
+	private XMLGregorianCalendar _infoCutOff = null;
+	private XMLGregorianCalendar _approvedOn = null;
+	private XMLGregorianCalendar _receivedOn = null;
 	
 	private static final String CREATED_NAME = "created";
 	private static final String POSTED_NAME = "posted";
@@ -92,24 +85,25 @@ public final class Dates extends AbstractBaseComponent {
 			setXOMElement(element, false);
 			String created = getAttributeValue(CREATED_NAME);
 			if (!Util.isEmpty(created))
-				_cachedCreated = getFactory().newXMLGregorianCalendar(created);
+				_created = getFactory().newXMLGregorianCalendar(created);
 			String posted = getAttributeValue(POSTED_NAME);
 			if (!Util.isEmpty(posted))
-				_cachedPosted = getFactory().newXMLGregorianCalendar(posted);
+				_posted = getFactory().newXMLGregorianCalendar(posted);
 			String validTil = getAttributeValue(VALID_TIL_NAME);
 			if (!Util.isEmpty(validTil))
-				_cachedValidTil = getFactory().newXMLGregorianCalendar(validTil);
+				_validTil = getFactory().newXMLGregorianCalendar(validTil);
 			String infoCutOff = getAttributeValue(INFO_CUT_OFF_NAME);
 			if (!Util.isEmpty(infoCutOff))
-				_cachedInfoCutOff = getFactory().newXMLGregorianCalendar(infoCutOff);
+				_infoCutOff = getFactory().newXMLGregorianCalendar(infoCutOff);
 			String approvedOn = getAttributeValue(APPROVED_ON_NAME);
 			if (!Util.isEmpty(approvedOn))
-				_cachedApprovedOn = getFactory().newXMLGregorianCalendar(approvedOn);
+				_approvedOn = getFactory().newXMLGregorianCalendar(approvedOn);
 			String receivedOn = getAttributeValue(RECEIVED_ON_NAME);
 			if (!Util.isEmpty(receivedOn))
-				_cachedReceivedOn = getFactory().newXMLGregorianCalendar(receivedOn);
+				_receivedOn = getFactory().newXMLGregorianCalendar(receivedOn);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -133,27 +127,27 @@ public final class Dates extends AbstractBaseComponent {
 			Element element = Util.buildDDMSElement(Dates.getName(DDMSVersion.getCurrentVersion()), null);
 			try {
 				if (!Util.isEmpty(created)) {
-						_cachedCreated = getFactory().newXMLGregorianCalendar(created);
+					_created = getFactory().newXMLGregorianCalendar(created);
 					Util.addDDMSAttribute(element, CREATED_NAME, getCreated().toXMLFormat());
 				}
 				if (!Util.isEmpty(posted)) {
-					_cachedPosted = getFactory().newXMLGregorianCalendar(posted);
+					_posted = getFactory().newXMLGregorianCalendar(posted);
 					Util.addDDMSAttribute(element, POSTED_NAME, getPosted().toXMLFormat());
 				}
 				if (!Util.isEmpty(validTil)) {
-					_cachedValidTil = getFactory().newXMLGregorianCalendar(validTil);
+					_validTil = getFactory().newXMLGregorianCalendar(validTil);
 					Util.addDDMSAttribute(element, VALID_TIL_NAME, getValidTil().toXMLFormat());
 				}
 				if (!Util.isEmpty(infoCutOff)) {
-					_cachedInfoCutOff = getFactory().newXMLGregorianCalendar(infoCutOff);
+					_infoCutOff = getFactory().newXMLGregorianCalendar(infoCutOff);
 					Util.addDDMSAttribute(element, INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat());
 				}
 				if (!Util.isEmpty(approvedOn)) {
-					_cachedApprovedOn = getFactory().newXMLGregorianCalendar(approvedOn);
+					_approvedOn = getFactory().newXMLGregorianCalendar(approvedOn);
 					Util.addDDMSAttribute(element, APPROVED_ON_NAME, getApprovedOn().toXMLFormat());
 				}
 				if (!Util.isEmpty(receivedOn)) {
-					_cachedReceivedOn = getFactory().newXMLGregorianCalendar(receivedOn);
+					_receivedOn = getFactory().newXMLGregorianCalendar(receivedOn);
 					Util.addDDMSAttribute(element, RECEIVED_ON_NAME, getReceivedOn().toXMLFormat());
 				}
 			}
@@ -290,45 +284,45 @@ public final class Dates extends AbstractBaseComponent {
 	 * Accessor for the created date (optional). Returns a copy.
 	 */
 	public XMLGregorianCalendar getCreated() {
-		return (_cachedCreated == null ? null : getFactory().newXMLGregorianCalendar(_cachedCreated.toXMLFormat()));
+		return (_created == null ? null : getFactory().newXMLGregorianCalendar(_created.toXMLFormat()));
 	}
 
 	/**
 	 * Accessor for the posted date (optional). Returns a copy.
 	 */
 	public XMLGregorianCalendar getPosted() {
-		return (_cachedPosted == null ? null : getFactory().newXMLGregorianCalendar(_cachedPosted.toXMLFormat()));
+		return (_posted == null ? null : getFactory().newXMLGregorianCalendar(_posted.toXMLFormat()));
 	}
 
 	/**
 	 * Accessor for the expiration date (optional). Returns a copy.
 	 */
 	public XMLGregorianCalendar getValidTil() {
-		return (_cachedValidTil == null ? null : getFactory().newXMLGregorianCalendar(_cachedValidTil.toXMLFormat()));
+		return (_validTil == null ? null : getFactory().newXMLGregorianCalendar(_validTil.toXMLFormat()));
 	}
 
 	/**
 	 * Accessor for the cutoff date (optional). Returns a copy.
 	 */
 	public XMLGregorianCalendar getInfoCutOff() {
-		return (_cachedInfoCutOff == null ? null
-			: getFactory().newXMLGregorianCalendar(_cachedInfoCutOff.toXMLFormat()));
+		return (_infoCutOff == null ? null
+			: getFactory().newXMLGregorianCalendar(_infoCutOff.toXMLFormat()));
 	}
 	
 	/**
 	 * Accessor for the approved on date (optional). Returns a copy.
 	 */
 	public XMLGregorianCalendar getApprovedOn() {
-		return (_cachedApprovedOn == null ? null
-			: getFactory().newXMLGregorianCalendar(_cachedApprovedOn.toXMLFormat()));
+		return (_approvedOn == null ? null
+			: getFactory().newXMLGregorianCalendar(_approvedOn.toXMLFormat()));
 	}
 
 	/**
 	 * Accessor for the received on date (optional). Returns a copy.
 	 */
 	public XMLGregorianCalendar getReceivedOn() {
-		return (_cachedReceivedOn == null ? null
-			: getFactory().newXMLGregorianCalendar(_cachedReceivedOn.toXMLFormat()));
+		return (_receivedOn == null ? null
+			: getFactory().newXMLGregorianCalendar(_receivedOn.toXMLFormat()));
 	}
 	
 	/**

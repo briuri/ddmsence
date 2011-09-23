@@ -144,6 +144,17 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
+	 * Returns a non-null instance of XLink attributes. If the instance passed in is not null, it will be returned.
+	 * 
+	 * @param xlinkAttributes the attributes to return by default
+	 * @return a non-null attributes instance
+	 * @throws InvalidDDMSException if there are problems creating the empty attributes instance
+	 */
+	public static XLinkAttributes getNonNullInstance(XLinkAttributes xlinkAttributes) throws InvalidDDMSException {
+		return (xlinkAttributes == null ? new XLinkAttributes() : xlinkAttributes);
+	}
+	
+	/**
 	 * Constructor which builds from raw data for an unknown type.
 	 * 
 	 * @throws InvalidDDMSException
