@@ -51,16 +51,20 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 
 	/**
 	 * Returns a fixture object for testing.
-	 * 
-	 * @return a XOM element representing a valid applicationSoftware
 	 */
-	protected static Element getFixtureElement() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		Element element = Util.buildDDMSElement(ApplicationSoftware.getName(version), TEST_VALUE);
-		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
-		element.addNamespaceDeclaration(PropertyReader.getPrefix("ism"), version.getIsmNamespace());
-		SecurityAttributesTest.getFixture().addTo(element);
-		return (element);
+	public static Element getFixtureElement() {
+		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			Element element = Util.buildDDMSElement(ApplicationSoftware.getName(version), TEST_VALUE);
+			element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
+			element.addNamespaceDeclaration(PropertyReader.getPrefix("ism"), version.getIsmNamespace());
+			SecurityAttributesTest.getFixture().addTo(element);
+			return (element);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

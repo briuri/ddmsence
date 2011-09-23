@@ -73,10 +73,16 @@ public class NoticeTest extends AbstractComponentTestCase {
 	/**
 	 * Returns a fixture object for testing.
 	 */
-	public static List<Notice> getFixtureList() throws InvalidDDMSException {
-		List<Notice> list = new ArrayList<Notice>();
-		list.add(new Notice(NoticeTest.getFixtureElement()));
-		return (list);
+	public static List<Notice> getFixtureList() {
+		try {
+			List<Notice> list = new ArrayList<Notice>();
+			list.add(new Notice(NoticeTest.getFixtureElement()));
+			return (list);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**
