@@ -47,20 +47,12 @@ import buri.ddmsence.util.Util;
  * ownerProducer attributes are required.
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: Information about when and/or how a product was transformed post-publication, 
- * including adding metadata to a published product.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class ProcessingInfo extends AbstractSimpleString {
 
-	// Values are cached upon instantiation, so Calendars do not have to be built when calling getters.
-	private XMLGregorianCalendar _cachedDateProcessed = null;
+	private XMLGregorianCalendar _dateProcessed = null;
 	
 	private static final String DATE_PROCESSED_NAME = "dateProcessed";
 	
@@ -75,7 +67,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 		try {
 			String processed = getAttributeValue(DATE_PROCESSED_NAME);
 			if (!Util.isEmpty(processed))
-				_cachedDateProcessed = getFactory().newXMLGregorianCalendar(processed);
+				_dateProcessed = getFactory().newXMLGregorianCalendar(processed);
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -97,7 +89,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 		try {
 			try {
 				if (!Util.isEmpty(dateProcessed)) {
-					_cachedDateProcessed = getFactory().newXMLGregorianCalendar(dateProcessed);
+					_dateProcessed = getFactory().newXMLGregorianCalendar(dateProcessed);
 					Util.addDDMSAttribute(getXOMElement(), DATE_PROCESSED_NAME, getDateProcessed().toXMLFormat());
 				}
 			} catch (IllegalArgumentException e) {
@@ -186,8 +178,8 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	 * Accessor for the processing date (required). Returns a copy.
 	 */
 	public XMLGregorianCalendar getDateProcessed() {
-		return (_cachedDateProcessed == null ? null : getFactory().newXMLGregorianCalendar(
-			_cachedDateProcessed.toXMLFormat()));
+		return (_dateProcessed == null ? null : getFactory().newXMLGregorianCalendar(
+			_dateProcessed.toXMLFormat()));
 	}
 	
 	/**

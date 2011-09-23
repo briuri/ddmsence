@@ -43,12 +43,6 @@ import buri.ddmsence.util.Util;
  * <u>ddms:beNumber</u>: uniquely identifies the installation of the facility (required).<br />
  * <u>ddms:osuffix</u>: identifies a facility in conjunction with a beNumber (required if beNumber is set).<br />
  * </td></tr></table>
- * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: Information about rights held in and over the resource<br />
- * <u>Obligation</u>: Optional nested in a geospatialCoverage element, but if used, must be used alone<br />
- * <u>Schema Modification Date</u>: 2010-01-25<br />
- * </td></tr></table>
  *  
  * @author Brian Uri!
  * @since 0.9.b

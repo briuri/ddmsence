@@ -43,12 +43,6 @@ import buri.ddmsence.util.Util;
  * <u>ddms:value</u>: a permissable value (required)<br />
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: A standards-based abbreviation of an administrative subdivision of a country.<br />
- * <u>Obligation</u>: Optional in geographicIdentifiers<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 2.0.0
  */

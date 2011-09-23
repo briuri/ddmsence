@@ -51,12 +51,6 @@ import buri.ddmsence.util.Util;
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS 3.0)
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: The subject-matter coverage of a publication in terms of one or more virtual addresses.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2010-01-26<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */

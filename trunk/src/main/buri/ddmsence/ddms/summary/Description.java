@@ -42,12 +42,6 @@ import buri.ddmsence.util.Util;
  * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: An account of the content of the resource.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2004-11-16<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */

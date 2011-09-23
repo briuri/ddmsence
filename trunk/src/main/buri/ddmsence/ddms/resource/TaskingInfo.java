@@ -51,24 +51,17 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  *  <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
  * </td></tr></table>
- *  
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: Information about the tasking of this resource.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class TaskingInfo extends AbstractBaseComponent {
 	
-	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
-	private List<RequesterInfo> _cachedRequesterInfos;
-	private List<Addressee> _cachedAddressees;
-	private Description _cachedDescription;
-	private TaskID _cachedTaskID;
-	private SecurityAttributes _securityAttributes;
+	private List<RequesterInfo> _requesterInfos = null;
+	private List<Addressee> _addressees = null;
+	private Description _description = null;
+	private TaskID _taskID = null;
+	private SecurityAttributes _securityAttributes = null;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -80,26 +73,27 @@ public final class TaskingInfo extends AbstractBaseComponent {
 		try {
 			Util.requireDDMSValue("element", element);
 			setXOMElement(element, false);
-			
-			_cachedRequesterInfos = new ArrayList<RequesterInfo>();			
+
+			_requesterInfos = new ArrayList<RequesterInfo>();
 			Elements infos = element.getChildElements(RequesterInfo.getName(getDDMSVersion()), getNamespace());
 			for (int i = 0; i < infos.size(); i++) {
-				_cachedRequesterInfos.add(new RequesterInfo(infos.get(i)));
+				_requesterInfos.add(new RequesterInfo(infos.get(i)));
 			}
-			_cachedAddressees = new ArrayList<Addressee>();			
+			_addressees = new ArrayList<Addressee>();
 			Elements addressees = element.getChildElements(Addressee.getName(getDDMSVersion()), getNamespace());
 			for (int i = 0; i < addressees.size(); i++) {
-				_cachedAddressees.add(new Addressee(addressees.get(i)));
+				_addressees.add(new Addressee(addressees.get(i)));
 			}
 			Element description = element.getFirstChildElement(Description.getName(getDDMSVersion()), getNamespace());
 			if (description != null)
-				_cachedDescription = new Description(description);
+				_description = new Description(description);
 			Element taskID = element.getFirstChildElement(TaskID.getName(getDDMSVersion()), getNamespace());
 			if (taskID != null)
-				_cachedTaskID = new TaskID(taskID);
+				_taskID = new TaskID(taskID);
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -121,8 +115,8 @@ public final class TaskingInfo extends AbstractBaseComponent {
 			if (requesterInfos == null)
 				requesterInfos = Collections.emptyList();
 			if (addressees == null)
-				addressees = Collections.emptyList();		
-			
+				addressees = Collections.emptyList();
+
 			Element element = Util.buildDDMSElement(TaskingInfo.getName(DDMSVersion.getCurrentVersion()), null);
 			setXOMElement(element, false);
 			for (RequesterInfo info : requesterInfos)
@@ -133,14 +127,16 @@ public final class TaskingInfo extends AbstractBaseComponent {
 				element.appendChild(description.getXOMElementCopy());
 			if (taskID != null)
 				element.appendChild(taskID.getXOMElementCopy());
-			_cachedRequesterInfos = requesterInfos;
-			_cachedAddressees = addressees;
-			_cachedDescription = description;
-			_cachedTaskID = taskID;
+			
+			_requesterInfos = requesterInfos;
+			_addressees = addressees;
+			_description = description;
+			_taskID = taskID;
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -166,7 +162,6 @@ public final class TaskingInfo extends AbstractBaseComponent {
 		Util.requireDDMSValue("taskID", getTaskID());		
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Description.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedDDMSChildCount(getXOMElement(), TaskID.getName(getDDMSVersion()), 1, 1);
-		
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 		
@@ -228,28 +223,28 @@ public final class TaskingInfo extends AbstractBaseComponent {
 	 * Accessor for the requesterInfos
 	 */
 	public List<RequesterInfo> getRequesterInfos() {
-		return _cachedRequesterInfos;
+		return _requesterInfos;
 	}
 
 	/**
 	 * Accessor for the addressees
 	 */
 	public List<Addressee> getAddressees() {
-		return _cachedAddressees;
+		return _addressees;
 	}
 
 	/**
 	 * Accessor for the description
 	 */
 	public Description getDescription() {
-		return _cachedDescription;
+		return _description;
 	}
 
 	/**
 	 * Accessor for the taskID
 	 */
 	public TaskID getTaskID() {
-		return _cachedTaskID;
+		return _taskID;
 	}
 	
 	/**

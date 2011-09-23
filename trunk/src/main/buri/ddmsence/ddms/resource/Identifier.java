@@ -43,12 +43,6 @@ import buri.ddmsence.util.Util;
  * <u>ddms:value</u>: an unambiguous reference to the resource (required)<br />
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: An unambiguous reference to a resource within a given context.<br />
- * <u>Obligation</u>: Mandatory<br />
- * <u>Schema Modification Date</u>: 2003-05-16<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */

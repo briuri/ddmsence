@@ -36,12 +36,6 @@ import buri.ddmsence.util.Util;
  * <u>ddms:intellectualProperty</u>: has an intellectual property rights owner (optional, default=false)<br />
  * <u>ddms:copyright</u>: has a copyright owner (optional, default=false)<br />
  * </td></tr></table>
- * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: Information about rights held in and over the resource<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2003-05-16<br />
- * </td></tr></table>
  *  
  * @author Brian Uri!
  * @since 0.9.b
@@ -101,7 +95,8 @@ public final class Rights extends AbstractBaseComponent {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix + PRIVACY_ACT_NAME, String.valueOf(getPrivacyAct()), true));
-		text.append(buildOutput(isHTML, prefix + INTELLECTUAL_PROPERY_NAME, String.valueOf(getIntellectualProperty()), true));
+		text.append(buildOutput(isHTML, prefix + INTELLECTUAL_PROPERY_NAME, String.valueOf(getIntellectualProperty()),
+			true));
 		text.append(buildOutput(isHTML, prefix + COPYRIGHT_NAME, String.valueOf(getCopyright()), true));
 		return (text.toString());
 	}

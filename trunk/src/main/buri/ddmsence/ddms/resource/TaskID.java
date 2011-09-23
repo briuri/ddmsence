@@ -47,14 +47,7 @@ import buri.ddmsence.util.Util;
  * <u>common:network</u>: the name of the network, taken from a token list (optional)<br />
  * <u>common:otherNetwork</u>: an alternate network name (optional)<br />
  * <u>ddms:taskingSystem</u>: the tasking system (optional)<br />
- * <u>{@link XLinkAttributes}</u>: If set, the xlink:type attribute must have a fixed
- * value of "simple".<br />
- * </td></tr></table>
- * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: >A tracking identification number associated with the tasking.<br />
- * <u>Obligation</u>: Mandatory.<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
+ * <u>{@link XLinkAttributes}</u>: If set, the xlink:type attribute must have a fixed value of "simple".<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -62,7 +55,7 @@ import buri.ddmsence.util.Util;
  */
 public final class TaskID extends AbstractBaseComponent {
 
-	private XLinkAttributes _cachedXLinkAttributes;
+	private XLinkAttributes _xlinkAttributes = null;
 	
 	private static final String FIXED_TYPE = "simple";
 	
@@ -78,7 +71,7 @@ public final class TaskID extends AbstractBaseComponent {
 	 */
 	public TaskID(Element element) throws InvalidDDMSException {
 		try {
-			_cachedXLinkAttributes = new XLinkAttributes(element);
+			_xlinkAttributes = new XLinkAttributes(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -96,22 +89,24 @@ public final class TaskID extends AbstractBaseComponent {
 	 * @param xlinkAttributes simple xlink attributes
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public TaskID(String value, String taskingSystem, String network, String otherNetwork, XLinkAttributes xlinkAttributes) 
-		throws InvalidDDMSException {
+	public TaskID(String value, String taskingSystem, String network, String otherNetwork,
+		XLinkAttributes xlinkAttributes) throws InvalidDDMSException {
 		try {
 			String commonPrefix = PropertyReader.getPrefix("common");
 			String commonNamespace = DDMSVersion.getCurrentVersion().getCommonNamespace();
 			if (Util.isEmpty(commonNamespace))
 				throw new InvalidDDMSException("The IC COMMON namespace is not supported in this version of DDMS.");
+			
 			Element element = Util.buildDDMSElement(TaskID.getName(DDMSVersion.getCurrentVersion()), value);
 			Util.addDDMSAttribute(element, TASKING_SYSTEM_NAME, taskingSystem);
 			Util.addAttribute(element, commonPrefix, NETWORK_NAME, commonNamespace, network);
 			Util.addAttribute(element, commonPrefix, OTHER_NETWORK_NAME, commonNamespace, otherNetwork);
-			_cachedXLinkAttributes = (xlinkAttributes == null ? new XLinkAttributes()
-				: xlinkAttributes);
-			_cachedXLinkAttributes.addTo(element);
+			
+			_xlinkAttributes = XLinkAttributes.getNonNullInstance(xlinkAttributes);
+			_xlinkAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -236,7 +231,7 @@ public final class TaskID extends AbstractBaseComponent {
 	 * Accessor for the XLink Attributes. Will always be non-null, even if it has no values set.
 	 */
 	public XLinkAttributes getXLinkAttributes() {
-		return (_cachedXLinkAttributes);
+		return (_xlinkAttributes);
 	}
 	
 	/**

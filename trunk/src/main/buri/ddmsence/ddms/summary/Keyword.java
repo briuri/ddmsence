@@ -46,12 +46,6 @@ import buri.ddmsence.util.Util;
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS 4.0)
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: Subject keyword(s) that characterize the subject matter of a resource.<br />
- * <u>Obligation</u>: At least 1 category or keyword is required in a SubjectCoverage.<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */

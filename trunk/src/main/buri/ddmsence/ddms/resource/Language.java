@@ -48,12 +48,6 @@ import buri.ddmsence.util.Util;
  * <u>ddms:value</u>: the identification of the content language (optional)<br />
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: The primary language of the intellectual content of the resource.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2003-05-16<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */

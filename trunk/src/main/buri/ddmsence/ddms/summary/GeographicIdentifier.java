@@ -56,19 +56,11 @@ import buri.ddmsence.util.Util;
  * {@link FacilityIdentifier}<br />
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: A wrapper for an identifier or reference to an identifier that describes a geographic extent 
- * using a name or other identifier.<br />
- * <u>Obligation</u>: Mandatory unless Not Applicable<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class GeographicIdentifier extends AbstractBaseComponent {
 	
-	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
 	private List<String> _cachedNames = null;
 	private List<String> _cachedRegions = null;
 	private CountryCode _cachedCountryCode = null;

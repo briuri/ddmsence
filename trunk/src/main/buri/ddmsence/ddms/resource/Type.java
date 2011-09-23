@@ -55,18 +55,12 @@ import buri.ddmsence.util.Util;
  * (starting in DDMS 4.0)
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: The nature, genre, or discipline of the content of the resource.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class Type extends AbstractQualifierValue {
 
-	private SecurityAttributes _securityAttributes;
+	private SecurityAttributes _securityAttributes = null;
 		
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -128,6 +122,7 @@ public final class Type extends AbstractQualifierValue {
 		Util.requireDDMSQName(getXOMElement(), Type.getName(getDDMSVersion()));
 		if (!Util.isEmpty(getValue()))
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
+		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0") && !Util.isEmpty(getDescription())) {
 			throw new InvalidDDMSException(

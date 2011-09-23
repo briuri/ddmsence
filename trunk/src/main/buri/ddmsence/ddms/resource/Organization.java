@@ -36,7 +36,7 @@ import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of a ddms:organization element.
+ * An immutable implementation of ddms:organization.
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
@@ -66,18 +66,12 @@ import buri.ddmsence.util.Util;
  * <u>{@link ExtensibleAttributes}</u>
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: Information about an organization.<br />
- * <u>Obligation</u>: At least one of the four producerTypes is required.<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class Organization extends AbstractRoleEntity {
 	
-	private List<SubOrganization> _cachedSubOrganizations;
+	private List<SubOrganization> _subOrganizations = null;
 	
 	private static final String ACRONYM_NAME = "acronym";
 	
@@ -90,12 +84,11 @@ public final class Organization extends AbstractRoleEntity {
 	public Organization(Element element) throws InvalidDDMSException {
 		super(element, false);
 		try {
-			_cachedSubOrganizations = new ArrayList<SubOrganization>();
 			String namespace = element.getNamespaceURI();
 			Elements components = element.getChildElements(SubOrganization.getName(getDDMSVersion()), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedSubOrganizations.add(new SubOrganization(components.get(i)));
-			}
+			_subOrganizations = new ArrayList<SubOrganization>();
+			for (int i = 0; i < components.size(); i++)
+				_subOrganizations.add(new SubOrganization(components.get(i)));
 			validate();
 		}
 		catch (InvalidDDMSException e) {
@@ -114,8 +107,7 @@ public final class Organization extends AbstractRoleEntity {
 	 * @param acronym the organization's acronym
 	 */
 	public Organization(List<String> names, List<String> phones, List<String> emails,
-		List<SubOrganization> subOrganizations, String acronym)
-		throws InvalidDDMSException {
+		List<SubOrganization> subOrganizations, String acronym) throws InvalidDDMSException {
 		this(names, phones, emails, subOrganizations, acronym, null);
 	}
 	
@@ -137,12 +129,12 @@ public final class Organization extends AbstractRoleEntity {
 			if (subOrganizations == null)
 				subOrganizations = Collections.emptyList();
 			Util.addDDMSAttribute(getXOMElement(), ACRONYM_NAME, acronym);
-			for (SubOrganization subOrganization : subOrganizations) {
+			for (SubOrganization subOrganization : subOrganizations)
 				getXOMElement().appendChild(subOrganization.getXOMElementCopy());
-			}
-			_cachedSubOrganizations = subOrganizations;
+			_subOrganizations = subOrganizations;
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -161,11 +153,13 @@ public final class Organization extends AbstractRoleEntity {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Organization.getName(getDDMSVersion()));
+		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0")) {
 			if (!Util.isEmpty(getAcronym()))
 				throw new InvalidDDMSException("An organization cannot have an acronym until DDMS 4.0 or later.");
 		}
+		
 		super.validate();
 	}
 		
@@ -240,7 +234,7 @@ public final class Organization extends AbstractRoleEntity {
 	 * Accessor for the suborganizations (0-many)
 	 */
 	public List<SubOrganization> getSubOrganizations() {
-		return (Collections.unmodifiableList(_cachedSubOrganizations));
+		return (Collections.unmodifiableList(_subOrganizations));
 	}
 	
 	/**

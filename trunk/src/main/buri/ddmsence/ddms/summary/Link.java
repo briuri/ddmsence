@@ -49,12 +49,6 @@ import buri.ddmsence.util.Util;
  * (starting in DDMS 4.0). The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: An XLink locator element for the resource being related.<br />
- * <u>Obligation</u>: At least 1 link is required in a RelatedResource.<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */

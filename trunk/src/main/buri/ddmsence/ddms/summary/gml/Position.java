@@ -48,18 +48,11 @@ import buri.ddmsence.util.Util;
  * <u>{@link SRSAttributes}</u>
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: This component is used to build gml:Polygon or gml:Point.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2010-01-25<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class Position extends AbstractBaseComponent {
 
-	// Values are cached upon instantiation, so objects are only created once
 	private SRSAttributes _cachedSrsAttributes;
 	private List<Double> _cachedCoordinates;	
 	

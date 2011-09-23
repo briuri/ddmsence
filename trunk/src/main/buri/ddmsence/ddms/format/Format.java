@@ -60,21 +60,14 @@ import buri.ddmsence.util.Util;
  * <u>ddms:medium</u>: the physical medium (0-1 optional)<br />
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: A format is the physical or digital manifestation of the resource.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class Format extends AbstractBaseComponent {
 	
-	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
-	private String _cachedMimeType;
-	private Extent _cachedExtent;
-	private String _cachedMedium;
+	private String _mimeType = null;
+	private Extent _extent = null;
+	private String _medium = null;
 	
 	private static final String MEDIA_NAME = "Media";
 	private static final String MIME_TYPE_NAME = "mimeType";
@@ -88,23 +81,23 @@ public final class Format extends AbstractBaseComponent {
 	 */
 	public Format(Element element) throws InvalidDDMSException {
 		try {
-			Util.requireDDMSValue("format element", element);
 			setXOMElement(element, false);
 			Element mediaElement = getMediaElement();
 			if (mediaElement != null) {
-				Element mimeTypeElement = mediaElement.getFirstChildElement(MIME_TYPE_NAME, element.getNamespaceURI());
+				Element mimeTypeElement = mediaElement.getFirstChildElement(MIME_TYPE_NAME, getNamespace());
 				if (mimeTypeElement != null)
-					_cachedMimeType = mimeTypeElement.getValue();
+					_mimeType = mimeTypeElement.getValue();
 				Element extentElement = mediaElement.getFirstChildElement(Extent.getName(getDDMSVersion()),
-					element.getNamespaceURI());
+					getNamespace());
 				if (extentElement != null)
-					_cachedExtent = new Extent(extentElement);
-				Element mediumElement = mediaElement.getFirstChildElement(MEDIUM_NAME, element.getNamespaceURI());
+					_extent = new Extent(extentElement);
+				Element mediumElement = mediaElement.getFirstChildElement(MEDIUM_NAME, getNamespace());
 				if (mediumElement != null)
-					_cachedMedium = mediumElement.getValue();
+					_medium = mediumElement.getValue();
 			}
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -121,22 +114,22 @@ public final class Format extends AbstractBaseComponent {
 	public Format(String mimeType, Extent extent, String medium) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Format.getName(DDMSVersion.getCurrentVersion()), null);
-			
-			Element mediaElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? element 
-				: Util.buildDDMSElement(MEDIA_NAME, null);
+			Element mediaElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? element : Util.buildDDMSElement(
+				MEDIA_NAME, null);
 			Util.addDDMSChildElement(mediaElement, MIME_TYPE_NAME, mimeType);
 			if (extent != null)
 				mediaElement.appendChild(extent.getXOMElementCopy());
 			Util.addDDMSChildElement(mediaElement, MEDIUM_NAME, medium);
-			
+
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				element.appendChild(mediaElement);
-			
-			_cachedMimeType = mimeType;
-			_cachedExtent = extent;
-			_cachedMedium = medium;
+
+			_mimeType = mimeType;
+			_extent = extent;
+			_medium = medium;
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -176,7 +169,7 @@ public final class Format extends AbstractBaseComponent {
 	protected void validateWarnings() {
 		Element mediaElement = getMediaElement();
 		if (Util.isEmpty(getMedium())
-				&& mediaElement.getChildElements(MEDIUM_NAME, mediaElement.getNamespaceURI()).size() == 1)
+			&& mediaElement.getChildElements(MEDIUM_NAME, mediaElement.getNamespaceURI()).size() == 1)
 			addWarning("A ddms:medium element was found with no value.");
 		super.validateWarnings();
 	}
@@ -260,14 +253,14 @@ public final class Format extends AbstractBaseComponent {
 	 * instantiation.
 	 */
 	public String getMimeType() {
-		return (Util.getNonNullString(_cachedMimeType));
+		return (Util.getNonNullString(_mimeType));
 	}
 
 	/**
 	 * Accessor for the extent
 	 */
 	public Extent getExtent() {
-		return (_cachedExtent);
+		return (_extent);
 	}
 
 	/**
@@ -288,7 +281,7 @@ public final class Format extends AbstractBaseComponent {
 	 * Accessor for the medium element child text
 	 */
 	public String getMedium() {
-		return (Util.getNonNullString(_cachedMedium));
+		return (Util.getNonNullString(_medium));
 	}
 	
 	/**

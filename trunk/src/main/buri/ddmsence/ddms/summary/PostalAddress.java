@@ -52,19 +52,11 @@ import buri.ddmsence.util.Util;
  * <u>ddms:countryCode</u>: the country code (0-1 optional), implemented as a {@link CountryCode}<br />
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: A wrapper for postal address elements including street, city, state or province, postal code and 
- * country code.<br />
- * <u>Obligation</u>: Optional in a geospatialCoverage element<br />
- * <u>Schema Modification Date</u>: 2010-01-25<br />
- * </td></tr></table>
- * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class PostalAddress extends AbstractBaseComponent {
 	
-	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
 	private List<String> _cachedStreets;
 	private String _cachedCity;
 	private String _cachedState;

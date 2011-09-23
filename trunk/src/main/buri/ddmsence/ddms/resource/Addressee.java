@@ -29,22 +29,16 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * An immutable implementation of a ddms:addressee element.
+ * An immutable implementation of ddms:addressee.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:person</u>: the person who is the addressee (0-1, optional)<br />
  * <u>ddms:organization</u>: The organization who is the addressee (0-1, optional)<br />
+ * <u>ddms:person</u>: the person who is the addressee (0-1, optional)<br />
  * Only one of the nested entities can appear in an addressee element.
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
- * </td></tr></table>
- * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: The addressee associated with tasking info for a resource.<br />
- * <u>Obligation</u>: At least 1 addressee is mandatory.<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!

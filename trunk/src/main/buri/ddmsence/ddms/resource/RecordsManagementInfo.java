@@ -37,7 +37,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:recordKeeper</u>: The organization responsible for the custody and ongoing management of the records 
  * (0-1 optional), implemented as a {@link RecordKeeper}<br />
- * <u>ddms:applicationSoftware.</u>: The software used to create the object to which this metadata applies (0-1 
+ * <u>ddms:applicationSoftware</u>: The software used to create the object to which this metadata applies (0-1 
  * optional), implemented as an {@link ApplicationSoftware}<br />
  * </td></tr></table>
  * 
@@ -45,22 +45,14 @@ import buri.ddmsence.util.Util;
  * <u>ddms:vitalRecordIndicator</u>: An indication that a publication is categorized a vital record by the originating 
  * agency (defaults to false)<br />
  * </td></tr></table>
- *  
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: A container for information about the format of the publication file and the authoring 
- * software used to produce the publication.<br />
- * <u>Obligation</u>: Optional<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
- * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
 public final class RecordsManagementInfo extends AbstractBaseComponent {
 	
-	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
-	private RecordKeeper _cachedRecordKeeper;
-	private ApplicationSoftware _cachedApplicationSoftware;
+	private RecordKeeper _recordKeeper = null;
+	private ApplicationSoftware _applicationSoftware = null;
 	
 	private static final String VITAL_RECORD_INDICATOR_NAME = "vitalRecordIndicator";
 	/**
@@ -75,12 +67,14 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 			setXOMElement(element, false);
 			Element recordKeeper = element.getFirstChildElement(RecordKeeper.getName(getDDMSVersion()), getNamespace());
 			if (recordKeeper != null)
-				_cachedRecordKeeper = new RecordKeeper(recordKeeper);
-			Element applicationSoftware = element.getFirstChildElement(ApplicationSoftware.getName(getDDMSVersion()), getNamespace());
+				_recordKeeper = new RecordKeeper(recordKeeper);
+			Element applicationSoftware = element.getFirstChildElement(ApplicationSoftware.getName(getDDMSVersion()),
+				getNamespace());
 			if (applicationSoftware != null)
-				_cachedApplicationSoftware = new ApplicationSoftware(applicationSoftware);
+				_applicationSoftware = new ApplicationSoftware(applicationSoftware);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -94,19 +88,22 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	 * @param vitalRecordIndicator whether this is a vital record (optional, defaults to false)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public RecordsManagementInfo(RecordKeeper recordKeeper, ApplicationSoftware applicationSoftware, Boolean vitalRecordIndicator) throws InvalidDDMSException {
+	public RecordsManagementInfo(RecordKeeper recordKeeper, ApplicationSoftware applicationSoftware,
+		Boolean vitalRecordIndicator) throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(RecordsManagementInfo.getName(DDMSVersion.getCurrentVersion()), null);
+			Element element = Util.buildDDMSElement(RecordsManagementInfo.getName(DDMSVersion.getCurrentVersion()),
+				null);
 			setXOMElement(element, false);
 			if (recordKeeper != null)
 				element.appendChild(recordKeeper.getXOMElementCopy());
 			if (applicationSoftware != null)
 				element.appendChild(applicationSoftware.getXOMElementCopy());
 			Util.addDDMSAttribute(element, VITAL_RECORD_INDICATOR_NAME, String.valueOf(vitalRecordIndicator));
-			_cachedRecordKeeper = recordKeeper;
-			_cachedApplicationSoftware = applicationSoftware;
+			_recordKeeper = recordKeeper;
+			_applicationSoftware = applicationSoftware;
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -142,7 +139,8 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 			text.append(getRecordKeeper().getOutput(isHTML, prefix));
 		if (getApplicationSoftware() != null)
 			text.append(getApplicationSoftware().getOutput(isHTML, prefix));
-		text.append(buildOutput(isHTML, prefix + VITAL_RECORD_INDICATOR_NAME, String.valueOf(getVitalRecordIndicator()), true));
+		text.append(buildOutput(isHTML, prefix + VITAL_RECORD_INDICATOR_NAME,
+			String.valueOf(getVitalRecordIndicator()), true));
 		return (text.toString());
 	}
 		
@@ -190,14 +188,14 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	 * Accessor for the recordKeeper
 	 */
 	public RecordKeeper getRecordKeeper() {
-		return _cachedRecordKeeper;
+		return _recordKeeper;
 	}
 
 	/**
 	 * Accessor for the applicationSoftware
 	 */
 	public ApplicationSoftware getApplicationSoftware() {
-		return _cachedApplicationSoftware;
+		return _applicationSoftware;
 	}	
 	
 	/**
