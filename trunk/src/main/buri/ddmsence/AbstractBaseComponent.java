@@ -45,8 +45,8 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractBaseComponent implements IDDMSComponent {
 
-	private List<ValidationMessage> _warnings;
-	private Element _element;
+	private List<ValidationMessage> _warnings = null;
+	private Element _element = null;
 	
 	/**
 	 * Empty constructor

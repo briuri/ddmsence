@@ -85,7 +85,7 @@ import buri.ddmsence.util.Util;
  */
 public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	
-	private List<Attribute> _cachedAttributes = null;
+	private List<Attribute> _attributes = null;
 	
 	private final Set<QName> RESERVED_RESOURCE_NAMES = new HashSet<QName>();
 	
@@ -112,8 +112,8 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	public ExtensibleAttributes(Element element) throws InvalidDDMSException {
 		super(element.getNamespaceURI());
 		buildReservedNames(element.getNamespaceURI());
-		
-		_cachedAttributes = new ArrayList<Attribute>();
+
+		_attributes = new ArrayList<Attribute>();
 		for (int i = 0; i < element.getAttributeCount(); i++) {
 			Attribute attribute = element.getAttribute(i);
 			// Skip ddms: attributes.
@@ -124,12 +124,12 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			if (Resource.getName(version).equals(element.getLocalName())
 				|| Category.getName(version).equals(element.getLocalName())
 				|| Keyword.getName(version).equals(element.getLocalName())) {
-				QName testName = new QName(attribute.getNamespaceURI(), attribute.getLocalName(), 
-					attribute.getNamespacePrefix());
+				QName testName = new QName(attribute.getNamespaceURI(), attribute.getLocalName(), attribute
+					.getNamespacePrefix());
 				if (RESERVED_RESOURCE_NAMES.contains(testName))
 					continue;
 			}
-			_cachedAttributes.add(attribute);
+			_attributes.add(attribute);
 		}
 		validate();
 	}
@@ -146,7 +146,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		super(DDMSVersion.getCurrentVersion().getNamespace());
 		if (attributes == null)
 			attributes = Collections.emptyList();
-		_cachedAttributes = new ArrayList<Attribute>(attributes);
+		_attributes = new ArrayList<Attribute>(attributes);
 		validate();
 	}
 		
@@ -217,8 +217,8 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		prefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
 		for (Attribute attribute : getAttributes()) {
-			text.append(Resource.buildOutput(isHTML, prefix + attribute.getNamespacePrefix() + "." + attribute.getLocalName(), 
-				attribute.getValue(), false));	
+			text.append(Resource.buildOutput(isHTML, prefix + attribute.getNamespacePrefix() + "."
+				+ attribute.getLocalName(), attribute.getValue(), false));
 		}
 		return (text.toString());
 	}
@@ -228,7 +228,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 */
 	public boolean equals(Object obj) {
 		if (!(obj instanceof ExtensibleAttributes))
-			return (false);		
+			return (false);
 		ExtensibleAttributes test = (ExtensibleAttributes) obj;
 		// XOM Attribute has no logical equality. Must compare by hand.
 		if (getAttributes().size() != test.getAttributes().size())
@@ -254,14 +254,14 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			result = 7 * result + attribute.getNamespaceURI().hashCode();
 		}
 		return (result);
-	}	
+	}
 	
 	/**
 	 * Accessor for the attributes. Returns a copy.
 	 */
 	public List<Attribute> getAttributes() {
 		List<Attribute> attributes = new ArrayList<Attribute>();
-		for (Attribute attribute : _cachedAttributes) {
+		for (Attribute attribute : _attributes) {
 			attributes.add(new Attribute(attribute));
 		}
 		return (Collections.unmodifiableList(attributes));

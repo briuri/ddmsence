@@ -63,8 +63,8 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	
-	private IRoleEntity _entity;
-	private SecurityAttributes _securityAttributes;
+	private IRoleEntity _entity = null;
+	private SecurityAttributes _securityAttributes = null;
 
 	private static final String POC_TYPE_NAME = "POCType";
 	

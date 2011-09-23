@@ -38,7 +38,7 @@ import java.net.URISyntaxException;
  */
 public class InvalidDDMSException extends Exception {
 	
-	private ValidationMessage _message;
+	private ValidationMessage _message = null;
 	
 	private static final long serialVersionUID = -183915550465140589L;
 	

@@ -47,9 +47,9 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractRoleEntity extends AbstractBaseComponent implements IRoleEntity {
 	
-	private List<String> _names;
-	private List<String> _phones;
-	private List<String> _emails;
+	private List<String> _names = null;
+	private List<String> _phones = null;
+	private List<String> _emails = null;
 	private ExtensibleAttributes _extensibleAttributes = null;
 	
 	private static final String NAME_NAME = "name";

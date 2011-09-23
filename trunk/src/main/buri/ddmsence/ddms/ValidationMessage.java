@@ -41,9 +41,9 @@ import buri.ddmsence.util.Util;
  */
 public class ValidationMessage {
 
-	private String _type;
-	private String _text;
-	private String _locator;
+	private String _type = null;
+	private String _text = null;
+	private String _locator = null;
 	
 	/** Constant type for a warning. */
 	public static final String WARNING_TYPE = "Warning";

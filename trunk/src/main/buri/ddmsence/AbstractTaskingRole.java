@@ -58,8 +58,8 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	
-	private IRoleEntity _entity;
-	private SecurityAttributes _securityAttributes;
+	private IRoleEntity _entity = null;
+	private SecurityAttributes _securityAttributes = null;
 	
 	/**
 	 * Base constructor
@@ -93,16 +93,18 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	 * @param entity the actual entity fulfilling this role
 	 * @param securityAttributes any security attributes (optional)
 	 */
-	protected AbstractTaskingRole(String roleType, IRoleEntity entity, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	protected AbstractTaskingRole(String roleType, IRoleEntity entity, SecurityAttributes securityAttributes)
+		throws InvalidDDMSException {
 		try {
 			Util.requireDDMSValue("entity", entity);
 			Element element = Util.buildDDMSElement(roleType, null);
 			element.appendChild(entity.getXOMElementCopy());
 			_entity = entity;
-			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);		
+			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -122,16 +124,15 @@ public abstract class AbstractTaskingRole extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSValue("entity", getEntity());
-		if (!(getEntity() instanceof Organization)
-			&& !(getEntity() instanceof Person)) {
+		if (!(getEntity() instanceof Organization) && !(getEntity() instanceof Person)) {
 			throw new InvalidDDMSException("The entity must be a person or an organization.");
 		}
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0");
-		
+
 		super.validate();
 	}
 			

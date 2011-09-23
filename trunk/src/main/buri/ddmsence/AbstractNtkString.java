@@ -49,8 +49,8 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractNtkString extends AbstractBaseComponent {
 	
-	private boolean _tokenBased;
-	private SecurityAttributes _securityAttributes;
+	private boolean _tokenBased = false;
+	private SecurityAttributes _securityAttributes = null;
 		
 	private static final String ID_NAME = "id";
 	private static final String ID_REFERENCE_NAME = "IDReference";
