@@ -53,7 +53,7 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 	 * 
 	 * @return a XOM element representing a valid applicationSoftware
 	 */
-	protected static Element getFixtureElement() throws InvalidDDMSException {
+	public static Element getFixtureElement() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Element element = Util.buildDDMSElement(RecordKeeper.getName(version), null);
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());

@@ -48,7 +48,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 	/**
 	 * Returns a fixture object for testing.
 	 */
-	public static List<Polygon> getFixtureList() throws InvalidDDMSException {
+	public static List<Polygon> getFixtureList() {
 		try {
 			List<Polygon> polygons = new ArrayList<Polygon>();
 			polygons.add(new Polygon(PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), TEST_ID));
