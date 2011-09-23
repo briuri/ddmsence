@@ -212,8 +212,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		xml.append("<ddms:organization><ddms:name>Name</ddms:name></ddms:organization>");
 		xml.append("</ddms:addressee>");
 		xml.append("<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Tasking Info</ddms:description>");
-		xml.append("<ddms:taskID xmlns:common=\"urn:us:gov:ic:common\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
-		xml.append("ddms:taskingSystem=\"MDR\" common:network=\"NIPRNet\" common:otherNetwork=\"PBS\" xlink:type=\"simple\" ");
+		xml.append("<ddms:taskID xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+		xml.append("ddms:taskingSystem=\"MDR\" network=\"NIPRNet\" otherNetwork=\"PBS\" xlink:type=\"simple\" ");
 		xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:arcrole=\"arcrole\" ");
 		xml.append("xlink:show=\"new\" xlink:actuate=\"onLoad\">Task #12345</ddms:taskID>");
 		xml.append("</ddms:taskingInfo>");

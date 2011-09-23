@@ -28,7 +28,6 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.util.DDMSVersion;
-import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -44,9 +43,9 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>common:network</u>: the name of the network, taken from a token list (optional)<br />
- * <u>common:otherNetwork</u>: an alternate network name (optional)<br />
  * <u>ddms:taskingSystem</u>: the tasking system (optional)<br />
+ * <u>network</u>: the name of the network, taken from a token list (optional)<br />
+ * <u>otherNetwork</u>: an alternate network name (optional)<br />
  * <u>{@link XLinkAttributes}</u>: If set, the xlink:type attribute must have a fixed value of "simple".<br />
  * </td></tr></table>
  * 
@@ -58,6 +57,12 @@ public final class TaskID extends AbstractBaseComponent {
 	private XLinkAttributes _xlinkAttributes = null;
 	
 	private static final String FIXED_TYPE = "simple";
+		
+	/** The prefix of the network attributes */
+	public static final String NO_PREFIX = "";
+	
+	/** The namespace of the network attributes */
+	public static final String NO_NAMESPACE = "";
 	
 	private static final String NETWORK_NAME = "network";
 	private static final String OTHER_NETWORK_NAME = "otherNetwork";
@@ -93,15 +98,10 @@ public final class TaskID extends AbstractBaseComponent {
 	public TaskID(String value, String taskingSystem, String network, String otherNetwork,
 		XLinkAttributes xlinkAttributes) throws InvalidDDMSException {
 		try {
-			String commonPrefix = PropertyReader.getPrefix("common");
-			String commonNamespace = DDMSVersion.getCurrentVersion().getCommonNamespace();
-			if (Util.isEmpty(commonNamespace))
-				throw new InvalidDDMSException("The IC COMMON namespace is not supported in this version of DDMS.");
-			
 			Element element = Util.buildDDMSElement(TaskID.getName(DDMSVersion.getCurrentVersion()), value);
 			Util.addDDMSAttribute(element, TASKING_SYSTEM_NAME, taskingSystem);
-			Util.addAttribute(element, commonPrefix, NETWORK_NAME, commonNamespace, network);
-			Util.addAttribute(element, commonPrefix, OTHER_NETWORK_NAME, commonNamespace, otherNetwork);
+			Util.addAttribute(element, NO_PREFIX, NETWORK_NAME, NO_NAMESPACE, network);
+			Util.addAttribute(element, NO_PREFIX, OTHER_NETWORK_NAME, NO_NAMESPACE, otherNetwork);
 			
 			_xlinkAttributes = XLinkAttributes.getNonNullInstance(xlinkAttributes);
 			_xlinkAttributes.addTo(element);
@@ -120,7 +120,7 @@ public final class TaskID extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A child text value is required.</li>
 	 * <li>If set, the xlink:type attribute has a value of "simple".</li>
-	 * <li>If set, the common:network attribute must be a valid network token.</li>
+	 * <li>If set, the network attribute must be a valid network token.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -218,14 +218,14 @@ public final class TaskID extends AbstractBaseComponent {
 	 * Accessor for the network attribute.
 	 */
 	public String getNetwork() {
-		return (getAttributeValue(NETWORK_NAME, getDDMSVersion().getCommonNamespace()));
+		return (getAttributeValue(NETWORK_NAME, NO_NAMESPACE));
 	}
 	
 	/**
 	 * Accessor for the otherNetwork attribute.
 	 */
 	public String getOtherNetwork() {
-		return (getAttributeValue(OTHER_NETWORK_NAME, getDDMSVersion().getCommonNamespace()));
+		return (getAttributeValue(OTHER_NETWORK_NAME, NO_NAMESPACE));
 	}
 	
 	/**
@@ -286,6 +286,20 @@ public final class TaskID extends AbstractBaseComponent {
 		}
 		
 		/**
+		 * Builder accessor for the value
+		 */
+		public String getValue() {
+			return _value;
+		}
+
+		/**
+		 * Builder accessor for the value
+		 */
+		public void setValue(String value) {
+			_value = value;
+		}	
+		
+		/**
 		 * Builder accessor for the taskingSystem
 		 */
 		public String getTaskingSystem() {
@@ -342,19 +356,5 @@ public final class TaskID extends AbstractBaseComponent {
 		public void setXLinkAttributes(XLinkAttributes.Builder xlinkAttributes) {
 			_xlinkAttributes = xlinkAttributes;
 		}
-
-		/**
-		 * Builder accessor for the value
-		 */
-		public String getValue() {
-			return _value;
-		}
-
-		/**
-		 * Builder accessor for the value
-		 */
-		public void setValue(String value) {
-			_value = value;
-		}		
 	}
 } 

@@ -433,7 +433,7 @@ public class ISMVocabulary {
 	}
 	
 	/**
-	 * Validates the value of a common:network attribute.
+	 * Validates the value of a network attribute from the IC-COMMON schema.
 	 * 
 	 * @param network the network token to test
 	 * @throws InvalidDDMSException if the network is not a valid token

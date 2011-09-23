@@ -59,16 +59,13 @@ public class TaskIDTest extends AbstractComponentTestCase {
 	 */
 	protected static Element getFixtureElement() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String commonPrefix = PropertyReader.getPrefix("common");
-		String commonNamespace = version.getCommonNamespace();
 
 		Element element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
-		element.addNamespaceDeclaration(PropertyReader.getPrefix("common"), version.getCommonNamespace());
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("xlink"), version.getXlinkNamespace());
 		Util.addDDMSAttribute(element, "taskingSystem", TEST_TASKING_SYSTEM);
-		Util.addAttribute(element, commonPrefix, "network", commonNamespace, TEST_NETWORK);
-		Util.addAttribute(element, commonPrefix, "otherNetwork", commonNamespace, TEST_OTHER_NETWORK);
+		Util.addAttribute(element, "", "network", "", TEST_NETWORK);
+		Util.addAttribute(element, "", "otherNetwork", "", TEST_OTHER_NETWORK);
 		XLinkAttributesTest.getSimpleFixture().addTo(element);
 		return (element);
 	}
@@ -134,9 +131,9 @@ public class TaskIDTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:taskID ").append(getXmlnsDDMS()).append(" xmlns:common=\"urn:us:gov:ic:common\" ");
+		xml.append("<ddms:taskID ").append(getXmlnsDDMS()).append(" ");
 		xml.append("xmlns:xlink=\"http://www.w3.org/1999/xlink\" ddms:taskingSystem=\"MDR\" ");
-		xml.append("common:network=\"NIPRNet\" common:otherNetwork=\"PBS\" xlink:type=\"simple\" ");
+		xml.append("network=\"NIPRNet\" otherNetwork=\"PBS\" xlink:type=\"simple\" ");
 		xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" ");
 		xml.append("xlink:arcrole=\"arcrole\" xlink:show=\"new\" xlink:actuate=\"onLoad\">Task #12345</ddms:taskID>");
 		return (xml.toString());
@@ -193,8 +190,7 @@ public class TaskIDTest extends AbstractComponentTestCase {
 
 			// Bad network
 			element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
-			Util.addAttribute(element, PropertyReader.getPrefix("common"), "network", version.getCommonNamespace(),
-				"PBS");
+			Util.addAttribute(element, "", "network", "", "PBS");
 			testConstructor(WILL_FAIL, element);
 
 		}
