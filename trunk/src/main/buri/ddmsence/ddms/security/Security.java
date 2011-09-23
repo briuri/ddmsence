@@ -38,8 +38,10 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:security.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:noticeList</u>: A collection of IC notices (optional, starting in DDMS 4.0)<br />
- * <u>ntk:Access</u>: Need-To-Know access information (optional, starting in DDMS 4.0)<br />
+ * <u>ddms:noticeList</u>: A collection of IC notices (optional, starting in DDMS 4.0), implemented as a 
+ * {@link NoticeList}<br />
+ * <u>ntk:Access</u>: Need-To-Know access information (optional, starting in DDMS 4.0), implemented as an 
+ * {@link Access}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -128,6 +130,7 @@ public final class Security extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A classification is required.</li>
+	 * <li>Only 0-1 noticeLists or Access elements exist.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>The excludeFromRollup is set and has a value of "true", starting in DDMS 3.0.</li>
 	 * </td></tr></table>
@@ -136,6 +139,8 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Security.getName(getDDMSVersion()));
+		Util.requireBoundedChildCount(getXOMElement(), NoticeList.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), Access.getName(getDDMSVersion()), 0, 1);
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (getDDMSVersion().isAtLeast("3.0")) {

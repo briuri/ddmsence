@@ -40,7 +40,7 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:noticeList.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ISM:Notice</u>: A collection of IC notices (1-to-many required)<br />
+ * <u>ISM:Notice</u>: A collection of IC notices (1-to-many required), implemented as {@link Notice}s<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">

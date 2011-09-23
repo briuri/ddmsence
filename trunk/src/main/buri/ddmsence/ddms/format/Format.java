@@ -152,9 +152,9 @@ public final class Format extends AbstractBaseComponent {
 		Element mediaElement = getMediaElement();
 		Util.requireDDMSValue("Media element", mediaElement);
 		Util.requireDDMSValue(MIME_TYPE_NAME, getMimeType());
-		Util.requireBoundedDDMSChildCount(mediaElement, MIME_TYPE_NAME, 1, 1);
-		Util.requireBoundedDDMSChildCount(mediaElement, Extent.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedDDMSChildCount(mediaElement, MEDIUM_NAME, 0, 1);
+		Util.requireBoundedChildCount(mediaElement, MIME_TYPE_NAME, 1, 1);
+		Util.requireBoundedChildCount(mediaElement, Extent.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(mediaElement, MEDIUM_NAME, 0, 1);
 
 		super.validate();
 	}

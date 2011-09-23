@@ -43,8 +43,8 @@ import buri.ddmsence.util.Util;
  * additional attributes or elements besides the nested Polygon/Point components, so no additional output is needed.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>gml:Polygon</u>: a polygon (0-many optional)<br />
- * <u>gml:Point</u>: a point (0-many optional)<br />
+ * <u>gml:Polygon</u>: a polygon (0-many optional), implemented as a {@link Polygon}<br />
+ * <u>gml:Point</u>: a point (0-many optional), implemented as a {@link Point}<br />
  * <p>At least 1 of Polygon or Point must be used.</p>
  * </td></tr></table>
  * 

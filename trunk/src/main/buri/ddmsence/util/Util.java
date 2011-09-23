@@ -309,20 +309,18 @@ public class Util {
 	}
 	
 	/**
-	 * Checks that the number of child elements with the given name in the DDMS namespace are bounded.
+	 * Checks that the number of child elements with the given name in the same namespace as the parent are bounded.
 	 * 
 	 * @param parent		the parent element
-	 * @param childName		the local name of the DDMS child
+	 * @param childName		the local name of the child
 	 * @param lowBound		the lowest value the number can be
 	 * @param highBound		the highest value the number can be
 	 * @throws InvalidDDMSException if the number is out of bounds
 	 */
-	public static void requireBoundedDDMSChildCount(Element parent, String childName, int lowBound, int highBound)
+	public static void requireBoundedChildCount(Element parent, String childName, int lowBound, int highBound)
 		throws InvalidDDMSException {
 		Util.requireValue("parent element", parent);
 		Util.requireValue("child name", childName);
-		if (!DDMSVersion.isSupportedDDMSNamespace(parent.getNamespaceURI()))
-			throw new IllegalArgumentException("This method should only be called on an element in the DDMS namespace.");
 		int childCount = parent.getChildElements(childName, parent.getNamespaceURI()).size();
 		if (!isBounded(childCount, lowBound, highBound)) {
 			StringBuffer error = new StringBuffer();

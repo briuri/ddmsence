@@ -44,7 +44,7 @@ import buri.ddmsence.util.Util;
  * 
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>gml:pos</u>: the position (exactly 1 required)<br />
+ * <u>gml:pos</u>: the position (exactly 1 required), implemented as a {@link Position}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">

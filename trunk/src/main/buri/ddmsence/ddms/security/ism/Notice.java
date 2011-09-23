@@ -39,7 +39,7 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ISM:Notice.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ISM:NoticeText</u>: The text associated with this Notice (1-to-many required)<br />
+ * <u>ISM:NoticeText</u>: The text associated with this Notice (1-to-many required), implemented as a {@link NoticeText}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">

@@ -631,17 +631,17 @@ public final class Resource extends AbstractBaseComponent {
 		if (getCreators().size() + getContributors().size() + getPublishers().size() + getPointOfContacts().size() == 0)
 			throw new InvalidDDMSException(
 				"At least 1 producer (creator, contributor, publisher, or pointOfContact) is required.");
-		Util.requireBoundedDDMSChildCount(getXOMElement(), Description.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), Dates.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), Rights.getName(getDDMSVersion()), 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), Format.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), Description.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), Dates.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), Rights.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), Format.getName(getDDMSVersion()), 0, 1);
 		if (getDDMSVersion().isAtLeast("4.0")) {
 			if (getSubjectCoverages().size() < 1)
 				throw new InvalidDDMSException("At least 1 subjectCoverage is required.");
 		}
 		else
-			Util.requireBoundedDDMSChildCount(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()), 1, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);
+			Util.requireBoundedChildCount(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()), 1, 1);
+		Util.requireBoundedChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);
 		if (!getSecurityAttributes().isEmpty()) {
 			Set<SecurityAttributes> childAttributes = new HashSet<SecurityAttributes>();
 			for (IDDMSComponent component : getTopLevelComponents()) {

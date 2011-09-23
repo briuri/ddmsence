@@ -44,7 +44,8 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:recordKeeperID</u>: A unique identifier for the Record Keeper (exactly 1 required)<br />
- * <u>ddms:organization</u>: The organization which acts as the record keeper (exactly 1 required)<br />
+ * <u>ddms:organization</u>: The organization which acts as the record keeper (exactly 1 required), implemented as an
+ * {@link Organization}<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -107,6 +108,7 @@ public class RecordKeeper extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The recordKeeperID exists.</li>
 	 * <li>The organization exists.</li>
+	 * <li>Exactly 1 organization exists.</li>
 	 * <li>This component cannot exist until DDMS 4.0 or later.</li>
 	 * </td></tr></table>
 	 * 
@@ -117,7 +119,8 @@ public class RecordKeeper extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), RecordKeeper.getName(getDDMSVersion()));
 		Util.requireDDMSValue("record keeper ID", getRecordKeeperID());
 		Util.requireDDMSValue("organization", getOrganization());
-		
+		Util.requireBoundedChildCount(getXOMElement(), Organization.getName(getDDMSVersion()), 1, 1);
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0");
 		

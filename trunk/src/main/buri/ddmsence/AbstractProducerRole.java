@@ -129,6 +129,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A producer entity exists.</li>
+	 * <li>Only 0-1 persons, organizations, services, or unknowns exist.</li>
 	 * <li>The POCType cannot be used before DDMS 4.0.</li>
 	 * </td></tr></table>
 	 * 
@@ -137,6 +138,10 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSValue("entity", getEntity());
+		Util.requireBoundedChildCount(getXOMElement(), Organization.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), Person.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), Service.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), Unknown.getName(getDDMSVersion()), 0, 1);
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("4.0") && !Util.isEmpty(getPOCType())) {

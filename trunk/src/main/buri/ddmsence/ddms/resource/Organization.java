@@ -58,7 +58,8 @@ import buri.ddmsence.util.Util;
  * <u>ddms:name</u>: names of the producer entity (1-many, at least 1 required)<br />
  * <u>ddms:phone</u>: phone numbers of the producer entity (0-many optional)<br />
  * <u>ddms:email</u>: email addresses of the producer entity (0-many optional)<br />
- * <u>ddms:subOrganization</u>: suborganization (0-many optional, starting in DDMS 4.0)<br />
+ * <u>ddms:subOrganization</u>: suborganization (0-many optional, starting in DDMS 4.0), implemented as a 
+ * {@link SubOrganization}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">

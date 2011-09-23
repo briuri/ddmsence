@@ -167,9 +167,9 @@ public final class Person extends AbstractRoleEntity {
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Person.getName(getDDMSVersion()));
 		Util.requireDDMSValue(SURNAME_NAME, getSurname());
-		Util.requireBoundedDDMSChildCount(getXOMElement(), SURNAME_NAME, 1, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), USERID_NAME, 0, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), AFFILIATION_NAME, 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), SURNAME_NAME, 1, 1);
+		Util.requireBoundedChildCount(getXOMElement(), USERID_NAME, 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), AFFILIATION_NAME, 0, 1);
 		
 		super.validate();
 	}
