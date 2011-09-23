@@ -39,8 +39,10 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ntk:AccessIndividual.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a {@link SystemName}<br />
- * <u>ntk:AccessIndividualValue</u>: The value used to describe the individual (1-to-many required), implemented as an {@link IndividualValue}<br />
+ * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a 
+ * {@link SystemName}<br />
+ * <u>ntk:AccessIndividualValue</u>: The value used to describe the individual (1-to-many required), implemented as an 
+ * {@link IndividualValue}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -53,7 +55,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Individual extends AbstractAccessEntity {
 	
-	private List<IndividualValue> _cachedIndividualValues;
+	private List<IndividualValue> _individualValues = null;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -65,9 +67,9 @@ public final class Individual extends AbstractAccessEntity {
 		super(element);
 		try {
 			Elements values = element.getChildElements(IndividualValue.getName(getDDMSVersion()), getNamespace());
-			_cachedIndividualValues = new ArrayList<IndividualValue>();
+			_individualValues = new ArrayList<IndividualValue>();
 			for (int i = 0; i < values.size(); i++) {
-				_cachedIndividualValues.add(new IndividualValue(values.get(i)));
+				_individualValues.add(new IndividualValue(values.get(i)));
 			}
 			validate();
 		} catch (InvalidDDMSException e) {
@@ -93,7 +95,7 @@ public final class Individual extends AbstractAccessEntity {
 			for (IndividualValue value : individualValues) {
 				getXOMElement().appendChild(value.getXOMElementCopy());
 			}
-			_cachedIndividualValues = individualValues;
+			_individualValues = individualValues;
 			validate();
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -167,7 +169,7 @@ public final class Individual extends AbstractAccessEntity {
 	 * Accessor for the list of individual values (1-many)
 	 */
 	public List<IndividualValue> getIndividualValues() {
-		return (Collections.unmodifiableList(_cachedIndividualValues));
+		return (Collections.unmodifiableList(_individualValues));
 	}	
 		
 	/**

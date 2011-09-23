@@ -54,10 +54,10 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public final class NoticeAttributes extends AbstractAttributeGroup {
-	private String _cachedNoticeType = null;
-	private String _cachedNoticeReason = null;
-	private XMLGregorianCalendar _cachedNoticeDate = null;
-	private String _cachedUnregisteredNoticeType = null;
+	private String _noticeType = null;
+	private String _noticeReason = null;
+	private XMLGregorianCalendar _noticeDate = null;
+	private String _unregisteredNoticeType = null;
 		
 	/** Attribute name */
 	public static final String NOTICE_TYPE_NAME = "noticeType";
@@ -86,6 +86,17 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	public static final Set<String> NON_EXTENSIBLE_NAMES = Collections.unmodifiableSet(ALL_NAMES);
 	
 	/**
+	 * Returns a non-null instance of notice attributes. If the instance passed in is not null, it will be returned.
+	 * 
+	 * @param noticeAttributes the attributes to return by default
+	 * @return a non-null attributes instance
+	 * @throws InvalidDDMSException if there are problems creating the empty attributes instance
+	 */
+	public static NoticeAttributes getNonNullInstance(NoticeAttributes noticeAttributes) throws InvalidDDMSException {
+		return (noticeAttributes == null ? new NoticeAttributes(null, null, null, null) : noticeAttributes);
+	}
+	
+	/**
 	 * Base constructor
 	 * 
 	 * @param element the XOM element which is decorated with these attributes.
@@ -94,12 +105,12 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		super(element.getNamespaceURI());
 		String icNamespace = getDDMSVersion().getIsmNamespace();
 
-		_cachedNoticeType = element.getAttributeValue(NOTICE_TYPE_NAME, icNamespace);;
-		_cachedNoticeReason = element.getAttributeValue(NOTICE_REASON_NAME, icNamespace);;
-		_cachedUnregisteredNoticeType = element.getAttributeValue(UNREGISTERED_NOTICE_TYPE_NAME, icNamespace);
+		_noticeType = element.getAttributeValue(NOTICE_TYPE_NAME, icNamespace);;
+		_noticeReason = element.getAttributeValue(NOTICE_REASON_NAME, icNamespace);;
+		_unregisteredNoticeType = element.getAttributeValue(UNREGISTERED_NOTICE_TYPE_NAME, icNamespace);
 		String noticeDate = element.getAttributeValue(NOTICE_DATE_NAME, icNamespace);
 		if (!Util.isEmpty(noticeDate))
-			_cachedNoticeDate = getFactory().newXMLGregorianCalendar(noticeDate);
+			_noticeDate = getFactory().newXMLGregorianCalendar(noticeDate);
 		validate();
 	}
 	
@@ -115,12 +126,12 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	public NoticeAttributes(String noticeType, String noticeReason, String noticeDate, String unregisteredNoticeType)
 		throws InvalidDDMSException {
 		super(DDMSVersion.getCurrentVersion().getNamespace());
-		_cachedNoticeType = noticeType;
-		_cachedNoticeReason = noticeReason;
-		_cachedUnregisteredNoticeType = unregisteredNoticeType;
+		_noticeType = noticeType;
+		_noticeReason = noticeReason;
+		_unregisteredNoticeType = unregisteredNoticeType;
 		if (!Util.isEmpty(noticeDate)) {
 			try {
-				_cachedNoticeDate = getFactory().newXMLGregorianCalendar(noticeDate);
+				_noticeDate = getFactory().newXMLGregorianCalendar(noticeDate);
 			}
 			catch (IllegalArgumentException e) {
 				throw new InvalidDDMSException("The ISM:noticeDate attribute is not in a valid date format.");
@@ -244,29 +255,29 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 * Accessor for the noticeType attribute.
 	 */
 	public String getNoticeType() {
-		return (Util.getNonNullString(_cachedNoticeType));
+		return (Util.getNonNullString(_noticeType));
 	}
 
 	/**
 	 * Accessor for the noticeReason attribute.
 	 */
 	public String getNoticeReason() {
-		return (Util.getNonNullString(_cachedNoticeReason));
+		return (Util.getNonNullString(_noticeReason));
 	}
 	
 	/**
 	 * Accessor for the unregisteredNoticeType attribute.
 	 */
 	public String getUnregisteredNoticeType() {
-		return (Util.getNonNullString(_cachedUnregisteredNoticeType));
+		return (Util.getNonNullString(_unregisteredNoticeType));
 	}
 	
 	/**
 	 * Accessor for the noticeDate attribute. May return null if not set.
 	 */
 	public XMLGregorianCalendar getNoticeDate() {
-		return (_cachedNoticeDate == null ? null : getFactory()
-			.newXMLGregorianCalendar(_cachedNoticeDate.toXMLFormat()));
+		return (_noticeDate == null ? null : getFactory()
+			.newXMLGregorianCalendar(_noticeDate.toXMLFormat()));
 	}
 
 	/**

@@ -87,7 +87,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	private String _cachedEndString;
 	private XMLGregorianCalendar _cachedStart = null;
 	private XMLGregorianCalendar _cachedEnd = null;
-	private SecurityAttributes _securityAttributes;
+	private SecurityAttributes _securityAttributes = null;
 	
 	private static final String DEFAULT_VALUE = "Unknown";
 		

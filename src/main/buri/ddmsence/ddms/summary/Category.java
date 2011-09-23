@@ -55,7 +55,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Category extends AbstractBaseComponent {
 
-	private SecurityAttributes _securityAttributes;
+	private SecurityAttributes _securityAttributes = null;
 	private ExtensibleAttributes _extensibleAttributes = null;
 	
 	private static final String QUALIFIER_NAME = "qualifier";

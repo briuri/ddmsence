@@ -168,7 +168,7 @@ public final class Resource extends AbstractBaseComponent {
 	private Integer _ismDESVersion = null;
 	private Integer _ntkDESVersion = null;
 	private NoticeAttributes _noticeAttributes = null;
-	private SecurityAttributes _securityAttributes;
+	private SecurityAttributes _securityAttributes = null;
 	private ExtensibleAttributes _extensibleAttributes = null;
 	
 	/** The attribute name for resource element flag */
@@ -451,8 +451,7 @@ public final class Resource extends AbstractBaseComponent {
 				Util.addAttribute(element, ismPrefix, CREATE_DATE_NAME, version.getIsmNamespace(), getCreateDate()
 					.toXMLFormat());
 			}
-			_noticeAttributes = (noticeAttributes == null ? new NoticeAttributes(null, null, null, null)
-				: noticeAttributes);
+			_noticeAttributes = NoticeAttributes.getNonNullInstance(noticeAttributes);
 			_noticeAttributes.addTo(element);
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);

@@ -36,8 +36,7 @@ import buri.ddmsence.util.Util;
  * <u>ntk:IDReference</u>: A cross-reference to a unique identifier (optional)<br />
  * <u>ntk:qualifier</u>: A user-defined property within an element for general purpose processing used with block 
  * objects to provide supplemental information over and above that conveyed by the element name (optional)<br />
- * <u>{@link SecurityAttributes}</u>:  The classification and
- * ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!

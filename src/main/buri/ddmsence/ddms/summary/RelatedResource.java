@@ -86,7 +86,7 @@ import buri.ddmsence.util.Util;
 public final class RelatedResource extends AbstractQualifierValue {
 
 	private List<Link> _cachedLinks;
-	private SecurityAttributes _securityAttributes;
+	private SecurityAttributes _securityAttributes = null;
 	
 	/** The value for an inbound direction. */
 	public static final String INBOUND_DIRECTION = "inbound";

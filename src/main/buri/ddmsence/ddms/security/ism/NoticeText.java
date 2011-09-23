@@ -45,8 +45,7 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ISM:pocType</u>: indicates that the element specifies a POC for particular notice type. (optional)<br />
- * <u>{@link SecurityAttributes}</u>:  The classification and
- * ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -54,7 +53,7 @@ import buri.ddmsence.util.Util;
  */
 public final class NoticeText extends AbstractSimpleString {
 	
-	private List<String> _cachedPocTypes;
+	private List<String> _pocTypes = null;
 	
 	private static final String POC_TYPE_NAME = "pocType";
 	
@@ -68,9 +67,10 @@ public final class NoticeText extends AbstractSimpleString {
 		super(element, false);	
 		try {
 			String pocTypes = element.getAttributeValue(POC_TYPE_NAME, getDDMSVersion().getIsmNamespace());
-			_cachedPocTypes = Util.getXsListAsList(pocTypes);
+			_pocTypes = Util.getXsListAsList(pocTypes);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -94,9 +94,10 @@ public final class NoticeText extends AbstractSimpleString {
 			if (!pocTypes.isEmpty())
 				Util.addAttribute(getXOMElement(), PropertyReader.getPrefix("ism"), POC_TYPE_NAME, DDMSVersion
 					.getCurrentVersion().getIsmNamespace(), Util.getXsList(pocTypes));
-			_cachedPocTypes = pocTypes;
+			_pocTypes = pocTypes;
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -184,7 +185,7 @@ public final class NoticeText extends AbstractSimpleString {
 	 * Accessor for the pocType attribute.
 	 */
 	public List<String> getPocTypes() {
-		return (_cachedPocTypes);
+		return (_pocTypes);
 	}
 	
 	/**

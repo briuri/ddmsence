@@ -52,34 +52,37 @@ import buri.ddmsence.util.Util;
  */
 public final class Security extends AbstractBaseComponent {
 
-	private NoticeList _cachedNoticeList = null;
-	private Access _cachedAccess = null;
-	private SecurityAttributes _securityAttributes;
+	private NoticeList _noticeList = null;
+	private Access _access = null;
+	private SecurityAttributes _securityAttributes = null;
 	
 	private static final String FIXED_ROLLUP = "true";
 	
 	/** Attribute name */
 	public static final String EXCLUDE_FROM_ROLLUP_NAME = "excludeFromRollup";
-	
+
 	/**
 	 * Constructor for creating a component from a XOM Element
-	 *  
-	 * @param element the XOM element representing this 
+	 * 
+	 * @param element the XOM element representing this
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Security(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			Element noticeListElement = element.getFirstChildElement(NoticeList.getName(getDDMSVersion()), getNamespace());
+			Element noticeListElement = element.getFirstChildElement(NoticeList.getName(getDDMSVersion()),
+				getNamespace());
 			if (noticeListElement != null)
-				_cachedNoticeList = new NoticeList(noticeListElement);
+				_noticeList = new NoticeList(noticeListElement);
 
-			Element accessElement = element.getFirstChildElement(Access.getName(getDDMSVersion()), getDDMSVersion().getNtkNamespace());
+			Element accessElement = element.getFirstChildElement(Access.getName(getDDMSVersion()), getDDMSVersion()
+				.getNtkNamespace());
 			if (accessElement != null)
-				_cachedAccess = new Access(accessElement);
+				_access = new Access(accessElement);
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -93,25 +96,27 @@ public final class Security extends AbstractBaseComponent {
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Security(NoticeList noticeList, Access access, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public Security(NoticeList noticeList, Access access, SecurityAttributes securityAttributes)
+		throws InvalidDDMSException {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			
+
 			Element element = Util.buildDDMSElement(Security.getName(version), null);
 			if (noticeList != null)
 				element.appendChild(noticeList.getXOMElementCopy());
 			if (access != null)
 				element.appendChild(access.getXOMElementCopy());
 			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
-				Util.addAttribute(element, PropertyReader.getPrefix("ism"), EXCLUDE_FROM_ROLLUP_NAME, 
-					DDMSVersion.getCurrentVersion().getIsmNamespace(), FIXED_ROLLUP);
-			_cachedNoticeList = noticeList;
-			_cachedAccess = access;
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), EXCLUDE_FROM_ROLLUP_NAME, DDMSVersion
+					.getCurrentVersion().getIsmNamespace(), FIXED_ROLLUP);
+			_noticeList = noticeList;
+			_access = access;
 			_securityAttributes = securityAttributes;
 			if (securityAttributes != null)
 				securityAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -131,6 +136,7 @@ public final class Security extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Security.getName(getDDMSVersion()));
+		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (getDDMSVersion().isAtLeast("3.0")) {
 			if (getExcludeFromRollup() == null)
@@ -141,7 +147,7 @@ public final class Security extends AbstractBaseComponent {
 		}
 		else if (getExcludeFromRollup() != null)
 			throw new InvalidDDMSException("The excludeFromRollup attribute cannot be used until DDMS 3.0 or later.");
-		
+
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 
@@ -212,14 +218,14 @@ public final class Security extends AbstractBaseComponent {
 	 * Accessor for the NoticeList. May be null.
 	 */
 	public NoticeList getNoticeList() {
-		return (_cachedNoticeList);
+		return (_noticeList);
 	}
 	
 	/**
 	 * Accessor for the Access. May be null.
 	 */
 	public Access getAccess() {
-		return (_cachedAccess);
+		return (_access);
 	}
 	
 	/**
@@ -262,9 +268,10 @@ public final class Security extends AbstractBaseComponent {
 		 * @see IBuilder#commit()
 		 */
 		public Security commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Security(getNoticeList().commit(), getAccess().commit(), getSecurityAttributes().commit()));
+			return (isEmpty() ? null : new Security(getNoticeList().commit(), getAccess().commit(),
+				getSecurityAttributes().commit()));
 		}
-		
+
 		/**
 		 * @see IBuilder#isEmpty()
 		 */

@@ -56,7 +56,7 @@ import buri.ddmsence.util.Util;
  */
 public final class VirtualCoverage extends AbstractBaseComponent {
 
-	private SecurityAttributes _securityAttributes;
+	private SecurityAttributes _securityAttributes = null;
 	
 	private static final String ADDRESS_NAME = "address";
 	private static final String PROTOCOL_NAME = "protocol";

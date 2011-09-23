@@ -39,8 +39,10 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ntk:AccessGroup.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a {@link SystemName}<br />
- * <u>ntk:AccessGroupValue</u>: The value used to describe the group (1-to-many required), implemented as a {@link GroupValue}<br />
+ * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a 
+ * {@link SystemName}<br />
+ * <u>ntk:AccessGroupValue</u>: The value used to describe the group (1-to-many required), implemented as a 
+ * {@link GroupValue}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -52,7 +54,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Group extends AbstractAccessEntity {
 	
-	private List<GroupValue> _groupValues;
+	private List<GroupValue> _groupValues = null;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
