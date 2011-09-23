@@ -55,7 +55,7 @@ public class PositionTest extends AbstractComponentTestCase {
 		TEST_COORDS_3.add(new Double(42.1));
 		TEST_COORDS_3.add(new Double(50.1));
 	}
-	
+
 	/**
 	 * Constructor
 	 */
@@ -73,9 +73,9 @@ public class PositionTest extends AbstractComponentTestCase {
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
 		}
-		return (null);		
+		return (null);
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing. This list of positions represents a closed polygon.
 	 */
@@ -91,9 +91,9 @@ public class PositionTest extends AbstractComponentTestCase {
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
 		}
-		return (null);		
+		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 

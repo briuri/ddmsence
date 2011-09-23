@@ -26,7 +26,6 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
-import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -49,15 +48,6 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	 */
 	public RelatedResourceTest() {
 		super("relatedResources.xml");
-	}
-
-	/**
-	 * Returns a list of links for testing
-	 */
-	private static List<Link> getLinks() throws InvalidDDMSException {
-		List<Link> links = new ArrayList<Link>();
-		links.add(new Link(new XLinkAttributes(TEST_VALUE, "role", null, null)));
-		return (links);
 	}
 
 	/**
@@ -188,10 +178,12 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getLinks(), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
+			testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
+				TEST_VALUE);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, getLinks(), TEST_RELATIONSHIP, null, TEST_QUALIFIER, TEST_VALUE);
+			testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, null, TEST_QUALIFIER,
+				TEST_VALUE);
 		}
 	}
 
@@ -292,22 +284,26 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing relationship
-			testConstructor(WILL_FAIL, getLinks(), null, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
+			testConstructor(WILL_FAIL, LinkTest.getFixtureList(), null, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 
 			// Invalid direction
-			testConstructor(WILL_FAIL, getLinks(), TEST_RELATIONSHIP, "veeringLeft", TEST_QUALIFIER, TEST_VALUE);
+			testConstructor(WILL_FAIL, LinkTest.getFixtureList(), TEST_RELATIONSHIP, "veeringLeft", TEST_QUALIFIER,
+				TEST_VALUE);
 
 			// Relationship not URI
-			testConstructor(WILL_FAIL, getLinks(), INVALID_URI, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
+			testConstructor(WILL_FAIL, LinkTest.getFixtureList(), INVALID_URI, TEST_DIRECTION, TEST_QUALIFIER,
+				TEST_VALUE);
 
 			// Missing qualifier
-			testConstructor(WILL_FAIL, getLinks(), TEST_RELATIONSHIP, TEST_DIRECTION, null, TEST_VALUE);
+			testConstructor(WILL_FAIL, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION, null, TEST_VALUE);
 
 			// Qualifier not URI
-			testConstructor(WILL_FAIL, getLinks(), TEST_RELATIONSHIP, TEST_DIRECTION, INVALID_URI, TEST_VALUE);
+			testConstructor(WILL_FAIL, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION, INVALID_URI,
+				TEST_VALUE);
 
 			// Missing value
-			testConstructor(WILL_FAIL, getLinks(), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, null);
+			testConstructor(WILL_FAIL, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
+				null);
 
 			// Missing link
 			testConstructor(WILL_FAIL, null, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
@@ -356,7 +352,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			RelatedResource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			RelatedResource dataComponent = testConstructor(WILL_SUCCEED, getLinks(), TEST_RELATIONSHIP,
+			RelatedResource dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP,
 				TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -367,19 +363,19 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			RelatedResource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			RelatedResource dataComponent = testConstructor(WILL_SUCCEED, getLinks(), DIFFERENT_VALUE, TEST_DIRECTION,
+			RelatedResource dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), DIFFERENT_VALUE,
+				TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, "inbound",
 				TEST_QUALIFIER, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getLinks(), TEST_RELATIONSHIP, "inbound", TEST_QUALIFIER,
-				TEST_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = testConstructor(WILL_SUCCEED, getLinks(), TEST_RELATIONSHIP, TEST_DIRECTION,
+			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION,
 				DIFFERENT_VALUE, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, getLinks(), TEST_RELATIONSHIP, TEST_DIRECTION,
+			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION,
 				TEST_QUALIFIER, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
@@ -399,8 +395,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getLinks(), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
-				TEST_VALUE);
+			component = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION,
+				TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -412,8 +408,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			RelatedResource component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getLinks(), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
-				TEST_VALUE);
+			component = testConstructor(WILL_SUCCEED, LinkTest.getFixtureList(), TEST_RELATIONSHIP, TEST_DIRECTION,
+				TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -421,7 +417,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	public void testLinkReuse() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			List<Link> links = getLinks();
+			List<Link> links = LinkTest.getFixtureList();
 			testConstructor(WILL_SUCCEED, links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 			testConstructor(WILL_SUCCEED, links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 		}
@@ -429,7 +425,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 
 	public void testWrongVersions() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		List<Link> links = getLinks();
+		List<Link> links = LinkTest.getFixtureList();
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
 			new RelatedResource(links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE, null);

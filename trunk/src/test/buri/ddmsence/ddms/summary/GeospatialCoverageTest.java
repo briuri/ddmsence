@@ -602,8 +602,7 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		PostalAddress address = PostalAddressTest.getFixture();
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
-			new GeospatialCoverage(null, null, null, address, null, null, null, SecurityAttributesTest
-				.getFixture());
+			new GeospatialCoverage(null, null, null, address, null, null, null, SecurityAttributesTest.getFixture());
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {

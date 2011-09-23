@@ -44,10 +44,16 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a country code fixture
+	 * Returns a fixture object for testing.
 	 */
-	protected static CountryCode getFixture() throws InvalidDDMSException {
-		return (new CountryCode("ISO-3166", "USA"));
+	public static CountryCode getFixture() {
+		try {
+			return (new CountryCode("ISO-3166", "USA"));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

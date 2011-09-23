@@ -19,6 +19,9 @@
  */
 package buri.ddmsence.ddms.summary;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -43,6 +46,23 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public NonStateActorTest() {
 		super("nonStateActor.xml");
 		removeSupportedVersions("2.0 3.0 3.1");
+	}
+
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static List<NonStateActor> getFixtureList() {
+		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			List<NonStateActor> actors = new ArrayList<NonStateActor>();
+			if (version.isAtLeast("4.0"))
+				actors.add(new NonStateActor("Laotian Monks", new Integer(1), SecurityAttributesTest.getFixture()));
+			return (actors);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

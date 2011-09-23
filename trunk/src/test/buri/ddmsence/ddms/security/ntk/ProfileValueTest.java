@@ -66,7 +66,7 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -75,7 +75,7 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 		list.add(ProfileValueTest.getFixture("profile"));
 		return (list);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 

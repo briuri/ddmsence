@@ -44,7 +44,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 	public PolygonTest() throws InvalidDDMSException {
 		super("polygon.xml");
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -59,7 +59,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -361,8 +361,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Polygon elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Polygon dataComponent = testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(),
-				TEST_ID);
+			Polygon dataComponent = testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(), SRSAttributesTest
+				.getFixture(), TEST_ID);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -383,8 +383,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 			dataComponent = testConstructor(WILL_SUCCEED, newPositions, SRSAttributesTest.getFixture(), TEST_ID);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(),
-				DIFFERENT_VALUE);
+			dataComponent = testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(),
+				SRSAttributesTest.getFixture(), DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
 		}
@@ -406,7 +406,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), TEST_ID);
+			component = testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(),
+				TEST_ID);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -418,7 +419,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 			Polygon component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), TEST_ID);
+			component = testConstructor(WILL_SUCCEED, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(),
+				TEST_ID);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}

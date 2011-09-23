@@ -212,7 +212,8 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			BoundingGeometry elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			BoundingGeometry dataComponent = testConstructor(WILL_SUCCEED, PolygonTest.getFixtureList(), PointTest.getFixtureList());
+			BoundingGeometry dataComponent = testConstructor(WILL_SUCCEED, PolygonTest.getFixtureList(), PointTest
+				.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, PolygonTest.getFixtureList(), null);
@@ -342,11 +343,15 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			fullPolygonBuilder.getPositions().get(0).getCoordinates().get(0).setValue(PositionTest.TEST_COORDS.get(0));
 			fullPolygonBuilder.getPositions().get(0).getCoordinates().get(1).setValue(PositionTest.TEST_COORDS.get(1));
 
-			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(0).setValue(PositionTest.TEST_COORDS_2.get(0));
-			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(1).setValue(PositionTest.TEST_COORDS_2.get(1));
+			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(0)
+				.setValue(PositionTest.TEST_COORDS_2.get(0));
+			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(1)
+				.setValue(PositionTest.TEST_COORDS_2.get(1));
 
-			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(0).setValue(PositionTest.TEST_COORDS_3.get(0));
-			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(1).setValue(PositionTest.TEST_COORDS_3.get(1));
+			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(0)
+				.setValue(PositionTest.TEST_COORDS_3.get(0));
+			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(1)
+				.setValue(PositionTest.TEST_COORDS_3.get(1));
 
 			fullPolygonBuilder.getPositions().get(3).getCoordinates().get(0).setValue(PositionTest.TEST_COORDS.get(0));
 			fullPolygonBuilder.getPositions().get(3).getCoordinates().get(1).setValue(PositionTest.TEST_COORDS.get(1));

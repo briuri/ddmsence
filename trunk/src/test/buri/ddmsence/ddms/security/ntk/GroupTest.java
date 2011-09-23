@@ -59,7 +59,7 @@ public class GroupTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -226,7 +226,8 @@ public class GroupTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Group elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Group dataComponent = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), GroupValueTest.getFixtureList());
+			Group dataComponent = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), GroupValueTest
+				.getFixtureList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}

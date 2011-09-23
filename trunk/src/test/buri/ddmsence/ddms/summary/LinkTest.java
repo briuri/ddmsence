@@ -19,6 +19,9 @@
  */
 package buri.ddmsence.ddms.summary;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -55,15 +58,34 @@ public class LinkTest extends AbstractComponentTestCase {
 
 	/**
 	 * Returns a fixture object for testing.
-	 * 
-	 * @return a XOM element representing a valid link
 	 */
-	protected static Element getFixtureElement() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		Element linkElement = Util.buildDDMSElement(Link.getName(version), null);
-		linkElement.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
-		XLinkAttributesTest.getLocatorFixture().addTo(linkElement);
-		return (linkElement);
+	public static Element getFixtureElement() {
+		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			Element linkElement = Util.buildDDMSElement(Link.getName(version), null);
+			linkElement.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
+			XLinkAttributesTest.getLocatorFixture().addTo(linkElement);
+			return (linkElement);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static List<Link> getFixtureList() {
+		try {
+			List<Link> links = new ArrayList<Link>();
+			links.add(new Link(new XLinkAttributes(TEST_HREF, "role", null, null)));
+			return (links);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

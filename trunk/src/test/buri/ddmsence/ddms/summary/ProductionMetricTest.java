@@ -19,6 +19,9 @@
  */
 package buri.ddmsence.ddms.summary;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -44,6 +47,23 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	public ProductionMetricTest() {
 		super("productionMetric.xml");
 		removeSupportedVersions("2.0 3.0 3.1");
+	}
+
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static List<ProductionMetric> getFixtureList() {
+		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			List<ProductionMetric> metrics = new ArrayList<ProductionMetric>();
+			if (version.isAtLeast("4.0"))
+				metrics.add(new ProductionMetric("FOOD", "AFG", SecurityAttributesTest.getFixture()));
+			return (metrics);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

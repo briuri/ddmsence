@@ -79,9 +79,9 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
 		}
-		return (null);	
+		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 

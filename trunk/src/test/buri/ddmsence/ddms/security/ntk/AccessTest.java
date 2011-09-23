@@ -50,7 +50,8 @@ public class AccessTest extends AbstractComponentTestCase {
 	 */
 	public static Access getFixture() {
 		try {
-			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ?  new Access(IndividualTest.getFixtureList(), null, null, SecurityAttributesTest.getFixture()) : null);
+			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new Access(IndividualTest.getFixtureList(),
+				null, null, SecurityAttributesTest.getFixture()) : null);
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -174,7 +175,8 @@ public class AccessTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), ProfileListTest.getFixture());
+			testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), ProfileListTest
+				.getFixture());
 
 			// No optional fields
 			testConstructor(WILL_SUCCEED, null, null, null);
@@ -229,8 +231,8 @@ public class AccessTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Access elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Access dataComponent = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), ProfileListTest
-				.getFixture());
+			Access dataComponent = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest
+				.getFixtureList(), ProfileListTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -241,13 +243,16 @@ public class AccessTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Access elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Access dataComponent = testConstructor(WILL_SUCCEED, null, GroupTest.getFixtureList(), ProfileListTest.getFixture());
+			Access dataComponent = testConstructor(WILL_SUCCEED, null, GroupTest.getFixtureList(), ProfileListTest
+				.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), null, ProfileListTest.getFixture());
+			dataComponent = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), null, ProfileListTest
+				.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), null);
+			dataComponent = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
+				null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -260,7 +265,8 @@ public class AccessTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), ProfileListTest.getFixture());
+			component = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
+				ProfileListTest.getFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -273,7 +279,8 @@ public class AccessTest extends AbstractComponentTestCase {
 			Access component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), ProfileListTest.getFixture());
+			component = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
+				ProfileListTest.getFixture());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}

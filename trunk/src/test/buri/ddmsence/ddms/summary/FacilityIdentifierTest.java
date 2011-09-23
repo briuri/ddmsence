@@ -44,10 +44,16 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a facility identifier fixture
+	 * Returns a fixture object for testing.
 	 */
-	protected static FacilityIdentifier getFixture() throws InvalidDDMSException {
-		return (new FacilityIdentifier("1234DD56789", "DD123"));
+	public static FacilityIdentifier getFixture() {
+		try {
+			return (new FacilityIdentifier("1234DD56789", "DD123"));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 
 	/**

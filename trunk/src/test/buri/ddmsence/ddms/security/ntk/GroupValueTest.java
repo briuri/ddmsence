@@ -73,7 +73,7 @@ public class GroupValueTest extends AbstractComponentTestCase {
 		list.add(GroupValueTest.getFixture());
 		return (list);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 

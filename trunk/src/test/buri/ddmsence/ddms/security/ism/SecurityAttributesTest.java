@@ -150,7 +150,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Returns a set of attributes for a specific version of DDMS.
 	 * 
