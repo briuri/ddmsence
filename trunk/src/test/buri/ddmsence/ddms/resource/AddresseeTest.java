@@ -71,7 +71,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	private static Organization getOrgFixture() {
 		try {
 			return (new Organization(Util.getXsListAsList(TEST_NAME), null, null, null, null, null));
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -83,7 +84,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	private static Person getPersonFixture() {
 		try {
 			return (new Person(Util.getXsListAsList(TEST_NAME), TEST_SURNAME, null, null, null, null, null));
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -102,7 +104,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 		try {
 			component = new Addressee(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -120,7 +123,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 		try {
 			component = new Addressee(entity, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -214,7 +218,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 			try {
 				new Addressee(getOrgFixture(), null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -282,7 +287,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new Addressee(getOrgFixture(), SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -312,7 +318,8 @@ public class AddresseeTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.getSecurityAttributes().setClassification("U");

@@ -57,7 +57,8 @@ public class ContributorTest extends AbstractComponentTestCase {
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new Contributor(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -68,10 +69,10 @@ public class ContributorTest extends AbstractComponentTestCase {
 	 */
 	private IRoleEntity getEntityFixture() {
 		try {
-			return (new Organization(Util.getXsListAsList("DISA PEO-GES"),
-				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com"), null, null,
-				null));
-		} catch (InvalidDDMSException e) {
+			return (new Organization(Util.getXsListAsList("DISA PEO-GES"), Util
+				.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com"), null, null, null));
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -89,7 +90,8 @@ public class ContributorTest extends AbstractComponentTestCase {
 		try {
 			component = new Contributor(entity, pocType, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -120,8 +122,8 @@ public class ContributorTest extends AbstractComponentTestCase {
 		xml.append("<ddms:contributor ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
 		if (version.isAtLeast("4.0"))
 			xml.append(" ddms:POCType=\"ICD-710\"");
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:")
-			.append(Organization.getName(version)).append(">\n");
+		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(
+			Organization.getName(version)).append(">\n");
 		xml.append("\t\t<ddms:name>DISA</ddms:name>\n");
 		xml.append("\t\t<ddms:name>PEO-GES</ddms:name>\n");
 		xml.append("\t\t<ddms:phone>703-882-1000</ddms:phone>\n");
@@ -245,7 +247,8 @@ public class ContributorTest extends AbstractComponentTestCase {
 		try {
 			new Contributor(getEntityFixture(), "ICD-710", SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -270,7 +273,8 @@ public class ContributorTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

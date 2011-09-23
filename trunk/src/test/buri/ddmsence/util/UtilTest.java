@@ -125,7 +125,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.getFirstDDMSChildValue(null, "test");
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -134,7 +135,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.getFirstDDMSChildValue(Util.buildDDMSElement("test", null), null);
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -144,7 +146,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.getFirstDDMSChildValue(element, "child");
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -176,7 +179,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.getDDMSChildValues(null, "test");
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -185,7 +189,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.getDDMSChildValues(Util.buildDDMSElement("test", null), null);
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -197,7 +202,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.getDDMSChildValues(element, "child");
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -246,7 +252,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireDDMSValue("description", null);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -255,7 +262,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireDDMSValue("description", "");
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -263,7 +271,8 @@ public class UtilTest extends TestCase {
 	public void testRequireDDMSValueNotEmpty() {
 		try {
 			Util.requireDDMSValue("description", "DDMSence");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Did not allow valid data.");
 		}
 	}
@@ -271,7 +280,8 @@ public class UtilTest extends TestCase {
 	public void testRequireDDMSDateFormatSuccess() {
 		try {
 			Util.requireDDMSDateFormat(DatatypeConstants.DATETIME);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Did not allow valid data.");
 		}
 	}
@@ -280,7 +290,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireDDMSDateFormat(DatatypeConstants.GDAY);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -289,7 +300,8 @@ public class UtilTest extends TestCase {
 		try {
 			Element element = Util.buildDDMSElement("name", null);
 			Util.requireDDMSQName(element, "name");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Did not allow valid data.");
 		}
 	}
@@ -300,7 +312,8 @@ public class UtilTest extends TestCase {
 			Element element = Util.buildElement("ic", "name", "urn:us:gov:ic:ism", null);
 			Util.requireDDMSQName(element, "name");
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 
@@ -309,7 +322,8 @@ public class UtilTest extends TestCase {
 			Element element = Util.buildDDMSElement("name", null);
 			Util.requireDDMSQName(element, "newName");
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -318,7 +332,8 @@ public class UtilTest extends TestCase {
 		try {
 			Element element = Util.buildDDMSElement("name", null);
 			Util.requireQName(element, DDMSVersion.getCurrentVersion().getNamespace(), "name");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Did not allow valid data.");
 		}
 
@@ -326,7 +341,8 @@ public class UtilTest extends TestCase {
 		try {
 			Element element = Util.buildElement("", "name", "", null);
 			Util.requireQName(element, null, "name");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Did not allow valid data.");
 		}
 	}
@@ -337,7 +353,8 @@ public class UtilTest extends TestCase {
 			Element element = Util.buildElement("ic", "name", "urn:us:gov:ic:ism", null);
 			Util.requireQName(element, "", "name");
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 
@@ -346,7 +363,8 @@ public class UtilTest extends TestCase {
 			Element element = Util.buildDDMSElement("name", null);
 			Util.requireQName(element, DDMSVersion.getCurrentVersion().getNamespace(), "newName");
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -355,7 +373,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireValue("description", null);
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -364,7 +383,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireValue("description", "");
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -372,7 +392,8 @@ public class UtilTest extends TestCase {
 	public void testRequireValueNotEmpty() {
 		try {
 			Util.requireValue("description", "DDMSence");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			fail("Did not allow valid data.");
 		}
 	}
@@ -381,9 +402,11 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireBoundedDDMSChildCount(null, "test", 0, 1);
 			fail("Allowed illegal argument data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Allowed illegal argument data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -392,9 +415,11 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireBoundedDDMSChildCount(Util.buildDDMSElement("test", null), null, 0, 1);
 			fail("Allowed illegal argument data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Allowed illegal argument data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -404,7 +429,8 @@ public class UtilTest extends TestCase {
 		element.appendChild(Util.buildDDMSElement("name", "nameValue"));
 		try {
 			Util.requireBoundedDDMSChildCount(element, "name", 0, 2);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Prevented valid data.");
 		}
 	}
@@ -415,7 +441,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireBoundedDDMSChildCount(element, "phone", 1, 1);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			assertEquals("Exactly 1 phone element must exist.", e.getMessage());
 		}
 	}
@@ -426,7 +453,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireBoundedDDMSChildCount(element, "phone", 2, 2);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			assertEquals("Exactly 2 phone elements must exist.", e.getMessage());
 		}
 	}
@@ -438,7 +466,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireBoundedDDMSChildCount(element, "phone", 0, 1);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			assertEquals("No more than 1 phone element can exist.", e.getMessage());
 		}
 	}
@@ -451,7 +480,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireBoundedDDMSChildCount(element, "phone", 0, 2);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			assertEquals("No more than 2 phone elements can exist.", e.getMessage());
 		}
 	}
@@ -461,7 +491,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireBoundedDDMSChildCount(element, "phone", 1, 5);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			assertEquals("The number of phone elements must be between 1 and 5.", e.getMessage());
 		}
 	}
@@ -471,9 +502,11 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireBoundedDDMSChildCount(element, "child", 0, 0);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Allowed processing of invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -502,7 +535,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireValidNCNames(names);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -511,7 +545,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireValidNCName(null);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -520,7 +555,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireValidNCName("1TEST");
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -529,7 +565,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireValidNCName("xmlns:TEST");
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -542,7 +579,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireValidNMToken(null);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -567,7 +605,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireDDMSValidURI(":::::");
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -576,7 +615,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireDDMSValidURI(null);
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -585,7 +625,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireValidLongitude(null);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -597,7 +638,8 @@ public class UtilTest extends TestCase {
 
 			Util.requireValidLongitude(new Double(181));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -610,7 +652,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireValidLatitude(null);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -622,7 +665,8 @@ public class UtilTest extends TestCase {
 
 			Util.requireValidLatitude(new Double(91));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -635,7 +679,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.isBounded(0, 10, 0);
 			fail("Did not stop on bad range.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -668,7 +713,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.listEquals(null, null);
 			fail("Did not stop on bad data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -724,8 +770,8 @@ public class UtilTest extends TestCase {
 
 	public void testXmlEscape() {
 		String testString = "<test>\"Brian's DDMSense & DDMS\"</test>";
-		assertEquals("&lt;test&gt;&quot;Brian&apos;s DDMSense &amp; DDMS&quot;&lt;/test&gt;",
-			Util.xmlEscape(testString));
+		assertEquals("&lt;test&gt;&quot;Brian&apos;s DDMSense &amp; DDMS&quot;&lt;/test&gt;", Util
+			.xmlEscape(testString));
 	}
 
 	public void testCapitalizeEmpty() {
@@ -766,7 +812,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.buildDDMSElement(null, null);
 			fail("Method allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -821,7 +868,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.buildDDMSAttribute(null, "testValue");
 			fail("Method allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -830,7 +878,8 @@ public class UtilTest extends TestCase {
 		try {
 			Util.buildDDMSAttribute("test", null);
 			fail("Method allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -850,7 +899,8 @@ public class UtilTest extends TestCase {
 			Identifier identifier2 = new Identifier("Test", "Value");
 			Util.requireCompatibleVersion(identifier, identifier2);
 			fail("Allowed different versions.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -915,14 +965,16 @@ public class UtilTest extends TestCase {
 		try {
 			Util.buildXmlDocument(null);
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 
 		try {
 			Util.buildXmlDocument(new ByteArrayInputStream("Not an XML File".getBytes()));
 			fail("Allowed invalid data.");
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			// Good
 		}
 	}

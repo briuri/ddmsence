@@ -63,7 +63,8 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 		try {
 			component = new FacilityIdentifier(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -82,7 +83,8 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 		try {
 			component = new FacilityIdentifier(beNumber, osuffix);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -261,7 +263,8 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

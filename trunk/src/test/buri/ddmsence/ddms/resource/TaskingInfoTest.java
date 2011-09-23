@@ -77,7 +77,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			List<RequesterInfo> list = new ArrayList<RequesterInfo>();
 			list.add(new RequesterInfo(RequesterInfoTest.getFixtureElement(true)));
 			return (list);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -91,7 +92,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			List<Addressee> list = new ArrayList<Addressee>();
 			list.add(new Addressee(AddresseeTest.getFixtureElement(true)));
 			return (list);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -103,7 +105,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	private static Description getDescriptionFixture() {
 		try {
 			return (new Description("Tasking Info", SecurityAttributesTest.getFixture(false)));
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -115,7 +118,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	private static TaskID getTaskIDFixture() {
 		try {
 			return (new TaskID(TaskIDTest.getFixtureElement()));
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -134,7 +138,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		try {
 			component = new TaskingInfo(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -153,10 +158,11 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		List<Addressee> addressees, Description description, TaskID taskID) {
 		TaskingInfo component = null;
 		try {
-			component = new TaskingInfo(requesterInfos, addressees, description, taskID,
-				SecurityAttributesTest.getFixture(false));
+			component = new TaskingInfo(requesterInfos, addressees, description, taskID, SecurityAttributesTest
+				.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -218,8 +224,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_DDMS_PREFIX,
-				TaskingInfo.getName(version));
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_DDMS_PREFIX, TaskingInfo
+				.getName(version));
 			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
@@ -279,7 +285,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			try {
 				new TaskingInfo(null, null, null, new TaskID("test", null, null, null, null), null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -366,7 +373,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new TaskingInfo(null, null, null, new TaskID("test", null, null, null, null), attr);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -397,7 +405,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));

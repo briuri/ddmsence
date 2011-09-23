@@ -52,7 +52,8 @@ public class ProfileListTest extends AbstractComponentTestCase {
 	public static ProfileList getFixture() {
 		try {
 			return (new ProfileList(getProfileList(), SecurityAttributesTest.getFixture(false)));
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -80,7 +81,8 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		try {
 			component = new ProfileList(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -97,7 +99,8 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		try {
 			component = new ProfileList(profiles, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -189,7 +192,8 @@ public class ProfileListTest extends AbstractComponentTestCase {
 			try {
 				new ProfileList(getProfileList(), null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -281,7 +285,8 @@ public class ProfileListTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

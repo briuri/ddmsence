@@ -49,7 +49,8 @@ public class PropertyReaderTest extends TestCase {
 		try {
 			PropertyReader.getProperty("unknown.property");
 			fail("Did not prevent invalid property.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -64,7 +65,8 @@ public class PropertyReaderTest extends TestCase {
 		try {
 			PropertyReader.setProperty("unknown.property", "value");
 			fail("Did not prevent invalid property name.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}

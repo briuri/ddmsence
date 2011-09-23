@@ -63,7 +63,8 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		try {
 			component = new CountryCode(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -82,7 +83,8 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		try {
 			component = new CountryCode(qualifier, value);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -251,7 +253,8 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

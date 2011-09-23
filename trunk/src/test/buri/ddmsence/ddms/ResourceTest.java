@@ -220,14 +220,14 @@ public class ResourceTest extends AbstractComponentTestCase {
 		String ntkNamespace = version.getNtkNamespace();
 
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
-		Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-			String.valueOf(TEST_RESOURCE_ELEMENT));
+		Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace, String
+			.valueOf(TEST_RESOURCE_ELEMENT));
 		Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
-		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
-			String.valueOf(getIsmDESVersion()));
+		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace, String
+			.valueOf(getIsmDESVersion()));
 		if (version.isAtLeast("4.0"))
-			Util.addAttribute(element, ntkPrefix, Resource.DES_VERSION_NAME, ntkNamespace,
-				String.valueOf(getNtkDESVersion()));
+			Util.addAttribute(element, ntkPrefix, Resource.DES_VERSION_NAME, ntkNamespace, String
+				.valueOf(getNtkDESVersion()));
 		SecurityAttributesTest.getFixture(false).addTo(element);
 		return (element);
 	}
@@ -247,11 +247,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 		String ismNamespace = version.getIsmNamespace();
 
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
-		Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-			String.valueOf(TEST_RESOURCE_ELEMENT));
+		Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace, String
+			.valueOf(TEST_RESOURCE_ELEMENT));
 		Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
-		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
-			String.valueOf(getIsmDESVersion()));
+		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace, String
+			.valueOf(getIsmDESVersion()));
 		SecurityAttributesTest.getFixture(false).addTo(element);
 		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
 		element.appendChild(TEST_TITLE.getXOMElementCopy());
@@ -329,7 +329,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		try {
 			component = new Resource(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -356,7 +357,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 			component = new Resource(topLevelComponents, resourceElement, createDate, ismDESVersion, ntkDESVersion,
 				attr, notice, null);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -417,7 +419,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		if (version.isAtLeast("3.0")) {
 			text.append(buildOutput(isHTML, "pointOfContact.entityType", Unknown.getName(version)));
 			text.append(buildOutput(isHTML, "pointOfContact.name", "UnknownEntity"));
-		} else {
+		}
+		else {
 			text.append(buildOutput(isHTML, "pointOfContact.entityType", Person.getName(version)));
 			text.append(buildOutput(isHTML, "pointOfContact.name", "Brian"));
 			text.append(buildOutput(isHTML, "pointOfContact.surname", "Uri"));
@@ -517,7 +520,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 			xml.append("\t\t<ddms:").append(Unknown.getName(version)).append(">\n");
 			xml.append("\t\t\t<ddms:name>UnknownEntity</ddms:name>\n");
 			xml.append("\t\t</ddms:").append(Unknown.getName(version)).append(">\t\n");
-		} else {
+		}
+		else {
 			xml.append("\t\t<ddms:").append(Person.getName(version)).append(">\n");
 			xml.append("\t\t\t<ddms:name>Brian</ddms:name>\n");
 			xml.append("\t\t\t<ddms:surname>Uri</ddms:surname>\n");
@@ -527,7 +531,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("\t<ddms:format>\n");
 		if (version.isAtLeast("4.0")) {
 			xml.append("\t\t<ddms:mimeType>text/xml</ddms:mimeType>\n");
-		} else {
+		}
+		else {
 			xml.append("\t\t<ddms:Media>\n");
 			xml.append("\t\t\t<ddms:mimeType>text/xml</ddms:mimeType>\n");
 			xml.append("\t\t</ddms:Media>\n");
@@ -536,7 +541,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		xml.append("\t<ddms:subjectCoverage>\n");
 		if (version.isAtLeast("4.0")) {
 			xml.append("\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
-		} else {
+		}
+		else {
 			xml.append("\t\t<ddms:Subject>\n");
 			xml.append("\t\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
 			xml.append("\t\t</ddms:Subject>\n");
@@ -547,7 +553,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		if (version.isAtLeast("4.0")) {
 			xml.append("\t\t<ddms:start>1979-09-15</ddms:start>\n");
 			xml.append("\t\t<ddms:end>Not Applicable</ddms:end>\n");
-		} else {
+		}
+		else {
 			xml.append("\t\t<ddms:TimePeriod>\n");
 			xml.append("\t\t\t<ddms:start>1979-09-15</ddms:start>\n");
 			xml.append("\t\t\t<ddms:end>Not Applicable</ddms:end>\n");
@@ -558,17 +565,20 @@ public class ResourceTest extends AbstractComponentTestCase {
 		if (version.isAtLeast("4.0")) {
 			xml.append("\t\t<ddms:boundingGeometry>\n");
 			xml.append("\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace()).append("\" ");
-			xml.append("gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ").append(
-				"axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n");
+			xml.append(
+				"gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ")
+				.append("axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n");
 			xml.append("\t\t\t\t<gml:pos>32.1 40.1</gml:pos>\n");
 			xml.append("\t\t\t</gml:Point>\n");
 			xml.append("\t\t</ddms:boundingGeometry>\n");
-		} else {
+		}
+		else {
 			xml.append("\t\t<ddms:GeospatialExtent>\n");
 			xml.append("\t\t\t<ddms:boundingGeometry>\n");
 			xml.append("\t\t\t\t<gml:Point xmlns:gml=\"").append(version.getGmlNamespace()).append("\" ");
-			xml.append("gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ").append(
-				"axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n");
+			xml.append(
+				"gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ")
+				.append("axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n");
 			xml.append("\t\t\t\t\t<gml:pos>32.1 40.1</gml:pos>\n");
 			xml.append("\t\t\t\t</gml:Point>\n");
 			xml.append("\t\t\t</ddms:boundingGeometry>\n");
@@ -576,13 +586,14 @@ public class ResourceTest extends AbstractComponentTestCase {
 		}
 		xml.append("\t</ddms:geospatialCoverage>\n");
 		if (version.isAtLeast("4.0")) {
-			xml.append("\t<ddms:relatedResource ddms:relationship=\"http://purl.org/dc/terms/references\" ")
-				.append("ddms:direction=\"outbound\" ddms:qualifier=\"http://purl.org/dc/terms/URI\" ")
-				.append("ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n");
+			xml.append("\t<ddms:relatedResource ddms:relationship=\"http://purl.org/dc/terms/references\" ").append(
+				"ddms:direction=\"outbound\" ddms:qualifier=\"http://purl.org/dc/terms/URI\" ").append(
+				"ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n");
 			xml.append("\t\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ").append(
 				"xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"role\" />\n");
 			xml.append("\t</ddms:relatedResource>\n");
-		} else {
+		}
+		else {
 			xml.append("\t<ddms:relatedResources ddms:relationship=\"http://purl.org/dc/terms/references\" ").append(
 				"ddms:direction=\"outbound\">\n");
 			xml.append("\t\t<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ").append(
@@ -669,8 +680,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 				// Missing resourceElement
 				Element element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
-				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
-					String.valueOf(getIsmDESVersion()));
+				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace, String
+					.valueOf(getIsmDESVersion()));
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				testConstructor(WILL_FAIL, element);
 
@@ -678,8 +689,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace, "");
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
-				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
-					String.valueOf(getIsmDESVersion()));
+				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace, String
+					.valueOf(getIsmDESVersion()));
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				testConstructor(WILL_FAIL, element);
 
@@ -687,42 +698,42 @@ public class ResourceTest extends AbstractComponentTestCase {
 				element = getResourceWithoutHeaderElement();
 				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace, "aardvark");
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
-				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
-					String.valueOf(getIsmDESVersion()));
+				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace, String
+					.valueOf(getIsmDESVersion()));
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				testConstructor(WILL_FAIL, element);
 
 				// Missing createDate
 				element = getResourceWithoutHeaderElement();
-				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-					String.valueOf(TEST_RESOURCE_ELEMENT));
-				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
-					String.valueOf(getIsmDESVersion()));
+				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace, String
+					.valueOf(TEST_RESOURCE_ELEMENT));
+				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace, String
+					.valueOf(getIsmDESVersion()));
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				testConstructor(WILL_FAIL, element);
 
 				// Invalid createDate
 				element = getResourceWithoutHeaderElement();
-				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-					String.valueOf(TEST_RESOURCE_ELEMENT));
+				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace, String
+					.valueOf(TEST_RESOURCE_ELEMENT));
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, "2004");
-				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace,
-					String.valueOf(getIsmDESVersion()));
+				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace, String
+					.valueOf(getIsmDESVersion()));
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				testConstructor(WILL_FAIL, element);
 
 				// Missing desVersion
 				element = getResourceWithoutHeaderElement();
-				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-					String.valueOf(TEST_RESOURCE_ELEMENT));
+				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace, String
+					.valueOf(TEST_RESOURCE_ELEMENT));
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				testConstructor(WILL_FAIL, element);
 
 				// desVersion not an integer
 				element = getResourceWithoutHeaderElement();
-				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-					String.valueOf(TEST_RESOURCE_ELEMENT));
+				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace, String
+					.valueOf(TEST_RESOURCE_ELEMENT));
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
 				Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace, "one");
 				SecurityAttributesTest.getFixture(false).addTo(element);
@@ -731,8 +742,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 			if (version.isAtLeast("4.0")) {
 				// NTK desVersion not an integer
 				Element element = getResourceWithoutHeaderElement();
-				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace,
-					String.valueOf(TEST_RESOURCE_ELEMENT));
+				Util.addAttribute(element, ismPrefix, Resource.RESOURCE_ELEMENT_NAME, ismNamespace, String
+					.valueOf(TEST_RESOURCE_ELEMENT));
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
 				Util.addAttribute(element, ntkPrefix, Resource.DES_VERSION_NAME, ntkNamespace, "one");
 				SecurityAttributesTest.getFixture(false).addTo(element);
@@ -949,7 +960,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 				text = "A qualifier has been set without an accompanying value attribute.";
 				locator = "ddms:" + resourceName + "/ddms:format/ddms:Media/ddms:extent";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));
-			} else {
+			}
+			else {
 				String text = "A qualifier has been set without an accompanying value attribute.";
 				String locator = (version.isAtLeast("4.0")) ? "ddms:" + resourceName + "/ddms:format/ddms:extent"
 					: "ddms:" + resourceName + "/ddms:format/ddms:Media/ddms:extent";
@@ -974,7 +986,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 				text = "A completely empty ddms:postalAddress element was found.";
 				locator = "ddms:" + resourceName + "/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));
-			} else {
+			}
+			else {
 				String text = "A completely empty ddms:postalAddress element was found.";
 				String locator = (version.isAtLeast("4.0")) ? "ddms:" + resourceName
 					+ "/ddms:geospatialCoverage/ddms:postalAddress" : "ddms:" + resourceName
@@ -1154,8 +1167,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 		// ISM:DESVersion in element
 		Element element = getResourceWithoutHeaderElement();
-		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, version.getIsmNamespace(),
-			String.valueOf(getIsmDESVersion()));
+		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, version.getIsmNamespace(), String
+			.valueOf(getIsmDESVersion()));
 		Resource component = new Resource(element);
 		assertEquals(getIsmDESVersion(), component.getIsmDESVersion());
 		assertTrue(component.getSecurityAttributes().isEmpty());
@@ -1215,8 +1228,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		// secAttribute as securityAttribute, uniqueAttribute as extensibleAttribute
 		exAttr.clear();
 		exAttr.add(new Attribute(uniqueAttribute));
-		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null,
-			SecurityAttributesTest.getFixture(false), null, new ExtensibleAttributes(exAttr));
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null, SecurityAttributesTest
+			.getFixture(false), null, new ExtensibleAttributes(exAttr));
 		assertNull(component.getIsmDESVersion());
 		assertFalse(component.getSecurityAttributes().isEmpty());
 		assertEquals(1, component.getExtensibleAttributes().getAttributes().size());
@@ -1253,8 +1266,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		exAttr.clear();
 		exAttr.add(new Attribute(icAttribute));
 		exAttr.add(new Attribute(uniqueAttribute));
-		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null,
-			SecurityAttributesTest.getFixture(false), null, new ExtensibleAttributes(exAttr));
+		component = new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null, SecurityAttributesTest
+			.getFixture(false), null, new ExtensibleAttributes(exAttr));
 		assertNull(component.getIsmDESVersion());
 		assertFalse(component.getSecurityAttributes().isEmpty());
 		assertEquals(2, component.getExtensibleAttributes().getAttributes().size());
@@ -1282,7 +1295,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, getIsmDESVersion(), getNtkDESVersion(),
 					SecurityAttributesTest.getFixture(false), null, new ExtensibleAttributes(exAttr));
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 
@@ -1290,10 +1304,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 			try {
 				List<Attribute> exAttr = new ArrayList<Attribute>();
 				exAttr.add(new Attribute("ISM:classification", version.getIsmNamespace(), "U"));
-				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null,
-					SecurityAttributesTest.getFixture(false), null, new ExtensibleAttributes(exAttr));
+				new Resource(TEST_TOP_LEVEL_COMPONENTS, null, null, null, null, SecurityAttributesTest
+					.getFixture(false), null, new ExtensibleAttributes(exAttr));
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -1405,12 +1420,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			// Equality with ExtensibleElement
 			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
-			builder
-				.getExtensibleElements()
-				.get(0)
-				.setXml(
-					"<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">"
-						+ "This is an extensible element.</ddmsence:extension>");
+			builder.getExtensibleElements().get(0).setXml(
+				"<ddmsence:extension xmlns:ddmsence=\"http://ddmsence.urizone.net/\">"
+					+ "This is an extensible element.</ddmsence:extension>");
 			component = builder.commit();
 			builder = new Resource.Builder(component);
 			assertEquals(builder.commit(), component);
@@ -1425,7 +1437,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -1459,7 +1472,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		try {
 			builder.commit();
 			fail("Builder allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -1493,7 +1507,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		try {
 			builder.commit();
 			fail("Builder allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -1510,7 +1525,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		try {
 			builder.commit();
 			fail("Builder allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 
@@ -1531,7 +1547,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		try {
 			builder.commit();
 			fail("Builder allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 
@@ -1556,7 +1573,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 		try {
 			builder.commit();
 			fail("Builder allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 

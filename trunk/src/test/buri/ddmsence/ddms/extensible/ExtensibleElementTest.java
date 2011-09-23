@@ -69,7 +69,8 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 		try {
 			component = new ExtensibleElement(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -182,7 +183,8 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.setXml(getExpectedXMLOutput());

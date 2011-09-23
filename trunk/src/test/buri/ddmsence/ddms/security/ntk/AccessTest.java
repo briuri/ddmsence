@@ -52,7 +52,8 @@ public class AccessTest extends AbstractComponentTestCase {
 	public static Access getFixture() {
 		try {
 			return (new Access(getIndividualList(), null, null, SecurityAttributesTest.getFixture(false)));
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -89,7 +90,8 @@ public class AccessTest extends AbstractComponentTestCase {
 		try {
 			component = new Access(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -109,7 +111,8 @@ public class AccessTest extends AbstractComponentTestCase {
 		try {
 			component = new Access(individuals, groups, profileList, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -164,8 +167,8 @@ public class AccessTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
-				Access.getName(version));
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, Access
+				.getName(version));
 			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
@@ -216,7 +219,8 @@ public class AccessTest extends AbstractComponentTestCase {
 			try {
 				new Access(null, null, null, null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -244,8 +248,8 @@ public class AccessTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Access elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Access dataComponent = testConstructor(WILL_SUCCEED, getIndividualList(), getGroupList(),
-				ProfileListTest.getFixture());
+			Access dataComponent = testConstructor(WILL_SUCCEED, getIndividualList(), getGroupList(), ProfileListTest
+				.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -318,7 +322,8 @@ public class AccessTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

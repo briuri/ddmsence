@@ -58,7 +58,8 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		try {
 			component = new ProcessingInfo(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -77,7 +78,8 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		try {
 			component = new ProcessingInfo(value, dateProcessed, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -183,7 +185,8 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			try {
 				new ProcessingInfo(TEST_VALUE, TEST_DATE_PROCESSED, null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -264,7 +267,8 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new ProcessingInfo(TEST_VALUE, TEST_DATE_PROCESSED, SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -289,7 +293,8 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

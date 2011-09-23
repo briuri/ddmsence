@@ -51,9 +51,10 @@ public class GroupTest extends AbstractComponentTestCase {
 	 */
 	public static Group getFixture() {
 		try {
-			return (new Group(SystemNameTest.getFixture(), getGroupValueList(),
-				SecurityAttributesTest.getFixture(false)));
-		} catch (InvalidDDMSException e) {
+			return (new Group(SystemNameTest.getFixture(), getGroupValueList(), SecurityAttributesTest
+				.getFixture(false)));
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -81,7 +82,8 @@ public class GroupTest extends AbstractComponentTestCase {
 		try {
 			component = new Group(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -99,7 +101,8 @@ public class GroupTest extends AbstractComponentTestCase {
 		try {
 			component = new Group(systemName, values, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -136,8 +139,8 @@ public class GroupTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
-				Group.getName(version));
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, Group
+				.getName(version));
 			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
@@ -201,7 +204,8 @@ public class GroupTest extends AbstractComponentTestCase {
 			try {
 				new Group(SystemNameTest.getFixture(), getGroupValueList(), null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -300,7 +304,8 @@ public class GroupTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

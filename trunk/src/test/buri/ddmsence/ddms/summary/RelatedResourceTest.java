@@ -71,7 +71,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		try {
 			component = new RelatedResource(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -92,10 +93,11 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		String direction, String qualifier, String value) {
 		RelatedResource component = null;
 		try {
-			component = new RelatedResource(links, relationship, direction, qualifier, value,
-				SecurityAttributesTest.getFixture(false));
+			component = new RelatedResource(links, relationship, direction, qualifier, value, SecurityAttributesTest
+				.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -136,7 +138,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			xml.append("\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ");
 			xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"role\" />\n");
 			xml.append("</ddms:relatedResource>");
-		} else {
+		}
+		else {
 			xml.append("<ddms:relatedResources ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 			xml.append("ddms:relationship=\"http://purl.org/dc/terms/references\" ddms:direction=\"outbound\" ");
 			xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
@@ -316,7 +319,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 				links.add(link);
 				new RelatedResource(links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE, null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -430,7 +434,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		try {
 			new RelatedResource(links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE, null);
 			fail("Allowed different versions.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -454,7 +459,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 

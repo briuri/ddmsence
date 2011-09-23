@@ -75,7 +75,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		try {
 			component = new Organization(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -97,7 +98,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		try {
 			component = new Organization(names, phones, emails, subOrganizations, acronym, null);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -147,10 +149,10 @@ public class OrganizationTest extends AbstractComponentTestCase {
 		for (String email : TEST_EMAILS)
 			xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
 		if (version.isAtLeast("4.0")) {
-			xml.append("\t<ddms:subOrganization ").append(getXmlnsISM())
-				.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">sub1</ddms:subOrganization>\n");
-			xml.append("\t<ddms:subOrganization ").append(getXmlnsISM())
-				.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">sub2</ddms:subOrganization>\n");
+			xml.append("\t<ddms:subOrganization ").append(getXmlnsISM()).append(
+				" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">sub1</ddms:subOrganization>\n");
+			xml.append("\t<ddms:subOrganization ").append(getXmlnsISM()).append(
+				" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">sub2</ddms:subOrganization>\n");
 		}
 		xml.append("</ddms:").append(Organization.getName(version)).append(">");
 		return (formatXml(xml.toString(), preserveFormatting));
@@ -260,16 +262,16 @@ public class OrganizationTest extends AbstractComponentTestCase {
 				SubOrganizationTest.getFixtureList(), getAcronym());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, null,
-				SubOrganizationTest.getFixtureList(), getAcronym());
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, null, SubOrganizationTest
+				.getFixtureList(), getAcronym());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			if (version.isAtLeast("4.0")) {
 				dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, null, getAcronym());
 				assertFalse(elementComponent.equals(dataComponent));
 
-				dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS,
-					SubOrganizationTest.getFixtureList(), "NewACRONYM");
+				dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, SubOrganizationTest
+					.getFixtureList(), "NewACRONYM");
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 		}
@@ -282,8 +284,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS,
-				SubOrganizationTest.getFixtureList(), getAcronym());
+			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, SubOrganizationTest
+				.getFixtureList(), getAcronym());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -295,8 +297,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			Organization component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS,
-				SubOrganizationTest.getFixtureList(), getAcronym());
+			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_PHONES, TEST_EMAILS, SubOrganizationTest
+				.getFixtureList(), getAcronym());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -319,7 +321,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("3.1");
 			builder.commit();
 			fail("Builder allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -355,7 +358,8 @@ public class OrganizationTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

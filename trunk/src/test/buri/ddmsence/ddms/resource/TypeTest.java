@@ -58,7 +58,8 @@ public class TypeTest extends AbstractComponentTestCase {
 		try {
 			component = new Type(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -77,10 +78,11 @@ public class TypeTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Type component = null;
 		try {
-			component = new Type(description, qualifier, value,
-				version.isAtLeast("4.0") ? SecurityAttributesTest.getFixture(false) : null);
+			component = new Type(description, qualifier, value, version.isAtLeast("4.0") ? SecurityAttributesTest
+				.getFixture(false) : null);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -113,11 +115,12 @@ public class TypeTest extends AbstractComponentTestCase {
 		if (version.isAtLeast("4.0")) {
 			xml.append(getXmlnsISM()).append(" ");
 		}
-		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
-			.append("\"");
+		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE).append(
+			"\"");
 		if (version.isAtLeast("4.0")) {
 			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Description</ddms:type>");
-		} else
+		}
+		else
 			xml.append(" />");
 		return (xml.toString());
 	}
@@ -126,8 +129,8 @@ public class TypeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				Type.getName(version));
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Type
+				.getName(version));
 			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
@@ -255,7 +258,8 @@ public class TypeTest extends AbstractComponentTestCase {
 		try {
 			new Type(null, TEST_QUALIFIER, TEST_VALUE, SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -265,7 +269,8 @@ public class TypeTest extends AbstractComponentTestCase {
 		try {
 			new Type(TEST_DESCRIPTION, TEST_QUALIFIER, TEST_VALUE, null);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -289,7 +294,8 @@ public class TypeTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

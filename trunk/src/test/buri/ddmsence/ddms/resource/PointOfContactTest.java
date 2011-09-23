@@ -57,7 +57,8 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new PointOfContact(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -69,11 +70,12 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	private IRoleEntity getEntityFixture() {
 		try {
 			if ("2.0".equals(DDMSVersion.getCurrentVersion().getVersion()))
-				return (new Service(Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"),
-					Util.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
-			return (new Unknown(Util.getXsListAsList("UnknownEntity"), Util.getXsListAsList("703-882-1000"),
-				Util.getXsListAsList("ddms@fgm.com")));
-		} catch (InvalidDDMSException e) {
+				return (new Service(Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), Util
+					.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
+			return (new Unknown(Util.getXsListAsList("UnknownEntity"), Util.getXsListAsList("703-882-1000"), Util
+				.getXsListAsList("ddms@fgm.com")));
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -91,7 +93,8 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		try {
 			component = new PointOfContact(entity, pocType, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -129,7 +132,8 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 			xml.append("\t\t<ddms:phone>703-882-1000</ddms:phone>\n");
 			xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
 			xml.append("\t</ddms:").append(Service.getName(version)).append(">");
-		} else {
+		}
+		else {
 			xml.append("<ddms:").append(Unknown.getName(version)).append(">\n");
 			xml.append("\t\t<ddms:name>UnknownEntity</ddms:name>\n");
 			xml.append("\t\t<ddms:phone>703-882-1000</ddms:phone>\n");
@@ -201,8 +205,8 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			PointOfContact elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			PointOfContact dataComponent = testConstructor(WILL_SUCCEED, getEntityFixture(),
-				RoleEntityTest.getPOCType());
+			PointOfContact dataComponent = testConstructor(WILL_SUCCEED, getEntityFixture(), RoleEntityTest
+				.getPOCType());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -212,9 +216,9 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			PointOfContact elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			PointOfContact dataComponent = testConstructor(WILL_SUCCEED,
-				new Service(Util.getXsListAsList("DISA PEO-GES"), Util.getXsListAsList("703-882-1000 703-885-1000"),
-					Util.getXsListAsList("ddms@fgm.com")), null);
+			PointOfContact dataComponent = testConstructor(WILL_SUCCEED, new Service(Util
+				.getXsListAsList("DISA PEO-GES"), Util.getXsListAsList("703-882-1000 703-885-1000"), Util
+				.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -246,8 +250,8 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			PointOfContact component = new PointOfContact(getEntityFixture(), null,
-				SecurityAttributesTest.getFixture(false));
+			PointOfContact component = new PointOfContact(getEntityFixture(), null, SecurityAttributesTest
+				.getFixture(false));
 			assertEquals(SecurityAttributesTest.getFixture(false), component.getSecurityAttributes());
 		}
 	}
@@ -257,7 +261,8 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		try {
 			new PointOfContact(getEntityFixture(), "ICD-710", SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -282,7 +287,8 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

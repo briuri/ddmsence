@@ -57,7 +57,8 @@ public class PublisherTest extends AbstractComponentTestCase {
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new Publisher(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -68,9 +69,10 @@ public class PublisherTest extends AbstractComponentTestCase {
 	 */
 	private IRoleEntity getEntityFixture() {
 		try {
-			return (new Service(Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"),
-				Util.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
-		} catch (InvalidDDMSException e) {
+			return (new Service(Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), Util
+				.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -88,7 +90,8 @@ public class PublisherTest extends AbstractComponentTestCase {
 		try {
 			component = new Publisher(entity, pocType, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -242,7 +245,8 @@ public class PublisherTest extends AbstractComponentTestCase {
 		try {
 			new Publisher(getEntityFixture(), "ICD-710", SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -267,7 +271,8 @@ public class PublisherTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

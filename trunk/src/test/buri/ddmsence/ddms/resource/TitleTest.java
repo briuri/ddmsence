@@ -56,7 +56,8 @@ public class TitleTest extends AbstractComponentTestCase {
 		try {
 			component = new Title(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -74,7 +75,8 @@ public class TitleTest extends AbstractComponentTestCase {
 		try {
 			component = new Title(title, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -96,8 +98,8 @@ public class TitleTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:title ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM())
-			.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:title ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(
+			" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE).append("</ddms:title>");
 		return (xml.toString());
 	}
@@ -106,8 +108,8 @@ public class TitleTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				Title.getName(version));
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Title
+				.getName(version));
 			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
@@ -222,7 +224,8 @@ public class TitleTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

@@ -59,7 +59,8 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 		try {
 			component = new ProductionMetric(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -81,7 +82,8 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 		try {
 			component = new ProductionMetric(subject, coverage, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -105,8 +107,8 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:productionMetric ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
-		xml.append("ddms:subject=\"").append(TEST_SUBJECT).append("\" ").append("ddms:coverage=\"")
-			.append(TEST_COVERAGE).append("\" ");
+		xml.append("ddms:subject=\"").append(TEST_SUBJECT).append("\" ").append("ddms:coverage=\"").append(
+			TEST_COVERAGE).append("\" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		xml.append(" />");
 		return (xml.toString());
@@ -243,7 +245,8 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new ProductionMetric(TEST_SUBJECT, TEST_COVERAGE, null);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -265,7 +268,8 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.setSubject(TEST_SUBJECT);

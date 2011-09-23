@@ -63,7 +63,8 @@ public class KeywordTest extends AbstractComponentTestCase {
 		try {
 			component = new Keyword(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -82,7 +83,8 @@ public class KeywordTest extends AbstractComponentTestCase {
 		try {
 			component = new Keyword(value, version.isAtLeast("4.0") ? SecurityAttributesTest.getFixture(false) : null);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -241,7 +243,8 @@ public class KeywordTest extends AbstractComponentTestCase {
 		try {
 			new Keyword(TEST_VALUE, null, attributes);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 
@@ -255,7 +258,8 @@ public class KeywordTest extends AbstractComponentTestCase {
 		try {
 			new Keyword(TEST_VALUE, null, attributes);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -265,7 +269,8 @@ public class KeywordTest extends AbstractComponentTestCase {
 		try {
 			new Keyword(TEST_VALUE, SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}

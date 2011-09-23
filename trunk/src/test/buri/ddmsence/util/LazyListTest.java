@@ -58,8 +58,8 @@ public class LazyListTest extends TestCase {
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(serialized));
 		LazyList unserializedList = (LazyList) ois.readObject();
 		assertEquals(list.size(), unserializedList.size());
-		assertEquals(((Dates.Builder) (list.get(0))).getCreated(),
-			((Dates.Builder) (unserializedList.get(0))).getCreated());
+		assertEquals(((Dates.Builder) (list.get(0))).getCreated(), ((Dates.Builder) (unserializedList.get(0)))
+			.getCreated());
 	}
 
 	public void testUnmodifiableList() {
@@ -68,7 +68,8 @@ public class LazyListTest extends TestCase {
 		LazyList lazyList = new LazyList(Collections.unmodifiableList(list), String.class);
 		try {
 			lazyList.set(0, "Test2");
-		} catch (UnsupportedOperationException e) {
+		}
+		catch (UnsupportedOperationException e) {
 			fail("Should have unwrapped the unmodifiable list.");
 		}
 	}
@@ -179,7 +180,8 @@ public class LazyListTest extends TestCase {
 	public void testNullList() {
 		try {
 			new LazyList(null, String.class);
-		} catch (NullPointerException e) {
+		}
+		catch (NullPointerException e) {
 			fail("Should not have thrown NPE.");
 		}
 	}
@@ -189,7 +191,8 @@ public class LazyListTest extends TestCase {
 		try {
 			list.get(0);
 			fail("Allowed invalid class.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 
@@ -197,7 +200,8 @@ public class LazyListTest extends TestCase {
 		try {
 			list.get(0);
 			fail("Allowed invalid class.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}

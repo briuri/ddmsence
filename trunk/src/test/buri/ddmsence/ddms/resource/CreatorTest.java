@@ -57,7 +57,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 			SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new Creator(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -68,9 +69,10 @@ public class CreatorTest extends AbstractComponentTestCase {
 	 */
 	private IRoleEntity getEntityFixture() {
 		try {
-			return (new Person(Util.getXsListAsList("Brian BU"), "Uri", Util.getXsListAsList("703-885-1000"),
-				Util.getXsListAsList("ddms@fgm.com"), "123", "DISA"));
-		} catch (InvalidDDMSException e) {
+			return (new Person(Util.getXsListAsList("Brian BU"), "Uri", Util.getXsListAsList("703-885-1000"), Util
+				.getXsListAsList("ddms@fgm.com"), "123", "DISA"));
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -88,7 +90,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 		try {
 			component = new Creator(entity, pocType, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -129,7 +132,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 			xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
 			xml.append("\t\t<ddms:userID>123</ddms:userID>\n");
 			xml.append("\t\t<ddms:affiliation>DISA</ddms:affiliation>\n");
-		} else {
+		}
+		else {
 			xml.append("\t\t<ddms:userID>123</ddms:userID>\n");
 			xml.append("\t\t<ddms:affiliation>DISA</ddms:affiliation>\n");
 			xml.append("\t\t<ddms:phone>703-885-1000</ddms:phone>\n");
@@ -253,7 +257,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 		try {
 			new Creator(getEntityFixture(), "ICD-710", SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -265,7 +270,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("4.0");
 			new Creator(entity, "ICD-710", SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -290,7 +296,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

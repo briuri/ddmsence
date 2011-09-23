@@ -81,7 +81,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		try {
 			component = new GeographicIdentifier(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -107,7 +108,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			else
 				component = new GeographicIdentifier(names, regions, countryCode, subDivisionCode);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -286,8 +288,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
 			GeographicIdentifier elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			GeographicIdentifier dataComponent = testConstructor(WILL_SUCCEED, null, TEST_REGIONS,
-				CountryCodeTest.getFixture(), subCode, null);
+			GeographicIdentifier dataComponent = testConstructor(WILL_SUCCEED, null, TEST_REGIONS, CountryCodeTest
+				.getFixture(), subCode, null);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, null, CountryCodeTest.getFixture(), subCode, null);
@@ -398,7 +400,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		try {
 			new GeographicIdentifier(TEST_NAMES, TEST_REGIONS, code, null);
 			fail("Allowed different versions.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -414,7 +417,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		try {
 			new GeographicIdentifier(facId);
 			fail("Allowed different versions.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -444,7 +448,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			// Non-FacID-based

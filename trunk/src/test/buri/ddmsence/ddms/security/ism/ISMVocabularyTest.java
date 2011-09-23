@@ -41,7 +41,8 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 		try {
 			ISMVocabulary.getEnumerationTokens("unknownKey");
 			fail("Allowed invalid key.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -138,7 +139,7 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 	}
 
 	public void testInvalidMessage() {
-		assertEquals("Dog is not a valid enumeration token for this attribute, as specified in Cat.",
-			ISMVocabulary.getInvalidMessage("Cat", "Dog"));
+		assertEquals("Dog is not a valid enumeration token for this attribute, as specified in Cat.", ISMVocabulary
+			.getInvalidMessage("Cat", "Dog"));
 	}
 }

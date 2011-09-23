@@ -54,7 +54,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	public static IndividualValue getFixture() {
 		try {
 			return (new IndividualValue(TEST_VALUE, null, null, null, SecurityAttributesTest.getFixture(false)));
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -73,7 +74,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 		try {
 			component = new IndividualValue(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -95,7 +97,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 		try {
 			component = new IndividualValue(value, id, idReference, qualifier, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -185,7 +188,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 			try {
 				new IndividualValue(TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER, null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -287,7 +291,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.getSecurityAttributes().setClassification("U");

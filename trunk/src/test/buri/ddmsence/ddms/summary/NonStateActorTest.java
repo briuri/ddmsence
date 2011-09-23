@@ -58,7 +58,8 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 		try {
 			component = new NonStateActor(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -77,7 +78,8 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 		try {
 			component = new NonStateActor(value, order, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -232,7 +234,8 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new NonStateActor(TEST_VALUE, TEST_ORDER, null);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}

@@ -71,7 +71,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	private static Organization getOrgFixture() {
 		try {
 			return (new Organization(Util.getXsListAsList(TEST_NAME), null, null, null, null, null));
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -83,7 +84,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	private static Person getPersonFixture() {
 		try {
 			return (new Person(Util.getXsListAsList(TEST_NAME), TEST_SURNAME, null, null, null, null, null));
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -102,7 +104,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 		try {
 			component = new RequesterInfo(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -120,7 +123,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 		try {
 			component = new RequesterInfo(entity, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -214,7 +218,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 			try {
 				new RequesterInfo(getOrgFixture(), null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -292,7 +297,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new RequesterInfo(getOrgFixture(), SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -322,7 +328,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.getSecurityAttributes().setClassification("U");

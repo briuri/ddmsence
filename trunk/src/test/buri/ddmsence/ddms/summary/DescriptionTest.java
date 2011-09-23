@@ -56,7 +56,8 @@ public class DescriptionTest extends AbstractComponentTestCase {
 		try {
 			component = new Description(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -74,7 +75,8 @@ public class DescriptionTest extends AbstractComponentTestCase {
 		try {
 			component = new Description(value, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -96,8 +98,8 @@ public class DescriptionTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:description ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM())
-			.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:description ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(
+			" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE).append("</ddms:description>");
 		return (xml.toString());
 	}
@@ -153,7 +155,8 @@ public class DescriptionTest extends AbstractComponentTestCase {
 			try {
 				new Description(TEST_VALUE, null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -239,7 +242,8 @@ public class DescriptionTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

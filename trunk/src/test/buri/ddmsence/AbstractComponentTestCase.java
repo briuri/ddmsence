@@ -97,7 +97,8 @@ public abstract class AbstractComponentTestCase extends TestCase {
 					}
 				}
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new RuntimeException("Cannot run tests without valid DDMSReader and valid unit test object.", e);
 		}
 

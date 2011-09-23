@@ -68,7 +68,8 @@ public class PointTest extends AbstractComponentTestCase {
 		try {
 			component = new Point(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -88,7 +89,8 @@ public class PointTest extends AbstractComponentTestCase {
 		try {
 			component = new Point(position, srsAttributes, id);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -133,8 +135,8 @@ public class PointTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_GML_PREFIX,
-				Point.getName(version));
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_GML_PREFIX, Point
+				.getName(version));
 			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
@@ -146,8 +148,8 @@ public class PointTest extends AbstractComponentTestCase {
 			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 
 			// No optional fields
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Point.getName(version),
-				version.getGmlNamespace(), null);
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Point.getName(version), version
+				.getGmlNamespace(), null);
 			Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE,
 				SRSAttributesTest.getFixture().getSrsName());
 			Util.addAttribute(element, PropertyReader.getPrefix("gml"), "id", version.getGmlNamespace(), TEST_ID);
@@ -348,7 +350,8 @@ public class PointTest extends AbstractComponentTestCase {
 		try {
 			new Point(pos, SRSAttributesTest.getFixture(), TEST_ID);
 			fail("Allowed different versions.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -372,7 +375,8 @@ public class PointTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.getPosition().getCoordinates().get(0).setValue(new Double(32.1));

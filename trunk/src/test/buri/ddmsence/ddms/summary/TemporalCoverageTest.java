@@ -60,7 +60,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 				SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new TemporalCoverage(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -83,7 +84,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 				: SecurityAttributesTest.getFixture(false);
 			component = new TemporalCoverage(timePeriodName, startString, endString, attr);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -140,7 +142,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 			xml.append("<ddms:name>").append(TEST_NAME).append("</ddms:name>\n\t");
 			xml.append("<ddms:start>").append(TEST_START).append("</ddms:start>\n\t");
 			xml.append("<ddms:end>").append(TEST_END).append("</ddms:end>\n");
-		} else {
+		}
+		else {
 			xml.append("<ddms:TimePeriod>\n\t\t");
 			xml.append("<ddms:name>").append(TEST_NAME).append("</ddms:name>\n\t\t");
 			xml.append("<ddms:start>").append(TEST_START).append("</ddms:start>\n\t\t");
@@ -326,7 +329,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			try {
 				TemporalCoverage.validateExtendedDateType("Not Applicable");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				fail("Did not allow valid data.");
 			}
 		}
@@ -338,7 +342,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 			try {
 				TemporalCoverage.validateExtendedDateType("N/A");
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -380,7 +385,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		try {
 			new TemporalCoverage(TEST_NAME, TEST_START, TEST_END, SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -404,7 +410,8 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

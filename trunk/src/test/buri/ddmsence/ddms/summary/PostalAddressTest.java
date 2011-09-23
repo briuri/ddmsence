@@ -72,7 +72,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		try {
 			component = new PostalAddress(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -97,7 +98,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		try {
 			component = new PostalAddress(streets, city, stateOrProvince, postalCode, countryCode, hasState);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -167,12 +169,12 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE,
-				CountryCodeTest.getFixture(), true);
+			testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, CountryCodeTest
+				.getFixture(), true);
 
 			// All fields with a province
-			testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE,
-				CountryCodeTest.getFixture(), false);
+			testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, CountryCodeTest
+				.getFixture(), false);
 
 			// No optional fields
 			testConstructor(WILL_SUCCEED, null, null, null, null, null, false);
@@ -234,8 +236,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			List<String> streets = new ArrayList<String>();
 			for (int i = 0; i < 7; i++)
 				streets.add("Street" + i);
-			testConstructor(WILL_FAIL, streets, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE,
-				CountryCodeTest.getFixture(), true);
+			testConstructor(WILL_FAIL, streets, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, CountryCodeTest
+				.getFixture(), true);
 		}
 	}
 
@@ -288,8 +290,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 				CountryCodeTest.getFixture(), false);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, null,
-				CountryCodeTest.getFixture(), true);
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, null, CountryCodeTest
+				.getFixture(), true);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = testConstructor(WILL_SUCCEED, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, null,
@@ -351,7 +353,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		try {
 			new PostalAddress(TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, code, true);
 			fail("Allowed different versions.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -391,7 +394,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

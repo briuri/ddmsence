@@ -69,7 +69,8 @@ public class PersonTest extends AbstractComponentTestCase {
 		try {
 			component = new Person(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -92,7 +93,8 @@ public class PersonTest extends AbstractComponentTestCase {
 		try {
 			component = new Person(names, surname, phones, emails, userID, affiliation);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -136,7 +138,8 @@ public class PersonTest extends AbstractComponentTestCase {
 				xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
 			xml.append("\t<ddms:userID>").append(TEST_USERID).append("</ddms:userID>\n");
 			xml.append("\t<ddms:affiliation>").append(TEST_AFFILIATION).append("</ddms:affiliation>\n");
-		} else {
+		}
+		else {
 			xml.append("\t<ddms:userID>").append(TEST_USERID).append("</ddms:userID>\n");
 			xml.append("\t<ddms:affiliation>").append(TEST_AFFILIATION).append("</ddms:affiliation>\n");
 			for (String phone : TEST_PHONES)
@@ -371,7 +374,8 @@ public class PersonTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
