@@ -53,7 +53,6 @@ public class PropertyReader {
 	
 	private static final Set<String> CUSTOM_PROPERTIES = new HashSet<String>();
 	static {
-		CUSTOM_PROPERTIES.add("common.prefix");
 		CUSTOM_PROPERTIES.add("ddms.prefix");
 		CUSTOM_PROPERTIES.add("gml.prefix");
 		CUSTOM_PROPERTIES.add("ism.cve.validationAsErrors");

@@ -674,7 +674,6 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 	
 <table>
 <tr><th>Property Name</th><th>Description</th><th>Default Value</th></tr>
-<tr><td>common.prefix</td><td>Default IC-COMMON prefix used when generating components from scratch</td><td><code>common</code></td></tr>
 <tr><td>ddms.prefix</td><td>Default DDMS prefix used when generating components from scratch</td><td><code>ddms</code></td></tr>
 <tr><td>gml.prefix</td><td>Default GML prefix used when generating components from scratch</td><td><code>gml</code></td></tr>
 <tr><td>ism.cve.validationAsErrors</td><td>When validating SecurityAttributes, ISM Controlled Vocabulary checks should return errors, instead of warnings</td><td><code>true</code></td></tr>
