@@ -53,7 +53,8 @@ import buri.ddmsence.util.Util;
  * <u>xlink:label</u>: The label attribute provides a name for the link (optional)<br />
  * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>Resource Attributes (for ddms:revisionRecall)</th></tr><tr><td class="infoBody">
+ * <table class="info"><tr class="infoHeader"><th>Resource Attributes (for ddms:revisionRecall)</th></tr><tr>
+ * <td class="infoBody">
  * <u>xlink:type</u>: (optional, but fixed as "resource" if set)<br />
  * <u>xlink:role</u>: The URI reference identifies some resource that describes the intended property. When no value is
  * supplied, no particular role value is to be inferred. (optional, but must be non-empty if set)<br />
@@ -79,14 +80,14 @@ import buri.ddmsence.util.Util;
  */
 public final class XLinkAttributes extends AbstractAttributeGroup {
 	
-	private String _type;
-	private String _href;
-	private String _role;
-	private String _title;	
-	private String _label;	
-	private String _arcrole;
-	private String _show;
-	private String _actuate;
+	private String _type = null;
+	private String _href = null;
+	private String _role = null;
+	private String _title = null;	
+	private String _label = null;	
+	private String _arcrole = null;
+	private String _show = null;
+	private String _actuate = null;
 
 	private static final String TYPE_NAME = "type";
 	private static final String HREF_NAME = "href";
@@ -125,6 +126,17 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
+	 * Returns a non-null instance of XLink attributes. If the instance passed in is not null, it will be returned.
+	 * 
+	 * @param xlinkAttributes the attributes to return by default
+	 * @return a non-null attributes instance
+	 * @throws InvalidDDMSException if there are problems creating the empty attributes instance
+	 */
+	public static XLinkAttributes getNonNullInstance(XLinkAttributes xlinkAttributes) throws InvalidDDMSException {
+		return (xlinkAttributes == null ? new XLinkAttributes() : xlinkAttributes);
+	}
+	
+	/**
 	 * Base constructor
 	 * 
 	 * @param element the XOM element which is decorated with these attributes.
@@ -142,18 +154,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		_actuate = element.getAttributeValue(ACTUATE_NAME, xlinkNamespace);
 		validate();
 	}
-	
-	/**
-	 * Returns a non-null instance of XLink attributes. If the instance passed in is not null, it will be returned.
-	 * 
-	 * @param xlinkAttributes the attributes to return by default
-	 * @return a non-null attributes instance
-	 * @throws InvalidDDMSException if there are problems creating the empty attributes instance
-	 */
-	public static XLinkAttributes getNonNullInstance(XLinkAttributes xlinkAttributes) throws InvalidDDMSException {
-		return (xlinkAttributes == null ? new XLinkAttributes() : xlinkAttributes);
-	}
-	
+
 	/**
 	 * Constructor which builds from raw data for an unknown type.
 	 * 

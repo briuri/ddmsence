@@ -57,8 +57,8 @@ import buri.ddmsence.util.Util;
  */
 public final class Point extends AbstractBaseComponent {
 
-	private SRSAttributes _cachedSrsAttributes;
-	private Position _cachedPosition;
+	private Position _position = null;
+	private SRSAttributes _srsAttributes = null;
 	
 	private static final String ID_NAME = "id";
 	
@@ -72,10 +72,10 @@ public final class Point extends AbstractBaseComponent {
 		try {
 			setXOMElement(element, false);
 			Element posElement = element.getFirstChildElement(Position.getName(getDDMSVersion()), 
-				element.getNamespaceURI());
+				getNamespace());
 			if (posElement != null)
-				_cachedPosition = new Position(posElement);
-			_cachedSrsAttributes = new SRSAttributes(element);
+				_position = new Position(posElement);
+			_srsAttributes = new SRSAttributes(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -94,18 +94,18 @@ public final class Point extends AbstractBaseComponent {
 	 */
 	public Point(Position position, SRSAttributes srsAttributes, String id) throws InvalidDDMSException {
 		try {
-			_cachedPosition = position;
-			_cachedSrsAttributes = srsAttributes;
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Point.getName(version),
 				version.getGmlNamespace(), null);
 			if (position != null) {
 				element.appendChild(position.getXOMElementCopy());
 			}
-			if (srsAttributes != null)
-				srsAttributes.addTo(element);
 			Util.addAttribute(element, PropertyReader.getPrefix("gml"), ID_NAME, DDMSVersion
 				.getCurrentVersion().getGmlNamespace(), id);
+
+			_position = position;
+			_srsAttributes = SRSAttributes.getNonNullInstance(srsAttributes);
+			_srsAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -209,7 +209,7 @@ public final class Point extends AbstractBaseComponent {
 	 * Accessor for the SRS Attributes. Will always be non-null.
 	 */
 	public SRSAttributes getSRSAttributes() {
-		return (_cachedSrsAttributes);
+		return (_srsAttributes);
 	}
 	
 	/**
@@ -223,7 +223,7 @@ public final class Point extends AbstractBaseComponent {
 	 * Accessor for the coordinates of the position. May return null, but cannot happen after instantiation.
 	 */
 	public Position getPosition() {
-		return (_cachedPosition);
+		return (_position);
 	}
 	
 	/**

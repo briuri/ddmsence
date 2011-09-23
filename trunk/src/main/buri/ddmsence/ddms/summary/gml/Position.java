@@ -53,8 +53,8 @@ import buri.ddmsence.util.Util;
  */
 public final class Position extends AbstractBaseComponent {
 
-	private SRSAttributes _cachedSrsAttributes;
-	private List<Double> _cachedCoordinates;	
+	private SRSAttributes _srsAttributes = null;
+	private List<Double> _coordinates = null;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -66,11 +66,11 @@ public final class Position extends AbstractBaseComponent {
 		try {
 			setXOMElement(element, false);
 			List<String> tuple = Util.getXsListAsList(getCoordinatesAsXsList());
-			_cachedCoordinates = new ArrayList<Double>();
+			_coordinates = new ArrayList<Double>();
 			for (String coordinate : tuple) {
-				_cachedCoordinates.add(getStringAsDouble(coordinate));
+				_coordinates.add(getStringAsDouble(coordinate));
 			}
-			_cachedSrsAttributes = new SRSAttributes(element);
+			_srsAttributes = new SRSAttributes(element);
 			setXOMElement(element, true);
 
 		} catch (InvalidDDMSException e) {
@@ -90,13 +90,13 @@ public final class Position extends AbstractBaseComponent {
 		try {
 			if (coordinates == null)
 				coordinates = Collections.emptyList();
-			_cachedSrsAttributes = (srsAttributes == null ? new SRSAttributes(null, null, null, null) : srsAttributes);
-			_cachedCoordinates = coordinates;
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
 				version.getGmlNamespace(), Util.getXsList(coordinates));
-			if (srsAttributes != null)
-				srsAttributes.addTo(element);
+
+			_coordinates = coordinates;
+			_srsAttributes = SRSAttributes.getNonNullInstance(srsAttributes);
+			_srsAttributes.addTo(element);
 			setXOMElement(element, true);
 		} catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -207,14 +207,14 @@ public final class Position extends AbstractBaseComponent {
 	 * Accessor for the SRS Attributes. Will always be non-null, even if the attributes inside are not set.
 	 */
 	public SRSAttributes getSRSAttributes() {
-		return (_cachedSrsAttributes);
+		return (_srsAttributes);
 	}
 	
 	/**
 	 * Accessor for the coordinates of the position. May return null, but cannot happen after instantiation.
 	 */
 	public List<Double> getCoordinates() {
-		return (Collections.unmodifiableList(_cachedCoordinates));
+		return (Collections.unmodifiableList(_coordinates));
 	}
 		
 	/**
