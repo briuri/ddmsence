@@ -74,7 +74,8 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 		try {
 			attributes = new ExtensibleAttributes(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (attributes);
@@ -92,7 +93,8 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 		try {
 			exAttributes = new ExtensibleAttributes(attributes);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (exAttributes);

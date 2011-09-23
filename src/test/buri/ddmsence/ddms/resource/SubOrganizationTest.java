@@ -88,7 +88,8 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 		try {
 			component = new SubOrganization(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -106,7 +107,8 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 		try {
 			component = new SubOrganization(value, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -129,8 +131,8 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subOrganization ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM())
-			.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:subOrganization ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(
+			" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE);
 		xml.append("</ddms:subOrganization>");
 		return (xml.toString());
@@ -250,7 +252,8 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new SubOrganization(TEST_VALUE, SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -275,7 +278,8 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

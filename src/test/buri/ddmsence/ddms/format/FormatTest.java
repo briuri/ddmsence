@@ -56,7 +56,8 @@ public class FormatTest extends AbstractComponentTestCase {
 		try {
 			component = new Format(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -76,7 +77,8 @@ public class FormatTest extends AbstractComponentTestCase {
 		try {
 			component = new Format(mimeType, extent, medium);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -125,7 +127,8 @@ public class FormatTest extends AbstractComponentTestCase {
 			xml.append("<ddms:mimeType>text/xml</ddms:mimeType>\n\t");
 			xml.append("<ddms:extent ddms:qualifier=\"sizeBytes\" ddms:value=\"75000\" />\n\t");
 			xml.append("<ddms:medium>digital</ddms:medium>\n");
-		} else {
+		}
+		else {
 			xml.append("<ddms:Media>\n\t\t");
 			xml.append("<ddms:mimeType>text/xml</ddms:mimeType>\n\t\t");
 			xml.append("<ddms:extent ddms:qualifier=\"sizeBytes\" ddms:value=\"75000\" />\n\t\t");
@@ -350,7 +353,8 @@ public class FormatTest extends AbstractComponentTestCase {
 		try {
 			new Format(TEST_MIME_TYPE, extent, TEST_MEDIUM);
 			fail("Allowed different versions.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -374,7 +378,8 @@ public class FormatTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 

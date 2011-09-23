@@ -51,9 +51,11 @@ public class DDMSReaderTest extends TestCase {
 		try {
 			getReader().getElement((File) null);
 			fail("Allowed invalid data.");
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -62,9 +64,11 @@ public class DDMSReaderTest extends TestCase {
 		try {
 			getReader().getElement((String) null);
 			fail("Allowed invalid data.");
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -73,9 +77,11 @@ public class DDMSReaderTest extends TestCase {
 		try {
 			getReader().getElement((InputStream) null);
 			fail("Allowed invalid data.");
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -84,9 +90,11 @@ public class DDMSReaderTest extends TestCase {
 		try {
 			getReader().getElement((Reader) null);
 			fail("Allowed invalid data.");
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			fail("Allowed invalid data.");
-		} catch (IllegalArgumentException e) {
+		}
+		catch (IllegalArgumentException e) {
 			// Good
 		}
 	}
@@ -95,7 +103,8 @@ public class DDMSReaderTest extends TestCase {
 		try {
 			getReader().getElement(new File("doesnotexist"));
 			fail("Allowed invalid data.");
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			// Good
 		}
 	}
@@ -104,9 +113,11 @@ public class DDMSReaderTest extends TestCase {
 		try {
 			getReader().getElement("<wrong></wrong>");
 			fail("Allowed invalid data.");
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			fail("Should have thrown an InvalidDDMSException");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -115,7 +126,8 @@ public class DDMSReaderTest extends TestCase {
 		try {
 			getReader().getElement(new FileInputStream(new File("doesnotexist")));
 			fail("Allowed invalid data.");
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			// Good
 		}
 	}
@@ -124,7 +136,8 @@ public class DDMSReaderTest extends TestCase {
 		try {
 			getReader().getElement(new FileReader(new File("doesnotexist")));
 			fail("Allowed invalid data.");
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			// Good
 		}
 	}
@@ -133,7 +146,8 @@ public class DDMSReaderTest extends TestCase {
 		try {
 			getReader().getElement(new File("conf/ddmsence.properties"));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -163,7 +177,8 @@ public class DDMSReaderTest extends TestCase {
 		try {
 			getReader().getDDMSResource(new File(PropertyReader.getProperty("test.unit.data"), "3.0/rights.xml"));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -173,8 +188,8 @@ public class DDMSReaderTest extends TestCase {
 	}
 
 	public void testGetResourceSuccessString() throws InvalidDDMSException, IOException {
-		LineNumberReader reader = new LineNumberReader(new FileReader(new File(
-			PropertyReader.getProperty("test.unit.data"), "3.0/resource.xml")));
+		LineNumberReader reader = new LineNumberReader(new FileReader(new File(PropertyReader
+			.getProperty("test.unit.data"), "3.0/resource.xml")));
 		StringBuffer xmlString = new StringBuffer();
 		String nextLine = reader.readLine();
 		while (nextLine != null) {

@@ -48,36 +48,39 @@ public class DDMSVersionTest extends TestCase {
 		try {
 			DDMSVersion.getVersionFor("1.4");
 			fail("Allowed unsupported version.");
-		} catch (UnsupportedVersionException e) {
+		}
+		catch (UnsupportedVersionException e) {
 			// Good
 		}
 	}
 
 	public void testGetVersionForDDMSNamespace() {
-		assertEquals(DDMSVersion.getVersionFor("2.0"),
-			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
-		assertEquals(DDMSVersion.getVersionFor("3.0"),
-			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/"));
-		assertEquals(DDMSVersion.getVersionFor("3.1"),
-			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.1/"));
-		assertEquals(DDMSVersion.getVersionFor("4.0"),
-			DDMSVersion.getVersionForNamespace("urn:us:mil:ces:metadata:ddms:4"));
+		assertEquals(DDMSVersion.getVersionFor("2.0"), DDMSVersion
+			.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
+		assertEquals(DDMSVersion.getVersionFor("3.0"), DDMSVersion
+			.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/"));
+		assertEquals(DDMSVersion.getVersionFor("3.1"), DDMSVersion
+			.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.1/"));
+		assertEquals(DDMSVersion.getVersionFor("4.0"), DDMSVersion
+			.getVersionForNamespace("urn:us:mil:ces:metadata:ddms:4"));
 		try {
 			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/1.4/");
 			fail("Allowed unsupported version.");
-		} catch (UnsupportedVersionException e) {
+		}
+		catch (UnsupportedVersionException e) {
 			// Good
 		}
 	}
 
 	public void testGetVersionForGMLNamespace() {
 		assertEquals(DDMSVersion.getVersionFor("2.0"), DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml"));
-		assertEquals(DDMSVersion.getVersionFor("4.0"),
-			DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml/3.2"));
+		assertEquals(DDMSVersion.getVersionFor("4.0"), DDMSVersion
+			.getVersionForNamespace("http://www.opengis.net/gml/3.2"));
 		try {
 			DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml/3.2.1");
 			fail("Allowed unsupported version.");
-		} catch (UnsupportedVersionException e) {
+		}
+		catch (UnsupportedVersionException e) {
 			// Good
 		}
 	}
@@ -87,7 +90,8 @@ public class DDMSVersionTest extends TestCase {
 		try {
 			DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk:v2");
 			fail("Allowed unsupported version.");
-		} catch (UnsupportedVersionException e) {
+		}
+		catch (UnsupportedVersionException e) {
 			// Good
 		}
 	}
@@ -119,7 +123,8 @@ public class DDMSVersionTest extends TestCase {
 		try {
 			DDMSVersion.setCurrentVersion("1.4");
 			fail("Allowed unsupported version.");
-		} catch (UnsupportedVersionException e) {
+		}
+		catch (UnsupportedVersionException e) {
 			// Good
 		}
 	}
@@ -186,7 +191,8 @@ public class DDMSVersionTest extends TestCase {
 		try {
 			DDMSVersion.getCurrentVersion().isAtLeast("dog");
 			fail("Allowed invalid data.");
-		} catch (UnsupportedVersionException e) {
+		}
+		catch (UnsupportedVersionException e) {
 			// Good
 		}
 	}

@@ -58,7 +58,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 		try {
 			component = new Security(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -92,7 +93,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 		try {
 			component = new Security(noticeList, access, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -181,8 +183,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 			// No optional fields
 			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(Security.getName(version), null);
-				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
-					version.getIsmNamespace(), "true");
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version
+					.getIsmNamespace(), "true");
 				SecurityAttributesTest.getFixture(false).addTo(element);
 				testConstructor(WILL_SUCCEED, element);
 			}
@@ -228,7 +230,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 			try {
 				new Security(null, null, (SecurityAttributes) null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -244,8 +247,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 			// Nested warnings
 			if (version.isAtLeast("4.0")) {
 				Element element = Util.buildDDMSElement(Security.getName(version), null);
-				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
-					version.getIsmNamespace(), "true");
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version
+					.getIsmNamespace(), "true");
 				Element accessElement = Util.buildElement(PropertyReader.getPrefix("ntk"), Access.getName(version),
 					version.getNtkNamespace(), null);
 				SecurityAttributesTest.getFixture(false).addTo(accessElement);
@@ -321,7 +324,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 		try {
 			new Security(element);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -345,7 +349,8 @@ public class SecurityTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

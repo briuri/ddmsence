@@ -54,7 +54,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		try {
 			return (new RecordKeeper(TEST_ID, new Organization(Util.getXsListAsList(TEST_NAME), null, null, null, null,
 				null)));
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -66,7 +67,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	private static ApplicationSoftware getApplicationSoftwareFixture() {
 		try {
 			return (new ApplicationSoftware(TEST_SOFTWARE, SecurityAttributesTest.getFixture(false)));
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -85,7 +87,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		try {
 			component = new RecordsManagementInfo(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -106,7 +109,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		try {
 			component = new RecordsManagementInfo(keeper, software, vitalRecord);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -267,7 +271,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new RecordsManagementInfo(null, null, TEST_VITAL);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -292,7 +297,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.getApplicationSoftware().getSecurityAttributes().setClassification("U");

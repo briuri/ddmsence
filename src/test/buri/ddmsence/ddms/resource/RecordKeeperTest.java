@@ -69,7 +69,8 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 	private static Organization getOrgFixture() {
 		try {
 			return (new Organization(Util.getXsListAsList(TEST_NAME), null, null, null, null, null));
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -88,7 +89,8 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 		try {
 			component = new RecordKeeper(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -106,7 +108,8 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 		try {
 			component = new RecordKeeper(recordKeeperID, org);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -265,7 +268,8 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new RecordKeeper(TEST_ID, getOrgFixture());
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -290,7 +294,8 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.getOrganization().setNames(Util.getXsListAsList(TEST_NAME));

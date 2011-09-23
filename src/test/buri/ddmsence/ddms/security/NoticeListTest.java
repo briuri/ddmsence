@@ -88,7 +88,8 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		try {
 			component = new NoticeList(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -106,7 +107,8 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		try {
 			component = new NoticeList(notices, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -151,8 +153,8 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_DDMS_PREFIX,
-				NoticeList.getName(version));
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_DDMS_PREFIX, NoticeList
+				.getName(version));
 			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
@@ -197,7 +199,8 @@ public class NoticeListTest extends AbstractComponentTestCase {
 			try {
 				new NoticeList(getNoticeList(), null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -268,7 +271,8 @@ public class NoticeListTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new NoticeList(getNoticeList(), SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}

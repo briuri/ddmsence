@@ -73,7 +73,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 		try {
 			attributes = new NoticeAttributes(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (attributes);
@@ -95,7 +96,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 		try {
 			attributes = new NoticeAttributes(noticeType, noticeReason, noticeDate, unregisteredNoticeType);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (attributes);
@@ -150,8 +152,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 
 			// too long noticeReason
 			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_REASON_NAME, icNamespace,
-				longString.toString());
+			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_REASON_NAME, icNamespace, longString
+				.toString());
 			testConstructor(WILL_FAIL, element);
 
 			// too long unregisteredNoticeType
@@ -261,8 +263,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	public void testWrongVersion() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
-		Util.addAttribute(element, PropertyReader.getPrefix("ism"), NoticeAttributes.NOTICE_DATE_NAME,
-			version.getIsmNamespace(), "2011-09-15");
+		Util.addAttribute(element, PropertyReader.getPrefix("ism"), NoticeAttributes.NOTICE_DATE_NAME, version
+			.getIsmNamespace(), "2011-09-15");
 		testConstructor(WILL_FAIL, element);
 
 		DDMSVersion.setCurrentVersion("4.0");
@@ -270,7 +272,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 		try {
 			attributes.addTo(element);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -317,7 +320,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

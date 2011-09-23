@@ -66,7 +66,8 @@ public class UnknownTest extends AbstractComponentTestCase {
 		try {
 			component = new Unknown(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -85,7 +86,8 @@ public class UnknownTest extends AbstractComponentTestCase {
 		try {
 			component = new Unknown(names, phones, emails);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -244,7 +246,8 @@ public class UnknownTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new Unknown(TEST_NAMES, TEST_PHONES, TEST_EMAILS);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -269,7 +272,8 @@ public class UnknownTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

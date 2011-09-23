@@ -62,7 +62,8 @@ public class SourceTest extends AbstractComponentTestCase {
 				SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new Source(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -86,7 +87,8 @@ public class SourceTest extends AbstractComponentTestCase {
 				: SecurityAttributesTest.getFixture(false));
 			component = new Source(qualifier, value, schemaQualifier, schemaHref, attr);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -116,8 +118,8 @@ public class SourceTest extends AbstractComponentTestCase {
 		xml.append("<ddms:source ").append(getXmlnsDDMS()).append(" ");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			xml.append(getXmlnsISM()).append(" ");
-		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE)
-			.append("\" ");
+		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE).append(
+			"\" ");
 		xml.append("ddms:schemaQualifier=\"").append(TEST_SCHEMA_QUALIFIER).append("\" ");
 		xml.append("ddms:schemaHref=\"").append(TEST_SCHEMA_HREF).append("\" ");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
@@ -270,10 +272,11 @@ public class SourceTest extends AbstractComponentTestCase {
 	public void test20Usage() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
-			new Source(TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF,
-				SecurityAttributesTest.getFixture(false));
+			new Source(TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF, SecurityAttributesTest
+				.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -297,7 +300,8 @@ public class SourceTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

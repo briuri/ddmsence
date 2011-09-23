@@ -59,7 +59,8 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 				SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new VirtualCoverage(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -80,7 +81,8 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 				: SecurityAttributesTest.getFixture(false);
 			component = new VirtualCoverage(address, protocol, attr);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -108,8 +110,8 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		xml.append("<ddms:virtualCoverage ").append(getXmlnsDDMS());
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			xml.append(" ").append(getXmlnsISM());
-		xml.append(" ddms:address=\"").append(TEST_ADDRESS).append("\" ddms:protocol=\"").append(TEST_PROTOCOL)
-			.append("\"");
+		xml.append(" ddms:address=\"").append(TEST_ADDRESS).append("\" ddms:protocol=\"").append(TEST_PROTOCOL).append(
+			"\"");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		xml.append(" />");
@@ -256,7 +258,8 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		try {
 			new VirtualCoverage(TEST_ADDRESS, TEST_PROTOCOL, SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -280,7 +283,8 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

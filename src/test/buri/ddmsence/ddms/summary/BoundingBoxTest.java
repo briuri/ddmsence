@@ -66,7 +66,8 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		try {
 			component = new BoundingBox(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -88,7 +89,8 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		try {
 			component = new BoundingBox(westBL, eastBL, southBL, northBL);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -142,14 +144,14 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:boundingBox ").append(getXmlnsDDMS()).append(">\n\t");
-		xml.append("<ddms:").append(getWestBLName()).append(">").append(TEST_WEST).append("</ddms:")
-			.append(getWestBLName()).append(">\n\t");
-		xml.append("<ddms:").append(getEastBLName()).append(">").append(TEST_EAST).append("</ddms:")
-			.append(getEastBLName()).append(">\n\t");
-		xml.append("<ddms:").append(getSouthBLName()).append(">").append(TEST_SOUTH).append("</ddms:")
-			.append(getSouthBLName()).append(">\n\t");
-		xml.append("<ddms:").append(getNorthBLName()).append(">").append(TEST_NORTH).append("</ddms:")
-			.append(getNorthBLName()).append(">\n");
+		xml.append("<ddms:").append(getWestBLName()).append(">").append(TEST_WEST).append("</ddms:").append(
+			getWestBLName()).append(">\n\t");
+		xml.append("<ddms:").append(getEastBLName()).append(">").append(TEST_EAST).append("</ddms:").append(
+			getEastBLName()).append(">\n\t");
+		xml.append("<ddms:").append(getSouthBLName()).append(">").append(TEST_SOUTH).append("</ddms:").append(
+			getSouthBLName()).append(">\n\t");
+		xml.append("<ddms:").append(getNorthBLName()).append(">").append(TEST_NORTH).append("</ddms:").append(
+			getNorthBLName()).append(">\n");
 		xml.append("</ddms:boundingBox>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
@@ -204,28 +206,28 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, element);
 
 			// Not Double
-			element = buildComponentElement("west", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH),
-				String.valueOf(TEST_NORTH));
+			element = buildComponentElement("west", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), String
+				.valueOf(TEST_NORTH));
 			testConstructor(WILL_FAIL, element);
 
 			// Longitude too small
-			element = buildComponentElement("-181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH),
-				String.valueOf(TEST_NORTH));
+			element = buildComponentElement("-181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), String
+				.valueOf(TEST_NORTH));
 			testConstructor(WILL_FAIL, element);
 
 			// Longitude too big
-			element = buildComponentElement("181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH),
-				String.valueOf(TEST_NORTH));
+			element = buildComponentElement("181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), String
+				.valueOf(TEST_NORTH));
 			testConstructor(WILL_FAIL, element);
 
 			// Latitude too small
-			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "-91",
-				String.valueOf(TEST_NORTH));
+			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "-91", String
+				.valueOf(TEST_NORTH));
 			testConstructor(WILL_FAIL, element);
 
 			// Latitude too big
-			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "91",
-				String.valueOf(TEST_NORTH));
+			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "91", String
+				.valueOf(TEST_NORTH));
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -353,7 +355,8 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

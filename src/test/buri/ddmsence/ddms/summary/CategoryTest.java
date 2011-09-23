@@ -65,7 +65,8 @@ public class CategoryTest extends AbstractComponentTestCase {
 		try {
 			component = new Category(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -84,10 +85,11 @@ public class CategoryTest extends AbstractComponentTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Category component = null;
 		try {
-			component = new Category(qualifier, code, label,
-				version.isAtLeast("4.0") ? SecurityAttributesTest.getFixture(false) : null);
+			component = new Category(qualifier, code, label, version.isAtLeast("4.0") ? SecurityAttributesTest
+				.getFixture(false) : null);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -264,7 +266,8 @@ public class CategoryTest extends AbstractComponentTestCase {
 		try {
 			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 
@@ -277,7 +280,8 @@ public class CategoryTest extends AbstractComponentTestCase {
 		try {
 			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 
@@ -288,7 +292,8 @@ public class CategoryTest extends AbstractComponentTestCase {
 		try {
 			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 
@@ -299,7 +304,8 @@ public class CategoryTest extends AbstractComponentTestCase {
 		try {
 			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 
@@ -309,7 +315,8 @@ public class CategoryTest extends AbstractComponentTestCase {
 		attributes = new ExtensibleAttributes(extAttributes);
 		try {
 			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, null, attributes);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Prevented valid data.");
 		}
 	}
@@ -319,7 +326,8 @@ public class CategoryTest extends AbstractComponentTestCase {
 		try {
 			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -343,7 +351,8 @@ public class CategoryTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

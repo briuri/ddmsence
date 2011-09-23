@@ -56,7 +56,8 @@ public class IdentifierTest extends AbstractComponentTestCase {
 		try {
 			component = new Identifier(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -75,7 +76,8 @@ public class IdentifierTest extends AbstractComponentTestCase {
 		try {
 			component = new Identifier(qualifier, value);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -254,7 +256,8 @@ public class IdentifierTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.setQualifier(TEST_QUALIFIER);

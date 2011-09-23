@@ -80,7 +80,8 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		try {
 			component = new NoticeText(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -99,7 +100,8 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		try {
 			component = new NoticeText(value, pocTypes, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -132,8 +134,8 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_ISM_PREFIX,
-				NoticeText.getName(version));
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_ISM_PREFIX, NoticeText
+				.getName(version));
 			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
@@ -259,7 +261,8 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new NoticeText(TEST_VALUE, TEST_POC_TYPES, null);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}

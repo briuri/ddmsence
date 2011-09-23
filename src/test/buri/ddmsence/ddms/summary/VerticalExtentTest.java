@@ -66,7 +66,8 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 		try {
 			component = new VerticalExtent(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -88,7 +89,8 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 		try {
 			component = new VerticalExtent(minVerticalExtent, maxVerticalExtent, unitOfMeasure, datum);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -130,10 +132,10 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 		xml.append("<ddms:verticalExtent ").append(getXmlnsDDMS()).append(" ");
 		xml.append("ddms:unitOfMeasure=\"").append(TEST_UOM).append("\" ");
 		xml.append("ddms:datum=\"").append(TEST_DATUM).append("\">\n\t");
-		xml.append("<ddms:").append(getMinVerticalExtentName()).append(">").append(TEST_MIN).append("</ddms:")
-			.append(getMinVerticalExtentName()).append(">\n\t");
-		xml.append("<ddms:").append(getMaxVerticalExtentName()).append(">").append(TEST_MAX).append("</ddms:")
-			.append(getMaxVerticalExtentName()).append(">\n");
+		xml.append("<ddms:").append(getMinVerticalExtentName()).append(">").append(TEST_MIN).append("</ddms:").append(
+			getMinVerticalExtentName()).append(">\n\t");
+		xml.append("<ddms:").append(getMaxVerticalExtentName()).append(">").append(TEST_MAX).append("</ddms:").append(
+			getMaxVerticalExtentName()).append(">\n");
 		xml.append("</ddms:verticalExtent>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
@@ -386,7 +388,8 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

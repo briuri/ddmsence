@@ -55,7 +55,8 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	public static GroupValue getFixture() {
 		try {
 			return (new GroupValue(TEST_VALUE, null, null, null, SecurityAttributesTest.getFixture(false)));
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			fail("Failed to create fixture: " + e.getMessage());
 		}
 		return (null);
@@ -74,7 +75,8 @@ public class GroupValueTest extends AbstractComponentTestCase {
 		try {
 			component = new GroupValue(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -96,7 +98,8 @@ public class GroupValueTest extends AbstractComponentTestCase {
 		try {
 			component = new GroupValue(value, id, idReference, qualifier, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -186,7 +189,8 @@ public class GroupValueTest extends AbstractComponentTestCase {
 			try {
 				new GroupValue(TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER, null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -298,7 +302,8 @@ public class GroupValueTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.getSecurityAttributes().setClassification("U");

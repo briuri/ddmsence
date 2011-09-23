@@ -56,7 +56,8 @@ public class LanguageTest extends AbstractComponentTestCase {
 		try {
 			component = new Language(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -75,7 +76,8 @@ public class LanguageTest extends AbstractComponentTestCase {
 		try {
 			component = new Language(qualifier, value);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -243,7 +245,8 @@ public class LanguageTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.setQualifier(TEST_QUALIFIER);

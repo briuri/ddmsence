@@ -55,7 +55,8 @@ public class RoleEntityTest extends TestCase {
 		try {
 			new Creator(org, null, null);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}

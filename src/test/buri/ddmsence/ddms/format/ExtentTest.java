@@ -66,7 +66,8 @@ public class ExtentTest extends AbstractComponentTestCase {
 		try {
 			component = new Extent(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -85,7 +86,8 @@ public class ExtentTest extends AbstractComponentTestCase {
 		try {
 			component = new Extent(qualifier, value);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -106,8 +108,8 @@ public class ExtentTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:extent ").append(getXmlnsDDMS()).append(" ddms:qualifier=\"").append(TEST_QUALIFIER)
-			.append("\" ddms:value=\"").append(TEST_VALUE).append("\" />");
+		xml.append("<ddms:extent ").append(getXmlnsDDMS()).append(" ddms:qualifier=\"").append(TEST_QUALIFIER).append(
+			"\" ddms:value=\"").append(TEST_VALUE).append("\" />");
 		return (xml.toString());
 	}
 
@@ -273,7 +275,8 @@ public class ExtentTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.setQualifier(TEST_QUALIFIER);

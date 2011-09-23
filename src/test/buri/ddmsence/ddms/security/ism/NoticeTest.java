@@ -88,7 +88,8 @@ public class NoticeTest extends AbstractComponentTestCase {
 		try {
 			component = new Notice(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -104,10 +105,11 @@ public class NoticeTest extends AbstractComponentTestCase {
 	private Notice testConstructor(boolean expectFailure, List<NoticeText> noticeTexts) {
 		Notice component = null;
 		try {
-			component = new Notice(noticeTexts, SecurityAttributesTest.getFixture(false),
-				NoticeAttributesTest.getFixture());
+			component = new Notice(noticeTexts, SecurityAttributesTest.getFixture(false), NoticeAttributesTest
+				.getFixture());
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -147,8 +149,8 @@ public class NoticeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_ISM_PREFIX,
-				Notice.getName(version));
+			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_ISM_PREFIX, Notice
+				.getName(version));
 			testConstructor(WILL_FAIL, getWrongNameElementFixture());
 		}
 	}
@@ -172,7 +174,8 @@ public class NoticeTest extends AbstractComponentTestCase {
 			// No attributes
 			try {
 				new Notice(getNoticeTextList(), null, null);
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				fail("Prevented valid data.");
 			}
 		}
@@ -263,7 +266,8 @@ public class NoticeTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new Notice(getNoticeTextList(), SecurityAttributesTest.getFixture(false), null);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}

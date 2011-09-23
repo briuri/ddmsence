@@ -76,7 +76,8 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 		try {
 			component = new ApplicationSoftware(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -94,7 +95,8 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 		try {
 			component = new ApplicationSoftware(value, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -116,8 +118,8 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:applicationSoftware ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM())
-			.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:applicationSoftware ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(
+			" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE).append("</ddms:applicationSoftware>");
 		return (xml.toString());
 	}
@@ -177,7 +179,8 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 			try {
 				new ApplicationSoftware(TEST_VALUE, (SecurityAttributes) null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -254,7 +257,8 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new ApplicationSoftware(TEST_VALUE, SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -279,7 +283,8 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

@@ -57,7 +57,8 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		try {
 			component = new Subtitle(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -75,7 +76,8 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		try {
 			component = new Subtitle(value, SecurityAttributesTest.getFixture(false));
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -97,8 +99,8 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subtitle ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM())
-			.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ddms:subtitle ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(
+			" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append(TEST_VALUE).append("</ddms:subtitle>");
 		return (xml.toString());
 	}
@@ -154,7 +156,8 @@ public class SubtitleTest extends AbstractComponentTestCase {
 			try {
 				new Subtitle(TEST_VALUE, (SecurityAttributes) null);
 				fail("Allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}
@@ -240,7 +243,8 @@ public class SubtitleTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

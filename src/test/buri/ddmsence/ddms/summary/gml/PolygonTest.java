@@ -89,7 +89,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 		try {
 			component = new Polygon(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -110,7 +111,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 		try {
 			component = new Polygon(positions, srsAttributes, id);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -462,7 +464,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 		try {
 			new Polygon(positions, SRSAttributesTest.getFixture(), TEST_ID);
 			fail("Allowed different versions.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -486,7 +489,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 

@@ -99,7 +99,8 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		try {
 			component = new BoundingGeometry(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -118,7 +119,8 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		try {
 			component = new BoundingGeometry(polygons, points);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -142,8 +144,9 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:boundingGeometry ").append(getXmlnsDDMS()).append(">\n\t");
 		xml.append("<gml:Point ").append(getXmlnsGML()).append(" ");
-		xml.append("gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ").append(
-			"axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n\t\t");
+		xml.append(
+			"gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ")
+			.append("axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n\t\t");
 		xml.append("<gml:pos>32.1 40.1</gml:pos>\n\t");
 		xml.append("</gml:Point>\n");
 		xml.append("</ddms:boundingGeometry>");
@@ -282,7 +285,8 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		try {
 			new BoundingGeometry(polygons, null);
 			fail("Allowed different versions.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 
@@ -293,7 +297,8 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		try {
 			new BoundingGeometry(null, points);
 			fail("Allowed different versions.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -326,7 +331,8 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder = new BoundingGeometry.Builder();

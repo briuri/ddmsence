@@ -100,7 +100,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 				SecurityAttributesTest.getFixture(false).addTo(element);
 			component = new SubjectCoverage(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -124,7 +125,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 				: SecurityAttributesTest.getFixture(false);
 			component = new SubjectCoverage(keywords, categories, metrics, actors, attr);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -192,7 +194,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 				"ddms:label=\"DDMS\" />\n");
 			xml.append("\t<ddms:productionMetric ddms:subject=\"FOOD\" ddms:coverage=\"AFG\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" />\n");
 			xml.append("\t<ddms:nonStateActor ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ddms:order=\"1\">Laotian Monks</ddms:nonStateActor>\n");
-		} else {
+		}
+		else {
 			xml.append("\t<ddms:Subject>\n");
 			xml.append("\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
 			xml.append("\t\t<ddms:keyword ddms:value=\"Uri\" />\n");
@@ -408,7 +411,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		try {
 			new SubjectCoverage(getKeywords(), getCategories(), null, null, SecurityAttributesTest.getFixture(false));
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -420,7 +424,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		try {
 			new SubjectCoverage(keywords, null, null, null, SecurityAttributesTest.getFixture(false));
 			fail("Allowed different versions.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 
@@ -430,7 +435,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		try {
 			new SubjectCoverage(null, categories, null, null, SecurityAttributesTest.getFixture(false));
 			fail("Allowed different versions.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}

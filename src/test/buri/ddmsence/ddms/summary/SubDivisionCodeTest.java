@@ -64,7 +64,8 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 		try {
 			component = new SubDivisionCode(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -83,7 +84,8 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 		try {
 			component = new SubDivisionCode(qualifier, value);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -247,7 +249,8 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion("2.0");
 			new SubDivisionCode(TEST_QUALIFIER, TEST_VALUE);
 			fail("Allowed invalid data.");
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			// Good
 		}
 	}
@@ -272,7 +275,8 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 		}

@@ -90,7 +90,8 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 		try {
 			attributes = new XLinkAttributes(element);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (attributes);
@@ -110,7 +111,8 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 		try {
 			attributes = new XLinkAttributes(role, title, label);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (attributes);
@@ -131,7 +133,8 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 		try {
 			attributes = new XLinkAttributes(href, role, title, label);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (attributes);
@@ -155,7 +158,8 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 		try {
 			attributes = new XLinkAttributes(href, role, title, arcrole, show, actuate);
 			checkConstructorSuccess(expectFailure);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (attributes);
@@ -521,7 +525,8 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
-			} catch (InvalidDDMSException e) {
+			}
+			catch (InvalidDDMSException e) {
 				// Good
 			}
 			builder.setType("locator");
