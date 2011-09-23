@@ -53,8 +53,8 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractAccessEntity extends AbstractBaseComponent {
 	
-	private SystemName _systemName;
-	private SecurityAttributes _securityAttributes;
+	private SystemName _systemName = null;
+	private SecurityAttributes _securityAttributes = null;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element. Does not validate.

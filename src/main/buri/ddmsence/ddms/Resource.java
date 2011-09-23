@@ -74,8 +74,8 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:resource (the top-level element of a DDMS record).
  * 
  * <p>
- * Starting in DDMS 3.0, resources have additional ISM attributes which did not exist in 2.0. However, the 2.0 schema still allows 
- * "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present.
+ * Starting in DDMS 3.0, resources have additional ISM attributes which did not exist in 2.0. However, the 2.0 schema 
+ * still allows "any" attributes on the Resource, so the 3.0 attribute values will be loaded if present.
  * </p>
  *  
  * <p>When generating HTML/Text output for a Resource, additional tags are generated listing the version of DDMSence 
@@ -83,8 +83,8 @@ import buri.ddmsence.util.Util;
  * (and may be removed). For example:</p>
  * 
  * <ul><code>
- * DDMSGenerator: DDMSence 1.0.0<br />
- * DDMSVersion: 3.0<br /><br />
+ * ddms.generator: DDMSence 1.0.0<br />
+ * ddms.version: 3.0<br /><br />
  * &lt;meta name="ddms.generator" content="DDMSence 1.0.0" /&gt;<br />
  * &lt;meta name="ddms.version" content="3.0" /&gt;<br />
  * </code></ul></p>
@@ -124,21 +124,16 @@ import buri.ddmsence.util.Util;
  * markings on this record. (required, starting in DDMS 3.0)<br />
  * <u>ntk:DESVersion</u>: Specifies the version of the Data Encoding Specification used for Need-To-Know markings
  * on this record. (required, starting in DDMS 4.0 with a fixed value)<br />
- * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required. (starting in DDMS 3.0)<br />
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required. (starting in DDMS 
+ * 3.0)<br />
  * <u>{@link NoticeAttributes}</u>: (optional, starting in DDMS 4.0)<br /><br />
  * <u>{@link ExtensibleAttributes}</u>: (optional)<br />
  * 
- * Starting in DDMS 3.0, the ISM attributes explicitly defined in the schema should appear in the SecurityAttributes, not
- * the ExtensibleAttributes. Attempts to load them as ExtensibleAttributes will throw an InvalidDDMSException.
+ * Starting in DDMS 3.0, the ISM attributes explicitly defined in the schema should appear in the SecurityAttributes, 
+ * not the ExtensibleAttributes. Attempts to load them as ExtensibleAttributes will throw an InvalidDDMSException.
  * In DDMS 2.0, there are no ISM attributes explicitly defined in the schema, so you can load them in any way you 
  * want. It is recommended that you load them as SecurityAttributes anyhow, for consistency with newer DDMS resources. 
  * Please see the "Power Tips" on the Extensible Layer (on the DDMSence home page) for details. 
- * </td></tr></table>
- * 
- * <table class="info"><tr class="infoHeader"><th>DDMS Information</th></tr><tr><td class="infoBody">
- * <u>Description</u>: The top-level element of a DDMS Metacard with its amplifying attributes.<br />
- * <u>Obligation</u>: Mandatory<br />
- * <u>Schema Modification Date</u>: 2011-08-31<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -146,42 +141,41 @@ import buri.ddmsence.util.Util;
  */
 public final class Resource extends AbstractBaseComponent {
 	
-	// Values are cached upon instantiation, so XOM elements do not have to be traversed when calling getters.
-	private List<Identifier> _cachedIdentifiers = new ArrayList<Identifier>();
-	private List<Title> _cachedTitles = new ArrayList<Title>();
-	private List<Subtitle> _cachedSubtitles = new ArrayList<Subtitle>();
-	private Description _cachedDescription = null;
-	private List<Language> _cachedLanguages = new ArrayList<Language>();
-	private Dates _cachedDates = null;
-	private Rights _cachedRights = null;
-	private List<Source> _cachedSources = new ArrayList<Source>();
-	private List<Type> _cachedTypes = new ArrayList<Type>();
-	private List<Creator> _cachedCreators = new ArrayList<Creator>();
-	private List<Publisher> _cachedPublishers = new ArrayList<Publisher>();
-	private List<Contributor> _cachedContributors = new ArrayList<Contributor>();
-	private List<PointOfContact> _cachedPointOfContacts = new ArrayList<PointOfContact>();
-	private Format _cachedFormat = null;
-	private List<SubjectCoverage> _cachedSubjectCoverages = new ArrayList<SubjectCoverage>();
-	private List<VirtualCoverage> _cachedVirtualCoverages = new ArrayList<VirtualCoverage>();
-	private List<TemporalCoverage> _cachedTemporalCoverages = new ArrayList<TemporalCoverage>();
-	private List<GeospatialCoverage> _cachedGeospatialCoverages = new ArrayList<GeospatialCoverage>();
-	private List<RelatedResource> _cachedRelatedResources = new ArrayList<RelatedResource>();
-	private Security _cachedSecurity = null;
-	private List<ExtensibleElement> _cachedExtensibleElements = new ArrayList<ExtensibleElement>();
+	private List<Identifier> _identifiers = new ArrayList<Identifier>();
+	private List<Title> _titles = new ArrayList<Title>();
+	private List<Subtitle> _subtitles = new ArrayList<Subtitle>();
+	private Description _description = null;
+	private List<Language> _languages = new ArrayList<Language>();
+	private Dates _dates = null;
+	private Rights _rights = null;
+	private List<Source> _sources = new ArrayList<Source>();
+	private List<Type> _types = new ArrayList<Type>();
+	private List<Creator> _creators = new ArrayList<Creator>();
+	private List<Publisher> _publishers = new ArrayList<Publisher>();
+	private List<Contributor> _contributors = new ArrayList<Contributor>();
+	private List<PointOfContact> _pointOfContacts = new ArrayList<PointOfContact>();
+	private Format _format = null;
+	private List<SubjectCoverage> _subjectCoverages = new ArrayList<SubjectCoverage>();
+	private List<VirtualCoverage> _virtualCoverages = new ArrayList<VirtualCoverage>();
+	private List<TemporalCoverage> _temporalCoverages = new ArrayList<TemporalCoverage>();
+	private List<GeospatialCoverage> geospatialCoverages = new ArrayList<GeospatialCoverage>();
+	private List<RelatedResource> _relatedResources = new ArrayList<RelatedResource>();
+	private Security _security = null;
+	private List<ExtensibleElement> _extensibleElements = new ArrayList<ExtensibleElement>();
 	private List<IDDMSComponent> _orderedList = new ArrayList<IDDMSComponent>();
 
-	private XMLGregorianCalendar _cachedCreateDate = null;
-	private Integer _cachedIsmDESVersion = null;
-	private Integer _cachedNtkDESVersion = null;
-	private NoticeAttributes _cachedNoticeAttributes = null;
+	private XMLGregorianCalendar _createDate = null;
+	private Integer _ismDESVersion = null;
+	private Integer _ntkDESVersion = null;
+	private NoticeAttributes _noticeAttributes = null;
 	private SecurityAttributes _securityAttributes;
 	private ExtensibleAttributes _extensibleAttributes = null;
 	
 	/** The attribute name for resource element flag */
-	public static final String RESOURCE_ELEMENT_NAME = "resourceElement";
+	protected static final String RESOURCE_ELEMENT_NAME = "resourceElement";
 		
 	/** The attribute name for create date */
-	public static final String CREATE_DATE_NAME = "createDate";
+	protected static final String CREATE_DATE_NAME = "createDate";
 	
 	/** The attribute name for DES version */
 	public static final String DES_VERSION_NAME = "DESVersion";
@@ -211,117 +205,102 @@ public final class Resource extends AbstractBaseComponent {
 			String namespace = element.getNamespaceURI();
 			String createDate = getAttributeValue(CREATE_DATE_NAME, getDDMSVersion().getIsmNamespace());
 			if (!Util.isEmpty(createDate))
-				_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
-			String ismDESVersion = element.getAttributeValue(DES_VERSION_NAME, 
-				getDDMSVersion().getIsmNamespace());
+				_createDate = getFactory().newXMLGregorianCalendar(createDate);
+			String ismDESVersion = element.getAttributeValue(DES_VERSION_NAME, getDDMSVersion().getIsmNamespace());
 			if (!Util.isEmpty(ismDESVersion)) {
 				try {
-					_cachedIsmDESVersion = Integer.valueOf(ismDESVersion);
-				} catch (NumberFormatException e) {
+					_ismDESVersion = Integer.valueOf(ismDESVersion);
+				}
+				catch (NumberFormatException e) {
 					// 	This will be thrown as an InvalidDDMSException during validation
 				}
 			}
 			if (getDDMSVersion().isAtLeast("4.0")) {
-				String ntkDESVersion = element.getAttributeValue(DES_VERSION_NAME, 
-					getDDMSVersion().getNtkNamespace());
+				String ntkDESVersion = element.getAttributeValue(DES_VERSION_NAME, getDDMSVersion().getNtkNamespace());
 				if (!Util.isEmpty(ntkDESVersion)) {
 					try {
-						_cachedNtkDESVersion = Integer.valueOf(ntkDESVersion);
-					} catch (NumberFormatException e) {
+						_ntkDESVersion = Integer.valueOf(ntkDESVersion);
+					}
+					catch (NumberFormatException e) {
 						// This will be thrown as an InvalidDDMSException during validation
 					}
 				}
 			}
-			_cachedNoticeAttributes = new NoticeAttributes(element);
+			_noticeAttributes = new NoticeAttributes(element);
 			_securityAttributes = new SecurityAttributes(element);
 			_extensibleAttributes = new ExtensibleAttributes(element);
-			
+
 			DDMSVersion version = getDDMSVersion();
 			// Resource Set
 			Elements components = element.getChildElements(Identifier.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedIdentifiers.add(new Identifier(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				_identifiers.add(new Identifier(components.get(i)));
 			components = element.getChildElements(Title.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedTitles.add(new Title(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				_titles.add(new Title(components.get(i)));
 			components = element.getChildElements(Subtitle.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedSubtitles.add(new Subtitle(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				_subtitles.add(new Subtitle(components.get(i)));
 			Element component = getChild(Description.getName(version));
 			if (component != null)
-				_cachedDescription = new Description(component);
+				_description = new Description(component);
 			components = element.getChildElements(Language.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedLanguages.add(new Language(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				_languages.add(new Language(components.get(i)));
 			component = getChild(Dates.getName(version));
 			if (component != null)
-				_cachedDates = new Dates(component);
+				_dates = new Dates(component);
 			component = getChild(Rights.getName(version));
 			if (component != null)
-				_cachedRights = new Rights(component);
+				_rights = new Rights(component);
 			components = element.getChildElements(Source.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedSources.add(new Source(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				_sources.add(new Source(components.get(i)));
 			components = element.getChildElements(Type.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedTypes.add(new Type(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				_types.add(new Type(components.get(i)));
 			components = element.getChildElements(Creator.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedCreators.add(new Creator(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				_creators.add(new Creator(components.get(i)));
 			components = element.getChildElements(Publisher.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedPublishers.add(new Publisher(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				_publishers.add(new Publisher(components.get(i)));
 			components = element.getChildElements(Contributor.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedContributors.add(new Contributor(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				_contributors.add(new Contributor(components.get(i)));
 			components = element.getChildElements(PointOfContact.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedPointOfContacts.add(new PointOfContact(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				_pointOfContacts.add(new PointOfContact(components.get(i)));
 
 			// Format Set
 			component = getChild(Format.getName(version));
 			if (component != null)
-				_cachedFormat = new Format(component);
+				_format = new Format(component);
 
 			// Summary Set
 			components = element.getChildElements(SubjectCoverage.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedSubjectCoverages.add(new SubjectCoverage(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				_subjectCoverages.add(new SubjectCoverage(components.get(i)));
 			components = element.getChildElements(VirtualCoverage.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedVirtualCoverages.add(new VirtualCoverage(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				_virtualCoverages.add(new VirtualCoverage(components.get(i)));
 			components = element.getChildElements(TemporalCoverage.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedTemporalCoverages.add(new TemporalCoverage(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				_temporalCoverages.add(new TemporalCoverage(components.get(i)));
 			components = element.getChildElements(GeospatialCoverage.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
-				_cachedGeospatialCoverages.add(new GeospatialCoverage(components.get(i)));
-			}
+			for (int i = 0; i < components.size(); i++)
+				geospatialCoverages.add(new GeospatialCoverage(components.get(i)));
 			components = element.getChildElements(RelatedResource.getName(version), namespace);
-			for (int i = 0; i < components.size(); i++) {
+			for (int i = 0; i < components.size(); i++)
 				loadRelatedResource(components.get(i));
-			}
 
 			// Security Set
 			component = getChild(Security.getName(version));
 			if (component != null) {
-				_cachedSecurity = new Security(component);
+				_security = new Security(component);
 
 				// Extensible Layer
-				
+
 				// We use the security component to locate the extensible layer. If it is null, this resource is going
 				// to fail validation anyhow, so we skip the extensible layer.
 				int index = 0;
@@ -329,13 +308,13 @@ public final class Resource extends AbstractBaseComponent {
 				while (allElements.get(index) != component) {
 					index++;
 				}
-				for (int i = index + 1; i < allElements.size(); i++) {
-					_cachedExtensibleElements.add(new ExtensibleElement(allElements.get(i)));
-				}	
+				for (int i = index + 1; i < allElements.size(); i++)
+					_extensibleElements.add(new ExtensibleElement(allElements.get(i)));
 			}
 			populatedOrderedList();
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -352,14 +331,14 @@ public final class Resource extends AbstractBaseComponent {
 	private void loadRelatedResource(Element resource) throws InvalidDDMSException {
 		Elements children = resource.getChildElements(RelatedResource.OLD_INNER_NAME, getNamespace());
 		if (children.size() <= 1) {
-			_cachedRelatedResources.add(new RelatedResource(resource));
+			_relatedResources.add(new RelatedResource(resource));
 		}
 		else {
 			for (int i = 0; i < children.size(); i++) {
 				Element copy = new Element(resource);
 				copy.removeChildren();
 				copy.appendChild(new Element(children.get(i)));
-				_cachedRelatedResources.add(new RelatedResource(copy));
+				_relatedResources.add(new RelatedResource(copy));
 			}
 		}
 	}
@@ -383,11 +362,11 @@ public final class Resource extends AbstractBaseComponent {
 	 * (or higher) components will fail, because some required attributes are missing.</p>
 	 * 
 	 * @param topLevelComponents a list of top level components
-	 * @param extensions any extensible attributes (optional)
+	 * @param extensibleAttributes any extensible attributes (optional)
 	 */
-	public Resource(List<IDDMSComponent> topLevelComponents, ExtensibleAttributes extensions)
+	public Resource(List<IDDMSComponent> topLevelComponents, ExtensibleAttributes extensibleAttributes)
 		throws InvalidDDMSException {
-		this(topLevelComponents, null, null, null, null, null, null, extensions);
+		this(topLevelComponents, null, null, null, null, null, null, extensibleAttributes);
 	}
 
 	/**
@@ -437,43 +416,44 @@ public final class Resource extends AbstractBaseComponent {
 	 * does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
-		Integer ismDESVersion, Integer ntkDESVersion, SecurityAttributes securityAttributes, NoticeAttributes noticeAttributes,
-		ExtensibleAttributes extensibleAttributes) throws InvalidDDMSException {
+		Integer ismDESVersion, Integer ntkDESVersion, SecurityAttributes securityAttributes,
+		NoticeAttributes noticeAttributes, ExtensibleAttributes extensibleAttributes) throws InvalidDDMSException {
 		try {
-			String name = Resource.getName(DDMSVersion.getCurrentVersion());
 			if (topLevelComponents == null)
 				topLevelComponents = Collections.emptyList();
-			Element element = Util.buildDDMSElement(name, null);
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			String ismPrefix = PropertyReader.getPrefix("ism");
+			String ismNamespace = version.getIsmNamespace();
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
+			String ntkNamespace = version.getNtkNamespace();
+			Element element = Util.buildDDMSElement(Resource.getName(version), null);
+						
 			// Attributes
 			if (ntkDESVersion != null) {
-				_cachedNtkDESVersion = ntkDESVersion;
-				Util.addAttribute(element, ntkPrefix, DES_VERSION_NAME, 
-					DDMSVersion.getCurrentVersion().getNtkNamespace(), ntkDESVersion.toString());
+				_ntkDESVersion = ntkDESVersion;
+				Util.addAttribute(element, ntkPrefix, DES_VERSION_NAME, ntkNamespace, ntkDESVersion.toString());
 			}
 			if (resourceElement != null) {
-				Util.addAttribute(element, ismPrefix, RESOURCE_ELEMENT_NAME, 
-					DDMSVersion.getCurrentVersion().getIsmNamespace(), String.valueOf(resourceElement));
+				Util.addAttribute(element, ismPrefix, RESOURCE_ELEMENT_NAME, ismNamespace, String
+					.valueOf(resourceElement));
 			}
 			if (ismDESVersion != null) {
-				_cachedIsmDESVersion = ismDESVersion;
-				Util.addAttribute(element, ismPrefix, DES_VERSION_NAME, 
-					DDMSVersion.getCurrentVersion().getIsmNamespace(), ismDESVersion.toString());
+				_ismDESVersion = ismDESVersion;
+				Util.addAttribute(element, ismPrefix, DES_VERSION_NAME, ismNamespace, ismDESVersion.toString());
 			}
 			if (!Util.isEmpty(createDate)) {
 				try {
-					_cachedCreateDate = getFactory().newXMLGregorianCalendar(createDate);
+					_createDate = getFactory().newXMLGregorianCalendar(createDate);
 				}
 				catch (IllegalArgumentException e) {
 					throw new InvalidDDMSException("The ISM:createDate attribute is not in a valid date format.");
 				}
-				Util.addAttribute(element, ismPrefix, CREATE_DATE_NAME, 
-					DDMSVersion.getCurrentVersion().getIsmNamespace(), getCreateDate().toXMLFormat());
+				Util.addAttribute(element, ismPrefix, CREATE_DATE_NAME, version.getIsmNamespace(), getCreateDate()
+					.toXMLFormat());
 			}
-			_cachedNoticeAttributes = (noticeAttributes == null ? new NoticeAttributes(null, null, null, null)
+			_noticeAttributes = (noticeAttributes == null ? new NoticeAttributes(null, null, null, null)
 				: noticeAttributes);
-			_cachedNoticeAttributes.addTo(element);
+			_noticeAttributes.addTo(element);
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			_extensibleAttributes = ExtensibleAttributes.getNonNullInstance(extensibleAttributes);
@@ -482,66 +462,67 @@ public final class Resource extends AbstractBaseComponent {
 			for (IDDMSComponent component : topLevelComponents) {
 				// Resource Set
 				if (component instanceof Identifier)
-					_cachedIdentifiers.add((Identifier) component);
+					_identifiers.add((Identifier) component);
 				else if (component instanceof Title)
-					_cachedTitles.add((Title) component);
+					_titles.add((Title) component);
 				else if (component instanceof Subtitle)
-					_cachedSubtitles.add((Subtitle) component);
+					_subtitles.add((Subtitle) component);
 				else if (component instanceof Description)
-					_cachedDescription = (Description) component;
+					_description = (Description) component;
 				else if (component instanceof Language)
-					_cachedLanguages.add((Language) component);
+					_languages.add((Language) component);
 				else if (component instanceof Dates)
-					_cachedDates = (Dates) component;
+					_dates = (Dates) component;
 				else if (component instanceof Rights)
-					_cachedRights = (Rights) component;
+					_rights = (Rights) component;
 				else if (component instanceof Source)
-					_cachedSources.add((Source) component);
+					_sources.add((Source) component);
 				else if (component instanceof Type)
-					_cachedTypes.add((Type) component);
+					_types.add((Type) component);
 				else if (component instanceof Creator)
-					_cachedCreators.add((Creator) component);
+					_creators.add((Creator) component);
 				else if (component instanceof Publisher)
-					_cachedPublishers.add((Publisher) component);
+					_publishers.add((Publisher) component);
 				else if (component instanceof Contributor)
-					_cachedContributors.add((Contributor) component);
+					_contributors.add((Contributor) component);
 				else if (component instanceof PointOfContact)
-					_cachedPointOfContacts.add((PointOfContact) component);
+					_pointOfContacts.add((PointOfContact) component);
 				// Format Set
 				else if (component instanceof Format)
-					_cachedFormat = (Format) component;
+					_format = (Format) component;
 				// Summary Set
 				else if (component instanceof SubjectCoverage)
-					_cachedSubjectCoverages.add((SubjectCoverage) component);
+					_subjectCoverages.add((SubjectCoverage) component);
 				else if (component instanceof VirtualCoverage)
-					_cachedVirtualCoverages.add((VirtualCoverage) component);
+					_virtualCoverages.add((VirtualCoverage) component);
 				else if (component instanceof TemporalCoverage)
-					_cachedTemporalCoverages.add((TemporalCoverage) component);
+					_temporalCoverages.add((TemporalCoverage) component);
 				else if (component instanceof GeospatialCoverage)
-					_cachedGeospatialCoverages.add((GeospatialCoverage) component);
+					geospatialCoverages.add((GeospatialCoverage) component);
 				else if (component instanceof RelatedResource)
-					_cachedRelatedResources.add((RelatedResource) component);
+					_relatedResources.add((RelatedResource) component);
 				// Security Set
 				else if (component instanceof Security)
-					_cachedSecurity = (Security) component;
+					_security = (Security) component;
 				// Extensible Layer
 				else if (component instanceof ExtensibleElement)
-					_cachedExtensibleElements.add((ExtensibleElement) component);
+					_extensibleElements.add((ExtensibleElement) component);
 				else
 					throw new InvalidDDMSException(component.getName()
-						+ " is not a valid top-level component in a ddms:" + name + ".");
+						+ " is not a valid top-level component in a resource.");
 			}
 			populatedOrderedList();
 			for (IDDMSComponent component : getTopLevelComponents()) {
 				element.appendChild(component.getXOMElementCopy());
 			}
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Creates an ordered list of all the top-level components in this Resource, for ease of traversal.
 	 */
@@ -597,7 +578,7 @@ public final class Resource extends AbstractBaseComponent {
 		XSLTransform schematronTransform = Util.buildSchematronTransform(schematronFile);
 		Nodes nodes = schematronTransform.transform(new Document(getXOMElementCopy()));
 		Document doc = XSLTransform.toDocument(nodes);
-		
+
 		XPathContext context = XPathContext.makeNamespaceContext(doc.getRootElement());
 		String svrlNamespace = context.lookup("svrl");
 		Nodes outputNodes = doc.query("//svrl:failed-assert | //svrl:successful-report", context);
@@ -607,10 +588,10 @@ public final class Resource extends AbstractBaseComponent {
 				boolean isAssert = "failed-assert".equals(outputElement.getLocalName());
 				String text = outputElement.getFirstChildElement("text", svrlNamespace).getValue();
 				String locator = outputElement.getAttributeValue("location");
-				messages.add(isAssert ? ValidationMessage.newError(text, locator)
-					: ValidationMessage.newWarning(text, locator));
+				messages.add(isAssert ? ValidationMessage.newError(text, locator) : ValidationMessage.newWarning(text,
+					locator));
 			}
-		}		
+		}
 		return (messages);
 	}
 	
@@ -657,11 +638,11 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedDDMSChildCount(getXOMElement(), Format.getName(getDDMSVersion()), 0, 1);
 		if (getDDMSVersion().isAtLeast("4.0")) {
 			if (getSubjectCoverages().size() < 1)
-				throw new InvalidDDMSException("At least 1 subjectCoverage is required.");		
+				throw new InvalidDDMSException("At least 1 subjectCoverage is required.");
 		}
 		else
 			Util.requireBoundedDDMSChildCount(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()), 1, 1);
-		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);	
+		Util.requireBoundedDDMSChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);
 		if (!getSecurityAttributes().isEmpty()) {
 			Set<SecurityAttributes> childAttributes = new HashSet<SecurityAttributes>();
 			for (IDDMSComponent component : getTopLevelComponents()) {
@@ -670,7 +651,7 @@ public final class Resource extends AbstractBaseComponent {
 			}
 			ISMVocabulary.validateRollup(getSecurityAttributes(), childAttributes);
 		}
-		
+
 		// Should be reviewed as additional versions of DDMS are supported.
 		if ("3.1".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getIsmDESVersion())))
 			throw new InvalidDDMSException("The ISM:DESVersion must be 5 in DDMS 3.1 resources.");
@@ -688,7 +669,7 @@ public final class Resource extends AbstractBaseComponent {
 			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 				throw new InvalidDDMSException("The createDate must be in the xs:date format (YYYY-MM-DD).");
 		}
-		
+
 		super.validate();
 	}
 	
@@ -701,9 +682,8 @@ public final class Resource extends AbstractBaseComponent {
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (!getNoticeAttributes().isEmpty()) {
+		if (!getNoticeAttributes().isEmpty())
 			addWarnings(getNoticeAttributes().getValidationWarnings(), true);
-		}
 		if (getSecurityAttributes().isEmpty()) {
 			addWarning("Security rollup validation is being skipped, because no classification exists "
 				+ "on the ddms:" + getName() + " itself.");
@@ -716,16 +696,17 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public String getOutput(boolean isHTML, String prefix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
-		StringBuffer text = new StringBuffer();	
+		StringBuffer text = new StringBuffer();
 		if (isResourceElement() != null)
-			text.append(buildOutput(isHTML, prefix + RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement()),
-				true));
+			text.append(buildOutput(isHTML, prefix + RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement()), true));
 		if (getCreateDate() != null)
 			text.append(buildOutput(isHTML, prefix + CREATE_DATE_NAME, getCreateDate().toXMLFormat(), true));
 		if (getIsmDESVersion() != null)
-			text.append(buildOutput(isHTML, prefix + "ism." + DES_VERSION_NAME, String.valueOf(getIsmDESVersion()), true));
+			text.append(buildOutput(isHTML, prefix + "ism." + DES_VERSION_NAME, String.valueOf(getIsmDESVersion()),
+				true));
 		if (getNtkDESVersion() != null)
-			text.append(buildOutput(isHTML, prefix + "ntk." + DES_VERSION_NAME, String.valueOf(getNtkDESVersion()), true));
+			text.append(buildOutput(isHTML, prefix + "ntk." + DES_VERSION_NAME, String.valueOf(getNtkDESVersion()),
+				true));
 		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		text.append(getNoticeAttributes().getOutput(isHTML, prefix));
 		text.append(getExtensibleAttributes().getOutput(isHTML, prefix));
@@ -733,8 +714,7 @@ public final class Resource extends AbstractBaseComponent {
 			text.append(isHTML ? component.toHTML() : component.toText());
 		text.append(buildOutput(isHTML, "extensible.layer", String.valueOf(!getExtensibleElements().isEmpty()), true));
 		text.append(buildOutput(isHTML, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version"), true));
-		text.append(buildOutput(isHTML, "ddms.version", getDDMSVersion().getVersion(),
-			true));
+		text.append(buildOutput(isHTML, "ddms.version", getDDMSVersion().getVersion(), true));
 		return (text.toString());
 	}
 	
@@ -786,147 +766,147 @@ public final class Resource extends AbstractBaseComponent {
 	 * Accessor for the identifier components. There will always be at least one.
 	 */
 	public List<Identifier> getIdentifiers() {
-		return (Collections.unmodifiableList(_cachedIdentifiers));
+		return (Collections.unmodifiableList(_identifiers));
 	}
 
 	/**
 	 * Accessor for the title components. There will always be at least one.
 	 */
 	public List<Title> getTitles() {
-		return (Collections.unmodifiableList(_cachedTitles));
+		return (Collections.unmodifiableList(_titles));
 	}
 
 	/**
 	 * Accessor for the subtitle components (0-many)
 	 */
 	public List<Subtitle> getSubtitles() {
-		return (Collections.unmodifiableList(_cachedSubtitles));
+		return (Collections.unmodifiableList(_subtitles));
 	}
 
 	/**
 	 * Accessor for the description component (0-1)
 	 */
 	public Description getDescription() {
-		return (_cachedDescription);
+		return (_description);
 	}
 
 	/**
 	 * Accessor for the language components (0-many)
 	 */
 	public List<Language> getLanguages() {
-		return (Collections.unmodifiableList(_cachedLanguages));
+		return (Collections.unmodifiableList(_languages));
 	}
 
 	/**
 	 * Accessor for the dates component (0-1). May return null.
 	 */
 	public Dates getDates() {
-		return _cachedDates;
+		return _dates;
 	}
 
 	/**
 	 * Accessor for the rights component (0-1). May return null.
 	 */
 	public Rights getRights() {
-		return _cachedRights;
+		return _rights;
 	}
 
 	/**
 	 * Accessor for the source components (0-many)
 	 */
 	public List<Source> getSources() {
-		return (Collections.unmodifiableList(_cachedSources));
+		return (Collections.unmodifiableList(_sources));
 	}
 
 	/**
 	 * Accessor for the type components (0-many)
 	 */
 	public List<Type> getTypes() {
-		return (Collections.unmodifiableList(_cachedTypes));
+		return (Collections.unmodifiableList(_types));
 	}
 
 	/**
 	 * Accessor for a list of all Creator entities (0-many)
 	 */
 	public List<Creator> getCreators() {
-		return (Collections.unmodifiableList(_cachedCreators));
+		return (Collections.unmodifiableList(_creators));
 	}
 
 	/**
 	 * Accessor for a list of all Publisher entities (0-many)
 	 */
 	public List<Publisher> getPublishers() {
-		return (Collections.unmodifiableList(_cachedPublishers));
+		return (Collections.unmodifiableList(_publishers));
 	}
 
 	/**
 	 * Accessor for a list of all Contributor entities (0-many)
 	 */
 	public List<Contributor> getContributors() {
-		return (Collections.unmodifiableList(_cachedContributors));
+		return (Collections.unmodifiableList(_contributors));
 	}
 
 	/**
 	 * Accessor for a list of all PointOfContact entities (0-many)
 	 */
 	public List<PointOfContact> getPointOfContacts() {
-		return (Collections.unmodifiableList(_cachedPointOfContacts));
+		return (Collections.unmodifiableList(_pointOfContacts));
 	}
 
 	/**
 	 * Accessor for the Format component (0-1). May return null.
 	 */
 	public Format getFormat() {
-		return (_cachedFormat);
+		return (_format);
 	}
 
 	/**
 	 * Accessor for the subjectCoverage component (1-many)
 	 */
 	public List<SubjectCoverage> getSubjectCoverages() {
-		return _cachedSubjectCoverages;
+		return _subjectCoverages;
 	}
 
 	/**
 	 * Accessor for the virtualCoverage components (0-many)
 	 */
 	public List<VirtualCoverage> getVirtualCoverages() {
-		return (Collections.unmodifiableList(_cachedVirtualCoverages));
+		return (Collections.unmodifiableList(_virtualCoverages));
 	}
 
 	/**
 	 * Accessor for the temporalCoverage components (0-many)
 	 */
 	public List<TemporalCoverage> getTemporalCoverages() {
-		return (Collections.unmodifiableList(_cachedTemporalCoverages));
+		return (Collections.unmodifiableList(_temporalCoverages));
 	}
 
 	/**
 	 * Accessor for the geospatialCoverage components (0-many)
 	 */
 	public List<GeospatialCoverage> getGeospatialCoverages() {
-		return (Collections.unmodifiableList(_cachedGeospatialCoverages));
+		return (Collections.unmodifiableList(geospatialCoverages));
 	}
 
 	/**
 	 * Accessor for the RelatedResource components (0-many)
 	 */
 	public List<RelatedResource> getRelatedResources() {
-		return (Collections.unmodifiableList(_cachedRelatedResources));
+		return (Collections.unmodifiableList(_relatedResources));
 	}
 
 	/**
 	 * Accessor for the security component (exactly 1). May return null but this cannot happen after instantiation.
 	 */
 	public Security getSecurity() {
-		return (_cachedSecurity);
+		return (_security);
 	}
 	
 	/**
 	 * Accessor for the extensible layer elements (0-many in 3.0, 0-1 in 2.0).
 	 */
 	public List<ExtensibleElement> getExtensibleElements() {
-		return (Collections.unmodifiableList(_cachedExtensibleElements));
+		return (Collections.unmodifiableList(_extensibleElements));
 	}
 
 	/**
@@ -945,8 +925,8 @@ public final class Resource extends AbstractBaseComponent {
 	 * Accessor for the createDate date (optional). Returns a copy. This may be null for v2.0 Resource components.
 	 */
 	public XMLGregorianCalendar getCreateDate() {
-		return (_cachedCreateDate == null ? null
-			: getFactory().newXMLGregorianCalendar(_cachedCreateDate.toXMLFormat()));
+		return (_createDate == null ? null
+			: getFactory().newXMLGregorianCalendar(_createDate.toXMLFormat()));
 	}
 
 	/**
@@ -954,14 +934,14 @@ public final class Resource extends AbstractBaseComponent {
 	 * will return null for v2.0 Resource elements.
 	 */
 	public Integer getIsmDESVersion() {
-		return (_cachedIsmDESVersion);
+		return (_ismDESVersion);
 	}
 	
 	/**
 	 * Accessor for the NTK DESVersion attribute.
 	 */
 	public Integer getNtkDESVersion() {
-		return (_cachedNtkDESVersion);
+		return (_ntkDESVersion);
 	}
 
 	/**
@@ -990,7 +970,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * Accessor for the Notice Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public NoticeAttributes getNoticeAttributes() {
-		return (_cachedNoticeAttributes);
+		return (_noticeAttributes);
 	}
 	
 	/**
@@ -1127,8 +1107,9 @@ public final class Resource extends AbstractBaseComponent {
 				if (component != null)
 					topLevelComponents.add(component);
 			}
-			return (new Resource(topLevelComponents, getResourceElement(), getCreateDate(), getIsmDESVersion(), getNtkDESVersion(),
-				getSecurityAttributes().commit(), getNoticeAttributes().commit(), getExtensibleAttributes().commit()));
+			return (new Resource(topLevelComponents, getResourceElement(), getCreateDate(), getIsmDESVersion(),
+				getNtkDESVersion(), getSecurityAttributes().commit(), getNoticeAttributes().commit(),
+				getExtensibleAttributes().commit()));
 		}
 
 		/**

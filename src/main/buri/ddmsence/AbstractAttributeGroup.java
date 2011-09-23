@@ -39,8 +39,8 @@ import buri.ddmsence.util.DDMSVersion;
  */
 public abstract class AbstractAttributeGroup {
 
-	private String _xmlNamespace;
-	private List<ValidationMessage> _warnings;
+	private String _xmlNamespace = null;
+	private List<ValidationMessage> _warnings = null;
 	
 	/**
 	 * Constructor which stores the XML namespace of the enclosing element

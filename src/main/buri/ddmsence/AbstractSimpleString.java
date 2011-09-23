@@ -46,7 +46,7 @@ import buri.ddmsence.util.Util;
  */
 public abstract class AbstractSimpleString extends AbstractBaseComponent {
 	
-	private SecurityAttributes _securityAttributes;
+	private SecurityAttributes _securityAttributes = null;
 	
 	/**
 	 * Base constructor which works from a XOM element.

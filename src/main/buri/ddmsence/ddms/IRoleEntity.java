@@ -25,7 +25,8 @@ import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 
 /**
  * Identifying interface for an entity element (person, organization, service, unknown) which may be used to fulfill
- * some role (creator, contributor, pointOfContact, publisher, addressee, requesterInfo, recordKeeper).
+ * a producer role (creator, contributor, pointOfContact, publisher) or a tasking role (addressee, requesterInfo, 
+ * recordKeeper).
  *  
  * @author Brian Uri!
  * @since 2.0.0

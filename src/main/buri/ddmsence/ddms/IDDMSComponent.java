@@ -29,7 +29,8 @@ import buri.ddmsence.ddms.security.ism.SecurityAttributes;
  * 
  * <p>
  * All DDMS components should be valid after instantiation and can output themselves in various formats. Implementation
- * classes are divided up into packages based on the five Core sets: Metacard Info, Security, Resource, Summary Content, and Format.
+ * classes are divided up into packages based on the five Core sets: Metacard Info, Security, Resource, Summary Content, 
+ * and Format.
  * </p>
  * 
  * <p>
