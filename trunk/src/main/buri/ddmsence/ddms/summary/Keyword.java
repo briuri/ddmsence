@@ -51,7 +51,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Keyword extends AbstractBaseComponent {
 
-	private SecurityAttributes _securityAttributes;
+	private SecurityAttributes _securityAttributes = null;
 	private ExtensibleAttributes _extensibleAttributes = null;
 	
 	private static final String VALUE_NAME = "value";

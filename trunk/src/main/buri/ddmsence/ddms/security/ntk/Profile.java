@@ -39,13 +39,14 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ntk:AccessProfile.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a {@link SystemName}<br />
- * <u>ntk:AccessProfileValue</u>: The value used to describe the profile (1-to-many required), implemented as a {@link ProfileValue}<br />
+ * <u>ntk:AccessSystemName</u>: The system described by this access record (exactly 1 required), implemented as a 
+ * {@link SystemName}<br />
+ * <u>ntk:AccessProfileValue</u>: The value used to describe the profile (1-to-many required), implemented as a 
+ * {@link ProfileValue}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and
- * ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -53,7 +54,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Profile extends AbstractAccessEntity {
 
-	private List<ProfileValue> _cachedProfileValues;
+	private List<ProfileValue> _profileValues = null;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -65,12 +66,13 @@ public final class Profile extends AbstractAccessEntity {
 		super(element);
 		try {
 			Elements values = element.getChildElements(ProfileValue.getName(getDDMSVersion()), getNamespace());
-			_cachedProfileValues = new ArrayList<ProfileValue>();
+			_profileValues = new ArrayList<ProfileValue>();
 			for (int i = 0; i < values.size(); i++) {
-				_cachedProfileValues.add(new ProfileValue(values.get(i)));
-			}			
+				_profileValues.add(new ProfileValue(values.get(i)));
+			}
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -84,8 +86,8 @@ public final class Profile extends AbstractAccessEntity {
 	 * @param securityAttributes security attributes (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Profile(SystemName systemName, List<ProfileValue> profileValues,
-		SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public Profile(SystemName systemName, List<ProfileValue> profileValues, SecurityAttributes securityAttributes)
+		throws InvalidDDMSException {
 		super(Profile.getName(DDMSVersion.getCurrentVersion()), systemName, securityAttributes);
 		try {
 			if (profileValues == null)
@@ -93,9 +95,10 @@ public final class Profile extends AbstractAccessEntity {
 			for (ProfileValue value : profileValues) {
 				getXOMElement().appendChild(value.getXOMElementCopy());
 			}
-			_cachedProfileValues = profileValues;
+			_profileValues = profileValues;
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -167,7 +170,7 @@ public final class Profile extends AbstractAccessEntity {
 	 * Accessor for the list of profile values (1-many)
 	 */
 	public List<ProfileValue> getProfileValues() {
-		return (Collections.unmodifiableList(_cachedProfileValues));
+		return (Collections.unmodifiableList(_profileValues));
 	}	
 		
 	/**

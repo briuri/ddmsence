@@ -77,7 +77,7 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	private List<Category> _cachedCategories;
 	private List<ProductionMetric> _cachedProductionMetrics;
 	private List<NonStateActor> _cachedNonStateActors;
-	private SecurityAttributes _securityAttributes;
+	private SecurityAttributes _securityAttributes = null;
 	
 	private static final String SUBJECT_NAME = "Subject";
 

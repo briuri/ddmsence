@@ -55,7 +55,7 @@ import buri.ddmsence.util.Util;
 public final class Link extends AbstractBaseComponent {
 
 	private XLinkAttributes _cachedXLinkAttributes = null;
-	private SecurityAttributes _securityAttributes;
+	private SecurityAttributes _securityAttributes = null;
 		
 	private static final String FIXED_TYPE = "locator";
 	

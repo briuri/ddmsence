@@ -39,15 +39,16 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ntk:AccessProfileList.
  * 
- * <p>Unlike ntk:AccessIndividualList and ntk:AccessGroupList, this element is implemented in DDMSence because it has security attributes.
+ * <p>Unlike ntk:AccessIndividualList and ntk:AccessGroupList, this element is implemented in DDMSence because it has 
+ * security attributes.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ntk:AccessProfile</u>: A system access record matching a profile (1-to-many required), implemented as a {@link Profile}<br />
+ * <u>ntk:AccessProfile</u>: A system access record matching a profile (1-to-many required), implemented as a 
+ * {@link Profile}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and
- * ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
  * </td></tr></table>
  *  
  * @author Brian Uri!
@@ -55,8 +56,8 @@ import buri.ddmsence.util.Util;
  */
 public final class ProfileList extends AbstractBaseComponent {
 	
-	private List<Profile> _cachedProfiles;
-	private SecurityAttributes _securityAttributes;
+	private List<Profile> _profiles = null;
+	private SecurityAttributes _securityAttributes = null;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -68,9 +69,9 @@ public final class ProfileList extends AbstractBaseComponent {
 		try {
 			setXOMElement(element, false);
 			Elements values = element.getChildElements(Profile.getName(getDDMSVersion()), getNamespace());
-			_cachedProfiles = new ArrayList<Profile>();
+			_profiles = new ArrayList<Profile>();
 			for (int i = 0; i < values.size(); i++) {
-				_cachedProfiles.add(new Profile(values.get(i)));
+				_profiles.add(new Profile(values.get(i)));
 			}			
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
@@ -98,7 +99,7 @@ public final class ProfileList extends AbstractBaseComponent {
 			for (Profile profile : profiles) {
 				getXOMElement().appendChild(profile.getXOMElementCopy());
 			}
-			_cachedProfiles = profiles;
+			_profiles = profiles;
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			validate();
@@ -180,7 +181,7 @@ public final class ProfileList extends AbstractBaseComponent {
 	 * Accessor for the list of profile values (1-many)
 	 */
 	public List<Profile> getProfiles() {
-		return (Collections.unmodifiableList(_cachedProfiles));
+		return (Collections.unmodifiableList(_profiles));
 	}	
 	
 	/**

@@ -44,8 +44,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and
- * ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -53,8 +52,8 @@ import buri.ddmsence.util.Util;
  */
 public final class NoticeList extends AbstractBaseComponent {
 	
-	private List<Notice> _cachedNotices;
-	private SecurityAttributes _securityAttributes;
+	private List<Notice> _notices = null;
+	private SecurityAttributes _securityAttributes = null;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -65,14 +64,16 @@ public final class NoticeList extends AbstractBaseComponent {
 	public NoticeList(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			_cachedNotices = new ArrayList<Notice>();			
-			Elements notices = element.getChildElements(Notice.getName(getDDMSVersion()), getDDMSVersion().getIsmNamespace());
+			_notices = new ArrayList<Notice>();
+			Elements notices = element.getChildElements(Notice.getName(getDDMSVersion()), getDDMSVersion()
+				.getIsmNamespace());
 			for (int i = 0; i < notices.size(); i++) {
-				_cachedNotices.add(new Notice(notices.get(i)));
+				_notices.add(new Notice(notices.get(i)));
 			}
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -85,20 +86,22 @@ public final class NoticeList extends AbstractBaseComponent {
 	 * @param securityAttributes any security attributes (classification and ownerProducer are optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public NoticeList(List<Notice> notices, SecurityAttributes securityAttributes)
-		throws InvalidDDMSException {
+	public NoticeList(List<Notice> notices, SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			if (notices == null)
 				notices = Collections.emptyList();
+			
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			Element element = Util.buildDDMSElement(NoticeList.getName(version), null);
 			for (Notice noticeText : notices)
 				element.appendChild(noticeText.getXOMElementCopy());
-			_cachedNotices = notices;
+			
+			_notices = notices;
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -176,7 +179,7 @@ public final class NoticeList extends AbstractBaseComponent {
 	 * Accessor for the list of Notices.
 	 */
 	public List<Notice> getNotices() {
-		return (Collections.unmodifiableList(_cachedNotices));
+		return (Collections.unmodifiableList(_notices));
 	}
 	
 	/**

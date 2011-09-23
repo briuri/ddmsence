@@ -52,9 +52,9 @@ import buri.ddmsence.util.Util;
  */
 public final class Notice extends AbstractBaseComponent {
 	
-	private List<NoticeText> _cachedNoticeTexts;
-	private SecurityAttributes _securityAttributes;
-	private NoticeAttributes _cachedNoticeAttributes = null;
+	private List<NoticeText> _noticeTexts = null;
+	private SecurityAttributes _securityAttributes = null;
+	private NoticeAttributes _noticeAttributes = null;
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -65,15 +65,17 @@ public final class Notice extends AbstractBaseComponent {
 	public Notice(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			_cachedNoticeTexts = new ArrayList<NoticeText>();			
-			Elements noticeTexts = element.getChildElements(NoticeText.getName(getDDMSVersion()), getDDMSVersion().getIsmNamespace());
+			_noticeTexts = new ArrayList<NoticeText>();
+			Elements noticeTexts = element.getChildElements(NoticeText.getName(getDDMSVersion()), getDDMSVersion()
+				.getIsmNamespace());
 			for (int i = 0; i < noticeTexts.size(); i++) {
-				_cachedNoticeTexts.add(new NoticeText(noticeTexts.get(i)));
+				_noticeTexts.add(new NoticeText(noticeTexts.get(i)));
 			}
-			_cachedNoticeAttributes = new NoticeAttributes(element);
+			_noticeAttributes = new NoticeAttributes(element);
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -93,17 +95,18 @@ public final class Notice extends AbstractBaseComponent {
 			if (noticeTexts == null)
 				noticeTexts = Collections.emptyList();
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			Element element = Util.buildElement(PropertyReader.getPrefix("ism"), Notice.getName(version), version.getIsmNamespace(), null);
+			Element element = Util.buildElement(PropertyReader.getPrefix("ism"), Notice.getName(version), version
+				.getIsmNamespace(), null);
 			for (NoticeText noticeText : noticeTexts)
 				element.appendChild(noticeText.getXOMElementCopy());
-			_cachedNoticeTexts = noticeTexts;
-			_cachedNoticeAttributes = (noticeAttributes == null ? new NoticeAttributes(null, null, null, null)
-				: noticeAttributes);
-			_cachedNoticeAttributes.addTo(element);
+			_noticeTexts = noticeTexts;
+			_noticeAttributes = NoticeAttributes.getNonNullInstance(noticeAttributes);
+			_noticeAttributes.addTo(element);
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -122,7 +125,6 @@ public final class Notice extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireQName(getXOMElement(), getDDMSVersion().getIsmNamespace(), Notice.getName(getDDMSVersion()));
-		
 		if (getNoticeTexts().isEmpty())
 			throw new InvalidDDMSException("At least one ISM:NoticeText must exist within an ISM:Notice element.");
 		
@@ -202,7 +204,7 @@ public final class Notice extends AbstractBaseComponent {
 	 * Accessor for the list of NoticeTexts.
 	 */
 	public List<NoticeText> getNoticeTexts() {
-		return (Collections.unmodifiableList(_cachedNoticeTexts));
+		return (Collections.unmodifiableList(_noticeTexts));
 	}
 	
 	/**
@@ -216,7 +218,7 @@ public final class Notice extends AbstractBaseComponent {
 	 * Accessor for the Notice Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public NoticeAttributes getNoticeAttributes() {
-		return (_cachedNoticeAttributes);
+		return (_noticeAttributes);
 	}
 	
 	/**

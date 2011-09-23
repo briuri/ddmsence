@@ -57,8 +57,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link SecurityAttributes}</u>:  The classification and
- * ownerProducer attributes are required.
+ * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
  * </td></tr></table>
  *  
  * @author Brian Uri!
@@ -66,10 +65,10 @@ import buri.ddmsence.util.Util;
  */
 public final class Access extends AbstractBaseComponent {
 	
-	private List<Individual> _cachedIndividuals;
-	private List<Group> _cachedGroups;
-	private ProfileList _cachedProfileList;
-	private SecurityAttributes _securityAttributes;
+	private List<Individual> _individuals = null;
+	private List<Group> _groups = null;
+	private ProfileList _profileList = null;
+	private SecurityAttributes _securityAttributes = null;
 	
 	private static final String INDIVIDUAL_LIST_NAME = "AccessIndividualList";
 	private static final String GROUP_LIST_NAME = "AccessGroupList";
@@ -83,28 +82,29 @@ public final class Access extends AbstractBaseComponent {
 	public Access(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
-			_cachedIndividuals = new ArrayList<Individual>();
+			_individuals = new ArrayList<Individual>();
 			Element individualList = element.getFirstChildElement(INDIVIDUAL_LIST_NAME, getNamespace());
 			if (individualList != null) {
 				Elements individuals = individualList.getChildElements();
 				for (int i = 0; i < individuals.size(); i++) {
-					_cachedIndividuals.add(new Individual(individuals.get(i)));
+					_individuals.add(new Individual(individuals.get(i)));
 				}
 			}
-			_cachedGroups = new ArrayList<Group>();
+			_groups = new ArrayList<Group>();
 			Element groupList = element.getFirstChildElement(GROUP_LIST_NAME, getNamespace());
 			if (groupList != null) {
 				Elements groups = groupList.getChildElements();
 				for (int i = 0; i < groups.size(); i++) {
-					_cachedGroups.add(new Group(groups.get(i)));
+					_groups.add(new Group(groups.get(i)));
 				}
 			}
 			Element profileList = element.getFirstChildElement(ProfileList.getName(getDDMSVersion()), getNamespace());
 			if (profileList != null)
-				_cachedProfileList = new ProfileList(profileList);
+				_profileList = new ProfileList(profileList);
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -112,13 +112,15 @@ public final class Access extends AbstractBaseComponent {
 	
 	/**
 	 * Constructor for creating a component from raw data
+	 * 
 	 * @param individuals a list of individuals
 	 * @param groups a list of groups
 	 * @param profileList the profile list
 	 * @param securityAttributes security attributes (required)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Access(List<Individual> individuals, List<Group> groups, ProfileList profileList, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+	public Access(List<Individual> individuals, List<Group> groups, ProfileList profileList,
+		SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
@@ -149,13 +151,14 @@ public final class Access extends AbstractBaseComponent {
 			if (profileList != null)
 				element.appendChild(profileList.getXOMElementCopy());
 			
-			_cachedIndividuals = individuals;
-			_cachedGroups = groups;
-			_cachedProfileList = profileList;
+			_individuals = individuals;
+			_groups = groups;
+			_profileList = profileList;
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			validate();
-		} catch (InvalidDDMSException e) {
+		}
+		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
 		}
@@ -249,21 +252,21 @@ public final class Access extends AbstractBaseComponent {
 	 * Accessor for the individuals
 	 */
 	public List<Individual> getIndividuals() {
-		return (Collections.unmodifiableList(_cachedIndividuals));
+		return (Collections.unmodifiableList(_individuals));
 	}
 
 	/**
 	 * Accessor for the groups
 	 */
 	public List<Group> getGroups() {
-		return (Collections.unmodifiableList(_cachedGroups));
+		return (Collections.unmodifiableList(_groups));
 	}
 
 	/**
 	 * Accessor for the profileList
 	 */
 	public ProfileList getProfileList() {
-		return _cachedProfileList;
+		return _profileList;
 	}
 
 	/**

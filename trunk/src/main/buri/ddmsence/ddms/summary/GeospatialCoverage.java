@@ -81,7 +81,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	private BoundingGeometry _cachedBoundingGeometry;
 	private PostalAddress _cachedPostalAddress;
 	private VerticalExtent _cachedVerticalExtent;
-	private SecurityAttributes _securityAttributes;
+	private SecurityAttributes _securityAttributes = null;
 	
 	private static final String GEOSPATIAL_EXTENT_NAME = "GeospatialExtent";
 	private static final String PRECEDENCE_NAME = "precedence";

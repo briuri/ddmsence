@@ -50,7 +50,7 @@ import buri.ddmsence.util.Util;
  */
 public final class ProductionMetric extends AbstractBaseComponent {
 
-	private SecurityAttributes _securityAttributes;
+	private SecurityAttributes _securityAttributes = null;
 	
 	private static final String SUBJECT_NAME = "subject";
 	private static final String COVERAGE_NAME = "coverage";
