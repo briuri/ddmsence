@@ -44,20 +44,6 @@ public class PublisherTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Returns a fixture object for testing. organization to act as an entity
-	 */
-	private IRoleEntity getEntityFixture() {
-		try {
-			return (new Service(Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), Util
-				.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
-		}
-		catch (InvalidDDMSException e) {
-			fail("Could not create fixture: " + e.getMessage());
-		}
-		return (null);
-	}
-	
-	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
 	 * @param expectFailure true if this operation is expected to fail, false otherwise
@@ -103,7 +89,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(getEntityFixture().getOutput(isHTML, "publisher."));
+		text.append(ServiceTest.getFixture().getOutput(isHTML, "publisher."));
 		if (version.isAtLeast("4.0"))
 			text.append(buildOutput(isHTML, "publisher.POCType", "ICD-710"));
 		text.append(buildOutput(isHTML, "publisher.classification", "U"));
@@ -149,7 +135,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(Publisher.getName(version), null);
-			element.appendChild(getEntityFixture().getXOMElementCopy());
+			element.appendChild(ServiceTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 		}
 	}
@@ -158,7 +144,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getEntityFixture(), null);
+			testConstructor(WILL_SUCCEED, ServiceTest.getFixture(), null);
 		}
 	}
 
@@ -192,7 +178,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Publisher elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Publisher dataComponent = testConstructor(WILL_SUCCEED, getEntityFixture(), RoleEntityTest.getPOCType());
+			Publisher dataComponent = testConstructor(WILL_SUCCEED, ServiceTest.getFixture(), RoleEntityTest.getPOCType());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -215,7 +201,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getEntityFixture(), RoleEntityTest.getPOCType());
+			component = testConstructor(WILL_SUCCEED, ServiceTest.getFixture(), RoleEntityTest.getPOCType());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -227,7 +213,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 			Publisher component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getEntityFixture(), RoleEntityTest.getPOCType());
+			component = testConstructor(WILL_SUCCEED, ServiceTest.getFixture(), RoleEntityTest.getPOCType());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -235,7 +221,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Publisher component = new Publisher(getEntityFixture(), null, SecurityAttributesTest.getFixture());
+			Publisher component = new Publisher(ServiceTest.getFixture(), null, SecurityAttributesTest.getFixture());
 			assertEquals(SecurityAttributesTest.getFixture(), component.getSecurityAttributes());
 		}
 	}
@@ -243,7 +229,7 @@ public class PublisherTest extends AbstractComponentTestCase {
 	public void testPOCTypeWrongVersion() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new Publisher(getEntityFixture(), "ICD-710", SecurityAttributesTest.getFixture());
+			new Publisher(ServiceTest.getFixture(), "ICD-710", SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

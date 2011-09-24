@@ -60,7 +60,7 @@ public class OrganizationTest extends AbstractComponentTestCase {
 	 */
 	public static Organization getFixture() {
 		try {
-			return (new Organization(Util.getXsListAsList("Name"), null, null, null, null, null));
+			return (new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());

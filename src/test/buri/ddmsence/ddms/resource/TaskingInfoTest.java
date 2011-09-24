@@ -122,11 +122,11 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "taskingInfo.requesterInfo.entityType", "organization"));
-		text.append(buildOutput(isHTML, "taskingInfo.requesterInfo.name", "Name"));
+		text.append(buildOutput(isHTML, "taskingInfo.requesterInfo.name", "DISA"));
 		text.append(buildOutput(isHTML, "taskingInfo.requesterInfo.classification", "U"));
 		text.append(buildOutput(isHTML, "taskingInfo.requesterInfo.ownerProducer", "USA"));
 		text.append(buildOutput(isHTML, "taskingInfo.addressee.entityType", "organization"));
-		text.append(buildOutput(isHTML, "taskingInfo.addressee.name", "Name"));
+		text.append(buildOutput(isHTML, "taskingInfo.addressee.name", "DISA"));
 		text.append(buildOutput(isHTML, "taskingInfo.addressee.classification", "U"));
 		text.append(buildOutput(isHTML, "taskingInfo.addressee.ownerProducer", "USA"));
 		text.append(buildOutput(isHTML, "taskingInfo.description", "Tasking Info"));
@@ -154,10 +154,10 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		xml.append("<ddms:taskingInfo ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("<ddms:requesterInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ddms:organization><ddms:name>Name</ddms:name></ddms:organization>");
+		xml.append("<ddms:organization><ddms:name>DISA</ddms:name></ddms:organization>");
 		xml.append("</ddms:requesterInfo>");
 		xml.append("<ddms:addressee ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ddms:organization><ddms:name>Name</ddms:name></ddms:organization>");
+		xml.append("<ddms:organization><ddms:name>DISA</ddms:name></ddms:organization>");
 		xml.append("</ddms:addressee>");
 		xml.append("<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Tasking Info</ddms:description>");
 		xml.append("<ddms:taskID xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");

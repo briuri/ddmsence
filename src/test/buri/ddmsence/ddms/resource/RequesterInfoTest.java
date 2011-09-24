@@ -42,9 +42,6 @@ import buri.ddmsence.util.Util;
  */
 public class RequesterInfoTest extends AbstractComponentTestCase {
 
-	private static final String TEST_NAME = "Name";
-	private static final String TEST_SURNAME = "Surname";
-
 	/**
 	 * Constructor
 	 */
@@ -135,7 +132,7 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "requesterInfo.entityType", "organization"));
-		text.append(buildOutput(isHTML, "requesterInfo.name", TEST_NAME));
+		text.append(buildOutput(isHTML, "requesterInfo.name", "DISA"));
 		text.append(buildOutput(isHTML, "requesterInfo.classification", "U"));
 		text.append(buildOutput(isHTML, "requesterInfo.ownerProducer", "USA"));
 		return (text.toString());
@@ -148,7 +145,7 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:requesterInfo ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ddms:organization><ddms:name>").append(TEST_NAME).append("</ddms:name></ddms:organization>");
+		xml.append("<ddms:organization><ddms:name>DISA</ddms:name></ddms:organization>");
 		xml.append("</ddms:requesterInfo>");
 		return (xml.toString());
 	}
@@ -211,7 +208,7 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 			testConstructor(WILL_FAIL, (IRoleEntity) null);
 
 			// Wrong entity
-			testConstructor(WILL_FAIL, new Service(Util.getXsListAsList(TEST_NAME), null, null));
+			testConstructor(WILL_FAIL, new Service(Util.getXsListAsList("Service"), null, null));
 
 			// Missing security attributes
 			try {
@@ -322,8 +319,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 
 			// Validation
 			builder = new RequesterInfo.Builder();
-			builder.getPerson().setNames(Util.getXsListAsList(TEST_NAME));
-			builder.getPerson().setSurname(TEST_SURNAME);
+			builder.getPerson().setNames(Util.getXsListAsList("Brian"));
+			builder.getPerson().setSurname("Uri");
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");

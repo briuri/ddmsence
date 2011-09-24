@@ -51,7 +51,21 @@ public class ServiceTest extends AbstractComponentTestCase {
 	public ServiceTest() {
 		super("service.xml");
 	}
-
+	
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static Service getFixture() {
+		try {
+			return (new Service(Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), Util
+				.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+		
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
