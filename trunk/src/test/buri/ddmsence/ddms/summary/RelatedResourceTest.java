@@ -106,7 +106,9 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, prefix + "value", TEST_VALUE));
 		text.append(buildOutput(isHTML, prefix + "link.type", "locator"));
 		text.append(buildOutput(isHTML, prefix + "link.href", TEST_VALUE));
-		text.append(buildOutput(isHTML, prefix + "link.role", "role"));
+		text.append(buildOutput(isHTML, prefix + "link.role", "tank"));
+		text.append(buildOutput(isHTML, prefix + "link.title", "Tank Page"));
+		text.append(buildOutput(isHTML, prefix + "link.label", "tank"));
 		text.append(buildOutput(isHTML, prefix + "classification", "U"));
 		text.append(buildOutput(isHTML, prefix + "ownerProducer", "USA"));
 		return (text.toString());
@@ -126,7 +128,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			xml.append("ddms:qualifier=\"http://purl.org/dc/terms/URI\" ddms:value=\"http://en.wikipedia.org/wiki/Tank\" ");
 			xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
 			xml.append("\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ");
-			xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"role\" />\n");
+			xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" />\n");
 			xml.append("</ddms:relatedResource>");
 		}
 		else {
@@ -136,7 +138,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			xml.append("\t<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ");
 			xml.append("ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n");
 			xml.append("\t\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ");
-			xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"role\" />\n");
+			xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" />\n");
 			xml.append("\t</ddms:RelatedResource>\n");
 			xml.append("</ddms:relatedResources>\n");
 		}
@@ -411,6 +413,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			component = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
 				TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
+
 		}
 	}
 
