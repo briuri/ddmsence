@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ddms:resource xsi:schemaLocation="urn:us:mil:ces:metadata:ddms:4 DDMS-v4_0.xsd" 
+<ddms:resource xsi:schemaLocation="urn:us:mil:ces:metadata:ddms:4 ../schemas/4.0/DDMS/DDMS-v4_0.xsd" 
 	xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:ISM="urn:us:gov:ic:ism" 
 	xmlns:ntk="urn:us:gov:ic:ntk"
 	ntk:DESVersion="5"
-	ISM:resourceElement="true" ISM:DESVersion="5" ISM:createDate="2010-01-21" ISM:classification="U" ISM:ownerProducer="USA">
+	ISM:resourceElement="true" ISM:DESVersion="7" ISM:createDate="2010-01-21" ISM:classification="U" ISM:ownerProducer="USA">
+	<ddms:metacardInfo ISM:classification="U" ISM:ownerProducer="USA">
+		<ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence:testIdentifier" />
+		<ddms:dates ddms:created="2011-09-24" />
+		<ddms:publisher>
+			<ddms:person>
+				<ddms:name>Brian</ddms:name>
+				<ddms:surname>Uri</ddms:surname>
+			</ddms:person>
+		</ddms:publisher>
+	</ddms:metacardInfo>
 	<ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence"/>
 	<ddms:title ISM:ownerProducer="USA" ISM:classification="U">DDMSence</ddms:title>
 	<ddms:description ISM:ownerProducer="USA" ISM:classification="U">An open source Java API for DDMS</ddms:description>
