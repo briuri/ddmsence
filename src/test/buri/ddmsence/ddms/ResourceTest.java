@@ -51,6 +51,7 @@ import buri.ddmsence.ddms.resource.PointOfContact;
 import buri.ddmsence.ddms.resource.PointOfContactTest;
 import buri.ddmsence.ddms.resource.Publisher;
 import buri.ddmsence.ddms.resource.PublisherTest;
+import buri.ddmsence.ddms.resource.ResourceManagementTest;
 import buri.ddmsence.ddms.resource.RightsTest;
 import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Source;
@@ -112,6 +113,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		TEST_TOP_LEVEL_COMPONENTS = new ArrayList<IDDMSComponent>();
 		TEST_TOP_LEVEL_COMPONENTS.add(SecurityTest.getFixture());
 		TEST_TOP_LEVEL_COMPONENTS.add(RelatedResourceTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(ResourceManagementTest.getFixture());
 		TEST_TOP_LEVEL_COMPONENTS.add(GeospatialCoverageTest.getFixture());
 		TEST_TOP_LEVEL_COMPONENTS.add(TemporalCoverageTest.getFixture());
 		TEST_TOP_LEVEL_COMPONENTS.add(VirtualCoverageTest.getFixture());
@@ -280,7 +282,6 @@ public class ResourceTest extends AbstractComponentTestCase {
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
-			System.out.println(e.getMessage());
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -405,6 +406,14 @@ public class ResourceTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, relatedPrefix + "link.href", "http://en.wikipedia.org/wiki/Tank"));
 		text.append(buildOutput(isHTML, relatedPrefix + "link.role", "role"));
 
+		if (version.isAtLeast("4.0")) {
+			text.append(buildOutput(isHTML, "resourceManagement.processingInfo", "XSLT Transformation to convert DDMS 2.0 to DDMS 3.1."));
+			text.append(buildOutput(isHTML, "resourceManagement.processingInfo.dateProcessed", "2011-08-19"));
+			text.append(buildOutput(isHTML, "resourceManagement.processingInfo.classification", "U"));
+			text.append(buildOutput(isHTML, "resourceManagement.processingInfo.ownerProducer", "USA"));
+			text.append(buildOutput(isHTML, "resourceManagement.classification", "U"));
+			text.append(buildOutput(isHTML, "resourceManagement.ownerProducer", "USA"));
+		}
 		if (version.isAtLeast("3.0"))
 			text.append(buildOutput(isHTML, "security.excludeFromRollup", "true"));
 		text.append(buildOutput(isHTML, "security.classification", "U"));
@@ -552,6 +561,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 				"xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"role\" />\n");
 			xml.append("\t\t</ddms:RelatedResource>\n");
 			xml.append("\t</ddms:relatedResources>\n");
+		}
+		if (version.isAtLeast("4.0")) {
+			xml.append("\t<ddms:resourceManagement ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+			xml.append("<ddms:processingInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ddms:dateProcessed=\"2011-08-19\">");
+			xml.append("XSLT Transformation to convert DDMS 2.0 to DDMS 3.1.</ddms:processingInfo></ddms:resourceManagement>\n");
 		}
 		xml.append("\t<ddms:security ");
 		if (version.isAtLeast("3.0"))
@@ -768,6 +782,19 @@ public class ResourceTest extends AbstractComponentTestCase {
 			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
+			// No more than 1 resourceManagement
+			if (version.isAtLeast("4.0")) {
+				element = getResourceWithoutBodyElement();
+				element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+				element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+				element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+				element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+				element.appendChild(ResourceManagementTest.getFixture().getXOMElementCopy());
+				element.appendChild(ResourceManagementTest.getFixture().getXOMElementCopy());
+				element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
+				testConstructor(WILL_FAIL, element);
+			}
+			
 			// At least 1 subjectCoverage
 			element = getResourceWithoutBodyElement();
 			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
