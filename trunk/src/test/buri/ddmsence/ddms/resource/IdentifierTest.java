@@ -44,6 +44,19 @@ public class IdentifierTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static Identifier getFixture() {
+		try {
+			return (new Identifier("URI", "urn:buri:ddmsence:testIdentifier"));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
 	 * @param expectFailure true if this operation is expected to fail, false otherwise

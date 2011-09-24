@@ -44,6 +44,19 @@ public class LanguageTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static Language getFixture() {
+		try {
+			return (new Language("http://purl.org/dc/elements/1.1/language", "en"));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
 	 * @param expectFailure true if this operation is expected to fail, false otherwise

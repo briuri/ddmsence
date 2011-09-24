@@ -129,7 +129,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		text.append(buildOutput(isHTML, "taskingInfo.addressee.name", "DISA"));
 		text.append(buildOutput(isHTML, "taskingInfo.addressee.classification", "U"));
 		text.append(buildOutput(isHTML, "taskingInfo.addressee.ownerProducer", "USA"));
-		text.append(buildOutput(isHTML, "taskingInfo.description", "Tasking Info"));
+		text.append(buildOutput(isHTML, "taskingInfo.description", "A transformation service."));
 		text.append(buildOutput(isHTML, "taskingInfo.description.classification", "U"));
 		text.append(buildOutput(isHTML, "taskingInfo.description.ownerProducer", "USA"));
 		text.append(buildOutput(isHTML, "taskingInfo.taskID", "Task #12345"));
@@ -159,7 +159,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		xml.append("<ddms:addressee ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("<ddms:organization><ddms:name>DISA</ddms:name></ddms:organization>");
 		xml.append("</ddms:addressee>");
-		xml.append("<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Tasking Info</ddms:description>");
+		xml.append("<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">A transformation service.</ddms:description>");
 		xml.append("<ddms:taskID xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
 		xml.append("ddms:taskingSystem=\"MDR\" network=\"NIPRNet\" otherNetwork=\"PBS\" xlink:type=\"simple\" ");
 		xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:arcrole=\"arcrole\" ");

@@ -44,6 +44,19 @@ public class TypeTest extends AbstractComponentTestCase {
 	public TypeTest() {
 		super("type.xml");
 	}
+	
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static Type getFixture() {
+		try {
+			return (new Type(null, "DCMITYPE", "http://purl.org/dc/dcmitype/Text", null));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
 
 	/**
 	 * Attempts to build a component from a XOM element.

@@ -45,6 +45,19 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static Subtitle getFixture() {
+		try {
+			return (new Subtitle("Version 0.1", SecurityAttributesTest.getFixture()));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
 	 * @param expectFailure true if this operation is expected to fail, false otherwise

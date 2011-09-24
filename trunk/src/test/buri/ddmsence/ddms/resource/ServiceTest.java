@@ -57,8 +57,7 @@ public class ServiceTest extends AbstractComponentTestCase {
 	 */
 	public static Service getFixture() {
 		try {
-			return (new Service(Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), Util
-				.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
+			return (new Service(Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), null, null));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());

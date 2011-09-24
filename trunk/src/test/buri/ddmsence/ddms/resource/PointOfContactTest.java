@@ -44,6 +44,20 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static PointOfContact getFixture() {
+		try {
+			return (new PointOfContact(DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? UnknownTest.getFixture()
+				: PersonTest.getFixture(), null, null));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
 	 * Returns a fixture object for testing. organization to act as an entity
 	 */
 	private IRoleEntity getEntityFixture() {
@@ -121,15 +135,11 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		if ("2.0".equals(version.getVersion())) {
 			xml.append("<ddms:").append(Service.getName(version)).append(">\n");
 			xml.append("\t\t<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>\n");
-			xml.append("\t\t<ddms:phone>703-882-1000</ddms:phone>\n");
-			xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
 			xml.append("\t</ddms:").append(Service.getName(version)).append(">");
 		}
 		else {
 			xml.append("<ddms:").append(Unknown.getName(version)).append(">\n");
 			xml.append("\t\t<ddms:name>UnknownEntity</ddms:name>\n");
-			xml.append("\t\t<ddms:phone>703-882-1000</ddms:phone>\n");
-			xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
 			xml.append("\t</ddms:").append(Unknown.getName(version)).append(">");
 		}
 		xml.append("\n</ddms:pointOfContact>");

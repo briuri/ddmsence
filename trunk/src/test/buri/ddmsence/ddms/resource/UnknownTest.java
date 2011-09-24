@@ -58,8 +58,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 	 */
 	public static Unknown getFixture() {
 		try {
-			return (new Unknown(Util.getXsListAsList("UnknownEntity"), Util.getXsListAsList("703-882-1000"), Util
-				.getXsListAsList("ddms@fgm.com")));
+			return (new Unknown(Util.getXsListAsList("UnknownEntity"), null, null));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());

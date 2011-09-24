@@ -28,6 +28,7 @@ import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
+import buri.ddmsence.ddms.summary.gml.PointTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -49,6 +50,20 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 		super("geospatialCoverage.xml");
 	}
 
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static GeospatialCoverage getFixture() {
+		try {
+			return (new GeospatialCoverage(null, null, new BoundingGeometry(null, PointTest.getFixtureList()), null,
+				null, null, null, null));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
