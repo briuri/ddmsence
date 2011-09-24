@@ -107,11 +107,11 @@ public class DDMSVersionTest extends TestCase {
 	}
 
 	public void testGetCurrentSchema() {
-		assertEquals("/schemas/3.1/DDMS/DDMS-v3_1.xsd", DDMSVersion.getCurrentVersion().getSchema());
+		assertEquals("/schemas/4.0/DDMS/DDMS-v4_0.xsd", DDMSVersion.getCurrentVersion().getSchema());
 	}
 
 	public void testGetCurrentNamespace() {
-		assertEquals("http://metadata.dod.mil/mdr/ns/DDMS/3.1/", DDMSVersion.getCurrentVersion().getNamespace());
+		assertEquals("urn:us:mil:ces:metadata:ddms:4", DDMSVersion.getCurrentVersion().getNamespace());
 	}
 
 	public void testGetNamespaceForValid() {

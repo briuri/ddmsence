@@ -67,18 +67,30 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 				String resourceName = Resource.getName(version);
 				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/" + sVersion
 					+ "/testSchematronXslt1.sch"));
-				assertEquals(2, messages.size());
-
+				assertEquals(version.isAtLeast("4.0") ? 3 : 2, messages.size());
+				
 				String text = "A DDMS Resource must have an unknownElement child. This will always fail.";
 				String locator = "/*[local-name()='" + resourceName + "' and namespace-uri()='" + ddmsNamespace + "']";
 				assertErrorEquality(text, locator, messages.get(0));
-
+				
+				int originalWarningIndex = version.isAtLeast("4.0") ? 2 : 1;
+				
 				text = "Members of the Uri family cannot be publishers.";
 				locator = "/*[local-name()='" + resourceName + "' and namespace-uri()='" + ddmsNamespace + "']"
-					+ "/*[local-name()='publisher' and namespace-uri()='" + ddmsNamespace + "']" + "/*[local-name()='"
-					+ Person.getName(version) + "' and namespace-uri()='" + ddmsNamespace + "']"
+					+ "/*[local-name()='publisher' and namespace-uri()='" + ddmsNamespace + "']"
+					+ "/*[local-name()='" + Person.getName(version) + "' and namespace-uri()='" + ddmsNamespace + "']"
 					+ "/*[local-name()='surname' and namespace-uri()='" + ddmsNamespace + "']";
-				assertWarningEquality(text, locator, messages.get(1));
+				assertWarningEquality(text, locator, messages.get(originalWarningIndex));
+				
+				if (version.isAtLeast("4.0")) {
+					text = "Members of the Uri family cannot be publishers.";
+					locator = "/*[local-name()='" + resourceName + "' and namespace-uri()='" + ddmsNamespace + "']"
+						+ "/*[local-name()='metacardInfo' and namespace-uri()='" + ddmsNamespace + "']"
+						+ "/*[local-name()='publisher' and namespace-uri()='" + ddmsNamespace + "']"
+						+ "/*[local-name()='" + Person.getName(version) + "' and namespace-uri()='" + ddmsNamespace + "']"
+						+ "/*[local-name()='surname' and namespace-uri()='" + ddmsNamespace + "']";
+					assertWarningEquality(text, locator, messages.get(1));					
+				}
 			}
 		}
 	}

@@ -87,7 +87,7 @@ JJP
 			</xs:appinfo>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element ref="metacardInfo" minOccurs="0" maxOccurs="1"/>
+			<xs:element ref="metacardInfo" minOccurs="1" maxOccurs="1"/>
 			<xs:element ref="identifier" maxOccurs="unbounded"/>
 			<xs:element ref="title" maxOccurs="unbounded"/>
 			<xs:element ref="subtitle" minOccurs="0" maxOccurs="unbounded"/>
