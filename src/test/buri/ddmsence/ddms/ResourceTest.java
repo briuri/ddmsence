@@ -1410,6 +1410,40 @@ public class ResourceTest extends AbstractComponentTestCase {
 			assertEquals("http://en.wikipedia.org/wiki/Tank4", resource.getRelatedResources().get(3).getValue());
 		}
 	}
+	
+	public void testOrderConstraints() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			createComponents();
+			if (!version.isAtLeast("4.0"))
+				continue;
+
+			// Valid orders
+			List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_TOP_LEVEL_COMPONENTS);
+			components.add(SubjectCoverageTest.getFixture(1));
+			components.add(GeospatialCoverageTest.getFixture(2));
+			components.add(SubjectCoverageTest.getFixture(3));
+			testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
+				getIsmDESVersion(), getNtkDESVersion());
+			
+			// Duplicate orders
+			components = new ArrayList<IDDMSComponent>(TEST_TOP_LEVEL_COMPONENTS);
+			components.add(SubjectCoverageTest.getFixture(1));
+			components.add(GeospatialCoverageTest.getFixture(1));
+			components.add(SubjectCoverageTest.getFixture(3));
+			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
+				getIsmDESVersion(), getNtkDESVersion());
+			
+			// Skipped orders
+			components = new ArrayList<IDDMSComponent>(TEST_TOP_LEVEL_COMPONENTS);
+			components.add(SubjectCoverageTest.getFixture(1));
+			components.add(GeospatialCoverageTest.getFixture(3));
+			components.add(SubjectCoverageTest.getFixture(4));
+			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
+				getIsmDESVersion(), getNtkDESVersion());
+		}
+		
+	}
 
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {

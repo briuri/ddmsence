@@ -50,13 +50,29 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 
 	/**
 	 * Returns a fixture object for testing.
+	 * 
+	 * @param a fixed order value
+	 */
+	public static NonStateActor getFixture(int order) {
+		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			return (version.isAtLeast("4.0") ? new NonStateActor(TEST_VALUE, new Integer(order), SecurityAttributesTest.getFixture()) : null);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
+	 * Returns a fixture object for testing.
 	 */
 	public static List<NonStateActor> getFixtureList() {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			List<NonStateActor> actors = new ArrayList<NonStateActor>();
 			if (version.isAtLeast("4.0"))
-				actors.add(new NonStateActor("Laotian Monks", new Integer(1), SecurityAttributesTest.getFixture()));
+				actors.add(new NonStateActor(TEST_VALUE, TEST_ORDER, SecurityAttributesTest.getFixture()));
 			return (actors);
 		}
 		catch (InvalidDDMSException e) {

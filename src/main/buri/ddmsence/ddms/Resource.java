@@ -63,6 +63,7 @@ import buri.ddmsence.ddms.security.ism.NoticeAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.Description;
 import buri.ddmsence.ddms.summary.GeospatialCoverage;
+import buri.ddmsence.ddms.summary.NonStateActor;
 import buri.ddmsence.ddms.summary.RelatedResource;
 import buri.ddmsence.ddms.summary.SubjectCoverage;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
@@ -635,7 +636,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
 	 * <li>If this resource has security attributes, the SecurityAttributes on any subcomponents are valid according 
 	 * to rollup rules (security attributes are not required in DDMS 2.0).</li>
-	 * <li>All child components are using the same version of DDMS.</li>
+	 * <li>All ddms:order attributes make a complete, consecutive set, starting at 1.</li>
 	 * <li>resourceElement attribute must exist, starting in DDMS 3.0.</li>
 	 * <li>createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD), starting in DDMS 3.0.</li>
 	 * <li>ISM DESVersion must exist and be a valid Integer, starting in DDMS 3.0.</li>
@@ -681,8 +682,10 @@ public final class Resource extends AbstractBaseComponent {
 			}
 			ISMVocabulary.validateRollup(getSecurityAttributes(), childAttributes);
 		}
-
+		
 		// Should be reviewed as additional versions of DDMS are supported.
+		if (getDDMSVersion().isAtLeast("4.0"))
+			validateOrderAttributes();
 		if ("3.1".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getIsmDESVersion())))
 			throw new InvalidDDMSException("The ISM:DESVersion must be 5 in DDMS 3.1 resources.");
 		if ("4.0".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getNtkDESVersion())))
@@ -703,6 +706,34 @@ public final class Resource extends AbstractBaseComponent {
 		}
 
 		super.validate();
+	}
+	
+	/**
+	 * Validates the ddms:order attributes on ddms:nonStateActor and ddms:geospatialCoverage elements.  All elements 
+	 * in the document which specify the order attribute should be interpreted as entries in a single, ordered list.
+	 * Values must be sequential, starting at 1, and may not contain duplicates.
+	 * @throws InvalidDDMSException if the orders do not make a unique consecutive list starting at 1.
+	 */
+	private void validateOrderAttributes() throws InvalidDDMSException {
+		List<Integer> orders = new ArrayList<Integer>();
+		for (GeospatialCoverage coverage : getGeospatialCoverages()) {
+			if (coverage.getOrder() != null)
+				orders.add(coverage.getOrder());
+		}
+		for (SubjectCoverage coverage : getSubjectCoverages()) {
+			for (NonStateActor actor : coverage.getNonStateActors()) {
+				if (actor.getOrder() != null)
+					orders.add(actor.getOrder());
+			}
+		}
+		Collections.sort(orders);
+		for (int i = 0; i < orders.size(); i++) {
+			Integer expectedValue = new Integer(i + 1);
+			if (!expectedValue.equals(orders.get(i))) {
+				throw new InvalidDDMSException("The ddms:order attributes throughout this resource must form "
+					+ "a single, ordered list starting from 1.");
+			}
+		}		
 	}
 	
 	/**
