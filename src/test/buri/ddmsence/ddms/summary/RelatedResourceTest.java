@@ -26,6 +26,7 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
+import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -50,6 +51,22 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		super("relatedResources.xml");
 	}
 
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static RelatedResource getFixture() {
+		try {
+			List<Link> links = new ArrayList<Link>();
+			links.add(new Link(new XLinkAttributes("http://en.wikipedia.org/wiki/Tank", "role", null, null)));		
+			return (new RelatedResource(links, "http://purl.org/dc/terms/references", "outbound",
+				"http://purl.org/dc/terms/URI", "http://en.wikipedia.org/wiki/Tank", null));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 

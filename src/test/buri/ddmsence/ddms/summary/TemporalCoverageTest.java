@@ -46,6 +46,19 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	public TemporalCoverageTest() {
 		super("temporalCoverage.xml");
 	}
+	
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static TemporalCoverage getFixture() {
+		try {
+			return (new TemporalCoverage(null, "1979-09-15", "Not Applicable", null));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
 
 	/**
 	 * Helper method to create an object which is expected to be valid.

@@ -47,6 +47,19 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static VirtualCoverage getFixture() {
+		try {
+			return (new VirtualCoverage("123.456.789.0", "IP", null));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param element the element to build from

@@ -48,7 +48,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 	 */
 	public static Description getFixture() {
 		try {
-			return (new Description("Tasking Info", SecurityAttributesTest.getFixture()));
+			return (new Description(TEST_VALUE, SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());

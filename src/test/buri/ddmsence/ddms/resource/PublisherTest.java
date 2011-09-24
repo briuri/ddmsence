@@ -44,6 +44,19 @@ public class PublisherTest extends AbstractComponentTestCase {
 	}
 
 	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static Publisher getFixture() {
+		try {
+			return (new Publisher(PersonTest.getFixture(), null, null));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
 	 * @param expectFailure true if this operation is expected to fail, false otherwise
@@ -111,8 +124,6 @@ public class PublisherTest extends AbstractComponentTestCase {
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(Service.getName(version))
 			.append(">\n");
 		xml.append("\t\t<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>\n");
-		xml.append("\t\t<ddms:phone>703-882-1000</ddms:phone>\n");
-		xml.append("\t\t<ddms:email>ddms@fgm.com</ddms:email>\n");
 		xml.append("\t</ddms:").append(Service.getName(version)).append(">\n</ddms:publisher>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}

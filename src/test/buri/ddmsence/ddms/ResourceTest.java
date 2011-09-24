@@ -35,42 +35,51 @@ import buri.ddmsence.ddms.extensible.ExtensibleElement;
 import buri.ddmsence.ddms.extensible.ExtensibleElementTest;
 import buri.ddmsence.ddms.format.Extent;
 import buri.ddmsence.ddms.format.Format;
+import buri.ddmsence.ddms.format.FormatTest;
 import buri.ddmsence.ddms.resource.Contributor;
+import buri.ddmsence.ddms.resource.ContributorTest;
 import buri.ddmsence.ddms.resource.Creator;
-import buri.ddmsence.ddms.resource.Dates;
+import buri.ddmsence.ddms.resource.CreatorTest;
+import buri.ddmsence.ddms.resource.DatesTest;
 import buri.ddmsence.ddms.resource.Identifier;
+import buri.ddmsence.ddms.resource.IdentifierTest;
 import buri.ddmsence.ddms.resource.Language;
+import buri.ddmsence.ddms.resource.LanguageTest;
 import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.PointOfContact;
+import buri.ddmsence.ddms.resource.PointOfContactTest;
 import buri.ddmsence.ddms.resource.Publisher;
-import buri.ddmsence.ddms.resource.Rights;
+import buri.ddmsence.ddms.resource.PublisherTest;
+import buri.ddmsence.ddms.resource.RightsTest;
 import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Source;
+import buri.ddmsence.ddms.resource.SourceTest;
 import buri.ddmsence.ddms.resource.Subtitle;
+import buri.ddmsence.ddms.resource.SubtitleTest;
 import buri.ddmsence.ddms.resource.Title;
+import buri.ddmsence.ddms.resource.TitleTest;
 import buri.ddmsence.ddms.resource.Type;
+import buri.ddmsence.ddms.resource.TypeTest;
 import buri.ddmsence.ddms.resource.Unknown;
-import buri.ddmsence.ddms.security.Security;
+import buri.ddmsence.ddms.security.SecurityTest;
 import buri.ddmsence.ddms.security.ism.NoticeAttributes;
 import buri.ddmsence.ddms.security.ism.NoticeAttributesTest;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
-import buri.ddmsence.ddms.summary.BoundingGeometry;
-import buri.ddmsence.ddms.summary.Description;
+import buri.ddmsence.ddms.summary.DescriptionTest;
 import buri.ddmsence.ddms.summary.GeospatialCoverage;
+import buri.ddmsence.ddms.summary.GeospatialCoverageTest;
 import buri.ddmsence.ddms.summary.Keyword;
 import buri.ddmsence.ddms.summary.Link;
 import buri.ddmsence.ddms.summary.PostalAddress;
 import buri.ddmsence.ddms.summary.RelatedResource;
-import buri.ddmsence.ddms.summary.SubjectCoverage;
+import buri.ddmsence.ddms.summary.RelatedResourceTest;
+import buri.ddmsence.ddms.summary.SubjectCoverageTest;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
+import buri.ddmsence.ddms.summary.TemporalCoverageTest;
 import buri.ddmsence.ddms.summary.VirtualCoverage;
-import buri.ddmsence.ddms.summary.gml.Point;
-import buri.ddmsence.ddms.summary.gml.Position;
-import buri.ddmsence.ddms.summary.gml.PositionTest;
-import buri.ddmsence.ddms.summary.gml.SRSAttributes;
-import buri.ddmsence.ddms.summary.gml.SRSAttributesTest;
+import buri.ddmsence.ddms.summary.VirtualCoverageTest;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
@@ -83,28 +92,6 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public class ResourceTest extends AbstractComponentTestCase {
-
-	private Identifier TEST_IDENTIFIER;
-	private Title TEST_TITLE;
-	private Subtitle TEST_SUBTITLE;
-	private Description TEST_DESCRIPTION;
-	private Language TEST_LANGUAGE;
-	private Dates TEST_DATES;
-	private Rights TEST_RIGHTS;
-	private Source TEST_SOURCE;
-	private Type TEST_TYPE;
-	private Creator TEST_CREATOR;
-	private Publisher TEST_PUBLISHER;
-	private Contributor TEST_CONTRIBUTOR;
-	private PointOfContact TEST_POC;
-	private Format TEST_FORMAT;
-	private SubjectCoverage TEST_SUBJECT;
-	private VirtualCoverage TEST_VIRTUAL;
-	private TemporalCoverage TEST_TEMPORAL;
-	private GeospatialCoverage TEST_GEOSPATIAL;
-	private RelatedResource TEST_RELATED;
-	private Security TEST_SECURITY;
-	private SRSAttributes TEST_SRS_ATTRIBUTES;
 	private List<IDDMSComponent> TEST_TOP_LEVEL_COMPONENTS;
 	private List<IDDMSComponent> TEST_NO_OPTIONAL_COMPONENTS;
 
@@ -122,72 +109,34 @@ public class ResourceTest extends AbstractComponentTestCase {
 	 * Regenerates all the components needed in a Resource
 	 */
 	private void createComponents() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		TEST_IDENTIFIER = new Identifier("URI", "urn:buri:ddmsence:testIdentifier");
-		TEST_TITLE = new Title("DDMSence", SecurityAttributesTest.getFixture());
-		TEST_SUBTITLE = new Subtitle("Version 0.1", SecurityAttributesTest.getFixture());
-		TEST_DESCRIPTION = new Description("A transformation service.", SecurityAttributesTest.getFixture());
-		TEST_LANGUAGE = new Language("http://purl.org/dc/elements/1.1/language", "en");
-		TEST_DATES = new Dates("2003", null, null, null, null, null);
-		TEST_RIGHTS = new Rights(true, true, true);
-		TEST_SOURCE = new Source(null, "http://www.xmethods.com", null, null, null);
-		TEST_TYPE = new Type(null, "DCMITYPE", "http://purl.org/dc/dcmitype/Text", null);
-		TEST_CREATOR = new Creator(new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null), null,
-			null);
-		TEST_PUBLISHER = new Publisher(new Person(Util.getXsListAsList("Brian"), "Uri", null, null, null, null), null,
-			null);
-		TEST_CONTRIBUTOR = new Contributor(new Service(
-			Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), null, null), null, null);
-		TEST_POC = new PointOfContact(version.isAtLeast("3.0") ? new Unknown(Util.getXsListAsList("UnknownEntity"),
-			null, null) : new Person(Util.getXsListAsList("Brian"), "Uri", null, null, null, null), null, null);
-		TEST_FORMAT = new Format("text/xml", null, null);
-
-		List<Keyword> keywords = new ArrayList<Keyword>();
-		keywords.add(new Keyword("DDMSence", null));
-		TEST_SUBJECT = new SubjectCoverage(keywords, null, null, null, null);
-		TEST_VIRTUAL = new VirtualCoverage("123.456.789.0", "IP", null);
-		TEST_TEMPORAL = new TemporalCoverage(null, "1979-09-15", "Not Applicable", null);
-
-		TEST_SRS_ATTRIBUTES = SRSAttributesTest.getFixture();
-		List<Point> points = new ArrayList<Point>();
-		points.add(new Point(new Position(PositionTest.TEST_COORDS, null), TEST_SRS_ATTRIBUTES, TEST_ID));
-		TEST_GEOSPATIAL = new GeospatialCoverage(null, null, new BoundingGeometry(null, points), null, null, null,
-			null, null);
-
-		List<Link> links = new ArrayList<Link>();
-		links.add(new Link(new XLinkAttributes("http://en.wikipedia.org/wiki/Tank", "role", null, null)));
-		TEST_RELATED = new RelatedResource(links, "http://purl.org/dc/terms/references", "outbound",
-			"http://purl.org/dc/terms/URI", "http://en.wikipedia.org/wiki/Tank", null);
-		TEST_SECURITY = new Security(null, null, SecurityAttributesTest.getFixture());
-
 		TEST_TOP_LEVEL_COMPONENTS = new ArrayList<IDDMSComponent>();
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_SECURITY);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_RELATED);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_GEOSPATIAL);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_TEMPORAL);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_VIRTUAL);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_SUBJECT);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_FORMAT);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_POC);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_CONTRIBUTOR);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_PUBLISHER);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_CREATOR);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_TYPE);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_SOURCE);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_RIGHTS);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_DATES);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_LANGUAGE);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_DESCRIPTION);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_SUBTITLE);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_TITLE);
-		TEST_TOP_LEVEL_COMPONENTS.add(TEST_IDENTIFIER);
+		TEST_TOP_LEVEL_COMPONENTS.add(SecurityTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(RelatedResourceTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(GeospatialCoverageTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(TemporalCoverageTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(VirtualCoverageTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(SubjectCoverageTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(FormatTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(PointOfContactTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(ContributorTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(PublisherTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(CreatorTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(TypeTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(SourceTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(RightsTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(DatesTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(LanguageTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(DescriptionTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(SubtitleTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(TitleTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(IdentifierTest.getFixture());
 
 		TEST_NO_OPTIONAL_COMPONENTS = new ArrayList<IDDMSComponent>();
-		TEST_NO_OPTIONAL_COMPONENTS.add(TEST_IDENTIFIER);
-		TEST_NO_OPTIONAL_COMPONENTS.add(TEST_TITLE);
-		TEST_NO_OPTIONAL_COMPONENTS.add(TEST_CREATOR);
-		TEST_NO_OPTIONAL_COMPONENTS.add(TEST_SUBJECT);
-		TEST_NO_OPTIONAL_COMPONENTS.add(TEST_SECURITY);
+		TEST_NO_OPTIONAL_COMPONENTS.add(IdentifierTest.getFixture());
+		TEST_NO_OPTIONAL_COMPONENTS.add(TitleTest.getFixture());
+		TEST_NO_OPTIONAL_COMPONENTS.add(CreatorTest.getFixture());
+		TEST_NO_OPTIONAL_COMPONENTS.add(SubjectCoverageTest.getFixture());
+		TEST_NO_OPTIONAL_COMPONENTS.add(SecurityTest.getFixture());
 	}
 
 	/**
@@ -198,11 +147,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 	 */
 	private Element getResourceWithoutHeaderElement() throws InvalidDDMSException {
 		Element element = Util.buildDDMSElement(Resource.getName(DDMSVersion.getCurrentVersion()), null);
-		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-		element.appendChild(TEST_TITLE.getXOMElementCopy());
-		element.appendChild(TEST_CREATOR.getXOMElementCopy());
-		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-		element.appendChild(TEST_SECURITY.getXOMElementCopy());
+		element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+		element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+		element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+		element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+		element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 		return (element);
 	}
 
@@ -253,10 +202,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 		Util.addAttribute(element, ismPrefix, Resource.DES_VERSION_NAME, ismNamespace, String
 			.valueOf(getIsmDESVersion()));
 		SecurityAttributesTest.getFixture().addTo(element);
-		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-		element.appendChild(TEST_TITLE.getXOMElementCopy());
-		element.appendChild(TEST_CREATOR.getXOMElementCopy());
-		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+		element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+		element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+		element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+		element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
 
 		Link link = new Link(new XLinkAttributes("http://en.wikipedia.org/wiki/Tank", "role", null, null));
 
@@ -290,7 +239,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		rel2.appendChild(innerElement3);
 		element.appendChild(rel2);
 
-		element.appendChild(TEST_SECURITY.getXOMElementCopy());
+		element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 		return (element);
 	}
 
@@ -631,22 +580,22 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			// No optional fields
 			Element element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(TEST_CREATOR.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 
 			// More than 1 subjectCoverage
 			if (version.isAtLeast("4.0")) {
 				element = getResourceWithoutBodyElement();
-				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-				element.appendChild(TEST_TITLE.getXOMElementCopy());
-				element.appendChild(TEST_CREATOR.getXOMElementCopy());
-				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-				element.appendChild(TEST_SECURITY.getXOMElementCopy());
+				element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+				element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+				element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+				element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+				element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+				element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 				testConstructor(WILL_SUCCEED, element);
 			}
 		}
@@ -752,108 +701,108 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			// At least 1 producer
 			Element element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// At least 1 identifier
 			element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(TEST_CREATOR.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// At least 1 title
 			element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_CREATOR.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 description
 			element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(TEST_DESCRIPTION.getXOMElementCopy());
-			element.appendChild(TEST_DESCRIPTION.getXOMElementCopy());
-			element.appendChild(TEST_CREATOR.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+			element.appendChild(DescriptionTest.getFixture().getXOMElementCopy());
+			element.appendChild(DescriptionTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 dates
 			element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(TEST_DATES.getXOMElementCopy());
-			element.appendChild(TEST_DATES.getXOMElementCopy());
-			element.appendChild(TEST_CREATOR.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+			element.appendChild(DatesTest.getFixture().getXOMElementCopy());
+			element.appendChild(DatesTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 rights
 			element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(TEST_RIGHTS.getXOMElementCopy());
-			element.appendChild(TEST_RIGHTS.getXOMElementCopy());
-			element.appendChild(TEST_CREATOR.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+			element.appendChild(RightsTest.getFixture().getXOMElementCopy());
+			element.appendChild(RightsTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 formats
 			element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(TEST_CREATOR.getXOMElementCopy());
-			element.appendChild(TEST_FORMAT.getXOMElementCopy());
-			element.appendChild(TEST_FORMAT.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(FormatTest.getFixture().getXOMElementCopy());
+			element.appendChild(FormatTest.getFixture().getXOMElementCopy());
+			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// At least 1 subjectCoverage
 			element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(TEST_CREATOR.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 subjectCoverage
 			if (!version.isAtLeast("4.0")) {
 				element = getResourceWithoutBodyElement();
-				element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-				element.appendChild(TEST_TITLE.getXOMElementCopy());
-				element.appendChild(TEST_CREATOR.getXOMElementCopy());
-				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-				element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-				element.appendChild(TEST_SECURITY.getXOMElementCopy());
+				element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+				element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+				element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+				element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+				element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+				element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 				testConstructor(WILL_FAIL, element);
 			}
 
 			// At least 1 security
 			element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(TEST_CREATOR.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
+			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 security
 			element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(TEST_CREATOR.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// No top level components
@@ -892,31 +841,31 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			// At least 1 producer
 			List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
-			components.remove(TEST_CREATOR);
+			components.remove(CreatorTest.getFixture());
 			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getIsmDESVersion(),
 				getNtkDESVersion());
 
 			// At least 1 identifier
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
-			components.remove(TEST_IDENTIFIER);
+			components.remove(IdentifierTest.getFixture());
 			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getIsmDESVersion(),
 				getNtkDESVersion());
 
 			// At least 1 title
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
-			components.remove(TEST_TITLE);
+			components.remove(TitleTest.getFixture());
 			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getIsmDESVersion(),
 				getNtkDESVersion());
 
 			// At least 1 subjectCoverage
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
-			components.remove(TEST_SUBJECT);
+			components.remove(SubjectCoverageTest.getFixture());
 			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getIsmDESVersion(),
 				getNtkDESVersion());
 
 			// At least 1 security
 			components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
-			components.remove(TEST_SECURITY);
+			components.remove(CreatorTest.getFixture());
 			testConstructor(WILL_FAIL, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getIsmDESVersion(),
 				getNtkDESVersion());
 
@@ -1085,11 +1034,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 			Creator creator = new Creator(org, null, new SecurityAttributes("TS", ownerProducers, null));
 
 			Element element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
+			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 			element.appendChild(creator.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -1104,11 +1053,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 		Creator creator = new Creator(org, null, new SecurityAttributes("TS", ownerProducers, null));
 
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
-		element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-		element.appendChild(TEST_TITLE.getXOMElementCopy());
+		element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+		element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 		element.appendChild(creator.getXOMElementCopy());
-		element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-		element.appendChild(TEST_SECURITY.getXOMElementCopy());
+		element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+		element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 		testConstructor(WILL_SUCCEED, element);
 	}
 
@@ -1125,11 +1074,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 			Creator creator = new Creator(org, null, new SecurityAttributes("CTSA", ownerProducers, null));
 
 			Element element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
+			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 			element.appendChild(creator.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -1321,11 +1270,11 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			ExtensibleElement component = new ExtensibleElement(ExtensibleElementTest.getFixtureElement());
 			Element element = getResourceWithoutBodyElement();
-			element.appendChild(TEST_IDENTIFIER.getXOMElementCopy());
-			element.appendChild(TEST_TITLE.getXOMElementCopy());
-			element.appendChild(TEST_CREATOR.getXOMElementCopy());
-			element.appendChild(TEST_SUBJECT.getXOMElementCopy());
-			element.appendChild(TEST_SECURITY.getXOMElementCopy());
+			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
+			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
+			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
+			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			element.appendChild(component.getXOMElementCopy());
 			testConstructor(WILL_SUCCEED, element);
 		}

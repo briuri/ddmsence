@@ -19,6 +19,7 @@
  */
 package buri.ddmsence.ddms.summary;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
@@ -44,6 +45,21 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		super("subjectCoverage.xml");
 	}
 
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static SubjectCoverage getFixture() {
+		try {
+			List<Keyword> keywords = new ArrayList<Keyword>();
+			keywords.add(new Keyword("DDMSence", null));
+			return (new SubjectCoverage(keywords, null, null, null, null));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 

@@ -44,6 +44,19 @@ public class CreatorTest extends AbstractComponentTestCase {
 	}
 	
 	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static Creator getFixture() {
+		try {
+			return (new Creator(OrganizationTest.getFixture(), null, null));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
 	 * @param expectFailure true if this operation is expected to fail, false otherwise
