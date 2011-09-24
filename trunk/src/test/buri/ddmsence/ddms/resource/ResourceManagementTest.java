@@ -65,15 +65,18 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 		return (component);
 	}
 
-	public static void main(String[] args) throws Exception {
-		DDMSVersion.setCurrentVersion("4.0");
-		Element element = Util.buildDDMSElement("resourceManagement", null);
-		element.appendChild(RecordsManagementInfoTest.getFixture().getXOMElementCopy());
-		element.appendChild(RevisionRecallTest.getTextFixtureElement());
-		element.appendChild(TaskingInfoTest.getFixtureElement());
-		element.appendChild(ProcessingInfoTest.getFixture().getXOMElementCopy());
-		SecurityAttributesTest.getFixture().addTo(element);
-		System.out.println(element.toXML());
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static ResourceManagement getFixture() {
+		try {
+			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new ResourceManagement(null, null, null,
+				ProcessingInfoTest.getFixtureList(), SecurityAttributesTest.getFixture()) : null);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
 	}
 	
 	/**

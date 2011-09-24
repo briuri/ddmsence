@@ -50,6 +50,7 @@ import buri.ddmsence.ddms.resource.Identifier;
 import buri.ddmsence.ddms.resource.Language;
 import buri.ddmsence.ddms.resource.PointOfContact;
 import buri.ddmsence.ddms.resource.Publisher;
+import buri.ddmsence.ddms.resource.ResourceManagement;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.resource.Source;
 import buri.ddmsence.ddms.resource.Subtitle;
@@ -111,6 +112,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:temporalCoverage</u>: (0-many optional), implemented as a {@link TemporalCoverage}<br />
  * <u>ddms:geospatialCoverage</u>: (0-many optional), implemented as a {@link GeospatialCoverage}<br />
  * <u>ddms:relatedResources</u>: (0-many optional), implemented as a {@link RelatedResource}<br />
+ * <u>ddms:resourceManagement</u>: (0-1 optional, starting in DDMS 4.0), implemented as a {@link ResourceManageement}<br />
  * <u>ddms:security</u>: (exactly 1 required), implemented as a {@link Security}<br />
  * <u>Extensible Layer</u>: (0-many optional), implemented as a {@link ExtensibleElement}<br />
  * </td></tr></table>
@@ -160,6 +162,7 @@ public final class Resource extends AbstractBaseComponent {
 	private List<TemporalCoverage> _temporalCoverages = new ArrayList<TemporalCoverage>();
 	private List<GeospatialCoverage> geospatialCoverages = new ArrayList<GeospatialCoverage>();
 	private List<RelatedResource> _relatedResources = new ArrayList<RelatedResource>();
+	private ResourceManagement _resourceManagement = null;
 	private Security _security = null;
 	private List<ExtensibleElement> _extensibleElements = new ArrayList<ExtensibleElement>();
 	private List<IDDMSComponent> _orderedList = new ArrayList<IDDMSComponent>();
@@ -294,6 +297,11 @@ public final class Resource extends AbstractBaseComponent {
 			for (int i = 0; i < components.size(); i++)
 				loadRelatedResource(components.get(i));
 
+			// Resource Set again
+			component = getChild(ResourceManagement.getName(version));
+			if (component != null)
+				_resourceManagement = new ResourceManagement(component);
+			
 			// Security Set
 			component = getChild(Security.getName(version));
 			if (component != null) {
@@ -459,6 +467,9 @@ public final class Resource extends AbstractBaseComponent {
 			_extensibleAttributes.addTo(element);
 
 			for (IDDMSComponent component : topLevelComponents) {
+				if (component == null)
+					continue;
+				
 				// Resource Set
 				if (component instanceof Identifier)
 					_identifiers.add((Identifier) component);
@@ -500,6 +511,9 @@ public final class Resource extends AbstractBaseComponent {
 					geospatialCoverages.add((GeospatialCoverage) component);
 				else if (component instanceof RelatedResource)
 					_relatedResources.add((RelatedResource) component);
+				// Resource Set again
+				else if (component instanceof ResourceManagement)
+					_resourceManagement = (ResourceManagement) component;
 				// Security Set
 				else if (component instanceof Security)
 					_security = (Security) component;
@@ -549,6 +563,8 @@ public final class Resource extends AbstractBaseComponent {
 		_orderedList.addAll(getTemporalCoverages());
 		_orderedList.addAll(getGeospatialCoverages());
 		_orderedList.addAll(getRelatedResources());
+		if (getResourceManagement() != null)
+			_orderedList.add(getResourceManagement());
 		if (getSecurity() != null)
 			_orderedList.add(getSecurity());
 		_orderedList.addAll(getExtensibleElements());
@@ -600,7 +616,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights, 0-1 formats, exactly 1
-	 * subjectCoverage, and exactly 1 security element must exist.</li>
+	 * subjectCoverage, 0-1 resourceManagement, and exactly 1 security element must exist.</li>
 	 * <li>Starting in DDMS 4.0, 1-many subjectCoverage elements can exist.</li>
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
 	 * <li>If this resource has security attributes, the SecurityAttributes on any subcomponents are valid according 
@@ -635,6 +651,7 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), Dates.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Rights.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Format.getName(getDDMSVersion()), 0, 1);
+		Util.requireBoundedChildCount(getXOMElement(), ResourceManagement.getName(getDDMSVersion()), 0, 1);
 		if (getDDMSVersion().isAtLeast("4.0")) {
 			if (getSubjectCoverages().size() < 1)
 				throw new InvalidDDMSException("At least 1 subjectCoverage is required.");
@@ -895,6 +912,13 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
+	 * Accessor for the ResourceManagement component (0-1). May return null.
+	 */
+	public ResourceManagement getResourceManagement() {
+		return (_resourceManagement);
+	}
+	
+	/**
 	 * Accessor for the security component (exactly 1). May return null but this cannot happen after instantiation.
 	 */
 	public Security getSecurity() {
@@ -1014,6 +1038,7 @@ public final class Resource extends AbstractBaseComponent {
 		private List<TemporalCoverage.Builder> _temporalCoverages;
 		private List<GeospatialCoverage.Builder> _geospatialCoverages;
 		private List<RelatedResource.Builder> _relatedResources;
+		private ResourceManagement.Builder _resourceManagement;
 		private Security.Builder _security;
 		private List<ExtensibleElement.Builder> _extensibleElements;
 
@@ -1077,6 +1102,10 @@ public final class Resource extends AbstractBaseComponent {
 					getGeospatialCoverages().add(new GeospatialCoverage.Builder((GeospatialCoverage) component));
 				else if (component instanceof RelatedResource)
 					getRelatedResources().add(new RelatedResource.Builder((RelatedResource) component));
+				// Resource Set again
+				else if (component instanceof ResourceManagement)
+					setResourceManagement(new ResourceManagement.Builder((ResourceManagement) component));
+				
 				// Security Set
 				else if (component instanceof Security)
 					setSecurity(new Security.Builder((Security) component));
@@ -1155,6 +1184,7 @@ public final class Resource extends AbstractBaseComponent {
 			list.add(getDates());
 			list.add(getRights());
 			list.add(getFormat());
+			list.add(getResourceManagement());
 			list.add(getSecurity());
 			return (list);
 		}
@@ -1367,6 +1397,22 @@ public final class Resource extends AbstractBaseComponent {
 			if (_relatedResources == null)
 				_relatedResources = new LazyList(RelatedResource.Builder.class);
 			return _relatedResources;
+		}
+		
+		/**
+		 * Builder accessor for the resourceManagement
+		 */
+		public ResourceManagement.Builder getResourceManagement() {
+			if (_resourceManagement == null)
+				_resourceManagement = new ResourceManagement.Builder();
+			return _resourceManagement;
+		}
+		
+		/**
+		 * Builder accessor for the resourceManagement
+		 */
+		public void setResourceManagement(ResourceManagement.Builder resourceManagement) {
+			_resourceManagement = resourceManagement;
 		}
 		
 		/**
