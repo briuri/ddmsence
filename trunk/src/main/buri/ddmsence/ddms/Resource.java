@@ -43,6 +43,7 @@ import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleElement;
 import buri.ddmsence.ddms.format.Format;
+import buri.ddmsence.ddms.metacard.MetacardInfo;
 import buri.ddmsence.ddms.resource.Contributor;
 import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Dates;
@@ -93,6 +94,7 @@ import buri.ddmsence.util.Util;
  * <p>The name of this component was changed from "Resource" to "resource" in DDMS 4.0.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * <u>ddms:metacardInfo</u>: (exactly 1 required, starting in DDMS 4.0), implemented as a {@link MetacardInfo}<br />
  * <u>ddms:identifier</u>: (1-many required), implemented as an {@link Identifier}<br />
  * <u>ddms:title</u>: (1-many required), implemented as a {@link Title}<br />
  * <u>ddms:subtitle</u>: (0-many optional), implemented as a {@link Subtitle}<br />
@@ -102,17 +104,17 @@ import buri.ddmsence.util.Util;
  * <u>ddms:rights</u>: (0-1 optional), implemented as a {@link Rights}<br />
  * <u>ddms:source</u>: (0-many optional), implemented as a {@link Source}<br />
  * <u>ddms:type</u>: (0-many optional), implemented as a {@link Type}<br />
- * <u>ddms:creator</u>: (0-many optional), implemented as a {@link Creator}<br />
- * <u>ddms:publisher</u>: (0-many optional), implemented as a {@link Publisher}<br />
  * <u>ddms:contributor</u>: (0-many optional), implemented as a {@link Contributor}<br />
+ * <u>ddms:creator</u>: (0-many optional), implemented as a {@link Creator}<br />
  * <u>ddms:pointOfContact</u>: (0-many optional), implemented as a {@link PointOfContact}<br />
+ * <u>ddms:publisher</u>: (0-many optional), implemented as a {@link Publisher}<br />
  * <u>ddms:format</u>: (0-1 optional), implemented as a {@link Format}<br />
  * <u>ddms:subjectCoverage</u>: (1-many required, starting in DDMS 4.0), implemented as a {@link SubjectCoverage}<br />
  * <u>ddms:virtualCoverage</u>: (0-many optional), implemented as a {@link VirtualCoverage}<br />
  * <u>ddms:temporalCoverage</u>: (0-many optional), implemented as a {@link TemporalCoverage}<br />
  * <u>ddms:geospatialCoverage</u>: (0-many optional), implemented as a {@link GeospatialCoverage}<br />
  * <u>ddms:relatedResources</u>: (0-many optional), implemented as a {@link RelatedResource}<br />
- * <u>ddms:resourceManagement</u>: (0-1 optional, starting in DDMS 4.0), implemented as a {@link ResourceManageement}<br />
+ * <u>ddms:resourceManagement</u>: (0-1 optional, starting in DDMS 4.0), implemented as a {@link ResourceManagement}<br />
  * <u>ddms:security</u>: (exactly 1 required), implemented as a {@link Security}<br />
  * <u>Extensible Layer</u>: (0-many optional), implemented as a {@link ExtensibleElement}<br />
  * </td></tr></table>
@@ -143,6 +145,7 @@ import buri.ddmsence.util.Util;
  */
 public final class Resource extends AbstractBaseComponent {
 	
+	private MetacardInfo _metacardInfo = null;
 	private List<Identifier> _identifiers = new ArrayList<Identifier>();
 	private List<Title> _titles = new ArrayList<Title>();
 	private List<Subtitle> _subtitles = new ArrayList<Subtitle>();
@@ -234,6 +237,12 @@ public final class Resource extends AbstractBaseComponent {
 			_extensibleAttributes = new ExtensibleAttributes(element);
 
 			DDMSVersion version = getDDMSVersion();
+			
+			// Metacard Set
+			Element component = getChild(MetacardInfo.getName(version));
+			if (component != null) {
+				_metacardInfo = new MetacardInfo(component);
+			}
 			// Resource Set
 			Elements components = element.getChildElements(Identifier.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++)
@@ -244,7 +253,7 @@ public final class Resource extends AbstractBaseComponent {
 			components = element.getChildElements(Subtitle.getName(version), namespace);
 			for (int i = 0; i < components.size(); i++)
 				_subtitles.add(new Subtitle(components.get(i)));
-			Element component = getChild(Description.getName(version));
+			component = getChild(Description.getName(version));
 			if (component != null)
 				_description = new Description(component);
 			components = element.getChildElements(Language.getName(version), namespace);
@@ -470,8 +479,11 @@ public final class Resource extends AbstractBaseComponent {
 				if (component == null)
 					continue;
 				
+				// Metacard Set
+				if (component instanceof MetacardInfo)
+					_metacardInfo = (MetacardInfo) component;
 				// Resource Set
-				if (component instanceof Identifier)
+				else if (component instanceof Identifier)
 					_identifiers.add((Identifier) component);
 				else if (component instanceof Title)
 					_titles.add((Title) component);
@@ -540,6 +552,8 @@ public final class Resource extends AbstractBaseComponent {
 	 * Creates an ordered list of all the top-level components in this Resource, for ease of traversal.
 	 */
 	private void populatedOrderedList() {
+		if (getMetacardInfo() != null)
+			_orderedList.add(getMetacardInfo());
 		_orderedList.addAll(getIdentifiers());
 		_orderedList.addAll(getTitles());
 		_orderedList.addAll(getSubtitles());
@@ -615,8 +629,8 @@ public final class Resource extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights, 0-1 formats, exactly 1
-	 * subjectCoverage, 0-1 resourceManagement, and exactly 1 security element must exist.</li>
+	 * <li>Exactly 1 metacardInfo, 1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights, 
+	 * 0-1 formats, exactly 1 subjectCoverage, 0-1 resourceManagement, and exactly 1 security element must exist.</li>
 	 * <li>Starting in DDMS 4.0, 1-many subjectCoverage elements can exist.</li>
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
 	 * <li>If this resource has security attributes, the SecurityAttributes on any subcomponents are valid according 
@@ -676,6 +690,8 @@ public final class Resource extends AbstractBaseComponent {
 		if (!getDDMSVersion().isAtLeast("3.0") && getExtensibleElements().size() > 1) {
 			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
 		}
+		if (getDDMSVersion().isAtLeast("4.0"))
+			Util.requireBoundedChildCount(getXOMElement(), MetacardInfo.getName(getDDMSVersion()), 1, 1);
 		if (getDDMSVersion().isAtLeast("3.0")) {
 			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
 			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
@@ -776,6 +792,13 @@ public final class Resource extends AbstractBaseComponent {
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
 		return (version.isAtLeast("4.0") ? "resource" : "Resource");
+	}
+	
+	/**
+	 * Accessor for the MetacardInfo component (exactly 1)
+	 */
+	public MetacardInfo getMetacardInfo() {
+		return (_metacardInfo);
 	}
 	
 	/**
@@ -1019,6 +1042,7 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public static class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = -8581492714895157280L;
+		private MetacardInfo.Builder _metacardInfo;
 		private List<Identifier.Builder> _identifiers;
 		private List<Title.Builder> _titles;
 		private List<Subtitle.Builder> _subtitles;
@@ -1060,8 +1084,11 @@ public final class Resource extends AbstractBaseComponent {
 		 */
 		public Builder(Resource resource) {
 			for (IDDMSComponent component : resource.getTopLevelComponents()) {
+				// Metacard Set
+				if (component instanceof MetacardInfo)
+					setMetacardInfo(new MetacardInfo.Builder((MetacardInfo) component));
 				// Resource Set
-				if (component instanceof Identifier)
+				else if (component instanceof Identifier)
 					getIdentifiers().add(new Identifier.Builder((Identifier) component));
 				else if (component instanceof Title)
 					getTitles().add(new Title.Builder((Title) component));
@@ -1180,6 +1207,7 @@ public final class Resource extends AbstractBaseComponent {
 			list.addAll(getGeospatialCoverages());
 			list.addAll(getRelatedResources());
 			list.addAll(getExtensibleElements());
+			list.add(getMetacardInfo());
 			list.add(getDescription());
 			list.add(getDates());
 			list.add(getRights());
@@ -1187,6 +1215,22 @@ public final class Resource extends AbstractBaseComponent {
 			list.add(getResourceManagement());
 			list.add(getSecurity());
 			return (list);
+		}
+		
+		/**
+		 * Builder accessor for the metacardInfo
+		 */
+		public MetacardInfo.Builder getMetacardInfo() {
+			if (_metacardInfo == null)
+				_metacardInfo = new MetacardInfo.Builder();
+			return _metacardInfo;
+		}
+		
+		/**
+		 * Builder accessor for the metacardInfo
+		 */
+		public void setMetacardInfo(MetacardInfo.Builder metacardInfo) {
+			_metacardInfo = metacardInfo;
 		}
 		
 		/**
@@ -1302,6 +1346,7 @@ public final class Resource extends AbstractBaseComponent {
 			producers.addAll(getPointOfContacts());
 			return (producers);
 		}
+		
 		/**
 		 * Builder accessor for creators
 		 */

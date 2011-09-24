@@ -47,7 +47,8 @@ for the security classification and ownerProducer attributes to save time while 
 <p>First, let's try creating an invalid Identifier. The DDMS specification states that the qualifier must be a valid URI. Type in "<code>:::::</code>" as
 a qualifier and "<code>test</code>" as a value.</p>
 
-<pre class="brush: xml">=== ddms:identifier (at least 1 required) ===
+<pre class="brush: xml">=== ddms:metacardInfo (exactly 1 required) ===
+A minimal metacardInfo consist of an identifier, dates, and a publisher.
 Please enter the qualifier [testQualifier]: :::::
 Please enter the value [testValue]: test
 [ERROR] /ddms:identifier: Invalid URI (Expected scheme name at index 0: :::::)
@@ -63,8 +64,8 @@ of the exception).</p>
 <p>Now, let's take a look at the source code in <code>/src/samples/buri/ddmsence/samples/Escort.java</code> to see how this was accomplished. The <code>run()</code>
 method defines the control flow for the program, and uses the helper method, <code>inputLoop()</code>, to ask for user input until a valid component can be created:</p>
 
-<pre class="brush: java">printHead("ddms:identifier (at least 1 required)");
-getTopLevelComponents().add(inputLoop(Identifier.class));</pre>
+<pre class="brush: java">printHead("ddms:metacardInfo (exactly 1 required)");
+getTopLevelComponents().add(inputLoop(MetacardInfo.class));</pre>
 <p class="figure">Figure 3. Excerpt from the run() method</p>
 		
 <pre class="brush: java">private IDDMSComponent inputLoop(Class theClass) throws IOException {
@@ -82,7 +83,8 @@ getTopLevelComponents().add(inputLoop(Identifier.class));</pre>
 <p class="figure">Figure 4. Source code to continuously loop until a valid component is created</p>
 
 <p>An anonymous implementation of IComponentBuilder is created (in the <u>Escort</u> constructor) for each DDMS Component class, and each Builder
-is responsible for one top-level component. For example, here is the definition of the Builder that builds Identifiers:</p>
+is responsible for one top-level component. Some Builders, like the one for a MetacardInfo will use other Builders to create child components.
+For example, here is the definition of the Builder that builds Identifiers:</p>
 
 <pre class="brush: java">BUILDERS.put(Identifier.class, new IComponentBuilder() {
    public IDDMSComponent build() throws IOException, InvalidDDMSException {
@@ -101,6 +103,24 @@ component.</p>
 road to a valid Resource.</p>
 
 <pre class="brush: xml">Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the resource? [Y/N]: Y
+
+=== ddms:metacardInfo (exactly 1 required) ===
+A minimal metacardInfo consist of an identifier, dates, and a publisher.
+Please enter the qualifier [testQualifier]: testQualifier
+Please enter the value [testValue]: testValue
+Please enter the created date [2010]: 2010
+Please enter the posted date [2010]: 
+Please enter the validTil date [2010]: 
+Please enter the infoCutOff date [2010]: 
+Please enter the approvedOn date [2010]: 
+Please enter the receivedOn date [2010]: 
+Please enter the publisher entity type [organization]: organization
+Please enter the number of names this organization has [1]: 1
+Please enter the number of phone numbers this organization has [0]: 0
+Please enter the number of email addresses this organization has [0]: 0
+Please enter the number of suborganizations to include [0]: 0
+Please enter entity name #1 [testName1]: DISA
+Please enter the Organization acronym [testAcronym]: DISA
 
 === ddms:identifier (at least 1 required) ===
 Please enter the qualifier [testQualifier]: testQualifier
@@ -122,8 +142,8 @@ Please enter the number of names this organization has [1]: 1
 Please enter the number of phone numbers this organization has [0]: 0
 Please enter the number of email addresses this organization has [0]: 0
 Please enter the number of suborganizations to include [0]: 0
-Please enter entity name #1 [testName1]: testName
-Please enter the Organization acronym [testAcronym]: testAcronym
+Please enter entity name #1 [testName1]: DISA
+Please enter the Organization acronym [testAcronym]: DISA
 
 === ddms:subjectCoverage (at least 1 required) ===
 Please enter the number of keywords to include [1]: 1
@@ -131,14 +151,15 @@ Please enter the number of categories to include [0]: 0
 Please enter the number of productionMetrics to include [0]: 0
 Please enter the number of nonStateActors to include [0]: 0
 * Keyword #1
-Please enter the keyword value [testValue]: testValue
+Please enter the keyword value [testValue]: DDMSence
 
 === ddms:security (exactly 1 required) ===
 
 === ddms:resource Attributes (all required) ===
 Does this tag set the classification for the resource as a whole? [Y/N]: Y
 Please enter Resource createDate [2010-04-01]: 2010-04-01
-Please enter the Resource DESVersion [2]: 5
+Please enter the Resource ISM:DESVersion [7]: 7
+Please enter the Resource ntk:DESVersion [5]: 5
 The DDMS Resource is valid!
 No warnings were recorded.</pre>
 <p class="figure">Figure 6. Successful run of the Escort Wizard</p>

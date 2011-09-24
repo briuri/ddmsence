@@ -38,6 +38,7 @@ import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.ValidationMessage;
+import buri.ddmsence.ddms.metacard.MetacardInfo;
 import buri.ddmsence.ddms.resource.Contributor;
 import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Dates;
@@ -111,6 +112,28 @@ public class Escort {
 	 * Creates the anonymous builders used in the main loop.
 	 */
 	public Escort() {
+		BUILDERS.put(MetacardInfo.class, new IComponentBuilder() {
+			public IDDMSComponent build() throws IOException, InvalidDDMSException {
+				DDMSVersion version = DDMSVersion.getCurrentVersion();
+				List<IDDMSComponent> components = new ArrayList<IDDMSComponent>();
+				println("A minimal metacardInfo consist of an identifier, dates, and a publisher.");
+				components.add((Identifier) inputLoop(Identifier.class));
+				components.add((Dates) inputLoop(Dates.class));
+
+				String entityType = readString("the publisher entity type [organization]");
+				IRoleEntity entity = null;
+				if (Person.getName(version).equals(entityType))
+					entity = (Person) inputLoop(Person.class);
+				else if (Organization.getName(version).equals(entityType))
+					entity = (Organization) inputLoop(Organization.class);
+				else if (Service.getName(version).equals(entityType))
+					entity = (Service) inputLoop(Service.class);
+				else if (Unknown.getName(version).equals(entityType)) 
+					entity = (Unknown) inputLoop(Unknown.class);
+				components.add(new Publisher(entity, null, buildSecurityAttributes("publisher")));
+				return (new MetacardInfo(components, buildSecurityAttributes("subject")));
+			}		
+		});
 		BUILDERS.put(Identifier.class, new IComponentBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String qualifier = readString("the qualifier [testQualifier]");
@@ -356,9 +379,10 @@ public class Escort {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				boolean resourceElement = confirm("Does this tag set the classification for the resource as a whole?");
 				String createDate = readString("Resource createDate [2010-04-01]");
-				int desVersion = readInt("the Resource DESVersion [7]");
-				return (new Resource(getTopLevelComponents(), resourceElement, createDate, new Integer(desVersion), 
-					buildSecurityAttributes("resource")));
+				int ismDESVersion = readInt("the Resource ISM:DESVersion [7]");
+				int ntkDESVersion = readInt("the Resource ntk:DESVersion [5]");
+				return (new Resource(getTopLevelComponents(), resourceElement, createDate, new Integer(ismDESVersion), new Integer(ntkDESVersion), 
+					buildSecurityAttributes("resource"), null, null));
 			}		
 		});
 	}
@@ -377,6 +401,9 @@ public class Escort {
 		_useDummySecurityAttributes = confirm("Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the resource?");
 				
 		DDMSVersion.setCurrentVersion("4.0");
+		
+		printHead("ddms:metacardInfo (exactly 1 required)");
+		getTopLevelComponents().add(inputLoop(MetacardInfo.class));
 		
 		printHead("ddms:identifier (at least 1 required)");
 		getTopLevelComponents().add(inputLoop(Identifier.class));

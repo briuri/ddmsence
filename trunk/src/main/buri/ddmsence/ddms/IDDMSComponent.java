@@ -114,6 +114,16 @@ public interface IDDMSComponent {
 	public String toText();
 
 	/**
+	 * Renders this component as HTML or Text, with an optional prefix to nest it.
+	 * 
+	 * @param isHTML true for HTML, false for Text.
+	 * @param prefix an optional prefix to put on each name-value pair.
+	 * 
+	 * @return the HTML or Text representation of this component
+	 */
+	public String getOutput(boolean isHTML, String prefix);
+	
+	/**
 	 * Renders this component as XML.
 	 * 
 	 * @return the XML representation of this component

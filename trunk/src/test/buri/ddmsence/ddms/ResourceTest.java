@@ -36,6 +36,7 @@ import buri.ddmsence.ddms.extensible.ExtensibleElementTest;
 import buri.ddmsence.ddms.format.Extent;
 import buri.ddmsence.ddms.format.Format;
 import buri.ddmsence.ddms.format.FormatTest;
+import buri.ddmsence.ddms.metacard.MetacardInfoTest;
 import buri.ddmsence.ddms.resource.Contributor;
 import buri.ddmsence.ddms.resource.ContributorTest;
 import buri.ddmsence.ddms.resource.Creator;
@@ -132,8 +133,10 @@ public class ResourceTest extends AbstractComponentTestCase {
 		TEST_TOP_LEVEL_COMPONENTS.add(SubtitleTest.getFixture());
 		TEST_TOP_LEVEL_COMPONENTS.add(TitleTest.getFixture());
 		TEST_TOP_LEVEL_COMPONENTS.add(IdentifierTest.getFixture());
+		TEST_TOP_LEVEL_COMPONENTS.add(MetacardInfoTest.getFixture());
 
 		TEST_NO_OPTIONAL_COMPONENTS = new ArrayList<IDDMSComponent>();
+		TEST_NO_OPTIONAL_COMPONENTS.add(MetacardInfoTest.getFixture());
 		TEST_NO_OPTIONAL_COMPONENTS.add(IdentifierTest.getFixture());
 		TEST_NO_OPTIONAL_COMPONENTS.add(TitleTest.getFixture());
 		TEST_NO_OPTIONAL_COMPONENTS.add(CreatorTest.getFixture());
@@ -339,6 +342,14 @@ public class ResourceTest extends AbstractComponentTestCase {
 			text.append(buildOutput(isHTML, resourcePrefix + ".noticeReason", "noticeReason"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".noticeDate", "2011-09-15"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".unregisteredNoticeType", "unregisteredNoticeType"));
+			text.append(buildOutput(isHTML, "metacardInfo.identifier.qualifier", "URI"));
+			text.append(buildOutput(isHTML, "metacardInfo.identifier.value", "urn:buri:ddmsence:testIdentifier"));
+			text.append(buildOutput(isHTML, "metacardInfo.dates.created", "2003"));
+			text.append(buildOutput(isHTML, "metacardInfo.publisher.entityType", "person"));
+			text.append(buildOutput(isHTML, "metacardInfo.publisher.name", "Brian"));
+			text.append(buildOutput(isHTML, "metacardInfo.publisher.surname", "Uri"));
+			text.append(buildOutput(isHTML, "metacardInfo.classification", "U"));
+			text.append(buildOutput(isHTML, "metacardInfo.ownerProducer", "USA"));
 		}
 		text.append(buildOutput(isHTML, "identifier.qualifier", "URI"));
 		text.append(buildOutput(isHTML, "identifier.value", "urn:buri:ddmsence:testIdentifier"));
@@ -449,6 +460,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 		if (version.isAtLeast("3.0"))
 			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		xml.append(">\n");
+		if (version.isAtLeast("4.0")) {
+			xml.append("\t<ddms:metacardInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+			xml.append("<ddms:identifier ddms:qualifier=\"URI\" ddms:value=\"urn:buri:ddmsence:testIdentifier\" />");
+			xml.append("<ddms:dates ddms:created=\"2003\" />");
+			xml.append("<ddms:publisher><ddms:person><ddms:name>Brian</ddms:name><ddms:surname>Uri</ddms:surname></ddms:person></ddms:publisher>");
+			xml.append("</ddms:metacardInfo>\n");
+		}		
 		xml.append("\t<ddms:identifier ddms:qualifier=\"URI\" ddms:value=\"urn:buri:ddmsence:testIdentifier\" />\n");
 		xml.append("\t<ddms:title ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DDMSence</ddms:title>\n");
 		xml.append("\t<ddms:subtitle ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Version 0.1</ddms:subtitle>\n");
@@ -595,6 +613,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 			// No optional fields
 			Element element = getResourceWithoutBodyElement();
+			if (version.isAtLeast("4.0"))
+				element.appendChild(MetacardInfoTest.getFixture().getXOMElementCopy());	
 			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
 			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
@@ -605,6 +625,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			// More than 1 subjectCoverage
 			if (version.isAtLeast("4.0")) {
 				element = getResourceWithoutBodyElement();
+				element.appendChild(MetacardInfoTest.getFixture().getXOMElementCopy());
 				element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
 				element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 				element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
@@ -1293,11 +1314,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 
 	public void testExtensibleElementElementConstructor() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			createComponents();
 
 			ExtensibleElement component = new ExtensibleElement(ExtensibleElementTest.getFixtureElement());
 			Element element = getResourceWithoutBodyElement();
+			if (version.isAtLeast("4.0"))
+				element.appendChild(MetacardInfoTest.getFixture().getXOMElementCopy());
 			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
 			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
