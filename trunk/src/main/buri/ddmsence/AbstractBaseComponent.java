@@ -301,8 +301,9 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	/**
 	 * Test for logical equality.
 	 * 
-	 * <p> The base case tests against the name value and namespaceURI. Extending classes may require additional rules
-	 * for equality. This case automatically includes any nested components or security attributes.</p>
+	 * <p> The base case tests against the name value and namespaceURI, as well as any child components classified as
+	 * "nested components" and any security attributes. Extending classes may require additional rules for equality. 
+	 * This case automatically includes any nested components or security attributes.</p>
 	 * 
 	 * @see Object#equals(Object)
 	 */

@@ -93,9 +93,8 @@ public abstract class AbstractSimpleString extends AbstractBaseComponent {
 		SecurityAttributes attributes, boolean validateNow) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildElement(prefix, name, namespace, value);
-			_securityAttributes = attributes;
-			if (attributes != null)
-				attributes.addTo(element);
+			_securityAttributes = SecurityAttributes.getNonNullInstance(attributes);
+			_securityAttributes.addTo(element);
 			setXOMElement(element, validateNow);
 		}
 		catch (InvalidDDMSException e) {

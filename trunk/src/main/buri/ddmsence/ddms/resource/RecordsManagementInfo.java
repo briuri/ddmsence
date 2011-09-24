@@ -63,7 +63,6 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	 */
 	public RecordsManagementInfo(Element element) throws InvalidDDMSException {
 		try {
-			Util.requireDDMSValue("element", element);
 			setXOMElement(element, false);
 			Element recordKeeper = element.getFirstChildElement(RecordKeeper.getName(getDDMSVersion()), getNamespace());
 			if (recordKeeper != null)
