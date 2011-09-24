@@ -48,7 +48,7 @@
 			</xsd:restriction>
 		</xsd:simpleType>
 	</xsd:attribute>
-
+	<xsd:attribute name="DESVersion" type="xsd:int" fixed="7" />
 	
 	
 	
@@ -726,14 +726,7 @@
 	<!-- ************************************************************* -->
 	<!-- DESVersion          ......................................... -->
 	<!-- ************************************************************* -->
-	<xsd:attribute name="DESVersion" type="xsd:int" fixed="5">
-		<xsd:annotation>
-			<xsd:documentation xml:lang="en">
-				The version number of the DES. Should there be multiple specified in an instance document 
-				the one at the root node is the one that will apply to the entire document.
-			</xsd:documentation>
-		</xsd:annotation>
-	</xsd:attribute>
+
 	
 	<!-- ************************************************************* -->
 	<!-- ISMRootNodeAttributeGroup ................................... -->

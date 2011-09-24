@@ -256,7 +256,9 @@ public class ResourceTest extends AbstractComponentTestCase {
 	private Integer getIsmDESVersion() {
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("3.1"))
 			return (new Integer(2));
-		return (new Integer(5));
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
+			return (new Integer(5));
+		return (new Integer(7));
 	}
 
 	/**
