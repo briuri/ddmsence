@@ -19,6 +19,7 @@
  */
 package buri.ddmsence.ddms.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
@@ -73,6 +74,21 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		return (null);
 	}
 
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static List<TaskingInfo> getFixtureList() {
+		try {
+			List<TaskingInfo> infos = new ArrayList<TaskingInfo>();
+			infos.add(new TaskingInfo(getFixtureElement()));
+			return (infos);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 

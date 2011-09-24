@@ -280,6 +280,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
+			System.out.println(e.getMessage());
 			checkConstructorFailure(expectFailure, e);
 		}
 		return (component);
@@ -712,7 +713,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// At least 1 title
@@ -720,7 +721,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
 			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 description
@@ -731,7 +732,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			element.appendChild(DescriptionTest.getFixture().getXOMElementCopy());
 			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 dates
@@ -742,7 +743,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			element.appendChild(DatesTest.getFixture().getXOMElementCopy());
 			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 rights
@@ -753,7 +754,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			element.appendChild(RightsTest.getFixture().getXOMElementCopy());
 			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 formats
@@ -764,7 +765,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			element.appendChild(FormatTest.getFixture().getXOMElementCopy());
 			element.appendChild(FormatTest.getFixture().getXOMElementCopy());
 			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// At least 1 subjectCoverage
@@ -772,7 +773,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
 			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// No more than 1 subjectCoverage
@@ -783,7 +784,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 				element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 				element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
 				element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-				element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+				element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 				testConstructor(WILL_FAIL, element);
 			}
 
@@ -801,8 +802,8 @@ public class ResourceTest extends AbstractComponentTestCase {
 			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
 			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
+			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 
 			// No top level components
@@ -1038,7 +1039,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 			element.appendChild(creator.getXOMElementCopy());
 			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
 	}
@@ -1078,7 +1079,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
 			element.appendChild(creator.getXOMElementCopy());
 			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			element.appendChild(CreatorTest.getFixture().getXOMElementCopy());
+			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
 			testConstructor(WILL_FAIL, element);
 		}
 	}

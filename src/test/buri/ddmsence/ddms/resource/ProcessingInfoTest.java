@@ -19,6 +19,9 @@
  */
 package buri.ddmsence.ddms.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -44,7 +47,29 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		super("processingInfo.xml");
 		removeSupportedVersions("2.0 3.0 3.1");
 	}
-
+	
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static ProcessingInfo getFixture() {
+		try {
+			return (new ProcessingInfo(TEST_VALUE, TEST_DATE_PROCESSED, SecurityAttributesTest.getFixture()));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static List<ProcessingInfo> getFixtureList() {
+		List<ProcessingInfo> infos = new ArrayList<ProcessingInfo>();
+		infos.add(getFixture());
+		return (infos);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 

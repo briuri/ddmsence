@@ -58,14 +58,27 @@ public class RevisionRecallTest extends AbstractComponentTestCase {
 	/**
 	 * Returns a fixture object for testing.
 	 */
-	public Element getTextFixtureElement() {
+	public static Element getTextFixtureElement() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		Element element = new Element(getValidElement(version.getVersion()));
+		Element element = new Element(new RevisionRecallTest().getValidElement(version.getVersion()));
 		element.removeChildren();
 		element.appendChild(TEST_VALUE);
 		return (element);
 	}
 
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static RevisionRecall getTextFixture() {
+		try {
+			return (new RevisionRecall(getTextFixtureElement()));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
