@@ -47,6 +47,24 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 	/**
 	 * Returns a fixture object for testing.
+	 * 
+	 * @param order an order value for a nonstate actor inside
+	 */
+	public static SubjectCoverage getFixture(int order) {
+		try {
+			List<NonStateActor> actors = new ArrayList<NonStateActor>();
+			actors.add(NonStateActorTest.getFixture(order));
+			return (new SubjectCoverage(KeywordTest.getFixtureList(), null, null, DDMSVersion.getCurrentVersion()
+				.isAtLeast("4.0") ? actors : null, null));
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
+	 * Returns a fixture object for testing.
 	 */
 	public static SubjectCoverage getFixture() {
 		try {

@@ -52,6 +52,23 @@ public class GeospatialCoverageTest extends AbstractComponentTestCase {
 
 	/**
 	 * Returns a fixture object for testing.
+	 * 
+	 * @param a fixed order value
+	 */
+	public static GeospatialCoverage getFixture(int order) {
+		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			return (new GeospatialCoverage(null, null, new BoundingGeometry(null, PointTest.getFixtureList()), null, null, 
+				null, version.isAtLeast("4.0") ? new Integer(order) : null, null));				
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
+	 * Returns a fixture object for testing.
 	 */
 	public static GeospatialCoverage getFixture() {
 		try {
