@@ -108,7 +108,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		xml.append("\t<ddms:recordKeeper>\n");
 		xml.append("\t\t<ddms:recordKeeperID>#289-99202.9</ddms:recordKeeperID>\n");
 		xml.append("\t\t<ddms:organization>\n");
-		xml.append("\t\t\t<ddms:name>Name</ddms:name>\n");
+		xml.append("\t\t\t<ddms:name>DISA</ddms:name>\n");
 		xml.append("\t\t</ddms:organization>\n");
 		xml.append("\t</ddms:recordKeeper>\n");
 		xml.append("\t<ddms:applicationSoftware ").append(getXmlnsISM());

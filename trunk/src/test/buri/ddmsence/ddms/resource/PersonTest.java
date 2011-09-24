@@ -61,14 +61,14 @@ public class PersonTest extends AbstractComponentTestCase {
 	 */
 	public static Person getFixture() {
 		try {
-			return (new Person(Util.getXsListAsList("Name"), TEST_SURNAME, null, null, null, null, null));
+			return (new Person(Util.getXsListAsList("Brian"), TEST_SURNAME, null, null, null, null, null));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
-	
+		
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 

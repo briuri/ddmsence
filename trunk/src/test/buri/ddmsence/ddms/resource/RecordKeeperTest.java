@@ -38,7 +38,7 @@ import buri.ddmsence.util.Util;
 public class RecordKeeperTest extends AbstractComponentTestCase {
 
 	private static final String TEST_ID = "#289-99202.9";
-	private static final String TEST_NAME = "Name";
+	private static final String TEST_NAME = "DISA";
 
 	/**
 	 * Constructor
@@ -230,7 +230,7 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 			RecordKeeper dataComponent = testConstructor(WILL_SUCCEED, "newID", OrganizationTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_ID, new Organization(Util.getXsListAsList("DISA"), null,
+			dataComponent = testConstructor(WILL_SUCCEED, TEST_ID, new Organization(Util.getXsListAsList("DARPA"), null,
 				null, null, null));
 			assertFalse(elementComponent.equals(dataComponent));
 		}

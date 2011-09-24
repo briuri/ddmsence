@@ -47,17 +47,9 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	 * Returns a fixture object for testing. organization to act as an entity
 	 */
 	private IRoleEntity getEntityFixture() {
-		try {
-			if ("2.0".equals(DDMSVersion.getCurrentVersion().getVersion()))
-				return (new Service(Util.getXsListAsList("https://metadata.dod.mil/ebxmlquery/soap"), Util
-					.getXsListAsList("703-882-1000"), Util.getXsListAsList("ddms@fgm.com")));
-			return (new Unknown(Util.getXsListAsList("UnknownEntity"), Util.getXsListAsList("703-882-1000"), Util
-				.getXsListAsList("ddms@fgm.com")));
-		}
-		catch (InvalidDDMSException e) {
-			fail("Could not create fixture: " + e.getMessage());
-		}
-		return (null);
+		if ("2.0".equals(DDMSVersion.getCurrentVersion().getVersion()))
+			return (ServiceTest.getFixture());
+		return (UnknownTest.getFixture());
 	}
 	
 	/**

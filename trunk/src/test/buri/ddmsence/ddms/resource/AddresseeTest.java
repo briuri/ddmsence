@@ -133,7 +133,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "addressee.entityType", "organization"));
-		text.append(buildOutput(isHTML, "addressee.name", "Name"));
+		text.append(buildOutput(isHTML, "addressee.name", "DISA"));
 		text.append(buildOutput(isHTML, "addressee.classification", "U"));
 		text.append(buildOutput(isHTML, "addressee.ownerProducer", "USA"));
 		return (text.toString());
@@ -146,7 +146,7 @@ public class AddresseeTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:addressee ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ddms:organization><ddms:name>Name</ddms:name></ddms:organization>");
+		xml.append("<ddms:organization><ddms:name>DISA</ddms:name></ddms:organization>");
 		xml.append("</ddms:addressee>");
 		return (xml.toString());
 	}
