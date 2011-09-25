@@ -193,8 +193,8 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		// Should be reviewed as additional versions of DDMS are supported.
 		DDMSVersion version = getDDMSVersion();
 		ISMVocabulary.setDDMSVersion(version);
-//		if (!Util.isEmpty(getNoticeType()))
-//			validateEnumeration(ISMVocabulary.CVE_NOTICE_TYPE, getNoticeType());
+		if (version.isAtLeast("4.0") && !Util.isEmpty(getNoticeType()))
+			validateEnumeration(ISMVocabulary.CVE_NOTICE_TYPE, getNoticeType());
 		if (!Util.isEmpty(getNoticeReason()) && getNoticeReason().length() > MAX_LENGTH)
 			throw new InvalidDDMSException("The noticeReason attribute must be shorted than " + MAX_LENGTH
 				+ " characters.");

@@ -25,8 +25,10 @@ import java.util.List;
 
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
+import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 
 /**
  * Top-level base class for attribute groups, such as {@link SecurityAttributes}.
@@ -105,6 +107,28 @@ public abstract class AbstractAttributeGroup {
 		return (_warnings);
 	}	
 
+
+	/**
+	 * Helper method to validate a value from a controlled vocabulary. This is the delegate that handles whether a bad
+	 * validation should result in a warning or error, based on the configurable property,
+	 * "icism.cve.validationAsErrors".
+	 * 
+	 * @param enumerationKey the key of the enumeration
+	 * @param value the test value
+	 * @throws InvalidDDMSException if the value is not and validation should result in errors
+	 */
+	protected void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
+		boolean validationAsErrors = Boolean.valueOf(PropertyReader.getProperty("ism.cve.validationAsErrors"))
+			.booleanValue();
+		if (!ISMVocabulary.enumContains(enumerationKey, value)) {
+			String message = ISMVocabulary.getInvalidMessage(enumerationKey, value);
+			if (validationAsErrors)
+				throw new InvalidDDMSException(message);
+			else
+				getWarnings().add(ValidationMessage.newWarning(message, null));
+		}
+	}
+	
 	/**
 	 * Outputs to HTML or Text with a prefix at the beginning of each meta tag or line.
 	 * 
