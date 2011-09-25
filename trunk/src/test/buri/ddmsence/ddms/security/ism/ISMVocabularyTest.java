@@ -43,7 +43,7 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 			fail("Allowed invalid key.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "No controlled vocabulary could be found for this key: unknownKey");
 		}
 	}
 
