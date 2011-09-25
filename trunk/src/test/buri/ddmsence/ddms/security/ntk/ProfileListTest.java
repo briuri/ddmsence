@@ -62,12 +62,13 @@ public class ProfileListTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private ProfileList testConstructor(boolean expectFailure, Element element) {
+	private ProfileList getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		ProfileList component = null;
 		try {
 			component = new ProfileList(element);
@@ -75,6 +76,7 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -82,10 +84,11 @@ public class ProfileListTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param profiles the profiles in this list (required)
 	 */
-	private ProfileList testConstructor(boolean expectFailure, List<Profile> profiles) {
+	private ProfileList getInstance(String message, List<Profile> profiles) {
+		boolean expectFailure = !Util.isEmpty(message);
 		ProfileList component = null;
 		try {
 			component = new ProfileList(profiles, SecurityAttributesTest.getFixture());
@@ -93,6 +96,7 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -129,9 +133,9 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
 				ProfileList.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -140,7 +144,7 @@ public class ProfileListTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 		}
 	}
 
@@ -149,7 +153,7 @@ public class ProfileListTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, ProfileTest.getFixtureList());
+			getInstance(SUCCESS, ProfileTest.getFixtureList());
 		}
 	}
 
@@ -162,13 +166,13 @@ public class ProfileListTest extends AbstractComponentTestCase {
 			Element element = Util.buildElement(ntkPrefix, ProfileList.getName(version), version.getNtkNamespace(),
 				null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
+			getInstance("At least one profile is required.", element);
 
 			// Missing security attributes
 			element = Util.buildElement(ntkPrefix, ProfileList.getName(version), version.getNtkNamespace(), null);
 			for (Profile profile : ProfileTest.getFixtureList())
 				element.appendChild(profile.getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("classification is required.", element);
 		}
 	}
 
@@ -177,7 +181,7 @@ public class ProfileListTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing profile
-			testConstructor(WILL_FAIL, (List) null);
+			getInstance("At least one profile is required.", (List) null);
 
 			// Missing security attributes
 			try {
@@ -185,7 +189,7 @@ public class ProfileListTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}
@@ -195,7 +199,7 @@ public class ProfileListTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			ProfileList component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProfileList component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -204,8 +208,8 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProfileList elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			ProfileList dataComponent = testConstructor(WILL_SUCCEED, ProfileTest.getFixtureList());
+			ProfileList elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			ProfileList dataComponent = getInstance(SUCCESS, ProfileTest.getFixtureList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -215,12 +219,12 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProfileList elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProfileList elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			List<Profile> profiles = ProfileTest.getFixtureList();
 			List<ProfileValue> valueList = new ArrayList<ProfileValue>();
 			valueList.add(ProfileValueTest.getFixture("profile2"));
 			profiles.add(new Profile(SystemNameTest.getFixture(), valueList, SecurityAttributesTest.getFixture()));
-			ProfileList dataComponent = testConstructor(WILL_SUCCEED, profiles);
+			ProfileList dataComponent = getInstance(SUCCESS, profiles);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -229,11 +233,11 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProfileList component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProfileList component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, ProfileTest.getFixtureList());
+			component = getInstance(SUCCESS, ProfileTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -243,10 +247,10 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProfileList component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProfileList component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, ProfileTest.getFixtureList());
+			component = getInstance(SUCCESS, ProfileTest.getFixtureList());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -255,7 +259,7 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProfileList component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProfileList component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			ProfileList.Builder builder = new ProfileList.Builder(component);
@@ -278,7 +282,7 @@ public class ProfileListTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "At least one profile is required.");
 			}
 		}
 	}

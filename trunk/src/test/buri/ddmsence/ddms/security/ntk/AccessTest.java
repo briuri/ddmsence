@@ -62,12 +62,13 @@ public class AccessTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private Access testConstructor(boolean expectFailure, Element element) {
+	private Access getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Access component = null;
 		try {
 			component = new Access(element);
@@ -75,6 +76,7 @@ public class AccessTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -82,13 +84,14 @@ public class AccessTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param individuals the individuals
 	 * @param groups the groups
 	 * @parma profileList the profilesprofiles the profiles in this list (required)
 	 */
-	private Access testConstructor(boolean expectFailure, List<Individual> individuals, List<Group> groups,
+	private Access getInstance(String message, List<Individual> individuals, List<Group> groups,
 		ProfileList profileList) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Access component = null;
 		try {
 			component = new Access(individuals, groups, profileList, SecurityAttributesTest.getFixture());
@@ -96,6 +99,7 @@ public class AccessTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -149,9 +153,9 @@ public class AccessTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, Access
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, Access
 				.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -161,12 +165,12 @@ public class AccessTest extends AbstractComponentTestCase {
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildElement(ntkPrefix, Access.getName(version), version.getNtkNamespace(), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -175,11 +179,11 @@ public class AccessTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), ProfileListTest
+			getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), ProfileListTest
 				.getFixture());
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, null, null, null);
+			getInstance(SUCCESS, null, null, null);
 		}
 	}
 
@@ -190,7 +194,7 @@ public class AccessTest extends AbstractComponentTestCase {
 
 			// Missing security attributes
 			Element element = Util.buildElement(ntkPrefix, Access.getName(version), version.getNtkNamespace(), null);
-			testConstructor(WILL_FAIL, element);
+			getInstance("classification is required.", element);
 		}
 	}
 
@@ -204,7 +208,7 @@ public class AccessTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}
@@ -214,11 +218,11 @@ public class AccessTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			Access component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Access component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty
-			component = testConstructor(WILL_SUCCEED, null, null, null);
+			component = getInstance(SUCCESS, null, null, null);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "An ntk:Access element was found with no individual, group, or profile information.";
 			String locator = "ntk:Access";
@@ -230,8 +234,8 @@ public class AccessTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Access elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Access dataComponent = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest
+			Access elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Access dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest
 				.getFixtureList(), ProfileListTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -242,16 +246,16 @@ public class AccessTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Access elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Access dataComponent = testConstructor(WILL_SUCCEED, null, GroupTest.getFixtureList(), ProfileListTest
+			Access elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Access dataComponent = getInstance(SUCCESS, null, GroupTest.getFixtureList(), ProfileListTest
 				.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), null, ProfileListTest
+			dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), null, ProfileListTest
 				.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
+			dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
 				null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
@@ -261,11 +265,11 @@ public class AccessTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Access component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Access component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
+			component = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
 				ProfileListTest.getFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -276,10 +280,10 @@ public class AccessTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Access component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Access component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
+			component = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
 				ProfileListTest.getFixture());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
@@ -289,7 +293,7 @@ public class AccessTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Access component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Access component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			Access.Builder builder = new Access.Builder(component);
@@ -312,7 +316,7 @@ public class AccessTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "At least 1 ownerProducer must be set.");
 			}
 		}
 	}
