@@ -205,7 +205,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 	<li><a href="builder.uri">DDMS Builder</a>: An experimental tool to build DDMS resources with a form-based UI.</li>
 	<li><a href="validator.uri">DDMS Validator</a>: An experimental tool to validate DDMS resources.</li>
 	<li><a href="relationalTables.jsp">Relational Database Model for DDMS 3.1</a>: A mapping of the DDMS 3.1 specification to relational database tables (database-agnostic).</li>
-	<li><a href="schematron.jsp">Schematron Implementation for DDMS</a>: An attempt to model some of the more complex rules in the DDMS specification with ISO Schematron.</li>
+	<li><a href="schematron.jsp">Schematron Implementation for DDMS 4.0</a>: An attempt to model some of the more complex rules in the DDMS specification with ISO Schematron.</li>
 </ul>
 
 <a name="contributors"></a><h3>Contributors</h3>

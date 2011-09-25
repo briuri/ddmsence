@@ -7,9 +7,9 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 07/16/2011 at 15:32</p>
+<p align="right"><b>Last Update:</b> 09/24/2011</p>
 
-<a name="top"></a><h1>Schematron Implementation for DDMS</h1>
+<a name="top"></a><h1>Schematron Implementation for DDMS 4.0</h1>
 
 <p>This document is an attempt to map some of the more complex DDMS conditions to a Schematron file. Where an XML Schema can be used 
 to validate correctness and syntax, a Schematron file can more easily address rules related to content and dependencies between 
@@ -66,7 +66,7 @@ ensure that the proper Schematron transformation stylesheets are used. The absen
 <h4>Dates Constraints</h4>
 
 <pre class="brush: xml">&lt;iso:pattern id="Dates_Constraints"&gt;
-    &lt;iso:rule context="//ddms:resource/ddms:dates"&gt;
+    &lt;iso:rule context="//ddms:resource//ddms:dates"&gt;
        &lt;iso:report test="count(@*) = 0"&gt;
           The ddms:dates element does not have any date attributes.
        &lt;/iso:report&gt;
@@ -76,7 +76,7 @@ ensure that the proper Schematron transformation stylesheets are used. The absen
 <h4>Extent Constraints</h4>
 
 <pre class="brush: xml">&lt;iso:pattern id="Extent_Constraints"&gt;
-    &lt;iso:rule context="//ddms:resource/ddms:format/ddms:Media/ddms:extent"&gt;
+    &lt;iso:rule context="//ddms:resource/ddms:format/ddms:extent"&gt;
        &lt;iso:assert test="not(@ddms:value) or (@ddms:qualifier and @ddms:value)"&gt;
           If a ddms:extent element has a value, it must also have a qualifier.
        &lt;/iso:assert&gt;
