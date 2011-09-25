@@ -25,6 +25,7 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.resource.RevisionRecall;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.util.DDMSVersion;

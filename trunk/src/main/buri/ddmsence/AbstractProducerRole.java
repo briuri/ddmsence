@@ -262,13 +262,13 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		 */
 		protected IRoleEntity commitSelectedEntity() throws InvalidDDMSException {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			if (Organization.getName(version).equals(getEntityType())) {
+			if (Organization.getName(version).equalsIgnoreCase(getEntityType())) {
 				return (getOrganization().commit());
 			}
-			if (Person.getName(version).equals(getEntityType())) {
+			if (Person.getName(version).equalsIgnoreCase(getEntityType())) {
 				return (getPerson().commit());
 			}
-			if (Service.getName(version).equals(getEntityType())) {
+			if (Service.getName(version).equalsIgnoreCase(getEntityType())) {
 				return (getService().commit());
 			}
 			return (getUnknown().commit());

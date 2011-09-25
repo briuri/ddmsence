@@ -1527,11 +1527,40 @@ public class ResourceTest extends AbstractComponentTestCase {
 		catch (InvalidDDMSException e) {
 			// Good
 		}
-
+		
+		// Adding 3.1-specific fields works
 		builder.setIsmDESVersion(new Integer(5));
 		builder.commit();
 	}
 
+	public void testLoad31Commit40() throws InvalidDDMSException {
+		Resource.Builder builder = new Resource.Builder(new Resource(getValidElement("3.1")));
+
+		// Direct mapping works
+		DDMSVersion.setCurrentVersion("3.1");
+		builder.commit();
+
+		// Transform up to 4.0 fails on 3.1-specific fields
+		DDMSVersion.setCurrentVersion("4.0");
+		try {
+			builder.commit();
+			fail("Builder allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			// Good
+		}
+		
+		// Adding 4.0-specific fields works
+		builder.setNtkDESVersion(new Integer(5));
+		builder.setIsmDESVersion(new Integer(7));
+		builder.getMetacardInfo().getIdentifiers().get(0).setQualifier("qualifier");
+		builder.getMetacardInfo().getIdentifiers().get(0).setValue("value");
+		builder.getMetacardInfo().getDates().setCreated("2011-09-25");
+		builder.getMetacardInfo().getPublishers().get(0).setEntityType("organization");
+		builder.getMetacardInfo().getPublishers().get(0).getOrganization().setNames(Util.getXsListAsList("DISA"));
+		builder.commit();
+	}
+	
 	public void testBuilderEmptiness() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
