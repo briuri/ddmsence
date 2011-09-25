@@ -187,18 +187,19 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	 */
 	private void assertAttributeChangeAffectsEquality(SecurityAttributes expected, String key, String value) {
 		Map<String, String> others = getOtherAttributes(key, value);
-		assertFalse(expected.equals(testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, others)));
+		assertFalse(expected.equals(getInstance(SUCCESS, TEST_CLASS, TEST_OWNERS, others)));
 	}
 
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private SecurityAttributes testConstructor(boolean expectFailure, Element element) {
+	private SecurityAttributes getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		SecurityAttributes attributes = null;
 		try {
 			attributes = new SecurityAttributes(element);
@@ -206,6 +207,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (attributes);
 	}
@@ -213,15 +215,16 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param classification the classification level, which must be a legal classification type (optional)
 	 * @param ownerProducers a list of ownerProducers (optional)
 	 * @param otherAttributes a name/value mapping of other ISM attributes. The value will be a String value, as it
 	 * appears in XML.
 	 * @return a valid object
 	 */
-	private SecurityAttributes testConstructor(boolean expectFailure, String classification,
+	private SecurityAttributes getInstance(String message, String classification,
 		List<String> ownerProducers, Map<String, String> otherAttributes) {
+		boolean expectFailure = !Util.isEmpty(message);
 		SecurityAttributes attributes = null;
 		try {
 			attributes = new SecurityAttributes(classification, ownerProducers, otherAttributes);
@@ -229,6 +232,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (attributes);
 	}
@@ -243,7 +247,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(Security.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			getFullFixture().addTo(element);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 
 			// No optional fields
 			element = Util.buildDDMSElement(Security.getName(version), null);
@@ -251,7 +255,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace, Util
 				.getXsList(TEST_OWNERS));
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -260,13 +264,13 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, getOtherAttributes());
+			getInstance(SUCCESS, TEST_CLASS, TEST_OWNERS, getOtherAttributes());
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, null);
+			getInstance(SUCCESS, TEST_CLASS, TEST_OWNERS, null);
 
 			// Extra fields
-			testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, getOtherAttributes("notAnAttribute", "test"));
+			getInstance(SUCCESS, TEST_CLASS, TEST_OWNERS, getOtherAttributes("notAnAttribute", "test"));
 		}
 	}
 
@@ -283,7 +287,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace, Util
 				.getXsList(TEST_OWNERS));
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.DECLASS_DATE_NAME, icNamespace, "2001");
-			testConstructor(WILL_FAIL, element);
+			getInstance("The declassDate must be in the xs:date format (YYYY-MM-DD).", element);
 
 			// invalid dateOfExemptedSource
 			element = Util.buildDDMSElement(Security.getName(version), null);
@@ -293,28 +297,32 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 				.getXsList(TEST_OWNERS));
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.DECLASS_DATE_NAME, icNamespace, "2001");
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace, "2001");
-			testConstructor(WILL_FAIL, element);
+			String message = (version.isAtLeast("3.1") ? "The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0."
+				: "The dateOfExemptedSource attribute must be in the xs:date format (YYYY-MM-DD).");
+			getInstance(message, element);
 		}
 	}
 
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// invalid declassDate
-			testConstructor(WILL_FAIL, TEST_CLASS, TEST_OWNERS, getOtherAttributes(
+			getInstance("The declassDate must be in the xs:date format (YYYY-MM-DD).", TEST_CLASS, TEST_OWNERS, getOtherAttributes(
 				SecurityAttributes.DECLASS_DATE_NAME, "2004"));
 
 			// nonsensical declassDate
-			testConstructor(WILL_FAIL, TEST_CLASS, TEST_OWNERS, getOtherAttributes(
+			getInstance("The ISM:declassDate attribute is not in a valid date format.", TEST_CLASS, TEST_OWNERS, getOtherAttributes(
 				SecurityAttributes.DECLASS_DATE_NAME, "notAnXmlDate"));
 
 			// invalid dateOfExemptedSource
-			testConstructor(WILL_FAIL, TEST_CLASS, TEST_OWNERS, getOtherAttributes(
+			String message = (version.isAtLeast("3.1") ? "The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0."
+				: "The dateOfExemptedSource attribute must be in the xs:date format (YYYY-MM-DD).");
+			getInstance(message, TEST_CLASS, TEST_OWNERS, getOtherAttributes(
 				SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2004"));
 
 			// nonsensical dateOfExemptedSource
-			testConstructor(WILL_FAIL, TEST_CLASS, TEST_OWNERS, getOtherAttributes(
+			getInstance("The ISM:dateOfExemptedSource attribute is not in a valid date format.", TEST_CLASS, TEST_OWNERS, getOtherAttributes(
 				SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "notAnXmlDate"));
 		}
 	}
@@ -329,7 +337,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Util.addAttribute(element, PropertyReader.getPrefix("ism"), Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace,
 				"true");
 			getFullFixture().addTo(element);
-			SecurityAttributes attr = testConstructor(WILL_SUCCEED, element);
+			SecurityAttributes attr = getInstance(SUCCESS, element);
 			assertEquals(0, attr.getValidationWarnings().size());
 		}
 	}
@@ -343,8 +351,8 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Util.addAttribute(element, PropertyReader.getPrefix("ism"), Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace,
 				"true");
 			getFullFixture().addTo(element);
-			SecurityAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
-			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS,
+			SecurityAttributes elementAttributes = getInstance(SUCCESS, element);
+			SecurityAttributes dataAttributes = getInstance(SUCCESS, TEST_CLASS, TEST_OWNERS,
 				getOtherAttributes());
 
 			assertEquals(elementAttributes, elementAttributes);
@@ -362,11 +370,11 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Util.addAttribute(element, PropertyReader.getPrefix("ism"), Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace,
 				"true");
 			getFullFixture().addTo(element);
-			SecurityAttributes expected = testConstructor(WILL_SUCCEED, element);
+			SecurityAttributes expected = getInstance(SUCCESS, element);
 
 			if (version.isAtLeast("3.1"))
 				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.ATOMIC_ENERGY_MARKINGS_NAME, "FRD");
-			assertFalse(expected.equals(testConstructor(WILL_SUCCEED, "C", TEST_OWNERS, getOtherAttributes()))); // Classification
+			assertFalse(expected.equals(getInstance(SUCCESS, "C", TEST_OWNERS, getOtherAttributes()))); // Classification
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.CLASSIFIED_BY_NAME, DIFFERENT_VALUE);
 			if (version.isAtLeast("3.0"))
 				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.COMPILATION_REASON_NAME,
@@ -392,7 +400,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.NON_IC_MARKINGS_NAME, "SBU");
 			if (version.isAtLeast("3.1"))
 				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.NON_US_CONTROLS_NAME, "BALK");
-			assertFalse(expected.equals(testConstructor(WILL_SUCCEED, TEST_CLASS, Util.getXsListAsList("AUS"),
+			assertFalse(expected.equals(getInstance(SUCCESS, TEST_CLASS, Util.getXsListAsList("AUS"),
 				getOtherAttributes()))); // OwnerProducer
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.RELEASABLE_TO_NAME, "BGR");
 			assertAttributeChangeAffectsEquality(expected, SecurityAttributes.SAR_IDENTIFIER_NAME, "SAR-AIA");
@@ -413,14 +421,14 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 
 	public void testWrongVersionAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
-		SecurityAttributes attr = testConstructor(WILL_SUCCEED, TEST_CLASS, TEST_OWNERS, getOtherAttributes());
+		SecurityAttributes attr = getInstance(SUCCESS, TEST_CLASS, TEST_OWNERS, getOtherAttributes());
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
 			new Title("Wrong Version Title", attr);
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "These attributes cannot decorate a component with a different DDMS version.");
 		}
 	}
 
@@ -432,7 +440,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed 3.0 attributes in 3.1.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "The typeOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0.");
 		}
 
 		others = getOtherAttributes(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2010-01-01");
@@ -441,7 +449,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed 3.0 attributes in 3.1.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0.");
 		}
 	}
 
@@ -453,7 +461,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed 3.1 attributes in 3.0.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "The atomicEnergyMarkings attribute cannot be used until DDMS 3.1 or later.");
 		}
 
 		others = getOtherAttributes(SecurityAttributes.COMPLIES_WITH_NAME, "ICD-710");
@@ -462,7 +470,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed 3.1 attributes in 3.0.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "The compliesWith attribute cannot be used until DDMS 3.1 or later.");
 		}
 
 		others = getOtherAttributes(SecurityAttributes.DISPLAY_ONLY_TO_NAME, "AIA");
@@ -471,7 +479,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed 3.1 attributes in 3.0.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "The displayOnlyTo attribute cannot be used until DDMS 3.1 or later.");
 		}
 
 		others = getOtherAttributes(SecurityAttributes.NON_US_CONTROLS_NAME, "ATOMAL");
@@ -480,7 +488,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed 3.1 attributes in 3.0.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "The nonUSControls attribute cannot be used until DDMS 3.1 or later.");
 		}
 	}
 
@@ -490,42 +498,42 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Map<String, String> others = getOtherAttributes();
 
 			// Missing classification
-			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, null, TEST_OWNERS, others);
+			SecurityAttributes dataAttributes = getInstance(SUCCESS, null, TEST_OWNERS, others);
 			try {
 				dataAttributes.requireClassification();
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "classification is required.");
 			}
 
 			// Empty classification
-			dataAttributes = testConstructor(WILL_SUCCEED, "", TEST_OWNERS, others);
+			dataAttributes = getInstance(SUCCESS, "", TEST_OWNERS, others);
 			try {
 				dataAttributes.requireClassification();
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "classification is required.");
 			}
 
 			// Invalid classification
-			testConstructor(WILL_FAIL, "ZOO", TEST_OWNERS, others);
+			getInstance("ZOO is not a valid enumeration token for this attribute, as specified in CVEnumISMClassificationAll.xml.", "ZOO", TEST_OWNERS, others);
 
 			// No ownerProducers
-			dataAttributes = testConstructor(WILL_SUCCEED, TEST_CLASS, null, others);
+			dataAttributes = getInstance(SUCCESS, TEST_CLASS, null, others);
 			try {
 				dataAttributes.requireClassification();
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "At least 1 ownerProducer must be set.");
 			}
 
 			// No non-empty ownerProducers
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("");
-			dataAttributes = testConstructor(WILL_FAIL, TEST_CLASS, ownerProducers, others);
+			dataAttributes = getInstance(" is not a valid enumeration token for this attribute, as specified in CVEnumISMOwnerProducer.xml.", TEST_CLASS, ownerProducers, others);
 		}
 	}
 
@@ -534,14 +542,14 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			Map<String, String> others = new HashMap<String, String>();
 			others.put(SecurityAttributes.DECLASS_DATE_NAME, "2005-10-10");
-			SecurityAttributes dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
+			SecurityAttributes dataAttributes = getInstance(SUCCESS, null, null, others);
 			assertEquals(buildOutput(true, "declassDate", "2005-10-10"), dataAttributes.getOutput(true, ""));
 			assertEquals(buildOutput(false, "declassDate", "2005-10-10"), dataAttributes.getOutput(false, ""));
 
 			if (!version.isAtLeast("3.1")) {
 				others = new HashMap<String, String>();
 				others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-10");
-				dataAttributes = testConstructor(WILL_SUCCEED, null, null, others);
+				dataAttributes = getInstance(SUCCESS, null, null, others);
 				assertEquals(buildOutput(true, "dateOfExemptedSource", "2005-10-10"), dataAttributes
 					.getOutput(true, ""));
 				assertEquals(buildOutput(false, "dateOfExemptedSource", "2005-10-10"), dataAttributes.getOutput(false,
@@ -552,11 +560,11 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 
 	public void testOldClassifications() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
-		testConstructor(WILL_SUCCEED, "NS-S", TEST_OWNERS, null);
-		testConstructor(WILL_SUCCEED, "NS-A", TEST_OWNERS, null);
+		getInstance(SUCCESS, "NS-S", TEST_OWNERS, null);
+		getInstance(SUCCESS, "NS-A", TEST_OWNERS, null);
 		DDMSVersion.setCurrentVersion("3.0");
-		testConstructor(WILL_FAIL, "NS-S", TEST_OWNERS, null);
-		testConstructor(WILL_FAIL, "NS-A", TEST_OWNERS, null);
+		getInstance("NS-S is not a valid enumeration token for this attribute, as specified in CVEnumISMClassificationAll.xml.", "NS-S", TEST_OWNERS, null);
+		getInstance("NS-A is not a valid enumeration token for this attribute, as specified in CVEnumISMClassificationAll.xml.", "NS-A", TEST_OWNERS, null);
 	}
 
 	public void test30AttributesIn20() throws InvalidDDMSException {
@@ -568,7 +576,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed DDMS 3.0 attributes to be used in DDMS 2.0.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "The compilationReason attribute cannot be used until DDMS 3.0 or later.");
 		}
 	}
 
@@ -581,7 +589,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed DDMS 2.0 attributes to be used in DDMS 3.0.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "The declassManualReview attribute can only be used in DDMS 2.0.");
 		}
 
 		DDMSVersion.setCurrentVersion("2.0");
@@ -660,7 +668,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "SuperSecret is not a valid enumeration token for this attribute, as specified in CVEnumISMClassificationAll.xml.");
 			}
 		}
 	}

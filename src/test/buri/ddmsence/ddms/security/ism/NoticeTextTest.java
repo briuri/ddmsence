@@ -90,12 +90,13 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private NoticeText testConstructor(boolean expectFailure, Element element) {
+	private NoticeText getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		NoticeText component = null;
 		try {
 			component = new NoticeText(element);
@@ -103,6 +104,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -110,12 +112,13 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param value the value (optional)
 	 * @param pocTypes the poc types (optional)
 	 * @return a valid object
 	 */
-	private NoticeText testConstructor(boolean expectFailure, String value, List<String> pocTypes) {
+	private NoticeText getInstance(String message, String value, List<String> pocTypes) {
+		boolean expectFailure = !Util.isEmpty(message);
 		NoticeText component = null;
 		try {
 			component = new NoticeText(value, pocTypes, SecurityAttributesTest.getFixture());
@@ -123,6 +126,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -154,9 +158,9 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_ISM_PREFIX, NoticeText
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_ISM_PREFIX, NoticeText
 				.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -166,13 +170,13 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			String ismPrefix = PropertyReader.getPrefix("ism");
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getFixtureElement());
+			getInstance(SUCCESS, getFixtureElement());
 
 			// No optional fields
 			Element element = Util
 				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -181,10 +185,10 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_POC_TYPES);
+			getInstance(SUCCESS, TEST_VALUE, TEST_POC_TYPES);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, null, null);
+			getInstance(SUCCESS, null, null);
 		}
 	}
 
@@ -197,12 +201,12 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			Element element = Util
 				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "Unknown");
-			testConstructor(WILL_FAIL, element);
+			getInstance("Unknown is not a valid enumeration token for this attribute, as specified in CVEnumISMPocType.xml.", element);
 
 			// Partial Invalid POCType
 			element = Util.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "ABC Unknown");
-			testConstructor(WILL_FAIL, element);
+			getInstance("Unknown is not a valid enumeration token for this attribute, as specified in CVEnumISMPocType.xml.", element);
 		}
 	}
 
@@ -211,10 +215,10 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Invalid POCType
-			testConstructor(WILL_FAIL, TEST_VALUE, Util.getXsListAsList("Unknown"));
+			getInstance("Unknown is not a valid enumeration token for this attribute, as specified in CVEnumISMPocType.xml.", TEST_VALUE, Util.getXsListAsList("Unknown"));
 			
 			// Partial Invalid POCType
-			testConstructor(WILL_FAIL, TEST_VALUE, Util.getXsListAsList("ABC Unknown"));
+			getInstance("Unknown is not a valid enumeration token for this attribute, as specified in CVEnumISMPocType.xml.", TEST_VALUE, Util.getXsListAsList("ABC Unknown"));
 		}
 	}
 
@@ -224,14 +228,14 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			String ismPrefix = PropertyReader.getPrefix("ism");
 
 			// No warnings
-			NoticeText component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeText component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty value
 			Element element = Util
 				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			component = testConstructor(WILL_SUCCEED, element);
+			component = getInstance(SUCCESS, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "An ISM:NoticeText element was found with no value.";
 			String locator = "ISM:NoticeText";
@@ -239,7 +243,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			
 			// Invalid POCType with CVEAsWarnings
 			PropertyReader.setProperty("ism.cve.validationAsErrors", "false");
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, Util.getXsListAsList("Unknown"));
+			component = getInstance(SUCCESS, TEST_VALUE, Util.getXsListAsList("Unknown"));
 			assertEquals(1, component.getValidationWarnings().size());
 			text = "Unknown is not a valid enumeration token for this attribute, as specified in CVEnumISMPocType.xml.";
 			locator = "ISM:NoticeText";
@@ -251,8 +255,8 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeText elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			NoticeText dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_POC_TYPES);
+			NoticeText elementComponent = getInstance(SUCCESS, getFixtureElement());
+			NoticeText dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_POC_TYPES);
 
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -263,11 +267,11 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeText elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			NoticeText dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_POC_TYPES);
+			NoticeText elementComponent = getInstance(SUCCESS, getFixtureElement());
+			NoticeText dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_POC_TYPES);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, null);
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -276,11 +280,11 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeText component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeText component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_POC_TYPES);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_POC_TYPES);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -290,10 +294,10 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeText component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeText component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_POC_TYPES);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_POC_TYPES);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -305,7 +309,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "The ddms:NoticeText element cannot be used until DDMS 4.0 or later.");
 		}
 	}
 
@@ -313,7 +317,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeText component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeText component = getInstance(SUCCESS, getFixtureElement());
 
 			NoticeText.Builder builder = new NoticeText.Builder();
 			assertNull(builder.commit());
