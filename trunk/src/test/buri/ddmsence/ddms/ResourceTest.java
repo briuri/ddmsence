@@ -340,7 +340,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 			text.append(buildOutput(isHTML, resourcePrefix + ".ownerProducer", "USA"));
 		}
 		if (version.isAtLeast("4.0")) {
-			text.append(buildOutput(isHTML, resourcePrefix + ".noticeType", "noticeType"));
+			text.append(buildOutput(isHTML, resourcePrefix + ".noticeType", "ABC"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".noticeReason", "noticeReason"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".noticeDate", "2011-09-15"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".unregisteredNoticeType", "unregisteredNoticeType"));
@@ -458,7 +458,7 @@ public class ResourceTest extends AbstractComponentTestCase {
 		if (version.isAtLeast("3.0"))
 			xml.append(" ISM:createDate=\"2010-01-21\"");
 		if (version.isAtLeast("4.0"))
-			xml.append(" ISM:noticeType=\"noticeType\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
+			xml.append(" ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
 		if (version.isAtLeast("3.0"))
 			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		xml.append(">\n");

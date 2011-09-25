@@ -59,7 +59,7 @@ import buri.ddmsence.util.Util;
  * <p>
  * Token values are read from the CVEnumISM.xml files accompanying the "XML Data Encoding Specification for Information
  * Security Marking Metadata". They can then be used to validate the contents of the attributes
- * in a {@link SecurityAttributes} instance.
+ * in a {@link SecurityAttributes} or {@link NoticeAttributes} instance.
  * </p>
  * 
  * <ul>
@@ -74,6 +74,7 @@ import buri.ddmsence.util.Util;
  * <li>CVEnumISMFGIProtected.xml: tokens allowed in the "FGIsourceProtected" attribute</li>
  * <li>CVEnumISMNonIC.xml: tokens allowed in the "nonICmarkings" attribute</li>
  * <li>CVEnumISMNonUSControls.xml: tokens allowed in the "nonUSControls" attribute (starting in DDMS 3.1)</li>
+ * <li>CVEnumISMNotice.xml: tokens allowed in the "noticeType" attribute (starting in DDMS 4.0)</li>
  * <li>CVEnumISMOwnerProducer.xml: tokens allowed in the "ownerProducer" attribute</li>
  * <li>CVEnumISMRelTo.xml: tokens allowed in the "displayOnlyTo" (starting in DDMS 3.1) and "releasableTo" attribute</li>
  * <li>CVEnumISMSAR.xml: tokens allowed in the "SARIdentifier" attribute</li>
@@ -124,6 +125,9 @@ public class ISMVocabulary {
 	/** Filename for the enumerations allowed in a nonUSControls attribute */
 	public static final String CVE_NON_US_CONTROLS = "CVEnumISMNonUSControls.xml";
 	
+	/** Filename for the enumerations allowed in a noticeType attribute */
+	public static final String CVE_NOTICE_TYPE = "CVEnumISMNotice.xml";
+	
 	/** Filename for the enumerations allowed in an ownerProducer attribute */
 	public static final String CVE_OWNER_PRODUCERS = "CVEnumISMOwnerProducer.xml";
 	
@@ -164,6 +168,7 @@ public class ISMVocabulary {
 		ALL_ENUMS.add(CVE_FGI_SOURCE_PROTECTED);
 		ALL_ENUMS.add(CVE_NON_IC_MARKINGS);
 		ALL_ENUMS.add(CVE_NON_US_CONTROLS);
+		ALL_ENUMS.add(CVE_NOTICE_TYPE);
 		ALL_ENUMS.add(CVE_OWNER_PRODUCERS);
 		ALL_ENUMS.add(CVE_RELEASABLE_TO);
 		ALL_ENUMS.add(CVE_SAR_IDENTIFIER);

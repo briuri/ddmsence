@@ -37,7 +37,7 @@ import buri.ddmsence.util.Util;
  */
 public class NoticeAttributesTest extends AbstractComponentTestCase {
 
-	private static final String TEST_NOTICE_TYPE = "noticeType";
+	private static final String TEST_NOTICE_TYPE = "ABC";
 	private static final String TEST_NOTICE_REASON = "noticeReason";
 	private static final String TEST_NOTICE_DATE = "2011-09-15";
 	private static final String TEST_UNREGISTERED_NOTICE_TYPE = "unregisteredNoticeType";
@@ -142,10 +142,12 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 			String icNamespace = version.getIsmNamespace();
 
 			// invalid noticeType
-			// TBD
+			Element element = Util.buildDDMSElement(Resource.getName(version), null);
+			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_TYPE_NAME, icNamespace, "Unknown");
+			testConstructor(WILL_FAIL, element);
 
 			// invalid noticeDate
-			Element element = Util.buildDDMSElement(Resource.getName(version), null);
+			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_DATE_NAME, icNamespace, "2001");
 			testConstructor(WILL_FAIL, element);
 
@@ -173,7 +175,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// invalid noticeType
-			// TBD
+			testConstructor(WILL_FAIL, "Unknown", TEST_NOTICE_REASON, "2001", TEST_UNREGISTERED_NOTICE_TYPE);
 
 			// horribly invalid noticeDate
 			testConstructor(WILL_FAIL, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, "baboon", TEST_UNREGISTERED_NOTICE_TYPE);
@@ -235,7 +237,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 			getFixture().addTo(element);
 			NoticeAttributes expected = testConstructor(WILL_SUCCEED, element);
 
-			NoticeAttributes test = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_NOTICE_REASON,
+			NoticeAttributes test = testConstructor(WILL_SUCCEED, "DEF", TEST_NOTICE_REASON,
 				TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
 			assertFalse(expected.equals(test));
 

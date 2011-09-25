@@ -37,7 +37,6 @@ import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
-import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
@@ -511,27 +510,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			}
 		}
 		super.validate();
-	}
-
-	/**
-	 * Helper method to validate a value from a controlled vocabulary. This is the delegate that handles whether a bad
-	 * validation should result in a warning or error, based on the configurable property,
-	 * "icism.cve.validationAsErrors".
-	 * 
-	 * @param enumerationKey the key of the enumeration
-	 * @param value the test value
-	 * @throws InvalidDDMSException if the value is not and validation should result in errors
-	 */
-	private void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
-		boolean validationAsErrors = Boolean.valueOf(PropertyReader.getProperty("ism.cve.validationAsErrors"))
-			.booleanValue();
-		if (!ISMVocabulary.enumContains(enumerationKey, value)) {
-			String message = ISMVocabulary.getInvalidMessage(enumerationKey, value);
-			if (validationAsErrors)
-				throw new InvalidDDMSException(message);
-			else
-				getWarnings().add(ValidationMessage.newWarning(message, null));
-		}
 	}
 
 	/**

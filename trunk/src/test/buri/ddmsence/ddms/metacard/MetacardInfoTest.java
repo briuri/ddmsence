@@ -188,7 +188,7 @@ public class MetacardInfoTest extends AbstractComponentTestCase {
 		xml.append("<ddms:applicationSoftware ISM:classification=\"U\" ISM:ownerProducer=\"USA\">IRM Generator 2L-9</ddms:applicationSoftware>");
 		xml.append("</ddms:recordsManagementInfo>");
 		xml.append("<ddms:noticeList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ISM:Notice ISM:noticeType=\"noticeType\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
+		xml.append("<ISM:Notice ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
 		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>");
 		xml.append("</ISM:Notice></ddms:noticeList></ddms:metacardInfo>");
