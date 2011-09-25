@@ -65,7 +65,8 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	 * @param element the element to build from
 	 * @return a valid object
 	 */
-	private VirtualCoverage testConstructor(boolean expectFailure, Element element) {
+	private VirtualCoverage getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		VirtualCoverage component = null;
 		try {
 			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
@@ -75,6 +76,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -82,12 +84,13 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param address the virtual address (optional)
 	 * @param protocol the network protocol (optional, should be used if address is provided)
 	 * @return a valid object
 	 */
-	private VirtualCoverage testConstructor(boolean expectFailure, String address, String protocol) {
+	private VirtualCoverage getInstance(String message, String address, String protocol) {
+		boolean expectFailure = !Util.isEmpty(message);
 		VirtualCoverage component = null;
 		try {
 			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) ? null
@@ -97,6 +100,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -135,9 +139,9 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				VirtualCoverage.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -145,11 +149,11 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(VirtualCoverage.getName(version), null);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -157,10 +161,10 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_ADDRESS, TEST_PROTOCOL);
+			getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, null, null);
+			getInstance(SUCCESS, null, null);
 		}
 	}
 
@@ -170,7 +174,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 			// address without protocol
 			Element element = Util.buildDDMSElement(VirtualCoverage.getName(version), null);
 			Util.addDDMSAttribute(element, "address", TEST_ADDRESS);
-			testConstructor(WILL_FAIL, element);
+			getInstance("protocol is required.", element);
 		}
 	}
 
@@ -178,7 +182,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// address without protocol		
-			testConstructor(WILL_FAIL, TEST_ADDRESS, null);
+			getInstance("protocol is required.", TEST_ADDRESS, null);
 		}
 	}
 
@@ -186,12 +190,12 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			VirtualCoverage component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			VirtualCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty element
 			Element element = Util.buildDDMSElement(VirtualCoverage.getName(version), null);
-			component = testConstructor(WILL_SUCCEED, element);
+			component = getInstance(SUCCESS, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A completely empty ddms:virtualCoverage element was found.";
 			String locator = "ddms:virtualCoverage";
@@ -202,8 +206,8 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			VirtualCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			VirtualCoverage dataComponent = testConstructor(WILL_SUCCEED, TEST_ADDRESS, TEST_PROTOCOL);
+			VirtualCoverage elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			VirtualCoverage dataComponent = getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -212,11 +216,11 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			VirtualCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			VirtualCoverage dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_PROTOCOL);
+			VirtualCoverage elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			VirtualCoverage dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_PROTOCOL);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_ADDRESS, DIFFERENT_VALUE);
+			dataComponent = getInstance(SUCCESS, TEST_ADDRESS, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -224,7 +228,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			VirtualCoverage elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			VirtualCoverage elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -233,11 +237,11 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			VirtualCoverage component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			VirtualCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_ADDRESS, TEST_PROTOCOL);
+			component = getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -246,10 +250,10 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			VirtualCoverage component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			VirtualCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_ADDRESS, TEST_PROTOCOL);
+			component = getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -273,14 +277,14 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			VirtualCoverage component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			VirtualCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			VirtualCoverage.Builder builder = new VirtualCoverage.Builder(component);
@@ -298,7 +302,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "protocol is required.");
 			}
 		}
 	}
