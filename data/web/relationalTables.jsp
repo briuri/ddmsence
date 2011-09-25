@@ -7,8 +7,6 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<p align="right"><b>Last Update:</b> 09/10/2011</p>
-
 <a name="top"></a><h1>Relational Database Model for DDMS 3.1</h1>
 
 <p>This document is an attempt to map the DDMS specification to a relational database model. The intent of this mapping is to be comprehensive first 
