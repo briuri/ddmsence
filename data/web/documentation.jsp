@@ -59,7 +59,7 @@ to change the version numbers in the classpath examples.</p>
 <!-- DDMScargo(t), DDMScrow, DDMSophagus, DDMStrogen, DDMStuary, DDMSquire, DDMSteem, DDMStablishment, DDMStimator, DDMScalator, DDMState -->
 
 <p>
-<img src="./images/essentials-thumb.png" width="300" height="199" title="Essentials Screenshot" align="right" />
+<img src="./images/essentials-thumb.png" width="300" height="200" title="Essentials Screenshot" align="right" />
 DDMSence comes with three sample applications. The intention of these applications is to highlight notable aspects of DDMSence, not to create
 real-world solutions.</p>
 

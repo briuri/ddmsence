@@ -31,7 +31,6 @@ problems, I would be glad to assist you further.</p>
 		<li><a href="#minor-06">Non-DDMS classes moved into new packages</a></li>
 		<li><a href="#minor-07">Configurable property names changed</a></li>
 		<li><a href="#minor-08">Class names changed</a></li>
-		<li><a href="#minor-09">Version comparison mechanism changed</a></li>
 	</ul></li>
 </ul>
 
@@ -63,7 +62,7 @@ between warnings and errors with the "<code>ism.cve.validationAsErrors</code>" c
    &lt;/ddms:Organization&gt;	
 &lt;/ddms:creator&gt;</pre>
 
-<p>This creator element was modeled in DDMSence as "An instance of Organization has the role of creator" 
+<p>This creator element was modeled in DDMSence 1.x as "An instance of Organization has the role of creator" 
 and the Organization class contained this entire construct. With DDMS 4.0, Organizations and Persons 
 can now appear in other elements besides the classic producers (such as an Addressee or RecordKeeper), and the 
 old approach became too fragile to sustain. Producers and entities are now consistent with the schema -- 
@@ -141,7 +140,7 @@ constructor for RelatedResource expects a construct that describes a single rela
 
 <p>If the element-based constructor of RelatedResource encounters this case of multiples, it will only process the first
 related resource and provide a validation warning message. However, the element-based constructor for the entire Resource
-has been updated to mediate this case automatically.</p>
+has been updated to mediate this case automatically. The result will be 2 RelatedResource instances, each with the same relation and direction attributes.</p>
 
 <p><b>How to Upgrade:</b></p>
 <p>If your code is working at the Resource level, you don't need to do a thing. The Resource constructors can handle all legal
@@ -155,7 +154,7 @@ RelatedResource classes directly via the data-based constructors, you will need 
 
 <div class="upgradeGuide">
 <p>Previously, DDMSence would do a basic check to see that security classifications of top-level components
-were never less restrictive than the resource itself, and checked to see that all classifications used
+were never more restrictive than the resource itself, and checked to see that all classifications used
 a consistent system (US vs NATO). In DDMS 4.0, classification markings can go much deeper into the object
 hierarchy, and NATO markings are now handled apart from classifications. Rather than reinvent the wheel
 here, it would be better to use the ISM Schematron files to correctly and comprehensively manage your
@@ -226,10 +225,10 @@ Link link = new Link(attributes);
 String role = link.getXLinkAttributes().getRole();</pre>
 </div>
 
-<a name="minor-05"></a><h4>Public NAME constants removed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=">Issue #152</a>)</h4>
+<a name="minor-05"></a><h4>Public NAME constants removed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=152">Issue #152</a>)</h4>
 <div class="upgradeGuide">
 
-<p>Previously all components had a public NAME field containing the expected name of the component. Because
+<p>Previously, all components had a public NAME field containing the expected name of the component. Because
 many elements have had their names changed in DDMS 4.0 (i.e. ddms:Person became ddms:person), component
 classes now have a static method which returns a name for some DDMSVersion.</p>
 
@@ -240,7 +239,7 @@ classes now have a static method which returns a name for some DDMSVersion.</p>
 <pre class="brush: java">String extentName = Extent.getName(ddmsVersion);</pre>
 </div>
 
-<a name="minor-06"></a><h4>Non-DDMS classes moved into new packages (<a href="http://code.google.com/p/ddmsence/issues/detail?id=">Issue #148</a>)</h4>
+<a name="minor-06"></a><h4>Non-DDMS classes moved into new packages (<a href="http://code.google.com/p/ddmsence/issues/detail?id=148">Issue #148</a>)</h4>
 
 <div class="upgradeGuide">
 
@@ -258,7 +257,7 @@ then on the XML namespace (ISM, GML, etc.).</p>
 
 </div>
 
-<a name="minor-07"></a><h4>Configurable property names changed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=">Issue #95</a>)</h4>
+<a name="minor-07"></a><h4>Configurable property names changed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=95">Issue #95</a>)</h4>
 
 <div class="upgradeGuide">
 <ul>
@@ -274,32 +273,12 @@ then on the XML namespace (ISM, GML, etc.).</p>
 <div class="upgradeGuide">
 
 <ul>
-<li>MediaExtent renamed to Extent: Because the Media wrapper was removed in DDMS 4.0, the old name no longer made sense. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=">Issue #127</a>).</li>
-<li>IProducerEntity renamed to IRoleEntity: Because Entities can now fulfill non-producer roles, the old name no longer made sense (<a href="http://code.google.com/p/ddmsence/issues/detail?id=">Issue #163</a>).</li>
+<li>MediaExtent renamed to Extent: Because the Media wrapper was removed in DDMS 4.0, the old name no longer made sense. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=127">Issue #127</a>).</li>
+<li>IProducerEntity renamed to IRoleEntity: Because Entities can now fulfill non-producer roles, the old name no longer made sense (<a href="http://code.google.com/p/ddmsence/issues/detail?id=163">Issue #163</a>).</li>
 </ul>
 
 <p><b>How to Upgrade:</b></p>
 <p>Change the class names of the affected classes.</p>	
-</div>
-
-<a name="minor-09"></a><h4>Version comparison mechanism changed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=">Issue #159</a>)</h4>
-
-<div class="upgradeGuide">
-<p>Previously, the method DDMSVersion.isCompatibleWithVersion() was introduced to determine whether
-an element with a particular DDMS namespace was compatible with some version of DDMS. This introduced
-unnecessary complexity, since there is still a 1-to-1 relationship between DDMSVersions and namespaces.
-The method has been replaced with a similar method that checks whether a version is greater than or
-equal to a test version -- this conditional is much more useful.</p>
-
-<p><b>How to Upgrade:</b></p>
-<p>If you had this code:</p>
-	
-<pre class="brush: java">boolean isCompatible = DDMSVersion.isCompatibleWithVersion("3.0", xomElement);</pre>
-	
-<p>You can accomplish the same thing with:</p>
-	
-<pre class="brush: java">DDMSVersion version = DDMSVersion.getVersionForNamespace(xomElement.getNamespaceURI());
-boolean isCompatible = version.isAtLeast("3.0");</pre>	
 </div>
 
 <p>
