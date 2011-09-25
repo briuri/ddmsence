@@ -683,6 +683,8 @@ public final class Resource extends AbstractBaseComponent {
 			validateOrderAttributes();
 		if ("3.1".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getIsmDESVersion())))
 			throw new InvalidDDMSException("The ISM:DESVersion must be 5 in DDMS 3.1 resources.");
+		if ("4.0".equals(getDDMSVersion().getVersion()) && !(new Integer(7).equals(getIsmDESVersion())))
+			throw new InvalidDDMSException("The ISM:DESVersion must be 7 in DDMS 4.0 resources.");
 		if ("4.0".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getNtkDESVersion())))
 			throw new InvalidDDMSException("The ntk:DESVersion must be 5 in DDMS 4.0 resources.");
 		if (!getDDMSVersion().isAtLeast("3.0") && getExtensibleElements().size() > 1) {
