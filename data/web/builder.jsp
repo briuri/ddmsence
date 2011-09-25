@@ -16,6 +16,21 @@
 		// validate form on keyup and submit
 		$("#resource").validate({
 			rules: {
+				'metacardInfo.identifiers[0].qualifier': {
+					required: true
+				},
+				'metacardInfo.identifiers[0].value': {
+					required: true
+				},
+				'metacardInfo.dates.created': {
+					required: true
+				},
+				'metacardInfo.publishers[0].person.names[0]': {
+					required: true
+				},
+				'metacardInfo.publishers[0].person.surname': {
+					required: true
+				},
 				'identifiers[0].qualifier': {
 					required: true
 				},
@@ -34,12 +49,6 @@
 				'creators[0].organization.names[0]': {
 					required: true
 				},
-				'creators[0].organization.phones[0]': {
-					required: true
-				},
-				'creators[0].organization.emails[0]': {
-					required: true
-				},
 				'subjectCoverage.keywords[0].value': {
 					required: true
 				},
@@ -52,7 +61,10 @@
 				'createDate': {
 					required: true
 				},
-				'DESVersion': {
+				'ismDESVersion': {
+					required: true
+				},
+				'ntkDESVersion': {
 					required: true
 				},
 				'securityAttributes.classification': {
@@ -63,6 +75,21 @@
 				}
 			}, 
 			messages: {
+				'metacardInfo.identifiers[0].qualifier': {
+					required: "A metacard identifier qualifier is required."
+				},
+				'metacardInfo.identifiers[0].value': {
+					required: "A metacard identifier value is required."
+				},
+				'metacardInfo.dates.created': {
+					required: "A metacard creation date is required."
+				},
+				'metacardInfo.publishers[0].person.names[0]': {
+					required: "A metacard publisher's name is required."
+				},
+				'metacardInfo.publishers[0].person.surname': {
+					required: "A metacard publisher's surname is required."
+				},
 				'identifiers[0].qualifier': {
 					required: "A qualifier is required."
 				},
@@ -81,13 +108,7 @@
 				'creators[0].organization.names[0]': {
 					required: "A name is required."
 				},
-				'creators[0].organization.phones[0]': {
-					required: "A phone number is required."
-				},
-				'creators[0].organization.emails[0]': {
-					required: "An email address is required."
-				},
-				'subjectCoverage.keywords[0].value': {
+				'subjectCoverages[0].keywords[0].value': {
 					required: "A keyword is required."
 				},
 				'security.securityAttributes.classification': {
@@ -99,8 +120,11 @@
 				'createDate': {
 					required: "A create date is required."
 				},
-				'DESVersion': {
-					required: "A DES Version is required."
+				'ismDESVersion': {
+					required: "An ISM DES Version is required."
+				},
+				'ntkDESVersion': {
+					required: "An NTK DES Version is required."
 				},
 				'securityAttributes.classification': {
 					required: "A security classification is required."
@@ -113,6 +137,11 @@
 	});
 		
 	function showExample(form) {
+		form.elements['metacardInfo.identifiers[0].qualifier'].value = 'URI';
+		form.elements['metacardInfo.identifiers[0].value'].value = 'urn:buri:ddmsence';
+		form.elements['metacardInfo.dates.created'].value = '2011-09-25';
+		form.elements['metacardInfo.publishers[0].person.names[0]'].value = 'Brian';
+		form.elements['metacardInfo.publishers[0].person.surname'].value = 'Uri';
 		form.elements['identifiers[0].qualifier'].value = 'URI';
 		form.elements['identifiers[0].value'].value = 'urn:buri:ddmsence';
 		form.elements['titles[0].value'].value = 'DDMSence';
@@ -121,12 +150,14 @@
 		form.elements['creators[0].organization.names[0]'].value = 'FGM, Inc.';
 		form.elements['creators[0].organization.phones[0]'].value = '703-885-1000';
 		form.elements['creators[0].organization.emails[0]'].value = 'ddmsence@urizone.net';
-		form.elements['subjectCoverage.keywords[0].value'].value = 'DDMSence';
+		form.elements['creators[0].organization.acronym'].value = 'FGM';
+		form.elements['subjectCoverages[0].keywords[0].value'].value = 'DDMSence';
 		form.elements['security.securityAttributes.classification'].value = 'U';
 		form.elements['security.securityAttributes.ownerProducers'].value = 'USA';
 		form.elements['resourceElement'].checked = true;
 		form.elements['createDate'].value = '2010-01-21';
-		form.elements['DESVersion'].value = '5';
+		form.elements['ismDESVersion'].value = '7';
+		form.elements['ntkDESVersion'].value = '5';
 		form.elements['securityAttributes.classification'].value = 'U';
 		form.elements['securityAttributes.ownerProducers'].value = 'USA';
 	}	
@@ -138,15 +169,31 @@
 
 <h1>DDMS Builder</h1>
 
-<p>This experimental tool uses the DDMSence library to create a DDMS 3.1 Resource from form input. It uses
+<p>This experimental tool uses the DDMSence library to create a DDMS 4.0 Resource from form input. It uses
 the <a href="documentation-builders.jsp">Component Builder</a> framework, which was introduced in DDMSence 
-1.8.0. To simplify the example source code, the form only asks for the minimal subset of elements and attributes required for a valid Resource
- (this is similar to running the <u>Escort</u> <a href="tutorials-02.jsp">tutorial</a> in FAST mode). 
+1.8.0. To simplify the example source code, the form only asks for a minimal subset of elements and attributes required for a valid resource. 
 Information submitted through this tool is not retained on the server.</p> 
 
 <p>Starred fields (<b>*</b>) are required.</p>
 
 <form:form id="resource" commandName="resource" method="post">
+
+	<label class="builderComponent">Metacard Info</label>
+	<div class="clear"></div>
+	<div class="clear"><label class="builderField" for="metacardInfo.identifiers[0].qualifier">Identifier Qualifier: *</label>
+	<form:input path="metacardInfo.identifiers[0].qualifier" size="25" maxlength="2048" /></div>
+	<div class="clear"><label class="builderField" for="metacardInfo.identifiers[0].value">Identifier Value: *</label>
+	<form:input path="metacardInfo.identifiers[0].value" size="25" maxlength="256" /></div>
+	<div class="clear"><label class="builderField" for="metacardInfo.dates.created">Creation Date: *</label>
+	<form:input path="metacardInfo.dates.created" size="10" maxlength="32" /></div>
+	<div class="clear"><label class="builderField" for="metacardInfo.publishers[0].entityType">Publisher Entity Type: *</label>
+	<span class="formElement">person<input type="hidden" name="metacardInfo.publishers[0].entityType" value="person" /></span></div>
+	<div class="clear"><label class="builderField" for="metacardInfo.publishers[0].person.names[0]">Publisher Person Name: *</label>
+	<form:input path="metacardInfo.publishers[0].person.names[0]" size="25" maxlength="256" /></div>
+	<div class="clear"><label class="builderField" for="metacardInfo.publishers[0].person.surname">Publisher Person Surname: *</label>
+	<form:input path="metacardInfo.publishers[0].person.surname" size="25" maxlength="256" /></div>
+	
+	<br />
 	<label class="builderComponent">Identifier</label>
 	<div class="clear"></div>
 	<div class="clear"><label class="builderField" for="identifiers[0].qualifier">Qualifier: *</label>
@@ -174,21 +221,23 @@ Information submitted through this tool is not retained on the server.</p>
 	<br />
 	<label class="builderComponent">Creator</label>
 	<div class="clear"><label class="builderField" for="creators[0].entityType">Entity Type: *</label>
-	<span class="formElement">Organization<input type="hidden" name="creators[0].entityType" value="Organization" /></span></div>
+	<span class="formElement">organization<input type="hidden" name="creators[0].entityType" value="organization" /></span></div>
 	<div class="clear"><label class="builderField" for="creators[0].organization.names[0]">Organization Name: *</label>
 	<form:input path="creators[0].organization.names[0]" size="25" maxlength="256" /></div>
-	<div class="clear"><label class="builderField" for="creators[0].organization.phones[0]">Organization Phone: *</label>
+	<div class="clear"><label class="builderField" for="creators[0].organization.phones[0]">Organization Phone:</label>
 	<form:input path="creators[0].organization.phones[0]" size="25" maxlength="256" /></div>
-	<div class="clear"><label class="builderField" for="creators[0].organization.emails[0]">Organization Email: *</label>
+	<div class="clear"><label class="builderField" for="creators[0].organization.emails[0]">Organization Email:</label>
 	<form:input path="creators[0].organization.emails[0]" size="25" maxlength="2048" /></div>
-
+	<div class="clear"><label class="builderField" for="creators[0].organization.acronym">Organization Acronym:</label>
+	<form:input path="creators[0].organization.acronym" size="25" maxlength="256" /></div>
+	
 	<br />
 	<label class="builderComponent">SubjectCoverage</label>
 	<div class="clear"></div>
-	<div class="clear"><label class="builderField" for="subjectCoverage.keywords[0].value">Keyword #1: *</label>
-	<form:input path="subjectCoverage.keywords[0].value" size="25" maxlength="256" /></div>
-	<div class="clear"><label class="builderField" for="subjectCoverage.keywords[1].value">Keyword #2:</label>
-	<form:input path="subjectCoverage.keywords[1].value" size="25" maxlength="256" /></div>
+	<div class="clear"><label class="builderField" for="subjectCoverages[0].keywords[0].value">Keyword #1: *</label>
+	<form:input path="subjectCoverages[0].keywords[0].value" size="25" maxlength="256" /></div>
+	<div class="clear"><label class="builderField" for="subjectCoverages[0].keywords[1].value">Keyword #2:</label>
+	<form:input path="subjectCoverages[0].keywords[1].value" size="25" maxlength="256" /></div>
 	
 	<br />
 	<label class="builderComponent">Security</label>
@@ -214,8 +263,10 @@ Information submitted through this tool is not retained on the server.</p>
 	<form:checkbox path="resourceElement" /> yes</div>
 	<div class="clear"><label class="builderField" for="createDate">Create Date: *</label>
 	<form:input path="createDate" size="10" maxlength="32" /></div>
-	<div class="clear"><label class="builderField" for="DESVersion">DES Version: *</label>
-	<form:input path="DESVersion" size="1" maxlength="1" /></div>
+	<div class="clear"><label class="builderField" for="ismDESVersion">ISM DES Version: *</label>
+	<form:input path="ismDESVersion" size="1" maxlength="1" /></div>
+	<div class="clear"><label class="builderField" for="ntkDESVersion">NTK DES Version: *</label>
+	<form:input path="ntkDESVersion" size="1" maxlength="1" /></div>
 	<div class="clear"><label class="builderField" for="securityAttributes.classification">Security Classification: *</label>
  	<form:select path="securityAttributes.classification"  multiple="false" size="1">
  		<form:option value=""></form:option>
