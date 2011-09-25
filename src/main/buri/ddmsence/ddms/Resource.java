@@ -58,7 +58,6 @@ import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
 import buri.ddmsence.ddms.security.Security;
-import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.ddms.security.ism.NoticeAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.Description;
@@ -634,8 +633,6 @@ public final class Resource extends AbstractBaseComponent {
 	 * 0-1 formats, exactly 1 subjectCoverage, 0-1 resourceManagement, and exactly 1 security element must exist.</li>
 	 * <li>Starting in DDMS 4.0, 1-many subjectCoverage elements can exist.</li>
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
-	 * <li>If this resource has security attributes, the SecurityAttributes on any subcomponents are valid according 
-	 * to rollup rules (security attributes are not required in DDMS 2.0).</li>
 	 * <li>All ddms:order attributes make a complete, consecutive set, starting at 1.</li>
 	 * <li>resourceElement attribute must exist, starting in DDMS 3.0.</li>
 	 * <li>createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD), starting in DDMS 3.0.</li>
@@ -648,7 +645,6 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>Only 1 extensible element can exist in DDMS 2.0.</li>
 	 * </td></tr></table>
 	 * 
-	 * @see ISMVocabulary#validateRollup(SecurityAttributes, Set)
 	 * @see AbstractBaseComponent#validate()
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */

@@ -57,7 +57,7 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:link</u>: Links to further information about the recall (0-many optional), implemented as a {@link Link}<br />
- * <u>ddms:details</u>: Further details about the recall (0-many optional), implemented as a {@link Details)<br />
+ * <u>ddms:details</u>: Further details about the recall (0-many optional), implemented as a {@link Details}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
