@@ -97,12 +97,13 @@ public class PositionTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private Position testConstructor(boolean expectFailure, Element element) {
+	private Position getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Position component = null;
 		try {
 			component = new Position(element);
@@ -110,6 +111,7 @@ public class PositionTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -117,12 +119,13 @@ public class PositionTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param coordinates the coordinates
 	 * @param srsAttributes the srs attributes (optional)
 	 * @return a valid object
 	 */
-	private Position testConstructor(boolean expectFailure, List<Double> coordinates, SRSAttributes srsAttributes) {
+	private Position getInstance(String message, List<Double> coordinates, SRSAttributes srsAttributes) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Position component = null;
 		try {
 			component = new Position(coordinates, srsAttributes);
@@ -130,6 +133,7 @@ public class PositionTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -164,9 +168,9 @@ public class PositionTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_GML_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_GML_PREFIX,
 				Position.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -177,15 +181,15 @@ public class PositionTest extends AbstractComponentTestCase {
 			String gmlNamespace = version.getGmlNamespace();
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, TEST_XS_LIST);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 
 			// Empty coordinate
 			element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, "25.0    26.0");
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 
 		}
 	}
@@ -194,10 +198,10 @@ public class PositionTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_COORDS, SRSAttributesTest.getFixture());
+			getInstance(SUCCESS, TEST_COORDS, SRSAttributesTest.getFixture());
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, TEST_COORDS, null);
+			getInstance(SUCCESS, TEST_COORDS, null);
 		}
 	}
 
@@ -209,23 +213,23 @@ public class PositionTest extends AbstractComponentTestCase {
 			// Missing coordinates
 			Element element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
+			getInstance("A position must be represented by either 2 or 3 coordinates.", element);
 
 			// At least 2 coordinates
 			element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, "25.0");
 			SRSAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
+			getInstance("A position must be represented by either 2 or 3 coordinates.", element);
 
 			// No more than 3 coordinates
 			element = Util
 				.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, TEST_XS_LIST + " 25.0 35.0");
 			SRSAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
+			getInstance("A position must be represented by either 2 or 3 coordinates.", element);
 
 			// Each coordinate is a Double
 			element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, "25.0 Dog");
 			SRSAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
+			getInstance("coordinate is required.", element);
 		}
 	}
 
@@ -233,12 +237,12 @@ public class PositionTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing coordinates
-			testConstructor(WILL_FAIL, null, SRSAttributesTest.getFixture());
+			getInstance("A position must be represented by either 2 or 3 coordinates.", null, SRSAttributesTest.getFixture());
 
 			// At least 2 coordinates
 			List<Double> newCoords = new ArrayList<Double>();
 			newCoords.add(new Double(12.3));
-			testConstructor(WILL_FAIL, newCoords, SRSAttributesTest.getFixture());
+			getInstance("A position must be represented by either 2 or 3 coordinates.", newCoords, SRSAttributesTest.getFixture());
 
 			// No more than 3 coordinates
 			newCoords = new ArrayList<Double>();
@@ -246,7 +250,7 @@ public class PositionTest extends AbstractComponentTestCase {
 			newCoords.add(new Double(12.3));
 			newCoords.add(new Double(12.3));
 			newCoords.add(new Double(12.3));
-			testConstructor(WILL_FAIL, newCoords, SRSAttributesTest.getFixture());
+			getInstance("A position must be represented by either 2 or 3 coordinates.", newCoords, SRSAttributesTest.getFixture());
 		}
 	}
 
@@ -254,7 +258,7 @@ public class PositionTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Position component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Position component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -262,8 +266,8 @@ public class PositionTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Position elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Position dataComponent = testConstructor(WILL_SUCCEED, TEST_COORDS, SRSAttributesTest.getFixture());
+			Position elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Position dataComponent = getInstance(SUCCESS, TEST_COORDS, SRSAttributesTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -294,13 +298,13 @@ public class PositionTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Position elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Position dataComponent = testConstructor(WILL_SUCCEED, TEST_COORDS, null);
+			Position elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Position dataComponent = getInstance(SUCCESS, TEST_COORDS, null);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			List<Double> newCoords = new ArrayList<Double>(TEST_COORDS);
 			newCoords.add(new Double(100.0));
-			dataComponent = testConstructor(WILL_SUCCEED, newCoords, SRSAttributesTest.getFixture());
+			dataComponent = getInstance(SUCCESS, newCoords, SRSAttributesTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -308,7 +312,7 @@ public class PositionTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Position elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Position elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -317,11 +321,11 @@ public class PositionTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Position component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Position component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_COORDS, SRSAttributesTest.getFixture());
+			component = getInstance(SUCCESS, TEST_COORDS, SRSAttributesTest.getFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -330,10 +334,10 @@ public class PositionTest extends AbstractComponentTestCase {
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Position component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Position component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_COORDS, SRSAttributesTest.getFixture());
+			component = getInstance(SUCCESS, TEST_COORDS, SRSAttributesTest.getFixture());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -341,7 +345,7 @@ public class PositionTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Position component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Position component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			Position.Builder builder = new Position.Builder(component);
@@ -359,7 +363,7 @@ public class PositionTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "A position must be represented by either 2 or 3 coordinates.");
 			}
 
 			// Skip empty Coordinates

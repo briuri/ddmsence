@@ -64,12 +64,13 @@ public class PointTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private Point testConstructor(boolean expectFailure, Element element) {
+	private Point getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Point component = null;
 		try {
 			component = new Point(element);
@@ -77,6 +78,7 @@ public class PointTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -84,13 +86,14 @@ public class PointTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param position the position (required)
 	 * @param srsAttributes the srs attributes (required)
 	 * @param id the id (required)
 	 * @return a valid object
 	 */
-	private Point testConstructor(boolean expectFailure, Position position, SRSAttributes srsAttributes, String id) {
+	private Point getInstance(String message, Position position, SRSAttributes srsAttributes, String id) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Point component = null;
 		try {
 			component = new Point(position, srsAttributes, id);
@@ -98,6 +101,7 @@ public class PointTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -141,9 +145,9 @@ public class PointTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_GML_PREFIX, Point
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_GML_PREFIX, Point
 				.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -151,7 +155,7 @@ public class PointTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Point.getName(version), version
@@ -160,7 +164,7 @@ public class PointTest extends AbstractComponentTestCase {
 				SRSAttributesTest.getFixture().getSrsName());
 			Util.addAttribute(element, PropertyReader.getPrefix("gml"), "id", version.getGmlNamespace(), TEST_ID);
 			element.appendChild(PositionTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -168,7 +172,7 @@ public class PointTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, PositionTest.getFixture(), SRSAttributesTest.getFixture(), TEST_ID);
+			getInstance(SUCCESS, PositionTest.getFixture(), SRSAttributesTest.getFixture(), TEST_ID);
 		}
 	}
 
@@ -184,7 +188,7 @@ public class PointTest extends AbstractComponentTestCase {
 			attr.addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			element.appendChild(PositionTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("srsName is required.", element);
 
 			// Empty SRS Name
 			element = Util.buildElement(gmlPrefix, Point.getName(version), gmlNamespace, null);
@@ -192,7 +196,7 @@ public class PointTest extends AbstractComponentTestCase {
 			attr.addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			element.appendChild(PositionTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("srsName is required.", element);
 
 			// Point SRS Name doesn't match pos SRS Name
 			element = Util.buildElement(gmlPrefix, Point.getName(version), gmlNamespace, null);
@@ -201,33 +205,33 @@ public class PointTest extends AbstractComponentTestCase {
 			attr.addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			element.appendChild(PositionTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("The srsName of the position must match the srsName of the Point.", element);
 
 			// Missing ID
 			element = Util.buildElement(gmlPrefix, Point.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			element.appendChild(PositionTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("id is required.", element);
 
 			// Empty ID
 			element = Util.buildElement(gmlPrefix, Point.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, "");
 			element.appendChild(PositionTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("id is required.", element);
 
 			// ID not NCName
 			element = Util.buildElement(gmlPrefix, Point.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, "1TEST");
 			element.appendChild(PositionTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("\"1TEST\" is not a valid NCName.", element);
 
 			// Missing position
 			element = Util.buildElement(gmlPrefix, Point.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
-			testConstructor(WILL_FAIL, element);
+			getInstance("position is required.", element);
 		}
 	}
 
@@ -236,28 +240,28 @@ public class PointTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing SRS Name
 			SRSAttributes attr = new SRSAttributes(null, SRSAttributesTest.getFixture().getSrsDimension(), null, null);
-			testConstructor(WILL_FAIL, PositionTest.getFixture(), attr, TEST_ID);
+			getInstance("srsName is required.", PositionTest.getFixture(), attr, TEST_ID);
 
 			// Empty SRS Name
 			attr = new SRSAttributes("", SRSAttributesTest.getFixture().getSrsDimension(), null, null);
-			testConstructor(WILL_FAIL, PositionTest.getFixture(), attr, TEST_ID);
+			getInstance("srsName is required.", PositionTest.getFixture(), attr, TEST_ID);
 
 			// Polygon SRS Name doesn't match pos SRS Name
 			attr = new SRSAttributes(DIFFERENT_VALUE, SRSAttributesTest.getFixture().getSrsDimension(),
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
-			testConstructor(WILL_FAIL, PositionTest.getFixture(), attr, TEST_ID);
+			getInstance("The srsName of the position must match the srsName of the Point.", PositionTest.getFixture(), attr, TEST_ID);
 
 			// Missing ID
-			testConstructor(WILL_FAIL, PositionTest.getFixture(), SRSAttributesTest.getFixture(), null);
+			getInstance("id is required.", PositionTest.getFixture(), SRSAttributesTest.getFixture(), null);
 
 			// Empty ID
-			testConstructor(WILL_FAIL, PositionTest.getFixture(), SRSAttributesTest.getFixture(), "");
+			getInstance("id is required.", PositionTest.getFixture(), SRSAttributesTest.getFixture(), "");
 
 			// ID not NCName
-			testConstructor(WILL_FAIL, PositionTest.getFixture(), SRSAttributesTest.getFixture(), "1TEST");
+			getInstance("\"1TEST\" is not a valid NCName.", PositionTest.getFixture(), SRSAttributesTest.getFixture(), "1TEST");
 
 			// Missing position
-			testConstructor(WILL_FAIL, null, SRSAttributesTest.getFixture(), TEST_ID);
+			getInstance("position is required.", null, SRSAttributesTest.getFixture(), TEST_ID);
 		}
 	}
 
@@ -265,7 +269,7 @@ public class PointTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Point component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Point component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -273,8 +277,8 @@ public class PointTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Point elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Point dataComponent = testConstructor(WILL_SUCCEED, PositionTest.getFixture(), SRSAttributesTest
+			Point elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Point dataComponent = getInstance(SUCCESS, PositionTest.getFixture(), SRSAttributesTest
 				.getFixture(), TEST_ID);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -286,8 +290,8 @@ public class PointTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SRSAttributes attr = new SRSAttributes(SRSAttributesTest.getFixture().getSrsName(), new Integer(11),
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
-			Point elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Point dataComponent = testConstructor(WILL_SUCCEED, PositionTest.getFixture(), attr, TEST_ID);
+			Point elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Point dataComponent = getInstance(SUCCESS, PositionTest.getFixture(), attr, TEST_ID);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			List<Double> newCoords = new ArrayList<Double>();
@@ -295,10 +299,10 @@ public class PointTest extends AbstractComponentTestCase {
 			newCoords.add(new Double(150.0));
 			Position newPosition = new Position(newCoords, SRSAttributesTest.getFixture());
 
-			dataComponent = testConstructor(WILL_SUCCEED, newPosition, SRSAttributesTest.getFixture(), TEST_ID);
+			dataComponent = getInstance(SUCCESS, newPosition, SRSAttributesTest.getFixture(), TEST_ID);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, PositionTest.getFixture(), SRSAttributesTest.getFixture(),
+			dataComponent = getInstance(SUCCESS, PositionTest.getFixture(), SRSAttributesTest.getFixture(),
 				DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
@@ -308,7 +312,7 @@ public class PointTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Point elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Point elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -317,11 +321,11 @@ public class PointTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Point component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Point component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, PositionTest.getFixture(), SRSAttributesTest.getFixture(),
+			component = getInstance(SUCCESS, PositionTest.getFixture(), SRSAttributesTest.getFixture(),
 				TEST_ID);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -331,10 +335,10 @@ public class PointTest extends AbstractComponentTestCase {
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Point component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Point component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, PositionTest.getFixture(), SRSAttributesTest.getFixture(),
+			component = getInstance(SUCCESS, PositionTest.getFixture(), SRSAttributesTest.getFixture(),
 				TEST_ID);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
@@ -344,8 +348,8 @@ public class PointTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Position pos = PositionTest.getFixture();
-			testConstructor(WILL_SUCCEED, pos, SRSAttributesTest.getFixture(), TEST_ID);
-			testConstructor(WILL_SUCCEED, pos, SRSAttributesTest.getFixture(), TEST_ID);
+			getInstance(SUCCESS, pos, SRSAttributesTest.getFixture(), TEST_ID);
+			getInstance(SUCCESS, pos, SRSAttributesTest.getFixture(), TEST_ID);
 		}
 	}
 
@@ -361,14 +365,14 @@ public class PointTest extends AbstractComponentTestCase {
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "A child component, gml:pos, is using a different version of DDMS from its parent.");
 		}
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Point component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Point component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			Point.Builder builder = new Point.Builder(component);
@@ -386,7 +390,7 @@ public class PointTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "srsName is required.");
 			}
 			builder.getPosition().getCoordinates().get(0).setValue(new Double(32.1));
 			builder.getPosition().getCoordinates().get(1).setValue(new Double(42.1));
