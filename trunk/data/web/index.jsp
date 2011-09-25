@@ -82,14 +82,14 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
-	<div class="newsUpdate"><u>07/17/2011</u>: <a href="downloads.jsp">v1.11.0</a> released, adding <a href="documentation.jsp#tips-schematron">support for XSLT2-based Schematron validation</a>.</div>
-	<div class="newsUpdate"><u>07/05/2011</u>: v1.10.0 released, adding <a href="documentation.jsp#tips-version">support for DDMS 3.1</a>.</div>
+	<div class="newsUpdate"><u>07/17/2011</u>: <a href="downloads.jsp">v1.11.0</a> released, adding <a href="documentation-schematron.jsp">support for XSLT2-based Schematron validation</a>.</div>
+	<div class="newsUpdate"><u>07/05/2011</u>: v1.10.0 released, adding support for DDMS 3.1.</div>
 	<div class="newsUpdate"><u>06/06/2011</u>: <a href="schematron.jsp">Schematron Implementation for DDMS</a> published.</div>
 	<div class="newsUpdate"><u>06/02/2011</u>: v1.9.1 released. Example code for <a href="validator.uri">DDMS Validator</a> and <a href="builder.uri">DDMS Builder</a> posted.</div>
 	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
 	<div id="oldNews" class="divHidden">
 		<div class="newsUpdate"><u>05/24/2011</u>: v1.9.0 released.</div>
-		<div class="newsUpdate"><u>05/13/2011</u>: v1.8.0 released, introducing the <a href="documentation.jsp#tips-builders">Component Builder</a> framework.</div>
+		<div class="newsUpdate"><u>05/13/2011</u>: v1.8.0 released, introducing the Component Builder framework.</div>
 		<div class="newsUpdate"><u>03/10/2011</u>: v1.7.2 released.</div>
 		<div class="newsUpdate"><u>11/26/2010</u>: <a href="relationalTables.jsp">Relational Database Model for DDMS</a> published.</div>
 		<div class="newsUpdate"><u>11/16/2010</u>: v1.7.1 released.</div>
@@ -100,7 +100,7 @@
 		<div class="newsUpdate"><u>07/05/2010</u>: v1.5.0 released.</div>
 		<div class="newsUpdate"><u>06/08/2010</u>: v1.4.0 released.</div>
 		<div class="newsUpdate"><u>05/14/2010</u>: v1.3.2 released.</div>
-		<div class="newsUpdate"><u>05/11/2010</u>: Added table of supported XSLT Engines to <a href="documentation.jsp#tips-schematron">Schematron Validation</a> Power Tip.</div>
+		<div class="newsUpdate"><u>05/11/2010</u>: Added table of supported XSLT Engines to Schematron Validation Power Tip.</div>
 		<div class="newsUpdate"><u>05/09/2010</u>: v1.3.1 released.</div>
 		<div class="newsUpdate"><u>05/07/2010</u>: v1.3.0 released.</div>
 		<div class="newsUpdate"><u>04/24/2010</u>: v1.2.1 released.</div>

@@ -212,7 +212,7 @@ even though <code>ddms:Media</code> is not an implemented component (the medium 
 
 <p>In this tutorial, you have seen how DDMS Resources can be built from scratch. You have also seen further examples of component validation. In practice, the data-based
 constructor approach for building components is somewhat inflexible. The Component Builder framework offers more flexibility in the building process, and can also
-be used to edit existing DDMS Resources. More about this framework can be found in the Power Tip on <a href="documentation.jsp#tips-builders">Using Component Builders</a>.</p>
+be used to edit existing DDMS Resources. More about this framework can be found in the Power Tip on <a href="documentation-builders.jsp">Using Component Builders</a>.</p>
 
 <p>The next tutorial, covering the Escape application, will show how a DDMS Resource can be traversed and used in other contexts.</p>
 

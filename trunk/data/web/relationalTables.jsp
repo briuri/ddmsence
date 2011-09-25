@@ -165,7 +165,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	<tr class="relRow">
 		<td class="relHeader">Additional Notes:</td>
 		<td class="relInfo" colspan="2">
-			Please see the documentation on <a href="documentation.jsp#tips-extensible">Extensible Attributes on a Resource</a> to 
+			Please see the documentation on <a href="documentation-extensible.jsp">Extensible Attributes on a Resource</a> to 
 			understand the ambiguity problem associated with modeling security attributes as extensible attributes.	
 		</td>
 	</tr>

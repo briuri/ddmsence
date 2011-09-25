@@ -139,7 +139,7 @@
 <h1>DDMS Builder</h1>
 
 <p>This experimental tool uses the DDMSence library to create a DDMS 3.1 Resource from form input. It uses
-the <a href="documentation.jsp#tips-builders">Component Builder</a> framework, which was introduced in DDMSence 
+the <a href="documentation-builders.jsp">Component Builder</a> framework, which was introduced in DDMSence 
 1.8.0. To simplify the example source code, the form only asks for the minimal subset of elements and attributes required for a valid Resource
  (this is similar to running the <u>Escort</u> <a href="tutorials-02.jsp">tutorial</a> in FAST mode). 
 Information submitted through this tool is not retained on the server.</p> 

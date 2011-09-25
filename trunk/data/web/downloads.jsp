@@ -48,7 +48,7 @@ All changes which are not backwards compatible will be linked from this page wit
 <h3>Older Releases</h3>
 
 <p>Version <b>1.11.0</b> (07/17/2011) is a stable release, which adds support for 
-<a href="documentation.jsp#tips-schematron">XSLT2-based Schematron validation</a> (<a href="http://code.google.com/p/ddmsence/issues/detail?id=79">Issue #79</a>),
+<a href="documentation-schematron.jsp">XSLT2-based Schematron validation</a> (<a href="http://code.google.com/p/ddmsence/issues/detail?id=79">Issue #79</a>),
 improved performance when using multiple Controlled Vocabularies (<a href="http://code.google.com/p/ddmsence/issues/detail?id=90">Issue #90</a>), and a few 
 minor bug fixes. This release is backwards compatible with v1.10.0.</p>
 
@@ -57,7 +57,7 @@ minor bug fixes. This release is backwards compatible with v1.10.0.</p>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.11.0.zip"><code>ddmsence-src-1.11.0.zip</code></a></b> (4.9 MB)</li>
 </ul>
 
-<p>Version <b>1.10.0</b> (07/05/2011) is a stable release, which adds support for <a href="documentation.jsp#tips-version">DDMS 3.1</a> (<a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.10.0">Issue #82 - 85</a>).
+<p>Version <b>1.10.0</b> (07/05/2011) is a stable release, which adds support for DDMS 3.1 (<a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.10.0">Issue #82 - 85</a>).
 It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=88">backwards compatible</a> with earlier versions.</p>
 
 <ul>
@@ -84,7 +84,7 @@ and <a href="http://code.google.com/p/ddmsence/issues/detail?id=75">Issue #75</a
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.9.0.zip"><code>ddmsence-src-1.9.0.zip</code></a></b> (4.4 MB)</li>
 </ul>
 
-<p>Version <b>1.8.0</b> (05/13/2011) is a stable release, which adds <a href="documentation.jsp#tips-builders">mutable Builders</a> for all DDMS components 
+<p>Version <b>1.8.0</b> (05/13/2011) is a stable release, which adds <a href="documentation-builders.jsp">mutable Builders</a> for all DDMS components 
 (<a href="http://code.google.com/p/ddmsence/issues/detail?id=68">Issue #68</a>). It is backwards compatible with all versions since v1.4.0.</p>
 
 <ul>
@@ -168,7 +168,7 @@ of DDMS at a time. It is backwards compatible with all versions since v1.1.0.</p
 </ul>
 
 <p>Version <b>1.3.0</b> (5/7/2010) is a stable release, and adds support for custom validation through the 
-<a href="documentation.jsp#tips-schematron">ISO Schematron</a> standard. It is backwards compatible with all versions since v1.1.0.</p>
+<a href="documentation-schematron.jsp">ISO Schematron</a> standard. It is backwards compatible with all versions since v1.1.0.</p>
 
 <ul>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.3.0.zip"><code>ddmsence-bin-1.3.0.zip</code></a></b> (3.6 MB, compiled with JDK1.5.0_22)</li>
