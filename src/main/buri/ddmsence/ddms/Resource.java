@@ -680,7 +680,6 @@ public final class Resource extends AbstractBaseComponent {
 				if (component.getSecurityAttributes() != null && !(component instanceof Security))
 					childAttributes.add(component.getSecurityAttributes());
 			}
-			ISMVocabulary.validateRollup(getSecurityAttributes(), childAttributes);
 		}
 		
 		// Should be reviewed as additional versions of DDMS are supported.
@@ -740,17 +739,12 @@ public final class Resource extends AbstractBaseComponent {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>If ddms:resource has no classification, warn about ignoring rollup validation.</li>
 	 * <li>Add any warnings from the notice attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
 		if (!getNoticeAttributes().isEmpty())
 			addWarnings(getNoticeAttributes().getValidationWarnings(), true);
-		if (getSecurityAttributes().isEmpty()) {
-			addWarning("Security rollup validation is being skipped, because no classification exists "
-				+ "on the ddms:" + getName() + " itself.");
-		}
 		super.validateWarnings();
 	}
 		

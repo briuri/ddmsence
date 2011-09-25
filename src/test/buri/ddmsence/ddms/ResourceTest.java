@@ -937,36 +937,22 @@ public class ResourceTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			createComponents();
 
-			// base warnings (1 for 2.0, 0 for all others)
-			int warnings = version.isAtLeast("3.0") ? 0 : 1;
+			// No warnings
 			Resource component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			assertEquals(warnings, component.getValidationWarnings().size());
+			assertEquals(0, component.getValidationWarnings().size());
 
 			// Nested warnings
 			List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.add(new Format("test", new Extent("test", ""), "test"));
 			component = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
 				getIsmDESVersion(), getNtkDESVersion());
-			warnings = version.isAtLeast("3.0") ? 1 : 2;
-			assertEquals(warnings, component.getValidationWarnings().size());
+			assertEquals(1, component.getValidationWarnings().size());
 
 			String resourceName = Resource.getName(version);
-			if (!version.isAtLeast("3.0")) {
-				String text = "Security rollup validation is being skipped, because no classification exists "
-					+ "on the ddms:" + resourceName + " itself.";
-				String locator = "ddms:" + resourceName;
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-
-				text = "A qualifier has been set without an accompanying value attribute.";
-				locator = "ddms:" + resourceName + "/ddms:format/ddms:Media/ddms:extent";
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));
-			}
-			else {
-				String text = "A qualifier has been set without an accompanying value attribute.";
-				String locator = (version.isAtLeast("4.0")) ? "ddms:" + resourceName + "/ddms:format/ddms:extent"
-					: "ddms:" + resourceName + "/ddms:format/ddms:Media/ddms:extent";
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-			}
+			String text = "A qualifier has been set without an accompanying value attribute.";
+			String locator = (version.isAtLeast("4.0")) ? "ddms:" + resourceName + "/ddms:format/ddms:extent"
+				: "ddms:" + resourceName + "/ddms:format/ddms:Media/ddms:extent";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
 			// More nested warnings
 			Element element = Util.buildDDMSElement(PostalAddress.getName(version), null);
@@ -975,25 +961,13 @@ public class ResourceTest extends AbstractComponentTestCase {
 			components.add(new GeospatialCoverage(null, null, null, address, null, null, null, null));
 			component = testConstructor(WILL_SUCCEED, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE,
 				getIsmDESVersion(), getNtkDESVersion());
-			warnings = version.isAtLeast("3.0") ? 1 : 2;
-			assertEquals(warnings, component.getValidationWarnings().size());
-			if (!version.isAtLeast("3.0")) {
-				String text = "Security rollup validation is being skipped, because no classification exists "
-					+ "on the ddms:" + resourceName + " itself.";
-				String locator = "ddms:" + resourceName;
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			assertEquals(1, component.getValidationWarnings().size());
 
-				text = "A completely empty ddms:postalAddress element was found.";
-				locator = "ddms:" + resourceName + "/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));
-			}
-			else {
-				String text = "A completely empty ddms:postalAddress element was found.";
-				String locator = (version.isAtLeast("4.0")) ? "ddms:" + resourceName
-					+ "/ddms:geospatialCoverage/ddms:postalAddress" : "ddms:" + resourceName
-					+ "/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
-				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-			}
+			text = "A completely empty ddms:postalAddress element was found.";
+			locator = (version.isAtLeast("4.0")) ? "ddms:" + resourceName
+				+ "/ddms:geospatialCoverage/ddms:postalAddress" : "ddms:" + resourceName
+				+ "/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 
@@ -1071,66 +1045,6 @@ public class ResourceTest extends AbstractComponentTestCase {
 				TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, getIsmDESVersion(),
 				getNtkDESVersion()));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
-		}
-	}
-
-	public void testRollupTooRestrictive() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			createComponents();
-
-			List<String> ownerProducers = new ArrayList<String>();
-			ownerProducers.add("USA");
-			Organization org = new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null);
-			Creator creator = new Creator(org, null, new SecurityAttributes("TS", ownerProducers, null));
-
-			Element element = getResourceWithoutBodyElement();
-			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
-			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
-			element.appendChild(creator.getXOMElementCopy());
-			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
-		}
-	}
-
-	public void testSkipRollupIfNotAvailable() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
-		createComponents();
-
-		List<String> ownerProducers = new ArrayList<String>();
-		ownerProducers.add("USA");
-		Organization org = new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null);
-		Creator creator = new Creator(org, null, new SecurityAttributes("TS", ownerProducers, null));
-
-		Element element = Util.buildDDMSElement(Resource.getName(version), null);
-		element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
-		element.appendChild(TitleTest.getFixture().getXOMElementCopy());
-		element.appendChild(creator.getXOMElementCopy());
-		element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-		element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
-		testConstructor(WILL_SUCCEED, element);
-	}
-
-	public void testRollupWrongSystem() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			if (version.isAtLeast("3.1"))
-				continue;
-			createComponents();
-
-			List<String> ownerProducers = new ArrayList<String>();
-			ownerProducers.add("USA");
-			Organization org = new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null);
-			Creator creator = new Creator(org, null, new SecurityAttributes("CTSA", ownerProducers, null));
-
-			Element element = getResourceWithoutBodyElement();
-			element.appendChild(IdentifierTest.getFixture().getXOMElementCopy());
-			element.appendChild(TitleTest.getFixture().getXOMElementCopy());
-			element.appendChild(creator.getXOMElementCopy());
-			element.appendChild(SubjectCoverageTest.getFixture().getXOMElementCopy());
-			element.appendChild(SecurityTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
 		}
 	}
 
