@@ -76,12 +76,13 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private IndividualValue testConstructor(boolean expectFailure, Element element) {
+	private IndividualValue getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		IndividualValue component = null;
 		try {
 			component = new IndividualValue(element);
@@ -89,6 +90,7 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -96,15 +98,16 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param value the value of the element's child text
 	 * @param id the NTK ID (optional)
 	 * @param idReference a reference to an NTK ID (optional)
 	 * @param qualifier an NTK qualifier (optional)
 	 * @return a valid object
 	 */
-	private IndividualValue testConstructor(boolean expectFailure, String value, String id, String idReference,
+	private IndividualValue getInstance(String message, String value, String id, String idReference,
 		String qualifier) {
+		boolean expectFailure = !Util.isEmpty(message);
 		IndividualValue component = null;
 		try {
 			component = new IndividualValue(value, id, idReference, qualifier, SecurityAttributesTest.getFixture());
@@ -112,6 +115,7 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -146,9 +150,9 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
 				IndividualValue.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -158,13 +162,13 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildElement(ntkPrefix, IndividualValue.getName(version), version.getNtkNamespace(),
 				TEST_VALUE);
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -173,10 +177,10 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
+			getInstance(SUCCESS, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, TEST_VALUE, null, null, null);
+			getInstance(SUCCESS, TEST_VALUE, null, null, null);
 		}
 	}
 
@@ -188,7 +192,7 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 			// Missing security attributes
 			Element element = Util.buildElement(ntkPrefix, IndividualValue.getName(version), version.getNtkNamespace(),
 				TEST_VALUE);
-			testConstructor(WILL_FAIL, element);
+			getInstance("classification is required.", element);
 		}
 	}
 
@@ -202,7 +206,7 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}
@@ -212,11 +216,11 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			IndividualValue component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			IndividualValue component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// No value
-			component = testConstructor(WILL_SUCCEED, null, null, null, null);
+			component = getInstance(SUCCESS, null, null, null, null);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A ntk:AccessIndividualValue element was found with no value.";
 			String locator = "ntk:AccessIndividualValue";
@@ -228,8 +232,8 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			IndividualValue elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			IndividualValue dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE,
+			IndividualValue elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			IndividualValue dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE,
 				TEST_QUALIFIER);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -240,19 +244,19 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			IndividualValue elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			IndividualValue dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_ID, TEST_ID_REFERENCE,
+			IndividualValue elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			IndividualValue dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_ID, TEST_ID_REFERENCE,
 				TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, DIFFERENT_VALUE, TEST_ID_REFERENCE,
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, DIFFERENT_VALUE, TEST_ID_REFERENCE,
 				TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, DIFFERENT_VALUE, TEST_QUALIFIER);
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ID, DIFFERENT_VALUE, TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, DIFFERENT_VALUE);
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -261,11 +265,11 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			IndividualValue component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			IndividualValue component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -275,10 +279,10 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			IndividualValue component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			IndividualValue component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -287,7 +291,7 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			IndividualValue component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			IndividualValue component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			IndividualValue.Builder builder = new IndividualValue.Builder(component);
@@ -305,7 +309,7 @@ public class IndividualValueTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "classification is required.");
 			}
 			builder.getSecurityAttributes().setClassification("U");
 			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));

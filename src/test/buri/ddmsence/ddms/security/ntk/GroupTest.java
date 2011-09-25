@@ -72,12 +72,13 @@ public class GroupTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private Group testConstructor(boolean expectFailure, Element element) {
+	private Group getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Group component = null;
 		try {
 			component = new Group(element);
@@ -85,6 +86,7 @@ public class GroupTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -92,11 +94,12 @@ public class GroupTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param systemName the system (required)
 	 * @param values the values (1 required)
 	 */
-	private Group testConstructor(boolean expectFailure, SystemName systemName, List<GroupValue> values) {
+	private Group getInstance(String message, SystemName systemName, List<GroupValue> values) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Group component = null;
 		try {
 			component = new Group(systemName, values, SecurityAttributesTest.getFixture());
@@ -104,6 +107,7 @@ public class GroupTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -139,9 +143,9 @@ public class GroupTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, Group
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, Group
 				.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -150,7 +154,7 @@ public class GroupTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 		}
 	}
 
@@ -159,7 +163,7 @@ public class GroupTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), GroupValueTest.getFixtureList());
+			getInstance(SUCCESS, SystemNameTest.getFixture(), GroupValueTest.getFixtureList());
 		}
 	}
 
@@ -173,20 +177,20 @@ public class GroupTest extends AbstractComponentTestCase {
 			for (GroupValue value : GroupValueTest.getFixtureList())
 				element.appendChild(value.getXOMElementCopy());
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
+			getInstance("systemName is required.", element);
 
 			// Missing groupValue
 			element = Util.buildElement(ntkPrefix, Group.getName(version), version.getNtkNamespace(), null);
 			element.appendChild(SystemNameTest.getFixture().getXOMElementCopy());
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
+			getInstance("At least one group value is required.", element);
 
 			// Missing security attributes
 			element = Util.buildElement(ntkPrefix, Group.getName(version), version.getNtkNamespace(), null);
 			element.appendChild(SystemNameTest.getFixture().getXOMElementCopy());
 			for (GroupValue value : GroupValueTest.getFixtureList())
 				element.appendChild(value.getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("classification is required.", element);
 		}
 	}
 
@@ -195,10 +199,10 @@ public class GroupTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing systemName
-			testConstructor(WILL_FAIL, null, GroupValueTest.getFixtureList());
+			getInstance("systemName is required.", null, GroupValueTest.getFixtureList());
 
 			// Missing groupValue
-			testConstructor(WILL_FAIL, SystemNameTest.getFixture(), null);
+			getInstance("At least one group value is required.", SystemNameTest.getFixture(), null);
 
 			// Missing security attributes
 			try {
@@ -206,7 +210,7 @@ public class GroupTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}
@@ -216,7 +220,7 @@ public class GroupTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			Group component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Group component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -225,8 +229,8 @@ public class GroupTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Group elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Group dataComponent = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), GroupValueTest
+			Group elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Group dataComponent = getInstance(SUCCESS, SystemNameTest.getFixture(), GroupValueTest
 				.getFixtureList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -237,14 +241,14 @@ public class GroupTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Group elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Group dataComponent = testConstructor(WILL_SUCCEED, new SystemName("MDR", null, null, null,
+			Group elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Group dataComponent = getInstance(SUCCESS, new SystemName("MDR", null, null, null,
 				SecurityAttributesTest.getFixture()), GroupValueTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			List<GroupValue> list = new ArrayList<GroupValue>();
 			list.add(new GroupValue("newUser", null, null, null, SecurityAttributesTest.getFixture()));
-			dataComponent = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), list);
+			dataComponent = getInstance(SUCCESS, SystemNameTest.getFixture(), list);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -253,11 +257,11 @@ public class GroupTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Group component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Group component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), GroupValueTest.getFixtureList());
+			component = getInstance(SUCCESS, SystemNameTest.getFixture(), GroupValueTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -267,10 +271,10 @@ public class GroupTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Group component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Group component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, SystemNameTest.getFixture(), GroupValueTest.getFixtureList());
+			component = getInstance(SUCCESS, SystemNameTest.getFixture(), GroupValueTest.getFixtureList());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -279,7 +283,7 @@ public class GroupTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Group component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Group component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			Group.Builder builder = new Group.Builder(component);
@@ -307,7 +311,7 @@ public class GroupTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "At least one group value is required.");
 			}
 		}
 	}

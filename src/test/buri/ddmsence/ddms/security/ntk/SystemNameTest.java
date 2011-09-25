@@ -64,12 +64,13 @@ public class SystemNameTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private SystemName testConstructor(boolean expectFailure, Element element) {
+	private SystemName getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		SystemName component = null;
 		try {
 			component = new SystemName(element);
@@ -77,6 +78,7 @@ public class SystemNameTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -84,15 +86,16 @@ public class SystemNameTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param value the value of the element's child text
 	 * @param id the NTK ID (optional)
 	 * @param idReference a reference to an NTK ID (optional)
 	 * @param qualifier an NTK qualifier (optional)
 	 * @return a valid object
 	 */
-	private SystemName testConstructor(boolean expectFailure, String value, String id, String idReference,
+	private SystemName getInstance(String message, String value, String id, String idReference,
 		String qualifier) {
+		boolean expectFailure = !Util.isEmpty(message);
 		SystemName component = null;
 		try {
 			component = new SystemName(value, id, idReference, qualifier, SecurityAttributesTest.getFixture());
@@ -100,6 +103,7 @@ public class SystemNameTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -134,9 +138,9 @@ public class SystemNameTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
 				SystemName.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -146,13 +150,13 @@ public class SystemNameTest extends AbstractComponentTestCase {
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(),
 				TEST_VALUE);
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -161,10 +165,10 @@ public class SystemNameTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
+			getInstance(SUCCESS, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, TEST_VALUE, null, null, null);
+			getInstance(SUCCESS, TEST_VALUE, null, null, null);
 		}
 	}
 
@@ -177,11 +181,11 @@ public class SystemNameTest extends AbstractComponentTestCase {
 			Element element = Util
 				.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
+			getInstance("\"\" is not a valid NMTOKEN.", element);
 
 			// Missing security attributes
 			element = Util.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(), TEST_VALUE);
-			testConstructor(WILL_FAIL, element);
+			getInstance("classification is required.", element);
 		}
 	}
 
@@ -190,7 +194,7 @@ public class SystemNameTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing value
-			testConstructor(WILL_FAIL, null, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
+			getInstance("\"\" is not a valid NMTOKEN.", null, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
 
 			// Missing security attributes
 			try {
@@ -198,7 +202,7 @@ public class SystemNameTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}
@@ -208,7 +212,7 @@ public class SystemNameTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			SystemName component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			SystemName component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -217,8 +221,8 @@ public class SystemNameTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			SystemName elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			SystemName dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE,
+			SystemName elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			SystemName dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE,
 				TEST_QUALIFIER);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -229,19 +233,19 @@ public class SystemNameTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			SystemName elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			SystemName dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_ID, TEST_ID_REFERENCE,
+			SystemName elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			SystemName dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_ID, TEST_ID_REFERENCE,
 				TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, DIFFERENT_VALUE, TEST_ID_REFERENCE,
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, DIFFERENT_VALUE, TEST_ID_REFERENCE,
 				TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, DIFFERENT_VALUE, TEST_QUALIFIER);
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ID, DIFFERENT_VALUE, TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, DIFFERENT_VALUE);
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -250,11 +254,11 @@ public class SystemNameTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			SystemName component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			SystemName component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -264,10 +268,10 @@ public class SystemNameTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			SystemName component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			SystemName component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -276,7 +280,7 @@ public class SystemNameTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			SystemName component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			SystemName component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			SystemName.Builder builder = new SystemName.Builder(component);
@@ -294,7 +298,7 @@ public class SystemNameTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "classification is required.");
 			}
 			builder.getSecurityAttributes().setClassification("U");
 			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
