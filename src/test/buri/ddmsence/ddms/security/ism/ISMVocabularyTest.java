@@ -96,6 +96,14 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_NON_US_CONTROLS, "ATOMAL"));
 				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_NON_US_CONTROLS, "unknown"));
 			}
+			
+			if (version.isAtLeast("4.0")) {
+				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_NOTICE_TYPE, "ABC"));
+				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_NOTICE_TYPE, "unknown"));
+				
+				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_POC_TYPE, "ABC"));
+				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_POC_TYPE, "unknown"));
+			}
 		}
 	}
 
