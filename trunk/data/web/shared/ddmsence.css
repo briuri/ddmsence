@@ -59,14 +59,8 @@ div.newsFeed {
 div.newsUpdate {
 	margin: 2px 5px 2px 5px;
 }
-div.powerTipDivider {
-	background-color: #47a6dc;
-	height: 2px;
-	margin-bottom: 40px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 25px;
-	width: 70%;
+div.upgradeGuide {
+	padding-left: 30px;
 }
 .example {
 	background-color: #f2f2fa;
