@@ -119,7 +119,23 @@ FIX:
 	ddms:relatedResources or ddms:relatedResource elements. However, if you were instantiating RelatedResources or 
 	RelatedResource classes directly, you will need to update your code to stop using the removed class. I will also 
 	be glad to review your code and provide feedback on how it can be upgraded. 
+	
+#########################################################################################################
+Security classification rollup is no longer checked (Issue #165)
 
+SEVERITY: Minor
+DETAILS:
+	Previously, DDMSence would do a basic check to see that security classifications of top-level components
+	were never less restrictive than the resource itself, and checked to see that all classifications used
+	a consistent system (US vs NATO). In DDMS 4.0, classification markings can go much deeper into the object
+	hierarchy, and NATO markings are now handled apart from classifications. Rather than reinvent the wheel
+	here, it would be better to use the ISM Schematron files to correctly and comprehensively manage your
+	security classifications.
+	
+FIX:
+	Validate rollup with the Schematron files that come with each version of ISM. There are instructions
+	in the Power Tip on Schematron validation which show how to use these files with DDMSence.
+	
 #########################################################################################################
 Producer entities and country codes no longer have a parentType (Issue #162)
 
