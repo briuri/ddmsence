@@ -41,7 +41,7 @@ import buri.ddmsence.util.Util;
 public class NoticeTextTest extends AbstractComponentTestCase {
 
 	private static final String TEST_VALUE = "noticeText";
-	private static final List<String> TEST_POC_TYPES = Util.getXsListAsList("DoD-Dist-B");
+	private static final List<String> TEST_POC_TYPES = Util.getXsListAsList("ABC");
 
 	/**
 	 * Constructor
@@ -63,7 +63,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			Element element = Util.buildElement(ismPrefix, NoticeText.getName(version), ismNs, TEST_VALUE);
 			element.addNamespaceDeclaration(ismPrefix, version.getIsmNamespace());
 			SecurityAttributesTest.getFixture().addTo(element);
-			Util.addAttribute(element, ismPrefix, "pocType", ismNs, "DoD-Dist-B");
+			Util.addAttribute(element, ismPrefix, "pocType", ismNs, "ABC");
 			return (element);
 		}
 		catch (InvalidDDMSException e) {
@@ -145,7 +145,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ISM:NoticeText ").append(getXmlnsISM()).append(" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\"");
+		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\"");
 		xml.append(">").append(TEST_VALUE).append("</ISM:NoticeText>");
 		return (xml.toString());
 	}
@@ -190,9 +190,19 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			String ismPrefix = PropertyReader.getPrefix("ism");
 
-			// There are no invalid constructors right now -- every field is optional.
+			// Invalid POCType
+			Element element = Util
+				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
+			Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "Unknown");
+			testConstructor(WILL_FAIL, element);
+
+			// Partial Invalid POCType
+			element = Util.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
+			Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "ABC Unknown");
+			testConstructor(WILL_FAIL, element);
 		}
 	}
 
@@ -200,7 +210,11 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// There are no invalid constructors right now -- every field is optional.
+			// Invalid POCType
+			testConstructor(WILL_FAIL, TEST_VALUE, Util.getXsListAsList("Unknown"));
+			
+			// Partial Invalid POCType
+			testConstructor(WILL_FAIL, TEST_VALUE, Util.getXsListAsList("ABC Unknown"));
 		}
 	}
 
@@ -222,9 +236,17 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			String text = "An ISM:NoticeText element was found with no value.";
 			String locator = "ISM:NoticeText";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			
+			// Invalid POCType with CVEAsWarnings
+			PropertyReader.setProperty("ism.cve.validationAsErrors", "false");
+			component = testConstructor(WILL_SUCCEED, TEST_VALUE, Util.getXsListAsList("Unknown"));
+			assertEquals(1, component.getValidationWarnings().size());
+			text = "Unknown is not a valid enumeration token for this attribute, as specified in CVEnumISMPocType.xml.";
+			locator = "ISM:NoticeText";
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
-
+	
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

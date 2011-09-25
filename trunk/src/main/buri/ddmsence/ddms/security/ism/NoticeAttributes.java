@@ -192,7 +192,6 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	protected void validate() throws InvalidDDMSException {
 		// Should be reviewed as additional versions of DDMS are supported.
 		DDMSVersion version = getDDMSVersion();
-		ISMVocabulary.setDDMSVersion(version);
 		if (version.isAtLeast("4.0") && !Util.isEmpty(getNoticeType()))
 			validateEnumeration(ISMVocabulary.CVE_NOTICE_TYPE, getNoticeType());
 		if (!Util.isEmpty(getNoticeReason()) && getNoticeReason().length() > MAX_LENGTH)

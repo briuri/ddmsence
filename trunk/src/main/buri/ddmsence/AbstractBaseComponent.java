@@ -29,8 +29,10 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.UnsupportedVersionException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.extensible.ExtensibleElement;
+import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -285,6 +287,28 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		if (!getDDMSVersion().isAtLeast(version))
 			throw new InvalidDDMSException("The ddms:" + getName() + " element cannot be used until DDMS " + version
 				+ " or later.");
+	}
+	
+	/**
+	 * Helper method to validate a value from a controlled vocabulary. This is the delegate that handles whether a bad
+	 * validation should result in a warning or error, based on the configurable property,
+	 * "icism.cve.validationAsErrors".
+	 * 
+	 * @param enumerationKey the key of the enumeration
+	 * @param value the test value
+	 * @throws InvalidDDMSException if the value is not and validation should result in errors
+	 */
+	protected void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
+		ISMVocabulary.setDDMSVersion(getDDMSVersion());
+		boolean validationAsErrors = Boolean.valueOf(PropertyReader.getProperty("ism.cve.validationAsErrors"))
+			.booleanValue();
+		if (!ISMVocabulary.enumContains(enumerationKey, value)) {
+			String message = ISMVocabulary.getInvalidMessage(enumerationKey, value);
+			if (validationAsErrors)
+				throw new InvalidDDMSException(message);
+			else
+				addWarning(message);
+		}
 	}
 	
 	/**

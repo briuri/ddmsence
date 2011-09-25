@@ -76,6 +76,7 @@ import buri.ddmsence.util.Util;
  * <li>CVEnumISMNonUSControls.xml: tokens allowed in the "nonUSControls" attribute (starting in DDMS 3.1)</li>
  * <li>CVEnumISMNotice.xml: tokens allowed in the "noticeType" attribute (starting in DDMS 4.0)</li>
  * <li>CVEnumISMOwnerProducer.xml: tokens allowed in the "ownerProducer" attribute</li>
+ * <li>CVEnumISMPocType.xml: tokens allowed in the "pocType" attribute</li>
  * <li>CVEnumISMRelTo.xml: tokens allowed in the "displayOnlyTo" (starting in DDMS 3.1) and "releasableTo" attribute</li>
  * <li>CVEnumISMSAR.xml: tokens allowed in the "SARIdentifier" attribute</li>
  * <li>CVEnumISMSCIControls.xml: tokens allowed in the "SCIcontrols" attribute</li>
@@ -131,6 +132,9 @@ public class ISMVocabulary {
 	/** Filename for the enumerations allowed in an ownerProducer attribute */
 	public static final String CVE_OWNER_PRODUCERS = "CVEnumISMOwnerProducer.xml";
 	
+	/** Filename for the enumerations allowed in a pocType attribute */
+	public static final String CVE_POC_TYPE = "CVEnumISMPocType.xml";
+	
 	/** Filename for the enumerations allowed in a releasableTo attribute */
 	public static final String CVE_RELEASABLE_TO = "CVEnumISMRelTo.xml";
 	
@@ -170,6 +174,7 @@ public class ISMVocabulary {
 		ALL_ENUMS.add(CVE_NON_US_CONTROLS);
 		ALL_ENUMS.add(CVE_NOTICE_TYPE);
 		ALL_ENUMS.add(CVE_OWNER_PRODUCERS);
+		ALL_ENUMS.add(CVE_POC_TYPE);
 		ALL_ENUMS.add(CVE_RELEASABLE_TO);
 		ALL_ENUMS.add(CVE_SAR_IDENTIFIER);
 		ALL_ENUMS.add(CVE_SCI_CONTROLS);
