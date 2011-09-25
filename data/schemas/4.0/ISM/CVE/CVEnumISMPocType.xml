@@ -9,17 +9,18 @@
 	ism:classification="U"
 	ism:DESVersion="5"
 	ism:resourceElement="true"
-	ism:createDate="2010-03-12">
+	ism:createDate="2011-07-18">
 	
-	<!--  This is a fake Notice CVE, used for development purposes. -->
+	<!--  This is a fake POCType CVE, used for development purposes. -->
+	
 	<cve:IRM>
-		<ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:ism:notice:v1"/>
-		<ddms:title ism:ownerProducer="USA" ism:classification="U">CVEnumISMNotice</ddms:title>
-		<ddms:description ism:ownerProducer="USA" ism:classification="U">All currently authorized Notice values</ddms:description>
+		<ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:ism:pocType:v1"/>
+		<ddms:title ism:ownerProducer="USA" ism:classification="U">CVEnumISMPocType</ddms:title>
+		<ddms:description ism:ownerProducer="USA" ism:classification="U">All currently authorized types for ISM-related points-of-contact.</ddms:description>
 		
-		<cve:Created>2010-03-12T11:29:00-04:00</cve:Created>
+		<cve:Created>2011-07-13T14:42:00-04:00</cve:Created>
 		
-		<ddms:source ddms:value="Marking Classified National Security Information Directive No. 1"/>
+		<ddms:source ddms:value="DoD Directive 5230.24"/>
 		<ddms:pointOfContact>
 			<ddms:Organization>
 				<ddms:name>Office IC CIO</ddms:name>

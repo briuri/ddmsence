@@ -435,7 +435,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		// Should be reviewed as additional versions of DDMS are supported.
 		DDMSVersion version = getDDMSVersion();
 		boolean isDDMS20 = "2.0".equals(version.getVersion());
-		ISMVocabulary.setDDMSVersion(version);
 
 		if (!version.isAtLeast("3.1") && !getAtomicEnergyMarkings().isEmpty())
 			throw new InvalidDDMSException("The atomicEnergyMarkings attribute cannot be used until DDMS 3.1 or later.");

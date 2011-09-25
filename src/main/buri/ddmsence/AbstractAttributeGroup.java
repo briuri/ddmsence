@@ -118,6 +118,7 @@ public abstract class AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if the value is not and validation should result in errors
 	 */
 	protected void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
+		ISMVocabulary.setDDMSVersion(getDDMSVersion());
 		boolean validationAsErrors = Boolean.valueOf(PropertyReader.getProperty("ism.cve.validationAsErrors"))
 			.booleanValue();
 		if (!ISMVocabulary.enumContains(enumerationKey, value)) {

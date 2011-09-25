@@ -71,6 +71,7 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	 */
 	protected void tearDown() throws Exception {
 		DDMSVersion.clearCurrentVersion();
+		PropertyReader.setProperty("ism.cve.validationAsErrors", "true");
 	}
 
 	/**

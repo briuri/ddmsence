@@ -3,7 +3,7 @@
 <ddms:security xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" xmlns:ISM="urn:us:gov:ic:ism" ISM:excludeFromRollup="true" ISM:classification="U" ISM:ownerProducer="USA">
 	<ddms:noticeList ISM:classification="U" ISM:ownerProducer="USA">
 		<ISM:Notice ISM:noticeType="ABC" ISM:noticeReason="noticeReason" ISM:noticeDate="2011-09-15" ISM:unregisteredNoticeType="unregisteredNoticeType" ISM:classification="U" ISM:ownerProducer="USA">
-			<ISM:NoticeText ISM:classification="U" ISM:ownerProducer="USA" ISM:pocType="DoD-Dist-B">noticeText</ISM:NoticeText>
+			<ISM:NoticeText ISM:classification="U" ISM:ownerProducer="USA" ISM:pocType="ABC">noticeText</ISM:NoticeText>
 		</ISM:Notice>
 	</ddms:noticeList>
 	<ntk:Access xmlns:ntk="urn:us:gov:ic:ntk" ISM:classification="U" ISM:ownerProducer="USA">

@@ -115,12 +115,13 @@ public final class NoticeText extends AbstractSimpleString {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireQName(getXOMElement(), getDDMSVersion().getIsmNamespace(), NoticeText.getName(getDDMSVersion()));
-		
-		// TBD: Validate against CVE.
-		
+				
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0");
-		
+		if (getDDMSVersion().isAtLeast("4.0")) {
+			for (String pocType : getPocTypes())
+				validateEnumeration(ISMVocabulary.CVE_POC_TYPE, pocType);
+		}
 		super.validate();
 	}
 	
