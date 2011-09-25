@@ -27,10 +27,9 @@ import java.io.InputStream;
 import java.io.LineNumberReader;
 import java.io.Reader;
 
-import junit.framework.TestCase;
-
 import org.xml.sax.SAXException;
 
+import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 
 /**
@@ -39,14 +38,16 @@ import buri.ddmsence.ddms.InvalidDDMSException;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class DDMSReaderTest extends TestCase {
+public class DDMSReaderTest extends AbstractComponentTestCase {
 
 	private DDMSReader _reader;
 
 	public DDMSReaderTest() throws SAXException {
+		super(null);
 		_reader = new DDMSReader();
 	}
 
+	
 	public void testGetElementNullFile() throws InvalidDDMSException {
 		try {
 			getReader().getElement((File) null);
@@ -56,7 +57,7 @@ public class DDMSReaderTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "file is required.");
 		}
 	}
 
@@ -69,7 +70,7 @@ public class DDMSReaderTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "XML string is required.");
 		}
 	}
 
@@ -82,7 +83,7 @@ public class DDMSReaderTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "input stream is required.");
 		}
 	}
 
@@ -95,7 +96,7 @@ public class DDMSReaderTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "reader is required.");
 		}
 	}
 
@@ -105,7 +106,7 @@ public class DDMSReaderTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IOException e) {
-			// Good
+			expectMessage(e, "doesnotexist (The system cannot find the file specified)");
 		}
 	}
 
@@ -118,7 +119,7 @@ public class DDMSReaderTest extends TestCase {
 			fail("Should have thrown an InvalidDDMSException");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "nu.xom.ValidityException: cvc-elt.1: Cannot find the declaration of element 'wrong'. at line 1, column 8");
 		}
 	}
 
@@ -128,7 +129,7 @@ public class DDMSReaderTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IOException e) {
-			// Good
+			expectMessage(e, "doesnotexist (The system cannot find the file specified)");
 		}
 	}
 
@@ -138,7 +139,7 @@ public class DDMSReaderTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IOException e) {
-			// Good
+			expectMessage(e, "doesnotexist (The system cannot find the file specified)");
 		}
 	}
 
@@ -148,7 +149,7 @@ public class DDMSReaderTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "nu.xom.ParsingException: Content is not allowed in prolog. at line 1, column 1");
 		}
 	}
 
@@ -179,7 +180,7 @@ public class DDMSReaderTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "Unexpected namespace URI and local name encountered: ddms:rights");
 		}
 	}
 

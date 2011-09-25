@@ -19,7 +19,7 @@
  */
 package buri.ddmsence.util;
 
-import junit.framework.TestCase;
+import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.UnsupportedVersionException;
 
 /**
@@ -28,8 +28,12 @@ import buri.ddmsence.ddms.UnsupportedVersionException;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class DDMSVersionTest extends TestCase {
+public class DDMSVersionTest extends AbstractComponentTestCase {
 
+	public DDMSVersionTest() {
+		super(null);
+	}
+	
 	/**
 	 * Resets the in-use version of DDMS.
 	 */
@@ -50,7 +54,7 @@ public class DDMSVersionTest extends TestCase {
 			fail("Allowed unsupported version.");
 		}
 		catch (UnsupportedVersionException e) {
-			// Good
+			expectMessage(e, "Version 1.4 of DDMS is not yet supported.");
 		}
 	}
 
@@ -68,7 +72,7 @@ public class DDMSVersionTest extends TestCase {
 			fail("Allowed unsupported version.");
 		}
 		catch (UnsupportedVersionException e) {
-			// Good
+			expectMessage(e, "Version for XML namespace http://metadata.dod.mil/mdr/ns/DDMS/1.4/ of DDMS is not yet supported.");
 		}
 	}
 
@@ -81,7 +85,7 @@ public class DDMSVersionTest extends TestCase {
 			fail("Allowed unsupported version.");
 		}
 		catch (UnsupportedVersionException e) {
-			// Good
+			expectMessage(e, "Version for XML namespace http://www.opengis.net/gml/3.2.1 of DDMS is not yet supported.");
 		}
 	}
 
@@ -92,7 +96,7 @@ public class DDMSVersionTest extends TestCase {
 			fail("Allowed unsupported version.");
 		}
 		catch (UnsupportedVersionException e) {
-			// Good
+			expectMessage(e, "Version for XML namespace urn:us:gov:ic:ntk:v2 of DDMS is not yet supported.");
 		}
 	}
 
@@ -125,7 +129,7 @@ public class DDMSVersionTest extends TestCase {
 			fail("Allowed unsupported version.");
 		}
 		catch (UnsupportedVersionException e) {
-			// Good
+			expectMessage(e, "Version 1.4 of DDMS is not yet supported.");
 		}
 	}
 
@@ -192,7 +196,7 @@ public class DDMSVersionTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (UnsupportedVersionException e) {
-			// Good
+			expectMessage(e, "Version dog of DDMS is not yet supported.");
 		}
 	}
 }
