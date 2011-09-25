@@ -85,12 +85,13 @@ public class NoticeListTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private NoticeList testConstructor(boolean expectFailure, Element element) {
+	private NoticeList getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		NoticeList component = null;
 		try {
 			component = new NoticeList(element);
@@ -98,6 +99,7 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -105,11 +107,12 @@ public class NoticeListTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param notices the notices (at least 1 required)
 	 * @return a valid object
 	 */
-	private NoticeList testConstructor(boolean expectFailure, List<Notice> notices) {
+	private NoticeList getInstance(String message, List<Notice> notices) {
+		boolean expectFailure = !Util.isEmpty(message);
 		NoticeList component = null;
 		try {
 			component = new NoticeList(notices, SecurityAttributesTest.getFixture());
@@ -117,6 +120,7 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -160,9 +164,9 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_DDMS_PREFIX, NoticeList
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX, NoticeList
 				.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -171,7 +175,7 @@ public class NoticeListTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getFixtureElement());
+			getInstance(SUCCESS, getFixtureElement());
 		}
 	}
 
@@ -180,7 +184,7 @@ public class NoticeListTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, NoticeTest.getFixtureList());
+			getInstance(SUCCESS, NoticeTest.getFixtureList());
 		}
 	}
 
@@ -191,7 +195,7 @@ public class NoticeListTest extends AbstractComponentTestCase {
 			// No Notices
 			Element element = new Element(getFixtureElement());
 			element.removeChildren();
-			testConstructor(WILL_FAIL, element);
+			getInstance("At least one ISM:Notice must exist within a ddms:noticeList element.", element);
 		}
 	}
 
@@ -200,7 +204,7 @@ public class NoticeListTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No Notices
-			testConstructor(WILL_FAIL, (List) null);
+			getInstance("At least one ISM:Notice must exist within a ddms:noticeList element.", (List) null);
 
 			// No attributes
 			try {
@@ -208,7 +212,7 @@ public class NoticeListTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}
@@ -218,7 +222,7 @@ public class NoticeListTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			NoticeList component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeList component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -227,8 +231,8 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeList elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			NoticeList dataComponent = testConstructor(WILL_SUCCEED, NoticeTest.getFixtureList());
+			NoticeList elementComponent = getInstance(SUCCESS, getFixtureElement());
+			NoticeList dataComponent = getInstance(SUCCESS, NoticeTest.getFixtureList());
 
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -241,8 +245,8 @@ public class NoticeListTest extends AbstractComponentTestCase {
 
 			List<Notice> list = NoticeTest.getFixtureList();
 			list.add(new Notice(NoticeTest.getFixtureElement()));
-			NoticeList elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			NoticeList dataComponent = testConstructor(WILL_SUCCEED, list);
+			NoticeList elementComponent = getInstance(SUCCESS, getFixtureElement());
+			NoticeList dataComponent = getInstance(SUCCESS, list);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -251,11 +255,11 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeList component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeList component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, NoticeTest.getFixtureList());
+			component = getInstance(SUCCESS, NoticeTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -265,10 +269,10 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeList component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeList component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, NoticeTest.getFixtureList());
+			component = getInstance(SUCCESS, NoticeTest.getFixtureList());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -277,7 +281,7 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeList component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			NoticeList component = getInstance(SUCCESS, getFixtureElement());
 
 			NoticeList.Builder builder = new NoticeList.Builder();
 			assertNull(builder.commit());
