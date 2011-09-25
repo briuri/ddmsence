@@ -28,8 +28,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.TestCase;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.resource.Dates;
@@ -41,8 +41,12 @@ import buri.ddmsence.ddms.resource.Rights;
  * @author Brian Uri!
  * @since 1.9.9
  */
-public class LazyListTest extends TestCase {
+public class LazyListTest extends AbstractComponentTestCase {
 
+	public LazyListTest() {
+		super(null);
+	}
+	
 	public void testSerializableInterface() throws Exception {
 		LazyList list = new LazyList(Dates.Builder.class);
 		list.add(new Dates.Builder());
@@ -193,7 +197,8 @@ public class LazyListTest extends TestCase {
 			fail("Allowed invalid class.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "Cannot instantiate list item because instantiatingClass is invalid: "
+				+ "Class buri.ddmsence.util.LazyList can not access a member of class buri.ddmsence.AbstractBaseComponent with modifiers \"protected\"");
 		}
 
 		list = new LazyList(null, IDDMSComponent.class);
@@ -202,7 +207,7 @@ public class LazyListTest extends TestCase {
 			fail("Allowed invalid class.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "Cannot instantiate list item because instantiatingClass is invalid: buri.ddmsence.ddms.IDDMSComponent");
 		}
 	}
 }

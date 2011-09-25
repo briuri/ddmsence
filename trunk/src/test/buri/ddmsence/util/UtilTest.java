@@ -28,10 +28,10 @@ import java.util.List;
 
 import javax.xml.datatype.DatatypeConstants;
 
-import junit.framework.TestCase;
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
+import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Identifier;
 
@@ -41,10 +41,14 @@ import buri.ddmsence.ddms.resource.Identifier;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class UtilTest extends TestCase {
+public class UtilTest extends AbstractComponentTestCase {
 
 	protected static final String TEST_NAMESPACE = DDMSVersion.getCurrentVersion().getNamespace();
 
+	public UtilTest() {
+		super(null);
+	}
+	
 	/**
 	 * Resets the in-use version of DDMS.
 	 */
@@ -127,7 +131,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "parent element is required.");
 		}
 	}
 
@@ -137,7 +141,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "child name is required.");
 		}
 	}
 
@@ -148,7 +152,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "This method should only be called on an element in the DDMS namespace.");
 		}
 	}
 
@@ -181,7 +185,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "parent element is required.");
 		}
 	}
 
@@ -191,7 +195,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "child name is required.");
 		}
 	}
 
@@ -204,7 +208,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "This method should only be called on an element in the DDMS namespace.");
 		}
 	}
 
@@ -254,7 +258,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "description is required.");
 		}
 	}
 
@@ -264,7 +268,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "description is required.");
 		}
 	}
 
@@ -292,7 +296,9 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "The date datatype must be one of [{http://www.w3.org/2001/XMLSchema}dateTime, "
+				+ "{http://www.w3.org/2001/XMLSchema}gYear, {http://www.w3.org/2001/XMLSchema}gYearMonth, "
+				+ "{http://www.w3.org/2001/XMLSchema}date]");
 		}
 	}
 
@@ -314,7 +320,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "Unexpected namespace URI and local name encountered: ic:name");
 		}
 
 		// Bad Name
@@ -324,7 +330,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "Unexpected namespace URI and local name encountered: ddms:name");
 		}
 	}
 
@@ -355,7 +361,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "Unexpected namespace URI and local name encountered: ic:name");
 		}
 
 		// Bad Name
@@ -365,7 +371,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "Unexpected namespace URI and local name encountered: ddms:name");
 		}
 	}
 
@@ -375,7 +381,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "description is required.");
 		}
 	}
 
@@ -385,7 +391,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "description is required.");
 		}
 	}
 
@@ -407,7 +413,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed illegal argument data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "parent element is required.");
 		}
 	}
 
@@ -420,7 +426,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed illegal argument data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "child name is required.");
 		}
 	}
 
@@ -523,7 +529,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "\"1test\" is not a valid NCName.");
 		}
 	}
 
@@ -533,7 +539,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "\"null\" is not a valid NCName.");
 		}
 	}
 
@@ -543,7 +549,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "\"1TEST\" is not a valid NCName.");
 		}
 	}
 
@@ -553,7 +559,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "\"xmlns:TEST\" is not a valid NCName.");
 		}
 	}
 
@@ -567,7 +573,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "\"null\" is not a valid NMTOKEN.");
 		}
 	}
 
@@ -593,7 +599,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "Invalid URI (Expected scheme name at index 0: :::::)");
 		}
 	}
 
@@ -603,7 +609,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "uri is required.");
 		}
 	}
 
@@ -613,7 +619,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "A longitude value must be between -180 and 180 degrees: null");
 		}
 	}
 
@@ -621,12 +627,16 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireValidLongitude(new Double(-181));
 			fail("Allowed invalid data.");
-
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "A longitude value must be between -180 and 180 degrees: -181.0");
+		}
+		try {
 			Util.requireValidLongitude(new Double(181));
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "A longitude value must be between -180 and 180 degrees: 181.0");
 		}
 	}
 
@@ -640,7 +650,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "A latitude value must be between -90 and 90 degrees: null");
 		}
 	}
 
@@ -648,12 +658,16 @@ public class UtilTest extends TestCase {
 		try {
 			Util.requireValidLatitude(new Double(-91));
 			fail("Allowed invalid data.");
-
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "A latitude value must be between -90 and 90 degrees: -91.0");
+		}
+		try {
 			Util.requireValidLatitude(new Double(91));
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "A latitude value must be between -90 and 90 degrees: 91.0");
 		}
 	}
 
@@ -667,7 +681,7 @@ public class UtilTest extends TestCase {
 			fail("Did not stop on bad range.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "Invalid number range: 10 to 0");
 		}
 	}
 
@@ -701,7 +715,7 @@ public class UtilTest extends TestCase {
 			fail("Did not stop on bad data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "Null lists cannot be compared.");
 		}
 	}
 
@@ -800,7 +814,7 @@ public class UtilTest extends TestCase {
 			fail("Method allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "name is required.");
 		}
 	}
 
@@ -856,7 +870,7 @@ public class UtilTest extends TestCase {
 			fail("Method allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "name is required.");
 		}
 	}
 
@@ -866,7 +880,7 @@ public class UtilTest extends TestCase {
 			fail("Method allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "value is required.");
 		}
 	}
 
@@ -887,7 +901,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "A child component, ddms:identifier, is using a different version of DDMS from its parent.");
 		}
 	}
 
@@ -953,7 +967,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "input stream is required.");
 		}
 
 		try {
@@ -961,7 +975,7 @@ public class UtilTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IOException e) {
-			// Good
+			expectMessage(e, "Content is not allowed in prolog.");
 		}
 	}
 

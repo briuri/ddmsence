@@ -21,7 +21,7 @@ package buri.ddmsence.util;
 
 import java.util.List;
 
-import junit.framework.TestCase;
+import buri.ddmsence.AbstractComponentTestCase;
 
 /**
  * A collection of PropertyReader tests.
@@ -29,8 +29,12 @@ import junit.framework.TestCase;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class PropertyReaderTest extends TestCase {
+public class PropertyReaderTest extends AbstractComponentTestCase {
 
+	public PropertyReaderTest() {
+		super(null);
+	}
+	
 	/**
 	 * Resets the in-use prefix for DDMS.
 	 */
@@ -51,7 +55,7 @@ public class PropertyReaderTest extends TestCase {
 			fail("Did not prevent invalid property.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "Undefined Property: buri.ddmsence.unknown.property");
 		}
 	}
 
@@ -67,7 +71,7 @@ public class PropertyReaderTest extends TestCase {
 			fail("Did not prevent invalid property name.");
 		}
 		catch (IllegalArgumentException e) {
-			// Good
+			expectMessage(e, "unknown.property is not a configurable property.");
 		}
 	}
 
