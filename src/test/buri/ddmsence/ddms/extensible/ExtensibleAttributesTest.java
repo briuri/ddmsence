@@ -29,6 +29,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.summary.Keyword;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.Util;
 
 /**
  * <p>Tests related to the extensible attributes themselves. How they interact with parent classes is tested in those
@@ -68,12 +69,13 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private ExtensibleAttributes testConstructor(boolean expectFailure, Element element) {
+	private ExtensibleAttributes getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		ExtensibleAttributes attributes = null;
 		try {
 			attributes = new ExtensibleAttributes(element);
@@ -81,6 +83,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (attributes);
 	}
@@ -88,11 +91,12 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param attributes a list of attributes (optional)
 	 * @return a valid object
 	 */
-	private ExtensibleAttributes testConstructor(boolean expectFailure, List<Attribute> attributes) {
+	private ExtensibleAttributes getInstance(String message, List<Attribute> attributes) {
+		boolean expectFailure = !Util.isEmpty(message);
 		ExtensibleAttributes exAttributes = null;
 		try {
 			exAttributes = new ExtensibleAttributes(attributes);
@@ -100,6 +104,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (exAttributes);
 	}
@@ -120,11 +125,11 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			// All fields
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 
 			// No optional fields
 			element = new Keyword("testValue", null).getXOMElementCopy();
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -135,10 +140,10 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			// All fields
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(new Attribute(TEST_ATTRIBUTE));
-			testConstructor(WILL_SUCCEED, attributes);
+			getInstance(SUCCESS, attributes);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, (List<Attribute>) null);
+			getInstance(SUCCESS, (List<Attribute>) null);
 		}
 	}
 
@@ -162,8 +167,8 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			// No warnings
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			testConstructor(WILL_SUCCEED, element);
-			ExtensibleAttributes component = testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
+			ExtensibleAttributes component = getInstance(SUCCESS, element);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -174,11 +179,11 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
+			ExtensibleAttributes elementAttributes = getInstance(SUCCESS, element);
 
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes dataAttributes = testConstructor(WILL_SUCCEED, attributes);
+			ExtensibleAttributes dataAttributes = getInstance(SUCCESS, attributes);
 
 			assertEquals(elementAttributes, dataAttributes);
 			assertEquals(elementAttributes.hashCode(), dataAttributes.hashCode());
@@ -190,10 +195,10 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
+			ExtensibleAttributes elementAttributes = getInstance(SUCCESS, element);
 			assertFalse(elementAttributes.isEmpty());
 
-			ExtensibleAttributes dataAttributes = testConstructor(WILL_SUCCEED, (List<Attribute>) null);
+			ExtensibleAttributes dataAttributes = getInstance(SUCCESS, (List<Attribute>) null);
 			assertTrue(dataAttributes.isEmpty());
 		}
 	}
@@ -203,13 +208,13 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
+			ExtensibleAttributes elementAttributes = getInstance(SUCCESS, element);
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(new Attribute("essence:confidence", "http://essence/", "test"));
-			ExtensibleAttributes dataAttributes = testConstructor(WILL_SUCCEED, attributes);
+			ExtensibleAttributes dataAttributes = getInstance(SUCCESS, attributes);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			dataAttributes = testConstructor(WILL_SUCCEED, (List<Attribute>) null);
+			dataAttributes = getInstance(SUCCESS, (List<Attribute>) null);
 			assertFalse(elementAttributes.equals(dataAttributes));
 		}
 	}
@@ -219,7 +224,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
+			ExtensibleAttributes elementAttributes = getInstance(SUCCESS, element);
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementAttributes.equals(wrongComponent));
 		}
@@ -230,13 +235,13 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes elementAttributes = testConstructor(WILL_SUCCEED, element);
+			ExtensibleAttributes elementAttributes = getInstance(SUCCESS, element);
 			assertEquals(getExpectedOutput(true), elementAttributes.getOutput(true, ""));
 			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, ""));
 
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(new Attribute(TEST_ATTRIBUTE));
-			elementAttributes = testConstructor(WILL_SUCCEED, attributes);
+			elementAttributes = getInstance(SUCCESS, attributes);
 			assertEquals(getExpectedOutput(true), elementAttributes.getOutput(true, ""));
 			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, ""));
 		}
@@ -247,7 +252,7 @@ public class ExtensibleAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes component = testConstructor(WILL_SUCCEED, element);
+			ExtensibleAttributes component = getInstance(SUCCESS, element);
 
 			// Equality after Building
 			ExtensibleAttributes.Builder builder = new ExtensibleAttributes.Builder(component);

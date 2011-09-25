@@ -59,12 +59,13 @@ public class ExtentTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private Extent testConstructor(boolean expectFailure, Element element) {
+	private Extent getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Extent component = null;
 		try {
 			component = new Extent(element);
@@ -72,6 +73,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -79,12 +81,13 @@ public class ExtentTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param qualifier the qualifier value
 	 * @param value the value
 	 * @return a valid object
 	 */
-	private Extent testConstructor(boolean expectFailure, String qualifier, String value) {
+	private Extent getInstance(String message, String qualifier, String value) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Extent component = null;
 		try {
 			component = new Extent(qualifier, value);
@@ -92,6 +95,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -120,9 +124,9 @@ public class ExtentTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				Extent.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -131,11 +135,11 @@ public class ExtentTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(Extent.getName(version), null);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -144,10 +148,10 @@ public class ExtentTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, "", "");
+			getInstance(SUCCESS, "", "");
 		}
 	}
 
@@ -158,13 +162,13 @@ public class ExtentTest extends AbstractComponentTestCase {
 			// Missing qualifier
 			Element element = Util.buildDDMSElement(Extent.getName(version), null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
-			testConstructor(WILL_FAIL, element);
+			getInstance("qualifier attribute is required.", element);
 
 			// Qualifier not URI
 			element = Util.buildDDMSElement(Extent.getName(version), null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			Util.addDDMSAttribute(element, "qualifier", INVALID_URI);
-			testConstructor(WILL_FAIL, element);
+			getInstance("Invalid URI (Expected scheme name at index 0: :::::)", element);
 		}
 	}
 
@@ -173,10 +177,10 @@ public class ExtentTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing qualifier
-			testConstructor(WILL_FAIL, null, TEST_VALUE);
+			getInstance("qualifier attribute is required.", null, TEST_VALUE);
 
 			// Qualifier not URI
-			testConstructor(WILL_FAIL, INVALID_URI, TEST_VALUE);
+			getInstance("Invalid URI (Expected scheme name at index 0: :::::)", INVALID_URI, TEST_VALUE);
 		}
 	}
 
@@ -186,13 +190,13 @@ public class ExtentTest extends AbstractComponentTestCase {
 			String extentName = Extent.getName(version);
 
 			// No warnings
-			Extent component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Extent component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Qualifier without value
 			Element element = Util.buildDDMSElement(extentName, null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
-			component = testConstructor(WILL_SUCCEED, element);
+			component = getInstance(SUCCESS, element);
 			assertEquals(1, component.getValidationWarnings().size());
 
 			String text = "A qualifier has been set without an accompanying value attribute.";
@@ -201,7 +205,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 
 			// Neither attribute
 			element = Util.buildDDMSElement(extentName, null);
-			component = testConstructor(WILL_SUCCEED, element);
+			component = getInstance(SUCCESS, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			text = "A completely empty ddms:extent element was found.";
 			locator = "ddms:extent";
@@ -213,8 +217,8 @@ public class ExtentTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Extent elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Extent dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			Extent elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Extent dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -224,11 +228,11 @@ public class ExtentTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Extent elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Extent dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_VALUE);
+			Extent elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Extent dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, DIFFERENT_VALUE);
+			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -237,11 +241,11 @@ public class ExtentTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Extent component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Extent component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -251,10 +255,10 @@ public class ExtentTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Extent component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Extent component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -264,7 +268,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Equality after Building
-			Extent component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Extent component = getInstance(SUCCESS, getValidElement(sVersion));
 			Extent.Builder builder = new Extent.Builder(component);
 			assertEquals(builder.commit(), component);
 
@@ -280,7 +284,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "qualifier attribute is required.");
 			}
 			builder.setQualifier(TEST_QUALIFIER);
 			builder.commit();

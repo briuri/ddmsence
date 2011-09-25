@@ -50,6 +50,7 @@ public abstract class AbstractComponentTestCase extends TestCase {
 
 	protected static final String TEST_ID = "IDValue";
 
+	protected static final String SUCCESS = "";
 	protected static final boolean WILL_SUCCEED = false;
 	protected static final boolean WILL_FAIL = true;
 	protected static final String INVALID_URI = ":::::";
@@ -105,6 +106,21 @@ public abstract class AbstractComponentTestCase extends TestCase {
 
 	}
 
+	/**
+	 * Convenience method to fail a test if the wrong error message comes back. This addresses cases where a test is no
+	 * longer failing for the reason we expect it to be failing.
+	 * 
+	 * @param e the exception
+	 * @param message the expected message.
+	 */
+	protected void expectMessage(Exception e, String message) {
+		if (!message.equals(e.getMessage())) {
+			System.out.println(DDMSVersion.getCurrentVersion());
+			System.out.println(e.getMessage());
+			fail("Test failed for the wrong reason.");
+		}
+	}
+	
 	/**
 	 * Convenience method to create a XOM element which is not a valid DDMS component because of an incorrect name.
 	 */

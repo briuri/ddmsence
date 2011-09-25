@@ -22,8 +22,8 @@ package buri.ddmsence.ddms;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
 import nu.xom.Element;
+import buri.ddmsence.AbstractComponentTestCase;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.resource.Creator;
@@ -37,10 +37,29 @@ import buri.ddmsence.util.Util;
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class RoleEntityTest extends TestCase {
+public class RoleEntityTest extends AbstractComponentTestCase {
 
+	public RoleEntityTest() {
+		super(null);
+	}
+	
 	private static final String TEST_POC_TYPE = "ICD-710";
 
+	/**
+	 * Convenience method to fail a test if the wrong error message comes back. This addresses cases where a test is no
+	 * longer failing for the reason we expect it to be failing.
+	 * 
+	 * @param e the exception
+	 * @param message the expected message.
+	 */
+	protected void expectMessage(Exception e, String message) {
+		if (!message.equals(e.getMessage())) {
+			System.out.println(DDMSVersion.getCurrentVersion());
+			System.out.println(e.getMessage());
+			fail("Test failed for the wrong reason.");
+		}
+	}
+	
 	/**
 	 * Helper method to generate a POCType for producers
 	 */
@@ -57,7 +76,7 @@ public class RoleEntityTest extends TestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "A child component, ddms:Organization, is using a different version of DDMS from its parent.");
 		}
 	}
 
