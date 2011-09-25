@@ -59,12 +59,13 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private ExtensibleElement testConstructor(boolean expectFailure, Element element) {
+	private ExtensibleElement getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		ExtensibleElement component = null;
 		try {
 			component = new ExtensibleElement(element);
@@ -72,6 +73,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -90,7 +92,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), TEST_PREFIX, TEST_NAME);
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), TEST_PREFIX, TEST_NAME);
 		}
 	}
 
@@ -98,7 +100,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getFixtureElement());
+			getInstance(SUCCESS, getFixtureElement());
 		}
 	}
 
@@ -107,7 +109,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Using the DDMS namespace
 			Element element = Util.buildDDMSElement("name", null);
-			testConstructor(WILL_FAIL, element);
+			getInstance("Extensible elements cannot be defined in the DDMS namespace.", element);
 		}
 	}
 
@@ -115,7 +117,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			ExtensibleElement component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			ExtensibleElement component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -123,11 +125,11 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
+			ExtensibleElement elementComponent = getInstance(SUCCESS, getFixtureElement());
 
 			Element element = Util.buildElement(TEST_PREFIX, TEST_NAME, TEST_NAMESPACE,
 				"This is an extensible element.");
-			ExtensibleElement dataComponent = testConstructor(WILL_SUCCEED, element);
+			ExtensibleElement dataComponent = getInstance(SUCCESS, element);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -136,10 +138,10 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
+			ExtensibleElement elementComponent = getInstance(SUCCESS, getFixtureElement());
 			Element element = Util.buildElement(TEST_PREFIX, "newName", TEST_NAMESPACE,
 				"This is an extensible element.");
-			ExtensibleElement dataComponent = testConstructor(WILL_SUCCEED, element);
+			ExtensibleElement dataComponent = getInstance(SUCCESS, element);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -147,7 +149,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			ExtensibleElement component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals("", component.toHTML());
 			assertEquals("", component.toText());
 		}
@@ -156,7 +158,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			ExtensibleElement component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -164,7 +166,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 	public void testBuilder() throws SAXException, IOException, InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			ExtensibleElement component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			ExtensibleElement component = getInstance(SUCCESS, getFixtureElement());
 
 			// Equality after Building
 			ExtensibleElement.Builder builder = new ExtensibleElement.Builder(component);
@@ -185,7 +187,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "Could not create a valid element from XML string: Content is not allowed in prolog.");
 			}
 			builder.setXml(getExpectedXMLOutput());
 			builder.commit();
