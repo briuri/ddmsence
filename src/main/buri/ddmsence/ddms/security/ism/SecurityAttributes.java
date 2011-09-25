@@ -407,7 +407,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * <li>The compliesWith attribute cannot be used until DDMS 3.1 or later.</li>
 	 * <li>If set, the compliesWith attribute must be valid tokens.</li>
 	 * <li>The compilationReason attribute cannot be used until DDMS 3.0 or later.</li>
-	 * <li>The dateOfExemptedSource attribute can only be used until DDMS 3.1 or later.</li>
+	 * <li>The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0</li>
 	 * <li>If set, the dateOfExemptedSource attribute is a valid xs:date value.</li>
 	 * <li>If set, the declassDate attribute is a valid xs:date value.</li>
 	 * <li>If set, the declassException attribute must be a valid token.</li>
@@ -450,9 +450,9 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);
 		if (!version.isAtLeast("3.0") && !Util.isEmpty(getCompilationReason()))
 			throw new InvalidDDMSException("The compilationReason attribute cannot be used until DDMS 3.0 or later.");
-		if (!!version.isAtLeast("3.1") && getDateOfExemptedSource() != null)
+		if (version.isAtLeast("3.1") && getDateOfExemptedSource() != null)
 			throw new InvalidDDMSException(
-				"The dateOfExemptedSource attribute can only be used until DDMS 3.1 or later.");
+				"The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0.");
 		if (getDateOfExemptedSource() != null
 			&& !getDateOfExemptedSource().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException(
