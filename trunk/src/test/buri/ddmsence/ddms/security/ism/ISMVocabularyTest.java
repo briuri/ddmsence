@@ -129,15 +129,6 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 		assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, "CTS"));
 	}
 
-	public void testGetClassificationIndex() {
-		assertEquals(-1, ISMVocabulary.getClassificationIndex("SuperSecret"));
-		assertEquals(1, ISMVocabulary.getClassificationIndex("R"));
-		assertEquals(7, ISMVocabulary.getClassificationIndex("CTS-BALK"));
-		assertEquals(7, ISMVocabulary.getClassificationIndex("CTS-B"));
-		assertTrue(ISMVocabulary.getClassificationIndex("TS") > ISMVocabulary.getClassificationIndex("C"));
-		assertTrue(ISMVocabulary.getClassificationIndex("CTS") > ISMVocabulary.getClassificationIndex("NU"));
-	}
-
 	public void testInvalidMessage() {
 		assertEquals("Dog is not a valid enumeration token for this attribute, as specified in Cat.", ISMVocabulary
 			.getInvalidMessage("Cat", "Dog"));

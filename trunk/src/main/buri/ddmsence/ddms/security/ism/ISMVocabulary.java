@@ -43,7 +43,6 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -179,28 +178,6 @@ public class ISMVocabulary {
 		ALL_ENUMS.add(CVE_SAR_IDENTIFIER);
 		ALL_ENUMS.add(CVE_SCI_CONTROLS);
 		ALL_ENUMS.add(CVE_TYPE_EXEMPTED_SOURCE);
-	}
-	
-	private static final List<String> ORDERED_BASE_CLASSIFICATIONS = new ArrayList<String>();
-	static {
-		ORDERED_BASE_CLASSIFICATIONS.add("U");
-		ORDERED_BASE_CLASSIFICATIONS.add("R");
-		ORDERED_BASE_CLASSIFICATIONS.add("C");
-		ORDERED_BASE_CLASSIFICATIONS.add("S");
-		ORDERED_BASE_CLASSIFICATIONS.add("TS");
-	}
-	
-	private static final List<String> ORDERED_NATO_CLASSIFICATIONS = new ArrayList<String>();
-	static {		
-		ORDERED_NATO_CLASSIFICATIONS.add("NU");
-		ORDERED_NATO_CLASSIFICATIONS.add("NR");
-		ORDERED_NATO_CLASSIFICATIONS.add("NC");
-		ORDERED_NATO_CLASSIFICATIONS.add("NCA");
-		ORDERED_NATO_CLASSIFICATIONS.add("NS");
-		ORDERED_NATO_CLASSIFICATIONS.add("NSAT");	
-		ORDERED_NATO_CLASSIFICATIONS.add("CTS");
-		ORDERED_NATO_CLASSIFICATIONS.add("CTS-?");
-		ORDERED_NATO_CLASSIFICATIONS.add("CTSA");
 	}
 	
 	private static final Map<String, Map<String, Set<String>>> LOCATION_TO_ENUM_TOKENS
@@ -357,25 +334,6 @@ public class ISMVocabulary {
 	}
 	
 	/**
-	 * Returns an index which can be used to determine how restrictive a marking is (with lower numbers being less
-	 * restrictive).
-	 * 
-	 * <p> The ordering for standard markings (from least to most restrictive) is [U, R, C, S, TS]. The ordering for
-	 * NATO markings (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTS-B/CTS-BALK, CTSA]. For the
-	 * purposes of rollup, CTS-B and CTS-BALK are presumed to be siblings. </p>
-	 * 
-	 * @param classification the classification to test
-	 * @return an index, or -1 if the marking does not belong to any known systems.
-	 */
-	public static int getClassificationIndex(String classification) {
-		if (ORDERED_BASE_CLASSIFICATIONS.contains(classification))
-			return (ORDERED_BASE_CLASSIFICATIONS.indexOf(classification));
-		if ("CTS-B".equals(classification) || "CTS-BALK".equals(classification))
-			return (ORDERED_NATO_CLASSIFICATIONS.indexOf("CTS-?"));
-		return (ORDERED_NATO_CLASSIFICATIONS.indexOf(classification));
-	}
-	
-	/**
 	 * Checks if one of the classifications that existed in DDMS 2.0 but was removed for DDMS 3.0 is being used.
 	 * 
 	 * @param classification the classification to test
@@ -394,52 +352,6 @@ public class ISMVocabulary {
 	 */
 	public static String getInvalidMessage(String enumerationKey, String value) {
 		return (value + " is not a valid enumeration token for this attribute, as specified in " + enumerationKey + ".");
-	}
-
-	/**
-	 * Validates that the security attributes of any subcomponents are no more restrictive than
-	 * the parent attributes. Does not include the ddms:security tag which has a fixed
-	 * excludeFromRollup="true" attribute.
-	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>For any subcomponent's security attributes:</li>
-	 * <ul>
-	 * <li>The classification must belong to the same classification system as the parent's
-	 * classification (US or NATO markings).</li>
-	 * <li>The classification cannot be more restrictive than the parent classification. The ordering 
-	 * for standard markings (from least to most restrictive) is [U, R, C, S, TS]. The ordering for NATO markings
-	 * (from least to most restrictive) is [NU, NR, NC, NCA, NS, NSAT, CTS, CTS-B/CTS-BALK, CTSA]. For the purposes of 
-	 * rollup, CTS-B and CTS-BALK are presumed to be siblings.</li>
-	 * </ul>
-	 * </td></tr></table>
-	 * 	
-	 * @param parentAttributes the master attributes to compare to
-	 * @param childAttributes a set of all nested attributes
-	 */
-	public static void validateRollup(SecurityAttributes parentAttributes, Set<SecurityAttributes> childAttributes)
-		throws InvalidDDMSException {
-		Util.requireValue("parent classification", parentAttributes.getClassification());
-		setDDMSVersion(parentAttributes.getDDMSVersion());
-
-		String parentClass = parentAttributes.getClassification();
-		boolean isParentUS = enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, parentClass);
-		int parentIndex = getClassificationIndex(parentClass);
-		
-		for (SecurityAttributes childAttr : childAttributes) {
-			String childClass = childAttr.getClassification();
-			if (Util.isEmpty(childClass))
-				continue;
-			boolean isChildUS = enumContains(ISMVocabulary.CVE_US_CLASSIFICATIONS, childClass);
-			int childIndex = getClassificationIndex(childClass);
-			if (isParentUS != isChildUS) {
-				throw new InvalidDDMSException("The security classification of a nested component is using a "
-					+ "different marking system than the ddms:" + Resource.getName(getDDMSVersion()) + " itself.");
-			}
-			if (childIndex > parentIndex) {
-				throw new InvalidDDMSException("The security classification of a nested component is more "
-					+ "restrictive than the ddms:" + Resource.getName(getDDMSVersion()) + " itself.");
-			}			
-		}
 	}
 	
 	/**
