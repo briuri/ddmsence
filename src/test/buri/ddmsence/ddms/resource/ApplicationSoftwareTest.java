@@ -20,7 +20,7 @@
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -29,15 +29,19 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:applicationSoftware elements</p>
+ * <p>
+ * Tests related to ddms:applicationSoftware elements
+ * </p>
  * 
- * <p> Because a ddms:applicationSoftware is a local component, we cannot load a valid document from a unit test data
- * file. We have to build the well-formed Element ourselves. </p>
+ * <p>
+ * Because a ddms:applicationSoftware is a local component, we cannot load a valid document from a unit test data file.
+ * We have to build the well-formed Element ourselves.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class ApplicationSoftwareTest extends AbstractComponentTestCase {
+public class ApplicationSoftwareTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "IRM Generator 2L-9";
 
@@ -66,7 +70,6 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
 
 	/**
 	 * Returns a fixture object for testing.
@@ -150,9 +153,9 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX,
-				ApplicationSoftware.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX, ApplicationSoftware
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -184,12 +187,11 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// Wrong name
-			Element element = Util.buildDDMSElement("unknownName", null);
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("moo", element);
+			// Bad security attributes
+			Element element = Util.buildDDMSElement(ApplicationSoftware.getName(version), null);
+			getInstance("classification is required.", element);
 		}
 	}
 
@@ -203,7 +205,7 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}
@@ -274,14 +276,14 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void test20Usage() {
+	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
 			new ApplicationSoftware(TEST_VALUE, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The applicationSoftware element cannot be used");
 		}
 	}
 
@@ -307,7 +309,7 @@ public class ApplicationSoftwareTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}

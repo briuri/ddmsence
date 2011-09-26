@@ -20,18 +20,20 @@
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:recordsManagementInfo elements</p>
+ * <p>
+ * Tests related to ddms:recordsManagementInfo elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class RecordsManagementInfoTest extends AbstractComponentTestCase {
+public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 
 	private static final Boolean TEST_VITAL = Boolean.TRUE;
 
@@ -48,14 +50,15 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	 */
 	public static RecordsManagementInfo getFixture() {
 		try {
-			return (new RecordsManagementInfo(RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(), TEST_VITAL));
+			return (new RecordsManagementInfo(RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(),
+				TEST_VITAL));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -87,8 +90,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	 * @param vitalRecord whether this is a vital record (optional, defaults to false)
 	 * @param org the organization
 	 */
-	private RecordsManagementInfo getInstance(String message, RecordKeeper keeper,
-		ApplicationSoftware software, Boolean vitalRecord) {
+	private RecordsManagementInfo getInstance(String message, RecordKeeper keeper, ApplicationSoftware software,
+		Boolean vitalRecord) {
 		boolean expectFailure = !Util.isEmpty(message);
 		RecordsManagementInfo component = null;
 		try {
@@ -129,7 +132,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		xml.append("\t\t</ddms:organization>\n");
 		xml.append("\t</ddms:recordKeeper>\n");
 		xml.append("\t<ddms:applicationSoftware ").append(getXmlnsISM());
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">IRM Generator 2L-9</ddms:applicationSoftware>\n");
+		xml
+			.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">IRM Generator 2L-9</ddms:applicationSoftware>\n");
 		xml.append("</ddms:recordsManagementInfo>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
@@ -140,7 +144,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				RecordsManagementInfo.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -252,14 +256,14 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void test20Usage() {
+	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
 			new RecordsManagementInfo(null, null, TEST_VITAL);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The recordsManagementInfo element cannot be used");
 		}
 	}
 
@@ -285,7 +289,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 			builder.getApplicationSoftware().getSecurityAttributes().setClassification("U");
 			builder.getApplicationSoftware().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -31,12 +31,14 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ntk:AccessProfileList elements</p>
+ * <p>
+ * Tests related to ntk:AccessProfileList elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class ProfileListTest extends AbstractComponentTestCase {
+public class ProfileListTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -122,8 +124,10 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		xml.append("<ntk:AccessProfileList ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
 		xml.append("\t<ntk:AccessProfile ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml.append("\t\t<ntk:AccessProfileValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>\n");
+		xml
+			.append("\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml
+			.append("\t\t<ntk:AccessProfileValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>\n");
 		xml.append("\t</ntk:AccessProfile>\n");
 		xml.append("</ntk:AccessProfileList>\n");
 		return (formatXml(xml.toString(), preserveFormatting));
@@ -133,9 +137,9 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
-				ProfileList.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, ProfileList
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -255,6 +259,10 @@ public class ProfileListTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testWrongVersion() {
+		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
+	}
+	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

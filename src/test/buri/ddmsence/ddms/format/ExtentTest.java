@@ -20,18 +20,20 @@
 package buri.ddmsence.ddms.format;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:extent elements</p>
+ * <p>
+ * Tests related to ddms:extent elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class ExtentTest extends AbstractComponentTestCase {
+public class ExtentTest extends AbstractBaseTestCase {
 
 	private static final String TEST_QUALIFIER = "sizeBytes";
 	private static final String TEST_VALUE = "75000";
@@ -124,9 +126,9 @@ public class ExtentTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				Extent.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Extent
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -168,7 +170,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 			element = Util.buildDDMSElement(Extent.getName(version), null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
 			Util.addDDMSAttribute(element, "qualifier", INVALID_URI);
-			getInstance("Invalid URI (Expected scheme name at index 0: :::::)", element);
+			getInstance("Invalid URI", element);
 		}
 	}
 
@@ -180,7 +182,7 @@ public class ExtentTest extends AbstractComponentTestCase {
 			getInstance("qualifier attribute is required.", null, TEST_VALUE);
 
 			// Qualifier not URI
-			getInstance("Invalid URI (Expected scheme name at index 0: :::::)", INVALID_URI, TEST_VALUE);
+			getInstance("Invalid URI", INVALID_URI, TEST_VALUE);
 		}
 	}
 

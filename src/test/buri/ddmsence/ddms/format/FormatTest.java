@@ -20,18 +20,20 @@
 package buri.ddmsence.ddms.format;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:format elements</p>
+ * <p>
+ * Tests related to ddms:format elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class FormatTest extends AbstractComponentTestCase {
+public class FormatTest extends AbstractBaseTestCase {
 
 	private static final String TEST_MIME_TYPE = "text/xml";
 	private static final String TEST_MEDIUM = "digital";
@@ -55,7 +57,7 @@ public class FormatTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -160,9 +162,9 @@ public class FormatTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				Format.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Format
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -360,19 +362,6 @@ public class FormatTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Format component = getInstance(SUCCESS, TEST_MIME_TYPE, null, null);
 			assertEquals("", component.getExtentValue());
-		}
-	}
-
-	public void testWrongVersionExtent() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("2.0");
-		Extent extent = new Extent("test", "test");
-		DDMSVersion.setCurrentVersion("3.0");
-		try {
-			new Format(TEST_MIME_TYPE, extent, TEST_MEDIUM);
-			fail("Allowed different versions.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "A child component, ddms:extent, is using a different version of DDMS from its parent.");
 		}
 	}
 

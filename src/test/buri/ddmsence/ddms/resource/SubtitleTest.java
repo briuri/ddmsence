@@ -20,7 +20,7 @@
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -28,12 +28,14 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:subtitle elements</p>
+ * <p>
+ * Tests related to ddms:subtitle elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class SubtitleTest extends AbstractComponentTestCase {
+public class SubtitleTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "Version 0.1";
 
@@ -56,7 +58,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -126,9 +128,9 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				Subtitle.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Subtitle
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -158,11 +160,11 @@ public class SubtitleTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			// Wrong name
-			Element element = Util.buildDDMSElement("unknownName", null);
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("moo", element);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+
+			// Bad security attributes
+			Element element = Util.buildDDMSElement(Subtitle.getName(version), null);
+			getInstance("classification is required.", element);
 		}
 	}
 
@@ -175,7 +177,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}
@@ -262,7 +264,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}

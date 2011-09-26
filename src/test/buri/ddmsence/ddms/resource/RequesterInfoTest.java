@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -32,15 +32,19 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:requesterInfo elements</p>
+ * <p>
+ * Tests related to ddms:requesterInfo elements
+ * </p>
  * 
- * <p> Because a ddms:requesterInfo is a local component, we cannot load a valid document from a unit test data file. We
- * have to build the well-formed Element ourselves. </p>
+ * <p>
+ * Because a ddms:requesterInfo is a local component, we cannot load a valid document from a unit test data file. We
+ * have to build the well-formed Element ourselves.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class RequesterInfoTest extends AbstractComponentTestCase {
+public class RequesterInfoTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -60,7 +64,8 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			Element element = Util.buildDDMSElement(RequesterInfo.getName(version), null);
 			element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
-			element.appendChild(useOrg ? OrganizationTest.getFixture().getXOMElementCopy() : PersonTest.getFixture().getXOMElementCopy());
+			element.appendChild(useOrg ? OrganizationTest.getFixture().getXOMElementCopy() : PersonTest.getFixture()
+				.getXOMElementCopy());
 			SecurityAttributesTest.getFixture().addTo(element);
 			return (element);
 		}
@@ -69,7 +74,6 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-
 
 	/**
 	 * Returns a fixture object for testing.
@@ -86,7 +90,6 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 		return (null);
 	}
 
-	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -158,9 +161,9 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement(true)), DEFAULT_DDMS_PREFIX,
-				RequesterInfo.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement(true)), DEFAULT_DDMS_PREFIX, RequesterInfo
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -195,12 +198,12 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 			// Missing entity
 			Element element = Util.buildDDMSElement(RequesterInfo.getName(version), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("moo", element);
+			getInstance("entity is required.", element);
 
 			// Missing security attributes
 			element = Util.buildDDMSElement(RequesterInfo.getName(version), null);
 			element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
-			getInstance("moo", element);
+			getInstance("classification is required.", element);
 		}
 	}
 
@@ -208,11 +211,11 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// Missing entity		
-			getInstance("moo", (IRoleEntity) null);
+			// Missing entity
+			getInstance("entity is required.", (IRoleEntity) null);
 
 			// Wrong entity
-			getInstance("moo", new Service(Util.getXsListAsList("Service"), null, null));
+			getInstance("The entity must be a person or an organization.", new Service(Util.getXsListAsList("Service"), null, null));
 
 			// Missing security attributes
 			try {
@@ -220,7 +223,7 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}
@@ -292,14 +295,14 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void test20Usage() {
+	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
 			new RequesterInfo(OrganizationTest.getFixture(), SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The requesterInfo element cannot be used");
 		}
 	}
 
@@ -330,7 +333,7 @@ public class RequesterInfoTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 			builder.getSecurityAttributes().setClassification("U");
 			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));

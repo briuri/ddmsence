@@ -20,7 +20,7 @@
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
@@ -29,12 +29,14 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:temporalCoverage elements</p>
+ * <p>
+ * Tests related to ddms:temporalCoverage elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class TemporalCoverageTest extends AbstractComponentTestCase {
+public class TemporalCoverageTest extends AbstractBaseTestCase {
 
 	private static final String TEST_NAME = "My Time Period";
 	private static final String TEST_START = "1979-09-15";
@@ -46,7 +48,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	public TemporalCoverageTest() {
 		super("temporalCoverage.xml");
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -91,8 +93,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 	 * @param endString a string representation of the end date (required)
 	 * @return a valid object
 	 */
-	private TemporalCoverage getInstance(String message, String timePeriodName, String startString,
-		String endString) {
+	private TemporalCoverage getInstance(String message, String timePeriodName, String startString, String endString) {
 		boolean expectFailure = !Util.isEmpty(message);
 		TemporalCoverage component = null;
 		try {
@@ -177,7 +178,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				TemporalCoverage.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -231,13 +232,16 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 			periodElement = Util.buildDDMSElement("TimePeriod", null);
 			periodElement.appendChild(Util.buildDDMSElement("start", "---31"));
 			periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
-			getInstance("The date datatype must be one of [{http://www.w3.org/2001/XMLSchema}dateTime, {http://www.w3.org/2001/XMLSchema}gYear, {http://www.w3.org/2001/XMLSchema}gYearMonth, {http://www.w3.org/2001/XMLSchema}date]", wrapInnerElement(periodElement));
+			getInstance(
+				"The date datatype must be one of",
+				wrapInnerElement(periodElement));
 
 			// Wrong extended value
 			periodElement = Util.buildDDMSElement("TimePeriod", null);
 			periodElement.appendChild(Util.buildDDMSElement("start", "N/A"));
 			periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
-			getInstance("If no date is specified, the value must be one of [Not Applicable, Unknown]", wrapInnerElement(periodElement));
+			getInstance("If no date is specified,",
+				wrapInnerElement(periodElement));
 
 			// Bad range
 			periodElement = Util.buildDDMSElement("TimePeriod", null);
@@ -251,10 +255,13 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Wrong date format (using xs:gDay here)
-			getInstance("The date datatype must be one of [{http://www.w3.org/2001/XMLSchema}dateTime, {http://www.w3.org/2001/XMLSchema}gYear, {http://www.w3.org/2001/XMLSchema}gYearMonth, {http://www.w3.org/2001/XMLSchema}date]", TEST_NAME, "---31", TEST_END);
+			getInstance(
+				"The date datatype must be one of",
+				TEST_NAME, "---31", TEST_END);
 
 			// Wrong extended value
-			getInstance("If no date is specified, the value must be one of [Not Applicable, Unknown]", TEST_NAME, "N/A", TEST_END);
+			getInstance("If no date is specified,", TEST_NAME,
+				"N/A", TEST_END);
 
 			// Bad range
 			getInstance("The start date is after the end date.", TEST_NAME, "2004", "2003");
@@ -361,7 +368,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "If no date is specified, the value must be one of [Not Applicable, Unknown]");
+				expectMessage(e, "If no date is specified,");
 			}
 		}
 	}
@@ -397,14 +404,14 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void test20Usage() throws InvalidDDMSException {
+	public void testWrongVersionSecurityAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
 			new TemporalCoverage(TEST_NAME, TEST_START, TEST_END, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "Security attributes cannot be applied to this component until DDMS 3.0 or later.");
+			expectMessage(e, "Security attributes cannot be applied");
 		}
 	}
 
@@ -429,7 +436,7 @@ public class TemporalCoverageTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "If no date is specified, the value must be one of [Not Applicable, Unknown]");
+				expectMessage(e, "If no date is specified");
 			}
 		}
 	}

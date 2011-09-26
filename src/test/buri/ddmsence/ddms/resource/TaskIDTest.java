@@ -20,7 +20,7 @@
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributesTest;
@@ -29,15 +29,19 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:taskID elements</p>
+ * <p>
+ * Tests related to ddms:taskID elements
+ * </p>
  * 
- * <p> Because a ddms:taskID is a local component, we cannot load a valid document from a unit test data file. We have
- * to build the well-formed Element ourselves. </p>
+ * <p>
+ * Because a ddms:taskID is a local component, we cannot load a valid document from a unit test data file. We have to
+ * build the well-formed Element ourselves.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class TaskIDTest extends AbstractComponentTestCase {
+public class TaskIDTest extends AbstractBaseTestCase {
 
 	private static final String TEST_TASKING_SYSTEM = "MDR";
 	private static final String TEST_VALUE = "Task #12345";
@@ -73,7 +77,7 @@ public class TaskIDTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -119,8 +123,8 @@ public class TaskIDTest extends AbstractComponentTestCase {
 	 * @param otherNetwork another network (optional)
 	 * @param attributes the xlink attributes (optional)
 	 */
-	private TaskID getInstance(String message, String value, String taskingSystem, String network,
-		String otherNetwork, XLinkAttributes attributes) {
+	private TaskID getInstance(String message, String value, String taskingSystem, String network, String otherNetwork,
+		XLinkAttributes attributes) {
 		boolean expectFailure = !Util.isEmpty(message);
 		TaskID component = null;
 		try {
@@ -166,7 +170,7 @@ public class TaskIDTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX, TaskID
 				.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -188,8 +192,8 @@ public class TaskIDTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK,
-				XLinkAttributesTest.getSimpleFixture());
+			getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest
+				.getSimpleFixture());
 
 			// No optional fields
 			getInstance(SUCCESS, TEST_VALUE, null, null, null, null);
@@ -203,16 +207,16 @@ public class TaskIDTest extends AbstractComponentTestCase {
 			// Wrong type of XLinkAttributes (locator)
 			Element element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
 			XLinkAttributesTest.getLocatorFixture().addTo(element);
-			getInstance("moo", element);
+			getInstance("The type attribute must have a fixed value", element);
 
 			// Missing value
 			element = Util.buildDDMSElement(TaskID.getName(version), null);
-			getInstance("moo", element);
+			getInstance("value is required.", element);
 
 			// Bad network
 			element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
 			Util.addAttribute(element, "", "network", "", "PBS");
-			getInstance("moo", element);
+			getInstance("The network attribute must be one of", element);
 
 		}
 	}
@@ -222,13 +226,13 @@ public class TaskIDTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Wrong type of XLinkAttributes
-			getInstance("moo", TEST_VALUE, null, null, null, XLinkAttributesTest.getLocatorFixture());
+			getInstance("The type attribute must have a fixed value", TEST_VALUE, null, null, null, XLinkAttributesTest.getLocatorFixture());
 
 			// Missing value
-			getInstance("moo", null, null, null, null, null);
+			getInstance("value is required.", null, null, null, null, null);
 
 			// Bad network
-			getInstance("moo", TEST_VALUE, null, "PBS", null, null);
+			getInstance("The network attribute must be one of", TEST_VALUE, null, "PBS", null, null);
 		}
 	}
 
@@ -263,20 +267,20 @@ public class TaskIDTest extends AbstractComponentTestCase {
 				TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, DIFFERENT_VALUE, TEST_NETWORK,
-				TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, DIFFERENT_VALUE, TEST_NETWORK, TEST_OTHER_NETWORK,
+				XLinkAttributesTest.getSimpleFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, "SIPRNet",
-				TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, "SIPRNet", TEST_OTHER_NETWORK,
+				XLinkAttributesTest.getSimpleFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
-				DIFFERENT_VALUE, XLinkAttributesTest.getSimpleFixture());
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, DIFFERENT_VALUE,
+				XLinkAttributesTest.getSimpleFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
-				TEST_OTHER_NETWORK, null);
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK,
+				null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -299,8 +303,8 @@ public class TaskIDTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
-				TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK,
+				XLinkAttributesTest.getSimpleFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -313,13 +317,13 @@ public class TaskIDTest extends AbstractComponentTestCase {
 			TaskID component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
-				TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK,
+				XLinkAttributesTest.getSimpleFixture());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
 
-	public void test20Usage() {
+	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("4.0");
 			XLinkAttributes attr = XLinkAttributesTest.getSimpleFixture();
@@ -328,7 +332,7 @@ public class TaskIDTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "These attributes cannot decorate");
 		}
 	}
 
@@ -354,7 +358,7 @@ public class TaskIDTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "value is required.");
 			}
 			builder.setValue(TEST_VALUE);
 			builder.commit();

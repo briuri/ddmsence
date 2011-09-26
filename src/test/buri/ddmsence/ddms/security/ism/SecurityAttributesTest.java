@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
@@ -36,12 +36,14 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to the ISM attributes</p>
+ * <p>
+ * Tests related to the ISM attributes
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class SecurityAttributesTest extends AbstractComponentTestCase {
+public class SecurityAttributesTest extends AbstractBaseTestCase {
 
 	private static final String TEST_CLASS = "U";
 	private static final List<String> TEST_OWNERS = Util.getXsListAsList("USA");
@@ -219,11 +221,11 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 	 * @param classification the classification level, which must be a legal classification type (optional)
 	 * @param ownerProducers a list of ownerProducers (optional)
 	 * @param otherAttributes a name/value mapping of other ISM attributes. The value will be a String value, as it
-	 * appears in XML.
+	 *            appears in XML.
 	 * @return a valid object
 	 */
-	private SecurityAttributes getInstance(String message, String classification,
-		List<String> ownerProducers, Map<String, String> otherAttributes) {
+	private SecurityAttributes getInstance(String message, String classification, List<String> ownerProducers,
+		Map<String, String> otherAttributes) {
 		boolean expectFailure = !Util.isEmpty(message);
 		SecurityAttributes attributes = null;
 		try {
@@ -287,7 +289,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace, Util
 				.getXsList(TEST_OWNERS));
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.DECLASS_DATE_NAME, icNamespace, "2001");
-			getInstance("The declassDate must be in the xs:date format (YYYY-MM-DD).", element);
+			getInstance("The declassDate must be in the xs:date format", element);
 
 			// invalid dateOfExemptedSource
 			element = Util.buildDDMSElement(Security.getName(version), null);
@@ -298,7 +300,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.DECLASS_DATE_NAME, icNamespace, "2001");
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace, "2001");
 			String message = (version.isAtLeast("3.1") ? "The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0."
-				: "The dateOfExemptedSource attribute must be in the xs:date format (YYYY-MM-DD).");
+				: "The dateOfExemptedSource attribute must be in the xs:date format");
 			getInstance(message, element);
 		}
 	}
@@ -308,22 +310,22 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// invalid declassDate
-			getInstance("The declassDate must be in the xs:date format (YYYY-MM-DD).", TEST_CLASS, TEST_OWNERS, getOtherAttributes(
-				SecurityAttributes.DECLASS_DATE_NAME, "2004"));
+			getInstance("The declassDate must be in the xs:date format", TEST_CLASS, TEST_OWNERS,
+				getOtherAttributes(SecurityAttributes.DECLASS_DATE_NAME, "2004"));
 
 			// nonsensical declassDate
-			getInstance("The ISM:declassDate attribute is not in a valid date format.", TEST_CLASS, TEST_OWNERS, getOtherAttributes(
-				SecurityAttributes.DECLASS_DATE_NAME, "notAnXmlDate"));
+			getInstance("The ISM:declassDate attribute is not in a valid date format.", TEST_CLASS, TEST_OWNERS,
+				getOtherAttributes(SecurityAttributes.DECLASS_DATE_NAME, "notAnXmlDate"));
 
 			// invalid dateOfExemptedSource
 			String message = (version.isAtLeast("3.1") ? "The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0."
-				: "The dateOfExemptedSource attribute must be in the xs:date format (YYYY-MM-DD).");
+				: "The dateOfExemptedSource attribute must be in the xs:date format");
 			getInstance(message, TEST_CLASS, TEST_OWNERS, getOtherAttributes(
 				SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2004"));
 
 			// nonsensical dateOfExemptedSource
-			getInstance("The ISM:dateOfExemptedSource attribute is not in a valid date format.", TEST_CLASS, TEST_OWNERS, getOtherAttributes(
-				SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "notAnXmlDate"));
+			getInstance("The ISM:dateOfExemptedSource attribute is not in a valid date format.", TEST_CLASS,
+				TEST_OWNERS, getOtherAttributes(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "notAnXmlDate"));
 		}
 	}
 
@@ -352,8 +354,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 				"true");
 			getFullFixture().addTo(element);
 			SecurityAttributes elementAttributes = getInstance(SUCCESS, element);
-			SecurityAttributes dataAttributes = getInstance(SUCCESS, TEST_CLASS, TEST_OWNERS,
-				getOtherAttributes());
+			SecurityAttributes dataAttributes = getInstance(SUCCESS, TEST_CLASS, TEST_OWNERS, getOtherAttributes());
 
 			assertEquals(elementAttributes, elementAttributes);
 			assertEquals(elementAttributes, dataAttributes);
@@ -428,7 +429,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "These attributes cannot decorate a component with a different DDMS version.");
+			expectMessage(e, "These attributes cannot decorate");
 		}
 	}
 
@@ -440,7 +441,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed 3.0 attributes in 3.1.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The typeOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0.");
+			expectMessage(e, "The typeOfExemptedSource attribute can only be used");
 		}
 
 		others = getOtherAttributes(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2010-01-01");
@@ -449,7 +450,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed 3.0 attributes in 3.1.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0.");
+			expectMessage(e, "The dateOfExemptedSource attribute can only be used");
 		}
 	}
 
@@ -461,7 +462,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed 3.1 attributes in 3.0.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The atomicEnergyMarkings attribute cannot be used until DDMS 3.1 or later.");
+			expectMessage(e, "The atomicEnergyMarkings attribute cannot be used");
 		}
 
 		others = getOtherAttributes(SecurityAttributes.COMPLIES_WITH_NAME, "ICD-710");
@@ -470,7 +471,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed 3.1 attributes in 3.0.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The compliesWith attribute cannot be used until DDMS 3.1 or later.");
+			expectMessage(e, "The compliesWith attribute cannot be used");
 		}
 
 		others = getOtherAttributes(SecurityAttributes.DISPLAY_ONLY_TO_NAME, "AIA");
@@ -479,7 +480,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed 3.1 attributes in 3.0.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The displayOnlyTo attribute cannot be used until DDMS 3.1 or later.");
+			expectMessage(e, "The displayOnlyTo attribute cannot be used");
 		}
 
 		others = getOtherAttributes(SecurityAttributes.NON_US_CONTROLS_NAME, "ATOMAL");
@@ -488,7 +489,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed 3.1 attributes in 3.0.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The nonUSControls attribute cannot be used until DDMS 3.1 or later.");
+			expectMessage(e, "The nonUSControls attribute cannot be used");
 		}
 	}
 
@@ -518,7 +519,9 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			}
 
 			// Invalid classification
-			getInstance("ZOO is not a valid enumeration token for this attribute, as specified in CVEnumISMClassificationAll.xml.", "ZOO", TEST_OWNERS, others);
+			getInstance(
+				"ZOO is not a valid enumeration token",
+				"ZOO", TEST_OWNERS, others);
 
 			// No ownerProducers
 			dataAttributes = getInstance(SUCCESS, TEST_CLASS, null, others);
@@ -533,7 +536,9 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			// No non-empty ownerProducers
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("");
-			dataAttributes = getInstance(" is not a valid enumeration token for this attribute, as specified in CVEnumISMOwnerProducer.xml.", TEST_CLASS, ownerProducers, others);
+			dataAttributes = getInstance(
+				" is not a valid enumeration token",
+				TEST_CLASS, ownerProducers, others);
 		}
 	}
 
@@ -563,8 +568,12 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 		getInstance(SUCCESS, "NS-S", TEST_OWNERS, null);
 		getInstance(SUCCESS, "NS-A", TEST_OWNERS, null);
 		DDMSVersion.setCurrentVersion("3.0");
-		getInstance("NS-S is not a valid enumeration token for this attribute, as specified in CVEnumISMClassificationAll.xml.", "NS-S", TEST_OWNERS, null);
-		getInstance("NS-A is not a valid enumeration token for this attribute, as specified in CVEnumISMClassificationAll.xml.", "NS-A", TEST_OWNERS, null);
+		getInstance(
+			"NS-S is not a valid enumeration token",
+			"NS-S", TEST_OWNERS, null);
+		getInstance(
+			"NS-A is not a valid enumeration token for this attribute",
+			"NS-A", TEST_OWNERS, null);
 	}
 
 	public void test30AttributesIn20() throws InvalidDDMSException {
@@ -576,7 +585,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed DDMS 3.0 attributes to be used in DDMS 2.0.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The compilationReason attribute cannot be used until DDMS 3.0 or later.");
+			expectMessage(e, "The compilationReason attribute cannot be used");
 		}
 	}
 
@@ -628,9 +637,7 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed invalid CVE value without throwing an Exception.");
 		}
 		catch (InvalidDDMSException e) {
-			assertEquals(
-				"UnknownValue is not a valid enumeration token for this attribute, as specified in CVEnumISM25X.xml.",
-				e.getMessage());
+			expectMessage(e, "UnknownValue is not a valid enumeration token");
 		}
 	}
 
@@ -668,7 +675,8 @@ public class SecurityAttributesTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "SuperSecret is not a valid enumeration token for this attribute, as specified in CVEnumISMClassificationAll.xml.");
+				expectMessage(e,
+					"SuperSecret is not a valid enumeration token");
 			}
 		}
 	}

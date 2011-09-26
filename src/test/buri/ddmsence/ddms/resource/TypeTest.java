@@ -20,19 +20,21 @@
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:type elements</p>
+ * <p>
+ * Tests related to ddms:type elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class TypeTest extends AbstractComponentTestCase {
+public class TypeTest extends AbstractBaseTestCase {
 
 	private static final String TEST_DESCRIPTION = "Description";
 	private static final String TEST_QUALIFIER = "DCMITYPE";
@@ -44,7 +46,7 @@ public class TypeTest extends AbstractComponentTestCase {
 	public TypeTest() {
 		super("type.xml");
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -148,7 +150,7 @@ public class TypeTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Type
 				.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -181,7 +183,7 @@ public class TypeTest extends AbstractComponentTestCase {
 			// Missing qualifier
 			Element element = Util.buildDDMSElement(Type.getName(version), null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
-			getInstance("moo", element);
+			getInstance("qualifier attribute is required.", element);
 		}
 	}
 
@@ -189,7 +191,7 @@ public class TypeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing qualifier
-			getInstance("moo", null, null, TEST_VALUE);
+			getInstance("qualifier attribute is required.", null, null, TEST_VALUE);
 		}
 	}
 
@@ -223,8 +225,8 @@ public class TypeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			Type elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "",
-				TEST_QUALIFIER, TEST_VALUE);
+			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
+				TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -234,8 +236,8 @@ public class TypeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			Type elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "",
-				TEST_QUALIFIER, DIFFERENT_VALUE);
+			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
+				DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 			if (version.isAtLeast("4.0")) {
 				dataComponent = getInstance(SUCCESS, "differentDescription", TEST_QUALIFIER, TEST_VALUE);
@@ -270,25 +272,25 @@ public class TypeTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testSecurityAttributesWrongVersion() throws InvalidDDMSException {
+	public void testWrongVersionSecurityAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
 			new Type(null, TEST_QUALIFIER, TEST_VALUE, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "Security attributes cannot be applied");
 		}
 	}
 
-	public void testDescriptionAttributesWrongVersion() throws InvalidDDMSException {
+	public void testWrongVersionDescriptionAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
 			new Type(TEST_DESCRIPTION, TEST_QUALIFIER, TEST_VALUE, null);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "This component cannot contain description");
 		}
 	}
 
@@ -313,7 +315,7 @@ public class TypeTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "qualifier attribute is required.");
 			}
 		}
 	}

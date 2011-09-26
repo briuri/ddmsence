@@ -24,7 +24,7 @@ import java.util.List;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
@@ -34,12 +34,14 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:category elements</p>
+ * <p>
+ * Tests related to ddms:category elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class CategoryTest extends AbstractComponentTestCase {
+public class CategoryTest extends AbstractBaseTestCase {
 
 	private static final String TEST_QUALIFIER = "http://metadata.dod.mil/mdr/artifiact/MET/severeWeatherCode_enum/xml";
 	private static final String TEST_CODE = "T";
@@ -154,9 +156,9 @@ public class CategoryTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				Category.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Category
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -189,7 +191,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// Missing label
 			Element element = Util.buildDDMSElement(Category.getName(version), null);
-			getInstance("moo", element);
+			getInstance("label attribute is required.", element);
 		}
 	}
 
@@ -197,10 +199,10 @@ public class CategoryTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing label
-			getInstance("moo", TEST_QUALIFIER, TEST_CODE, null);
+			getInstance("label attribute is required.", TEST_QUALIFIER, TEST_CODE, null);
 
 			// Qualifier not URI
-			getInstance("moo", INVALID_URI, TEST_CODE, TEST_LABEL);
+			getInstance("Invalid URI", INVALID_URI, TEST_CODE, TEST_LABEL);
 		}
 	}
 
@@ -287,7 +289,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "xs:anyAttribute cannot be applied");
 		}
 
 		DDMSVersion version = DDMSVersion.setCurrentVersion("3.0");
@@ -301,7 +303,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The extensible attribute with the name, ddms:qualifier");
 		}
 
 		// Using ddms:code as the extension (data)
@@ -313,7 +315,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The extensible attribute with the name, ddms:code");
 		}
 
 		// Using ddms:label as the extension (data)
@@ -325,7 +327,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The extensible attribute with the name, ddms:label");
 		}
 
 		// Using icism:classification as the extension (data)
@@ -340,14 +342,14 @@ public class CategoryTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testSecurityAttributesWrongVersion() throws InvalidDDMSException {
+	public void testWrongVersionSecurityAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
 			new Category(TEST_QUALIFIER, TEST_CODE, TEST_LABEL, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "Security attributes cannot be applied");
 		}
 	}
 
@@ -372,7 +374,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "label attribute is required.");
 			}
 		}
 	}

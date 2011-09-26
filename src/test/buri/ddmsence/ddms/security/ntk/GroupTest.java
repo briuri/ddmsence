@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -31,12 +31,14 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ntk:AccessGroup elements</p>
+ * <p>
+ * Tests related to ntk:AccessGroup elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class GroupTest extends AbstractComponentTestCase {
+public class GroupTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -133,8 +135,10 @@ public class GroupTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ntk:AccessGroup ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml.append("\t<ntk:AccessGroupValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">WISE/RODCA</ntk:AccessGroupValue>\n");
+		xml
+			.append("\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml
+			.append("\t<ntk:AccessGroupValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">WISE/RODCA</ntk:AccessGroupValue>\n");
 		xml.append("</ntk:AccessGroup>\n");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
@@ -145,7 +149,7 @@ public class GroupTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, Group
 				.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -230,8 +234,7 @@ public class GroupTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Group elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Group dataComponent = getInstance(SUCCESS, SystemNameTest.getFixture(), GroupValueTest
-				.getFixtureList());
+			Group dataComponent = getInstance(SUCCESS, SystemNameTest.getFixture(), GroupValueTest.getFixtureList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -242,8 +245,8 @@ public class GroupTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Group elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Group dataComponent = getInstance(SUCCESS, new SystemName("MDR", null, null, null,
-				SecurityAttributesTest.getFixture()), GroupValueTest.getFixtureList());
+			Group dataComponent = getInstance(SUCCESS, new SystemName("MDR", null, null, null, SecurityAttributesTest
+				.getFixture()), GroupValueTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			List<GroupValue> list = new ArrayList<GroupValue>();
@@ -279,6 +282,10 @@ public class GroupTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testWrongVersion() {
+		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
+	}
+	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

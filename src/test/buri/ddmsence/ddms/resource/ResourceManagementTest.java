@@ -22,7 +22,7 @@ package buri.ddmsence.ddms.resource;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -30,12 +30,14 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:resourceManagement elements</p>
+ * <p>
+ * Tests related to ddms:resourceManagement elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class ResourceManagementTest extends AbstractComponentTestCase {
+public class ResourceManagementTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -58,7 +60,7 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -80,7 +82,7 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
@@ -116,7 +118,7 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 		text.append(TaskingInfoTest.getFixtureList().get(0).getOutput(isHTML, "resourceManagement."));
 		text.append(ProcessingInfoTest.getFixtureList().get(0).getOutput(isHTML, "resourceManagement."));
 		text.append(buildOutput(isHTML, "resourceManagement.classification", "U"));
-		text.append(buildOutput(isHTML, "resourceManagement.ownerProducer", "USA"));		
+		text.append(buildOutput(isHTML, "resourceManagement.ownerProducer", "USA"));
 		return (text.toString());
 	}
 
@@ -159,7 +161,7 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				ResourceManagement.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -181,7 +183,7 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest.getTextFixture(), 
+			getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest.getTextFixture(),
 				TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
 
 			// No optional fields
@@ -197,13 +199,13 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(ResourceManagement.getName(version), null);
 			element.appendChild(RecordsManagementInfoTest.getFixture().getXOMElementCopy());
 			element.appendChild(RecordsManagementInfoTest.getFixture().getXOMElementCopy());
-			getInstance("moo", element);
+			getInstance("No more than 1 recordsManagementInfo", element);
 
 			// Too many revisionRecall elements
 			element = Util.buildDDMSElement(ResourceManagement.getName(version), null);
 			element.appendChild(RevisionRecallTest.getTextFixtureElement());
 			element.appendChild(RevisionRecallTest.getTextFixtureElement());
-			getInstance("moo", element);
+			getInstance("No more than 1 revisionRecall", element);
 		}
 	}
 
@@ -220,7 +222,7 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "These attributes cannot decorate");
 			}
 		}
 	}
@@ -279,8 +281,8 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest.getTextFixture(), 
-				TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
+			component = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest
+				.getTextFixture(), TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -293,12 +295,23 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 			ResourceManagement component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest.getTextFixture(), 
-				TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
+			component = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest
+				.getTextFixture(), TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
 
+	public void testWrongVersion() {
+		try {
+			DDMSVersion.setCurrentVersion("2.0");
+			new ResourceManagement(null, null, null, null, SecurityAttributesTest.getFixture());
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "The resourceManagement element cannot be used");
+		}
+	}
+	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -312,7 +325,6 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 			// Empty case
 			builder = new ResourceManagement.Builder();
 			assertNull(builder.commit());
-			
 
 			// Emptiness
 			builder = new ResourceManagement.Builder();
@@ -322,16 +334,16 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 			builder = new ResourceManagement.Builder();
 			builder.getProcessingInfos().get(1).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
-			
+
 			// Validation
 			builder = new ResourceManagement.Builder();
-			builder.getSecurityAttributes().setClassification("ABC");
+			builder.getSecurityAttributes().setClassification("COW");
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "COW is not a valid enumeration token for this attribute");
 			}
 			builder.getSecurityAttributes().setClassification("U");
 			builder.commit();

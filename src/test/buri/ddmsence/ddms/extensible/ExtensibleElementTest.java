@@ -25,18 +25,20 @@ import nu.xom.Element;
 
 import org.xml.sax.SAXException;
 
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to extensible layer elements</p>
+ * <p>
+ * Tests related to extensible layer elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 1.1.0
  */
-public class ExtensibleElementTest extends AbstractComponentTestCase {
+public class ExtensibleElementTest extends AbstractBaseTestCase {
 
 	private static final String TEST_NAME = "extension";
 	private static final String TEST_PREFIX = "ddmsence";
@@ -187,7 +189,7 @@ public class ExtensibleElementTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "Could not create a valid element from XML string: Content is not allowed in prolog.");
+				expectMessage(e, "Could not create a valid element");
 			}
 			builder.setXml(getExpectedXMLOutput());
 			builder.commit();

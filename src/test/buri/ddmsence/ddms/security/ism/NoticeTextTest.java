@@ -23,22 +23,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ISM:NoticeText elements</p>
+ * <p>
+ * Tests related to ISM:NoticeText elements
+ * </p>
  * 
- * <p> The valid instance of ISM:NoticeText is generated, rather than relying on the ISM schemas to validate an XML
- * file.</p>
+ * <p>
+ * The valid instance of ISM:NoticeText is generated, rather than relying on the ISM schemas to validate an XML file.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class NoticeTextTest extends AbstractComponentTestCase {
+public class NoticeTextTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "noticeText";
 	private static final List<String> TEST_POC_TYPES = Util.getXsListAsList("ABC");
@@ -160,7 +163,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_ISM_PREFIX, NoticeText
 				.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -201,12 +204,16 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			Element element = Util
 				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "Unknown");
-			getInstance("Unknown is not a valid enumeration token for this attribute, as specified in CVEnumISMPocType.xml.", element);
+			getInstance(
+				"Unknown is not a valid enumeration token",
+				element);
 
 			// Partial Invalid POCType
 			element = Util.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "ABC Unknown");
-			getInstance("Unknown is not a valid enumeration token for this attribute, as specified in CVEnumISMPocType.xml.", element);
+			getInstance(
+				"Unknown is not a valid enumeration token",
+				element);
 		}
 	}
 
@@ -215,10 +222,14 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Invalid POCType
-			getInstance("Unknown is not a valid enumeration token for this attribute, as specified in CVEnumISMPocType.xml.", TEST_VALUE, Util.getXsListAsList("Unknown"));
-			
+			getInstance(
+				"Unknown is not a valid enumeration token",
+				TEST_VALUE, Util.getXsListAsList("Unknown"));
+
 			// Partial Invalid POCType
-			getInstance("Unknown is not a valid enumeration token for this attribute, as specified in CVEnumISMPocType.xml.", TEST_VALUE, Util.getXsListAsList("ABC Unknown"));
+			getInstance(
+				"Unknown is not a valid enumeration token",
+				TEST_VALUE, Util.getXsListAsList("ABC Unknown"));
 		}
 	}
 
@@ -240,7 +251,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			String text = "An ISM:NoticeText element was found with no value.";
 			String locator = "ISM:NoticeText";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-			
+
 			// Invalid POCType with CVEAsWarnings
 			PropertyReader.setProperty("ism.cve.validationAsErrors", "false");
 			component = getInstance(SUCCESS, TEST_VALUE, Util.getXsListAsList("Unknown"));
@@ -250,7 +261,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
-	
+
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -309,7 +320,7 @@ public class NoticeTextTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The ddms:NoticeText element cannot be used until DDMS 4.0 or later.");
+			expectMessage(e, "The NoticeText element cannot be used");
 		}
 	}
 

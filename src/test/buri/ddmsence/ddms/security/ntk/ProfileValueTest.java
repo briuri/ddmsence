@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -31,12 +31,14 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ntk:AccessProfileValue elements</p>
+ * <p>
+ * Tests related to ntk:AccessProfileValue elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class ProfileValueTest extends AbstractComponentTestCase {
+public class ProfileValueTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "profile";
 	private static final String TEST_VOCABULARY = "vocabulary";
@@ -109,8 +111,8 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 	 * @param qualifier an NTK qualifier (optional)
 	 * @return a valid object
 	 */
-	private ProfileValue getInstance(String message, String value, String vocabulary, String id,
-		String idReference, String qualifier) {
+	private ProfileValue getInstance(String message, String value, String vocabulary, String id, String idReference,
+		String qualifier) {
 		boolean expectFailure = !Util.isEmpty(message);
 		ProfileValue component = null;
 		try {
@@ -156,9 +158,9 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
-				ProfileValue.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, ProfileValue
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -249,8 +251,8 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			ProfileValue elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			ProfileValue dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID,
-				TEST_ID_REFERENCE, TEST_QUALIFIER);
+			ProfileValue dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE,
+				TEST_QUALIFIER);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -269,12 +271,11 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 				TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, DIFFERENT_VALUE,
-				TEST_ID_REFERENCE, TEST_QUALIFIER);
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, DIFFERENT_VALUE, TEST_ID_REFERENCE,
+				TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, DIFFERENT_VALUE,
-				TEST_QUALIFIER);
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, DIFFERENT_VALUE, TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE,
@@ -291,8 +292,7 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE,
-				TEST_QUALIFIER);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -305,10 +305,13 @@ public class ProfileValueTest extends AbstractComponentTestCase {
 			ProfileValue component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE,
-				TEST_QUALIFIER);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_VOCABULARY, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
+	}
+	
+	public void testWrongVersion() {
+		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
 	}
 
 	public void testBuilder() throws InvalidDDMSException {

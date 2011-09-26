@@ -20,7 +20,7 @@
 package buri.ddmsence.ddms.security;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.ddms.security.ntk.Access;
@@ -30,12 +30,14 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:security elements</p>
+ * <p>
+ * Tests related to ddms:security elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class SecurityTest extends AbstractComponentTestCase {
+public class SecurityTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -56,7 +58,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -147,14 +149,18 @@ public class SecurityTest extends AbstractComponentTestCase {
 		else {
 			xml.append(">\n");
 			xml.append("\t<ddms:noticeList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-			xml.append("\t\t<ISM:Notice ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-			xml.append("\t\t\t<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\">noticeText</ISM:NoticeText>\n");
+			xml
+				.append("\t\t<ISM:Notice ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
+			xml
+				.append("\t\t\t<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\">noticeText</ISM:NoticeText>\n");
 			xml.append("\t\t</ISM:Notice>\n");
 			xml.append("\t</ddms:noticeList>\n");
-			xml.append("\t<ntk:Access xmlns:ntk=\"urn:us:gov:ic:ntk\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
+			xml
+				.append("\t<ntk:Access xmlns:ntk=\"urn:us:gov:ic:ntk\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
 			xml.append("\t\t<ntk:AccessIndividualList>\n");
 			xml.append("\t\t\t<ntk:AccessIndividual ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-			xml.append("\t\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+			xml
+				.append("\t\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
 			xml.append("\t\t\t\t<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 			xml.append("user_2321889:Doe_John_H</ntk:AccessIndividualValue>\n");
 			xml.append("\t\t\t</ntk:AccessIndividual>\n");
@@ -169,9 +175,9 @@ public class SecurityTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				Security.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Security
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -214,14 +220,14 @@ public class SecurityTest extends AbstractComponentTestCase {
 
 				// Incorrect excludeFromRollup
 				element = Util.buildDDMSElement(Security.getName(version), null);
-				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version.getIsmNamespace(),
-					"false");
-				getInstance("The excludeFromRollup attribute must have a fixed value of \"true\".", element);
-				
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version
+					.getIsmNamespace(), "false");
+				getInstance("The excludeFromRollup attribute must have a fixed value", element);
+
 				// Invalid excludeFromRollup
 				element = Util.buildDDMSElement(Security.getName(version), null);
-				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version.getIsmNamespace(),
-					"aardvark");
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version
+					.getIsmNamespace(), "aardvark");
 				getInstance("The excludeFromRollup attribute is required.", element);
 			}
 		}
@@ -316,7 +322,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void test20Usage() throws InvalidDDMSException {
+	public void testWrongVersionExcludeFromRollup() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		String icPrefix = PropertyReader.getPrefix("ism");
 		String icNamespace = version.getIsmNamespace();
@@ -330,7 +336,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The excludeFromRollup attribute cannot be used until DDMS 3.0 or later.");
+			expectMessage(e, "The excludeFromRollup attribute cannot be used");
 		}
 	}
 
@@ -355,7 +361,7 @@ public class SecurityTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "SuperSecret is not a valid enumeration token for this attribute, as specified in CVEnumISMClassificationAll.xml.");
+				expectMessage(e, "SuperSecret is not a valid enumeration token");
 			}
 		}
 	}

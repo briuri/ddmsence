@@ -29,7 +29,7 @@ import java.io.Reader;
 
 import org.xml.sax.SAXException;
 
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 
 /**
@@ -38,7 +38,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class DDMSReaderTest extends AbstractComponentTestCase {
+public class DDMSReaderTest extends AbstractBaseTestCase {
 
 	private DDMSReader _reader;
 
@@ -47,7 +47,6 @@ public class DDMSReaderTest extends AbstractComponentTestCase {
 		_reader = new DDMSReader();
 	}
 
-	
 	public void testGetElementNullFile() throws InvalidDDMSException {
 		try {
 			getReader().getElement((File) null);
@@ -119,7 +118,8 @@ public class DDMSReaderTest extends AbstractComponentTestCase {
 			fail("Should have thrown an InvalidDDMSException");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "nu.xom.ValidityException: cvc-elt.1: Cannot find the declaration of element 'wrong'. at line 1, column 8");
+			expectMessage(e,
+				"nu.xom.ValidityException");
 		}
 	}
 
@@ -149,7 +149,7 @@ public class DDMSReaderTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "nu.xom.ParsingException: Content is not allowed in prolog. at line 1, column 1");
+			expectMessage(e, "nu.xom.ParsingException");
 		}
 	}
 
@@ -180,7 +180,7 @@ public class DDMSReaderTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "Unexpected namespace URI and local name encountered: ddms:rights");
+			expectMessage(e, "Unexpected namespace URI and local name encountered");
 		}
 	}
 

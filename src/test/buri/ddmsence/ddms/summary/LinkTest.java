@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -34,15 +34,19 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:link elements</p>
+ * <p>
+ * Tests related to ddms:link elements
+ * </p>
  * 
- * <p> Because a ddms:link is a local component, we cannot load a valid document from a unit test data file. We have to
- * build the well-formed Element ourselves. </p>
+ * <p>
+ * Because a ddms:link is a local component, we cannot load a valid document from a unit test data file. We have to
+ * build the well-formed Element ourselves.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class LinkTest extends AbstractComponentTestCase {
+public class LinkTest extends AbstractBaseTestCase {
 
 	private static final String TEST_TYPE = "locator";
 	private static final String TEST_HREF = "http://en.wikipedia.org/wiki/Tank";
@@ -92,7 +96,8 @@ public class LinkTest extends AbstractComponentTestCase {
 	 */
 	public static Link getLocatorFixture(boolean hasSecurity) {
 		try {
-			return (new Link(XLinkAttributesTest.getLocatorFixture(), hasSecurity ? SecurityAttributesTest.getFixture() : null));
+			return (new Link(XLinkAttributesTest.getLocatorFixture(), hasSecurity ? SecurityAttributesTest.getFixture()
+				: null));
 		}
 		catch (InvalidDDMSException e) {
 			e.printStackTrace();
@@ -190,7 +195,7 @@ public class LinkTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX, Link
 				.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -223,11 +228,11 @@ public class LinkTest extends AbstractComponentTestCase {
 
 			// Missing href
 			Element element = buildComponentElement(TEST_TYPE, null);
-			getInstance("moo", element);
+			getInstance("href attribute is required.", element);
 
 			// invalid type
 			element = buildComponentElement("simple", TEST_HREF);
-			getInstance("moo", element);
+			getInstance("The type attribute must have a fixed value", element);
 		}
 	}
 
@@ -236,10 +241,10 @@ public class LinkTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing attributes
-			getInstance("moo", (XLinkAttributes) null);
+			getInstance("type attribute is required.", (XLinkAttributes) null);
 
 			// Missing href
-			getInstance("moo", new XLinkAttributes("", TEST_ROLE, TEST_TITLE, TEST_LABEL));
+			getInstance("href attribute is required.", new XLinkAttributes("", TEST_ROLE, TEST_TITLE, TEST_LABEL));
 		}
 	}
 
@@ -266,8 +271,8 @@ public class LinkTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Link elementComponent = getInstance(SUCCESS, getFixtureElement());
-			Link dataComponent = getInstance(SUCCESS, new XLinkAttributes(DIFFERENT_VALUE, TEST_ROLE,
-				TEST_TITLE, TEST_LABEL));
+			Link dataComponent = getInstance(SUCCESS, new XLinkAttributes(DIFFERENT_VALUE, TEST_ROLE, TEST_TITLE,
+				TEST_LABEL));
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -309,7 +314,7 @@ public class LinkTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			getInstance("moo", XLinkAttributesTest.getSimpleFixture());
+			getInstance("The type attribute must have a fixed value", XLinkAttributesTest.getSimpleFixture());
 		}
 	}
 
@@ -334,7 +339,7 @@ public class LinkTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "type attribute is required.");
 			}
 		}
 	}

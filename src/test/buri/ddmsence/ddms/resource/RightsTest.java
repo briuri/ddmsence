@@ -20,19 +20,21 @@
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:rights elements</p>
+ * <p>
+ * Tests related to ddms:rights elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class RightsTest extends AbstractComponentTestCase {
+public class RightsTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -53,7 +55,7 @@ public class RightsTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -85,8 +87,7 @@ public class RightsTest extends AbstractComponentTestCase {
 	 * @param copyright the value for the copyright attribute
 	 * @return a valid object
 	 */
-	private Rights getInstance(String message, boolean privacyAct, boolean intellectualProperty,
-		boolean copyright) {
+	private Rights getInstance(String message, boolean privacyAct, boolean intellectualProperty, boolean copyright) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Rights component = null;
 		try {
@@ -131,7 +132,7 @@ public class RightsTest extends AbstractComponentTestCase {
 
 			// Wrong name/namespace
 			Element element = Util.buildDDMSElement("wrongName", null);
-			getInstance("moo", element);
+			getInstance(WRONG_NAME_MESSAGE, element);
 		}
 	}
 

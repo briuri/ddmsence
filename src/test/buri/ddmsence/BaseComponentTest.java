@@ -22,23 +22,30 @@ package buri.ddmsence;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
 import nu.xom.Element;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
+import buri.ddmsence.ddms.resource.Creator;
 import buri.ddmsence.ddms.resource.Language;
+import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to underlying methods in the base class for DDMS components</p>
+ * <p>
+ * Tests related to underlying methods in the base class for DDMS components
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class BaseComponentTest extends TestCase {
+public class BaseComponentTest extends AbstractBaseTestCase {
 
+	public BaseComponentTest() {
+		super(null);
+	}
+	
 	/**
 	 * Resets the in-use version of DDMS.
 	 */
@@ -103,6 +110,20 @@ public class BaseComponentTest extends TestCase {
 		warnings.add(ValidationMessage.newWarning("test", "locator"));
 		component.addWarnings(warnings, true);
 		assertEquals("//locator", component.getValidationWarnings().get(0).getLocator());
+	}
+	
 
+	public void testSameVersion() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("3.0");
+		Organization org = new Organization(Util.getXsListAsList("DISA"), null, null, null, null, null);
+		DDMSVersion.setCurrentVersion("2.0");
+		try {
+			new Creator(org, null, null);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e,
+				"A child component, ddms:Organization");
+		}
 	}
 }

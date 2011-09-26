@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
@@ -31,12 +31,14 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to gml:pos elements</p>
+ * <p>
+ * Tests related to gml:pos elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class PositionTest extends AbstractComponentTestCase {
+public class PositionTest extends AbstractBaseTestCase {
 
 	public static final List<Double> TEST_COORDS = new ArrayList<Double>();
 	static {
@@ -168,9 +170,9 @@ public class PositionTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_GML_PREFIX,
-				Position.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_GML_PREFIX, Position
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -213,18 +215,18 @@ public class PositionTest extends AbstractComponentTestCase {
 			// Missing coordinates
 			Element element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, null);
 			SRSAttributesTest.getFixture().addTo(element);
-			getInstance("A position must be represented by either 2 or 3 coordinates.", element);
+			getInstance("A position must be represented by", element);
 
 			// At least 2 coordinates
 			element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, "25.0");
 			SRSAttributesTest.getFixture().addTo(element);
-			getInstance("A position must be represented by either 2 or 3 coordinates.", element);
+			getInstance("A position must be represented by", element);
 
 			// No more than 3 coordinates
 			element = Util
 				.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, TEST_XS_LIST + " 25.0 35.0");
 			SRSAttributesTest.getFixture().addTo(element);
-			getInstance("A position must be represented by either 2 or 3 coordinates.", element);
+			getInstance("A position must be represented by", element);
 
 			// Each coordinate is a Double
 			element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, "25.0 Dog");
@@ -237,12 +239,14 @@ public class PositionTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing coordinates
-			getInstance("A position must be represented by either 2 or 3 coordinates.", null, SRSAttributesTest.getFixture());
+			getInstance("A position must be represented by", null, SRSAttributesTest
+				.getFixture());
 
 			// At least 2 coordinates
 			List<Double> newCoords = new ArrayList<Double>();
 			newCoords.add(new Double(12.3));
-			getInstance("A position must be represented by either 2 or 3 coordinates.", newCoords, SRSAttributesTest.getFixture());
+			getInstance("A position must be represented by", newCoords, SRSAttributesTest
+				.getFixture());
 
 			// No more than 3 coordinates
 			newCoords = new ArrayList<Double>();
@@ -250,7 +254,8 @@ public class PositionTest extends AbstractComponentTestCase {
 			newCoords.add(new Double(12.3));
 			newCoords.add(new Double(12.3));
 			newCoords.add(new Double(12.3));
-			getInstance("A position must be represented by either 2 or 3 coordinates.", newCoords, SRSAttributesTest.getFixture());
+			getInstance("A position must be represented by", newCoords, SRSAttributesTest
+				.getFixture());
 		}
 	}
 
@@ -363,7 +368,7 @@ public class PositionTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "A position must be represented by either 2 or 3 coordinates.");
+				expectMessage(e, "A position must be represented by");
 			}
 
 			// Skip empty Coordinates

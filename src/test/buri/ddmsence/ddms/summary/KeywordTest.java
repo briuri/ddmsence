@@ -24,7 +24,7 @@ import java.util.List;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
@@ -34,12 +34,14 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:keyword elements</p>
+ * <p>
+ * Tests related to ddms:keyword elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class KeywordTest extends AbstractComponentTestCase {
+public class KeywordTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "Tornado";
 
@@ -144,9 +146,9 @@ public class KeywordTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				Keyword.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Keyword
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -169,11 +171,11 @@ public class KeywordTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// Missing value
 			Element element = Util.buildDDMSElement(Keyword.getName(version), null);
-			getInstance("moo", element);
+			getInstance("value attribute is required.", element);
 
 			// Empty value
 			element = Util.buildDDMSElement(Keyword.getName(version), "");
-			getInstance("moo", element);
+			getInstance("value attribute is required.", element);
 		}
 	}
 
@@ -181,10 +183,10 @@ public class KeywordTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing value
-			getInstance("moo", (String) null);
+			getInstance("value attribute is required.", (String) null);
 
 			// Empty value
-			getInstance("moo", "");
+			getInstance("value attribute is required.", "");
 		}
 	}
 
@@ -265,7 +267,7 @@ public class KeywordTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "xs:anyAttribute cannot be applied");
 		}
 
 		DDMSVersion version = DDMSVersion.setCurrentVersion("3.0");
@@ -280,18 +282,18 @@ public class KeywordTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The extensible attribute with the name, ddms:value");
 		}
 	}
 
-	public void testSecurityAttributesWrongVersion() throws InvalidDDMSException {
+	public void testWrongVersionSecurityAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
 			new Keyword(TEST_VALUE, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "Security attributes cannot be applied");
 		}
 	}
 

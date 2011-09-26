@@ -23,19 +23,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:nonStateActor elements</p>
+ * <p>
+ * Tests related to ddms:nonStateActor elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class NonStateActorTest extends AbstractComponentTestCase {
+public class NonStateActorTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "Laotian Monks";
 	private static final Integer TEST_ORDER = new Integer(1);
@@ -56,14 +58,15 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	public static NonStateActor getFixture(int order) {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			return (version.isAtLeast("4.0") ? new NonStateActor(TEST_VALUE, new Integer(order), SecurityAttributesTest.getFixture()) : null);
+			return (version.isAtLeast("4.0") ? new NonStateActor(TEST_VALUE, new Integer(order), SecurityAttributesTest
+				.getFixture()) : null);
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -153,9 +156,9 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				NonStateActor.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, NonStateActor
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -276,7 +279,7 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The nonStateActor element cannot be used");
 		}
 	}
 

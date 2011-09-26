@@ -31,7 +31,7 @@ import javax.xml.datatype.DatatypeConstants;
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Identifier;
 
@@ -41,14 +41,14 @@ import buri.ddmsence.ddms.resource.Identifier;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class UtilTest extends AbstractComponentTestCase {
+public class UtilTest extends AbstractBaseTestCase {
 
 	protected static final String TEST_NAMESPACE = DDMSVersion.getCurrentVersion().getNamespace();
 
 	public UtilTest() {
 		super(null);
 	}
-	
+
 	/**
 	 * Resets the in-use version of DDMS.
 	 */
@@ -152,7 +152,7 @@ public class UtilTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "This method should only be called on an element in the DDMS namespace.");
+			expectMessage(e, "This method should only be called");
 		}
 	}
 
@@ -208,7 +208,7 @@ public class UtilTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "This method should only be called on an element in the DDMS namespace.");
+			expectMessage(e, "This method should only be called");
 		}
 	}
 
@@ -296,9 +296,7 @@ public class UtilTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The date datatype must be one of [{http://www.w3.org/2001/XMLSchema}dateTime, "
-				+ "{http://www.w3.org/2001/XMLSchema}gYear, {http://www.w3.org/2001/XMLSchema}gYearMonth, "
-				+ "{http://www.w3.org/2001/XMLSchema}date]");
+			expectMessage(e, "The date datatype must be one of");
 		}
 	}
 
@@ -320,7 +318,7 @@ public class UtilTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "Unexpected namespace URI and local name encountered: ic:name");
+			expectMessage(e, "Unexpected namespace URI and local name encountered");
 		}
 
 		// Bad Name
@@ -330,7 +328,7 @@ public class UtilTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "Unexpected namespace URI and local name encountered: ddms:name");
+			expectMessage(e, "Unexpected namespace URI and local name encountered");
 		}
 	}
 
@@ -361,7 +359,7 @@ public class UtilTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "Unexpected namespace URI and local name encountered: ic:name");
+			expectMessage(e, "Unexpected namespace URI and local name encountered");
 		}
 
 		// Bad Name
@@ -371,7 +369,7 @@ public class UtilTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "Unexpected namespace URI and local name encountered: ddms:name");
+			expectMessage(e, "Unexpected namespace URI and local name encountered");
 		}
 	}
 
@@ -599,7 +597,7 @@ public class UtilTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "Invalid URI (Expected scheme name at index 0: :::::)");
+			expectMessage(e, "Invalid URI");
 		}
 	}
 
@@ -619,7 +617,7 @@ public class UtilTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "A longitude value must be between -180 and 180 degrees: null");
+			expectMessage(e, "A longitude value must be between");
 		}
 	}
 
@@ -629,14 +627,14 @@ public class UtilTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "A longitude value must be between -180 and 180 degrees: -181.0");
+			expectMessage(e, "A longitude value must be between");
 		}
 		try {
 			Util.requireValidLongitude(new Double(181));
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "A longitude value must be between -180 and 180 degrees: 181.0");
+			expectMessage(e, "A longitude value must be between");
 		}
 	}
 
@@ -650,7 +648,7 @@ public class UtilTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "A latitude value must be between -90 and 90 degrees: null");
+			expectMessage(e, "A latitude value must be between");
 		}
 	}
 
@@ -660,14 +658,14 @@ public class UtilTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "A latitude value must be between -90 and 90 degrees: -91.0");
+			expectMessage(e, "A latitude value must be between");
 		}
 		try {
 			Util.requireValidLatitude(new Double(91));
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "A latitude value must be between -90 and 90 degrees: 91.0");
+			expectMessage(e, "A latitude value must be between");
 		}
 	}
 
@@ -901,7 +899,8 @@ public class UtilTest extends AbstractComponentTestCase {
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "A child component, ddms:identifier, is using a different version of DDMS from its parent.");
+			expectMessage(e,
+				"A child component, ddms:identifier");
 		}
 	}
 
