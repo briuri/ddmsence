@@ -19,11 +19,10 @@
  */
 package buri.ddmsence.ddms.summary;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.summary.gml.Point;
 import buri.ddmsence.ddms.summary.gml.PointTest;
@@ -37,12 +36,14 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:subjectCoverage elements</p>
+ * <p>
+ * Tests related to ddms:subjectCoverage elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class BoundingGeometryTest extends AbstractComponentTestCase {
+public class BoundingGeometryTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -139,7 +140,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				BoundingGeometry.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -181,7 +182,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No polygons or points
 			Element element = Util.buildDDMSElement(BoundingGeometry.getName(version), null);
-			getInstance("moo", element);
+			getInstance("At least 1 of ", element);
 		}
 	}
 
@@ -189,7 +190,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No polygons or points
-			getInstance("moo", null, null);
+			getInstance("At least 1 of ", null, null);
 		}
 	}
 
@@ -253,37 +254,6 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testWrongVersions() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("2.0");
-		List<Position> positions = new ArrayList<Position>();
-		positions.add(new Position(PositionTest.TEST_COORDS, null));
-		positions.add(new Position(PositionTest.TEST_COORDS_2, null));
-		positions.add(new Position(PositionTest.TEST_COORDS_3, null));
-		positions.add(new Position(PositionTest.TEST_COORDS, null));
-		List<Polygon> polygons = new ArrayList<Polygon>();
-		polygons.add(new Polygon(positions, SRSAttributesTest.getFixture(), TEST_ID));
-		DDMSVersion.setCurrentVersion("3.0");
-		try {
-			new BoundingGeometry(polygons, null);
-			fail("Allowed different versions.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
-		}
-
-		DDMSVersion.setCurrentVersion("2.0");
-		List<Point> points = new ArrayList<Point>();
-		points.add(new Point(new Position(PositionTest.TEST_COORDS, null), SRSAttributesTest.getFixture(), TEST_ID));
-		DDMSVersion.setCurrentVersion("3.0");
-		try {
-			new BoundingGeometry(null, points);
-			fail("Allowed different versions.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
-		}
-	}
-
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -314,7 +284,7 @@ public class BoundingGeometryTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "id is required.");
 			}
 			builder = new BoundingGeometry.Builder();
 			for (Polygon polygon : PolygonTest.getFixtureList()) {

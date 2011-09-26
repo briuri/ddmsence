@@ -19,16 +19,18 @@
  */
 package buri.ddmsence.ddms.security.ism;
 
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.util.DDMSVersion;
 
 /**
- * <p>Tests related to the ISM Controlled Vocabularies</p>
+ * <p>
+ * Tests related to the ISM Controlled Vocabularies
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.d
  */
-public class ISMVocabularyTest extends AbstractComponentTestCase {
+public class ISMVocabularyTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -43,7 +45,7 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 			fail("Allowed invalid key.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "No controlled vocabulary could be found for this key: unknownKey");
+			expectMessage(e, "No controlled vocabulary could be found");
 		}
 	}
 
@@ -96,11 +98,11 @@ public class ISMVocabularyTest extends AbstractComponentTestCase {
 				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_NON_US_CONTROLS, "ATOMAL"));
 				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_NON_US_CONTROLS, "unknown"));
 			}
-			
+
 			if (version.isAtLeast("4.0")) {
 				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_NOTICE_TYPE, "ABC"));
 				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_NOTICE_TYPE, "unknown"));
-				
+
 				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_POC_TYPE, "ABC"));
 				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_POC_TYPE, "unknown"));
 			}

@@ -23,19 +23,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:processingInfo elements</p>
+ * <p>
+ * Tests related to ddms:processingInfo elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class ProcessingInfoTest extends AbstractComponentTestCase {
+public class ProcessingInfoTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "XSLT Transformation to convert DDMS 2.0 to DDMS 3.1.";
 	private static final String TEST_DATE_PROCESSED = "2011-08-19";
@@ -47,7 +49,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		super("processingInfo.xml");
 		removeSupportedVersions("2.0 3.0 3.1");
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -60,7 +62,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -69,7 +71,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		infos.add(getFixture());
 		return (infos);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -142,9 +144,9 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				ProcessingInfo.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, ProcessingInfo
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -179,21 +181,16 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// Wrong name
-			Element element = Util.buildDDMSElement("unknownName", null);
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("moo", element);
-
 			// Missing date
-			element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
+			Element element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("moo", element);
+			getInstance("dateProcessed is required.", element);
 
 			// Wrong date format (using xs:gDay here)
 			element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
 			Util.addDDMSAttribute(element, "dateProcessed", "---31");
 			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("moo", element);
+			getInstance("The date datatype must be one of", element);
 		}
 	}
 
@@ -202,13 +199,13 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing date
-			getInstance("moo", TEST_VALUE, null);
+			getInstance("dateProcessed is required.", TEST_VALUE, null);
 
 			// Invalid date format
-			getInstance("moo", TEST_VALUE, "baboon");
+			getInstance("The ddms:dateProcessed attribute is not in a valid date format.", TEST_VALUE, "baboon");
 
 			// Wrong date format (using xs:gDay here)
-			getInstance("moo", TEST_VALUE, "---31");
+			getInstance("The date datatype must be one of", TEST_VALUE, "---31");
 
 			// Bad security attributes
 			try {
@@ -216,7 +213,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}
@@ -291,14 +288,14 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void test20Usage() {
+	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
 			new ProcessingInfo(TEST_VALUE, TEST_DATE_PROCESSED, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The processingInfo element cannot be used");
 		}
 	}
 
@@ -324,7 +321,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "dateProcessed is required.");
 			}
 		}
 	}

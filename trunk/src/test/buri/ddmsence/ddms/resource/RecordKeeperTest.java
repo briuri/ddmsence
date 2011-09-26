@@ -20,22 +20,26 @@
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:recordKeeper elements</p>
+ * <p>
+ * Tests related to ddms:recordKeeper elements
+ * </p>
  * 
- * <p> Because a ddms:recordKeeper is a local component, we cannot load a valid document from a unit test data file. We
- * have to build the well-formed Element ourselves. </p>
+ * <p>
+ * Because a ddms:recordKeeper is a local component, we cannot load a valid document from a unit test data file. We have
+ * to build the well-formed Element ourselves.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class RecordKeeperTest extends AbstractComponentTestCase {
+public class RecordKeeperTest extends AbstractBaseTestCase {
 
 	private static final String TEST_ID = "#289-99202.9";
 	private static final String TEST_NAME = "DISA";
@@ -60,7 +64,6 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 		element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
 		return (element);
 	}
-	
 
 	/**
 	 * Returns a fixture object for testing.
@@ -147,9 +150,9 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX,
-				RecordKeeper.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX, RecordKeeper
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -178,18 +181,18 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 			// Missing recordKeeperID
 			Element element = Util.buildDDMSElement(RecordKeeper.getName(version), null);
 			element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
-			getInstance("moo", element);
+			getInstance("record keeper ID is required.", element);
 
 			// Empty recordKeeperID
 			element = Util.buildDDMSElement(RecordKeeper.getName(version), null);
 			element.appendChild(Util.buildDDMSElement("recordKeeperID", null));
 			element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
-			getInstance("moo", element);
+			getInstance("record keeper ID is required.", element);
 
 			// Missing organization
 			element = Util.buildDDMSElement(RecordKeeper.getName(version), null);
 			element.appendChild(Util.buildDDMSElement("recordKeeperID", TEST_ID));
-			getInstance("moo", element);
+			getInstance("organization is required.", element);
 		}
 	}
 
@@ -197,11 +200,11 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// Missing recordKeeperID		
-			getInstance("moo", null, OrganizationTest.getFixture());
+			// Missing recordKeeperID
+			getInstance("record keeper ID is required.", null, OrganizationTest.getFixture());
 
 			// Missing organization
-			getInstance("moo", TEST_ID, null);
+			getInstance("organization is required.", TEST_ID, null);
 		}
 	}
 
@@ -234,8 +237,8 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 			RecordKeeper dataComponent = getInstance(SUCCESS, "newID", OrganizationTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_ID, new Organization(Util.getXsListAsList("DARPA"), null,
-				null, null, null));
+			dataComponent = getInstance(SUCCESS, TEST_ID, new Organization(Util.getXsListAsList("DARPA"), null, null,
+				null, null));
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -266,14 +269,14 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void test20Usage() {
+	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
 			new RecordKeeper(TEST_ID, OrganizationTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The recordKeeper element cannot be used");
 		}
 	}
 
@@ -299,7 +302,7 @@ public class RecordKeeperTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "organization is required.");
 			}
 			builder.getOrganization().setNames(Util.getXsListAsList(TEST_NAME));
 			builder.commit();

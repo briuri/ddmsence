@@ -23,18 +23,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:postalAddress elements</p>
+ * <p>
+ * Tests related to ddms:postalAddress elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class PostalAddressTest extends AbstractComponentTestCase {
+public class PostalAddressTest extends AbstractBaseTestCase {
 
 	private static final List<String> TEST_STREETS = new ArrayList<String>();
 	static {
@@ -97,11 +99,11 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 	 * @param postalCode the postal code (optional)
 	 * @param countryCode the country code (optional)
 	 * @param hasState true if the stateOrProvince is a state, false if it is a province (only 1 of state or province
-	 * can exist in a postalAddress)
+	 *            can exist in a postalAddress)
 	 * @return a valid object
 	 */
-	private PostalAddress getInstance(String message, List<String> streets, String city,
-		String stateOrProvince, String postalCode, CountryCode countryCode, boolean hasState) {
+	private PostalAddress getInstance(String message, List<String> streets, String city, String stateOrProvince,
+		String postalCode, CountryCode countryCode, boolean hasState) {
 		boolean expectFailure = !Util.isEmpty(message);
 		PostalAddress component = null;
 		try {
@@ -157,9 +159,9 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				PostalAddress.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, PostalAddress
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -179,12 +181,12 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, CountryCodeTest
-				.getFixture(), true);
+			getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, CountryCodeTest.getFixture(),
+				true);
 
 			// All fields with a province
-			getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, CountryCodeTest
-				.getFixture(), false);
+			getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE,
+				CountryCodeTest.getFixture(), false);
 
 			// No optional fields
 			getInstance(SUCCESS, null, null, null, null, null, false);
@@ -195,47 +197,48 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String postalName = PostalAddress.getName(version);
+			
 			// Either a state or a province but not both.
 			Element element = Util.buildDDMSElement(postalName, null);
 			element.appendChild(Util.buildDDMSElement("state", TEST_STATE));
 			element.appendChild(Util.buildDDMSElement("province", TEST_PROVINCE));
-			getInstance("moo", element);
+			getInstance("Only 1 of state or province can be used.", element);
 
 			// Too many streets
 			element = Util.buildDDMSElement(postalName, null);
 			for (int i = 0; i < 7; i++)
 				element.appendChild(Util.buildDDMSElement("street", "street" + i));
-			getInstance("moo", element);
+			getInstance("No more than 6 street elements can exist.", element);
 
 			// Too many cities
 			element = Util.buildDDMSElement(postalName, null);
 			for (int i = 0; i < 2; i++)
 				element.appendChild(Util.buildDDMSElement("city", "city" + i));
-			getInstance("moo", element);
+			getInstance("No more than 1 city element can exist.", element);
 
 			// Too many states
 			element = Util.buildDDMSElement(postalName, null);
 			for (int i = 0; i < 2; i++)
 				element.appendChild(Util.buildDDMSElement("state", "state" + i));
-			getInstance("moo", element);
+			getInstance("No more than 1 state element can exist.", element);
 
 			// Too many provinces
 			element = Util.buildDDMSElement(postalName, null);
 			for (int i = 0; i < 2; i++)
 				element.appendChild(Util.buildDDMSElement("province", "province" + i));
-			getInstance("moo", element);
+			getInstance("No more than 1 province element can exist.", element);
 
 			// Too many postalCodes
 			element = Util.buildDDMSElement(postalName, null);
 			for (int i = 0; i < 2; i++)
 				element.appendChild(Util.buildDDMSElement("postalCode", "postalCode" + i));
-			getInstance("moo", element);
+			getInstance("No more than 1 postalCode element can exist.", element);
 
 			// Too many country codes
 			element = Util.buildDDMSElement(postalName, null);
 			for (int i = 0; i < 2; i++)
 				element.appendChild(new CountryCode("ISO-123" + i, "US" + i).getXOMElementCopy());
-			getInstance("moo", element);
+			getInstance("No more than 1 countryCode element can exist.", element);
 		}
 	}
 
@@ -246,8 +249,7 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			List<String> streets = new ArrayList<String>();
 			for (int i = 0; i < 7; i++)
 				streets.add("Street" + i);
-			getInstance("moo", streets, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, CountryCodeTest
-				.getFixture(), true);
+			getInstance("No more than 6 street elements can exist.", streets, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, CountryCodeTest.getFixture(), true);
 		}
 	}
 
@@ -272,8 +274,8 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			PostalAddress elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			PostalAddress dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE,
-				TEST_POSTAL_CODE, CountryCodeTest.getFixture(), true);
+			PostalAddress dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE,
+				CountryCodeTest.getFixture(), true);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -288,24 +290,23 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 				CountryCodeTest.getFixture(), true);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_STREETS, null, TEST_STATE, TEST_POSTAL_CODE,
-				CountryCodeTest.getFixture(), true);
+			dataComponent = getInstance(SUCCESS, TEST_STREETS, null, TEST_STATE, TEST_POSTAL_CODE, CountryCodeTest
+				.getFixture(), true);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, null, TEST_POSTAL_CODE,
-				CountryCodeTest.getFixture(), true);
+			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, null, TEST_POSTAL_CODE, CountryCodeTest
+				.getFixture(), true);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, null, TEST_POSTAL_CODE,
-				CountryCodeTest.getFixture(), false);
+			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, null, TEST_POSTAL_CODE, CountryCodeTest
+				.getFixture(), false);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, null, CountryCodeTest
 				.getFixture(), true);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, null,
-				true);
+			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, null, true);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -318,13 +319,13 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true, true), component.toHTML());
 			assertEquals(getExpectedOutput(false, true), component.toText());
 
-			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE,
-				CountryCodeTest.getFixture(), true);
+			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, CountryCodeTest
+				.getFixture(), true);
 			assertEquals(getExpectedOutput(true, true), component.toHTML());
 			assertEquals(getExpectedOutput(false, true), component.toText());
 
-			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE,
-				CountryCodeTest.getFixture(), false);
+			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, CountryCodeTest
+				.getFixture(), false);
 			assertEquals(getExpectedOutput(true, false), component.toHTML());
 			assertEquals(getExpectedOutput(false, false), component.toText());
 		}
@@ -337,12 +338,12 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			PostalAddress component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true, true), component.toXML());
 
-			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE,
-				CountryCodeTest.getFixture(), true);
+			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, CountryCodeTest
+				.getFixture(), true);
 			assertEquals(getExpectedXMLOutput(false, true), component.toXML());
 
-			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE,
-				CountryCodeTest.getFixture(), false);
+			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, CountryCodeTest
+				.getFixture(), false);
 			assertEquals(getExpectedXMLOutput(false, false), component.toXML());
 		}
 	}
@@ -353,19 +354,6 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 			CountryCode code = CountryCodeTest.getFixture();
 			getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, code, true);
 			getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, code, true);
-		}
-	}
-
-	public void testWrongVersionCountryCode() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("2.0");
-		CountryCode code = CountryCodeTest.getFixture();
-		DDMSVersion.setCurrentVersion("3.0");
-		try {
-			new PostalAddress(TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, code, true);
-			fail("Allowed different versions.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
 		}
 	}
 
@@ -406,7 +394,7 @@ public class PostalAddressTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "Only 1 of state or province can be used.");
 			}
 		}
 	}

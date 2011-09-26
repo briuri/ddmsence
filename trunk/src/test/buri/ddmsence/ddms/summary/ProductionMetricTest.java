@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -31,12 +31,14 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:productionMetric elements</p>
+ * <p>
+ * Tests related to ddms:productionMetric elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class ProductionMetricTest extends AbstractComponentTestCase {
+public class ProductionMetricTest extends AbstractBaseTestCase {
 
 	private static final String TEST_SUBJECT = "FOOD";
 	private static final String TEST_COVERAGE = "AFG";
@@ -93,9 +95,9 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	 * 
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param subject a method of categorizing the subject of a document in a fashion understandable by DDNI-A
-	 * (required)
+	 *            (required)
 	 * @param coverage a method of categorizing the coverage of a document in a fashion understandable by DDNI-A
-	 * (required)
+	 *            (required)
 	 * @param label the label (required)
 	 * @return a valid object
 	 */
@@ -144,7 +146,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				ProductionMetric.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -173,12 +175,12 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			// Missing subject
 			Element element = Util.buildDDMSElement(ProductionMetric.getName(version), null);
 			element.addAttribute(Util.buildDDMSAttribute("coverage", TEST_COVERAGE));
-			getInstance("moo", element);
+			getInstance("subject attribute is required.", element);
 
 			// Missing coverage
 			element = Util.buildDDMSElement(ProductionMetric.getName(version), null);
 			element.addAttribute(Util.buildDDMSAttribute("subject", TEST_SUBJECT));
-			getInstance("moo", element);
+			getInstance("coverage attribute is required.", element);
 		}
 	}
 
@@ -187,10 +189,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing subject
-			getInstance("moo", null, TEST_COVERAGE);
+			getInstance("subject attribute is required.", null, TEST_COVERAGE);
 
 			// Missing coverage
-			getInstance("moo", TEST_SUBJECT, null);
+			getInstance("coverage attribute is required.", TEST_SUBJECT, null);
 		}
 	}
 
@@ -271,7 +273,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The productionMetric element cannot be used");
 		}
 	}
 
@@ -294,7 +296,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "subject attribute is required.");
 			}
 			builder.setSubject(TEST_SUBJECT);
 			builder.commit();

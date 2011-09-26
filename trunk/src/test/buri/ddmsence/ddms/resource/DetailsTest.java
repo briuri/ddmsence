@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -32,15 +32,19 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:details elements</p>
+ * <p>
+ * Tests related to ddms:details elements
+ * </p>
  * 
- * <p> Because a ddms:details is a local component, we cannot load a valid document from a unit test data file. We have
- * to build the well-formed Element ourselves. </p>
+ * <p>
+ * Because a ddms:details is a local component, we cannot load a valid document from a unit test data file. We have to
+ * build the well-formed Element ourselves.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class DetailsTest extends AbstractComponentTestCase {
+public class DetailsTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "This is a revision recall.";
 
@@ -91,7 +95,7 @@ public class DetailsTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -163,7 +167,7 @@ public class DetailsTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX, Details
 				.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -195,12 +199,11 @@ public class DetailsTest extends AbstractComponentTestCase {
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// Wrong name
-			Element element = Util.buildDDMSElement("unknownName", null);
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("moo", element);
+			// Bad security attributes
+			Element element = Util.buildDDMSElement(Details.getName(version), null);
+			getInstance("classification is required.", element);
 		}
 	}
 
@@ -214,7 +217,7 @@ public class DetailsTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}
@@ -285,14 +288,14 @@ public class DetailsTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void test20Usage() {
+	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
 			new Details(TEST_VALUE, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The details element cannot be used");
 		}
 	}
 
@@ -318,7 +321,7 @@ public class DetailsTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}

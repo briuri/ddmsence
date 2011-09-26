@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -32,12 +32,14 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ntk:AccessGroupValue elements</p>
+ * <p>
+ * Tests related to ntk:AccessGroupValue elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class GroupValueTest extends AbstractComponentTestCase {
+public class GroupValueTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "WISE/RODCA";
 	private static final String TEST_ID = "ID";
@@ -106,8 +108,7 @@ public class GroupValueTest extends AbstractComponentTestCase {
 	 * @param qualifier an NTK qualifier (optional)
 	 * @return a valid object
 	 */
-	private GroupValue getInstance(String message, String value, String id, String idReference,
-		String qualifier) {
+	private GroupValue getInstance(String message, String value, String id, String idReference, String qualifier) {
 		boolean expectFailure = !Util.isEmpty(message);
 		GroupValue component = null;
 		try {
@@ -151,9 +152,9 @@ public class GroupValueTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
-				GroupValue.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, GroupValue
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -244,8 +245,7 @@ public class GroupValueTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			GroupValue elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			GroupValue dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE,
-				TEST_QUALIFIER);
+			GroupValue dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -256,12 +256,10 @@ public class GroupValueTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			GroupValue elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			GroupValue dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_ID, TEST_ID_REFERENCE,
-				TEST_QUALIFIER);
+			GroupValue dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_ID, TEST_ID_REFERENCE, TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, DIFFERENT_VALUE, TEST_ID_REFERENCE,
-				TEST_QUALIFIER);
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, DIFFERENT_VALUE, TEST_ID_REFERENCE, TEST_QUALIFIER);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ID, DIFFERENT_VALUE, TEST_QUALIFIER);
@@ -298,6 +296,10 @@ public class GroupValueTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testWrongVersion() {
+		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
+	}
+	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

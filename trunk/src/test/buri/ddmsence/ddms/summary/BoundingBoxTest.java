@@ -20,19 +20,21 @@
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:boundingBox elements</p>
+ * <p>
+ * Tests related to ddms:boundingBox elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class BoundingBoxTest extends AbstractComponentTestCase {
+public class BoundingBoxTest extends AbstractBaseTestCase {
 
 	private static final double TEST_WEST = 12.3;
 	private static final double TEST_EAST = 23.4;
@@ -91,8 +93,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	 * @param northBL the northbound latitude
 	 * @return a valid object
 	 */
-	private BoundingBox getInstance(String message, double westBL, double eastBL, double southBL,
-		double northBL) {
+	private BoundingBox getInstance(String message, double westBL, double eastBL, double southBL, double northBL) {
 		boolean expectFailure = !Util.isEmpty(message);
 		BoundingBox component = null;
 		try {
@@ -177,10 +178,10 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	 */
 	private Element buildComponentElement(String west, String east, String south, String north) {
 		Element element = Util.buildDDMSElement(BoundingBox.getName(DDMSVersion.getCurrentVersion()), null);
-		element.appendChild(Util.buildDDMSElement(getWestBLName(), String.valueOf("west")));
-		element.appendChild(Util.buildDDMSElement(getEastBLName(), String.valueOf(TEST_EAST)));
-		element.appendChild(Util.buildDDMSElement(getSouthBLName(), String.valueOf(TEST_SOUTH)));
-		element.appendChild(Util.buildDDMSElement(getNorthBLName(), String.valueOf(TEST_NORTH)));
+		element.appendChild(Util.buildDDMSElement(getWestBLName(), String.valueOf(west)));
+		element.appendChild(Util.buildDDMSElement(getEastBLName(), String.valueOf(east)));
+		element.appendChild(Util.buildDDMSElement(getSouthBLName(), String.valueOf(south)));
+		element.appendChild(Util.buildDDMSElement(getNorthBLName(), String.valueOf(north)));
 		return (element);
 	}
 
@@ -188,9 +189,9 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				BoundingBox.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, BoundingBox
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -213,55 +214,55 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// Missing values
 			Element element = Util.buildDDMSElement(BoundingBox.getName(version), null);
-			getInstance("moo", element);
+			getInstance("westbound longitude is required.", element);
 
 			// Not Double
 			element = buildComponentElement("west", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), String
 				.valueOf(TEST_NORTH));
-			getInstance("moo", element);
+			getInstance("westbound longitude is required.", element);
 
 			// Longitude too small
 			element = buildComponentElement("-181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), String
 				.valueOf(TEST_NORTH));
-			getInstance("moo", element);
+			getInstance("A longitude value must be between", element);
 
 			// Longitude too big
 			element = buildComponentElement("181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), String
 				.valueOf(TEST_NORTH));
-			getInstance("moo", element);
+			getInstance("A longitude value must be between", element);
 
 			// Latitude too small
 			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "-91", String
 				.valueOf(TEST_NORTH));
-			getInstance("moo", element);
+			getInstance("A latitude value must be between", element);
 
 			// Latitude too big
 			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "91", String
 				.valueOf(TEST_NORTH));
-			getInstance("moo", element);
+			getInstance("A latitude value must be between", element);
 		}
 	}
 
 	public void testNorthboundLatitudeValiation() {
 		// Issue #65
-		getInstance("moo", TEST_WEST, TEST_EAST, TEST_SOUTH, -91);
-		getInstance("moo", TEST_WEST, TEST_EAST, TEST_SOUTH, 91);
+		getInstance("A latitude value must be between", TEST_WEST, TEST_EAST, TEST_SOUTH, -91);
+		getInstance("A latitude value must be between", TEST_WEST, TEST_EAST, TEST_SOUTH, 91);
 	}
 
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Longitude too small
-			getInstance("moo", -181, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			getInstance("A longitude value must be between", -181, TEST_EAST, TEST_SOUTH, TEST_NORTH);
 
 			// Longitude too big
-			getInstance("moo", 181, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			getInstance("A longitude value must be between", 181, TEST_EAST, TEST_SOUTH, TEST_NORTH);
 
 			// Latitude too small
-			getInstance("moo", TEST_WEST, TEST_EAST, -91, TEST_NORTH);
+			getInstance("A latitude value must be between", TEST_WEST, TEST_EAST, -91, TEST_NORTH);
 
 			// Latitude too big
-			getInstance("moo", TEST_WEST, TEST_EAST, 91, TEST_NORTH);
+			getInstance("A latitude value must be between", TEST_WEST, TEST_EAST, 91, TEST_NORTH);
 		}
 	}
 
@@ -367,7 +368,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "A ddms:boundingBox requires");
 			}
 		}
 	}

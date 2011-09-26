@@ -22,7 +22,7 @@ package buri.ddmsence.ddms.security.ntk;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -30,12 +30,14 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ntk:Access elements</p>
+ * <p>
+ * Tests related to ntk:Access elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class AccessTest extends AbstractComponentTestCase {
+public class AccessTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -89,8 +91,7 @@ public class AccessTest extends AbstractComponentTestCase {
 	 * @param groups the groups
 	 * @parma profileList the profilesprofiles the profiles in this list (required)
 	 */
-	private Access getInstance(String message, List<Individual> individuals, List<Group> groups,
-		ProfileList profileList) {
+	private Access getInstance(String message, List<Individual> individuals, List<Group> groups, ProfileList profileList) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Access component = null;
 		try {
@@ -128,20 +129,26 @@ public class AccessTest extends AbstractComponentTestCase {
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
 		xml.append("\t<ntk:AccessIndividualList>\n");
 		xml.append("\t\t<ntk:AccessIndividual ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml.append("\t\t\t<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">user_2321889:Doe_John_H</ntk:AccessIndividualValue>\n");
+		xml
+			.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml
+			.append("\t\t\t<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">user_2321889:Doe_John_H</ntk:AccessIndividualValue>\n");
 		xml.append("\t\t</ntk:AccessIndividual>\n");
 		xml.append("\t</ntk:AccessIndividualList>\n");
 		xml.append("\t<ntk:AccessGroupList>\n");
 		xml.append("\t\t<ntk:AccessGroup ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml.append("\t\t\t<ntk:AccessGroupValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">WISE/RODCA</ntk:AccessGroupValue>\n");
+		xml
+			.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml
+			.append("\t\t\t<ntk:AccessGroupValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">WISE/RODCA</ntk:AccessGroupValue>\n");
 		xml.append("\t\t</ntk:AccessGroup>\n");
 		xml.append("\t</ntk:AccessGroupList>\n");
 		xml.append("\t<ntk:AccessProfileList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
 		xml.append("\t\t<ntk:AccessProfile ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml.append("\t\t\t<ntk:AccessProfileValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>\n");
+		xml
+			.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml
+			.append("\t\t\t<ntk:AccessProfileValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>\n");
 		xml.append("\t\t</ntk:AccessProfile>\n");
 		xml.append("\t</ntk:AccessProfileList>\n");
 		xml.append("</ntk:Access>");
@@ -155,7 +162,7 @@ public class AccessTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, Access
 				.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -235,8 +242,8 @@ public class AccessTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Access elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Access dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest
-				.getFixtureList(), ProfileListTest.getFixture());
+			Access dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
+				ProfileListTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -247,16 +254,13 @@ public class AccessTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Access elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Access dataComponent = getInstance(SUCCESS, null, GroupTest.getFixtureList(), ProfileListTest
-				.getFixture());
+			Access dataComponent = getInstance(SUCCESS, null, GroupTest.getFixtureList(), ProfileListTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), null, ProfileListTest
-				.getFixture());
+			dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), null, ProfileListTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
-				null);
+			dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -321,6 +325,10 @@ public class AccessTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testWrongVersion() {
+		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
+	}
+	
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

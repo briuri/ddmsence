@@ -33,6 +33,6 @@ public class UnsupportedVersionException extends RuntimeException {
 	 * @see Exception#Exception(String)
 	 */
 	public UnsupportedVersionException(String version) {
-		super("Version " + version + " of DDMS is not yet supported.");
+		super("DDMS Version " + version + " is not yet supported.");
 	}
 }

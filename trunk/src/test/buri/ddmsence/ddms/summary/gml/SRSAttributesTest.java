@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
@@ -31,12 +31,14 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to the SRS attributes on gml: elements</p>
+ * <p>
+ * Tests related to the SRS attributes on gml: elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class SRSAttributesTest extends AbstractComponentTestCase {
+public class SRSAttributesTest extends AbstractBaseTestCase {
 
 	protected static final String TEST_SRS_NAME = "http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D";
 	protected static final Integer TEST_SRS_DIMENSION = 10;
@@ -105,8 +107,8 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 	 * @param uomLabels the labels for UOM (required when axisLabels is set)
 	 * @return a valid object
 	 */
-	private SRSAttributes getInstance(String message, String srsName, Integer srsDimension,
-		List<String> axisLabels, List<String> uomLabels) {
+	private SRSAttributes getInstance(String message, String srsName, Integer srsDimension, List<String> axisLabels,
+		List<String> uomLabels) {
 		boolean expectFailure = !Util.isEmpty(message);
 		SRSAttributes attributes = null;
 		try {
@@ -187,18 +189,18 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(Position.getName(version), null);
 			addAttributes(element, INVALID_URI, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
 				.getXsList(TEST_UOM_LABELS));
-			getInstance("Invalid URI (Expected scheme name at index 0: :::::)", element);
+			getInstance("Invalid URI", element);
 
 			// axisLabels without srsName
 			element = Util.buildDDMSElement(Position.getName(version), null);
 			addAttributes(element, null, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
 				.getXsList(TEST_UOM_LABELS));
-			getInstance("The axisLabels attribute can only be used in tandem with an srsName.", element);
+			getInstance("The axisLabels attribute can only be used", element);
 
 			// uomLabels without axisLabels
 			element = Util.buildDDMSElement(Position.getName(version), null);
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, null, Util.getXsList(TEST_UOM_LABELS));
-			getInstance("The uomLabels attribute can only be used in tandem with axisLabels.", element);
+			getInstance("The uomLabels attribute can only be used", element);
 
 			// Non-NCNames in axisLabels
 			List<String> newLabels = new ArrayList<String>(TEST_AXIS_LABELS);
@@ -227,26 +229,32 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// srsName not a URI
-			getInstance("Invalid URI (Expected scheme name at index 0: :::::)", INVALID_URI, TEST_SRS_DIMENSION, TEST_AXIS_LABELS, TEST_UOM_LABELS);
+			getInstance("Invalid URI", INVALID_URI, TEST_SRS_DIMENSION,
+				TEST_AXIS_LABELS, TEST_UOM_LABELS);
 
 			// axisLabels without srsName
-			getInstance("The axisLabels attribute can only be used in tandem with an srsName.", null, TEST_SRS_DIMENSION, TEST_AXIS_LABELS, TEST_UOM_LABELS);
+			getInstance("The axisLabels attribute can only be used", null,
+				TEST_SRS_DIMENSION, TEST_AXIS_LABELS, TEST_UOM_LABELS);
 
 			// uomLabels without axisLabels
-			getInstance("The uomLabels attribute can only be used in tandem with axisLabels.", TEST_SRS_NAME, TEST_SRS_DIMENSION, null, TEST_UOM_LABELS);
+			getInstance("The uomLabels attribute can only be used", TEST_SRS_NAME,
+				TEST_SRS_DIMENSION, null, TEST_UOM_LABELS);
 
 			// Non-NCNames in axisLabels
 			List<String> newLabels = new ArrayList<String>(TEST_AXIS_LABELS);
 			newLabels.add("TEST:TEST");
-			getInstance("\"TEST:TEST\" is not a valid NCName.", TEST_SRS_NAME, TEST_SRS_DIMENSION, newLabels, TEST_UOM_LABELS);
+			getInstance("\"TEST:TEST\" is not a valid NCName.", TEST_SRS_NAME, TEST_SRS_DIMENSION, newLabels,
+				TEST_UOM_LABELS);
 
 			// Non-NCNames in uomLabels
 			newLabels = new ArrayList<String>(TEST_UOM_LABELS);
 			newLabels.add("TEST:TEST");
-			getInstance("\"TEST:TEST\" is not a valid NCName.", TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS, newLabels);
+			getInstance("\"TEST:TEST\" is not a valid NCName.", TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS,
+				newLabels);
 
 			// Dimension is a positive integer
-			getInstance("The srsDimension must be a positive integer.", TEST_SRS_NAME, new Integer(-1), TEST_AXIS_LABELS, TEST_UOM_LABELS);
+			getInstance("The srsDimension must be a positive integer.", TEST_SRS_NAME, new Integer(-1),
+				TEST_AXIS_LABELS, TEST_UOM_LABELS);
 		}
 	}
 
@@ -271,8 +279,8 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
 				.getXsList(TEST_UOM_LABELS));
 			SRSAttributes elementAttributes = getInstance(SUCCESS, element);
-			SRSAttributes dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION,
-				TEST_AXIS_LABELS, TEST_UOM_LABELS);
+			SRSAttributes dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS,
+				TEST_UOM_LABELS);
 
 			assertEquals(elementAttributes, dataAttributes);
 			assertEquals(elementAttributes.hashCode(), dataAttributes.hashCode());
@@ -287,8 +295,8 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
 				.getXsList(TEST_UOM_LABELS));
 			SRSAttributes elementAttributes = getInstance(SUCCESS, element);
-			SRSAttributes dataAttributes = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_SRS_DIMENSION,
-				TEST_AXIS_LABELS, TEST_UOM_LABELS);
+			SRSAttributes dataAttributes = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_SRS_DIMENSION, TEST_AXIS_LABELS,
+				TEST_UOM_LABELS);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
 			dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, null, TEST_AXIS_LABELS, TEST_UOM_LABELS);
@@ -296,8 +304,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 
 			List<String> newLabels = new ArrayList<String>(TEST_AXIS_LABELS);
 			newLabels.add("NewLabel");
-			dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION, newLabels,
-				TEST_UOM_LABELS);
+			dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION, newLabels, TEST_UOM_LABELS);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
 			dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS, null);
@@ -330,8 +337,8 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), attributes.getOutput(true, ""));
 			assertEquals(getExpectedOutput(false), attributes.getOutput(false, ""));
 
-			SRSAttributes dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION,
-				TEST_AXIS_LABELS, TEST_UOM_LABELS);
+			SRSAttributes dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS,
+				TEST_UOM_LABELS);
 			assertEquals(getExpectedOutput(true), dataAttributes.getOutput(true, ""));
 			assertEquals(getExpectedOutput(false), dataAttributes.getOutput(false, ""));
 		}
@@ -346,7 +353,7 @@ public class SRSAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "These attributes cannot decorate a component with a different DDMS version.");
+			expectMessage(e, "These attributes cannot decorate");
 		}
 	}
 

@@ -20,18 +20,20 @@
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:subDivisionCode elements</p>
+ * <p>
+ * Tests related to ddms:subDivisionCode elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class SubDivisionCodeTest extends AbstractComponentTestCase {
+public class SubDivisionCodeTest extends AbstractBaseTestCase {
 
 	private static final String TEST_QUALIFIER = "ISO-3166";
 	private static final String TEST_VALUE = "USA";
@@ -127,7 +129,7 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				SubDivisionCode.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -155,24 +157,24 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 			// Missing qualifier
 			Element element = Util.buildDDMSElement(subCode, null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
-			getInstance("moo", element);
+			getInstance("qualifier attribute is required.", element);
 
 			// Empty qualifier
 			element = Util.buildDDMSElement(subCode, null);
 			Util.addDDMSAttribute(element, "qualifier", "");
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
-			getInstance("moo", element);
+			getInstance("qualifier attribute is required.", element);
 
 			// Missing value
 			element = Util.buildDDMSElement(subCode, null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
-			getInstance("moo", element);
+			getInstance("value attribute is required.", element);
 
 			// Empty value
 			element = Util.buildDDMSElement(subCode, null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(element, "value", "");
-			getInstance("moo", element);
+			getInstance("value attribute is required.", element);
 		}
 	}
 
@@ -181,16 +183,16 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing qualifier
-			getInstance("moo", null, TEST_VALUE);
+			getInstance("qualifier attribute is required.", null, TEST_VALUE);
 
 			// Empty qualifier
-			getInstance("moo", "", TEST_VALUE);
+			getInstance("qualifier attribute is required.", "", TEST_VALUE);
 
 			// Missing value
-			getInstance("moo", TEST_QUALIFIER, null);
+			getInstance("value attribute is required.", TEST_QUALIFIER, null);
 
 			// Empty value
-			getInstance("moo", TEST_QUALIFIER, "");
+			getInstance("value attribute is required.", TEST_QUALIFIER, "");
 		}
 	}
 
@@ -261,7 +263,7 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The subDivisionCode element cannot be used");
 		}
 	}
 
@@ -287,7 +289,7 @@ public class SubDivisionCodeTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "qualifier attribute is required.");
 			}
 		}
 	}

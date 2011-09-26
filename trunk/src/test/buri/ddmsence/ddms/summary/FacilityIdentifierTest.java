@@ -20,19 +20,21 @@
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:facilityIdentifier elements</p>
+ * <p>
+ * Tests related to ddms:facilityIdentifier elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class FacilityIdentifierTest extends AbstractComponentTestCase {
+public class FacilityIdentifierTest extends AbstractBaseTestCase {
 	private static final String TEST_BENUMBER = "1234DD56789";
 	private static final String TEST_OSUFFIX = "DD123";
 
@@ -129,7 +131,7 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				FacilityIdentifier.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -153,24 +155,24 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 			// Missing beNumber
 			Element element = Util.buildDDMSElement(FacilityIdentifier.getName(version), null);
 			Util.addDDMSAttribute(element, "osuffix", TEST_OSUFFIX);
-			getInstance("moo", element);
+			getInstance("beNumber is required.", element);
 
 			// Empty beNumber
 			element = Util.buildDDMSElement(FacilityIdentifier.getName(version), null);
 			Util.addDDMSAttribute(element, "beNumber", "");
 			Util.addDDMSAttribute(element, "osuffix", TEST_OSUFFIX);
-			getInstance("moo", element);
+			getInstance("beNumber is required.", element);
 
 			// Missing osuffix
 			element = Util.buildDDMSElement(FacilityIdentifier.getName(version), null);
 			Util.addDDMSAttribute(element, "beNumber", TEST_BENUMBER);
-			getInstance("moo", element);
+			getInstance("osuffix is required.", element);
 
 			// Empty osuffix
 			element = Util.buildDDMSElement(FacilityIdentifier.getName(version), null);
 			Util.addDDMSAttribute(element, "beNumber", TEST_BENUMBER);
 			Util.addDDMSAttribute(element, "osuffix", "");
-			getInstance("moo", element);
+			getInstance("osuffix is required.", element);
 		}
 	}
 
@@ -178,16 +180,16 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing beNumber
-			getInstance("moo", null, TEST_OSUFFIX);
+			getInstance("beNumber is required.", null, TEST_OSUFFIX);
 
 			// Empty beNumber
-			getInstance("moo", "", TEST_OSUFFIX);
+			getInstance("beNumber is required.", "", TEST_OSUFFIX);
 
 			// Missing osuffix
-			getInstance("moo", TEST_BENUMBER, null);
+			getInstance("osuffix is required.", TEST_BENUMBER, null);
 
 			// Empty osuffix
-			getInstance("moo", TEST_BENUMBER, "");
+			getInstance("osuffix is required.", TEST_BENUMBER, "");
 		}
 	}
 
@@ -275,7 +277,7 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "osuffix is required.");
 			}
 		}
 	}

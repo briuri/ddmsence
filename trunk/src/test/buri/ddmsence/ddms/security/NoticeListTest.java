@@ -22,7 +22,7 @@ package buri.ddmsence.ddms.security;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.Notice;
 import buri.ddmsence.ddms.security.ism.NoticeTest;
@@ -32,15 +32,19 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:noticeList elements</p>
+ * <p>
+ * Tests related to ddms:noticeList elements
+ * </p>
  * 
- * <p> Because a ddms:noticeList is a local component, we cannot load a valid document from a unit test data file. We
- * have to build the well-formed Element ourselves. </p>
+ * <p>
+ * Because a ddms:noticeList is a local component, we cannot load a valid document from a unit test data file. We have
+ * to build the well-formed Element ourselves.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class NoticeListTest extends AbstractComponentTestCase {
+public class NoticeListTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -152,9 +156,12 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:noticeList ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ISM:Notice ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
-		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\">noticeText</ISM:NoticeText>");
+		xml
+			.append("<ISM:Notice ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
+		xml
+			.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml
+			.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\">noticeText</ISM:NoticeText>");
 		xml.append("</ISM:Notice>");
 		xml.append("</ddms:noticeList>");
 		return (xml.toString());
@@ -166,7 +173,7 @@ public class NoticeListTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX, NoticeList
 				.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -195,7 +202,7 @@ public class NoticeListTest extends AbstractComponentTestCase {
 			// No Notices
 			Element element = new Element(getFixtureElement());
 			element.removeChildren();
-			getInstance("At least one ISM:Notice must exist within a ddms:noticeList element.", element);
+			getInstance("At least one ISM:Notice", element);
 		}
 	}
 
@@ -204,7 +211,7 @@ public class NoticeListTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No Notices
-			getInstance("At least one ISM:Notice must exist within a ddms:noticeList element.", (List) null);
+			getInstance("At least one ISM:Notice", (List) null);
 
 			// No attributes
 			try {
@@ -277,6 +284,10 @@ public class NoticeListTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testWrongVersion() {
+		// Implicit, since 1 Notice is required and that requires DDMS 4.0 or greater.
+	}
+	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

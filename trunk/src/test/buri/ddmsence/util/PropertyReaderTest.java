@@ -21,7 +21,7 @@ package buri.ddmsence.util;
 
 import java.util.List;
 
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 
 /**
  * A collection of PropertyReader tests.
@@ -29,12 +29,12 @@ import buri.ddmsence.AbstractComponentTestCase;
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class PropertyReaderTest extends AbstractComponentTestCase {
+public class PropertyReaderTest extends AbstractBaseTestCase {
 
 	public PropertyReaderTest() {
 		super(null);
 	}
-	
+
 	/**
 	 * Resets the in-use prefix for DDMS.
 	 */
@@ -55,7 +55,7 @@ public class PropertyReaderTest extends AbstractComponentTestCase {
 			fail("Did not prevent invalid property.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e, "Undefined Property: buri.ddmsence.unknown.property");
+			expectMessage(e, "Undefined Property");
 		}
 	}
 

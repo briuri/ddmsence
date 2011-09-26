@@ -20,19 +20,21 @@
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:verticalExtent elements</p>
+ * <p>
+ * Tests related to ddms:verticalExtent elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class VerticalExtentTest extends AbstractComponentTestCase {
+public class VerticalExtentTest extends AbstractBaseTestCase {
 
 	private static final String TEST_UOM = "Meter";
 	private static final String TEST_DATUM = "AGL";
@@ -154,9 +156,9 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				VerticalExtent.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, VerticalExtent
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -191,7 +193,9 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
 			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN)));
 			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX)));
-			getInstance("The length measure type must be one of [StatuteMile, Meter, Kilometer, Inch, Fathom, Foot, NauticalMile]", element);
+			getInstance(
+				"The length measure type must be one of",
+				element);
 
 			// Missing Datum
 			element = Util.buildDDMSElement(extentName, null);
@@ -206,7 +210,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "datum", "PDQ");
 			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN)));
 			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX)));
-			getInstance("The vertical datum type must be one of [MSL, HAE, AGL]", element);
+			getInstance("The vertical datum type must be one of", element);
 
 			// Missing MinVerticalExtent
 			element = Util.buildDDMSElement(extentName, null);
@@ -230,7 +234,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
 			element.appendChild(minElement);
 			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX)));
-			getInstance("The unitOfMeasure on the " + getMinVerticalExtentName() + " element must match the unitOfMeasure on the enclosing verticalExtent element.", element);
+			getInstance("The unitOfMeasure on the", element);
 
 			// MinVerticalExtent Datum doesn't match parent
 			minElement = Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN));
@@ -240,7 +244,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
 			element.appendChild(minElement);
 			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX)));
-			getInstance("The datum on the " + getMinVerticalExtentName() + " element must match the datum on the enclosing verticalExtent element.", element);
+			getInstance("The datum on the", element);
 
 			// MaxVerticalExtent UOM doesn't match parent
 			Element maxElement = Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX));
@@ -250,7 +254,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
 			element.appendChild(maxElement);
 			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN)));
-			getInstance("The unitOfMeasure on the " + getMaxVerticalExtentName() + " element must match the unitOfMeasure on the enclosing verticalExtent element.", element);
+			getInstance("The unitOfMeasure on the", element);
 
 			// MaxVerticalExtent Datum doesn't match parent
 			maxElement = Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX));
@@ -260,7 +264,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
 			element.appendChild(maxElement);
 			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN)));
-			getInstance("The datum on the " + getMaxVerticalExtentName() + " element must match the datum on the enclosing verticalExtent element.", element);
+			getInstance("The datum on the", element);
 
 			// MinVerticalExtent is not less than MaxVerticalExtent
 			element = Util.buildDDMSElement(extentName, null);
@@ -268,7 +272,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
 			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MAX)));
 			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MIN)));
-			getInstance("Minimum vertical extent must be less than maximum vertical extent.", element);
+			getInstance("Minimum vertical extent must be less", element);
 
 			// Not Double
 			element = Util.buildDDMSElement(extentName, null);
@@ -287,16 +291,19 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 			getInstance("unitOfMeasure is required.", TEST_MIN, TEST_MAX, null, TEST_DATUM);
 
 			// Invalid UOM
-			getInstance("The length measure type must be one of [StatuteMile, Meter, Kilometer, Inch, Fathom, Foot, NauticalMile]", TEST_MIN, TEST_MAX, "furlong", TEST_DATUM);
+			getInstance(
+				"The length measure type must be one of",
+				TEST_MIN, TEST_MAX, "furlong", TEST_DATUM);
 
 			// Missing Datum
 			getInstance("datum is required.", TEST_MIN, TEST_MAX, TEST_UOM, null);
 
 			// Invalid Datum
-			getInstance("The vertical datum type must be one of [MSL, HAE, AGL]", TEST_MIN, TEST_MAX, TEST_UOM, "PDQ");
+			getInstance("The vertical datum type must be one of", TEST_MIN, TEST_MAX, TEST_UOM, "PDQ");
 
 			// MinVerticalExtent is not less than MaxVerticalExtent
-			getInstance("Minimum vertical extent must be less than maximum vertical extent.", TEST_MAX, TEST_MIN, TEST_UOM, TEST_DATUM);
+			getInstance("Minimum vertical extent must be less", TEST_MAX, TEST_MIN,
+				TEST_UOM, TEST_DATUM);
 		}
 	}
 
@@ -400,7 +407,7 @@ public class VerticalExtentTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "A ddms:verticalExtent requires a minimum and maximum extent value.");
+				expectMessage(e, "A ddms:verticalExtent requires");
 			}
 		}
 	}

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -34,15 +34,19 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:taskingInfo elements</p>
+ * <p>
+ * Tests related to ddms:taskingInfo elements
+ * </p>
  * 
- * <p> Because a ddms:taskingInfo is a local component, we cannot load a valid document from a unit test data file. We
- * have to build the well-formed Element ourselves. </p>
+ * <p>
+ * Because a ddms:taskingInfo is a local component, we cannot load a valid document from a unit test data file. We have
+ * to build the well-formed Element ourselves.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class TaskingInfoTest extends AbstractComponentTestCase {
+public class TaskingInfoTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -88,7 +92,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -120,8 +124,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	 * @param description description of tasking (optional)
 	 * @param taskID taskID for tasking (required)
 	 */
-	private TaskingInfo getInstance(String message, List<RequesterInfo> requesterInfos,
-		List<Addressee> addressees, Description description, TaskID taskID) {
+	private TaskingInfo getInstance(String message, List<RequesterInfo> requesterInfos, List<Addressee> addressees,
+		Description description, TaskID taskID) {
 		boolean expectFailure = !Util.isEmpty(message);
 		TaskingInfo component = null;
 		try {
@@ -179,10 +183,12 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		xml.append("<ddms:addressee ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("<ddms:organization><ddms:name>DISA</ddms:name></ddms:organization>");
 		xml.append("</ddms:addressee>");
-		xml.append("<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">A transformation service.</ddms:description>");
+		xml
+			.append("<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">A transformation service.</ddms:description>");
 		xml.append("<ddms:taskID xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
 		xml.append("ddms:taskingSystem=\"MDR\" network=\"NIPRNet\" otherNetwork=\"PBS\" xlink:type=\"simple\" ");
-		xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:arcrole=\"arcrole\" ");
+		xml
+			.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:arcrole=\"arcrole\" ");
 		xml.append("xlink:show=\"new\" xlink:actuate=\"onLoad\">Task #12345</ddms:taskID>");
 		xml.append("</ddms:taskingInfo>");
 		return (xml.toString());
@@ -194,7 +200,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX, TaskingInfo
 				.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -218,8 +224,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),
-				TaskIDTest.getFixture());
+			getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest
+				.getFixture(), TaskIDTest.getFixture());
 
 			// No optional fields
 			getInstance(SUCCESS, null, null, null, TaskIDTest.getFixture());
@@ -233,12 +239,12 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			// Missing taskID
 			Element element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("moo", element);
+			getInstance("taskID is required.", element);
 
 			// Missing security attributes
 			element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
 			element.appendChild(TaskIDTest.getFixture().getXOMElementCopy());
-			getInstance("moo", element);
+			getInstance("classification is required.", element);
 		}
 	}
 
@@ -247,7 +253,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing taskID
-			getInstance("moo", null, null, null, null);
+			getInstance("taskID is required.", null, null, null, null);
 
 			// Missing security attributes
 			try {
@@ -255,7 +261,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}
@@ -275,8 +281,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			TaskingInfo elementComponent = getInstance(SUCCESS, getFixtureElement());
-			TaskingInfo dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
-				DescriptionTest.getFixture(), TaskIDTest.getFixture());
+			TaskingInfo dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest
+				.getFixtureList(), DescriptionTest.getFixture(), TaskIDTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -287,16 +293,16 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			TaskingInfo elementComponent = getInstance(SUCCESS, getFixtureElement());
-			TaskingInfo dataComponent = getInstance(SUCCESS, null, AddresseeTest.getFixtureList(),
+			TaskingInfo dataComponent = getInstance(SUCCESS, null, AddresseeTest.getFixtureList(), DescriptionTest
+				.getFixture(), TaskIDTest.getFixture());
+			assertFalse(elementComponent.equals(dataComponent));
+
+			dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), null,
 				DescriptionTest.getFixture(), TaskIDTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), null, DescriptionTest.getFixture(),
-				TaskIDTest.getFixture());
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), null,
-				TaskIDTest.getFixture());
+			dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
+				null, TaskIDTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			TaskID taskID = new TaskID("Test", null, null, null, null);
@@ -314,8 +320,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),
-				TaskIDTest.getFixture());
+			component = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
+				DescriptionTest.getFixture(), TaskIDTest.getFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -328,13 +334,13 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			TaskingInfo component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),
-				TaskIDTest.getFixture());
+			component = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
+				DescriptionTest.getFixture(), TaskIDTest.getFixture());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
 
-	public void test20Usage() {
+	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("4.0");
 			SecurityAttributes attr = SecurityAttributesTest.getFixture();
@@ -343,7 +349,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "These attributes cannot decorate");
 		}
 	}
 
@@ -375,7 +381,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "taskID is required.");
 			}
 			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 			builder.getTaskID().setValue("test");

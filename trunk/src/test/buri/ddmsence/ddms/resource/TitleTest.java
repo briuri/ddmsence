@@ -20,19 +20,21 @@
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:title elements</p>
+ * <p>
+ * Tests related to ddms:title elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class TitleTest extends AbstractComponentTestCase {
+public class TitleTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "DDMSence";
 
@@ -55,7 +57,7 @@ public class TitleTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -127,7 +129,7 @@ public class TitleTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Title
 				.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -151,11 +153,11 @@ public class TitleTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// Missing child text
 			Element element = Util.buildDDMSElement(Title.getName(version), null);
-			getInstance("moo", element);
+			getInstance("title value is required.", element);
 
 			// Empty child text
 			element = Util.buildDDMSElement(Title.getName(version), "");
-			getInstance("moo", element);
+			getInstance("title value is required.", element);
 		}
 	}
 
@@ -163,10 +165,10 @@ public class TitleTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing child text
-			getInstance("moo", (String) null);
+			getInstance("title value is required.", (String) null);
 
 			// Empty child text
-			getInstance("moo", "");
+			getInstance("title value is required.", "");
 		}
 	}
 
@@ -243,7 +245,7 @@ public class TitleTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}

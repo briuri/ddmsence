@@ -20,7 +20,7 @@
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
@@ -29,12 +29,14 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:virtualCoverage elements</p>
+ * <p>
+ * Tests related to ddms:virtualCoverage elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class VirtualCoverageTest extends AbstractComponentTestCase {
+public class VirtualCoverageTest extends AbstractBaseTestCase {
 
 	private static final String TEST_ADDRESS = "123.456.789.0";
 	private static final String TEST_PROTOCOL = "IP";
@@ -58,7 +60,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
@@ -141,7 +143,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				VirtualCoverage.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -181,7 +183,7 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// address without protocol		
+			// address without protocol
 			getInstance("protocol is required.", TEST_ADDRESS, null);
 		}
 	}
@@ -270,14 +272,14 @@ public class VirtualCoverageTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void test20Usage() throws InvalidDDMSException {
+	public void testWrongVersionSecurityAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
 			new VirtualCoverage(TEST_ADDRESS, TEST_PROTOCOL, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "Security attributes cannot be applied to this component until DDMS 3.0 or later.");
+			expectMessage(e, "Security attributes cannot be applied");
 		}
 	}
 

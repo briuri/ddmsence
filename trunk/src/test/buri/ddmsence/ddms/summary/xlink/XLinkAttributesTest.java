@@ -20,7 +20,7 @@
 package buri.ddmsence.ddms.summary.xlink;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
@@ -28,12 +28,14 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to the XLINK attributes on ddms:link and ddms:taskID elements</p>
+ * <p>
+ * Tests related to the XLINK attributes on ddms:link and ddms:taskID elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class XLinkAttributesTest extends AbstractComponentTestCase {
+public class XLinkAttributesTest extends AbstractBaseTestCase {
 
 	private static final String TEST_HREF = "http://en.wikipedia.org/wiki/Tank";
 	private static final String TEST_ROLE = "tank";
@@ -170,8 +172,8 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 	 * @param actuate the actuate token (optional)
 	 * @return a valid object
 	 */
-	private XLinkAttributes getInstance(String message, String href, String role, String title,
-		String arcrole, String show, String actuate) {
+	private XLinkAttributes getInstance(String message, String href, String role, String title, String arcrole,
+		String show, String actuate) {
 		boolean expectFailure = !Util.isEmpty(message);
 		XLinkAttributes attributes = null;
 		try {
@@ -315,13 +317,13 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 			// href is not valid URI
 			Element element = Util.buildDDMSElement("link", null);
 			addAttributes(element, INVALID_URI, null, null, null);
-			getInstance("Invalid URI (Expected scheme name at index 0: :::::)", element);
+			getInstance("Invalid URI", element);
 
 			// role is not valid URI
 			if (version.isAtLeast("4.0")) {
 				element = Util.buildDDMSElement("link", null);
 				addAttributes(element, null, INVALID_URI, null, null);
-				getInstance("Invalid URI (Expected scheme name at index 0: :::::)", element);
+				getInstance("Invalid URI", element);
 			}
 
 			// label is not valid NCName
@@ -350,11 +352,11 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// href is not valid URI
-			getInstance("Invalid URI (Expected scheme name at index 0: :::::)", INVALID_URI, null, null, null);
+			getInstance("Invalid URI", INVALID_URI, null, null, null);
 
 			// role is not valid URI
 			if (version.isAtLeast("4.0")) {
-				getInstance("Invalid URI (Expected scheme name at index 0: :::::)", null, INVALID_URI, null, null);
+				getInstance("Invalid URI", null, INVALID_URI, null, null);
 			}
 
 			// label is not valid NCName
@@ -363,13 +365,16 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 			}
 
 			// invalid arcrole
-			getInstance("Invalid URI (Expected scheme name at index 0: :::::)", null, null, null, INVALID_URI, null, null);
+			getInstance("Invalid URI", null, null, null, INVALID_URI, null,
+				null);
 
 			// invalid show
-			getInstance("The show attribute must be one of [replace, new, other, none, embed]", null, null, null, null, "notInTheTokenList", null);
+			getInstance("The show attribute must be one of", null, null, null, null,
+				"notInTheTokenList", null);
 
 			// invalid actuate
-			getInstance("The actuate attribute must be one of [other, onLoad, onRequest, none]", null, null, null, null, null, "notInTheTokenList");
+			getInstance("The actuate attribute must be one of", null, null, null,
+				null, null, "notInTheTokenList");
 		}
 	}
 
@@ -425,8 +430,7 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement("link", null);
 			addAttributes(element, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
 			XLinkAttributes elementAttributes = getInstance(SUCCESS, element);
-			XLinkAttributes dataAttributes = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_ROLE, TEST_TITLE,
-				TEST_LABEL);
+			XLinkAttributes dataAttributes = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_ROLE, TEST_TITLE, TEST_LABEL);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
 			dataAttributes = getInstance(SUCCESS, TEST_HREF, DIFFERENT_VALUE, TEST_TITLE, TEST_LABEL);
@@ -442,20 +446,20 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 			element = Util.buildDDMSElement("link", null);
 			addAttributes(element, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, TEST_ACTUATE);
 
-			dataAttributes = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_ROLE, TEST_TITLE, TEST_ARCROLE,
-				TEST_SHOW, TEST_ACTUATE);
+			dataAttributes = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW,
+				TEST_ACTUATE);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			dataAttributes = getInstance(SUCCESS, TEST_HREF, DIFFERENT_VALUE, TEST_TITLE, TEST_ARCROLE,
-				TEST_SHOW, TEST_ACTUATE);
+			dataAttributes = getInstance(SUCCESS, TEST_HREF, DIFFERENT_VALUE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW,
+				TEST_ACTUATE);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			dataAttributes = getInstance(SUCCESS, TEST_HREF, TEST_ROLE, DIFFERENT_VALUE, TEST_ARCROLE,
-				TEST_SHOW, TEST_ACTUATE);
+			dataAttributes = getInstance(SUCCESS, TEST_HREF, TEST_ROLE, DIFFERENT_VALUE, TEST_ARCROLE, TEST_SHOW,
+				TEST_ACTUATE);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
-			dataAttributes = getInstance(SUCCESS, TEST_HREF, TEST_ROLE, TEST_TITLE, DIFFERENT_VALUE,
-				TEST_SHOW, TEST_ACTUATE);
+			dataAttributes = getInstance(SUCCESS, TEST_HREF, TEST_ROLE, TEST_TITLE, DIFFERENT_VALUE, TEST_SHOW,
+				TEST_ACTUATE);
 			assertFalse(elementAttributes.equals(dataAttributes));
 
 			dataAttributes = getInstance(SUCCESS, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, "replace",
@@ -547,7 +551,7 @@ public class XLinkAttributesTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "Invalid URI (Expected scheme name at index 0: :::::)");
+				expectMessage(e, "Invalid URI");
 			}
 			builder.setType("locator");
 			builder.setHref(TEST_HREF);

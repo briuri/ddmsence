@@ -20,19 +20,21 @@
 package buri.ddmsence.ddms.summary;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:description elements</p>
+ * <p>
+ * Tests related to ddms:description elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class DescriptionTest extends AbstractComponentTestCase {
+public class DescriptionTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "A transformation service.";
 
@@ -42,7 +44,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 	public DescriptionTest() {
 		super("description.xml");
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -55,7 +57,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -125,9 +127,9 @@ public class DescriptionTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				Description.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Description
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -161,7 +163,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 
 			// Missing security attributes
 			Element element = Util.buildDDMSElement(Description.getName(version), null);
-			getInstance("moo", element);
+			getInstance("classification is required.", element);
 		}
 	}
 
@@ -174,7 +176,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}
@@ -261,7 +263,7 @@ public class DescriptionTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}

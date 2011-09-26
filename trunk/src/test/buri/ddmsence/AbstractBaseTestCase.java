@@ -36,12 +36,12 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * Base class for test cases involving components.
+ * Base class for DDMSence test cases.
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public abstract class AbstractComponentTestCase extends TestCase {
+public abstract class AbstractBaseTestCase extends TestCase {
 
 	private String _type;
 	private List<String> _supportedVersions = new ArrayList<String>(DDMSVersion.getSupportedVersions());
@@ -51,10 +51,9 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	protected static final String TEST_ID = "IDValue";
 
 	protected static final String SUCCESS = "";
-	protected static final boolean WILL_SUCCEED = false;
-	protected static final boolean WILL_FAIL = true;
 	protected static final String INVALID_URI = ":::::";
 	protected static final String DIFFERENT_VALUE = "Different";
+	protected static final String WRONG_NAME_MESSAGE = "Unexpected namespace URI and local name encountered:";
 	protected static final String DEFAULT_DDMS_PREFIX = PropertyReader.getPrefix("ddms");
 	protected static final String DEFAULT_GML_PREFIX = PropertyReader.getPrefix("gml");
 	protected static final String DEFAULT_ISM_PREFIX = PropertyReader.getPrefix("ism");
@@ -80,7 +79,7 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	 * 
 	 * @param validDocumentFile the filename to load. One of these will be loaded for each supporting version.
 	 */
-	public AbstractComponentTestCase(String validDocumentFile) {
+	public AbstractBaseTestCase(String validDocumentFile) {
 		_type = validDocumentFile;
 		if (validDocumentFile == null)
 			return;
@@ -111,16 +110,16 @@ public abstract class AbstractComponentTestCase extends TestCase {
 	 * longer failing for the reason we expect it to be failing.
 	 * 
 	 * @param e the exception
-	 * @param message the expected message.
+	 * @param message the beginning of the expected message (enough to confirm its accuracy).
 	 */
 	protected void expectMessage(Exception e, String message) {
-		if (!message.equals(e.getMessage())) {
+		if (!e.getMessage().startsWith(message)) {
 			System.out.println(DDMSVersion.getCurrentVersion());
 			System.out.println(e.getMessage());
 			fail("Test failed for the wrong reason.");
 		}
 	}
-	
+
 	/**
 	 * Convenience method to create a XOM element which is not a valid DDMS component because of an incorrect name.
 	 */

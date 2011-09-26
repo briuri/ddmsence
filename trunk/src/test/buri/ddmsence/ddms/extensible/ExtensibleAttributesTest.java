@@ -24,7 +24,7 @@ import java.util.List;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.summary.Keyword;
@@ -32,13 +32,15 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to the extensible attributes themselves. How they interact with parent classes is tested in those
- * classes.</p>
+ * <p>
+ * Tests related to the extensible attributes themselves. How they interact with parent classes is tested in those
+ * classes.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 1.1.0
  */
-public class ExtensibleAttributesTest extends AbstractComponentTestCase {
+public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 
 	private static final String TEST_NAMESPACE = "http://ddmsence.urizone.net/";
 

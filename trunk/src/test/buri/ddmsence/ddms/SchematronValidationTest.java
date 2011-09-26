@@ -27,18 +27,20 @@ import java.util.List;
 import java.util.Map;
 
 import nu.xom.xslt.XSLException;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 
 /**
- * <p>Tests related to Schematron validation of Resources</p>
+ * <p>
+ * Tests related to Schematron validation of Resources
+ * </p>
  * 
  * @author Brian Uri!
  * @since 1.3.1
  */
-public class SchematronValidationTest extends AbstractComponentTestCase {
+public class SchematronValidationTest extends AbstractBaseTestCase {
 
 	private Map<String, Resource> versionToResourceMap;
 
@@ -68,28 +70,28 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/" + sVersion
 					+ "/testSchematronXslt1.sch"));
 				assertEquals(version.isAtLeast("4.0") ? 3 : 2, messages.size());
-				
+
 				String text = "A DDMS Resource must have an unknownElement child. This will always fail.";
 				String locator = "/*[local-name()='" + resourceName + "' and namespace-uri()='" + ddmsNamespace + "']";
 				assertErrorEquality(text, locator, messages.get(0));
-				
+
 				int originalWarningIndex = version.isAtLeast("4.0") ? 2 : 1;
-				
+
 				text = "Members of the Uri family cannot be publishers.";
 				locator = "/*[local-name()='" + resourceName + "' and namespace-uri()='" + ddmsNamespace + "']"
-					+ "/*[local-name()='publisher' and namespace-uri()='" + ddmsNamespace + "']"
-					+ "/*[local-name()='" + Person.getName(version) + "' and namespace-uri()='" + ddmsNamespace + "']"
+					+ "/*[local-name()='publisher' and namespace-uri()='" + ddmsNamespace + "']" + "/*[local-name()='"
+					+ Person.getName(version) + "' and namespace-uri()='" + ddmsNamespace + "']"
 					+ "/*[local-name()='surname' and namespace-uri()='" + ddmsNamespace + "']";
 				assertWarningEquality(text, locator, messages.get(originalWarningIndex));
-				
+
 				if (version.isAtLeast("4.0")) {
 					text = "Members of the Uri family cannot be publishers.";
 					locator = "/*[local-name()='" + resourceName + "' and namespace-uri()='" + ddmsNamespace + "']"
 						+ "/*[local-name()='metacardInfo' and namespace-uri()='" + ddmsNamespace + "']"
 						+ "/*[local-name()='publisher' and namespace-uri()='" + ddmsNamespace + "']"
-						+ "/*[local-name()='" + Person.getName(version) + "' and namespace-uri()='" + ddmsNamespace + "']"
-						+ "/*[local-name()='surname' and namespace-uri()='" + ddmsNamespace + "']";
-					assertWarningEquality(text, locator, messages.get(1));					
+						+ "/*[local-name()='" + Person.getName(version) + "' and namespace-uri()='" + ddmsNamespace
+						+ "']" + "/*[local-name()='surname' and namespace-uri()='" + ddmsNamespace + "']";
+					assertWarningEquality(text, locator, messages.get(1));
 				}
 			}
 		}
@@ -121,14 +123,14 @@ public class SchematronValidationTest extends AbstractComponentTestCase {
 		}
 	}
 
-	//	public void testIsmXmlV5SchematronValidation() throws SAXException, InvalidDDMSException, IOException, XSLException {
-	//		// For this test to work, the ISM.XML V5 distribution must be unpacked in the data directory.
-	//		File schematronFile = new File("ISM_XML.sch");
-	//		Resource resource = new DDMSReader().getDDMSResource(new File("data/sample/DDMSence_Example_v3_1.xml"));
-	//		List<ValidationMessage> messages = resource.validateWithSchematron(schematronFile);
-	//		for (ValidationMessage message : messages) {
-	//			System.out.println("Location: " + message.getLocator());
-	//			System.out.println("Message: " + message.getText());
-	//		}
-	//	}
+//	public void testIsmXmlV5SchematronValidation() throws SAXException, InvalidDDMSException, IOException, XSLException {
+//		// For this test to work, the ISM.XML V5 distribution must be unpacked in the data directory.
+//		File schematronFile = new File("ISM_XML.sch");
+//		Resource resource = new DDMSReader().getDDMSResource(new File("data/sample/DDMSence_Example_v3_1.xml"));
+//		List<ValidationMessage> messages = resource.validateWithSchematron(schematronFile);
+//		for (ValidationMessage message : messages) {
+//			System.out.println("Location: " + message.getLocator());
+//			System.out.println("Message: " + message.getText());
+//		}
+//	}
 }

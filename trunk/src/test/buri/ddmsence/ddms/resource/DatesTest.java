@@ -20,18 +20,20 @@
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:source elements</p>
+ * <p>
+ * Tests related to ddms:source elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class DatesTest extends AbstractComponentTestCase {
+public class DatesTest extends AbstractBaseTestCase {
 
 	private static final String TEST_CREATED = "2003";
 	private static final String TEST_POSTED = "2003-02";
@@ -59,7 +61,7 @@ public class DatesTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -94,8 +96,8 @@ public class DatesTest extends AbstractComponentTestCase {
 	 * @param receivedOn the received on date (optional, starting in 4.0)
 	 * @return a valid object
 	 */
-	private Dates getInstance(String message, String created, String posted, String validTil,
-		String infoCutOff, String approvedOn, String receivedOn) {
+	private Dates getInstance(String message, String created, String posted, String validTil, String infoCutOff,
+		String approvedOn, String receivedOn) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Dates component = null;
 		try {
@@ -165,7 +167,7 @@ public class DatesTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Dates
 				.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -186,8 +188,7 @@ public class DatesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(),
-				getReceivedOn());
+			getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(), getReceivedOn());
 
 			// No optional fields
 			getInstance(SUCCESS, "", "", "", "", "", "");
@@ -200,7 +201,7 @@ public class DatesTest extends AbstractComponentTestCase {
 			// Wrong date format (using xs:gDay here)
 			Element element = Util.buildDDMSElement(Dates.getName(version), null);
 			Util.addDDMSAttribute(element, "created", "---31");
-			getInstance("moo", element);
+			getInstance("The date datatype must be one of", element);
 		}
 	}
 
@@ -209,7 +210,7 @@ public class DatesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Wrong date format (using xs:gDay here)
-			getInstance("moo", "---31", TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(), getReceivedOn());
+			getInstance("The date datatype must be one of", "---31", TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(), getReceivedOn());
 		}
 	}
 
@@ -247,8 +248,8 @@ public class DatesTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			Dates elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Dates dataComponent = getInstance(SUCCESS, "", TEST_POSTED, TEST_VALID, TEST_CUTOFF,
-				getApprovedOn(), getReceivedOn());
+			Dates dataComponent = getInstance(SUCCESS, "", TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(),
+				getReceivedOn());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, TEST_CREATED, "", TEST_VALID, TEST_CUTOFF, getApprovedOn(),
@@ -295,8 +296,8 @@ public class DatesTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
-				getApprovedOn(), getReceivedOn());
+			component = getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(),
+				getReceivedOn());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -309,31 +310,31 @@ public class DatesTest extends AbstractComponentTestCase {
 			Dates component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
-				getApprovedOn(), getReceivedOn());
+			component = getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(),
+				getReceivedOn());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
 
-	public void testApprovedOnWrongVersion() {
+	public void testWrongVersionApprovedOn() {
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
 			new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, TEST_APPROVED, null);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "This component cannot have an approvedOn date ");
 		}
 	}
 
-	public void testReceivedOnWrongVersion() {
+	public void testWrongVersionReceivedOn() {
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
 			new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, null, TEST_RECEIVED);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "This component cannot have a receivedOn date ");
 		}
 	}
 
@@ -358,7 +359,7 @@ public class DatesTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "One or more ddms:dates attributes are not in a valid date format.");
 			}
 			builder.setCreated(TEST_CREATED);
 			builder.commit();

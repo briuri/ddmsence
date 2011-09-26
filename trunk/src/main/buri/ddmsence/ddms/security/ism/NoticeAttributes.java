@@ -195,10 +195,10 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		if (version.isAtLeast("4.0") && !Util.isEmpty(getNoticeType()))
 			validateEnumeration(ISMVocabulary.CVE_NOTICE_TYPE, getNoticeType());
 		if (!Util.isEmpty(getNoticeReason()) && getNoticeReason().length() > MAX_LENGTH)
-			throw new InvalidDDMSException("The noticeReason attribute must be shorted than " + MAX_LENGTH
+			throw new InvalidDDMSException("The noticeReason attribute must be shorter than " + MAX_LENGTH
 				+ " characters.");
 		if (!Util.isEmpty(getUnregisteredNoticeType()) && getUnregisteredNoticeType().length() > MAX_LENGTH)
-			throw new InvalidDDMSException("The unregisteredNoticeType attribute must be shorted than "
+			throw new InvalidDDMSException("The unregisteredNoticeType attribute must be shorter than "
 				+ MAX_LENGTH + " characters.");
 		if (getNoticeDate() != null && !getNoticeDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException("The noticeDate attribute must be in the xs:date format (YYYY-MM-DD).");

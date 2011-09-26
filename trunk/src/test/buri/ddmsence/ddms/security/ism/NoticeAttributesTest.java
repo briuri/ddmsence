@@ -20,7 +20,7 @@
 package buri.ddmsence.ddms.security.ism;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
 import buri.ddmsence.ddms.resource.Rights;
@@ -30,12 +30,14 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to the ISM notice attributes</p>
+ * <p>
+ * Tests related to the ISM notice attributes
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class NoticeAttributesTest extends AbstractComponentTestCase {
+public class NoticeAttributesTest extends AbstractBaseTestCase {
 
 	private static final String TEST_NOTICE_TYPE = "ABC";
 	private static final String TEST_NOTICE_REASON = "noticeReason";
@@ -96,8 +98,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 	 * @param unregisteredNoticeType a notice type not in the CVE
 	 * @return a valid object
 	 */
-	private NoticeAttributes getInstance(String message, String noticeType, String noticeReason,
-		String noticeDate, String unregisteredNoticeType) {
+	private NoticeAttributes getInstance(String message, String noticeType, String noticeReason, String noticeDate,
+		String unregisteredNoticeType) {
 		boolean expectFailure = !Util.isEmpty(message);
 		NoticeAttributes attributes = null;
 		try {
@@ -131,8 +133,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE,
-				TEST_UNREGISTERED_NOTICE_TYPE);
+			getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
 
 			// No optional fields
 			getInstance(SUCCESS, null, null, null, null);
@@ -148,12 +149,14 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 			// invalid noticeType
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_TYPE_NAME, icNamespace, "Unknown");
-			getInstance("Unknown is not a valid enumeration token for this attribute, as specified in CVEnumISMNotice.xml.", element);
+			getInstance(
+				"Unknown is not a valid enumeration token",
+				element);
 
 			// invalid noticeDate
 			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_DATE_NAME, icNamespace, "2001");
-			getInstance("The noticeDate attribute must be in the xs:date format (YYYY-MM-DD).", element);
+			getInstance("The noticeDate attribute must be in the xs:date format", element);
 
 			StringBuffer longString = new StringBuffer();
 			for (int i = 0; i < NoticeAttributes.MAX_LENGTH / 10 + 1; i++) {
@@ -164,13 +167,13 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_REASON_NAME, icNamespace, longString
 				.toString());
-			getInstance("The noticeReason attribute must be shorted than 2048 characters.", element);
+			getInstance("The noticeReason attribute must be shorter", element);
 
 			// too long unregisteredNoticeType
 			element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, NoticeAttributes.UNREGISTERED_NOTICE_TYPE_NAME, icNamespace,
 				longString.toString());
-			getInstance("The unregisteredNoticeType attribute must be shorted than 2048 characters.", element);
+			getInstance("The unregisteredNoticeType attribute must be shorter", element);
 		}
 	}
 
@@ -179,13 +182,16 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// invalid noticeType
-			getInstance("Unknown is not a valid enumeration token for this attribute, as specified in CVEnumISMNotice.xml.", "Unknown", TEST_NOTICE_REASON, "2001", TEST_UNREGISTERED_NOTICE_TYPE);
+			getInstance("Unknown is not a valid enumeration token", "Unknown", TEST_NOTICE_REASON, "2001",
+				TEST_UNREGISTERED_NOTICE_TYPE);
 
 			// horribly invalid noticeDate
-			getInstance("The ISM:noticeDate attribute is not in a valid date format.", TEST_NOTICE_TYPE, TEST_NOTICE_REASON, "baboon", TEST_UNREGISTERED_NOTICE_TYPE);
+			getInstance("The ISM:noticeDate attribute is not in a valid date format.", TEST_NOTICE_TYPE,
+				TEST_NOTICE_REASON, "baboon", TEST_UNREGISTERED_NOTICE_TYPE);
 
 			// invalid noticeDate
-			getInstance("The noticeDate attribute must be in the xs:date format (YYYY-MM-DD).", TEST_NOTICE_TYPE, TEST_NOTICE_REASON, "2001", TEST_UNREGISTERED_NOTICE_TYPE);
+			getInstance("The noticeDate attribute must be in the xs:date format", TEST_NOTICE_TYPE, TEST_NOTICE_REASON,
+				"2001", TEST_UNREGISTERED_NOTICE_TYPE);
 
 			StringBuffer longString = new StringBuffer();
 			for (int i = 0; i < NoticeAttributes.MAX_LENGTH / 10 + 1; i++) {
@@ -193,11 +199,12 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 			}
 
 			// too long noticeReason
-			getInstance("The noticeReason attribute must be shorted than 2048 characters.", TEST_NOTICE_TYPE, longString.toString(), TEST_NOTICE_DATE,
-				TEST_UNREGISTERED_NOTICE_TYPE);
+			getInstance("The noticeReason attribute must be shorter", TEST_NOTICE_TYPE, longString.toString(),
+				TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
 
 			// too long unregisteredNoticeType
-			getInstance("The unregisteredNoticeType attribute must be shorted than 2048 characters.", TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, longString.toString());
+			getInstance("The unregisteredNoticeType attribute must be shorter", TEST_NOTICE_TYPE, TEST_NOTICE_REASON,
+				TEST_NOTICE_DATE, longString.toString());
 		}
 	}
 
@@ -241,8 +248,8 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 			getFixture().addTo(element);
 			NoticeAttributes expected = getInstance(SUCCESS, element);
 
-			NoticeAttributes test = getInstance(SUCCESS, "DEF", TEST_NOTICE_REASON,
-				TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
+			NoticeAttributes test = getInstance(SUCCESS, "DEF", TEST_NOTICE_REASON, TEST_NOTICE_DATE,
+				TEST_UNREGISTERED_NOTICE_TYPE);
 			assertFalse(expected.equals(test));
 
 			test = getInstance(SUCCESS, TEST_NOTICE_TYPE, DIFFERENT_VALUE, TEST_NOTICE_DATE,
@@ -253,8 +260,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 				TEST_UNREGISTERED_NOTICE_TYPE);
 			assertFalse(expected.equals(test));
 
-			test = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE,
-				DIFFERENT_VALUE);
+			test = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, DIFFERENT_VALUE);
 			assertFalse(expected.equals(test));
 		}
 
@@ -275,7 +281,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
 		Util.addAttribute(element, PropertyReader.getPrefix("ism"), NoticeAttributes.NOTICE_DATE_NAME, version
 			.getIsmNamespace(), "2011-09-15");
-		getInstance("Notice attributes cannot be used until DDMS 4.0 or later.", element);
+		getInstance("Notice attributes cannot be used", element);
 
 		DDMSVersion.setCurrentVersion("4.0");
 		NoticeAttributes attributes = getFixture();
@@ -284,7 +290,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "These attributes cannot decorate a component with a different DDMS version.");
+			expectMessage(e, "These attributes cannot decorate");
 		}
 	}
 
@@ -332,7 +338,7 @@ public class NoticeAttributesTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "The noticeDate attribute must be in the xs:date format (YYYY-MM-DD).");
+				expectMessage(e, "The noticeDate attribute must be in the xs:date format");
 			}
 		}
 	}

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
@@ -31,12 +31,14 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to gml:Polygon elements</p>
+ * <p>
+ * Tests related to gml:Polygon elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.0
  */
-public class PolygonTest extends AbstractComponentTestCase {
+public class PolygonTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -91,8 +93,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 	 * @param id the id (required)
 	 * @return a valid object
 	 */
-	private Polygon getInstance(String message, List<Position> positions, SRSAttributes srsAttributes,
-		String id) {
+	private Polygon getInstance(String message, List<Position> positions, SRSAttributes srsAttributes, String id) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Polygon component = null;
 		try {
@@ -186,9 +187,9 @@ public class PolygonTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_GML_PREFIX,
-				Polygon.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_GML_PREFIX, Polygon
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -261,7 +262,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			attr.addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			element.appendChild(wrapPositions(PositionTest.getFixtureList()));
-			getInstance("The srsName of each position must match the srsName of the Polygon.", element);
+			getInstance("The srsName of each position", element);
 
 			// Missing ID
 			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
@@ -288,7 +289,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			SRSAttributesTest.getFixture().addTo(element);
 			Util.addAttribute(element, gmlPrefix, "id", gmlNamespace, TEST_ID);
 			element.appendChild(wrapPositions(new ArrayList<Position>()));
-			getInstance("At least 4 positions are required for a valid Polygon.", element);
+			getInstance("At least 4 positions are required", element);
 
 			// First position doesn't match last position.
 			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
@@ -297,7 +298,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			List<Position> newPositions = new ArrayList<Position>(PositionTest.getFixtureList());
 			newPositions.add(PositionTest.getFixtureList().get(1));
 			element.appendChild(wrapPositions(newPositions));
-			getInstance("The first and last position in the Polygon must be the same.", element);
+			getInstance("The first and last position", element);
 
 			// Not enough positions
 			element = Util.buildElement(gmlPrefix, Polygon.getName(version), gmlNamespace, null);
@@ -306,9 +307,9 @@ public class PolygonTest extends AbstractComponentTestCase {
 			newPositions = new ArrayList<Position>();
 			newPositions.add(PositionTest.getFixtureList().get(0));
 			element.appendChild(wrapPositions(newPositions));
-			getInstance("At least 4 positions are required for a valid Polygon.", element);
+			getInstance("At least 4 positions are required", element);
 
-			// Tests on shared attributes are done in the PositionTest.		
+			// Tests on shared attributes are done in the PositionTest.
 		}
 	}
 
@@ -326,7 +327,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 			// Polygon SRS Name doesn't match pos SRS Name
 			attr = new SRSAttributes(DIFFERENT_VALUE, SRSAttributesTest.getFixture().getSrsDimension(),
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
-			getInstance("The srsName of each position must match the srsName of the Polygon.", PositionTest.getFixtureList(), attr, TEST_ID);
+			getInstance("The srsName of each position", PositionTest
+				.getFixtureList(), attr, TEST_ID);
 
 			// Missing ID
 			getInstance("id is required.", PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), null);
@@ -335,20 +337,24 @@ public class PolygonTest extends AbstractComponentTestCase {
 			getInstance("id is required.", PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), "");
 
 			// ID not NCName
-			getInstance("\"1TEST\" is not a valid NCName.", PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), "1TEST");
+			getInstance("\"1TEST\" is not a valid NCName.", PositionTest.getFixtureList(), SRSAttributesTest
+				.getFixture(), "1TEST");
 
 			// Missing Positions
-			getInstance("At least 4 positions are required for a valid Polygon.", null, SRSAttributesTest.getFixture(), TEST_ID);
+			getInstance("At least 4 positions are required", null, SRSAttributesTest.getFixture(),
+				TEST_ID);
 
 			// First position doesn't match last position.
 			List<Position> newPositions = new ArrayList<Position>(PositionTest.getFixtureList());
 			newPositions.add(PositionTest.getFixtureList().get(1));
-			getInstance("The first and last position in the Polygon must be the same.", newPositions, SRSAttributesTest.getFixture(), TEST_ID);
+			getInstance("The first and last position", newPositions, SRSAttributesTest
+				.getFixture(), TEST_ID);
 
 			// Not enough positions
 			newPositions = new ArrayList<Position>();
 			newPositions.add(PositionTest.getFixtureList().get(0));
-			getInstance("At least 4 positions are required for a valid Polygon.", newPositions, SRSAttributesTest.getFixture(), TEST_ID);
+			getInstance("At least 4 positions are required", newPositions, SRSAttributesTest
+				.getFixture(), TEST_ID);
 		}
 	}
 
@@ -365,8 +371,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Polygon elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Polygon dataComponent = getInstance(SUCCESS, PositionTest.getFixtureList(), SRSAttributesTest
-				.getFixture(), TEST_ID);
+			Polygon dataComponent = getInstance(SUCCESS, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(),
+				TEST_ID);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -387,8 +393,8 @@ public class PolygonTest extends AbstractComponentTestCase {
 			dataComponent = getInstance(SUCCESS, newPositions, SRSAttributesTest.getFixture(), TEST_ID);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, PositionTest.getFixtureList(),
-				SRSAttributesTest.getFixture(), DIFFERENT_VALUE);
+			dataComponent = getInstance(SUCCESS, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(),
+				DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
 		}
@@ -410,8 +416,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(),
-				TEST_ID);
+			component = getInstance(SUCCESS, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), TEST_ID);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -423,8 +428,7 @@ public class PolygonTest extends AbstractComponentTestCase {
 			Polygon component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = getInstance(SUCCESS, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(),
-				TEST_ID);
+			component = getInstance(SUCCESS, PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), TEST_ID);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -444,19 +448,6 @@ public class PolygonTest extends AbstractComponentTestCase {
 			// Because Positions don't have any ValidationWarnings, no existing code uses this locator method right now.
 			Polygon component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals("/gml:exterior/gml:LinearRing", component.getLocatorSuffix());
-		}
-	}
-
-	public void testWrongVersionPosition() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("2.0");
-		List<Position> positions = PositionTest.getFixtureList();
-		DDMSVersion.setCurrentVersion("3.0");
-		try {
-			new Polygon(positions, SRSAttributesTest.getFixture(), TEST_ID);
-			fail("Allowed different versions.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "A child component, gml:pos, is using a different version of DDMS from its parent.");
 		}
 	}
 

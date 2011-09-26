@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -31,12 +31,14 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:subjectCoverage elements</p>
+ * <p>
+ * Tests related to ddms:subjectCoverage elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class SubjectCoverageTest extends AbstractComponentTestCase {
+public class SubjectCoverageTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -62,7 +64,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -77,7 +79,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
@@ -187,8 +189,10 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			xml.append("\t<ddms:keyword ddms:value=\"Uri\" />\n");
 			xml.append("\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ").append(
 				"ddms:label=\"DDMS\" />\n");
-			xml.append("\t<ddms:productionMetric ddms:subject=\"FOOD\" ddms:coverage=\"AFG\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" />\n");
-			xml.append("\t<ddms:nonStateActor ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ddms:order=\"1\">Laotian Monks</ddms:nonStateActor>\n");
+			xml
+				.append("\t<ddms:productionMetric ddms:subject=\"FOOD\" ddms:coverage=\"AFG\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" />\n");
+			xml
+				.append("\t<ddms:nonStateActor ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ddms:order=\"1\">Laotian Monks</ddms:nonStateActor>\n");
 		}
 		else {
 			xml.append("\t<ddms:Subject>\n");
@@ -208,7 +212,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				SubjectCoverage.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -229,8 +233,8 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			getInstance(SUCCESS, KeywordTest.getFixtureList(), CategoryTest.getFixtureList(),
-				ProductionMetricTest.getFixtureList(), NonStateActorTest.getFixtureList());
+			getInstance(SUCCESS, KeywordTest.getFixtureList(), CategoryTest.getFixtureList(), ProductionMetricTest
+				.getFixtureList(), NonStateActorTest.getFixtureList());
 
 			// No optional fields
 			getInstance(SUCCESS, KeywordTest.getFixtureList(), null, null, null);
@@ -242,7 +246,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No keywords or categories
 			Element subjectElement = Util.buildDDMSElement("Subject", null);
-			getInstance("moo", wrapInnerElement(subjectElement));
+			getInstance("At least 1 keyword or category must exist.", wrapInnerElement(subjectElement));
 		}
 	}
 
@@ -250,7 +254,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No keywords or categories
-			getInstance("moo", null, null, null, null);
+			getInstance("At least 1 keyword or category must exist.", null, null, null, null);
 		}
 	}
 
@@ -320,12 +324,12 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			assertFalse(elementComponent.equals(dataComponent));
 
 			if (version.isAtLeast("4.0")) {
-				dataComponent = getInstance(SUCCESS, KeywordTest.getFixtureList(), CategoryTest
-					.getFixtureList(), null, NonStateActorTest.getFixtureList());
+				dataComponent = getInstance(SUCCESS, KeywordTest.getFixtureList(), CategoryTest.getFixtureList(), null,
+					NonStateActorTest.getFixtureList());
 				assertFalse(elementComponent.equals(dataComponent));
 
-				dataComponent = getInstance(SUCCESS, KeywordTest.getFixtureList(), CategoryTest
-					.getFixtureList(), ProductionMetricTest.getFixtureList(), null);
+				dataComponent = getInstance(SUCCESS, KeywordTest.getFixtureList(), CategoryTest.getFixtureList(),
+					ProductionMetricTest.getFixtureList(), null);
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 		}
@@ -414,7 +418,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "Security attributes cannot be applied");
 		}
 	}
 
@@ -427,7 +431,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "At least 1 keyword or category must exist.");
 		}
 
 		DDMSVersion.setCurrentVersion("2.0");
@@ -438,7 +442,7 @@ public class SubjectCoverageTest extends AbstractComponentTestCase {
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "At least 1 keyword or category must exist.");
 		}
 	}
 

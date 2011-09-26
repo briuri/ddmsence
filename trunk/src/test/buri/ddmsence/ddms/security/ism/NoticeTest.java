@@ -23,22 +23,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ISM:Notice elements</p>
+ * <p>
+ * Tests related to ISM:Notice elements
+ * </p>
  * 
- * <p> The valid instance of ISM:Notice is generated, rather than relying on the ISM schemas to validate an XML
- * file.</p>
+ * <p>
+ * The valid instance of ISM:Notice is generated, rather than relying on the ISM schemas to validate an XML file.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class NoticeTest extends AbstractComponentTestCase {
+public class NoticeTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -153,8 +156,10 @@ public class NoticeTest extends AbstractComponentTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ISM:Notice ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
-		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\">noticeText</ISM:NoticeText></ISM:Notice>");
+		xml
+			.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml
+			.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\">noticeText</ISM:NoticeText></ISM:Notice>");
 		return (xml.toString());
 	}
 
@@ -164,7 +169,7 @@ public class NoticeTest extends AbstractComponentTestCase {
 
 			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_ISM_PREFIX, Notice
 				.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -201,7 +206,7 @@ public class NoticeTest extends AbstractComponentTestCase {
 			// No NoticeTexts
 			Element element = new Element(getFixtureElement());
 			element.removeChildren();
-			getInstance("At least one ISM:NoticeText must exist within an ISM:Notice element.", element);
+			getInstance("At least one ISM:NoticeText", element);
 		}
 	}
 
@@ -210,7 +215,7 @@ public class NoticeTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No NoticeTexts
-			getInstance("At least one ISM:NoticeText must exist within an ISM:Notice element.", (List) null);
+			getInstance("At least one ISM:NoticeText", (List) null);
 		}
 	}
 
@@ -274,6 +279,10 @@ public class NoticeTest extends AbstractComponentTestCase {
 		}
 	}
 
+	public void testWrongVersion() {
+		// Implicit, since 1 NoticeText is required and that requires DDMS 4.0 or greater.
+	}
+	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

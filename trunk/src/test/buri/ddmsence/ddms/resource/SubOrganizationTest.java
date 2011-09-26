@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -31,15 +31,19 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:subOrganization elements</p>
+ * <p>
+ * Tests related to ddms:subOrganization elements
+ * </p>
  * 
- * <p> Because a ddms:subOrganization is a local component, we cannot load a valid document from a unit test data file.
- * We have to build the well-formed Element ourselves. </p>
+ * <p>
+ * Because a ddms:subOrganization is a local component, we cannot load a valid document from a unit test data file. We
+ * have to build the well-formed Element ourselves.
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class SubOrganizationTest extends AbstractComponentTestCase {
+public class SubOrganizationTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "PEO-GES";
 
@@ -54,7 +58,7 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 	/**
 	 * Returns a fixture object for testing.
 	 */
-	public static List<SubOrganization> getFixtureList()  {
+	public static List<SubOrganization> getFixtureList() {
 		try {
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 				return (null);
@@ -156,9 +160,9 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX,
-				SubOrganization.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX, SubOrganization
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -184,11 +188,11 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 
 			// Missing child text
 			Element element = Util.buildDDMSElement(SubOrganization.getName(version), null);
-			getInstance("moo", element);
+			getInstance("subOrganization value is required.", element);
 
 			// Empty child text
 			element = Util.buildDDMSElement(SubOrganization.getName(version), "");
-			getInstance("moo", element);
+			getInstance("subOrganization value is required.", element);
 		}
 	}
 
@@ -197,10 +201,10 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing child text
-			getInstance("moo", (String) null);
+			getInstance("subOrganization value is required.", (String) null);
 
 			// Empty child text
-			getInstance("moo", "");
+			getInstance("subOrganization value is required.", "");
 		}
 	}
 
@@ -261,14 +265,14 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void test20Usage() {
+	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
 			new SubOrganization(TEST_VALUE, SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The subOrganization element cannot be used");
 		}
 	}
 
@@ -294,7 +298,7 @@ public class SubOrganizationTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "classification is required.");
 			}
 		}
 	}

@@ -20,7 +20,7 @@
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.IRoleEntity;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.RoleEntityTest;
@@ -29,12 +29,14 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:creator elements</p>
+ * <p>
+ * Tests related to ddms:creator elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
  */
-public class CreatorTest extends AbstractComponentTestCase {
+public class CreatorTest extends AbstractBaseTestCase {
 
 	/**
 	 * Constructor
@@ -42,7 +44,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 	public CreatorTest() {
 		super("creator.xml");
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -55,7 +57,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -137,9 +139,9 @@ public class CreatorTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				Creator.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Creator
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -169,15 +171,15 @@ public class CreatorTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// Missing entity
 			Element element = Util.buildDDMSElement(Creator.getName(version), null);
-			getInstance("moo", element);
+			getInstance("entity is required.", element);
 		}
 	}
 
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			// Missing entity		
-			getInstance("moo", (IRoleEntity) null, null);
+			// Missing entity
+			getInstance("entity is required.", (IRoleEntity) null, null);
 		}
 	}
 
@@ -204,8 +206,8 @@ public class CreatorTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Creator elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Creator dataComponent = getInstance(SUCCESS, new Service(Util.getXsListAsList("DISA PEO-GES"),
-				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
+			Creator dataComponent = getInstance(SUCCESS, new Service(Util.getXsListAsList("DISA PEO-GES"), Util
+				.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -242,27 +244,14 @@ public class CreatorTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void testPOCTypeWrongVersion() {
+	public void testWrongVersionPOCType() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
 			new Creator(PersonTest.getFixture(), "ICD-710", SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
-		}
-	}
-
-	public void testEntityWrongVersion() {
-		DDMSVersion.setCurrentVersion("3.0");
-		try {
-			IRoleEntity entity = PersonTest.getFixture();
-			DDMSVersion.setCurrentVersion("4.0");
-			new Creator(entity, "ICD-710", SecurityAttributesTest.getFixture());
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "This component cannot have a POCType");
 		}
 	}
 
@@ -288,7 +277,7 @@ public class CreatorTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "entity is required.");
 			}
 		}
 	}

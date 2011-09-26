@@ -23,18 +23,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:unknown elements</p>
+ * <p>
+ * Tests related to ddms:unknown elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class UnknownTest extends AbstractComponentTestCase {
+public class UnknownTest extends AbstractBaseTestCase {
 
 	private static final List<String> TEST_NAMES = new ArrayList<String>();
 	private static final List<String> TEST_PHONES = new ArrayList<String>();
@@ -65,7 +67,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -149,9 +151,9 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				Unknown.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Unknown
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -175,12 +177,12 @@ public class UnknownTest extends AbstractComponentTestCase {
 
 			// Missing name
 			Element element = Util.buildDDMSElement(Unknown.getName(version), null);
-			getInstance("moo", element);
+			getInstance("At least 1 name element must exist.", element);
 
 			// Empty name
 			element = Util.buildDDMSElement(Unknown.getName(version), null);
 			element.appendChild(Util.buildDDMSElement("name", ""));
-			getInstance("moo", element);
+			getInstance("At least 1 name element must have a non-empty value.", element);
 		}
 	}
 
@@ -188,13 +190,13 @@ public class UnknownTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// Missing name		
-			getInstance("moo", null, TEST_PHONES, TEST_EMAILS);
+			// Missing name
+			getInstance("At least 1 name element must exist.", null, TEST_PHONES, TEST_EMAILS);
 
 			// Empty name
 			List<String> names = new ArrayList<String>();
 			names.add("");
-			getInstance("moo", names, TEST_PHONES, TEST_EMAILS);
+			getInstance("At least 1 name element must have a non-empty value.", names, TEST_PHONES, TEST_EMAILS);
 		}
 	}
 
@@ -265,7 +267,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "The Unknown element cannot be used");
 		}
 	}
 
@@ -291,7 +293,7 @@ public class UnknownTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "At least 1 name element must exist.");
 			}
 		}
 	}

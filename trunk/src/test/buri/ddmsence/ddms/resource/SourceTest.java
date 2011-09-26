@@ -20,7 +20,7 @@
 package buri.ddmsence.ddms.resource;
 
 import nu.xom.Element;
-import buri.ddmsence.AbstractComponentTestCase;
+import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
@@ -28,12 +28,14 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>Tests related to ddms:source elements</p>
+ * <p>
+ * Tests related to ddms:source elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
-public class SourceTest extends AbstractComponentTestCase {
+public class SourceTest extends AbstractBaseTestCase {
 
 	private static final String TEST_QUALIFIER = "URL";
 	private static final String TEST_VALUE = "http://www.xmethods.com";
@@ -59,7 +61,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -94,8 +96,7 @@ public class SourceTest extends AbstractComponentTestCase {
 	 * @param schemaHref the value of the schemaHref attribute
 	 * @return a valid object
 	 */
-	private Source getInstance(String message, String qualifier, String value, String schemaQualifier,
-		String schemaHref) {
+	private Source getInstance(String message, String qualifier, String value, String schemaQualifier, String schemaHref) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Source component = null;
 		try {
@@ -149,9 +150,9 @@ public class SourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
-				Source.getName(version));
-			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Source
+				.getName(version));
+			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
 
@@ -184,7 +185,7 @@ public class SourceTest extends AbstractComponentTestCase {
 			// Href not URI
 			Element element = Util.buildDDMSElement(Source.getName(version), null);
 			Util.addDDMSAttribute(element, "schemaHref", INVALID_URI);
-			getInstance("moo", element);
+			getInstance("Invalid URI", element);
 		}
 	}
 
@@ -192,7 +193,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Href not URI
-			getInstance("moo", TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, INVALID_URI);
+			getInstance("Invalid URI", TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, INVALID_URI);
 		}
 	}
 
@@ -227,12 +228,11 @@ public class SourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Source elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Source dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, DIFFERENT_VALUE,
-				TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF);
+			Source dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, DIFFERENT_VALUE, TEST_SCHEMA_QUALIFIER,
+				TEST_SCHEMA_HREF);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
-				TEST_SCHEMA_HREF);
+			dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, DIFFERENT_VALUE, TEST_SCHEMA_QUALIFIER,
@@ -242,8 +242,7 @@ public class SourceTest extends AbstractComponentTestCase {
 			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE, DIFFERENT_VALUE, TEST_SCHEMA_HREF);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
-				DIFFERENT_VALUE);
+			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -255,8 +254,7 @@ public class SourceTest extends AbstractComponentTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
-				TEST_SCHEMA_HREF);
+			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -268,8 +266,7 @@ public class SourceTest extends AbstractComponentTestCase {
 			Source component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
-				TEST_SCHEMA_HREF);
+			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -286,7 +283,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		}
 	}
 
-	public void test20Usage() throws InvalidDDMSException {
+	public void testWrongVersionSecurityAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		try {
 			new Source(TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF, SecurityAttributesTest
@@ -294,7 +291,7 @@ public class SourceTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "moo");
+			expectMessage(e, "Security attributes cannot be applied");
 		}
 	}
 
@@ -319,7 +316,7 @@ public class SourceTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "moo");
+				expectMessage(e, "SuperSecret is not a valid enumeration token");
 			}
 		}
 	}
