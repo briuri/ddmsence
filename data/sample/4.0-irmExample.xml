@@ -96,7 +96,7 @@
 	<ddms:virtualCoverage ddms:protocol="IP" ddms:address="222.173.190.239"/>
 	<ddms:temporalCoverage ICISM:classification="U" ICISM:ownerProducer="USA">
 		<ddms:start>2001-01-01T00:01:00Z</ddms:start>
-		<ddms:end>2001-12-31T24:00:00Z</ddms:end>
+		<ddms:end>2001-12-31T23:00:00Z</ddms:end>
 	</ddms:temporalCoverage>
 	<ddms:geospatialCoverage>
 		<ddms:geographicIdentifier>
@@ -111,7 +111,7 @@
 			<ddms:northBL>38</ddms:northBL>
 		</ddms:boundingBox>
 	</ddms:geospatialCoverage>
-	<ddms:geospatialCoverage ddms:order="2">
+	<ddms:geospatialCoverage ddms:order="1">
 		<ddms:geographicIdentifier>
 			<ddms:subDivisionCode ddms:qualifier="urn:us:gov:ic:cvenum:irm:coverage:iso3166-2" ddms:value="LA-VT"/>
 		</ddms:geographicIdentifier>
