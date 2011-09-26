@@ -59,12 +59,13 @@ public class TitleTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private Title testConstructor(boolean expectFailure, Element element) {
+	private Title getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Title component = null;
 		try {
 			component = new Title(element);
@@ -72,6 +73,7 @@ public class TitleTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -79,11 +81,12 @@ public class TitleTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param title the title child text
 	 * @return a valid object
 	 */
-	private Title testConstructor(boolean expectFailure, String title) {
+	private Title getInstance(String message, String title) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Title component = null;
 		try {
 			component = new Title(title, SecurityAttributesTest.getFixture());
@@ -91,6 +94,7 @@ public class TitleTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -121,16 +125,16 @@ public class TitleTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Title
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Title
 				.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
 	public void testElementConstructorValid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 		}
 	}
 
@@ -138,7 +142,7 @@ public class TitleTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_VALUE);
+			getInstance(SUCCESS, TEST_VALUE);
 		}
 	}
 
@@ -147,11 +151,11 @@ public class TitleTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// Missing child text
 			Element element = Util.buildDDMSElement(Title.getName(version), null);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Empty child text
 			element = Util.buildDDMSElement(Title.getName(version), "");
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -159,10 +163,10 @@ public class TitleTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing child text
-			testConstructor(WILL_FAIL, (String) null);
+			getInstance("moo", (String) null);
 
 			// Empty child text
-			testConstructor(WILL_FAIL, "");
+			getInstance("moo", "");
 		}
 	}
 
@@ -170,7 +174,7 @@ public class TitleTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Title component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Title component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -178,8 +182,8 @@ public class TitleTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Title elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Title dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE);
+			Title elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Title dataComponent = getInstance(SUCCESS, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -188,8 +192,8 @@ public class TitleTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Title elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Title dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE);
+			Title elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Title dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -197,11 +201,11 @@ public class TitleTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Title component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Title component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
+			component = getInstance(SUCCESS, TEST_VALUE);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -210,10 +214,10 @@ public class TitleTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Title component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Title component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
+			component = getInstance(SUCCESS, TEST_VALUE);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -221,7 +225,7 @@ public class TitleTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Title component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Title component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			Title.Builder builder = new Title.Builder(component);
@@ -239,7 +243,7 @@ public class TitleTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}

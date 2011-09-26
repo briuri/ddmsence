@@ -59,12 +59,13 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private FacilityIdentifier testConstructor(boolean expectFailure, Element element) {
+	private FacilityIdentifier getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		FacilityIdentifier component = null;
 		try {
 			component = new FacilityIdentifier(element);
@@ -72,6 +73,7 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -79,12 +81,13 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param beNumber the beNumber (required)
 	 * @param osuffix the Osuffix (required, because beNumber is required)
 	 * @return a valid object
 	 */
-	private FacilityIdentifier testConstructor(boolean expectFailure, String beNumber, String osuffix) {
+	private FacilityIdentifier getInstance(String message, String beNumber, String osuffix) {
+		boolean expectFailure = !Util.isEmpty(message);
 		FacilityIdentifier component = null;
 		try {
 			component = new FacilityIdentifier(beNumber, osuffix);
@@ -92,6 +95,7 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -123,23 +127,23 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				FacilityIdentifier.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
 	public void testElementConstructorValid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 		}
 	}
 
 	public void testDataConstructorValid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			testConstructor(WILL_SUCCEED, TEST_BENUMBER, TEST_OSUFFIX);
+			getInstance(SUCCESS, TEST_BENUMBER, TEST_OSUFFIX);
 		}
 	}
 
@@ -149,24 +153,24 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 			// Missing beNumber
 			Element element = Util.buildDDMSElement(FacilityIdentifier.getName(version), null);
 			Util.addDDMSAttribute(element, "osuffix", TEST_OSUFFIX);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Empty beNumber
 			element = Util.buildDDMSElement(FacilityIdentifier.getName(version), null);
 			Util.addDDMSAttribute(element, "beNumber", "");
 			Util.addDDMSAttribute(element, "osuffix", TEST_OSUFFIX);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Missing osuffix
 			element = Util.buildDDMSElement(FacilityIdentifier.getName(version), null);
 			Util.addDDMSAttribute(element, "beNumber", TEST_BENUMBER);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Empty osuffix
 			element = Util.buildDDMSElement(FacilityIdentifier.getName(version), null);
 			Util.addDDMSAttribute(element, "beNumber", TEST_BENUMBER);
 			Util.addDDMSAttribute(element, "osuffix", "");
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -174,16 +178,16 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing beNumber
-			testConstructor(WILL_FAIL, null, TEST_OSUFFIX);
+			getInstance("moo", null, TEST_OSUFFIX);
 
 			// Empty beNumber
-			testConstructor(WILL_FAIL, "", TEST_OSUFFIX);
+			getInstance("moo", "", TEST_OSUFFIX);
 
 			// Missing osuffix
-			testConstructor(WILL_FAIL, TEST_BENUMBER, null);
+			getInstance("moo", TEST_BENUMBER, null);
 
 			// Empty osuffix
-			testConstructor(WILL_FAIL, TEST_BENUMBER, "");
+			getInstance("moo", TEST_BENUMBER, "");
 		}
 	}
 
@@ -191,7 +195,7 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			FacilityIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			FacilityIdentifier component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -199,8 +203,8 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			FacilityIdentifier elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			FacilityIdentifier dataComponent = testConstructor(WILL_SUCCEED, TEST_BENUMBER, TEST_OSUFFIX);
+			FacilityIdentifier elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			FacilityIdentifier dataComponent = getInstance(SUCCESS, TEST_BENUMBER, TEST_OSUFFIX);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -209,11 +213,11 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			FacilityIdentifier elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			FacilityIdentifier dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_OSUFFIX);
+			FacilityIdentifier elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			FacilityIdentifier dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_OSUFFIX);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_BENUMBER, DIFFERENT_VALUE);
+			dataComponent = getInstance(SUCCESS, TEST_BENUMBER, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -221,7 +225,7 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			FacilityIdentifier elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			FacilityIdentifier elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -230,11 +234,11 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			FacilityIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			FacilityIdentifier component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_BENUMBER, TEST_OSUFFIX);
+			component = getInstance(SUCCESS, TEST_BENUMBER, TEST_OSUFFIX);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -243,10 +247,10 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			FacilityIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			FacilityIdentifier component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_BENUMBER, TEST_OSUFFIX);
+			component = getInstance(SUCCESS, TEST_BENUMBER, TEST_OSUFFIX);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -254,7 +258,7 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			FacilityIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			FacilityIdentifier component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			FacilityIdentifier.Builder builder = new FacilityIdentifier.Builder(component);
@@ -271,7 +275,7 @@ public class FacilityIdentifierTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}

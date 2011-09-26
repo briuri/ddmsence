@@ -60,12 +60,13 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private Subtitle testConstructor(boolean expectFailure, Element element) {
+	private Subtitle getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Subtitle component = null;
 		try {
 			component = new Subtitle(element);
@@ -73,6 +74,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -80,11 +82,12 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param value the child text
 	 * @return a valid object
 	 */
-	private Subtitle testConstructor(boolean expectFailure, String value) {
+	private Subtitle getInstance(String message, String value) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Subtitle component = null;
 		try {
 			component = new Subtitle(value, SecurityAttributesTest.getFixture());
@@ -92,6 +95,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -122,9 +126,9 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				Subtitle.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -132,12 +136,12 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(Subtitle.getName(version), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -145,10 +149,10 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_VALUE);
+			getInstance(SUCCESS, TEST_VALUE);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, "");
+			getInstance(SUCCESS, "");
 		}
 	}
 
@@ -158,7 +162,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 			// Wrong name
 			Element element = Util.buildDDMSElement("unknownName", null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -171,7 +175,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}
@@ -180,13 +184,13 @@ public class SubtitleTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Subtitle component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Subtitle component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// No value
 			Element element = Util.buildDDMSElement(Subtitle.getName(version), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			component = testConstructor(WILL_SUCCEED, element);
+			component = getInstance(SUCCESS, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A ddms:subtitle element was found with no subtitle value.";
 			String locator = "ddms:subtitle";
@@ -197,8 +201,8 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Subtitle elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Subtitle dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE);
+			Subtitle elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Subtitle dataComponent = getInstance(SUCCESS, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -207,8 +211,8 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Subtitle elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Subtitle dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE);
+			Subtitle elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Subtitle dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -216,11 +220,11 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Subtitle component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Subtitle component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
+			component = getInstance(SUCCESS, TEST_VALUE);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -229,10 +233,10 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Subtitle component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Subtitle component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE);
+			component = getInstance(SUCCESS, TEST_VALUE);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -240,7 +244,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Subtitle component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Subtitle component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			Subtitle.Builder builder = new Subtitle.Builder(component);
@@ -258,7 +262,7 @@ public class SubtitleTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}

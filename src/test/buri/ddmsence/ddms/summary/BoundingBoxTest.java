@@ -62,12 +62,13 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private BoundingBox testConstructor(boolean expectFailure, Element element) {
+	private BoundingBox getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		BoundingBox component = null;
 		try {
 			component = new BoundingBox(element);
@@ -75,6 +76,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -82,15 +84,16 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param westBL the westbound longitude
 	 * @param eastBL the eastbound longitude
 	 * @param southBL the southbound latitude
 	 * @param northBL the northbound latitude
 	 * @return a valid object
 	 */
-	private BoundingBox testConstructor(boolean expectFailure, double westBL, double eastBL, double southBL,
+	private BoundingBox getInstance(String message, double westBL, double eastBL, double southBL,
 		double northBL) {
+		boolean expectFailure = !Util.isEmpty(message);
 		BoundingBox component = null;
 		try {
 			component = new BoundingBox(westBL, eastBL, southBL, northBL);
@@ -98,6 +101,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -184,23 +188,23 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				BoundingBox.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
 	public void testElementConstructorValid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 		}
 	}
 
 	public void testDataConstructorValid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			getInstance(SUCCESS, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
 		}
 	}
 
@@ -209,55 +213,55 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// Missing values
 			Element element = Util.buildDDMSElement(BoundingBox.getName(version), null);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Not Double
 			element = buildComponentElement("west", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), String
 				.valueOf(TEST_NORTH));
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Longitude too small
 			element = buildComponentElement("-181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), String
 				.valueOf(TEST_NORTH));
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Longitude too big
 			element = buildComponentElement("181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), String
 				.valueOf(TEST_NORTH));
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Latitude too small
 			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "-91", String
 				.valueOf(TEST_NORTH));
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Latitude too big
 			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "91", String
 				.valueOf(TEST_NORTH));
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
 	public void testNorthboundLatitudeValiation() {
 		// Issue #65
-		testConstructor(WILL_FAIL, TEST_WEST, TEST_EAST, TEST_SOUTH, -91);
-		testConstructor(WILL_FAIL, TEST_WEST, TEST_EAST, TEST_SOUTH, 91);
+		getInstance("moo", TEST_WEST, TEST_EAST, TEST_SOUTH, -91);
+		getInstance("moo", TEST_WEST, TEST_EAST, TEST_SOUTH, 91);
 	}
 
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Longitude too small
-			testConstructor(WILL_FAIL, -181, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			getInstance("moo", -181, TEST_EAST, TEST_SOUTH, TEST_NORTH);
 
 			// Longitude too big
-			testConstructor(WILL_FAIL, 181, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			getInstance("moo", 181, TEST_EAST, TEST_SOUTH, TEST_NORTH);
 
 			// Latitude too small
-			testConstructor(WILL_FAIL, TEST_WEST, TEST_EAST, -91, TEST_NORTH);
+			getInstance("moo", TEST_WEST, TEST_EAST, -91, TEST_NORTH);
 
 			// Latitude too big
-			testConstructor(WILL_FAIL, TEST_WEST, TEST_EAST, 91, TEST_NORTH);
+			getInstance("moo", TEST_WEST, TEST_EAST, 91, TEST_NORTH);
 		}
 	}
 
@@ -265,7 +269,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			BoundingBox component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -273,8 +277,8 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			BoundingBox elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			BoundingBox dataComponent = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			BoundingBox elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			BoundingBox dataComponent = getInstance(SUCCESS, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -283,17 +287,17 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			BoundingBox elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			BoundingBox dataComponent = testConstructor(WILL_SUCCEED, 10, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			BoundingBox elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			BoundingBox dataComponent = getInstance(SUCCESS, 10, TEST_EAST, TEST_SOUTH, TEST_NORTH);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_WEST, 10, TEST_SOUTH, TEST_NORTH);
+			dataComponent = getInstance(SUCCESS, TEST_WEST, 10, TEST_SOUTH, TEST_NORTH);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, 10, TEST_NORTH);
+			dataComponent = getInstance(SUCCESS, TEST_WEST, TEST_EAST, 10, TEST_NORTH);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, 10);
+			dataComponent = getInstance(SUCCESS, TEST_WEST, TEST_EAST, TEST_SOUTH, 10);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -301,7 +305,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			BoundingBox elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			BoundingBox elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -310,11 +314,11 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			BoundingBox component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			component = getInstance(SUCCESS, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -323,10 +327,10 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			BoundingBox component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			component = getInstance(SUCCESS, TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -334,7 +338,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	public void testDoubleEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			BoundingBox component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(component.getWestBL(), Double.valueOf(TEST_WEST));
 			assertEquals(component.getEastBL(), Double.valueOf(TEST_EAST));
 			assertEquals(component.getSouthBL(), Double.valueOf(TEST_SOUTH));
@@ -345,7 +349,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			BoundingBox component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			BoundingBox component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			BoundingBox.Builder builder = new BoundingBox.Builder(component);
@@ -363,7 +367,7 @@ public class BoundingBoxTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}

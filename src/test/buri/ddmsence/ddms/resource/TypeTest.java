@@ -61,12 +61,13 @@ public class TypeTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private Type testConstructor(boolean expectFailure, Element element) {
+	private Type getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Type component = null;
 		try {
 			component = new Type(element);
@@ -74,6 +75,7 @@ public class TypeTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -81,13 +83,14 @@ public class TypeTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param description the description child text
 	 * @param qualifier the qualifier value
 	 * @param value the value
 	 * @return a valid object
 	 */
-	private Type testConstructor(boolean expectFailure, String description, String qualifier, String value) {
+	private Type getInstance(String message, String description, String qualifier, String value) {
+		boolean expectFailure = !Util.isEmpty(message);
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Type component = null;
 		try {
@@ -97,6 +100,7 @@ public class TypeTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -142,9 +146,9 @@ public class TypeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Type
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Type
 				.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -152,11 +156,11 @@ public class TypeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(Type.getName(version), null);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -164,10 +168,10 @@ public class TypeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER, TEST_VALUE);
+			getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER, TEST_VALUE);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, "", "", "");
+			getInstance(SUCCESS, "", "", "");
 		}
 	}
 
@@ -177,7 +181,7 @@ public class TypeTest extends AbstractComponentTestCase {
 			// Missing qualifier
 			Element element = Util.buildDDMSElement(Type.getName(version), null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -185,7 +189,7 @@ public class TypeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing qualifier
-			testConstructor(WILL_FAIL, null, null, TEST_VALUE);
+			getInstance("moo", null, null, TEST_VALUE);
 		}
 	}
 
@@ -193,13 +197,13 @@ public class TypeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Type component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Type component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Qualifier without value
 			Element element = Util.buildDDMSElement(Type.getName(version), null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
-			component = testConstructor(WILL_SUCCEED, element);
+			component = getInstance(SUCCESS, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A qualifier has been set without an accompanying value attribute.";
 			String locator = "ddms:type";
@@ -207,7 +211,7 @@ public class TypeTest extends AbstractComponentTestCase {
 
 			// Neither attribute
 			element = Util.buildDDMSElement(Type.getName(version), null);
-			component = testConstructor(WILL_SUCCEED, element);
+			component = getInstance(SUCCESS, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			text = "Neither a qualifier nor a value was set on this type.";
 			locator = "ddms:type";
@@ -218,8 +222,8 @@ public class TypeTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Type elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Type dataComponent = testConstructor(WILL_SUCCEED, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "",
+			Type elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "",
 				TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -229,12 +233,12 @@ public class TypeTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Type elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Type dataComponent = testConstructor(WILL_SUCCEED, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "",
+			Type elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "",
 				TEST_QUALIFIER, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 			if (version.isAtLeast("4.0")) {
-				dataComponent = testConstructor(WILL_SUCCEED, "differentDescription", TEST_QUALIFIER, TEST_VALUE);
+				dataComponent = getInstance(SUCCESS, "differentDescription", TEST_QUALIFIER, TEST_VALUE);
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 		}
@@ -243,11 +247,11 @@ public class TypeTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Type component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Type component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
+			component = getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
 				TEST_VALUE);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -257,10 +261,10 @@ public class TypeTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Type component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Type component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
+			component = getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
 				TEST_VALUE);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
@@ -273,7 +277,7 @@ public class TypeTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 	}
 
@@ -284,14 +288,14 @@ public class TypeTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Type component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Type component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			Type.Builder builder = new Type.Builder(component);
@@ -309,7 +313,7 @@ public class TypeTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}

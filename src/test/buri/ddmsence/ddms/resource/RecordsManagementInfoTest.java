@@ -59,12 +59,13 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private RecordsManagementInfo testConstructor(boolean expectFailure, Element element) {
+	private RecordsManagementInfo getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		RecordsManagementInfo component = null;
 		try {
 			component = new RecordsManagementInfo(element);
@@ -72,6 +73,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -79,14 +81,15 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param keeper the record keeper (optional)
 	 * @param software the software (optional)
 	 * @param vitalRecord whether this is a vital record (optional, defaults to false)
 	 * @param org the organization
 	 */
-	private RecordsManagementInfo testConstructor(boolean expectFailure, RecordKeeper keeper,
+	private RecordsManagementInfo getInstance(String message, RecordKeeper keeper,
 		ApplicationSoftware software, Boolean vitalRecord) {
+		boolean expectFailure = !Util.isEmpty(message);
 		RecordsManagementInfo component = null;
 		try {
 			component = new RecordsManagementInfo(keeper, software, vitalRecord);
@@ -94,6 +97,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -134,9 +138,9 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				RecordsManagementInfo.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -145,11 +149,11 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(RecordsManagementInfo.getName(version), null);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -158,10 +162,10 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(), TEST_VITAL);
+			getInstance(SUCCESS, RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(), TEST_VITAL);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, null, null, null);
+			getInstance(SUCCESS, null, null, null);
 		}
 	}
 
@@ -186,7 +190,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			RecordsManagementInfo component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			RecordsManagementInfo component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -195,8 +199,8 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RecordsManagementInfo elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			RecordsManagementInfo dataComponent = testConstructor(WILL_SUCCEED, RecordKeeperTest.getFixture(),
+			RecordsManagementInfo elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			RecordsManagementInfo dataComponent = getInstance(SUCCESS, RecordKeeperTest.getFixture(),
 				ApplicationSoftwareTest.getFixture(), TEST_VITAL);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -207,15 +211,15 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RecordsManagementInfo elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			RecordsManagementInfo dataComponent = testConstructor(WILL_SUCCEED, RecordKeeperTest.getFixture(),
+			RecordsManagementInfo elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			RecordsManagementInfo dataComponent = getInstance(SUCCESS, RecordKeeperTest.getFixture(),
 				ApplicationSoftwareTest.getFixture(), null);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, RecordKeeperTest.getFixture(), null, TEST_VITAL);
+			dataComponent = getInstance(SUCCESS, RecordKeeperTest.getFixture(), null, TEST_VITAL);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, null, ApplicationSoftwareTest.getFixture(), TEST_VITAL);
+			dataComponent = getInstance(SUCCESS, null, ApplicationSoftwareTest.getFixture(), TEST_VITAL);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -224,11 +228,11 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RecordsManagementInfo component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			RecordsManagementInfo component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(),
+			component = getInstance(SUCCESS, RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(),
 				TEST_VITAL);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -239,10 +243,10 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RecordsManagementInfo component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			RecordsManagementInfo component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(),
+			component = getInstance(SUCCESS, RecordKeeperTest.getFixture(), ApplicationSoftwareTest.getFixture(),
 				TEST_VITAL);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
@@ -255,7 +259,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 	}
 
@@ -263,7 +267,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RecordsManagementInfo component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			RecordsManagementInfo component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			RecordsManagementInfo.Builder builder = new RecordsManagementInfo.Builder(component);
@@ -281,7 +285,7 @@ public class RecordsManagementInfoTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 			builder.getApplicationSoftware().getSecurityAttributes().setClassification("U");
 			builder.getApplicationSoftware().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));

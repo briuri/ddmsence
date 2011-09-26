@@ -70,12 +70,13 @@ public class CategoryTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private Category testConstructor(boolean expectFailure, Element element) {
+	private Category getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Category component = null;
 		try {
 			component = new Category(element);
@@ -83,6 +84,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -90,13 +92,14 @@ public class CategoryTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param qualifier the qualifier (optional)
 	 * @param code the code (optional)
 	 * @param label the label (required)
 	 * @return a valid object
 	 */
-	private Category testConstructor(boolean expectFailure, String qualifier, String code, String label) {
+	private Category getInstance(String message, String qualifier, String code, String label) {
+		boolean expectFailure = !Util.isEmpty(message);
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Category component = null;
 		try {
@@ -106,6 +109,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -150,9 +154,9 @@ public class CategoryTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				Category.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -160,12 +164,12 @@ public class CategoryTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(Category.getName(version), null);
 			Util.addDDMSAttribute(element, "label", TEST_LABEL);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -173,10 +177,10 @@ public class CategoryTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
+			getInstance(SUCCESS, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, "", "", TEST_LABEL);
+			getInstance(SUCCESS, "", "", TEST_LABEL);
 		}
 	}
 
@@ -185,7 +189,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// Missing label
 			Element element = Util.buildDDMSElement(Category.getName(version), null);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -193,10 +197,10 @@ public class CategoryTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing label
-			testConstructor(WILL_FAIL, TEST_QUALIFIER, TEST_CODE, null);
+			getInstance("moo", TEST_QUALIFIER, TEST_CODE, null);
 
 			// Qualifier not URI
-			testConstructor(WILL_FAIL, INVALID_URI, TEST_CODE, TEST_LABEL);
+			getInstance("moo", INVALID_URI, TEST_CODE, TEST_LABEL);
 		}
 	}
 
@@ -204,7 +208,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Category component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Category component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -212,8 +216,8 @@ public class CategoryTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Category elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Category dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
+			Category elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Category dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -222,14 +226,14 @@ public class CategoryTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Category elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Category dataComponent = testConstructor(WILL_SUCCEED, "", TEST_CODE, TEST_LABEL);
+			Category elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Category dataComponent = getInstance(SUCCESS, "", TEST_CODE, TEST_LABEL);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, "", TEST_LABEL);
+			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, "", TEST_LABEL);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, DIFFERENT_VALUE);
+			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_CODE, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -237,7 +241,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Category elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Category elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -246,11 +250,11 @@ public class CategoryTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Category component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Category component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
+			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -259,10 +263,10 @@ public class CategoryTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Category component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Category component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
+			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_CODE, TEST_LABEL);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -283,7 +287,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 
 		DDMSVersion version = DDMSVersion.setCurrentVersion("3.0");
@@ -297,7 +301,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 
 		// Using ddms:code as the extension (data)
@@ -309,7 +313,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 
 		// Using ddms:label as the extension (data)
@@ -321,7 +325,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 
 		// Using icism:classification as the extension (data)
@@ -343,14 +347,14 @@ public class CategoryTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Category component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Category component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			Category.Builder builder = new Category.Builder(component);
@@ -368,7 +372,7 @@ public class CategoryTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}

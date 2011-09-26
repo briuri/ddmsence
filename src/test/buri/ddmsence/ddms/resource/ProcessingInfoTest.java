@@ -73,12 +73,13 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private ProcessingInfo testConstructor(boolean expectFailure, Element element) {
+	private ProcessingInfo getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		ProcessingInfo component = null;
 		try {
 			component = new ProcessingInfo(element);
@@ -86,6 +87,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -93,12 +95,13 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param value the child text
 	 * @param dateProcessed the processing date
 	 * @return a valid object
 	 */
-	private ProcessingInfo testConstructor(boolean expectFailure, String value, String dateProcessed) {
+	private ProcessingInfo getInstance(String message, String value, String dateProcessed) {
+		boolean expectFailure = !Util.isEmpty(message);
 		ProcessingInfo component = null;
 		try {
 			component = new ProcessingInfo(value, dateProcessed, SecurityAttributesTest.getFixture());
@@ -106,6 +109,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -138,9 +142,9 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				ProcessingInfo.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -149,13 +153,13 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
 			Util.addDDMSAttribute(element, "dateProcessed", TEST_DATE_PROCESSED);
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -164,10 +168,10 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_DATE_PROCESSED);
+			getInstance(SUCCESS, TEST_VALUE, TEST_DATE_PROCESSED);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, "", TEST_DATE_PROCESSED);
+			getInstance(SUCCESS, "", TEST_DATE_PROCESSED);
 		}
 	}
 
@@ -178,18 +182,18 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			// Wrong name
 			Element element = Util.buildDDMSElement("unknownName", null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Missing date
 			element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Wrong date format (using xs:gDay here)
 			element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
 			Util.addDDMSAttribute(element, "dateProcessed", "---31");
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -198,13 +202,13 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing date
-			testConstructor(WILL_FAIL, TEST_VALUE, null);
+			getInstance("moo", TEST_VALUE, null);
 
 			// Invalid date format
-			testConstructor(WILL_FAIL, TEST_VALUE, "baboon");
+			getInstance("moo", TEST_VALUE, "baboon");
 
 			// Wrong date format (using xs:gDay here)
-			testConstructor(WILL_FAIL, TEST_VALUE, "---31");
+			getInstance("moo", TEST_VALUE, "---31");
 
 			// Bad security attributes
 			try {
@@ -212,7 +216,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}
@@ -222,14 +226,14 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			ProcessingInfo component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// No value
 			Element element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
 			Util.addDDMSAttribute(element, "dateProcessed", TEST_DATE_PROCESSED);
 			SecurityAttributesTest.getFixture().addTo(element);
-			component = testConstructor(WILL_SUCCEED, element);
+			component = getInstance(SUCCESS, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A ddms:processingInfo element was found with no value.";
 			String locator = "ddms:processingInfo";
@@ -241,8 +245,8 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProcessingInfo elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			ProcessingInfo dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_DATE_PROCESSED);
+			ProcessingInfo elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			ProcessingInfo dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_DATE_PROCESSED);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -252,11 +256,11 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProcessingInfo elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			ProcessingInfo dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_DATE_PROCESSED);
+			ProcessingInfo elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			ProcessingInfo dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_DATE_PROCESSED);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, "2011");
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, "2011");
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -265,11 +269,11 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProcessingInfo component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_DATE_PROCESSED);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_DATE_PROCESSED);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -279,10 +283,10 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProcessingInfo component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_DATE_PROCESSED);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_DATE_PROCESSED);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -294,7 +298,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 	}
 
@@ -302,7 +306,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProcessingInfo component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			ProcessingInfo.Builder builder = new ProcessingInfo.Builder(component);
@@ -320,7 +324,7 @@ public class ProcessingInfoTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}

@@ -72,12 +72,13 @@ public class PersonTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private Person testConstructor(boolean expectFailure, Element element) {
+	private Person getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Person component = null;
 		try {
 			component = new Person(element);
@@ -85,6 +86,7 @@ public class PersonTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -92,7 +94,7 @@ public class PersonTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param surname the surname of the person
 	 * @param names an ordered list of names
 	 * @param userID optional unique identifier within an organization
@@ -100,8 +102,9 @@ public class PersonTest extends AbstractComponentTestCase {
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 */
-	private Person testConstructor(boolean expectFailure, String surname, List<String> names, String userID,
+	private Person getInstance(String message, String surname, List<String> names, String userID,
 		String affiliation, List<String> phones, List<String> emails) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Person component = null;
 		try {
 			component = new Person(names, surname, phones, emails, userID, affiliation);
@@ -109,6 +112,7 @@ public class PersonTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -168,9 +172,9 @@ public class PersonTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				Person.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -178,13 +182,13 @@ public class PersonTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(Person.getName(version), null);
 			element.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -192,11 +196,11 @@ public class PersonTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION, TEST_PHONES,
+			getInstance(SUCCESS, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION, TEST_PHONES,
 				TEST_EMAILS);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, null, null, null, null);
+			getInstance(SUCCESS, TEST_SURNAME, TEST_NAMES, null, null, null, null);
 		}
 	}
 
@@ -207,29 +211,29 @@ public class PersonTest extends AbstractComponentTestCase {
 			// Missing name
 			Element entityElement = Util.buildDDMSElement(personName, null);
 			entityElement.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
-			testConstructor(WILL_FAIL, entityElement);
+			getInstance("moo", entityElement);
 
 			// Empty name
 			entityElement = Util.buildDDMSElement(personName, null);
 			entityElement.appendChild(Util.buildDDMSElement("name", ""));
-			testConstructor(WILL_FAIL, entityElement);
+			getInstance("moo", entityElement);
 
 			// Missing surname
 			entityElement = Util.buildDDMSElement(personName, null);
 			entityElement.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
-			testConstructor(WILL_FAIL, entityElement);
+			getInstance("moo", entityElement);
 
 			// Empty surname
 			entityElement = Util.buildDDMSElement(personName, null);
 			entityElement.appendChild(Util.buildDDMSElement("surname", ""));
-			testConstructor(WILL_FAIL, entityElement);
+			getInstance("moo", entityElement);
 
 			// Too many surnames
 			Element element = Util.buildDDMSElement(personName, null);
 			element.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
 			element.appendChild(Util.buildDDMSElement("surname", TEST_SURNAME));
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
-			testConstructor(WILL_FAIL, entityElement);
+			getInstance("moo", entityElement);
 
 			// Too many userIds
 			element = Util.buildDDMSElement(personName, null);
@@ -237,7 +241,7 @@ public class PersonTest extends AbstractComponentTestCase {
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 			element.appendChild(Util.buildDDMSElement("userID", TEST_USERID));
 			element.appendChild(Util.buildDDMSElement("userID", TEST_USERID));
-			testConstructor(WILL_FAIL, entityElement);
+			getInstance("moo", entityElement);
 
 			// Too many affiliations
 			element = Util.buildDDMSElement(personName, null);
@@ -245,7 +249,7 @@ public class PersonTest extends AbstractComponentTestCase {
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 			element.appendChild(Util.buildDDMSElement("affiliation", TEST_AFFILIATION));
 			element.appendChild(Util.buildDDMSElement("affiliation", TEST_AFFILIATION));
-			testConstructor(WILL_FAIL, entityElement);
+			getInstance("moo", entityElement);
 		}
 	}
 
@@ -253,18 +257,18 @@ public class PersonTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing name
-			testConstructor(WILL_FAIL, TEST_SURNAME, null, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
+			getInstance("moo", TEST_SURNAME, null, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
 
 			// Empty name
 			List<String> names = new ArrayList<String>();
 			names.add("");
-			testConstructor(WILL_FAIL, TEST_SURNAME, names, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
+			getInstance("moo", TEST_SURNAME, names, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
 
 			// Missing surname
-			testConstructor(WILL_FAIL, null, TEST_NAMES, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
+			getInstance("moo", null, TEST_NAMES, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
 
 			// Empty surname
-			testConstructor(WILL_FAIL, "", TEST_NAMES, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
+			getInstance("moo", "", TEST_NAMES, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
 		}
 	}
 
@@ -272,7 +276,7 @@ public class PersonTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Person component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Person component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty userID
@@ -302,8 +306,8 @@ public class PersonTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Person elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Person dataComponent = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID,
+			Person elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Person dataComponent = getInstance(SUCCESS, TEST_SURNAME, TEST_NAMES, TEST_USERID,
 				TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -313,30 +317,30 @@ public class PersonTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Person elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Person dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_NAMES, TEST_USERID,
+			Person elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Person dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_NAMES, TEST_USERID,
 				TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			List<String> differentNames = new ArrayList<String>();
 			differentNames.add("Brian");
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_SURNAME, differentNames, TEST_USERID, TEST_AFFILIATION,
+			dataComponent = getInstance(SUCCESS, TEST_SURNAME, differentNames, TEST_USERID, TEST_AFFILIATION,
 				TEST_PHONES, TEST_EMAILS);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, DIFFERENT_VALUE, TEST_AFFILIATION,
+			dataComponent = getInstance(SUCCESS, TEST_SURNAME, TEST_NAMES, DIFFERENT_VALUE, TEST_AFFILIATION,
 				TEST_PHONES, TEST_EMAILS);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, DIFFERENT_VALUE,
+			dataComponent = getInstance(SUCCESS, TEST_SURNAME, TEST_NAMES, TEST_USERID, DIFFERENT_VALUE,
 				TEST_PHONES, TEST_EMAILS);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
+			dataComponent = getInstance(SUCCESS, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
 				null, TEST_EMAILS);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
+			dataComponent = getInstance(SUCCESS, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
 				TEST_PHONES, null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
@@ -345,11 +349,11 @@ public class PersonTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Person component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Person component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
+			component = getInstance(SUCCESS, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
 				TEST_PHONES, TEST_EMAILS);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -359,10 +363,10 @@ public class PersonTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Person component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Person component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
+			component = getInstance(SUCCESS, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATION,
 				TEST_PHONES, TEST_EMAILS);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
@@ -371,7 +375,7 @@ public class PersonTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Person component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Person component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			Person.Builder builder = new Person.Builder(component);
@@ -389,7 +393,7 @@ public class PersonTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}
