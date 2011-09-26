@@ -147,7 +147,9 @@
 	</xs:simpleType>
 
 	<xs:attributeGroup name="simpleAttrs">
-		<xs:attribute ref="xlink:type" fixed="simple"/>
+	  	<!--  Removing fixed="simple" and enforcing this constraint in Java, because of XOM's
+  		  handling of fixed, optional attributes -->
+		<xs:attribute ref="xlink:type"/>
 		<xs:attribute ref="xlink:href"/>
 		<xs:attribute ref="xlink:role"/>
 		<xs:attribute ref="xlink:arcrole"/>
