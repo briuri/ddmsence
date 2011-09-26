@@ -11,8 +11,7 @@
 
 <p>In order to cleanly and comprehensively support DDMS 4.0, DDMSence 2.0.0 required multiple changes which
 might break backwards compatibility with your existing code. Some of these changes are as simple as new package names
-or changed method names, while others are more significant. This Upgrade Guide outlines all of the changes which might
-require updates to your existing code, and provides recommendations on how to migrate your code to use the new version
+or changed method names, while others are more significant. This Upgrade Guide describes the changes and provides recommendations on how to migrate your code to use the new version
 of DDMSence. If you have followed the instructions in this guide and are still encountering compiler errors or other
 problems, I would be glad to assist you further.</p>
 
@@ -40,15 +39,17 @@ problems, I would be glad to assist you further.</p>
 
 <div class="upgradeGuide">
 <p>In previous versions of DDMSence, you could point to a custom set of ISM Controlled Vocabulary Enumeration files
-with the "<code>icism.cve.customEnumLocation</code>" custom property. Because V5 and above of ISM.XML validate vocabularies directly from the schemas (with 
-generated CVE schemas), changing the vocabulary without changing the schema no longer made sense. 
-<a href="http://code.google.com/p/ddmsence/issues/detail?id=154">Issue #154</a> tracks future work to reintroduce 
-this general concept of swappable ISM, but at the schema level and not just the vocabulary level. You can still toggle CVEs 
-between warnings and errors with the "<code>ism.cve.validationAsErrors</code>" custom property.</p>
+with the "<code>icism.cve.customEnumLocation</code>" custom property. Starting with V5 of ISM.XML (the version bundled with DDMS 3.1),
+these vocabularies were enforced in the schemas themselves, as well as the CVE files. So, being able to change to a custom set of CVE files
+no longer made sense, because the CVEs would then conflict with the values in the generated schema files.</p>
+
+<p><a href="http://code.google.com/p/ddmsence/issues/detail?id=154">Issue #154</a> tracks future work to reintroduce 
+this general concept of swappable ISM, but at the schema level and not just the vocabulary level.</p>
 
 <p><b>How to Upgrade:</b></p>
-<p>The selection of CVE is now based upon the current DDMSVersion and uses bundled Public Release CVEs all of the time.</p> 
-<p>There is no workaround at this time. Please contact me with feedback on how you used this feature previously so I can support your use case in the future.</p>
+<p>There is no workaround at this time. The selection of CVE is now based upon the current DDMSVersion and uses bundled Public Release CVEs all of the
+time. You can still toggle CVEs between warnings and errors with the "<code>ism.cve.validationAsErrors</code>" custom property.</p> 
+<p>Please contact me with feedback on how you used this feature previously so I can support your use case in the future.</p>
 </div>
 
 <a name="major-02"></a><h4>Producer/Entity hierarchy changed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=153">Issue #153</a>)</h4>
@@ -64,7 +65,7 @@ between warnings and errors with the "<code>ism.cve.validationAsErrors</code>" c
 
 <p>This creator element was modeled in DDMSence 1.x as "An instance of Organization has the role of creator" 
 and the Organization class contained this entire construct. With DDMS 4.0, Organizations and Persons 
-can now appear in other elements besides the classic producers (such as an Addressee or RecordKeeper), and the 
+can now appear in other roles besides the classic producers (such as an Addressee or RecordKeeper), and the 
 old approach became too fragile to sustain. Producers and entities are now consistent with the schema -- 
 the above construct is modeled as "An instance of Creator contains an instance of Organization".</p>
 
@@ -81,6 +82,10 @@ previously had code that worked with a "Service that was a creator":</p>
 
 <pre class="brush: java">Service service = new Service(names, phones, emails);
 Creator creator = new Creator(service, null, securityAttributes);</pre>
+
+<p>In places where you passed an Organization, Person, Service, or Unknown into a Resource constructor as a "top-level component", you will now need to pass
+in the producer role (Contributor, Creator, PointOfContact, or Publisher) instead.</p>
+
 </div>
 
 <a name="major-03"></a><h4>Related Resources hierarchy compressed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=130">Issue #130</a>)</h4>
@@ -95,8 +100,8 @@ Creator creator = new Creator(service, null, securityAttributes);</pre>
       @ddms:qualifier
       @ddms:value
       ddms:link (1-many)</pre>
-      
-<p>DDMS 4.0  has flattened this to one level:</p>
+<p>In this model, the ddms:relatedResources element defined the relationship and direction, and a collection of ddms:relatedResource elements shared those values.
+DDMS 4.0  has flattened this to one level:</p>
 
 <pre class="brush: xml">ddms:relatedResource (0-many in a ddms:resource)
    @ddms:qualifier
@@ -154,7 +159,7 @@ RelatedResource classes directly via the data-based constructors, you will need 
 
 <div class="upgradeGuide">
 <p>Previously, DDMSence would do a basic check to see that security classifications of top-level components
-were never more restrictive than the resource itself, and checked to see that all classifications used
+were never more restrictive than the resource itself, and also checked to see that all classifications used
 a consistent system (US vs NATO). In DDMS 4.0, classification markings can go much deeper into the object
 hierarchy, and NATO markings are now handled apart from classifications. Rather than reinvent the wheel
 here, it would be better to use the ISM Schematron files to correctly and comprehensively manage your
@@ -238,6 +243,8 @@ classes now have a static method which returns a name for some DDMSVersion.</p>
 <pre class="brush: java">String extentName = Extent.NAME;</pre>
 <p>You would now call a static method:</p>
 <pre class="brush: java">String extentName = Extent.getName(ddmsVersion);</pre>
+<p>The non-static <code>getName()</code> method on each component will still return the currently defined name for the component.</p>
+
 </div>
 
 <a name="minor-06"></a><h4>Non-DDMS classes moved into new packages (<a href="http://code.google.com/p/ddmsence/issues/detail?id=148">Issue #148</a>)</h4>

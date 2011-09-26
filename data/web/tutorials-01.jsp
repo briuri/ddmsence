@@ -82,7 +82,7 @@ at any given time.</p>
 	<li>Any warnings which do not actually result in an invalid component are stored on the component, and can be retrieved via <code>getValidationWarnings()</code>.</li>
 </ul>
 
-<p>Finally, a resource from other versions of DDMS can also be opened with <u>Essentials</u>. An example is provided in the file, <code>2.0-earlierVersionExample.xml</code>. Working with
+<p>The <u>Essentials</u> program can open resources of any supported DDMS Version. An example is provided in the file, <code>2.0-earlierVersionExample.xml</code>. Working with
 a other versions of DDMS is covered in the <a href="documentation.jsp#tips">Power Tips</a> section.</p>
 
 <h3>Conclusion</h3>

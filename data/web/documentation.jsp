@@ -35,7 +35,7 @@ into a batch/shell script and running that script):</p>
 
 <pre class="brush: xml">REM Windows Commands
 cd &lt;folderWhereDDMSenceIsUnzipped&gt;\ddmsence-bin-@ddmsence.version@
-set DDMSENCE_CLASSPATH=lib/serializer-2.7.1.jar;lib/xalan-2.7.1.jar;lib/xercesImpl-2.9.1.jar
+set DDMSENCE_CLASSPATH=lib/serializer-2.7.1.jar;lib/saxon9he-9.3.0.5.jar;lib/xercesImpl-2.9.1.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/xml-apis-1.3.04.jar;lib/xom-1.2.6.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-@ddmsence.version@.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-samples-@ddmsence.version@.jar
@@ -45,7 +45,7 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
 <pre class="brush: xml">#!/bin/sh
 # Linux Commands
 cd &lt;folderWhereDDMSenceIsUnzipped&gt;/ddmsence-bin-@ddmsence.version@
-ddmsence_classpath=lib/serializer-2.7.1.jar:lib/xalan-2.7.1.jar:lib/xercesImpl-2.9.1.jar
+ddmsence_classpath=lib/serializer-2.7.1.jar:lib/saxon9he-9.3.0.5.jar:lib/xercesImpl-2.9.1.jar
 ddmsence_classpath=$ddmsence_classpath:lib/xml-apis-1.3.04.jar:lib/xom-1.2.6.jar
 ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-@ddmsence.version@.jar
 ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-samples-@ddmsence.version@.jar
@@ -128,9 +128,9 @@ followed these rules to determine which components are important enough to deser
 	<li>Elements which are explicitly declared as DDMS Categories in the DDMS documentation are always implemented (<code>ddms:identifier</code>).</li>
 	<li>Elements which merely enclose important data AND which have no special attributes are never implemented (<code>ddms:Media</code>).</li>
 	<li>Data which can be represented as a simple Java type AND which has no special attributes is represented as a simple Java type (<code>ddms:email</code>).</li>
-	<li>Attributes are generally implemented as properties on an Object. The exceptions to this are the 
-		<a href="/docs/index.html?buri/ddmsence/ddms/security/ism/SecurityAttributes.html">ISM Attribute Group</a>, 
-		which decorates many DDMS components, and the <a href="/docs/index.html?buri/ddmsence/ddms/summary/gml/SRSAttributes.html">SRS Attribute Group</a>,
+	<li>Attributes are generally implemented as properties on an Object. The exceptions to this are the attributes which tend to be used together, such as the
+		<a href="/docs/index.html?buri/ddmsence/ddms/security/ism/SecurityAttributes.html">ISM SecurityAttributes</a>, 
+		which decorates many DDMS components, and the <a href="/docs/index.html?buri/ddmsence/ddms/summary/gml/SRSAttributes.html">GML SRSAttributes</a>,
 		which decorates components in the GML profile.</li>
 </ul>
 
@@ -177,7 +177,7 @@ The following convention is used to provide some consistency:</p>
 
 <h4>Accessor Consistency Across Versions</h4>
 
-<p>Some attributes, such as <code>ISM:excludeFromRollup</code> and <code>ISM:resouceElement</code> do not appear in earlier versions of DDMS. When the accessors for 
+<p>Some non-string-based attributes, such as <code>ISM:excludeFromRollup</code> and <code>ISM:resouceElement</code> do not appear in earlier versions of DDMS. When the accessors for 
 these attributes are called on an older version, a null value will be returned. This decision allows DDMS records of varying versions to be
 traversed and queried in the same manner, without requiring too much knowledge of when specific attributes were introduced.</p>
 

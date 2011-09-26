@@ -18,7 +18,7 @@ and supporting 3rd-party JAR files. Sample applications can be run from the <a h
 <p><b><code>ddmsence-src-version.zip</code></b>: This download is intended for developers who wish to see what DDMSence is doing under the hood. It contains source 
 code for the main library, unit tests, and the sample applications, as well as supporting 3rd-party JAR files. The included <code>build.xml</code> 
 file allows you to compile source code, run unit tests, generate API documentation, or even generate the "bin"-flavored archive with <a href="http://ant.apache.org/">Apache Ant</a>. 
-I have also included the <code>.project</code> file if you wish to import the project into Eclipse.</p>
+I have also included a <code>.project</code> file if you wish to import the project into Eclipse.</p>
 
 <p>Regardless of your choice, you will need a <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_new">JRE or JDK</a> which supports Java 1.5 or higher.</p>
 

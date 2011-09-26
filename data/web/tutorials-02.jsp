@@ -17,7 +17,8 @@ shows an example of how the Java object model can be built with basic data types
 <p>I have implemented this wizard as a series of textual prompts, to avoid the overhead of having a full-fledged MVC Swing application (or implementing it as a web application and
 requiring a server to run). It is not as flashy, but this should make it easier to focus on the important sections of the source code.</p>
 
-<p>This wizard only focuses on small representative subset of the DDMS components, such as Identifier and SubjectCoverage.</p>
+<p>This wizard only focuses on small representative subset of the DDMS components, such as Identifier and SubjectCoverage. It will not ask you for every single optional component
+in the specification.</p>
 
 <h2>Getting Started</h2>
 
@@ -33,9 +34,9 @@ command line parameters.</p>
 <pre class="brush: xml">Escort: a DDMSence Sample
 
 This program allows you to build a DDMS 4.0 resource from scratch using a
-representative subset of possible components. Suggested valid examples are
-provided in square brackets for each prompt. However, this is not a default
-value (hitting Enter will answer the prompt with an empty string).
+representative subset of possible components. Suggested valid answers are
+provided in square brackets for each prompt. However, these are not default
+values (hitting Enter will answer the prompt with an empty string).
 
 Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the resource? [Y/N]:</pre>
 <p class="figure">Figure 1. Starting the Wizard</p>
