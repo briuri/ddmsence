@@ -63,12 +63,13 @@ public class SourceTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private Source testConstructor(boolean expectFailure, Element element) {
+	private Source getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Source component = null;
 		try {
 			if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
@@ -78,6 +79,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -85,15 +87,16 @@ public class SourceTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param qualifier the qualifier value
 	 * @param value the value
 	 * @param schemaQualifier the value of the schemaQualifier attribute
 	 * @param schemaHref the value of the schemaHref attribute
 	 * @return a valid object
 	 */
-	private Source testConstructor(boolean expectFailure, String qualifier, String value, String schemaQualifier,
+	private Source getInstance(String message, String qualifier, String value, String schemaQualifier,
 		String schemaHref) {
+		boolean expectFailure = !Util.isEmpty(message);
 		Source component = null;
 		try {
 			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0") ? null
@@ -103,6 +106,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -145,9 +149,9 @@ public class SourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				Source.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -155,11 +159,11 @@ public class SourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(Source.getName(version), null);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -167,10 +171,10 @@ public class SourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF);
+			getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, "", "", "", "");
+			getInstance(SUCCESS, "", "", "", "");
 		}
 	}
 
@@ -180,7 +184,7 @@ public class SourceTest extends AbstractComponentTestCase {
 			// Href not URI
 			Element element = Util.buildDDMSElement(Source.getName(version), null);
 			Util.addDDMSAttribute(element, "schemaHref", INVALID_URI);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -188,7 +192,7 @@ public class SourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Href not URI
-			testConstructor(WILL_FAIL, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, INVALID_URI);
+			getInstance("moo", TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER, INVALID_URI);
 		}
 	}
 
@@ -196,11 +200,11 @@ public class SourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Source component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Source component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			Element element = Util.buildDDMSElement(Source.getName(version), null);
-			component = testConstructor(WILL_SUCCEED, element);
+			component = getInstance(SUCCESS, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A completely empty ddms:source element was found.";
 			String locator = "ddms:source";
@@ -211,8 +215,8 @@ public class SourceTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Source elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Source dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
+			Source elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Source dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
 				TEST_SCHEMA_HREF);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -222,23 +226,23 @@ public class SourceTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Source elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			Source dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, DIFFERENT_VALUE,
+			Source elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			Source dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, DIFFERENT_VALUE,
 				TEST_SCHEMA_QUALIFIER, TEST_SCHEMA_HREF);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
+			dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
 				TEST_SCHEMA_HREF);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, DIFFERENT_VALUE, TEST_SCHEMA_QUALIFIER,
+			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, DIFFERENT_VALUE, TEST_SCHEMA_QUALIFIER,
 				TEST_SCHEMA_HREF);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE, DIFFERENT_VALUE, TEST_SCHEMA_HREF);
+			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE, DIFFERENT_VALUE, TEST_SCHEMA_HREF);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
+			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
 				DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
@@ -247,11 +251,11 @@ public class SourceTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Source component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Source component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
+			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
 				TEST_SCHEMA_HREF);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -261,10 +265,10 @@ public class SourceTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Source component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Source component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
+			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE, TEST_SCHEMA_QUALIFIER,
 				TEST_SCHEMA_HREF);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
@@ -290,14 +294,14 @@ public class SourceTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			Source component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			Source component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			Source.Builder builder = new Source.Builder(component);
@@ -315,7 +319,7 @@ public class SourceTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}

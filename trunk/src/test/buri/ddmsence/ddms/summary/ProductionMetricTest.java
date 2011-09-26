@@ -69,12 +69,13 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private ProductionMetric testConstructor(boolean expectFailure, Element element) {
+	private ProductionMetric getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		ProductionMetric component = null;
 		try {
 			component = new ProductionMetric(element);
@@ -82,6 +83,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -89,7 +91,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param subject a method of categorizing the subject of a document in a fashion understandable by DDNI-A
 	 * (required)
 	 * @param coverage a method of categorizing the coverage of a document in a fashion understandable by DDNI-A
@@ -97,7 +99,8 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 	 * @param label the label (required)
 	 * @return a valid object
 	 */
-	private ProductionMetric testConstructor(boolean expectFailure, String subject, String coverage) {
+	private ProductionMetric getInstance(String message, String subject, String coverage) {
+		boolean expectFailure = !Util.isEmpty(message);
 		ProductionMetric component = null;
 		try {
 			component = new ProductionMetric(subject, coverage, SecurityAttributesTest.getFixture());
@@ -105,6 +108,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -138,9 +142,9 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				ProductionMetric.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -149,7 +153,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 		}
 	}
 
@@ -158,7 +162,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
+			getInstance(SUCCESS, TEST_SUBJECT, TEST_COVERAGE);
 		}
 	}
 
@@ -169,12 +173,12 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			// Missing subject
 			Element element = Util.buildDDMSElement(ProductionMetric.getName(version), null);
 			element.addAttribute(Util.buildDDMSAttribute("coverage", TEST_COVERAGE));
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Missing coverage
 			element = Util.buildDDMSElement(ProductionMetric.getName(version), null);
 			element.addAttribute(Util.buildDDMSAttribute("subject", TEST_SUBJECT));
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -183,10 +187,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing subject
-			testConstructor(WILL_FAIL, null, TEST_COVERAGE);
+			getInstance("moo", null, TEST_COVERAGE);
 
 			// Missing coverage
-			testConstructor(WILL_FAIL, TEST_SUBJECT, null);
+			getInstance("moo", TEST_SUBJECT, null);
 		}
 	}
 
@@ -195,7 +199,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProductionMetric component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -204,8 +208,8 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProductionMetric elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			ProductionMetric dataComponent = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
+			ProductionMetric elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			ProductionMetric dataComponent = getInstance(SUCCESS, TEST_SUBJECT, TEST_COVERAGE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -215,11 +219,11 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProductionMetric elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			ProductionMetric dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_COVERAGE);
+			ProductionMetric elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			ProductionMetric dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_COVERAGE);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_SUBJECT, DIFFERENT_VALUE);
+			dataComponent = getInstance(SUCCESS, TEST_SUBJECT, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -228,7 +232,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProductionMetric elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProductionMetric elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(elementComponent.equals(wrongComponent));
 		}
@@ -238,11 +242,11 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProductionMetric component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
+			component = getInstance(SUCCESS, TEST_SUBJECT, TEST_COVERAGE);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -252,10 +256,10 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProductionMetric component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_SUBJECT, TEST_COVERAGE);
+			component = getInstance(SUCCESS, TEST_SUBJECT, TEST_COVERAGE);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -267,7 +271,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 	}
 
@@ -275,7 +279,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProductionMetric component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ProductionMetric component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			ProductionMetric.Builder builder = new ProductionMetric.Builder(component);
@@ -290,7 +294,7 @@ public class ProductionMetricTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 			builder.setSubject(TEST_SUBJECT);
 			builder.commit();

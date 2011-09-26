@@ -83,12 +83,13 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private GeographicIdentifier testConstructor(boolean expectFailure, Element element) {
+	private GeographicIdentifier getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		GeographicIdentifier component = null;
 		try {
 			component = new GeographicIdentifier(element);
@@ -96,6 +97,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -103,7 +105,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param names the names (optional)
 	 * @param regions the region names (optional)
 	 * @param countryCode the country code (optional)
@@ -111,8 +113,9 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 	 * @param facilityIdentifier the facility identifier (optional)
 	 * @return a valid object
 	 */
-	private GeographicIdentifier testConstructor(boolean expectFailure, List<String> names, List<String> regions,
+	private GeographicIdentifier getInstance(String message, List<String> names, List<String> regions,
 		CountryCode countryCode, SubDivisionCode subDivisionCode, FacilityIdentifier facilityIdentifier) {
+		boolean expectFailure = !Util.isEmpty(message);
 		GeographicIdentifier component = null;
 		try {
 			if (facilityIdentifier != null)
@@ -123,6 +126,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -163,9 +167,9 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				GeographicIdentifier.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -175,30 +179,30 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			String geoIdName = GeographicIdentifier.getName(version);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(geoIdName, null);
 			element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 
 			element = Util.buildDDMSElement(geoIdName, null);
 			element.appendChild(Util.buildDDMSElement("region", TEST_REGIONS.get(0)));
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 
 			element = Util.buildDDMSElement(geoIdName, null);
 			element.appendChild(CountryCodeTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 
 			if (version.isAtLeast("4.0")) {
 				element = Util.buildDDMSElement(geoIdName, null);
 				element.appendChild(SubDivisionCodeTest.getFixture().getXOMElementCopy());
-				testConstructor(WILL_SUCCEED, element);
+				getInstance(SUCCESS, element);
 			}
 
 			element = Util.buildDDMSElement(geoIdName, null);
 			element.appendChild(FacilityIdentifierTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -208,15 +212,15 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(), subCode, null);
+			getInstance(SUCCESS, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(), subCode, null);
 
 			// No optional fields		
-			testConstructor(WILL_SUCCEED, TEST_NAMES, null, null, null, null);
-			testConstructor(WILL_SUCCEED, null, TEST_REGIONS, null, null, null);
-			testConstructor(WILL_SUCCEED, null, null, CountryCodeTest.getFixture(), null, null);
+			getInstance(SUCCESS, TEST_NAMES, null, null, null, null);
+			getInstance(SUCCESS, null, TEST_REGIONS, null, null, null);
+			getInstance(SUCCESS, null, null, CountryCodeTest.getFixture(), null, null);
 			if (version.isAtLeast("4.0"))
-				testConstructor(WILL_SUCCEED, null, null, null, subCode, null);
-			testConstructor(WILL_SUCCEED, null, null, null, null, FacilityIdentifierTest.getFixture());
+				getInstance(SUCCESS, null, null, null, subCode, null);
+			getInstance(SUCCESS, null, null, null, null, FacilityIdentifierTest.getFixture());
 		}
 	}
 
@@ -227,33 +231,33 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 
 			// At least 1 name, region, countryCode, or facilityIdentifier must exist.
 			Element element = Util.buildDDMSElement(geoIdName, null);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// No more than 1 countryCode
 			element = Util.buildDDMSElement(geoIdName, null);
 			element.appendChild(CountryCodeTest.getFixture().getXOMElementCopy());
 			element.appendChild(CountryCodeTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// No more than 1 subDivisionCode
 			if (version.isAtLeast("4.0")) {
 				element = Util.buildDDMSElement(geoIdName, null);
 				element.appendChild(SubDivisionCodeTest.getFixture().getXOMElementCopy());
 				element.appendChild(SubDivisionCodeTest.getFixture().getXOMElementCopy());
-				testConstructor(WILL_FAIL, element);
+				getInstance("moo", element);
 			}
 
 			// No more than 1 facilityIdentifier
 			element = Util.buildDDMSElement(geoIdName, null);
 			element.appendChild(FacilityIdentifierTest.getFixture().getXOMElementCopy());
 			element.appendChild(FacilityIdentifierTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// facilityIdentifier must be alone
 			element = Util.buildDDMSElement(geoIdName, null);
 			element.appendChild(CountryCodeTest.getFixture().getXOMElementCopy());
 			element.appendChild(FacilityIdentifierTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -261,7 +265,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// At least 1 name, region, countryCode, subDivisionCode or facilityIdentifier must exist.
-			testConstructor(WILL_FAIL, null, null, null, null, null);
+			getInstance("moo", null, null, null, null, null);
 		}
 	}
 
@@ -269,7 +273,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			GeographicIdentifier component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -279,16 +283,16 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
-			GeographicIdentifier elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			GeographicIdentifier dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS,
+			GeographicIdentifier elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			GeographicIdentifier dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_REGIONS,
 				CountryCodeTest.getFixture(), subCode, null);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 
 			Element element = Util.buildDDMSElement(GeographicIdentifier.getName(version), null);
 			element.appendChild(FacilityIdentifierTest.getFixture().getXOMElementCopy());
-			elementComponent = testConstructor(WILL_SUCCEED, element);
-			dataComponent = testConstructor(WILL_SUCCEED, null, null, null, null, FacilityIdentifierTest.getFixture());
+			elementComponent = getInstance(SUCCESS, element);
+			dataComponent = getInstance(SUCCESS, null, null, null, null, FacilityIdentifierTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -299,24 +303,24 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
-			GeographicIdentifier elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			GeographicIdentifier dataComponent = testConstructor(WILL_SUCCEED, null, TEST_REGIONS, CountryCodeTest
+			GeographicIdentifier elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			GeographicIdentifier dataComponent = getInstance(SUCCESS, null, TEST_REGIONS, CountryCodeTest
 				.getFixture(), subCode, null);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, null, CountryCodeTest.getFixture(), subCode, null);
+			dataComponent = getInstance(SUCCESS, TEST_NAMES, null, CountryCodeTest.getFixture(), subCode, null);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, null, subCode, null);
+			dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_REGIONS, null, subCode, null);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			if (version.isAtLeast("4.0")) {
-				dataComponent = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(),
+				dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(),
 					null, null);
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 
-			dataComponent = testConstructor(WILL_SUCCEED, null, null, null, null, FacilityIdentifierTest.getFixture());
+			dataComponent = getInstance(SUCCESS, null, null, null, null, FacilityIdentifierTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -326,11 +330,11 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
-			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			GeographicIdentifier component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(), subCode,
+			component = getInstance(SUCCESS, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(), subCode,
 				null);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -365,10 +369,10 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SubDivisionCode subCode = SubDivisionCodeTest.getFixture();
 
-			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			GeographicIdentifier component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(), subCode,
+			component = getInstance(SUCCESS, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(), subCode,
 				null);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
@@ -378,8 +382,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			CountryCode code = CountryCodeTest.getFixture();
-			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, code, null, null);
-			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, code, null, null);
+			getInstance(SUCCESS, TEST_NAMES, TEST_REGIONS, code, null, null);
+			getInstance(SUCCESS, TEST_NAMES, TEST_REGIONS, code, null, null);
 		}
 	}
 
@@ -391,8 +395,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 				continue;
 
 			SubDivisionCode code = SubDivisionCodeTest.getFixture();
-			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, null, code, null);
-			testConstructor(WILL_SUCCEED, TEST_NAMES, TEST_REGIONS, null, code, null);
+			getInstance(SUCCESS, TEST_NAMES, TEST_REGIONS, null, code, null);
+			getInstance(SUCCESS, TEST_NAMES, TEST_REGIONS, null, code, null);
 		}
 	}
 
@@ -400,8 +404,8 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			FacilityIdentifier facId = FacilityIdentifierTest.getFixture();
-			testConstructor(WILL_SUCCEED, null, null, null, null, facId);
-			testConstructor(WILL_SUCCEED, null, null, null, null, facId);
+			getInstance(SUCCESS, null, null, null, null, facId);
+			getInstance(SUCCESS, null, null, null, null, facId);
 		}
 	}
 
@@ -414,7 +418,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 	}
 
@@ -431,14 +435,14 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			GeographicIdentifier component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			GeographicIdentifier component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building (CountryCode-based)
 			GeographicIdentifier.Builder builder = new GeographicIdentifier.Builder(component);
@@ -462,7 +466,7 @@ public class GeographicIdentifierTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 			// Non-FacID-based
 			builder = new GeographicIdentifier.Builder();

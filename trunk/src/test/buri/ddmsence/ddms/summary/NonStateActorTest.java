@@ -84,12 +84,13 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private NonStateActor testConstructor(boolean expectFailure, Element element) {
+	private NonStateActor getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		NonStateActor component = null;
 		try {
 			component = new NonStateActor(element);
@@ -97,6 +98,7 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -104,12 +106,13 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param value the value of the actor (optional)
 	 * @param order the order of the actor (optional)
 	 * @return a valid object
 	 */
-	private NonStateActor testConstructor(boolean expectFailure, String value, Integer order) {
+	private NonStateActor getInstance(String message, String value, Integer order) {
+		boolean expectFailure = !Util.isEmpty(message);
 		NonStateActor component = null;
 		try {
 			component = new NonStateActor(value, order, SecurityAttributesTest.getFixture());
@@ -117,6 +120,7 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -149,9 +153,9 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				NonStateActor.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -160,11 +164,11 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(NonStateActor.getName(version), null);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -173,10 +177,10 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ORDER);
+			getInstance(SUCCESS, TEST_VALUE, TEST_ORDER);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, null, null);
+			getInstance(SUCCESS, null, null);
 		}
 	}
 
@@ -201,12 +205,12 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			NonStateActor component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty value
 			Element element = Util.buildDDMSElement(NonStateActor.getName(version), null);
-			component = testConstructor(WILL_SUCCEED, element);
+			component = getInstance(SUCCESS, element);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A ddms:nonStateActor element was found with no value.";
 			String locator = "ddms:nonStateActor";
@@ -218,8 +222,8 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NonStateActor elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			NonStateActor dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ORDER);
+			NonStateActor elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			NonStateActor dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ORDER);
 
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -230,11 +234,11 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NonStateActor elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			NonStateActor dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_ORDER);
+			NonStateActor elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			NonStateActor dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_ORDER);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_VALUE, null);
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -243,11 +247,11 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			NonStateActor component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ORDER);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_ORDER);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -257,10 +261,10 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			NonStateActor component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_VALUE, TEST_ORDER);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_ORDER);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -272,7 +276,7 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 	}
 
@@ -280,7 +284,7 @@ public class NonStateActorTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NonStateActor component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			NonStateActor component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			NonStateActor.Builder builder = new NonStateActor.Builder();
 			assertNull(builder.commit());

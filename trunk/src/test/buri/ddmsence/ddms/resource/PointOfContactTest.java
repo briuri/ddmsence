@@ -69,12 +69,13 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private PointOfContact testConstructor(boolean expectFailure, Element element) {
+	private PointOfContact getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		PointOfContact component = null;
 		try {
 			SecurityAttributesTest.getFixture().addTo(element);
@@ -83,6 +84,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -90,11 +92,12 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param entity the producer entity
 	 * @param pocType the POCType (DDMS 4.0 or later)
 	 */
-	private PointOfContact testConstructor(boolean expectFailure, IRoleEntity entity, String pocType) {
+	private PointOfContact getInstance(String message, IRoleEntity entity, String pocType) {
+		boolean expectFailure = !Util.isEmpty(message);
 		PointOfContact component = null;
 		try {
 			component = new PointOfContact(entity, pocType, SecurityAttributesTest.getFixture());
@@ -102,6 +105,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -150,9 +154,9 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				PointOfContact.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -160,12 +164,12 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(PointOfContact.getName(version), null);
 			element.appendChild(getEntityFixture().getXOMElementCopy());
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -173,7 +177,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			testConstructor(WILL_SUCCEED, getEntityFixture(), null);
+			getInstance(SUCCESS, getEntityFixture(), null);
 		}
 	}
 
@@ -182,7 +186,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// Missing entity
 			Element element = Util.buildDDMSElement(PointOfContact.getName(version), null);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -190,7 +194,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing entity		
-			testConstructor(WILL_FAIL, (IRoleEntity) null, null);
+			getInstance("moo", (IRoleEntity) null, null);
 		}
 	}
 
@@ -198,7 +202,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			PointOfContact component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			PointOfContact component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -206,8 +210,8 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			PointOfContact elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			PointOfContact dataComponent = testConstructor(WILL_SUCCEED, getEntityFixture(), RoleEntityTest
+			PointOfContact elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			PointOfContact dataComponent = getInstance(SUCCESS, getEntityFixture(), RoleEntityTest
 				.getPOCType());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -217,8 +221,8 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			PointOfContact elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			PointOfContact dataComponent = testConstructor(WILL_SUCCEED, new Service(Util
+			PointOfContact elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			PointOfContact dataComponent = getInstance(SUCCESS, new Service(Util
 				.getXsListAsList("DISA PEO-GES"), Util.getXsListAsList("703-882-1000 703-885-1000"), Util
 				.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -228,11 +232,11 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			PointOfContact component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			PointOfContact component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, getEntityFixture(), RoleEntityTest.getPOCType());
+			component = getInstance(SUCCESS, getEntityFixture(), RoleEntityTest.getPOCType());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -241,10 +245,10 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			PointOfContact component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			PointOfContact component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, getEntityFixture(), RoleEntityTest.getPOCType());
+			component = getInstance(SUCCESS, getEntityFixture(), RoleEntityTest.getPOCType());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -264,14 +268,14 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			PointOfContact component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			PointOfContact component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			PointOfContact.Builder builder = new PointOfContact.Builder(component);
@@ -290,7 +294,7 @@ public class PointOfContactTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}

@@ -92,12 +92,13 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private TaskingInfo testConstructor(boolean expectFailure, Element element) {
+	private TaskingInfo getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		TaskingInfo component = null;
 		try {
 			component = new TaskingInfo(element);
@@ -105,6 +106,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -112,14 +114,15 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param requesterInfos list of requestors (optional)
 	 * @param addressees list of addressee (optional)
 	 * @param description description of tasking (optional)
 	 * @param taskID taskID for tasking (required)
 	 */
-	private TaskingInfo testConstructor(boolean expectFailure, List<RequesterInfo> requesterInfos,
+	private TaskingInfo getInstance(String message, List<RequesterInfo> requesterInfos,
 		List<Addressee> addressees, Description description, TaskID taskID) {
+		boolean expectFailure = !Util.isEmpty(message);
 		TaskingInfo component = null;
 		try {
 			component = new TaskingInfo(requesterInfos, addressees, description, taskID, SecurityAttributesTest
@@ -128,6 +131,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -188,9 +192,9 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getFixtureElement()), DEFAULT_DDMS_PREFIX, TaskingInfo
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX, TaskingInfo
 				.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -199,13 +203,13 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getFixtureElement());
+			getInstance(SUCCESS, getFixtureElement());
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
 			SecurityAttributesTest.getFixture().addTo(element);
 			element.appendChild(TaskIDTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -214,11 +218,11 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),
+			getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),
 				TaskIDTest.getFixture());
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, null, null, null, TaskIDTest.getFixture());
+			getInstance(SUCCESS, null, null, null, TaskIDTest.getFixture());
 		}
 	}
 
@@ -229,12 +233,12 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			// Missing taskID
 			Element element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
 			SecurityAttributesTest.getFixture().addTo(element);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Missing security attributes
 			element = Util.buildDDMSElement(TaskingInfo.getName(version), null);
 			element.appendChild(TaskIDTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -243,7 +247,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing taskID
-			testConstructor(WILL_FAIL, null, null, null, null);
+			getInstance("moo", null, null, null, null);
 
 			// Missing security attributes
 			try {
@@ -251,7 +255,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}
@@ -261,7 +265,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			TaskingInfo component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			TaskingInfo component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -270,8 +274,8 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			TaskingInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			TaskingInfo dataComponent = testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
+			TaskingInfo elementComponent = getInstance(SUCCESS, getFixtureElement());
+			TaskingInfo dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
 				DescriptionTest.getFixture(), TaskIDTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -282,21 +286,21 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			TaskingInfo elementComponent = testConstructor(WILL_SUCCEED, getFixtureElement());
-			TaskingInfo dataComponent = testConstructor(WILL_SUCCEED, null, AddresseeTest.getFixtureList(),
+			TaskingInfo elementComponent = getInstance(SUCCESS, getFixtureElement());
+			TaskingInfo dataComponent = getInstance(SUCCESS, null, AddresseeTest.getFixtureList(),
 				DescriptionTest.getFixture(), TaskIDTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), null, DescriptionTest.getFixture(),
+			dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), null, DescriptionTest.getFixture(),
 				TaskIDTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), null,
+			dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), null,
 				TaskIDTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			TaskID taskID = new TaskID("Test", null, null, null, null);
-			dataComponent = testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
+			dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
 				DescriptionTest.getFixture(), taskID);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
@@ -306,11 +310,11 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			TaskingInfo component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			TaskingInfo component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),
+			component = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),
 				TaskIDTest.getFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -321,10 +325,10 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			TaskingInfo component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			TaskingInfo component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),
+			component = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),
 				TaskIDTest.getFixture());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
@@ -339,7 +343,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 	}
 
@@ -347,7 +351,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			TaskingInfo component = testConstructor(WILL_SUCCEED, getFixtureElement());
+			TaskingInfo component = getInstance(SUCCESS, getFixtureElement());
 
 			// Equality after Building
 			TaskingInfo.Builder builder = new TaskingInfo.Builder(component);
@@ -371,7 +375,7 @@ public class TaskingInfoTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 			builder.getTaskID().setValue("test");

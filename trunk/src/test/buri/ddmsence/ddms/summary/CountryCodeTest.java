@@ -59,12 +59,13 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param element the element to build from
 	 * 
 	 * @return a valid object
 	 */
-	private CountryCode testConstructor(boolean expectFailure, Element element) {
+	private CountryCode getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		CountryCode component = null;
 		try {
 			component = new CountryCode(element);
@@ -72,6 +73,7 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -79,12 +81,13 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param qualifier the qualifier value
 	 * @param value the value
 	 * @return a valid object
 	 */
-	private CountryCode testConstructor(boolean expectFailure, String qualifier, String value) {
+	private CountryCode getInstance(String message, String qualifier, String value) {
+		boolean expectFailure = !Util.isEmpty(message);
 		CountryCode component = null;
 		try {
 			component = new CountryCode(qualifier, value);
@@ -92,6 +95,7 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -120,23 +124,23 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				CountryCode.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
 	public void testElementConstructorValid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 		}
 	}
 
 	public void testDataConstructorValid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
 		}
 	}
 
@@ -147,24 +151,24 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 			// Missing qualifier
 			Element element = Util.buildDDMSElement(countryCodeName, null);
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Empty qualifier
 			element = Util.buildDDMSElement(countryCodeName, null);
 			Util.addDDMSAttribute(element, "qualifier", "");
 			Util.addDDMSAttribute(element, "value", TEST_VALUE);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Missing value
 			element = Util.buildDDMSElement(countryCodeName, null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Empty value
 			element = Util.buildDDMSElement(countryCodeName, null);
 			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(element, "value", "");
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -172,16 +176,16 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing qualifier
-			testConstructor(WILL_FAIL, null, TEST_VALUE);
+			getInstance("moo", null, TEST_VALUE);
 
 			// Empty qualifier
-			testConstructor(WILL_FAIL, "", TEST_VALUE);
+			getInstance("moo", "", TEST_VALUE);
 
 			// Missing value
-			testConstructor(WILL_FAIL, TEST_QUALIFIER, null);
+			getInstance("moo", TEST_QUALIFIER, null);
 
 			// Empty value
-			testConstructor(WILL_FAIL, TEST_QUALIFIER, "");
+			getInstance("moo", TEST_QUALIFIER, "");
 		}
 	}
 
@@ -189,7 +193,7 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			CountryCode component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			CountryCode component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -197,8 +201,8 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			CountryCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			CountryCode dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			CountryCode elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			CountryCode dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -207,11 +211,11 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			CountryCode elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			CountryCode dataComponent = testConstructor(WILL_SUCCEED, DIFFERENT_VALUE, TEST_VALUE);
+			CountryCode elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			CountryCode dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, DIFFERENT_VALUE);
+			dataComponent = getInstance(SUCCESS, TEST_QUALIFIER, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -219,11 +223,11 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			CountryCode component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			CountryCode component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -232,10 +236,10 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			CountryCode component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			CountryCode component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, TEST_QUALIFIER, TEST_VALUE);
+			component = getInstance(SUCCESS, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -243,7 +247,7 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			CountryCode component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			CountryCode component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			CountryCode.Builder builder = new CountryCode.Builder(component);
@@ -261,7 +265,7 @@ public class CountryCodeTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}

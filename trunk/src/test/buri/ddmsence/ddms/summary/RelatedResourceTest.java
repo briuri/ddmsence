@@ -73,7 +73,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	 * @param element the element to build from
 	 * @return a valid object
 	 */
-	private RelatedResource testConstructor(boolean expectFailure, Element element) {
+	private RelatedResource getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
 		RelatedResource component = null;
 		try {
 			component = new RelatedResource(element);
@@ -81,6 +82,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -88,7 +90,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param links a list of links
 	 * @param relationship the relationship attribute (required)
 	 * @param direction the relationship direction (optional)
@@ -96,8 +98,9 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	 * @param value the value
 	 * @return a valid object
 	 */
-	private RelatedResource testConstructor(boolean expectFailure, List<Link> links, String relationship,
+	private RelatedResource getInstance(String message, List<Link> links, String relationship,
 		String direction, String qualifier, String value) {
+		boolean expectFailure = !Util.isEmpty(message);
 		RelatedResource component = null;
 		try {
 			component = new RelatedResource(links, relationship, direction, qualifier, value, SecurityAttributesTest
@@ -106,6 +109,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -166,9 +170,9 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				RelatedResource.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -177,7 +181,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(RelatedResource.getName(version), null);
@@ -188,7 +192,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
 			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -197,11 +201,11 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
+			getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
 				TEST_VALUE);
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, null, TEST_QUALIFIER,
+			getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, null, TEST_QUALIFIER,
 				TEST_VALUE);
 		}
 	}
@@ -218,7 +222,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
 			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Invalid direction
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
@@ -230,7 +234,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
 			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Relationship not URI
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
@@ -241,7 +245,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
 			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Missing qualifier
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
@@ -251,7 +255,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
 			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// qualifier not URI
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
@@ -262,7 +266,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(innerElement, "qualifier", INVALID_URI);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
 			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Missing value
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
@@ -272,7 +276,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Missing link
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
@@ -282,7 +286,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Security Attributes
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
@@ -294,7 +298,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
 			Link link = new Link(XLinkAttributesTest.getLocatorFixture(), SecurityAttributesTest.getFixture());
 			innerElement.appendChild(link.getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -303,29 +307,29 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing relationship
-			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(false), null, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
+			getInstance("moo", LinkTest.getLocatorFixtureList(false), null, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 
 			// Invalid direction
-			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, "veeringLeft", TEST_QUALIFIER,
+			getInstance("moo", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, "veeringLeft", TEST_QUALIFIER,
 				TEST_VALUE);
 
 			// Relationship not URI
-			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(false), INVALID_URI, TEST_DIRECTION, TEST_QUALIFIER,
+			getInstance("moo", LinkTest.getLocatorFixtureList(false), INVALID_URI, TEST_DIRECTION, TEST_QUALIFIER,
 				TEST_VALUE);
 
 			// Missing qualifier
-			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, null, TEST_VALUE);
+			getInstance("moo", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, null, TEST_VALUE);
 
 			// Qualifier not URI
-			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, INVALID_URI,
+			getInstance("moo", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, INVALID_URI,
 				TEST_VALUE);
 
 			// Missing value
-			testConstructor(WILL_FAIL, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
+			getInstance("moo", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
 				null);
 
 			// Missing link
-			testConstructor(WILL_FAIL, null, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
+			getInstance("moo", null, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 
 			// Security Attributes
 			try {
@@ -336,7 +340,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}
@@ -345,7 +349,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			RelatedResource component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			RelatedResource component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Pre-DDMS 4.0, too many relatedResource children
@@ -356,7 +360,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 				child.addAttribute(Util.buildDDMSAttribute("value", "ignoreMe"));
 				child.appendChild(new Element(LinkTest.getFixtureElement()));
 				element.appendChild(child);
-				component = testConstructor(WILL_SUCCEED, element);
+				component = getInstance(SUCCESS, element);
 				assertEquals(1, component.getValidationWarnings().size());
 				String text = "A ddms:RelatedResources element contains more than 1 ddms:relatedResource. "
 					+ "To ensure consistency between versions of DDMS, each ddms:RelatedResources element "
@@ -370,8 +374,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			RelatedResource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			RelatedResource dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP,
+			RelatedResource elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			RelatedResource dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP,
 				TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -381,27 +385,27 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			RelatedResource elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			RelatedResource dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), DIFFERENT_VALUE,
+			RelatedResource elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			RelatedResource dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), DIFFERENT_VALUE,
 				TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, "inbound",
+			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, "inbound",
 				TEST_QUALIFIER, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
+			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
 				DIFFERENT_VALUE, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
+			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
 				TEST_QUALIFIER, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			List<Link> differentLinks = new ArrayList<Link>();
 			differentLinks.add(new Link(XLinkAttributesTest.getLocatorFixture()));
 			differentLinks.add(new Link(XLinkAttributesTest.getLocatorFixture()));
-			dataComponent = testConstructor(WILL_SUCCEED, differentLinks, TEST_RELATIONSHIP, TEST_DIRECTION,
+			dataComponent = getInstance(SUCCESS, differentLinks, TEST_RELATIONSHIP, TEST_DIRECTION,
 				TEST_QUALIFIER, TEST_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
@@ -410,11 +414,11 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			RelatedResource component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			RelatedResource component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
+			component = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
 				TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -424,10 +428,10 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			RelatedResource component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			RelatedResource component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
+			component = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
 				TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
@@ -438,8 +442,8 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			List<Link> links = LinkTest.getLocatorFixtureList(false);
-			testConstructor(WILL_SUCCEED, links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
-			testConstructor(WILL_SUCCEED, links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
+			getInstance(SUCCESS, links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
+			getInstance(SUCCESS, links, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 		}
 	}
 
@@ -452,14 +456,14 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
-			// Good
+			expectMessage(e, "moo");
 		}
 	}
 
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			RelatedResource component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			RelatedResource component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			RelatedResource.Builder builder = new RelatedResource.Builder(component);
@@ -477,7 +481,7 @@ public class RelatedResourceTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 
 			// Skip empty Links

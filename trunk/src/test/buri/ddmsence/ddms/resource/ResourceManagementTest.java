@@ -46,26 +46,6 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 	}
 
 	/**
-	 * Attempts to build a component from a XOM element.
-	 * 
-	 * @param expectFailure true if this operation is expected to fail, false otherwise
-	 * @param element the element to build from
-	 * 
-	 * @return a valid object
-	 */
-	private ResourceManagement testConstructor(boolean expectFailure, Element element) {
-		ResourceManagement component = null;
-		try {
-			component = new ResourceManagement(element);
-			checkConstructorSuccess(expectFailure);
-		}
-		catch (InvalidDDMSException e) {
-			checkConstructorFailure(expectFailure, e);
-		}
-		return (component);
-	}
-
-	/**
 	 * Returns a fixture object for testing.
 	 */
 	public static ResourceManagement getFixture() {
@@ -80,16 +60,39 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 	}
 	
 	/**
+	 * Attempts to build a component from a XOM element.
+	 * 
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
+	 * @param element the element to build from
+	 * 
+	 * @return a valid object
+	 */
+	private ResourceManagement getInstance(String message, Element element) {
+		boolean expectFailure = !Util.isEmpty(message);
+		ResourceManagement component = null;
+		try {
+			component = new ResourceManagement(element);
+			checkConstructorSuccess(expectFailure);
+		}
+		catch (InvalidDDMSException e) {
+			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
+		}
+		return (component);
+	}
+	
+	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
-	 * @param expectFailure true if this operation is expected to succeed, false otherwise
+	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param recordsManagementInfo records management info (optional)
 	 * @param revisionRecall information about revision recalls (optional)
 	 * @param taskingInfos list of tasking info (optional)
 	 * @param processingInfos list of processing info (optional)
 	 */
-	private ResourceManagement testConstructor(boolean expectFailure, RecordsManagementInfo recordsManagementInfo,
+	private ResourceManagement getInstance(String message, RecordsManagementInfo recordsManagementInfo,
 		RevisionRecall revisionRecall, List<TaskingInfo> taskingInfos, List<ProcessingInfo> processingInfos) {
+		boolean expectFailure = !Util.isEmpty(message);
 		ResourceManagement component = null;
 		try {
 			component = new ResourceManagement(recordsManagementInfo, revisionRecall, taskingInfos, processingInfos,
@@ -98,6 +101,7 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			checkConstructorFailure(expectFailure, e);
+			expectMessage(e, message);
 		}
 		return (component);
 	}
@@ -153,9 +157,9 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(testConstructor(WILL_SUCCEED, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
 				ResourceManagement.getName(version));
-			testConstructor(WILL_FAIL, getWrongNameElementFixture());
+			getInstance("Unexpected namespace URI and local name encountered: ddms:wrongName", getWrongNameElementFixture());
 		}
 	}
 
@@ -164,11 +168,11 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
 			Element element = Util.buildDDMSElement(ResourceManagement.getName(version), null);
-			testConstructor(WILL_SUCCEED, element);
+			getInstance(SUCCESS, element);
 		}
 	}
 
@@ -177,11 +181,11 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			testConstructor(WILL_SUCCEED, RecordsManagementInfoTest.getFixture(), RevisionRecallTest.getTextFixture(), 
+			getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest.getTextFixture(), 
 				TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
 
 			// No optional fields
-			testConstructor(WILL_SUCCEED, null, null, null, null);
+			getInstance(SUCCESS, null, null, null, null);
 		}
 	}
 
@@ -193,13 +197,13 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 			Element element = Util.buildDDMSElement(ResourceManagement.getName(version), null);
 			element.appendChild(RecordsManagementInfoTest.getFixture().getXOMElementCopy());
 			element.appendChild(RecordsManagementInfoTest.getFixture().getXOMElementCopy());
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 
 			// Too many revisionRecall elements
 			element = Util.buildDDMSElement(ResourceManagement.getName(version), null);
 			element.appendChild(RevisionRecallTest.getTextFixtureElement());
 			element.appendChild(RevisionRecallTest.getTextFixtureElement());
-			testConstructor(WILL_FAIL, element);
+			getInstance("moo", element);
 		}
 	}
 
@@ -216,7 +220,7 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 		}
 	}
@@ -226,7 +230,7 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			ResourceManagement component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ResourceManagement component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 		}
 	}
@@ -235,8 +239,8 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ResourceManagement elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			ResourceManagement dataComponent = testConstructor(WILL_SUCCEED, RecordsManagementInfoTest.getFixture(),
+			ResourceManagement elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			ResourceManagement dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(),
 				RevisionRecallTest.getTextFixture(), TaskingInfoTest.getFixtureList(), ProcessingInfoTest
 					.getFixtureList());
 			assertEquals(elementComponent, dataComponent);
@@ -248,20 +252,20 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ResourceManagement elementComponent = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
-			ResourceManagement dataComponent = testConstructor(WILL_SUCCEED, null, RevisionRecallTest.getTextFixture(),
+			ResourceManagement elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
+			ResourceManagement dataComponent = getInstance(SUCCESS, null, RevisionRecallTest.getTextFixture(),
 				TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, RecordsManagementInfoTest.getFixture(), null, TaskingInfoTest
+			dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), null, TaskingInfoTest
 				.getFixtureList(), ProcessingInfoTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, RecordsManagementInfoTest.getFixture(), RevisionRecallTest
+			dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest
 				.getTextFixture(), null, ProcessingInfoTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = testConstructor(WILL_SUCCEED, RecordsManagementInfoTest.getFixture(), RevisionRecallTest
+			dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest
 				.getTextFixture(), TaskingInfoTest.getFixtureList(), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
@@ -271,11 +275,11 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ResourceManagement component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ResourceManagement component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = testConstructor(WILL_SUCCEED, RecordsManagementInfoTest.getFixture(), RevisionRecallTest.getTextFixture(), 
+			component = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest.getTextFixture(), 
 				TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -286,10 +290,10 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ResourceManagement component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ResourceManagement component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = testConstructor(WILL_SUCCEED, RecordsManagementInfoTest.getFixture(), RevisionRecallTest.getTextFixture(), 
+			component = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest.getTextFixture(), 
 				TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
@@ -299,7 +303,7 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ResourceManagement component = testConstructor(WILL_SUCCEED, getValidElement(sVersion));
+			ResourceManagement component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building
 			ResourceManagement.Builder builder = new ResourceManagement.Builder(component);
@@ -327,7 +331,7 @@ public class ResourceManagementTest extends AbstractComponentTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				// Good
+				expectMessage(e, "moo");
 			}
 			builder.getSecurityAttributes().setClassification("U");
 			builder.commit();
