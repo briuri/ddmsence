@@ -394,9 +394,9 @@ public class Escort {
 		println("Escort: a DDMSence Sample\n");
 		
 		println("This program allows you to build a DDMS 4.0 resource from scratch using a");
-		println("representative subset of possible components. Suggested valid examples are");
-		println("provided in square brackets for each prompt. However, this is not a default");
-		println("value (hitting Enter will answer the prompt with an empty string).\n");
+		println("representative subset of possible components. Suggested valid answers are");
+		println("provided in square brackets for each prompt. However, these are not default");
+		println("values (hitting Enter will answer the prompt with an empty string).\n");
 
 		_useDummySecurityAttributes = confirm("Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the resource?");
 				

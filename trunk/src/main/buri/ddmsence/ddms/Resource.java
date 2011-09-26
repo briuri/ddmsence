@@ -131,9 +131,9 @@ import buri.ddmsence.util.Util;
  * on this record. (required, starting in DDMS 4.0 with a fixed value)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required. (starting in DDMS 
  * 3.0)<br />
- * <u>{@link NoticeAttributes}</u>: (optional, starting in DDMS 4.0)<br /><br />
+ * <u>{@link NoticeAttributes}</u>: (optional, starting in DDMS 4.0)<br />
  * <u>{@link ExtensibleAttributes}</u>: (optional)<br />
- * 
+ * <br />
  * Starting in DDMS 3.0, the ISM attributes explicitly defined in the schema should appear in the SecurityAttributes, 
  * not the ExtensibleAttributes. Attempts to load them as ExtensibleAttributes will throw an InvalidDDMSException.
  * In DDMS 2.0, there are no ISM attributes explicitly defined in the schema, so you can load them in any way you 
@@ -414,7 +414,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param topLevelComponents a list of top level components
 	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
 	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
-	 * @param compliesWith shows what ISM rulesets this resource complies with (optional, starting in DDMS 3.1)
+	 * @param compliesWiths shows what ISM rulesets this resource complies with (optional, starting in DDMS 3.1)
 	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
 	 * DDMS 3.0)
@@ -678,7 +678,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>NTK DESVersion must exist and be a valid Integer, starting in DDMS 4.0.</li>
 	 * <li>NTK DESVersion must exist and be "5" in DDMS 4.0.</li>
 	 * <li>A classification is required, starting in DDMS 3.0.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty, starting in DDMS 3.0y.</li>
+	 * <li>At least 1 ownerProducer exists and is non-empty, starting in DDMS 3.0.</li>
 	 * <li>Only 1 extensible element can exist in DDMS 2.0.</li>
 	 * </td></tr></table>
 	 * 
