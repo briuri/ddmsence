@@ -45,31 +45,41 @@ import buri.ddmsence.util.Util;
 /**
  * Attribute group for the ISM markings used throughout DDMS.
  * 
- * <p>The DDMS documentation does not provide sample HTML/Text output for every attribute, so a best guess was taken. In
- * general, the HTML/Text output of security attributes will be prefixed with the name of the element being marked. For
- * example:</p> <ul><code> security.classification: U<br /> &lt;meta name="security.classification" content="U" /&gt;<br
- * /> </code></ul></p> <p> When validating this attribute group, the required/optional nature of the classification and
+ * <p> When validating this attribute group, the required/optional nature of the classification and
  * ownerProducer attributes are not checked. Because that limitation depends on the parent element (for example,
  * ddms:title requires them, but ddms:creator does not), the parent element should be responsible for checking, via
  * <code>requireClassification()</code>. </p>
  * 
  * <p> At this time, logical validation is only done on the data types of the various attributes, and the controlled
  * vocabulary enumerations behind some of the attributes. Comparisons against the CVEs can be toggled between warnings
- * and errors with the configurable property, <code>icism.cve.validationAsErrors</code>.</p>
+ * and errors with the configurable property, <code>ism.cve.validationAsErrors</code>.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ISM:atomicEnergyMarkings</u>: (optional, starting in DDMS 3.1)<br /> <u>ISM:classification</u>: (optional)<br />
- * <u>ISM:classificationReason</u>: (optional)<br /> <u>ISM:classifiedBy</u>: (optional)<br />
- * <u>ISM:compilationReason</u>: (optional, starting in DDMS 3.0)<br /> <u>ISM:compliesWith</u>: (optional, v3.1
- * only)<br /> <u>ISM:dateOfExemptedSource</u>: (optional, DDMS 2.0 and 3.0 only)<br /> <u>ISM:declassDate</u>:
- * (optional)<br /> <u>ISM:declassEvent</u>: (optional)<br /> <u>ISM:declassException</u>: (optional)<br />
- * <u>ISM:declassManualReview</u>: (optional, DDMS 2.0 only)<br /> <u>ISM:derivativelyClassifiedBy</u>: (optional)<br />
- * <u>ISM:derivedFrom</u>: (optional)<br /> <u>ISM:displayOnlyTo</u>: (optional, starting in DDMS 3.1)<br />
- * <u>ISM:disseminationControls</u>: (optional)<br /> <u>ISM:FGIsourceOpen</u>: (optional)<br />
- * <u>ISM:FGIsourceProtected</u>: (optional)<br /> <u>ISM:nonICmarkings</u>: (optional)<br /> <u>ISM:nonUSControls</u>:
- * (optional, starting in DDMS 3.1)<br /> <u>ISM:ownerProducer</u>: (optional)<br /> <u>ISM:releasableTo</u>:
- * (optional)<br /> <u>ISM:SARIdentifier</u>: (optional)<br /> <u>ISM:SCIcontrols</u>: (optional)<br />
- * <u>ISM:typeOfExemptedSource</u>: (optional, DDMS 2.0 and 3.0 only)<br /> </td></tr></table>
+ * <u>ISM:atomicEnergyMarkings</u>: (optional, starting in DDMS 3.1)<br />
+ * <u>ISM:classification</u>: (optional)<br />
+ * <u>ISM:classificationReason</u>: (optional)<br />
+ * <u>ISM:classifiedBy</u>: (optional)<br />
+ * <u>ISM:compilationReason</u>: (optional, starting in DDMS 3.0)<br />
+ * <u>ISM:compliesWith</u>: (optional, starting in DDMS 3.1)<br />
+ * <u>ISM:dateOfExemptedSource</u>: (optional, DDMS 2.0 and 3.0 only)<br />
+ * <u>ISM:declassDate</u>: (optional)<br />
+ * <u>ISM:declassEvent</u>: (optional)<br />
+ * <u>ISM:declassException</u>: (optional)<br />
+ * <u>ISM:declassManualReview</u>: (optional, DDMS 2.0 only)<br />
+ * <u>ISM:derivativelyClassifiedBy</u>: (optional)<br />
+ * <u>ISM:derivedFrom</u>: (optional)<br />
+ * <u>ISM:displayOnlyTo</u>: (optional, starting in DDMS 3.1)<br />
+ * <u>ISM:disseminationControls</u>: (optional)<br />
+ * <u>ISM:FGIsourceOpen</u>: (optional)<br />
+ * <u>ISM:FGIsourceProtected</u>: (optional)<br />
+ * <u>ISM:nonICmarkings</u>: (optional)<br />
+ * <u>ISM:nonUSControls</u>: (optional, starting in DDMS 3.1)<br />
+ * <u>ISM:ownerProducer</u>: (optional)<br />
+ * <u>ISM:releasableTo</u>: (optional)<br />
+ * <u>ISM:SARIdentifier</u>: (optional)<br />
+ * <u>ISM:SCIcontrols</u>: (optional)<br />
+ * <u>ISM:typeOfExemptedSource</u>: (optional, DDMS 2.0 and 3.0 only)<br />
+ * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 0.9.b
