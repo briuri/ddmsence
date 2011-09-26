@@ -30,9 +30,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to the ISM notice attributes
- * </p>
+ * <p> Tests related to the ISM notice attributes </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -149,9 +147,7 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			// invalid noticeType
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_TYPE_NAME, icNamespace, "Unknown");
-			getInstance(
-				"Unknown is not a valid enumeration token",
-				element);
+			getInstance("Unknown is not a valid enumeration token", element);
 
 			// invalid noticeDate
 			element = Util.buildDDMSElement(Resource.getName(version), null);

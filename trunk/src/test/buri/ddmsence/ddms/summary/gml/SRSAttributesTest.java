@@ -31,9 +31,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to the SRS attributes on gml: elements
- * </p>
+ * <p> Tests related to the SRS attributes on gml: elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -229,16 +227,15 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// srsName not a URI
-			getInstance("Invalid URI", INVALID_URI, TEST_SRS_DIMENSION,
-				TEST_AXIS_LABELS, TEST_UOM_LABELS);
+			getInstance("Invalid URI", INVALID_URI, TEST_SRS_DIMENSION, TEST_AXIS_LABELS, TEST_UOM_LABELS);
 
 			// axisLabels without srsName
-			getInstance("The axisLabels attribute can only be used", null,
-				TEST_SRS_DIMENSION, TEST_AXIS_LABELS, TEST_UOM_LABELS);
+			getInstance("The axisLabels attribute can only be used", null, TEST_SRS_DIMENSION, TEST_AXIS_LABELS,
+				TEST_UOM_LABELS);
 
 			// uomLabels without axisLabels
-			getInstance("The uomLabels attribute can only be used", TEST_SRS_NAME,
-				TEST_SRS_DIMENSION, null, TEST_UOM_LABELS);
+			getInstance("The uomLabels attribute can only be used", TEST_SRS_NAME, TEST_SRS_DIMENSION, null,
+				TEST_UOM_LABELS);
 
 			// Non-NCNames in axisLabels
 			List<String> newLabels = new ArrayList<String>(TEST_AXIS_LABELS);

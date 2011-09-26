@@ -29,9 +29,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:person elements
- * </p>
+ * <p> Tests related to ddms:person elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -259,15 +257,18 @@ public class PersonTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing name
-			getInstance("At least 1 name element must exist.", TEST_SURNAME, null, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
+			getInstance("At least 1 name element must exist.", TEST_SURNAME, null, TEST_USERID, TEST_AFFILIATION,
+				TEST_PHONES, TEST_EMAILS);
 
 			// Empty name
 			List<String> names = new ArrayList<String>();
 			names.add("");
-			getInstance("At least 1 name element must have a non-empty value.", TEST_SURNAME, names, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
+			getInstance("At least 1 name element must have a non-empty value.", TEST_SURNAME, names, TEST_USERID,
+				TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
 
 			// Missing surname
-			getInstance("surname is required.", null, TEST_NAMES, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);
+			getInstance("surname is required.", null, TEST_NAMES, TEST_USERID, TEST_AFFILIATION, TEST_PHONES,
+				TEST_EMAILS);
 
 			// Empty surname
 			getInstance("surname is required.", "", TEST_NAMES, TEST_USERID, TEST_AFFILIATION, TEST_PHONES, TEST_EMAILS);

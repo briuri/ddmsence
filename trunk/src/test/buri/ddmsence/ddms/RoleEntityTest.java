@@ -31,9 +31,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to underlying methods in the base class for DDMS producer entities
- * </p>
+ * <p> Tests related to underlying methods in the base class for DDMS producer entities </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -52,7 +50,6 @@ public class RoleEntityTest extends AbstractBaseTestCase {
 	public static String getPOCType() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? TEST_POC_TYPE : "");
 	}
-
 
 	public void testSharedWarnings() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();

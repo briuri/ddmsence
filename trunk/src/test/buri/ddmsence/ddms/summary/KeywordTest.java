@@ -34,9 +34,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:keyword elements
- * </p>
+ * <p> Tests related to ddms:keyword elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -308,7 +306,7 @@ public class KeywordTest extends AbstractBaseTestCase {
 
 			// Empty case
 			builder = new Keyword.Builder();
-			assertNull(builder.commit());	
+			assertNull(builder.commit());
 		}
 	}
 }

@@ -31,9 +31,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to extensible layer elements
- * </p>
+ * <p> Tests related to extensible layer elements </p>
  * 
  * @author Brian Uri!
  * @since 1.1.0

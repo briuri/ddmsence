@@ -60,7 +60,6 @@ import buri.ddmsence.util.Util;
  * <u>ISM:classificationReason</u>: (optional)<br />
  * <u>ISM:classifiedBy</u>: (optional)<br />
  * <u>ISM:compilationReason</u>: (optional, starting in DDMS 3.0)<br />
- * <u>ISM:compliesWith</u>: (optional, starting in DDMS 3.1)<br />
  * <u>ISM:dateOfExemptedSource</u>: (optional, DDMS 2.0 and 3.0 only)<br />
  * <u>ISM:declassDate</u>: (optional)<br />
  * <u>ISM:declassEvent</u>: (optional)<br />
@@ -90,7 +89,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	private String _classificationReason = null;
 	private String _classifiedBy = null;
 	private String _compilationReason = null;
-	private List<String> _compliesWith = null;
 	private XMLGregorianCalendar _dateOfExemptedSource = null;
 	private XMLGregorianCalendar _declassDate = null;
 	private String _declassEvent = null;
@@ -124,9 +122,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 
 	/** Attribute name */
 	public static final String COMPILATION_REASON_NAME = "compilationReason";
-
-	/** Attribute name */
-	public static final String COMPLIES_WITH_NAME = "compliesWith";
 
 	/** Attribute name */
 	public static final String DATE_OF_EXEMPTED_SOURCE_NAME = "dateOfExemptedSource";
@@ -189,7 +184,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		ALL_NAMES.add(CLASSIFICATION_REASON_NAME);
 		ALL_NAMES.add(CLASSIFIED_BY_NAME);
 		ALL_NAMES.add(COMPILATION_REASON_NAME);
-		ALL_NAMES.add(COMPLIES_WITH_NAME);
 		ALL_NAMES.add(DATE_OF_EXEMPTED_SOURCE_NAME);
 		ALL_NAMES.add(DECLASS_DATE_NAME);
 		ALL_NAMES.add(DECLASS_EVENT_NAME);
@@ -239,7 +233,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		_classificationReason = element.getAttributeValue(CLASSIFICATION_REASON_NAME, icNamespace);
 		_classifiedBy = element.getAttributeValue(CLASSIFIED_BY_NAME, icNamespace);
 		_compilationReason = element.getAttributeValue(COMPILATION_REASON_NAME, icNamespace);
-		_compliesWith = Util.getXsListAsList(element.getAttributeValue(COMPLIES_WITH_NAME, icNamespace));
 		String dateOfExemptedSource = element.getAttributeValue(DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace);
 		if (!Util.isEmpty(dateOfExemptedSource))
 			_dateOfExemptedSource = getFactory().newXMLGregorianCalendar(dateOfExemptedSource);
@@ -298,7 +291,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		_classificationReason = otherAttributes.get(CLASSIFICATION_REASON_NAME);
 		_classifiedBy = otherAttributes.get(CLASSIFIED_BY_NAME);
 		_compilationReason = otherAttributes.get(COMPILATION_REASON_NAME);
-		_compliesWith = Util.getXsListAsList(otherAttributes.get(COMPLIES_WITH_NAME));
 		String dateOfExemptedSource = otherAttributes.get(DATE_OF_EXEMPTED_SOURCE_NAME);
 		if (!Util.isEmpty(dateOfExemptedSource)) {
 			try {
@@ -355,7 +347,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		Util.addAttribute(element, icPrefix, CLASSIFICATION_REASON_NAME, icNamespace, getClassificationReason());
 		Util.addAttribute(element, icPrefix, CLASSIFIED_BY_NAME, icNamespace, getClassifiedBy());
 		Util.addAttribute(element, icPrefix, COMPILATION_REASON_NAME, icNamespace, getCompilationReason());
-		Util.addAttribute(element, icPrefix, COMPLIES_WITH_NAME, icNamespace, Util.getXsList(getCompliesWith()));
 		if (getDateOfExemptedSource() != null)
 			Util.addAttribute(element, icPrefix, DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace, getDateOfExemptedSource()
 				.toXMLFormat());
@@ -393,7 +384,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	public boolean isEmpty() {
 		return (getAtomicEnergyMarkings().isEmpty() && Util.isEmpty(getClassification())
 			&& Util.isEmpty(getClassificationReason()) && Util.isEmpty(getClassifiedBy())
-			&& Util.isEmpty(getCompilationReason()) && getCompliesWith().isEmpty() && getDateOfExemptedSource() == null
+			&& Util.isEmpty(getCompilationReason()) && getDateOfExemptedSource() == null
 			&& getDeclassDate() == null && Util.isEmpty(getDeclassEvent()) && Util.isEmpty(getDeclassException())
 			&& getDeclassManualReview() == null && Util.isEmpty(getDerivativelyClassifiedBy())
 			&& Util.isEmpty(getDerivedFrom()) && getDisplayOnlyTo().isEmpty() && getDisseminationControls().isEmpty()
@@ -414,8 +405,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * <li>The atomicEnergyMarkings cannot be used until DDMS 3.1 or later.</li>
 	 * <li>If set, the atomicEnergyMarkings attribute must be valid tokens.</li>
 	 * <li>If set, the classification attribute must be a valid token.</li>
-	 * <li>The compliesWith attribute cannot be used until DDMS 3.1 or later.</li>
-	 * <li>If set, the compliesWith attribute must be valid tokens.</li>
 	 * <li>The compilationReason attribute cannot be used until DDMS 3.0 or later.</li>
 	 * <li>The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0</li>
 	 * <li>If set, the dateOfExemptedSource attribute is a valid xs:date value.</li>
@@ -454,10 +443,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			if (version.isAtLeast("3.0") || !ISMVocabulary.usingOldClassification(getClassification()))
 				validateEnumeration(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, getClassification());
 		}
-		if (!version.isAtLeast("3.1") && !getCompliesWith().isEmpty())
-			throw new InvalidDDMSException("The compliesWith attribute cannot be used until DDMS 3.1 or later.");
-		for (String with : getCompliesWith())
-			validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);
 		if (!version.isAtLeast("3.0") && !Util.isEmpty(getCompilationReason()))
 			throw new InvalidDDMSException("The compilationReason attribute cannot be used until DDMS 3.0 or later.");
 		if (version.isAtLeast("3.1") && getDateOfExemptedSource() != null)
@@ -544,7 +529,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		text.append(Resource.buildOutput(isHTML, prefix + CLASSIFICATION_REASON_NAME, getClassificationReason(), false));
 		text.append(Resource.buildOutput(isHTML, prefix + CLASSIFIED_BY_NAME, getClassifiedBy(), false));
 		text.append(Resource.buildOutput(isHTML, prefix + COMPILATION_REASON_NAME, getCompilationReason(), false));
-		text.append(Resource.buildOutput(isHTML, prefix + COMPLIES_WITH_NAME, Util.getXsList(getCompliesWith()), false));
 		if (getDateOfExemptedSource() != null) {
 			text.append(Resource.buildOutput(isHTML, prefix + DATE_OF_EXEMPTED_SOURCE_NAME, getDateOfExemptedSource()
 				.toXMLFormat(), false));
@@ -595,7 +579,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			&& getClassificationReason().equals(test.getClassificationReason())
 			&& getClassifiedBy().equals(test.getClassifiedBy())
 			&& getCompilationReason().equals(test.getCompilationReason())
-			&& Util.listEquals(getCompliesWith(), test.getCompliesWith())
 			&& Util.nullEquals(getDateOfExemptedSource(), test.getDateOfExemptedSource())
 			&& Util.nullEquals(getDeclassDate(), test.getDeclassDate())
 			&& getDeclassEvent().equals(test.getDeclassEvent())
@@ -626,7 +609,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		result = 7 * result + getClassificationReason().hashCode();
 		result = 7 * result + getClassifiedBy().hashCode();
 		result = 7 * result + getCompilationReason().hashCode();
-		result = 7 * result + getCompliesWith().hashCode();
 		if (getDateOfExemptedSource() != null)
 			result = 7 * result + getDateOfExemptedSource().hashCode();
 		if (getDeclassDate() != null)
@@ -684,13 +666,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 */
 	public String getCompilationReason() {
 		return (Util.getNonNullString(_compilationReason));
-	}
-
-	/**
-	 * Accessor for the compliesWith attribute. Returns a copy.
-	 */
-	public List<String> getCompliesWith() {
-		return (Collections.unmodifiableList(_compliesWith));
 	}
 
 	/**
@@ -862,7 +837,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			setClassificationReason(attributes.getClassificationReason());
 			setClassifiedBy(attributes.getClassifiedBy());
 			setCompilationReason(attributes.getCompilationReason());
-			setCompliesWith(attributes.getCompliesWith());
 			if (attributes.getDateOfExemptedSource() != null)
 				setDateOfExemptedSource(attributes.getDateOfExemptedSource().toXMLFormat());
 			if (attributes.getDeclassDate() != null)
@@ -898,7 +872,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			otherAttributes.put(CLASSIFICATION_REASON_NAME, getClassificationReason());
 			otherAttributes.put(CLASSIFIED_BY_NAME, getClassifiedBy());
 			otherAttributes.put(COMPILATION_REASON_NAME, getCompilationReason());
-			otherAttributes.put(COMPLIES_WITH_NAME, Util.getXsList(getCompliesWith()));
 			otherAttributes.put(DATE_OF_EXEMPTED_SOURCE_NAME, getDateOfExemptedSource());
 			otherAttributes.put(DECLASS_DATE_NAME, getDeclassDate());
 			otherAttributes.put(DECLASS_EVENT_NAME, getDeclassEvent());
@@ -1004,20 +977,6 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		 */
 		public void setCompilationReason(String compilationReason) {
 			getStringAttributes().put(COMPILATION_REASON_NAME, compilationReason);
-		}
-
-		/**
-		 * Builder accessor for the compliesWith attribute
-		 */
-		public List<String> getCompliesWith() {
-			return (getListAttribute(COMPLIES_WITH_NAME));
-		}
-
-		/**
-		 * Builder accessor for the compliesWith attribute
-		 */
-		public void setCompliesWith(List<String> compliesWith) {
-			setListAttribute(COMPLIES_WITH_NAME, compliesWith);
 		}
 
 		/**

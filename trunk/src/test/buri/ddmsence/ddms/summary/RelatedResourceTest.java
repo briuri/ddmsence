@@ -32,9 +32,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to DDMS 2.0, 3.0, 3.1 ddms:RelatedResources elements or DDMS 4.0 ddms:relatedResource elements
- * </p>
+ * <p> Tests related to DDMS 2.0, 3.0, 3.1 ddms:RelatedResources elements or DDMS 4.0 ddms:relatedResource elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -148,12 +146,10 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 		if (version.isAtLeast("4.0")) {
 			xml.append("<ddms:relatedResource ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 			xml.append("ddms:relationship=\"http://purl.org/dc/terms/references\" ddms:direction=\"outbound\" ");
-			xml
-				.append("ddms:qualifier=\"http://purl.org/dc/terms/URI\" ddms:value=\"http://en.wikipedia.org/wiki/Tank\" ");
+			xml.append("ddms:qualifier=\"http://purl.org/dc/terms/URI\" ddms:value=\"http://en.wikipedia.org/wiki/Tank\" ");
 			xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
 			xml.append("\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ");
-			xml
-				.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" />\n");
+			xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" />\n");
 			xml.append("</ddms:relatedResource>");
 		}
 		else {
@@ -163,8 +159,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			xml.append("\t<ddms:RelatedResource ddms:qualifier=\"http://purl.org/dc/terms/URI\" ");
 			xml.append("ddms:value=\"http://en.wikipedia.org/wiki/Tank\">\n");
 			xml.append("\t\t<ddms:link xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:type=\"locator\" ");
-			xml
-				.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" />\n");
+			xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" />\n");
 			xml.append("\t</ddms:RelatedResource>\n");
 			xml.append("</ddms:relatedResources>\n");
 		}
@@ -312,30 +307,32 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing relationship
-			getInstance("relationship attribute is required.", LinkTest.getLocatorFixtureList(false), null, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
+			getInstance("relationship attribute is required.", LinkTest.getLocatorFixtureList(false), null,
+				TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
 
 			// Invalid direction
-			getInstance("The direction attribute must be one of", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, "veeringLeft", TEST_QUALIFIER,
-				TEST_VALUE);
+			getInstance("The direction attribute must be one of", LinkTest.getLocatorFixtureList(false),
+				TEST_RELATIONSHIP, "veeringLeft", TEST_QUALIFIER, TEST_VALUE);
 
 			// Relationship not URI
-			getInstance("Invalid URI", LinkTest.getLocatorFixtureList(false), INVALID_URI, TEST_DIRECTION, TEST_QUALIFIER,
-				TEST_VALUE);
+			getInstance("Invalid URI", LinkTest.getLocatorFixtureList(false), INVALID_URI, TEST_DIRECTION,
+				TEST_QUALIFIER, TEST_VALUE);
 
 			// Missing qualifier
-			getInstance("qualifier attribute is required.", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, null,
-				TEST_VALUE);
+			getInstance("qualifier attribute is required.", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP,
+				TEST_DIRECTION, null, TEST_VALUE);
 
 			// Qualifier not URI
-			getInstance("Invalid URI", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION, INVALID_URI,
-				TEST_VALUE);
+			getInstance("Invalid URI", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
+				INVALID_URI, TEST_VALUE);
 
 			// Missing value
-			getInstance("value attribute is required.", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP, TEST_DIRECTION,
-				TEST_QUALIFIER, null);
+			getInstance("value attribute is required.", LinkTest.getLocatorFixtureList(false), TEST_RELATIONSHIP,
+				TEST_DIRECTION, TEST_QUALIFIER, null);
 
 			// Missing link
-			getInstance("At least 1 link must exist.", null, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER, TEST_VALUE);
+			getInstance("At least 1 link must exist.", null, TEST_RELATIONSHIP, TEST_DIRECTION, TEST_QUALIFIER,
+				TEST_VALUE);
 
 			// Security Attributes
 			try {
@@ -483,7 +480,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			builder.getLinks().get(0).getXLinkAttributes().setHref("http://ddmsence.urizone.net/");
 			builder.getLinks().get(0).getXLinkAttributes().setRole("role");
 			builder.commit();
-			
+
 			// Skip empty Links
 			builder = new RelatedResource.Builder();
 			builder.setDirection(TEST_DIRECTION);

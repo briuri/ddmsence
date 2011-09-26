@@ -34,14 +34,10 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:link elements
- * </p>
+ * <p> Tests related to ddms:link elements </p>
  * 
- * <p>
- * Because a ddms:link is a local component, we cannot load a valid document from a unit test data file. We have to
- * build the well-formed Element ourselves.
- * </p>
+ * <p> Because a ddms:link is a local component, we cannot load a valid document from a unit test data file. We have to
+ * build the well-formed Element ourselves. </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b

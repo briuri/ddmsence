@@ -72,8 +72,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 			fail("Allowed unsupported version.");
 		}
 		catch (UnsupportedVersionException e) {
-			expectMessage(e,
-				"DDMS Version for XML namespace");
+			expectMessage(e, "DDMS Version for XML namespace");
 		}
 	}
 

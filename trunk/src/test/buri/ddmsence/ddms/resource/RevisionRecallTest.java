@@ -34,9 +34,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:revisionRecall elements
- * </p>
+ * <p> Tests related to ddms:revisionRecall elements </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -345,31 +343,35 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Wrong type of XLinkAttributes (locator)
-			getInstance("The type attribute must have a fixed value", LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID,
-				TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getLocatorFixture());
+			getInstance("The type attribute must have a fixed value", LinkTest.getLocatorFixtureList(true), DetailsTest
+				.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK,
+				XLinkAttributesTest.getLocatorFixture());
 
 			// Links without security attributes
 			Link link = new Link(XLinkAttributesTest.getLocatorFixture(), null);
 			List<Link> linkList = new ArrayList<Link>();
 			linkList.add(link);
-			getInstance("classification is required.", linkList, DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE,
-				TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getLocatorFixture());
+			getInstance("classification is required.", linkList, DetailsTest.getFixtureList(), TEST_REVISION_ID,
+				TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getLocatorFixture());
 
 			// Missing revisionID
-			getInstance("revision ID is required.", LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), null,
-				TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+			getInstance("revision ID is required.", LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
+				null, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 
 			// Missing revisionType
-			getInstance("The revisionType attribute must be one of", LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID,
-				null, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+			getInstance("The revisionType attribute must be one of", LinkTest.getLocatorFixtureList(true), DetailsTest
+				.getFixtureList(), TEST_REVISION_ID, null, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest
+				.getResourceFixture());
 
 			// Bad revisionType
-			getInstance("The revisionType attribute must be one of", LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID,
-				"MISTAKE", TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+			getInstance("The revisionType attribute must be one of", LinkTest.getLocatorFixtureList(true), DetailsTest
+				.getFixtureList(), TEST_REVISION_ID, "MISTAKE", TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest
+				.getResourceFixture());
 
 			// Bad network
-			getInstance("The network attribute must be one of", LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID,
-				TEST_REVISION_TYPE, "PBS", TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+			getInstance("The network attribute must be one of", LinkTest.getLocatorFixtureList(true), DetailsTest
+				.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, "PBS", TEST_OTHER_NETWORK, XLinkAttributesTest
+				.getResourceFixture());
 		}
 	}
 

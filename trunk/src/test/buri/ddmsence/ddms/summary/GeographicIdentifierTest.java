@@ -29,9 +29,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:geographicIdentifier elements
- * </p>
+ * <p> Tests related to ddms:geographicIdentifier elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -438,8 +436,8 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 				expectMessage(e, "osuffix is required.");
 			}
 			builder.getFacilityIdentifier().setOsuffix("osuffix");
-			builder.commit();			
-			
+			builder.commit();
+
 			// Non-FacID-based
 			builder = new GeographicIdentifier.Builder();
 			builder.getNames().add("Name");

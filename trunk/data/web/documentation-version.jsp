@@ -103,6 +103,7 @@ Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 <tr><th width="36%">Component</th><th width="32%">DDMS 3.0 Notes</th><th width="32%">DDMS 3.1 Notes</th></tr>
 <tr><td>XML Namespace</td><td><code>http://metadata.dod.mil/mdr/ns/DDMS/3.0/</code></td><td>Changed to <code>http://metadata.dod.mil/mdr/ns/DDMS/3.1/</code></td></tr>
 <tr><td><code>ddms:dates/@ddms:approvedOn</code></td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:Resource/@ISM:compliesWith</td><td>Unsupported, but can exist as extensible attributes.</td><td>Optional.</td></tr>
 <tr><td><code>ddms:Resource/@ISM:DESVersion</td><td>Required. DESVersion should be 2.</td><td>Required. DESVersion must be 5.</td></tr>
 </table>
 <p class="figure">Table 2. Component changes from DDMS 3.0 to DDMS 3.1</p>
@@ -161,7 +162,6 @@ Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 <tr><td><code>@ISM:classificationReason</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ISM:classifiedBy</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ISM:compilationReason</code></td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:compliesWith</code></td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ISM:dateOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td></tr>
 <tr><td><code>@ISM:declassDate</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ISM:declassEvent</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>

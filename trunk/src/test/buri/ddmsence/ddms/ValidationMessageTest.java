@@ -23,9 +23,7 @@ import junit.framework.TestCase;
 import buri.ddmsence.ddms.resource.Rights;
 
 /**
- * <p>
- * Tests related to ValidationMessages
- * </p>
+ * <p> Tests related to ValidationMessages </p>
  * 
  * @author Brian Uri!
  * @since 0.9.c

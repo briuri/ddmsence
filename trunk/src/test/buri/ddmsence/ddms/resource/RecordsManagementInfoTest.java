@@ -26,9 +26,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:recordsManagementInfo elements
- * </p>
+ * <p> Tests related to ddms:recordsManagementInfo elements </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -132,8 +130,7 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 		xml.append("\t\t</ddms:organization>\n");
 		xml.append("\t</ddms:recordKeeper>\n");
 		xml.append("\t<ddms:applicationSoftware ").append(getXmlnsISM());
-		xml
-			.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">IRM Generator 2L-9</ddms:applicationSoftware>\n");
+		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">IRM Generator 2L-9</ddms:applicationSoftware>\n");
 		xml.append("</ddms:recordsManagementInfo>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}

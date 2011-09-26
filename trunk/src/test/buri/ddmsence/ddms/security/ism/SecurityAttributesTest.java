@@ -36,9 +36,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to the ISM attributes
- * </p>
+ * <p> Tests related to the ISM attributes </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -54,7 +52,6 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		TEST_OTHERS_31.put(SecurityAttributes.CLASSIFICATION_REASON_NAME, "PQ");
 		TEST_OTHERS_31.put(SecurityAttributes.CLASSIFIED_BY_NAME, " MN");
 		TEST_OTHERS_31.put(SecurityAttributes.COMPILATION_REASON_NAME, "NO");
-		TEST_OTHERS_31.put(SecurityAttributes.COMPLIES_WITH_NAME, "ICD-710");
 		TEST_OTHERS_31.put(SecurityAttributes.DECLASS_DATE_NAME, "2005-10-10");
 		TEST_OTHERS_31.put(SecurityAttributes.DECLASS_EVENT_NAME, "RS");
 		TEST_OTHERS_31.put(SecurityAttributes.DECLASS_EXCEPTION_NAME, "25X1");
@@ -221,7 +218,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 	 * @param classification the classification level, which must be a legal classification type (optional)
 	 * @param ownerProducers a list of ownerProducers (optional)
 	 * @param otherAttributes a name/value mapping of other ISM attributes. The value will be a String value, as it
-	 *            appears in XML.
+	 * appears in XML.
 	 * @return a valid object
 	 */
 	private SecurityAttributes getInstance(String message, String classification, List<String> ownerProducers,
@@ -310,8 +307,8 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// invalid declassDate
-			getInstance("The declassDate must be in the xs:date format", TEST_CLASS, TEST_OWNERS,
-				getOtherAttributes(SecurityAttributes.DECLASS_DATE_NAME, "2004"));
+			getInstance("The declassDate must be in the xs:date format", TEST_CLASS, TEST_OWNERS, getOtherAttributes(
+				SecurityAttributes.DECLASS_DATE_NAME, "2004"));
 
 			// nonsensical declassDate
 			getInstance("The ISM:declassDate attribute is not in a valid date format.", TEST_CLASS, TEST_OWNERS,
@@ -380,8 +377,6 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			if (version.isAtLeast("3.0"))
 				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.COMPILATION_REASON_NAME,
 					DIFFERENT_VALUE);
-			if (version.isAtLeast("3.1"))
-				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.COMPLIES_WITH_NAME, "DoD5230.24");
 			if (!version.isAtLeast("3.1"))
 				assertAttributeChangeAffectsEquality(expected, SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME,
 					"2001-10-10");
@@ -465,15 +460,6 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			expectMessage(e, "The atomicEnergyMarkings attribute cannot be used");
 		}
 
-		others = getOtherAttributes(SecurityAttributes.COMPLIES_WITH_NAME, "ICD-710");
-		try {
-			new SecurityAttributes(TEST_CLASS, TEST_OWNERS, others);
-			fail("Allowed 3.1 attributes in 3.0.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The compliesWith attribute cannot be used");
-		}
-
 		others = getOtherAttributes(SecurityAttributes.DISPLAY_ONLY_TO_NAME, "AIA");
 		try {
 			new SecurityAttributes(TEST_CLASS, TEST_OWNERS, others);
@@ -519,9 +505,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			}
 
 			// Invalid classification
-			getInstance(
-				"ZOO is not a valid enumeration token",
-				"ZOO", TEST_OWNERS, others);
+			getInstance("ZOO is not a valid enumeration token", "ZOO", TEST_OWNERS, others);
 
 			// No ownerProducers
 			dataAttributes = getInstance(SUCCESS, TEST_CLASS, null, others);
@@ -536,9 +520,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			// No non-empty ownerProducers
 			List<String> ownerProducers = new ArrayList<String>();
 			ownerProducers.add("");
-			dataAttributes = getInstance(
-				" is not a valid enumeration token",
-				TEST_CLASS, ownerProducers, others);
+			dataAttributes = getInstance(" is not a valid enumeration token", TEST_CLASS, ownerProducers, others);
 		}
 	}
 
@@ -568,12 +550,8 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		getInstance(SUCCESS, "NS-S", TEST_OWNERS, null);
 		getInstance(SUCCESS, "NS-A", TEST_OWNERS, null);
 		DDMSVersion.setCurrentVersion("3.0");
-		getInstance(
-			"NS-S is not a valid enumeration token",
-			"NS-S", TEST_OWNERS, null);
-		getInstance(
-			"NS-A is not a valid enumeration token for this attribute",
-			"NS-A", TEST_OWNERS, null);
+		getInstance("NS-S is not a valid enumeration token", "NS-S", TEST_OWNERS, null);
+		getInstance("NS-A is not a valid enumeration token for this attribute", "NS-A", TEST_OWNERS, null);
 	}
 
 	public void test30AttributesIn20() throws InvalidDDMSException {
@@ -697,7 +675,6 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 
 			if (version.isAtLeast("3.1")) {
 				assertNotNull(builder.getAtomicEnergyMarkings().get(1));
-				assertNotNull(builder.getCompliesWith().get(1));
 				assertNotNull(builder.getDisplayOnlyTo().get(1));
 				assertNotNull(builder.getNonUSControls().get(1));
 			}

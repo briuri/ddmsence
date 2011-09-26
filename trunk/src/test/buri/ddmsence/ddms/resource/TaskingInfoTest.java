@@ -34,14 +34,10 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:taskingInfo elements
- * </p>
+ * <p> Tests related to ddms:taskingInfo elements </p>
  * 
- * <p>
- * Because a ddms:taskingInfo is a local component, we cannot load a valid document from a unit test data file. We have
- * to build the well-formed Element ourselves.
- * </p>
+ * <p> Because a ddms:taskingInfo is a local component, we cannot load a valid document from a unit test data file. We
+ * have to build the well-formed Element ourselves. </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -183,12 +179,10 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 		xml.append("<ddms:addressee ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("<ddms:organization><ddms:name>DISA</ddms:name></ddms:organization>");
 		xml.append("</ddms:addressee>");
-		xml
-			.append("<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">A transformation service.</ddms:description>");
+		xml.append("<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">A transformation service.</ddms:description>");
 		xml.append("<ddms:taskID xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
 		xml.append("ddms:taskingSystem=\"MDR\" network=\"NIPRNet\" otherNetwork=\"PBS\" xlink:type=\"simple\" ");
-		xml
-			.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:arcrole=\"arcrole\" ");
+		xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:arcrole=\"arcrole\" ");
 		xml.append("xlink:show=\"new\" xlink:actuate=\"onLoad\">Task #12345</ddms:taskID>");
 		xml.append("</ddms:taskingInfo>");
 		return (xml.toString());

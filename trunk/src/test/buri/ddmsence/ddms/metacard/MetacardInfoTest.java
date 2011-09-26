@@ -51,9 +51,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:metacardInfo elements
- * </p>
+ * <p> Tests related to ddms:metacardInfo elements </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -200,8 +198,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		xml.append("IRM Generator 2L-9</ddms:applicationSoftware>");
 		xml.append("</ddms:recordsManagementInfo>");
 		xml.append("<ddms:noticeList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml
-			.append("<ISM:Notice ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
+		xml.append("<ISM:Notice ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
 		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");

@@ -31,9 +31,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to gml:Point elements
- * </p>
+ * <p> Tests related to gml:Point elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -251,8 +249,7 @@ public class PointTest extends AbstractBaseTestCase {
 			// Polygon SRS Name doesn't match pos SRS Name
 			attr = new SRSAttributes(DIFFERENT_VALUE, SRSAttributesTest.getFixture().getSrsDimension(),
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
-			getInstance("The srsName of the position must match", PositionTest.getFixture(),
-				attr, TEST_ID);
+			getInstance("The srsName of the position must match", PositionTest.getFixture(), attr, TEST_ID);
 
 			// Missing ID
 			getInstance("id is required.", PositionTest.getFixture(), SRSAttributesTest.getFixture(), null);

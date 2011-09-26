@@ -27,9 +27,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:rights elements
- * </p>
+ * <p> Tests related to ddms:rights elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b

@@ -33,9 +33,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 
 /**
- * <p>
- * Tests related to Schematron validation of Resources
- * </p>
+ * <p> Tests related to Schematron validation of Resources </p>
  * 
  * @author Brian Uri!
  * @since 1.3.1
@@ -123,14 +121,14 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 		}
 	}
 
-//	public void testIsmXmlV5SchematronValidation() throws SAXException, InvalidDDMSException, IOException, XSLException {
-//		// For this test to work, the ISM.XML V5 distribution must be unpacked in the data directory.
-//		File schematronFile = new File("ISM_XML.sch");
-//		Resource resource = new DDMSReader().getDDMSResource(new File("data/sample/DDMSence_Example_v3_1.xml"));
-//		List<ValidationMessage> messages = resource.validateWithSchematron(schematronFile);
-//		for (ValidationMessage message : messages) {
-//			System.out.println("Location: " + message.getLocator());
-//			System.out.println("Message: " + message.getText());
-//		}
-//	}
+	//	public void testIsmXmlV5SchematronValidation() throws SAXException, InvalidDDMSException, IOException, XSLException {
+	//		// For this test to work, the ISM.XML V5 distribution must be unpacked in the data directory.
+	//		File schematronFile = new File("ISM_XML.sch");
+	//		Resource resource = new DDMSReader().getDDMSResource(new File("data/sample/DDMSence_Example_v3_1.xml"));
+	//		List<ValidationMessage> messages = resource.validateWithSchematron(schematronFile);
+	//		for (ValidationMessage message : messages) {
+	//			System.out.println("Location: " + message.getLocator());
+	//			System.out.println("Message: " + message.getText());
+	//		}
+	//	}
 }

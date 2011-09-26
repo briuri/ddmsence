@@ -58,6 +58,7 @@ import buri.ddmsence.ddms.resource.Subtitle;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.resource.Type;
 import buri.ddmsence.ddms.security.Security;
+import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.ddms.security.ism.NoticeAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.summary.Description;
@@ -171,6 +172,7 @@ public final class Resource extends AbstractBaseComponent {
 	private List<IDDMSComponent> _orderedList = new ArrayList<IDDMSComponent>();
 
 	private XMLGregorianCalendar _createDate = null;
+	List<String> _compliesWiths = null;
 	private Integer _ismDESVersion = null;
 	private Integer _ntkDESVersion = null;
 	private NoticeAttributes _noticeAttributes = null;
@@ -182,7 +184,10 @@ public final class Resource extends AbstractBaseComponent {
 		
 	/** The attribute name for create date */
 	protected static final String CREATE_DATE_NAME = "createDate";
-	
+
+	/** The attribute name for the compliesWith attribute */
+	public static final String COMPLIES_WITH_NAME = "compliesWith";
+
 	/** The attribute name for DES version */
 	public static final String DES_VERSION_NAME = "DESVersion";
 	
@@ -209,10 +214,13 @@ public final class Resource extends AbstractBaseComponent {
 		try {
 			setXOMElement(element, false);
 			String namespace = element.getNamespaceURI();
-			String createDate = getAttributeValue(CREATE_DATE_NAME, getDDMSVersion().getIsmNamespace());
+			String ismNamespace = getDDMSVersion().getIsmNamespace();
+			
+			String createDate = getAttributeValue(CREATE_DATE_NAME, ismNamespace);
 			if (!Util.isEmpty(createDate))
-				_createDate = getFactory().newXMLGregorianCalendar(createDate);
-			String ismDESVersion = element.getAttributeValue(DES_VERSION_NAME, getDDMSVersion().getIsmNamespace());
+				_createDate = getFactory().newXMLGregorianCalendar(createDate);	
+			_compliesWiths = Util.getXsListAsList(getAttributeValue(COMPLIES_WITH_NAME, ismNamespace));
+			String ismDESVersion = element.getAttributeValue(DES_VERSION_NAME, ismNamespace);
 			if (!Util.isEmpty(ismDESVersion)) {
 				try {
 					_ismDESVersion = Integer.valueOf(ismDESVersion);
@@ -363,18 +371,6 @@ public final class Resource extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a DDMS 2.0 Resource from raw data.
 	 * 
-	 * <p>This helper constructor merely calls the fully-parameterized version. Attempts to use it with DDMS 3.0 (or
-	 * higher) components will fail, because some required attributes are missing.</p>
-	 * 
-	 * @param topLevelComponents a list of top level components
-	 */
-	public Resource(List<IDDMSComponent> topLevelComponents) throws InvalidDDMSException {
-		this(topLevelComponents, null, null, null, null, null, null, null);
-	}
-	
-	/**
-	 * Constructor for creating a DDMS 2.0 Resource from raw data.
-	 * 
 	 * <p>This helper constructor merely calls the fully-parameterized version. Attempts to use it with DDMS 3.0
 	 * (or higher) components will fail, because some required attributes are missing.</p>
 	 * 
@@ -383,26 +379,56 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, ExtensibleAttributes extensibleAttributes)
 		throws InvalidDDMSException {
-		this(topLevelComponents, null, null, null, null, null, null, extensibleAttributes);
+		this(topLevelComponents, null, null, null, null, null, null, null, extensibleAttributes);
 	}
 
 	/**
-	 * Constructor for creating a DDMS resource of any version from raw data.
+	 * Constructor for creating a DDMS 3.0 Resource from raw data.
 	 * 
-	 * <p>This helper constructor merely calls the fully-parameterized version.</p>
+	 * <p>This helper constructor merely calls the fully-parameterized version. Attempts to use it with DDMS 3.1
+	 * (or higher) components will fail, because some required attributes are missing.</p>
 	 * 
 	 * @param topLevelComponents a list of top level components
 	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
 	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
-	 * @param desVersion the DES Version as an Integer (required, starting in DDMS 3.0)
+	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
 	 * DDMS 3.0)
+	 * @param extensibleAttributes any extensible attributes (optional)
+	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
+	 * does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
-		Integer desVersion, SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		this(topLevelComponents, resourceElement, createDate, desVersion, null, securityAttributes, null, null);
+		Integer ismDESVersion, SecurityAttributes securityAttributes, ExtensibleAttributes extensibleAttributes)
+		throws InvalidDDMSException {
+		this(topLevelComponents, resourceElement, createDate, null, ismDESVersion, null, securityAttributes, null,
+			extensibleAttributes);
 	}
-
+	
+	/**
+	 * Constructor for creating a DDMS 3.1 Resource from raw data.
+	 * 
+	 * <p>This helper constructor merely calls the fully-parameterized version. Attempts to use it with DDMS 4.0
+	 * (or higher) components will fail, because some required attributes are missing.</p>
+	 * 
+	 * @param topLevelComponents a list of top level components
+	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
+	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
+	 * @param compliesWith shows what ISM rulesets this resource complies with (optional, starting in DDMS 3.1)
+	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
+	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
+	 * DDMS 3.0)
+	 * @param extensibleAttributes any extensible attributes (optional)
+	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
+	 * does not belong at the top-level of the Resource.
+	 */
+	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
+		List<String> compliesWiths, Integer ismDESVersion, SecurityAttributes securityAttributes,
+		ExtensibleAttributes extensibleAttributes) throws InvalidDDMSException {
+		this(topLevelComponents, resourceElement, createDate, compliesWiths, ismDESVersion, null, securityAttributes,
+			null, extensibleAttributes);
+	}
+	
 	/**
 	 * Constructor for creating a DDMS resource of any version from raw data.
 	 * 
@@ -423,6 +449,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param topLevelComponents a list of top level components
 	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
 	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
+	 * @param compliesWiths shows what ISM rule sets this resource complies with (optional, starting in DDMS 3.1)
 	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
 	 * @param ntkDESVersion the DES Version as an Integer (required, starting in DDMS 4.0)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
@@ -433,11 +460,14 @@ public final class Resource extends AbstractBaseComponent {
 	 * does not belong at the top-level of the Resource.
 	 */
 	public Resource(List<IDDMSComponent> topLevelComponents, Boolean resourceElement, String createDate,
-		Integer ismDESVersion, Integer ntkDESVersion, SecurityAttributes securityAttributes,
+		List<String> compliesWiths, Integer ismDESVersion, Integer ntkDESVersion, SecurityAttributes securityAttributes,
 		NoticeAttributes noticeAttributes, ExtensibleAttributes extensibleAttributes) throws InvalidDDMSException {
 		try {
 			if (topLevelComponents == null)
 				topLevelComponents = Collections.emptyList();
+			if (compliesWiths == null)
+				compliesWiths = Collections.emptyList();
+			
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			String ismPrefix = PropertyReader.getPrefix("ism");
 			String ismNamespace = version.getIsmNamespace();
@@ -446,6 +476,11 @@ public final class Resource extends AbstractBaseComponent {
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 						
 			// Attributes
+			_compliesWiths = compliesWiths;
+			if (!compliesWiths.isEmpty()) {
+				Util.addAttribute(element, ismPrefix, COMPLIES_WITH_NAME, ismNamespace, 
+					Util.getXsList(compliesWiths));
+			}
 			if (ntkDESVersion != null) {
 				_ntkDESVersion = ntkDESVersion;
 				Util.addAttribute(element, ntkPrefix, DES_VERSION_NAME, ntkNamespace, ntkDESVersion.toString());
@@ -636,6 +671,8 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>All ddms:order attributes make a complete, consecutive set, starting at 1.</li>
 	 * <li>resourceElement attribute must exist, starting in DDMS 3.0.</li>
 	 * <li>createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD), starting in DDMS 3.0.</li>
+	 * <li>The compliesWith attribute cannot be used until DDMS 3.1 or later.</li>
+	 * <li>If set, the compliesWith attribute must be valid tokens.</li>
 	 * <li>ISM DESVersion must exist and be a valid Integer, starting in DDMS 3.0.</li>
 	 * <li>ISM DESVersion must exist and be "5" in DDMS 3.1.</li>
 	 * <li>NTK DESVersion must exist and be a valid Integer, starting in DDMS 4.0.</li>
@@ -681,6 +718,10 @@ public final class Resource extends AbstractBaseComponent {
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (getDDMSVersion().isAtLeast("4.0"))
 			validateOrderAttributes();
+		if (!getDDMSVersion().isAtLeast("3.1") && !getCompliesWiths().isEmpty())
+			throw new InvalidDDMSException("The compliesWith attribute cannot be used until DDMS 3.1 or later.");
+		for (String with : getCompliesWiths())
+			validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);
 		if ("3.1".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getIsmDESVersion())))
 			throw new InvalidDDMSException("The ISM:DESVersion must be 5 in DDMS 3.1 resources.");
 		if ("4.0".equals(getDDMSVersion().getVersion()) && !(new Integer(7).equals(getIsmDESVersion())))
@@ -756,6 +797,7 @@ public final class Resource extends AbstractBaseComponent {
 			text.append(buildOutput(isHTML, prefix + RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement()), true));
 		if (getCreateDate() != null)
 			text.append(buildOutput(isHTML, prefix + CREATE_DATE_NAME, getCreateDate().toXMLFormat(), true));
+		text.append(buildOutput(isHTML, prefix + COMPLIES_WITH_NAME, Util.getXsList(getCompliesWiths()), false));
 		if (getIsmDESVersion() != null)
 			text.append(buildOutput(isHTML, prefix + "ism." + DES_VERSION_NAME, String.valueOf(getIsmDESVersion()),
 				true));
@@ -782,6 +824,7 @@ public final class Resource extends AbstractBaseComponent {
 		Resource test = (Resource) obj;
 		return (Util.nullEquals(isResourceElement(), test.isResourceElement())
 			&& Util.nullEquals(getCreateDate(), test.getCreateDate())
+			&& Util.listEquals(getCompliesWiths(), test.getCompliesWiths())
 			&& Util.nullEquals(getIsmDESVersion(), test.getIsmDESVersion())
 			&& Util.nullEquals(getNtkDESVersion(), test.getNtkDESVersion())
 			&& getNoticeAttributes().equals(test.getNoticeAttributes())
@@ -797,6 +840,7 @@ public final class Resource extends AbstractBaseComponent {
 			result = 7 * result + isResourceElement().hashCode();
 		if (getCreateDate() != null)
 			result = 7 * result + getCreateDate().hashCode();
+		result = 7 * result + getCompliesWiths().hashCode();
 		if (getIsmDESVersion() != null)
 			result = 7 * result + getIsmDESVersion().hashCode();
 		if (getNtkDESVersion() != null)
@@ -999,6 +1043,13 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
+	 * Accessor for the ISM compliesWith attribute.
+	 */
+	public List<String> getCompliesWiths() {
+		return (Collections.unmodifiableList(_compliesWiths));
+	}
+	
+	/**
 	 * Accessor for the ISM DESVersion attribute. Because this attribute does not exist before DDMS 3.0, the accessor
 	 * will return null for v2.0 Resource elements.
 	 */
@@ -1089,8 +1140,9 @@ public final class Resource extends AbstractBaseComponent {
 		private Security.Builder _security;
 		private List<ExtensibleElement.Builder> _extensibleElements;
 
-		private String _createDate;
 		private Boolean _resourceElement;
+		private String _createDate;
+		private List<String> _compliesWiths;
 		private Integer _ismDESVersion;
 		private Integer _ntkDESVersion;
 		private NoticeAttributes.Builder _noticeAttributes;
@@ -1166,6 +1218,7 @@ public final class Resource extends AbstractBaseComponent {
 			if (resource.getCreateDate() != null)
 				setCreateDate(resource.getCreateDate().toXMLFormat());
 			setResourceElement(resource.isResourceElement());
+			setCompliesWiths(resource.getCompliesWiths());
 			setIsmDESVersion(resource.getIsmDESVersion());
 			setNtkDESVersion(resource.getNtkDESVersion());
 			setSecurityAttributes(new SecurityAttributes.Builder(resource.getSecurityAttributes()));
@@ -1185,7 +1238,7 @@ public final class Resource extends AbstractBaseComponent {
 				if (component != null)
 					topLevelComponents.add(component);
 			}
-			return (new Resource(topLevelComponents, getResourceElement(), getCreateDate(), getIsmDESVersion(),
+			return (new Resource(topLevelComponents, getResourceElement(), getCreateDate(), getCompliesWiths(), getIsmDESVersion(),
 				getNtkDESVersion(), getSecurityAttributes().commit(), getNoticeAttributes().commit(),
 				getExtensibleAttributes().commit()));
 		}
@@ -1200,6 +1253,7 @@ public final class Resource extends AbstractBaseComponent {
 			return (!hasValueInList
 				&& Util.isEmpty(getCreateDate())
 				&& getResourceElement() == null
+				&& getCompliesWiths().isEmpty()
 				&& getIsmDESVersion() == null
 				&& getNtkDESVersion() == null
 				&& getSecurityAttributes().isEmpty()
@@ -1535,6 +1589,23 @@ public final class Resource extends AbstractBaseComponent {
 		public void setResourceElement(Boolean resourceElement) {
 			_resourceElement = resourceElement;
 		}
+		
+		/**
+		 * Builder accessor for the compliesWith attribute
+		 */
+		public List<String> getCompliesWiths() {
+			if (_compliesWiths == null)
+				_compliesWiths = new LazyList(String.class);
+			return _compliesWiths;
+		}
+		
+		/**
+		 * Builder accessor for the compliesWith attribute
+		 */
+		public void setCompliesWiths(List<String> compliesWiths) {
+			_compliesWiths = new LazyList(compliesWiths, String.class);
+		}
+
 		
 		/**
 		 * Builder accessor for the NTK DESVersion

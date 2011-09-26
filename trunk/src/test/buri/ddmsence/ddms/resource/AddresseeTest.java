@@ -32,14 +32,10 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:addressee elements
- * </p>
+ * <p> Tests related to ddms:addressee elements </p>
  * 
- * <p>
- * Because a ddms:addressee is a local component, we cannot load a valid document from a unit test data file. We have to
- * build the well-formed Element ourselves.
- * </p>
+ * <p> Because a ddms:addressee is a local component, we cannot load a valid document from a unit test data file. We
+ * have to build the well-formed Element ourselves. </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -215,7 +211,8 @@ public class AddresseeTest extends AbstractBaseTestCase {
 			getInstance("entity is required.", (IRoleEntity) null);
 
 			// Wrong entity
-			getInstance("The entity must be a person or an organization.", new Service(Util.getXsListAsList("Name"), null, null));
+			getInstance("The entity must be a person or an organization.", new Service(Util.getXsListAsList("Name"),
+				null, null));
 
 			// Missing security attributes
 			try {

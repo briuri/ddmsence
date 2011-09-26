@@ -29,9 +29,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:temporalCoverage elements
- * </p>
+ * <p> Tests related to ddms:temporalCoverage elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -232,16 +230,13 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			periodElement = Util.buildDDMSElement("TimePeriod", null);
 			periodElement.appendChild(Util.buildDDMSElement("start", "---31"));
 			periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
-			getInstance(
-				"The date datatype must be one of",
-				wrapInnerElement(periodElement));
+			getInstance("The date datatype must be one of", wrapInnerElement(periodElement));
 
 			// Wrong extended value
 			periodElement = Util.buildDDMSElement("TimePeriod", null);
 			periodElement.appendChild(Util.buildDDMSElement("start", "N/A"));
 			periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
-			getInstance("If no date is specified,",
-				wrapInnerElement(periodElement));
+			getInstance("If no date is specified,", wrapInnerElement(periodElement));
 
 			// Bad range
 			periodElement = Util.buildDDMSElement("TimePeriod", null);
@@ -255,13 +250,10 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Wrong date format (using xs:gDay here)
-			getInstance(
-				"The date datatype must be one of",
-				TEST_NAME, "---31", TEST_END);
+			getInstance("The date datatype must be one of", TEST_NAME, "---31", TEST_END);
 
 			// Wrong extended value
-			getInstance("If no date is specified,", TEST_NAME,
-				"N/A", TEST_END);
+			getInstance("If no date is specified,", TEST_NAME, "N/A", TEST_END);
 
 			// Bad range
 			getInstance("The start date is after the end date.", TEST_NAME, "2004", "2003");

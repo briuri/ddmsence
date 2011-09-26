@@ -197,9 +197,7 @@ public class LazyListTest extends AbstractBaseTestCase {
 			fail("Allowed invalid class.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(
-				e,
-				"Cannot instantiate list item");
+			expectMessage(e, "Cannot instantiate list item");
 		}
 
 		list = new LazyList(null, IDDMSComponent.class);
@@ -208,8 +206,7 @@ public class LazyListTest extends AbstractBaseTestCase {
 			fail("Allowed invalid class.");
 		}
 		catch (IllegalArgumentException e) {
-			expectMessage(e,
-				"Cannot instantiate list item");
+			expectMessage(e, "Cannot instantiate list item");
 		}
 	}
 }
