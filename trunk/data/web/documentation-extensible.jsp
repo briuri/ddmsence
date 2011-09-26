@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<h1>Power Tip: The Extensible Layer</h1>
+<a name="top"></a><h1>Power Tip: The Extensible Layer</h1>
 
 <p>DDMS is composed of five Core Sets (Metacard Info, Security, Resource, Summary Content, and Format) and the Extensible Layer. This layer supports extensibility
 by providing space for custom attributes and elements within a <code>ddms:resource</code>. Specifically, custom attributes can be added to any producer
@@ -69,7 +69,8 @@ Keyword keyword = new Keyword("XML", extensions);</pre>
 <h2>ExtensibleAttributes on a Resource</h2>
 
 <p>The <code>ddms:resource</code> element has additional (ISM) attributes that might conflict with your extensible
-attributes. The situation is trickier in DDMS 2.0, where the ISM attributes are not explicitly defined in the schema, but can exist nonetheless.</p>
+attributes. The situation is trickier in DDMS 2.0, where the ISM attributes are not explicitly defined in the schema, but can exist nonetheless because
+of the leeway provided with <code>xs:anyAttribute</code>.</p>
 
 <p>When creating an ExtensibleAttributes instance based upon a <code>ddms:resource</code> XOM Element:</p>
 <ul>
@@ -127,6 +128,7 @@ of a SecurityAttributes instance, it should. This will make DDMS 2.0 resources m
 situation -- define your security attributes as explicitly as possible to avoid confusion.</p>
 
 <p>
+	<a href="#top">Back to Top</a><br>
 	<a href="documentation.jsp#tips">Back to Power Tips</a>
 </p>
 

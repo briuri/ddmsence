@@ -149,7 +149,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<h1>DDMS Validator</h1>
+<a name="top"></a><h1>DDMS Validator</h1>
 
 <p>This experimental tool uses the DDMSence library to validate <b>Unclassified</b> DDMS 2.0, 3.0, 3.1, and 4.0 records. Records 
 can be submitted by pasting XML text, uploading a file, or referencing a URL. Information submitted through this tool is not retained

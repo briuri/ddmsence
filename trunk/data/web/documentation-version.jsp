@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<h1>Power Tip: Working with Different DDMS Versions</h1>
+<a name="top"></a><h1>Power Tip: Working with Different DDMS Versions</h1>
 
 <h2>Using Alternate Versions</h2>
  
@@ -186,6 +186,7 @@ Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 
 
 <p>
+	<a href="#top">Back to Top</a><br>
 	<a href="documentation.jsp#tips">Back to Power Tips</a>
 </p>
 

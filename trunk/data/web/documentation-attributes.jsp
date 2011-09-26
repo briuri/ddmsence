@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<h1>Power Tip: Common Attribute Groups</h1>
+<a name="top"></a><h1>Power Tip: Common Attribute Groups</h1>
 
 <p>The DDMS specification identifies several groups of attributes which always tend to be used together: ISM security attributes (such as classification), ISM
 notice attributes, XLink attributes, GML SRS attributes, and attributes used as part of the Extensible Layer.</p>
@@ -103,6 +103,7 @@ System.out.println(position.toXML());</pre>
 <p>Please note that the SRSAttributes do not belong in any XML namespace -- this is correct according to the DDMS GML Profile.</p>
 
 <p>
+	<a href="#top">Back to Top</a><br>
 	<a href="documentation.jsp#tips">Back to Power Tips</a>
 </p>
 
