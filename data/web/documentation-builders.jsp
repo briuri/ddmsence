@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<h1>Power Tip: Using Component Builders</h1>
+<a name="top"></a><h1>Power Tip: Using Component Builders</h1>
 
 <p>Every DDMS component has an associated <a href="/docs/buri/ddmsence/ddms/IBuilder.html">Builder</a> class
 which offers a mutable way to build components. A Builder class can be the form bean behind an HTML form on a website, allowing someone to fill in the details page
@@ -108,6 +108,7 @@ Resource my31Resource = builder.commit();</pre>
 <p>I have also created a sample <a href="builder.uri">DDMS Builder</a> web application which puts the Builder framework to work.</li></p> 
 
 <p>
+	<a href="#top">Back to Top</a><br>
 	<a href="documentation.jsp#tips">Back to Power Tips</a>
 </p>
 

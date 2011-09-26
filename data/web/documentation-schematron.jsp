@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<h1>Power Tip: Schematron Validation</h1>
+<a name="top"></a><h1>Power Tip: Schematron Validation</h1>
 
 <p>It is expected that organizations and communities of interest may have additional constraints on the data in their DDMS Resources, besides the rules in the DDMS specification.
 DDMSence provides support for these rules through the <a href="http://www.schematron.com/">ISO Schematron</a> standard. Using a combination of a configurable XSLT engine
@@ -119,6 +119,7 @@ see the Power Tip on <a href="documentation-configuration.jsp">Configurable Prop
 <p class="figure">Table 1. XSLT Engines for Schematron Validation</p>
 
 <p>
+	<a href="#top">Back to Top</a><br>
 	<a href="documentation.jsp#tips">Back to Power Tips</a>
 </p>
 

@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<h1>Power Tip: Configurable Properties</h1>
+<a name="top"></a><h1>Power Tip: Configurable Properties</h1>
 
 <p>DDMSence exposes some properties, such as the namespace prefixes used for each XML namespace, so they can be configured by the end user. For example, if you are 
 building components from scratch, and you wish to use "ic" as a namespace prefix for the Intelligence Community namespace
@@ -32,6 +32,7 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 <p class="figure">Table 1. Configurable Properties</p>
 
 <p>
+	<a href="#top">Back to Top</a><br>
 	<a href="documentation.jsp#tips">Back to Power Tips</a>
 </p>
 

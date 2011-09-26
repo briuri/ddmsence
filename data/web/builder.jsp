@@ -167,7 +167,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<h1>DDMS Builder</h1>
+<a name="top"></a><h1>DDMS Builder</h1>
 
 <p>This experimental tool uses the DDMSence library to create a DDMS 4.0 Resource from form input. It uses
 the <a href="documentation-builders.jsp">Component Builder</a> framework, which was introduced in DDMSence 
