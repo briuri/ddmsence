@@ -341,6 +341,9 @@ public class LinkTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "type attribute is required.");
 			}
+			builder.getXLinkAttributes().setType("locator");
+			builder.getXLinkAttributes().setHref(TEST_HREF);
+			builder.commit();
 		}
 	}
 }

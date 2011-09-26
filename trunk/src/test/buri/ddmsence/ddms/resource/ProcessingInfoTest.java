@@ -323,6 +323,10 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "dateProcessed is required.");
 			}
+			builder.setDateProcessed(TEST_DATE_PROCESSED);
+			builder.getSecurityAttributes().setClassification("U");
+			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.commit();
 		}
 	}
 }

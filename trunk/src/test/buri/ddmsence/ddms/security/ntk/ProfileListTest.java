@@ -292,6 +292,18 @@ public class ProfileListTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "At least one profile is required.");
 			}
+			builder.getProfiles().get(0).getSystemName().setValue("TEST");
+			builder.getProfiles().get(0).getProfileValues().get(0).setVocabulary("vocab");
+			builder.getProfiles().get(0).getProfileValues().get(0).setValue("TEST");
+			builder.getProfiles().get(0).getSystemName().getSecurityAttributes().setClassification("U");
+			builder.getProfiles().get(0).getSystemName().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.getProfiles().get(0).getProfileValues().get(0).getSecurityAttributes().setClassification("U");
+			builder.getProfiles().get(0).getProfileValues().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.getProfiles().get(0).getSecurityAttributes().setClassification("U");
+			builder.getProfiles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.getSecurityAttributes().setClassification("U");
+			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.commit();
 		}
 	}
 

@@ -376,6 +376,8 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "The srsDimension must be a positive integer.");
 			}
+			builder.setSrsDimension(new Integer(1));
+			builder.commit();
 
 			// Empty Tests
 			builder = new SRSAttributes.Builder();

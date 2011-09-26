@@ -388,6 +388,8 @@ public class FormatTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "mimeType is required.");
 			}
+			builder.setMimeType(TEST_MIME_TYPE);
+			builder.commit();
 
 			// No extent vs. empty extent
 			builder = new Format.Builder();

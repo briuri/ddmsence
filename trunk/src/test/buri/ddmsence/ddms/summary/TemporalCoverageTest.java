@@ -438,6 +438,9 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "If no date is specified");
 			}
+			builder.setStartString("2001");
+			builder.setEndString("2002");
+			builder.commit();
 		}
 	}
 }

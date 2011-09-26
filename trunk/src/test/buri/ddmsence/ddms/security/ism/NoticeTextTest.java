@@ -336,6 +336,19 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			// Equality after Building
 			builder = new NoticeText.Builder(component);
 			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new NoticeText.Builder();
+			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			try {
+				builder.commit();
+				fail("Allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				expectMessage(e, "classification is required.");
+			}
+			builder.getSecurityAttributes().setClassification("U");
+			builder.commit();	
 		}
 	}
 

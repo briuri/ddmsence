@@ -269,6 +269,8 @@ public class CountryCodeTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "qualifier attribute is required.");
 			}
+			builder.setQualifier(TEST_QUALIFIER);
+			builder.commit();
 		}
 	}
 }

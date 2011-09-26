@@ -363,6 +363,9 @@ public class SecurityTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "SuperSecret is not a valid enumeration token");
 			}
+			builder.getSecurityAttributes().setClassification("U");
+			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.commit();
 		}
 	}
 }

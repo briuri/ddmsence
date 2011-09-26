@@ -308,7 +308,7 @@ public class KeywordTest extends AbstractBaseTestCase {
 
 			// Empty case
 			builder = new Keyword.Builder();
-			assertNull(builder.commit());
+			assertNull(builder.commit());	
 		}
 	}
 }

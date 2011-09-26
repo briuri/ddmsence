@@ -437,6 +437,9 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "osuffix is required.");
 			}
+			builder.getFacilityIdentifier().setOsuffix("osuffix");
+			builder.commit();			
+			
 			// Non-FacID-based
 			builder = new GeographicIdentifier.Builder();
 			builder.getNames().add("Name");

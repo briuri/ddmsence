@@ -371,7 +371,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 			}
 			// Validation
 			builder = new Organization.Builder();
-			builder.setPhones(Util.getXsListAsList("703-885-1000"));
+			builder.setPhones(TEST_PHONES);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
@@ -379,6 +379,8 @@ public class OrganizationTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "At least 1 name element must exist.");
 			}
+			builder.setNames(TEST_NAMES);
+			builder.commit();
 		}
 	}
 

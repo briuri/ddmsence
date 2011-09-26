@@ -340,6 +340,8 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "The noticeDate attribute must be in the xs:date format");
 			}
+			builder.setNoticeDate("");
+			builder.commit();
 		}
 	}
 }

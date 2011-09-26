@@ -376,6 +376,8 @@ public class CategoryTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "label attribute is required.");
 			}
+			builder.setLabel(TEST_LABEL);
+			builder.commit();
 		}
 	}
 }

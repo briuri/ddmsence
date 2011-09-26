@@ -322,6 +322,8 @@ public class AccessTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "At least 1 ownerProducer must be set.");
 			}
+			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.commit();
 		}
 	}
 

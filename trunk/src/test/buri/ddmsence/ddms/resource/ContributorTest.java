@@ -279,6 +279,8 @@ public class ContributorTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "At least 1 name element must exist.");
 			}
+			builder.getOrganization().setNames(Util.getXsListAsList("DISA"));
+			builder.commit();
 		}
 	}
 }

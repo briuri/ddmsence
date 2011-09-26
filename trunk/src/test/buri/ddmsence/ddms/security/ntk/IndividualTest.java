@@ -323,6 +323,11 @@ public class IndividualTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "At least one individual value is required.");
 			}
+			builder.getIndividualValues().get(0).setQualifier("test");
+			builder.getIndividualValues().get(0).setValue("test");
+			builder.getIndividualValues().get(0).getSecurityAttributes().setClassification("U");
+			builder.getIndividualValues().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.commit();
 		}
 	}
 
