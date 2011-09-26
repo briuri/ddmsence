@@ -198,6 +198,7 @@ in the Power Tip on <a href="documentation-schematron.jsp">Schematron Validation
 <li><u>RelatedResource</u>: The constructor has additional parameters for new attributes. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=130">Issue #130</a>)</li>
 <li><u>Resource</u>: getSubjectCoverage() became getSubjectCoverages() and now returns a list of SubjectCoverage components (<a href="http://code.google.com/p/ddmsence/issues/detail?id=126">Issue #126</a>)</li>
 <li><u>Resource</u>: getDESVersion() became getIsmDESVersion() to avoid conflict with ntk:DESVersion (<a href="http://code.google.com/p/ddmsence/issues/detail?id=131">Issue #131</a>)</li>
+<li><u>Resource</u>: Constructor updated to include ISM:compliesWith, which used to be part of SecurityAttributes (<a href="http://code.google.com/p/ddmsence/issues/detail?id=168">Issue #168</a>)</li>
 <li><u>Security</u>: The constructor has additional parametesr for access and noticeList. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=111">Issue #111</a>)</li>
 <li><u>SubjectCoverage</u>: The constructor has additional parameters for productionMetrics and nonStateActors.  (<a href="http://code.google.com/p/ddmsence/issues/detail?id=126">Issue #126</a>)</li>
 <li><u>Type</u>: The constructor has an additional parameter for optional description. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=118">Issue #118</a>)</li>
