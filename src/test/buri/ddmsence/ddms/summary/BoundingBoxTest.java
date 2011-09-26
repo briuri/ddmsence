@@ -370,6 +370,10 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "A ddms:boundingBox requires");
 			}
+			builder.setWestBL(Double.valueOf(TEST_WEST));
+			builder.setNorthBL(Double.valueOf(TEST_NORTH));
+			builder.setSouthBL(Double.valueOf(TEST_SOUTH));
+			builder.commit();
 		}
 	}
 }

@@ -389,7 +389,7 @@ public class PersonTest extends AbstractBaseTestCase {
 
 			// Validation
 			builder = new Person.Builder();
-			builder.setPhones(Util.getXsListAsList("703-885-1000"));
+			builder.setPhones(TEST_PHONES);
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
@@ -397,6 +397,9 @@ public class PersonTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "surname is required.");
 			}
+			builder.setSurname(TEST_SURNAME);
+			builder.setNames(TEST_NAMES);
+			builder.commit();
 		}
 	}
 

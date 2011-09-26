@@ -320,6 +320,12 @@ public class ProfileTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "At least one profile value is required.");
 			}
+			builder.getProfileValues().get(0).setQualifier("test");
+			builder.getProfileValues().get(0).setValue("test");
+			builder.getProfileValues().get(0).setVocabulary("vocab");
+			builder.getProfileValues().get(0).getSecurityAttributes().setClassification("U");
+			builder.getProfileValues().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.commit();
 		}
 	}
 

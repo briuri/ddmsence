@@ -279,6 +279,8 @@ public class FacilityIdentifierTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "osuffix is required.");
 			}
+			builder.setOsuffix(TEST_OSUFFIX);
+			builder.commit();
 		}
 	}
 }

@@ -659,9 +659,10 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			// Empty case
 			builder = new GeospatialCoverage.Builder();
 			assertNull(builder.commit());
+			
 			// Validation
 			builder = new GeospatialCoverage.Builder();
-			builder.getVerticalExtent().setDatum("datum");
+			builder.getVerticalExtent().setDatum("AGL");
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
@@ -669,6 +670,10 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "A ddms:verticalExtent requires ");
 			}
+			builder.getVerticalExtent().setUnitOfMeasure("Fathom");
+			builder.getVerticalExtent().setMaxVerticalExtent(Double.valueOf(2));
+			builder.getVerticalExtent().setMinVerticalExtent(Double.valueOf(1));
+			builder.commit();
 		}
 	}
 }

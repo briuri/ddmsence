@@ -396,6 +396,8 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "Only 1 of state or province can be used.");
 			}
+			builder.setProvince("");
+			builder.commit();
 		}
 	}
 

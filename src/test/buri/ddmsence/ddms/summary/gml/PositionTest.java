@@ -370,6 +370,8 @@ public class PositionTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "A position must be represented by");
 			}
+			builder.getCoordinates().get(1).setValue(Double.valueOf(0));
+			builder.commit();
 
 			// Skip empty Coordinates
 			builder = new Position.Builder();

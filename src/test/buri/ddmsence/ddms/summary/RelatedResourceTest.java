@@ -476,7 +476,14 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "relationship attribute is required.");
 			}
-
+			builder.setRelationship(TEST_RELATIONSHIP);
+			builder.setQualifier(TEST_QUALIFIER);
+			builder.setValue(TEST_VALUE);
+			builder.getLinks().get(0).getXLinkAttributes().setType("locator");
+			builder.getLinks().get(0).getXLinkAttributes().setHref("http://ddmsence.urizone.net/");
+			builder.getLinks().get(0).getXLinkAttributes().setRole("role");
+			builder.commit();
+			
 			// Skip empty Links
 			builder = new RelatedResource.Builder();
 			builder.setDirection(TEST_DIRECTION);

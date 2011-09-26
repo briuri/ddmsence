@@ -409,6 +409,9 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "A ddms:verticalExtent requires");
 			}
+			builder.setDatum(TEST_DATUM);
+			builder.setMaxVerticalExtent(TEST_MAX);
+			builder.setMinVerticalExtent(TEST_MIN);
 		}
 	}
 }

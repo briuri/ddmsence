@@ -338,8 +338,10 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "\"\" is not a valid NMTOKEN.");
 			}
+			builder.setVocabulary("test");
 			builder.getSecurityAttributes().setClassification("U");
 			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.commit();
 		}
 	}
 }

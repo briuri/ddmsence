@@ -270,14 +270,17 @@ public class PublisherTest extends AbstractBaseTestCase {
 			// Validation
 			builder = new Publisher.Builder();
 			builder.setEntityType(Person.getName(version));
-			builder.getOrganization().setPhones(Util.getXsListAsList("703-885-1000"));
+			builder.getPerson().setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "entity is required.");
+				expectMessage(e, "surname is required.");
 			}
+			builder.getPerson().setSurname("Uri");
+			builder.getPerson().setNames(Util.getXsListAsList("Brian"));
+			builder.commit();
 		}
 	}
 }

@@ -295,6 +295,8 @@ public class UnknownTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "At least 1 name element must exist.");
 			}
+			builder.setNames(TEST_NAMES);
+			builder.commit();
 		}
 	}
 

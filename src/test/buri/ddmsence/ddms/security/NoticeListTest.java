@@ -299,9 +299,28 @@ public class NoticeListTest extends AbstractBaseTestCase {
 			assertTrue(builder.isEmpty());
 			builder.getNotices().get(1).getNoticeTexts().get(1).setValue("TEST");
 			assertFalse(builder.isEmpty());
+			
 			// Equality after Building
 			builder = new NoticeList.Builder(component);
 			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new NoticeList.Builder();
+			builder.getSecurityAttributes().setClassification("U");
+			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				expectMessage(e, "At least one ISM:Notice");
+			}
+			builder.getNotices().get(0).getNoticeTexts().get(0).setValue("test");
+			builder.getNotices().get(0).getSecurityAttributes().setClassification("U");
+			builder.getNotices().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.getNotices().get(0).getNoticeTexts().get(0).getSecurityAttributes().setClassification("U");
+			builder.getNotices().get(0).getNoticeTexts().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.commit();
 		}
 	}
 

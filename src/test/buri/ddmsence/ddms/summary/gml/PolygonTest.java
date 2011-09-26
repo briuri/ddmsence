@@ -474,6 +474,16 @@ public class PolygonTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "srsName is required.");
 			}
+			builder.getSrsAttributes().setSrsName("http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D");
+			builder.getPositions().get(0).getCoordinates().get(0).setValue(Double.valueOf(1));
+			builder.getPositions().get(0).getCoordinates().get(1).setValue(Double.valueOf(1));
+			builder.getPositions().get(1).getCoordinates().get(0).setValue(Double.valueOf(2));
+			builder.getPositions().get(1).getCoordinates().get(1).setValue(Double.valueOf(2));
+			builder.getPositions().get(2).getCoordinates().get(0).setValue(Double.valueOf(3));
+			builder.getPositions().get(2).getCoordinates().get(1).setValue(Double.valueOf(3));
+			builder.getPositions().get(3).getCoordinates().get(0).setValue(Double.valueOf(1));
+			builder.getPositions().get(3).getCoordinates().get(1).setValue(Double.valueOf(1));
+			builder.commit();
 
 			// Skip empty Positions
 			builder = new Polygon.Builder();

@@ -306,6 +306,8 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "protocol is required.");
 			}
+			builder.setProtocol(TEST_PROTOCOL);
+			builder.commit();
 		}
 	}
 }

@@ -1460,6 +1460,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "At least 1 identifier is required.");
 			}
+			// Successful cases covered below.
 		}
 	}
 

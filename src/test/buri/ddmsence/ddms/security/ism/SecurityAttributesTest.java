@@ -675,9 +675,10 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e,
-					"SuperSecret is not a valid enumeration token");
+				expectMessage(e, "SuperSecret is not a valid enumeration token");
 			}
+			builder.setClassification("U");
+			builder.commit();
 		}
 	}
 

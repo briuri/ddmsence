@@ -297,6 +297,22 @@ public class NoticeTest extends AbstractBaseTestCase {
 			// Equality after Building
 			builder = new Notice.Builder(component);
 			assertEquals(builder.commit(), component);
+			
+			// Validation
+			builder = new Notice.Builder();
+			builder.getSecurityAttributes().setClassification("U");
+			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			try {
+				builder.commit();
+				fail("Allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				expectMessage(e, "At least one ISM:NoticeText");
+			}
+			builder.getNoticeTexts().get(0).setValue("TEST");
+			builder.getNoticeTexts().get(0).getSecurityAttributes().setClassification("U");
+			builder.getNoticeTexts().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.commit();			
 		}
 	}
 

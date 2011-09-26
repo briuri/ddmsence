@@ -304,6 +304,7 @@ public class SystemNameTest extends AbstractBaseTestCase {
 			}
 			builder.getSecurityAttributes().setClassification("U");
 			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.commit();
 		}
 	}
 }

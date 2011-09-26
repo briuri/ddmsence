@@ -320,6 +320,11 @@ public class GroupTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "At least one group value is required.");
 			}
+			builder.getGroupValues().get(0).setQualifier("test");
+			builder.getGroupValues().get(0).setValue("test");
+			builder.getGroupValues().get(0).getSecurityAttributes().setClassification("U");
+			builder.getGroupValues().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.commit();
 		}
 	}
 

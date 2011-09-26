@@ -318,6 +318,10 @@ public class SourceTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "SuperSecret is not a valid enumeration token");
 			}
+			builder.getSecurityAttributes().setClassification("");
+			builder.setQualifier(TEST_QUALIFIER);
+			builder.setQualifier(TEST_VALUE);
+			builder.commit();
 		}
 	}
 }
