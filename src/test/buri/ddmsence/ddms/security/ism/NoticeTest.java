@@ -30,12 +30,9 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ISM:Notice elements
- * </p>
+ * <p> Tests related to ISM:Notice elements </p>
  * 
- * <p>
- * The valid instance of ISM:Notice is generated, rather than relying on the ISM schemas to validate an XML file.
+ * <p> The valid instance of ISM:Notice is generated, rather than relying on the ISM schemas to validate an XML file.
  * </p>
  * 
  * @author Brian Uri!
@@ -156,10 +153,8 @@ public class NoticeTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ISM:Notice ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
-		xml
-			.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml
-			.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\">noticeText</ISM:NoticeText></ISM:Notice>");
+		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\">noticeText</ISM:NoticeText></ISM:Notice>");
 		return (xml.toString());
 	}
 
@@ -282,7 +277,7 @@ public class NoticeTest extends AbstractBaseTestCase {
 	public void testWrongVersion() {
 		// Implicit, since 1 NoticeText is required and that requires DDMS 4.0 or greater.
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -297,7 +292,7 @@ public class NoticeTest extends AbstractBaseTestCase {
 			// Equality after Building
 			builder = new Notice.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Validation
 			builder = new Notice.Builder();
 			builder.getSecurityAttributes().setClassification("U");
@@ -312,7 +307,7 @@ public class NoticeTest extends AbstractBaseTestCase {
 			builder.getNoticeTexts().get(0).setValue("TEST");
 			builder.getNoticeTexts().get(0).getSecurityAttributes().setClassification("U");
 			builder.getNoticeTexts().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
-			builder.commit();			
+			builder.commit();
 		}
 	}
 

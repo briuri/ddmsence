@@ -118,8 +118,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 			fail("Should have thrown an InvalidDDMSException");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e,
-				"nu.xom.ValidityException");
+			expectMessage(e, "nu.xom.ValidityException");
 		}
 	}
 

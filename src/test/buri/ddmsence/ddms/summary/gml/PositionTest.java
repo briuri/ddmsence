@@ -31,9 +31,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to gml:pos elements
- * </p>
+ * <p> Tests related to gml:pos elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -239,14 +237,12 @@ public class PositionTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing coordinates
-			getInstance("A position must be represented by", null, SRSAttributesTest
-				.getFixture());
+			getInstance("A position must be represented by", null, SRSAttributesTest.getFixture());
 
 			// At least 2 coordinates
 			List<Double> newCoords = new ArrayList<Double>();
 			newCoords.add(new Double(12.3));
-			getInstance("A position must be represented by", newCoords, SRSAttributesTest
-				.getFixture());
+			getInstance("A position must be represented by", newCoords, SRSAttributesTest.getFixture());
 
 			// No more than 3 coordinates
 			newCoords = new ArrayList<Double>();
@@ -254,8 +250,7 @@ public class PositionTest extends AbstractBaseTestCase {
 			newCoords.add(new Double(12.3));
 			newCoords.add(new Double(12.3));
 			newCoords.add(new Double(12.3));
-			getInstance("A position must be represented by", newCoords, SRSAttributesTest
-				.getFixture());
+			getInstance("A position must be represented by", newCoords, SRSAttributesTest.getFixture());
 		}
 	}
 

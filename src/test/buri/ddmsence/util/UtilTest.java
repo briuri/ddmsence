@@ -899,8 +899,7 @@ public class UtilTest extends AbstractBaseTestCase {
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e,
-				"A child component, ddms:identifier");
+			expectMessage(e, "A child component, ddms:identifier");
 		}
 	}
 

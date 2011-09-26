@@ -381,7 +381,7 @@ public class Escort {
 				String createDate = readString("Resource createDate [2010-04-01]");
 				int ismDESVersion = readInt("the Resource ISM:DESVersion [7]");
 				int ntkDESVersion = readInt("the Resource ntk:DESVersion [5]");
-				return (new Resource(getTopLevelComponents(), resourceElement, createDate, new Integer(ismDESVersion), new Integer(ntkDESVersion), 
+				return (new Resource(getTopLevelComponents(), resourceElement, createDate, null, new Integer(ismDESVersion), new Integer(ntkDESVersion), 
 					buildSecurityAttributes("resource"), null, null));
 			}		
 		});

@@ -31,9 +31,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ntk:AccessProfileValue elements
- * </p>
+ * <p> Tests related to ntk:AccessProfileValue elements </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -309,7 +307,7 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
-	
+
 	public void testWrongVersion() {
 		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
 	}

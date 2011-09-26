@@ -28,9 +28,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to the XLINK attributes on ddms:link and ddms:taskID elements
- * </p>
+ * <p> Tests related to the XLINK attributes on ddms:link and ddms:taskID elements </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -365,16 +363,13 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 			}
 
 			// invalid arcrole
-			getInstance("Invalid URI", null, null, null, INVALID_URI, null,
-				null);
+			getInstance("Invalid URI", null, null, null, INVALID_URI, null, null);
 
 			// invalid show
-			getInstance("The show attribute must be one of", null, null, null, null,
-				"notInTheTokenList", null);
+			getInstance("The show attribute must be one of", null, null, null, null, "notInTheTokenList", null);
 
 			// invalid actuate
-			getInstance("The actuate attribute must be one of", null, null, null,
-				null, null, "notInTheTokenList");
+			getInstance("The actuate attribute must be one of", null, null, null, null, null, "notInTheTokenList");
 		}
 	}
 

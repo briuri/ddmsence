@@ -29,14 +29,10 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:applicationSoftware elements
- * </p>
+ * <p> Tests related to ddms:applicationSoftware elements </p>
  * 
- * <p>
- * Because a ddms:applicationSoftware is a local component, we cannot load a valid document from a unit test data file.
- * We have to build the well-formed Element ourselves.
- * </p>
+ * <p> Because a ddms:applicationSoftware is a local component, we cannot load a valid document from a unit test data
+ * file. We have to build the well-formed Element ourselves. </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0

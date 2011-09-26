@@ -31,9 +31,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:productionMetric elements
- * </p>
+ * <p> Tests related to ddms:productionMetric elements </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -95,9 +93,9 @@ public class ProductionMetricTest extends AbstractBaseTestCase {
 	 * 
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param subject a method of categorizing the subject of a document in a fashion understandable by DDNI-A
-	 *            (required)
+	 * (required)
 	 * @param coverage a method of categorizing the coverage of a document in a fashion understandable by DDNI-A
-	 *            (required)
+	 * (required)
 	 * @param label the label (required)
 	 * @return a valid object
 	 */

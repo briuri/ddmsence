@@ -31,9 +31,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to gml:Polygon elements
- * </p>
+ * <p> Tests related to gml:Polygon elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.0
@@ -327,8 +325,7 @@ public class PolygonTest extends AbstractBaseTestCase {
 			// Polygon SRS Name doesn't match pos SRS Name
 			attr = new SRSAttributes(DIFFERENT_VALUE, SRSAttributesTest.getFixture().getSrsDimension(),
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
-			getInstance("The srsName of each position", PositionTest
-				.getFixtureList(), attr, TEST_ID);
+			getInstance("The srsName of each position", PositionTest.getFixtureList(), attr, TEST_ID);
 
 			// Missing ID
 			getInstance("id is required.", PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), null);
@@ -341,20 +338,17 @@ public class PolygonTest extends AbstractBaseTestCase {
 				.getFixture(), "1TEST");
 
 			// Missing Positions
-			getInstance("At least 4 positions are required", null, SRSAttributesTest.getFixture(),
-				TEST_ID);
+			getInstance("At least 4 positions are required", null, SRSAttributesTest.getFixture(), TEST_ID);
 
 			// First position doesn't match last position.
 			List<Position> newPositions = new ArrayList<Position>(PositionTest.getFixtureList());
 			newPositions.add(PositionTest.getFixtureList().get(1));
-			getInstance("The first and last position", newPositions, SRSAttributesTest
-				.getFixture(), TEST_ID);
+			getInstance("The first and last position", newPositions, SRSAttributesTest.getFixture(), TEST_ID);
 
 			// Not enough positions
 			newPositions = new ArrayList<Position>();
 			newPositions.add(PositionTest.getFixtureList().get(0));
-			getInstance("At least 4 positions are required", newPositions, SRSAttributesTest
-				.getFixture(), TEST_ID);
+			getInstance("At least 4 positions are required", newPositions, SRSAttributesTest.getFixture(), TEST_ID);
 		}
 	}
 

@@ -30,9 +30,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ntk:Access elements
- * </p>
+ * <p> Tests related to ntk:Access elements </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -129,26 +127,20 @@ public class AccessTest extends AbstractBaseTestCase {
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
 		xml.append("\t<ntk:AccessIndividualList>\n");
 		xml.append("\t\t<ntk:AccessIndividual ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml
-			.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml
-			.append("\t\t\t<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">user_2321889:Doe_John_H</ntk:AccessIndividualValue>\n");
+		xml.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml.append("\t\t\t<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">user_2321889:Doe_John_H</ntk:AccessIndividualValue>\n");
 		xml.append("\t\t</ntk:AccessIndividual>\n");
 		xml.append("\t</ntk:AccessIndividualList>\n");
 		xml.append("\t<ntk:AccessGroupList>\n");
 		xml.append("\t\t<ntk:AccessGroup ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml
-			.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml
-			.append("\t\t\t<ntk:AccessGroupValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">WISE/RODCA</ntk:AccessGroupValue>\n");
+		xml.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml.append("\t\t\t<ntk:AccessGroupValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">WISE/RODCA</ntk:AccessGroupValue>\n");
 		xml.append("\t\t</ntk:AccessGroup>\n");
 		xml.append("\t</ntk:AccessGroupList>\n");
 		xml.append("\t<ntk:AccessProfileList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
 		xml.append("\t\t<ntk:AccessProfile ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml
-			.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml
-			.append("\t\t\t<ntk:AccessProfileValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>\n");
+		xml.append("\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml.append("\t\t\t<ntk:AccessProfileValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>\n");
 		xml.append("\t\t</ntk:AccessProfile>\n");
 		xml.append("\t</ntk:AccessProfileList>\n");
 		xml.append("</ntk:Access>");
@@ -330,7 +322,7 @@ public class AccessTest extends AbstractBaseTestCase {
 	public void testWrongVersion() {
 		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
 	}
-	
+
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

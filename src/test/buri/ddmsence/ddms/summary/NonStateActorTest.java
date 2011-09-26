@@ -30,9 +30,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:nonStateActor elements
- * </p>
+ * <p> Tests related to ddms:nonStateActor elements </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0

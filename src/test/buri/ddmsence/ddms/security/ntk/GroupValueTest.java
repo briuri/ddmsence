@@ -32,9 +32,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ntk:AccessGroupValue elements
- * </p>
+ * <p> Tests related to ntk:AccessGroupValue elements </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -299,7 +297,7 @@ public class GroupValueTest extends AbstractBaseTestCase {
 	public void testWrongVersion() {
 		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

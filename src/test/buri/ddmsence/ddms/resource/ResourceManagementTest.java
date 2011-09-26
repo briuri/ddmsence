@@ -30,9 +30,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:resourceManagement elements
- * </p>
+ * <p> Tests related to ddms:resourceManagement elements </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -311,7 +309,7 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 			expectMessage(e, "The resourceManagement element cannot be used");
 		}
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

@@ -33,9 +33,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to underlying methods in the base class for DDMS components
- * </p>
+ * <p> Tests related to underlying methods in the base class for DDMS components </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -45,7 +43,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 	public BaseComponentTest() {
 		super(null);
 	}
-	
+
 	/**
 	 * Resets the in-use version of DDMS.
 	 */
@@ -111,7 +109,6 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		component.addWarnings(warnings, true);
 		assertEquals("//locator", component.getValidationWarnings().get(0).getLocator());
 	}
-	
 
 	public void testSameVersion() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
@@ -122,8 +119,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e,
-				"A child component, ddms:Organization");
+			expectMessage(e, "A child component, ddms:Organization");
 		}
 	}
 }

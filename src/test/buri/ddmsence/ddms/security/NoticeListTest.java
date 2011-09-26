@@ -32,14 +32,10 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:noticeList elements
- * </p>
+ * <p> Tests related to ddms:noticeList elements </p>
  * 
- * <p>
- * Because a ddms:noticeList is a local component, we cannot load a valid document from a unit test data file. We have
- * to build the well-formed Element ourselves.
- * </p>
+ * <p> Because a ddms:noticeList is a local component, we cannot load a valid document from a unit test data file. We
+ * have to build the well-formed Element ourselves. </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -156,12 +152,9 @@ public class NoticeListTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:noticeList ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml
-			.append("<ISM:Notice ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
-		xml
-			.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml
-			.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\">noticeText</ISM:NoticeText>");
+		xml.append("<ISM:Notice ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
+		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\">noticeText</ISM:NoticeText>");
 		xml.append("</ISM:Notice>");
 		xml.append("</ddms:noticeList>");
 		return (xml.toString());
@@ -287,7 +280,7 @@ public class NoticeListTest extends AbstractBaseTestCase {
 	public void testWrongVersion() {
 		// Implicit, since 1 Notice is required and that requires DDMS 4.0 or greater.
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -299,11 +292,11 @@ public class NoticeListTest extends AbstractBaseTestCase {
 			assertTrue(builder.isEmpty());
 			builder.getNotices().get(1).getNoticeTexts().get(1).setValue("TEST");
 			assertFalse(builder.isEmpty());
-			
+
 			// Equality after Building
 			builder = new NoticeList.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Validation
 			builder = new NoticeList.Builder();
 			builder.getSecurityAttributes().setClassification("U");
@@ -319,7 +312,8 @@ public class NoticeListTest extends AbstractBaseTestCase {
 			builder.getNotices().get(0).getSecurityAttributes().setClassification("U");
 			builder.getNotices().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 			builder.getNotices().get(0).getNoticeTexts().get(0).getSecurityAttributes().setClassification("U");
-			builder.getNotices().get(0).getNoticeTexts().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.getNotices().get(0).getNoticeTexts().get(0).getSecurityAttributes().setOwnerProducers(
+				Util.getXsListAsList("USA"));
 			builder.commit();
 		}
 	}

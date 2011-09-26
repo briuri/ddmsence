@@ -29,14 +29,10 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:taskID elements
- * </p>
+ * <p> Tests related to ddms:taskID elements </p>
  * 
- * <p>
- * Because a ddms:taskID is a local component, we cannot load a valid document from a unit test data file. We have to
- * build the well-formed Element ourselves.
- * </p>
+ * <p> Because a ddms:taskID is a local component, we cannot load a valid document from a unit test data file. We have
+ * to build the well-formed Element ourselves. </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -226,7 +222,8 @@ public class TaskIDTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Wrong type of XLinkAttributes
-			getInstance("The type attribute must have a fixed value", TEST_VALUE, null, null, null, XLinkAttributesTest.getLocatorFixture());
+			getInstance("The type attribute must have a fixed value", TEST_VALUE, null, null, null, XLinkAttributesTest
+				.getLocatorFixture());
 
 			// Missing value
 			getInstance("value is required.", null, null, null, null, null);

@@ -27,9 +27,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:boundingBox elements
- * </p>
+ * <p> Tests related to ddms:boundingBox elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b

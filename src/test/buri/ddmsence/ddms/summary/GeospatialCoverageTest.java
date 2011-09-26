@@ -33,9 +33,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:geospatialCoverage elements
- * </p>
+ * <p> Tests related to ddms:geospatialCoverage elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -198,14 +196,12 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		xml.append(">\n\t");
 		if (version.isAtLeast("4.0")) {
 			xml.append("<ddms:geographicIdentifier>\n\t\t");
-			xml
-				.append("<ddms:countryCode ddms:qualifier=\"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1\" ddms:value=\"LAO\" />\n\t");
+			xml.append("<ddms:countryCode ddms:qualifier=\"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1\" ddms:value=\"LAO\" />\n\t");
 			xml.append("</ddms:geographicIdentifier>\n");
 		}
 		else {
 			xml.append("<ddms:GeospatialExtent>\n\t\t<ddms:geographicIdentifier>\n\t\t\t");
-			xml
-				.append("<ddms:countryCode ddms:qualifier=\"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1\" ddms:value=\"LAO\" />\n\t\t");
+			xml.append("<ddms:countryCode ddms:qualifier=\"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1\" ddms:value=\"LAO\" />\n\t\t");
 			xml.append("</ddms:geographicIdentifier>\n\t</ddms:GeospatialExtent>\n");
 		}
 		xml.append("</ddms:geospatialCoverage>");
@@ -378,8 +374,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			getInstance("At least 1 of ", null, null, null, null, null, null, null);
 
 			// If facilityIdentifier is used, nothing else can.
-			getInstance("A geographicIdentifier containing a facilityIdentifier", GeographicIdentifierTest.getFacIdBasedFixture(), BoundingBoxTest.getFixture(), null,
-				null, null, null, null);
+			getInstance("A geographicIdentifier containing a facilityIdentifier", GeographicIdentifierTest
+				.getFacIdBasedFixture(), BoundingBoxTest.getFixture(), null, null, null, null, null);
 		}
 	}
 
@@ -659,7 +655,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			// Empty case
 			builder = new GeospatialCoverage.Builder();
 			assertNull(builder.commit());
-			
+
 			// Validation
 			builder = new GeospatialCoverage.Builder();
 			builder.getVerticalExtent().setDatum("AGL");

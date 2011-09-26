@@ -31,9 +31,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:subjectCoverage elements
- * </p>
+ * <p> Tests related to ddms:subjectCoverage elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -189,10 +187,8 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 			xml.append("\t<ddms:keyword ddms:value=\"Uri\" />\n");
 			xml.append("\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ").append(
 				"ddms:label=\"DDMS\" />\n");
-			xml
-				.append("\t<ddms:productionMetric ddms:subject=\"FOOD\" ddms:coverage=\"AFG\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" />\n");
-			xml
-				.append("\t<ddms:nonStateActor ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ddms:order=\"1\">Laotian Monks</ddms:nonStateActor>\n");
+			xml.append("\t<ddms:productionMetric ddms:subject=\"FOOD\" ddms:coverage=\"AFG\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" />\n");
+			xml.append("\t<ddms:nonStateActor ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ddms:order=\"1\">Laotian Monks</ddms:nonStateActor>\n");
 		}
 		else {
 			xml.append("\t<ddms:Subject>\n");

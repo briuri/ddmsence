@@ -30,9 +30,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:organization elements
- * </p>
+ * <p> Tests related to ddms:organization elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -230,12 +228,14 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing name
-			getInstance("At least 1 name element must exist.", null, TEST_PHONES, TEST_EMAILS, SubOrganizationTest.getFixtureList(), getAcronym());
+			getInstance("At least 1 name element must exist.", null, TEST_PHONES, TEST_EMAILS, SubOrganizationTest
+				.getFixtureList(), getAcronym());
 
 			// Empty name
 			List<String> names = new ArrayList<String>();
 			names.add("");
-			getInstance("At least 1 name element must have a non-empty value.", names, TEST_PHONES, TEST_EMAILS, SubOrganizationTest.getFixtureList(), getAcronym());
+			getInstance("At least 1 name element must have a non-empty value.", names, TEST_PHONES, TEST_EMAILS,
+				SubOrganizationTest.getFixtureList(), getAcronym());
 		}
 	}
 

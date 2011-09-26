@@ -26,9 +26,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:source elements
- * </p>
+ * <p> Tests related to ddms:source elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -210,7 +208,8 @@ public class DatesTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Wrong date format (using xs:gDay here)
-			getInstance("The date datatype must be one of", "---31", TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(), getReceivedOn());
+			getInstance("The date datatype must be one of", "---31", TEST_POSTED, TEST_VALID, TEST_CUTOFF,
+				getApprovedOn(), getReceivedOn());
 		}
 	}
 

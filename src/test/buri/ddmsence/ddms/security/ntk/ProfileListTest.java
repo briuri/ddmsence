@@ -31,9 +31,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ntk:AccessProfileList elements
- * </p>
+ * <p> Tests related to ntk:AccessProfileList elements </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -124,10 +122,8 @@ public class ProfileListTest extends AbstractBaseTestCase {
 		xml.append("<ntk:AccessProfileList ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
 		xml.append("\t<ntk:AccessProfile ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml
-			.append("\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml
-			.append("\t\t<ntk:AccessProfileValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>\n");
+		xml.append("\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml.append("\t\t<ntk:AccessProfileValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ntk:vocabulary=\"vocabulary\">profile</ntk:AccessProfileValue>\n");
 		xml.append("\t</ntk:AccessProfile>\n");
 		xml.append("</ntk:AccessProfileList>\n");
 		return (formatXml(xml.toString(), preserveFormatting));
@@ -262,7 +258,7 @@ public class ProfileListTest extends AbstractBaseTestCase {
 	public void testWrongVersion() {
 		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -296,9 +292,11 @@ public class ProfileListTest extends AbstractBaseTestCase {
 			builder.getProfiles().get(0).getProfileValues().get(0).setVocabulary("vocab");
 			builder.getProfiles().get(0).getProfileValues().get(0).setValue("TEST");
 			builder.getProfiles().get(0).getSystemName().getSecurityAttributes().setClassification("U");
-			builder.getProfiles().get(0).getSystemName().getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.getProfiles().get(0).getSystemName().getSecurityAttributes().setOwnerProducers(
+				Util.getXsListAsList("USA"));
 			builder.getProfiles().get(0).getProfileValues().get(0).getSecurityAttributes().setClassification("U");
-			builder.getProfiles().get(0).getProfileValues().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
+			builder.getProfiles().get(0).getProfileValues().get(0).getSecurityAttributes().setOwnerProducers(
+				Util.getXsListAsList("USA"));
 			builder.getProfiles().get(0).getSecurityAttributes().setClassification("U");
 			builder.getProfiles().get(0).getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 			builder.getSecurityAttributes().setClassification("U");

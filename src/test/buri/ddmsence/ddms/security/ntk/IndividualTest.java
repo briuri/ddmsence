@@ -31,9 +31,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ntk:AccessIndividual elements
- * </p>
+ * <p> Tests related to ntk:AccessIndividual elements </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -135,10 +133,8 @@ public class IndividualTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ntk:AccessIndividual ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-		xml
-			.append("\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-		xml
-			.append("\t<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">user_2321889:Doe_John_H</ntk:AccessIndividualValue>\n");
+		xml.append("\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+		xml.append("\t<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">user_2321889:Doe_John_H</ntk:AccessIndividualValue>\n");
 		xml.append("</ntk:AccessIndividual>\n");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
@@ -288,7 +284,7 @@ public class IndividualTest extends AbstractBaseTestCase {
 	public void testWrongVersion() {
 		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
 	}
-	
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

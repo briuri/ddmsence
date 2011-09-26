@@ -29,9 +29,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:postalAddress elements
- * </p>
+ * <p> Tests related to ddms:postalAddress elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -99,7 +97,7 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 	 * @param postalCode the postal code (optional)
 	 * @param countryCode the country code (optional)
 	 * @param hasState true if the stateOrProvince is a state, false if it is a province (only 1 of state or province
-	 *            can exist in a postalAddress)
+	 * can exist in a postalAddress)
 	 * @return a valid object
 	 */
 	private PostalAddress getInstance(String message, List<String> streets, String city, String stateOrProvince,
@@ -197,7 +195,7 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String postalName = PostalAddress.getName(version);
-			
+
 			// Either a state or a province but not both.
 			Element element = Util.buildDDMSElement(postalName, null);
 			element.appendChild(Util.buildDDMSElement("state", TEST_STATE));
@@ -249,7 +247,8 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			List<String> streets = new ArrayList<String>();
 			for (int i = 0; i < 7; i++)
 				streets.add("Street" + i);
-			getInstance("No more than 6 street elements can exist.", streets, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, CountryCodeTest.getFixture(), true);
+			getInstance("No more than 6 street elements can exist.", streets, TEST_CITY, TEST_PROVINCE,
+				TEST_POSTAL_CODE, CountryCodeTest.getFixture(), true);
 		}
 	}
 

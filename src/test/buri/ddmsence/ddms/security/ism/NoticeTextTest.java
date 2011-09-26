@@ -30,13 +30,10 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ISM:NoticeText elements
- * </p>
+ * <p> Tests related to ISM:NoticeText elements </p>
  * 
- * <p>
- * The valid instance of ISM:NoticeText is generated, rather than relying on the ISM schemas to validate an XML file.
- * </p>
+ * <p> The valid instance of ISM:NoticeText is generated, rather than relying on the ISM schemas to validate an XML
+ * file. </p>
  * 
  * @author Brian Uri!
  * @since 2.0.0
@@ -204,16 +201,12 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			Element element = Util
 				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "Unknown");
-			getInstance(
-				"Unknown is not a valid enumeration token",
-				element);
+			getInstance("Unknown is not a valid enumeration token", element);
 
 			// Partial Invalid POCType
 			element = Util.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "ABC Unknown");
-			getInstance(
-				"Unknown is not a valid enumeration token",
-				element);
+			getInstance("Unknown is not a valid enumeration token", element);
 		}
 	}
 
@@ -222,14 +215,10 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Invalid POCType
-			getInstance(
-				"Unknown is not a valid enumeration token",
-				TEST_VALUE, Util.getXsListAsList("Unknown"));
+			getInstance("Unknown is not a valid enumeration token", TEST_VALUE, Util.getXsListAsList("Unknown"));
 
 			// Partial Invalid POCType
-			getInstance(
-				"Unknown is not a valid enumeration token",
-				TEST_VALUE, Util.getXsListAsList("ABC Unknown"));
+			getInstance("Unknown is not a valid enumeration token", TEST_VALUE, Util.getXsListAsList("ABC Unknown"));
 		}
 	}
 
@@ -336,7 +325,7 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			// Equality after Building
 			builder = new NoticeText.Builder(component);
 			assertEquals(builder.commit(), component);
-			
+
 			// Validation
 			builder = new NoticeText.Builder();
 			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
@@ -348,7 +337,7 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 				expectMessage(e, "classification is required.");
 			}
 			builder.getSecurityAttributes().setClassification("U");
-			builder.commit();	
+			builder.commit();
 		}
 	}
 

@@ -27,9 +27,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p>
- * Tests related to ddms:verticalExtent elements
- * </p>
+ * <p> Tests related to ddms:verticalExtent elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -193,9 +191,7 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 			Util.addDDMSAttribute(element, "datum", TEST_DATUM);
 			element.appendChild(Util.buildDDMSElement(getMinVerticalExtentName(), String.valueOf(TEST_MIN)));
 			element.appendChild(Util.buildDDMSElement(getMaxVerticalExtentName(), String.valueOf(TEST_MAX)));
-			getInstance(
-				"The length measure type must be one of",
-				element);
+			getInstance("The length measure type must be one of", element);
 
 			// Missing Datum
 			element = Util.buildDDMSElement(extentName, null);
@@ -291,9 +287,7 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 			getInstance("unitOfMeasure is required.", TEST_MIN, TEST_MAX, null, TEST_DATUM);
 
 			// Invalid UOM
-			getInstance(
-				"The length measure type must be one of",
-				TEST_MIN, TEST_MAX, "furlong", TEST_DATUM);
+			getInstance("The length measure type must be one of", TEST_MIN, TEST_MAX, "furlong", TEST_DATUM);
 
 			// Missing Datum
 			getInstance("datum is required.", TEST_MIN, TEST_MAX, TEST_UOM, null);
@@ -302,8 +296,7 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 			getInstance("The vertical datum type must be one of", TEST_MIN, TEST_MAX, TEST_UOM, "PDQ");
 
 			// MinVerticalExtent is not less than MaxVerticalExtent
-			getInstance("Minimum vertical extent must be less", TEST_MAX, TEST_MIN,
-				TEST_UOM, TEST_DATUM);
+			getInstance("Minimum vertical extent must be less", TEST_MAX, TEST_MIN, TEST_UOM, TEST_DATUM);
 		}
 	}
 
