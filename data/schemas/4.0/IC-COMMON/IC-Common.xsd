@@ -160,7 +160,9 @@
   </xsd:attributeGroup>
   
   <xsd:attributeGroup name="OptionalResourceLinkAttributesGroup">
-    <xsd:attribute ref="xlink:type" fixed="resource" use="optional"/>
+  	<!--  Removing fixed="resource" and enforcing this constraint in Java, because of XOM's
+  		  handling of fixed, optional attributes -->
+    <xsd:attribute ref="xlink:type" use="optional"/>
     <xsd:attribute ref="xlink:role" use="optional"/>
     <xsd:attribute ref="xlink:title" use="optional"/>
     <xsd:attribute ref="xlink:label" use="optional"/>
