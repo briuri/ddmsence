@@ -64,29 +64,44 @@ higher classification levels. This restriction will be addressed in a future rel
 <p><a href="/docs/index.html?buri/ddmsence/ddms/security/ism/NoticeAttributes.html">NoticeAttributes</a> are new in DDMS 4.0, and follow the same patterns used 
 by the SecurityAttributes. The <code>ISM:noticeType</code> attribute is validated against a CVE when present.</p>
 
+<pre class="brush: java">// Assume that a list of noticeTexts, and the security attributes were previously created.
+NoticeAttributes noticeAttributes = new NoticeAttributes("POC", "This is a reason.", "2011-09-15", null);
+Notice notice = new Notice(noticeTexts, securityAttributes, noticeAttributes);
+System.out.println(notice.toXML());</pre>
+<p class="figure">Figure 4. Code to generate NoticeAttributes</p>
+
+<pre class="brush: xml">&lt;ISM:Notice ISM:noticeType="POC" ISM:noticeReason="This is a reason." ISM:noticeDate="2011-09-15"
+   ISM:classification="U" ISM:ownerProducer="USA"&gt;
+   [...]
+&lt;/ISM:Notice&gt;</pre>
+<p class="figure">Figure 5. The resultant XML element with notice attributes</p>
+
 <h2>XLink Attributes</h2>
 
 <p><a href="/docs/index.html?buri/ddmsence/ddms/summary/xlink/XLinkAttributes.html">XLinkAttributes</a> are new in DDMS 4.0, and support the various components
 which provide link attributes. An XLinkAttributes instance can function as 3 different types of XLink attribute groups: locator, simple, and resource, based on
 the value of the <code>xlink:type</code> attribute, or the constructor used to build the instance.</p>
 
+<pre class="brush: java">
+// Constructor for attributes with type="locator", used with ddms:link
+public XLinkAttributes(String href, String role, String title, String label);
+
+// Constructor for attributes with type="resource", used with ddms:revisionRecall
+public XLinkAttributes(String role, String title, String label);
+
+// Constructor for attributes with type="simple", used with ddms:taskID
+public XLinkAttributes(String href, String role, String title, String arcrole, String show, String actuate);</pre>
+<p class="figure">Figure 6. Constructors to generate XLinkAttributes for various purposes</p>
+
 <h2>GML SRS Attributes</h2>
 
 <p>Spatial Reference System (SRS) attributes are defined in the DDMS' GML Profile and implemented as an <a href="/docs/index.html?buri/ddmsence/ddms/summary/gml/SRSAttributes.html">SRSAttributes</a> class.
 They can be applied to <code>gml:Point</code>, <code>gml:Polygon</code>, and <code>gml:pos</code>.</p>
 
-<pre class="brush: java">SRSAttributes(String srsName, Integer srsDimension, List&lt;String&gt; axisLabels,
-   List&lt;String&gt; uomLabels)</pre>
-<p class="figure">Figure 4. SRSAttributes constructor</p>
-
 <p>Here is an example which creates SRS attributes on a <code>gml:pos</code> element:</p>
 
-<pre class="brush: java">List&lt;String&gt; axisLabels = new ArrayList&lt;String&gt;();
-axisLabels.add("X");
-axisLabels.add("Y");
-List&lt;String&gt; uomLabels = new ArrayList&lt;String&gt;();
-uomLabels.add("Meter");
-uomLabels.add("Meter");
+<pre class="brush: java">List&lt;String&gt; axisLabels = Util.getXsListAsList("X Y");
+List&lt;String&gt; uomLabels = Util.getXsListAsList("Meter Meter");
 SRSAttributes srsAttributes = new SRSAttributes("http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D",
    new Integer(10), axisLabels, uomLabels);
 List&lt;Double&gt; coordinates = new ArrayList&lt;Double&gt;();
@@ -94,11 +109,11 @@ coordinates.add(new Double(32.1));
 coordinates.add(new Double(40.1));
 Position position = new Position(coordinates, srsAttributes);
 System.out.println(position.toXML());</pre>
-<p class="figure">Figure 5. Code to generate SRSAttributes</p>
+<p class="figure">Figure 7. Code to generate SRSAttributes</p>
 
 <pre class="brush: xml">&lt;gml:pos srsName="http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D" srsDimension="10" 
    axisLabels="X Y" uomLabels="Meter Meter"&gt;32.1 40.1&lt;/gml:pos&gt;</pre>
-<p class="figure">Figure 6. The resultant XML element with SRS attributes</p>
+<p class="figure">Figure 8. The resultant XML element with SRS attributes</p>
   
 <p>Please note that the SRSAttributes do not belong in any XML namespace -- this is correct according to the DDMS GML Profile.</p>
 
