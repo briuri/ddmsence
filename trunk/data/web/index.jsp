@@ -140,20 +140,16 @@ It transforms XML DDMS Resource records into a Java object model (using XOM and 
 
 <img src="./images/chart.png" width="800" height="300" title="DDMSence Flow Chart"  />
 
-<p>Components created with this library maintain an underlying XOM element structure, which provides latent avenues for future 
-improvement, based on XOM's support of XPath, XInclude, and XSLT. However, you do not need to have any experience with XOM to get started.</p>
-
-<p>DDMSence comes with a complete set of JUnit tests, and code coverage was aided by <a href="http://www.eclemma.org/" target="_new">EclEmma</a>.
-It is being released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
+<p>DDMSence comes with a complete set of JUnit tests, and is being released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
 			
 <h1>About the Author</h1>
 
 <p><img src="./images/BU.jpg" width="73" height="100" title="BU" class="bordered" align="left" />
 <b><a href="http://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a Technical Lead at <a href="http://www.fgm.com/" target="_new">FGM, Inc.</a> 
 in Reston, Virginia. He has been involved in the development and support of the <a href="http://metadata.ces.mil/" target="_new">DoD Metadata Registry</a>
-and other enterprise services since the inception of the Net-Centric Enterprise Services (NCES) program in 2005. His current role supports DISA
-as the Technical Agent for Universal Core (UCore), promoting interoperability with other standards, such as NIEM, DDMS, and various common cores.
-DDMSence grew out of his desire to gain more practical XML Schema experience, to write something useful which had never been done before, and an 
+and other enterprise services since the inception of the Net-Centric Enterprise Services (NCES) program in 2005. He currently supports the Defense
+Information Systems Agency (DISA) in its role as the Technical Agent for Universal Core (UCore). DDMSence was conceived in January 2010 and
+grew out of Brian's desire to gain more practical XML Schema experience, to write something useful which had never been done before, and an 
 unusually large amount of free time.</p>
 
 <div class="clear"></div>
