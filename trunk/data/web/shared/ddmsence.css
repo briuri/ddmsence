@@ -174,7 +174,7 @@ label.error {
 	margin: 0;
 }
 td {
-	background-color: #eeeeee;
+	background-color: #efeff4;
 	border-color: #adb3b5;
 	border-style: dotted;
 	border-width: 1px;
@@ -191,7 +191,7 @@ table {
 	font-size: 10pt;
 }
 th {
-	background-color: #e0e0e0;
+	background-color: #e0e0e5;
 	border-color: #bdc3c5;
 	border-style: dotted;
 	border-width: 1px;

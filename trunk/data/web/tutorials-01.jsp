@@ -44,7 +44,7 @@ The two lower panes contain the results of calling <code>toHTML()</code> and <co
 <pre class="brush: java">// The DDMS reader builds a Resource object from the XML in the file.
 _resource = getReader().getDDMSResource(file);
 			
-// The four output formats
+// The three output formats
 String xmlFormat = getResource().toXML();
 String htmlFormat = getResource().toHTML();
 String textFormat = getResource().toText();</pre>

@@ -90,8 +90,7 @@ shows an example of how the Java object model can be built with simple data type
 application are non-interactive, but provide the foundation for more complex cases: for example, it would
 be possible to plot Temporal Coverage on an 
 <a href="http://code.google.com/apis/visualization/documentation/gallery/annotatedtimeline.html" target="_new">Annotated Timeline</a>, or Geospatial Coverage on 
-<a href="http://code.google.com/apis/visualization/documentation/gallery/map.html" target="_new">Google Maps</a>. While the first two sample applications were 
-designed to teach developers how DDMSence works, the intent of this one is to provide brainstorming ideas for leveraging DDMS in other contexts.</p>
+<a href="http://code.google.com/apis/visualization/documentation/gallery/map.html" target="_new">Google Maps</a>.</p>
 	
 <ul>
 	<li><a href="tutorials-03.jsp">Tutorial #3: Escape</a></li>

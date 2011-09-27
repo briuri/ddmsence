@@ -138,10 +138,20 @@ It transforms XML DDMS Resource records into a Java object model (using XOM and 
 		and <a href="documentation.jsp#tips">Power Tips</a> are available for more experienced users.</li>
 </ul>
 
-<img src="./images/chart.png" width="800" height="300" title="DDMSence Flow Chart"  />
+<img src="./images/chart.png" width="800" height="283" title="DDMSence Flow Chart"  />
 
 <p>DDMSence comes with a complete set of JUnit tests, and is being released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
 			
+<h2>Sample Use Cases</h2>
+
+<ul>
+<li>Reading existing DDMS resources, possibly as part of a query or search service</li>
+<li>Creating new DDMS resources from scratch, possibly as part of a web-based wizard</li>
+<li>Editing existing DDMS resources</li>
+<li>Transforming older DDMS resources to the latest version of DDMS</li>
+<li>Applying custom Community of Interest (COI) constraints on a DDMS resource with Schematron</li>
+</ul>
+
 <h1>About the Author</h1>
 
 <p><img src="./images/BU.jpg" width="73" height="100" title="BU" class="bordered" align="left" />
