@@ -82,7 +82,8 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
-	<div class="newsUpdate"><u>07/17/2011</u>: <a href="downloads.jsp">v1.11.0</a> released, adding <a href="documentation-schematron.jsp">support for XSLT2-based Schematron validation</a>.</div>
+	<div class="newsUpdate"><u>XX/YY/ZZZZ</u>: <a href="downloads.jsp">v2.0.0</a> released, adding support for DDMS 4.0.</div>
+	<div class="newsUpdate"><u>07/17/2011</u>: v1.11.0 released, adding <a href="documentation-schematron.jsp">support for XSLT2-based Schematron validation</a>.</div>
 	<div class="newsUpdate"><u>07/05/2011</u>: v1.10.0 released, adding support for DDMS 3.1.</div>
 	<div class="newsUpdate"><u>06/06/2011</u>: <a href="schematron.jsp">Schematron Implementation for DDMS</a> published.</div>
 	<div class="newsUpdate"><u>06/02/2011</u>: v1.9.1 released. Example code for <a href="validator.uri">DDMS Validator</a> and <a href="builder.uri">DDMS Builder</a> posted.</div>
