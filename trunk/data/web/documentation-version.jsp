@@ -10,47 +10,60 @@
 <a name="top"></a><h1>Power Tip: Working with Different DDMS Versions</h1>
 
 <h2>Using Alternate Versions</h2>
- 
-<p>DDMSence currently supports four versions of DDMS: 2.0, 3.0, 3.1, and 4.0. When building DDMS components from XML files, the 
-DDMSReader class can automatically use the correct version of DDMS based on the XML namespace defined in the file.
-When building DDMS components from scratch, the <a href="/docs/index.html?buri/ddmsence/util/DDMSVersion.html">DDMSVersion</a>
-class controls the version being used. There is an instance of DDMSVersion for each supported version, and this 
-instance contains the specific XML namespaces used for DDMS, GML, NTK, and ISM components.</p>
 
-<div class="clear"></div>
+<p>DDMSence currently supports four versions of DDMS: 2.0, 3.0, 3.1, and 4.0. When loading DDMS components from XML files, the 
+DDMSReader class can automatically use the correct version of DDMS based on the XML namespace defined in the file -- you do not need any extra code.</p>
+
+<pre class="brush: java">Resource resource = getReader().getDDMSResource(my40resourceFile);
+System.out.println("This resource was created with DDMS "
+   + DDMSVersion.getVersionForNamespace(resource.getNamespace()));</pre>
+<p class="figure">Figure 1. Loading resources from XML files</p>
+
+<pre class="brush: xml">This resource was created with DDMS 4.0</pre>
+<p class="figure">Figure 2. Output of the code in Figure 1</p>
+
+<p>When building DDMS components from scratch, the <a href="/docs/index.html?buri/ddmsence/util/DDMSVersion.html">DDMSVersion</a>
+class controls the version being used.</p>
 
 <pre class="brush: java">DDMSVersion.setCurrentVersion("2.0");
-DDMSVersion version = DDMSVersion.getCurrentVersion();
-System.out.println("In DDMS " + version.getVersion() + ", the following namespaces are used: ");
-System.out.println("ddms: " + version.getNamespace());
-System.out.println("gml: " + version.getGmlNamespace());
-System.out.println("ISM: " + version.getIsmNamespace());
-System.out.println("Are we using DDMS 2.0? " + DDMSVersion.isCurrentVersion("2.0"));
-System.out.println("If I see the namespace, http://metadata.dod.mil/mdr/ns/DDMS/3.0/, "
-   + "I know we are using DDMS "
-   + DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/").getVersion());
-
 Identifier identifier = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
    "http://www.whitehouse.gov/news/releases/2005/06/20050621.html");
 System.out.println("This identifier was created with DDMS "
    + DDMSVersion.getVersionForNamespace(identifier.getNamespace()));
-
 DDMSVersion.setCurrentVersion("3.0");
 Identifier identifier2 = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
    "http://www.whitehouse.gov/news/releases/2005/06/20050621.html");
 System.out.println("This identifier was created with DDMS "
    + DDMSVersion.getVersionForNamespace(identifier.getNamespace()));</pre>
-<p class="figure">Figure 1. Using a different version of DDMS</p>
-
-<pre class="brush: xml">In DDMS 2.0, the following namespaces are used: 
-ddms: http://metadata.dod.mil/mdr/ns/DDMS/2.0/
-gml: http://www.opengis.net/gml
-ISM: urn:us:gov:ic:ism:v2
-Are we using DDMS 2.0? true
-If I see the namespace, http://metadata.dod.mil/mdr/ns/DDMS/3.0/, I know we are using DDMS 3.0
-This identifier was created with DDMS 2.0
+<p class="figure">Figure 3. Creating Identifiers using different DDMS versions</p>
+   
+<pre class="brush: xml">This identifier was created with DDMS 2.0
 This identifier was created with DDMS 3.0</pre>
-<p class="figure">Figure 2. Output of the code in Figure 1</p>
+<p class="figure">Figure 4. Output of the code in Figure 3</p>
+  
+<p>There is an instance of DDMSVersion for each supported version, and this instance contains the specific XML namespaces used for DDMS, GML, NTK, and ISM components.</p>
+
+<pre class="brush: java">DDMSVersion.setCurrentVersion("4.0");
+DDMSVersion version = DDMSVersion.getCurrentVersion();
+System.out.println("In DDMS " + version.getVersion() + ", the following namespaces are used: ");
+System.out.println("ddms: " + version.getNamespace());
+System.out.println("gml: " + version.getGmlNamespace());
+System.out.println("ISM: " + version.getIsmNamespace());
+System.out.println("ntk: " + version.getNtkNamespace());
+System.out.println("xlink: " + version.getXlinkNamespace());
+System.out.println("Are we using DDMS 4.0? " + DDMSVersion.isCurrentVersion("4.0"));
+System.out.println("Can we use components that were introduced in DDMS 3.1? " + version.isAtLeast("3.1"));</pre>
+<p class="figure">Figure 5. Learning details of the current DDMSVersion</p>
+
+<pre class="brush: xml">In DDMS 4.0, the following namespaces are used: 
+ddms: urn:us:mil:ces:metadata:ddms:4
+gml: http://www.opengis.net/gml/3.2
+ISM: urn:us:gov:ic:ism
+ntk: urn:us:gov:ic:ntk
+xlink: http://www.w3.org/1999/xlink
+Are we using DDMS 4.0? true
+Can we use components that were introduced in DDMS 3.1? true</pre>
+<p class="figure">Figure 6. Output of the code in Figure 5</p>
 
 <p>Calling <code>DDMSVersion.setCurrentVersion("2.0")</code> will make any components you create from that point on obey DDMS 2.0 
 validation rules. The default version if you never call this method is "4.0" (but you should always explicitly set the current version yourself,
@@ -58,14 +71,16 @@ because this default changes as new versions of DDMS are released). The version 
 is not a thread-safe approach, but I believe that the most common use cases will deal with DDMS components of a single version at a time,
 and I wanted the versioning mechanism to be as unobtrusive as possible.</p>
 
+<h2>Point Releases</h2>
+
 <p>DDMS release 3.0.1 was merely a documentation release which clarified some of the supporting documentation on geospatial elements. Because none of the 
-schemas or components themselves were updated, 3.0.1 reuses all of the same technical information from 3.0 (ncluding XML namespaces). DDMSence treats 3.0.1 as an alias 
+schemas or components themselves were updated, 3.0.1 reuses all of the same technical information from 3.0 (including XML namespaces). DDMSence treats 3.0.1 as an alias 
 for DDMS 3.0 -- you can set your DDMS version to 3.0.1, but DDMSence will continue to use DDMS 3.0 artifacts.</p>
 
 <pre class="brush: java">DDMSVersion.setCurrentVersion("3.0.1");
 System.out.println(DDMSVersion.getCurrentVersion().getVersion());
 </pre>
-<p class="figure">Figure 3. This code will print out "3.0".</p>
+<p class="figure">Figure 7. This code will print out "3.0".</p>
 
 <h2>Differences Between Versions</h2>
 
@@ -76,7 +91,7 @@ entity for producers was not introduced until DDMS 3.0, so attempts to create on
 List&lt;String&gt; names = new ArrayList&lt;String&gt;();
 names.add("Unknown Entity");
 Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
-<p class="figure">Figure 4. This code will throw an InvalidDDMSException</p>
+<p class="figure">Figure 8. This code will throw an InvalidDDMSException</p>
 
 <p>If you have a set of DDMS resources from an older version of DDMS and wish to transform them to a newer version, you can do so with the <a href="documentation-builders.jsp">Component
 Builder</a> framework. Builders allow you to load the old resource, add any new fields that are required, and save it in the new version.</p>
