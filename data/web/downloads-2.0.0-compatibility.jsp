@@ -7,7 +7,7 @@
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<h1>Upgrade Guide: Version 1.x to 2.0.0</h1>
+<a name="top"></a><h1>Upgrade Guide: Version 1.x to 2.0.0</h1>
 
 <p>In order to cleanly and comprehensively support DDMS 4.0, DDMSence 2.0.0 required multiple changes which
 might break backwards compatibility with your existing code. Some of these changes are as simple as new package names
@@ -290,6 +290,7 @@ then on the XML namespace (ISM, GML, etc.).</p>
 </div>
 
 <p>
+	<a href="#top">Back to Top</a><br>
 	<a href="downloads.jsp">Back to Downloads</a>
 </p>
 
