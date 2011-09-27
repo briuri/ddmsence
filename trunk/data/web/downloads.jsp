@@ -24,13 +24,13 @@ I have also included a <code>.project</code> file if you wish to import the proj
 
 <h1>Latest Release: v2.0.0</h1>
 
-<p>Version <b>2.0.0</b> (MM/DD/2011) is a stable, major release, which adds support for DDMS 4.0. It is <i>not</i> backwards compatible with previous versions. Upgrading your existing
+<p>Version <b>2.0.0</b> (XX/YY/ZZZZ) is a stable, major release, which adds support for DDMS 4.0. It is <i>not</i> backwards compatible with previous versions. Upgrading your existing
 code to use this version should be straightforward, but may require a non-trivial effort. An upgrade guide is linked below, and I will be glad to assist you as well.</p>
 
 <ul>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.0.0.zip"><code>ddmsence-bin-2.0.0.zip</code></a></b> (X.X MB, compiled with JDK1.6.0_25, source level 1.5)</li>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-2.0.0.zip"><code>ddmsence-src-2.0.0.zip</code></a></b> (X.X MB)</li>
-<li><a href="downloads-2.0.0-compatibility.jsp">Upgrade Guide: Version 1.x to 2.0.0</a></li>
+<li><a href="upgrade-2.0.0.jsp">Upgrade Guide: Version 1.x to 2.0.0</a></li>
 </ul>
 
 <h3>Versioning</h3>
