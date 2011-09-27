@@ -78,6 +78,9 @@ names.add("Unknown Entity");
 Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 <p class="figure">Figure 4. This code will throw an InvalidDDMSException</p>
 
+<p>If you have a set of DDMS resources from an older version of DDMS and wish to transform them to a newer version, you can do so with the <a href="documentation-builders.jsp">Component
+Builder</a> framework. Builders allow you to load the old resource, add any new fields that are required, and save it in the new version.</p>
+
 <p>The tables below identify the key differences between supported versions of DDMS components in DDMSence.</p>
 <table width="100%">
 <tr><th width="36%">Component</th><th width="32%">DDMS 2.0 Notes</th><th width="32%">DDMS 3.0 Notes</th></tr>
@@ -183,7 +186,6 @@ Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
 <tr><td><code>@ISM:SCIcontrols</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ISM:typeOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td></tr></table>
 <p class="figure">Table 4. Security Attribute changes from DDMS 2.0 to DDMS 4.0</p>
-
 
 <p>
 	<a href="#top">Back to Top</a><br>
