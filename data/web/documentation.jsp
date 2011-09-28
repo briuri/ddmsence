@@ -56,7 +56,7 @@ java -cp $ddmsence_classpath buri.ddmsence.samples.Essentials</pre>
 to change the version numbers in the classpath examples.</p>
 
 <a name="samples"></a><h4>Sample Applications</h4>
-<!-- DDMScargo(t), DDMScrow, DDMSophagus, DDMStrogen, DDMStuary, DDMSquire, DDMSteem, DDMStablishment, DDMStimator, DDMScalator, DDMState -->
+<!-- DDMScargo(t), DDMScrow, DDMSophagus, DDMSpresso, DDMStrogen, DDMStuary, DDMSquire, DDMSteem, DDMStablishment, DDMStimator, DDMScalator, DDMState -->
 
 <p>
 <img src="./images/essentials-thumb.png" width="300" height="200" title="Essentials Screenshot" align="right" />

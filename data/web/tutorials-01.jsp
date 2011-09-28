@@ -25,7 +25,7 @@ optional parameter: the name of a file to load upon startup.</p>
 
 <p>When the application first opens, go to the <i>File</i> menu and choose <i>Open...</i>. You will be able to select an XML file containing
 a DDMS resource. Sample files from various versions of DDMS can be found in the <code>data/sample/</code> directory. Let's start by
-selecting the sample file, <code>3.0-identifierPostalAddressExample.xml</code> and clicking on the <i>Open</i> button.</p>
+selecting the sample file, <code>3.1-identifierPostalAddressExample.xml</code> and clicking on the <i>Open</i> button.</p>
 
 <img src="./images/essentials-02.png" width="300" height="214" title="Essentials File Chooser" />
 <p class="figure">Figure 1. Selecting an existing DDMS Record from an XML file</p>
