@@ -73,7 +73,7 @@ getTopLevelComponents().add(inputLoop(MetacardInfo.class));</pre>
    IDDMSComponent component = null;
    while (component == null) {
       try {
-         component = BUILDERS.get(theClass).build();
+         component = CONSTRUCTOR_BUILDERS.get(theClass).build();
       }
       catch (InvalidDDMSException e) {
          printError(e);
@@ -83,11 +83,11 @@ getTopLevelComponents().add(inputLoop(MetacardInfo.class));</pre>
 }</pre>
 <p class="figure">Figure 4. Source code to continuously loop until a valid component is created</p>
 
-<p>An anonymous implementation of IComponentBuilder is created (in the <u>Escort</u> constructor) for each DDMS Component class, and each Builder
+<p>An anonymous implementation of IConstructorBuilder is created (in the <u>Escort</u> constructor) for each DDMS Component class, and each Builder
 is responsible for one top-level component. Some Builders, like the one for a MetacardInfo will use other Builders to create child components.
 For example, here is the definition of the Builder that builds Identifiers:</p>
 
-<pre class="brush: java">BUILDERS.put(Identifier.class, new IComponentBuilder() {
+<pre class="brush: java">CONSTRUCTOR_BUILDERS.put(Identifier.class, new IConstructorBuilder() {
    public IDDMSComponent build() throws IOException, InvalidDDMSException {
       String qualifier = readString("the qualifier [testQualifier]");
       String value = readString("the value [testValue]");
