@@ -105,9 +105,9 @@ up into single words (to make the visualization more exciting).</p>
 <p>The source code for this visualization can be found in the <code>buildDateGraph()</code> method. Dates can appear in a DDMS Resource in multiple locations:</p>
 
 <ul>
-	<li>There are four date attributes in the <code>ddms:dates</code> element, which apply to the resource being described.</li>
+	<li>There are six date attributes in the <code>ddms:dates</code> element, which apply to the resource being described.</li>
 	<li>If any <code>ddms:temporalCoverage</code> elements are defined, each one may have a start date and an end date.</li>
-	<li>The resource record itself has a createDate attribute in DDMS 3.0.</li>
+	<li>The resource record itself has a createDate attribute starting in DDMS 3.0.</li>
 </ul>
 
 <pre class="brush: java">Distribution distribution = new Distribution();
@@ -123,9 +123,13 @@ for (Resource resource : getResources()) {
          distribution.incrementCount(String.valueOf(dates.getValidTil().getYear()));
       if (dates.getInfoCutOff() != null)
          distribution.incrementCount(String.valueOf(dates.getInfoCutOff().getYear()));
+      if (dates.getApprovedOn() != null)
+         distribution.incrementCount(String.valueOf(dates.getApprovedOn().getYear()));
+      if (dates.getReceivedOn() != null)
+         distribution.incrementCount(String.valueOf(dates.getReceivedOn().getYear()));
    }
    
-   // Resource createDate (required field in 3.0, optional in 2.0)
+   // Resource createDate (required field starting in 3.0, optional in 2.0)
    if (resource.getCreateDate() != null)
       distribution.incrementCount(String.valueOf(resource.getCreateDate().getYear()));
    
