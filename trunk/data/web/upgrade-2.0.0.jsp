@@ -144,13 +144,31 @@ constructor for RelatedResource expects a construct that describes a single rela
 &lt;/ddms:relatedResources&gt;</pre>
 
 <p>If the element-based constructor of RelatedResource encounters this case of multiples, it will only process the first
-related resource and provide a validation warning message. However, the element-based constructor for the entire Resource
+related resource and provide a validation warning message that it is skipping the remainder. However, the element-based constructor for the entire Resource
 has been updated to mediate this case automatically. The result will be 2 RelatedResource instances, each with the same relation and direction attributes.</p>
 
 <p><b>How to Upgrade:</b></p>
 <p>If your code is working at the Resource level, you don't need to do a thing. The Resource constructors can handle all legal
 ddms:relatedResources or ddms:relatedResource elements in all supported DDMS versions. However, if you were instantiating RelatedResources or 
 RelatedResource classes directly via the data-based constructors, you will need to update your code to stop using the removed class.</p>
+
+<p>If you had old code that looked like this:</p>
+
+<pre class="brush: java">List&lt;RelatedResource&gt; list = new ArrayList&lt;RelatedResource&gt;();
+list.add(new RelatedResource(links, "qualifier", "resource1"));
+list.add(new RelatedResource(links, "qualifier", "resource2"));
+RelatedResources resources = new RelatedResources(list, "http://purl.org/dc/terms/references",
+   "outbound", securityAttributes);
+myTopLevelComponents.add(resources);</pre>
+   
+<p>The RelatedResources wrapper is now removed:</p>
+
+<pre class="brush: java">
+myTopLevelComponents.add(new RelatedResource(links, "http://purl.org/dc/terms/references", "outbound", "qualifier",
+   "resource1"));
+myTopLevelComponents.add(new RelatedResource(links, "http://purl.org/dc/terms/references", "outbound", "qualifier",
+   "resource2"));</pre>
+   
 </div>
 
 <h3>Minor Changes</h3>
