@@ -147,6 +147,20 @@ resulting data is not logical. To provide some consistency in this library, I ha
 	that are legal according to the schema, but I wanted to minimize the cases where this library might interfere with existing records.</li>
 </ul>
 
+<h4>Lists of Strings</h4>
+
+<p>In some instances, the DDMS specification supports multiple string values, either by  multiple elements (<code>ddms:name</code> elements on a <code>ddms:person</code>)
+or by supporting the <code>xsd:list</code> datatype (the <code>ISM:ownerProducer</code> security attribute). The accessor methods for these fields in DDMSence will always deal with
+a List of String values, rather than a space-separated String containing multiple values. However, because list management can be tedious, there is a shortcut utility method available:
+
+<pre class="brush: java">// These two approaches to generating ownerProducers are equivalent.
+List&lt;String&gt; ownerProducers = new ArrayList&lt;String&gt;();
+ownerProducers.add("AUS");
+ownerProducers.add("USA");
+
+List&lt;String&gt; ownerProducers = Util.getXsListAsList("AUS USA");</pre>
+<p class="figure">Figure 3. Conveniently creating a list of Strings from a space-delimited String</p>
+
 <h4>Immutability</h4>
 
 <p>All DDMS components are implemented as immutable objects, which means that their values cannot be changed after instantiation. Because the components are

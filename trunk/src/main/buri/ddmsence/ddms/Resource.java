@@ -114,7 +114,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:virtualCoverage</u>: (0-many optional), implemented as a {@link VirtualCoverage}<br />
  * <u>ddms:temporalCoverage</u>: (0-many optional), implemented as a {@link TemporalCoverage}<br />
  * <u>ddms:geospatialCoverage</u>: (0-many optional), implemented as a {@link GeospatialCoverage}<br />
- * <u>ddms:relatedResources</u>: (0-many optional), implemented as a {@link RelatedResource}<br />
+ * <u>ddms:relatedResource</u>: (0-many optional), implemented as a {@link RelatedResource}<br />
  * <u>ddms:resourceManagement</u>: (0-1 optional, starting in DDMS 4.0), implemented as a {@link ResourceManagement}<br />
  * <u>ddms:security</u>: (exactly 1 required), implemented as a {@link Security}<br />
  * <u>Extensible Layer</u>: (0-many optional), implemented as a {@link ExtensibleElement}<br />

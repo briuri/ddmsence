@@ -25,17 +25,18 @@ import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 
 /**
- * Simple interface for a builder which takes data
- * from the command line and converts it into a DDMS Component.
+ * Simple interface for a builder which takes data from the command line and converts it into a DDMS Component.
  * 
  * <p>
- * This interface is used in the Escort application.
+ * This interface is used in the Escort application. It is NOT the same as the {@link IBuilder} interface in the main
+ * DDMSence library. This builder works by directly calling the constructor of a component, while the {@link IBuilder}
+ * interface is a stateful builder that loads all of the pieces of a component and then commits the changes.
  * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.d
  */
-public interface IComponentBuilder {
+public interface IConstructorBuilder {
 
 	/**
 	 * Takes user input and constructs a DDMS Component
