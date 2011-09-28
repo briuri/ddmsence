@@ -41,7 +41,7 @@ SubjectCoverage subjectCoverage = builder.commit(); // All validation occurs her
 
 <p>As you can see, the Builder approach treats the building process from a "top-down" perspective. By using 
 a <a href="http://ddmsence.urizone.net/docs/buri/ddmsence/ddms/Resource.Builder.html">Resource.Builder</a> instance, you can edit and traverse
-a complete DDMS Resource, without necessarily needing to understand the intricacies of the components you aren't worried about. The code sample
+a complete DDMS Resource, without necessarily needing to understand the intricacies of the components you aren't worried about. The code sample below
 takes a List of pre-existing DDMS Resources, uses the Builder framework to edit a <code>ddms:dates</code> attribute on each one, and saves the results in a new List.</p>
  
 <pre class="brush: java">List&lt;Resource&gt; updatedResources = new ArrayList&lt;Resource&gt;();
