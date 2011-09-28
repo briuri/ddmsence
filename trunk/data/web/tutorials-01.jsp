@@ -27,12 +27,12 @@ optional parameter: the name of a file to load upon startup.</p>
 a DDMS resource. Sample files from various versions of DDMS can be found in the <code>data/sample/</code> directory. Let's start by
 selecting the sample file, <code>3.1-identifierPostalAddressExample.xml</code> and clicking on the <i>Open</i> button.</p>
 
-<img src="./images/essentials-02.png" width="300" height="214" title="Essentials File Chooser" />
+<img src="./images/essentials-02.png" width="300" height="212" title="Essentials File Chooser" />
 <p class="figure">Figure 1. Selecting an existing DDMS Record from an XML file</p>
 
 <p>The application will convert the XML file into a Java object model and then display the results in three separate panes.</p>
 
-<img src="./images/essentials-01.png" width="800" height="532" title="Essentials Screenshot" />
+<img src="./images/essentials-01.png" width="800" height="535" title="Essentials Screenshot" />
 <p class="figure">Figure 1. The three output formats</p>
 
 <p>The top pane contains the result of calling <code>toXML()</code> on the Resource object. It should be identical to the data from the file.
