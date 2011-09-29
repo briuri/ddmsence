@@ -43,13 +43,12 @@ with the "<code>icism.cve.customEnumLocation</code>" custom property. Starting w
 these vocabularies were enforced in the schemas themselves, as well as the CVE files. So, being able to change to a custom set of CVE files
 no longer made sense, because the CVEs would then conflict with the values in the generated schema files.</p>
 
-<p><a href="http://code.google.com/p/ddmsence/issues/detail?id=154">Issue #154</a> tracks future work to reintroduce 
-this general concept of swappable ISM, but at the schema level and not just the vocabulary level.</p>
-
 <p><b>How to Upgrade:</b></p>
-<p>There is no workaround at this time. The selection of CVE is now based upon the current DDMSVersion and uses bundled Public Release CVEs all of the
-time. You can still toggle CVEs between warnings and errors with the "<code>ism.cve.validationAsErrors</code>" custom property.</p> 
-<p>Please contact me with feedback on how you used this feature previously so I can support your use case in the future.</p>
+<p>The selection of CVE is now based upon the current DDMSVersion and uses bundled Public Release CVEs all of the
+time. It is possible to swap out your entire set of ISM schemas and vocabularies by editing the DDMSence JAR files, as discussed in this
+<a href="documentation-differentIsm.jsp">Power Tip</a>, but it requires a fair amount of do-it-yourself configuration. 
+<p><a href="http://code.google.com/p/ddmsence/issues/detail?id=154">Issue #154</a> tracks future work to reintroduce 
+this general concept of swappable ISM as a runtime configuration step rather than through JAR magic.</p> 
 </div>
 
 <a name="major-02"></a><h4>Producer/Entity hierarchy changed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=153">Issue #153</a>)</h4>
