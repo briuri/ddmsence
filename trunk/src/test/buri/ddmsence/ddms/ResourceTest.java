@@ -1666,7 +1666,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		builder.commit();
 	}
 
-	public void testBuilderEmptiness() {
+	public void testBuilderIsEmpty() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
