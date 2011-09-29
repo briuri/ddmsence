@@ -341,6 +341,27 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testAddTo() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			SRSAttributes component = getFixture();
+			
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), "sample", version.getGmlNamespace(), null);
+			component.addTo(element);
+			SRSAttributes output = new SRSAttributes(element);
+			assertEquals(component, output);
+		}
+	}
+
+	public void testGetNonNull() throws InvalidDDMSException {
+		SRSAttributes component = new SRSAttributes(null, null, null, null);
+		SRSAttributes output = SRSAttributes.getNonNullInstance(null);
+		assertEquals(component, output);
+		
+		output = SRSAttributes.getNonNullInstance(getFixture());
+		assertEquals(getFixture(), output);
+	}
+	
 	public void testWrongVersionAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		SRSAttributes attr = getFixture();

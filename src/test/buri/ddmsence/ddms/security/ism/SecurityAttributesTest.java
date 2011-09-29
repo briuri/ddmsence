@@ -415,6 +415,38 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testAddTo() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			SecurityAttributes component = getFixture();
+			
+			Element element = Util.buildDDMSElement("sample", null);
+			component.addTo(element);
+			SecurityAttributes output = new SecurityAttributes(element);
+			assertEquals(component, output);
+		}
+	}
+
+	public void testGetNonNull() throws InvalidDDMSException {
+		SecurityAttributes component = new SecurityAttributes(null, null, null);
+		SecurityAttributes output = SecurityAttributes.getNonNullInstance(null);
+		assertEquals(component, output);
+		
+		output = SecurityAttributes.getNonNullInstance(getFixture());
+		assertEquals(getFixture(), output);
+	}
+	
+	public void testIsEmpty() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			SecurityAttributes dataAttributes = getInstance(SUCCESS, null, null, null);
+			assertTrue(dataAttributes.isEmpty());
+			dataAttributes = getInstance(SUCCESS, TEST_CLASS, null, null);
+			assertFalse(dataAttributes.isEmpty());
+		}
+	}
+	
 	public void testWrongVersionAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		SecurityAttributes attr = getInstance(SUCCESS, TEST_CLASS, TEST_OWNERS, getOtherAttributes());

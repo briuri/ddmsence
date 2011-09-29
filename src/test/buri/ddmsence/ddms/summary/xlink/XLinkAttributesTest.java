@@ -413,7 +413,6 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 			dataAttributes = getInstance(SUCCESS, TEST_ROLE, TEST_TITLE, TEST_LABEL);
 			assertEquals(elementAttributes, dataAttributes);
 			assertEquals(elementAttributes.hashCode(), dataAttributes.hashCode());
-
 		}
 	}
 
@@ -528,6 +527,27 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testAddTo() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			XLinkAttributes component = getLocatorFixture();
+			
+			Element element = Util.buildDDMSElement("sample", null);
+			component.addTo(element);
+			XLinkAttributes output = new XLinkAttributes(element);
+			assertEquals(component, output);
+		}
+	}
+
+	public void testGetNonNull() throws InvalidDDMSException {
+		XLinkAttributes component = new XLinkAttributes();
+		XLinkAttributes output = XLinkAttributes.getNonNullInstance(null);
+		assertEquals(component, output);
+		
+		output = XLinkAttributes.getNonNullInstance(getLocatorFixture());
+		assertEquals(getLocatorFixture(), output);
+	}
+	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -561,7 +581,9 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 			assertTrue(builder.isEmpty());
 			builder.setLabel(TEST_LABEL);
 			assertFalse(builder.isEmpty());
-
+			XLinkAttributes output = builder.commit();
+			assertTrue(Util.isEmpty(output.getType()));
+			
 		}
 	}
 }

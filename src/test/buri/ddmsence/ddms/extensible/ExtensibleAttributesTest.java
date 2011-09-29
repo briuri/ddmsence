@@ -190,19 +190,6 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testIsEmpty() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Element element = new Keyword("testValue", null).getXOMElementCopy();
-			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
-			ExtensibleAttributes elementAttributes = getInstance(SUCCESS, element);
-			assertFalse(elementAttributes.isEmpty());
-
-			ExtensibleAttributes dataAttributes = getInstance(SUCCESS, (List<Attribute>) null);
-			assertTrue(dataAttributes.isEmpty());
-		}
-	}
-
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -244,6 +231,40 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			elementAttributes = getInstance(SUCCESS, attributes);
 			assertEquals(getExpectedOutput(true), elementAttributes.getOutput(true, ""));
 			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, ""));
+		}
+	}
+	
+	public void testAddTo() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			ExtensibleAttributes component = getFixture();
+			
+			Element element = Util.buildDDMSElement("sample", null);
+			component.addTo(element);
+			ExtensibleAttributes output = new ExtensibleAttributes(element);
+			assertEquals(component, output);
+		}
+	}
+
+	public void testGetNonNull() throws InvalidDDMSException {
+		ExtensibleAttributes component = new ExtensibleAttributes((List) null);
+		ExtensibleAttributes output = ExtensibleAttributes.getNonNullInstance(null);
+		assertEquals(component, output);
+		
+		output = ExtensibleAttributes.getNonNullInstance(getFixture());
+		assertEquals(getFixture(), output);
+	}
+	
+	public void testIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Element element = new Keyword("testValue", null).getXOMElementCopy();
+			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
+			ExtensibleAttributes elementAttributes = getInstance(SUCCESS, element);
+			assertFalse(elementAttributes.isEmpty());
+
+			ExtensibleAttributes dataAttributes = getInstance(SUCCESS, (List<Attribute>) null);
+			assertTrue(dataAttributes.isEmpty());
 		}
 	}
 
