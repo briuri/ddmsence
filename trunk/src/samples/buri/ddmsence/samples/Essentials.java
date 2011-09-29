@@ -38,7 +38,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * DDMSsentials is a simple reader application which loads a DDMS Resource from a file, and displays it in four formats.
+ * DDMSsentials is a simple reader application which loads a DDMS Resource from a file, and displays it in three formats.
  * 
  * <ol>
  * <li>The original XML</li>
