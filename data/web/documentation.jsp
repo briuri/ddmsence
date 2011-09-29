@@ -208,6 +208,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 	code for using the official ISM.XML Schematron files.</li>
 	<li><a href="documentation-configuration.jsp">Configurable Properties</a>: Identifies DDMSence properties which can be changed at runtime.</li>
 	<li><a href="documentation-extensible.jsp">The Extensible Layer</a>: Discusses how the library provides support for the custom elements and attributes allowed by the DDMS specification.</li>
+	<li><a href="documentation-differentIsm.jsp">Using Alternate Versions of ISM</a>: Shows how to swap out the Public Release version of ISM that is bundled with DDMSence.</li>
 </ul>
 
 <a name="explorations"></a><h3>Explorations</h3>
