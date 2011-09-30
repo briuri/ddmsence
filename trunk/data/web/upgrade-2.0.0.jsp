@@ -35,13 +35,13 @@ problems, I would be glad to assist you further.</p>
 
 <h3>Major Changes</h3>
 
-<a name="major-01"></a><h4>Swappable CVE feature removed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=95">Issue #95</a>)</h4> 
+<a name="major-01"></a><h4>Swappable CVE feature removed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=95">Issue #95</a> and <a href="http://code.google.com/p/ddmsence/issues/detail?id=169">Issue #169</a>)</h4> 
 
 <div class="upgradeGuide">
 <p>In previous versions of DDMSence, you could point to a custom set of ISM Controlled Vocabulary Enumeration files
 with the "<code>icism.cve.customEnumLocation</code>" custom property or toggle CVEs to suppress errors with "<code>icism.cve.validationAsErrors</code>". 
 Starting with V5 of ISM.XML (the version bundled with DDMS 3.1),
-these vocabularies were enforced in the schemas themselves, as well as the CVE files. So, being able to change to a custom set of CVE files or suppress
+these vocabularies were enforced in the schemas themselves. So, being able to change to a custom set of CVE files or suppress
 errors no longer made sense, because the CVEs would then present conflicting results when compared to the generated schema files,
 which strictly enforce the vocabularies.</p>
 
