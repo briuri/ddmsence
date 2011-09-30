@@ -120,7 +120,7 @@ public final class NoticeText extends AbstractSimpleString {
 		requireVersion("4.0");
 		if (getDDMSVersion().isAtLeast("4.0")) {
 			for (String pocType : getPocTypes())
-				validateEnumeration(ISMVocabulary.CVE_POC_TYPE, pocType);
+				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_POC_TYPE, pocType);
 		}
 		super.validate();
 	}

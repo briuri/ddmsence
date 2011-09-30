@@ -240,14 +240,6 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			String text = "An ISM:NoticeText element was found with no value.";
 			String locator = "ISM:NoticeText";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-
-			// Invalid POCType with CVEAsWarnings
-			PropertyReader.setProperty("ism.cve.validationAsErrors", "false");
-			component = getInstance(SUCCESS, TEST_VALUE, Util.getXsListAsList("Unknown"));
-			assertEquals(1, component.getValidationWarnings().size());
-			text = "Unknown is not a valid enumeration token for this attribute, as specified in CVEnumISMPocType.xml.";
-			locator = "ISM:NoticeText";
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
 

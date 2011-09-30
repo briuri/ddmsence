@@ -22,7 +22,6 @@ instead of "ISM", you would set the "ism.prefix" property with a custom value of
 <tr><th>Property Name</th><th>Description</th><th>Default Value</th></tr>
 <tr><td>ddms.prefix</td><td>Default DDMS prefix used when generating components from scratch</td><td><code>ddms</code></td></tr>
 <tr><td>gml.prefix</td><td>Default GML prefix used when generating components from scratch</td><td><code>gml</code></td></tr>
-<tr><td>ism.cve.validationAsErrors</td><td>When validating SecurityAttributes, ISM Controlled Vocabulary checks should return errors, instead of warnings</td><td><code>true</code></td></tr>
 <tr><td>ism.prefix</td><td>Default ISM prefix used when generating components from scratch</td><td><code>ISM</code></td></tr>
 <tr><td>ntk.prefix</td><td>Default NTK prefix used when generating components from scratch</td><td><code>ntk</code></td></tr>
 <tr><td>sample.data</td><td>Default data directory used by sample applications</td><td><code>data/sample/</code></td></tr>

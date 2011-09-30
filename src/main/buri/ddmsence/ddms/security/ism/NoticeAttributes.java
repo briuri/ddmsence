@@ -172,11 +172,6 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 
 	/**
 	 * Validates the attribute group. Where appropriate the {@link ISMVocabulary} enumerations are validated.
-	 * For any validation rule in which the value "must be a valid token", the configurable property,
-	 * <code>icism.cve.validationAsErrors</code> determines whether the results of these checks are returned
-	 * as errors or warnings. The default behavior is to return errors when a value is not found in a controlled
-	 * vocabulary. Note that this property does not affect other types of rules -- for example, a
-	 * noticeReason which is too long will always result in an error.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>If set, the noticeType attribute must be a valid token.</li>
@@ -193,7 +188,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 		// Should be reviewed as additional versions of DDMS are supported.
 		DDMSVersion version = getDDMSVersion();
 		if (version.isAtLeast("4.0") && !Util.isEmpty(getNoticeType()))
-			validateEnumeration(ISMVocabulary.CVE_NOTICE_TYPE, getNoticeType());
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_NOTICE_TYPE, getNoticeType());
 		if (!Util.isEmpty(getNoticeReason()) && getNoticeReason().length() > MAX_LENGTH)
 			throw new InvalidDDMSException("The noticeReason attribute must be shorter than " + MAX_LENGTH
 				+ " characters.");
