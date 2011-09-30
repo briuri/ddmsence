@@ -51,11 +51,6 @@ import buri.ddmsence.util.Util;
  * Representation of the Controlled Vocabulary enumerations used by ISM attributes.
  * 
  * <p>
- * The set of CVEs used can be configured with the configurable property, <code>icism.cve.enumLocation</code>,
- * which points to a classpath resource location where the XML files can be found. Enumeration files are reloaded
- * on each <code>enumContains()</code> call, if this property has changed.</p>
- * 
- * <p>
  * Token values are read from the CVEnumISM.xml files accompanying the "XML Data Encoding Specification for Information
  * Security Marking Metadata". They can then be used to validate the contents of the attributes
  * in a {@link SecurityAttributes} or {@link NoticeAttributes} instance.
@@ -83,9 +78,6 @@ import buri.ddmsence.util.Util;
  * </ul>
  * 
  * <p>Some of these vocabularies include regular expression patterns.</p>
- * 
- * <p>Separate Java lists of Classification values are maintained to calculate the ordering of classifications from 
- * least to most restrictive.</p>
  * 
  * @author Brian Uri!
  * @since 0.9.d
@@ -308,6 +300,21 @@ public class ISMVocabulary {
 	}
 	
 	/**
+	 * Helper method to validate a value from a controlled vocabulary.
+	 * 
+	 * @param enumerationKey the key of the enumeration
+	 * @param value the test value
+	 * @throws InvalidDDMSException if the value is not and validation should result in errors
+	 */
+	public static void validateEnumeration(String enumerationKey, String value) throws InvalidDDMSException {
+		setDDMSVersion(getDDMSVersion());
+		if (!enumContains(enumerationKey, value)) {
+			String message = getInvalidMessage(enumerationKey, value);
+			throw new InvalidDDMSException(message);
+		}
+	}
+	
+	/**
 	 * Checks if a value exists in the controlled vocabulary identified by the key. If the value does not match the
 	 * tokens, but the CVE also contains patterns, the regular expression pattern is checked next. If neither tokens or
 	 * patterns returns a match, return false.
@@ -317,7 +324,7 @@ public class ISMVocabulary {
 	 * @return true if the value exists in the enumeration, false otherwise
 	 * @throws IllegalArgumentException on an invalid key
 	 */
-	public static boolean enumContains(String enumerationKey, String value) {
+	protected static boolean enumContains(String enumerationKey, String value) {
 		Util.requireValue("key", enumerationKey);
 		boolean isValidToken = getEnumerationTokens(enumerationKey).contains(value);
 		if (!isValidToken) {

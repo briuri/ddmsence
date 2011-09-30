@@ -27,7 +27,6 @@ import java.util.Map;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
-import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.ddms.resource.Title;
 import buri.ddmsence.ddms.security.Security;
@@ -120,7 +119,6 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 	 */
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		PropertyReader.setProperty("ism.cve.validationAsErrors", "true");
 	}
 
 	/**
@@ -648,23 +646,6 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 		catch (InvalidDDMSException e) {
 			expectMessage(e, "UnknownValue is not a valid enumeration token");
-		}
-	}
-
-	public void testCVEWarnings() {
-		PropertyReader.setProperty("ism.cve.validationAsErrors", "false");
-		Map<String, String> map = new HashMap<String, String>();
-		map.put(SecurityAttributes.DECLASS_EXCEPTION_NAME, "UnknownValue");
-		try {
-			SecurityAttributes attr = new SecurityAttributes(TEST_CLASS, TEST_OWNERS, map);
-			List<ValidationMessage> warnings = attr.getValidationWarnings();
-			assertEquals(1, warnings.size());
-			assertEquals(
-				"UnknownValue is not a valid enumeration token for this attribute, as specified in CVEnumISM25X.xml.",
-				warnings.get(0).getText());
-		}
-		catch (InvalidDDMSException e) {
-			fail("An exception was thrown when a warning was expected.");
 		}
 	}
 

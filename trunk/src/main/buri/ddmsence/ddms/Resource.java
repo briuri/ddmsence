@@ -721,7 +721,7 @@ public final class Resource extends AbstractBaseComponent {
 		if (!getDDMSVersion().isAtLeast("3.1") && !getCompliesWiths().isEmpty())
 			throw new InvalidDDMSException("The compliesWith attribute cannot be used until DDMS 3.1 or later.");
 		for (String with : getCompliesWiths())
-			validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);
 		if ("3.1".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getIsmDESVersion())))
 			throw new InvalidDDMSException("The ISM:DESVersion must be 5 in DDMS 3.1 resources.");
 		if ("4.0".equals(getDDMSVersion().getVersion()) && !(new Integer(7).equals(getIsmDESVersion())))

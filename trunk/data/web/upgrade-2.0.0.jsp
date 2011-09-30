@@ -39,12 +39,14 @@ problems, I would be glad to assist you further.</p>
 
 <div class="upgradeGuide">
 <p>In previous versions of DDMSence, you could point to a custom set of ISM Controlled Vocabulary Enumeration files
-with the "<code>icism.cve.customEnumLocation</code>" custom property. Starting with V5 of ISM.XML (the version bundled with DDMS 3.1),
-these vocabularies were enforced in the schemas themselves, as well as the CVE files. So, being able to change to a custom set of CVE files
-no longer made sense, because the CVEs would then conflict with the values in the generated schema files.</p>
+with the "<code>icism.cve.customEnumLocation</code>" custom property or toggle CVEs to suppress errors with "<code>icism.cve.validationAsErrors</code>". 
+Starting with V5 of ISM.XML (the version bundled with DDMS 3.1),
+these vocabularies were enforced in the schemas themselves, as well as the CVE files. So, being able to change to a custom set of CVE files or suppress
+errors no longer made sense, because the CVEs would then present conflicting results when compared to the generated schema files,
+which strictly enforce the vocabularies.</p>
 
 <p><b>How to Upgrade:</b></p>
-<p>The selection of CVE is now based upon the current DDMSVersion and uses bundled Public Release CVEs all of the
+<p>Both CVE configurable properties are removed. The selection of CVE is now based upon the current DDMSVersion and uses bundled Public Release CVEs all of the
 time. It is possible to swap out your entire set of ISM schemas and vocabularies by editing the DDMSence JAR files, as discussed in this
 <a href="documentation-differentIsm.jsp">Power Tip</a>, but it requires a fair amount of do-it-yourself configuration. 
 <p><a href="http://code.google.com/p/ddmsence/issues/detail?id=154">Issue #154</a> tracks future work to reintroduce 
@@ -282,11 +284,10 @@ then on the XML namespace (ISM, GML, etc.).</p>
 
 </div>
 
-<a name="minor-07"></a><h4>Configurable property names changed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=95">Issue #95</a>)</h4>
+<a name="minor-07"></a><h4>Configurable property name changed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=95">Issue #95</a>)</h4>
 
 <div class="upgradeGuide">
 <ul>
-<li><code>icism.cve.validationAsErrors</code> became <code>ism.cve.validationAsErrors</code>.</li>
 <li><code>icism.prefix</code> became <code>ism.prefix</code>.</li>
 </ul>
 <p><b>How to Upgrade:</b></p>

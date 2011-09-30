@@ -51,8 +51,8 @@ import buri.ddmsence.util.Util;
  * <code>requireClassification()</code>. </p>
  * 
  * <p> At this time, logical validation is only done on the data types of the various attributes, and the controlled
- * vocabulary enumerations behind some of the attributes. Comparisons against the CVEs can be toggled between warnings
- * and errors with the configurable property, <code>ism.cve.validationAsErrors</code>.</p>
+ * vocabulary enumerations behind some of the attributes. Any further validation would require integration
+ * with ISM Schematron files as discussed in the Schematron Validation Power Tip on the website.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ISM:atomicEnergyMarkings</u>: (optional, starting in DDMS 3.1)<br />
@@ -394,12 +394,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
-	 * Validates the attribute group. Where appropriate the {@link ISMVocabulary} enumerations are validated. For any
-	 * validation rule in which the value "must be a valid token", the configurable property,
-	 * <code>icism.cve.validationAsErrors</code> determines whether the results of these checks are returned as errors
-	 * or warnings. The default behavior is to return errors when a value is not found in a controlled vocabulary. Note
-	 * that this property does not affect other types of rules -- for example, using "compliationReason" on a DDMS 2.0
-	 * component will always result in an error.
+	 * Validates the attribute group. Where appropriate the {@link ISMVocabulary} enumerations are validated.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody"> 
 	 * <li>The atomicEnergyMarkings cannot be used until DDMS 3.1 or later.</li>
@@ -438,10 +433,10 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		if (!version.isAtLeast("3.1") && !getAtomicEnergyMarkings().isEmpty())
 			throw new InvalidDDMSException("The atomicEnergyMarkings attribute cannot be used until DDMS 3.1 or later.");
 		for (String atomic : getAtomicEnergyMarkings())
-			validateEnumeration(ISMVocabulary.CVE_ATOMIC_ENERGY_MARKINGS, atomic);
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_ATOMIC_ENERGY_MARKINGS, atomic);
 		if (!Util.isEmpty(getClassification())) {
 			if (version.isAtLeast("3.0") || !ISMVocabulary.usingOldClassification(getClassification()))
-				validateEnumeration(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, getClassification());
+				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_ALL_CLASSIFICATIONS, getClassification());
 		}
 		if (!version.isAtLeast("3.0") && !Util.isEmpty(getCompilationReason()))
 			throw new InvalidDDMSException("The compilationReason attribute cannot be used until DDMS 3.0 or later.");
@@ -458,45 +453,45 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 			if (isDDMS20) {
 				// In DDMS 2.0, this can be a list of tokens.
 				for (String value : Util.getXsListAsList(getDeclassException()))
-					validateEnumeration(ISMVocabulary.CVE_DECLASS_EXCEPTION, value);
+					ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DECLASS_EXCEPTION, value);
 			}
 			else
-				validateEnumeration(ISMVocabulary.CVE_DECLASS_EXCEPTION, getDeclassException());
+				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DECLASS_EXCEPTION, getDeclassException());
 		}
 		if (!isDDMS20 && getDeclassManualReview() != null)
 			throw new InvalidDDMSException("The declassManualReview attribute can only be used in DDMS 2.0.");
 		if (!version.isAtLeast("3.1") && !getDisplayOnlyTo().isEmpty())
 			throw new InvalidDDMSException("The displayOnlyTo attribute cannot be used until DDMS 3.1 or later.");
 		for (String display : getDisplayOnlyTo())
-			validateEnumeration(ISMVocabulary.CVE_DISPLAY_ONLY_TO, display);
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DISPLAY_ONLY_TO, display);
 		for (String dissemination : getDisseminationControls())
-			validateEnumeration(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, dissemination);
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_DISSEMINATION_CONTROLS, dissemination);
 		for (String fgiSourceOpen : getFGIsourceOpen())
-			validateEnumeration(ISMVocabulary.CVE_FGI_SOURCE_OPEN, fgiSourceOpen);
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_FGI_SOURCE_OPEN, fgiSourceOpen);
 		for (String fgiSourceProtected : getFGIsourceProtected())
-			validateEnumeration(ISMVocabulary.CVE_FGI_SOURCE_PROTECTED, fgiSourceProtected);
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_FGI_SOURCE_PROTECTED, fgiSourceProtected);
 		for (String nonIC : getNonICmarkings())
-			validateEnumeration(ISMVocabulary.CVE_NON_IC_MARKINGS, nonIC);
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_NON_IC_MARKINGS, nonIC);
 		if (!version.isAtLeast("3.1") && !getNonUSControls().isEmpty())
 			throw new InvalidDDMSException("The nonUSControls attribute cannot be used until DDMS 3.1 or later.");
 		for (String nonUS : getNonUSControls())
-			validateEnumeration(ISMVocabulary.CVE_NON_US_CONTROLS, nonUS);
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_NON_US_CONTROLS, nonUS);
 		for (String op : getOwnerProducers())
-			validateEnumeration(ISMVocabulary.CVE_OWNER_PRODUCERS, op);
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_OWNER_PRODUCERS, op);
 		for (String releasableTo : getReleasableTo())
-			validateEnumeration(ISMVocabulary.CVE_RELEASABLE_TO, releasableTo);
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_RELEASABLE_TO, releasableTo);
 		for (String sarId : getSARIdentifier())
-			validateEnumeration(ISMVocabulary.CVE_SAR_IDENTIFIER, sarId);
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_SAR_IDENTIFIER, sarId);
 		for (String sciControls : getSCIcontrols())
-			validateEnumeration(ISMVocabulary.CVE_SCI_CONTROLS, sciControls);
+			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_SCI_CONTROLS, sciControls);
 		if (!Util.isEmpty(getTypeOfExemptedSource())) {
 			if (isDDMS20) {
 				// In DDMS 2.0, this can be a list of tokens.
 				for (String value : Util.getXsListAsList(getTypeOfExemptedSource()))
-					validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, value);
+					ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, value);
 			}
 			else if ("3.0".equals(version.getVersion())) {
-				validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, getTypeOfExemptedSource());
+				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_TYPE_EXEMPTED_SOURCE, getTypeOfExemptedSource());
 			}
 			else {
 				throw new InvalidDDMSException(
