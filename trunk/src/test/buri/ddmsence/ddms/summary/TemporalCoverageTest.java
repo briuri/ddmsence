@@ -275,7 +275,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
 			component = getInstance(SUCCESS, wrapInnerElement(periodElement));
 			assertEquals(1, component.getValidationWarnings().size());
-			String text = "A ddms:name element was found with no value. Defaulting to \"Unknown\".";
+			String text = "A ddms:name element was found with no value.";
 			String locator = version.isAtLeast("4.0") ? "ddms:temporalCoverage"
 				: "ddms:temporalCoverage/ddms:TimePeriod";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));

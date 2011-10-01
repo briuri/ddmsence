@@ -69,7 +69,7 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 					+ "/testSchematronXslt1.sch"));
 				assertEquals(version.isAtLeast("4.0") ? 3 : 2, messages.size());
 
-				String text = "A DDMS Resource must have an unknownElement child. This will always fail.";
+				String text = "A DDMS Resource must have an unknownElement child.";
 				String locator = "/*[local-name()='" + resourceName + "' and namespace-uri()='" + ddmsNamespace + "']";
 				assertErrorEquality(text, locator, messages.get(0));
 

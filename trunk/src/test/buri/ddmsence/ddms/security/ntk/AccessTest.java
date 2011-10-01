@@ -223,7 +223,7 @@ public class AccessTest extends AbstractBaseTestCase {
 			// Empty
 			component = getInstance(SUCCESS, null, null, null);
 			assertEquals(1, component.getValidationWarnings().size());
-			String text = "An ntk:Access element was found with no individual, group, or profile information.";
+			String text = "An ntk:Access element was found with no";
 			String locator = "ntk:Access";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}

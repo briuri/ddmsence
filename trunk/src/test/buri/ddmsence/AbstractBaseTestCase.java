@@ -157,7 +157,11 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	 * @param message the ValidationMessage to test
 	 */
 	protected void assertWarningEquality(String text, String locator, ValidationMessage message) {
-		assertEquals(ValidationMessage.newWarning(text, locator), message);
+		if (locator != "")
+			locator = "/" + locator;
+		assertTrue(ValidationMessage.WARNING_TYPE.equals(message.getType()));
+		assertTrue(locator.equals(message.getLocator()));
+		assertTrue(message.getText().startsWith(text));
 	}
 
 	/**
@@ -168,8 +172,11 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	 * @param message the ValidationMessage to test
 	 */
 	protected void assertErrorEquality(String text, String locator, ValidationMessage message) {
-		assertEquals(ValidationMessage.newError(text, locator), message);
-	}
+		if (locator != "")
+			locator = "/" + locator;
+		assertTrue(ValidationMessage.ERROR_TYPE.equals(message.getType()));
+		assertTrue(locator.equals(message.getLocator()));
+		assertTrue(message.getText().startsWith(text));	}
 
 	/**
 	 * Shared method for testing the name and namespace of a created component.
