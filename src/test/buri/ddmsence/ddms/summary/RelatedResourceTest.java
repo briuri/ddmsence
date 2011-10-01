@@ -365,9 +365,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 				element.appendChild(child);
 				component = getInstance(SUCCESS, element);
 				assertEquals(1, component.getValidationWarnings().size());
-				String text = "A ddms:RelatedResources element contains more than 1 ddms:relatedResource. "
-					+ "To ensure consistency between versions of DDMS, each ddms:RelatedResources element "
-					+ "should contain only 1 ddms:RelatedResource. DDMSence will only process the first child.";
+				String text = "A ddms:RelatedResources element contains more than 1";
 				String locator = "ddms:relatedResources";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}

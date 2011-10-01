@@ -260,7 +260,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 				SecurityAttributesTest.getFixture().addTo(element);
 				component = getInstance(SUCCESS, element);
 				assertEquals(1, component.getValidationWarnings().size());
-				String text = "An ntk:Access element was found with no individual, group, or profile information.";
+				String text = "An ntk:Access element was found with no";
 				String locator = "ddms:security/ntk:Access";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
