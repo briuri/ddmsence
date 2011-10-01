@@ -200,15 +200,21 @@ traversed and queried in the same manner, without requiring too much knowledge o
 
 <ul>
 	<li><a href="documentation-version.jsp">Working With Different DDMS Versions</a>: Shows how to read and create DDMS Resources and components using other supported versions. Also outlines
-	the important changes between each version of DDMS in table form.</li>
+	the important changes between each version of DDMS in table form.</li><br />
+
 	<li><a href="documentation-attributes.jsp">Common Attribute Groups</a>: Discusses the classes which represent the attribute groups used throughout DDMS, such as
-	Information Security Marking (ISM) attributes.</li>
-	<li><a href="documentation-builders.jsp">Using Component Builders</a>: Shows how DDMS components can be built up over time and validated at the end.</li>
+	Information Security Marking (ISM) attributes.</li><br />
+
+	<li><a href="documentation-builders.jsp">Using Component Builders</a>: Shows how DDMS components can be built up over time and validated at the end.</li><br />
+
 	<li><a href="documentation-schematron.jsp">Schematron Validation</a>: Explains the process for using custom Schematron files with DDMSence, and provides example
-	code for using the official ISM.XML Schematron files.</li>
-	<li><a href="documentation-configuration.jsp">Configurable Properties</a>: Identifies DDMSence properties which can be changed at runtime.</li>
-	<li><a href="documentation-extensible.jsp">The Extensible Layer</a>: Discusses how the library provides support for the custom elements and attributes allowed by the DDMS specification.</li>
-	<li><a href="documentation-differentIsm.jsp">Using Alternate Versions of ISM</a>: Shows how to swap out the Public Release version of ISM that is bundled with DDMSence.</li>
+	code for using the official ISM.XML Schematron files.</li><br />
+
+	<li><a href="documentation-differentIsm.jsp">Using Alternate Versions of ISM</a>: Shows how to use a local set of ISM schemas and CVE files instead of the files bundled with DDMSence.</li>
+
+	<li><a href="documentation-configuration.jsp">Configurable Properties</a>: Identifies DDMSence properties which can be changed at runtime.</li><br />
+
+	<li><a href="documentation-extensible.jsp">The Extensible Layer</a>: Discusses how the library provides support for the custom elements and attributes allowed by the DDMS specification.</li><br />
 </ul>
 
 <a name="explorations"></a><h3>Explorations</h3>
@@ -216,9 +222,9 @@ traversed and queried in the same manner, without requiring too much knowledge o
 <p>This section contains links to DDMS-related research and personal experimentation which may be useful to DDMSence in the future.</p>
 
 <ul>
-	<li><a href="builder.uri">DDMS Builder</a>: An experimental tool to build DDMS resources with a form-based UI.</li>
-	<li><a href="validator.uri">DDMS Validator</a>: An experimental tool to validate DDMS resources.</li>
-	<li><a href="relationalTables.jsp">Relational Database Model for DDMS 3.1</a>: A mapping of the DDMS 3.1 specification to relational database tables (database-agnostic).</li>
+	<li><a href="builder.uri">DDMS Builder</a>: An experimental tool to build DDMS resources with a form-based UI.</li><br />
+	<li><a href="validator.uri">DDMS Validator</a>: An experimental tool to validate DDMS resources.</li><br />
+	<li><a href="relationalTables.jsp">Relational Database Model for DDMS 3.1</a>: A mapping of the DDMS 3.1 specification to relational database tables (database-agnostic).</li><br />
 	<li><a href="schematron.jsp">Schematron Implementation for DDMS 4.0</a>: An attempt to model some of the more complex rules in the DDMS specification with ISO Schematron.</li>
 </ul>
 

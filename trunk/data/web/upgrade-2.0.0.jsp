@@ -17,7 +17,7 @@ problems, I would be glad to assist you further.</p>
 
 <ul>
 	<li><b>Major Changes</b><ul>
-		<li><a href="#major-01">Swappable CVE feature removed</a></li>
+		<li><a href="#major-01">Swappable CVE feature expanded</a></li>
 		<li><a href="#major-02">Producer/Entity hierarchy changed</a></li>
 		<li><a href="#major-03">Related Resources hierarchy compressed</a></li>
 	</ul></li>
@@ -35,22 +35,22 @@ problems, I would be glad to assist you further.</p>
 
 <h3>Major Changes</h3>
 
-<a name="major-01"></a><h4>Swappable CVE feature removed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=95">Issue #95</a> and <a href="http://code.google.com/p/ddmsence/issues/detail?id=169">Issue #169</a>)</h4> 
+<a name="major-01"></a><h4>Swappable CVE feature expanded (<a href="http://code.google.com/p/ddmsence/issues/detail?id=95">Issue #95</a>, <a href="http://code.google.com/p/ddmsence/issues/detail?id=169">Issue #169</a>, and <a href="http://code.google.com/p/ddmsence/issues/detail?id=154">Issue #154</a>)</h4> 
 
 <div class="upgradeGuide">
 <p>In previous versions of DDMSence, you could point to a custom set of ISM Controlled Vocabulary Enumeration files
 with the "<code>icism.cve.customEnumLocation</code>" custom property or toggle CVEs to suppress errors with "<code>icism.cve.validationAsErrors</code>". 
-Starting with V5 of ISM.XML (the version bundled with DDMS 3.1),
-these vocabularies were enforced in the schemas themselves. So, being able to change to a custom set of CVE files or suppress
-errors no longer made sense, because the CVEs would then present conflicting results when compared to the generated schema files,
+Starting with V5 of ISM.XML (the version bundled with DDMS 3.1), these vocabularies were enforced in the schemas themselves. So, being able to change to a 
+custom set of CVE files or suppress errors no longer made sense, because the CVEs would then present conflicting results when compared to the generated schema files,
 which strictly enforce the vocabularies.</p>
 
+<p>Both runtime configurable properties have now been removed. Support for alternate ISM schemas and CVEs is now handled as a configuration step to your
+classpath.</p>
+
 <p><b>How to Upgrade:</b></p>
-<p>Both CVE configurable properties are removed. The selection of CVE is now based upon the current DDMSVersion and uses bundled Public Release CVEs all of the
-time. It is possible to swap out your entire set of ISM schemas and vocabularies by editing the DDMSence JAR files, as discussed in this
-<a href="documentation-differentIsm.jsp">Power Tip</a>, but it requires a fair amount of do-it-yourself configuration. 
-<p><a href="http://code.google.com/p/ddmsence/issues/detail?id=154">Issue #154</a> tracks future work to reintroduce 
-this general concept of swappable ISM as a runtime configuration step rather than through JAR magic.</p> 
+<p>The default selection of ISM schemas and CVEs is now based upon the current DDMSVersion and uses bundled Public Release files all of the
+time. It is now possible to swap out your entire set of ISM schemas and vocabularies by giving your local copy a higher priority in the Java classpath, 
+as discussed in this <a href="documentation-differentIsm.jsp">Power Tip</a>.</p> 
 </div>
 
 <a name="major-02"></a><h4>Producer/Entity hierarchy changed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=153">Issue #153</a>)</h4>
