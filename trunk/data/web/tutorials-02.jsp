@@ -208,7 +208,17 @@ you called <code>getValidationWarnings()</code> on the Dates component itself, t
 <p>If a parent-child hierarchy has some DDMS elements which are not <a href="documentation.jsp#design">implemented as Java objects</a>, the locator string will
 include every element in the hierarchy. For example, a warning in a <code>ddms:medium</code> element (in DDMS 2.0, 3.0, or 3.1) will have a locator value of "<code>/ddms:resource/ddms:format/ddms:Media/ddms:medium</code>"
 even though <code>ddms:Media</code> is not an implemented component (the medium is a property on the Format object in the Java implementation).</p>
-  
+
+<p>Validation for a Resource built from scratch proceeds in the following order:</p>
+
+<ul>
+	<li>As the objects are built in Java, the schema rules are validated in Java.</li>
+	<li>Next, any rules mandated in the DDMS Specification but not implemented in the schema are validated (such as constraints on latitude/longitude values). This is done with
+	custom Java code, and you can create your own rules with <a href="documentation-schematron.jsp">ISO Schematron</a>.</li>
+	<li>Next, the Resource is converted into XML and validated against the DDMS schemas.</li>
+	<li>Any warnings which do not actually result in an invalid component are stored on the component, and can be retrieved via <code>getValidationWarnings()</code>.</li>
+</ul>
+
 <h3>Conclusion</h3>
 
 <p>In this tutorial, you have seen how DDMS Resources can be built from scratch. You have also seen further examples of component validation. In practice, the data-based
