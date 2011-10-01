@@ -35,8 +35,8 @@ into a batch/shell script and running that script):</p>
 
 <pre class="brush: xml">REM Windows Commands
 cd &lt;folderWhereDDMSenceIsUnzipped&gt;\ddmsence-bin-@ddmsence.version@
-set DDMSENCE_CLASSPATH=lib/serializer-2.7.1.jar;lib/saxon9he-9.3.0.5.jar;lib/xercesImpl-2.9.1.jar
-set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/xml-apis-1.3.04.jar;lib/xom-1.2.6.jar
+set DDMSENCE_CLASSPATH=lib/saxon9he-9.3.0.5.jar;lib/xercesImpl-2.11.0.jar
+set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/xml-apis-1.4.01.jar;lib/xom-1.2.7.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-@ddmsence.version@.jar
 set DDMSENCE_CLASSPATH=%DDMSENCE_CLASSPATH%;lib/ddmsence-samples-@ddmsence.version@.jar
 java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
@@ -45,8 +45,8 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
 <pre class="brush: xml">#!/bin/sh
 # Linux Commands
 cd &lt;folderWhereDDMSenceIsUnzipped&gt;/ddmsence-bin-@ddmsence.version@
-ddmsence_classpath=lib/serializer-2.7.1.jar:lib/saxon9he-9.3.0.5.jar:lib/xercesImpl-2.9.1.jar
-ddmsence_classpath=$ddmsence_classpath:lib/xml-apis-1.3.04.jar:lib/xom-1.2.6.jar
+ddmsence_classpath=lib/saxon9he-9.3.0.5.jar:lib/xercesImpl-2.11.0.jar
+ddmsence_classpath=$ddmsence_classpath:lib/xml-apis-1.4.01.jar:lib/xom-1.2.7.jar
 ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-@ddmsence.version@.jar
 ddmsence_classpath=$ddmsence_classpath:lib/ddmsence-samples-@ddmsence.version@.jar
 java -cp $ddmsence_classpath buri.ddmsence.samples.Essentials</pre>
