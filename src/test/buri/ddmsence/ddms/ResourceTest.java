@@ -752,12 +752,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 						.valueOf(getNtkDESVersion()));
 				}
 				SecurityAttributesTest.getFixture().addTo(element);
-				String message = "";
-				if ("3.0".equals(version.getVersion()))
-					message = "DESVersion is required.";
-				else if (version.isAtLeast("3.1"))
-					message = "The ISM:DESVersion must be";
-				getInstance(message, element);
+				getInstance("ISM:DESVersion is required.", element);
 
 				// desVersion not an integer
 				element = getResourceWithoutHeaderElement();
@@ -770,7 +765,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 						.valueOf(getNtkDESVersion()));
 				}
 				SecurityAttributesTest.getFixture().addTo(element);
-				getInstance(message, element);
+				getInstance("ISM:DESVersion is required", element);
 			}
 			if (version.isAtLeast("4.0")) {
 				// NTK desVersion not an integer
@@ -782,7 +777,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 				Util.addAttribute(element, ismPrefix, Resource.CREATE_DATE_NAME, ismNamespace, TEST_CREATE_DATE);
 				Util.addAttribute(element, ntkPrefix, Resource.DES_VERSION_NAME, ntkNamespace, "one");
 				SecurityAttributesTest.getFixture().addTo(element);
-				getInstance("The ntk:DESVersion must be", element);
+				getInstance("ntk:DESVersion is required.", element);
 			}
 
 			// At least 1 producer
@@ -930,19 +925,13 @@ public class ResourceTest extends AbstractBaseTestCase {
 				getInstance("The ISM:createDate attribute is not in a valid date format.", TEST_NO_OPTIONAL_COMPONENTS,
 					TEST_RESOURCE_ELEMENT, "notAnXmlDate", null, getIsmDESVersion(), getNtkDESVersion());
 
-				String message = "";
-				if ("3.0".equals(version.getVersion()))
-					message = "DESVersion is required.";
-				else if (version.isAtLeast("3.1"))
-					message = "The ISM:DESVersion must be";
-
 				// Missing desVersion
-				getInstance(message, TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null, null,
+				getInstance("ISM:DESVersion is required.", TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null, null,
 					getNtkDESVersion());
 			}
 			if (version.isAtLeast("4.0")) {
 				// Missing desVersion
-				getInstance("The ntk:DESVersion must be", TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT,
+				getInstance("ntk:DESVersion is required", TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT,
 					TEST_CREATE_DATE, null, getIsmDESVersion(), null);
 			}
 
@@ -1630,7 +1619,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			fail("Builder allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The ISM:DESVersion must be");
+			expectMessage(e, "DESVersion is required");
 		}
 
 		// Adding 3.1-specific fields works
@@ -1652,7 +1641,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			fail("Builder allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "The ISM:DESVersion must be");
+			expectMessage(e, "ntk:DESVersion is required.");
 		}
 
 		// Adding 4.0-specific fields works
