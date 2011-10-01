@@ -124,6 +124,27 @@ public class DDMSReader {
 	}
 
 	/**
+	 * Attempts to build an Element from a Resource XML string. Element-based constructors
+	 * for a Resource are automatically validated against a schema when the XML parser
+	 * loads it. This method allows the data-based constructors for a Resource to do
+	 * a final confirmation that none of the data breaks any schema rules.
+	 * 
+	 * @param resourceXML the XML of the resource to check
+	 * @throws InvalidDDMSException if the resource is invalid
+	 */
+	public static void validateWithSchema(String resourceXML) throws InvalidDDMSException {
+		try {
+			new DDMSReader().getElement(resourceXML);
+		}
+		catch (SAXException e) {
+			throw new InvalidDDMSException(e);
+		}
+		catch (IOException e) {
+			throw new InvalidDDMSException(e);
+		}
+	}
+	
+	/**
 	 * Creates a XOM element representing the root XML element in the file.
 	 * 
 	 * <p>The implementation of this method delegates to the Reader-based overloaded method.</p>

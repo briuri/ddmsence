@@ -195,9 +195,11 @@ public final class MetacardInfo extends AbstractBaseComponent {
 				else
 					throw new InvalidDDMSException(component.getName()
 						+ " is not a valid child component in a metacardInfo element.");
-				element.appendChild(component.getXOMElementCopy());
 			}
 			populatedOrderedList();
+			for (IDDMSComponent component : getNestedComponents()) {
+				element.appendChild(component.getXOMElementCopy());
+			}
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			validate();

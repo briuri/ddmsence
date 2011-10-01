@@ -1038,9 +1038,13 @@ public class ResourceTest extends AbstractBaseTestCase {
 			createComponents();
 
 			Resource elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Resource dataComponent = getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, false, TEST_CREATE_DATE, null,
-				getIsmDESVersion(), getNtkDESVersion());
-			assertFalse(elementComponent.equals(dataComponent));
+			Resource dataComponent;
+			// resourceElement is fixed starting in 3.1.
+			if (!version.isAtLeast("3.1")) {
+				dataComponent = getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, false, TEST_CREATE_DATE, null,
+					getIsmDESVersion(), getNtkDESVersion());
+				assertFalse(elementComponent.equals(dataComponent));
+			}
 
 			dataComponent = getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, "1999-10-10", null,
 				getIsmDESVersion(), getNtkDESVersion());
@@ -1619,7 +1623,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			fail("Builder allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "DESVersion is required");
+			expectMessage(e, "nu.xom.ValidityException: cvc-attribute.4: The value '2' of attribute 'ISM:DESVersion'");
 		}
 
 		// Adding 3.1-specific fields works
