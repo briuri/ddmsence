@@ -68,6 +68,7 @@ import buri.ddmsence.ddms.summary.RelatedResource;
 import buri.ddmsence.ddms.summary.SubjectCoverage;
 import buri.ddmsence.ddms.summary.TemporalCoverage;
 import buri.ddmsence.ddms.summary.VirtualCoverage;
+import buri.ddmsence.util.DDMSReader;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
@@ -576,6 +577,7 @@ public final class Resource extends AbstractBaseComponent {
 				element.appendChild(component.getXOMElementCopy());
 			}
 			setXOMElement(element, true);
+			DDMSReader.validateWithSchema(toXML());
 		}
 		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
@@ -618,7 +620,7 @@ public final class Resource extends AbstractBaseComponent {
 			_orderedList.add(getSecurity());
 		_orderedList.addAll(getExtensibleElements());
 	}
-
+	
 	/**
 	 * Performs a Schematron validation of the DDMS Resource, via the ISO Schematron skeleton stylesheets for XSLT1
 	 * or XSLT2 processors. This action can only be performed on a DDMS Resource which is already valid according 
@@ -707,13 +709,6 @@ public final class Resource extends AbstractBaseComponent {
 		else
 			Util.requireBoundedChildCount(getXOMElement(), SubjectCoverage.getName(getDDMSVersion()), 1, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);
-		if (!getSecurityAttributes().isEmpty()) {
-			Set<SecurityAttributes> childAttributes = new HashSet<SecurityAttributes>();
-			for (IDDMSComponent component : getTopLevelComponents()) {
-				if (component.getSecurityAttributes() != null && !(component instanceof Security))
-					childAttributes.add(component.getSecurityAttributes());
-			}
-		}
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (getDDMSVersion().isAtLeast("4.0")) {

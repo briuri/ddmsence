@@ -58,8 +58,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	public static GeospatialCoverage getFixture(int order) {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			return (new GeospatialCoverage(null, null, new BoundingGeometry(null, PointTest.getFixtureList()), null,
-				null, null, version.isAtLeast("4.0") ? new Integer(order) : null, null));
+			return (new GeospatialCoverage(null, null, null, PostalAddressTest.getFixture(), null, null, version
+				.isAtLeast("4.0") ? new Integer(order) : null, null));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
