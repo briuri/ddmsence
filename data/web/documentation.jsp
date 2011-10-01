@@ -200,13 +200,14 @@ traversed and queried in the same manner, without requiring too much knowledge o
 <p>Power Tips provide instructions and sample code to maximize the benefits of DDMSence, once you are comfortable with the basics of the library.</p>
 
 <ul>
-	<li><a href="documentation-version.jsp">Working With Different DDMS Versions</a>: Shows how to read and create DDMS Resources and components using other supported versions. Also outlines
-	the important changes between each version of DDMS in table form.</li><br />
+	<li><a href="documentation-version.jsp">Working With Different DDMS Versions</a>: Shows how to read and create DDMS Resources and components using other supported versions. 
+	Also outlines the important changes between each version of DDMS in table form.</li><br />
 
 	<li><a href="documentation-attributes.jsp">Common Attribute Groups</a>: Discusses the classes which represent the attribute groups used throughout DDMS, such as
 	Information Security Marking (ISM) attributes.</li><br />
 
-	<li><a href="documentation-builders.jsp">Using Component Builders</a>: Shows how DDMS components can be built up over time and validated at the end.</li><br />
+	<li><a href="documentation-builders.jsp">Using Component Builders</a>: Shows a "top-down" alternative to building a DDMS resource from scratch. Components can be built up over
+	time and validated once at the end, rather than the "bottoms-up" constructor-based approach which validates each component individually and groups them together.</li><br />
 
 	<li><a href="documentation-schematron.jsp">Schematron Validation</a>: Explains the process for using custom Schematron files with DDMSence, and provides example
 	code for using the official ISM.XML Schematron files.</li><br />
