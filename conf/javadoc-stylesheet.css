@@ -19,3 +19,10 @@ table.info {
 	background-color: #ffffff;
 	padding: 3px 3px 3px 18px;
 }
+td.hierarchy {
+	border-color: #adb3b5;
+	border-style: dotted;
+	border-width: 1px;
+	padding: 4px;
+	vertical-align: top;
+}
