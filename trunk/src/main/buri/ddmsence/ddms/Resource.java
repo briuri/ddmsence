@@ -674,9 +674,9 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>The compliesWith attribute cannot be used until DDMS 3.1 or later.</li>
 	 * <li>If set, the compliesWith attribute must be valid tokens.</li>
 	 * <li>ISM DESVersion must exist and be a valid Integer, starting in DDMS 3.0.</li>
-	 * <li>ISM DESVersion must exist and be "5" in DDMS 3.1.</li>
+	 * <li>The value of ISM DESVersion must be fixed, starting in DDMS 3.1. This is checked during schema validation.</li>
 	 * <li>NTK DESVersion must exist and be a valid Integer, starting in DDMS 4.0.</li>
-	 * <li>NTK DESVersion must exist and be "5" in DDMS 4.0.</li>
+	 * <li>The value of NTK DESVersion must be fixed,s tarting in DDMS 4.0. This is checked during schema validation.</li>
 	 * <li>A classification is required, starting in DDMS 3.0.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty, starting in DDMS 3.0.</li>
 	 * <li>Only 1 extensible element can exist in DDMS 2.0.</li>
@@ -716,18 +716,14 @@ public final class Resource extends AbstractBaseComponent {
 		}
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (getDDMSVersion().isAtLeast("4.0"))
+		if (getDDMSVersion().isAtLeast("4.0")) {
 			validateOrderAttributes();
+			Util.requireDDMSValue("ntk:" + DES_VERSION_NAME, getNtkDESVersion());
+		}
 		if (!getDDMSVersion().isAtLeast("3.1") && !getCompliesWiths().isEmpty())
 			throw new InvalidDDMSException("The compliesWith attribute cannot be used until DDMS 3.1 or later.");
 		for (String with : getCompliesWiths())
 			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);
-		if ("3.1".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getIsmDESVersion())))
-			throw new InvalidDDMSException("The ISM:DESVersion must be 5 in DDMS 3.1 resources.");
-		if ("4.0".equals(getDDMSVersion().getVersion()) && !(new Integer(7).equals(getIsmDESVersion())))
-			throw new InvalidDDMSException("The ISM:DESVersion must be 7 in DDMS 4.0 resources.");
-		if ("4.0".equals(getDDMSVersion().getVersion()) && !(new Integer(5).equals(getNtkDESVersion())))
-			throw new InvalidDDMSException("The ntk:DESVersion must be 5 in DDMS 4.0 resources.");
 		if (!getDDMSVersion().isAtLeast("3.0") && getExtensibleElements().size() > 1) {
 			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
 		}
@@ -736,7 +732,7 @@ public final class Resource extends AbstractBaseComponent {
 		if (getDDMSVersion().isAtLeast("3.0")) {
 			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
 			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
-			Util.requireDDMSValue(DES_VERSION_NAME, getIsmDESVersion());
+			Util.requireDDMSValue("ISM:" + DES_VERSION_NAME, getIsmDESVersion());
 			Util.requireDDMSValue("security attributes", getSecurityAttributes());
 			getSecurityAttributes().requireClassification();
 			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
