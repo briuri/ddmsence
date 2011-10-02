@@ -203,7 +203,7 @@ public class DDMSReader {
 	
 	/**
 	 * Creates a DDMS resource based on the contents of a file, and also sets the DDMSVersion based on the namespace
-	 * URIs in the file).
+	 * URIs in the file.
 	 * 
 	 * @param file the file containing the DDMS Resource.
 	 * @return a DDMS Resource
@@ -215,7 +215,7 @@ public class DDMSReader {
 	
 	/**
 	 * Creates a DDMS resource based on the contents of a string representation of an XML document, and also sets the
-	 * DDMSVersion based on the namespace URIs in the document).
+	 * DDMSVersion based on the namespace URIs in the document.
 	 * 
 	 * @param xml the string representation of the XML DDMS Resource
 	 * @return a DDMS Resource
@@ -227,7 +227,7 @@ public class DDMSReader {
 	
 	/**
 	 * Creates a DDMS resource based on the contents of an input stream, and also sets the DDMSVersion based on the
-	 * namespace URIs in the document).
+	 * namespace URIs in the document.
 	 * 
 	 * @param inputStream the input stream wrapped around an XML DDMS Resource
 	 * @return a DDMS Resource
@@ -239,7 +239,7 @@ public class DDMSReader {
 	
 	/**
 	 * Creates a DDMS resource based on the contents of a reader, and also sets the DDMSVersion based on the namespace
-	 * URIs in the document).
+	 * URIs in the document.
 	 * 
 	 * @param reader the reader wrapped around an XML DDMS Resource
 	 * @return a DDMS Resource
