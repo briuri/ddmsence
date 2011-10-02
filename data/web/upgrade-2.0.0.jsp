@@ -20,6 +20,7 @@ problems, I would be glad to assist you further.</p>
 		<li><a href="#major-01">Swappable CVE feature expanded</a></li>
 		<li><a href="#major-02">Producer/Entity hierarchy changed</a></li>
 		<li><a href="#major-03">Related Resources hierarchy compressed</a></li>
+		<li><a href="#major-04">Non-XML Resources validated against DDMS schemas</a></li>
 	</ul></li>
 	<li><b>Minor Changes</b><ul>
 		<li><a href="#minor-01">Validation for security rollup removed</a></li>
@@ -170,6 +171,19 @@ myTopLevelComponents.add(new RelatedResource(links, "http://purl.org/dc/terms/re
 myTopLevelComponents.add(new RelatedResource(links, "http://purl.org/dc/terms/references", "outbound", "qualifier",
    "resource2"));</pre>
    
+</div>
+
+<a name="major-04"></a><h4>Non-XML Resources validated against DDMS schemas (<a href="http://code.google.com/p/ddmsence/issues/detail?id=28">Issue #28</a>)</h4>
+<div class="upgradeGuide">
+<p>DDMS resources loaded from an XML file have always been validated against the DDMS schemas. However, DDMS resources built from scratch (either with the data-based constructors
+or the Component Builder framework) were not. Starting in this release, a resource built from scratch is converted into XML and validated against the schemas, to elminate
+any remaining loopholes in data correctness. Individual components which are built from scratch are not validated against the schema until the enclosing Resource is instantiated.</p>
+
+<p><b>How to Upgrade:</b></p>
+<p>There are no upgrade steps required. However, DDMSence v2.0.0 may catch a few additional fringe cases which were mistakenly identified as valid in previous versions. For example,
+the <code>gml:id</code> on GML points is supposed to be unique to the XML resource. By using data-based constructors in the past, it was possible to create multiple points with the same
+ID value, which would result in an invalid XML record.</p>
+
 </div>
 
 <h3>Minor Changes</h3>
