@@ -30,7 +30,9 @@ code to use this version should be straightforward, but may require a non-trivia
 <ul>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.0.0.zip"><code>ddmsence-bin-2.0.0.zip</code></a></b> (X.X MB, compiled with JDK1.6.0_25, source level 1.5)</li>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-2.0.0.zip"><code>ddmsence-src-2.0.0.zip</code></a></b> (X.X MB)</li>
+<br />
 <li><a href="upgrade-2.0.0.jsp">Upgrade Guide: Version 1.x to 2.0.0</a></li>
+<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.0.0">Complete List of Changes</a></li>
 </ul>
 
 <h3>Versioning</h3>
