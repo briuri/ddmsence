@@ -626,6 +626,15 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testGetLocatorSuffix() {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			GeospatialCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
+			String suffix = version.isAtLeast("4.0") ? "" : "/ddms:GeospatialExtent";
+			assertEquals(suffix, component.getLocatorSuffix());
+		}
+	}
+	
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
