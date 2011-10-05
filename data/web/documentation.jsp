@@ -107,7 +107,7 @@ be possible to plot Temporal Coverage on an
 </ul>
 The API documentation is also bundled with the "bin"-flavored download on the <a href="downloads.jsp">Downloads</a> page, and can be generated from source code 
 in the "src"-flavored download. The overview page contains a quick reference chart of all implemented DDMS components. 
-You should be aware of the following sections, which appear on every DDMS component's page:
+You should also be aware of the following sections, which appear on every DDMS component's page:
 <ul>
 	<li>The class description describes cases where DDMSence is stricter than the DDMS specification, and allowed cases which are legal, but nonsensical. If this varies
 	for different versions of DDMS, the version number will be indicated. If no version number is listed, the constraint applies to all versions.</li>
