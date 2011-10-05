@@ -56,7 +56,7 @@ for (Resource resource : myExistingResources) {
 <p>There are a few implementation details to keep in mind when working with Builders:</p>
 <ol>
 <li>Calling a <code>get()</code> method that returns a child Builder instance (or a List of them) will never return <code>null</code>. A new Builder will be lazily instantiated if 
-one does not already exist. An example of this can be seen on line 2 of Figure 3 When the value of the Keyword is set to "DDMSence", the List of Keyword.Builders
+one does not already exist. An example of this can be seen on line 2 of Figure 3. When the value of the Keyword is set to "DDMSence", the List of Keyword.Builders
 returned by <code>getKeywords()</code>, and the first Keyword.Builder returned by <code>get(0)</code> are both instantiated upon request.
 This should make it easier for Component Builders to be used in a web-based form, where the number of child components might grow dynamically with JavaScript.</li>
 <li>The <code>commit()</code> method on any given Builder will only return a component if the Builder was actually used, according its
@@ -66,7 +66,7 @@ in any of the fields on a <code>ddms:dates</code> form, it is presumed that thei
 the building process has no effect up until the moment that <code>commit()</code> is called. In addition, initializing a Builder with an existing resource will not change the current DDMSVersion value.</li>
 </ol>
 
-<p>The last detail is important, because it allows you to load a resource from an old version of DDMS and transform it into a newer version.</p>
+<p>The third detail is important, because it allows you to load a resource from an old version of DDMS and transform it into a newer version.</p>
 
 <h2>Transforming Between DDMS Versions</h2>
 

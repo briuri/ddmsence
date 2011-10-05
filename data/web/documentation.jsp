@@ -216,7 +216,8 @@ traversed and queried in the same manner, without requiring too much knowledge o
 
 	<li><a href="documentation-configuration.jsp">Configurable Properties</a>: Identifies DDMSence properties which can be changed at runtime.</li><br />
 
-	<li><a href="documentation-extensible.jsp">The Extensible Layer</a>: Discusses how the library provides support for the custom elements and attributes allowed by the DDMS specification.</li><br />
+	<li><a href="documentation-extensible.jsp">The Extensible Layer</a>: Discusses how the library provides support for the custom elements and attributes allowed by the DDMS specification. Also discusses
+	the way DDMSence proritizes the various types of attributes which can exist on a DDMS Resource.</li><br />
 </ul>
 
 <a name="explorations"></a><h3>Explorations</h3>

@@ -90,7 +90,7 @@ entity for producers was not introduced until DDMS 3.0, so attempts to create on
 <pre class="brush: java">DDMSVersion.setCurrentVersion("2.0");
 List&lt;String&gt; names = new ArrayList&lt;String&gt;();
 names.add("Unknown Entity");
-Unknown unknown = new Unknown("creator", names, null, null, null);</pre>
+Unknown unknown = new Unknown(names, null, null);</pre>
 <p class="figure">Figure 8. This code will throw an InvalidDDMSException</p>
 
 <p>If you have a set of DDMS resources from an older version of DDMS and wish to transform them to a newer version, you can do so with the <a href="documentation-builders.jsp">Component
@@ -171,7 +171,8 @@ Builder</a> framework. Builders allow you to load the old resource, add any new 
 <p class="figure">Table 3. Component changes from DDMS 3.1 to DDMS 4.0</p>
 <br /><br />
 
-<p>The table below lists the complete set of ISM security attributes, and shows which attributes can be used with each version of DDMS.</p>
+<p>The table below lists the complete set of ISM security attributes modeled by the <a href="/docs/index.html?buri/ddmsence/ddms/security/ism/SecurityAttributes.html">SecurityAttributes</a> class, 
+and shows which attributes can be used with each version of DDMS.</p>
 
 <table>
 <tr><th>Attribute</th><th>DDMS 2.0 (ISM V2-PR)</th><th>DDMS 3.0 (ISM V2)</th><th>DDMS 3.1 (ISM V5)</th><th>DDMS 4.0 (ISM V7)</tr>

@@ -48,7 +48,7 @@ element.appendChild("This is an extensible element.");
 ExtensibleElement component = new ExtensibleElement(element);</pre>
 <p class="figure">Figure 2. Creating a simple ExtensibleElement from scratch</p>
 
-<p>Once you have an ExtensibleElement, you can add it to a list of top-level components (like any other IDDMSComponent), and pass it into a Resource constrcutor.
+<p>Once you have an ExtensibleElement, you can add it to a list of top-level components (like any other IDDMSComponent), and pass it into a Resource constructor.
 Creating more complex Elements from scratch requires XOM knowledge, and is outside the scope of this documentation.</p>
 
 <h2>ExtensibleAttributes</h2>
