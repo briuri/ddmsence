@@ -29,7 +29,9 @@ should not need to download them separately.</p>
 	<br />	
 	<li><a href="http://www.servlets.com/cos/">com.oreilly.servlets 26Dec2008</a>
 		(<a href="http://www.servlets.com/cos/license.html">Custom License</a>): Used on the DDMSence website (not bundled).</li>
-	<li><a href="http://jquery.com/">jQuery 1.3.2</a>
+	<li><a href="http://jquery.com/">jQuery 1.6.4</a>
+		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website.</li>
+	<li><a href="http://bassistance.de/jquery-plugins/jquery-plugin-validation/">jQuery Validation 1.8.1</a>
 		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website.</li>
 	<li><a href="http://junit.sourceforge.net/">JUnit 4.8.1</a> 
 		(<a href="http://junit.sourceforge.net/cpl-v10.html">Common Public License v1.0</a>): Needed to run unit tests against DDMSence.</li>

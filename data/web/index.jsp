@@ -150,7 +150,7 @@ It transforms XML DDMS Resource records into a Java object model (using XOM and 
 
 <p>DDMSence comes with a complete set of JUnit tests, and is being released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
 		
-<img src="./images/chart.png" width="800" height="283" title="DDMSence Flow Chart"  />
+<img src="./images/chart.png" width="725" height="283" title="DDMSence Flow Chart"  />
 
 <h1>About the Author</h1>
 
