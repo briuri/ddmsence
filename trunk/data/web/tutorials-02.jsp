@@ -84,8 +84,7 @@ getTopLevelComponents().add(inputLoop(MetacardInfo.class));</pre>
 <p class="figure">Figure 4. Source code to continuously loop until a valid component is created</p>
 
 <p>An anonymous implementation of IConstructorBuilder is created (in the <u>Escort</u> constructor) for each DDMS Component class, and each Builder
-is responsible for one top-level component. Some Builders, like the one for a MetacardInfo will use other Builders to create child components.
-For example, here is the definition of the Builder that builds Identifiers:</p>
+is responsible for one top-level component. For example, here is the definition of the Builder that builds Identifiers:</p>
 
 <pre class="brush: java">CONSTRUCTOR_BUILDERS.put(Identifier.class, new IConstructorBuilder() {
    public IDDMSComponent build() throws IOException, InvalidDDMSException {
@@ -98,7 +97,7 @@ For example, here is the definition of the Builder that builds Identifiers:</p>
 
 <p>As soon as <code>inputLoop()</code> receives a valid component from a Builder, it returns that component to the main wizard method, <code>run()</code>. The main
 wizard saves the component in a list and moves on to the next component type. You can examine the constructor to see the code needed to build each type of
-component.</p>
+component. Some Builders, like the one for a MetacardInfo will use other Builders to create child components.</p>
 
 <p>Let's use the wizard to create a valid Resource. You should be able to follow the prompts to the end, but if not, the output below is one possible
 road to a valid Resource.</p>
@@ -207,7 +206,7 @@ you called <code>getValidationWarnings()</code> on the Dates component itself, t
 
 <p>If a parent-child hierarchy has some DDMS elements which are not <a href="documentation.jsp#design">implemented as Java objects</a>, the locator string will
 include every element in the hierarchy. For example, a warning in a <code>ddms:medium</code> element (in DDMS 2.0, 3.0, or 3.1) will have a locator value of "<code>/ddms:resource/ddms:format/ddms:Media/ddms:medium</code>"
-even though <code>ddms:Media</code> is not an implemented component (the medium is a property on the Format object in the Java implementation).</p>
+even though <code>ddms:Media</code> is not an implemented component.</p>
 
 <p>Validation for a Resource built from scratch proceeds in the following order:</p>
 

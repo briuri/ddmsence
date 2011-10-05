@@ -34,7 +34,7 @@ command line parameters. A network connection is needed to connect to Google (wh
 <h3>Walkthrough</h3>
 
 <p>When the application first opens, it will search the <code>data/sample/</code> directory for any XML files and try to convert them all into Resource
-objects (DDMSence can currently handle DDMS 2.0, 3.0, and 3.1 files). You might see an error message appear in your console, because I have included an invalid resource file (aptly named <code>3.0-invalidResourceExample.xml</code>)
+objects (DDMSence can currently handle DDMS 2.0, 3.0, 3.1, and 4.0 files). You might see an error message appear in your console, because I have included an invalid resource file (aptly named <code>3.0-invalidResourceExample.xml</code>)
 in the directory, which is used in the <u>Essentials</u> application. <u>Escape</u> will ignore any files it could not convert, so you can safely ignore this message.</p>
 
 <p>With a collection of Resources in hand, <u>Escape</u> examines the data in each Resource and builds frequency distribution charts based on various metrics. The
@@ -68,7 +68,7 @@ Pie Chart in Google-specific terms.</p>
 0 or 1 elements to appear, the getter will return a single DDMS component. If the DDMS schema allows 0 to many elements appear, the getter will return
 a List of DDMS components. The name of the getter will be a capitalized version of the DDMS element name (such as <code>getVirtualCoverage</code> for <code>ddms:virtualCoverage</code>).</p>
 
-<p>Next, let's click on the "Keyword" tab to see a pie graph of keyword usage.</p>
+<p>Next, let's click on the "Keywords" tab to see a pie graph of keyword usage.</p>
 
 <img src="./images/escape-02.png" width="400" height="267" title="Second Screen" />
 <p class="figure">Figure 3. The Keyword Distribution</p>
@@ -151,11 +151,12 @@ return (buildPieGraphURL("DDMS%20Date%20Distribution", distribution, PIE_GRAPH))
 is then tracked as it was in the previous two examples. A more useful graph might show just expiration dates or time periods -- I added the additional
 dates to provide more examples of traversing a Resource, and to make the visualization more exciting.</p>
 
-<p>The final distribution in "DDMS Versions" tab shows the DDMS versions of the loaded Resources, based on the XML namespaces in the files. If you would like to add new Resources to the dataset, simply copy your XML files into the <code>data/samples/</code> directory, or use the <u>Escort</u> wizard
-application to generate Resources. When you open up <u>Escape</u> again, your new files will be included in the metrics.</p>
-
+<p>The final distribution in the "DDMS Versions" tab shows the DDMS versions of the loaded Resources, based on the XML namespaces in the files.</p>
 <img src="./images/escape-04.png" width="400" height="267" title="Fourth Screen" />
 <p class="figure">Figure 6. The Version Distribution</p>
+
+<p>If you would like to add new Resources to the dataset, simply copy your XML files into the <code>data/samples/</code> directory, or use the <u>Escort</u> wizard
+application to generate Resources. When you open up <u>Escape</u> again, your new files will be included in the metrics.</p>
 
 <h3>Conclusion</h3>
 

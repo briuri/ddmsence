@@ -126,7 +126,7 @@
 <h1>DDMSence v@ddmsence.version@</h1>
 
 <p>
-DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
+DDMSence (pronounced "<i>dee-dee-em-<font color="#660000">Essence</font></i>") is an open source Java API which supports the 
 <a href="http://metadata.ces.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
 It transforms XML DDMS Resource records into a Java object model (using XOM and Xerces), allowing them to be manipulated or traversed within the context of a Java environment. 
 </p>
@@ -145,7 +145,7 @@ It transforms XML DDMS Resource records into a Java object model (using XOM and 
 <li>Creating new DDMS resources from scratch, possibly as part of a web-based wizard</li>
 <li>Editing existing DDMS resources</li>
 <li>Transforming older DDMS resources to the latest version of DDMS</li>
-<li>Applying custom Community of Interest (COI) constraints on a DDMS resource with Schematron</li>
+<li>Applying custom Community of Interest (COI) constraints to a DDMS resource with Schematron</li>
 </ul>
 
 <p>DDMSence comes with a complete set of JUnit tests, and is being released under the GNU Lesser General Public License (<a href="license.jsp">LGPL</a>).</p>
