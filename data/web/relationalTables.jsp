@@ -2148,7 +2148,7 @@ may be useful when integrating DDMSence with an existing persistence framework l
 		<td class="relField">resourceId</td><td class="relRules">integer</td><td>foreign key to the parent DDMS resource</td>
 	</tr>
 	<tr class="relRow">
-		<td class="relField">xml</td><td class="relRules">blob</td><td>the raw XML text of the extensible element</td>
+		<td class="relField">xml</td><td class="relRules">clob</td><td>the raw XML text of the extensible element</td>
 	</tr>
 </table>
 
