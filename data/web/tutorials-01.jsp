@@ -10,7 +10,7 @@
 <h1>Tutorial #1: <u>Essentials</u></h1>
 
 <p>
-<img src="./images/essentials-flow.png" width="400" height="150" title="Essentials Workflow" align="right" />
+<img src="./images/essentials-flow.png" width="400" height="156" title="Essentials Workflow" align="right" />
 <u>Essentials</u> is a simple reader application which loads an XML file containing a DDMS Resource and displays it in three different formats: the
 original XML, HTML, and Text. The source code for this application provides an example of how to create DDMS components from an XML file.</p>
 
