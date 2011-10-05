@@ -33,8 +33,8 @@ should not need to download them separately.</p>
 		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website.</li>
 	<li><a href="http://bassistance.de/jquery-plugins/jquery-plugin-validation/">jQuery Validation 1.8.1</a>
 		(<a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a>): Used on the DDMSence website.</li>
-	<li><a href="http://junit.sourceforge.net/">JUnit 4.8.1</a> 
-		(<a href="http://junit.sourceforge.net/cpl-v10.html">Common Public License v1.0</a>): Needed to run unit tests against DDMSence.</li>
+	<li><a href="http://junit.org/">JUnit 4.10.0</a> 
+		(<a href="http://www.junit.org/license">Common Public License v1.0</a>): Needed to run unit tests against DDMSence.</li>
 	<li><a href="http://www.springsource.org/">Spring MVC 2.0</a>
 		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Used on the DDMSence website (not bundled).</li>
 	<li><a href="http://alexgorbatchev.com/SyntaxHighlighter/">SyntaxHighlighter 3.0.83</a>
