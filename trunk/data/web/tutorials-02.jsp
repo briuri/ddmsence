@@ -10,7 +10,7 @@
 <h1>Tutorial #2: <u>Escort</u></h1>
 
 <p>
-<img src="./images/escort-flow.png" width="400" height="150" title="Escort Workflow" align="right" />
+<img src="./images/escort-flow.png" width="400" height="156" title="Escort Workflow" align="right" />
 <u>Escort</u> is a step-by-step wizard for building a simple DDMS Resource from scratch, and then saving it to a file. The source code for this application
 shows an example of how the Java object model can be built with basic data types (possibly mapped from a database table or some other pre-existing entity).</p>
 

@@ -10,7 +10,7 @@
 <h1>Tutorial #3: <u>Escape</u></h1>
 
 <p>
-<img src="./images/escape-flow.png" width="400" height="150" title="Escape Workflow" align="right" />
+<img src="./images/escape-flow.png" width="400" height="156" title="Escape Workflow" align="right" />
 <u>Escape</u> is a tool that traverses multiple DDMS Resource files and then exposes various statistics about them through the 
 <a href="http://code.google.com/apis/visualization/documentation/gallery.html" target="_new">Google Visualization API</a>. Charts in this sample
 application are non-interactive, but provide the foundation for more complex cases: for example, it would
