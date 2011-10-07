@@ -757,7 +757,7 @@ public final class Resource extends AbstractBaseComponent {
 		}
 		Collections.sort(orders);
 		for (int i = 0; i < orders.size(); i++) {
-			Integer expectedValue = new Integer(i + 1);
+			Integer expectedValue = Integer.valueOf(i + 1);
 			if (!expectedValue.equals(orders.get(i))) {
 				throw new InvalidDDMSException("The ddms:order attributes throughout this resource must form "
 					+ "a single, ordered list starting from 1.");
