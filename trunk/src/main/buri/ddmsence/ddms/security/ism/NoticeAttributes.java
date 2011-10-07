@@ -72,7 +72,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	public static final String UNREGISTERED_NOTICE_TYPE_NAME = "unregisteredNoticeType";
 			
 	/** Maximum length of reason and unregistered notice type attributes. */
-	public static int MAX_LENGTH = 2048;
+	public static final int MAX_LENGTH = 2048;
 	
 	private static final Set<String> ALL_NAMES = new HashSet<String>();
 	static {
