@@ -138,7 +138,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, prefix + "start", TEST_START));
 		text.append(buildOutput(isHTML, prefix + "end", TEST_END));
 		if (version.isAtLeast("3.0"))
-			text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix));
+			text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix, ""));
 		return (text.toString());
 	}
 

@@ -110,7 +110,7 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(PointTest.getFixtureList().get(0).getOutput(isHTML, "boundingGeometry."));
+		text.append(PointTest.getFixtureList().get(0).getOutput(isHTML, "boundingGeometry.", ""));
 		return (text.toString());
 	}
 
@@ -236,8 +236,8 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = getInstance(SUCCESS, PolygonTest.getFixtureList(), null);
-			assertEquals(PolygonTest.getFixtureList().get(0).getOutput(true, "boundingGeometry."), component.toHTML());
-			assertEquals(PolygonTest.getFixtureList().get(0).getOutput(false, "boundingGeometry."), component.toText());
+			assertEquals(PolygonTest.getFixtureList().get(0).getOutput(true, "boundingGeometry.", ""), component.toHTML());
+			assertEquals(PolygonTest.getFixtureList().get(0).getOutput(false, "boundingGeometry.", ""), component.toText());
 		}
 	}
 

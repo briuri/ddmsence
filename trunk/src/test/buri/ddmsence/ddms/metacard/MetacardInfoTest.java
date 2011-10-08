@@ -158,7 +158,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		for (IDDMSComponent component : getChildComponents())
-			text.append(component.getOutput(isHTML, "metacardInfo."));
+			text.append(component.getOutput(isHTML, "metacardInfo.", ""));
 		text.append(buildOutput(isHTML, "metacardInfo.classification", "U"));
 		text.append(buildOutput(isHTML, "metacardInfo.ownerProducer", "USA"));
 		return (text.toString());

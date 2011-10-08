@@ -104,16 +104,16 @@ public final class GroupValue extends AbstractNtkString {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + "groupValue";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix, getValue(), false));
 		text.append(buildOutput(isHTML, prefix + ".id", getID(), false));
 		text.append(buildOutput(isHTML, prefix + ".idReference", getIDReference(), false));
 		text.append(buildOutput(isHTML, prefix + ".qualifier", getQualifier(), false));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix + "."));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix + ".", ""));
 		return (text.toString());
 	}
 	

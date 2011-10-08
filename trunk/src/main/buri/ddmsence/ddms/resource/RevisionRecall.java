@@ -282,9 +282,9 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		boolean hasNestedElements = (!getLinks().isEmpty() || !getDetails().isEmpty());
 		prefix = Util.getNonNullString(prefix) + getName();
 		StringBuffer text = new StringBuffer();
@@ -295,11 +295,11 @@ public final class RevisionRecall extends AbstractBaseComponent {
 		text.append(buildOutput(isHTML, prefix + "." + NETWORK_NAME, getNetwork(), true));
 		text.append(buildOutput(isHTML, prefix + "." + OTHER_NETWORK_NAME, getOtherNetwork(), false));
 		for (Link link : getLinks())
-			text.append(link.getOutput(isHTML, prefix + "."));
+			text.append(link.getOutput(isHTML, prefix + ".", ""));
 		for (Details details : getDetails())
-			text.append(details.getOutput(isHTML, prefix + "."));
-		text.append(getXLinkAttributes().getOutput(isHTML, prefix + "."));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix + "."));
+			text.append(details.getOutput(isHTML, prefix + ".", ""));
+		text.append(getXLinkAttributes().getOutput(isHTML, prefix + ".", ""));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix + ".", ""));
 		return (text.toString());
 	}
 		

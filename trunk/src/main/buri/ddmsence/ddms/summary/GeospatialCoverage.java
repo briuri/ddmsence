@@ -275,27 +275,27 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			prefix += GEOSPATIAL_EXTENT_NAME + ".";
 		StringBuffer text = new StringBuffer();
 		if (getGeographicIdentifier() != null)
-			text.append(getGeographicIdentifier().getOutput(isHTML, prefix));
+			text.append(getGeographicIdentifier().getOutput(isHTML, prefix, ""));
 		if (getBoundingBox() != null)
-			text.append(getBoundingBox().getOutput(isHTML, prefix));
+			text.append(getBoundingBox().getOutput(isHTML, prefix, ""));
 		if (getBoundingGeometry() != null)
-			text.append(getBoundingGeometry().getOutput(isHTML, prefix));
+			text.append(getBoundingGeometry().getOutput(isHTML, prefix, ""));
 		if (getPostalAddress() != null)
-			text.append(getPostalAddress().getOutput(isHTML, prefix));
+			text.append(getPostalAddress().getOutput(isHTML, prefix, ""));
 		if (getVerticalExtent() != null)
-			text.append(getVerticalExtent().getOutput(isHTML, prefix));
+			text.append(getVerticalExtent().getOutput(isHTML, prefix, ""));
 		text.append(buildOutput(isHTML, prefix + PRECEDENCE_NAME, getPrecedence(), false));
 		if (getOrder() != null)
 			text.append(buildOutput(isHTML, prefix + ORDER_NAME, String.valueOf(getOrder()), false));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
 		return (text.toString());
 	}
 

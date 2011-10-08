@@ -179,9 +179,9 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix);		
 		StringBuffer text = new StringBuffer();
 		text.append(Resource.buildOutput(isHTML, prefix + "srsName", getSrsName(), false));

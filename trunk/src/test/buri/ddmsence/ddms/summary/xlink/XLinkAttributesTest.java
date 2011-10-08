@@ -497,33 +497,33 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 			Element element = Util.buildDDMSElement("link", null);
 			addAttributes(element, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
 			XLinkAttributes attributes = new XLinkAttributes(element);
-			assertEquals(getExpectedOutput(true, "locator"), attributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false, "locator"), attributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(true, "locator"), attributes.getOutput(true, "", ""));
+			assertEquals(getExpectedOutput(false, "locator"), attributes.getOutput(false, "", ""));
 
 			XLinkAttributes dataAttributes = getInstance(SUCCESS, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_LABEL);
-			assertEquals(getExpectedOutput(true, "locator"), dataAttributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false, "locator"), dataAttributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(true, "locator"), dataAttributes.getOutput(true, "", ""));
+			assertEquals(getExpectedOutput(false, "locator"), dataAttributes.getOutput(false, "", ""));
 
 			element = Util.buildDDMSElement("link", null);
 			addAttributes(element, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW, TEST_ACTUATE);
 			attributes = new XLinkAttributes(element);
-			assertEquals(getExpectedOutput(true, "simple"), attributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false, "simple"), attributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(true, "simple"), attributes.getOutput(true, "", ""));
+			assertEquals(getExpectedOutput(false, "simple"), attributes.getOutput(false, "", ""));
 
 			dataAttributes = getInstance(SUCCESS, TEST_HREF, TEST_ROLE, TEST_TITLE, TEST_ARCROLE, TEST_SHOW,
 				TEST_ACTUATE);
-			assertEquals(getExpectedOutput(true, "simple"), dataAttributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false, "simple"), dataAttributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(true, "simple"), dataAttributes.getOutput(true, "", ""));
+			assertEquals(getExpectedOutput(false, "simple"), dataAttributes.getOutput(false, "", ""));
 
 			element = Util.buildDDMSElement("link", null);
 			addAttributes(element, TEST_ROLE, TEST_TITLE, TEST_LABEL);
 			attributes = new XLinkAttributes(element);
-			assertEquals(getExpectedOutput(true, "resource"), attributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false, "resource"), attributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(true, "resource"), attributes.getOutput(true, "", ""));
+			assertEquals(getExpectedOutput(false, "resource"), attributes.getOutput(false, "", ""));
 
 			dataAttributes = getInstance(SUCCESS, TEST_ROLE, TEST_TITLE, TEST_LABEL);
-			assertEquals(getExpectedOutput(true, "resource"), dataAttributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false, "resource"), dataAttributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(true, "resource"), dataAttributes.getOutput(true, "", ""));
+			assertEquals(getExpectedOutput(false, "resource"), dataAttributes.getOutput(false, "", ""));
 		}
 	}
 

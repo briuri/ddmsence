@@ -117,8 +117,8 @@ public class IndividualTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(SystemNameTest.getFixture().getOutput(isHTML, "individual."));
-		text.append(IndividualValueTest.getFixtureList().get(0).getOutput(isHTML, "individual."));
+		text.append(SystemNameTest.getFixture().getOutput(isHTML, "individual.", ""));
+		text.append(IndividualValueTest.getFixtureList().get(0).getOutput(isHTML, "individual.", ""));
 		text.append(buildOutput(isHTML, "individual.classification", "U"));
 		text.append(buildOutput(isHTML, "individual.ownerProducer", "USA"));
 		return (text.toString());

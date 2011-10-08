@@ -143,7 +143,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, "taskID.taskingSystem", TEST_TASKING_SYSTEM));
 		text.append(buildOutput(isHTML, "taskID.network", TEST_NETWORK));
 		text.append(buildOutput(isHTML, "taskID.otherNetwork", TEST_OTHER_NETWORK));
-		text.append(XLinkAttributesTest.getSimpleFixture().getOutput(isHTML, "taskID."));
+		text.append(XLinkAttributesTest.getSimpleFixture().getOutput(isHTML, "taskID.", ""));
 		return (text.toString());
 	}
 

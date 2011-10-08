@@ -127,7 +127,7 @@ public class FormatTest extends AbstractBaseTestCase {
 		String prefix = version.isAtLeast("4.0") ? "format." : "format.Media.";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix + "mimeType", TEST_MIME_TYPE));
-		text.append(ExtentTest.getFixture().getOutput(isHTML, prefix));
+		text.append(ExtentTest.getFixture().getOutput(isHTML, prefix, ""));
 		text.append(buildOutput(isHTML, prefix + "medium", TEST_MEDIUM));
 		return (text.toString());
 	}

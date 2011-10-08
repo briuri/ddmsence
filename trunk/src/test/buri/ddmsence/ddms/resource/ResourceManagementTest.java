@@ -111,10 +111,10 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(RecordsManagementInfoTest.getFixture().getOutput(isHTML, "resourceManagement."));
-		text.append(RevisionRecallTest.getTextFixture().getOutput(isHTML, "resourceManagement."));
-		text.append(TaskingInfoTest.getFixtureList().get(0).getOutput(isHTML, "resourceManagement."));
-		text.append(ProcessingInfoTest.getFixtureList().get(0).getOutput(isHTML, "resourceManagement."));
+		text.append(RecordsManagementInfoTest.getFixture().getOutput(isHTML, "resourceManagement.", ""));
+		text.append(RevisionRecallTest.getTextFixture().getOutput(isHTML, "resourceManagement.", ""));
+		text.append(TaskingInfoTest.getFixtureList().get(0).getOutput(isHTML, "resourceManagement.", ""));
+		text.append(ProcessingInfoTest.getFixtureList().get(0).getOutput(isHTML, "resourceManagement.", ""));
 		text.append(buildOutput(isHTML, "resourceManagement.classification", "U"));
 		text.append(buildOutput(isHTML, "resourceManagement.ownerProducer", "USA"));
 		return (text.toString());

@@ -106,7 +106,7 @@ public class PublisherTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(ServiceTest.getFixture().getOutput(isHTML, "publisher."));
+		text.append(ServiceTest.getFixture().getOutput(isHTML, "publisher.", ""));
 		if (version.isAtLeast("4.0"))
 			text.append(buildOutput(isHTML, "publisher.POCType", "ICD-710"));
 		text.append(buildOutput(isHTML, "publisher.classification", "U"));

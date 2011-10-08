@@ -144,7 +144,7 @@ public class PositionTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "pos", TEST_XS_LIST));
-		text.append(SRSAttributesTest.getFixture().getOutput(isHTML, "pos."));
+		text.append(SRSAttributesTest.getFixture().getOutput(isHTML, "pos.", ""));
 		return (text.toString());
 	}
 

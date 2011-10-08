@@ -779,9 +779,9 @@ public final class Resource extends AbstractBaseComponent {
 	}
 		
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		if (isResourceElement() != null)
@@ -795,9 +795,9 @@ public final class Resource extends AbstractBaseComponent {
 		if (getNtkDESVersion() != null)
 			text.append(buildOutput(isHTML, prefix + "ntk." + DES_VERSION_NAME, String.valueOf(getNtkDESVersion()),
 				true));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
-		text.append(getNoticeAttributes().getOutput(isHTML, prefix));
-		text.append(getExtensibleAttributes().getOutput(isHTML, prefix));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
+		text.append(getNoticeAttributes().getOutput(isHTML, prefix, ""));
+		text.append(getExtensibleAttributes().getOutput(isHTML, prefix, ""));
 		for (IDDMSComponent component : getTopLevelComponents())
 			text.append(isHTML ? component.toHTML() : component.toText());
 		text.append(buildOutput(isHTML, "extensible.layer", String.valueOf(!getExtensibleElements().isEmpty()), true));

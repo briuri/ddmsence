@@ -280,9 +280,9 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			prefix += TIME_PERIOD_NAME + ".";
@@ -290,7 +290,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		text.append(buildOutput(isHTML, prefix + TIME_PERIOD_NAME_NAME, getTimePeriodName(), false));
 		text.append(buildOutput(isHTML, prefix + START_NAME, getStartString(), true));
 		text.append(buildOutput(isHTML, prefix + END_NAME, getEndString(), true));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
 		return (text.toString());
 	}
 	 

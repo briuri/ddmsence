@@ -168,13 +168,13 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		StringBuffer text = new StringBuffer();
-		text.append(GeographicIdentifierTest.getCountryCodeBasedFixture().getOutput(isHTML, prefix));
+		text.append(GeographicIdentifierTest.getCountryCodeBasedFixture().getOutput(isHTML, prefix, ""));
 		if (version.isAtLeast("4.0")) {
 			text.append(buildOutput(isHTML, prefix + "precedence", "Primary"));
 			text.append(buildOutput(isHTML, prefix + "order", "1"));
 		}
 		if (version.isAtLeast("3.0"))
-			text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix));
+			text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix, ""));
 		return (text.toString());
 	}
 
@@ -484,21 +484,21 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-			assertEquals(BoundingBoxTest.getFixture().getOutput(true, prefix) + getHtmlIcism(), component.toHTML());
-			assertEquals(BoundingBoxTest.getFixture().getOutput(false, prefix) + getTextIcism(), component.toText());
+			assertEquals(BoundingBoxTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(), component.toHTML());
+			assertEquals(BoundingBoxTest.getFixture().getOutput(false, prefix, "") + getTextIcism(), component.toText());
 
 			component = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
-			assertEquals(BoundingGeometryTest.getFixture().getOutput(true, prefix) + getHtmlIcism(), component.toHTML());
-			assertEquals(BoundingGeometryTest.getFixture().getOutput(false, prefix) + getTextIcism(), component
+			assertEquals(BoundingGeometryTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(), component.toHTML());
+			assertEquals(BoundingGeometryTest.getFixture().getOutput(false, prefix, "") + getTextIcism(), component
 				.toText());
 
 			component = getInstance(SUCCESS, null, null, null, PostalAddressTest.getFixture(), null, null, null);
-			assertEquals(PostalAddressTest.getFixture().getOutput(true, prefix) + getHtmlIcism(), component.toHTML());
-			assertEquals(PostalAddressTest.getFixture().getOutput(false, prefix) + getTextIcism(), component.toText());
+			assertEquals(PostalAddressTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(), component.toHTML());
+			assertEquals(PostalAddressTest.getFixture().getOutput(false, prefix, "") + getTextIcism(), component.toText());
 
 			component = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
-			assertEquals(VerticalExtentTest.getFixture().getOutput(true, prefix) + getHtmlIcism(), component.toHTML());
-			assertEquals(VerticalExtentTest.getFixture().getOutput(false, prefix) + getTextIcism(), component.toText());
+			assertEquals(VerticalExtentTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(), component.toHTML());
+			assertEquals(VerticalExtentTest.getFixture().getOutput(false, prefix, "") + getTextIcism(), component.toText());
 		}
 	}
 

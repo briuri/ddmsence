@@ -106,7 +106,7 @@ public class ProfileListTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(ProfileTest.getFixtureList().get(0).getOutput(isHTML, "profileList."));
+		text.append(ProfileTest.getFixtureList().get(0).getOutput(isHTML, "profileList.", ""));
 		text.append(buildOutput(isHTML, "profileList.classification", "U"));
 		text.append(buildOutput(isHTML, "profileList.ownerProducer", "USA"));
 		return (text.toString());

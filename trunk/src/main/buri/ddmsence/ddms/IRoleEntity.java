@@ -59,15 +59,5 @@ public interface IRoleEntity extends IDDMSComponent {
 	 * 
 	 * @return the attributes
 	 */
-	public ExtensibleAttributes getExtensibleAttributes();
-	
-	/**
-	 * Renders this entity as HTML or Text
-	 * 
-	 * @param isHTML true for HTML, false for Text
-	 * @param prefix a prefix to attach to each field name
-	 * @return a string containing the entity details
-	 */
-	public String getOutput(boolean isHTML, String prefix);
-	
+	public ExtensibleAttributes getExtensibleAttributes();	
 }

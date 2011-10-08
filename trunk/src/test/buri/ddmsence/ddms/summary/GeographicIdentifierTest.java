@@ -139,9 +139,9 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "geographicIdentifier.name", TEST_NAMES.get(0)));
 		text.append(buildOutput(isHTML, "geographicIdentifier.region", TEST_REGIONS.get(0)));
-		text.append(CountryCodeTest.getFixture().getOutput(isHTML, "geographicIdentifier."));
+		text.append(CountryCodeTest.getFixture().getOutput(isHTML, "geographicIdentifier.", ""));
 		if (version.isAtLeast("4.0"))
-			text.append(SubDivisionCodeTest.getFixture().getOutput(isHTML, "geographicIdentifier."));
+			text.append(SubDivisionCodeTest.getFixture().getOutput(isHTML, "geographicIdentifier.", ""));
 		return (text.toString());
 	}
 

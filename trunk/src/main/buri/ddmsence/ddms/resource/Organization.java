@@ -181,13 +181,13 @@ public final class Organization extends AbstractRoleEntity {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix);
-		StringBuffer text = new StringBuffer(super.getOutput(isHTML, prefix));
+		StringBuffer text = new StringBuffer(super.getOutput(isHTML, prefix, ""));
 		for (SubOrganization subOrg : getSubOrganizations())
-			text.append(subOrg.getOutput(isHTML, prefix));	
+			text.append(subOrg.getOutput(isHTML, prefix, ""));	
 		text.append(buildOutput(isHTML, prefix + ACRONYM_NAME, getAcronym(), false));
 		return (text.toString());
 	}

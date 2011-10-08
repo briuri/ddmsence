@@ -202,18 +202,18 @@ public final class Access extends AbstractBaseComponent {
 	}
 		
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + "access.";
 		StringBuffer text = new StringBuffer();
 		for (Individual individual : getIndividuals())
-			text.append(individual.getOutput(isHTML, prefix + "individualList."));
+			text.append(individual.getOutput(isHTML, prefix + "individualList.", ""));
 		for (Group group : getGroups())
-			text.append(group.getOutput(isHTML, prefix + "groupList."));
+			text.append(group.getOutput(isHTML, prefix + "groupList.", ""));
 		if (getProfileList() != null)
-			text.append(getProfileList().getOutput(isHTML, prefix));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+			text.append(getProfileList().getOutput(isHTML, prefix, ""));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
 		return (text.toString());
 	}
 		

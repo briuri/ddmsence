@@ -160,19 +160,19 @@ public final class Security extends AbstractBaseComponent {
 	}
 
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		if (getExcludeFromRollup() != null)
 			text.append(buildOutput(isHTML, prefix + EXCLUDE_FROM_ROLLUP_NAME, String.valueOf(getExcludeFromRollup()),
 				true));
 		if (getNoticeList() != null)
-			text.append(getNoticeList().getOutput(isHTML, prefix));
+			text.append(getNoticeList().getOutput(isHTML, prefix, ""));
 		if (getAccess() != null)
-			text.append(getAccess().getOutput(isHTML, prefix));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+			text.append(getAccess().getOutput(isHTML, prefix, ""));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
 		return (text.toString());
 	}
 	

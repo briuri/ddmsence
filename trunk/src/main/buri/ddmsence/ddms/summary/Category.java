@@ -159,16 +159,16 @@ public final class Category extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix + QUALIFIER_NAME, getQualifier(), false));
 		text.append(buildOutput(isHTML, prefix + CODE_NAME, getCode(), false));
 		text.append(buildOutput(isHTML, prefix + LABEL_NAME, getLabel(), true));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
-		text.append(getExtensibleAttributes().getOutput(isHTML, prefix));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
+		text.append(getExtensibleAttributes().getOutput(isHTML, prefix, ""));
 		return (text.toString());
 	}
 	
