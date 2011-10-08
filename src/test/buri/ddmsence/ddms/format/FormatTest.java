@@ -370,7 +370,7 @@ public class FormatTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Format.Builder builder = new Format.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Format.Builder();

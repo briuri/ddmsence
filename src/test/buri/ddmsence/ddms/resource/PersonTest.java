@@ -382,7 +382,7 @@ public class PersonTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Person.Builder builder = new Person.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Person.Builder();

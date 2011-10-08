@@ -250,7 +250,7 @@ public class LanguageTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Language.Builder builder = new Language.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Language.Builder();

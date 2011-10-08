@@ -272,7 +272,7 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			RecordsManagementInfo.Builder builder = new RecordsManagementInfo.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new RecordsManagementInfo.Builder();

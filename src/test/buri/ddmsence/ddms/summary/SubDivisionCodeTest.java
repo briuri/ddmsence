@@ -265,22 +265,34 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			SubDivisionCode component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			SubDivisionCode.Builder builder = new SubDivisionCode.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new SubDivisionCode.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			SubDivisionCode.Builder builder = new SubDivisionCode.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setValue(TEST_VALUE);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new SubDivisionCode.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			SubDivisionCode.Builder builder = new SubDivisionCode.Builder();
 			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();

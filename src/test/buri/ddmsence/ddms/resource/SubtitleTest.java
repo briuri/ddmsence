@@ -248,7 +248,7 @@ public class SubtitleTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Subtitle.Builder builder = new Subtitle.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Subtitle.Builder();

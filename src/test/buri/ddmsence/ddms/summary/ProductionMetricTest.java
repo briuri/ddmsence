@@ -275,18 +275,33 @@ public class ProductionMetricTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			ProductionMetric component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			ProductionMetric.Builder builder = new ProductionMetric.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Validation
-			builder = new ProductionMetric.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			ProductionMetric.Builder builder = new ProductionMetric.Builder();
+			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setCoverage(TEST_COVERAGE);
+			assertFalse(builder.isEmpty());
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			ProductionMetric.Builder builder = new ProductionMetric.Builder();
 			assertNull(builder.commit());
 			builder.setCoverage(TEST_COVERAGE);
 			try {

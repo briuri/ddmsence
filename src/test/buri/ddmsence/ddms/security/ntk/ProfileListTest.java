@@ -267,7 +267,7 @@ public class ProfileListTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			ProfileList.Builder builder = new ProfileList.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new ProfileList.Builder();

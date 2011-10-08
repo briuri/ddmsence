@@ -303,7 +303,7 @@ public class DetailsTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Details.Builder builder = new Details.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Details.Builder();

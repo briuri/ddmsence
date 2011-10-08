@@ -281,21 +281,33 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			VirtualCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			VirtualCoverage.Builder builder = new VirtualCoverage.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new VirtualCoverage.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			VirtualCoverage.Builder builder = new VirtualCoverage.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setAddress(TEST_ADDRESS);
+			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new VirtualCoverage.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			VirtualCoverage.Builder builder = new VirtualCoverage.Builder();
 			builder.setAddress(TEST_ADDRESS);
 			try {
 				builder.commit();

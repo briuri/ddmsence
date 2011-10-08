@@ -342,21 +342,39 @@ public class PositionTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testGetStringAsDouble() {
+		assertNull(Position.getStringAsDouble(null));
+		assertEquals(new Double(2.1), Position.getStringAsDouble("2.1"));
+		assertNull(Position.getStringAsDouble("notADouble"));
+	}
+
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			Position component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Position.Builder builder = new Position.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Position.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Position.Builder builder = new Position.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.getCoordinates().get(0).setValue(Double.valueOf(0));
+			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new Position.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Position.Builder builder = new Position.Builder();
 			builder.getCoordinates().get(0).setValue(Double.valueOf(0));
 			try {
 				builder.commit();
@@ -384,11 +402,5 @@ public class PositionTest extends AbstractBaseTestCase {
 			Position.Builder builder = new Position.Builder();
 			assertNotNull(builder.getCoordinates().get(1));
 		}
-	}
-
-	public void testGetStringAsDouble() {
-		assertNull(Position.getStringAsDouble(null));
-		assertEquals(new Double(2.1), Position.getStringAsDouble("2.1"));
-		assertNull(Position.getStringAsDouble("notADouble"));
 	}
 }

@@ -280,7 +280,7 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			SubOrganization.Builder builder = new SubOrganization.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new SubOrganization.Builder();

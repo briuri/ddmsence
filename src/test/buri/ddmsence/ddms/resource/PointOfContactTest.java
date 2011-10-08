@@ -277,7 +277,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			PointOfContact.Builder builder = new PointOfContact.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new PointOfContact.Builder();

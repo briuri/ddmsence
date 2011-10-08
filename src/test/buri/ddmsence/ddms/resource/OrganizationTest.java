@@ -355,7 +355,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Organization.Builder builder = new Organization.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Organization.Builder();

@@ -345,8 +345,9 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			SRSAttributes component = getFixture();
-			
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), "sample", version.getGmlNamespace(), null);
+
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), "sample", version.getGmlNamespace(),
+				null);
 			component.addTo(element);
 			SRSAttributes output = new SRSAttributes(element);
 			assertEquals(component, output);
@@ -357,11 +358,11 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		SRSAttributes component = new SRSAttributes(null, null, null, null);
 		SRSAttributes output = SRSAttributes.getNonNullInstance(null);
 		assertEquals(component, output);
-		
+
 		output = SRSAttributes.getNonNullInstance(getFixture());
 		assertEquals(getFixture(), output);
 	}
-	
+
 	public void testWrongVersionAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		SRSAttributes attr = getFixture();
@@ -378,10 +379,10 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			SRSAttributes component = getFixture();
 			SRSAttributes.Builder builder = new SRSAttributes.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 		}
 	}
 
@@ -394,16 +395,16 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 			assertTrue(builder.isEmpty());
 			builder.setSrsName(TEST_SRS_NAME);
 			assertFalse(builder.isEmpty());
-			
+
 			builder = new SRSAttributes.Builder();
 			builder.setSrsDimension(TEST_SRS_DIMENSION);
 			assertFalse(builder.isEmpty());
-			
+
 			builder = new SRSAttributes.Builder();
 			builder.getUomLabels().add(null);
 			builder.getUomLabels().add("label");
 			assertFalse(builder.isEmpty());
-			
+
 			builder = new SRSAttributes.Builder();
 			builder.getAxisLabels().add(null);
 			builder.getAxisLabels().add("label");
@@ -414,7 +415,7 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 	public void testBuilderValidation() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			SRSAttributes.Builder builder = new SRSAttributes.Builder();
 			builder.setSrsDimension(Integer.valueOf(-1));
 			try {

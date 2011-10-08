@@ -202,6 +202,13 @@ public final class NonStateActor extends AbstractSimpleString {
 		}
 
 		/**
+		 * @see AbstractSimpleString.Builder#isEmpty()
+		 */
+		public boolean isEmpty() {
+			return (super.isEmpty() && getOrder() == null);
+		}
+		
+		/**
 		 * Builder accessor for the order
 		 */
 		public Integer getOrder() {

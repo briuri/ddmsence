@@ -56,8 +56,8 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	public static NonStateActor getFixture(int order) {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			return (version.isAtLeast("4.0") ? new NonStateActor(TEST_VALUE, Integer.valueOf(order), SecurityAttributesTest
-				.getFixture()) : null);
+			return (version.isAtLeast("4.0") ? new NonStateActor(TEST_VALUE, Integer.valueOf(order),
+				SecurityAttributesTest.getFixture()) : null);
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -281,18 +281,34 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			NonStateActor component = getInstance(SUCCESS, getValidElement(sVersion));
+			NonStateActor.Builder builder = new NonStateActor.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			NonStateActor.Builder builder = new NonStateActor.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setOrder(TEST_ORDER);
+			assertFalse(builder.isEmpty());
 
-			// Equality after Building
-			builder = new NonStateActor.Builder(component);
-			assertEquals(builder.commit(), component);
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			// There are no invalid cases right now -- every field is optional.
 		}
 	}
 }

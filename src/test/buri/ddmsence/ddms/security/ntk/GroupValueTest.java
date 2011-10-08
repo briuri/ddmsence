@@ -306,7 +306,7 @@ public class GroupValueTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			GroupValue.Builder builder = new GroupValue.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new GroupValue.Builder();

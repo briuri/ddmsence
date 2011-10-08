@@ -284,7 +284,7 @@ public class SystemNameTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			SystemName.Builder builder = new SystemName.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new SystemName.Builder();

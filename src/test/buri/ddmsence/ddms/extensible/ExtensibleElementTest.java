@@ -170,10 +170,10 @@ public class ExtensibleElementTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			ExtensibleElement.Builder builder = new ExtensibleElement.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 			builder = new ExtensibleElement.Builder();
 			builder.setXml(getFixtureElement().toXML());
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new ExtensibleElement.Builder();

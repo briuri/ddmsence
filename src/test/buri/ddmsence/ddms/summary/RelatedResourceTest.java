@@ -448,21 +448,34 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			RelatedResource component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			RelatedResource.Builder builder = new RelatedResource.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new RelatedResource.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			RelatedResource.Builder builder = new RelatedResource.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setQualifier(TEST_QUALIFIER);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new RelatedResource.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			RelatedResource.Builder builder = new RelatedResource.Builder();
 			builder.setQualifier(TEST_QUALIFIER);
 			try {
 				builder.commit();

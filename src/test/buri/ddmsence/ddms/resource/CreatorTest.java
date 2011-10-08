@@ -260,7 +260,7 @@ public class CreatorTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Creator.Builder builder = new Creator.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Creator.Builder();

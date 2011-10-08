@@ -284,7 +284,7 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			RecordKeeper.Builder builder = new RecordKeeper.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new RecordKeeper.Builder();

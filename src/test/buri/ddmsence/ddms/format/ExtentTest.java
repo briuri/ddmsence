@@ -270,7 +270,7 @@ public class ExtentTest extends AbstractBaseTestCase {
 			// Equality after Building
 			Extent component = getInstance(SUCCESS, getValidElement(sVersion));
 			Extent.Builder builder = new Extent.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Extent.Builder();

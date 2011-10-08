@@ -634,39 +634,52 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			assertEquals(suffix, component.getLocatorSuffix());
 		}
 	}
-	
-	public void testBuilder() throws InvalidDDMSException {
+
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// Equality after Building
 			GeospatialCoverage component = getInstance(SUCCESS, GeographicIdentifierTest.getCountryCodeBasedFixture(),
 				null, null, null, null, null, null);
 			GeospatialCoverage.Builder builder = new GeospatialCoverage.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			component = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
 			builder = new GeospatialCoverage.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			component = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
 			builder = new GeospatialCoverage.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			component = getInstance(SUCCESS, null, null, null, PostalAddressTest.getFixture(), null, null, null);
 			builder = new GeospatialCoverage.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			component = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
 			builder = new GeospatialCoverage.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new GeospatialCoverage.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			GeospatialCoverage.Builder builder = new GeospatialCoverage.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setOrder(TEST_ORDER);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new GeospatialCoverage.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			GeospatialCoverage.Builder builder = new GeospatialCoverage.Builder();
 			builder.getVerticalExtent().setDatum("AGL");
 			try {
 				builder.commit();

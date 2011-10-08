@@ -341,7 +341,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Security.Builder builder = new Security.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Security.Builder();

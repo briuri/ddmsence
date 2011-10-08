@@ -276,7 +276,7 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			NoticeAttributes component = getFixture();
-			
+
 			Element element = Util.buildDDMSElement("sample", null);
 			component.addTo(element);
 			NoticeAttributes output = new NoticeAttributes(element);
@@ -289,11 +289,11 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 		NoticeAttributes output = NoticeAttributes.getNonNullInstance(null);
 		assertEquals(component, output);
 		assertTrue(output.isEmpty());
-		
+
 		output = NoticeAttributes.getNonNullInstance(getFixture());
 		assertEquals(getFixture(), output);
 	}
-	
+
 	public void testWrongVersion() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
@@ -336,10 +336,10 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			NoticeAttributes component = getFixture();
 			NoticeAttributes.Builder builder = new NoticeAttributes.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 		}
 	}
 

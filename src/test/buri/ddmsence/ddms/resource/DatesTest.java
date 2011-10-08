@@ -344,7 +344,7 @@ public class DatesTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Dates.Builder builder = new Dates.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Dates.Builder();

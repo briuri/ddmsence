@@ -293,7 +293,7 @@ public class IndividualTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Individual.Builder builder = new Individual.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Individual.Builder();

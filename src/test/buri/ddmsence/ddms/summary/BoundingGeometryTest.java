@@ -252,26 +252,40 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			BoundingGeometry component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building (Point-based)
 			BoundingGeometry.Builder builder = new BoundingGeometry.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Equality after Building (Polygon-based)
 			component = new BoundingGeometry(PolygonTest.getFixtureList(), null);
 			builder = new BoundingGeometry.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new BoundingGeometry.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			BoundingGeometry.Builder builder = new BoundingGeometry.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.getPoints().get(0).setId(TEST_ID);
+			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new BoundingGeometry.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			BoundingGeometry.Builder builder = new BoundingGeometry.Builder();
 			for (Point point : PointTest.getFixtureList()) {
 				Point.Builder pointBuilder = new Point.Builder(point);
 				pointBuilder.setId("");

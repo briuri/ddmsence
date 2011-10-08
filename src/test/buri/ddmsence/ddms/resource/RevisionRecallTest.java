@@ -553,12 +553,12 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			// Equality after Building (links)
 			RevisionRecall component = getInstance(SUCCESS, getValidElement(sVersion));
 			RevisionRecall.Builder builder = new RevisionRecall.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Equality after Building (text)
 			component = getInstance(SUCCESS, getTextFixtureElement());
 			builder = new RevisionRecall.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new RevisionRecall.Builder();

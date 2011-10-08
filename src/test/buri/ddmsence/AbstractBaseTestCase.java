@@ -176,7 +176,8 @@ public abstract class AbstractBaseTestCase extends TestCase {
 			locator = "/" + locator;
 		assertTrue(ValidationMessage.ERROR_TYPE.equals(message.getType()));
 		assertTrue(locator.equals(message.getLocator()));
-		assertTrue(message.getText().startsWith(text));	}
+		assertTrue(message.getText().startsWith(text));
+	}
 
 	/**
 	 * Shared method for testing the name and namespace of a created component.

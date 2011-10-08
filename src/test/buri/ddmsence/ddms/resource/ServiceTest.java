@@ -267,7 +267,7 @@ public class ServiceTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Service.Builder builder = new Service.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Service.Builder();

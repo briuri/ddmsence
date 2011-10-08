@@ -356,18 +356,13 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			PostalAddress component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			PostalAddress.Builder builder = new PostalAddress.Builder(component);
-			assertEquals(builder.commit(), component);
-
-			// Empty case
-			builder = new PostalAddress.Builder();
-			assertNull(builder.commit());
+			assertEquals(component, builder.commit());
 
 			// No country code
 			builder = new PostalAddress.Builder(component);
@@ -383,9 +378,26 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			builder.getStreets().add("1600 Pennsylvania Avenue, NW");
 			address = builder.commit();
 			assertEquals(countryCode, address.getCountryCode());
+		}
+	}
 
-			// Validation
-			builder = new PostalAddress.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			PostalAddress.Builder builder = new PostalAddress.Builder();
+			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setCity(TEST_CITY);
+			assertFalse(builder.isEmpty());
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			PostalAddress.Builder builder = new PostalAddress.Builder();
 			builder.setState(TEST_STATE);
 			builder.setProvince(TEST_PROVINCE);
 			try {

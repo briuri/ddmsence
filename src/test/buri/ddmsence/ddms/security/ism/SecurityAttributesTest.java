@@ -417,7 +417,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SecurityAttributes component = getFixture();
-			
+
 			Element element = Util.buildDDMSElement("sample", null);
 			component.addTo(element);
 			SecurityAttributes output = new SecurityAttributes(element);
@@ -429,11 +429,11 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		SecurityAttributes component = new SecurityAttributes(null, null, null);
 		SecurityAttributes output = SecurityAttributes.getNonNullInstance(null);
 		assertEquals(component, output);
-		
+
 		output = SecurityAttributes.getNonNullInstance(getFixture());
 		assertEquals(getFixture(), output);
 	}
-	
+
 	public void testIsEmpty() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -444,7 +444,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			assertFalse(dataAttributes.isEmpty());
 		}
 	}
-	
+
 	public void testWrongVersionAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("3.0");
 		SecurityAttributes attr = getInstance(SUCCESS, TEST_CLASS, TEST_OWNERS, getOtherAttributes());
@@ -652,10 +652,10 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			SecurityAttributes component = getFullFixture();
 			SecurityAttributes.Builder builder = new SecurityAttributes.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 		}
 	}
 

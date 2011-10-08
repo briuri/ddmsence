@@ -260,7 +260,7 @@ public class ContributorTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Contributor.Builder builder = new Contributor.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Contributor.Builder();

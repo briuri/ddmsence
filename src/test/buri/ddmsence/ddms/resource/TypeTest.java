@@ -299,7 +299,7 @@ public class TypeTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Type.Builder builder = new Type.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Type.Builder();

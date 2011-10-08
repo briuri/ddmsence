@@ -531,7 +531,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			XLinkAttributes component = getLocatorFixture();
-			
+
 			Element element = Util.buildDDMSElement("sample", null);
 			component.addTo(element);
 			XLinkAttributes output = new XLinkAttributes(element);
@@ -543,31 +543,31 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		XLinkAttributes component = new XLinkAttributes();
 		XLinkAttributes output = XLinkAttributes.getNonNullInstance(null);
 		assertEquals(component, output);
-		
+
 		output = XLinkAttributes.getNonNullInstance(getLocatorFixture());
 		assertEquals(getLocatorFixture(), output);
 	}
-	
+
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			XLinkAttributes component = getLocatorFixture();
 			XLinkAttributes.Builder builder = new XLinkAttributes.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 		}
 	}
 
 	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			XLinkAttributes.Builder builder = new XLinkAttributes.Builder();
 			assertNotNull(builder.commit());
 			assertTrue(builder.isEmpty());
 			builder.setLabel(TEST_LABEL);
 			assertFalse(builder.isEmpty());
-			
+
 			// An untyped instance
 			XLinkAttributes output = builder.commit();
 			assertTrue(Util.isEmpty(output.getType()));
@@ -577,7 +577,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 	public void testBuilderValidation() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			XLinkAttributes.Builder builder = new XLinkAttributes.Builder();
 			builder.setType("locator");
 			builder.setHref(INVALID_URI);
@@ -587,7 +587,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 			}
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "Invalid URI");
-			}			
+			}
 			builder.setType("locator");
 			builder.setHref(TEST_HREF);
 			builder.commit();

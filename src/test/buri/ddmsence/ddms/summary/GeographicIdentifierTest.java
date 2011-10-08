@@ -406,27 +406,42 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			GeographicIdentifier component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// Equality after Building (CountryCode-based)
 			GeographicIdentifier.Builder builder = new GeographicIdentifier.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Equality after Building (FacID-based)
 			FacilityIdentifier facId = FacilityIdentifierTest.getFixture();
 			component = new GeographicIdentifier(facId);
 			builder = new GeographicIdentifier.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new GeographicIdentifier.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			GeographicIdentifier.Builder builder = new GeographicIdentifier.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setNames(TEST_NAMES);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new GeographicIdentifier.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			GeographicIdentifier.Builder builder = new GeographicIdentifier.Builder();
 			builder.getFacilityIdentifier().setBeNumber("1234DD56789");
 			try {
 				builder.commit();

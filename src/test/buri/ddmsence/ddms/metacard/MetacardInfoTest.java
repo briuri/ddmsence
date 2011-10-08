@@ -488,7 +488,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			MetacardInfo.Builder builder = new MetacardInfo.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new MetacardInfo.Builder();

@@ -300,7 +300,7 @@ public class SourceTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Source.Builder builder = new Source.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Source.Builder();

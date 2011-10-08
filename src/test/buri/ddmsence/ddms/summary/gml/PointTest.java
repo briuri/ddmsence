@@ -352,21 +352,33 @@ public class PointTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			Point component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Point.Builder builder = new Point.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Point.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Point.Builder builder = new Point.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setId(TEST_ID);
+			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new Point.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Point.Builder builder = new Point.Builder();
 			builder.setId(TEST_ID);
 			try {
 				builder.commit();

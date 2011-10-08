@@ -316,7 +316,7 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			builder = new NoticeText.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Validation
 			builder = new NoticeText.Builder();
