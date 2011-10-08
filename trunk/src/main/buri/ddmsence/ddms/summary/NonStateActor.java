@@ -57,8 +57,7 @@ public final class NonStateActor extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public NonStateActor(Element element) throws InvalidDDMSException {
-		super(element, true);
-		
+		super(element, true);		
 	}
 	
 	/**
@@ -202,7 +201,7 @@ public final class NonStateActor extends AbstractSimpleString {
 		}
 
 		/**
-		 * @see AbstractSimpleString.Builder#isEmpty()
+		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
 			return (super.isEmpty() && getOrder() == null);
