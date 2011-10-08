@@ -255,7 +255,7 @@ public class PublisherTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Publisher component = getInstance(SUCCESS, getValidElement(sVersion));
 			Publisher.Builder builder = new Publisher.Builder(component);
 			assertEquals(component, builder.commit());

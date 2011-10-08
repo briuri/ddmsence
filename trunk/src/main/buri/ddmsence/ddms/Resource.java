@@ -782,7 +782,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
 		StringBuffer text = new StringBuffer();
 		if (isResourceElement() != null)
 			text.append(buildOutput(isHTML, prefix + RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement()), true));
@@ -795,11 +795,42 @@ public final class Resource extends AbstractBaseComponent {
 		if (getNtkDESVersion() != null)
 			text.append(buildOutput(isHTML, prefix + "ntk." + DES_VERSION_NAME, String.valueOf(getNtkDESVersion()),
 				true));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
-		text.append(getNoticeAttributes().getOutput(isHTML, prefix, ""));
-		text.append(getExtensibleAttributes().getOutput(isHTML, prefix, ""));
-		for (IDDMSComponent component : getTopLevelComponents())
-			text.append(isHTML ? component.toHTML() : component.toText());
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		text.append(getNoticeAttributes().getOutput(isHTML, prefix));
+		text.append(getExtensibleAttributes().getOutput(isHTML, prefix));
+		
+		// Traverse top-level components, suppressing the resource prefix
+		if (getMetacardInfo() != null)
+			text.append(getMetacardInfo().getOutput(isHTML, "", ""));
+		text.append(buildOutput(isHTML, "", getIdentifiers()));
+		text.append(buildOutput(isHTML, "", getTitles()));
+		text.append(buildOutput(isHTML, "", getSubtitles()));
+		if (getDescription() != null)
+			text.append(getDescription().getOutput(isHTML, "", ""));
+		text.append(buildOutput(isHTML, "", getLanguages()));
+		if (getDates() != null)
+			text.append(getDates().getOutput(isHTML, "", ""));
+		if (getRights() != null)
+			text.append(getRights().getOutput(isHTML, "", ""));
+		text.append(buildOutput(isHTML, "", getSources()));
+		text.append(buildOutput(isHTML, "", getTypes()));
+		text.append(buildOutput(isHTML, "", getCreators()));
+		text.append(buildOutput(isHTML, "", getPublishers()));
+		text.append(buildOutput(isHTML, "", getContributors()));
+		text.append(buildOutput(isHTML, "", getPointOfContacts()));
+		if (getFormat() != null)
+			text.append(getFormat().getOutput(isHTML, "", ""));
+		text.append(buildOutput(isHTML, "", getSubjectCoverages()));
+		text.append(buildOutput(isHTML, "", getVirtualCoverages()));
+		text.append(buildOutput(isHTML, "", getTemporalCoverages()));
+		text.append(buildOutput(isHTML, "", getGeospatialCoverages()));
+		text.append(buildOutput(isHTML, "", getRelatedResources()));
+		if (getResourceManagement() != null)
+			text.append(getResourceManagement().getOutput(isHTML, "", ""));
+		if (getSecurity() != null)
+			text.append(getSecurity().getOutput(isHTML, "", ""));
+		text.append(buildOutput(isHTML, "", getExtensibleElements()));
+		
 		text.append(buildOutput(isHTML, "extensible.layer", String.valueOf(!getExtensibleElements().isEmpty()), true));
 		text.append(buildOutput(isHTML, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version"), true));
 		text.append(buildOutput(isHTML, "ddms.version", getDDMSVersion().getVersion(), true));

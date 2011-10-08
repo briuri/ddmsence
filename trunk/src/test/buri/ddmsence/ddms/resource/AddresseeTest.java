@@ -296,7 +296,7 @@ public class AddresseeTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			// Equality after Building, organization
 			Addressee component = getInstance(SUCCESS, getFixtureElement(true));
 			Addressee.Builder builder = new Addressee.Builder(component);

@@ -217,7 +217,7 @@ public final class Dates extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
 		StringBuffer text = new StringBuffer();
 		if (getCreated() != null)
 			text.append(buildOutput(isHTML, prefix + CREATED_NAME, getCreated().toXMLFormat(), true));

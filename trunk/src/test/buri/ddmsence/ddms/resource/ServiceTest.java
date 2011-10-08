@@ -263,7 +263,7 @@ public class ServiceTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Service component = getInstance(SUCCESS, getValidElement(sVersion));
 			Service.Builder builder = new Service.Builder(component);
 			assertEquals(component, builder.commit());

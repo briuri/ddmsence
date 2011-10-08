@@ -147,11 +147,11 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName();
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix);
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix, getValue(), false));
 		text.append(buildOutput(isHTML, prefix + "." + DATE_PROCESSED_NAME, getDateProcessed().toXMLFormat(), true));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix + ".", ""));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix + "."));
 		return (text.toString());
 	}
 		

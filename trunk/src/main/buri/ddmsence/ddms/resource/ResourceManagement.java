@@ -172,17 +172,15 @@ public final class ResourceManagement extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
 		StringBuffer text = new StringBuffer();
 		if (getRecordsManagementInfo() != null)
 			text.append(getRecordsManagementInfo().getOutput(isHTML, prefix, ""));
 		if (getRevisionRecall() != null)
 			text.append(getRevisionRecall().getOutput(isHTML, prefix, ""));
-		for (TaskingInfo info : getTaskingInfos())
-			text.append(info.getOutput(isHTML, prefix, ""));
-		for (ProcessingInfo info : getProcessingInfos())
-			text.append(info.getOutput(isHTML, prefix, ""));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
+		text.append(buildOutput(isHTML, prefix, getTaskingInfos()));
+		text.append(buildOutput(isHTML, prefix, getProcessingInfos()));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 		

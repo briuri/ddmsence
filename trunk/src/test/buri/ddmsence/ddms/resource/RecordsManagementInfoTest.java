@@ -267,7 +267,7 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			RecordsManagementInfo component = getInstance(SUCCESS, getValidElement(sVersion));
 			RecordsManagementInfo.Builder builder = new RecordsManagementInfo.Builder(component);
 			assertEquals(component, builder.commit());

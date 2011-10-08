@@ -301,10 +301,10 @@ public class GroupValueTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			GroupValue component = getInstance(SUCCESS, getValidElement(sVersion));
 			GroupValue.Builder builder = new GroupValue.Builder(component);
-			assertEquals(component, builder.commit());			
+			assertEquals(component, builder.commit());
 		}
 	}
 

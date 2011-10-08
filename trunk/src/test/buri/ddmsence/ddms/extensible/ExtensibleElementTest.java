@@ -161,7 +161,7 @@ public class ExtensibleElementTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			ExtensibleElement component = getInstance(SUCCESS, getFixtureElement());
 			ExtensibleElement.Builder builder = new ExtensibleElement.Builder(component);
 			assertEquals(component, builder.commit());

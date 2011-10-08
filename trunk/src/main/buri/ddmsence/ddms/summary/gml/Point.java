@@ -158,10 +158,10 @@ public final class Point extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix + ID_NAME, getId(), true));
-		text.append(getSRSAttributes().getOutput(isHTML, prefix, ""));
+		text.append(getSRSAttributes().getOutput(isHTML, prefix));
 		text.append(getPosition().getOutput(isHTML, prefix, ""));
 		return (text.toString());
 	}

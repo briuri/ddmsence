@@ -288,7 +288,7 @@ public class IndividualTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Individual component = getInstance(SUCCESS, getValidElement(sVersion));
 			Individual.Builder builder = new Individual.Builder(component);
 			assertEquals(component, builder.commit());

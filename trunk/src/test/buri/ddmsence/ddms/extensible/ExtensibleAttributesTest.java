@@ -223,14 +223,14 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes elementAttributes = getInstance(SUCCESS, element);
-			assertEquals(getExpectedOutput(true), elementAttributes.getOutput(true, "", ""));
-			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, "", ""));
+			assertEquals(getExpectedOutput(true), elementAttributes.getOutput(true, ""));
+			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, ""));
 
 			List<Attribute> attributes = new ArrayList<Attribute>();
 			attributes.add(new Attribute(TEST_ATTRIBUTE));
 			elementAttributes = getInstance(SUCCESS, attributes);
-			assertEquals(getExpectedOutput(true), elementAttributes.getOutput(true, "", ""));
-			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, "", ""));
+			assertEquals(getExpectedOutput(true), elementAttributes.getOutput(true, ""));
+			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, ""));
 		}
 	}
 

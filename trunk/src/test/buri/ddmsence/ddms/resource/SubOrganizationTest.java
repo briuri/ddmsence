@@ -275,7 +275,7 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			SubOrganization component = getInstance(SUCCESS, getFixtureElement());
 			SubOrganization.Builder builder = new SubOrganization.Builder(component);
 			assertEquals(component, builder.commit());

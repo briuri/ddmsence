@@ -186,7 +186,7 @@ public final class Format extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			prefix += MEDIA_NAME + ".";		
 		StringBuffer text = new StringBuffer();

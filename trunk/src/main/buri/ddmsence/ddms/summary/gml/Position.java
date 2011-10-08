@@ -147,10 +147,10 @@ public final class Position extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName();
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix);
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix, getCoordinatesAsXsList(), true));
-		text.append(getSRSAttributes().getOutput(isHTML, prefix + ".", ""));
+		text.append(getSRSAttributes().getOutput(isHTML, prefix + "."));
 		return (text.toString());
 	}
 	

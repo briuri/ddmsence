@@ -266,7 +266,7 @@ public class ExtentTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Extent component = getInstance(SUCCESS, getValidElement(sVersion));
 			Extent.Builder builder = new Extent.Builder(component);
 			assertEquals(component, builder.commit());

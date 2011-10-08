@@ -27,7 +27,9 @@ import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.resource.Organization;
+import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -73,6 +75,23 @@ public class RoleEntityTest extends AbstractBaseTestCase {
 		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
 		assertEquals("A ddms:email element was found with no value.", component.getValidationWarnings().get(0)
 			.getText());
+	}
+
+	public void testIndexLevelsStringLists() throws InvalidDDMSException {
+		List<String> names = Util.getXsListAsList("Brian BU");
+		List<String> phones = Util.getXsListAsList("703-885-1000");
+		Person person = new Person(names, "Uri", phones, null, null, null);
+
+		PropertyReader.setProperty("output.indexLevel", "0");
+		assertEquals("entityType: person\nname: Brian\nname: BU\nphone: 703-885-1000\nsurname: Uri\n", person.toText());
+
+		PropertyReader.setProperty("output.indexLevel", "1");
+		assertEquals("entityType: person\nname[1]: Brian\nname[2]: BU\nphone: 703-885-1000\nsurname: Uri\n", person
+			.toText());
+
+		PropertyReader.setProperty("output.indexLevel", "2");
+		assertEquals("entityType: person\nname[1]: Brian\nname[2]: BU\nphone[1]: 703-885-1000\nsurname: Uri\n", person
+			.toText());
 	}
 
 	public void testExtensibleSuccess() throws InvalidDDMSException {

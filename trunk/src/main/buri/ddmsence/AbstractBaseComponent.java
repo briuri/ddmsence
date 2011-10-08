@@ -189,8 +189,8 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * Convenience method to build a meta tag for HTML output or a text line for Text output.
 	 * 
 	 * @param isHTML true for HTML, false for Text
-	 * @param name the name value of the meta tag (will be escaped in HTML)
-	 * @param content the content value of the meta tag (will be escaped in HTML)
+	 * @param name the name of the name-value pairing (will be escaped in HTML)
+	 * @param content the value of the name-value pairing (will be escaped in HTML)
 	 * @param alwaysPrint if true, will print the tag even if the content is empty or null.
 	 * @return a string containing the output
 	 */
@@ -204,6 +204,39 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		tag.append(isHTML ? Util.xmlEscape(content) : content);
 		tag.append(isHTML ? "\" />\n" : "\n");
 		return (tag.toString());
+	}
+	
+	/**
+	 * Convenience method to build a meta tag for HTML output or a text line for Text output for a list of
+	 * multiple DDMS components.
+	 * 
+	 * @param isHTML true for HTML, false for Text
+	 * @param prefix the first part of the name in the name-value pairing (will be escaped in HTML)
+	 * @param contents a list of the values (will be escaped in HTML)
+	 * @return a string containing the output
+	 */
+	protected String buildOutput(boolean isHTML, String prefix, List<? extends AbstractBaseComponent> contents) {
+		StringBuffer values = new StringBuffer();
+		for (int i = 0; i < contents.size(); i++)
+			values.append(contents.get(i).getOutput(isHTML, prefix, buildIndex(i, contents.size())));
+		return (values.toString());
+	}
+	
+	/**
+	 * Convenience method to build a meta tag for HTML output or a text line for Text output for a list of
+	 * multiple values.
+	 * 
+	 * @param isHTML true for HTML, false for Text
+	 * @param prefix the first part of the name in the name-value pairing (will be escaped in HTML)
+	 * @param contents a list of the values (will be escaped in HTML)
+	 * @param alwaysPrint if true, will print the tag even if the content is empty or null.
+	 * @return a string containing the output
+	 */
+	protected String buildOutput(boolean isHTML, String prefix, List<String> contents, boolean alwaysPrint) {
+		StringBuffer values = new StringBuffer();
+		for (int i = 0; i < contents.size(); i++)
+			values.append(buildOutput(isHTML, prefix + buildIndex(i, contents.size()), contents.get(i), alwaysPrint));
+		return (values.toString());
 	}
 	
 	/**

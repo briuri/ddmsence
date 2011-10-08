@@ -300,7 +300,7 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
 			ProcessingInfo.Builder builder = new ProcessingInfo.Builder(component);
 			assertEquals(component, builder.commit());

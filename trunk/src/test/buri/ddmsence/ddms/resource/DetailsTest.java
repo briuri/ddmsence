@@ -298,7 +298,7 @@ public class DetailsTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Details component = getInstance(SUCCESS, getFixtureElement());
 			Details.Builder builder = new Details.Builder(component);
 			assertEquals(component, builder.commit());

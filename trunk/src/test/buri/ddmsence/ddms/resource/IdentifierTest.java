@@ -257,7 +257,7 @@ public class IdentifierTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Identifier component = getInstance(SUCCESS, getValidElement(sVersion));
 			Identifier.Builder builder = new Identifier.Builder(component);
 			assertEquals(component, builder.commit());

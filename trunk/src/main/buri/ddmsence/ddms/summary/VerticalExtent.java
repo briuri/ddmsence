@@ -213,7 +213,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix + UOM_NAME, getUnitOfMeasure(), true));
 		text.append(buildOutput(isHTML, prefix + DATUM_NAME, getDatum(), true));

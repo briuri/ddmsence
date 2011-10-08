@@ -164,7 +164,7 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 				text.append(actor.getOutput(isHTML, prefix, ""));
 		}
 		if (version.isAtLeast("3.0")) {
-			text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix, ""));
+			text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix));
 		}
 		return (text.toString());
 	}
@@ -334,6 +334,7 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			SubjectCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());

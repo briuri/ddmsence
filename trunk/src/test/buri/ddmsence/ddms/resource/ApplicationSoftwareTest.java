@@ -286,7 +286,7 @@ public class ApplicationSoftwareTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			ApplicationSoftware component = getInstance(SUCCESS, getFixtureElement());
 			ApplicationSoftware.Builder builder = new ApplicationSoftware.Builder(component);
 			assertEquals(component, builder.commit());

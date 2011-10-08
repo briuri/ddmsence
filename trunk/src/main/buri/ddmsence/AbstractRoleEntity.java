@@ -195,16 +195,13 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix);
+		prefix = Util.getNonNullString(prefix) + Util.getNonNullString(suffix);
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix + "entityType", getName(), true));
-		for (String name : getNames())
-			text.append(buildOutput(isHTML, prefix + NAME_NAME, name, true));
-		for (String phone : getPhones())
-			text.append(buildOutput(isHTML, prefix + PHONE_NAME, phone, true));
-		for (String email : getEmails())
-			text.append(buildOutput(isHTML, prefix + EMAIL_NAME, email, true));
-		text.append(getExtensibleAttributes().getOutput(isHTML, prefix, ""));
+		text.append(buildOutput(isHTML, prefix + NAME_NAME, getNames(), true));
+		text.append(buildOutput(isHTML, prefix + PHONE_NAME, getPhones(), true));
+		text.append(buildOutput(isHTML, prefix + EMAIL_NAME, getEmails(), true));
+		text.append(getExtensibleAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 	

@@ -126,7 +126,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 			text.append(buildOutput(isHTML, prefix + "noticeList.ownerProducer", "USA"));
 			text.append(AccessTest.getFixture().getOutput(isHTML, "security.", ""));
 		}
-		text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix, ""));
+		text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 
@@ -337,7 +337,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Security component = getInstance(SUCCESS, getValidElement(sVersion));
 			Security.Builder builder = new Security.Builder(component);
 			assertEquals(component, builder.commit());

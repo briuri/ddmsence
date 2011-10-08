@@ -295,10 +295,10 @@ public class TypeTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Type component = getInstance(SUCCESS, getValidElement(sVersion));
 			Type.Builder builder = new Type.Builder(component);
-			assertEquals(component, builder.commit());			
+			assertEquals(component, builder.commit());
 		}
 	}
 

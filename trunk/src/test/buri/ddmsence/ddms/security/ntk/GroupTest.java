@@ -285,7 +285,7 @@ public class GroupTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Group component = getInstance(SUCCESS, getValidElement(sVersion));
 			Group.Builder builder = new Group.Builder(component);
 			assertEquals(component, builder.commit());

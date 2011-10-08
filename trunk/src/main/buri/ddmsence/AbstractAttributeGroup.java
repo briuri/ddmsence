@@ -110,8 +110,7 @@ public abstract class AbstractAttributeGroup {
 	 * 
 	 * @param isHTML true for HTML, false for Text
 	 * @param prefix the prefix to add
-	 * @param suffix the suffix to add
 	 * @return the HTML or Text output
 	 */
-	public abstract String getOutput(boolean isHTML, String prefix, String suffix);
+	public abstract String getOutput(boolean isHTML, String prefix);
 }

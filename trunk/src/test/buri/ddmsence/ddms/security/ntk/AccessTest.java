@@ -288,7 +288,7 @@ public class AccessTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Access component = getInstance(SUCCESS, getValidElement(sVersion));
 			Access.Builder builder = new Access.Builder(component);
 			assertEquals(component, builder.commit());

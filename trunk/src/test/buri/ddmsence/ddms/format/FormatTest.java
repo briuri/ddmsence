@@ -366,7 +366,7 @@ public class FormatTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Format component = getInstance(SUCCESS, getValidElement(sVersion));
 			Format.Builder builder = new Format.Builder(component);
 			assertEquals(component, builder.commit());
