@@ -108,9 +108,9 @@ public class AccessTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(IndividualTest.getFixture().getOutput(isHTML, "access.individualList."));
-		text.append(GroupTest.getFixture().getOutput(isHTML, "access.groupList."));
-		text.append(ProfileListTest.getFixture().getOutput(isHTML, "access."));
+		text.append(IndividualTest.getFixture().getOutput(isHTML, "access.individualList.", ""));
+		text.append(GroupTest.getFixture().getOutput(isHTML, "access.groupList.", ""));
+		text.append(ProfileListTest.getFixture().getOutput(isHTML, "access.", ""));
 		text.append(buildOutput(isHTML, "access.classification", "U"));
 		text.append(buildOutput(isHTML, "access.ownerProducer", "USA"));
 		return (text.toString());

@@ -106,7 +106,7 @@ public class CreatorTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(PersonTest.getFixture().getOutput(isHTML, "creator."));
+		text.append(PersonTest.getFixture().getOutput(isHTML, "creator.", ""));
 		if (version.isAtLeast("4.0"))
 			text.append(buildOutput(isHTML, "creator.POCType", "ICD-710"));
 		text.append(buildOutput(isHTML, "creator.classification", "U"));

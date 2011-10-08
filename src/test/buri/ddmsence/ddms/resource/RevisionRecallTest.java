@@ -179,8 +179,8 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			text.append(buildOutput(isHTML, "revisionRecall.details.classification", "U"));
 			text.append(buildOutput(isHTML, "revisionRecall.details.ownerProducer", "USA"));
 		}
-		text.append(XLinkAttributesTest.getResourceFixture().getOutput(isHTML, "revisionRecall."));
-		text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, "revisionRecall."));
+		text.append(XLinkAttributesTest.getResourceFixture().getOutput(isHTML, "revisionRecall.", ""));
+		text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, "revisionRecall.", ""));
 		return (text.toString());
 	}
 

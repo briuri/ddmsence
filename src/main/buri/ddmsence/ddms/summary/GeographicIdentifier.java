@@ -187,9 +187,9 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		for (String name : getNames())
@@ -197,11 +197,11 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 		for (String region : getRegions())
 			text.append(buildOutput(isHTML, prefix + REGION_NAME, region, false));
 		if (getCountryCode() != null)
-			text.append(getCountryCode().getOutput(isHTML, prefix));
+			text.append(getCountryCode().getOutput(isHTML, prefix, ""));
 		if (getSubDivisionCode() != null)
-			text.append(getSubDivisionCode().getOutput(isHTML, prefix));
+			text.append(getSubDivisionCode().getOutput(isHTML, prefix, ""));
 		if (hasFacilityIdentifier())
-			text.append(getFacilityIdentifier().getOutput(isHTML, prefix));
+			text.append(getFacilityIdentifier().getOutput(isHTML, prefix, ""));
 		return (text.toString());
 	}
 		

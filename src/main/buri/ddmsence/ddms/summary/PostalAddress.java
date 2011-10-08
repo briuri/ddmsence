@@ -190,9 +190,9 @@ public final class PostalAddress extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		for (String street : getStreets())
@@ -202,7 +202,7 @@ public final class PostalAddress extends AbstractBaseComponent {
 		text.append(buildOutput(isHTML, prefix + PROVINCE_NAME, getProvince(), false));
 		text.append(buildOutput(isHTML, prefix + POSTAL_CODE_NAME, getPostalCode(), false));
 		if (getCountryCode() != null)
-			text.append(getCountryCode().getOutput(isHTML, prefix));
+			text.append(getCountryCode().getOutput(isHTML, prefix, ""));
 		return (text.toString());
 	}
 	

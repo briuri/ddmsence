@@ -162,24 +162,20 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @see IDDMSComponent#toHTML()
 	 */
 	public String toHTML() {
-		return (getOutput(true, ""));
+		return (getOutput(true, "", ""));
 	}
 	
 	/**
 	 * @see IDDMSComponent#toText()
 	 */
 	public String toText() {
-		return (getOutput(false, ""));
+		return (getOutput(false, "", ""));
 	}
 
 	/**
-	 * Outputs a component to HTML or Text with a prefix at the beginning of each meta tag or line.
-	 * 
-	 * @param isHTML true for HTML, false for Text
-	 * @param prefix the prefix to add
-	 * @return the HTML output
+	 * @see IDDMSComponent#getOutput(boolean, String, String)
 	 */
-	public abstract String getOutput(boolean isHTML, String prefix);
+	public abstract String getOutput(boolean isHTML, String prefix, String suffix);
 		
 	/**
 	 * Accessor for a collection of nested components. A list such as this is useful for bulk actions, such as

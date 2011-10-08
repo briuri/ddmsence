@@ -153,18 +153,18 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 		String prefix = version.isAtLeast("4.0") ? "subjectCoverage." : "subjectCoverage.Subject.";
 		StringBuffer text = new StringBuffer();
 		for (Keyword keyword : KeywordTest.getFixtureList())
-			text.append(keyword.getOutput(isHTML, prefix));
+			text.append(keyword.getOutput(isHTML, prefix, ""));
 		for (Category category : CategoryTest.getFixtureList())
-			text.append(category.getOutput(isHTML, prefix));
+			text.append(category.getOutput(isHTML, prefix, ""));
 
 		if (version.isAtLeast("4.0")) {
 			for (ProductionMetric metric : ProductionMetricTest.getFixtureList())
-				text.append(metric.getOutput(isHTML, prefix));
+				text.append(metric.getOutput(isHTML, prefix, ""));
 			for (NonStateActor actor : NonStateActorTest.getFixtureList())
-				text.append(actor.getOutput(isHTML, prefix));
+				text.append(actor.getOutput(isHTML, prefix, ""));
 		}
 		if (version.isAtLeast("3.0")) {
-			text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix));
+			text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix, ""));
 		}
 		return (text.toString());
 	}

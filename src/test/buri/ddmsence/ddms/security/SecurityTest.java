@@ -124,9 +124,9 @@ public class SecurityTest extends AbstractBaseTestCase {
 				"unregisteredNoticeType"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.classification", "U"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.ownerProducer", "USA"));
-			text.append(AccessTest.getFixture().getOutput(isHTML, "security."));
+			text.append(AccessTest.getFixture().getOutput(isHTML, "security.", ""));
 		}
-		text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix));
+		text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix, ""));
 		return (text.toString());
 	}
 

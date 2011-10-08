@@ -116,7 +116,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(getEntityFixture().getOutput(isHTML, "pointOfContact."));
+		text.append(getEntityFixture().getOutput(isHTML, "pointOfContact.", ""));
 		if (version.isAtLeast("4.0"))
 			text.append(buildOutput(isHTML, "pointOfContact.POCType", "ICD-710"));
 		text.append(buildOutput(isHTML, "pointOfContact.classification", "U"));

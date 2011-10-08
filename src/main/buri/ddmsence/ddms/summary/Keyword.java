@@ -141,14 +141,14 @@ public final class Keyword extends AbstractBaseComponent {
 	}
 		
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + getName();
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix, getValue(), false));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix + "."));
-		text.append(getExtensibleAttributes().getOutput(isHTML, prefix + "."));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix + ".", ""));
+		text.append(getExtensibleAttributes().getOutput(isHTML, prefix + ".", ""));
 		return (text.toString());
 	}
 	

@@ -132,15 +132,15 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	}
 		
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		StringBuffer text = new StringBuffer();
 		if (getRecordKeeper() != null)
-			text.append(getRecordKeeper().getOutput(isHTML, prefix));
+			text.append(getRecordKeeper().getOutput(isHTML, prefix, ""));
 		if (getApplicationSoftware() != null)
-			text.append(getApplicationSoftware().getOutput(isHTML, prefix));
+			text.append(getApplicationSoftware().getOutput(isHTML, prefix, ""));
 		text.append(buildOutput(isHTML, prefix + VITAL_RECORD_INDICATOR_NAME,
 			String.valueOf(getVitalRecordIndicator()), true));
 		return (text.toString());

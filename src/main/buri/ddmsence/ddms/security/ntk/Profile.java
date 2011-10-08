@@ -124,16 +124,16 @@ public final class Profile extends AbstractAccessEntity {
 	}
 		
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + "profile.";
 		StringBuffer text = new StringBuffer();
 		if (getSystemName() != null)
-			text.append(getSystemName().getOutput(isHTML, prefix));
+			text.append(getSystemName().getOutput(isHTML, prefix, ""));
 		for (ProfileValue value : getProfileValues())
-			text.append(value.getOutput(isHTML, prefix));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+			text.append(value.getOutput(isHTML, prefix, ""));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
 		return (text.toString());
 	}
 		

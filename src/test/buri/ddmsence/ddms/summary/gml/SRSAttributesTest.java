@@ -331,13 +331,13 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
 				.getXsList(TEST_UOM_LABELS));
 			SRSAttributes attributes = new SRSAttributes(element);
-			assertEquals(getExpectedOutput(true), attributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false), attributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(true), attributes.getOutput(true, "", ""));
+			assertEquals(getExpectedOutput(false), attributes.getOutput(false, "", ""));
 
 			SRSAttributes dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS,
 				TEST_UOM_LABELS);
-			assertEquals(getExpectedOutput(true), dataAttributes.getOutput(true, ""));
-			assertEquals(getExpectedOutput(false), dataAttributes.getOutput(false, ""));
+			assertEquals(getExpectedOutput(true), dataAttributes.getOutput(true, "", ""));
+			assertEquals(getExpectedOutput(false), dataAttributes.getOutput(false, "", ""));
 		}
 	}
 

@@ -108,8 +108,8 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(RecordKeeperTest.getFixture().getOutput(isHTML, "recordsManagementInfo."));
-		text.append(ApplicationSoftwareTest.getFixture().getOutput(isHTML, "recordsManagementInfo."));
+		text.append(RecordKeeperTest.getFixture().getOutput(isHTML, "recordsManagementInfo.", ""));
+		text.append(ApplicationSoftwareTest.getFixture().getOutput(isHTML, "recordsManagementInfo.", ""));
 		text.append(buildOutput(isHTML, "recordsManagementInfo.vitalRecordIndicator", "true"));
 		return (text.toString());
 	}

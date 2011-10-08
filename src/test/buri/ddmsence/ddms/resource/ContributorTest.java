@@ -106,7 +106,7 @@ public class ContributorTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		text.append(OrganizationTest.getFixture().getOutput(isHTML, "contributor."));
+		text.append(OrganizationTest.getFixture().getOutput(isHTML, "contributor.", ""));
 		if (version.isAtLeast("4.0"))
 			text.append(buildOutput(isHTML, "contributor.POCType", "ICD-710"));
 		text.append(buildOutput(isHTML, "contributor.classification", "U"));

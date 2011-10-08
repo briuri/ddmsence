@@ -145,7 +145,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 
 	public void testNullChecks() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
-			public String getOutput(boolean isHTML, String prefix) {
+			public String getOutput(boolean isHTML, String prefix, String suffix) {
 				return null;
 			}
 		};
@@ -157,7 +157,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 
 	public void testAttributeWarnings() throws InvalidDDMSException {
 		AbstractBaseComponent component = new AbstractBaseComponent() {
-			public String getOutput(boolean isHTML, String prefix) {
+			public String getOutput(boolean isHTML, String prefix, String suffix) {
 				return null;
 			}
 

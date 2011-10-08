@@ -238,22 +238,22 @@ public final class SubjectCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String)
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix) {
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + getName() + ".";
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			prefix += SUBJECT_NAME + ".";
 		StringBuffer text = new StringBuffer();
 		for (Keyword keyword : getKeywords())
-			text.append(keyword.getOutput(isHTML, prefix));
+			text.append(keyword.getOutput(isHTML, prefix, ""));
 		for (Category category : getCategories())
-			text.append(category.getOutput(isHTML, prefix));
+			text.append(category.getOutput(isHTML, prefix, ""));
 		for (ProductionMetric metric : getProductionMetrics())
-			text.append(metric.getOutput(isHTML, prefix));
+			text.append(metric.getOutput(isHTML, prefix, ""));
 		for (NonStateActor actor : getNonStateActors())
-			text.append(actor.getOutput(isHTML, prefix));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+			text.append(actor.getOutput(isHTML, prefix, ""));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
 		return (text.toString());
 	}
 		
