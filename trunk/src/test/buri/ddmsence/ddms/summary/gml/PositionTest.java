@@ -342,12 +342,6 @@ public class PositionTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testGetStringAsDouble() {
-		assertNull(Position.getStringAsDouble(null));
-		assertEquals(new Double(2.1), Position.getStringAsDouble("2.1"));
-		assertNull(Position.getStringAsDouble("notADouble"));
-	}
-
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
