@@ -1456,15 +1456,14 @@ public class ResourceTest extends AbstractBaseTestCase {
 		assertEquals(resource, fullResource);
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			Resource component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Resource.Builder builder = new Resource.Builder(component);
 			assertEquals(component, builder.commit());
-
+			
 			// Equality with ExtensibleElement
 			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
 			builder.getExtensibleElements().get(0).setXml(
@@ -1473,13 +1472,58 @@ public class ResourceTest extends AbstractBaseTestCase {
 			component = builder.commit();
 			builder = new Resource.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Resource.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Resource.Builder builder = new Resource.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.getIdentifiers().add(new Identifier.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getTitles().add(new Title.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getSubtitles().add(new Subtitle.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getLanguages().add(new Language.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getSources().add(new Source.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getTypes().add(new Type.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getCreators().add(new Creator.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getContributors().add(new Contributor.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getPublishers().add(new Publisher.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getPointOfContacts().add(new PointOfContact.Builder());
+			assertTrue(builder.isEmpty());
+			assertEquals(4, builder.getProducers().size());
+			builder.getVirtualCoverages().add(new VirtualCoverage.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getTemporalCoverages().add(new TemporalCoverage.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getGeospatialCoverages().add(new GeospatialCoverage.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getRelatedResources().add(new RelatedResource.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
+			assertTrue(builder.isEmpty());
+			builder.getExtensibleElements().get(0).setXml("InvalidXml");
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new Resource.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Resource.Builder builder = new Resource.Builder();
 			builder.setCreateDate(TEST_CREATE_DATE);
 			try {
 				builder.commit();
@@ -1488,10 +1532,32 @@ public class ResourceTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "At least 1 identifier is required.");
 			}
-			// Successful cases covered below.
+			// Successful cases covered in-depth below.
 		}
 	}
 
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Resource.Builder builder = new Resource.Builder();
+			assertNotNull(builder.getIdentifiers().get(1));
+			assertNotNull(builder.getTitles().get(1));
+			assertNotNull(builder.getSubtitles().get(1));
+			assertNotNull(builder.getLanguages().get(1));
+			assertNotNull(builder.getSources().get(1));
+			assertNotNull(builder.getTypes().get(1));
+			assertNotNull(builder.getCreators().get(1));
+			assertNotNull(builder.getContributors().get(1));
+			assertNotNull(builder.getPublishers().get(1));
+			assertNotNull(builder.getPointOfContacts().get(1));
+			assertNotNull(builder.getVirtualCoverages().get(1));
+			assertNotNull(builder.getTemporalCoverages().get(1));
+			assertNotNull(builder.getGeospatialCoverages().get(1));
+			assertNotNull(builder.getRelatedResources().get(1));
+			assertNotNull(builder.getExtensibleElements().get(1));
+		}
+	}
+	
 	public void testBuild20Commit30() throws InvalidDDMSException {
 		// Version during building should be 100% irrelevant
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
@@ -1659,49 +1725,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		builder.commit();
 	}
 
-	public void testBuilderIsEmpty() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			Resource.Builder builder = new Resource.Builder();
-			assertTrue(builder.isEmpty());
-			builder.getIdentifiers().add(new Identifier.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getTitles().add(new Title.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getSubtitles().add(new Subtitle.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getLanguages().add(new Language.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getSources().add(new Source.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getTypes().add(new Type.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getCreators().add(new Creator.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getContributors().add(new Contributor.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getPublishers().add(new Publisher.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getPointOfContacts().add(new PointOfContact.Builder());
-			assertTrue(builder.isEmpty());
-			assertEquals(4, builder.getProducers().size());
-			builder.getVirtualCoverages().add(new VirtualCoverage.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getTemporalCoverages().add(new TemporalCoverage.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getGeospatialCoverages().add(new GeospatialCoverage.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getRelatedResources().add(new RelatedResource.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
-			assertTrue(builder.isEmpty());
-			builder.getExtensibleElements().get(0).setXml("InvalidXml");
-			assertFalse(builder.isEmpty());
-		}
-	}
-
-	public void testSerializableBuilders() throws Exception {
+	public void testBuilderSerialization() throws Exception {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Resource component = getInstance(SUCCESS, getValidElement(sVersion));
@@ -1720,25 +1744,5 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilderLazyList() throws InvalidDDMSException {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			Resource.Builder builder = new Resource.Builder();
-			assertNotNull(builder.getIdentifiers().get(1));
-			assertNotNull(builder.getTitles().get(1));
-			assertNotNull(builder.getSubtitles().get(1));
-			assertNotNull(builder.getLanguages().get(1));
-			assertNotNull(builder.getSources().get(1));
-			assertNotNull(builder.getTypes().get(1));
-			assertNotNull(builder.getCreators().get(1));
-			assertNotNull(builder.getContributors().get(1));
-			assertNotNull(builder.getPublishers().get(1));
-			assertNotNull(builder.getPointOfContacts().get(1));
-			assertNotNull(builder.getVirtualCoverages().get(1));
-			assertNotNull(builder.getTemporalCoverages().get(1));
-			assertNotNull(builder.getGeospatialCoverages().get(1));
-			assertNotNull(builder.getRelatedResources().get(1));
-			assertNotNull(builder.getExtensibleElements().get(1));
-		}
-	}
+
 }
