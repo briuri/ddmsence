@@ -20,7 +20,7 @@ versions of DDMS with your own copies.</p>
 <li>These instructions assume that you are updating from a Public Release to a more restricted release, and are NOT changing ISM versions altogether. Please 
 remember that each DDMS version identifies one specific supported version of ISM. For example, in DDMS 4.0, replacing ISM.XML V7 Public Release 
 with ISM.XML V7 FOUO is supported, but replacing it with ISM.XML V4 FOUO may have unexpected side effects or simply fail to work.</li>
-<li>Out of the box, DDMSence only contains files cleared for Public Release. Using restricted files with DDMSence does not remove your responsibility for
+<li>Out of the box, DDMSence only contains files cleared for Public Release. Using restricted files with DDMSence does not absolve you of your responsibility for
 obeying all handling and dissemination instructions on those files. Do not proceed unless you are comfortable with this responsibility.</li>
 </ol>
 

@@ -26,17 +26,12 @@ the attributes from a XOM element will simply load these attributes from the ele
 <p class="figure">Figure 1. SecurityAttributes constructor</p>
 
 <p>Because the <code>classification</code> and <code>ownerProducers</code> are the most commonly referenced attributes, they are explicit parameters. Any other
-attribute can be added in the String-based map called <code>otherAttributes</code>. If an attribute does not match an
-expected attribute name, it is ignored. Here is an example which creates Confidential markings and puts them on a <code>ddms:title</code> element:</p>
+attribute can be added in the String-based map called <code>otherAttributes</code>. Here is an example which creates Confidential markings and puts them on a <code>ddms:title</code> element:</p>
 
-<pre class="brush: java">List&lt;String&gt; ownerProducers = new ArrayList&lt;String&gt;();
-ownerProducers.add("AUS");
-ownerProducers.add("USA");
+<pre class="brush: java">List&lt;String&gt; ownerProducers = Util.getXsListAsList("AUS USA");
 Map&lt;String, String&gt; otherAttributes = new HashMap&lt;String, String&gt;();
 otherAttributes.put("SCIcontrols", "SI");
 otherAttributes.put("SARIdentifier", "SAR-USA");
-// The next line will be ignored, because the "classification" parameter takes precedence.
-otherAttributes.put("classification", "U"); 
 SecurityAttributes security = new SecurityAttributes("C", ownerProducers, otherAttributes);
 Title title = new Title("My Confidential Notes", security);
 System.out.println(title.toXML());</pre>
@@ -50,6 +45,29 @@ System.out.println(title.toXML());</pre>
    My Confidential Notes
 &lt;/ddms:title&gt;</pre>
 <p class="figure">Figure 3. The resultant XML element with security attributes</p>
+
+<p>If an attribute in the <code>otherAttributes</code> map does not have one of the expected ISM attribute names, it is ignored. In addition, the parameter versions
+of <code>classification</code> and <code>ownerProducer</code> always take precedence if you try to override them with <code>otherAttributes</code>:
+
+<pre class="brush: java">List&lt;String&gt; ownerProducers = Util.getXsListAsList("AUS USA");
+Map&lt;String, String&gt; otherAttributes = new HashMap&lt;String, String&gt;();
+// The next line will be ignored, because there is no ISM attribute with this name.
+otherAttributes.put("favoriteColor", "blue");
+// The next line will be ignored, because the "classification" parameter takes precedence.
+otherAttributes.put("classification", "U");
+// The next line will be ignored, because the "ownerProducers" parameter takes precedence.
+otherAttributes.put("ownerProducer", "FRA"); 
+SecurityAttributes security = new SecurityAttributes("C", ownerProducers, otherAttributes);
+Title title = new Title("My Confidential Notes", security);
+System.out.println(title.toXML());</pre>
+<p class="figure">Figure 4. Code to generate SecurityAttributes</p>
+
+<pre class="brush: xml">&lt;ddms:title xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:ISM="urn:us:gov:ic:ism" 
+   ISM:classification="C" ISM:ownerProducer="AUS USA"&gt;
+   My Confidential Notes
+&lt;/ddms:title&gt;</pre>
+<p class="figure">Figure 5. The resultant XML element with security attributes</p>
+
 
 <p>The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. A set of Schematron files is 
 bundled with ISM.XML V5 and V7 (which are used by DDMS 3.1 and 4.0, respectively),
@@ -68,13 +86,13 @@ by the SecurityAttributes. The <code>ISM:noticeType</code> attribute is validate
 NoticeAttributes noticeAttributes = new NoticeAttributes("POC", "This is a reason.", "2011-09-15", null);
 Notice notice = new Notice(noticeTexts, securityAttributes, noticeAttributes);
 System.out.println(notice.toXML());</pre>
-<p class="figure">Figure 4. Code to generate NoticeAttributes</p>
+<p class="figure">Figure 6. Code to generate NoticeAttributes</p>
 
 <pre class="brush: xml">&lt;ISM:Notice ISM:noticeType="POC" ISM:noticeReason="This is a reason." ISM:noticeDate="2011-09-15"
    ISM:classification="U" ISM:ownerProducer="USA"&gt;
    [...]
 &lt;/ISM:Notice&gt;</pre>
-<p class="figure">Figure 5. The resultant XML element with notice attributes</p>
+<p class="figure">Figure 7. The resultant XML element with notice attributes</p>
 
 <h2>XLink Attributes</h2>
 
@@ -91,7 +109,7 @@ public XLinkAttributes(String role, String title, String label);
 
 // Constructor for attributes with type="simple", used with ddms:taskID
 public XLinkAttributes(String href, String role, String title, String arcrole, String show, String actuate);</pre>
-<p class="figure">Figure 6. Constructors to generate XLinkAttributes for various purposes</p>
+<p class="figure">Figure 8. Constructors to generate XLinkAttributes for various purposes</p>
 
 <h2>GML SRS Attributes</h2>
 
@@ -109,11 +127,11 @@ coordinates.add(new Double(32.1));
 coordinates.add(new Double(40.1));
 Position position = new Position(coordinates, srsAttributes);
 System.out.println(position.toXML());</pre>
-<p class="figure">Figure 7. Code to generate SRSAttributes</p>
+<p class="figure">Figure 9. Code to generate SRSAttributes</p>
 
 <pre class="brush: xml">&lt;gml:pos srsName="http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D" srsDimension="10" 
    axisLabels="X Y" uomLabels="Meter Meter"&gt;32.1 40.1&lt;/gml:pos&gt;</pre>
-<p class="figure">Figure 8. The resultant XML element with SRS attributes</p>
+<p class="figure">Figure 10. The resultant XML element with SRS attributes</p>
   
 <p>Please note that the SRSAttributes do not belong in any XML namespace -- this is correct according to the DDMS GML Profile.</p>
 
