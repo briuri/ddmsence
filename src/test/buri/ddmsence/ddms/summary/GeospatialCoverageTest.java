@@ -41,7 +41,7 @@ import buri.ddmsence.util.Util;
 public class GeospatialCoverageTest extends AbstractBaseTestCase {
 
 	private static final String TEST_PRECEDENCE = "Primary";
-	private static final Integer TEST_ORDER = new Integer(1);
+	private static final Integer TEST_ORDER = Integer.valueOf(1);
 
 	/**
 	 * Constructor
@@ -59,7 +59,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			return (new GeospatialCoverage(null, null, null, PostalAddressTest.getFixture(), null, null, version
-				.isAtLeast("4.0") ? new Integer(order) : null, null));
+				.isAtLeast("4.0") ? Integer.valueOf(order) : null, null));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());

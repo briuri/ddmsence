@@ -649,17 +649,35 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			SecurityAttributes component = getFullFixture();
-
-			// Equality after Building
 			SecurityAttributes.Builder builder = new SecurityAttributes.Builder(component);
 			assertEquals(builder.commit(), component);
+		}
+	}
 
-			// Validation
-			builder = new SecurityAttributes.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			SecurityAttributes.Builder builder = new SecurityAttributes.Builder();
+			assertNotNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setAtomicEnergyMarkings(Util.getXsListAsList(""));
+			assertTrue(builder.isEmpty());
+			builder.setAtomicEnergyMarkings(Util.getXsListAsList("RD FRD"));
+			assertFalse(builder.isEmpty());
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			SecurityAttributes.Builder builder = new SecurityAttributes.Builder();
 			builder.setClassification("SuperSecret");
 			try {
 				builder.commit();
@@ -692,14 +710,5 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 				assertNotNull(builder.getNonUSControls().get(1));
 			}
 		}
-	}
-
-	public void testBuilderListEquality() throws InvalidDDMSException {
-		DDMSVersion.setCurrentVersion("3.1");
-		SecurityAttributes.Builder builder = new SecurityAttributes.Builder();
-		builder.setAtomicEnergyMarkings(Util.getXsListAsList(""));
-		assertTrue(builder.isEmpty());
-		builder.setAtomicEnergyMarkings(Util.getXsListAsList("RD FRD"));
-		assertFalse(builder.isEmpty());
 	}
 }

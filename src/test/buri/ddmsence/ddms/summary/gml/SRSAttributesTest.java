@@ -218,7 +218,7 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 
 			// Dimension is a positive integer
 			element = Util.buildDDMSElement(Position.getName(version), null);
-			addAttributes(element, TEST_SRS_NAME, new Integer(-1), null, Util.getXsList(TEST_UOM_LABELS));
+			addAttributes(element, TEST_SRS_NAME, Integer.valueOf(-1), null, Util.getXsList(TEST_UOM_LABELS));
 			getInstance("The srsDimension must be a positive integer.", element);
 		}
 	}
@@ -250,7 +250,7 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 				newLabels);
 
 			// Dimension is a positive integer
-			getInstance("The srsDimension must be a positive integer.", TEST_SRS_NAME, new Integer(-1),
+			getInstance("The srsDimension must be a positive integer.", TEST_SRS_NAME, Integer.valueOf(-1),
 				TEST_AXIS_LABELS, TEST_UOM_LABELS);
 		}
 	}
@@ -375,18 +375,48 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			SRSAttributes component = getFixture();
-
-			// Equality after Building
 			SRSAttributes.Builder builder = new SRSAttributes.Builder(component);
 			assertEquals(builder.commit(), component);
+		}
+	}
 
-			// Validation
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			SRSAttributes.Builder builder = new SRSAttributes.Builder();
+			assertNotNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setSrsName(TEST_SRS_NAME);
+			assertFalse(builder.isEmpty());
+			
 			builder = new SRSAttributes.Builder();
-			builder.setSrsDimension(new Integer(-1));
+			builder.setSrsDimension(TEST_SRS_DIMENSION);
+			assertFalse(builder.isEmpty());
+			
+			builder = new SRSAttributes.Builder();
+			builder.getUomLabels().add(null);
+			builder.getUomLabels().add("label");
+			assertFalse(builder.isEmpty());
+			
+			builder = new SRSAttributes.Builder();
+			builder.getAxisLabels().add(null);
+			builder.getAxisLabels().add("label");
+			assertFalse(builder.isEmpty());
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			SRSAttributes.Builder builder = new SRSAttributes.Builder();
+			builder.setSrsDimension(Integer.valueOf(-1));
 			try {
 				builder.commit();
 				fail("Builder allowed invalid data.");
@@ -394,25 +424,8 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "The srsDimension must be a positive integer.");
 			}
-			builder.setSrsDimension(new Integer(1));
+			builder.setSrsDimension(Integer.valueOf(1));
 			builder.commit();
-
-			// Empty Tests
-			builder = new SRSAttributes.Builder();
-			builder.setSrsName(TEST_SRS_NAME);
-			assertFalse(builder.isEmpty());
-			builder = new SRSAttributes.Builder();
-			builder.setSrsDimension(TEST_SRS_DIMENSION);
-			assertFalse(builder.isEmpty());
-			builder = new SRSAttributes.Builder();
-			builder.getUomLabels().add(null);
-			builder.getUomLabels().add("label");
-			assertFalse(builder.isEmpty());
-			builder = new SRSAttributes.Builder();
-			builder.getAxisLabels().add(null);
-			builder.getAxisLabels().add("label");
-			assertFalse(builder.isEmpty());
-
 		}
 	}
 

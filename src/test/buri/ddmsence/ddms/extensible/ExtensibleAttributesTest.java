@@ -268,20 +268,36 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes component = getInstance(SUCCESS, element);
-
-			// Equality after Building
 			ExtensibleAttributes.Builder builder = new ExtensibleAttributes.Builder(component);
 			assertEquals(builder.commit(), component);
+		}
+	}
 
-			// Empty Case
-			builder = new ExtensibleAttributes.Builder();
-			assertTrue(builder.commit().getAttributes().isEmpty());
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			ExtensibleAttributes.Builder builder = new ExtensibleAttributes.Builder();
+			assertNotNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.getAttributes().add(new ExtensibleAttributes.AttributeBuilder(TEST_ATTRIBUTE));
+			assertFalse(builder.isEmpty());
+
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			// No invalid cases right now, because validation cannot occur until these attributes are attached to something.
 		}
 	}
 
