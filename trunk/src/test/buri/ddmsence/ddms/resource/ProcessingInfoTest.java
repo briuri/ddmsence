@@ -305,7 +305,7 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			ProcessingInfo.Builder builder = new ProcessingInfo.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new ProcessingInfo.Builder();

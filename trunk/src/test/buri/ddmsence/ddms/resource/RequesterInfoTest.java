@@ -310,12 +310,12 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 			// Equality after Building, organization
 			RequesterInfo component = getInstance(SUCCESS, getFixtureElement(true));
 			RequesterInfo.Builder builder = new RequesterInfo.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Equality after Building, person
 			component = getInstance(SUCCESS, getFixtureElement(false));
 			builder = new RequesterInfo.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new RequesterInfo.Builder();

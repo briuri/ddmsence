@@ -233,12 +233,12 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(false), elementAttributes.getOutput(false, ""));
 		}
 	}
-	
+
 	public void testAddTo() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			ExtensibleAttributes component = getFixture();
-			
+
 			Element element = Util.buildDDMSElement("sample", null);
 			component.addTo(element);
 			ExtensibleAttributes output = new ExtensibleAttributes(element);
@@ -250,11 +250,11 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		ExtensibleAttributes component = new ExtensibleAttributes((List) null);
 		ExtensibleAttributes output = ExtensibleAttributes.getNonNullInstance(null);
 		assertEquals(component, output);
-		
+
 		output = ExtensibleAttributes.getNonNullInstance(getFixture());
 		assertEquals(getFixture(), output);
 	}
-	
+
 	public void testIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -271,12 +271,12 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Element element = new Keyword("testValue", null).getXOMElementCopy();
 			element.addAttribute(new Attribute(TEST_ATTRIBUTE));
 			ExtensibleAttributes component = getInstance(SUCCESS, element);
 			ExtensibleAttributes.Builder builder = new ExtensibleAttributes.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 		}
 	}
 
@@ -296,7 +296,7 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 	public void testBuilderValidation() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			// No invalid cases right now, because validation cannot occur until these attributes are attached to something.
 		}
 	}

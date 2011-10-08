@@ -259,7 +259,7 @@ public class PublisherTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Publisher.Builder builder = new Publisher.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Publisher.Builder();

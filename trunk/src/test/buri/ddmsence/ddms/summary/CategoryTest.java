@@ -351,21 +351,34 @@ public class CategoryTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			Category component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Category.Builder builder = new Category.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Category.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Category.Builder builder = new Category.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setLabel(TEST_LABEL);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new Category.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Category.Builder builder = new Category.Builder();
 			builder.setQualifier(TEST_QUALIFIER);
 			try {
 				builder.commit();

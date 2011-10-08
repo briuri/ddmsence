@@ -255,20 +255,34 @@ public class FacilityIdentifierTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			FacilityIdentifier component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			FacilityIdentifier.Builder builder = new FacilityIdentifier.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new FacilityIdentifier.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			FacilityIdentifier.Builder builder = new FacilityIdentifier.Builder();
 			assertNull(builder.commit());
-			// Validation
-			builder = new FacilityIdentifier.Builder();
+			assertTrue(builder.isEmpty());
+			builder.setBeNumber(TEST_BENUMBER);
+			assertFalse(builder.isEmpty());
+
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			FacilityIdentifier.Builder builder = new FacilityIdentifier.Builder();
 			builder.setBeNumber(TEST_BENUMBER);
 			try {
 				builder.commit();

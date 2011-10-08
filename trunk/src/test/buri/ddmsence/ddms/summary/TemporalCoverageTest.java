@@ -407,21 +407,33 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			TemporalCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			TemporalCoverage.Builder builder = new TemporalCoverage.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new TemporalCoverage.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			TemporalCoverage.Builder builder = new TemporalCoverage.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setStartString(TEST_START);
+			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new TemporalCoverage.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			TemporalCoverage.Builder builder = new TemporalCoverage.Builder();
 			builder.setStartString("Invalid");
 			try {
 				builder.commit();

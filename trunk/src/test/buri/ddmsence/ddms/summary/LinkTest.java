@@ -314,21 +314,33 @@ public class LinkTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			Link component = getInstance(SUCCESS, getFixtureElement());
-
-			// Equality after Building
 			Link.Builder builder = new Link.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Link.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Link.Builder builder = new Link.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.getXLinkAttributes().setRole(TEST_ROLE);
+			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new Link.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Link.Builder builder = new Link.Builder();
 			builder.getXLinkAttributes().setRole(TEST_ROLE);
 			try {
 				builder.commit();

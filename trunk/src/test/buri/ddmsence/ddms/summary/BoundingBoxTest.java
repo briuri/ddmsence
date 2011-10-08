@@ -345,21 +345,34 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			BoundingBox component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			BoundingBox.Builder builder = new BoundingBox.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new BoundingBox.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			BoundingBox.Builder builder = new BoundingBox.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setWestBL(TEST_WEST);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new BoundingBox.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			BoundingBox.Builder builder = new BoundingBox.Builder();
 			builder.setEastBL(Double.valueOf(TEST_EAST));
 			try {
 				builder.commit();

@@ -300,12 +300,12 @@ public class AddresseeTest extends AbstractBaseTestCase {
 			// Equality after Building, organization
 			Addressee component = getInstance(SUCCESS, getFixtureElement(true));
 			Addressee.Builder builder = new Addressee.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Equality after Building, person
 			component = getInstance(SUCCESS, getFixtureElement(false));
 			builder = new Addressee.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Addressee.Builder();

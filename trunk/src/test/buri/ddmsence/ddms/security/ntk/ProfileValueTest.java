@@ -320,7 +320,7 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			ProfileValue.Builder builder = new ProfileValue.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new ProfileValue.Builder();

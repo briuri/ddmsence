@@ -296,7 +296,7 @@ public class IndividualValueTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			IndividualValue.Builder builder = new IndividualValue.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new IndividualValue.Builder();

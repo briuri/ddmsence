@@ -229,7 +229,7 @@ public class TitleTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Title.Builder builder = new Title.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Title.Builder();

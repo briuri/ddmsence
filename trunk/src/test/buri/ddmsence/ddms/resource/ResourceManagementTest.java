@@ -318,7 +318,7 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			ResourceManagement.Builder builder = new ResourceManagement.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new ResourceManagement.Builder();

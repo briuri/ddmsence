@@ -291,7 +291,7 @@ public class ApplicationSoftwareTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			ApplicationSoftware.Builder builder = new ApplicationSoftware.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new ApplicationSoftware.Builder();

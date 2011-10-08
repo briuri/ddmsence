@@ -291,7 +291,7 @@ public class NoticeTest extends AbstractBaseTestCase {
 			assertFalse(builder.isEmpty());
 			// Equality after Building
 			builder = new Notice.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Validation
 			builder = new Notice.Builder();

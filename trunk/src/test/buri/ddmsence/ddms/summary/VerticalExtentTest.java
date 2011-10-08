@@ -379,21 +379,34 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			VerticalExtent component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			VerticalExtent.Builder builder = new VerticalExtent.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new VerticalExtent.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			VerticalExtent.Builder builder = new VerticalExtent.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setDatum(TEST_DATUM);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new VerticalExtent.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			VerticalExtent.Builder builder = new VerticalExtent.Builder();
 			builder.setUnitOfMeasure(TEST_UOM);
 			try {
 				builder.commit();

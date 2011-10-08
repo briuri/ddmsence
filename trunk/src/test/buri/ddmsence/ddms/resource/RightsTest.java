@@ -239,7 +239,7 @@ public class RightsTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Rights.Builder builder = new Rights.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Rights.Builder();

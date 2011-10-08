@@ -442,18 +442,45 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			SubjectCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
+			SubjectCoverage.Builder builder = new SubjectCoverage.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			SubjectCoverage.Builder builder = new SubjectCoverage.Builder();
+			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.getSecurityAttributes().setClassification("U");
+			assertFalse(builder.isEmpty());
+
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			SubjectCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
 
-			// Equality after Building
-			SubjectCoverage.Builder builder = new SubjectCoverage.Builder(component);
-			assertEquals(builder.commit(), component);
-
-			// Empty case
-			builder = new SubjectCoverage.Builder();
-			assertNull(builder.commit());
+			SubjectCoverage.Builder builder = new SubjectCoverage.Builder();
+			builder.getCategories().get(0).setCode("TEST");
+			try {
+				builder.commit();
+				fail("Builder allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				expectMessage(e, "label attribute is required.");
+			}
+			builder.getCategories().get(0).setQualifier("qualifier");
+			builder.getCategories().get(0).setLabel("label");
+			builder.commit();
 
 			// Skip empty Keywords
 			builder = new SubjectCoverage.Builder();

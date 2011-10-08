@@ -261,7 +261,7 @@ public class IdentifierTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Identifier.Builder builder = new Identifier.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Identifier.Builder();

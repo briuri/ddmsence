@@ -926,8 +926,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 					TEST_RESOURCE_ELEMENT, "notAnXmlDate", null, getIsmDESVersion(), getNtkDESVersion());
 
 				// Missing desVersion
-				getInstance("ISM:DESVersion is required.", TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null, null,
-					getNtkDESVersion());
+				getInstance("ISM:DESVersion is required.", TEST_NO_OPTIONAL_COMPONENTS, TEST_RESOURCE_ELEMENT,
+					TEST_CREATE_DATE, null, null, getNtkDESVersion());
 			}
 			if (version.isAtLeast("4.0")) {
 				// Missing desVersion
@@ -1100,10 +1100,10 @@ public class ResourceTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("3.0");
 		createComponents();
 
-		getInstance("The compliesWith attribute cannot be used", TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, TEST_COMPLIES_WITH,
-			getIsmDESVersion(), getNtkDESVersion());
+		getInstance("The compliesWith attribute cannot be used", TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
+			TEST_CREATE_DATE, TEST_COMPLIES_WITH, getIsmDESVersion(), getNtkDESVersion());
 	}
-	
+
 	public void testWrongVersionSecurityAttributes() throws InvalidDDMSException {
 		DDMSVersion.setCurrentVersion("2.0");
 		createComponents();
@@ -1463,7 +1463,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Resource.Builder builder = new Resource.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Equality with ExtensibleElement
 			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
@@ -1472,7 +1472,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 					+ "This is an extensible element.</ddmsence:extension>");
 			component = builder.commit();
 			builder = new Resource.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Resource.Builder();

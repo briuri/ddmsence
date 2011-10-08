@@ -295,7 +295,7 @@ public class NoticeListTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			builder = new NoticeList.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Validation
 			builder = new NoticeList.Builder();

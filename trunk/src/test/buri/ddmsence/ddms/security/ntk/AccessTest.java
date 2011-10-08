@@ -293,7 +293,7 @@ public class AccessTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Access.Builder builder = new Access.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Access.Builder();

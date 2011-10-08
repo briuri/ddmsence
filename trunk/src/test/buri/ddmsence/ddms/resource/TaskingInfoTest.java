@@ -355,7 +355,7 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			TaskingInfo.Builder builder = new TaskingInfo.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new TaskingInfo.Builder();

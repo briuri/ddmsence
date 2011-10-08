@@ -290,7 +290,7 @@ public class GroupTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Group.Builder builder = new Group.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Group.Builder();

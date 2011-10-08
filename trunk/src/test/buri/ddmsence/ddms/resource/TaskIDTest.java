@@ -341,7 +341,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			TaskID.Builder builder = new TaskID.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new TaskID.Builder();

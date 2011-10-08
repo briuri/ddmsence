@@ -277,7 +277,7 @@ public class UnknownTest extends AbstractBaseTestCase {
 
 			// Equality after Building
 			Unknown.Builder builder = new Unknown.Builder(component);
-			assertEquals(builder.commit(), component);
+			assertEquals(component, builder.commit());
 
 			// Empty case
 			builder = new Unknown.Builder();
