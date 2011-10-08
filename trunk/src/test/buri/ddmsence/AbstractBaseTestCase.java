@@ -71,6 +71,7 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	 */
 	protected void tearDown() throws Exception {
 		DDMSVersion.clearCurrentVersion();
+		PropertyReader.setProperty("output.indexLevel", "0");
 	}
 
 	/**

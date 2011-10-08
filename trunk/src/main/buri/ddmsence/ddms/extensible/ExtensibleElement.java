@@ -149,7 +149,7 @@ public final class ExtensibleElement extends AbstractBaseComponent {
 			if (isEmpty())
 				return (null);
 			try {
-				XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xmlReader.class"));
+				XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xml.reader.class"));
 				nu.xom.Builder builder = new nu.xom.Builder(reader, false);
 				Document doc = builder.build(new StringReader(getXml()));
 				return (new ExtensibleElement(doc.getRootElement()));

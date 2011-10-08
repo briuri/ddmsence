@@ -31,6 +31,7 @@ import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.extensible.ExtensibleElement;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -207,6 +208,31 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		tag.append(isHTML ? Util.xmlEscape(content) : content);
 		tag.append(isHTML ? "\" />\n" : "\n");
 		return (tag.toString());
+	}
+	
+	/**
+	 * Constructs a braced 1-based index to differentiate multiples in HTML/Text output, based on
+	 * the 0-based list index of the item, and the <code>output.indexLevel</code> configurable
+	 * property. When this property is 0, indices are never shown. At 1, indices are shown when needed,
+	 * but hidden when there is only 1 item to display. At 2, indices are always shown. If the property
+	 * is set to something else, it defaults to 0.
+	 * 
+	 * @param index the 0-based index of an item in a list
+	 * @param total the total number of items in that list
+	 * @return a String containing the index text, if applicable
+	 */
+	protected String buildIndex(int index, int total) {
+		if (total < 1)
+			throw new IllegalArgumentException("The total must be at least 1.");
+		if (index < 0 || index >= total)
+			throw new IllegalArgumentException("The index is not properly bounded between 0 and " + (total - 1));
+		
+		String indexLevel = PropertyReader.getProperty("output.indexLevel");
+		if ("2".equals(indexLevel))
+			return ("[" + (index + 1) + "]");
+		if ("1".equals(indexLevel) && (total > 1))
+			return ("[" + (index + 1) + "]");
+		return ("");		
 	}
 	
 	/**

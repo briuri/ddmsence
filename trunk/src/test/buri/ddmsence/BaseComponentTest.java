@@ -30,6 +30,7 @@ import buri.ddmsence.ddms.resource.Language;
 import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.ddms.resource.Rights;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -44,20 +45,80 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		super(null);
 	}
 
-	/**
-	 * Resets the in-use version of DDMS.
-	 */
-	protected void setUp() throws Exception {
-		DDMSVersion.clearCurrentVersion();
+	public void testBuildIndexInvalidInputBounds() throws InvalidDDMSException {
+		Rights rights = new Rights(true, true, true);
+		
+		// Bad total
+		try {
+			rights.buildIndex(0, 0);
+		}
+		catch (IllegalArgumentException e) {
+			expectMessage(e, "The total must be at least 1");
+		}
+		
+		// Low index
+		try {
+			rights.buildIndex(-1, 1);
+		}
+		catch (IllegalArgumentException e) {
+			expectMessage(e, "The index is not properly bounded");
+		}
+		
+		// High index
+		try {
+			rights.buildIndex(2, 2);
+		}
+		catch (IllegalArgumentException e) {
+			expectMessage(e, "The index is not properly bounded");
+		}
 	}
-
-	/**
-	 * Resets the in-use version of DDMS.
-	 */
-	protected void tearDown() throws Exception {
-		DDMSVersion.clearCurrentVersion();
+	
+	public void testBuildIndexValidInputBounds() throws InvalidDDMSException {
+		Rights rights = new Rights(true, true, true);
+		
+		// Good total
+		rights.buildIndex(0, 1);
+		
+		// Good index
+		rights.buildIndex(1, 2);
 	}
-
+		
+	public void testBuildIndexLevel0() throws InvalidDDMSException {
+		Rights rights = new Rights(true, true, true);
+		
+		PropertyReader.setProperty("output.indexLevel", "0");
+		String index = rights.buildIndex(0, 1);
+		assertEquals("", index);
+		index = rights.buildIndex(2, 4);
+		assertEquals("", index);
+		
+		PropertyReader.setProperty("output.indexLevel", "unknown");
+		index = rights.buildIndex(0, 1);
+		assertEquals("", index);
+		index = rights.buildIndex(2, 4);
+		assertEquals("", index);
+	}
+	
+	public void testBuildIndexLevel1() throws InvalidDDMSException {
+		Rights rights = new Rights(true, true, true);
+		
+		PropertyReader.setProperty("output.indexLevel", "1");
+		String index = rights.buildIndex(0, 1);
+		assertEquals("", index);
+		index = rights.buildIndex(2, 4);
+		assertEquals("[3]", index);
+	}
+	
+	public void testBuildIndexLevel2() throws InvalidDDMSException {
+		Rights rights = new Rights(true, true, true);
+		
+		PropertyReader.setProperty("output.indexLevel", "2");
+		String index = rights.buildIndex(0, 1);
+		assertEquals("[1]", index);
+		index = rights.buildIndex(2, 4);
+		assertEquals("[3]", index);
+	}
+	
 	public void testSelfEquality() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		assertEquals(rights, rights);
