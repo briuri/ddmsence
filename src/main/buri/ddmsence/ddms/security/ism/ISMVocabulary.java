@@ -213,7 +213,7 @@ public class ISMVocabulary {
 				try {
 					LOCATION_TO_ENUM_TOKENS.put(getLastEnumLocation(), new HashMap<String, Set<String>>());
 					LOCATION_TO_ENUM_PATTERNS.put(getLastEnumLocation(), new HashMap<String, Set<String>>());
-					XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xmlReader.class"));
+					XMLReader reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xml.reader.class"));
 					Builder builder = new Builder(reader, false);
 					for (String cve : ALL_ENUMS) {
 						try {

@@ -34,20 +34,6 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		super(null);
 	}
 
-	/**
-	 * Resets the in-use version of DDMS.
-	 */
-	protected void setUp() throws Exception {
-		DDMSVersion.clearCurrentVersion();
-	}
-
-	/**
-	 * Resets the in-use version of DDMS.
-	 */
-	protected void tearDown() throws Exception {
-		DDMSVersion.clearCurrentVersion();
-	}
-
 	public void testGetVersionForInvalid() {
 		try {
 			DDMSVersion.getVersionFor("1.4");

@@ -72,7 +72,7 @@ public class DDMSReader {
 	 * Creates a DDMSReader which can process various versions of DDMS and GML
 	 */
 	public DDMSReader() throws SAXException {
-		_reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xmlReader.class"));
+		_reader = XMLReaderFactory.createXMLReader(PropertyReader.getProperty("xml.reader.class"));
 		StringBuffer schemas = new StringBuffer();
 		List<String> versions = new ArrayList<String>(DDMSVersion.getSupportedVersions());
 		Collections.reverse(versions);
