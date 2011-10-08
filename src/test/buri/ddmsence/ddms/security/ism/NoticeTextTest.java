@@ -305,21 +305,34 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			NoticeText component = getInstance(SUCCESS, getFixtureElement());
+			NoticeText.Builder builder = new NoticeText.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeText component = getInstance(SUCCESS, getFixtureElement());
-
 			NoticeText.Builder builder = new NoticeText.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setValue(TEST_VALUE);
+			assertFalse(builder.isEmpty());
 
-			// Equality after Building
-			builder = new NoticeText.Builder(component);
-			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Validation
-			builder = new NoticeText.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			NoticeText.Builder builder = new NoticeText.Builder();
 			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 			try {
 				builder.commit();

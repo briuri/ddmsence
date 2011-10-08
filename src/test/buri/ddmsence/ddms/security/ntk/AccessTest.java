@@ -285,27 +285,35 @@ public class AccessTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			Access component = getInstance(SUCCESS, getValidElement(sVersion));
+			Access.Builder builder = new Access.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Access component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
-			Access.Builder builder = new Access.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new Access.Builder();
+			Access.Builder builder = new Access.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
 			builder.getIndividuals().get(0);
 			assertTrue(builder.isEmpty());
 			builder.getGroups().get(1).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new Access.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Access.Builder builder = new Access.Builder();
 			builder.getSecurityAttributes().setClassification("U");
 			try {
 				builder.commit();

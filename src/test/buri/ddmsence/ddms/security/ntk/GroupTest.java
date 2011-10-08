@@ -282,27 +282,35 @@ public class GroupTest extends AbstractBaseTestCase {
 		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			Group component = getInstance(SUCCESS, getValidElement(sVersion));
+			Group.Builder builder = new Group.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Group component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
-			Group.Builder builder = new Group.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new Group.Builder();
+			Group.Builder builder = new Group.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
 			builder.getGroupValues().get(0);
 			assertTrue(builder.isEmpty());
 			builder.getGroupValues().get(1).setValue("TEST");
 			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new Group.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Group.Builder builder = new Group.Builder();
 			builder.getSecurityAttributes().setClassification("U");
 			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 			builder.getSystemName().setValue("value");
