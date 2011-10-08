@@ -38,7 +38,7 @@ import buri.ddmsence.util.Util;
 public class NonStateActorTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "Laotian Monks";
-	private static final Integer TEST_ORDER = new Integer(1);
+	private static final Integer TEST_ORDER = Integer.valueOf(1);
 
 	/**
 	 * Constructor
@@ -56,7 +56,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	public static NonStateActor getFixture(int order) {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			return (version.isAtLeast("4.0") ? new NonStateActor(TEST_VALUE, new Integer(order), SecurityAttributesTest
+			return (version.isAtLeast("4.0") ? new NonStateActor(TEST_VALUE, Integer.valueOf(order), SecurityAttributesTest
 				.getFixture()) : null);
 		}
 		catch (InvalidDDMSException e) {

@@ -289,7 +289,7 @@ public class PointTest extends AbstractBaseTestCase {
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			SRSAttributes attr = new SRSAttributes(SRSAttributesTest.getFixture().getSrsName(), new Integer(11),
+			SRSAttributes attr = new SRSAttributes(SRSAttributesTest.getFixture().getSrsName(), Integer.valueOf(11),
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
 			Point elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			Point dataComponent = getInstance(SUCCESS, PositionTest.getFixture(), attr, TEST_ID);

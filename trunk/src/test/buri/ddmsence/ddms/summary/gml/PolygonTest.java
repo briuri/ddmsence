@@ -375,7 +375,7 @@ public class PolygonTest extends AbstractBaseTestCase {
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			SRSAttributes attr = new SRSAttributes(SRSAttributesTest.getFixture().getSrsName(), new Integer(11),
+			SRSAttributes attr = new SRSAttributes(SRSAttributesTest.getFixture().getSrsName(), Integer.valueOf(11),
 				SRSAttributesTest.getFixture().getAxisLabels(), SRSAttributesTest.getFixture().getUomLabels());
 			Polygon elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			Polygon dataComponent = getInstance(SUCCESS, PositionTest.getFixtureList(), attr, TEST_ID);

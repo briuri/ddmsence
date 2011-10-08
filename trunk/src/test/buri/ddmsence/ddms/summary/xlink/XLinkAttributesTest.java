@@ -548,17 +548,37 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 		assertEquals(getLocatorFixture(), output);
 	}
 	
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			XLinkAttributes component = getLocatorFixture();
 
-			// Equality after Building
+			XLinkAttributes component = getLocatorFixture();
 			XLinkAttributes.Builder builder = new XLinkAttributes.Builder(component);
 			assertEquals(builder.commit(), component);
+		}
+	}
 
-			// Validation
-			builder = new XLinkAttributes.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			XLinkAttributes.Builder builder = new XLinkAttributes.Builder();
+			assertNotNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setLabel(TEST_LABEL);
+			assertFalse(builder.isEmpty());
+			
+			// An untyped instance
+			XLinkAttributes output = builder.commit();
+			assertTrue(Util.isEmpty(output.getType()));
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			XLinkAttributes.Builder builder = new XLinkAttributes.Builder();
 			builder.setType("locator");
 			builder.setHref(INVALID_URI);
 			try {
@@ -567,7 +587,7 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 			}
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "Invalid URI");
-			}
+			}			
 			builder.setType("locator");
 			builder.setHref(TEST_HREF);
 			builder.commit();
@@ -575,15 +595,6 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 			builder.commit();
 			builder.setType("resource");
 			builder.commit();
-
-			// Empty Tests
-			builder = new XLinkAttributes.Builder();
-			assertTrue(builder.isEmpty());
-			builder.setLabel(TEST_LABEL);
-			assertFalse(builder.isEmpty());
-			XLinkAttributes output = builder.commit();
-			assertTrue(Util.isEmpty(output.getType()));
-			
 		}
 	}
 }

@@ -61,7 +61,8 @@ returned by <code>getKeywords()</code>, and the first Keyword.Builder returned b
 This should make it easier for Component Builders to be used in a web-based form, where the number of child components might grow dynamically with JavaScript.</li>
 <li>The <code>commit()</code> method on any given Builder will only return a component if the Builder was actually used, according its
 implementation of <code>IBuilder.isEmpty()</code>. This decision was made to handle form beans more flexibly: if a user has not filled 
-in any of the fields on a <code>ddms:dates</code> form, it is presumed that their intent is NO <code>ddms:dates</code> element, and not an empty, useless one.</li>
+in any of the fields on a <code>ddms:dates</code> form, it is presumed that their intent is NO <code>ddms:dates</code> element, and not an empty, useless one. The exception to this
+are the builders for any attribute group, such as SecurityAttributes. If the builder is empty, an empty attributes instance will be returned.</li>
 <li>The <code>commit()</code> method will use the version of DDMS defined in <code>DDMSVersion.getCurrentVersion()</code> for validation and XML namespaces. Changing the current version during
 the building process has no effect up until the moment that <code>commit()</code> is called. In addition, initializing a Builder with an existing resource will not change the current DDMSVersion value.</li>
 </ol>

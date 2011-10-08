@@ -333,23 +333,35 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			NoticeAttributes component = getFixture();
+			NoticeAttributes.Builder builder = new NoticeAttributes.Builder(component);
+			assertEquals(builder.commit(), component);
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeAttributes component = getFixture();
-
-			// Equality after Building
-			NoticeAttributes.Builder builder = new NoticeAttributes.Builder(component);
-			assertEquals(builder.commit(), component);
-
-			// Validation
-			builder = new NoticeAttributes.Builder();
+			NoticeAttributes.Builder builder = new NoticeAttributes.Builder();
+			assertNotNull(builder.commit());
 			assertTrue(builder.isEmpty());
 			builder.setNoticeType("");
 			assertTrue(builder.isEmpty());
-			builder.setUnregisteredNoticeType("test");
+			builder.setNoticeReason(TEST_NOTICE_REASON);
 			assertFalse(builder.isEmpty());
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			NoticeAttributes.Builder builder = new NoticeAttributes.Builder();
 			builder.setNoticeDate("2001");
 			try {
 				builder.commit();
@@ -358,7 +370,7 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "The noticeDate attribute must be in the xs:date format");
 			}
-			builder.setNoticeDate("");
+			builder.setNoticeDate("2011-01-20");
 			builder.commit();
 		}
 	}

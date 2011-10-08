@@ -258,10 +258,10 @@ public class ResourceTest extends AbstractBaseTestCase {
 	 */
 	private Integer getIsmDESVersion() {
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("3.1"))
-			return (new Integer(2));
+			return (Integer.valueOf(2));
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
-			return (new Integer(5));
-		return (new Integer(7));
+			return (Integer.valueOf(5));
+		return (Integer.valueOf(7));
 	}
 
 	/**
@@ -272,7 +272,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 	private Integer getNtkDESVersion() {
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
 			return (null);
-		return (new Integer(5));
+		return (Integer.valueOf(5));
 	}
 
 	/**
@@ -1053,7 +1053,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			// Can only use alternate DESVersions in early DDMS versions
 			if (!version.isAtLeast("3.1")) {
 				dataComponent = getInstance(SUCCESS, TEST_TOP_LEVEL_COMPONENTS, TEST_RESOURCE_ELEMENT,
-					TEST_CREATE_DATE, null, new Integer(1), getNtkDESVersion());
+					TEST_CREATE_DATE, null, Integer.valueOf(1), getNtkDESVersion());
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 
@@ -1627,7 +1627,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 
 		// Adding 3.1-specific fields works
-		builder.setIsmDESVersion(new Integer(5));
+		builder.setIsmDESVersion(Integer.valueOf(5));
 		builder.commit();
 	}
 
@@ -1649,8 +1649,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 
 		// Adding 4.0-specific fields works
-		builder.setNtkDESVersion(new Integer(5));
-		builder.setIsmDESVersion(new Integer(7));
+		builder.setNtkDESVersion(Integer.valueOf(5));
+		builder.setIsmDESVersion(Integer.valueOf(7));
 		builder.getMetacardInfo().getIdentifiers().get(0).setQualifier("qualifier");
 		builder.getMetacardInfo().getIdentifiers().get(0).setValue("value");
 		builder.getMetacardInfo().getDates().setCreated("2011-09-25");

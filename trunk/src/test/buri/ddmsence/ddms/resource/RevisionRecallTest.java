@@ -41,7 +41,7 @@ import buri.ddmsence.util.Util;
  */
 public class RevisionRecallTest extends AbstractBaseTestCase {
 
-	private static final Integer TEST_REVISION_ID = new Integer(1);
+	private static final Integer TEST_REVISION_ID = Integer.valueOf(1);
 	private static final String TEST_REVISION_TYPE = "ADMINISTRATIVE RECALL";
 	private static final String TEST_VALUE = "Description of Recall";
 	private static final String TEST_NETWORK = "NIPRNet";
@@ -421,7 +421,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				new Integer(2), TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest
+				Integer.valueOf(2), TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest
 					.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
@@ -449,7 +449,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, new Integer(2), TEST_REVISION_TYPE, TEST_NETWORK,
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, Integer.valueOf(2), TEST_REVISION_TYPE, TEST_NETWORK,
 				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 

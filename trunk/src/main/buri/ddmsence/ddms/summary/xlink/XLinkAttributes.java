@@ -444,8 +444,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 				return (new XLinkAttributes(getHref(), getRole(), getTitle(), getArcrole(), getShow(), getActuate()));
 			if (TYPE_RESOURCE.equals(getType()))
 				return (new XLinkAttributes(getRole(), getTitle(), getLabel()));
-			else
-				return (new XLinkAttributes());
+			return (new XLinkAttributes());
 		}
 		
 		/**
