@@ -267,8 +267,18 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		Element childElement = element.getFirstChildElement(name, element.getNamespaceURI());
 		if (childElement == null)
 			return (null);
+		return (getStringAsDouble(childElement.getValue()));
+	}
+	
+	/**
+	 * Helper method to assist with string to double conversion
+	 * 
+	 * @param string the double as a string
+	 * @return a Double if possible, or null if the string cannot be converted
+	 */
+	protected static Double getStringAsDouble(String string) {
 		try {
-			return (Double.valueOf(childElement.getValue()));
+			return (Double.valueOf(string));
 		}
 		catch (NumberFormatException e) {
 			return (null);

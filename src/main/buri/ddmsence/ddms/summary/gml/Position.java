@@ -104,23 +104,6 @@ public final class Position extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-	
-	/**
-	 * Helper method to assist with string to double conversion
-	 * 
-	 * @param string the double as a string
-	 * @return a Double if possible, or null if the string cannot be converted
-	 */
-	public static Double getStringAsDouble(String string) {
-		if (Util.isEmpty(string))
-			return (null);
-		try {
-			return (Double.valueOf(string));
-		}
-		catch (NumberFormatException e) {
-			return (null);
-		}
-	}
 			
 	/**
 	 * Validates the component.
