@@ -347,20 +347,25 @@ public class OrganizationTest extends AbstractBaseTestCase {
 	public void testWrongVersion() {
 		// This test is implicit -- SubOrganization cannot even be instantiated except in DDMS 4.0 or later.
 	}
-
-	public void testBuilder() throws InvalidDDMSException {
+	
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion.setCurrentVersion(sVersion);
+			
 			Organization component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Organization.Builder builder = new Organization.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Organization.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+
+			Organization.Builder builder = new Organization.Builder();
 			assertNull(builder.commit());
-
+			assertTrue(builder.isEmpty());
+			
 			// List Emptiness
 			if (version.isAtLeast("4.0")) {
 				assertTrue(builder.isEmpty());
@@ -369,8 +374,18 @@ public class OrganizationTest extends AbstractBaseTestCase {
 				builder.getSubOrganizations().get(0).setValue("TEST");
 				assertFalse(builder.isEmpty());
 			}
-			// Validation
-			builder = new Organization.Builder();
+			
+			builder.setNames(TEST_NAMES);
+			assertFalse(builder.isEmpty());
+
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Organization.Builder builder = new Organization.Builder();
 			builder.setPhones(TEST_PHONES);
 			try {
 				builder.commit();

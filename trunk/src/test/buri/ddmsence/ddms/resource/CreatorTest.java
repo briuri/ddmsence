@@ -253,21 +253,34 @@ public class CreatorTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Creator component = getInstance(SUCCESS, getValidElement(sVersion));
+			DDMSVersion.setCurrentVersion(sVersion);
 
-			// Equality after Building
+			Creator component = getInstance(SUCCESS, getValidElement(sVersion));
 			Creator.Builder builder = new Creator.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Creator.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Creator.Builder builder = new Creator.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setPocType("pocType");
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new Creator.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+
+			Creator.Builder builder = new Creator.Builder();
 			builder.setEntityType(Person.getName(version));
 			builder.getPerson().setPhones(Util.getXsListAsList("703-885-1000"));
 			try {

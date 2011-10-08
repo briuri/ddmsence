@@ -269,22 +269,34 @@ public class UnknownTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			Unknown component = getInstance(SUCCESS, getValidElement(sVersion));
+			Unknown.Builder builder = new Unknown.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Unknown component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
-			Unknown.Builder builder = new Unknown.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new Unknown.Builder();
+			Unknown.Builder builder = new Unknown.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setNames(TEST_NAMES);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new Unknown.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Unknown.Builder builder = new Unknown.Builder();
 			builder.setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();

@@ -310,22 +310,22 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			ResourceManagement component = getInstance(SUCCESS, getValidElement(sVersion));
+			ResourceManagement.Builder builder = new ResourceManagement.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ResourceManagement component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
-			ResourceManagement.Builder builder = new ResourceManagement.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new ResourceManagement.Builder();
+			ResourceManagement.Builder builder = new ResourceManagement.Builder();
 			assertNull(builder.commit());
-
-			// Emptiness
-			builder = new ResourceManagement.Builder();
 			assertTrue(builder.isEmpty());
 			builder.getTaskingInfos().get(1).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
@@ -333,8 +333,14 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 			builder.getProcessingInfos().get(1).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new ResourceManagement.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			ResourceManagement.Builder builder = new ResourceManagement.Builder();
 			builder.getSecurityAttributes().setClassification("COW");
 			try {
 				builder.commit();

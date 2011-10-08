@@ -293,10 +293,10 @@ public class AddresseeTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-
+			
 			// Equality after Building, organization
 			Addressee component = getInstance(SUCCESS, getFixtureElement(true));
 			Addressee.Builder builder = new Addressee.Builder(component);
@@ -306,13 +306,27 @@ public class AddresseeTest extends AbstractBaseTestCase {
 			component = getInstance(SUCCESS, getFixtureElement(false));
 			builder = new Addressee.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Addressee.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Addressee.Builder builder = new Addressee.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.getPerson().setNames(Util.getXsListAsList("Name"));
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new Addressee.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Addressee.Builder builder = new Addressee.Builder();
 			builder.getPerson().setNames(Util.getXsListAsList("Name"));
 			builder.getPerson().setSurname("Surname");
 			try {

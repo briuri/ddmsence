@@ -264,22 +264,33 @@ public class RecordsManagementInfoTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			RecordsManagementInfo component = getInstance(SUCCESS, getValidElement(sVersion));
+			RecordsManagementInfo.Builder builder = new RecordsManagementInfo.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RecordsManagementInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
-			RecordsManagementInfo.Builder builder = new RecordsManagementInfo.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new RecordsManagementInfo.Builder();
+			RecordsManagementInfo.Builder builder = new RecordsManagementInfo.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setVitalRecordIndicator(TEST_VITAL);
+			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new RecordsManagementInfo.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			RecordsManagementInfo.Builder builder = new RecordsManagementInfo.Builder();
 			builder.getApplicationSoftware().setValue("value");
 			try {
 				builder.commit();

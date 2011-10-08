@@ -242,22 +242,35 @@ public class LanguageTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
-
-	public void testBuilder() throws InvalidDDMSException {
+	
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			Language component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Language.Builder builder = new Language.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Language.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Language.Builder builder = new Language.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setValue(TEST_VALUE);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new Language.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Language.Builder builder = new Language.Builder();
 			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();

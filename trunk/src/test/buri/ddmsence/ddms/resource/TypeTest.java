@@ -292,21 +292,33 @@ public class TypeTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			Type component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Type.Builder builder = new Type.Builder(component);
-			assertEquals(component, builder.commit());
+			assertEquals(component, builder.commit());			
+		}
+	}
 
-			// Empty case
-			builder = new Type.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Type.Builder builder = new Type.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setValue(TEST_VALUE);
+			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new Type.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Type.Builder builder = new Type.Builder();
 			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();

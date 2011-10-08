@@ -252,21 +252,34 @@ public class PublisherTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion.setCurrentVersion(sVersion);
+			
 			Publisher component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Publisher.Builder builder = new Publisher.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Publisher.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Publisher.Builder builder = new Publisher.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setPocType("pocType");
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new Publisher.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+
+			Publisher.Builder builder = new Publisher.Builder();
 			builder.setEntityType(Person.getName(version));
 			builder.getPerson().setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
