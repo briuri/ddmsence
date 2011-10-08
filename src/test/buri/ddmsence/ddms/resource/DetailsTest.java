@@ -295,22 +295,34 @@ public class DetailsTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			Details component = getInstance(SUCCESS, getFixtureElement());
+			Details.Builder builder = new Details.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Details component = getInstance(SUCCESS, getFixtureElement());
-
-			// Equality after Building
-			Details.Builder builder = new Details.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new Details.Builder();
+			Details.Builder builder = new Details.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setValue(TEST_VALUE);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new Details.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Details.Builder builder = new Details.Builder();
 			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();

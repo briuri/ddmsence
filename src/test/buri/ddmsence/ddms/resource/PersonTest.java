@@ -375,21 +375,34 @@ public class PersonTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			Person component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Person.Builder builder = new Person.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Person.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Person.Builder builder = new Person.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setNames(TEST_NAMES);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new Person.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Person.Builder builder = new Person.Builder();
 			builder.setPhones(TEST_PHONES);
 			try {
 				builder.commit();

@@ -347,18 +347,21 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			TaskingInfo component = getInstance(SUCCESS, getFixtureElement());
-
-			// Equality after Building
 			TaskingInfo.Builder builder = new TaskingInfo.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new TaskingInfo.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			TaskingInfo.Builder builder = new TaskingInfo.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
 			builder.getRequesterInfos().get(1).getSecurityAttributes().setClassification("U");
@@ -366,9 +369,14 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 			builder = new TaskingInfo.Builder();
 			builder.getAddressees().get(1).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new TaskingInfo.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			TaskingInfo.Builder builder = new TaskingInfo.Builder();
 			builder.getSecurityAttributes().setClassification("U");
 			try {
 				builder.commit();

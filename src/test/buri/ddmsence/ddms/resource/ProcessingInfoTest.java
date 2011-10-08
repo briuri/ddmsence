@@ -297,22 +297,34 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
+			ProcessingInfo.Builder builder = new ProcessingInfo.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
-			ProcessingInfo.Builder builder = new ProcessingInfo.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new ProcessingInfo.Builder();
+			ProcessingInfo.Builder builder = new ProcessingInfo.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setValue(TEST_VALUE);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new ProcessingInfo.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			ProcessingInfo.Builder builder = new ProcessingInfo.Builder();
 			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();

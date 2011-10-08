@@ -337,21 +337,34 @@ public class DatesTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			Dates component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Dates.Builder builder = new Dates.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Dates.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Dates.Builder builder = new Dates.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setCreated(TEST_CREATED);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new Dates.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Dates.Builder builder = new Dates.Builder();
 			builder.setCreated("notAnXmlDate");
 			try {
 				builder.commit();

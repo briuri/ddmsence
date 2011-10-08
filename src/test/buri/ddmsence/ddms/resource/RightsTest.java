@@ -232,21 +232,34 @@ public class RightsTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			Rights component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Rights.Builder builder = new Rights.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Rights.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Rights.Builder builder = new Rights.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setCopyright(Boolean.TRUE);
+			assertFalse(builder.isEmpty());
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Default values (at least 1 value must be explicit to prevent a null commit)
-			builder = new Rights.Builder();
+			Rights.Builder builder = new Rights.Builder();
 			builder.setPrivacyAct(true);
 			assertFalse(builder.commit().getIntellectualProperty());
 			assertFalse(builder.commit().getCopyright());

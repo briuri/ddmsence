@@ -302,11 +302,11 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 			expectMessage(e, "The requesterInfo element cannot be used");
 		}
 	}
-
-	public void testBuilder() throws InvalidDDMSException {
+	
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-
+			
 			// Equality after Building, organization
 			RequesterInfo component = getInstance(SUCCESS, getFixtureElement(true));
 			RequesterInfo.Builder builder = new RequesterInfo.Builder(component);
@@ -316,13 +316,27 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 			component = getInstance(SUCCESS, getFixtureElement(false));
 			builder = new RequesterInfo.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new RequesterInfo.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			RequesterInfo.Builder builder = new RequesterInfo.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.getPerson().setSurname("surname");
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new RequesterInfo.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			RequesterInfo.Builder builder = new RequesterInfo.Builder();
 			builder.getPerson().setNames(Util.getXsListAsList("Brian"));
 			builder.getPerson().setSurname("Uri");
 			try {

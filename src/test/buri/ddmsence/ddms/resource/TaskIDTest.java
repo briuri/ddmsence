@@ -333,22 +333,34 @@ public class TaskIDTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			TaskID component = getInstance(SUCCESS, getFixtureElement());
+			TaskID.Builder builder = new TaskID.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			TaskID component = getInstance(SUCCESS, getFixtureElement());
-
-			// Equality after Building
-			TaskID.Builder builder = new TaskID.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new TaskID.Builder();
+			TaskID.Builder builder = new TaskID.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setValue(TEST_VALUE);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new TaskID.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			TaskID.Builder builder = new TaskID.Builder();
 			builder.setTaskingSystem(TEST_TASKING_SYSTEM);
 			try {
 				builder.commit();

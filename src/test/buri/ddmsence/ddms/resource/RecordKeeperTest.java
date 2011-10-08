@@ -276,22 +276,34 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			RecordKeeper component = getInstance(SUCCESS, getFixtureElement());
+			RecordKeeper.Builder builder = new RecordKeeper.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			RecordKeeper component = getInstance(SUCCESS, getFixtureElement());
-
-			// Equality after Building
-			RecordKeeper.Builder builder = new RecordKeeper.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new RecordKeeper.Builder();
+			RecordKeeper.Builder builder = new RecordKeeper.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setRecordKeeperID(TEST_ID);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new RecordKeeper.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			RecordKeeper.Builder builder = new RecordKeeper.Builder();
 			builder.setRecordKeeperID(TEST_ID);
 			try {
 				builder.commit();

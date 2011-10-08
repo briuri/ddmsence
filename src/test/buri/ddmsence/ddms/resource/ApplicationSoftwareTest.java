@@ -283,22 +283,34 @@ public class ApplicationSoftwareTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			ApplicationSoftware component = getInstance(SUCCESS, getFixtureElement());
+			ApplicationSoftware.Builder builder = new ApplicationSoftware.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ApplicationSoftware component = getInstance(SUCCESS, getFixtureElement());
-
-			// Equality after Building
-			ApplicationSoftware.Builder builder = new ApplicationSoftware.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new ApplicationSoftware.Builder();
+			ApplicationSoftware.Builder builder = new ApplicationSoftware.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setValue(TEST_VALUE);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new ApplicationSoftware.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			ApplicationSoftware.Builder builder = new ApplicationSoftware.Builder();
 			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();

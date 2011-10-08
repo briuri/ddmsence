@@ -253,21 +253,40 @@ public class ContributorTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			Contributor component = getInstance(SUCCESS, getValidElement(sVersion));
+			Contributor.Builder builder = new Contributor.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Contributor.Builder builder = new Contributor.Builder();
+			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setPocType("pocType");
+			assertFalse(builder.isEmpty());
+
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+		}
+	}
+
 	public void testBuilder() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Contributor component = getInstance(SUCCESS, getValidElement(sVersion));
 
-			// Equality after Building
-			Contributor.Builder builder = new Contributor.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new Contributor.Builder();
-			assertNull(builder.commit());
-
-			// Validation
-			builder = new Contributor.Builder();
+			Contributor.Builder builder = new Contributor.Builder();
 			builder.setEntityType(Organization.getName(version));
 			builder.getOrganization().setPhones(Util.getXsListAsList("703-885-1000"));
 			try {

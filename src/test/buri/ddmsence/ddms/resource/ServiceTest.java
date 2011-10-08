@@ -260,21 +260,33 @@ public class ServiceTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			Service component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Service.Builder builder = new Service.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Service.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Service.Builder builder = new Service.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setNames(TEST_NAMES);
+			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new Service.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Service.Builder builder = new Service.Builder();
 			builder.setPhones(Util.getXsListAsList("703-885-1000"));
 			try {
 				builder.commit();

@@ -546,10 +546,10 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-
+			
 			// Equality after Building (links)
 			RevisionRecall component = getInstance(SUCCESS, getValidElement(sVersion));
 			RevisionRecall.Builder builder = new RevisionRecall.Builder(component);
@@ -559,23 +559,31 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			component = getInstance(SUCCESS, getTextFixtureElement());
 			builder = new RevisionRecall.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new RevisionRecall.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			RevisionRecall.Builder builder = new RevisionRecall.Builder();
 			assertNull(builder.commit());
-
-			// Emptiness
-			builder = new RevisionRecall.Builder();
 			assertTrue(builder.isEmpty());
 			builder.getLinks().get(2).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
+			
 			builder = new RevisionRecall.Builder();
 			assertTrue(builder.isEmpty());
 			builder.getDetails().get(2).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new RevisionRecall.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			RevisionRecall.Builder builder = new RevisionRecall.Builder();
 			builder.setRevisionID(TEST_REVISION_ID);
 			try {
 				builder.commit();
