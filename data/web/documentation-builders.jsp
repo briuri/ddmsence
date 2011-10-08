@@ -11,7 +11,7 @@
 
 <p>Every DDMS component has an associated <a href="/docs/buri/ddmsence/ddms/IBuilder.html">Builder</a> class
 which offers a mutable way to build components. A Builder class can be the form bean behind an HTML form on a website, allowing someone to fill in the details page
-by page. A Builder class can also be initialized with an existing component to allow for editing after it has already been saved. 
+by page (this is discussed more below). A Builder class can also be initialized with an existing component to allow for editing after it has already been saved. 
 Properties on a Builder class can be set or re-set, and the strict DDMSence validation does not occur until
 you are ready to <code>commit()</code> the changes.</p>
 
@@ -105,7 +105,22 @@ DDMSVersion.setCurrentVersion("4.0");
 Resource my31Resource = builder.commit();</pre>
 <p class="figure">Figure 7. Transforming a DDMS 3.0 resource with the Builder Framework</p>
 
-<p>I have also created a sample <a href="builder.uri">DDMS Builder</a> web application which puts the Builder framework to work.</li></p> 
+<h2>Builders as Form Beans</h2>
+
+<p>Because every Builder adheres to the JavaBean standard for having conventional get() and set() accessors, the Resource.Builder
+or any sub-builders can easily be used in a web context. The next two figures show a sample form input field, and the way a
+web library like Spring MVC might resolve that field into Java:
+
+<pre class="brush: xml">&lt;input name="metacardInfo.publishers[0].entityType" type="hidden" value="person" /&gt;
+&lt;input name="metacardInfo.publishers[0].person.surname" type="text" value="Uri" /&gt;</pre>
+<p class="figure">Figure 8. Form fields identifying a publisher as a person, and setting his surname</p>
+
+<pre class="brush: java">Resource.Builder builder = new ResourceBuilder();
+builder.getMetacardInfo().getPublishers().get(0).setEntityType("person");
+builder.getMetacardInfo().getPublishers().get(0).getPerson().setSurname("Uri");</pre>
+<p class="figure">Figure 9. Comparable Builder code to the form fields in Figure 8.</p>
+
+<p>I have created a sample <a href="builder.uri">DDMS Builder</a> web application which provides an example of this behavior.</li></p> 
 
 <p>
 	<a href="#top">Back to Top</a><br>

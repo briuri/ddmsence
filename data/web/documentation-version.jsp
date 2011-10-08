@@ -26,25 +26,29 @@ System.out.println("This resource was created with DDMS "
 class controls the version being used.</p>
 
 <pre class="brush: java">DDMSVersion.setCurrentVersion("2.0");
+System.out.println("The current version is " + DDMSVersion.getCurrentVersion());
 Identifier identifier = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
    "http://www.whitehouse.gov/news/releases/2005/06/20050621.html");
 System.out.println("This identifier was created with DDMS "
    + DDMSVersion.getVersionForNamespace(identifier.getNamespace()));
 DDMSVersion.setCurrentVersion("3.0");
+System.out.println("The current version is " + DDMSVersion.getCurrentVersion());
 Identifier identifier2 = new Identifier("http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI",
    "http://www.whitehouse.gov/news/releases/2005/06/20050621.html");
 System.out.println("This identifier was created with DDMS "
    + DDMSVersion.getVersionForNamespace(identifier.getNamespace()));</pre>
 <p class="figure">Figure 3. Creating Identifiers using different DDMS versions</p>
    
-<pre class="brush: xml">This identifier was created with DDMS 2.0
+<pre class="brush: xml">The current version is 2.0
+This identifier was created with DDMS 2.0
+The current version is 3.0
 This identifier was created with DDMS 3.0</pre>
 <p class="figure">Figure 4. Output of the code in Figure 3</p>
   
-<p>There is an instance of DDMSVersion for each supported version, and this instance contains the specific XML namespaces used for DDMS, GML, NTK, and ISM components.</p>
+<p>There is an instance of DDMSVersion for each supported version, and this instance contains the specific XML namespaces used for DDMS, GML, 
+NTK, and ISM components. The NTK namespace is new in DDMS 4.0, and will be blank in earlier DDMS versions.</p>
 
-<pre class="brush: java">DDMSVersion.setCurrentVersion("4.0");
-DDMSVersion version = DDMSVersion.getCurrentVersion();
+<pre class="brush: java">DDMSVersion version = DDMSVersion.setCurrentVersion("4.0");
 System.out.println("In DDMS " + version.getVersion() + ", the following namespaces are used: ");
 System.out.println("ddms: " + version.getNamespace());
 System.out.println("gml: " + version.getGmlNamespace());
@@ -71,27 +75,15 @@ because this default changes as new versions of DDMS are released). The version 
 is not a thread-safe approach, but I believe that the most common use cases will deal with DDMS components of a single version at a time,
 and I wanted the versioning mechanism to be as unobtrusive as possible.</p>
 
-<h2>Point Releases</h2>
-
-<p>DDMS release 3.0.1 was merely a documentation release which clarified some of the supporting documentation on geospatial elements. Because none of the 
-schemas or components themselves were updated, 3.0.1 reuses all of the same technical information from 3.0 (including XML namespaces). DDMSence treats 3.0.1 as an alias 
-for DDMS 3.0 -- you can set your DDMS version to 3.0.1, but DDMSence will continue to use DDMS 3.0 artifacts.</p>
-
-<pre class="brush: java">DDMSVersion.setCurrentVersion("3.0.1");
-System.out.println(DDMSVersion.getCurrentVersion().getVersion());
-</pre>
-<p class="figure">Figure 7. This code will print out "3.0".</p>
-
 <h2>Differences Between Versions</h2>
 
 <p>The validation rules between versions of DDMS are very similar, but there are a few major differences. For example, the Unknown
 entity for producers was not introduced until DDMS 3.0, so attempts to create one in DDMS 2.0 will fail.</p>
 
 <pre class="brush: java">DDMSVersion.setCurrentVersion("2.0");
-List&lt;String&gt; names = new ArrayList&lt;String&gt;();
-names.add("Unknown Entity");
+List&lt;String&gt; names = Util.getXsListAsList("UnknownEntity"); 
 Unknown unknown = new Unknown(names, null, null);</pre>
-<p class="figure">Figure 8. This code will throw an InvalidDDMSException</p>
+<p class="figure">Figure 7. This code will throw an InvalidDDMSException</p>
 
 <p>If you have a set of DDMS resources from an older version of DDMS and wish to transform them to a newer version, you can do so with the <a href="documentation-builders.jsp">Component
 Builder</a> framework. Builders allow you to load the old resource, add any new fields that are required, and save it in the new version.</p>
@@ -202,6 +194,18 @@ and shows which attributes can be used with each version of DDMS.</p>
 <tr><td><code>@ISM:SCIcontrols</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
 <tr><td><code>@ISM:typeOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td></tr></table>
 <p class="figure">Table 4. Security Attribute changes from DDMS 2.0 to DDMS 4.0</p>
+
+
+<h2>Point Releases</h2>
+
+<p>DDMS release 3.0.1 was merely a documentation release which clarified some of the supporting documentation on geospatial elements. Because none of the 
+schemas or components themselves were updated, 3.0.1 reuses all of the same technical information from 3.0 (including XML namespaces). DDMSence treats 3.0.1 as an alias 
+for DDMS 3.0 -- you can set your DDMS version to 3.0.1, but DDMSence will continue to use DDMS 3.0 artifacts.</p>
+
+<pre class="brush: java">DDMSVersion.setCurrentVersion("3.0.1");
+System.out.println(DDMSVersion.getCurrentVersion().getVersion());
+</pre>
+<p class="figure">Figure 8. This code will print out "3.0".</p>
 
 <p>
 	<a href="#top">Back to Top</a><br>
