@@ -312,22 +312,33 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			ProfileValue component = getInstance(SUCCESS, getValidElement(sVersion));
+			ProfileValue.Builder builder = new ProfileValue.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ProfileValue component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
-			ProfileValue.Builder builder = new ProfileValue.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new ProfileValue.Builder();
+			ProfileValue.Builder builder = new ProfileValue.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setValue(TEST_VALUE);
+			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new ProfileValue.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			ProfileValue.Builder builder = new ProfileValue.Builder();
 			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();

@@ -288,22 +288,34 @@ public class IndividualValueTest extends AbstractBaseTestCase {
 		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			IndividualValue component = getInstance(SUCCESS, getValidElement(sVersion));
+			IndividualValue.Builder builder = new IndividualValue.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			IndividualValue component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
-			IndividualValue.Builder builder = new IndividualValue.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new IndividualValue.Builder();
+			IndividualValue.Builder builder = new IndividualValue.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setValue(TEST_VALUE);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new IndividualValue.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			IndividualValue.Builder builder = new IndividualValue.Builder();
 			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();

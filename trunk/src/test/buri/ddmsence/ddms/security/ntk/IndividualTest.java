@@ -285,27 +285,35 @@ public class IndividualTest extends AbstractBaseTestCase {
 		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			Individual component = getInstance(SUCCESS, getValidElement(sVersion));
+			Individual.Builder builder = new Individual.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Individual component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
-			Individual.Builder builder = new Individual.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new Individual.Builder();
+			Individual.Builder builder = new Individual.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
 			builder.getIndividualValues().get(0);
 			assertTrue(builder.isEmpty());
 			builder.getIndividualValues().get(1).setValue("TEST");
 			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new Individual.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Individual.Builder builder = new Individual.Builder();
 			builder.getSecurityAttributes().setClassification("U");
 			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 			builder.getSystemName().setValue("value");

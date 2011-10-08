@@ -278,23 +278,33 @@ public class NoticeTest extends AbstractBaseTestCase {
 		// Implicit, since 1 NoticeText is required and that requires DDMS 4.0 or greater.
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-
+			
 			Notice component = getInstance(SUCCESS, getFixtureElement());
+			Notice.Builder builder = new Notice.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
 
 			Notice.Builder builder = new Notice.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
 			builder.getNoticeTexts().get(1).setValue("TEST");
 			assertFalse(builder.isEmpty());
-			// Equality after Building
-			builder = new Notice.Builder(component);
-			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Validation
-			builder = new Notice.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Notice.Builder builder = new Notice.Builder();
 			builder.getSecurityAttributes().setClassification("U");
 			builder.getSecurityAttributes().setOwnerProducers(Util.getXsListAsList("USA"));
 			try {

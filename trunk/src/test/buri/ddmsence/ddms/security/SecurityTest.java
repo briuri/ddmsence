@@ -334,21 +334,34 @@ public class SecurityTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			Security component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Security.Builder builder = new Security.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Security.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Security.Builder builder = new Security.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.getSecurityAttributes().setClassification("U");
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new Security.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Security.Builder builder = new Security.Builder();
 			builder.getSecurityAttributes().setClassification("SuperSecret");
 			try {
 				builder.commit();

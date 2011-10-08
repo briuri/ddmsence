@@ -276,22 +276,34 @@ public class SystemNameTest extends AbstractBaseTestCase {
 		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			
+			SystemName component = getInstance(SUCCESS, getValidElement(sVersion));
+			SystemName.Builder builder = new SystemName.Builder(component);
+			assertEquals(component, builder.commit());
+		}
+	}
+
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			SystemName component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
-			SystemName.Builder builder = new SystemName.Builder(component);
-			assertEquals(component, builder.commit());
-
-			// Empty case
-			builder = new SystemName.Builder();
+			SystemName.Builder builder = new SystemName.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setValue(TEST_VALUE);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new SystemName.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			SystemName.Builder builder = new SystemName.Builder();
 			builder.setValue(TEST_VALUE);
 			try {
 				builder.commit();
