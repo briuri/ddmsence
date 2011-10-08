@@ -363,21 +363,34 @@ public class FormatTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			Format component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			Format.Builder builder = new Format.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new Format.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Format.Builder builder = new Format.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setMimeType(TEST_MIME_TYPE);
+			assertFalse(builder.isEmpty());
 
-			// Validation
-			builder = new Format.Builder();
+		}
+	}
+
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Format.Builder builder = new Format.Builder();
 			builder.setMedium(TEST_MEDIUM);
 			try {
 				builder.commit();

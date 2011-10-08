@@ -480,22 +480,34 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			MetacardInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-
-			// Equality after Building
 			MetacardInfo.Builder builder = new MetacardInfo.Builder(component);
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new MetacardInfo.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			MetacardInfo.Builder builder = new MetacardInfo.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.getDates().setApprovedOn("2001");
+			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new MetacardInfo.Builder(component);
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			MetacardInfo component = getInstance(SUCCESS, getValidElement(sVersion));
+			MetacardInfo.Builder builder = new MetacardInfo.Builder(component);
 			builder.getIdentifiers().clear();
 			try {
 				builder.commit();

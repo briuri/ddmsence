@@ -19,12 +19,7 @@
  */
 package buri.ddmsence.ddms.extensible;
 
-import java.io.IOException;
-
 import nu.xom.Element;
-
-import org.xml.sax.SAXException;
-
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
@@ -163,24 +158,37 @@ public class ExtensibleElementTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testBuilder() throws SAXException, IOException, InvalidDDMSException {
+	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+			
 			ExtensibleElement component = getInstance(SUCCESS, getFixtureElement());
-
-			// Equality after Building
 			ExtensibleElement.Builder builder = new ExtensibleElement.Builder(component);
 			assertEquals(component, builder.commit());
+
 			builder = new ExtensibleElement.Builder();
 			builder.setXml(getFixtureElement().toXML());
 			assertEquals(component, builder.commit());
+		}
+	}
 
-			// Empty case
-			builder = new ExtensibleElement.Builder();
+	public void testBuilderIsEmpty() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			ExtensibleElement.Builder builder = new ExtensibleElement.Builder();
 			assertNull(builder.commit());
+			assertTrue(builder.isEmpty());
+			builder.setXml("<test/>");
+			assertFalse(builder.isEmpty());
+		}
+	}
 
-			// Validation
-			builder = new ExtensibleElement.Builder();
+	public void testBuilderValidation() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			ExtensibleElement.Builder builder = new ExtensibleElement.Builder();
 			builder.setXml("InvalidXml");
 			try {
 				builder.commit();
