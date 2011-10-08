@@ -127,13 +127,12 @@ public final class Individual extends AbstractAccessEntity {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + "individual.";
+		prefix = Util.getNonNullString(prefix) + "individual" + Util.getNonNullString(suffix) + ".";
 		StringBuffer text = new StringBuffer();
 		if (getSystemName() != null)
 			text.append(getSystemName().getOutput(isHTML, prefix, ""));
-		for (IndividualValue value : getIndividualValues())
-			text.append(value.getOutput(isHTML, prefix, ""));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
+		text.append(buildOutput(isHTML, prefix, getIndividualValues()));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 		

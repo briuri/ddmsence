@@ -285,7 +285,7 @@ public class ProfileTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Profile component = getInstance(SUCCESS, getValidElement(sVersion));
 			Profile.Builder builder = new Profile.Builder(component);
 			assertEquals(component, builder.commit());

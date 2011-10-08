@@ -138,11 +138,10 @@ public final class NoticeList extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
 		StringBuffer text = new StringBuffer();
-		for (Notice notice : getNotices())
-			text.append(notice.getOutput(isHTML, prefix, ""));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
+		text.append(buildOutput(isHTML, prefix, getNotices()));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 	

@@ -244,7 +244,7 @@ public class SubtitleTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Subtitle component = getInstance(SUCCESS, getValidElement(sVersion));
 			Subtitle.Builder builder = new Subtitle.Builder(component);
 			assertEquals(component, builder.commit());

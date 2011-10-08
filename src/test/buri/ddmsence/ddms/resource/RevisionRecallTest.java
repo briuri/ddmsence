@@ -179,8 +179,8 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			text.append(buildOutput(isHTML, "revisionRecall.details.classification", "U"));
 			text.append(buildOutput(isHTML, "revisionRecall.details.ownerProducer", "USA"));
 		}
-		text.append(XLinkAttributesTest.getResourceFixture().getOutput(isHTML, "revisionRecall.", ""));
-		text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, "revisionRecall.", ""));
+		text.append(XLinkAttributesTest.getResourceFixture().getOutput(isHTML, "revisionRecall."));
+		text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, "revisionRecall."));
 		return (text.toString());
 	}
 
@@ -549,7 +549,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			// Equality after Building (links)
 			RevisionRecall component = getInstance(SUCCESS, getValidElement(sVersion));
 			RevisionRecall.Builder builder = new RevisionRecall.Builder(component);
@@ -571,7 +571,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			assertTrue(builder.isEmpty());
 			builder.getLinks().get(2).getSecurityAttributes().setClassification("U");
 			assertFalse(builder.isEmpty());
-			
+
 			builder = new RevisionRecall.Builder();
 			assertTrue(builder.isEmpty());
 			builder.getDetails().get(2).getSecurityAttributes().setClassification("U");

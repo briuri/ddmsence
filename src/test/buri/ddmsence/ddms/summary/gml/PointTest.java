@@ -112,7 +112,7 @@ public class PointTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "Point.id", TEST_ID));
-		text.append(SRSAttributesTest.getFixture().getOutput(isHTML, "Point.", ""));
+		text.append(SRSAttributesTest.getFixture().getOutput(isHTML, "Point."));
 		text.append(PositionTest.getFixture().getOutput(isHTML, "Point.", ""));
 		return (text.toString());
 	}

@@ -1459,11 +1459,11 @@ public class ResourceTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Resource component = getInstance(SUCCESS, getValidElement(sVersion));
 			Resource.Builder builder = new Resource.Builder(component);
 			assertEquals(component, builder.commit());
-			
+
 			// Equality with ExtensibleElement
 			builder.getExtensibleElements().add(new ExtensibleElement.Builder());
 			builder.getExtensibleElements().get(0).setXml(
@@ -1557,7 +1557,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			assertNotNull(builder.getExtensibleElements().get(1));
 		}
 	}
-	
+
 	public void testBuild20Commit30() throws InvalidDDMSException {
 		// Version during building should be 100% irrelevant
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
@@ -1743,6 +1743,5 @@ public class ResourceTest extends AbstractBaseTestCase {
 			assertEquals(component, unserializedBuilder.commit());
 		}
 	}
-
 
 }

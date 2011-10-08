@@ -296,7 +296,7 @@ public class SourceTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Source component = getInstance(SUCCESS, getValidElement(sVersion));
 			Source.Builder builder = new Source.Builder(component);
 			assertEquals(component, builder.commit());

@@ -308,7 +308,7 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			NoticeText component = getInstance(SUCCESS, getFixtureElement());
 			NoticeText.Builder builder = new NoticeText.Builder(component);
 			assertEquals(component, builder.commit());

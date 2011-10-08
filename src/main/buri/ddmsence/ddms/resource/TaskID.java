@@ -152,13 +152,13 @@ public final class TaskID extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName();
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix);
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix, getValue(), true));
 		text.append(buildOutput(isHTML, prefix + "." + TASKING_SYSTEM_NAME, getTaskingSystem(), true));
 		text.append(buildOutput(isHTML, prefix + "." + NETWORK_NAME, getNetwork(), true));
 		text.append(buildOutput(isHTML, prefix + "." + OTHER_NETWORK_NAME, getOtherNetwork(), false));
-		text.append(getXLinkAttributes().getOutput(isHTML, prefix + ".", ""));
+		text.append(getXLinkAttributes().getOutput(isHTML, prefix + "."));
 		return (text.toString());
 	}
 		

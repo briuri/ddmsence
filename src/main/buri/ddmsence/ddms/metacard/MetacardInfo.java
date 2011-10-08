@@ -268,11 +268,28 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
 		StringBuffer text = new StringBuffer();
-		for (IDDMSComponent component : getChildComponents())
-			text.append(component.getOutput(isHTML, prefix, ""));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
+		
+		// Traverse child components, suppressing the resource prefix
+		text.append(buildOutput(isHTML, prefix, getIdentifiers()));
+		if (getDates() != null)
+			text.append(getDates().getOutput(isHTML, prefix, ""));
+		text.append(buildOutput(isHTML, prefix, getPublishers()));
+		text.append(buildOutput(isHTML, prefix, getContributors()));
+		text.append(buildOutput(isHTML, prefix, getCreators()));
+		text.append(buildOutput(isHTML, prefix, getPointOfContacts()));		
+		if (getDescription() != null)
+			text.append(getDescription().getOutput(isHTML, prefix, ""));
+		text.append(buildOutput(isHTML, prefix, getProcessingInfos()));
+		if (getRevisionRecall() != null)
+			text.append(getRevisionRecall().getOutput(isHTML, prefix, ""));
+		if (getRecordsManagementInfo() != null)
+			text.append(getRecordsManagementInfo().getOutput(isHTML, prefix, ""));
+		if (getNoticeList() != null)
+			text.append(getNoticeList().getOutput(isHTML, prefix, ""));		
+
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 		

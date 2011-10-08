@@ -101,7 +101,7 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix + QUALIFIER_NAME, getQualifier(), true));
 		text.append(buildOutput(isHTML, prefix + VALUE_NAME, getValue(), true));

@@ -221,11 +221,11 @@ public class TitleTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
-	
+
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Title component = getInstance(SUCCESS, getValidElement(sVersion));
 			Title.Builder builder = new Title.Builder(component);
 			assertEquals(component, builder.commit());

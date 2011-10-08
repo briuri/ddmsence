@@ -47,7 +47,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 
 	public void testBuildIndexInvalidInputBounds() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
-		
+
 		// Bad total
 		try {
 			rights.buildIndex(0, 0);
@@ -55,7 +55,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		catch (IllegalArgumentException e) {
 			expectMessage(e, "The total must be at least 1");
 		}
-		
+
 		// Low index
 		try {
 			rights.buildIndex(-1, 1);
@@ -63,7 +63,7 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		catch (IllegalArgumentException e) {
 			expectMessage(e, "The index is not properly bounded");
 		}
-		
+
 		// High index
 		try {
 			rights.buildIndex(2, 2);
@@ -72,53 +72,53 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 			expectMessage(e, "The index is not properly bounded");
 		}
 	}
-	
+
 	public void testBuildIndexValidInputBounds() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
-		
+
 		// Good total
 		rights.buildIndex(0, 1);
-		
+
 		// Good index
 		rights.buildIndex(1, 2);
 	}
-		
+
 	public void testBuildIndexLevel0() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
-		
+
 		PropertyReader.setProperty("output.indexLevel", "0");
 		String index = rights.buildIndex(0, 1);
 		assertEquals("", index);
 		index = rights.buildIndex(2, 4);
 		assertEquals("", index);
-		
+
 		PropertyReader.setProperty("output.indexLevel", "unknown");
 		index = rights.buildIndex(0, 1);
 		assertEquals("", index);
 		index = rights.buildIndex(2, 4);
 		assertEquals("", index);
 	}
-	
+
 	public void testBuildIndexLevel1() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
-		
+
 		PropertyReader.setProperty("output.indexLevel", "1");
 		String index = rights.buildIndex(0, 1);
 		assertEquals("", index);
 		index = rights.buildIndex(2, 4);
 		assertEquals("[3]", index);
 	}
-	
+
 	public void testBuildIndexLevel2() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
-		
+
 		PropertyReader.setProperty("output.indexLevel", "2");
 		String index = rights.buildIndex(0, 1);
 		assertEquals("[1]", index);
 		index = rights.buildIndex(2, 4);
 		assertEquals("[3]", index);
 	}
-	
+
 	public void testSelfEquality() throws InvalidDDMSException {
 		Rights rights = new Rights(true, true, true);
 		assertEquals(rights, rights);

@@ -273,10 +273,10 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			PointOfContact component = getInstance(SUCCESS, getValidElement(sVersion));
 			PointOfContact.Builder builder = new PointOfContact.Builder(component);
-			assertEquals(component, builder.commit());			
+			assertEquals(component, builder.commit());
 		}
 	}
 

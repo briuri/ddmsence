@@ -378,7 +378,7 @@ public class PersonTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Person component = getInstance(SUCCESS, getValidElement(sVersion));
 			Person.Builder builder = new Person.Builder(component);
 			assertEquals(component, builder.commit());

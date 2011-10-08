@@ -279,7 +279,7 @@ public class RecordKeeperTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			RecordKeeper component = getInstance(SUCCESS, getFixtureElement());
 			RecordKeeper.Builder builder = new RecordKeeper.Builder(component);
 			assertEquals(component, builder.commit());

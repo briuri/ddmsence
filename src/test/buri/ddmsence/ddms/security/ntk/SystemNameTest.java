@@ -279,7 +279,7 @@ public class SystemNameTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			SystemName component = getInstance(SUCCESS, getValidElement(sVersion));
 			SystemName.Builder builder = new SystemName.Builder(component);
 			assertEquals(component, builder.commit());

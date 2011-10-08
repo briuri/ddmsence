@@ -128,7 +128,7 @@ public class PolygonTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "Polygon.id", TEST_ID));
-		text.append(SRSAttributesTest.getFixture().getOutput(isHTML, "Polygon.", ""));
+		text.append(SRSAttributesTest.getFixture().getOutput(isHTML, "Polygon."));
 		for (Position pos : PositionTest.getFixtureList()) {
 			text.append(pos.getOutput(isHTML, "Polygon.", ""));
 		}

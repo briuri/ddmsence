@@ -135,7 +135,7 @@ public final class RecordsManagementInfo extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
 		StringBuffer text = new StringBuffer();
 		if (getRecordKeeper() != null)
 			text.append(getRecordKeeper().getOutput(isHTML, prefix, ""));

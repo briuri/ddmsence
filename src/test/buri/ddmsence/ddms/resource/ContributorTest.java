@@ -256,7 +256,7 @@ public class ContributorTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Contributor component = getInstance(SUCCESS, getValidElement(sVersion));
 			Contributor.Builder builder = new Contributor.Builder(component);
 			assertEquals(component, builder.commit());

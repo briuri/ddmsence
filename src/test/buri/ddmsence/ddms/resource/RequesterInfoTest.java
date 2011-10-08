@@ -302,11 +302,11 @@ public class RequesterInfoTest extends AbstractBaseTestCase {
 			expectMessage(e, "The requesterInfo element cannot be used");
 		}
 	}
-	
+
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			// Equality after Building, organization
 			RequesterInfo component = getInstance(SUCCESS, getFixtureElement(true));
 			RequesterInfo.Builder builder = new RequesterInfo.Builder(component);

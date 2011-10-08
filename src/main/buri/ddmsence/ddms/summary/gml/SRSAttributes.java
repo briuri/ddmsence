@@ -26,7 +26,6 @@ import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractAttributeGroup;
-import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.Resource;
@@ -179,10 +178,10 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	}
 	
 	/**
-	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 * @see AbstractAttributeGroup#getOutput(boolean, String)
 	 */
-	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix);		
+	public String getOutput(boolean isHTML, String prefix) {
+		prefix = Util.getNonNullString(prefix);	
 		StringBuffer text = new StringBuffer();
 		text.append(Resource.buildOutput(isHTML, prefix + "srsName", getSrsName(), false));
 		if (getSrsDimension() != null) {

@@ -27,6 +27,7 @@ import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -347,11 +348,36 @@ public class OrganizationTest extends AbstractBaseTestCase {
 	public void testWrongVersion() {
 		// This test is implicit -- SubOrganization cannot even be instantiated except in DDMS 4.0 or later.
 	}
-	
+
+	public void testIndexLevelsObjectLists() throws InvalidDDMSException {
+		List<String> names = Util.getXsListAsList("DISA");
+		Organization org = new Organization(names, null, null, SubOrganizationTest.getFixtureList(), null, null);
+
+		PropertyReader.setProperty("output.indexLevel", "0");
+		assertEquals("entityType: organization\nname: DISA\n"
+			+ "subOrganization: sub1\nsubOrganization.classification: U\nsubOrganization.ownerProducer: USA\n"
+			+ "subOrganization: sub2\nsubOrganization.classification: U\nsubOrganization.ownerProducer: USA\n", org
+			.toText());
+
+		PropertyReader.setProperty("output.indexLevel", "1");
+		assertEquals(
+			"entityType: organization\nname: DISA\n"
+				+ "subOrganization[1]: sub1\nsubOrganization[1].classification: U\nsubOrganization[1].ownerProducer: USA\n"
+				+ "subOrganization[2]: sub2\nsubOrganization[2].classification: U\nsubOrganization[2].ownerProducer: USA\n",
+			org.toText());
+
+		PropertyReader.setProperty("output.indexLevel", "2");
+		assertEquals(
+			"entityType: organization\nname[1]: DISA\n"
+				+ "subOrganization[1]: sub1\nsubOrganization[1].classification: U\nsubOrganization[1].ownerProducer: USA\n"
+				+ "subOrganization[2]: sub2\nsubOrganization[2].classification: U\nsubOrganization[2].ownerProducer: USA\n",
+			org.toText());
+	}
+
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Organization component = getInstance(SUCCESS, getValidElement(sVersion));
 			Organization.Builder builder = new Organization.Builder(component);
 			assertEquals(component, builder.commit());
@@ -365,7 +391,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 			Organization.Builder builder = new Organization.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
-			
+
 			// List Emptiness
 			if (version.isAtLeast("4.0")) {
 				assertTrue(builder.isEmpty());
@@ -374,7 +400,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 				builder.getSubOrganizations().get(0).setValue("TEST");
 				assertFalse(builder.isEmpty());
 			}
-			
+
 			builder.setNames(TEST_NAMES);
 			assertFalse(builder.isEmpty());
 

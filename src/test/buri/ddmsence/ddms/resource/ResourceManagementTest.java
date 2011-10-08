@@ -313,7 +313,7 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			ResourceManagement component = getInstance(SUCCESS, getValidElement(sVersion));
 			ResourceManagement.Builder builder = new ResourceManagement.Builder(component);
 			assertEquals(component, builder.commit());

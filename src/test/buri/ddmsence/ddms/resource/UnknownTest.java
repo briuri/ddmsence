@@ -272,7 +272,7 @@ public class UnknownTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Unknown component = getInstance(SUCCESS, getValidElement(sVersion));
 			Unknown.Builder builder = new Unknown.Builder(component);
 			assertEquals(component, builder.commit());

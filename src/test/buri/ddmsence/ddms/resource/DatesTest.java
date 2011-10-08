@@ -340,7 +340,7 @@ public class DatesTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Dates component = getInstance(SUCCESS, getValidElement(sVersion));
 			Dates.Builder builder = new Dates.Builder(component);
 			assertEquals(component, builder.commit());

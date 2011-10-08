@@ -284,10 +284,10 @@ public class NoticeListTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			NoticeList component = getInstance(SUCCESS, getFixtureElement());
 			NoticeList.Builder builder = new NoticeList.Builder(component);
-			assertEquals(component, builder.commit());			
+			assertEquals(component, builder.commit());
 		}
 	}
 

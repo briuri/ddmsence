@@ -235,7 +235,7 @@ public class RightsTest extends AbstractBaseTestCase {
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Rights component = getInstance(SUCCESS, getValidElement(sVersion));
 			Rights.Builder builder = new Rights.Builder(component);
 			assertEquals(component, builder.commit());

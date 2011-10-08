@@ -278,7 +278,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + ".";
+		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
 		if (!getDDMSVersion().isAtLeast("4.0"))
 			prefix += GEOSPATIAL_EXTENT_NAME + ".";
 		StringBuffer text = new StringBuffer();
@@ -295,7 +295,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		text.append(buildOutput(isHTML, prefix + PRECEDENCE_NAME, getPrecedence(), false));
 		if (getOrder() != null)
 			text.append(buildOutput(isHTML, prefix + ORDER_NAME, String.valueOf(getOrder()), false));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix, ""));
+		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
 	}
 
