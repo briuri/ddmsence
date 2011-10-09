@@ -172,8 +172,15 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		return (getOutput(false, "", ""));
 	}
 
+
 	/**
-	 * @see IDDMSComponent#getOutput(boolean, String, String)
+	 * Renders this component as HTML or Text, with an optional prefix to nest it.
+	 * 
+	 * @param isHTML true for HTML, false for Text.
+	 * @param prefix an optional prefix to put on each name.
+	 * @param suffix an optional suffix to append to each name, such as an index.
+	 * 
+	 * @return the HTML or Text representation of this component
 	 */
 	public abstract String getOutput(boolean isHTML, String prefix, String suffix);
 		

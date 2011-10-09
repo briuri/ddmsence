@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
+import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
@@ -158,7 +159,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		for (IDDMSComponent component : getChildComponents())
-			text.append(component.getOutput(isHTML, "metacardInfo.", ""));
+			text.append(((AbstractBaseComponent) component).getOutput(isHTML, "metacardInfo.", ""));
 		text.append(buildOutput(isHTML, "metacardInfo.classification", "U"));
 		text.append(buildOutput(isHTML, "metacardInfo.ownerProducer", "USA"));
 		return (text.toString());
