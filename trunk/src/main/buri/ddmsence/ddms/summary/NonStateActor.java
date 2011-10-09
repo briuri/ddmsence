@@ -121,11 +121,11 @@ public final class NonStateActor extends AbstractSimpleString {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + "value", getValue(), true));
-		text.append(buildOutput(isHTML, prefix + ORDER_NAME, String.valueOf(getOrder()), false));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		text.append(buildOutput(isHTML, localPrefix + "value", getValue()));
+		text.append(buildOutput(isHTML, localPrefix + ORDER_NAME, String.valueOf(getOrder())));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
 	

@@ -107,13 +107,13 @@ public final class IndividualValue extends AbstractNtkString {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + "individualValue" + Util.getNonNullString(suffix);
+		String localPrefix = buildPrefix(prefix, "individualValue", suffix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix, getValue(), false));
-		text.append(buildOutput(isHTML, prefix + ".id", getID(), false));
-		text.append(buildOutput(isHTML, prefix + ".idReference", getIDReference(), false));
-		text.append(buildOutput(isHTML, prefix + ".qualifier", getQualifier(), false));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix + "."));
+		text.append(buildOutput(isHTML, localPrefix, getValue()));
+		text.append(buildOutput(isHTML, localPrefix + ".id", getID()));
+		text.append(buildOutput(isHTML, localPrefix + ".idReference", getIDReference()));
+		text.append(buildOutput(isHTML, localPrefix + ".qualifier", getQualifier()));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
 	

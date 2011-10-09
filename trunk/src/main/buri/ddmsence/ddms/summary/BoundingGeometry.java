@@ -136,10 +136,10 @@ public final class BoundingGeometry extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix, getPolygons()));
-		text.append(buildOutput(isHTML, prefix, getPoints()));
+		text.append(buildOutput(isHTML, localPrefix, getPolygons()));
+		text.append(buildOutput(isHTML, localPrefix, getPoints()));
 		return (text.toString());
 	}
 	

@@ -152,11 +152,11 @@ public final class Notice extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + "notice" +  Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, "notice", suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix, getNoticeTexts()));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
-		text.append(getNoticeAttributes().getOutput(isHTML, prefix));
+		text.append(buildOutput(isHTML, localPrefix, getNoticeTexts()));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+		text.append(getNoticeAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
 	

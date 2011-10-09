@@ -152,10 +152,10 @@ public final class Link extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(getXLinkAttributes().getOutput(isHTML, prefix));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		text.append(getXLinkAttributes().getOutput(isHTML, localPrefix));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
 		

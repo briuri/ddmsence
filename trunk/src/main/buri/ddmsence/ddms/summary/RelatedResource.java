@@ -249,16 +249,16 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
-			prefix += "RelatedResource.";
+			localPrefix += "RelatedResource.";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + RELATIONSHIP_NAME, getRelationship(), true));
-		text.append(buildOutput(isHTML, prefix + DIRECTION_NAME, getDirection(), false));
-		text.append(buildOutput(isHTML, prefix + QUALIFIER_NAME, getQualifier(), true));
-		text.append(buildOutput(isHTML, prefix + VALUE_NAME, getValue(), true));
-		text.append(buildOutput(isHTML, prefix, getLinks()));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		text.append(buildOutput(isHTML, localPrefix + RELATIONSHIP_NAME, getRelationship()));
+		text.append(buildOutput(isHTML, localPrefix + DIRECTION_NAME, getDirection()));
+		text.append(buildOutput(isHTML, localPrefix + QUALIFIER_NAME, getQualifier()));
+		text.append(buildOutput(isHTML, localPrefix + VALUE_NAME, getValue()));
+		text.append(buildOutput(isHTML, localPrefix, getLinks()));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
 		

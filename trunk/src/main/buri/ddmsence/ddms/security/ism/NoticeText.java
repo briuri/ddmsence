@@ -143,11 +143,11 @@ public final class NoticeText extends AbstractSimpleString {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + "noticeText" + Util.getNonNullString(suffix);
+		String localPrefix = buildPrefix(prefix, "noticeText", suffix);
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix, getValue(), true));
-		text.append(buildOutput(isHTML, prefix +  "."  + POC_TYPE_NAME, Util.getXsList(getPocTypes()), false));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix + "."));
+		text.append(buildOutput(isHTML, localPrefix, getValue()));
+		text.append(buildOutput(isHTML, localPrefix +  "."  + POC_TYPE_NAME, Util.getXsList(getPocTypes())));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
 	

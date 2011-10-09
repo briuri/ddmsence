@@ -268,28 +268,28 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		
 		// Traverse child components, suppressing the resource prefix
-		text.append(buildOutput(isHTML, prefix, getIdentifiers()));
+		text.append(buildOutput(isHTML, localPrefix, getIdentifiers()));
 		if (getDates() != null)
-			text.append(getDates().getOutput(isHTML, prefix, ""));
-		text.append(buildOutput(isHTML, prefix, getPublishers()));
-		text.append(buildOutput(isHTML, prefix, getContributors()));
-		text.append(buildOutput(isHTML, prefix, getCreators()));
-		text.append(buildOutput(isHTML, prefix, getPointOfContacts()));		
+			text.append(getDates().getOutput(isHTML, localPrefix, ""));
+		text.append(buildOutput(isHTML, localPrefix, getPublishers()));
+		text.append(buildOutput(isHTML, localPrefix, getContributors()));
+		text.append(buildOutput(isHTML, localPrefix, getCreators()));
+		text.append(buildOutput(isHTML, localPrefix, getPointOfContacts()));		
 		if (getDescription() != null)
-			text.append(getDescription().getOutput(isHTML, prefix, ""));
-		text.append(buildOutput(isHTML, prefix, getProcessingInfos()));
+			text.append(getDescription().getOutput(isHTML, localPrefix, ""));
+		text.append(buildOutput(isHTML, localPrefix, getProcessingInfos()));
 		if (getRevisionRecall() != null)
-			text.append(getRevisionRecall().getOutput(isHTML, prefix, ""));
+			text.append(getRevisionRecall().getOutput(isHTML, localPrefix, ""));
 		if (getRecordsManagementInfo() != null)
-			text.append(getRecordsManagementInfo().getOutput(isHTML, prefix, ""));
+			text.append(getRecordsManagementInfo().getOutput(isHTML, localPrefix, ""));
 		if (getNoticeList() != null)
-			text.append(getNoticeList().getOutput(isHTML, prefix, ""));		
+			text.append(getNoticeList().getOutput(isHTML, localPrefix, ""));		
 
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
 		

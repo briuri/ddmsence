@@ -193,15 +193,15 @@ public final class PostalAddress extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + STREET_NAME, getStreets(), false));
-		text.append(buildOutput(isHTML, prefix + CITY_NAME, getCity(), false));
-		text.append(buildOutput(isHTML, prefix + STATE_NAME, getState(), false));
-		text.append(buildOutput(isHTML, prefix + PROVINCE_NAME, getProvince(), false));
-		text.append(buildOutput(isHTML, prefix + POSTAL_CODE_NAME, getPostalCode(), false));
+		text.append(buildOutput(isHTML, localPrefix + STREET_NAME, getStreets()));
+		text.append(buildOutput(isHTML, localPrefix + CITY_NAME, getCity()));
+		text.append(buildOutput(isHTML, localPrefix + STATE_NAME, getState()));
+		text.append(buildOutput(isHTML, localPrefix + PROVINCE_NAME, getProvince()));
+		text.append(buildOutput(isHTML, localPrefix + POSTAL_CODE_NAME, getPostalCode()));
 		if (getCountryCode() != null)
-			text.append(getCountryCode().getOutput(isHTML, prefix, ""));
+			text.append(getCountryCode().getOutput(isHTML, localPrefix, ""));
 		return (text.toString());
 	}
 	

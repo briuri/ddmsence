@@ -133,12 +133,12 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + getWestBLName(), String.valueOf(getWestBL()), true));
-		text.append(buildOutput(isHTML, prefix + getEastBLName(), String.valueOf(getEastBL()), true));
-		text.append(buildOutput(isHTML, prefix + getSouthBLName(), String.valueOf(getSouthBL()), true));
-		text.append(buildOutput(isHTML, prefix + getNorthBLName(), String.valueOf(getNorthBL()), true));
+		text.append(buildOutput(isHTML, localPrefix + getWestBLName(), String.valueOf(getWestBL())));
+		text.append(buildOutput(isHTML, localPrefix + getEastBLName(), String.valueOf(getEastBL())));
+		text.append(buildOutput(isHTML, localPrefix + getSouthBLName(), String.valueOf(getSouthBL())));
+		text.append(buildOutput(isHTML, localPrefix + getNorthBLName(), String.valueOf(getNorthBL())));
 		return (text.toString());
 	}
 		

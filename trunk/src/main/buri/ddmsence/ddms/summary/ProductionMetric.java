@@ -124,11 +124,11 @@ public final class ProductionMetric extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + SUBJECT_NAME, getSubject(), true));
-		text.append(buildOutput(isHTML, prefix + COVERAGE_NAME, getCoverage(), true));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		text.append(buildOutput(isHTML, localPrefix + SUBJECT_NAME, getSubject()));
+		text.append(buildOutput(isHTML, localPrefix + COVERAGE_NAME, getCoverage()));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
 		

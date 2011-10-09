@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.resource.Creator;
@@ -117,6 +118,21 @@ public class BaseComponentTest extends AbstractBaseTestCase {
 		assertEquals("[1]", index);
 		index = rights.buildIndex(2, 4);
 		assertEquals("[3]", index);
+	}
+
+	public void testBuildOutput() throws InvalidDDMSException {
+		Rights rights = new Rights(true, true, true);
+		List<IDDMSComponent> objectList = new ArrayList<IDDMSComponent>();
+		objectList.add(rights);
+		assertEquals("rights.privacyAct: true\nrights.intellectualProperty: true\nrights.copyright: true\n", rights.buildOutput(false, "", objectList));
+		
+		List<String> stringList = new ArrayList<String>();
+		stringList.add("Text");
+		assertEquals("name: Text\n", rights.buildOutput(false, "name", stringList));
+		
+		List<Double> otherList = new ArrayList<Double>();
+		otherList.add(Double.valueOf(2.0));
+		assertEquals("name: 2.0\n", rights.buildOutput(false, "name", otherList));
 	}
 
 	public void testSelfEquality() throws InvalidDDMSException {

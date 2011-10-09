@@ -158,12 +158,12 @@ public final class Type extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + "description", getDescription(), false));
-		text.append(buildOutput(isHTML, prefix + QUALIFIER_NAME, getQualifier(), false));
-		text.append(buildOutput(isHTML, prefix + VALUE_NAME, getValue(), false));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		text.append(buildOutput(isHTML, localPrefix + "description", getDescription()));
+		text.append(buildOutput(isHTML, localPrefix + QUALIFIER_NAME, getQualifier()));
+		text.append(buildOutput(isHTML, localPrefix + VALUE_NAME, getValue()));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
 	

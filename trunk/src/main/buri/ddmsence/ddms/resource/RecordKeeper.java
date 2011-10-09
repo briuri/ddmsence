@@ -150,10 +150,10 @@ public class RecordKeeper extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + RECORD_KEEPER_ID_NAME, getRecordKeeperID(), true));
-		text.append(getOrganization().getOutput(isHTML, prefix, ""));
+		text.append(buildOutput(isHTML, localPrefix + RECORD_KEEPER_ID_NAME, getRecordKeeperID()));
+		text.append(getOrganization().getOutput(isHTML, localPrefix, ""));
 		return (text.toString());
 	}
 		

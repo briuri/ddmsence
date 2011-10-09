@@ -782,22 +782,20 @@ public final class Resource extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		if (isResourceElement() != null)
-			text.append(buildOutput(isHTML, prefix + RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement()), true));
+			text.append(buildOutput(isHTML, localPrefix + RESOURCE_ELEMENT_NAME, String.valueOf(isResourceElement())));
 		if (getCreateDate() != null)
-			text.append(buildOutput(isHTML, prefix + CREATE_DATE_NAME, getCreateDate().toXMLFormat(), true));
-		text.append(buildOutput(isHTML, prefix + COMPLIES_WITH_NAME, Util.getXsList(getCompliesWiths()), false));
+			text.append(buildOutput(isHTML, localPrefix + CREATE_DATE_NAME, getCreateDate().toXMLFormat()));
+		text.append(buildOutput(isHTML, localPrefix + COMPLIES_WITH_NAME, Util.getXsList(getCompliesWiths())));
 		if (getIsmDESVersion() != null)
-			text.append(buildOutput(isHTML, prefix + "ism." + DES_VERSION_NAME, String.valueOf(getIsmDESVersion()),
-				true));
+			text.append(buildOutput(isHTML, localPrefix + "ism." + DES_VERSION_NAME, String.valueOf(getIsmDESVersion())));
 		if (getNtkDESVersion() != null)
-			text.append(buildOutput(isHTML, prefix + "ntk." + DES_VERSION_NAME, String.valueOf(getNtkDESVersion()),
-				true));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
-		text.append(getNoticeAttributes().getOutput(isHTML, prefix));
-		text.append(getExtensibleAttributes().getOutput(isHTML, prefix));
+			text.append(buildOutput(isHTML, localPrefix + "ntk." + DES_VERSION_NAME, String.valueOf(getNtkDESVersion())));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+		text.append(getNoticeAttributes().getOutput(isHTML, localPrefix));
+		text.append(getExtensibleAttributes().getOutput(isHTML, localPrefix));
 		
 		// Traverse top-level components, suppressing the resource prefix
 		if (getMetacardInfo() != null)
@@ -831,9 +829,9 @@ public final class Resource extends AbstractBaseComponent {
 			text.append(getSecurity().getOutput(isHTML, "", ""));
 		text.append(buildOutput(isHTML, "", getExtensibleElements()));
 		
-		text.append(buildOutput(isHTML, "extensible.layer", String.valueOf(!getExtensibleElements().isEmpty()), true));
-		text.append(buildOutput(isHTML, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version"), true));
-		text.append(buildOutput(isHTML, "ddms.version", getDDMSVersion().getVersion(), true));
+		text.append(buildOutput(isHTML, "extensible.layer", String.valueOf(!getExtensibleElements().isEmpty())));
+		text.append(buildOutput(isHTML, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version")));
+		text.append(buildOutput(isHTML, "ddms.version", getDDMSVersion().getVersion()));
 		return (text.toString());
 	}
 	

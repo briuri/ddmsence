@@ -127,12 +127,12 @@ public final class Group extends AbstractAccessEntity {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + "group" + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, "group", suffix) + ".";
 		StringBuffer text = new StringBuffer();
 		if (getSystemName() != null)
-			text.append(getSystemName().getOutput(isHTML, prefix, ""));
-		text.append(buildOutput(isHTML, prefix, getGroupValues()));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+			text.append(getSystemName().getOutput(isHTML, localPrefix, ""));
+		text.append(buildOutput(isHTML, localPrefix, getGroupValues()));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
 		

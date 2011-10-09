@@ -286,18 +286,18 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		boolean hasNestedElements = (!getLinks().isEmpty() || !getDetails().isEmpty());
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix);
+		String localPrefix = buildPrefix(prefix, getName(), suffix);
 		StringBuffer text = new StringBuffer();
 		if (!hasNestedElements)
-			text.append(buildOutput(isHTML, prefix, getValue(), true));
-		text.append(buildOutput(isHTML, prefix + "." + REVISION_ID_NAME, String.valueOf(getRevisionID()), true));
-		text.append(buildOutput(isHTML, prefix + "." + REVISION_TYPE_NAME, getRevisionType(), true));
-		text.append(buildOutput(isHTML, prefix + "." + NETWORK_NAME, getNetwork(), true));
-		text.append(buildOutput(isHTML, prefix + "." + OTHER_NETWORK_NAME, getOtherNetwork(), false));
-		text.append(buildOutput(isHTML, prefix + ".", getLinks()));
-		text.append(buildOutput(isHTML, prefix + ".", getDetails()));
-		text.append(getXLinkAttributes().getOutput(isHTML, prefix + "."));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix + "."));
+			text.append(buildOutput(isHTML, localPrefix, getValue()));
+		text.append(buildOutput(isHTML, localPrefix + "." + REVISION_ID_NAME, String.valueOf(getRevisionID())));
+		text.append(buildOutput(isHTML, localPrefix + "." + REVISION_TYPE_NAME, getRevisionType()));
+		text.append(buildOutput(isHTML, localPrefix + "." + NETWORK_NAME, getNetwork()));
+		text.append(buildOutput(isHTML, localPrefix + "." + OTHER_NETWORK_NAME, getOtherNetwork()));
+		text.append(buildOutput(isHTML, localPrefix + ".", getLinks()));
+		text.append(buildOutput(isHTML, localPrefix + ".", getDetails()));
+		text.append(getXLinkAttributes().getOutput(isHTML, localPrefix + "."));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
 		
