@@ -53,7 +53,7 @@ String textFormat = getResource().toText();</pre>
 <p>The remaining code in this method merely renders the data on the screen.</p>
 
 <p>As you can see from the code, building an object model from an XML file only requires a single-line call to <code>DDMSReader.getDDMSResource()</code>. The conversion of
-the Resource into XML, HTML, and Text is built-in to the Object.</p>
+the Resource into XML, HTML, and Text is built-in to the Object. The primary purpose of the DDMSReader class is to load a resource from an XML file. You can also use the <code>getElement()</code> methods of the DDMSReader to load XOM Elements representing any of the global DDMS components.</p>
 
 <p>Now that you have seen a valid Resource, let's try opening an invalid one. Return to the <i>File</i> menu and select the sample file, <code>3.0-invalidResourceExample.xml</code> from the
 samples directory. This XML file is invalid, because it tries to use an incorrect security classification (SuperSecret).</p>
