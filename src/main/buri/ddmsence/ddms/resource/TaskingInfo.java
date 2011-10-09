@@ -175,13 +175,13 @@ public final class TaskingInfo extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix, getRequesterInfos()));
-		text.append(buildOutput(isHTML, prefix, getAddressees()));
+		text.append(buildOutput(isHTML, localPrefix, getRequesterInfos()));
+		text.append(buildOutput(isHTML, localPrefix, getAddressees()));
 		if (getDescription() != null)
-			text.append(getDescription().getOutput(isHTML, prefix, ""));
-		text.append(getTaskID().getOutput(isHTML, prefix, ""));
+			text.append(getDescription().getOutput(isHTML, localPrefix, ""));
+		text.append(getTaskID().getOutput(isHTML, localPrefix, ""));
 		return (text.toString());
 	}
 		

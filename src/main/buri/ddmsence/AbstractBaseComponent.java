@@ -198,11 +198,10 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @param isHTML true for HTML, false for Text
 	 * @param name the name of the name-value pairing (will be escaped in HTML)
 	 * @param content the value of the name-value pairing (will be escaped in HTML)
-	 * @param alwaysPrint if true, will print the tag even if the content is empty or null.
 	 * @return a string containing the output
 	 */
-	public static String buildOutput(boolean isHTML, String name, String content, boolean alwaysPrint) {
-		if (Util.isEmpty(content) && !alwaysPrint)
+	public static String buildOutput(boolean isHTML, String name, String content) {
+		if (Util.isEmpty(content))
 			return ("");
 		StringBuffer tag = new StringBuffer();
 		tag.append(isHTML ? "<meta name=\"" : "");
@@ -222,28 +221,30 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @param contents a list of the values (will be escaped in HTML)
 	 * @return a string containing the output
 	 */
-	protected String buildOutput(boolean isHTML, String prefix, List<? extends AbstractBaseComponent> contents) {
+	protected String buildOutput(boolean isHTML, String prefix, List<?> contents) {
 		StringBuffer values = new StringBuffer();
-		for (int i = 0; i < contents.size(); i++)
-			values.append(contents.get(i).getOutput(isHTML, prefix, buildIndex(i, contents.size())));
+		for (int i = 0; i < contents.size(); i++) {
+			Object object = contents.get(i);
+			if (object instanceof AbstractBaseComponent)
+				values.append(((AbstractBaseComponent) object).getOutput(isHTML, prefix, buildIndex(i, contents.size())));
+			else if (object instanceof String)
+				values.append(buildOutput(isHTML, prefix + buildIndex(i, contents.size()), (String) object));
+			else
+				values.append(buildOutput(isHTML, prefix + buildIndex(i, contents.size()), String.valueOf(object)));
+		}
 		return (values.toString());
 	}
 	
 	/**
-	 * Convenience method to build a meta tag for HTML output or a text line for Text output for a list of
-	 * multiple values.
+	 * Convenience method to construct a naming prefix for use in HTML/Text output
 	 * 
-	 * @param isHTML true for HTML, false for Text
-	 * @param prefix the first part of the name in the name-value pairing (will be escaped in HTML)
-	 * @param contents a list of the values (will be escaped in HTML)
-	 * @param alwaysPrint if true, will print the tag even if the content is empty or null.
-	 * @return a string containing the output
+	 * @param prefix an optional first part to the prefix
+	 * @param token an optional second part to the prefix
+	 * @param suffix an optional third part to the prefix
+	 * @return a String containing the concatenated values
 	 */
-	protected String buildOutput(boolean isHTML, String prefix, List<String> contents, boolean alwaysPrint) {
-		StringBuffer values = new StringBuffer();
-		for (int i = 0; i < contents.size(); i++)
-			values.append(buildOutput(isHTML, prefix + buildIndex(i, contents.size()), contents.get(i), alwaysPrint));
-		return (values.toString());
+	protected String buildPrefix(String prefix, String token, String suffix) {
+		return (Util.getNonNullString(prefix) + Util.getNonNullString(token) + Util.getNonNullString(suffix));
 	}
 	
 	/**

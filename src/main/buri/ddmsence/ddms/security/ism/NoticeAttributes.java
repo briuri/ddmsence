@@ -206,15 +206,14 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 * @see AbstractAttributeGroup#getOutput(boolean, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix) {
-		prefix = Util.getNonNullString(prefix);
+		String localPrefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
-		text.append(Resource.buildOutput(isHTML, prefix + NOTICE_TYPE_NAME, getNoticeType(), false));
-		text.append(Resource.buildOutput(isHTML, prefix + NOTICE_REASON_NAME, getNoticeReason(), false));
+		text.append(Resource.buildOutput(isHTML, localPrefix + NOTICE_TYPE_NAME, getNoticeType()));
+		text.append(Resource.buildOutput(isHTML, localPrefix + NOTICE_REASON_NAME, getNoticeReason()));
 		if (getNoticeDate() != null) {
-			text.append(Resource.buildOutput(isHTML, prefix + NOTICE_DATE_NAME, getNoticeDate().toXMLFormat(), false));
+			text.append(Resource.buildOutput(isHTML, localPrefix + NOTICE_DATE_NAME, getNoticeDate().toXMLFormat()));
 		}
-		text.append(Resource.buildOutput(isHTML, prefix + UNREGISTERED_NOTICE_TYPE_NAME, getUnregisteredNoticeType(),
-			false));
+		text.append(Resource.buildOutput(isHTML, localPrefix + UNREGISTERED_NOTICE_TYPE_NAME, getUnregisteredNoticeType()));
 		return (text.toString());
 	}
 	

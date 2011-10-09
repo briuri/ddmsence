@@ -287,16 +287,16 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * @see AbstractAttributeGroup#getOutput(boolean, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix) {
-		prefix = Util.getNonNullString(prefix);		
+		String localPrefix = Util.getNonNullString(prefix);		
 		StringBuffer text = new StringBuffer();
-		text.append(Resource.buildOutput(isHTML, prefix + TYPE_NAME, getType(), false));
-		text.append(Resource.buildOutput(isHTML, prefix + HREF_NAME, getHref(), false));
-		text.append(Resource.buildOutput(isHTML, prefix + ROLE_NAME, getRole(), false));
-		text.append(Resource.buildOutput(isHTML, prefix + TITLE_NAME, getTitle(), false));
-		text.append(Resource.buildOutput(isHTML, prefix + LABEL_NAME, getLabel(), false));
-		text.append(Resource.buildOutput(isHTML, prefix + ARC_ROLE_NAME, getArcrole(), false));
-		text.append(Resource.buildOutput(isHTML, prefix + SHOW_NAME, getShow(), false));
-		text.append(Resource.buildOutput(isHTML, prefix + ACTUATE_NAME, getActuate(), false));
+		text.append(Resource.buildOutput(isHTML, localPrefix + TYPE_NAME, getType()));
+		text.append(Resource.buildOutput(isHTML, localPrefix + HREF_NAME, getHref()));
+		text.append(Resource.buildOutput(isHTML, localPrefix + ROLE_NAME, getRole()));
+		text.append(Resource.buildOutput(isHTML, localPrefix + TITLE_NAME, getTitle()));
+		text.append(Resource.buildOutput(isHTML, localPrefix + LABEL_NAME, getLabel()));
+		text.append(Resource.buildOutput(isHTML, localPrefix + ARC_ROLE_NAME, getArcrole()));
+		text.append(Resource.buildOutput(isHTML, localPrefix + SHOW_NAME, getShow()));
+		text.append(Resource.buildOutput(isHTML, localPrefix + ACTUATE_NAME, getActuate()));
 		return (text.toString());
 	}
 	

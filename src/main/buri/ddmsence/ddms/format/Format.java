@@ -186,14 +186,14 @@ public final class Format extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		if (!getDDMSVersion().isAtLeast("4.0"))
-			prefix += MEDIA_NAME + ".";		
+			localPrefix += MEDIA_NAME + ".";		
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + MIME_TYPE_NAME, getMimeType(), true));
+		text.append(buildOutput(isHTML, localPrefix + MIME_TYPE_NAME, getMimeType()));
 		if (getExtent() != null)
-			text.append(getExtent().getOutput(isHTML, prefix, ""));
-		text.append(buildOutput(isHTML, prefix + MEDIUM_NAME, getMedium(), false));
+			text.append(getExtent().getOutput(isHTML, localPrefix, ""));
+		text.append(buildOutput(isHTML, localPrefix + MEDIUM_NAME, getMedium()));
 		return (text.toString());
 	}
 	

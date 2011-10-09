@@ -95,10 +95,10 @@ public final class Identifier extends AbstractQualifierValue {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + QUALIFIER_NAME, getQualifier(), true));
-		text.append(buildOutput(isHTML, prefix + VALUE_NAME, getValue(), true));
+		text.append(buildOutput(isHTML, localPrefix + QUALIFIER_NAME, getQualifier()));
+		text.append(buildOutput(isHTML, localPrefix + VALUE_NAME, getValue()));
 		return (text.toString());
 	}
 		

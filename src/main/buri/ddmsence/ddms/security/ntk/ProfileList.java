@@ -142,10 +142,10 @@ public final class ProfileList extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + "profileList" + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, "profileList", suffix) + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix, getProfiles()));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		text.append(buildOutput(isHTML, localPrefix, getProfiles()));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
 		

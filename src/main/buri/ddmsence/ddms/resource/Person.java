@@ -195,11 +195,11 @@ public final class Person extends AbstractRoleEntity {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + Util.getNonNullString(suffix);
-		StringBuffer text = new StringBuffer(super.getOutput(isHTML, prefix, ""));
-		text.append(buildOutput(isHTML, prefix + SURNAME_NAME, getSurname(), true));
-		text.append(buildOutput(isHTML, prefix + USERID_NAME, getUserID(), false));
-		text.append(buildOutput(isHTML, prefix + AFFILIATION_NAME, getAffiliation(), false));
+		String localPrefix = buildPrefix(prefix, "", suffix);
+		StringBuffer text = new StringBuffer(super.getOutput(isHTML, localPrefix, ""));
+		text.append(buildOutput(isHTML, localPrefix + SURNAME_NAME, getSurname()));
+		text.append(buildOutput(isHTML, localPrefix + USERID_NAME, getUserID()));
+		text.append(buildOutput(isHTML, localPrefix + AFFILIATION_NAME, getAffiliation()));
 		return (text.toString());
 	}
 	

@@ -217,20 +217,20 @@ public final class Dates extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		if (getCreated() != null)
-			text.append(buildOutput(isHTML, prefix + CREATED_NAME, getCreated().toXMLFormat(), true));
+			text.append(buildOutput(isHTML, localPrefix + CREATED_NAME, getCreated().toXMLFormat()));
 		if (getPosted() != null)
-			text.append(buildOutput(isHTML, prefix + POSTED_NAME, getPosted().toXMLFormat(), true));
+			text.append(buildOutput(isHTML, localPrefix + POSTED_NAME, getPosted().toXMLFormat()));
 		if (getValidTil() != null)
-			text.append(buildOutput(isHTML, prefix + VALID_TIL_NAME, getValidTil().toXMLFormat(), true));
+			text.append(buildOutput(isHTML, localPrefix + VALID_TIL_NAME, getValidTil().toXMLFormat()));
 		if (getInfoCutOff() != null)
-			text.append(buildOutput(isHTML, prefix + INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat(), true));
+			text.append(buildOutput(isHTML, localPrefix + INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat()));
 		if (getApprovedOn() != null)
-			text.append(buildOutput(isHTML, prefix + APPROVED_ON_NAME, getApprovedOn().toXMLFormat(), true));
+			text.append(buildOutput(isHTML, localPrefix + APPROVED_ON_NAME, getApprovedOn().toXMLFormat()));
 		if (getReceivedOn() != null)
-			text.append(buildOutput(isHTML, prefix + RECEIVED_ON_NAME, getReceivedOn().toXMLFormat(), true));
+			text.append(buildOutput(isHTML, localPrefix + RECEIVED_ON_NAME, getReceivedOn().toXMLFormat()));
 		return (text.toString());
 	}
 		

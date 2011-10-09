@@ -143,11 +143,11 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
-		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
+		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, prefix + ADDRESS_NAME, getAddress(), false));
-		text.append(buildOutput(isHTML, prefix + PROTOCOL_NAME, getProtocol(), false));
-		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
+		text.append(buildOutput(isHTML, localPrefix + ADDRESS_NAME, getAddress()));
+		text.append(buildOutput(isHTML, localPrefix + PROTOCOL_NAME, getProtocol()));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
 	

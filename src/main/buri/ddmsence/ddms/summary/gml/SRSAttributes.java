@@ -181,15 +181,15 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * @see AbstractAttributeGroup#getOutput(boolean, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix) {
-		prefix = Util.getNonNullString(prefix);	
+		String localPrefix = Util.getNonNullString(prefix);	
 		StringBuffer text = new StringBuffer();
-		text.append(Resource.buildOutput(isHTML, prefix + "srsName", getSrsName(), false));
+		text.append(Resource.buildOutput(isHTML, localPrefix + "srsName", getSrsName()));
 		if (getSrsDimension() != null) {
-			text.append(Resource.buildOutput(isHTML, prefix + "srsDimension",
-				String.valueOf(getSrsDimension()), false));
+			text.append(Resource.buildOutput(isHTML, localPrefix + "srsDimension",
+				String.valueOf(getSrsDimension())));
 		}
-		text.append(Resource.buildOutput(isHTML, prefix + "axisLabels", getAxisLabelsAsXsList(), false));
-		text.append(Resource.buildOutput(isHTML, prefix + "uomLabels", getUomLabelsAsXsList(), false));
+		text.append(Resource.buildOutput(isHTML, localPrefix + "axisLabels", getAxisLabelsAsXsList()));
+		text.append(Resource.buildOutput(isHTML, localPrefix + "uomLabels", getUomLabelsAsXsList()));
 		return (text.toString());
 	}
 	

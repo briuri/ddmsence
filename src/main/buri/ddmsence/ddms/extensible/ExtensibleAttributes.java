@@ -213,11 +213,11 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @see AbstractAttributeGroup#getOutput(boolean, String)
 	 */
 	public String getOutput(boolean isHTML, String prefix) {
-		prefix = Util.getNonNullString(prefix);
+		String localPrefix = Util.getNonNullString(prefix);
 		StringBuffer text = new StringBuffer();
 		for (Attribute attribute : getAttributes()) {
-			text.append(Resource.buildOutput(isHTML, prefix + attribute.getNamespacePrefix() + "."
-				+ attribute.getLocalName(), attribute.getValue(), false));
+			text.append(Resource.buildOutput(isHTML, localPrefix + attribute.getNamespacePrefix() + "."
+				+ attribute.getLocalName(), attribute.getValue()));
 		}
 		return (text.toString());
 	}
