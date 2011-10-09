@@ -176,7 +176,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		prefix = Util.getNonNullString(prefix) + getName() + Util.getNonNullString(suffix) + ".";
 		StringBuffer text = new StringBuffer();
-		text.append(getEntity().getOutput(isHTML, prefix, ""));
+		text.append(((AbstractBaseComponent) getEntity()).getOutput(isHTML, prefix, ""));
 		text.append(buildOutput(isHTML, prefix + POC_TYPE_NAME, getPOCType(), false));
 		text.append(getSecurityAttributes().getOutput(isHTML, prefix));
 		return (text.toString());
