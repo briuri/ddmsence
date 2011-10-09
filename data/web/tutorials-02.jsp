@@ -83,7 +83,8 @@ getTopLevelComponents().add(inputLoop(MetacardInfo.class));</pre>
 }</pre>
 <p class="figure">Figure 4. Source code to continuously loop until a valid component is created</p>
 
-<p>An anonymous implementation of IConstructorBuilder is created (in the <u>Escort</u> constructor) for each DDMS Component class, and each Builder
+<p>IDDMSComponent is the identifying interface for any DDMS components implemented as Java objects, and contains methods which are common to all components.
+ An anonymous implementation of IConstructorBuilder is created (in the <u>Escort</u> constructor) for each DDMS Component class, and each Builder
 is responsible for one top-level component. For example, here is the definition of the Builder that builds Identifiers:</p>
 
 <pre class="brush: java">CONSTRUCTOR_BUILDERS.put(Identifier.class, new IConstructorBuilder() {
