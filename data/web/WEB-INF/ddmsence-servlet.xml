@@ -22,8 +22,11 @@
 			This code is not checked into the DDMSence project, because
 			it has dependencies on Spring and other libraries which are ancillary
 			to the main purpose of the library. I did not want to bloat up the main
-			distribution with these files, but will be glad to provide the source code
-			upon request.
+			distribution with these files, but you can find the source code on the website
+			by visiting the two example web applications at:
+			
+			http://ddmsence.urizone.net/validator.uri
+			http://ddmsnece.urizone.net/builder.uri
 
 			The DDMSence web application is deployed in an environment which already has
 			Spring JARs deployed.

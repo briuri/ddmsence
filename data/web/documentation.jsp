@@ -106,8 +106,11 @@ be possible to plot Temporal Coverage on an
 	<li><a href="/docs/">Online API Documentation</a></li>
 </ul>
 The API documentation is also bundled with the "bin"-flavored download on the <a href="downloads.jsp">Downloads</a> page, and can be generated from source code 
-in the "src"-flavored download. The overview page contains a quick reference chart of all implemented DDMS components. 
-You should also be aware of the following sections, which appear on every DDMS component's page:
+in the "src"-flavored download. Classes which represent DDMS elements are grouped into packages based on which of the five 
+core sets they belong to. In some cases, packages are further divided to identify any components which originate from other 
+XML namespaces, such as GML or XLink. If a component is reused across multiple sets, it will be found in the package of the 
+set where it was first introduced.</p>
+<p>The overview page contains a quick reference chart of all implemented DDMS components. You should also be aware of the following sections, which appear on every DDMS component's page:
 <ul>
 	<li>The class description describes cases where DDMSence is stricter than the DDMS specification, and allowed cases which are legal, but nonsensical. If this varies
 	for different versions of DDMS, the version number will be indicated. If no version number is listed, the constraint applies to all versions.</li>
