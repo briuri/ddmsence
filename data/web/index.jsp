@@ -140,7 +140,7 @@ It transforms XML DDMS Resource records into a Java object model (using XOM and 
 	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,
 		and <a href="documentation.jsp#tips">Power Tips</a> are available for more experienced users.</li>
 </ul>
-<h2>Example Use Cases</h2>
+<h2>Suggested Use Cases</h2>
 
 <ul>
 <li>Reading existing DDMS resources, possibly as part of a query or search service</li>

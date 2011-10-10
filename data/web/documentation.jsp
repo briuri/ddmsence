@@ -16,7 +16,8 @@
 	<li><a href="#started">Getting Started</a></li><ul>
 		<li><a href="#samples">Sample Applications</a></li>
 		<li><a href="#javadoc">JavaDoc API Documentation</a></li>
-		</ul>	
+		</ul>
+	<li><a href="#useCases">Suggested Use Cases</a></li>	
 	<li><a href="#design">Design Decisions</a></li>
 	<li><a href="#tips">Power Tips</a></li>
 	<li><a href="#explorations">Explorations</a></li>
@@ -120,7 +121,43 @@ set where it was first introduced.</p>
 </ul>
 <div class="clear"></div>
 
+<a name="useCases"></a><h3>Suggested Use Cases</h3>
+
+<p>This section describes common use cases that are a good fit for the DDMSence library.</p>
+
+<h4>Reading existing resources</h4>
+
+<p>As the tutorials show, it is trivially easy for DDMSence to load a DDMS resource from an XML file, examine its contents in a Java way, and display it as XML, HTML or Text. If you
+have a search web service which queries a catalog of DDMS resources, DDMSence could be used to process those resources individually, or gather statistics about the catalog as a whole.
+You could also use DDMSence to quickly validate a collection of DDMS resources, simply by loading them into a DDMSReader.</p>
+
+<h4>Creating new resources</h4>
+
+<p>There are two ways to create DDMS resources from scratch in DDMSence. The first way makes use of standard Java constructors to build up each component and then group them together
+into a complete DDMS resource. The second way uses the <a href="documentation-builders.jsp">Component Builder</a> framework to model a top-down construction of a resource, and provides
+more flexibility of implementation. The latter approach follows the pattern of a step-by-step wizard that builds the resource over several steps, and then commits and validates the resource
+at the very end.</p>
+
+<h4>Editing existing resources</h4>
+
+<p>The Component Builder framework also allows you to load an existing resource, make changes to it, and then revalidate it. It might also be used to programmatically update or
+correct errors in a collection of DDMS resources. For example, if your assets have moved to a different web server, you could programmatically update all of your DDMS Identifiers
+to point to the new location. Alternately, you could change all occurences of a producer's last name after a marriage.</p>
+
+<p>As a specialized example of editing, you could transform older resources to the latest version of DDMS. With the Component Builder framework, you could load a DDMS 2.0 resource,
+add all of the fields required for DDMS 4.0, and then save it as a DDMS 4.0 resource. Example code for this use case can be found in the <a href="documentation-builders.jsp">Component Builder</a> Power Tip.</p>
+
+<h4>Applying custom constraints with Schematron</h4>
+
+<p>In many cases, schema validation is not sufficient to truly show conformance. The Intelligence Community codifies constraints on ISM attributes with a set of Schematron files. DDMSence
+requires just a few lines of code to validate your DDMS resources against these Schematron files. You could also validate against Schematron files developed by your Community of Interest.
+Additional details can be found in the <a href="documentation-schematron.jsp">Schematron Validation</a> Power Tip.</p>
+
+<div class="clear"></div>
+
 <a name="design"></a><h3>Design Decisions</h3>
+
+<p>This section identifies a few basic design principles of DDMSence which might affect you as incorporate it into your own projects.</p>
 
 <h4>Components Deserving an Object</h4>
 
