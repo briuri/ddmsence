@@ -152,7 +152,7 @@ has been updated to mediate this case automatically. The result will be 2 Relate
 <p><b>How to Upgrade:</b></p>
 <p>If your code is working at the Resource level, you don't need to do a thing. The Resource constructors can handle all legal
 ddms:relatedResources or ddms:relatedResource elements in all supported DDMS versions. However, if you were instantiating RelatedResources or 
-RelatedResource classes directly via the data-based constructors, you will need to update your code to stop using the removed class.</p>
+RelatedResource classes directly via the data-driven constructors, you will need to update your code to stop using the removed class.</p>
 
 <p>If you had old code that looked like this:</p>
 
@@ -175,13 +175,13 @@ myTopLevelComponents.add(new RelatedResource(links, "http://purl.org/dc/terms/re
 
 <a name="major-04"></a><h4>Non-XML Resources validated against DDMS schemas (<a href="http://code.google.com/p/ddmsence/issues/detail?id=28">Issue #28</a>)</h4>
 <div class="upgradeGuide">
-<p>DDMS resources loaded from an XML file have always been validated against the DDMS schemas. However, DDMS resources built from scratch (either with the data-based constructors
+<p>DDMS resources loaded from an XML file have always been validated against the DDMS schemas. However, DDMS resources built from scratch (either with the data-driven constructors
 or the Component Builder framework) were not. Starting in this release, a resource built from scratch is converted into XML and validated against the schemas, to elminate
 any remaining loopholes in data correctness. Individual components which are built from scratch are not validated against the schema until the enclosing Resource is instantiated.</p>
 
 <p><b>How to Upgrade:</b></p>
 <p>There are no upgrade steps required. However, DDMSence v2.0.0 may catch a few additional fringe cases which were mistakenly identified as valid in previous versions. For example,
-the <code>gml:id</code> on GML points is supposed to be unique to the XML resource. By using data-based constructors in the past, it was possible to create multiple points with the same
+the <code>gml:id</code> on GML points is supposed to be unique to the XML resource. By using data-driven constructors in the past, it was possible to create multiple points with the same
 ID value, which would result in an invalid XML record.</p>
 
 </div>

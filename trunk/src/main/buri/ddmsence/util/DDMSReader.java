@@ -126,7 +126,7 @@ public class DDMSReader {
 	/**
 	 * Attempts to build an Element from a Resource XML string. Element-based constructors
 	 * for a Resource are automatically validated against a schema when the XML parser
-	 * loads it. This method allows the data-based constructors for a Resource to do
+	 * loads it. This method allows the data-driven constructors for a Resource to do
 	 * a final confirmation that none of the data breaks any schema rules.
 	 * 
 	 * @param resourceXML the XML of the resource to check
