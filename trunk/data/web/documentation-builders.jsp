@@ -104,7 +104,7 @@ builder.getMetacardInfo().getPublishers().get(0).setEntityType("organization");
 builder.getMetacardInfo().getPublishers().get(0).getOrganization().setNames(Util.getXsListAsList("DISA"));
 DDMSVersion.setCurrentVersion("4.0");
 Resource my31Resource = builder.commit();</pre>
-<p class="figure">Figure 7. Transforming a DDMS 3.0 resource with the Builder Framework</p>
+<p class="figure">Figure 7. Transforming a DDMS 3.1 resource with the Builder Framework</p>
 
 <h2>Builders as Form Beans</h2>
 
