@@ -144,7 +144,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), Unknown.getName(getDDMSVersion()), 0, 1);
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0") && !Util.isEmpty(getPOCType())) {
+		if (!getDDMSVersion().isAtLeast("4.0") && !Util.isEmpty(getPocType())) {
 			throw new InvalidDDMSException("This component cannot have a POCType until DDMS 4.0 or later.");
 		}
 		
@@ -158,7 +158,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof AbstractProducerRole))
 			return (false);
 		AbstractProducerRole test = (AbstractProducerRole) obj;
-		return (getPOCType().equals(test.getPOCType()));
+		return (getPocType().equals(test.getPocType()));
 	}
 
 	/**
@@ -166,7 +166,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 7 * result + getPOCType().hashCode();
+		result = 7 * result + getPocType().hashCode();
 		return (result);
 	}
 	
@@ -177,7 +177,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		text.append(((AbstractBaseComponent) getEntity()).getOutput(isHTML, localPrefix, ""));
-		text.append(buildOutput(isHTML, localPrefix + POC_TYPE_NAME, getPOCType()));
+		text.append(buildOutput(isHTML, localPrefix + POC_TYPE_NAME, getPocType()));
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
@@ -201,7 +201,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	/**
 	 * Accessor for the POCType attribute.
 	 */
-	public String getPOCType() {
+	public String getPocType() {
 		return (getAttributeValue(POC_TYPE_NAME)); 
 	}
 	
@@ -252,7 +252,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 				setService(new Service.Builder((Service) producer.getEntity()));
 			if (Unknown.getName(version).equals(getEntityType()))
 				setUnknown(new Unknown.Builder((Unknown) producer.getEntity()));
-			setPocType(producer.getPOCType());
+			setPocType(producer.getPocType());
 			setSecurityAttributes(new SecurityAttributes.Builder(producer.getSecurityAttributes()));
 		}
 		
