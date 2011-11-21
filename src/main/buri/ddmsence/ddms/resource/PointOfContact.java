@@ -19,6 +19,8 @@
  */
 package buri.ddmsence.ddms.resource;
 
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractProducerRole;
 import buri.ddmsence.ddms.IBuilder;
@@ -62,12 +64,12 @@ public class PointOfContact extends AbstractProducerRole {
 	 * Constructor which builds from raw data.
 	 * 
 	 * @param entity the actual entity fulfilling this role
-	 * @param pocType the ISM pocType for this producer (optional, starting in DDMS 4.0.1)
+	 * @param pocTypes the ISM pocType for this producer (optional, starting in DDMS 4.0.1)
 	 * @param securityAttributes any security attributes (optional)
 	 */
-	public PointOfContact(IRoleEntity entity, String pocType, SecurityAttributes securityAttributes)
+	public PointOfContact(IRoleEntity entity, List<String> pocTypes, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
-		super(PointOfContact.getName(DDMSVersion.getCurrentVersion()), entity, pocType, securityAttributes);
+		super(PointOfContact.getName(DDMSVersion.getCurrentVersion()), entity, pocTypes, securityAttributes);
 	}
 	
 	/**
@@ -129,7 +131,7 @@ public class PointOfContact extends AbstractProducerRole {
 		 * @see IBuilder#commit()
 		 */
 		public PointOfContact commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new PointOfContact(commitSelectedEntity(), getPocType(), getSecurityAttributes()
+			return (isEmpty() ? null : new PointOfContact(commitSelectedEntity(), getPocTypes(), getSecurityAttributes()
 				.commit()));
 		}
 	}

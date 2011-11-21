@@ -21,6 +21,7 @@ package buri.ddmsence;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
@@ -32,8 +33,10 @@ import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Unknown;
+import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
@@ -65,6 +68,7 @@ import buri.ddmsence.util.Util;
 public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	
 	private IRoleEntity _entity = null;
+	private List<String> _pocTypes = null;
 	private SecurityAttributes _securityAttributes = null;
 
 	private static final String POC_TYPE_NAME = "pocType";
@@ -89,6 +93,8 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 				if (Unknown.getName(getDDMSVersion()).equals(entityType))
 					_entity = new Unknown(entityElement);
 			}
+			String pocTypes = element.getAttributeValue(POC_TYPE_NAME, getDDMSVersion().getIsmNamespace());
+			_pocTypes = Util.getXsListAsList(pocTypes);
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
 		}
@@ -103,19 +109,23 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * 
 	 * @param producerType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
 	 * @param entity the actual entity fulfilling this role
-	 * @param pocType the pocType attribute (starting in DDMS 4.0.1)
+	 * @param pocTypes the pocType attribute (starting in DDMS 4.0.1)
 	 * @param securityAttributes any security attributes (optional)
 	 */
-	protected AbstractProducerRole(String producerType, IRoleEntity entity, String pocType,
+	protected AbstractProducerRole(String producerType, IRoleEntity entity, List<String> pocTypes,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
 		try {
+			if (pocTypes == null)
+				pocTypes = Collections.emptyList();
 			Util.requireDDMSValue("producer type", producerType);
 			Util.requireDDMSValue("entity", entity);
 			Element element = Util.buildDDMSElement(producerType, null);
 			element.appendChild(entity.getXOMElementCopy());
-			Util.addAttribute(element, PropertyReader.getPrefix("ism"), POC_TYPE_NAME, DDMSVersion
-				.getCurrentVersion().getIsmNamespace(), pocType);
 			_entity = entity;
+			if (!pocTypes.isEmpty())
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), POC_TYPE_NAME, DDMSVersion
+					.getCurrentVersion().getIsmNamespace(), Util.getXsList(pocTypes));
+			_pocTypes = pocTypes;
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
@@ -133,6 +143,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * <li>A producer entity exists.</li>
 	 * <li>Only 0-1 persons, organizations, services, or unknowns exist.</li>
 	 * <li>The pocType cannot be used before DDMS 4.0.1.</li>
+	 * <li>If set, the pocTypes must each be a valid token.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -146,8 +157,12 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), Unknown.getName(getDDMSVersion()), 0, 1);
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0.1") && !Util.isEmpty(getPocType())) {
+		if (!getDDMSVersion().isAtLeast("4.0.1") && !getPocTypes().isEmpty()) {
 			throw new InvalidDDMSException("This component cannot have a pocType until DDMS 4.0.1 or later.");
+		}
+		if (getDDMSVersion().isAtLeast("4.0.1")) {
+			for (String pocType : getPocTypes())
+				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_POC_TYPE, pocType);
 		}
 		
 		super.validate();	
@@ -160,7 +175,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof AbstractProducerRole))
 			return (false);
 		AbstractProducerRole test = (AbstractProducerRole) obj;
-		return (getPocType().equals(test.getPocType()));
+		return (Util.listEquals(getPocTypes(), test.getPocTypes()));	
 	}
 
 	/**
@@ -168,7 +183,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		result = 7 * result + getPocType().hashCode();
+		result = 7 * result + getPocTypes().hashCode();
 		return (result);
 	}
 	
@@ -179,7 +194,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		text.append(((AbstractBaseComponent) getEntity()).getOutput(isHTML, localPrefix, ""));
-		text.append(buildOutput(isHTML, localPrefix + POC_TYPE_NAME, getPocType()));
+		text.append(buildOutput(isHTML, localPrefix + POC_TYPE_NAME, Util.getXsList(getPocTypes())));
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
@@ -203,8 +218,8 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	/**
 	 * Accessor for the pocType attribute.
 	 */
-	public String getPocType() {
-		return (getAttributeValue(POC_TYPE_NAME, getDDMSVersion().getIsmNamespace())); 
+	public List<String> getPocTypes() {
+		return (_pocTypes);
 	}
 	
 	/**
@@ -232,7 +247,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		private Person.Builder _person;
 		private Service.Builder _service;
 		private Unknown.Builder _unknown;
-		private String _pocType;
+		private List<String> _pocTypes;
 		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
@@ -254,7 +269,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 				setService(new Service.Builder((Service) producer.getEntity()));
 			if (Unknown.getName(version).equals(getEntityType()))
 				setUnknown(new Unknown.Builder((Unknown) producer.getEntity()));
-			setPocType(producer.getPocType());
+			setPocTypes(producer.getPocTypes());
 			setSecurityAttributes(new SecurityAttributes.Builder(producer.getSecurityAttributes()));
 		}
 		
@@ -286,7 +301,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 				&& getPerson().isEmpty()
 				&& getService().isEmpty()
 				&& getUnknown().isEmpty()
-				&& Util.isEmpty(getPocType())
+				&& getPocTypes().isEmpty()
 				&& getSecurityAttributes().isEmpty());
 		}
 				
@@ -389,17 +404,19 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		}
 
 		/**
-		 * Builder accessor for the pocType attribute
+		 * Builder accessor for the pocTypes
 		 */
-		public String getPocType() {
-			return _pocType;
+		public List<String> getPocTypes() {
+			if (_pocTypes == null)
+				_pocTypes = new LazyList(String.class);
+			return _pocTypes;
 		}
 
 		/**
-		 * Builder accessor for the pocType attribute
+		 * Builder accessor for the pocTypes
 		 */
-		public void setPocType(String pocType) {
-			_pocType = pocType;
+		public void setPocTypes(List<String> pocTypes) {
+			_pocTypes = pocTypes;
 		}
 	}
 }
