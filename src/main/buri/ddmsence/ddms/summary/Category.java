@@ -47,7 +47,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:label</u>: The human readable representation of the concept that corresponds to the category qualifier and
  * the category code, if they exist. (required)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional (starting in DDMS 
- * 4.0).<br />
+ * 4.0.1).<br />
  * <u>{@link ExtensibleAttributes}</u>: (optional, starting in DDMS 3.0).
  * </td></tr></table>
  * 
@@ -134,7 +134,7 @@ public final class Category extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A label exists and is not empty.</li>
 	 * <li>If a qualifier exists, it is a valid URI.</li>
-	 * <li>The SecurityAttributes do not exist  until DDMS 4.0 or later.</li>
+	 * <li>The SecurityAttributes do not exist  until DDMS 4.0.1 or later.</li>
 	 * <li>No extensible attributes can exist until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
@@ -147,9 +147,9 @@ public final class Category extends AbstractBaseComponent {
 			Util.requireDDMSValidURI(getQualifier());
 		}			
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0") && !getSecurityAttributes().isEmpty()) {
+		if (!getDDMSVersion().isAtLeast("4.0.1") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
-				"Security attributes cannot be applied to this component until DDMS 4.0 or later.");
+				"Security attributes cannot be applied to this component until DDMS 4.0.1 or later.");
 		}
 		if (!getDDMSVersion().isAtLeast("3.0") && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException(

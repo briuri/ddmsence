@@ -59,7 +59,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			return (new GeospatialCoverage(null, null, null, PostalAddressTest.getFixture(), null, null, version
-				.isAtLeast("4.0") ? Integer.valueOf(order) : null, null));
+				.isAtLeast("4.0.1") ? Integer.valueOf(order) : null, null));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -114,8 +114,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	 * @param boundingGeometry a set of bounding geometry (0-1 optional)
 	 * @param postalAddress an address (0-1 optional)
 	 * @param verticalExtent an extent (0-1 optional)
-	 * @param precedence the precedence value (optional, DDMS 4.0)
-	 * @param order the order value (optional, DDMS 4.0)
+	 * @param precedence the precedence value (optional, DDMS 4.0.1)
+	 * @param order the order value (optional, DDMS 4.0.1)
 	 * @return a valid object
 	 */
 	private GeospatialCoverage getInstance(String message, GeographicIdentifier geographicIdentifier,
@@ -142,7 +142,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	 */
 	private String getHtmlIcism() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String prefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
+		String prefix = version.isAtLeast("4.0.1") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			return (buildOutput(true, prefix + "classification", "U") + buildOutput(true, prefix + "ownerProducer",
 				"USA"));
@@ -154,7 +154,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	 */
 	private String getTextIcism() {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String prefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
+		String prefix = version.isAtLeast("4.0.1") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			return (buildOutput(false, prefix + "classification", "U") + buildOutput(false, prefix + "ownerProducer",
 				"USA"));
@@ -166,10 +166,10 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String prefix = version.isAtLeast("4.0") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
+		String prefix = version.isAtLeast("4.0.1") ? "geospatialCoverage." : "geospatialCoverage.GeospatialExtent.";
 		StringBuffer text = new StringBuffer();
 		text.append(GeographicIdentifierTest.getCountryCodeBasedFixture().getOutput(isHTML, prefix, ""));
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			text.append(buildOutput(isHTML, prefix + "precedence", "Primary"));
 			text.append(buildOutput(isHTML, prefix + "order", "1"));
 		}
@@ -189,12 +189,12 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		xml.append("<ddms:geospatialCoverage ").append(getXmlnsDDMS());
 		if (version.isAtLeast("3.0")) {
 			xml.append(" ").append(getXmlnsISM()).append(" ");
-			if (version.isAtLeast("4.0"))
+			if (version.isAtLeast("4.0.1"))
 				xml.append("ddms:precedence=\"Primary\" ddms:order=\"1\" ");
 			xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n\t");
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			xml.append("<ddms:geographicIdentifier>\n\t\t");
 			xml.append("<ddms:countryCode ddms:qualifier=\"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1\" ddms:value=\"LAO\" />\n\t");
 			xml.append("</ddms:geographicIdentifier>\n");
@@ -230,12 +230,12 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	private Element buildComponentElement(List<IDDMSComponent> components) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Element element = Util.buildDDMSElement(GeospatialCoverage.getName(DDMSVersion.getCurrentVersion()), null);
-		Element extElement = version.isAtLeast("4.0") ? element : Util.buildDDMSElement("GeospatialExtent", null);
+		Element extElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("GeospatialExtent", null);
 		for (IDDMSComponent component : components) {
 			if (component != null)
 				extElement.appendChild(component.getXOMElementCopy());
 		}
-		if (!version.isAtLeast("4.0"))
+		if (!version.isAtLeast("4.0.1"))
 			element.appendChild(extElement);
 		return (element);
 	}
@@ -290,8 +290,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			getInstance(SUCCESS, GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null, null,
 				null);
 
-			// geographicIdentifier with DDMS 4.0 attributes
-			if (version.isAtLeast("4.0")) {
+			// geographicIdentifier with DDMS 4.0.1 attributes
+			if (version.isAtLeast("4.0.1")) {
 				getInstance(SUCCESS, GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null,
 					TEST_PRECEDENCE, TEST_ORDER);
 			}
@@ -391,8 +391,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String precedence = version.isAtLeast("4.0") ? TEST_PRECEDENCE : null;
-			Integer order = version.isAtLeast("4.0") ? TEST_ORDER : null;
+			String precedence = version.isAtLeast("4.0.1") ? TEST_PRECEDENCE : null;
+			Integer order = version.isAtLeast("4.0.1") ? TEST_ORDER : null;
 
 			GeospatialCoverage elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			GeospatialCoverage dataComponent = getInstance(SUCCESS, GeographicIdentifierTest
@@ -435,7 +435,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			GeospatialCoverage elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			GeospatialCoverage dataComponent = null;
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				dataComponent = getInstance(SUCCESS, GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null,
 					null, null, TEST_PRECEDENCE, null);
 				assertFalse(elementComponent.equals(dataComponent));
@@ -469,10 +469,10 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String prefix = "geospatialCoverage.";
-			if (!version.isAtLeast("4.0"))
+			if (!version.isAtLeast("4.0.1"))
 				prefix += "GeospatialExtent.";
-			String precedence = version.isAtLeast("4.0") ? TEST_PRECEDENCE : null;
-			Integer order = version.isAtLeast("4.0") ? TEST_ORDER : null;
+			String precedence = version.isAtLeast("4.0.1") ? TEST_PRECEDENCE : null;
+			Integer order = version.isAtLeast("4.0.1") ? TEST_ORDER : null;
 
 			GeospatialCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
@@ -510,8 +510,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			String precedence = version.isAtLeast("4.0") ? TEST_PRECEDENCE : null;
-			Integer order = version.isAtLeast("4.0") ? TEST_ORDER : null;
+			String precedence = version.isAtLeast("4.0.1") ? TEST_PRECEDENCE : null;
+			Integer order = version.isAtLeast("4.0.1") ? TEST_ORDER : null;
 
 			GeospatialCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
@@ -613,7 +613,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	}
 
 	public void testPrecedenceRestrictions() {
-		DDMSVersion.setCurrentVersion("4.0");
+		DDMSVersion.setCurrentVersion("4.0.1");
 		try {
 			new GeospatialCoverage(GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null,
 				"Tertiary", null, null);
@@ -635,7 +635,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			GeospatialCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
-			String suffix = version.isAtLeast("4.0") ? "" : "/ddms:GeospatialExtent";
+			String suffix = version.isAtLeast("4.0.1") ? "" : "/ddms:GeospatialExtent";
 			assertEquals(suffix, component.getLocatorSuffix());
 		}
 	}

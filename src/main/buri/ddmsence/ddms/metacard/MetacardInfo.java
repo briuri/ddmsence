@@ -240,7 +240,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	 * <li>At least 1 identifier and publisher must exist.</li>
 	 * <li>Only 1 dates can exist.</li>
 	 * <li>Only 0-1 descriptions, revisionRecalls, recordsManagementInfos, or noticeLists can exist.</li>
-	 * <li>This component cannot exist until DDMS 4.0 or later.</li>
+	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -259,7 +259,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), NoticeList.getName(getDDMSVersion()), 0, 1);		
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0");
+		requireVersion("4.0.1");
 
 		super.validate();
 	}

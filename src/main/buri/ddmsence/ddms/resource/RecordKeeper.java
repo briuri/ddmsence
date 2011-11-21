@@ -109,7 +109,7 @@ public class RecordKeeper extends AbstractBaseComponent {
 	 * <li>The recordKeeperID exists.</li>
 	 * <li>The organization exists.</li>
 	 * <li>Exactly 1 organization exists.</li>
-	 * <li>This component cannot exist until DDMS 4.0 or later.</li>
+	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractProducerRole#validate()
@@ -122,7 +122,7 @@ public class RecordKeeper extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), Organization.getName(getDDMSVersion()), 1, 1);
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0");
+		requireVersion("4.0.1");
 		
 		super.validate();
 	}

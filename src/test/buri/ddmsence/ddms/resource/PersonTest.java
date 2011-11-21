@@ -148,7 +148,7 @@ public class PersonTest extends AbstractBaseTestCase {
 		for (String name : TEST_NAMES)
 			xml.append("\t<ddms:name>").append(name).append("</ddms:name>\n");
 		xml.append("\t<ddms:surname>").append(TEST_SURNAME).append("</ddms:surname>\n");
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			for (String phone : TEST_PHONES)
 				xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
 			for (String email : TEST_EMAILS)

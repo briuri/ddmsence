@@ -49,7 +49,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:minVerticalExtent</u>: minimum extent (required)<br />
  * <u>ddms:maxVerticalExtent</u>: maximum extent (required)<br />
- * Please note that the case of the nested elements changed starting in DDMS 4.0. Previously, the first letter
+ * Please note that the case of the nested elements changed starting in DDMS 4.0.1. Previously, the first letter
  * of each element was capitalized (i.e. MinVerticalExtent/MaxVerticalExtent).
  * </td></tr></table>
  * 
@@ -259,17 +259,17 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the name of the minimum vertical extent element, which changed in DDMS 4.0.
+	 * Accessor for the name of the minimum vertical extent element, which changed in DDMS 4.0.1.
 	 */
 	private String getMinVerticalExtentName() {
-		return (getDDMSVersion().isAtLeast("4.0") ? "minVerticalExtent" : "MinVerticalExtent");
+		return (getDDMSVersion().isAtLeast("4.0.1") ? "minVerticalExtent" : "MinVerticalExtent");
 	}
 	
 	/**
-	 * Accessor for the name of the maximum vertical extent element, which changed in DDMS 4.0.
+	 * Accessor for the name of the maximum vertical extent element, which changed in DDMS 4.0.1.
 	 */
 	private String getMaxVerticalExtentName() {
-		return (getDDMSVersion().isAtLeast("4.0") ? "maxVerticalExtent" : "MaxVerticalExtent");
+		return (getDDMSVersion().isAtLeast("4.0.1") ? "maxVerticalExtent" : "MaxVerticalExtent");
 	}
 	
 	/**

@@ -75,7 +75,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot be used until DDMS 4.0 or later.</li>
+	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -84,7 +84,7 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 		Util.requireDDMSQName(getXOMElement(), ApplicationSoftware.getName(getDDMSVersion()));
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0");
+		requireVersion("4.0.1");
 		
 		super.validate();
 	}

@@ -40,17 +40,17 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of the ddms:relatedResource component.
  * 
- * <p>Before DDMS 4.0, ddms:RelatedResources was the top-level component (0-many in a resource) and contained
- * 1 to many ddms:relatedResource components. Starting in DDMS 4.0, the ddms:RelatedResources component was
+ * <p>Before DDMS 4.0.1, ddms:RelatedResources was the top-level component (0-many in a resource) and contained
+ * 1 to many ddms:relatedResource components. Starting in DDMS 4.0.1, the ddms:RelatedResources component was
  * removed, and the ddms:relatedResource now contains all of the parent information (relationship and direction).</p>
  * 
  * <p>The element-based constructor for this class can automatically handle these cases, and will automatically
  * mediate the Text/HTML/XML output:</p>
  * <ul>
- * 	<li>A pre-DDMS 4.0 ddms:RelatedResources element containing 1 ddms:relatedResource.</li>
- *  <li>A post-DDMS 4.0 ddms:relatedResource element.</li>
+ * 	<li>A pre-DDMS 4.0.1 ddms:RelatedResources element containing 1 ddms:relatedResource.</li>
+ *  <li>A post-DDMS 4.0.1 ddms:relatedResource element.</li>
  * </ul>
- * <p>If you have a case where a pre-DDMS 4.0 ddms:RelatedResources element contained 5 ddms:relatedResource
+ * <p>If you have a case where a pre-DDMS 4.0.1 ddms:RelatedResources element contained 5 ddms:relatedResource
  * elements, the Resource class will automatically mediate it to create 5 RelatedResource instances. If an
  * old-fashioned parent element containing multiple children is loaded in the element-based constructor,
  * only the first child will be processed, and a warning will be provided.</p>
@@ -97,7 +97,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	/** The value for an bidirectional direction. */
 	public static final String BIDRECTIONAL_DIRECTION = "bidirectional";
 
-	/** The pre-DDMS 4.0 name of the nested resource elements */
+	/** The pre-DDMS 4.0.1 name of the nested resource elements */
 	public static final String OLD_INNER_NAME = "RelatedResource";
 	
 	private static Set<String> RELATIONSHIP_DIRECTIONS = new HashSet<String>();
@@ -156,14 +156,14 @@ public final class RelatedResource extends AbstractQualifierValue {
 			Element element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, RELATIONSHIP_NAME, relationship);
 			Util.addDDMSAttribute(element, DIRECTION_NAME, direction);
-			Element innerElement = (version.isAtLeast("4.0") ? element : Util.buildDDMSElement(OLD_INNER_NAME, null));
+			Element innerElement = (version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement(OLD_INNER_NAME, null));
 			Util.addDDMSAttribute(innerElement, QUALIFIER_NAME, qualifier);
 			Util.addDDMSAttribute(innerElement, VALUE_NAME, value);
 			for (Link link : links) {
 				innerElement.appendChild(link.getXOMElementCopy());
 			}
 
-			if (!version.isAtLeast("4.0"))
+			if (!version.isAtLeast("4.0.1"))
 				element.appendChild(innerElement);
 			_links = links;
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
@@ -230,11 +230,11 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Before DDMS 4.0, warn if the parent component contains more than 1 ddms:relatedResource.</li>
+	 * <li>Before DDMS 4.0.1, warn if the parent component contains more than 1 ddms:relatedResource.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (!getDDMSVersion().isAtLeast("4.0")) {
+		if (!getDDMSVersion().isAtLeast("4.0.1")) {
 			Elements elements = getXOMElement().getChildElements(OLD_INNER_NAME, getNamespace());
 			if (elements.size() > 1)
 				addWarning("A ddms:RelatedResources element contains more than 1 ddms:relatedResource. "
@@ -250,7 +250,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
-		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
 			localPrefix += "RelatedResource.";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, localPrefix + RELATIONSHIP_NAME, getRelationship()));
@@ -300,16 +300,16 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return (version.isAtLeast("4.0") ? "relatedResource" : "relatedResources");
+		return (version.isAtLeast("4.0.1") ? "relatedResource" : "relatedResources");
 	}
 	
 	/**
-	 * Accessor for the element which contains the links, qualifier and value. Before DDMS 4.0,
-	 * this is a wrapper element called ddms:RelatedResource. Starting in DDMS 4.0, it is the ddms:relatedResource
+	 * Accessor for the element which contains the links, qualifier and value. Before DDMS 4.0.1,
+	 * this is a wrapper element called ddms:RelatedResource. Starting in DDMS 4.0.1, it is the ddms:relatedResource
 	 * element itself.
 	 */
 	private Element getInnerElement() {
-		return (getDDMSVersion().isAtLeast("4.0") ? getXOMElement() : getChild(OLD_INNER_NAME));
+		return (getDDMSVersion().isAtLeast("4.0.1") ? getXOMElement() : getChild(OLD_INNER_NAME));
 	}
 	
 	/**

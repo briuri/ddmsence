@@ -111,12 +111,12 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 	 * Helper method to manage the deprecated TimePeriod wrapper element
 	 * 
 	 * @param innerElement the element containing the guts of this component
-	 * @return the element itself in DDMS 4.0 or later, or the element wrapped in another element
+	 * @return the element itself in DDMS 4.0.1 or later, or the element wrapped in another element
 	 */
 	private Element wrapInnerElement(Element innerElement) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String name = TemporalCoverage.getName(version);
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			innerElement.setLocalName(name);
 			return (innerElement);
 		}
@@ -131,7 +131,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String prefix = "temporalCoverage.";
-		if (!version.isAtLeast("4.0"))
+		if (!version.isAtLeast("4.0.1"))
 			prefix += "TimePeriod.";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix + "name", TEST_NAME));
@@ -154,7 +154,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 		if (version.isAtLeast("3.0"))
 			xml.append(" ").append(getXmlnsISM()).append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		xml.append(">\n\t");
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			xml.append("<ddms:name>").append(TEST_NAME).append("</ddms:name>\n\t");
 			xml.append("<ddms:start>").append(TEST_START).append("</ddms:start>\n\t");
 			xml.append("<ddms:end>").append(TEST_END).append("</ddms:end>\n");
@@ -276,7 +276,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			component = getInstance(SUCCESS, wrapInnerElement(periodElement));
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A ddms:name element was found with no value.";
-			String locator = version.isAtLeast("4.0") ? "ddms:temporalCoverage"
+			String locator = version.isAtLeast("4.0.1") ? "ddms:temporalCoverage"
 				: "ddms:temporalCoverage/ddms:TimePeriod";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}

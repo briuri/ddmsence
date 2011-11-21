@@ -118,7 +118,7 @@ public final class Notice extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 NoticeText exists.</li>
-	 * <li>This component cannot be used until DDMS 4.0 or later.</li>
+	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
 	 * </td></tr></table>
 	 *  
 	 * @see AbstractBaseComponent#validate()
@@ -129,7 +129,7 @@ public final class Notice extends AbstractBaseComponent {
 			throw new InvalidDDMSException("At least one ISM:NoticeText must exist within an ISM:Notice element.");
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0");
+		requireVersion("4.0.1");
 		
 		super.validate();
 	}

@@ -5,7 +5,7 @@
 	xmlns:ISM="urn:us:gov:ic:ism"
 	ISM:classification="U"
 	ISM:ownerProducer="USA"
-	ddms:POCType="ICD-710">
+	ISM:pocType="ABC">
 	<ddms:organization >
 		<ddms:name>DISA</ddms:name>
 	</ddms:organization>

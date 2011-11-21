@@ -49,7 +49,7 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 	 */
 	public static SubDivisionCode getFixture() {
 		try {
-			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new SubDivisionCode("ISO-3166", "USA") : null);
+			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? new SubDivisionCode("ISO-3166", "USA") : null);
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());

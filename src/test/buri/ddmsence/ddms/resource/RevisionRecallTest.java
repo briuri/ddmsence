@@ -534,7 +534,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 
 	public void testWrongVersion() {
 		try {
-			DDMSVersion.setCurrentVersion("4.0");
+			DDMSVersion.setCurrentVersion("4.0.1");
 			XLinkAttributes attr = XLinkAttributesTest.getSimpleFixture();
 			DDMSVersion.setCurrentVersion("2.0");
 			new RevisionRecall(TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK,

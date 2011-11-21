@@ -74,7 +74,7 @@ public class NoticeListTest extends AbstractBaseTestCase {
 	 */
 	public static NoticeList getFixture() {
 		try {
-			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new NoticeList(getFixtureElement()) : null);
+			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? new NoticeList(getFixtureElement()) : null);
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -278,7 +278,7 @@ public class NoticeListTest extends AbstractBaseTestCase {
 	}
 
 	public void testWrongVersion() {
-		// Implicit, since 1 Notice is required and that requires DDMS 4.0 or greater.
+		// Implicit, since 1 Notice is required and that requires DDMS 4.0.1 or greater.
 	}
 
 	public void testBuilderEquality() throws InvalidDDMSException {

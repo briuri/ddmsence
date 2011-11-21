@@ -197,13 +197,13 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String ismPrefix = PropertyReader.getPrefix("ism");
 
-			// Invalid POCType
+			// Invalid pocType
 			Element element = Util
 				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "Unknown");
 			getInstance("Unknown is not a valid enumeration token", element);
 
-			// Partial Invalid POCType
+			// Partial Invalid pocType
 			element = Util.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "ABC Unknown");
 			getInstance("Unknown is not a valid enumeration token", element);
@@ -214,10 +214,10 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// Invalid POCType
+			// Invalid pocType
 			getInstance("Unknown is not a valid enumeration token", TEST_VALUE, Util.getXsListAsList("Unknown"));
 
-			// Partial Invalid POCType
+			// Partial Invalid pocType
 			getInstance("Unknown is not a valid enumeration token", TEST_VALUE, Util.getXsListAsList("ABC Unknown"));
 		}
 	}

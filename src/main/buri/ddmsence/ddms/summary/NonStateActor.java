@@ -87,7 +87,7 @@ public final class NonStateActor extends AbstractSimpleString {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>This component cannot be used until DDMS 4.0 or later.</li>
+	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
 	 * <li>Does not validate the value of the order attribute (this is done at the Resource level).</li>
 	 * </td></tr></table>
 	 *  
@@ -98,7 +98,7 @@ public final class NonStateActor extends AbstractSimpleString {
 		Util.requireDDMSQName(getXOMElement(), NonStateActor.getName(getDDMSVersion()));
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0");
+		requireVersion("4.0.1");
 		
 		validateWarnings();
 	}

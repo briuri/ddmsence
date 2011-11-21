@@ -252,8 +252,8 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>If the href attribute is set, it is a valid URI.</li>
-	 * <li>If the role attribute is set, it is a valid URI, starting in DDMS 4.0.</li>
-	 * <li>If the label attribute is set, it is a valid NCName, starting in DDMS 4.0.</li>
+	 * <li>If the role attribute is set, it is a valid URI, starting in DDMS 4.0.1.</li>
+	 * <li>If the label attribute is set, it is a valid NCName, starting in DDMS 4.0.1.</li>
 	 * <li>If the arcrole attribute is set, it is a valid URI.</li>
 	 * <li>If the show attribute is set, it is a valid token.</li>
 	 * <li>If the actuate attribute is set, it is a valid token.</li>
@@ -268,7 +268,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 			Util.requireDDMSValidURI(getHref());
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (getDDMSVersion().isAtLeast("4.0")) {
+		if (getDDMSVersion().isAtLeast("4.0.1")) {
 			if (!Util.isEmpty(getRole()))
 				Util.requireDDMSValidURI(getRole());
 			if (!Util.isEmpty(getLabel()))

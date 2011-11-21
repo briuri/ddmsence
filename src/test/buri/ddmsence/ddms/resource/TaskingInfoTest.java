@@ -336,7 +336,7 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 
 	public void testWrongVersion() {
 		try {
-			DDMSVersion.setCurrentVersion("4.0");
+			DDMSVersion.setCurrentVersion("4.0.1");
 			SecurityAttributes attr = SecurityAttributesTest.getFixture();
 			DDMSVersion.setCurrentVersion("2.0");
 			new TaskingInfo(null, null, null, new TaskID("test", null, null, null, null), attr);

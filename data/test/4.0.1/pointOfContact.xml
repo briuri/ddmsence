@@ -5,7 +5,7 @@
 	xmlns:ISM="urn:us:gov:ic:ism"
 	ISM:classification="U"
 	ISM:ownerProducer="USA"
-	ddms:POCType="ICD-710">
+	ISM:pocType="ABC">
 	<ddms:unknown>
 		<ddms:name>UnknownEntity</ddms:name>
 	</ddms:unknown>

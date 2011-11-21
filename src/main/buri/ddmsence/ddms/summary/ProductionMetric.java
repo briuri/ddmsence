@@ -104,7 +104,7 @@ public final class ProductionMetric extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>A subject exists and is not empty.</li>
 	 * <li>A coverage exists and is not empty.</li>
-	 * <li>This component cannot be used until DDMS 4.0 or later.</li>
+	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -115,7 +115,7 @@ public final class ProductionMetric extends AbstractBaseComponent {
 		Util.requireDDMSValue("coverage attribute", getCoverage());
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0");
+		requireVersion("4.0.1");
 		
 		super.validate();
 	}

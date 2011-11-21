@@ -109,7 +109,7 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 	 * @param names the names (optional)
 	 * @param regions the region names (optional)
 	 * @param countryCode the country code (optional)
-	 * @param subDivisionCode the subdivision code (optional, starting in DDMS 4.0)
+	 * @param subDivisionCode the subdivision code (optional, starting in DDMS 4.0.1)
 	 * @param facilityIdentifier the facility identifier (optional)
 	 * @return a valid object
 	 */
@@ -140,7 +140,7 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, "geographicIdentifier.name", TEST_NAMES.get(0)));
 		text.append(buildOutput(isHTML, "geographicIdentifier.region", TEST_REGIONS.get(0)));
 		text.append(CountryCodeTest.getFixture().getOutput(isHTML, "geographicIdentifier.", ""));
-		if (version.isAtLeast("4.0"))
+		if (version.isAtLeast("4.0.1"))
 			text.append(SubDivisionCodeTest.getFixture().getOutput(isHTML, "geographicIdentifier.", ""));
 		return (text.toString());
 	}
@@ -157,7 +157,7 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 		xml.append("<ddms:name>The White House</ddms:name>\n\t");
 		xml.append("<ddms:region>Mid-Atlantic States</ddms:region>\n\t");
 		xml.append("<ddms:countryCode ddms:qualifier=\"ISO-3166\" ddms:value=\"USA\" />\n");
-		if (version.isAtLeast("4.0"))
+		if (version.isAtLeast("4.0.1"))
 			xml.append("\t<ddms:subDivisionCode ddms:qualifier=\"ISO-3166\" ddms:value=\"USA\" />\n");
 		xml.append("</ddms:geographicIdentifier>");
 		return (formatXml(xml.toString(), preserveFormatting));
@@ -194,7 +194,7 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 			element.appendChild(CountryCodeTest.getFixture().getXOMElementCopy());
 			getInstance(SUCCESS, element);
 
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				element = Util.buildDDMSElement(geoIdName, null);
 				element.appendChild(SubDivisionCodeTest.getFixture().getXOMElementCopy());
 				getInstance(SUCCESS, element);
@@ -218,7 +218,7 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 			getInstance(SUCCESS, TEST_NAMES, null, null, null, null);
 			getInstance(SUCCESS, null, TEST_REGIONS, null, null, null);
 			getInstance(SUCCESS, null, null, CountryCodeTest.getFixture(), null, null);
-			if (version.isAtLeast("4.0"))
+			if (version.isAtLeast("4.0.1"))
 				getInstance(SUCCESS, null, null, null, subCode, null);
 			getInstance(SUCCESS, null, null, null, null, FacilityIdentifierTest.getFixture());
 		}
@@ -240,7 +240,7 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 			getInstance("No more than 1 countryCode", element);
 
 			// No more than 1 subDivisionCode
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				element = Util.buildDDMSElement(geoIdName, null);
 				element.appendChild(SubDivisionCodeTest.getFixture().getXOMElementCopy());
 				element.appendChild(SubDivisionCodeTest.getFixture().getXOMElementCopy());
@@ -314,7 +314,7 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 			dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_REGIONS, null, subCode, null);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_REGIONS, CountryCodeTest.getFixture(), null, null);
 				assertFalse(elementComponent.equals(dataComponent));
 			}
@@ -388,7 +388,7 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			if (!version.isAtLeast("4.0"))
+			if (!version.isAtLeast("4.0.1"))
 				continue;
 
 			SubDivisionCode code = SubDivisionCodeTest.getFixture();

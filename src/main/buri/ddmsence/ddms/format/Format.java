@@ -36,10 +36,10 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:format.
  * 
  * <p>
- * Before DDMS 4.0, a format element contains a locally defined Media construct.
+ * Before DDMS 4.0.1, a format element contains a locally defined Media construct.
  * This Media construct is a container for the mimeType,extent, and medium of a resource. 
  * It exists only inside of a ddms:format parent, so it is not implemented as a Java
- * object. Starting in DDMS 4.0, the Media wrapper has been removed.
+ * object. Starting in DDMS 4.0.1, the Media wrapper has been removed.
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
@@ -114,14 +114,14 @@ public final class Format extends AbstractBaseComponent {
 	public Format(String mimeType, Extent extent, String medium) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Format.getName(DDMSVersion.getCurrentVersion()), null);
-			Element mediaElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? element : Util.buildDDMSElement(
+			Element mediaElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? element : Util.buildDDMSElement(
 				MEDIA_NAME, null);
 			Util.addDDMSChildElement(mediaElement, MIME_TYPE_NAME, mimeType);
 			if (extent != null)
 				mediaElement.appendChild(extent.getXOMElementCopy());
 			Util.addDDMSChildElement(mediaElement, MEDIUM_NAME, medium);
 
-			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
 				element.appendChild(mediaElement);
 
 			_mimeType = mimeType;
@@ -178,7 +178,7 @@ public final class Format extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		return (getDDMSVersion().isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX
+		return (getDDMSVersion().isAtLeast("4.0.1") ? "" : ValidationMessage.ELEMENT_PREFIX
 			+ getXOMElement().getNamespacePrefix() + ":" + MEDIA_NAME);
 	}
 	
@@ -187,7 +187,7 @@ public final class Format extends AbstractBaseComponent {
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
-		if (!getDDMSVersion().isAtLeast("4.0"))
+		if (!getDDMSVersion().isAtLeast("4.0.1"))
 			localPrefix += MEDIA_NAME + ".";		
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, localPrefix + MIME_TYPE_NAME, getMimeType()));
@@ -240,12 +240,12 @@ public final class Format extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the element which contains the mimeType, medium, and extent. Before DDMS 4.0,
-	 * this is a wrapper element called ddms:Media. Starting in DDMS 4.0, it is the ddms:format
+	 * Accessor for the element which contains the mimeType, medium, and extent. Before DDMS 4.0.1,
+	 * this is a wrapper element called ddms:Media. Starting in DDMS 4.0.1, it is the ddms:format
 	 * element itself.
 	 */
 	private Element getMediaElement() {
-		return (getDDMSVersion().isAtLeast("4.0") ? getXOMElement() : getChild(MEDIA_NAME));
+		return (getDDMSVersion().isAtLeast("4.0.1") ? getXOMElement() : getChild(MEDIA_NAME));
 	}
 	
 	/**

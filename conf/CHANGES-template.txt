@@ -10,7 +10,7 @@ Release History
 ===========================================================================
 
 v 2.0.0 (XX/YY/ZZZZ):
-This stable major release adds support for DDMS 4.0. Because upgrading to this
+This stable major release adds support for DDMS 4.0.1. Because upgrading to this
 version may require a non-trivial effort, an upgrade guide has been provided
 on the DDMSence Downloads page.
 

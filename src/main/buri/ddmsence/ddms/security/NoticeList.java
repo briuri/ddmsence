@@ -113,7 +113,7 @@ public final class NoticeList extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>At least 1 Notice exists.</li>
-	 * <li>This component cannot be used until DDMS 4.0 or later.</li>
+	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * </td></tr></table>
@@ -129,7 +129,7 @@ public final class NoticeList extends AbstractBaseComponent {
 		getSecurityAttributes().requireClassification();
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0");
+		requireVersion("4.0.1");
 		
 		super.validate();
 	}

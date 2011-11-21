@@ -100,7 +100,7 @@ public class KeywordTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Keyword component = null;
 		try {
-			component = new Keyword(value, version.isAtLeast("4.0") ? SecurityAttributesTest.getFixture() : null);
+			component = new Keyword(value, version.isAtLeast("4.0.1") ? SecurityAttributesTest.getFixture() : null);
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -117,7 +117,7 @@ public class KeywordTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "keyword", TEST_VALUE));
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			text.append(buildOutput(isHTML, "keyword.classification", "U"));
 			text.append(buildOutput(isHTML, "keyword.ownerProducer", "USA"));
 		}
@@ -131,10 +131,10 @@ public class KeywordTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:keyword ").append(getXmlnsDDMS()).append(" ");
-		if (version.isAtLeast("4.0"))
+		if (version.isAtLeast("4.0.1"))
 			xml.append(getXmlnsISM()).append(" ");
 		xml.append("ddms:value=\"").append(TEST_VALUE).append("\"");
-		if (version.isAtLeast("4.0"))
+		if (version.isAtLeast("4.0.1"))
 			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		xml.append(" />");
 		return (xml.toString());

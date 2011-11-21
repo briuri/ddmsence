@@ -24,7 +24,7 @@ I have also included a <code>.project</code> file if you wish to import the proj
 
 <h1>Latest Release: v2.0.0</h1>
 
-<p>Version <b>2.0.0</b> (XX/YY/ZZZZ) is a stable, major release, which adds support for DDMS 4.0. It is <i>not</i> backwards compatible with previous versions. Upgrading your existing
+<p>Version <b>2.0.0</b> (XX/YY/ZZZZ) is a stable, major release, which adds support for DDMS 4.0.1. It is <i>not</i> backwards compatible with previous versions. Upgrading your existing
 code to use this version should be straightforward, but may require a non-trivial effort. An upgrade guide is linked below, and I will be glad to assist you as well.</p>
 
 <ul>

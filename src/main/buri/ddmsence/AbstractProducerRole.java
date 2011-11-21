@@ -34,6 +34,7 @@ import buri.ddmsence.ddms.resource.Service;
 import buri.ddmsence.ddms.resource.Unknown;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -53,8 +54,8 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ddms:POCType</u>: Indicates that the element specifies a point-of-contact (POC) and the methods with which
- * to contact them (optional, starting in DDMS 4.0).<br />
+ * <u>ISM:pocType</u>: Indicates that the element specifies a point-of-contact (POC) and the methods with which
+ * to contact them (optional, starting in DDMS 4.0.1.1).<br />
  * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are optional.
  * </td></tr></table>
  * 
@@ -66,7 +67,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	private IRoleEntity _entity = null;
 	private SecurityAttributes _securityAttributes = null;
 
-	private static final String POC_TYPE_NAME = "POCType";
+	private static final String POC_TYPE_NAME = "pocType";
 	
 	/**
 	 * Base constructor
@@ -102,7 +103,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * 
 	 * @param producerType the type of producer this producer entity is fulfilling (i.e. creator or contributor)
 	 * @param entity the actual entity fulfilling this role
-	 * @param pocType the POCType attribute (starting in DDMS 4.0)
+	 * @param pocType the pocType attribute (starting in DDMS 4.0.1)
 	 * @param securityAttributes any security attributes (optional)
 	 */
 	protected AbstractProducerRole(String producerType, IRoleEntity entity, String pocType,
@@ -112,7 +113,8 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 			Util.requireDDMSValue("entity", entity);
 			Element element = Util.buildDDMSElement(producerType, null);
 			element.appendChild(entity.getXOMElementCopy());
-			Util.addDDMSAttribute(element, POC_TYPE_NAME, pocType);
+			Util.addAttribute(element, PropertyReader.getPrefix("ism"), POC_TYPE_NAME, DDMSVersion
+				.getCurrentVersion().getIsmNamespace(), pocType);
 			_entity = entity;
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
@@ -130,7 +132,7 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A producer entity exists.</li>
 	 * <li>Only 0-1 persons, organizations, services, or unknowns exist.</li>
-	 * <li>The POCType cannot be used before DDMS 4.0.</li>
+	 * <li>The pocType cannot be used before DDMS 4.0.1.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -144,8 +146,8 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), Unknown.getName(getDDMSVersion()), 0, 1);
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0") && !Util.isEmpty(getPocType())) {
-			throw new InvalidDDMSException("This component cannot have a POCType until DDMS 4.0 or later.");
+		if (!getDDMSVersion().isAtLeast("4.0.1") && !Util.isEmpty(getPocType())) {
+			throw new InvalidDDMSException("This component cannot have a pocType until DDMS 4.0.1 or later.");
 		}
 		
 		super.validate();	
@@ -199,10 +201,10 @@ public abstract class AbstractProducerRole extends AbstractBaseComponent {
 	}
 		
 	/**
-	 * Accessor for the POCType attribute.
+	 * Accessor for the pocType attribute.
 	 */
 	public String getPocType() {
-		return (getAttributeValue(POC_TYPE_NAME)); 
+		return (getAttributeValue(POC_TYPE_NAME, getDDMSVersion().getIsmNamespace())); 
 	}
 	
 	/**

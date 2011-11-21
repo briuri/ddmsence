@@ -33,7 +33,7 @@ command line parameters.</p>
 
 <pre class="brush: xml">Escort: a DDMSence Sample
 
-This program allows you to build a DDMS 4.0 resource from scratch using a
+This program allows you to build a DDMS 4.0.1 resource from scratch using a
 representative subset of possible components. Suggested valid answers are
 provided in square brackets for each prompt. However, these are not default
 values (hitting Enter will answer the prompt with an empty string).

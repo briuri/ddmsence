@@ -63,7 +63,7 @@
 	<meta name="temporalCoverage.start" content="2010-03-24T12:00:00Z" />
 	<meta name="temporalCoverage.end" content="Not Applicable" />
 	<meta name="ddms.generator" content="DDMSence 2.0.0" />
-	<meta name="ddms.version" content="4.0" />
+	<meta name="ddms.version" content="4.0.1" />
 		
 	<script type="text/javascript" src="./shared/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript">
@@ -82,9 +82,9 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
-	<div class="newsUpdate"><u>XX/YY/ZZZZ</u>: <a href="downloads.jsp">v2.0.0</a> released, adding support for DDMS 4.0.</div>
+	<div class="newsUpdate"><u>XX/YY/ZZZZ</u>: <a href="downloads.jsp">v2.0.0</a> released, adding support for DDMS 4.0.1.</div>
 	<div class="newsUpdate"><u>10/06/2011</u>: I will be giving a briefing on DDMSence at the <a href="https://metadata.ces.mil/mdr/mdwgDocuments.htm">DoD Metadata Working Group Meeting</a> on October 20 in Columbia, MD.</div>
-	<div class="newsUpdate"><u>09/25/2011</u>: Development on v2.0.0 is complete! v2.0.0 will support DDMS 4.0, and will be released once the "Public Release" versions of IC-ISM and IC-NTK are available to be bundled with DDMSence.</div>
+	<div class="newsUpdate"><u>09/25/2011</u>: Development on v2.0.0 is complete! v2.0.0 will support DDMS 4.0.1, and will be released once the "Public Release" versions of IC-ISM and IC-NTK are available to be bundled with DDMSence.</div>
 	<div class="newsUpdate"><u>07/17/2011</u>: v1.11.0 released, adding <a href="documentation-schematron.jsp">support for XSLT2-based Schematron validation</a>.</div>
 	<div class="newsUpdate"><u>07/05/2011</u>: v1.10.0 released, adding support for DDMS 3.1.</div>
 	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
@@ -134,7 +134,7 @@ It transforms XML DDMS Resource records into a Java object model (using XOM and 
 </p>
 
 <ul>
-	<li>Provides a complete implementation of the DDMS specification (including the Extensible Layer) using DDMS 2.0, 3.0, 3.1, or 4.0.</li>
+	<li>Provides a complete implementation of the DDMS specification (including the Extensible Layer) using DDMS 2.0, 3.0, 3.1, or 4.0.1.</li>
 	<li>Java object model can be created from existing XML files, or built up from scratch with basic Java data types. Components automatically transform into valid, well-formed XML, HTML, and Text records.</li>
 	<li>Validates resources against the complete specification, not just the schemas. Integrated with the Controlled Vocabulary Enumerations for ISM attributes, as defined by the Intelligence Community, and supports Schematron-based custom validation rules.</li>
 	<li>Three sample applications and accompanying <a href="documentation.jsp#started">tutorials</a> provide an introduction to the library,

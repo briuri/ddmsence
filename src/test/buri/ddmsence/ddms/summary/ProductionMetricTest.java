@@ -56,7 +56,7 @@ public class ProductionMetricTest extends AbstractBaseTestCase {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			List<ProductionMetric> metrics = new ArrayList<ProductionMetric>();
-			if (version.isAtLeast("4.0"))
+			if (version.isAtLeast("4.0.1"))
 				metrics.add(new ProductionMetric("FOOD", "AFG", SecurityAttributesTest.getFixture()));
 			return (metrics);
 		}

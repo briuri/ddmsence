@@ -94,7 +94,7 @@ public class TypeTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Type component = null;
 		try {
-			component = new Type(description, qualifier, value, version.isAtLeast("4.0") ? SecurityAttributesTest
+			component = new Type(description, qualifier, value, version.isAtLeast("4.0.1") ? SecurityAttributesTest
 				.getFixture() : null);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -111,11 +111,11 @@ public class TypeTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
-		if (version.isAtLeast("4.0"))
+		if (version.isAtLeast("4.0.1"))
 			text.append(buildOutput(isHTML, "type.description", TEST_DESCRIPTION));
 		text.append(buildOutput(isHTML, "type.qualifier", TEST_QUALIFIER));
 		text.append(buildOutput(isHTML, "type.value", TEST_VALUE));
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			text.append(buildOutput(isHTML, "type.classification", "U"));
 			text.append(buildOutput(isHTML, "type.ownerProducer", "USA"));
 		}
@@ -129,12 +129,12 @@ public class TypeTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:type ").append(getXmlnsDDMS()).append(" ");
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			xml.append(getXmlnsISM()).append(" ");
 		}
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ddms:value=\"").append(TEST_VALUE).append(
 			"\"");
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Description</ddms:type>");
 		}
 		else
@@ -168,7 +168,7 @@ public class TypeTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER, TEST_VALUE);
+			getInstance(SUCCESS, version.isAtLeast("4.0.1") ? TEST_DESCRIPTION : "", TEST_QUALIFIER, TEST_VALUE);
 
 			// No optional fields
 			getInstance(SUCCESS, "", "", "");
@@ -223,7 +223,7 @@ public class TypeTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			Type elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
+			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0.1") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
 				TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -234,10 +234,10 @@ public class TypeTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			Type elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
+			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0.1") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
 				DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				dataComponent = getInstance(SUCCESS, "differentDescription", TEST_QUALIFIER, TEST_VALUE);
 				assertFalse(elementComponent.equals(dataComponent));
 			}
@@ -251,7 +251,7 @@ public class TypeTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
+			component = getInstance(SUCCESS, version.isAtLeast("4.0.1") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
 				TEST_VALUE);
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -264,7 +264,7 @@ public class TypeTest extends AbstractBaseTestCase {
 			Type component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = getInstance(SUCCESS, version.isAtLeast("4.0") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
+			component = getInstance(SUCCESS, version.isAtLeast("4.0.1") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
 				TEST_VALUE);
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}

@@ -106,31 +106,31 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 	}
 
 	/**
-	 * Helper method to get the name of the westbound longitude element, which changed in DDMS 4.0.
+	 * Helper method to get the name of the westbound longitude element, which changed in DDMS 4.0.1.
 	 */
 	private String getWestBLName() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "westBL" : "WestBL");
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? "westBL" : "WestBL");
 	}
 
 	/**
-	 * Helper method to get the name of the eastbound longitude element, which changed in DDMS 4.0.
+	 * Helper method to get the name of the eastbound longitude element, which changed in DDMS 4.0.1.
 	 */
 	private String getEastBLName() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "eastBL" : "EastBL");
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? "eastBL" : "EastBL");
 	}
 
 	/**
-	 * Helper method to get the name of the southbound latitude element, which changed in DDMS 4.0.
+	 * Helper method to get the name of the southbound latitude element, which changed in DDMS 4.0.1.
 	 */
 	private String getSouthBLName() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "southBL" : "SouthBL");
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? "southBL" : "SouthBL");
 	}
 
 	/**
-	 * Helper method to get the name of the northbound latitude element, which changed in DDMS 4.0.
+	 * Helper method to get the name of the northbound latitude element, which changed in DDMS 4.0.1.
 	 */
 	private String getNorthBLName() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "northBL" : "NorthBL");
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? "northBL" : "NorthBL");
 	}
 
 	/**

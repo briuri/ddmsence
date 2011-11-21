@@ -73,7 +73,7 @@ import buri.ddmsence.util.Util;
  * the procedural structuring should make it easier to focus on the important sections of the source code.
  * </p>
  * 
- * <p>Currently, the wizard only walks through a minimally representative set of DDMS components. DDMS 4.0 introduces a lot of
+ * <p>Currently, the wizard only walks through a minimally representative set of DDMS components. DDMS 4.0.1 introduces a lot of
  * depth and reuse (especially related to the new ddms:metacardInfo element) which gets very confusing when using
  * text prompts.</p>
  * 
@@ -121,14 +121,14 @@ public class Escort {
 	private void run() throws IOException {
 		println("Escort: a DDMSence Sample\n");
 		
-		println("This program allows you to build a DDMS 4.0 resource from scratch using a");
+		println("This program allows you to build a DDMS 4.0.1 resource from scratch using a");
 		println("representative subset of possible components. Suggested valid answers are");
 		println("provided in square brackets for each prompt. However, these are not default");
 		println("values (hitting Enter will answer the prompt with an empty string).\n");
 
 		_useDummySecurityAttributes = confirm("Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the resource?");
 				
-		DDMSVersion.setCurrentVersion("4.0");
+		DDMSVersion.setCurrentVersion("4.0.1");
 		
 		printHead("ddms:metacardInfo (exactly 1 required)");
 		getTopLevelComponents().add(inputLoop(MetacardInfo.class));

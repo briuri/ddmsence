@@ -32,7 +32,7 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p> Tests related to DDMS 2.0, 3.0, 3.1 ddms:RelatedResources elements or DDMS 4.0 ddms:relatedResource elements </p>
+ * <p> Tests related to DDMS 2.0, 3.0, 3.1 ddms:RelatedResources elements or DDMS 4.0.1 ddms:relatedResource elements </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -118,7 +118,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 	 * Returns the expected HTML or Text output for this unit test
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
-		String prefix = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "relatedResource."
+		String prefix = DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? "relatedResource."
 			: "relatedResources.RelatedResource.";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix + "relationship", TEST_RELATIONSHIP));
@@ -143,7 +143,7 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			xml.append("<ddms:relatedResource ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 			xml.append("ddms:relationship=\"http://purl.org/dc/terms/references\" ddms:direction=\"outbound\" ");
 			xml.append("ddms:qualifier=\"http://purl.org/dc/terms/URI\" ddms:value=\"http://en.wikipedia.org/wiki/Tank\" ");
@@ -186,8 +186,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			// No optional fields
 			Element element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
-			Element innerElement = version.isAtLeast("4.0") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0"))
+			Element innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
+			if (!version.isAtLeast("4.0.1"))
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
@@ -216,8 +216,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 
 			// Missing relationship
 			Element element = Util.buildDDMSElement(RelatedResource.getName(version), null);
-			Element innerElement = version.isAtLeast("4.0") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0"))
+			Element innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
+			if (!version.isAtLeast("4.0.1"))
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
@@ -228,8 +228,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
 			Util.addDDMSAttribute(element, "direction", "veeringLeft");
-			innerElement = version.isAtLeast("4.0") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0"))
+			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
+			if (!version.isAtLeast("4.0.1"))
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
@@ -239,8 +239,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			// Relationship not URI
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "relationship", INVALID_URI);
-			innerElement = version.isAtLeast("4.0") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0"))
+			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
+			if (!version.isAtLeast("4.0.1"))
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
@@ -250,8 +250,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			// Missing qualifier
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
-			innerElement = version.isAtLeast("4.0") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0"))
+			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
+			if (!version.isAtLeast("4.0.1"))
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
 			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
@@ -260,8 +260,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			// qualifier not URI
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
-			innerElement = version.isAtLeast("4.0") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0"))
+			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
+			if (!version.isAtLeast("4.0.1"))
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", INVALID_URI);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
@@ -271,8 +271,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			// Missing value
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
-			innerElement = version.isAtLeast("4.0") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0"))
+			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
+			if (!version.isAtLeast("4.0.1"))
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			innerElement.appendChild(new Element(LinkTest.getFixtureElement()));
@@ -281,8 +281,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			// Missing link
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
-			innerElement = version.isAtLeast("4.0") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0"))
+			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
+			if (!version.isAtLeast("4.0.1"))
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
@@ -291,8 +291,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			// Security Attributes
 			element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
-			innerElement = version.isAtLeast("4.0") ? element : Util.buildDDMSElement("RelatedResource", null);
-			if (!version.isAtLeast("4.0"))
+			innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
+			if (!version.isAtLeast("4.0.1"))
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
 			Util.addDDMSAttribute(innerElement, "value", TEST_VALUE);
@@ -355,8 +355,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			RelatedResource component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(0, component.getValidationWarnings().size());
 
-			// Pre-DDMS 4.0, too many relatedResource children
-			if (!version.isAtLeast("4.0")) {
+			// Pre-DDMS 4.0.1, too many relatedResource children
+			if (!version.isAtLeast("4.0.1")) {
 				Element element = new Element(getValidElement(sVersion));
 				Element child = Util.buildDDMSElement("RelatedResource", null);
 				child.addAttribute(Util.buildDDMSAttribute("qualifier", "ignoreMe"));

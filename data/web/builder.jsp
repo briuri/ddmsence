@@ -169,7 +169,7 @@
 
 <a name="top"></a><h1>DDMS Builder</h1>
 
-<p>This experimental tool uses the DDMSence library to create a DDMS 4.0 Resource from form input. It uses
+<p>This experimental tool uses the DDMSence library to create a DDMS 4.0.1 Resource from form input. It uses
 the <a href="documentation-builders.jsp">Component Builder</a> framework, which was introduced in DDMSence 
 1.8.0. To simplify the example source code, the form only asks for a minimal subset of elements and attributes required for a valid resource. 
 Information submitted through this tool is not retained on the server.</p> 

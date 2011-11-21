@@ -145,7 +145,7 @@ correct errors in a collection of DDMS resources. For example, if your assets ha
 to point to the new location. Alternately, you could change all occurences of a producer's last name after a marriage.</p>
 
 <p>As a specialized example of editing, you could transform older resources to the latest version of DDMS. With the Component Builder framework, you could load a DDMS 2.0 resource,
-add all of the fields required for DDMS 4.0, and then save it as a DDMS 4.0 resource. Example code for this use case can be found in the <a href="documentation-builders.jsp">Component Builder</a> Power Tip.</p>
+add all of the fields required for DDMS 4.0.1, and then save it as a DDMS 4.0.1 resource. Example code for this use case can be found in the <a href="documentation-builders.jsp">Component Builder</a> Power Tip.</p>
 
 <h4>Applying custom constraints with Schematron</h4>
 
@@ -268,7 +268,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 	<li><a href="builder.uri">DDMS Builder</a>: An experimental tool to build DDMS resources with a form-based UI.</li><br />
 	<li><a href="validator.uri">DDMS Validator</a>: An experimental tool to validate DDMS resources.</li><br />
 	<li><a href="relationalTables.jsp">Relational Database Model for DDMS 3.1</a>: A mapping of the DDMS 3.1 specification to relational database tables (database-agnostic).</li><br />
-	<li><a href="schematron.jsp">Schematron Implementation for DDMS 4.0</a>: An attempt to model some of the more complex rules in the DDMS specification with ISO Schematron.</li>
+	<li><a href="schematron.jsp">Schematron Implementation for DDMS 4.0.1</a>: An attempt to model some of the more complex rules in the DDMS specification with ISO Schematron.</li>
 </ul>
 
 <a name="contributors"></a><h3>Contributors</h3>

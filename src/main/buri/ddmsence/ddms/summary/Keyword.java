@@ -43,7 +43,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:value</u>: The keyword itself (required)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS 
- * 4.0)<br />
+ * 4.0.1)<br />
  * <u>{@link ExtensibleAttributes}</u>: (optional, starting in DDMS 3.0).
  * </td></tr></table>
  * 
@@ -120,7 +120,7 @@ public final class Keyword extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>The keyword value exists and is not empty.</li>
-	 * <li>The SecurityAttributes do not exist until DDMS 4.0 or later.</li>
+	 * <li>The SecurityAttributes do not exist until DDMS 4.0.1 or later.</li>
 	 * <li>No extensible attributes can exist until DDMS 3.0 or later.</li>
 	 * </td></tr></table>
 	 * 
@@ -130,9 +130,9 @@ public final class Keyword extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), Keyword.getName(getDDMSVersion()));
 		Util.requireDDMSValue("value attribute", getValue());
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0") && !getSecurityAttributes().isEmpty()) {
+		if (!getDDMSVersion().isAtLeast("4.0.1") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
-				"Security attributes cannot be applied to this component until DDMS 4.0 or later.");
+				"Security attributes cannot be applied to this component until DDMS 4.0.1 or later.");
 		}
 		if (!getDDMSVersion().isAtLeast("3.0") && !getExtensibleAttributes().isEmpty())
 			throw new InvalidDDMSException("xs:anyAttribute cannot be applied to ddms:keyword until DDMS 3.0 or later.");

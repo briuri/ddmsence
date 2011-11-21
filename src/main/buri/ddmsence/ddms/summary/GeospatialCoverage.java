@@ -37,9 +37,9 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:geospatialCoverage.
  * 
  * <p>
- * Before DDMS 4.0, a geospatialCoverage element contains a nested GeospatialExtent element. Because
+ * Before DDMS 4.0.1, a geospatialCoverage element contains a nested GeospatialExtent element. Because
  * DDMS does not decorate this element with any special attributes, it is not implemented as a Java object.
- * Starting in DDMS 4.0, the GeospatialExtent wrapper has been removed.
+ * Starting in DDMS 4.0.1, the GeospatialExtent wrapper has been removed.
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
@@ -65,9 +65,9 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:precedence</u>: priority claimed or received as a result of preeminence. Used with country codes (optional, 
- * starting in DDMS 4.0)
+ * starting in DDMS 4.0.1)
  * <u>ddms:order</u>: specifies a user-defined order of an element within the given document (optional, starting in 
- * DDMS 4.0)<br />
+ * DDMS 4.0.1)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS 3.0)
  * </td></tr></table>
  * 
@@ -144,8 +144,8 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * @param boundingGeometry a set of bounding geometry (0-1 optional)
 	 * @param postalAddress an address (0-1 optional)
 	 * @param verticalExtent an extent (0-1 optional)
-	 * @param precedence the precedence attribute (optional, starting in DDMS 4.0)
-	 * @param order the order attribute (optional, starting in DDMS 4.0)
+	 * @param precedence the precedence attribute (optional, starting in DDMS 4.0.1)
+	 * @param order the order attribute (optional, starting in DDMS 4.0.1)
 	 * @param securityAttributes any security attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
@@ -156,7 +156,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			Element coverageElement = Util.buildDDMSElement(
 				GeospatialCoverage.getName(DDMSVersion.getCurrentVersion()), null);
 
-			Element element = DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? coverageElement : Util
+			Element element = DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? coverageElement : Util
 				.buildDDMSElement(GEOSPATIAL_EXTENT_NAME, null);
 			if (geographicIdentifier != null)
 				element.appendChild(geographicIdentifier.getXOMElementCopy());
@@ -172,7 +172,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 			if (order != null)
 				Util.addDDMSAttribute(coverageElement, ORDER_NAME, order.toString());
 
-			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
 				coverageElement.appendChild(element);
 
 			_geographicIdentifier = geographicIdentifier;
@@ -200,7 +200,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * <li>No more than 1 geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent can 
 	 * be used.</li>
 	 * <li>If a geographicIdentifer is used and contains a facilityIdentifier, no other subcomponents can be used.</li>
-	 * <li>The order and precedence cannot be used until DDMS 4.0 or later.</li>
+	 * <li>The order and precedence cannot be used until DDMS 4.0.1 or later.</li>
 	 * <li>If set, the precedence must be "Primary" or "Secondary".</li>
 	 * <li>If a precedence is set, this coverage must contain a geographicIdentifier with a countryCode.</li>
 	 * <li>Does not validate the value of the order attribute (this is done at the Resource level).</li>
@@ -242,11 +242,11 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 		}	
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0") && !Util.isEmpty(getPrecedence())) {
-			throw new InvalidDDMSException("The ddms:precedence attribute cannot be used until DDMS 4.0 or later.");
+		if (!getDDMSVersion().isAtLeast("4.0.1") && !Util.isEmpty(getPrecedence())) {
+			throw new InvalidDDMSException("The ddms:precedence attribute cannot be used until DDMS 4.0.1 or later.");
 		}
-		if (!getDDMSVersion().isAtLeast("4.0") && getOrder() != null) {
-			throw new InvalidDDMSException("The ddms:order attribute cannot be used until DDMS 4.0 or later.");
+		if (!getDDMSVersion().isAtLeast("4.0.1") && getOrder() != null) {
+			throw new InvalidDDMSException("The ddms:order attribute cannot be used until DDMS 4.0.1 or later.");
 		}
 		if (!getDDMSVersion().isAtLeast("3.0") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
@@ -270,7 +270,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 * @see AbstractBaseComponent#getLocatorSuffix()
 	 */
 	protected String getLocatorSuffix() {
-		return (getDDMSVersion().isAtLeast("4.0") ? "" : ValidationMessage.ELEMENT_PREFIX
+		return (getDDMSVersion().isAtLeast("4.0.1") ? "" : ValidationMessage.ELEMENT_PREFIX
 			+ getXOMElement().getNamespacePrefix() + ":" + GEOSPATIAL_EXTENT_NAME);
 	}
 	
@@ -279,7 +279,7 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	 */
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
-		if (!getDDMSVersion().isAtLeast("4.0"))
+		if (!getDDMSVersion().isAtLeast("4.0.1"))
 			localPrefix += GEOSPATIAL_EXTENT_NAME + ".";
 		StringBuffer text = new StringBuffer();
 		if (getGeographicIdentifier() != null)
@@ -346,11 +346,11 @@ public final class GeospatialCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the element which contains the child elementsnt. Before DDMS 4.0, this is a wrapper element called
-	 * ddms:GeospatialExtent. Starting in DDMS 4.0, it is the ddms:geospatialCoverage element itself.
+	 * Accessor for the element which contains the child elementsnt. Before DDMS 4.0.1, this is a wrapper element called
+	 * ddms:GeospatialExtent. Starting in DDMS 4.0.1, it is the ddms:geospatialCoverage element itself.
 	 */
 	private Element getExtentElement() {
-		return (getDDMSVersion().isAtLeast("4.0") ? getXOMElement() : getChild(GEOSPATIAL_EXTENT_NAME));
+		return (getDDMSVersion().isAtLeast("4.0.1") ? getXOMElement() : getChild(GEOSPATIAL_EXTENT_NAME));
 	}
 	
 	/**

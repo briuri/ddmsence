@@ -4,7 +4,7 @@
 	<xs:include schemaLocation="DDMS-Globals.xsd"/>
 	<xs:annotation>
 		<xs:documentation>
-This XML Schema is an implementation of the Department of Defense Discovery Metadata Specification (DDMS Spec) version 4.0.  Unless otherwise stated, all references to the DDMS Spec refer to version 4.0 of that document.
+This XML Schema is an implementation of the Department of Defense Discovery Metadata Specification (DDMS Spec) version 4.0.1.  Unless otherwise stated, all references to the DDMS Spec refer to version 4.0 of that document.
   
 Version 1.0 was created by the DDMS Focus Group:
 		Robert Allegar - Booz Allen Hamilton

@@ -46,7 +46,7 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <p>The ddms:unknown element is new in DDMS 3.0. Attempts to use it with DDMS 2.0 will result in an 
- * UnsupportedVersionException. Its name was changed from "Unknown" to "unknown" in DDMS 4.0.</p>
+ * UnsupportedVersionException. Its name was changed from "Unknown" to "unknown" in DDMS 4.0.1.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:name</u>: names of the producer (1-many, at least 1 required)<br />
@@ -133,7 +133,7 @@ public final class Unknown extends AbstractRoleEntity {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return (version.isAtLeast("4.0") ? "unknown" : "Unknown");
+		return (version.isAtLeast("4.0.1") ? "unknown" : "Unknown");
 	}
 	
 	/**

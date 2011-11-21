@@ -114,7 +114,7 @@ public abstract class AbstractNtkString extends AbstractBaseComponent {
 	 * <li>If this is an NMTOKEN-based string, and the child text is not empty, the child text is an NMTOKEN.</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot be used until DDMS 4.0 or later.</li>
+	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -126,7 +126,7 @@ public abstract class AbstractNtkString extends AbstractBaseComponent {
 		getSecurityAttributes().requireClassification();
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0");
+		requireVersion("4.0.1");
 		
 		super.validate();
 	}

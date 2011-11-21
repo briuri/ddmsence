@@ -168,7 +168,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 		for (String reservedName : SecurityAttributes.NON_EXTENSIBLE_NAMES) {
 			RESERVED_RESOURCE_NAMES.add(new QName(version.getIsmNamespace(), reservedName, ismPrefix));
 		}
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			for (String reservedName : NoticeAttributes.NON_EXTENSIBLE_NAMES) {
 				RESERVED_RESOURCE_NAMES.add(new QName(version.getIsmNamespace(), reservedName, ismPrefix));
 			}

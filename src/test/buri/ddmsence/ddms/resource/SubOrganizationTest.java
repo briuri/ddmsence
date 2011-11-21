@@ -56,7 +56,7 @@ public class SubOrganizationTest extends AbstractBaseTestCase {
 	 */
 	public static List<SubOrganization> getFixtureList() {
 		try {
-			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0"))
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
 				return (null);
 			List<SubOrganization> subOrgs = new ArrayList<SubOrganization>();
 			subOrgs.add(new SubOrganization("sub1", SecurityAttributesTest.getFixture()));

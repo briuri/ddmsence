@@ -49,7 +49,7 @@ import buri.ddmsence.util.Util;
  * </ul>
  * </td></tr></table>
  * 
- * <p>The name of this component was changed from "Person" to "person" in DDMS 4.0.</p>
+ * <p>The name of this component was changed from "Person" to "person" in DDMS 4.0.1.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:name</u>: names of the producer (1-many, at least 1 required)<br />
@@ -134,7 +134,7 @@ public final class Person extends AbstractRoleEntity {
 	private void addExtraElements(int insertIndex, String surname, String userID, String affiliation)
 		throws InvalidDDMSException {
 		Element element = getXOMElement();
-		if (getDDMSVersion().isAtLeast("4.0")) {
+		if (getDDMSVersion().isAtLeast("4.0.1")) {
 			element.insertChild(Util.buildDDMSElement(SURNAME_NAME, surname), insertIndex);
 			if (!Util.isEmpty(userID))
 				element.appendChild(Util.buildDDMSElement(USERID_NAME, userID));
@@ -234,7 +234,7 @@ public final class Person extends AbstractRoleEntity {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return (version.isAtLeast("4.0") ? "person" : "Person");
+		return (version.isAtLeast("4.0.1") ? "person" : "Person");
 	}
 	
 	/**

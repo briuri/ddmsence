@@ -124,7 +124,7 @@ of a SecurityAttributes instance, it should. This will make DDMS 2.0 resources m
 
 <h2>ExtensibleAttributes on a Keyword or Category</h2>
 
-<p>Starting with DDMS 4.0, <code>ddms:keyword</code> and <code>ddms:category</code> can have both extensible and security attributes, just like a Resource. The same guidelines apply in this
+<p>Starting with DDMS 4.0.1, <code>ddms:keyword</code> and <code>ddms:category</code> can have both extensible and security attributes, just like a Resource. The same guidelines apply in this
 situation -- define your security attributes as explicitly as possible to avoid confusion.</p>
 
 <p>
