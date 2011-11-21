@@ -218,7 +218,7 @@ public final class NoticeText extends AbstractSimpleString {
 		 * @see IBuilder#commit()
 		 */
 		public NoticeText commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new NoticeText(getValue(), getPocTypes(), getSecurityAttributes().commit()));
+			return (isEmpty() && getPocTypes().isEmpty() ? null : new NoticeText(getValue(), getPocTypes(), getSecurityAttributes().commit()));
 		}
 
 		/**

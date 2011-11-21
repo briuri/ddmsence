@@ -284,7 +284,7 @@ public class Escort {
 				DDMSVersion version = DDMSVersion.getCurrentVersion();
 				String producerType = readString("the producer type [creator]");
 				String entityType = readString("the entity type [organization]");
-				String pocType =  readString("the pocType [DoD-Dist-B");
+				String pocTypes =  readString("the pocType [ABC]");
 				SecurityAttributes attr = buildSecurityAttributes("producer");
 				
 				IRoleEntity entity = null;
@@ -304,7 +304,7 @@ public class Escort {
 				if (Publisher.getName(version).equals(producerType))
 					return (new Publisher(entity, null, attr));
 				if (PointOfContact.getName(version).equals(producerType))
-					return (new PointOfContact(entity, pocType, attr));
+					return (new PointOfContact(entity, Util.getXsListAsList(pocTypes), attr));
 				throw new InvalidDDMSException("Unknown producerType: " + producerType);
 			}		
 		});	

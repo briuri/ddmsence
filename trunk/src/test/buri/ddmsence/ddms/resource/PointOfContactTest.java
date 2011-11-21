@@ -19,6 +19,8 @@
  */
 package buri.ddmsence.ddms.resource;
 
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractBaseTestCase;
@@ -27,6 +29,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.RoleEntityTest;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -95,13 +98,13 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 	 * 
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param entity the producer entity
-	 * @param pocType the pocType (DDMS 4.0.1 or later)
+	 * @param pocTypes the pocType (DDMS 4.0.1 or later)
 	 */
-	private PointOfContact getInstance(String message, IRoleEntity entity, String pocType) {
+	private PointOfContact getInstance(String message, IRoleEntity entity, List<String> pocTypes) {
 		boolean expectFailure = !Util.isEmpty(message);
 		PointOfContact component = null;
 		try {
-			component = new PointOfContact(entity, pocType, SecurityAttributesTest.getFixture());
+			component = new PointOfContact(entity, pocTypes, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -185,17 +188,42 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 	public void testElementConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			String ismPrefix = PropertyReader.getPrefix("ism");
+			
 			// Missing entity
 			Element element = Util.buildDDMSElement(PointOfContact.getName(version), null);
 			getInstance("entity is required.", element);
+			
+			if (version.isAtLeast("4.0.1")) {
+				// Invalid pocType
+				element = Util.buildDDMSElement(PointOfContact.getName(version), null);
+				element.appendChild(getEntityFixture().getXOMElementCopy());
+				Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "Unknown");
+				getInstance("Unknown is not a valid enumeration token", element);
+
+				// Partial Invalid pocType
+				element = Util.buildDDMSElement(PointOfContact.getName(version), null);
+				element.appendChild(getEntityFixture().getXOMElementCopy());
+				Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "ABC Unknown");
+				getInstance("Unknown is not a valid enumeration token", element);
+			}
 		}
 	}
 
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			
 			// Missing entity
 			getInstance("entity is required.", (IRoleEntity) null, null);
+			
+			if (version.isAtLeast("4.0.1")) {
+				// Invalid pocType
+				getInstance("Unknown is not a valid enumeration token", getEntityFixture(), Util.getXsListAsList("Unknown"));
+
+				// Partial Invalid pocType
+				getInstance("Unknown is not a valid enumeration token", getEntityFixture(), Util.getXsListAsList("ABC Unknown"));
+			}
 		}
 	}
 
@@ -212,7 +240,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			PointOfContact elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			PointOfContact dataComponent = getInstance(SUCCESS, getEntityFixture(), RoleEntityTest.getPocType());
+			PointOfContact dataComponent = getInstance(SUCCESS, getEntityFixture(), RoleEntityTest.getPocTypes());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -235,7 +263,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, getEntityFixture(), RoleEntityTest.getPocType());
+			component = getInstance(SUCCESS, getEntityFixture(), RoleEntityTest.getPocTypes());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -247,7 +275,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 			PointOfContact component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = getInstance(SUCCESS, getEntityFixture(), RoleEntityTest.getPocType());
+			component = getInstance(SUCCESS, getEntityFixture(), RoleEntityTest.getPocTypes());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -263,7 +291,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 	public void testWrongVersionPocType() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new PointOfContact(getEntityFixture(), "ABC", SecurityAttributesTest.getFixture());
+			new PointOfContact(getEntityFixture(), Util.getXsListAsList("ABC"), SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -288,7 +316,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 			PointOfContact.Builder builder = new PointOfContact.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
-			builder.setPocType("pocType");
+			builder.setPocTypes(Util.getXsListAsList("ABC"));
 			assertFalse(builder.isEmpty());
 
 		}

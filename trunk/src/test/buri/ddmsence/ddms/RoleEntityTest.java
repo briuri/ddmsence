@@ -49,8 +49,8 @@ public class RoleEntityTest extends AbstractBaseTestCase {
 	/**
 	 * Helper method to generate a pocType for producers
 	 */
-	public static String getPocType() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? TEST_POC_TYPE : "");
+	public static List<String> getPocTypes() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? Util.getXsListAsList(TEST_POC_TYPE) : Util.getXsListAsList(""));
 	}
 
 	public void testSharedWarnings() throws InvalidDDMSException {

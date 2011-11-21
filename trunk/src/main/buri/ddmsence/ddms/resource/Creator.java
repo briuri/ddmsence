@@ -19,6 +19,8 @@
  */
 package buri.ddmsence.ddms.resource;
 
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractProducerRole;
 import buri.ddmsence.ddms.IBuilder;
@@ -62,12 +64,12 @@ public class Creator extends AbstractProducerRole {
 	 * Constructor which builds from raw data.
 	 * 
 	 * @param entity the actual entity fulfilling this role
-	 * @param pocType the ISM pocType for this producer (optional, starting in DDMS 4.0.1)
+	 * @param pocTypes the ISM pocType for this producer (optional, starting in DDMS 4.0.1)
 	 * @param securityAttributes any security attributes (optional)
 	 */
-	public Creator(IRoleEntity entity, String pocType, SecurityAttributes securityAttributes)
+	public Creator(IRoleEntity entity, List<String> pocTypes, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
-		super(Creator.getName(DDMSVersion.getCurrentVersion()), entity, pocType, securityAttributes);
+		super(Creator.getName(DDMSVersion.getCurrentVersion()), entity, pocTypes, securityAttributes);
 	}
 	
 	/**
@@ -131,7 +133,7 @@ public class Creator extends AbstractProducerRole {
 		 * @see IBuilder#commit()
 		 */
 		public Creator commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Creator(commitSelectedEntity(), getPocType(), 
+			return (isEmpty() ? null : new Creator(commitSelectedEntity(), getPocTypes(), 
 				getSecurityAttributes().commit()));
 		}
 	}
