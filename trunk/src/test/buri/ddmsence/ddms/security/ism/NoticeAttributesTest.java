@@ -301,7 +301,7 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			.getIsmNamespace(), "2011-09-15");
 		getInstance("Notice attributes cannot be used", element);
 
-		DDMSVersion.setCurrentVersion("4.0");
+		DDMSVersion.setCurrentVersion("4.0.1");
 		NoticeAttributes attributes = getFixture();
 		try {
 			attributes.addTo(element);

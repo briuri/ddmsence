@@ -50,7 +50,7 @@ public class AccessTest extends AbstractBaseTestCase {
 	 */
 	public static Access getFixture() {
 		try {
-			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new Access(IndividualTest.getFixtureList(),
+			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? new Access(IndividualTest.getFixtureList(),
 				null, null, SecurityAttributesTest.getFixture()) : null);
 		}
 		catch (InvalidDDMSException e) {
@@ -328,7 +328,7 @@ public class AccessTest extends AbstractBaseTestCase {
 	}
 
 	public void testWrongVersion() {
-		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
+		// Implicit, since the NTK namespace does not exist before DDMS 4.0.1.
 	}
 
 	public void testBuilderLazyList() throws InvalidDDMSException {

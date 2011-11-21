@@ -62,7 +62,7 @@ public class PointOfContact extends AbstractProducerRole {
 	 * Constructor which builds from raw data.
 	 * 
 	 * @param entity the actual entity fulfilling this role
-	 * @param pocType the ISM POCType for this producer (optional, starting in DDMS 4.0)
+	 * @param pocType the ISM pocType for this producer (optional, starting in DDMS 4.0.1)
 	 * @param securityAttributes any security attributes (optional)
 	 */
 	public PointOfContact(IRoleEntity entity, String pocType, SecurityAttributes securityAttributes)

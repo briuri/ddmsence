@@ -31,7 +31,7 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:type.
  * 
- * <p>Beginning in DDMS 4.0, a ddms:type element can contain child text. The intent of this text is to provide further
+ * <p>Beginning in DDMS 4.0.1, a ddms:type element can contain child text. The intent of this text is to provide further
  * context when the ddms:type element references an IC activity.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
@@ -52,7 +52,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:value</u>: includes terms describing general categories, functions, genres, or aggregation levels 
  * (optional)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. 
- * (starting in DDMS 4.0)
+ * (starting in DDMS 4.0.1)
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -111,10 +111,10 @@ public final class Type extends AbstractQualifierValue {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>The description child text cannot exist until DDMS 4.0 or later.</li>
+	 * <li>The description child text cannot exist until DDMS 4.0.1 or later.</li>
 	 * <li>If a value is set, a qualifier must exist and be non-empty.</li>
 	 * <li>Does NOT validate that the value is valid against the qualifier's vocabulary.</li>
-	 * <li>The SecurityAttributes do not exist until DDMS 4.0 or later.</li>
+	 * <li>The SecurityAttributes do not exist until DDMS 4.0.1 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -126,13 +126,13 @@ public final class Type extends AbstractQualifierValue {
 			Util.requireDDMSValue("qualifier attribute", getQualifier());
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0") && !Util.isEmpty(getDescription())) {
+		if (!getDDMSVersion().isAtLeast("4.0.1") && !Util.isEmpty(getDescription())) {
 			throw new InvalidDDMSException(
-				"This component cannot contain description child text until DDMS 4.0 or later.");
+				"This component cannot contain description child text until DDMS 4.0.1 or later.");
 		}
-		if (!getDDMSVersion().isAtLeast("4.0") && !getSecurityAttributes().isEmpty()) {
+		if (!getDDMSVersion().isAtLeast("4.0.1") && !getSecurityAttributes().isEmpty()) {
 			throw new InvalidDDMSException(
-				"Security attributes cannot be applied to this component until DDMS 4.0 or later.");
+				"Security attributes cannot be applied to this component until DDMS 4.0.1 or later.");
 		}
 
 		super.validate();

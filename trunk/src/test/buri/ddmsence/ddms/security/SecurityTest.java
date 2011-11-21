@@ -110,7 +110,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 		StringBuffer text = new StringBuffer();
 		if (version.isAtLeast("3.0"))
 			text.append(buildOutput(isHTML, prefix + "excludeFromRollup", "true"));
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText", "noticeText"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText.pocType", "ABC"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText.classification", "U"));
@@ -142,7 +142,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 		if (version.isAtLeast("3.0"))
 			xml.append("ISM:excludeFromRollup=\"true\" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
-		if (!version.isAtLeast("4.0"))
+		if (!version.isAtLeast("4.0.1"))
 			xml.append(" />");
 		else {
 			xml.append(">\n");
@@ -182,7 +182,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				Element element = Util.buildDDMSElement(Security.getName(version), null);
 				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version
 					.getIsmNamespace(), "true");
@@ -249,7 +249,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Nested warnings
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				Element element = Util.buildDDMSElement(Security.getName(version), null);
 				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version
 					.getIsmNamespace(), "true");
@@ -281,7 +281,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				Security elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 				Security dataComponent = getInstance(SUCCESS, NoticeListTest.getFixture(), null);
 				assertFalse(elementComponent.equals(dataComponent));

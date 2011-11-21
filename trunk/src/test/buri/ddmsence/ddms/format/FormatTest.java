@@ -105,12 +105,12 @@ public class FormatTest extends AbstractBaseTestCase {
 	 * Helper method to manage the deprecated Media wrapper element
 	 * 
 	 * @param innerElement the element containing the guts of this component
-	 * @return the element itself in DDMS 4.0 or later, or the element wrapped in another element
+	 * @return the element itself in DDMS 4.0.1 or later, or the element wrapped in another element
 	 */
 	private Element wrapInnerElement(Element innerElement) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String name = Format.getName(version);
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			innerElement.setLocalName(name);
 			return (innerElement);
 		}
@@ -124,7 +124,7 @@ public class FormatTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String prefix = version.isAtLeast("4.0") ? "format." : "format.Media.";
+		String prefix = version.isAtLeast("4.0.1") ? "format." : "format.Media.";
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix + "mimeType", TEST_MIME_TYPE));
 		text.append(ExtentTest.getFixture().getOutput(isHTML, prefix, ""));
@@ -140,7 +140,7 @@ public class FormatTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:format ").append(getXmlnsDDMS()).append(">\n\t");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("4.0")) {
+		if (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1")) {
 			xml.append("<ddms:mimeType>text/xml</ddms:mimeType>\n\t");
 			xml.append("<ddms:extent ddms:qualifier=\"sizeBytes\" ddms:value=\"75000\" />\n\t");
 			xml.append("<ddms:medium>digital</ddms:medium>\n");
@@ -260,14 +260,14 @@ public class FormatTest extends AbstractBaseTestCase {
 			component = getInstance(SUCCESS, wrapInnerElement(mediaElement));
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A ddms:medium element was found with no value.";
-			String locator = version.isAtLeast("4.0") ? "ddms:format" : "ddms:format/ddms:Media";
+			String locator = version.isAtLeast("4.0.1") ? "ddms:format" : "ddms:format/ddms:Media";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
 			// Nested warnings
 			component = getInstance(SUCCESS, TEST_MIME_TYPE, new Extent("sizeBytes", ""), TEST_MEDIUM);
 			assertEquals(1, component.getValidationWarnings().size());
 			text = "A qualifier has been set without an accompanying value attribute.";
-			locator = (version.isAtLeast("4.0")) ? "ddms:format/ddms:extent" : "ddms:format/ddms:Media/ddms:extent";
+			locator = (version.isAtLeast("4.0.1")) ? "ddms:format/ddms:extent" : "ddms:format/ddms:Media/ddms:extent";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}

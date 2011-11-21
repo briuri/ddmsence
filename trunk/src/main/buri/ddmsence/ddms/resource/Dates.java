@@ -52,7 +52,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:validTil</u>: expiration date (optional)<br />
  * <u>ddms:infoCutOff</u>: info cutoff date (optional)<br />
  * <u>ddms:approvedOn</u>: approved for posting date (optional, starting in DDMS 3.1)<br />
- * <u>ddms:receivedOn</u>: received date (optional, starting in DDMS 4.0)<br />
+ * <u>ddms:receivedOn</u>: received date (optional, starting in DDMS 4.0.1)<br />
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -118,7 +118,7 @@ public final class Dates extends AbstractBaseComponent {
 	 * @param validTil the expiration date (optional)
 	 * @param infoCutOff the info cutoff date (optional)
 	 * @param approvedOn the approved on date (optional, starting in DDMS 3.1)
-	 * @param receivedOn the received on date (optional, starting in DDMS 4.0)
+	 * @param receivedOn the received on date (optional, starting in DDMS 4.0.1)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Dates(String created, String posted, String validTil, String infoCutOff, String approvedOn, String receivedOn)
@@ -191,8 +191,8 @@ public final class Dates extends AbstractBaseComponent {
 		if (!getDDMSVersion().isAtLeast("3.1") && getApprovedOn() != null) {
 			throw new InvalidDDMSException("This component cannot have an approvedOn date until DDMS 3.1 or later.");
 		}
-		if (!getDDMSVersion().isAtLeast("4.0") && getReceivedOn() != null) {
-			throw new InvalidDDMSException("This component cannot have a receivedOn date until DDMS 4.0 or later.");
+		if (!getDDMSVersion().isAtLeast("4.0.1") && getReceivedOn() != null) {
+			throw new InvalidDDMSException("This component cannot have a receivedOn date until DDMS 4.0.1 or later.");
 		}
 
 		super.validate();

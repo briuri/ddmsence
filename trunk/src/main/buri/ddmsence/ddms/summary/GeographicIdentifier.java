@@ -50,7 +50,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:name</u>: geographic name (0-many optional)<br />
  * <u>ddms:region</u>: geographic region (0-many optional)<br />
  * <u>ddms:countryCode</u>: the country code (0-1 optional), implemented as a {@link CountryCode}<br />
- * <u>ddms:subDivisionCode</u>: the subdivision code (0-1 optional, starting in DDMS 4.0), implemented as a 
+ * <u>ddms:subDivisionCode</u>: the subdivision code (0-1 optional, starting in DDMS 4.0.1), implemented as a 
  * {@link SubDivisionCode}<br />
  * <u>ddms:facilityIdentifier</u>: the facility identifier (0-1 optional), implemented as a 
  * {@link FacilityIdentifier}<br />
@@ -108,7 +108,7 @@ public final class GeographicIdentifier extends AbstractBaseComponent {
 	 * @param names the names (optional)
 	 * @param regions the region names (optional)
 	 * @param countryCode the country code (optional)
-	 * @param subDivisionCode the subdivision code (optional, starting in DDMS 4.0)
+	 * @param subDivisionCode the subdivision code (optional, starting in DDMS 4.0.1)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public GeographicIdentifier(List<String> names, List<String> regions, CountryCode countryCode,

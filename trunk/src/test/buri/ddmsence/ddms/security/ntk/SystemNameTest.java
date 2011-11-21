@@ -273,7 +273,7 @@ public class SystemNameTest extends AbstractBaseTestCase {
 	}
 
 	public void testWrongVersion() {
-		// Implicit, since the NTK namespace does not exist before DDMS 4.0.
+		// Implicit, since the NTK namespace does not exist before DDMS 4.0.1.
 	}
 
 	public void testBuilderEquality() throws InvalidDDMSException {

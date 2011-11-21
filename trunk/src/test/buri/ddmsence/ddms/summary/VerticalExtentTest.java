@@ -122,14 +122,14 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 	 * Helper method to get the correct-case of the minVerticalExtent eleemnt.
 	 */
 	private String getMinVerticalExtentName() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "minVerticalExtent" : "MinVerticalExtent");
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? "minVerticalExtent" : "MinVerticalExtent");
 	}
 
 	/**
 	 * Helper method to get the correct-case of the maxVerticalExtent eleemnt.
 	 */
 	private String getMaxVerticalExtentName() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? "maxVerticalExtent" : "MaxVerticalExtent");
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? "maxVerticalExtent" : "MaxVerticalExtent");
 	}
 
 	/**

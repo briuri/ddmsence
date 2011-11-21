@@ -56,7 +56,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	public static NonStateActor getFixture(int order) {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			return (version.isAtLeast("4.0") ? new NonStateActor(TEST_VALUE, Integer.valueOf(order),
+			return (version.isAtLeast("4.0.1") ? new NonStateActor(TEST_VALUE, Integer.valueOf(order),
 				SecurityAttributesTest.getFixture()) : null);
 		}
 		catch (InvalidDDMSException e) {
@@ -72,7 +72,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			List<NonStateActor> actors = new ArrayList<NonStateActor>();
-			if (version.isAtLeast("4.0"))
+			if (version.isAtLeast("4.0.1"))
 				actors.add(new NonStateActor(TEST_VALUE, TEST_ORDER, SecurityAttributesTest.getFixture()));
 			return (actors);
 		}

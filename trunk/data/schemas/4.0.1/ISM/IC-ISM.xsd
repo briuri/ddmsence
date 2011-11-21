@@ -10,8 +10,13 @@
 	<xsd:import namespace="urn:us:gov:ic:ism-cvenum" schemaLocation="./CVEGeneratedTypes.xsd"/>
 
 
-<!--  This is the V5 Public Release of ISM. Development on many ISM notice concepts cannot proceed without V7. -->
-
+<!--  This is a modified version of V5 Public Release of ISM. Development on many ISM notice concepts cannot proceed without V7. -->
+	<xsd:attributeGroup name="POCAttributeGroup">
+		<xsd:attribute ref="pocType" />
+	</xsd:attributeGroup>
+	<xsd:attribute name="pocType">
+	</xsd:attribute>
+	
 	<!--  Stubs created to aid development -->
 	<xsd:element name="Notice">
 		<xsd:complexType>
@@ -25,13 +30,12 @@
 		<xsd:complexType>
 			<xsd:simpleContent>
 				<xsd:extension base="xsd:string">
-					<xsd:attribute ref="pocType" />
+					<xsd:attributeGroup ref="POCAttributeGroup"/>
 					<xsd:attributeGroup ref="SecurityAttributesGroup"/>
 				</xsd:extension>
 			</xsd:simpleContent>
 		</xsd:complexType>
 	</xsd:element>
-	<xsd:attribute name="pocType" />
 	<xsd:attributeGroup name="NoticeAttributesOptionGroup">
 		<xsd:attribute ref="noticeType" use="optional"/>
 		<xsd:attribute ref="noticeReason" use="optional"/>

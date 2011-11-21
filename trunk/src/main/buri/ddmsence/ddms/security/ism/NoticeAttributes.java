@@ -40,7 +40,7 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * Attribute group for the ISM notice markings used on a ddms:resource and ISM:Notice, starting in DDMS 4.0.
+ * Attribute group for the ISM notice markings used on a ddms:resource and ISM:Notice, starting in DDMS 4.0.1.
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ISM:noticeType</u>: (optional)<br />
@@ -177,7 +177,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 * <li>The noticeReason must be shorter than 2048 characters.</li>
 	 * <li>The unregisteredNoticeType must be shorter than 2048 characters.</li>
 	 * <li>If set, the noticeDate attribute is a valid xs:date value.</li>
-	 * <li>These attributes cannot be used until DDMS 4.0 or later.</li>
+	 * <li>These attributes cannot be used until DDMS 4.0.1 or later.</li>
 	 * <li>Does NOT do any validation on the constraints described in the DES ISM specification.</li>
 	 * </td></tr></table>
 	 * 
@@ -186,7 +186,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	protected void validate() throws InvalidDDMSException {
 		// Should be reviewed as additional versions of DDMS are supported.
 		DDMSVersion version = getDDMSVersion();
-		if (version.isAtLeast("4.0") && !Util.isEmpty(getNoticeType()))
+		if (version.isAtLeast("4.0.1") && !Util.isEmpty(getNoticeType()))
 			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_NOTICE_TYPE, getNoticeType());
 		if (!Util.isEmpty(getNoticeReason()) && getNoticeReason().length() > MAX_LENGTH)
 			throw new InvalidDDMSException("The noticeReason attribute must be shorter than " + MAX_LENGTH
@@ -196,8 +196,8 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 				+ MAX_LENGTH + " characters.");
 		if (getNoticeDate() != null && !getNoticeDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 			throw new InvalidDDMSException("The noticeDate attribute must be in the xs:date format (YYYY-MM-DD).");
-		if (!version.isAtLeast("4.0") && !isEmpty())
-			throw new InvalidDDMSException("Notice attributes cannot be used until DDMS 4.0 or later.");
+		if (!version.isAtLeast("4.0.1") && !isEmpty())
+			throw new InvalidDDMSException("Notice attributes cannot be used until DDMS 4.0.1 or later.");
 
 		super.validate();
 	}

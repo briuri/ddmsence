@@ -97,7 +97,7 @@ public class ISMVocabularyTest extends AbstractBaseTestCase {
 				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_NON_US_CONTROLS, "unknown"));
 			}
 
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_NOTICE_TYPE, "ABC"));
 				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_NOTICE_TYPE, "unknown"));
 

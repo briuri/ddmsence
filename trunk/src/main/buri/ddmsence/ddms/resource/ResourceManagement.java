@@ -151,7 +151,7 @@ public final class ResourceManagement extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Only 0-1 recordsManagementInfo or revisionRecall elements exist.</li>
-	 * <li>This component cannot exist until DDMS 4.0 or later.</li>
+	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -163,7 +163,7 @@ public final class ResourceManagement extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), RevisionRecall.getName(getDDMSVersion()), 0, 1);
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0");
+		requireVersion("4.0.1");
 
 		super.validate();
 	}

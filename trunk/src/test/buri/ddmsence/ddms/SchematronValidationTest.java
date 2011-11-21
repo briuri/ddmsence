@@ -67,13 +67,13 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 				String resourceName = Resource.getName(version);
 				List<ValidationMessage> messages = resource.validateWithSchematron(new File("data/test/" + sVersion
 					+ "/testSchematronXslt1.sch"));
-				assertEquals(version.isAtLeast("4.0") ? 3 : 2, messages.size());
+				assertEquals(version.isAtLeast("4.0.1") ? 3 : 2, messages.size());
 
 				String text = "A DDMS Resource must have an unknownElement child.";
 				String locator = "/*[local-name()='" + resourceName + "' and namespace-uri()='" + ddmsNamespace + "']";
 				assertErrorEquality(text, locator, messages.get(0));
 
-				int originalWarningIndex = version.isAtLeast("4.0") ? 2 : 1;
+				int originalWarningIndex = version.isAtLeast("4.0.1") ? 2 : 1;
 
 				text = "Members of the Uri family cannot be publishers.";
 				locator = "/*[local-name()='" + resourceName + "' and namespace-uri()='" + ddmsNamespace + "']"
@@ -82,7 +82,7 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 					+ "/*[local-name()='surname' and namespace-uri()='" + ddmsNamespace + "']";
 				assertWarningEquality(text, locator, messages.get(originalWarningIndex));
 
-				if (version.isAtLeast("4.0")) {
+				if (version.isAtLeast("4.0.1")) {
 					text = "Members of the Uri family cannot be publishers.";
 					locator = "/*[local-name()='" + resourceName + "' and namespace-uri()='" + ddmsNamespace + "']"
 						+ "/*[local-name()='metacardInfo' and namespace-uri()='" + ddmsNamespace + "']"
@@ -109,7 +109,7 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 				assertEquals(1, messages.size());
 
 				String text = "The second coordinate in a gml:pos element must be 40.2 degrees.";
-				String extent = version.isAtLeast("4.0") ? "" : "/*:GeospatialExtent[namespace-uri()='" + ddmsNamespace
+				String extent = version.isAtLeast("4.0.1") ? "" : "/*:GeospatialExtent[namespace-uri()='" + ddmsNamespace
 					+ "'][1]";
 				String resourceName = Resource.getName(version);
 				String locator = "/*:" + resourceName + "[namespace-uri()='" + ddmsNamespace + "'][1]"

@@ -322,7 +322,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 
 	public void testWrongVersion() {
 		try {
-			DDMSVersion.setCurrentVersion("4.0");
+			DDMSVersion.setCurrentVersion("4.0.1");
 			XLinkAttributes attr = XLinkAttributesTest.getSimpleFixture();
 			DDMSVersion.setCurrentVersion("2.0");
 			new TaskID(TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK, attr);

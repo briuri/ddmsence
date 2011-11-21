@@ -119,7 +119,7 @@ public final class ProfileList extends AbstractBaseComponent {
 	 * <li>At least 1 profile is required.</li>
 	 * <li>A classification is required.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
-	 * <li>This component cannot exist until DDMS 4.0 or later.</li>
+	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -133,7 +133,7 @@ public final class ProfileList extends AbstractBaseComponent {
 		getSecurityAttributes().requireClassification();
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0");
+		requireVersion("4.0.1");
 		
 		super.validate();
 	}

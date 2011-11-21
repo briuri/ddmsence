@@ -44,13 +44,13 @@ public class RoleEntityTest extends AbstractBaseTestCase {
 		super(null);
 	}
 
-	private static final String TEST_POC_TYPE = "ICD-710";
+	private static final String TEST_POC_TYPE = "ABC";
 
 	/**
-	 * Helper method to generate a POCType for producers
+	 * Helper method to generate a pocType for producers
 	 */
-	public static String getPOCType() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? TEST_POC_TYPE : "");
+	public static String getPocType() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? TEST_POC_TYPE : "");
 	}
 
 	public void testSharedWarnings() throws InvalidDDMSException {

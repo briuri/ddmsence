@@ -55,7 +55,7 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 			List<NonStateActor> actors = new ArrayList<NonStateActor>();
 			actors.add(NonStateActorTest.getFixture(order));
 			return (new SubjectCoverage(KeywordTest.getFixtureList(), null, null, DDMSVersion.getCurrentVersion()
-				.isAtLeast("4.0") ? actors : null, null));
+				.isAtLeast("4.0.1") ? actors : null, null));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -131,12 +131,12 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 	 * Helper method to manage the deprecated Subject wrapper element
 	 * 
 	 * @param innerElement the element containing the guts of this component
-	 * @return the element itself in DDMS 4.0 or later, or the element wrapped in another element
+	 * @return the element itself in DDMS 4.0.1 or later, or the element wrapped in another element
 	 */
 	private Element wrapInnerElement(Element innerElement) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		String name = SubjectCoverage.getName(version);
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			innerElement.setLocalName(name);
 			return (innerElement);
 		}
@@ -150,14 +150,14 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		String prefix = version.isAtLeast("4.0") ? "subjectCoverage." : "subjectCoverage.Subject.";
+		String prefix = version.isAtLeast("4.0.1") ? "subjectCoverage." : "subjectCoverage.Subject.";
 		StringBuffer text = new StringBuffer();
 		for (Keyword keyword : KeywordTest.getFixtureList())
 			text.append(keyword.getOutput(isHTML, prefix, ""));
 		for (Category category : CategoryTest.getFixtureList())
 			text.append(category.getOutput(isHTML, prefix, ""));
 
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			for (ProductionMetric metric : ProductionMetricTest.getFixtureList())
 				text.append(metric.getOutput(isHTML, prefix, ""));
 			for (NonStateActor actor : NonStateActorTest.getFixtureList())
@@ -182,7 +182,7 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 			xml.append(" ").append(getXmlnsISM()).append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n");
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			xml.append("\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
 			xml.append("\t<ddms:keyword ddms:value=\"Uri\" />\n");
 			xml.append("\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ").append(
@@ -268,7 +268,7 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 			component = getInstance(SUCCESS, wrapInnerElement(subjectElement));
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "1 or more keywords have the same value.";
-			String locator = version.isAtLeast("4.0") ? "ddms:subjectCoverage" : "ddms:subjectCoverage/ddms:Subject";
+			String locator = version.isAtLeast("4.0.1") ? "ddms:subjectCoverage" : "ddms:subjectCoverage/ddms:Subject";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
 			// Identical categories
@@ -278,11 +278,11 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 			component = getInstance(SUCCESS, wrapInnerElement(subjectElement));
 			assertEquals(1, component.getValidationWarnings().size());
 			text = "1 or more categories have the same value.";
-			locator = version.isAtLeast("4.0") ? "ddms:subjectCoverage" : "ddms:subjectCoverage/ddms:Subject";
+			locator = version.isAtLeast("4.0.1") ? "ddms:subjectCoverage" : "ddms:subjectCoverage/ddms:Subject";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 
 			// Identical productionMetrics
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				subjectElement = Util.buildDDMSElement("Subject", null);
 				subjectElement.appendChild(CategoryTest.getFixtureList().get(0).getXOMElementCopy());
 				subjectElement.appendChild(ProductionMetricTest.getFixtureList().get(0).getXOMElementCopy());
@@ -319,7 +319,7 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 				.getFixtureList(), NonStateActorTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				dataComponent = getInstance(SUCCESS, KeywordTest.getFixtureList(), CategoryTest.getFixtureList(), null,
 					NonStateActorTest.getFixtureList());
 				assertFalse(elementComponent.equals(dataComponent));
@@ -501,7 +501,7 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 			builder.getCategories().add(fullCategoryBuilder);
 			assertEquals(1, builder.commit().getCategories().size());
 
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				// Skip empty metrics
 				builder = new SubjectCoverage.Builder();
 				ProductionMetric.Builder emptyProductionMetricBuilder = new ProductionMetric.Builder();

@@ -45,13 +45,13 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
  * </p>
  * 
  * <li><code>&lt;versionNumber&gt;.ddms.xmlNamespace</code>: i.e. "urn:us:mil:ces:metadata:ddms:4"</li>
- * <li><code>&lt;versionNumber&gt;.ddms.xsdLocation</code>: i.e. "/schemas/4.0/DDMS/DDMS-v4_0.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.ddms.xsdLocation</code>: i.e. "/schemas/4.0.1/DDMS/DDMS-v4_0.xsd"</li>
  * <li><code>&lt;versionNumber&gt;.gml.xmlNamespace</code>: i.e. "http://www.opengis.net/gml/3.2"</li>
- * <li><code>&lt;versionNumber&gt;.gml.xsdLocation</code>: i.e. "/schemas/4.0/DDMS/DDMS-GML-Profile.xsd"</li>
- * <li><code>&lt;versionNumber&gt;.ism.cveLocation</code>: i.e. "/schemas/4.0/ISM/CVE/"</li>
+ * <li><code>&lt;versionNumber&gt;.gml.xsdLocation</code>: i.e. "/schemas/4.0.1/DDMS/DDMS-GML-Profile.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.ism.cveLocation</code>: i.e. "/schemas/4.0.1/ISM/CVE/"</li>
  * <li><code>&lt;versionNumber&gt;.ism.xmlNamespace</code>: i.e. "urn:us:gov:ic:ism"</li>
  * <li><code>&lt;versionNumber&gt;.ntk.xmlNamespace</code>: i.e. "urn:us:gov:ic:ntk"</li>
- * <li><code>&lt;versionNumber&gt;.ntk.xsdLocation</code>: i.e. "/schemas/4.0/NTK/IC-NTK.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.ntk.xsdLocation</code>: i.e. "/schemas/4.0.1/NTK/IC-NTK.xsd"</li>
  * <li><code>&lt;versionNumber&gt;.xlink.xmlNamespace</code>: i.e. "http://www.w3.org/1999/xlink"</li>
  * 
  * <p>
@@ -119,7 +119,7 @@ public class DDMSVersion {
 	/**
 	 * Convenience method to check if a DDMS version number is equal to or higher that some
 	 * test number. An example of where this might be used is to determine the capitalization
-	 * of element names, many of which changed in DDMS 4.0.
+	 * of element names, many of which changed in DDMS 4.0.1.
 	 * 
 	 * @param version the version number to check
 	 * @return true if the version is equal to or greater than the test version

@@ -72,7 +72,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 	 */
 	public static MetacardInfo getFixture() {
 		try {
-			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new MetacardInfo(getRequiredChildComponents(),
+			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? new MetacardInfo(getRequiredChildComponents(),
 				SecurityAttributesTest.getFixture()) : null);
 		}
 		catch (InvalidDDMSException e) {

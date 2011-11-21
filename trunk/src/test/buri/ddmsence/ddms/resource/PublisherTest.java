@@ -84,7 +84,7 @@ public class PublisherTest extends AbstractBaseTestCase {
 	 * 
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param entity the producer entity
-	 * @param pocType the POCType (DDMS 4.0 or later)
+	 * @param pocType the pocType (DDMS 4.0.1 or later)
 	 */
 	private Publisher getInstance(String message, IRoleEntity entity, String pocType) {
 		boolean expectFailure = !Util.isEmpty(message);
@@ -107,8 +107,8 @@ public class PublisherTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
 		text.append(ServiceTest.getFixture().getOutput(isHTML, "publisher.", ""));
-		if (version.isAtLeast("4.0"))
-			text.append(buildOutput(isHTML, "publisher.POCType", "ICD-710"));
+		if (version.isAtLeast("4.0.1"))
+			text.append(buildOutput(isHTML, "publisher.pocType", "ABC"));
 		text.append(buildOutput(isHTML, "publisher.classification", "U"));
 		text.append(buildOutput(isHTML, "publisher.ownerProducer", "USA"));
 		return (text.toString());
@@ -123,8 +123,8 @@ public class PublisherTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:publisher ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
-		if (version.isAtLeast("4.0"))
-			xml.append(" ddms:POCType=\"ICD-710\"");
+		if (version.isAtLeast("4.0.1"))
+			xml.append(" ISM:pocType=\"ABC\"");
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(Service.getName(version))
 			.append(">\n");
 		xml.append("\t\t<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>\n");
@@ -193,7 +193,7 @@ public class PublisherTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Publisher elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Publisher dataComponent = getInstance(SUCCESS, ServiceTest.getFixture(), RoleEntityTest.getPOCType());
+			Publisher dataComponent = getInstance(SUCCESS, ServiceTest.getFixture(), RoleEntityTest.getPocType());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -213,10 +213,10 @@ public class PublisherTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Publisher component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML());
+			assertEquals(getExpectedOutput(true), component.toHTML()); 
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, ServiceTest.getFixture(), RoleEntityTest.getPOCType());
+			component = getInstance(SUCCESS, ServiceTest.getFixture(), RoleEntityTest.getPocType());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -228,7 +228,7 @@ public class PublisherTest extends AbstractBaseTestCase {
 			Publisher component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = getInstance(SUCCESS, ServiceTest.getFixture(), RoleEntityTest.getPOCType());
+			component = getInstance(SUCCESS, ServiceTest.getFixture(), RoleEntityTest.getPocType());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -241,14 +241,14 @@ public class PublisherTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testWrongVersionPOCType() {
+	public void testWrongVersionPocType() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new Publisher(ServiceTest.getFixture(), "ICD-710", SecurityAttributesTest.getFixture());
+			new Publisher(ServiceTest.getFixture(), "ABC", SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "This component cannot have a POCType");
+			expectMessage(e, "This component cannot have a pocType");
 		}
 	}
 

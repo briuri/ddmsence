@@ -45,7 +45,7 @@ import buri.ddmsence.util.Util;
  * </ul>
  * </td></tr></table>
  * 
- * <p>The name of this component was changed from "Service" to "service" in DDMS 4.0.</p>
+ * <p>The name of this component was changed from "Service" to "service" in DDMS 4.0.1.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:name</u>: names of the producer entity (1-many, at least 1 required)<br />
@@ -127,7 +127,7 @@ public final class Service extends AbstractRoleEntity {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return (version.isAtLeast("4.0") ? "service" : "Service");
+		return (version.isAtLeast("4.0.1") ? "service" : "Service");
 	}
 	
 	/**

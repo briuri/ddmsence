@@ -68,7 +68,7 @@ import buri.ddmsence.util.Util;
  * <li>CVEnumISMFGIProtected.xml: tokens allowed in the "FGIsourceProtected" attribute</li>
  * <li>CVEnumISMNonIC.xml: tokens allowed in the "nonICmarkings" attribute</li>
  * <li>CVEnumISMNonUSControls.xml: tokens allowed in the "nonUSControls" attribute (starting in DDMS 3.1)</li>
- * <li>CVEnumISMNotice.xml: tokens allowed in the "noticeType" attribute (starting in DDMS 4.0)</li>
+ * <li>CVEnumISMNotice.xml: tokens allowed in the "noticeType" attribute (starting in DDMS 4.0.1)</li>
  * <li>CVEnumISMOwnerProducer.xml: tokens allowed in the "ownerProducer" attribute</li>
  * <li>CVEnumISMPocType.xml: tokens allowed in the "pocType" attribute</li>
  * <li>CVEnumISMRelTo.xml: tokens allowed in the "displayOnlyTo" (starting in DDMS 3.1) and "releasableTo" attribute</li>

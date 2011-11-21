@@ -84,7 +84,7 @@ public class CreatorTest extends AbstractBaseTestCase {
 	 * 
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param entity the producer entity
-	 * @param pocType the POCType (DDMS 4.0 or later)
+	 * @param pocType the pocType (DDMS 4.0.1 or later)
 	 */
 	private Creator getInstance(String message, IRoleEntity entity, String pocType) {
 		boolean expectFailure = !Util.isEmpty(message);
@@ -107,8 +107,8 @@ public class CreatorTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
 		text.append(PersonTest.getFixture().getOutput(isHTML, "creator.", ""));
-		if (version.isAtLeast("4.0"))
-			text.append(buildOutput(isHTML, "creator.POCType", "ICD-710"));
+		if (version.isAtLeast("4.0.1"))
+			text.append(buildOutput(isHTML, "creator.pocType", "ABC"));
 		text.append(buildOutput(isHTML, "creator.classification", "U"));
 		text.append(buildOutput(isHTML, "creator.ownerProducer", "USA"));
 		return (text.toString());
@@ -123,8 +123,8 @@ public class CreatorTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:creator ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
-		if (version.isAtLeast("4.0"))
-			xml.append(" ddms:POCType=\"ICD-710\"");
+		if (version.isAtLeast("4.0.1"))
+			xml.append(" ISM:pocType=\"ABC\"");
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(Person.getName(version))
 			.append(">\n");
 		xml.append("\t\t<ddms:name>Brian</ddms:name>\n");
@@ -194,7 +194,7 @@ public class CreatorTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Creator elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Creator dataComponent = getInstance(SUCCESS, PersonTest.getFixture(), RoleEntityTest.getPOCType());
+			Creator dataComponent = getInstance(SUCCESS, PersonTest.getFixture(), RoleEntityTest.getPocType());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -217,7 +217,7 @@ public class CreatorTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, PersonTest.getFixture(), RoleEntityTest.getPOCType());
+			component = getInstance(SUCCESS, PersonTest.getFixture(), RoleEntityTest.getPocType());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -229,7 +229,7 @@ public class CreatorTest extends AbstractBaseTestCase {
 			Creator component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = getInstance(SUCCESS, PersonTest.getFixture(), RoleEntityTest.getPOCType());
+			component = getInstance(SUCCESS, PersonTest.getFixture(), RoleEntityTest.getPocType());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -242,14 +242,14 @@ public class CreatorTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testWrongVersionPOCType() {
+	public void testWrongVersionPocType() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new Creator(PersonTest.getFixture(), "ICD-710", SecurityAttributesTest.getFixture());
+			new Creator(PersonTest.getFixture(), "ABC", SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "This component cannot have a POCType");
+			expectMessage(e, "This component cannot have a pocType");
 		}
 	}
 

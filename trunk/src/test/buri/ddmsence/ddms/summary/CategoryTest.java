@@ -103,7 +103,7 @@ public class CategoryTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Category component = null;
 		try {
-			component = new Category(qualifier, code, label, version.isAtLeast("4.0") ? SecurityAttributesTest
+			component = new Category(qualifier, code, label, version.isAtLeast("4.0.1") ? SecurityAttributesTest
 				.getFixture() : null);
 			checkConstructorSuccess(expectFailure);
 		}
@@ -123,7 +123,7 @@ public class CategoryTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, "category.qualifier", TEST_QUALIFIER));
 		text.append(buildOutput(isHTML, "category.code", TEST_CODE));
 		text.append(buildOutput(isHTML, "category.label", TEST_LABEL));
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			text.append(buildOutput(isHTML, "category.classification", "U"));
 			text.append(buildOutput(isHTML, "category.ownerProducer", "USA"));
 		}
@@ -137,13 +137,13 @@ public class CategoryTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:category ").append(getXmlnsDDMS()).append(" ");
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			xml.append(getXmlnsISM()).append(" ");
 		}
 		xml.append("ddms:qualifier=\"").append(TEST_QUALIFIER).append("\" ");
 		xml.append("ddms:code=\"").append(TEST_CODE).append("\" ");
 		xml.append("ddms:label=\"").append(TEST_LABEL).append("\"");
-		if (version.isAtLeast("4.0")) {
+		if (version.isAtLeast("4.0.1")) {
 			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		}
 		xml.append(" />");

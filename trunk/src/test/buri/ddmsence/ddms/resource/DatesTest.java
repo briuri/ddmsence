@@ -91,7 +91,7 @@ public class DatesTest extends AbstractBaseTestCase {
 	 * @param validTil the expiration date (optional)
 	 * @param infoCutOff the info cutoff date (optional)
 	 * @param approvedOn the approved on date (optional, starting in 3.1)
-	 * @param receivedOn the received on date (optional, starting in 4.0)
+	 * @param receivedOn the received on date (optional, starting in 4.0.1)
 	 * @return a valid object
 	 */
 	private Dates getInstance(String message, String created, String posted, String validTil, String infoCutOff,
@@ -120,7 +120,7 @@ public class DatesTest extends AbstractBaseTestCase {
 	 * Generates a receivedOn Date for testing
 	 */
 	private String getReceivedOn() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? TEST_RECEIVED : "");
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? TEST_RECEIVED : "");
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class DatesTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, "dates.infoCutOff", TEST_CUTOFF));
 		if (version.isAtLeast("3.1"))
 			text.append(buildOutput(isHTML, "dates.approvedOn", TEST_APPROVED));
-		if (version.isAtLeast("4.0"))
+		if (version.isAtLeast("4.0.1"))
 			text.append(buildOutput(isHTML, "dates.receivedOn", TEST_RECEIVED));
 		return (text.toString());
 	}
@@ -153,7 +153,7 @@ public class DatesTest extends AbstractBaseTestCase {
 		xml.append("ddms:infoCutOff=\"").append(TEST_CUTOFF).append("\" ");
 		if (version.isAtLeast("3.1"))
 			xml.append("ddms:approvedOn=\"").append(TEST_APPROVED).append("\" ");
-		if (version.isAtLeast("4.0"))
+		if (version.isAtLeast("4.0.1"))
 			xml.append("ddms:receivedOn=\"").append(TEST_RECEIVED).append("\" ");
 		xml.append("/>");
 		return (xml.toString());
@@ -269,7 +269,7 @@ public class DatesTest extends AbstractBaseTestCase {
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				dataComponent = getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
 					getApprovedOn(), "");
 				assertFalse(elementComponent.equals(dataComponent));

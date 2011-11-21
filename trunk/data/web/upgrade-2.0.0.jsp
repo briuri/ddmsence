@@ -9,7 +9,7 @@
 
 <a name="top"></a><h1>Upgrade Guide: Version 1.x to 2.0.0</h1>
 
-<p>In order to cleanly and comprehensively support DDMS 4.0, DDMSence 2.0.0 required multiple changes which
+<p>In order to cleanly and comprehensively support DDMS 4.0.1, DDMSence 2.0.0 required multiple changes which
 might break backwards compatibility with your existing code. Some of these changes are as simple as new package names
 or changed method names, while others are more significant. This Upgrade Guide describes the changes and provides recommendations on how to migrate your code to use the new version
 of DDMSence. If you have followed the instructions in this guide and are still encountering compiler errors or other
@@ -21,6 +21,7 @@ problems, I would be glad to assist you further.</p>
 		<li><a href="#major-02">Producer/Entity hierarchy changed</a></li>
 		<li><a href="#major-03">Related Resources hierarchy compressed</a></li>
 		<li><a href="#major-04">Non-XML Resources validated against DDMS schemas</a></li>
+		<li><a href="#major-05">DDMS 4.0 skipped in favor of DDMS 4.0.1</a></li>
 	</ul></li>
 	<li><b>Minor Changes</b><ul>
 		<li><a href="#minor-01">Validation for security rollup removed</a></li>
@@ -66,7 +67,7 @@ as discussed in this <a href="documentation-differentIsm.jsp">Power Tip</a>.</p>
 &lt;/ddms:creator&gt;</pre>
 
 <p>This creator element was modeled in DDMSence 1.x as "An instance of Organization has the role of creator" 
-and the Organization class contained this entire construct. With DDMS 4.0, Organizations and Persons 
+and the Organization class contained this entire construct. With DDMS 4.0.1, Organizations and Persons 
 can now appear in other roles besides the classic producers (such as an Addressee or RecordKeeper), and the 
 old approach became too fragile to sustain. Producers and entities are now consistent with the schema -- 
 the above construct is modeled as "An instance of Creator contains an instance of Organization".</p>
@@ -103,7 +104,7 @@ in the producer role (Contributor, Creator, PointOfContact, or Publisher) instea
       @ddms:value
       ddms:link (1-many)</pre>
 <p>In this model, the ddms:relatedResources element defined the relationship and direction, and a collection of ddms:relatedResource elements shared those values.
-DDMS 4.0  has flattened this to one level:</p>
+DDMS 4.0.1  has flattened this to one level:</p>
 
 <pre class="brush: xml">ddms:relatedResource (0-many in a ddms:resource)
    @ddms:qualifier
@@ -117,7 +118,7 @@ DDMS 4.0  has flattened this to one level:</p>
 contains all of the required information (including the relationship and direction attributes). The element-based
 constructor for RelatedResource expects a construct that describes a single related resource. For example:</p>
 	
-<p><u>Pre-DDMS 4.0:</u></p>
+<p><u>Pre-DDMS 4.0.1:</u></p>
 <pre class="brush: xml">&lt;ddms:relatedResources ddms:relationship="http://purl.org/dc/terms/references" ddms:direction="outbound" 
    ISM:classification="U" ISM:ownerProducer="USA"&gt;
    &lt;ddms:RelatedResource ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://en.wikipedia.org/wiki/Tank"&gt;
@@ -125,7 +126,7 @@ constructor for RelatedResource expects a construct that describes a single rela
    &lt;/ddms:RelatedResource&gt;
 &lt;/ddms:relatedResources&gt;</pre>
 	
-<p><u>DDMS 4.0</u></p>
+<p><u>DDMS 4.0.1</u></p>
 <pre class="brush: xml">&lt;ddms:relatedResource ddms:relationship="http://purl.org/dc/terms/references" ddms:direction="outbound" 
    ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://en.wikipedia.org/wiki/Tank" 
    ISM:classification="U" ISM:ownerProducer="USA"&gt;
@@ -134,7 +135,7 @@ constructor for RelatedResource expects a construct that describes a single rela
 	
 <p>In earlier versions of DDMS, having multiple resources with the same relationship and direction was allowed:</p>
 	
-<p><u>Pre-DDMS 4.0:</u></p>
+<p><u>Pre-DDMS 4.0.1:</u></p>
 <pre class="brush: xml">&lt;ddms:relatedResources ddms:relationship="http://purl.org/dc/terms/references" ddms:direction="outbound" 
    ISM:classification="U" ISM:ownerProducer="USA"&gt;
    &lt;ddms:RelatedResource ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://en.wikipedia.org/wiki/Tank"&gt;
@@ -186,6 +187,23 @@ ID value, which would result in an invalid XML record.</p>
 
 </div>
 
+<a name="major-05"></a><h4>DDMS 4.0 skipped in favor of DDMS 4.0.1 (<a href="http://code.google.com/p/ddmsence/issues/detail?id=174">Issue #174</a>)</h4>
+<div class="upgradeGuide">
+
+<p>DDMS 4.0 was released in September 2011 with an oversight on the technical implementation of the <code>pocType</code> attribute on producer roles. DDMS 4.0
+contained a <code>ddms:POCType</code> attribute for this, but it was soon determined by the IC that this would break IRM instances. DDMS 4.0.1 was quickly released a month
+later and employs <code>ISM:pocType</code> instead.</p>
+
+<p>Although this change (removing the old attribute and adding a new one) breaks backwards compatibility, the decision was made to reuse the DDMS 4.0
+XML namespace, given that the adoption of DDMS 4.0 was assumed to be relatively low. Because DDMS 4.0 is considered to be "broken", and because
+DDMS 4.0.1 was released before I released DDMSence 2.0.0, I have elected not to support DDMS 4.0.</p>
+
+<p><b>How to Upgrade:</b></p>
+<p>There are no upgrade steps required. "4.0" is not a valid supported DDMS version in DDMSence. If your organization is upgrading from an earlier
+version of DDMS, the DDMS team is strongly encouraging that you go directly to 4.0.1 anyhow.</p>
+
+</div>
+
 <h3>Minor Changes</h3>
 
 <a name="minor-01"></a><h4>Validation for security rollup removed (<a href="http://code.google.com/p/ddmsence/issues/detail?id=165">Issue #165</a>)</h4>
@@ -193,7 +211,7 @@ ID value, which would result in an invalid XML record.</p>
 <div class="upgradeGuide">
 <p>Previously, DDMSence would do a basic check to see that security classifications of top-level components
 were never more restrictive than the resource itself, and also checked to see that all classifications used
-a consistent system (US vs NATO). In DDMS 4.0, classification markings can go much deeper into the object
+a consistent system (US vs NATO). In DDMS 4.0.1, classification markings can go much deeper into the object
 hierarchy, and NATO markings are now handled apart from classifications. Rather than reinvent the wheel
 here, it would be better to use the ISM Schematron files to correctly and comprehensively manage your
 security classifications.</p>
@@ -232,7 +250,7 @@ in the Power Tip on <a href="documentation-schematron.jsp">Schematron Validation
 <li><u>ISMVocabulary</u>: setIsmVersion() became setDDMSVersion() (<a href="http://code.google.com/p/ddmsence/issues/detail?id=95">Issue #95</a>).</li>
 <li><u>Keyword</u>: The constructor has an additional parameter for optional attributes. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=156">Issue #156</a>)</li>
 <li><u>Organization</u>: The constructor has additional parameters for optional subOrganization and acronym. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=113">Issue #113</a>)</li>
-<li><u>Person</u>: The order of the constructor parameters has been reordered to match the DDMS 4.0 schema (<a href="http://code.google.com/p/ddmsence/issues/detail?id=114">Issue #114</a>)</li>
+<li><u>Person</u>: The order of the constructor parameters has been reordered to match the DDMS 4.0.1 schema (<a href="http://code.google.com/p/ddmsence/issues/detail?id=114">Issue #114</a>)</li>
 <li><u>RelatedResource</u>: The constructor has additional parameters for new attributes. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=130">Issue #130</a>)</li>
 <li><u>Resource</u>: getSubjectCoverage() became getSubjectCoverages() and now returns a list of SubjectCoverage components (<a href="http://code.google.com/p/ddmsence/issues/detail?id=126">Issue #126</a>)</li>
 <li><u>Resource</u>: getDESVersion() became getIsmDESVersion() to avoid conflict with ntk:DESVersion (<a href="http://code.google.com/p/ddmsence/issues/detail?id=131">Issue #131</a>)</li>
@@ -243,13 +261,13 @@ in the Power Tip on <a href="documentation-schematron.jsp">Schematron Validation
 </ul>
 <p><b>How to Upgrade:</b></p>
 <p>If any method calls show compiler errors after upgrading to DDMSence 2.0.0, consult the API documentation and update the method signature. If a constructor
-has additional parameters to support new data from DDMS 4.0 and you are using an older version of DDMS, you can probably get away with simply passing in a <code>null</code> value.</p>	
+has additional parameters to support new data from DDMS 4.0.1 and you are using an older version of DDMS, you can probably get away with simply passing in a <code>null</code> value.</p>	
 </div>
 
 <a name="minor-04"></a><h4>XLink attributes encapsulated in a class (<a href="http://code.google.com/p/ddmsence/issues/detail?id=166">Issue #166</a>)</h4>
 
 <div class="upgradeGuide">
-<p>The XLink attributes which decorate a ddms:link element (and other new DDMS 4.0 elements) have been extracted into a standalone attribute group called
+<p>The XLink attributes which decorate a ddms:link element (and other new DDMS 4.0.1 elements) have been extracted into a standalone attribute group called
 <a href="/docs/index.html?buri/ddmsence/ddms/summary/xlink/XLinkAttributes.html">XLinkAttributes</a>.</p>
 
 <p><b>How to Upgrade:</b></p>
@@ -268,7 +286,7 @@ String role = link.getXLinkAttributes().getRole();</pre>
 <div class="upgradeGuide">
 
 <p>Previously, all components had a public NAME field containing the expected name of the component. Because
-many elements have had their names changed in DDMS 4.0 (i.e. ddms:Person became ddms:person), component
+many elements have had their names changed in DDMS 4.0.1 (i.e. ddms:Person became ddms:person), component
 classes now have a static method which returns a name for some DDMSVersion.</p>
 
 <p><b>How to Upgrade:</b></p>
@@ -313,7 +331,7 @@ then on the XML namespace (ISM, GML, etc.).</p>
 <div class="upgradeGuide">
 
 <ul>
-<li>MediaExtent renamed to Extent: Because the Media wrapper was removed in DDMS 4.0, the old name no longer made sense. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=127">Issue #127</a>).</li>
+<li>MediaExtent renamed to Extent: Because the Media wrapper was removed in DDMS 4.0.1, the old name no longer made sense. (<a href="http://code.google.com/p/ddmsence/issues/detail?id=127">Issue #127</a>).</li>
 <li>IProducerEntity renamed to IRoleEntity: Because Entities can now fulfill non-producer roles, the old name no longer made sense (<a href="http://code.google.com/p/ddmsence/issues/detail?id=163">Issue #163</a>).</li>
 </ul>
 

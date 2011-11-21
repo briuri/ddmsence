@@ -52,18 +52,18 @@ import buri.ddmsence.util.Util;
  * </ul>
  * </td></tr></table>
  * 
- * <p>The name of this component was changed from "Organization" to "organization" in DDMS 4.0.</p>
+ * <p>The name of this component was changed from "Organization" to "organization" in DDMS 4.0.1.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:name</u>: names of the producer entity (1-many, at least 1 required)<br />
  * <u>ddms:phone</u>: phone numbers of the producer entity (0-many optional)<br />
  * <u>ddms:email</u>: email addresses of the producer entity (0-many optional)<br />
- * <u>ddms:subOrganization</u>: suborganization (0-many optional, starting in DDMS 4.0), implemented as a 
+ * <u>ddms:subOrganization</u>: suborganization (0-many optional, starting in DDMS 4.0.1), implemented as a 
  * {@link SubOrganization}<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>ddms:acronym</u>: an acronym for the organization (optional, starting in DDMS 4.0)<br />
+ * <u>ddms:acronym</u>: an acronym for the organization (optional, starting in DDMS 4.0.1)<br />
  * <u>{@link ExtensibleAttributes}</u>
  * </td></tr></table>
  * 
@@ -146,7 +146,7 @@ public final class Organization extends AbstractRoleEntity {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>Acronyms cannot exist until DDMS 4.0 or later.</li>
+	 * <li>Acronyms cannot exist until DDMS 4.0.1 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractRoleEntity#validate()
@@ -156,9 +156,9 @@ public final class Organization extends AbstractRoleEntity {
 		Util.requireDDMSQName(getXOMElement(), Organization.getName(getDDMSVersion()));
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("4.0")) {
+		if (!getDDMSVersion().isAtLeast("4.0.1")) {
 			if (!Util.isEmpty(getAcronym()))
-				throw new InvalidDDMSException("An organization cannot have an acronym until DDMS 4.0 or later.");
+				throw new InvalidDDMSException("An organization cannot have an acronym until DDMS 4.0.1 or later.");
 		}
 		
 		super.validate();
@@ -172,7 +172,7 @@ public final class Organization extends AbstractRoleEntity {
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (getDDMSVersion().isAtLeast("4.0")) {
+		if (getDDMSVersion().isAtLeast("4.0.1")) {
 			if (Util.isEmpty(getAcronym())
 				&& getXOMElement().getAttribute(ACRONYM_NAME, getNamespace()) != null)
 			addWarning("A ddms:acronym attribute was found with no value.");
@@ -227,7 +227,7 @@ public final class Organization extends AbstractRoleEntity {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return (version.isAtLeast("4.0") ? "organization" : "Organization");
+		return (version.isAtLeast("4.0.1") ? "organization" : "Organization");
 	}
 	
 	/**

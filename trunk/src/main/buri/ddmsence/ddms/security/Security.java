@@ -38,9 +38,9 @@ import buri.ddmsence.util.Util;
  * An immutable implementation of ddms:security.
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:noticeList</u>: A collection of IC notices (optional, starting in DDMS 4.0), implemented as a 
+ * <u>ddms:noticeList</u>: A collection of IC notices (optional, starting in DDMS 4.0.1), implemented as a 
  * {@link NoticeList}<br />
- * <u>ntk:Access</u>: Need-To-Know access information (optional, starting in DDMS 4.0), implemented as an 
+ * <u>ntk:Access</u>: Need-To-Know access information (optional, starting in DDMS 4.0.1), implemented as an 
  * {@link Access}<br />
  * </td></tr></table>
  * 

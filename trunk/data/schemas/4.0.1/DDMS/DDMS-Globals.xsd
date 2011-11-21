@@ -15,6 +15,7 @@
 				1/5/2010 (P. Lunceford)  -- Created DDMS 3.0.  Implemented CRs 2009-04 (replaced creatorType/publisherType/contributorType/pointOfContactType with contactInfoType), 2009-07 (set minOccurs on RelatedResourceType to 1), 2009-09 (added Unknown entity to accompany Person, Organization, and Service for a choice for Creator, Publisher, Contributor, and PointOfContact), 2009-10 (added extensions to CompoundKeywordIdentifierType and CompoundCategoryIdentifierType), and 2009-12 (added Security Markings to SubjectCoverageType, CompoundSouceIdentifierType, TemporalCoverageType, and VirtualCoverageType).
 				6/05/2011 (E. Hughes) -- Created DDMS 3.1.  Implemented CR 2011-1 to create DDMS-Includes.xsd wherein all IC-ISM references are consolidated.
 				6/05/2011 (E. Hughes) -- Added approvedOn attribute pursuant to CR 2011-5.
+				11/11/2011 (E. Hughes) -- Implemented CR 2011-17 to use IC-ISM POCType.
 		</xs:documentation>
 	</xs:annotation>
 	<xs:include schemaLocation="DDMS-Includes.xsd"/>
@@ -34,32 +35,32 @@
 	</xs:element>
 	<xs:element name="title" type="TitleType">
 		<xs:annotation>
-			<xs:appinfo xml:lang="en">A name, or names, given to the resource	{from DCMI: title, v. 004}.  The title category must contain at least one title, and may contain subtitles, or supplementary, explanatory titles for use on cover pages and for cataloging and searching.  See also, DDMS Spec Cateogry: Title.
+			<xs:appinfo xml:lang="en">A name, or names, given to the resource	{from DCMI: title, v. 004}.  The title category must contain at least one title, and may contain subtitles, or supplementary, explanatory titles for use on cover pages and for cataloging and searching.  See also, DDMS Spec Category: Title.
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="subtitle" type="SubtitleType">
 		<xs:annotation>
-			<xs:appinfo xml:lang="en">A subtitle may be any form of the title used as a substitute, or it may be an alternative to the formal title of the resource.  See also, DDMS Spec Cateogry: Title.
+			<xs:appinfo xml:lang="en">A subtitle may be any form of the title used as a substitute, or it may be an alternative to the formal title of the resource.  See also, DDMS Spec Category: Title.
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="creator" type="ContactInfoType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">A subtitle may be any form of the title used as a substitute, or it may be an alternative to the formal title of the resource. Information about the entity responsible for generating the resource  {Source: DCMI:  creator, v. 004; IC MSP v. 1.0a:  AuthorInfo, POCInfo} 
-When a creator is a service or an organization, and not an individual, it is expected that the contact authority (person or organization) for the resource will be listed.  The relations provided in this schema are Organization, Person, Service, Unknown.  See also, DDMS Spec Cateogry: Creator.
+When a creator is a service or an organization, and not an individual, it is expected that the contact authority (person or organization) for the resource will be listed.  The relations provided in this schema are Organization, Person, Service, Unknown.  See also, DDMS Spec Category: Creator.
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="publisher" type="ContactInfoType">
 		<xs:annotation>
-			<xs:appinfo xml:lang="en">This category is used to tag the identification of the entity responsible for releasing the data asset--the entity primarily responsible for the intellectual content of the product.  It is intended that this category apply whenever applicable to an organization, as opposed to a person.  Typically, the name of a Publisher should be used to indicate the organization, agency, or domain responsible for the resource.  See also, DDMS Spec Cateogry: Publisher.
+			<xs:appinfo xml:lang="en">This category is used to tag the identification of the entity responsible for releasing the data asset--the entity primarily responsible for the intellectual content of the product.  It is intended that this category apply whenever applicable to an organization, as opposed to a person.  Typically, the name of a Publisher should be used to indicate the organization, agency, or domain responsible for the resource.  See also, DDMS Spec Category: Publisher.
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="contributor" type="ContactInfoType">
 		<xs:annotation>
-			<xs:appinfo xml:lang="en">Information about an organization, person, or entity, that contributed intellectual content to a resource, other than the publishing organization  {DCMI:  contributor, v. 004; IC MSP v. 1.0a: Contributor} When a creator is a service or an organization, and not an individual, it is expected that the contact authority (person or organization) for the resource will be listed.  The relations provided in this schema are Organization, Person, Service, Unknown.  See also, DDMS Spec Cateogry: Contributor.
+			<xs:appinfo xml:lang="en">Information about an organization, person, or entity, that contributed intellectual content to a resource, other than the publishing organization  {DCMI:  contributor, v. 004; IC MSP v. 1.0a: Contributor} When a creator is a service or an organization, and not an individual, it is expected that the contact authority (person or organization) for the resource will be listed.  The relations provided in this schema are Organization, Person, Service, Unknown.  See also, DDMS Spec Category: Contributor.
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
@@ -80,100 +81,95 @@ When a creator is a service or an organization, and not an individual, it is exp
 			<xs:element ref="service"/>
 			<xs:element ref="unknown"/>
 		</xs:choice>
-		<xs:attribute ref="POCType" use="optional">
-			<xs:annotation>
-				<xs:documentation>Indicates that the element specifies a point-of-contact (POC) and the methods with which to contact them.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
+		<xs:attributeGroup ref="POCAttributesGroup"/>
 	</xs:complexType>
 	<xs:element name="source" type="CompoundSourceIdentifierType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">References to assets or resources from which the tagged data asset is derived.  {Source: DCMI: type, v. 004}
-Sources may be derived partially or wholly, and it is recommended that an identifier (such as a string or number from a formal identification system) be used as a reference.  See also, DDMS Spec Cateogry: Source.
+Sources may be derived partially or wholly, and it is recommended that an identifier (such as a string or number from a formal identification system) be used as a reference.  See also, DDMS Spec Category: Source.
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="language" type="CompoundLanguageIdentifierType">
 		<xs:annotation>
-			<xs:appinfo xml:lang="en">The primary language of the intellectual content of the resource.  {Source: DCMI: language, v. 004IC MSP v. 1.0a: Language} The most specific in-scope language present (if any) should be specified in this category. See DDMS Spec Cateogry: Language.
+			<xs:appinfo xml:lang="en">The primary language of the intellectual content of the resource.  {Source: DCMI: language, v. 004IC MSP v. 1.0a: Language} The most specific in-scope language present (if any) should be specified in this category. See DDMS Spec Category: Language.
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="description" type="DescriptionType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				An account of the content of the resource.  {Source: DCMI: description, v. 004IC MSP v. 1.0a:  Description} Description may include but is not limited to: an abstract, reference to a graphical representation of content or a free-text account of the content.  See DDMS Spec Cateogry: Description.
+				An account of the content of the resource.  {Source: DCMI: description, v. 004IC MSP v. 1.0a:  Description} Description may include but is not limited to: an abstract, reference to a graphical representation of content or a free-text account of the content.  See DDMS Spec Category: Description.
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="dates" type="DatesType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				The date related properties of this resource.  See DDMS Spec Cateogry: Date.
+				The date related properties of this resource.  See DDMS Spec Category: Date.
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="rights" type="RightsType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				Information about rights held in and over the resource. Typically, a rights element will contain a rights management statement for the resource, or reference a service providing such information. Rights information often encompasses Intellectual Property Rights (IPR), Copyright, and various Property Rights. If the rights element is absent, no assumptions can be made about the status of these and other rights with respect to the resource.  See DDMS Spec Cateogry: Rights. 
+				Information about rights held in and over the resource. Typically, a rights element will contain a rights management statement for the resource, or reference a service providing such information. Rights information often encompasses Intellectual Property Rights (IPR), Copyright, and various Property Rights. If the rights element is absent, no assumptions can be made about the status of these and other rights with respect to the resource.  See DDMS Spec Category: Rights. 
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="type" type="CompoundTypeIdentifierType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				The nature or genre fo the content of the resource.  See, DCMI Type Vocabulary [DCMITYPE], which includes, Collection, Dataset, Event Image, InteractiveResource, Service, Software, Sound, Text, PhysicalObject, StillImage, MovingImage.  See DDMS Spec Cateogry: Type.
+				The nature or genre fo the content of the resource.  See, DCMI Type Vocabulary [DCMITYPE], which includes, Collection, Dataset, Event Image, InteractiveResource, Service, Software, Sound, Text, PhysicalObject, StillImage, MovingImage.  See DDMS Spec Category: Type.
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="format" type="FormatType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				The physical or digital manifestation of the resource.  Used to define the medium, extent or duration, and MIME type of the resource.  See DDMS Spec Cateogry: Format.
+				The physical or digital manifestation of the resource.  Used to define the medium, extent or duration, and MIME type of the resource.  See DDMS Spec Category: Format.
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="medium" type="MediumType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				The physical medium or instantiation of the resource.  See also DDMS Spec Cateogry: Format.  
+				The physical medium or instantiation of the resource.  See also DDMS Spec Category: Format.  
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="mimeType" type="MimeTypeType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				The Internet Media Type [MIME] of the Resource.  See DDMS Spec Cateogry: Format.  
+				The Internet Media Type [MIME] of the Resource.  See DDMS Spec Category: Format.  
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="extent" type="QualifiedExtentValueType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				A related data size, compression rate, or pixel size (etc.) of the resource.  See also, DDMS Spec Cateogry: Format.  
+				A related data size, compression rate, or pixel size (etc.) of the resource.  See also, DDMS Spec Category: Format.  
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="subjectCoverage" type="SubjectType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				Container for the categorical subject and natural language subject classifications.  It is assumed that all content under subjectCoverage is related to the same subject.  See also SubjectType.  NOTE: At least one of either Keyword or Category must appear, after one instance of either appears, additional categories must appear before additional keywords.  See DDMS Spec Cateogry: Subject.  
+				Container for the categorical subject and natural language subject classifications.  It is assumed that all content under subjectCoverage is related to the same subject.  See also SubjectType.  NOTE: At least one of either Keyword or Category must appear, after one instance of either appears, additional categories must appear before additional keywords.  See DDMS Spec Category: Subject.  
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="category" type="CompoundCategoryIdentifierType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				Specification of the subject matter by a qualified entry from a controlled vocabulary.  See DDMS Spec Cateogry: Subject.  
+				Specification of the subject matter by a qualified entry from a controlled vocabulary.  See DDMS Spec Category: Subject.  
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="keyword" type="CompoundKeywordIdentifierType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				A natural language indication of the resource's subject matter.  See DDMS Spec Cateogry: Subject.  
+				A natural language indication of the resource's subject matter.  See DDMS Spec Category: Subject.  
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
@@ -190,42 +186,42 @@ Sources may be derived partially or wholly, and it is recommended that an identi
 	<xs:element name="temporalCoverage" type="TimePeriodType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				The subject-matter coverage in terms of one or more periods of time.  That is, an indication of the time period for which the subject of the resource applies.  (E.g. The 50's, or a span of time indicated by a start and end time.)  See DDMS Spec Cateogry: Temporal Coverage.  
+				The subject-matter coverage in terms of one or more periods of time.  That is, an indication of the time period for which the subject of the resource applies.  (E.g. The 50's, or a span of time indicated by a start and end time.)  See DDMS Spec Category: Temporal Coverage.  
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="virtualCoverage" type="VirtualCoverageType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				The subject-matter coverage of a publication in terms of one ore more virtual addresses.  Must identify the protocol being used and the virtual address of the resource. See DDMS Spec Cateogry: Virtual Coverage.  
+				The subject-matter coverage of a publication in terms of one ore more virtual addresses.  Must identify the protocol being used and the virtual address of the resource. See DDMS Spec Category: Virtual Coverage.  
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="organization" type="OrganizationType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				A named organization responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher.  See also, DDMS Spec Cateogries: Contributor, Creator, Publisher.
+				A named organization responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher.  See also, DDMS Spec Categories: Contributor, Creator, Publisher.
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="person" type="PersonType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				A person responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher. See also, DDMS Spec Cateogries: Contributor, Creator, Publisher. 
+				A person responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher. See also, DDMS Spec Categories: Contributor, Creator, Publisher. 
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="service" type="ServiceType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				A named service responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher.  See also, DDMS Spec Cateogries: Contributor, Creator, Publisher.  
+				A named service responsible as indicated by its encompasing element, i.e. as a creator, contributor, or publisher.  See also, DDMS Spec Categories: Contributor, Creator, Publisher.  
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
 	<xs:element name="unknown" type="UnknownType">
 		<xs:annotation>
 			<xs:appinfo xml:lang="en">
-				Identification that the type of entity of the encompassing element i.e. as a creator, contributor, or publisher, is unknown.  See also, DDMS Spec Cateogries: Contributor, Creator, Publisher.  
+				Identification that the type of entity of the encompassing element i.e. as a creator, contributor, or publisher, is unknown.  See also, DDMS Spec Categories: Contributor, Creator, Publisher.  
 			</xs:appinfo>
 		</xs:annotation>
 	</xs:element>
@@ -944,6 +940,5 @@ This profile suggests two ways of handling time zone offsets:   1. Times are exp
 		<xs:attributeGroup ref="SecurityAttributesOptionGroup"/>
 	</xs:complexType>
 	<xs:attribute name="acronym" type="xs:string"/>
-	<xs:attribute name="POCType" type="xs:string"/>
 	<!-- End Global Types -->
 </xs:schema>

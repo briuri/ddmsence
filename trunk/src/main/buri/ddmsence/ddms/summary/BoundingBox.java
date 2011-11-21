@@ -36,7 +36,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:eastBL</u>: eastbound longitude (required)<br />
  * <u>ddms:southBL</u>: northbound latitude (required)<br />
  * <u>ddms:northBL</u>: southbound latitude (required)<br />
- * Please note that the case of the nested elements changed starting in DDMS 4.0. Previously, the first letter of 
+ * Please note that the case of the nested elements changed starting in DDMS 4.0.1. Previously, the first letter of 
  * each element was capitalized (i.e. WestBL/EastBL/SouthBL/NorthBL).
  * </td></tr></table>
  * 
@@ -179,31 +179,31 @@ public final class BoundingBox extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the name of the westbound longitude element, which changed in DDMS 4.0.
+	 * Accessor for the name of the westbound longitude element, which changed in DDMS 4.0.1.
 	 */
 	private String getWestBLName() {
-		return (getDDMSVersion().isAtLeast("4.0") ? "westBL" : "WestBL");
+		return (getDDMSVersion().isAtLeast("4.0.1") ? "westBL" : "WestBL");
 	}
 	
 	/**
-	 * Accessor for the name of the eastbound longitude element, which changed in DDMS 4.0.
+	 * Accessor for the name of the eastbound longitude element, which changed in DDMS 4.0.1.
 	 */
 	private String getEastBLName() {
-		return (getDDMSVersion().isAtLeast("4.0") ? "eastBL" : "EastBL");
+		return (getDDMSVersion().isAtLeast("4.0.1") ? "eastBL" : "EastBL");
 	}
 	
 	/**
-	 * Accessor for the name of the southbound latitude element, which changed in DDMS 4.0.
+	 * Accessor for the name of the southbound latitude element, which changed in DDMS 4.0.1.
 	 */
 	private String getSouthBLName() {
-		return (getDDMSVersion().isAtLeast("4.0") ? "southBL" : "SouthBL");
+		return (getDDMSVersion().isAtLeast("4.0.1") ? "southBL" : "SouthBL");
 	}
 	
 	/**
-	 * Accessor for the name of the northbound latitude element, which changed in DDMS 4.0.
+	 * Accessor for the name of the northbound latitude element, which changed in DDMS 4.0.1.
 	 */
 	private String getNorthBLName() {
-		return (getDDMSVersion().isAtLeast("4.0") ? "northBL" : "NorthBL");
+		return (getDDMSVersion().isAtLeast("4.0.1") ? "northBL" : "NorthBL");
 	}
 	
 	/**

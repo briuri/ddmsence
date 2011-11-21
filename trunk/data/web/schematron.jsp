@@ -9,7 +9,7 @@
 
 <p align="right"><b>Last Update:</b> 09/24/2011</p>
 
-<a name="top"></a><h1>Schematron Implementation for DDMS 4.0</h1>
+<a name="top"></a><h1>Schematron Implementation for DDMS 4.0.1</h1>
 
 <p>This document is an attempt to map some of the more complex DDMS conditions to a Schematron file. Where an XML Schema can be used 
 to validate correctness and syntax, a Schematron file can more easily address rules related to content and dependencies between 
@@ -26,7 +26,7 @@ various elements and attributes. Please note that DDMSence currently validates t
    xmlns="http://purl.oclc.org/dsdl/schematron"
    xmlns:iso="http://purl.oclc.org/dsdl/schematron"&gt;
    
-   &lt;iso:title&gt;Test ISO Schematron File for DDMSence (DDMS 4.0)&lt;/iso:title&gt;
+   &lt;iso:title&gt;Test ISO Schematron File for DDMSence (DDMS 4.0.1)&lt;/iso:title&gt;
    &lt;iso:ns prefix='ddms' uri='urn:us:mil:ces:metadata:ddms:4' /&gt;
    &lt;iso:ns prefix='ISM' uri='urn:us:gov:ic:ism' /&gt;
    &lt;iso:ns prefix='gml' uri='http://www.opengis.net/gml/3.2' /&gt;

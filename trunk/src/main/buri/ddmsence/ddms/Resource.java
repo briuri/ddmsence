@@ -93,10 +93,10 @@ import buri.ddmsence.util.Util;
  * &lt;meta name="ddms.version" content="3.0" /&gt;<br />
  * </code></ul></p>
  * 
- * <p>The name of this component was changed from "Resource" to "resource" in DDMS 4.0.</p>
+ * <p>The name of this component was changed from "Resource" to "resource" in DDMS 4.0.1.</p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:metacardInfo</u>: (exactly 1 required, starting in DDMS 4.0), implemented as a {@link MetacardInfo}<br />
+ * <u>ddms:metacardInfo</u>: (exactly 1 required, starting in DDMS 4.0.1), implemented as a {@link MetacardInfo}<br />
  * <u>ddms:identifier</u>: (1-many required), implemented as an {@link Identifier}<br />
  * <u>ddms:title</u>: (1-many required), implemented as a {@link Title}<br />
  * <u>ddms:subtitle</u>: (0-many optional), implemented as a {@link Subtitle}<br />
@@ -111,12 +111,12 @@ import buri.ddmsence.util.Util;
  * <u>ddms:pointOfContact</u>: (0-many optional), implemented as a {@link PointOfContact}<br />
  * <u>ddms:publisher</u>: (0-many optional), implemented as a {@link Publisher}<br />
  * <u>ddms:format</u>: (0-1 optional), implemented as a {@link Format}<br />
- * <u>ddms:subjectCoverage</u>: (1-many required, starting in DDMS 4.0), implemented as a {@link SubjectCoverage}<br />
+ * <u>ddms:subjectCoverage</u>: (1-many required, starting in DDMS 4.0.1), implemented as a {@link SubjectCoverage}<br />
  * <u>ddms:virtualCoverage</u>: (0-many optional), implemented as a {@link VirtualCoverage}<br />
  * <u>ddms:temporalCoverage</u>: (0-many optional), implemented as a {@link TemporalCoverage}<br />
  * <u>ddms:geospatialCoverage</u>: (0-many optional), implemented as a {@link GeospatialCoverage}<br />
  * <u>ddms:relatedResource</u>: (0-many optional), implemented as a {@link RelatedResource}<br />
- * <u>ddms:resourceManagement</u>: (0-1 optional, starting in DDMS 4.0), implemented as a {@link ResourceManagement}<br />
+ * <u>ddms:resourceManagement</u>: (0-1 optional, starting in DDMS 4.0.1), implemented as a {@link ResourceManagement}<br />
  * <u>ddms:security</u>: (exactly 1 required), implemented as a {@link Security}<br />
  * <u>Extensible Layer</u>: (0-many optional), implemented as a {@link ExtensibleElement}<br />
  * </td></tr></table>
@@ -129,10 +129,10 @@ import buri.ddmsence.util.Util;
  * <u>ISM:DESVersion</u>: Specifies the version of the Data Encoding Specification used for the security
  * markings on this record. (required, starting in DDMS 3.0)<br />
  * <u>ntk:DESVersion</u>: Specifies the version of the Data Encoding Specification used for Need-To-Know markings
- * on this record. (required, starting in DDMS 4.0 with a fixed value)<br />
+ * on this record. (required, starting in DDMS 4.0.1 with a fixed value)<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required. (starting in DDMS 
  * 3.0)<br />
- * <u>{@link NoticeAttributes}</u>: (optional, starting in DDMS 4.0)<br />
+ * <u>{@link NoticeAttributes}</u>: (optional, starting in DDMS 4.0.1)<br />
  * <u>{@link ExtensibleAttributes}</u>: (optional)<br />
  * <br />
  * Starting in DDMS 3.0, the ISM attributes explicitly defined in the schema should appear in the SecurityAttributes, 
@@ -230,7 +230,7 @@ public final class Resource extends AbstractBaseComponent {
 					// 	This will be thrown as an InvalidDDMSException during validation
 				}
 			}
-			if (getDDMSVersion().isAtLeast("4.0")) {
+			if (getDDMSVersion().isAtLeast("4.0.1")) {
 				String ntkDESVersion = element.getAttributeValue(DES_VERSION_NAME, getDDMSVersion().getNtkNamespace());
 				if (!Util.isEmpty(ntkDESVersion)) {
 					try {
@@ -347,7 +347,7 @@ public final class Resource extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Helper method to convert element-based related resources into components. In DDMS 4.0, there is a
+	 * Helper method to convert element-based related resources into components. In DDMS 4.0.1, there is a
 	 * one-to-one correlation between the two. In DDMS 2.0, 3.0, or 3.1, the top-level ddms:RelatedResources
 	 * element might contain more than 1 ddms:relatedResource. In the latter case, each ddms:relatedResource
 	 * must be mediated into a separate RelatedResource instance.
@@ -409,7 +409,7 @@ public final class Resource extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a DDMS 3.1 Resource from raw data.
 	 * 
-	 * <p>This helper constructor merely calls the fully-parameterized version. Attempts to use it with DDMS 4.0
+	 * <p>This helper constructor merely calls the fully-parameterized version. Attempts to use it with DDMS 4.0.1
 	 * (or higher) components will fail, because some required attributes are missing.</p>
 	 * 
 	 * @param topLevelComponents a list of top level components
@@ -452,10 +452,10 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
 	 * @param compliesWiths shows what ISM rule sets this resource complies with (optional, starting in DDMS 3.1)
 	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
-	 * @param ntkDESVersion the DES Version as an Integer (required, starting in DDMS 4.0)
+	 * @param ntkDESVersion the DES Version as an Integer (required, starting in DDMS 4.0.1)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
 	 * DDMS 3.0)
-	 * @param noticeAttributes any notice attributes (optional, starting in DDMS 4.0)
+	 * @param noticeAttributes any notice attributes (optional, starting in DDMS 4.0.1)
 	 * @param extensibleAttributes any extensible attributes (optional)
 	 * @throws InvalidDDMSException if any required information is missing or malformed, or if one of the components
 	 * does not belong at the top-level of the Resource.
@@ -668,7 +668,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Exactly 1 metacardInfo, 1-many identifiers, 1-many titles, 0-1 descriptions, 0-1 dates, 0-1 rights, 
 	 * 0-1 formats, exactly 1 subjectCoverage, 0-1 resourceManagement, and exactly 1 security element must exist.</li>
-	 * <li>Starting in DDMS 4.0, 1-many subjectCoverage elements can exist.</li>
+	 * <li>Starting in DDMS 4.0.1, 1-many subjectCoverage elements can exist.</li>
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
 	 * <li>All ddms:order attributes make a complete, consecutive set, starting at 1.</li>
 	 * <li>resourceElement attribute must exist, starting in DDMS 3.0.</li>
@@ -677,8 +677,8 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>If set, the compliesWith attribute must be valid tokens.</li>
 	 * <li>ISM DESVersion must exist and be a valid Integer, starting in DDMS 3.0.</li>
 	 * <li>The value of ISM DESVersion must be fixed, starting in DDMS 3.1. This is checked during schema validation.</li>
-	 * <li>NTK DESVersion must exist and be a valid Integer, starting in DDMS 4.0.</li>
-	 * <li>The value of NTK DESVersion must be fixed,s tarting in DDMS 4.0. This is checked during schema validation.</li>
+	 * <li>NTK DESVersion must exist and be a valid Integer, starting in DDMS 4.0.1.</li>
+	 * <li>The value of NTK DESVersion must be fixed,s tarting in DDMS 4.0.1. This is checked during schema validation.</li>
 	 * <li>A classification is required, starting in DDMS 3.0.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty, starting in DDMS 3.0.</li>
 	 * <li>Only 1 extensible element can exist in DDMS 2.0.</li>
@@ -702,7 +702,7 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), Rights.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Format.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), ResourceManagement.getName(getDDMSVersion()), 0, 1);
-		if (getDDMSVersion().isAtLeast("4.0")) {
+		if (getDDMSVersion().isAtLeast("4.0.1")) {
 			if (getSubjectCoverages().size() < 1)
 				throw new InvalidDDMSException("At least 1 subjectCoverage is required.");
 		}
@@ -711,7 +711,7 @@ public final class Resource extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), Security.getName(getDDMSVersion()), 1, 1);
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (getDDMSVersion().isAtLeast("4.0")) {
+		if (getDDMSVersion().isAtLeast("4.0.1")) {
 			validateOrderAttributes();
 			Util.requireDDMSValue("ntk:" + DES_VERSION_NAME, getNtkDESVersion());
 		}
@@ -722,7 +722,7 @@ public final class Resource extends AbstractBaseComponent {
 		if (!getDDMSVersion().isAtLeast("3.0") && getExtensibleElements().size() > 1) {
 			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
 		}
-		if (getDDMSVersion().isAtLeast("4.0"))
+		if (getDDMSVersion().isAtLeast("4.0.1"))
 			Util.requireBoundedChildCount(getXOMElement(), MetacardInfo.getName(getDDMSVersion()), 1, 1);
 		if (getDDMSVersion().isAtLeast("3.0")) {
 			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
@@ -878,7 +878,7 @@ public final class Resource extends AbstractBaseComponent {
 	 */
 	public static String getName(DDMSVersion version) {
 		Util.requireValue("version", version);
-		return (version.isAtLeast("4.0") ? "resource" : "Resource");
+		return (version.isAtLeast("4.0.1") ? "resource" : "Resource");
 	}
 	
 	/**

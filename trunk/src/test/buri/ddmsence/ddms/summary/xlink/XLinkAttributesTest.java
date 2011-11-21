@@ -318,14 +318,14 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 			getInstance("Invalid URI", element);
 
 			// role is not valid URI
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				element = Util.buildDDMSElement("link", null);
 				addAttributes(element, null, INVALID_URI, null, null);
 				getInstance("Invalid URI", element);
 			}
 
 			// label is not valid NCName
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				element = Util.buildDDMSElement("link", null);
 				addAttributes(element, null, null, null, "ddms:prefix& GML");
 				getInstance("\"ddms:prefix& GML\" is not a valid NCName.", element);
@@ -353,12 +353,12 @@ public class XLinkAttributesTest extends AbstractBaseTestCase {
 			getInstance("Invalid URI", INVALID_URI, null, null, null);
 
 			// role is not valid URI
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				getInstance("Invalid URI", null, INVALID_URI, null, null);
 			}
 
 			// label is not valid NCName
-			if (version.isAtLeast("4.0")) {
+			if (version.isAtLeast("4.0.1")) {
 				getInstance("\"ddms:prefix& GML\" is not a valid NCName.", null, null, null, "ddms:prefix& GML");
 			}
 

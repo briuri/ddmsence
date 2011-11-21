@@ -13,7 +13,7 @@
 			</ddms:organization>
 		</ddms:publisher>
 		<ddms:description ICISM:classification="U" ICISM:ownerProducer="USA">This is an example of a card produced for DDMS</ddms:description>
-		<ddms:processingInfo ICISM:classification="U" ddms:dateProcessed="2011-08-19" ICISM:ownerProducer="USA">XSLT Transformation to convert DDMS 3.0 to DDMS 4.0.		
+		<ddms:processingInfo ICISM:classification="U" ddms:dateProcessed="2011-08-19" ICISM:ownerProducer="USA">XSLT Transformation to convert DDMS 3.0 to DDMS 4.0.1.		
 		</ddms:processingInfo>
 		<ddms:revisionRecall ddms:revisionID="1" ICISM:classification="U" ddms:revisionType="ADMINISTRATIVE RECALL" ICISM:ownerProducer="USA"/>
 		<ddms:recordsManagementInfo ddms:vitalRecordIndicator="true">
@@ -42,7 +42,7 @@
 	<ddms:rights ddms:privacyAct="true" ddms:intellectualProperty="true" ddms:copyright="false"/>
 	<ddms:source ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://www.xmethods.com" ddms:schemaQualifier="WSDL" ddms:schemaHref="http://www.xmethods.com?wsdl"/>
 	<ddms:type ddms:qualifier="urn:us:gov:ic:activity" ddms:value="crisis" ICISM:classification="U" ICISM:ownerProducer="USA">A critical crisis activity</ddms:type>
-	<ddms:creator ICISM:classification="U" ICISM:ownerProducer="USA" ddms:POCType="type">
+	<ddms:creator ICISM:classification="U" ICISM:ownerProducer="USA" ICISM:pocType="ABC">
 		<ddms:person>
 			<ddms:name>John Q.</ddms:name>
 			<ddms:surname>Jones</ddms:surname>
@@ -52,7 +52,7 @@
 			<ddms:affiliation>U.S. Army</ddms:affiliation>
 		</ddms:person>
 	</ddms:creator>
-	<ddms:publisher ICISM:classification="U" ICISM:ownerProducer="USA" ddms:POCType="type">
+	<ddms:publisher ICISM:classification="U" ICISM:ownerProducer="USA" ICISM:pocType="ABC">
 		<ddms:person>
 			<ddms:name>John Q.</ddms:name>
 			<ddms:surname>Jones</ddms:surname>
@@ -62,7 +62,7 @@
 			<ddms:affiliation>U.S. Army</ddms:affiliation>
 		</ddms:person>
 	</ddms:publisher>
-	<ddms:contributor ICISM:classification="U" ICISM:ownerProducer="USA" ddms:POCType="type">
+	<ddms:contributor ICISM:classification="U" ICISM:ownerProducer="USA" ICISM:pocType="ABC">
 		<ddms:person>
 			<ddms:name>John Q.</ddms:name>
 			<ddms:surname>Jones</ddms:surname>
@@ -72,7 +72,7 @@
 			<ddms:affiliation>U.S. Army</ddms:affiliation>
 		</ddms:person>
 	</ddms:contributor>
-	<ddms:pointOfContact ddms:POCType="type">
+	<ddms:pointOfContact ICISM:pocType="ABC">
 		<ddms:person>
 			<ddms:name>John Q.</ddms:name>
 			<ddms:surname>Jones</ddms:surname>

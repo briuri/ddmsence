@@ -50,7 +50,7 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 	 */
 	public static ResourceManagement getFixture() {
 		try {
-			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0") ? new ResourceManagement(null, null, null,
+			return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? new ResourceManagement(null, null, null,
 				ProcessingInfoTest.getFixtureList(), SecurityAttributesTest.getFixture()) : null);
 		}
 		catch (InvalidDDMSException e) {
