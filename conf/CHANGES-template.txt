@@ -9,7 +9,7 @@ Copyright 2010 - 2011 by Brian Uri!
 Release History
 ===========================================================================
 
-v 2.0.0 (XX/YY/ZZZZ):
+v 2.0.0 (12/01/2011):
 This stable major release adds support for DDMS 4.0.1. Because upgrading to this
 version may require a non-trivial effort, an upgrade guide has been provided
 on the DDMSence Downloads page.
