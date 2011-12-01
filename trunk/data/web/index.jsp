@@ -82,13 +82,13 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
-	<div class="newsUpdate"><u>XX/YY/ZZZZ</u>: <a href="downloads.jsp">v2.0.0</a> released, adding support for DDMS 4.0.1.</div>
-	<div class="newsUpdate"><u>10/06/2011</u>: I will be giving a briefing on DDMSence at the <a href="https://metadata.ces.mil/mdr/mdwgDocuments.htm">DoD Metadata Working Group Meeting</a> on October 20 in Columbia, MD.</div>
+	<div class="newsUpdate"><u>12/01/2011</u>: <a href="downloads.jsp">v2.0.0</a> released, adding support for DDMS 4.0.1.</div>
+	<div class="newsUpdate"><u>10/20/2011</u>: I gave a briefing on DDMSence at the <a href="https://metadata.ces.mil/mdr/mdwgDocuments.htm">DoD Metadata Working Group Meeting</a> on October 20 in Columbia, MD.</div>
 	<div class="newsUpdate"><u>09/25/2011</u>: Development on v2.0.0 is complete! v2.0.0 will support DDMS 4.0.1, and will be released once the "Public Release" versions of IC-ISM and IC-NTK are available to be bundled with DDMSence.</div>
 	<div class="newsUpdate"><u>07/17/2011</u>: v1.11.0 released, adding <a href="documentation-schematron.jsp">support for XSLT2-based Schematron validation</a>.</div>
-	<div class="newsUpdate"><u>07/05/2011</u>: v1.10.0 released, adding support for DDMS 3.1.</div>
 	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
 	<div id="oldNews" class="divHidden">
+		<div class="newsUpdate"><u>07/05/2011</u>: v1.10.0 released, adding support for DDMS 3.1.</div>
 		<div class="newsUpdate"><u>06/06/2011</u>: <a href="schematron.jsp">Schematron Implementation for DDMS</a> published.</div>
 		<div class="newsUpdate"><u>06/02/2011</u>: v1.9.1 released. Example code for <a href="validator.uri">DDMS Validator</a> and <a href="builder.uri">DDMS Builder</a> posted.</div>
 		<div class="newsUpdate"><u>05/24/2011</u>: v1.9.0 released.</div>
