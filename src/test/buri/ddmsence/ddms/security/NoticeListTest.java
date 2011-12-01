@@ -131,12 +131,12 @@ public class NoticeListTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "noticeList.notice.noticeText", "noticeText"));
-		text.append(buildOutput(isHTML, "noticeList.notice.noticeText.pocType", "ABC"));
+		text.append(buildOutput(isHTML, "noticeList.notice.noticeText.pocType", "DoD-Dist-B"));
 		text.append(buildOutput(isHTML, "noticeList.notice.noticeText.classification", "U"));
 		text.append(buildOutput(isHTML, "noticeList.notice.noticeText.ownerProducer", "USA"));
 		text.append(buildOutput(isHTML, "noticeList.notice.classification", "U"));
 		text.append(buildOutput(isHTML, "noticeList.notice.ownerProducer", "USA"));
-		text.append(buildOutput(isHTML, "noticeList.notice.noticeType", "ABC"));
+		text.append(buildOutput(isHTML, "noticeList.notice.noticeType", "DoD-Dist-B"));
 		text.append(buildOutput(isHTML, "noticeList.notice.noticeReason", "noticeReason"));
 		text.append(buildOutput(isHTML, "noticeList.notice.noticeDate", "2011-09-15"));
 		text.append(buildOutput(isHTML, "noticeList.notice.unregisteredNoticeType", "unregisteredNoticeType"));
@@ -152,9 +152,9 @@ public class NoticeListTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:noticeList ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ISM:Notice ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
+		xml.append("<ISM:Notice ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
 		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\">noticeText</ISM:NoticeText>");
+		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>");
 		xml.append("</ISM:Notice>");
 		xml.append("</ddms:noticeList>");
 		return (xml.toString());

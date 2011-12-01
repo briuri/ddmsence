@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--UNCLASSIFIED--><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ism="urn:us:gov:ic:ism"
-            elementFormDefault="qualified"
-            xml:lang="en"
-            ism:ownerProducer="USA"
-            ism:classification="U"
-            ism:DESVersion="5"
-            ism:resourceElement="true"
-            ism:createDate="2010-03-12">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+            xml:lang="en">
    <xsd:annotation>
       <xsd:documentation>
                     W3C XML Schema fragment encoding types for Controlled vocabulary encodings CVEnumISMSCIControls. This file is generated so edits should be made to the CVEnumISMSCIControls the CVE it is based on instead of here.
@@ -28,43 +22,44 @@
       </xsd:annotation>
       <xsd:union>
          <xsd:simpleType>
-            <xsd:restriction base="xsd:token"><!--(U) The pattern "SI-G-[A-Z][A-Z][A-Z][A-Z]" is classified (U) --><xsd:pattern ism:classification="U" ism:ownerProducer="USA"
-                            value="SI-G-[A-Z][A-Z][A-Z][A-Z]">
+            <xsd:restriction base="xsd:token">
+               <xsd:pattern value="SI-G-[A-Z]{4}">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) G-AAAA, AAAA represents 4 alpha characters to indicate sub Gamma compartments</xsd:documentation>
+                     <xsd:documentation>G-AAAA, AAAA represents 4 alpha characters to indicate sub Gamma compartments</xsd:documentation>
                   </xsd:annotation>
                </xsd:pattern>
-               <!--(U) The pattern "SI-ECI-[A-Z][A-Z][A-Z]" is classified (U) --><xsd:pattern ism:classification="U" ism:ownerProducer="USA" value="SI-ECI-[A-Z][A-Z][A-Z]">
+               <xsd:pattern value="SI-ECI-[A-Z]{3}">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) ECI-AAA, AAA represents 3 alpha characters to indicate ECI compartments</xsd:documentation>
+                     <xsd:documentation>ECI-AAA, AAA represents 3 alpha characters to indicate ECI compartments</xsd:documentation>
                   </xsd:annotation>
                </xsd:pattern>
             </xsd:restriction>
          </xsd:simpleType>
          <xsd:simpleType>
-            <xsd:restriction base="xsd:token"><!--(U) The value "HCS" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="HCS">
+            <xsd:restriction base="xsd:token">
+               <xsd:enumeration value="HCS">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) HCS</xsd:documentation>
+                     <xsd:documentation>HCS</xsd:documentation>
                   </xsd:annotation>
                </xsd:enumeration>
-               <!--(U) The value "KDK" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="KDK">
+               <xsd:enumeration value="KDK">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) KLONDIKE</xsd:documentation>
+                     <xsd:documentation>KLONDIKE</xsd:documentation>
                   </xsd:annotation>
                </xsd:enumeration>
-               <!--(U) The value "SI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SI">
+               <xsd:enumeration value="SI">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) COMINT</xsd:documentation>
+                     <xsd:documentation>SPECIAL INTELLIGENCE</xsd:documentation>
                   </xsd:annotation>
                </xsd:enumeration>
-               <!--(U) The value "SI-G" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SI-G">
+               <xsd:enumeration value="SI-G">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) SI-GAMMA</xsd:documentation>
+                     <xsd:documentation>SI-GAMMA</xsd:documentation>
                   </xsd:annotation>
                </xsd:enumeration>
-               <!--(U) The value "TK" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TK">
+               <xsd:enumeration value="TK">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) TALENT KEYHOLE</xsd:documentation>
+                     <xsd:documentation>TALENT KEYHOLE</xsd:documentation>
                   </xsd:annotation>
                </xsd:enumeration>
             </xsd:restriction>

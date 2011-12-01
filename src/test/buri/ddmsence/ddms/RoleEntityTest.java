@@ -44,7 +44,7 @@ public class RoleEntityTest extends AbstractBaseTestCase {
 		super(null);
 	}
 
-	private static final String TEST_POC_TYPE = "ABC";
+	private static final String TEST_POC_TYPE = "DoD-Dist-B";
 
 	/**
 	 * Helper method to generate a pocType for producers

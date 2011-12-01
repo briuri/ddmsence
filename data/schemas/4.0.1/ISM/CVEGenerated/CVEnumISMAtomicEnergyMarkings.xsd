@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--UNCLASSIFIED--><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ism="urn:us:gov:ic:ism"
-            elementFormDefault="qualified"
-            xml:lang="en"
-            ism:ownerProducer="USA"
-            ism:classification="U"
-            ism:DESVersion="5"
-            ism:resourceElement="true"
-            ism:createDate="2010-08-31">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+            xml:lang="en">
    <xsd:annotation>
       <xsd:documentation>
                     W3C XML Schema fragment encoding types for Controlled vocabulary encodings CVEnumISMatomicEnergyMarkings. This file is generated so edits should be made to the CVEnumISMatomicEnergyMarkings the CVE it is based on instead of here.
@@ -28,42 +22,49 @@
       </xsd:annotation>
       <xsd:union>
          <xsd:simpleType>
-            <xsd:restriction base="xsd:token"><!--(U) The pattern "RD-SG-[1-9][0-9]?" is classified (U) --><xsd:pattern ism:classification="U" ism:ownerProducer="USA" value="RD-SG-[1-9][0-9]?">
+            <xsd:restriction base="xsd:token">
+               <xsd:pattern value="RD-SG-[1-9][0-9]?">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) RD-SIGMA-#, # represents the SIGMA number which may be between 1 and 99.</xsd:documentation>
+                     <xsd:documentation>RD-SIGMA-#, # represents the SIGMA number which may be between 1 and 99.</xsd:documentation>
                   </xsd:annotation>
                </xsd:pattern>
-               <!--(U) The pattern "FRD-SG-[1-9][0-9]?" is classified (U) --><xsd:pattern ism:classification="U" ism:ownerProducer="USA" value="FRD-SG-[1-9][0-9]?">
+               <xsd:pattern value="FRD-SG-[1-9][0-9]?">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) FRD-SIGMA-#, # represents the SIGMA number which may be between 1 and 99.</xsd:documentation>
+                     <xsd:documentation>FRD-SIGMA-#, # represents the SIGMA number which may be between 1 and 99.</xsd:documentation>
                   </xsd:annotation>
                </xsd:pattern>
             </xsd:restriction>
          </xsd:simpleType>
          <xsd:simpleType>
-            <xsd:restriction base="xsd:token"><!--(U) The value "RD" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="RD">
+            <xsd:restriction base="xsd:token">
+               <xsd:enumeration value="RD">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) RESTRICTED DATA</xsd:documentation>
+                     <xsd:documentation>RESTRICTED DATA</xsd:documentation>
                   </xsd:annotation>
                </xsd:enumeration>
-               <!--(U) The value "RD-CNWDI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="RD-CNWDI">
+               <xsd:enumeration value="RD-CNWDI">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) RD-CRITICAL NUCLEAR WEAPON DESIGN INFORMATION</xsd:documentation>
+                     <xsd:documentation>RD-CRITICAL NUCLEAR WEAPON DESIGN INFORMATION</xsd:documentation>
                   </xsd:annotation>
                </xsd:enumeration>
-               <!--(U) The value "FRD" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="FRD">
+               <xsd:enumeration value="FRD">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) FORMERLY RESTRICTED DATA</xsd:documentation>
+                     <xsd:documentation>FORMERLY RESTRICTED DATA</xsd:documentation>
                   </xsd:annotation>
                </xsd:enumeration>
-               <!--(U) The value "DCNI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="DCNI">
+               <xsd:enumeration value="DCNI">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) DoD CONTROLLED NUCLEAR INFORMATION</xsd:documentation>
+                     <xsd:documentation>DoD CONTROLLED NUCLEAR INFORMATION</xsd:documentation>
                   </xsd:annotation>
                </xsd:enumeration>
-               <!--(U) The value "UCNI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="UCNI">
+               <xsd:enumeration value="UCNI">
                   <xsd:annotation>
-                     <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) DoE CONTROLLED NUCLEAR INFORMATION</xsd:documentation>
+                     <xsd:documentation>DoE CONTROLLED NUCLEAR INFORMATION</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="TFNI">
+                  <xsd:annotation>
+                     <xsd:documentation>TRANSCLASSIFIED FOREIGN NUCLEAR INFORMATION</xsd:documentation>
                   </xsd:annotation>
                </xsd:enumeration>
             </xsd:restriction>

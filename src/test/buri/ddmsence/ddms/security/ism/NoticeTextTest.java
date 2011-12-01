@@ -41,7 +41,7 @@ import buri.ddmsence.util.Util;
 public class NoticeTextTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "noticeText";
-	private static final List<String> TEST_POC_TYPES = Util.getXsListAsList("ABC");
+	private static final List<String> TEST_POC_TYPES = Util.getXsListAsList("DoD-Dist-B");
 
 	/**
 	 * Constructor
@@ -63,7 +63,7 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			Element element = Util.buildElement(ismPrefix, NoticeText.getName(version), ismNs, TEST_VALUE);
 			element.addNamespaceDeclaration(ismPrefix, version.getIsmNamespace());
 			SecurityAttributesTest.getFixture().addTo(element);
-			Util.addAttribute(element, ismPrefix, "pocType", ismNs, "ABC");
+			Util.addAttribute(element, ismPrefix, "pocType", ismNs, "DoD-Dist-B");
 			return (element);
 		}
 		catch (InvalidDDMSException e) {
@@ -149,7 +149,7 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ISM:NoticeText ").append(getXmlnsISM()).append(" ");
-		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\"");
+		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\"");
 		xml.append(">").append(TEST_VALUE).append("</ISM:NoticeText>");
 		return (xml.toString());
 	}
@@ -205,7 +205,7 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 
 			// Partial Invalid pocType
 			element = Util.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
-			Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "ABC Unknown");
+			Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "DoD-Dist-B Unknown");
 			getInstance("Unknown is not a valid enumeration token", element);
 		}
 	}
@@ -218,7 +218,7 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			getInstance("Unknown is not a valid enumeration token", TEST_VALUE, Util.getXsListAsList("Unknown"));
 
 			// Partial Invalid pocType
-			getInstance("Unknown is not a valid enumeration token", TEST_VALUE, Util.getXsListAsList("ABC Unknown"));
+			getInstance("Unknown is not a valid enumeration token", TEST_VALUE, Util.getXsListAsList("DoD-Dist-B Unknown"));
 		}
 	}
 

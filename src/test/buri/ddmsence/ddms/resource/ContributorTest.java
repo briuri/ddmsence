@@ -111,7 +111,7 @@ public class ContributorTest extends AbstractBaseTestCase {
 		StringBuffer text = new StringBuffer();
 		text.append(OrganizationTest.getFixture().getOutput(isHTML, "contributor.", ""));
 		if (version.isAtLeast("4.0.1"))
-			text.append(buildOutput(isHTML, "contributor.pocType", "ABC"));
+			text.append(buildOutput(isHTML, "contributor.pocType", "DoD-Dist-B"));
 		text.append(buildOutput(isHTML, "contributor.classification", "U"));
 		text.append(buildOutput(isHTML, "contributor.ownerProducer", "USA"));
 		return (text.toString());
@@ -127,7 +127,7 @@ public class ContributorTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:contributor ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
 		if (version.isAtLeast("4.0.1"))
-			xml.append(" ISM:pocType=\"ABC\"");
+			xml.append(" ISM:pocType=\"DoD-Dist-B\"");
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(
 			Organization.getName(version)).append(">\n");
 		xml.append("\t\t<ddms:name>DISA</ddms:name>\n");
@@ -185,7 +185,7 @@ public class ContributorTest extends AbstractBaseTestCase {
 				// Partial Invalid pocType
 				element = Util.buildDDMSElement(Contributor.getName(version), null);
 				element.appendChild(OrganizationTest.getFixture().getXOMElementCopy());
-				Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "ABC Unknown");
+				Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "DoD-Dist-B Unknown");
 				getInstance("Unknown is not a valid enumeration token", element);
 			}
 		}
@@ -203,7 +203,7 @@ public class ContributorTest extends AbstractBaseTestCase {
 				getInstance("Unknown is not a valid enumeration token", OrganizationTest.getFixture(), Util.getXsListAsList("Unknown"));
 
 				// Partial Invalid pocType
-				getInstance("Unknown is not a valid enumeration token", OrganizationTest.getFixture(), Util.getXsListAsList("ABC Unknown"));
+				getInstance("Unknown is not a valid enumeration token", OrganizationTest.getFixture(), Util.getXsListAsList("DoD-Dist-B Unknown"));
 			}
 		}
 	}
@@ -273,7 +273,7 @@ public class ContributorTest extends AbstractBaseTestCase {
 	public void testWrongVersionPocType() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new Contributor(OrganizationTest.getFixture(), Util.getXsListAsList("ABC"), SecurityAttributesTest.getFixture());
+			new Contributor(OrganizationTest.getFixture(), Util.getXsListAsList("DoD-Dist-B"), SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -298,7 +298,7 @@ public class ContributorTest extends AbstractBaseTestCase {
 			Contributor.Builder builder = new Contributor.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
-			builder.setPocTypes(Util.getXsListAsList("ABC"));
+			builder.setPocTypes(Util.getXsListAsList("DoD-Dist-B"));
 			assertFalse(builder.isEmpty());
 
 		}

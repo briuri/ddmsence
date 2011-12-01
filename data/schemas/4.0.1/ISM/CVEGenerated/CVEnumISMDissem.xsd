@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--UNCLASSIFIED--><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ism="urn:us:gov:ic:ism"
-            elementFormDefault="qualified"
-            xml:lang="en"
-            ism:ownerProducer="USA"
-            ism:classification="U"
-            ism:DESVersion="5"
-            ism:resourceElement="true"
-            ism:createDate="2010-03-12">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+            xml:lang="en">
    <xsd:annotation>
       <xsd:documentation>
                     W3C XML Schema fragment encoding types for Controlled vocabulary encodings CVEnumISMDissem. This file is generated so edits should be made to the CVEnumISMDissem the CVE it is based on instead of here.
@@ -26,64 +20,65 @@
                          
                      </xsd:documentation>
       </xsd:annotation>
-      <xsd:restriction base="xsd:token"><!--(U) The value "RS" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="RS">
+      <xsd:restriction base="xsd:token">
+         <xsd:enumeration value="RS">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) RISK SENSITIVE</xsd:documentation>
+               <xsd:documentation>RISK SENSITIVE</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "FOUO" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="FOUO">
+         <xsd:enumeration value="FOUO">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) FOR OFFICIAL USE ONLY</xsd:documentation>
+               <xsd:documentation>FOR OFFICIAL USE ONLY</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "OC" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="OC">
+         <xsd:enumeration value="OC">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) ORIGINATOR CONTROLLED</xsd:documentation>
+               <xsd:documentation>ORIGINATOR CONTROLLED</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "IMC" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="IMC">
+         <xsd:enumeration value="IMC">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) CONTROLLED IMAGERY</xsd:documentation>
+               <xsd:documentation>CONTROLLED IMAGERY</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NF" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NF">
+         <xsd:enumeration value="NF">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) NOT RELEASABLE TO FOREIGN NATIONALS</xsd:documentation>
+               <xsd:documentation>NOT RELEASABLE TO FOREIGN NATIONALS</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PR">
+         <xsd:enumeration value="PR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) CAUTION-PROPRIETARY INFORMATION INVOLVED</xsd:documentation>
+               <xsd:documentation>CAUTION-PROPRIETARY INFORMATION INVOLVED</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "REL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="REL">
+         <xsd:enumeration value="REL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) AUTHORIZED FOR RELEASE TO</xsd:documentation>
+               <xsd:documentation>AUTHORIZED FOR RELEASE TO</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "RELIDO" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="RELIDO">
+         <xsd:enumeration value="RELIDO">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) RELEASABLE BY INFORMATION DISCLOSURE OFFICIAL</xsd:documentation>
+               <xsd:documentation>RELEASABLE BY INFORMATION DISCLOSURE OFFICIAL</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "EYES" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="EYES">
+         <xsd:enumeration value="EYES">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) EYES ONLY</xsd:documentation>
+               <xsd:documentation>EYES ONLY</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "DSEN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="DSEN">
+         <xsd:enumeration value="DSEN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) DEA SENSITIVE</xsd:documentation>
+               <xsd:documentation>DEA SENSITIVE</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "FISA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="FISA">
+         <xsd:enumeration value="FISA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) FOREIGN INTELLIGENCE SURVEILLANCE ACT</xsd:documentation>
+               <xsd:documentation>FOREIGN INTELLIGENCE SURVEILLANCE ACT</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "DISPLAYONLY" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="DISPLAYONLY">
+         <xsd:enumeration value="DISPLAYONLY">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) AUTHORIZED FOR DISPLAY BUT NOT RELEASE TO</xsd:documentation>
+               <xsd:documentation>AUTHORIZED FOR DISPLAY BUT NOT RELEASE TO</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
       </xsd:restriction>

@@ -199,11 +199,11 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		xml.append("IRM Generator 2L-9</ddms:applicationSoftware>");
 		xml.append("</ddms:recordsManagementInfo>");
 		xml.append("<ddms:noticeList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ISM:Notice ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
+		xml.append("<ISM:Notice ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
 		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
-		xml.append(" ISM:pocType=\"ABC\">noticeText</ISM:NoticeText>");
+		xml.append(" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>");
 		xml.append("</ISM:Notice></ddms:noticeList></ddms:metacardInfo>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}

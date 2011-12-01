@@ -4,10 +4,10 @@
 	xmlns="urn:us:gov:ic:cve:v1"
 	xmlns:ism="urn:us:gov:ic:ism"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="urn:us:gov:ic:cve:v1 ./Schema/CVEXml.xsd"
+	xsi:schemaLocation="urn:us:gov:ic:cve:v1 ../Schema/CVEXml.xsd"
 	ism:ownerProducer="USA"
 	ism:classification="U"
-	ism:DESVersion="5"
+	ism:DESVersion="7"
 	ism:resourceElement="true"
 	ism:createDate="2010-05-30">
 	
@@ -29,8 +29,9 @@
 	
 	<cve:Enumeration multivalue="true" ism:ownerProducer="USA" ism:classification="U">
 		<Term ism:classification="U" ism:ownerProducer="USA" >
-			<Value ism:classification="U" ism:ownerProducer="USA">ICD-710</Value>
-			<ddms:description ism:classification="U" ism:ownerProducer="USA">Document claims compliance with the rules in ICD-710 that have been encoded into ISM</ddms:description>
+			<Value ism:classification="U" ism:ownerProducer="USA">ICDocument</Value>
+			<ddms:description ism:classification="U" ism:ownerProducer="USA">Document claims compliance with IC rules 
+				that have been encoded into ISM. Currently this includes: ICD-710, DNI-ORCON Memo, and the DNI Revision-Recall Memo </ddms:description>
 		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">DoD5230.24</Value>

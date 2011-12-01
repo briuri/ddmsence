@@ -4,19 +4,19 @@
 	xmlns="urn:us:gov:ic:cve:v1"
 	xmlns:ism="urn:us:gov:ic:ism"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="urn:us:gov:ic:cve:v1 ./Schema/CVEXml.xsd"
+	xsi:schemaLocation="urn:us:gov:ic:cve:v1 ../Schema/CVEXml.xsd"
 	ism:ownerProducer="USA"
 	ism:classification="U"
-	ism:DESVersion="5"
+	ism:DESVersion="7"
 	ism:resourceElement="true"
-	ism:createDate="2010-09-25">
+	ism:createDate="2011-08-12">
 	
 	<cve:IRM>
 		<ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:ism:25x:v1"/>
 		<ddms:title ism:ownerProducer="USA" ism:classification="U">CVEnumISM25X</ddms:title>
 		<ddms:description ism:ownerProducer="USA" ism:classification="U">All currently authorized authority block declass date/event exemptions.</ddms:description>
 		
-		<cve:Created>2010-09-25T18:11:00-04:00</cve:Created>
+		<cve:Created>2011-08-12T12:24:23-04:00</cve:Created>
 		
 		<ddms:source ddms:value="Marking Classified National Security Information Directive No. 1"/>
 		<ddms:pointOfContact>
@@ -27,9 +27,9 @@
 		</ddms:pointOfContact>
 	</cve:IRM>
 	
-	<cve:Enumeration multivalue="false" ism:ownerProducer="USA" ism:classification="U">
+	<cve:Enumeration multivalue="true" ism:ownerProducer="USA" ism:classification="U">
 
-		<Term ism:classification="U" ism:ownerProducer="USA" deprecated="2011-09-11" >
+		<Term ism:classification="U" ism:ownerProducer="USA">
 			<Value ism:classification="U" ism:ownerProducer="USA">AEA</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">
 				When using a source document that contains portions of Restricted Data (RD)
@@ -59,15 +59,14 @@
 				development.
 			</ddms:description>
 		</Term>
-		<Term ism:classification="U" ism:ownerProducer="USA" deprecated="2011-09-11" >
+		<Term ism:classification="U" ism:ownerProducer="USA">
 			<Value ism:classification="U" ism:ownerProducer="USA">25X1-human</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">
 				Reveal the identity of a confidential human source or human intelligence source. 
-				Value has been deprecated ISSOO is unclear on when it will be forbiden. Possible 
-				forbid date is as early as 2010-12-20.
+				See page 25 of the ISOO implementation guide from December 2010 for details and restrictions on use.
 			</ddms:description>
 		</Term>
-		<Term ism:classification="U" ism:ownerProducer="USA" deprecated="2011-09-11" >
+		<Term ism:classification="U" ism:ownerProducer="USA">
 			<Value ism:classification="U" ism:ownerProducer="USA">25X1-EO-12951</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">
 				"25X1, EO 12951" (prescribed by the DNI for use on information described in E.O. 12951, 

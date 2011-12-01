@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--UNCLASSIFIED--><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ism="urn:us:gov:ic:ism"
-            elementFormDefault="qualified"
-            xml:lang="en"
-            ism:ownerProducer="USA"
-            ism:classification="U"
-            ism:DESVersion="5"
-            ism:resourceElement="true"
-            ism:createDate="2010-09-14">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+            xml:lang="en">
    <xsd:annotation>
       <xsd:documentation>
                     W3C XML Schema fragment encoding types for Controlled vocabulary encodings CVEnumISMRelTo. This file is generated so edits should be made to the CVEnumISMRelTo the CVE it is based on instead of here.
@@ -27,1354 +21,1370 @@
                          
                      </xsd:documentation>
       </xsd:annotation>
-      <xsd:restriction base="xsd:token"><!--(U) The value "USA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="USA">
+      <xsd:restriction base="xsd:token">
+         <xsd:enumeration value="USA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) United States</xsd:documentation>
+               <xsd:documentation>United States</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ABW" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ABW">
+         <xsd:enumeration value="ABW">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Aruba</xsd:documentation>
+               <xsd:documentation>Aruba</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "AFG" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="AFG">
+         <xsd:enumeration value="AFG">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Afghanistan</xsd:documentation>
+               <xsd:documentation>Afghanistan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "AGO" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="AGO">
+         <xsd:enumeration value="AGO">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Angola</xsd:documentation>
+               <xsd:documentation>Angola</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "AIA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="AIA">
+         <xsd:enumeration value="AIA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Anguilla</xsd:documentation>
+               <xsd:documentation>Anguilla</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ALA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ALA">
+         <xsd:enumeration value="ALA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Åland Islands</xsd:documentation>
+               <xsd:documentation>Åland Islands</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ALB" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ALB">
+         <xsd:enumeration value="ALB">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Albania</xsd:documentation>
+               <xsd:documentation>Albania</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "AND" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="AND">
+         <xsd:enumeration value="AND">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Andorra</xsd:documentation>
+               <xsd:documentation>Andorra</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ANT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ANT">
+         <xsd:enumeration value="ARE">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Netherlands Antilles</xsd:documentation>
+               <xsd:documentation>United Arab Emirates</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ARE" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ARE">
+         <xsd:enumeration value="ARG">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) United Arab Emirates</xsd:documentation>
+               <xsd:documentation>Argentina</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ARG" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ARG">
+         <xsd:enumeration value="ARM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Argentina</xsd:documentation>
+               <xsd:documentation>Armenia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ARM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ARM">
+         <xsd:enumeration value="ASM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Armenia</xsd:documentation>
+               <xsd:documentation>American Samoa</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ASM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ASM">
+         <xsd:enumeration value="ATA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) American Samoa</xsd:documentation>
+               <xsd:documentation>Antarctica</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ATA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ATA">
+         <xsd:enumeration value="ATF">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Antarctica</xsd:documentation>
+               <xsd:documentation>French Southern Territories</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ATF" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ATF">
+         <xsd:enumeration value="ATG">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) French Southern Territories</xsd:documentation>
+               <xsd:documentation>Antigua and Barbuda</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ATG" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ATG">
+         <xsd:enumeration value="AUS">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Antigua and Barbuda</xsd:documentation>
+               <xsd:documentation>Australia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "AUS" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="AUS">
+         <xsd:enumeration value="AUT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Australia</xsd:documentation>
+               <xsd:documentation>Austria</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "AUT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="AUT">
+         <xsd:enumeration value="AZE">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Austria</xsd:documentation>
+               <xsd:documentation>Azerbaijan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "AZE" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="AZE">
+         <xsd:enumeration value="BDI">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Azerbaijan</xsd:documentation>
+               <xsd:documentation>Burundi</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BDI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BDI">
+         <xsd:enumeration value="BEL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Burundi</xsd:documentation>
+               <xsd:documentation>Belgium</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BEL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BEL">
+         <xsd:enumeration value="BEN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Belgium</xsd:documentation>
+               <xsd:documentation>Benin</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BEN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BEN">
+         <xsd:enumeration value="BES">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Benin</xsd:documentation>
+               <xsd:documentation>Bonaire, Saint Eustatius and Saba</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BFA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BFA">
+         <xsd:enumeration value="BFA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Burkina Faso</xsd:documentation>
+               <xsd:documentation>Burkina Faso</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BGD" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BGD">
+         <xsd:enumeration value="BGD">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Bangladesh</xsd:documentation>
+               <xsd:documentation>Bangladesh</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BGR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BGR">
+         <xsd:enumeration value="BGR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Bulgaria</xsd:documentation>
+               <xsd:documentation>Bulgaria</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BHR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BHR">
+         <xsd:enumeration value="BHR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Bahrain</xsd:documentation>
+               <xsd:documentation>Bahrain</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BHS" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BHS">
+         <xsd:enumeration value="BHS">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Bahamas</xsd:documentation>
+               <xsd:documentation>Bahamas</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BIH" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BIH">
+         <xsd:enumeration value="BIH">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Bosnia and Herzegovina</xsd:documentation>
+               <xsd:documentation>Bosnia and Herzegovina</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BLM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BLM">
+         <xsd:enumeration value="BLM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Saint Barthélemy</xsd:documentation>
+               <xsd:documentation>Saint Barthélemy</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BLR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BLR">
+         <xsd:enumeration value="BLR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Belarus</xsd:documentation>
+               <xsd:documentation>Belarus</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BLZ" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BLZ">
+         <xsd:enumeration value="BLZ">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Belize</xsd:documentation>
+               <xsd:documentation>Belize</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BMU" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BMU">
+         <xsd:enumeration value="BMU">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Bermuda</xsd:documentation>
+               <xsd:documentation>Bermuda</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BOL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BOL">
+         <xsd:enumeration value="BOL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Bolivia, Plurinational State of</xsd:documentation>
+               <xsd:documentation>Bolivia, Plurinational State of</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BRA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BRA">
+         <xsd:enumeration value="BRA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Brazil</xsd:documentation>
+               <xsd:documentation>Brazil</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BRB" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BRB">
+         <xsd:enumeration value="BRB">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Barbados</xsd:documentation>
+               <xsd:documentation>Barbados</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BRN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BRN">
+         <xsd:enumeration value="BRN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Brunei Darussalam</xsd:documentation>
+               <xsd:documentation>Brunei Darussalam</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BTN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BTN">
+         <xsd:enumeration value="BTN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Bhutan</xsd:documentation>
+               <xsd:documentation>Bhutan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BVT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BVT">
+         <xsd:enumeration value="BVT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Bouvet Island</xsd:documentation>
+               <xsd:documentation>Bouvet Island</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BWA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BWA">
+         <xsd:enumeration value="BWA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Botswana</xsd:documentation>
+               <xsd:documentation>Botswana</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CAF" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CAF">
+         <xsd:enumeration value="CAF">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Central African Republic</xsd:documentation>
+               <xsd:documentation>Central African Republic</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CAN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CAN">
+         <xsd:enumeration value="CAN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Canada</xsd:documentation>
+               <xsd:documentation>Canada</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CCK" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CCK">
+         <xsd:enumeration value="CCK">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Cocos (Keeling) Islands</xsd:documentation>
+               <xsd:documentation>Cocos (Keeling) Islands</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CHE" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CHE">
+         <xsd:enumeration value="CHE">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Switzerland</xsd:documentation>
+               <xsd:documentation>Switzerland</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CHL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CHL">
+         <xsd:enumeration value="CHL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Chile</xsd:documentation>
+               <xsd:documentation>Chile</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CHN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CHN">
+         <xsd:enumeration value="CHN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) China</xsd:documentation>
+               <xsd:documentation>China</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CIV" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CIV">
+         <xsd:enumeration value="CIV">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Côte d'Ivoire</xsd:documentation>
+               <xsd:documentation>Côte d'Ivoire</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CMR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CMR">
+         <xsd:enumeration value="CMR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Cameroon</xsd:documentation>
+               <xsd:documentation>Cameroon</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "COD" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="COD">
+         <xsd:enumeration value="COD">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Congo, The Democratic Republic of the</xsd:documentation>
+               <xsd:documentation>Congo, The Democratic Republic of the</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "COG" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="COG">
+         <xsd:enumeration value="COG">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Congo</xsd:documentation>
+               <xsd:documentation>Congo</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "COK" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="COK">
+         <xsd:enumeration value="COK">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Cook Islands</xsd:documentation>
+               <xsd:documentation>Cook Islands</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "COL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="COL">
+         <xsd:enumeration value="COL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Colombia</xsd:documentation>
+               <xsd:documentation>Colombia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "COM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="COM">
+         <xsd:enumeration value="COM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Comoros</xsd:documentation>
+               <xsd:documentation>Comoros</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CPV" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CPV">
+         <xsd:enumeration value="CPV">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Cape Verde</xsd:documentation>
+               <xsd:documentation>Cape Verde</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CRI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CRI">
+         <xsd:enumeration value="CRI">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Costa Rica</xsd:documentation>
+               <xsd:documentation>Costa Rica</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CUB" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CUB">
+         <xsd:enumeration value="CUB">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Cuba</xsd:documentation>
+               <xsd:documentation>Cuba</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CXR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CXR">
+         <xsd:enumeration value="CUW">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Christmas Island</xsd:documentation>
+               <xsd:documentation>Curaçao</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CYM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CYM">
+         <xsd:enumeration value="CXR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Cayman Islands</xsd:documentation>
+               <xsd:documentation>Christmas Island</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CYP" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CYP">
+         <xsd:enumeration value="CYM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Cyprus</xsd:documentation>
+               <xsd:documentation>Cayman Islands</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CZE" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CZE">
+         <xsd:enumeration value="CYP">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Czech Republic</xsd:documentation>
+               <xsd:documentation>Cyprus</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "DEU" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="DEU">
+         <xsd:enumeration value="CZE">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Germany</xsd:documentation>
+               <xsd:documentation>Czech Republic</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "DJI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="DJI">
+         <xsd:enumeration value="DEU">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Djibouti</xsd:documentation>
+               <xsd:documentation>Germany</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "DMA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="DMA">
+         <xsd:enumeration value="DJI">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Dominica</xsd:documentation>
+               <xsd:documentation>Djibouti</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "DNK" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="DNK">
+         <xsd:enumeration value="DMA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Denmark</xsd:documentation>
+               <xsd:documentation>Dominica</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "DOM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="DOM">
+         <xsd:enumeration value="DNK">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Dominican Republic</xsd:documentation>
+               <xsd:documentation>Denmark</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "DZA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="DZA">
+         <xsd:enumeration value="DOM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Algeria</xsd:documentation>
+               <xsd:documentation>Dominican Republic</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ECU" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ECU">
+         <xsd:enumeration value="DZA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Eucador</xsd:documentation>
+               <xsd:documentation>Algeria</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "EGY" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="EGY">
+         <xsd:enumeration value="ECU">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Egypt</xsd:documentation>
+               <xsd:documentation>Ecuador</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ERI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ERI">
+         <xsd:enumeration value="EGY">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Eritrea</xsd:documentation>
+               <xsd:documentation>Egypt</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ESH" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ESH">
+         <xsd:enumeration value="ERI">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Western Sahara</xsd:documentation>
+               <xsd:documentation>Eritrea</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ESP" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ESP">
+         <xsd:enumeration value="ESH">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Spain</xsd:documentation>
+               <xsd:documentation>Western Sahara</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "EST" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="EST">
+         <xsd:enumeration value="ESP">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Estonia</xsd:documentation>
+               <xsd:documentation>Spain</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ETH" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ETH">
+         <xsd:enumeration value="EST">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Ethiopia</xsd:documentation>
+               <xsd:documentation>Estonia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "FIN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="FIN">
+         <xsd:enumeration value="ETH">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Finland</xsd:documentation>
+               <xsd:documentation>Ethiopia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "FJI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="FJI">
+         <xsd:enumeration value="FIN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Fiji</xsd:documentation>
+               <xsd:documentation>Finland</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "FLK" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="FLK">
+         <xsd:enumeration value="FJI">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Falkland Islands (Malvinas)</xsd:documentation>
+               <xsd:documentation>Fiji</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "FRA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="FRA">
+         <xsd:enumeration value="FLK">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) France</xsd:documentation>
+               <xsd:documentation>Falkland Islands (Malvinas)</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "FRO" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="FRO">
+         <xsd:enumeration value="FRA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Faroe Islands</xsd:documentation>
+               <xsd:documentation>France</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "FSM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="FSM">
+         <xsd:enumeration value="FRO">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Micronesia, Federated States of</xsd:documentation>
+               <xsd:documentation>Faroe Islands</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GAB" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GAB">
+         <xsd:enumeration value="FSM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Gabon</xsd:documentation>
+               <xsd:documentation>Micronesia, Federated States of</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GBR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GBR">
+         <xsd:enumeration value="GAB">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) United Kingdom</xsd:documentation>
+               <xsd:documentation>Gabon</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GEO" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GEO">
+         <xsd:enumeration value="GBR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Georgia</xsd:documentation>
+               <xsd:documentation>United Kingdom</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GGY" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GGY">
+         <xsd:enumeration value="GEO">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Guernsey</xsd:documentation>
+               <xsd:documentation>Georgia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GHA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GHA">
+         <xsd:enumeration value="GGY">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Ghana</xsd:documentation>
+               <xsd:documentation>Guernsey</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GIB" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GIB">
+         <xsd:enumeration value="GHA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Gibraltar</xsd:documentation>
+               <xsd:documentation>Ghana</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GIN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GIN">
+         <xsd:enumeration value="GIB">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Guinea</xsd:documentation>
+               <xsd:documentation>Gibraltar</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GLP" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GLP">
+         <xsd:enumeration value="GIN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Guadeloupe</xsd:documentation>
+               <xsd:documentation>Guinea</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GMB" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GMB">
+         <xsd:enumeration value="GLP">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Gambia</xsd:documentation>
+               <xsd:documentation>Guadeloupe</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GNB" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GNB">
+         <xsd:enumeration value="GMB">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Guinea-Bissau</xsd:documentation>
+               <xsd:documentation>Gambia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GNQ" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GNQ">
+         <xsd:enumeration value="GNB">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Equatorial Guinea</xsd:documentation>
+               <xsd:documentation>Guinea-Bissau</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GRC" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GRC">
+         <xsd:enumeration value="GNQ">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Greece</xsd:documentation>
+               <xsd:documentation>Equatorial Guinea</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GRD" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GRD">
+         <xsd:enumeration value="GRC">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Grenada</xsd:documentation>
+               <xsd:documentation>Greece</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GRL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GRL">
+         <xsd:enumeration value="GRD">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Greenland</xsd:documentation>
+               <xsd:documentation>Grenada</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GTM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GTM">
+         <xsd:enumeration value="GRL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Guatemala</xsd:documentation>
+               <xsd:documentation>Greenland</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GUF" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GUF">
+         <xsd:enumeration value="GTM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) French Guiana</xsd:documentation>
+               <xsd:documentation>Guatemala</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GUM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GUM">
+         <xsd:enumeration value="GUF">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Guam</xsd:documentation>
+               <xsd:documentation>French Guiana</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GUY" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GUY">
+         <xsd:enumeration value="GUM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Guyana</xsd:documentation>
+               <xsd:documentation>Guam</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "HKG" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="HKG">
+         <xsd:enumeration value="GUY">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Hong Kong</xsd:documentation>
+               <xsd:documentation>Guyana</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "HMD" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="HMD">
+         <xsd:enumeration value="HKG">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Heard Island and McDonald Islands</xsd:documentation>
+               <xsd:documentation>Hong Kong</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "HND" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="HND">
+         <xsd:enumeration value="HMD">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Honduras</xsd:documentation>
+               <xsd:documentation>Heard Island and McDonald Islands</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "HRV" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="HRV">
+         <xsd:enumeration value="HND">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Croatia</xsd:documentation>
+               <xsd:documentation>Honduras</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "HTI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="HTI">
+         <xsd:enumeration value="HRV">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Haiti</xsd:documentation>
+               <xsd:documentation>Croatia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "HUN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="HUN">
+         <xsd:enumeration value="HTI">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Hungary</xsd:documentation>
+               <xsd:documentation>Haiti</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "IDN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="IDN">
+         <xsd:enumeration value="HUN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Indonesia</xsd:documentation>
+               <xsd:documentation>Hungary</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "IMN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="IMN">
+         <xsd:enumeration value="IDN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Isle of Man</xsd:documentation>
+               <xsd:documentation>Indonesia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "IND" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="IND">
+         <xsd:enumeration value="IMN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) India</xsd:documentation>
+               <xsd:documentation>Isle of Man</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "IOT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="IOT">
+         <xsd:enumeration value="IND">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) British Indian Ocean Territory</xsd:documentation>
+               <xsd:documentation>India</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "IRL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="IRL">
+         <xsd:enumeration value="IOT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Ireland</xsd:documentation>
+               <xsd:documentation>British Indian Ocean Territory</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "IRN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="IRN">
+         <xsd:enumeration value="IRL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Iran, Islamic Republic of</xsd:documentation>
+               <xsd:documentation>Ireland</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "IRQ" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="IRQ">
+         <xsd:enumeration value="IRN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Iraq</xsd:documentation>
+               <xsd:documentation>Iran, Islamic Republic of</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ISL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ISL">
+         <xsd:enumeration value="IRQ">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Iceland</xsd:documentation>
+               <xsd:documentation>Iraq</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ISR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ISR">
+         <xsd:enumeration value="ISL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Israel</xsd:documentation>
+               <xsd:documentation>Iceland</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ITA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ITA">
+         <xsd:enumeration value="ISR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Italy</xsd:documentation>
+               <xsd:documentation>Israel</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "JAM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="JAM">
+         <xsd:enumeration value="ITA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Jamaica</xsd:documentation>
+               <xsd:documentation>Italy</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "JEY" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="JEY">
+         <xsd:enumeration value="JAM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Jersey</xsd:documentation>
+               <xsd:documentation>Jamaica</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "JOR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="JOR">
+         <xsd:enumeration value="JEY">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Jordan</xsd:documentation>
+               <xsd:documentation>Jersey</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "JPN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="JPN">
+         <xsd:enumeration value="JOR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Japan</xsd:documentation>
+               <xsd:documentation>Jordan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "KAZ" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="KAZ">
+         <xsd:enumeration value="JPN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Kazakhstan</xsd:documentation>
+               <xsd:documentation>Japan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "KEN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="KEN">
+         <xsd:enumeration value="KAZ">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Kenya</xsd:documentation>
+               <xsd:documentation>Kazakhstan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "KGZ" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="KGZ">
+         <xsd:enumeration value="KEN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Kyrgyzstan</xsd:documentation>
+               <xsd:documentation>Kenya</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "KHM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="KHM">
+         <xsd:enumeration value="KGZ">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Cambodia</xsd:documentation>
+               <xsd:documentation>Kyrgyzstan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "KIR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="KIR">
+         <xsd:enumeration value="KHM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Kiribati</xsd:documentation>
+               <xsd:documentation>Cambodia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "KNA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="KNA">
+         <xsd:enumeration value="KIR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Saint Kitts and Nevis</xsd:documentation>
+               <xsd:documentation>Kiribati</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "KOR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="KOR">
+         <xsd:enumeration value="KNA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Korea, Republic of</xsd:documentation>
+               <xsd:documentation>Saint Kitts and Nevis</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "KWT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="KWT">
+         <xsd:enumeration value="KOR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Kuwait</xsd:documentation>
+               <xsd:documentation>Korea, Republic of</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "LAO" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="LAO">
+         <xsd:enumeration value="KWT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Lao People's Democratic Republic</xsd:documentation>
+               <xsd:documentation>Kuwait</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "LBN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="LBN">
+         <xsd:enumeration value="LAO">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Lebanon</xsd:documentation>
+               <xsd:documentation>Lao People's Democratic Republic</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "LBR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="LBR">
+         <xsd:enumeration value="LBN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Liberia</xsd:documentation>
+               <xsd:documentation>Lebanon</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "LBY" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="LBY">
+         <xsd:enumeration value="LBR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Libyan Arab Jamahiriya</xsd:documentation>
+               <xsd:documentation>Liberia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "LCA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="LCA">
+         <xsd:enumeration value="LBY">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Saint Lucia</xsd:documentation>
+               <xsd:documentation>Libyan Arab Jamahiriya</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "LIE" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="LIE">
+         <xsd:enumeration value="LCA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Liechtenstein</xsd:documentation>
+               <xsd:documentation>Saint Lucia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "LKA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="LKA">
+         <xsd:enumeration value="LIE">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Sri Lanka</xsd:documentation>
+               <xsd:documentation>Liechtenstein</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "LSO" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="LSO">
+         <xsd:enumeration value="LKA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Lesotho</xsd:documentation>
+               <xsd:documentation>Sri Lanka</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "LTU" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="LTU">
+         <xsd:enumeration value="LSO">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Lithuania</xsd:documentation>
+               <xsd:documentation>Lesotho</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "LUX" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="LUX">
+         <xsd:enumeration value="LTU">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Luxembourg</xsd:documentation>
+               <xsd:documentation>Lithuania</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "LVA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="LVA">
+         <xsd:enumeration value="LUX">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Latvia</xsd:documentation>
+               <xsd:documentation>Luxembourg</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MAC" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MAC">
+         <xsd:enumeration value="LVA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Macao</xsd:documentation>
+               <xsd:documentation>Latvia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MAF" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MAF">
+         <xsd:enumeration value="MAC">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Saint Martin (French part)</xsd:documentation>
+               <xsd:documentation>Macao</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MAR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MAR">
+         <xsd:enumeration value="MAF">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Morocco</xsd:documentation>
+               <xsd:documentation>Saint Martin (French part)</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MCO" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MCO">
+         <xsd:enumeration value="MAR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Monaco</xsd:documentation>
+               <xsd:documentation>Morocco</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MDA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MDA">
+         <xsd:enumeration value="MCO">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Moldova, Republic of</xsd:documentation>
+               <xsd:documentation>Monaco</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MDG" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MDG">
+         <xsd:enumeration value="MDA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Madagascar</xsd:documentation>
+               <xsd:documentation>Moldova, Republic of</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MDV" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MDV">
+         <xsd:enumeration value="MDG">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Maldives</xsd:documentation>
+               <xsd:documentation>Madagascar</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MEX" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MEX">
+         <xsd:enumeration value="MDV">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Mexico</xsd:documentation>
+               <xsd:documentation>Maldives</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MHL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MHL">
+         <xsd:enumeration value="MEX">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Marshall Islands</xsd:documentation>
+               <xsd:documentation>Mexico</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MKD" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MKD">
+         <xsd:enumeration value="MHL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Macedonia, The former Yugoslav Republic of</xsd:documentation>
+               <xsd:documentation>Marshall Islands</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MLI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MLI">
+         <xsd:enumeration value="MKD">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Mali</xsd:documentation>
+               <xsd:documentation>Macedonia, The former Yugoslav Republic of</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MLT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MLT">
+         <xsd:enumeration value="MLI">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Malta</xsd:documentation>
+               <xsd:documentation>Mali</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MMR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MMR">
+         <xsd:enumeration value="MLT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Myanmar</xsd:documentation>
+               <xsd:documentation>Malta</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MNE" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MNE">
+         <xsd:enumeration value="MMR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Montenegro</xsd:documentation>
+               <xsd:documentation>Myanmar</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MNG" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MNG">
+         <xsd:enumeration value="MNE">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Mongolia</xsd:documentation>
+               <xsd:documentation>Montenegro</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MNP" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MNP">
+         <xsd:enumeration value="MNG">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Northern Mariana Islands</xsd:documentation>
+               <xsd:documentation>Mongolia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MOZ" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MOZ">
+         <xsd:enumeration value="MNP">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Mozambique</xsd:documentation>
+               <xsd:documentation>Northern Mariana Islands</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MRT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MRT">
+         <xsd:enumeration value="MOZ">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Mauritania</xsd:documentation>
+               <xsd:documentation>Mozambique</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MSR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MSR">
+         <xsd:enumeration value="MRT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Montserrat</xsd:documentation>
+               <xsd:documentation>Mauritania</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MTQ" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MTQ">
+         <xsd:enumeration value="MSR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Martinique</xsd:documentation>
+               <xsd:documentation>Montserrat</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MUS" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MUS">
+         <xsd:enumeration value="MTQ">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Mauritius</xsd:documentation>
+               <xsd:documentation>Martinique</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MWI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MWI">
+         <xsd:enumeration value="MUS">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Malawi</xsd:documentation>
+               <xsd:documentation>Mauritius</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MYS" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MYS">
+         <xsd:enumeration value="MWI">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Malaysia</xsd:documentation>
+               <xsd:documentation>Malawi</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MYT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MYT">
+         <xsd:enumeration value="MYS">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Mayotte</xsd:documentation>
+               <xsd:documentation>Malaysia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NAM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NAM">
+         <xsd:enumeration value="MYT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Namibia</xsd:documentation>
+               <xsd:documentation>Mayotte</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NCL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NCL">
+         <xsd:enumeration value="NAM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) New Caledonia</xsd:documentation>
+               <xsd:documentation>Namibia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NER" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NER">
+         <xsd:enumeration value="NCL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Niger</xsd:documentation>
+               <xsd:documentation>New Caledonia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NFK" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NFK">
+         <xsd:enumeration value="NER">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Norfolk Island</xsd:documentation>
+               <xsd:documentation>Niger</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NGA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NGA">
+         <xsd:enumeration value="NFK">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Nigeria</xsd:documentation>
+               <xsd:documentation>Norfolk Island</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NIC" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NIC">
+         <xsd:enumeration value="NGA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Nicaragua</xsd:documentation>
+               <xsd:documentation>Nigeria</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NIU" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NIU">
+         <xsd:enumeration value="NIC">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Niue</xsd:documentation>
+               <xsd:documentation>Nicaragua</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NLD" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NLD">
+         <xsd:enumeration value="NIU">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Netherlands</xsd:documentation>
+               <xsd:documentation>Niue</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NOR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NOR">
+         <xsd:enumeration value="NLD">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Norway</xsd:documentation>
+               <xsd:documentation>Netherlands</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NPL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NPL">
+         <xsd:enumeration value="NOR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Nepal</xsd:documentation>
+               <xsd:documentation>Norway</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NRU" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NRU">
+         <xsd:enumeration value="NPL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Nauru</xsd:documentation>
+               <xsd:documentation>Nepal</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NZL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NZL">
+         <xsd:enumeration value="NRU">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) New Zealand</xsd:documentation>
+               <xsd:documentation>Nauru</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "OMN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="OMN">
+         <xsd:enumeration value="NZL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Oman</xsd:documentation>
+               <xsd:documentation>New Zealand</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PAK" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PAK">
+         <xsd:enumeration value="OMN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Pakistan</xsd:documentation>
+               <xsd:documentation>Oman</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PAN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PAN">
+         <xsd:enumeration value="PAK">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Panama</xsd:documentation>
+               <xsd:documentation>Pakistan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PCN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PCN">
+         <xsd:enumeration value="PAN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Pitcairn</xsd:documentation>
+               <xsd:documentation>Panama</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PER" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PER">
+         <xsd:enumeration value="PCN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Peru</xsd:documentation>
+               <xsd:documentation>Pitcairn</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PHL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PHL">
+         <xsd:enumeration value="PER">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Philippines</xsd:documentation>
+               <xsd:documentation>Peru</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PLW" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PLW">
+         <xsd:enumeration value="PHL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Palau</xsd:documentation>
+               <xsd:documentation>Philippines</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PNG" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PNG">
+         <xsd:enumeration value="PLW">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Papua New Guinea</xsd:documentation>
+               <xsd:documentation>Palau</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "POL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="POL">
+         <xsd:enumeration value="PNG">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Poland</xsd:documentation>
+               <xsd:documentation>Papua New Guinea</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PRI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PRI">
+         <xsd:enumeration value="POL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Puerto Rico</xsd:documentation>
+               <xsd:documentation>Poland</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PRK" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PRK">
+         <xsd:enumeration value="PRI">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Korea, Democratic People's Republic of</xsd:documentation>
+               <xsd:documentation>Puerto Rico</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PRT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PRT">
+         <xsd:enumeration value="PRK">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Portugal</xsd:documentation>
+               <xsd:documentation>Korea, Democratic People's Republic of</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PRY" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PRY">
+         <xsd:enumeration value="PRT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Paraguay</xsd:documentation>
+               <xsd:documentation>Portugal</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PSE" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PSE">
+         <xsd:enumeration value="PRY">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Palestinian Territory, Occupied</xsd:documentation>
+               <xsd:documentation>Paraguay</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "PYF" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="PYF">
+         <xsd:enumeration value="PSE">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) French Polynesia</xsd:documentation>
+               <xsd:documentation>Palestinian Territory, Occupied</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "QAT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="QAT">
+         <xsd:enumeration value="PYF">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Qatar</xsd:documentation>
+               <xsd:documentation>French Polynesia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "REU" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="REU">
+         <xsd:enumeration value="QAT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Réunion</xsd:documentation>
+               <xsd:documentation>Qatar</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ROU" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ROU">
+         <xsd:enumeration value="REU">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Romania</xsd:documentation>
+               <xsd:documentation>Réunion</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "RUS" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="RUS">
+         <xsd:enumeration value="ROU">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Russian Federation</xsd:documentation>
+               <xsd:documentation>Romania</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "RWA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="RWA">
+         <xsd:enumeration value="RUS">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Rwanda</xsd:documentation>
+               <xsd:documentation>Russian Federation</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SAU" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SAU">
+         <xsd:enumeration value="RWA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Saudi Arabia</xsd:documentation>
+               <xsd:documentation>Rwanda</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SDN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SDN">
+         <xsd:enumeration value="SAU">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Sudan</xsd:documentation>
+               <xsd:documentation>Saudi Arabia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SEN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SEN">
+         <xsd:enumeration value="SDN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Senegal</xsd:documentation>
+               <xsd:documentation>Sudan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SGP" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SGP">
+         <xsd:enumeration value="SEN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Singapore</xsd:documentation>
+               <xsd:documentation>Senegal</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SGS" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SGS">
+         <xsd:enumeration value="SGP">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) South Georgia and the South Sandwich Islands</xsd:documentation>
+               <xsd:documentation>Singapore</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SHN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SHN">
+         <xsd:enumeration value="SGS">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Saint Helena, Ascension and Tristan da Cunha</xsd:documentation>
+               <xsd:documentation>South Georgia and the South Sandwich Islands</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SJM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SJM">
+         <xsd:enumeration value="SHN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Svalbard and Jan Mayen</xsd:documentation>
+               <xsd:documentation>Saint Helena, Ascension and Tristan da Cunha</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SLB" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SLB">
+         <xsd:enumeration value="SJM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Solomon Islands</xsd:documentation>
+               <xsd:documentation>Svalbard and Jan Mayen</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SLE" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SLE">
+         <xsd:enumeration value="SLB">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Sierra Leone</xsd:documentation>
+               <xsd:documentation>Solomon Islands</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SLV" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SLV">
+         <xsd:enumeration value="SLE">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) El Salvador</xsd:documentation>
+               <xsd:documentation>Sierra Leone</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SMR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SMR">
+         <xsd:enumeration value="SLV">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) San Marino</xsd:documentation>
+               <xsd:documentation>El Salvador</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SOM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SOM">
+         <xsd:enumeration value="SMR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Somalia</xsd:documentation>
+               <xsd:documentation>San Marino</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SPM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SPM">
+         <xsd:enumeration value="SOM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Saint Pierre and Miquelon</xsd:documentation>
+               <xsd:documentation>Somalia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SRB" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SRB">
+         <xsd:enumeration value="SPM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Serbia</xsd:documentation>
+               <xsd:documentation>Saint Pierre and Miquelon</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "STP" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="STP">
+         <xsd:enumeration value="SRB">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Sao Tome and Principe</xsd:documentation>
+               <xsd:documentation>Serbia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SUR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SUR">
+         <xsd:enumeration value="SSD">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Suriname</xsd:documentation>
+               <xsd:documentation>South Sudan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SVK" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SVK">
+         <xsd:enumeration value="STP">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Slovakia</xsd:documentation>
+               <xsd:documentation>Sao Tome and Principe</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SVN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SVN">
+         <xsd:enumeration value="SUR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Slovenia</xsd:documentation>
+               <xsd:documentation>Suriname</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SWE" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SWE">
+         <xsd:enumeration value="SVK">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Sweden</xsd:documentation>
+               <xsd:documentation>Slovakia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SWZ" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SWZ">
+         <xsd:enumeration value="SVN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Swaziland</xsd:documentation>
+               <xsd:documentation>Slovenia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SYC" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SYC">
+         <xsd:enumeration value="SWE">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Seychelles</xsd:documentation>
+               <xsd:documentation>Sweden</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SYR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SYR">
+         <xsd:enumeration value="SWZ">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Syrian Arab Republic</xsd:documentation>
+               <xsd:documentation>Swaziland</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TCA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TCA">
+         <xsd:enumeration value="SXM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Turks and Caicos Islands</xsd:documentation>
+               <xsd:documentation>Sint Maarten (Dutch part)</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TCD" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TCD">
+         <xsd:enumeration value="SYC">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Chad</xsd:documentation>
+               <xsd:documentation>Seychelles</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TGO" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TGO">
+         <xsd:enumeration value="SYR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Togo</xsd:documentation>
+               <xsd:documentation>Syrian Arab Republic</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "THA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="THA">
+         <xsd:enumeration value="TCA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Thailand</xsd:documentation>
+               <xsd:documentation>Turks and Caicos Islands</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TJK" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TJK">
+         <xsd:enumeration value="TCD">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Tajikistan</xsd:documentation>
+               <xsd:documentation>Chad</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TKL" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TKL">
+         <xsd:enumeration value="TGO">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Tokelau</xsd:documentation>
+               <xsd:documentation>Togo</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TKM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TKM">
+         <xsd:enumeration value="THA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Turkmenistan</xsd:documentation>
+               <xsd:documentation>Thailand</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TLS" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TLS">
+         <xsd:enumeration value="TJK">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Timor-Leste</xsd:documentation>
+               <xsd:documentation>Tajikistan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TON" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TON">
+         <xsd:enumeration value="TKL">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Tonga</xsd:documentation>
+               <xsd:documentation>Tokelau</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TTO" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TTO">
+         <xsd:enumeration value="TKM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Trinidad and Tobago</xsd:documentation>
+               <xsd:documentation>Turkmenistan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TUN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TUN">
+         <xsd:enumeration value="TLS">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Tunisia</xsd:documentation>
+               <xsd:documentation>Timor-Leste</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TUR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TUR">
+         <xsd:enumeration value="TON">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Turkey</xsd:documentation>
+               <xsd:documentation>Tonga</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TUV" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TUV">
+         <xsd:enumeration value="TTO">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Tuvalu</xsd:documentation>
+               <xsd:documentation>Trinidad and Tobago</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TWN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TWN">
+         <xsd:enumeration value="TUN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Taiwan, Province of China</xsd:documentation>
+               <xsd:documentation>Tunisia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TZA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TZA">
+         <xsd:enumeration value="TUR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Tanzania, United Republic of</xsd:documentation>
+               <xsd:documentation>Turkey</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "UGA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="UGA">
+         <xsd:enumeration value="TUV">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Uganda</xsd:documentation>
+               <xsd:documentation>Tuvalu</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "UKR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="UKR">
+         <xsd:enumeration value="TWN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Ukraine</xsd:documentation>
+               <xsd:documentation>Taiwan, Province of China</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "UMI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="UMI">
+         <xsd:enumeration value="TZA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) United States Minor Outlying Islands</xsd:documentation>
+               <xsd:documentation>Tanzania, United Republic of</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "URY" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="URY">
+         <xsd:enumeration value="UGA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Uruguay</xsd:documentation>
+               <xsd:documentation>Uganda</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "UZB" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="UZB">
+         <xsd:enumeration value="UKR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Uzbekistan</xsd:documentation>
+               <xsd:documentation>Ukraine</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "VAT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="VAT">
+         <xsd:enumeration value="UMI">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Holy See (Vatican City State)</xsd:documentation>
+               <xsd:documentation>United States Minor Outlying Islands</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "VCT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="VCT">
+         <xsd:enumeration value="URY">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Saint Vincent and the Grenadines</xsd:documentation>
+               <xsd:documentation>Uruguay</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "VEN" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="VEN">
+         <xsd:enumeration value="UZB">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Venezuela, Bolivarian Republic of</xsd:documentation>
+               <xsd:documentation>Uzbekistan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "VGB" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="VGB">
+         <xsd:enumeration value="VAT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Virgin Islands, British</xsd:documentation>
+               <xsd:documentation>Holy See (Vatican City State)</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "VIR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="VIR">
+         <xsd:enumeration value="VCT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Virgin Islands, U.S.</xsd:documentation>
+               <xsd:documentation>Saint Vincent and the Grenadines</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "VNM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="VNM">
+         <xsd:enumeration value="VEN">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Viet Nam</xsd:documentation>
+               <xsd:documentation>Venezuela, Bolivarian Republic of</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "VUT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="VUT">
+         <xsd:enumeration value="VGB">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Vanuatu</xsd:documentation>
+               <xsd:documentation>Virgin Islands, British</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "WLF" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="WLF">
+         <xsd:enumeration value="VIR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Wallis and Futuna</xsd:documentation>
+               <xsd:documentation>Virgin Islands, U.S.</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "WSM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="WSM">
+         <xsd:enumeration value="VNM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Samoa</xsd:documentation>
+               <xsd:documentation>Viet Nam</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "YEM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="YEM">
+         <xsd:enumeration value="VUT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Yemen</xsd:documentation>
+               <xsd:documentation>Vanuatu</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ZAF" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ZAF">
+         <xsd:enumeration value="WLF">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) South Africa</xsd:documentation>
+               <xsd:documentation>Wallis and Futuna</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ZMB" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ZMB">
+         <xsd:enumeration value="WSM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Zambia</xsd:documentation>
+               <xsd:documentation>Samoa</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ZWE" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ZWE">
+         <xsd:enumeration value="YEM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Zimbabwe</xsd:documentation>
+               <xsd:documentation>Yemen</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ACGU" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ACGU">
+         <xsd:enumeration value="ZAF">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) FOUR EYES</xsd:documentation>
+               <xsd:documentation>South Africa</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "APFS" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="APFS">
+         <xsd:enumeration value="ZMB">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Suppressed</xsd:documentation>
+               <xsd:documentation>Zambia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "BWCS" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="BWCS">
+         <xsd:enumeration value="ZWE">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Biological Weapons Convention States</xsd:documentation>
+               <xsd:documentation>Zimbabwe</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CFCK" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CFCK">
+         <xsd:enumeration value="ACGU">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) ROK/US Combined Forces Command, Korea</xsd:documentation>
+               <xsd:documentation>FOUR EYES</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CMFC" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CMFC">
+         <xsd:enumeration value="APFS">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Combined Maritime Forces</xsd:documentation>
+               <xsd:documentation>Suppressed</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CMFP" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CMFP">
+         <xsd:enumeration value="BWCS">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Cooperative Maritime Forces Pacific</xsd:documentation>
+               <xsd:documentation>Biological Weapons Convention States</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CPMT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CPMT">
+         <xsd:enumeration value="CFCK">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Civilian Protection Monitoring Team for Sudan</xsd:documentation>
+               <xsd:documentation>ROK/US Combined Forces Command, Korea</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "CWCS" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="CWCS">
+         <xsd:enumeration value="CFUP">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Chemical Weapons Convention States</xsd:documentation>
+               <xsd:documentation>Coalition Forces Unified Protector</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "EFOR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="EFOR">
+         <xsd:enumeration value="CMFC">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) European Union Stabilization Forces in Bosnia</xsd:documentation>
+               <xsd:documentation>Combined Maritime Forces</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "EUDA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="EUDA">
+         <xsd:enumeration value="CMFP">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) European Union DARFUR</xsd:documentation>
+               <xsd:documentation>Cooperative Maritime Forces Pacific</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "FVEY" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="FVEY">
+         <xsd:enumeration value="CPMT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) FIVE EYES</xsd:documentation>
+               <xsd:documentation>Civilian Protection Monitoring Team for Sudan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GCTF" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GCTF">
+         <xsd:enumeration value="CWCS">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Global Counter-Terrorism Forces</xsd:documentation>
+               <xsd:documentation>Chemical Weapons Convention States</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "GMIF" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="GMIF">
+         <xsd:enumeration value="EFOR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Global Maritime Interception Forces</xsd:documentation>
+               <xsd:documentation>European Union Stabilization Forces in Bosnia</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "IESC" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="IESC">
+         <xsd:enumeration value="EUDA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) International Events Security Coalition</xsd:documentation>
+               <xsd:documentation>European Union DARFUR</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "ISAF" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="ISAF">
+         <xsd:enumeration value="FVEY">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) International Security Assistance Force for Afghanistan</xsd:documentation>
+               <xsd:documentation>FIVE EYES</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "KFOR" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="KFOR">
+         <xsd:enumeration value="GCTF">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Stabilization Forces in Kosovo</xsd:documentation>
+               <xsd:documentation>Global Counter-Terrorism Forces</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MCFI" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MCFI">
+         <xsd:enumeration value="GMIF">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Multinational Coalition Forces - Iraq</xsd:documentation>
+               <xsd:documentation>Global Maritime Interception Forces</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MIFH" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MIFH">
+         <xsd:enumeration value="IESC">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Multinational Interim Force Haiti</xsd:documentation>
+               <xsd:documentation>International Events Security Coalition</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "MLEC" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="MLEC">
+         <xsd:enumeration value="ISAF">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Multi-Lateral Enduring Contingency</xsd:documentation>
+               <xsd:documentation>International Security Assistance Force for Afghanistan</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NACT" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NACT">
+         <xsd:enumeration value="KFOR">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) North African Counter-Terrorism Forces</xsd:documentation>
+               <xsd:documentation>Stabilization Forces in Kosovo</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "NATO" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="NATO">
+         <xsd:enumeration value="MIFH">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) North Atlantic Treaty Organization</xsd:documentation>
+               <xsd:documentation>Multinational Interim Force Haiti</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "SPAA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="SPAA">
+         <xsd:enumeration value="MLEC">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) Suppressed</xsd:documentation>
+               <xsd:documentation>Multi-Lateral Enduring Contingency</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "TEYE" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="TEYE">
+         <xsd:enumeration value="NACT">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) THREE EYES</xsd:documentation>
+               <xsd:documentation>North African Counter-Terrorism Forces</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "UNCK" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="UNCK">
+         <xsd:enumeration value="NATO">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) United Nations Command, Korea</xsd:documentation>
+               <xsd:documentation>North Atlantic Treaty Organization</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="SPAA">
+            <xsd:annotation>
+               <xsd:documentation>Suppressed</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="TEYE">
+            <xsd:annotation>
+               <xsd:documentation>THREE EYES</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="UNCK">
+            <xsd:annotation>
+               <xsd:documentation>United Nations Command, Korea</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
       </xsd:restriction>
@@ -1384,7 +1394,7 @@
          <xsd:simpleType>
             <xsd:list itemType="CVEnumISMRelToValues"/>
          </xsd:simpleType>
-         <xsd:maxLength value="270"/>
+         <xsd:maxLength value="273"/>
       </xsd:restriction>
    </xsd:simpleType>
 </xsd:schema>

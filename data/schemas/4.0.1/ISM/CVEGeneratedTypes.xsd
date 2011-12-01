@@ -4,7 +4,7 @@
   XML DATA ENCODING SPECIFICATION FOR INFORMATION SECURITY MARKING METADATA (ISM.XML)
   ****************************************************************
   Module:   Information Security Markup
-  Date:     2010-05-30
+  Date:     2011-07-18
   Creators: Office of the Director of National Intelligence
   Intelligence Community Chief Information Officer
   ******************************************************************* -->
@@ -132,11 +132,13 @@
 	
 	<xsd:include schemaLocation="./CVEGenerated/CVEnumISMCompliesWith.xsd"/>
 	
-            <xsd:include schemaLocation="./CVEGenerated/CVEnumISMSAR.xsd"/>
-            
-            <xsd:include schemaLocation="./CVEGenerated/CVEnumISMNonUSControls.xsd"/>
-            
-            <xsd:include schemaLocation="./CVEGenerated/CVEnumISMAtomicEnergyMarkings.xsd"/>
+   <xsd:include schemaLocation="./CVEGenerated/CVEnumISMSAR.xsd"/>
+   
+   <xsd:include schemaLocation="./CVEGenerated/CVEnumISMNonUSControls.xsd"/>
+   
+   <xsd:include schemaLocation="./CVEGenerated/CVEnumISMAtomicEnergyMarkings.xsd"/>
+   
+   <xsd:include schemaLocation="./CVEGenerated/CVEnumISMPocType.xsd"/>
    
    <!-- **************************************************************
                             CHANGE HISTORY
@@ -145,6 +147,19 @@
      * By:      ODNI OCIO ICEA
      *       - Add atomicEnergyMarkings
      *       - Remove typeOfExemptedSource
+     **************************************************************
+     * Date     2011-01-27
+     * By:      ODNI OCIO ICEA
+     *       - Add ACCM
+     **************************************************************
+     * Date     2011-01-27
+     * By:      ODNI OCIO ICEA
+     *       - Remove ACCM as attribute and move its values to nonICmarkings
+     **************************************************************
+     * Date    2011-07-18
+     * By:     Colbert, ODNI/OCIO/ICEA
+     *       - Added pocType
+     **************************************************************
      
 ******************************** END CHANGE HISTORY ************************ -->
 	<!-- *********************************************************************** -->

@@ -436,7 +436,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, "ABC", XLinkAttributesTest.getResourceFixture());
+				TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, "DoD-Dist-B", XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
@@ -461,7 +461,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, "ABC",
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, "DoD-Dist-B",
 				XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 

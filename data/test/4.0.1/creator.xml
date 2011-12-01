@@ -5,7 +5,7 @@
 	xmlns:ISM="urn:us:gov:ic:ism"
 	ISM:classification="U"
 	ISM:ownerProducer="USA"
-	ISM:pocType="ABC">
+	ISM:pocType="DoD-Dist-B">
 	<ddms:person>
 		<ddms:name>Brian</ddms:name>
 		<ddms:surname>Uri</ddms:surname>

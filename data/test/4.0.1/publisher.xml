@@ -5,7 +5,7 @@
 	xmlns:ISM="urn:us:gov:ic:ism"
 	ISM:classification="U"
 	ISM:ownerProducer="USA"
-	ISM:pocType="ABC">
+	ISM:pocType="DoD-Dist-B">
 	<ddms:service>
 		<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>
 	</ddms:service>

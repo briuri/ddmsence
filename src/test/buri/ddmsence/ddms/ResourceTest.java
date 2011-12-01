@@ -348,7 +348,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			text.append(buildOutput(isHTML, resourcePrefix + ".ownerProducer", "USA"));
 		}
 		if (version.isAtLeast("4.0.1")) {
-			text.append(buildOutput(isHTML, resourcePrefix + ".noticeType", "ABC"));
+			text.append(buildOutput(isHTML, resourcePrefix + ".noticeType", "DoD-Dist-B"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".noticeReason", "noticeReason"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".noticeDate", "2011-09-15"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".unregisteredNoticeType", "unregisteredNoticeType"));
@@ -467,7 +467,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		if (version.isAtLeast("3.0"))
 			xml.append(" ISM:createDate=\"2010-01-21\"");
 		if (version.isAtLeast("4.0.1")) {
-			xml.append(" ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
+			xml.append(" ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
 			xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
 		}
 		if (version.isAtLeast("3.0"))

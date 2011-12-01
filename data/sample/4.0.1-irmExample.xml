@@ -42,7 +42,7 @@
 	<ddms:rights ddms:privacyAct="true" ddms:intellectualProperty="true" ddms:copyright="false"/>
 	<ddms:source ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://www.xmethods.com" ddms:schemaQualifier="WSDL" ddms:schemaHref="http://www.xmethods.com?wsdl"/>
 	<ddms:type ddms:qualifier="urn:us:gov:ic:activity" ddms:value="crisis" ICISM:classification="U" ICISM:ownerProducer="USA">A critical crisis activity</ddms:type>
-	<ddms:creator ICISM:classification="U" ICISM:ownerProducer="USA" ICISM:pocType="ABC">
+	<ddms:creator ICISM:classification="U" ICISM:ownerProducer="USA" ICISM:pocType="DoD-Dist-B">
 		<ddms:person>
 			<ddms:name>John Q.</ddms:name>
 			<ddms:surname>Jones</ddms:surname>
@@ -52,7 +52,7 @@
 			<ddms:affiliation>U.S. Army</ddms:affiliation>
 		</ddms:person>
 	</ddms:creator>
-	<ddms:publisher ICISM:classification="U" ICISM:ownerProducer="USA" ICISM:pocType="ABC">
+	<ddms:publisher ICISM:classification="U" ICISM:ownerProducer="USA" ICISM:pocType="DoD-Dist-B">
 		<ddms:person>
 			<ddms:name>John Q.</ddms:name>
 			<ddms:surname>Jones</ddms:surname>
@@ -62,7 +62,7 @@
 			<ddms:affiliation>U.S. Army</ddms:affiliation>
 		</ddms:person>
 	</ddms:publisher>
-	<ddms:contributor ICISM:classification="U" ICISM:ownerProducer="USA" ICISM:pocType="ABC">
+	<ddms:contributor ICISM:classification="U" ICISM:ownerProducer="USA" ICISM:pocType="DoD-Dist-B">
 		<ddms:person>
 			<ddms:name>John Q.</ddms:name>
 			<ddms:surname>Jones</ddms:surname>
@@ -72,7 +72,7 @@
 			<ddms:affiliation>U.S. Army</ddms:affiliation>
 		</ddms:person>
 	</ddms:contributor>
-	<ddms:pointOfContact ICISM:pocType="ABC">
+	<ddms:pointOfContact ICISM:pocType="DoD-Dist-B">
 		<ddms:person>
 			<ddms:name>John Q.</ddms:name>
 			<ddms:surname>Jones</ddms:surname>
