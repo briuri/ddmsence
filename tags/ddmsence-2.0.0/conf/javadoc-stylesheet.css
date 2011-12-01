@@ -1,0 +1,28 @@
+body {
+	font-family: Trebuchet MS, Helvetica, sans-serif;
+	font-size: 10pt;
+}
+
+table.info {
+	border-color: #ccccff;
+	border-style: solid;
+	border-width: 1px;
+	margin: 0 0 15px 0;
+	width: 100%;
+}
+.infoHeader {
+	background-color: #eeeeff;
+	text-align: left;
+	padding: 3px;
+}
+.infoBody {
+	background-color: #ffffff;
+	padding: 3px 3px 3px 18px;
+}
+td.hierarchy {
+	border-color: #adb3b5;
+	border-style: dotted;
+	border-width: 1px;
+	padding: 4px;
+	vertical-align: top;
+}
