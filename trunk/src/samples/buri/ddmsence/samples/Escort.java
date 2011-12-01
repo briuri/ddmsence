@@ -284,7 +284,7 @@ public class Escort {
 				DDMSVersion version = DDMSVersion.getCurrentVersion();
 				String producerType = readString("the producer type [creator]");
 				String entityType = readString("the entity type [organization]");
-				String pocTypes =  readString("the pocType [ABC]");
+				String pocTypes =  readString("the pocType [DoD-Dist-B]");
 				SecurityAttributes attr = buildSecurityAttributes("producer");
 				
 				IRoleEntity entity = null;

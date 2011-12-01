@@ -87,7 +87,7 @@ public class ISMVocabularyTest extends AbstractBaseTestCase {
 				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_ATOMIC_ENERGY_MARKINGS, "RD"));
 				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_ATOMIC_ENERGY_MARKINGS, "unknown"));
 
-				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_COMPLIES_WITH, "ICD-710"));
+				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_COMPLIES_WITH, "DoD5230.24"));
 				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_COMPLIES_WITH, "unknown"));
 
 				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_DISPLAY_ONLY_TO, "ABW"));
@@ -98,10 +98,10 @@ public class ISMVocabularyTest extends AbstractBaseTestCase {
 			}
 
 			if (version.isAtLeast("4.0.1")) {
-				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_NOTICE_TYPE, "ABC"));
+				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_NOTICE_TYPE, "DoD-Dist-B"));
 				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_NOTICE_TYPE, "unknown"));
 
-				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_POC_TYPE, "ABC"));
+				assertTrue(ISMVocabulary.enumContains(ISMVocabulary.CVE_POC_TYPE, "DoD-Dist-B"));
 				assertFalse(ISMVocabulary.enumContains(ISMVocabulary.CVE_POC_TYPE, "unknown"));
 			}
 		}

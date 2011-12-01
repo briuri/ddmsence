@@ -112,12 +112,12 @@ public class SecurityTest extends AbstractBaseTestCase {
 			text.append(buildOutput(isHTML, prefix + "excludeFromRollup", "true"));
 		if (version.isAtLeast("4.0.1")) {
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText", "noticeText"));
-			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText.pocType", "ABC"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText.pocType", "DoD-Dist-B"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText.classification", "U"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeText.ownerProducer", "USA"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.classification", "U"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.ownerProducer", "USA"));
-			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeType", "ABC"));
+			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeType", "DoD-Dist-B"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeReason", "noticeReason"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.noticeDate", "2011-09-15"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.unregisteredNoticeType",
@@ -147,8 +147,8 @@ public class SecurityTest extends AbstractBaseTestCase {
 		else {
 			xml.append(">\n");
 			xml.append("\t<ddms:noticeList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-			xml.append("\t\t<ISM:Notice ISM:noticeType=\"ABC\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-			xml.append("\t\t\t<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"ABC\">noticeText</ISM:NoticeText>\n");
+			xml.append("\t\t<ISM:Notice ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
+			xml.append("\t\t\t<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>\n");
 			xml.append("\t\t</ISM:Notice>\n");
 			xml.append("\t</ddms:noticeList>\n");
 			xml.append("\t<ntk:Access xmlns:ntk=\"urn:us:gov:ic:ntk\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");

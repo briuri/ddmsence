@@ -4,12 +4,12 @@
          xmlns="urn:us:gov:ic:cve:v1"
          xmlns:ism="urn:us:gov:ic:ism"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="urn:us:gov:ic:cve:v1 ./Schema/CVEXml.xsd"
+         xsi:schemaLocation="urn:us:gov:ic:cve:v1 ../Schema/CVEXml.xsd"
          ism:ownerProducer="USA"
          ism:classification="U"
-         ism:DESVersion="5"
+         ism:DESVersion="7"
          ism:resourceElement="true"
-		 ism:createDate="2010-09-14">
+         ism:createDate="2011-08-10">
 
                 <cve:IRM>
                     <ddms:identifier ddms:qualifier="name"
@@ -18,7 +18,7 @@
                     <ddms:description ism:ownerProducer="USA" ism:classification="U">FGI followed by all currently valid ISO Trigraphs except USA in alphabetical order by Trigraph, 
             followed by all currently valid CAPCO Coalition tetragraphs in alphabetical order by tetragraph.</ddms:description>
 
-                    <cve:Created>2010-09-14T11:29:00-04:00</cve:Created>
+                	<cve:Created>2011-08-10T12:36:00-04:00</cve:Created>
                     
                     <ddms:source ddms:value="CAPCO Register Appendix A"/>
       <ddms:source ddms:value="ISO 3166"/>
@@ -63,10 +63,6 @@
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">AND</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Andorra</ddms:description>
-		</Term>
-		<Term ism:classification="U" ism:ownerProducer="USA" >
-			<Value ism:classification="U" ism:ownerProducer="USA">ANT</Value>
-			<ddms:description ism:classification="U" ism:ownerProducer="USA">Netherlands Antilles</ddms:description>
 		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">ARE</Value>
@@ -120,6 +116,10 @@
 			<Value ism:classification="U" ism:ownerProducer="USA">BEN</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Benin</ddms:description>
 		</Term>
+		<Term ism:classification="U" ism:ownerProducer="USA" >
+			<Value ism:classification="U" ism:ownerProducer="USA">BES</Value>
+			<ddms:description ism:classification="U" ism:ownerProducer="USA">Bonaire, Saint Eustatius and Saba</ddms:description>
+		</Term>	
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">BFA</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Burkina Faso</ddms:description>
@@ -253,6 +253,10 @@
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Cuba</ddms:description>
 		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" >
+			<Value ism:classification="U" ism:ownerProducer="USA">CUW</Value>
+			<ddms:description ism:classification="U" ism:ownerProducer="USA">Curaçao</ddms:description>
+		</Term>
+		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">CXR</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Christmas Island</ddms:description>
 		</Term>
@@ -294,7 +298,7 @@
 		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">ECU</Value>
-			<ddms:description ism:classification="U" ism:ownerProducer="USA">Eucador</ddms:description>
+			<ddms:description ism:classification="U" ism:ownerProducer="USA">Ecuador</ddms:description>
 		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">EGY</Value>
@@ -853,6 +857,10 @@
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Serbia</ddms:description>
 		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" >
+			<Value ism:classification="U" ism:ownerProducer="USA">SSD</Value>
+			<ddms:description ism:classification="U" ism:ownerProducer="USA">South Sudan</ddms:description>
+		</Term>
+		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">STP</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Sao Tome and Principe</ddms:description>
 		</Term>
@@ -875,6 +883,10 @@
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">SWZ</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Swaziland</ddms:description>
+		</Term>
+		<Term ism:classification="U" ism:ownerProducer="USA" >
+			<Value ism:classification="U" ism:ownerProducer="USA">SXM</Value>
+			<ddms:description ism:classification="U" ism:ownerProducer="USA">Sint Maarten (Dutch part)</ddms:description>
 		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">SYC</Value>
@@ -1032,6 +1044,10 @@
 			<Value ism:classification="U" ism:ownerProducer="USA">CFCK</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">ROK/US Combined Forces Command, Korea</ddms:description>
 		</Term>
+        <Term ism:classification="U" ism:ownerProducer="USA" >
+            <Value ism:classification="U" ism:ownerProducer="USA">CFUD</Value>
+        	<ddms:description ism:classification="U" ism:ownerProducer="USA">Coalition Forces Unified Protector</ddms:description>
+        </Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">CMFC</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Combined Maritime Forces</ddms:description>
@@ -1048,11 +1064,11 @@
 			<Value ism:classification="U" ism:ownerProducer="USA">CWCS</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Chemical Weapons Convention States</ddms:description>
 		</Term>
-		<Term ism:classification="U" ism:ownerProducer="USA" >
+		<Term ism:classification="U" ism:ownerProducer="USA" deprecated="2012-06-15" >
 			<Value ism:classification="U" ism:ownerProducer="USA">EFOR</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">European Union Stabilization Forces in Bosnia</ddms:description>
 		</Term>
-		<Term ism:classification="U" ism:ownerProducer="USA" >
+		<Term ism:classification="U" ism:ownerProducer="USA" deprecated="2012-05-25" >
 			<Value ism:classification="U" ism:ownerProducer="USA">EUDA</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">European Union DARFUR</ddms:description>
 		</Term>
@@ -1080,11 +1096,7 @@
 			<Value ism:classification="U" ism:ownerProducer="USA">KFOR</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Stabilization Forces in Kosovo</ddms:description>
 		</Term>
-		<Term ism:classification="U" ism:ownerProducer="USA" >
-			<Value ism:classification="U" ism:ownerProducer="USA">MCFI</Value>
-			<ddms:description ism:classification="U" ism:ownerProducer="USA">Multinational Coalition Forces - Iraq</ddms:description>
-		</Term>
-		<Term ism:classification="U" ism:ownerProducer="USA" >
+		<Term ism:classification="U" ism:ownerProducer="USA" deprecated="2012-05-18" >
 			<Value ism:classification="U" ism:ownerProducer="USA">MIFH</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Multinational Interim Force Haiti</ddms:description>
 		</Term>
@@ -1112,8 +1124,6 @@
 			<Value ism:classification="U" ism:ownerProducer="USA">UNCK</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">United Nations Command, Korea</ddms:description>
 		</Term>
-                    
-                </cve:Enumeration>
-                
-                </cve:CVE>
+	</cve:Enumeration>
+</cve:CVE>
         

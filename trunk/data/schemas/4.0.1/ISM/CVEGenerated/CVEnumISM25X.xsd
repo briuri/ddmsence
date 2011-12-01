@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--UNCLASSIFIED--><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ism="urn:us:gov:ic:ism"
-            elementFormDefault="qualified"
-            xml:lang="en"
-            ism:ownerProducer="USA"
-            ism:classification="U"
-            ism:DESVersion="5"
-            ism:resourceElement="true"
-            ism:createDate="2010-09-25">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+            xml:lang="en">
    <xsd:annotation>
       <xsd:documentation>
                     W3C XML Schema fragment encoding types for Controlled vocabulary encodings CVEnumISM25X. This file is generated so edits should be made to the CVEnumISM25X the CVE it is based on instead of here.
@@ -15,7 +9,7 @@
    <!--*************************************************************-->
 <!--Generated TYPE DEFINITIONS ..................................-->
 <!--*************************************************************-->
-<xsd:simpleType name="CVEnumISM25X">
+<xsd:simpleType name="CVEnumISM25XValues">
       <xsd:annotation>
          <xsd:documentation>(U) All currently authorized authority block declass date/event exemptions.
                          PERMISSIBLE VALUES
@@ -26,9 +20,10 @@
                          
                      </xsd:documentation>
       </xsd:annotation>
-      <xsd:restriction base="xsd:token"><!--(U) The value "AEA" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="AEA">
+      <xsd:restriction base="xsd:token">
+         <xsd:enumeration value="AEA">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				When using a source document that contains portions of Restricted Data (RD)
 				or Formerly Restricted Data (FRD) where the RD/FRD source document(s) 
 				do not have declassification instructions, the derivatively classified 
@@ -42,9 +37,9 @@
 			</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "25X1" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="25X1">
+         <xsd:enumeration value="25X1">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				Reveal the identity of a confidential 
 				human source, a human intelligence source, 
 				a relationship with an intelligence or security
@@ -57,52 +52,51 @@
 			</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "25X1-human" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="25X1-human">
+         <xsd:enumeration value="25X1-human">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				Reveal the identity of a confidential human source or human intelligence source. 
-				Value has been deprecated ISSOO is unclear on when it will be forbiden. Possible 
-				forbid date is as early as 2010-12-20.
+				See page 25 of the ISOO implementation guide from December 2010 for details and restrictions on use.
 			</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "25X1-EO-12951" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="25X1-EO-12951">
+         <xsd:enumeration value="25X1-EO-12951">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				"25X1, EO 12951" (prescribed by the DNI for use on information described in E.O. 12951, 
 				Release of Imagery Acquired by Space-Based National Intelligence Reconnaissance Systems)
 			</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "25X2" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="25X2">
+         <xsd:enumeration value="25X2">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				Reveal information that would assist 
 				in the development, production, or use of 
 				weapons of mass destruction.
 			</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "25X3" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="25X3">
+         <xsd:enumeration value="25X3">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				Reveal information that would 
 				impair U.S. cryptologic systems or activities.
 			</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "25X4" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="25X4">
+         <xsd:enumeration value="25X4">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				Reveal information that would 
 				impair the application of state-of-the-art 
 				technology within a U.S. weapon system.
 			</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "25X5" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="25X5">
+         <xsd:enumeration value="25X5">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				Reveal formally named or numbered 
 				U.S. military war plans that remain in effect, 
 				or reveal operational or tactical elements of 
@@ -110,9 +104,9 @@
 				plans;</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "25X6" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="25X6">
+         <xsd:enumeration value="25X6">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				Reveal information, including foreign 
 				government information, that would cause 
 				serious harm to relations between the United 
@@ -122,9 +116,9 @@
 			</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "25X7" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="25X7">
+         <xsd:enumeration value="25X7">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				Reveal information that would 
 				impair the current ability of United States 
 				Government officials to protect the President, 
@@ -134,9 +128,9 @@
 			</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "25X8" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="25X8">
+         <xsd:enumeration value="25X8">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				Reveal information that would 
 				seriously impair current national security 
 				emergency preparedness plans or reveal 
@@ -146,9 +140,9 @@
 			</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "25X9" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="25X9">
+         <xsd:enumeration value="25X9">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				Violate a statute, treaty, or 
 				international agreement that does not permit 
 				the automatic or unilateral declassification of 
@@ -156,9 +150,9 @@
 			</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "50X1-HUM" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="50X1-HUM">
+         <xsd:enumeration value="50X1-HUM">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				When the information clearly and 
 				demonstrably could be expected to 
 				reveal the identity of a confidential 
@@ -167,9 +161,9 @@
 			</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
-         <!--(U) The value "50X2-WMD" is classified (U) --><xsd:enumeration ism:classification="U" ism:ownerProducer="USA" value="50X2-WMD">
+         <xsd:enumeration value="50X2-WMD">
             <xsd:annotation>
-               <xsd:documentation ism:classification="U" ism:ownerProducer="USA">(U) 
+               <xsd:documentation>
 				When the information clearly and 
 				demonstrably could reveal key design 
 				concepts of weapons of mass 
@@ -177,6 +171,14 @@
 			</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
+      </xsd:restriction>
+   </xsd:simpleType>
+   <xsd:simpleType name="CVEnumISM25X">
+      <xsd:restriction>
+         <xsd:simpleType>
+            <xsd:list itemType="CVEnumISM25XValues"/>
+         </xsd:simpleType>
+         <xsd:maxLength value="14"/>
       </xsd:restriction>
    </xsd:simpleType>
 </xsd:schema>

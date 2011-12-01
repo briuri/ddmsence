@@ -1,66 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema 
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-	xmlns="urn:us:gov:ic:ism" 
-	xmlns:iccve="urn:us:gov:ic:ism-cvenum"
-	targetNamespace="urn:us:gov:ic:ism" 
-	elementFormDefault="qualified" 
-	xml:lang="en">
+<!-- ****************************************************************
+  INTELLIGENCE COMMUNITY TECHNICAL SPECIFICATION  
+  XML DATA ENCODING SPECIFICATION FOR INFORMATION SECURITY MARKING METADATA (ISM.XML)
+  ****************************************************************
+  Module:   Information Security Markup
+  Date:     2011-08-11
+  Version:  7.0 (See change history at the end of this file)
+  Creators: Office of the Director of National Intelligence
+  Intelligence Community Chief Information Officer
+  ******************************************************************* -->
+<!-- **************************************************************** -->
+<!--                            INTRODUCTION                          -->
+<!-- **************************************************************** -->
+<!-- This XML Schema file is one component of the XML Data Encoding 
+  Specification (DES). Please see the document titled 
+  "XML DATA ENCODING SPECIFICATION FOR INFORMATION SECURITY MARKING METADATA" 
+  for a complete description of the encoding as well as list
+  of all components.  
+  
+  It is envisioned that this schema or its components, as well as other
+  parts of the DES may be overridden for localized implementations. 
+  Therefore, permission to use, copy, modify and distribute this XML 
+  Schema and the other parts of the DES for any purpose is hereby 
+  granted in perpetuity.
+  
+  Please reference the preceding two paragraphs in all copies or
+  variations. The developers make no representation about the
+  suitability of the schema or DES for any purpose. It is provided 
+  "as is" without expressed or implied warranty.
+  
+  If you modify this XML Schema in any way label your schema
+  as a variant of ISM.XML. 
+  
+  Please direct all questions, bug reports,or suggestions for changes
+  to the points of contact identified in the document referenced above.
+-->
+<!-- **************************************************************** -->
+<!--
+     This file provides an XML-based schema for specification of metadata
+     for classification and controls markings.  The goal of the IC ISM XML
+     Schema is to provide a common set of XML attributes for implementing
+     security-based metadata throughout the IC. The IC ISM XML Schema
+     provides markup for the tokens that are used to format the CAPCO
+     markings.
 
+     The IC ISM XML Schema may be incorporated into organizational
+     XML-based schemas by (a) declaring the IC ISM namespace and
+     (b) inserting an "import" statement:
+
+        <xsd:schema
+            xmlns="...my namespace name..."
+            targetNamespace="...my namespace name..."
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:ism="urn:us:gov:ic:ism">
+        ...
+        <xsd:import
+            namespace="urn:us:gov:ic:ism
+            schemaLocation="IC-ISM.xsd" />
+
+     IMPLEMENTATION NOTES:
+
+     1. Refer to the XML DATA ENCODING SPECIFICATION FOR INFORMATION SECURITY MARKING METADATA 
+        Data Encoding Specification (ISM.XML DES)
+        for an explanation of the relationships
+        of the IC ISM attributes and the associated controlled vocabularies.
+        The CAPCO Register and CAPCO Implementation Manual provide additional business
+        rules (that may be classified) not provided in this schema or
+        the associated documentation.
+
+     2. The IC ISM attributes are intended to support all CAPCO security
+        markings.  However, the attribute values are NOT intended to be
+        verbatim pieces of portionmarks and banners.  Instead, the values
+        should be interpreted by XSLT stylesheets or other formatting speci-
+        fications to produce the required portionmarks and banners.
+
+     3. The IC ISM schema is not a standalone construct; it should be
+        imported into a parent XML schema.
+
+     4. The controlled vocabularies containing the required values for popu-
+     lating the attributes are described in the ISM.XML DES.
+
+     5. Attribute group "SecurityAttributesGroup" should be referenced
+        in the attribute definition list of any element that REQUIRES
+        security metadata.
+
+     6. Attribute group "SecurityAttributesOptionGroup" may be referenced
+        in the attribute definition list of any element for which
+        security metadata may be appropriate but is not required (such
+        as, an individual cell of a table).
+-->
+<!-- **************************************************************** -->
+<!-- **************************************************************** -->
+<!--                       Formal Change List                         -->
+<!-- **************************************************************** -->
+<!-- The formal change list is at the end of this file.               -->
+<!-- **************************************************************** -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:us:gov:ic:ism"
+	xmlns:iccve="urn:us:gov:ic:ism-cvenum" xmlns:common="urn:us:gov:ic:common"
+	targetNamespace="urn:us:gov:ic:ism" elementFormDefault="qualified" xml:lang="en">
+	<xsd:annotation>
+		<xsd:documentation>
+      W3C XML Schema for the Intelligence Community Metadata Standard 
+      for Information Security Marking (IC-ISM), which is part of the 
+      XML DATA ENCODING SPECIFICATION FOR INFORMATION SECURITY MARKING METADATA. 
+      Elements declared in this specification are conveniences to developers of Schema.
+      Their use is not required but was determined to be helpful for many Schemas that 
+      would otherwise have to declare these simple elements. Schema developers are free
+      to implement their own versions of these elements. 
+          </xsd:documentation>
+	</xsd:annotation>
+
+	<!-- **************************************************************** -->
+	<!--        IMPORT CVE-Generated schema types                         -->
+	<!-- **************************************************************** -->
 	<xsd:import namespace="urn:us:gov:ic:ism-cvenum" schemaLocation="./CVEGeneratedTypes.xsd"/>
 
-
-<!--  This is a modified version of V5 Public Release of ISM. Development on many ISM notice concepts cannot proceed without V7. -->
-	<xsd:attributeGroup name="POCAttributeGroup">
-		<xsd:attribute ref="pocType" />
-	</xsd:attributeGroup>
-	<xsd:attribute name="pocType">
-	</xsd:attribute>
-	
-	<!--  Stubs created to aid development -->
-	<xsd:element name="Notice">
-		<xsd:complexType>
-			<xsd:sequence minOccurs="1" maxOccurs="1">
-				<xsd:element ref="NoticeText" minOccurs="1" maxOccurs="unbounded"/>
-			</xsd:sequence>
-			<xsd:attributeGroup ref="NoticeAttributesOptionGroup"/>
-		</xsd:complexType>
-	</xsd:element>
-	<xsd:element name="NoticeText">
-		<xsd:complexType>
-			<xsd:simpleContent>
-				<xsd:extension base="xsd:string">
-					<xsd:attributeGroup ref="POCAttributeGroup"/>
-					<xsd:attributeGroup ref="SecurityAttributesGroup"/>
-				</xsd:extension>
-			</xsd:simpleContent>
-		</xsd:complexType>
-	</xsd:element>
-	<xsd:attributeGroup name="NoticeAttributesOptionGroup">
-		<xsd:attribute ref="noticeType" use="optional"/>
-		<xsd:attribute ref="noticeReason" use="optional"/>
-		<xsd:attribute ref="noticeDate" use="optional"/>
-		<xsd:attribute ref="unregisteredNoticeType" use="optional"/>
-		<xsd:attributeGroup ref="SecurityAttributesOptionGroup"/>
-	</xsd:attributeGroup>
-	<xsd:attribute name="noticeType">
-	</xsd:attribute>
-	<xsd:attribute name="unregisteredNoticeType">
-		<xsd:simpleType>
-			<xsd:restriction base="xsd:string">
-				<xsd:maxLength value="2048"/>
-			</xsd:restriction>
-		</xsd:simpleType>
-	</xsd:attribute>
-	<xsd:attribute name="DESVersion" type="xsd:int" fixed="7" />
-	
-	
-	
-	
-	
-	
-	
-
+	<!-- ************************************************************* -->
+	<!-- ATTRIBUTE GROUP DEFINITIONS ................................. -->
+	<!-- ************************************************************* -->
+	<!-- ************************************************************* -->
+	<!-- SecurityAttributesGroup ..................................... -->
+	<!-- ************************************************************* -->
 	<xsd:attributeGroup name="SecurityAttributesGroup">
 		<xsd:annotation>
 			<xsd:documentation xml:lang="en">
@@ -122,9 +182,22 @@
 		<xsd:attribute ref="declassEvent" use="optional"/>
 		<xsd:attribute ref="declassException" use="optional"/>
 	</xsd:attributeGroup>
-	
+
 	<!-- ************************************************************* -->
-	<!-- NoticeAttributesGroup ..................................... -->
+	<!-- ISMNoticeAttributeGroup .................................... -->
+	<!-- ************************************************************* -->
+	<xsd:attributeGroup name="ISMNoticeAttributeGroup">
+		<xsd:annotation>
+			<xsd:documentation>The group of Information Security Marking attributes for use on a notice element</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute ref="noticeType" use="optional"/>
+		<xsd:attribute ref="noticeReason" use="optional"/>
+		<xsd:attribute ref="noticeDate" use="optional"/>
+		<xsd:attribute ref="unregisteredNoticeType" use="optional"/>
+	</xsd:attributeGroup>
+
+	<!-- ************************************************************* -->
+	<!-- NoticeAttributesGroup ....................................... -->
 	<!-- ************************************************************* -->
 	<xsd:attributeGroup name="NoticeAttributesGroup">
 		<xsd:annotation>
@@ -132,19 +205,28 @@
 				The group of Information Security Marking attributes for use on a notice element in which the use of attributes 'classification' and 'ownerProducer' is required.
 			</xsd:documentation>
 		</xsd:annotation>
-		<xsd:attribute ref="notice" use="optional"/>
-		<xsd:attribute ref="noticePOC" use="optional"/>
-		<xsd:attribute ref="noticeReason" use="optional"/>
-		<xsd:attribute ref="noticeDate" use="optional"/>
+		<xsd:attributeGroup ref="ISMNoticeAttributeGroup"/>
 		<xsd:attributeGroup ref="SecurityAttributesGroup"/>
 	</xsd:attributeGroup>
-	
-	
+
+	<!-- ************************************************************* -->
+	<!-- NoticeAttributesOptionGroup ................................. -->
+	<!-- ************************************************************* -->
+	<xsd:attributeGroup name="NoticeAttributesOptionGroup">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				The group of Information Security Marking attributes for use on a notice element in which the use of Security on the notice is optional.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attributeGroup ref="ISMNoticeAttributeGroup"/>
+		<xsd:attributeGroup ref="SecurityAttributesOptionGroup"/>
+	</xsd:attributeGroup>
+
 	<!-- ************************************************************* -->
 	<!-- GLOBAL ATTRIBUTE DECLARATIONS ............................... -->
 	<!-- ************************************************************* -->
-	
-	
+
+
 	<!-- ************************************************************* -->
 	<!-- atomicEnergyMarkings ........................................ -->
 	<!-- ************************************************************* -->
@@ -162,7 +244,7 @@
 			</xsd:documentation>
 		</xsd:annotation>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
 	<!-- classification .............................................. -->
 	<!-- ************************************************************* -->
@@ -184,7 +266,7 @@
       </xsd:documentation>
 		</xsd:annotation>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
 	<!-- compliesWith ................................................ -->
 	<!-- ************************************************************* -->
@@ -193,7 +275,7 @@
 			<xsd:documentation>
 				This attribute is used at the resource level.
 				
-				An indicator of what optional ISM rule sets the documents complies with. This allows sytems to know that the document claims compliance with these rule sets and they should be enforced.
+				An indicator of what optional ISM rule sets the documents complies with. This allows systems to know that the document claims compliance with these rule sets and they should be enforced.
 				PERMISSIBLE VALUES
 				
 				The permissible values for this simple type are defined in the Controlled Value Enumeration:
@@ -202,7 +284,7 @@
 			</xsd:documentation>
 		</xsd:annotation>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
 	<!-- ownerProducer ............................................... -->
 	<!-- ************************************************************* -->
@@ -221,7 +303,7 @@
 
         PERMISSIBLE VALUES
 
-        1) The value "FGI" is permited under the circumstances described above.
+        1) The value "FGI" is permitted under the circumstances described above.
 
         2) The full set of values are defined in the Controlled Value Enumeration:
 
@@ -268,9 +350,9 @@
       </xsd:documentation>
 		</xsd:annotation>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
-	<!-- displayOnlyTo ................................................ -->
+	<!-- displayOnlyTo ............................................... -->
 	<!-- ************************************************************* -->
 	<xsd:attribute name="displayOnlyTo" type="iccve:CVEnumISMRelTo">
 		<xsd:annotation>
@@ -289,7 +371,7 @@
 			</xsd:documentation>
 		</xsd:annotation>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
 	<!-- disseminationControls ....................................... -->
 	<!-- ************************************************************* -->
@@ -326,7 +408,7 @@
 
         PERMISSIBLE VALUES
 
-        1) The value "UNKNOWN" is permited under the circumstances described above.
+        1) The value "UNKNOWN" is permitted under the circumstances described above.
 
         2) The full set of values are defined in the Controlled Value Enumeration:
 
@@ -337,7 +419,7 @@
 	<!-- ************************************************************* -->
 	<!-- FGIsourceProtected .......................................... -->
 	<!-- ************************************************************* -->
-	<xsd:attribute name="FGIsourceProtected" type="iccve:CVEnumISMFGIProtected" >
+	<xsd:attribute name="FGIsourceProtected" type="iccve:CVEnumISMFGIProtected">
 		<xsd:annotation>
 			<xsd:documentation xml:lang="en">
         This attribute is used at both the resource and the portion levels.
@@ -356,7 +438,7 @@
 
         PERMISSIBLE VALUES
 
-        1) The value "FGI" is permited under the circumstances described above.
+        1) The value "FGI" is permitted under the circumstances described above.
 
         2) The full set of values are defined in the Controlled Value Enumeration:
 
@@ -405,7 +487,7 @@
       </xsd:documentation>
 		</xsd:annotation>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
 	<!-- nonUSControls ............................................... -->
 	<!-- ************************************************************* -->
@@ -425,7 +507,7 @@
 			</xsd:documentation>
 		</xsd:annotation>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
 	<!-- classifiedBy ................................................ -->
 	<!-- ************************************************************* -->
@@ -572,24 +654,21 @@
 	<xsd:attribute name="declassException" type="iccve:CVEnumISM25X">
 		<xsd:annotation>
 			<xsd:documentation xml:lang="en">
-        This attribute is used primarily at the resource level.
-
-        A single indicator describing an exemption to the nominal 25-year point for automatic declassification.  This element is used in conjunction with the Declassification Date or Declassification Event.
-
-		It is manifested in the 'Declassify On' line of a resource's classification authority block.
-
-        ISOO has stated it should be a SINGLE value giving the longest protection.
-
-        PERMISSIBLE VALUE
-
-        The permissible value for this attribute is defined in the Controlled Value Enumeration:
-
-        CVEnumISMN25X.xml
-
-      </xsd:documentation>
+				This attribute is used primarily at the resource level.
+				A single indicator describing an exemption to the nominal 25-year point for automatic declassification.  
+				This element is used in conjunction with the Declassification Date or Declassification Event.
+				It is manifested in the 'Declassify On' line of a resource's classification authority block.
+				ISOO has stated it should be a SINGLE value giving the longest protection.
+				
+			</xsd:documentation>
+			<xsd:documentation>
+				PERMISSIBLE VALUE: 
+				The permissible value for this attribute is defined in the Controlled Value Enumeration:
+				CVEnumISMN25X.xml
+			</xsd:documentation>
 		</xsd:annotation>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
 	<!-- resourceElement ............................................. -->
 	<!-- ************************************************************* -->
@@ -623,7 +702,7 @@
 			<xsd:restriction base="xsd:boolean"/>
 		</xsd:simpleType>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
 	<!-- createDate .................................................. -->
 	<!-- ************************************************************* -->
@@ -639,7 +718,7 @@
 			<xsd:restriction base="xsd:date"/>
 		</xsd:simpleType>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
 	<!-- compilationReason ........................................... -->
 	<!-- ************************************************************* -->
@@ -660,24 +739,30 @@
 			</xsd:restriction>
 		</xsd:simpleType>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
-	<!-- Notice ..................................................... -->
+	<!-- Notice ...................................................... -->
 	<!-- ************************************************************* -->
 	<!-- 2010-01-26: Added notice   (CR 2010-26)           ********** -->
-	<xsd:attribute name="notice" type="iccve:CVEnumISMNotice">
+	<xsd:attribute name="noticeType" type="iccve:CVEnumISMNotice">
 		<xsd:annotation>
 			<xsd:documentation xml:lang="en">
-				A categorization defining which of the required Notices, described in the CAPCO Register, is included in the element.
-				This attribute is an indicator that the element contains a Notice. The element could contain any structure the implementing 
-				schema defined and details of the rendering would be up to the schema in question. 
+				This attribute is an indicator that the element contains a 
+				security-related notice and is used to categorize which of the 
+				required notices is specified in the element. These categories 
+				include those described in the CAPCO Register, as well as 
+				additional well-defined and formally recognized security notice 
+				types described in other directives, such as US-Person and DoD 
+				Distribution. The element could contain any structure that 
+				the implementing schema defines, and details of the 
+				rendering would be relegated to the implementing schema. 
 				The permissible value for this attribute are defined in the Controlled Value Enumeration:
 				
 				CVEnumISMNotice.xml
 			</xsd:documentation>
 		</xsd:annotation>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
 	<!-- NoticeDate .................................................. -->
 	<!-- ************************************************************* -->
@@ -692,7 +777,7 @@
 			<xsd:restriction base="xsd:date"/>
 		</xsd:simpleType>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
 	<!-- NoticeReason................................................. -->
 	<!-- ************************************************************* -->
@@ -709,15 +794,18 @@
 			</xsd:restriction>
 		</xsd:simpleType>
 	</xsd:attribute>
-	
+
 	<!-- ************************************************************* -->
-	<!-- noticePOC.................................................... -->
+	<!-- unregisteredNoticeType....................................... -->
 	<!-- ************************************************************* -->
-	<!-- 2010-05-30: Added noticePOC                        ********** -->
-	<xsd:attribute name="noticePOC">
+	<!-- 2011-04-26: Added unregisteredNoticeType           ********** -->
+	<xsd:attribute name="unregisteredNoticeType">
 		<xsd:annotation>
-			<xsd:documentation xml:lang="en">
-				A Point of Contact POC (less than 2048 chars) associated with a notice such as the DoD Distribution POC.
+			<xsd:documentation xml:lang="en"> 
+				A notice that is of a category that is not described in the CAPCO Register and/or 
+				is not sufficiently defined to be represented in the Controlled Value 
+				Enumeration CVEnumISMNotice.xml. This attribute can be used by specifications 
+				that import ISM to represent a wider variety of security-related notices.
 			</xsd:documentation>
 		</xsd:annotation>
 		<xsd:simpleType>
@@ -728,10 +816,131 @@
 	</xsd:attribute>
 	
 	<!-- ************************************************************* -->
+	<!-- pocType...................................................... -->
+	<!-- ************************************************************* -->
+	<!-- 2011-07-13: Added pocType                          ********** -->
+	<xsd:attribute name="pocType" type="iccve:CVEnumISMPocType">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				Indicates that the element specifies a point-of-contact (POC) and 
+				the methods with which to contact that individual. As certain POCs are 
+				required for different reasons (ICD-710 compliance, DoD Distribution statements, etc),
+				the values for this attribute specify the reason(s) why the POC is provided.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:attribute>
+	
+	<!-- ************************************************************* -->
+	<!-- SIMPLE TYPE DEFINITIONS ..................................... -->
+	<!-- ************************************************************* -->
+	
+	<!-- ************************************************************* -->
+	<!-- COMPLEX TYPE DEFINITIONS .................................... -->
+	<!-- ************************************************************* -->
+	
+	<!-- ************************************************************* -->
+	<!-- NoticeListType .............................................. -->
+	<!-- ************************************************************* -->
+	<!-- 2011-08-10: Added NoticeListType type              ********** -->
+	<xsd:complexType name="NoticeListType">
+		<xsd:annotation>
+			<xsd:documentation>A list of Notices</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence minOccurs="1" maxOccurs="1">
+			<xsd:element ref="Notice" minOccurs="1" maxOccurs="unbounded"/>
+		</xsd:sequence>
+		<xsd:attributeGroup ref="SecurityAttributesGroup"/>
+	</xsd:complexType>
+
+	<!-- ************************************************************* -->
+	<!-- NoticeList element........................................... -->
+	<!-- ************************************************************* -->
+	<!-- 2011-04-15: Added NoticeList element               ********** -->
+	<xsd:element name="NoticeList" type="NoticeListType"/>	
+
+	<!-- ************************************************************* -->
+	<!-- Notice element............................................... -->
+	<!-- ************************************************************* -->
+	<!-- 2011-04-15: Added Notice element                   ********** -->
+	<xsd:element name="Notice">
+		<xsd:annotation>
+			<xsd:documentation>A single Notice that may consist of 1 or more NoticeText</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="1" maxOccurs="1">
+				<xsd:element ref="NoticeText" minOccurs="1" maxOccurs="unbounded"/>
+			</xsd:sequence>
+			<xsd:attributeGroup ref="NoticeAttributesOptionGroup"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- ************************************************************* -->
+	<!-- NoticeText element........................................... -->
+	<!-- ************************************************************* -->
+	<!-- 2011-04-15: Added NoticeText element               ********** -->
+	<xsd:element name="NoticeText">
+		<xsd:annotation>
+			<xsd:documentation>The actual text of a notice.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:complexContent>
+				<xsd:extension base="LongStringWithSecurityType">
+					<xsd:attributeGroup ref="POCAttributeGroup"/>
+				</xsd:extension>
+			</xsd:complexContent>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- ************************************************************* -->
+	<!-- String Types................................................. -->
+	<!-- ************************************************************* -->
+	<!-- 2011-04-26: Added four String Types                ********** -->
+	<xsd:complexType name="LongStringWithSecurityType">
+		<xsd:simpleContent>
+			<xsd:extension base="LongStringType">
+				<xsd:attributeGroup ref="SecurityAttributesGroup"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:complexType name="ShortStringWithSecurityType">
+		<xsd:simpleContent>
+			<xsd:extension base="ShortStringType">
+				<xsd:attributeGroup ref="SecurityAttributesGroup"/>
+			</xsd:extension>
+		</xsd:simpleContent>
+	</xsd:complexType>
+
+	<xsd:simpleType name="ShortStringType">
+		<xsd:annotation>
+			<xsd:documentation>A short string, less than 256 characters.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="256"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="LongStringType">
+		<xsd:annotation>
+			<xsd:documentation>A long string, less than 32000 characters.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:string">
+			<xsd:maxLength value="32000"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- ************************************************************* -->
 	<!-- DESVersion          ......................................... -->
 	<!-- ************************************************************* -->
+	<xsd:attribute name="DESVersion" type="xsd:int" fixed="7">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">
+				The version number of the DES. Should there be multiple specified in an instance document 
+				the one at the root node is the one that will apply to the entire document.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:attribute>
 
-	
 	<!-- ************************************************************* -->
 	<!-- ISMRootNodeAttributeGroup ................................... -->
 	<!-- ************************************************************* -->
@@ -742,7 +951,7 @@
 		</xsd:annotation>
 		<xsd:attribute ref="DESVersion" use="required"/>
 	</xsd:attributeGroup>
-	
+
 	<!-- ************************************************************* -->
 	<!-- ISMRootNodeAttributeOptionGroup ............................. -->
 	<!-- ************************************************************* -->
@@ -757,6 +966,32 @@
 		</xsd:annotation>
 		<xsd:attribute ref="DESVersion" use="optional"/>
 	</xsd:attributeGroup>
+
+	<!-- ************************************************************* -->
+	<!-- ISMResourceNodeAttributeGroup .................................. -->
+	<!-- ************************************************************* -->
+	<xsd:attributeGroup name="ISMResourceAttributeGroup">
+		<xsd:annotation>
+			<xsd:documentation>An attribute group to be used on the element that represents the resource 
+				node of an instance document.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute ref="resourceElement" use="required"/>
+		<xsd:attribute ref="createDate" use="required"/>
+		<xsd:attribute ref="compliesWith" use="optional"/>
+	</xsd:attributeGroup>
+
+	<!-- ************************************************************* -->
+	<!-- ISMResourceAttributeOptionGroup ............................. -->
+	<!-- ************************************************************* -->
+	<xsd:attributeGroup name="ISMResourceAttributeOptionGroup">
+		<xsd:annotation>
+			<xsd:documentation>An attribute group to be used on the element that represents the resource 
+				node of an instance document.</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute ref="resourceElement" use="optional"/>
+		<xsd:attribute ref="createDate" use="optional"/>
+		<xsd:attribute ref="compliesWith" use="optional"/>
+	</xsd:attributeGroup>
 	
 	<!-- ************************************************************* -->
 	<!-- ResourceNodeAttributeGroup .................................. -->
@@ -766,43 +1001,195 @@
 			<xsd:documentation>
 				An attribute group to be used on the element that represents the resource 
 				node of an instance document. This node's ISM attributes would be used to 
-				generate banner marks and the E.O. 12958 classification authority block. 
+				generate banner marks and the E.O. 13526 classification authority block. 
 				Implementing Schemas might use this on the Root node or any other node.
 			</xsd:documentation>
 		</xsd:annotation>
-		<xsd:attribute ref="resourceElement" fixed="true" use="required"/>
-		<xsd:attribute ref="createDate" use="required"/>
-		<xsd:attribute ref="compliesWith" use="optional" />
+		<xsd:attributeGroup ref="ISMResourceAttributeGroup"/>
 		<xsd:attributeGroup ref="SecurityAttributesGroup"/>
+		<xsd:attributeGroup ref="ISMNoticeAttributeGroup"/>
 	</xsd:attributeGroup>
-	
+
 	<!-- ************************************************************* -->
-	<!-- ResourceNodeAttributeOptionGroup .................................. -->
+	<!-- ResourceNodeAttributeOptionGroup ............................ -->
 	<!-- ************************************************************* -->
 	<xsd:attributeGroup name="ResourceNodeAttributeOptionGroup">
 		<xsd:annotation>
 			<xsd:documentation>
 				An attribute group to be used on the element that represents the resource 
 				node of an instance document. This node's ISM attributes would be used to 
-				generate banner marks and the E.O. 12958 classification authority block. 
+				generate banner marks and the E.O. 13526 classification authority block. 
 				Implementing Schemas might use this on the Root node or any other node.
 				This group has all the attributes as optional. It could be used in a schema
 				where many nodes may be the resource element. When the element is acting 
 				as the resource element it should have attributes used similar to ResourceNodeAttributeGroup.
 			</xsd:documentation>
 		</xsd:annotation>
-		<xsd:attribute ref="resourceElement" fixed="true" use="optional"/>
-		<xsd:attribute ref="createDate" use="optional"/>
-		<xsd:attribute ref="compliesWith" use="optional" />
+		<xsd:attributeGroup ref="ISMResourceAttributeOptionGroup"/>
 		<xsd:attributeGroup ref="SecurityAttributesOptionGroup"/>
+		<xsd:attributeGroup ref="ISMNoticeAttributeGroup"/>
 	</xsd:attributeGroup>
-	
-	<xsd:simpleType name="ShortStringType">
+
+	<!-- ************************************************************* -->
+	<!-- POCAttributeGroup ........................................... -->
+	<!-- ************************************************************* -->
+	<xsd:attributeGroup name="POCAttributeGroup">
 		<xsd:annotation>
-			<xsd:documentation>A short string, less than 256 characters.</xsd:documentation>
+			<xsd:documentation>
+				An attribute group to be used on the element that represents an entity
+				that can be designated as a point-of-contact. This node may be a single
+				person or an organization.
+			</xsd:documentation>
 		</xsd:annotation>
-		<xsd:restriction base="xsd:string">
-			<xsd:maxLength value="256"/>
-		</xsd:restriction>
-	</xsd:simpleType>
+		<xsd:attribute ref="pocType" />
+	</xsd:attributeGroup>
+
+
+	<!-- **************************************************************
+                            CHANGE HISTORY
+     **************************************************************
+*
+* VERSION: 1.0
+* DATE:    2002-07-05
+* BY:      IC MWG
+* PURPOSE: Released as a registered, production XML entity set.
+*
+* VERSION: 2.0
+* DATE:    2004-04-30
+* BY:      IC MWG
+* PURPOSE: Updated to support changes to the CAPCO Register and
+           Implementation Manual.
+*
+*     - Added "ownerProducer" as a required attribute for entity
+*       "SecurityAttributes" and as an optional attribute for entity
+*       "SecurityAttributesOption."  Purpose is to provide a single method
+*       for specification of US, non-US, and joint classifications.
+*
+*     - Changed the enumerated list that is the declared value of attribute
+*       "classification" in order to accommodate non-US classifications.
+*
+*     - Added optional attribute "SARIdentifier" as a separate container for
+*       DoD/DoE special-access-required nicknames, codewords, or trigraph/
+*       digraph to support elevation of SAR to the same level as SCI controls.
+*
+*     - Added optional attributes "classifiedBy" and "classificationReason"
+*       to support generation of EO 12958 classification/declassification
+*       blocks.
+*
+*     - Changed the declared value of "derivedFrom" to CDATA to allow the titles
+*       and dates of source documents or classification guides to be specified.
+*
+*     - Replaced the single attribute "declassification" with distinct attri-
+*       butes for date-determined and event-determined declassification and
+*       for the 25X declassification exceptions.
+*
+*     - Added attributes "typeOfExemptedSource" and "dateOfExemptedSource" for
+*       use in specifying that one or more sources was marked OADR, X1 through
+*       X8, or X-Foreign Relations.
+*
+*     - Added attribute "declassManualReview" for use in forcing "MR" to
+*       appear in header and footer banners (regardless of whether any
+*       caveats in the portions would necessitate manual review).
+*
+*
+* VERSION: 2.1
+* DATE:    2008-08-19
+* BY:      ODNI OCIO ICIS
+* PURPOSE: Updated to support IC Standard for Information Security Marking Metadata (2007-500-2)
+*
+*     - Added "DerivativelyClassifiedBy" to allow capturing information about
+*       a derivative classifier separate from an original classifier
+*
+* DATE:    2009-12-01
+* BY:      ODNI OCIO ICIS
+*
+*     - (CR 2009-09) Added "compilationReason" to allow capturing information about
+*       the reason that the document or portion bears a more restrictive classification
+*       than the data would appear to support.
+*     - (CR 2009-07) Point to CVE files for enumeration values.
+*     - (CR 2009-22) Change declassException and typeOfExemptedSource to NMTOKEN.
+*     - (CR 2009-16) Add ability to specify DES Version.
+*     - (CR 2009-05) Add createDate, excludeFromRollup, resourceElement to allow ISM rules
+*       to be independent of implementing schema.
+*     - (CR 2009-05) Add ISMRootNodeAttributeGroup and ResourceNodeAttributeGroup.
+*
+* DATE:    2010-01-22
+* BY:      ODNI OCIO ICIS
+*
+*     - (CR 2010-02) Add notice attribute, NoticeAttributesGroup and NoticeAttributesOptionGroup
+* Final review before signature 2010-06-06
+*     - Remove comment about LES not being in the Register since it is now in the register.
+*     - Correct NoticeAttributesOptionGroup to have SecurityAttributesOptionGroup so that NoteInline in PUBS works correctly. 
+*
+* Date     2010-06-01
+* By:      ODNI OCIO ICIS
+*       - Add DoD Distro statements
+*       - Add NATO refactor
+*       - Add Use of Generated CVE schema types.
+*
+* Date     2010-09-25
+* By:      ODNI OCIO ICEA
+*       - Add atomicEnergyMarkings
+*       - Remove typeOfExemptedSource and dateOfExemptedSource
+*       - Add ResourceNodeAttributeOptionGroup
+*       - Add ISMRootNodeAttributeOptionGroup
+*
+* Date     2011-01-27
+* By:      ODNI OCIO ICEA
+*       - Add ACCM
+*
+* VERSION 7.0
+* Date	   2011-04-15
+* By:	   Colbert, ODNI OCIO ICEA
+*		- Add elements NoticeList, Notice, and NoticeText
+*
+* Date     2011-04-19
+* By:      Hodges, ODNI OCIO ICEA
+*       - (CR 2010-4) Add ISMNoticeAttributeGroup to hold the Notice specific  
+*		   attributes and changed the NoticeAttribute groups to reference it.
+*		   ISMResourceAttributeGroup also added and Resource specific attributes
+*		   have been removed from the ResourceAttribute groups and the new group
+*          added.
+
+* Date	   2011-04-22
+* By: 	   Colbert, ODNI OCIO ICEA
+*		- Explicitly declared minOccurs and maxOccurs where appropriate.
+*
+* Date	   2011-04-26
+* By: 	   Colbert, ODNI OCIO ICEA
+*		- Added String types LongStringType, ShortStringType, LongStringWithSecurityType, 
+*         and ShortStringWithSecurityType	  
+*       - Added attribute unregisteredNoticeType and included it in ISMNoticeAttributeGroup
+*
+* Date	2011-05-11
+* By:	Colbert, ODNI/OCIO/ICEA
+* 		- Added ORCONPOC attribute and POCAttributeGroup
+*
+* Date	2011-06-10
+* By:	Hansen, ODNI/OCIO/ICEA
+* 		- Removed @fixed="true" from the resourceElement attribute definition in 
+*         the ISMResourceNodeAttributeGroup and ISMResourceNodeAttributeOptionGroup
+*
+* Date: 2011-07-07
+* By:	Colbert, ODNI/OCIO/ICEA
+*			Gilsenan, ODNI/OCIO/ICEA
+*		- Added version information to the header
+*		- Removed ACCM attribute
+*
+* Date: 2011-07-14
+* By: 	Colbert, ODNI/OCIO/ICEA
+* 		Gilsenan, ODNI/OCIO/ICEA
+*		- Renamed @ism:notice to @ism:noticeType
+* 		- Removed @ism:ORCONPOC and @ism:noticePOC. They're replaced with the new
+* 		  @ism:pocType attribute which indicates that an element specifies a
+*		  point-of-contact's name and contact method.
+*
+* Date: 2011-08-10
+* By: Colbert, ODNI/OCIO/ICEA
+*		- Added a complex type for NoticeList
+*
+******************************** END CHANGE HISTORY ************************ -->
+	<!-- *********************************************************************** -->
+	<!--                                                                         -->
+	<!-- *********************************************************************** -->
 </xsd:schema>

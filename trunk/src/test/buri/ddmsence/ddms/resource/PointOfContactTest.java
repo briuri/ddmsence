@@ -122,7 +122,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		StringBuffer text = new StringBuffer();
 		text.append(((AbstractBaseComponent) getEntityFixture()).getOutput(isHTML, "pointOfContact.", ""));
 		if (version.isAtLeast("4.0.1"))
-			text.append(buildOutput(isHTML, "pointOfContact.pocType", "ABC"));
+			text.append(buildOutput(isHTML, "pointOfContact.pocType", "DoD-Dist-B"));
 		text.append(buildOutput(isHTML, "pointOfContact.classification", "U"));
 		text.append(buildOutput(isHTML, "pointOfContact.ownerProducer", "USA"));
 		return (text.toString());
@@ -138,7 +138,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:pointOfContact ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
 		if (version.isAtLeast("4.0.1"))
-			xml.append(" ISM:pocType=\"ABC\"");
+			xml.append(" ISM:pocType=\"DoD-Dist-B\"");
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t");
 		if ("2.0".equals(version.getVersion())) {
 			xml.append("<ddms:").append(Service.getName(version)).append(">\n");
@@ -204,7 +204,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 				// Partial Invalid pocType
 				element = Util.buildDDMSElement(PointOfContact.getName(version), null);
 				element.appendChild(getEntityFixture().getXOMElementCopy());
-				Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "ABC Unknown");
+				Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "DoD-Dist-B Unknown");
 				getInstance("Unknown is not a valid enumeration token", element);
 			}
 		}
@@ -222,7 +222,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 				getInstance("Unknown is not a valid enumeration token", getEntityFixture(), Util.getXsListAsList("Unknown"));
 
 				// Partial Invalid pocType
-				getInstance("Unknown is not a valid enumeration token", getEntityFixture(), Util.getXsListAsList("ABC Unknown"));
+				getInstance("Unknown is not a valid enumeration token", getEntityFixture(), Util.getXsListAsList("DoD-Dist-B Unknown"));
 			}
 		}
 	}
@@ -291,7 +291,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 	public void testWrongVersionPocType() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new PointOfContact(getEntityFixture(), Util.getXsListAsList("ABC"), SecurityAttributesTest.getFixture());
+			new PointOfContact(getEntityFixture(), Util.getXsListAsList("DoD-Dist-B"), SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -316,7 +316,7 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 			PointOfContact.Builder builder = new PointOfContact.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
-			builder.setPocTypes(Util.getXsListAsList("ABC"));
+			builder.setPocTypes(Util.getXsListAsList("DoD-Dist-B"));
 			assertFalse(builder.isEmpty());
 
 		}
