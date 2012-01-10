@@ -65,7 +65,7 @@
 	<meta name="ddms.generator" content="DDMSence 2.0.0" />
 	<meta name="ddms.version" content="4.0.1" />
 		
-	<script type="text/javascript" src="./shared/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" src="./shared/jquery-1.6.4.min.js"></script>
 	<script type="text/javascript">
 
 	// Collapsible subsection code
