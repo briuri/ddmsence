@@ -49,70 +49,38 @@ All changes which are not backwards compatible will be linked from this page wit
 
 <h3>Older Releases</h3>
 
-<!-- 818 downloads of 1.x as of 12/01/2011 -->
+<!-- 828 downloads of 1.x as of 03/17/2012 -->
+
+<p>The 1.x line of DDMSence is no longer available for download. The 2.x line should be adopted instead. Historical information about earlier releases can be
+found below.</p>
 
 <p>Version <b>1.11.0</b> (07/17/2011) is a stable release, which adds support for 
 <a href="documentation-schematron.jsp">XSLT2-based Schematron validation</a> (<a href="http://code.google.com/p/ddmsence/issues/detail?id=79">Issue #79</a>),
 improved performance when using multiple Controlled Vocabularies (<a href="http://code.google.com/p/ddmsence/issues/detail?id=90">Issue #90</a>), and a few 
 minor bug fixes. This release is backwards compatible with v1.10.0.</p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.11.0.zip"><code>ddmsence-bin-1.11.0.zip</code></a></b> (4.9 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.11.0.zip"><code>ddmsence-src-1.11.0.zip</code></a></b> (4.9 MB)</li>
-</ul>
-
 <p>Version <b>1.10.0</b> (07/05/2011) is a stable release, which adds support for DDMS 3.1 (<a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.10.0">Issue #82 - 85</a>).
 It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=88">backwards compatible</a> with earlier versions.</p>
-
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.10.0.zip"><code>ddmsence-bin-1.10.0.zip</code></a></b> (4.4 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.10.0.zip"><code>ddmsence-src-1.10.0.zip</code></a></b> (4.5 MB)</li>
-</ul>
 
 <p>Version <b>1.9.1</b> (06/02/2011) is a stable patch release, which corrects a few minor bugs related to the lazily instantiated lists
 in the Component Builder framework (<a href="http://code.google.com/p/ddmsence/issues/detail?id=76">Issue #76</a>,
 <a href="http://code.google.com/p/ddmsence/issues/detail?id=77">Issue #77</a>
 and <a href="http://code.google.com/p/ddmsence/issues/detail?id=78">Issue #78</a>). It is backwards compatible with all versions since v1.4.0.</p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.9.1.zip"><code>ddmsence-bin-1.9.1.zip</code></a></b> (4.3 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.9.1.zip"><code>ddmsence-src-1.9.1.zip</code></a></b> (4.4 MB)</li>
-</ul>
-
 <p>Version <b>1.9.0</b> (05/24/2011) is a stable release, which makes the Component Builder framework more amenable to web-based forms
 by implementing the Serializable interface and using lazily instantiated lists for child components (<a href="http://code.google.com/p/ddmsence/issues/detail?id=74">Issue #74</a>
 and <a href="http://code.google.com/p/ddmsence/issues/detail?id=75">Issue #75</a>). It is backwards compatible with all versions since v1.4.0.</p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.9.0.zip"><code>ddmsence-bin-1.9.0.zip</code></a></b> (4.3 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.9.0.zip"><code>ddmsence-src-1.9.0.zip</code></a></b> (4.4 MB)</li>
-</ul>
-
 <p>Version <b>1.8.0</b> (05/13/2011) is a stable release, which adds <a href="documentation-builders.jsp">mutable Builders</a> for all DDMS components 
 (<a href="http://code.google.com/p/ddmsence/issues/detail?id=68">Issue #68</a>). It is backwards compatible with all versions since v1.4.0.</p>
-
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.8.0.zip"><code>ddmsence-bin-1.8.0.zip</code></a></b> (4.3 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.8.0.zip"><code>ddmsence-src-1.8.0.zip</code></a></b> (4.4 MB)</li>
-</ul>
 
 <p>Version <b>1.7.2</b> (03/10/2011) is a stable patch release, which corrects syntax errors in the sample Schematron files 
 (<a href="http://code.google.com/p/ddmsence/issues/detail?id=67">Issue #67</a>), and adds "3.0.1" as an alias for DDMS 3.0
 (<a href="http://code.google.com/p/ddmsence/issues/detail?id=69">Issue #69</a>). It is backwards compatible with all versions since v1.4.0.</p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.7.2.zip"><code>ddmsence-bin-1.7.2.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.7.2.zip"><code>ddmsence-src-1.7.2.zip</code></a></b> (4.4 MB)</li>
-</ul>
-
 <p>Version <b>1.7.1</b> (11/16/2010) is a stable patch release, which corrects a very minor issue where northbound latitude values were validated as longitudes 
  (<a href="http://code.google.com/p/ddmsence/issues/detail?id=65">Issue #65</a>). It is backwards compatible 
 with all versions since v1.4.0.</p>
-
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.7.1.zip"><code>ddmsence-bin-1.7.1.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.7.1.zip"><code>ddmsence-src-1.7.1.zip</code></a></b> (4.3 MB)</li>
-</ul>
 
 <p>Version <b>1.7.0</b> (9/18/2010) is a stable release, which allows toggling between errors and warnings on
 Intelligence Community Controlled Vocabulary validation (<a href="http://code.google.com/p/ddmsence/issues/detail?id=36">Issue #36</a>)
@@ -120,119 +88,44 @@ and adds support for swappable Controlled Vocabulary files
 (<a href="http://code.google.com/p/ddmsence/issues/detail?id=59">Issue #59</a>). It is backwards compatible 
 with all versions since v1.4.0.</p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.7.0.zip"><code>ddmsence-bin-1.7.0.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.7.0.zip"><code>ddmsence-src-1.7.0.zip</code></a></b> (4.3 MB)</li>
-</ul>
-
 <p>Version <b>1.6.0</b> (9/07/2010) is a stable release, which updates bundled schemas and files for DDMS 3.0. Because the changes
 mainly affected the ISM Controlled Vocabulary files, this release is still backwards compatible with all versions since v1.4.0.</p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.6.0.zip"><code>ddmsence-bin-1.6.0.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.6.0.zip"><code>ddmsence-src-1.6.0.zip</code></a></b> (4.3 MB)</li>
-</ul>
-
 <p>Version <b>1.5.1</b> (7/07/2010) is a stable patch release, which fixes a <a href="http://code.google.com/p/ddmsence/issues/detail?id=50">Glassfish deployment issue</a>. It is backwards compatible with all versions since v1.4.0.</p>
-
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.5.1.zip"><code>ddmsence-bin-1.5.1.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.5.1.zip"><code>ddmsence-src-1.5.1.zip</code></a></b> (4.3 MB)</li>
-</ul>
 
 <p>Version <b>1.5.0</b> (7/05/2010) is a stable release, and adds DDMSReader support for Strings, Readers, and InputStreams. It also updates the bundled version of XOM
 to 1.2.6. This release is backwards compatible with v1.4.0.</p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.5.0.zip"><code>ddmsence-bin-1.5.0.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.5.0.zip"><code>ddmsence-src-1.5.0.zip</code></a></b> (4.3 MB)</li>
-</ul>
-
 <p>Version <b>1.4.0</b> (6/08/2010) is a stable release, and changes configurable property support to be code-driven rather than property-file driven.
 It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=46">backwards compatible</a> with earlier versions.</p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.4.0.zip"><code>ddmsence-bin-1.4.0.zip</code></a></b> (4.0 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.4.0.zip"><code>ddmsence-src-1.4.0.zip</code></a></b> (4.3 MB)</li>
-</ul>
-
 <p>Version <b>1.3.2</b> (5/14/2010) is a stable patch release, which fixes <a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v1.3.2">four minor bugs</a>. It is backwards compatible with all versions since v1.1.0.</p>
-
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.3.2.zip"><code>ddmsence-bin-1.3.2.zip</code></a></b> (3.6 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.3.2.zip"><code>ddmsence-src-1.3.2.zip</code></a></b> (4.3 MB)</li>
-</ul>
 
 <p>Version <b>1.3.1</b> (5/9/2010) is a stable patch release, which fixes a bug related to namespace resolution when working with more than one version
 of DDMS at a time. It is backwards compatible with all versions since v1.1.0.</p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.3.1.zip"><code>ddmsence-bin-1.3.1.zip</code></a></b> (3.6 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.3.1.zip"><code>ddmsence-src-1.3.1.zip</code></a></b> (4.3 MB)</li>
-</ul>
-
 <p>Version <b>1.3.0</b> (5/7/2010) is a stable release, and adds support for custom validation through the 
 <a href="documentation-schematron.jsp">ISO Schematron</a> standard. It is backwards compatible with all versions since v1.1.0.</p>
-
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.3.0.zip"><code>ddmsence-bin-1.3.0.zip</code></a></b> (3.6 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.3.0.zip"><code>ddmsence-src-1.3.0.zip</code></a></b> (4.3 MB)</li>
-</ul>
 
 <p>Version <b>1.2.1</b> (4/24/2010) is a stable patch release, which fixes a bug where QNames were compared based on namespace prefixes rather than URIs. 
 It is backwards compatible with v1.2.0 and v1.1.0.</p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.2.1.zip"><code>ddmsence-bin-1.2.1.zip</code></a></b> (1.7 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.2.1.zip"><code>ddmsence-src-1.2.1.zip</code></a></b> (2.4 MB)</li>
-</ul>
-
 <p>Version <b>1.2.0</b> (4/21/2010) is a stable release, and adds support for configurable properties. It also has improved unit tests and documentation. It is backwards
 compatible with v1.1.0.</p>
-
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.2.0.zip"><code>ddmsence-bin-1.2.0.zip</code></a></b> (1.7 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.2.0.zip"><code>ddmsence-src-1.2.0.zip</code></a></b> (2.4 MB)</li>
-</ul>
 
 <p>Version <b>1.1.0</b> (4/8/2010) is a stable release, and adds support for DDMS 2.0 and the Extensible Layer. 
 It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=31">backwards compatible</a> with earlier versions.</p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.1.0.zip"><code>ddmsence-bin-1.1.0.zip</code></a></b> (1.7 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.1.0.zip"><code>ddmsence-src-1.1.0.zip</code></a></b> (2.4 MB)</li>
-</ul>
-
 <p>Version <b>1.0.0</b> (4/1/2010) is the first official stable release of DDMSence. <!--  It is backwards compatible with v0.9.d and v0.9.c. --></p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-1.0.0.zip"><code>ddmsence-bin-1.0.0.zip</code></a></b> (1.7 MB, compiled with JDK1.5.0_22)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-1.0.0.zip"><code>ddmsence-src-1.0.0.zip</code></a></b> (2.3 MB)</li>
-</ul>
-<!-- 
 <p>Version <b>0.9.d</b> (3/29/2010) includes further validation improvements. This version is believed to be stable, and is intended to be the test candidate
 for v1.0.0. It is backwards compatible with v0.9.c.</p>
-
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.d.zip"><code>ddmsence-bin-0.9.d.zip</code></a></b> (1.9 MB, compiled with JDK1.6.0_16)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.d.zip"><code>ddmsence-src-0.9.d.zip</code></a></b> (2.3 MB)</li>
-</ul>
 
 <p>Version <b>0.9.c</b> (3/25/2010) adds warning support to the validation system. This version is believed to be stable, and is intended to be a limited audience release
 for early feedback. It is not <a href="http://code.google.com/p/ddmsence/issues/detail?id=32">backwards compatible</a> with earlier versions.</p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.c.zip"><code>ddmsence-bin-0.9.c.zip</code></a></b> (1.8 MB, compiled with JDK1.6.0_16)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.c.zip"><code>ddmsence-src-0.9.c.zip</code></a></b> (2.5 MB)</li>
-</ul>
-
 <p>Version <b>0.9.b</b> (3/24/2010) is the initial beta release. This version is believed to be stable, and is intended to be a limited audience release for early feedback.</p>
 
-<ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-0.9.b.zip"><code>ddmsence-bin-0.9.b.zip</code></a></b> (1.8 MB, compiled with JDK1.6.0_16)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-0.9.b.zip"><code>ddmsence-src-0.9.b.zip</code></a></b> (2.5 MB)</li>
-</ul>
- -->
 <div class="clear"></div>
 <%@ include file="../shared/footer.jspf" %>
 </body>
