@@ -343,7 +343,7 @@
       </xs:sequence>
       <xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup" />
    </xs:complexType>
-   <xs:complexType name="SubjectType">      
+   <xs:complexType name="SubjectType">
       <xs:choice maxOccurs="unbounded">
          <xs:element ref="category" />
          <xs:element ref="keyword" />
@@ -401,10 +401,11 @@
       </xs:sequence>
       <xs:attribute name="unitOfMeasure" type="LengthMeasureType" use="required" />
       <xs:attribute name="datum" type="VerticalDatumType" use="required" />
-   </xs:complexType>   
+   </xs:complexType>
    <xs:complexType name="VirtualCoverageType">
       <xs:attribute name="protocol" type="xs:string" use="optional" />
       <xs:attribute name="address" type="xs:string" use="optional" />
       <xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup" />
    </xs:complexType>
+
 </xs:schema>
