@@ -139,6 +139,10 @@
       <xs:attribute name="code" type="xs:string" use="optional" />
       <xs:attribute name="label" type="xs:string" use="required" />
    </xs:complexType>
+   <xs:complexType name="CompoundCountryCodeIdentifierType">
+      <xs:attribute name="qualifier" type="xs:string" />
+      <xs:attribute name="value" type="xs:string" />
+   </xs:complexType>
    <xs:complexType name="CompoundKeywordIdentifierType">
       <xs:attribute name="value" type="xs:string" use="required" />
    </xs:complexType>
@@ -168,10 +172,6 @@
       </xs:choice>
       <xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup" />
    </xs:complexType>
-   <xs:complexType name="CompoundCountryCodeIdentifierType">
-      <xs:attribute name="qualifier" type="xs:string" />
-      <xs:attribute name="value" type="xs:string" />
-   </xs:complexType>
    <xs:complexType name="creatorType">
       <xs:choice>
          <xs:element ref="Organization" />
@@ -199,7 +199,7 @@
    </xs:complexType>
    <xs:complexType name="FormatType">
       <xs:sequence>
-         <xs:element name="Media" type="MediaType" /> 
+         <xs:element name="Media" type="MediaType" />
       </xs:sequence>
    </xs:complexType>
    <xs:complexType name="GeospatialCoverageType">

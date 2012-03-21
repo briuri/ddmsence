@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema
-   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-   xmlns="urn:us:mil:ces:metadata:ddms:4"
    xmlns:common="urn:us:gov:ic:common"
    xmlns:ddms="urn:us:mil:ces:metadata:ddms:4"
    xmlns:gml="http://www.opengis.net/gml/3.2"
    xmlns:ICISM="urn:us:gov:ic:ism"
    xmlns:ntk="urn:us:gov:ic:ntk"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
    xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="urn:us:mil:ces:metadata:ddms:4"
    targetNamespace="urn:us:mil:ces:metadata:ddms:4"
    elementFormDefault="qualified" attributeFormDefault="qualified" version="4">
    
@@ -52,7 +52,7 @@
    <xs:element name="organization" type="OrganizationType" />
    <xs:element name="person" type="PersonType" />
    <xs:element name="pointOfContact" type="ContactInfoType" />
-   <xs:element name="postalAddress">      
+   <xs:element name="postalAddress">
       <xs:complexType>
          <xs:group ref="postalAddressGroup" />
       </xs:complexType>
@@ -65,7 +65,7 @@
    <xs:element name="resource" type="ResourceType" />
    <xs:element name="resourceManagement" type="ResourceManagementType" />
    <xs:element name="revisionRecall" type="RevisionRecallType" />
-   <xs:element name="rights" type="RightsType" />   
+   <xs:element name="rights" type="RightsType" />
    <xs:element name="security" type="SecurityType" />
    <xs:element name="service" type="ServiceType" />
    <xs:element name="source" type="CompoundSourceIdentifierType" />
@@ -78,9 +78,9 @@
    <xs:element name="unknown" type="UnknownType" />
    <xs:element name="verticalExtent" type="VerticalExtentType" />
    <xs:element name="virtualCoverage" type="VirtualCoverageType" />
-   
+
    <xs:attribute name="acronym" type="xs:string"/>
-   
+
    <xs:group name="postalAddressGroup">
       <xs:sequence>
          <xs:element name="street" type="xs:string" minOccurs="0" maxOccurs="6" />
@@ -93,7 +93,7 @@
          <xs:element ref="ddms:countryCode" minOccurs="0" />
       </xs:sequence>
    </xs:group>
-   
+
    <xs:simpleType name="CombinedDateType">
       <xs:union memberTypes="xs:dateTime xs:date xs:gYearMonth xs:gYear" />
    </xs:simpleType>
@@ -116,7 +116,7 @@
          <xs:enumeration value="Fathom" />
          <xs:enumeration value="Inch" />
       </xs:restriction>
-   </xs:simpleType> 
+   </xs:simpleType>
    <xs:simpleType name="MediumType">
       <xs:restriction base="xs:string" />
    </xs:simpleType>
@@ -129,8 +129,8 @@
          <xs:enumeration value="AGL" />
          <xs:enumeration value="HAE" />
       </xs:restriction>
-   </xs:simpleType> 
-   
+   </xs:simpleType>
+
    <xs:complexType name="BoundingBoxType">
       <xs:sequence>
          <xs:element name="westBL" type="xs:double" />
@@ -193,7 +193,7 @@
          <xs:element ref="unknown" />
       </xs:choice>
       <xs:attributeGroup ref="POCAttributesGroup" />
-   </xs:complexType>   
+   </xs:complexType>
    <xs:complexType name="DatesType">
       <xs:attribute name="created" type="CombinedDateType" use="optional" />
       <xs:attribute name="posted" type="CombinedDateType" use="optional" />
@@ -210,8 +210,8 @@
       </xs:simpleContent>
    </xs:complexType>
    <xs:complexType name="FacilityIdentifierType">
-      <xs:attribute name="beNumber" type="xs:string" use="required"> </xs:attribute>
-      <xs:attribute name="osuffix" type="xs:string" use="optional"> </xs:attribute>
+      <xs:attribute name="beNumber" type="xs:string" use="required" />
+      <xs:attribute name="osuffix" type="xs:string" use="optional" />
    </xs:complexType>
    <xs:complexType name="FormatType">
       <xs:sequence>

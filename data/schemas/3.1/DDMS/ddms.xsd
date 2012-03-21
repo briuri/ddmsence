@@ -16,7 +16,7 @@
    <xs:element name="boundingBox" type="BoundingBoxType" />
    <xs:element name="boundingGeometry" type="BoundingGeometryType" />
    <xs:element name="category" type="CompoundCategoryIdentifierType" />
-   <xs:element name="contributor" type="contactInfoType" />   
+   <xs:element name="contributor" type="contactInfoType" />
    <xs:element name="countryCode" type="CompoundCountryCodeIdentifierType" />
    <xs:element name="creator" type="contactInfoType" />
    <xs:element name="dates" type="DatesType" />
@@ -66,7 +66,7 @@
    <xs:element name="Unknown" type="UnknownType" />
    <xs:element name="verticalExtent" type="VerticalExtentType" />
    <xs:element name="virtualCoverage" type="VirtualCoverageType" />
-   
+
    <xs:group name="PostalAddressGroup">
       <xs:sequence>
          <xs:element name="street" type="xs:string" minOccurs="0" maxOccurs="6" />
@@ -79,11 +79,11 @@
          <xs:element ref="ddms:countryCode" minOccurs="0" />
       </xs:sequence>
    </xs:group>
-   
+
    <xs:simpleType name="CombinedDateType">
       <xs:union memberTypes="xs:dateTime xs:date xs:gYearMonth xs:gYear" />
    </xs:simpleType>
-   <xs:simpleType name="DateValueExtensionType">     
+   <xs:simpleType name="DateValueExtensionType">
       <xs:restriction base="xs:string">
          <xs:enumeration value="Not Applicable" />
          <xs:enumeration value="Unknown" />
@@ -116,7 +116,7 @@
          <xs:enumeration value="HAE" />
       </xs:restriction>
    </xs:simpleType>
-   
+
    <xs:complexType name="BoundingBoxType">
       <xs:sequence>
          <xs:element name="WestBL" type="xs:double" />
@@ -148,7 +148,7 @@
    <xs:complexType name="CompoundLanguageIdentifierType">
       <xs:attribute name="qualifier" type="xs:string" />
       <xs:attribute name="value" type="xs:string" />
-   </xs:complexType>   
+   </xs:complexType>
    <xs:complexType name="CompoundResourceIdentifierType">
       <xs:attribute name="qualifier" type="xs:anyURI" use="required" />
       <xs:attribute name="value" type="xs:string" use="required" />
@@ -240,7 +240,7 @@
          <xs:element ref="postalAddress" />
          <xs:element ref="verticalExtent" />
       </xs:choice>
-   </xs:complexType>  
+   </xs:complexType>
    <xs:complexType name="ProducerBaseType">
       <xs:anyAttribute namespace="##other" />
    </xs:complexType>
@@ -257,12 +257,12 @@
       <xs:attribute name="qualifier" type="xs:anyURI" />
       <xs:attribute name="value" type="xs:string" />
    </xs:complexType>
-   <xs:complexType name="RelatedResourcesType">      
+   <xs:complexType name="RelatedResourcesType">
       <xs:sequence>
-         <xs:element name="RelatedResource" maxOccurs="unbounded">            
+         <xs:element name="RelatedResource" maxOccurs="unbounded">
             <xs:complexType>
                <xs:complexContent>
-                  <xs:extension base="CompoundResourceIdentifierType">                     
+                  <xs:extension base="CompoundResourceIdentifierType">
                      <xs:sequence>
                         <xs:element name="link" maxOccurs="unbounded">
                            <xs:complexType>
@@ -366,7 +366,7 @@
          <xs:element name="start" type="ExtendedCombinedDateType" default="Unknown" />
          <xs:element name="end" type="ExtendedCombinedDateType" default="Unknown" />
       </xs:sequence>
-   </xs:complexType>   
+   </xs:complexType>
    <xs:complexType name="TitleType">
       <xs:simpleContent>
          <xs:extension base="xs:string">
@@ -399,7 +399,7 @@
       </xs:sequence>
       <xs:attribute name="unitOfMeasure" type="LengthMeasureType" use="required" />
       <xs:attribute name="datum" type="VerticalDatumType" use="required" />
-   </xs:complexType>   
+   </xs:complexType>
    <xs:complexType name="VirtualCoverageType">
       <xs:attribute name="protocol" type="xs:string" use="optional" />
       <xs:attribute name="address" type="xs:string" use="optional" />
