@@ -24,7 +24,7 @@ should not need to download them separately.</p>
 		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for XML parsing.</li>
 	<li><a href="http://xml.apache.org/commons/">XML-Commons 1.4.01</a>
 		(<a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License v2.0</a>): Core library needed for XML parsing.</li>
-	<li><a href="http://www.xom.nu/">XOM 1.2.7</a>
+	<li><a href="http://www.xom.nu/">XOM 1.2.8</a>
 		(<a href="http://xom.nu/license.xhtml">GNU Lesser General Public License v2.1</a>): Core library needed for XML parsing.</li>
 	<br />	
 	<li><a href="http://www.servlets.com/cos/">com.oreilly.servlets 26Dec2008</a>
