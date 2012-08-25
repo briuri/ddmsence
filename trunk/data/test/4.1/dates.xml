@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  Represents a single ddms:dates element, for unit testing -->
+<ddms:dates xmlns:ddms="urn:us:mil:ces:metadata:ddms:4"
+	ddms:created="2003"
+	ddms:posted="2003-02"
+	ddms:validTil="2003-02-15"
+	ddms:infoCutOff="2001-10-31T17:00:00Z"
+	ddms:approvedOn="2003-02-16"
+	ddms:receivedOn="2003-02-17" />

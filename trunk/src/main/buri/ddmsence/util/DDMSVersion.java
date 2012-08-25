@@ -21,9 +21,9 @@ package buri.ddmsence.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import buri.ddmsence.ddms.UnsupportedVersionException;
 import buri.ddmsence.ddms.security.ism.ISMVocabulary;
@@ -36,7 +36,7 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
  * currentVersion variable which can be set at runtime. All DDMS component constructors which build components from 
  * scratch can then call <code>DDMSVersion.getCurrentVersion()</code> to access various details such as schema 
  * locations and namespace URIs. If no currentVersion has been set, a default will be used, which maps to 
- * <code>buri.ddmsence.ddms.defaultVersion</code> in the properties file. This defaults to 3.1 right now.</p>
+ * <code>buri.ddmsence.ddms.defaultVersion</code> in the properties file. This defaults to 4.1 right now.</p>
  * 
  * <p>
  * The ddmsence.properties file has a property, <code>ddms.supportedVersions</code> which can be a comma-separated list of version
@@ -45,13 +45,13 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
  * </p>
  * 
  * <li><code>&lt;versionNumber&gt;.ddms.xmlNamespace</code>: i.e. "urn:us:mil:ces:metadata:ddms:4"</li>
- * <li><code>&lt;versionNumber&gt;.ddms.xsdLocation</code>: i.e. "/schemas/4.0.1/DDMS/DDMS-v4_0.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.ddms.xsdLocation</code>: i.e. "/schemas/4.1/DDMS/ddms.xsd"</li>
  * <li><code>&lt;versionNumber&gt;.gml.xmlNamespace</code>: i.e. "http://www.opengis.net/gml/3.2"</li>
- * <li><code>&lt;versionNumber&gt;.gml.xsdLocation</code>: i.e. "/schemas/4.0.1/DDMS/DDMS-GML-Profile.xsd"</li>
- * <li><code>&lt;versionNumber&gt;.ism.cveLocation</code>: i.e. "/schemas/4.0.1/ISM/CVE/"</li>
+ * <li><code>&lt;versionNumber&gt;.gml.xsdLocation</code>: i.e. "/schemas/4.1/DDMS/gml.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.ism.cveLocation</code>: i.e. "/schemas/4.1/ISM/CVE/"</li>
  * <li><code>&lt;versionNumber&gt;.ism.xmlNamespace</code>: i.e. "urn:us:gov:ic:ism"</li>
  * <li><code>&lt;versionNumber&gt;.ntk.xmlNamespace</code>: i.e. "urn:us:gov:ic:ntk"</li>
- * <li><code>&lt;versionNumber&gt;.ntk.xsdLocation</code>: i.e. "/schemas/4.0.1/NTK/IC-NTK.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.ntk.xsdLocation</code>: i.e. "/schemas/4.1/NTK/IC-NTK.xsd"</li>
  * <li><code>&lt;versionNumber&gt;.xlink.xmlNamespace</code>: i.e. "http://www.w3.org/1999/xlink"</li>
  * 
  * <p>
@@ -59,11 +59,16 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
  * <code>/schemas/&lt;versionNumber&gt;/schemaLocationInDataDirectory</code>.
  * </p>
  * 
- * <p>
- * Because DDMS 3.0.1 is syntactically identical to DDMS 3.0, requests for version 3.0.1
+ * <p><u>Version-specific Notes:</u></p>
+ * 
+ * <p>Because DDMS 3.0.1 is syntactically identical to DDMS 3.0, requests for version 3.0.1
  * will simply alias to DDMS 3.0. DDMS 3.0.1 is not set up as a separate batch of schemas and namespaces,
  * since none of the technical artifacts changed (3.0.1 was a documentation release).
  * </p>
+ * 
+ * <p>Because DDMS 4.1 uses the same XML namespace as DDMS 4.0, resolving the XML namespace to a version
+ * will always return 4.1 (because it is newer). You can still force the use of DDMS 4.0 specifically via 
+ * <code>setCurrentVersion()</code>.</p>
  * 
  * <p>
  * This class is intended for use in a single-threaded environment.
@@ -88,7 +93,7 @@ public class DDMSVersion {
 	
 	private static DDMSVersion _currentVersion;
 
-	private static final Map<String, DDMSVersion> VERSIONS_TO_DETAILS = new HashMap<String, DDMSVersion>();
+	private static final Map<String, DDMSVersion> VERSIONS_TO_DETAILS = new TreeMap<String, DDMSVersion>();
 	static {
 		for (String version : PropertyReader.getListProperty("ddms.supportedVersions")) {
 			VERSIONS_TO_DETAILS.put(version, new DDMSVersion(version));

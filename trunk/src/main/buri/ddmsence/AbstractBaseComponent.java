@@ -362,7 +362,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	
 	/**
 	 * Returns the most recent compatible DDMSVersion for this component, based on the XML Namespace. Depends on the XOM
-	 * Element being set.
+	 * Element being set. For DDMS versions that share the same namespace (4.0.1 and 4.1), the newer version is always returned.
 	 * 
 	 * @return a version
 	 * @throws UnsupportedVersionException if the XML namespace is not one of the supported DDMS namespaces.

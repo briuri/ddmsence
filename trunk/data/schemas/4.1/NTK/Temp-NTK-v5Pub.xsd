@@ -56,7 +56,7 @@
     <!-- ************************************************************* -->
     <!-- IMPORT IC INFORMATION SECURITY MARKING ATTRIBUTES ........... -->
     <!-- ************************************************************* -->
-    <xsd:import namespace="urn:us:gov:ic:ism" schemaLocation="../ISM/IC-ISM.xsd"/>
+    <xsd:import namespace="urn:us:gov:ic:ism" schemaLocation="../ISM/Temp-ISM-v7Pub.xsd"/>
     
     <xsd:element name="Access">
         <xsd:annotation>
