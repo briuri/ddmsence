@@ -442,7 +442,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, "security.ownerProducer", "USA"));
 		text.append(buildOutput(isHTML, "extensible.layer", "false"));
 		text.append(buildOutput(isHTML, "ddms.generator", "DDMSence " + PropertyReader.getProperty("version")));
-		text.append(buildOutput(isHTML, "ddms.version", version.getVersion()));
+		// Output for version will be based upon XML namespace of created resource, not the currently set version.
+		text.append(buildOutput(isHTML, "ddms.version", DDMSVersion.getVersionForNamespace(version.getNamespace()).getVersion()));
 		return (text.toString());
 	}
 
@@ -611,7 +612,6 @@ public class ResourceTest extends AbstractBaseTestCase {
 	public void testNameAndNamespace() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
 			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Resource
 				.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
@@ -1067,7 +1067,6 @@ public class ResourceTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			createComponents();
-
 			Resource component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());

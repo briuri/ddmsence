@@ -51,7 +51,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 			.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/"));
 		assertEquals(DDMSVersion.getVersionFor("3.1"), DDMSVersion
 			.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.1/"));
-		assertEquals(DDMSVersion.getVersionFor("4.0.1"), DDMSVersion
+		assertEquals(DDMSVersion.getVersionFor("4.1"), DDMSVersion
 			.getVersionForNamespace("urn:us:mil:ces:metadata:ddms:4"));
 		try {
 			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/1.4/");
@@ -64,7 +64,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 
 	public void testGetVersionForGMLNamespace() {
 		assertEquals(DDMSVersion.getVersionFor("2.0"), DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml"));
-		assertEquals(DDMSVersion.getVersionFor("4.0.1"), DDMSVersion
+		assertEquals(DDMSVersion.getVersionFor("4.1"), DDMSVersion
 			.getVersionForNamespace("http://www.opengis.net/gml/3.2"));
 		try {
 			DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml/3.2.1");
@@ -76,7 +76,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 	}
 
 	public void testGetVersionForNTKNamespace() {
-		assertEquals(DDMSVersion.getVersionFor("4.0.1"), DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk"));
+		assertEquals(DDMSVersion.getVersionFor("4.1"), DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk"));
 		try {
 			DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk:v2");
 			fail("Allowed unsupported version.");
@@ -97,7 +97,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 	}
 
 	public void testGetCurrentSchema() {
-		assertEquals("/schemas/4.0.1/DDMS/ddms.xsd", DDMSVersion.getCurrentVersion().getSchema());
+		assertEquals("/schemas/4.1/DDMS/ddms.xsd", DDMSVersion.getCurrentVersion().getSchema());
 	}
 
 	public void testGetCurrentNamespace() {
@@ -143,6 +143,10 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		version = DDMSVersion.setCurrentVersion("4.0.1");
 		assertEquals("urn:us:gov:ic:ntk", version.getNtkNamespace());
 		assertEquals("/schemas/4.0.1/NTK/IC-NTK.xsd", version.getNtkSchema());
+		
+		version = DDMSVersion.setCurrentVersion("4.1");
+		assertEquals("urn:us:gov:ic:ntk", version.getNtkNamespace());
+		assertEquals("/schemas/4.1/NTK/Temp-NTK-v5Pub.xsd", version.getNtkSchema());
 	}
 
 	public void testAliasVersion() {
@@ -158,25 +162,36 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		assertFalse(DDMSVersion.getVersionFor("2.0").isAtLeast("3.0.1"));
 		assertFalse(DDMSVersion.getVersionFor("2.0").isAtLeast("3.1"));
 		assertFalse(DDMSVersion.getVersionFor("2.0").isAtLeast("4.0.1"));
+		assertFalse(DDMSVersion.getVersionFor("2.0").isAtLeast("4.1"));
 
 		assertTrue(DDMSVersion.getVersionFor("3.0").isAtLeast("2.0"));
 		assertTrue(DDMSVersion.getVersionFor("3.0").isAtLeast("3.0"));
 		assertTrue(DDMSVersion.getVersionFor("3.0").isAtLeast("3.0.1"));
 		assertFalse(DDMSVersion.getVersionFor("3.0").isAtLeast("3.1"));
 		assertFalse(DDMSVersion.getVersionFor("3.0").isAtLeast("4.0.1"));
+		assertFalse(DDMSVersion.getVersionFor("3.0").isAtLeast("4.1"));
 
 		assertTrue(DDMSVersion.getVersionFor("3.1").isAtLeast("2.0"));
 		assertTrue(DDMSVersion.getVersionFor("3.1").isAtLeast("3.0"));
-		assertTrue(DDMSVersion.getVersionFor("3.0").isAtLeast("3.0.1"));
+		assertTrue(DDMSVersion.getVersionFor("3.1").isAtLeast("3.0.1"));
 		assertTrue(DDMSVersion.getVersionFor("3.1").isAtLeast("3.1"));
 		assertFalse(DDMSVersion.getVersionFor("3.1").isAtLeast("4.0.1"));
+		assertFalse(DDMSVersion.getVersionFor("3.1").isAtLeast("4.1"));
 
 		assertTrue(DDMSVersion.getVersionFor("4.0.1").isAtLeast("2.0"));
 		assertTrue(DDMSVersion.getVersionFor("4.0.1").isAtLeast("3.0"));
-		assertTrue(DDMSVersion.getVersionFor("3.0").isAtLeast("3.0.1"));
+		assertTrue(DDMSVersion.getVersionFor("4.0.1").isAtLeast("3.0.1"));
 		assertTrue(DDMSVersion.getVersionFor("4.0.1").isAtLeast("3.1"));
 		assertTrue(DDMSVersion.getVersionFor("4.0.1").isAtLeast("4.0.1"));
+		assertFalse(DDMSVersion.getVersionFor("4.0.1").isAtLeast("4.1"));
 
+		assertTrue(DDMSVersion.getVersionFor("4.1").isAtLeast("2.0"));
+		assertTrue(DDMSVersion.getVersionFor("4.1").isAtLeast("3.0"));
+		assertTrue(DDMSVersion.getVersionFor("4.1").isAtLeast("3.0.1"));
+		assertTrue(DDMSVersion.getVersionFor("4.1").isAtLeast("3.1"));
+		assertTrue(DDMSVersion.getVersionFor("4.1").isAtLeast("4.0.1"));
+		assertTrue(DDMSVersion.getVersionFor("4.1").isAtLeast("4.1"));
+		
 		try {
 			DDMSVersion.getCurrentVersion().isAtLeast("dog");
 			fail("Allowed invalid data.");
