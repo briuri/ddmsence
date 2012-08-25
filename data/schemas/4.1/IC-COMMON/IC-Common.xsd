@@ -37,7 +37,7 @@
    <!--Start Import Statements-->
    <!--***************************************************-->
    <xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../XLINK/XLink.xsd"/>
-   <xsd:import namespace="urn:us:gov:ic:ism" schemaLocation="../ISM/IC-ISM.xsd"/>
+   <xsd:import namespace="urn:us:gov:ic:ism" schemaLocation="../ISM/Temp-ISM-v7Pub.xsd"/>
    <!--***************************************************-->
    <!--End Import Statements-->
    <!--***************************************************-->
