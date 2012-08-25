@@ -118,6 +118,8 @@ see the Power Tip on <a href="documentation-configuration.jsp">Configurable Prop
 </table>
 <p class="figure">Table 1. XSLT Engines for Schematron Validation</p>
 
+<p>Be aware that DDMSence also uses the Saxon engine for some utility library functions. Even if you choose an alternate XSLT engine for Schematron validation, you will still need to include the Saxon JAR file in your classpath.</p>
+
 <p>
 	<a href="#top">Back to Top</a><br>
 	<a href="documentation.jsp#tips">Back to Power Tips</a>
