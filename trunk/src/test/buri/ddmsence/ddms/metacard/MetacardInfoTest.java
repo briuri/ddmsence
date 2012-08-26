@@ -46,6 +46,7 @@ import buri.ddmsence.ddms.security.NoticeList;
 import buri.ddmsence.ddms.security.NoticeListTest;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
+import buri.ddmsence.ddms.security.ntk.AccessTest;
 import buri.ddmsence.ddms.summary.Description;
 import buri.ddmsence.ddms.summary.DescriptionTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -108,6 +109,9 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		childComponents.add(RevisionRecallTest.getTextFixture());
 		childComponents.add(RecordsManagementInfoTest.getFixture());
 		childComponents.add(NoticeListTest.getFixture());
+		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
+			childComponents.add(AccessTest.getFixture());
+		}			
 		return (childComponents);
 	}
 
@@ -204,7 +208,19 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		xml.append(" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>");
-		xml.append("</ISM:Notice></ddms:noticeList></ddms:metacardInfo>");
+		xml.append("</ISM:Notice></ddms:noticeList>");
+		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
+			xml.append("<ntk:Access xmlns:ntk=\"urn:us:gov:ic:ntk\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+			xml.append("<ntk:AccessIndividualList>");
+			xml.append("<ntk:AccessIndividual ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+			xml.append("<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>");
+			xml.append("<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+			xml.append("user_2321889:Doe_John_H</ntk:AccessIndividualValue>");
+			xml.append("</ntk:AccessIndividual>");
+			xml.append("</ntk:AccessIndividualList>");
+			xml.append("</ntk:Access>");	
+		}		
+		xml.append("</ddms:metacardInfo>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
 
@@ -372,11 +388,21 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 	public void testWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// No warnings
 			MetacardInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(0, component.getValidationWarnings().size());
+
+			// 4.1 ntk:Access element used
+			if (version.isAtLeast("4.1")) {
+				assertEquals(1, component.getValidationWarnings().size());	
+				String text = "The ntk:Access element in this DDMS component";
+				String locator = "ddms:metacardInfo";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
+			// No warnings 
+			else {
+				assertEquals(0, component.getValidationWarnings().size());
+			}
 		}
 	}
 
@@ -468,7 +494,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
-
+	
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

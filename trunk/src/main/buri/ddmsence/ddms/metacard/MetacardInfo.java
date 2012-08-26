@@ -41,6 +41,7 @@ import buri.ddmsence.ddms.resource.RecordsManagementInfo;
 import buri.ddmsence.ddms.resource.RevisionRecall;
 import buri.ddmsence.ddms.security.NoticeList;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
+import buri.ddmsence.ddms.security.ntk.Access;
 import buri.ddmsence.ddms.summary.Description;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
@@ -61,6 +62,7 @@ import buri.ddmsence.util.Util;
  * <u>ddms:revisionRecall</u>: (0-1 optional), implemented as a {@link RevisionRecall}<br />
  * <u>ddms:recordsManagementInfo</u>: (0-1 optional), implemented as a {@link RecordsManagementInfo}<br />
  * <u>ddms:noticeList</u>: (0-1 optional), implemented as a {@link NoticeList}<br />
+ * <u>ntk:Access</u>: Need-To-Know access information (optional, starting in DDMS 4.1)<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -83,6 +85,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	private RevisionRecall _revisionRecall = null;
 	private RecordsManagementInfo _recordsManagementInfo = null;
 	private NoticeList _noticeList = null;
+	private Access _access = null;
 	private SecurityAttributes _securityAttributes = null;	
 	private List<IDDMSComponent> _orderedList = new ArrayList<IDDMSComponent>();
 	
@@ -131,6 +134,9 @@ public final class MetacardInfo extends AbstractBaseComponent {
 			component = element.getFirstChildElement(NoticeList.getName(getDDMSVersion()), getNamespace());
 			if (component != null)
 				_noticeList = new NoticeList(component);
+			component = element.getFirstChildElement(Access.getName(getDDMSVersion()), getDDMSVersion().getNtkNamespace());
+			if (component != null)
+				_access = new Access(component);
 			_securityAttributes = new SecurityAttributes(element);
 			populatedOrderedList();
 			validate();
@@ -192,6 +198,8 @@ public final class MetacardInfo extends AbstractBaseComponent {
 					_recordsManagementInfo = (RecordsManagementInfo) component;
 				else if (component instanceof NoticeList)
 					_noticeList = (NoticeList) component;
+				else if (component instanceof Access)
+					_access = (Access) component;
 				else
 					throw new InvalidDDMSException(component.getName()
 						+ " is not a valid child component in a metacardInfo element.");
@@ -229,7 +237,9 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		if (getRecordsManagementInfo() != null)
 			_orderedList.add(getRecordsManagementInfo());
 		if (getNoticeList() != null)
-			_orderedList.add(getNoticeList());		
+			_orderedList.add(getNoticeList());
+		if (getAccess() != null)
+			_orderedList.add(getAccess());
 	}
 	
 	/**
@@ -263,6 +273,21 @@ public final class MetacardInfo extends AbstractBaseComponent {
 
 		super.validate();
 	}
+	
+	/**
+	 * Validates any conditions that might result in a warning.
+	 * 
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>A qualifier has been set without an accompanying value attribute.</li>
+	 * <li>A completely empty ddms:extent element was found.</li>
+	 * </td></tr></table>
+	 */
+	protected void validateWarnings() {
+		if (getAccess() != null)
+			addSameNamespaceWarning("ntk:Access element");
+		
+		super.validateWarnings();
+	}
 		
 	/**
 	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
@@ -288,6 +313,8 @@ public final class MetacardInfo extends AbstractBaseComponent {
 			text.append(getRecordsManagementInfo().getOutput(isHTML, localPrefix, ""));
 		if (getNoticeList() != null)
 			text.append(getNoticeList().getOutput(isHTML, localPrefix, ""));		
+		if (getAccess() != null)
+			text.append(getAccess().getOutput(isHTML, localPrefix, ""));
 
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
@@ -405,6 +432,12 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		return _noticeList;
 	}
 	
+	/**
+	 * Accessor for the Access. May be null.
+	 */
+	public Access getAccess() {
+		return (_access);
+	}
 	
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
@@ -433,6 +466,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		private RevisionRecall.Builder _revisionRecall;
 		private RecordsManagementInfo.Builder _recordsManagementInfo;
 		private NoticeList.Builder _noticeList;
+		private Access.Builder _access;
 		private SecurityAttributes.Builder _securityAttributes;	
 		
 		/**
@@ -467,6 +501,8 @@ public final class MetacardInfo extends AbstractBaseComponent {
 					setRecordsManagementInfo(new RecordsManagementInfo.Builder((RecordsManagementInfo) component));
 				else if (component instanceof NoticeList)
 					setNoticeList(new NoticeList.Builder((NoticeList) component));
+				else if (component instanceof Access)
+					setAccess(new Access.Builder((Access) component));
 			}			
 			setSecurityAttributes(new SecurityAttributes.Builder(metacardInfo.getSecurityAttributes()));
 		}
@@ -480,8 +516,9 @@ public final class MetacardInfo extends AbstractBaseComponent {
 			List<IDDMSComponent> childComponents = new ArrayList<IDDMSComponent>();
 			for (IBuilder builder : getChildBuilders()) {
 				IDDMSComponent component = builder.commit();
-				if (component != null)
+				if (component != null) {
 					childComponents.add(component);
+				}
 			}
 			return (new MetacardInfo(childComponents, getSecurityAttributes().commit()));
 		}
@@ -515,6 +552,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 			list.add(getRevisionRecall());
 			list.add(getRecordsManagementInfo());
 			list.add(getNoticeList());
+			list.add(getAccess());
 			return (list);
 		}
 		
@@ -650,6 +688,22 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		 */
 		public void setNoticeList(NoticeList.Builder noticeList) {
 			_noticeList = noticeList;
+		}
+		
+		/**
+		 * Builder accessor for the access
+		 */
+		public Access.Builder getAccess() {
+			if (_access == null)
+				_access = new Access.Builder();
+			return _access;
+		}
+
+		/**
+		 * Accessor for the access
+		 */
+		public void setAccess(Access.Builder access) {
+			_access = access;
 		}
 		
 		/**

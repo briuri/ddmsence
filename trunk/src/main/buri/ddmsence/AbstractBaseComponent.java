@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence;
 
 import java.util.ArrayList;
@@ -37,9 +37,9 @@ import buri.ddmsence.util.Util;
 /**
  * Top-level base class for all DDMS elements and attributes modeled as Java objects.
  * 
- * <p>Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set
- * before the component is used. It is assumed that after the constructor on a component has been called, the component
- * will be well-formed and valid.</p>
+ * <p>Extensions of this class are generally expected to be immutable, and the underlying XOM element MUST be set before
+ * the component is used. It is assumed that after the constructor on a component has been called, the component will be
+ * well-formed and valid.</p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -48,12 +48,13 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 
 	private List<ValidationMessage> _warnings = null;
 	private Element _element = null;
-	
+
 	/**
 	 * Empty constructor
 	 */
-	protected AbstractBaseComponent() throws InvalidDDMSException {}
-	
+	protected AbstractBaseComponent() throws InvalidDDMSException {
+	}
+
 	/**
 	 * Base constructor
 	 * 
@@ -68,7 +69,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 			throw (e);
 		}
 	}
-	
+
 	/**
 	 * Will return an empty string if the element is not set, but this cannot occur after instantiation.
 	 * 
@@ -77,7 +78,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	public String getPrefix() {
 		return (getXOMElement() == null ? "" : getXOMElement().getNamespacePrefix());
 	}
-	
+
 	/**
 	 * Will return an empty string if the element is not set, but this cannot occur after instantiation.
 	 * 
@@ -86,7 +87,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	public String getName() {
 		return (getXOMElement() == null ? "" : getXOMElement().getLocalName());
 	}
-	
+
 	/**
 	 * Will return an empty string if the element is not set, but this cannot occur after instantiation.
 	 * 
@@ -95,7 +96,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	public String getNamespace() {
 		return (getXOMElement() == null ? "" : getXOMElement().getNamespaceURI());
 	}
-	
+
 	/**
 	 * Will return an empty string if the element is not set, but this cannot occur after instantiation.
 	 * 
@@ -104,30 +105,28 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	public String getQualifiedName() {
 		return (getXOMElement() == null ? "" : getXOMElement().getQualifiedName());
 	}
-	
+
 	/**
-	 * The base implementation of a DDMS component assumes that there are no security attributes. Components
-	 * with attributes should override this.
+	 * The base implementation of a DDMS component assumes that there are no security attributes. Components with
+	 * attributes should override this.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
 		return (null);
 	}
-	
+
 	/**
 	 * @see IDDMSComponent#getValidationWarnings()
 	 */
 	public List<ValidationMessage> getValidationWarnings() {
 		return (Collections.unmodifiableList(getWarnings()));
 	}
-	
+
 	/**
-	 * Base case for validation. This method can be overridden for more in-depth validation. It is always assumed
-	 * that the subcomponents of a component are already valid.
+	 * Base case for validation. This method can be overridden for more in-depth validation. It is always assumed that
+	 * the subcomponents of a component are already valid.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A name exists and is not empty.</li>
-	 * <li>All child components use the same version of DDMS as this component.</li>
-	 * </td></tr></table>
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody"> <li>A name exists and is
+	 * not empty.</li> <li>All child components use the same version of DDMS as this component.</li> </td></tr></table>
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSValue("name", getName());
@@ -138,15 +137,13 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		}
 		validateWarnings();
 	}
-	
+
 	/**
-	 * Base case for warnings. This method can be overridden for more in-depth validation. It is always assumed
-	 * that the subcomponents of a component are already valid.
+	 * Base case for warnings. This method can be overridden for more in-depth validation. It is always assumed that the
+	 * subcomponents of a component are already valid.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>Adds any warnings from any nested components.</li>
-	 * <li>Adds any warnings from any security attributes.</li>
-	 * </td></tr></table>
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody"> <li>Adds any warnings
+	 * from any nested components.</li> <li>Adds any warnings from any security attributes.</li> </td></tr></table>
 	 */
 	protected void validateWarnings() {
 		for (IDDMSComponent nested : getNestedComponents()) {
@@ -157,21 +154,35 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		if (getSecurityAttributes() != null)
 			addWarnings(getSecurityAttributes().getValidationWarnings(), true);
 	}
-	
+
+	/**
+	 * Adds a warning about a component which is used in a valid manner, but may cause issuse with systems that only
+	 * process an earlier DDMS version with the same namespace.
+	 * 
+	 * <p>DDMS 4.0 and 4.1 share the same XML namespace, so it is impossible to tell which DDMS version is employed from
+	 * the XML namespace alone. If an XML instance of a metacard employs a new DDMS 4.1 construct (like the new
+	 * ntk:Access element in a ddms:metacardInfo element), that XML instance will fail to work in a DDMS 4.0 system.</p>
+	 * 
+	 * @param component a text description of the component that is being warned about
+	 */
+	protected void addSameNamespaceWarning(String component) {
+		addWarning("The " + component + " in this DDMS component was introduced in a newer version of DDMS that shares "
+			+ "the same XML namespace as an older version of DDMS.");
+	}
+
 	/**
 	 * @see IDDMSComponent#toHTML()
 	 */
 	public String toHTML() {
 		return (getOutput(true, "", ""));
 	}
-	
+
 	/**
 	 * @see IDDMSComponent#toText()
 	 */
 	public String toText() {
 		return (getOutput(false, "", ""));
 	}
-
 
 	/**
 	 * Renders this component as HTML or Text, with an optional prefix to nest it.
@@ -183,15 +194,15 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * @return the HTML or Text representation of this component
 	 */
 	public abstract String getOutput(boolean isHTML, String prefix, String suffix);
-		
+
 	/**
-	 * Accessor for a collection of nested components. A list such as this is useful for bulk actions, such as
-	 * checking emptiness, equality, generating hash codes, or applying mass validation.
+	 * Accessor for a collection of nested components. A list such as this is useful for bulk actions, such as checking
+	 * emptiness, equality, generating hash codes, or applying mass validation.
 	 */
 	protected List<IDDMSComponent> getNestedComponents() {
 		return (Collections.EMPTY_LIST);
 	}
-	
+
 	/**
 	 * Convenience method to build a meta tag for HTML output or a text line for Text output.
 	 * 
@@ -211,10 +222,10 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		tag.append(isHTML ? "\" />\n" : "\n");
 		return (tag.toString());
 	}
-	
+
 	/**
-	 * Convenience method to build a meta tag for HTML output or a text line for Text output for a list of
-	 * multiple DDMS components.
+	 * Convenience method to build a meta tag for HTML output or a text line for Text output for a list of multiple DDMS
+	 * components.
 	 * 
 	 * @param isHTML true for HTML, false for Text
 	 * @param prefix the first part of the name in the name-value pairing (will be escaped in HTML)
@@ -226,7 +237,8 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		for (int i = 0; i < contents.size(); i++) {
 			Object object = contents.get(i);
 			if (object instanceof AbstractBaseComponent)
-				values.append(((AbstractBaseComponent) object).getOutput(isHTML, prefix, buildIndex(i, contents.size())));
+				values.append(((AbstractBaseComponent) object)
+					.getOutput(isHTML, prefix, buildIndex(i, contents.size())));
 			else if (object instanceof String)
 				values.append(buildOutput(isHTML, prefix + buildIndex(i, contents.size()), (String) object));
 			else
@@ -234,7 +246,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		}
 		return (values.toString());
 	}
-	
+
 	/**
 	 * Convenience method to construct a naming prefix for use in HTML/Text output
 	 * 
@@ -246,13 +258,12 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	protected String buildPrefix(String prefix, String token, String suffix) {
 		return (Util.getNonNullString(prefix) + Util.getNonNullString(token) + Util.getNonNullString(suffix));
 	}
-	
+
 	/**
-	 * Constructs a braced 1-based index to differentiate multiples in HTML/Text output, based on
-	 * the 0-based list index of the item, and the <code>output.indexLevel</code> configurable
-	 * property. When this property is 0, indices are never shown. At 1, indices are shown when needed,
-	 * but hidden when there is only 1 item to display. At 2, indices are always shown. If the property
-	 * is set to something else, it defaults to 0.
+	 * Constructs a braced 1-based index to differentiate multiples in HTML/Text output, based on the 0-based list index
+	 * of the item, and the <code>output.indexLevel</code> configurable property. When this property is 0, indices are
+	 * never shown. At 1, indices are shown when needed, but hidden when there is only 1 item to display. At 2, indices
+	 * are always shown. If the property is set to something else, it defaults to 0.
 	 * 
 	 * @param index the 0-based index of an item in a list
 	 * @param total the total number of items in that list
@@ -263,25 +274,24 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 			throw new IllegalArgumentException("The total must be at least 1.");
 		if (index < 0 || index >= total)
 			throw new IllegalArgumentException("The index is not properly bounded between 0 and " + (total - 1));
-		
+
 		String indexLevel = PropertyReader.getProperty("output.indexLevel");
 		if ("2".equals(indexLevel))
 			return ("[" + (index + 1) + "]");
 		if ("1".equals(indexLevel) && (total > 1))
 			return ("[" + (index + 1) + "]");
-		return ("");		
+		return ("");
 	}
-	
+
 	/**
-	 * Will return an empty string if the name is not set, but this cannot occur after
-	 * instantiation.
+	 * Will return an empty string if the name is not set, but this cannot occur after instantiation.
 	 * 
 	 * @see IDDMSComponent#toXML()
 	 */
 	public String toXML() {
 		return (getXOMElement() == null ? "" : getXOMElement().toXML());
 	}
-		
+
 	/**
 	 * Convenience method to look up an attribute which is in the same namespace as the enclosing element
 	 * 
@@ -291,7 +301,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	protected String getAttributeValue(String name) {
 		return (getAttributeValue(name, getNamespace()));
 	}
-	
+
 	/**
 	 * Convenience method to look up an attribute
 	 * 
@@ -304,7 +314,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		String attrValue = getXOMElement().getAttributeValue(name, Util.getNonNullString(namespaceURI));
 		return (Util.getNonNullString(attrValue));
 	}
-	
+
 	/**
 	 * Convenience method to get the first child element with a given name in the same namespace as the parent element
 	 * 
@@ -332,7 +342,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 			return (null);
 		return (getStringAsDouble(childElement.getValue()));
 	}
-	
+
 	/**
 	 * Helper method to assist with string to double conversion
 	 * 
@@ -347,8 +357,8 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 			return (null);
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Helper method to validate that a specific version of DDMS (or higher) is being used.
 	 * 
 	 * @param version the threshold version
@@ -359,23 +369,24 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 			throw new InvalidDDMSException("The " + getName() + " element cannot be used until DDMS " + version
 				+ " or later.");
 	}
-	
+
 	/**
 	 * Returns the most recent compatible DDMSVersion for this component, based on the XML Namespace. Depends on the XOM
-	 * Element being set. For DDMS versions that share the same namespace (4.0.1 and 4.1), the newer version is always returned.
+	 * Element being set. For DDMS versions that share the same namespace (4.0.1 and 4.1), the newer version is always
+	 * returned.
 	 * 
 	 * @return a version
 	 * @throws UnsupportedVersionException if the XML namespace is not one of the supported DDMS namespaces.
 	 */
 	protected DDMSVersion getDDMSVersion() {
-		return (DDMSVersion.getVersionForNamespace(getNamespace()));	
+		return (DDMSVersion.getVersionForNamespace(getNamespace()));
 	}
-	
+
 	/**
 	 * Test for logical equality.
 	 * 
 	 * <p> The base case tests against the name value and namespaceURI, as well as any child components classified as
-	 * "nested components" and any security attributes. Extending classes may require additional rules for equality. 
+	 * "nested components" and any security attributes. Extending classes may require additional rules for equality.
 	 * This case automatically includes any nested components or security attributes.</p>
 	 * 
 	 * @see Object#equals(Object)
@@ -384,14 +395,13 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 		if (obj == this)
 			return (true);
 		if (!(obj instanceof AbstractBaseComponent) || !(getClass().equals(obj.getClass())))
-			return (false);		
+			return (false);
 		AbstractBaseComponent test = (AbstractBaseComponent) obj;
-		return (getName().equals(test.getName())
-			&& getNamespace().equals(test.getNamespace())
-			&& Util.listEquals(getNestedComponents(), test.getNestedComponents())
-			&& Util.nullEquals(getSecurityAttributes(), test.getSecurityAttributes()));
+		return (getName().equals(test.getName()) && getNamespace().equals(test.getNamespace())
+			&& Util.listEquals(getNestedComponents(), test.getNestedComponents()) && Util.nullEquals(
+			getSecurityAttributes(), test.getSecurityAttributes()));
 	}
-	
+
 	/**
 	 * Returns a hashcode for the component.
 	 * 
@@ -411,7 +421,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 			result = 7 * result + getSecurityAttributes().hashCode();
 		return (result);
 	}
-	
+
 	/**
 	 * Returns the XML representation of the component
 	 * 
@@ -420,7 +430,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	public String toString() {
 		return (toXML());
 	}
-	
+
 	/**
 	 * Can be overridden to change the locator string used in warnings and errors.
 	 * 
@@ -435,7 +445,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	protected String getLocatorSuffix() {
 		return ("");
 	}
-	
+
 	/**
 	 * Convenience method to create a warning and add it to the list of validation warnings.
 	 * 
@@ -444,7 +454,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	protected void addWarning(String text) {
 		getWarnings().add(ValidationMessage.newWarning(text, getQualifiedName() + getLocatorSuffix()));
 	}
-	
+
 	/**
 	 * Convenience method to add multiple warnings to the list of validation warnings.
 	 * 
@@ -475,21 +485,21 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 			_warnings = new ArrayList<ValidationMessage>();
 		return (_warnings);
 	}
-	
+
 	/**
 	 * Accessor for the XOM element representing this component
 	 */
 	protected Element getXOMElement() {
 		return _element;
 	}
-	
+
 	/**
 	 * Accessor for a copy of the underlying XOM element
 	 */
 	public Element getXOMElementCopy() {
 		return (new Element(_element));
 	}
-	
+
 	/**
 	 * Accessor for the XOM element representing this component. When the element is set, the component is validated
 	 * again with <code>validate</code>.
