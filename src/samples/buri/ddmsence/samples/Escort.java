@@ -73,7 +73,7 @@ import buri.ddmsence.util.Util;
  * the procedural structuring should make it easier to focus on the important sections of the source code.
  * </p>
  * 
- * <p>Currently, the wizard only walks through a minimally representative set of DDMS components. DDMS 4.0.1 introduces a lot of
+ * <p>Currently, the wizard only walks through a minimally representative set of DDMS components. DDMS 4.0.1 introduced a lot of
  * depth and reuse (especially related to the new ddms:metacardInfo element) which gets very confusing when using
  * text prompts.</p>
  * 
@@ -128,7 +128,7 @@ public class Escort {
 
 		_useDummySecurityAttributes = confirm("Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the resource?");
 				
-		DDMSVersion.setCurrentVersion("4.0.1");
+		DDMSVersion.setCurrentVersion("4.1");
 		
 		printHead("ddms:metacardInfo (exactly 1 required)");
 		getTopLevelComponents().add(inputLoop(MetacardInfo.class));
@@ -466,8 +466,9 @@ public class Escort {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String value = readString("the value [testValue]");
 				int order = readInt("the order [1]");
+				String qualifier = readString("the qualifier [testQualifier]");
 				SecurityAttributes attr = buildSecurityAttributes("nonStateActor");
-				return (new NonStateActor(value, Integer.valueOf(order), attr));
+				return (new NonStateActor(value, Integer.valueOf(order), qualifier, attr));
 			}
 		});
 		CONSTRUCTOR_BUILDERS.put(SubjectCoverage.class, new IConstructorBuilder() {

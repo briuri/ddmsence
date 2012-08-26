@@ -188,7 +188,11 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 			xml.append("\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ").append(
 				"ddms:label=\"DDMS\" />\n");
 			xml.append("\t<ddms:productionMetric ddms:subject=\"FOOD\" ddms:coverage=\"AFG\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" />\n");
-			xml.append("\t<ddms:nonStateActor ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ddms:order=\"1\">Laotian Monks</ddms:nonStateActor>\n");
+			xml.append("\t<ddms:nonStateActor ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ddms:order=\"1\"");
+			if (version.isAtLeast("4.1")) {
+				xml.append(" ddms:qualifier=\"urn:sample\"");
+			}
+			xml.append(">Laotian Monks</ddms:nonStateActor>\n");
 		}
 		else {
 			xml.append("\t<ddms:Subject>\n");
@@ -257,10 +261,21 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 	public void testWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// No warnings
+			
 			SubjectCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(0, component.getValidationWarnings().size());
 
+			// 4.1 ddms:qualifier element used
+			if (version.isAtLeast("4.1")) {
+				assertEquals(1, component.getValidationWarnings().size());	
+				String text = "The ddms:qualifier attribute in this DDMS component";
+				String locator = "ddms:subjectCoverage/ddms:nonStateActor";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
+			// No warnings 
+			else {
+				assertEquals(0, component.getValidationWarnings().size());
+			}
+			
 			// Identical keywords
 			Element subjectElement = Util.buildDDMSElement("Subject", null);
 			subjectElement.appendChild(KeywordTest.getFixtureList().get(0).getXOMElementCopy());
