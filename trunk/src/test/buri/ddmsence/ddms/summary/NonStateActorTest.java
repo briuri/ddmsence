@@ -39,6 +39,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 
 	private static final String TEST_VALUE = "Laotian Monks";
 	private static final Integer TEST_ORDER = Integer.valueOf(1);
+	private static final String TEST_QUALIFIER = "urn:sample";
 
 	/**
 	 * Constructor
@@ -55,8 +56,8 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	 */
 	public static NonStateActor getFixture(int order) {
 		try {
-			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			return (version.isAtLeast("4.0.1") ? new NonStateActor(TEST_VALUE, Integer.valueOf(order),
+			DDMSVersion version = DDMSVersion.getCurrentVersion();			
+			return (version.isAtLeast("4.0.1") ? new NonStateActor(TEST_VALUE, Integer.valueOf(order), getQualifier(),
 				SecurityAttributesTest.getFixture()) : null);
 		}
 		catch (InvalidDDMSException e) {
@@ -66,6 +67,13 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	}
 
 	/**
+	 * Returns a dummy value for the qualifier, based upon the current DDMS version.
+	 */
+	private static String getQualifier() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.1") ? TEST_QUALIFIER : null);
+	}
+	
+	/**
 	 * Returns a fixture object for testing.
 	 */
 	public static List<NonStateActor> getFixtureList() {
@@ -73,7 +81,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			List<NonStateActor> actors = new ArrayList<NonStateActor>();
 			if (version.isAtLeast("4.0.1"))
-				actors.add(new NonStateActor(TEST_VALUE, TEST_ORDER, SecurityAttributesTest.getFixture()));
+				actors.add(new NonStateActor(TEST_VALUE, TEST_ORDER, getQualifier(), SecurityAttributesTest.getFixture()));
 			return (actors);
 		}
 		catch (InvalidDDMSException e) {
@@ -110,13 +118,14 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param value the value of the actor (optional)
 	 * @param order the order of the actor (optional)
+	 * @param qualifier the qualifier of the actor (optional)
 	 * @return a valid object
 	 */
-	private NonStateActor getInstance(String message, String value, Integer order) {
+	private NonStateActor getInstance(String message, String value, Integer order, String qualifier) {
 		boolean expectFailure = !Util.isEmpty(message);
 		NonStateActor component = null;
 		try {
-			component = new NonStateActor(value, order, SecurityAttributesTest.getFixture());
+			component = new NonStateActor(value, order, qualifier, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -130,9 +139,12 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	 * Returns the expected HTML or Text output for this unit test
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "nonStateActor.value", TEST_VALUE));
 		text.append(buildOutput(isHTML, "nonStateActor.order", String.valueOf(TEST_ORDER)));
+		if (version.isAtLeast("4.1"))
+			text.append(buildOutput(isHTML, "nonStateActor.qualifier", TEST_QUALIFIER));
 		text.append(buildOutput(isHTML, "nonStateActor.classification", "U"));
 		text.append(buildOutput(isHTML, "nonStateActor.ownerProducer", "USA"));
 		return (text.toString());
@@ -142,10 +154,13 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	 * Returns the expected XML output for this unit test
 	 */
 	private String getExpectedXMLOutput() {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:nonStateActor ").append(getXmlnsDDMS()).append(" ");
 		xml.append(getXmlnsISM()).append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ");
 		xml.append("ddms:order=\"").append(TEST_ORDER).append("\"");
+		if (version.isAtLeast("4.1"))
+			xml.append(" ddms:qualifier=\"").append(TEST_QUALIFIER).append("\"");
 		xml.append(">").append(TEST_VALUE).append("</ddms:nonStateActor>");
 		return (xml.toString());
 	}
@@ -178,10 +193,10 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, TEST_VALUE, TEST_ORDER);
+			getInstance(SUCCESS, TEST_VALUE, TEST_ORDER, getQualifier());
 
 			// No optional fields
-			getInstance(SUCCESS, null, null);
+			getInstance(SUCCESS, null, null, null);
 		}
 	}
 
@@ -205,10 +220,20 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// No warnings
 			NonStateActor component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(0, component.getValidationWarnings().size());
 
+			// 4.1 ddms:qualifier element used
+			if (version.isAtLeast("4.1")) {
+				assertEquals(1, component.getValidationWarnings().size());	
+				String text = "The ddms:qualifier attribute in this DDMS component";
+				String locator = "ddms:nonStateActor";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
+			// No warnings 
+			else {
+				assertEquals(0, component.getValidationWarnings().size());
+			}
+			
 			// Empty value
 			Element element = Util.buildDDMSElement(NonStateActor.getName(version), null);
 			component = getInstance(SUCCESS, element);
@@ -224,7 +249,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			NonStateActor elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			NonStateActor dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ORDER);
+			NonStateActor dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ORDER, getQualifier());
 
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
@@ -236,10 +261,13 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			NonStateActor elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			NonStateActor dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_ORDER);
+			NonStateActor dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_ORDER, getQualifier());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, null);
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, null, getQualifier());
+			assertFalse(elementComponent.equals(dataComponent));
+			
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ORDER, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -252,7 +280,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_ORDER);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_ORDER, getQualifier());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -261,11 +289,11 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-
+						
 			NonStateActor component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_ORDER);
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_ORDER, getQualifier());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -273,7 +301,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	public void testWrongVersion() {
 		try {
 			DDMSVersion.setCurrentVersion("2.0");
-			new NonStateActor(TEST_VALUE, TEST_ORDER, null);
+			new NonStateActor(TEST_VALUE, TEST_ORDER, null, null);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
