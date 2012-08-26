@@ -22,17 +22,15 @@ I have also included a <code>.project</code> file if you wish to import the proj
 
 <p>Regardless of your choice, you will need a <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html" target="_new">JRE or JDK</a> which supports Java 1.5 or higher.</p>
 
-<h1>Latest Release: v2.0.0</h1>
+<h1>Latest Release: v2.1.0</h1>
 
-<p>Version <b>2.0.0</b> (12/01/2011) is a stable, major release, which adds support for DDMS 4.0.1. It is <i>not</i> backwards compatible with previous versions. Upgrading your existing
-code to use this version should be straightforward, but may require a non-trivial effort. An upgrade guide is linked below, and I will be glad to assist you as well.</p>
+<p>Version <b>2.1.0</b> (XX/XX/2012) is a stable release, which adds support for DDMS 4.1. It is backwards compatible with 2.0.0.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.0.0.zip"><code>ddmsence-bin-2.0.0.zip</code></a></b> (5.5 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-2.0.0.zip"><code>ddmsence-src-2.0.0.zip</code></a></b> (5.6 MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.1.0.zip"><code>ddmsence-bin-2.1.0.zip</code></a></b> (X.X MB, compiled with JDK1.6.0_25, source level 1.5)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-2.1.0.zip"><code>ddmsence-src-2.1.0.zip</code></a></b> (X.X MB)</li>
 <br />
-<li><a href="upgrade-2.0.0.jsp">Upgrade Guide: Version 1.x to 2.0.0</a></li>
-<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.0.0">Complete List of Changes</a></li>
+<li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.1.0">Complete List of Changes</a></li>
 </ul>
 
 <h3>Versioning</h3>
@@ -49,10 +47,15 @@ All changes which are not backwards compatible will be linked from this page wit
 
 <h3>Older Releases</h3>
 
-<!-- 828 downloads of 1.x as of 03/17/2012 -->
+<!-- 238 downloads of 2.0.0 as of 8/26/2012 -->
+<!-- 828 downloads of 1.x -->
 
-<p>The 1.x line of DDMSence is no longer available for download. The 2.x line should be adopted instead. Historical information about earlier releases can be
+<p>Versions of DDMSence before 2.1.0 are no longer available for download (although they can still be built from the source code). Historical information about earlier releases can be
 found below.</p>
+
+<p>Version <b>2.0.0</b> (12/01/2011) is a stable, major release, which adds support for DDMS 4.0.1. It is <i>not</i> backwards compatible with previous versions. Upgrading your existing
+code to use this version should be straightforward, but may require a non-trivial effort. An <a href="upgrade-2.0.0.jsp">Upgrade Guide</a> is available for
+migrating from 1.x.x to 2.0.0.</p>
 
 <p>Version <b>1.11.0</b> (07/17/2011) is a stable release, which adds support for 
 <a href="documentation-schematron.jsp">XSLT2-based Schematron validation</a> (<a href="http://code.google.com/p/ddmsence/issues/detail?id=79">Issue #79</a>),
