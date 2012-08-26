@@ -16,7 +16,7 @@
 		12) Announcements (Google Groups / freshmeat / MDR)
 	-->
 	
-    <property name="version" value="2.0.0" />
+    <property name="version" value="2.1.0" />
 	<property name="conf.dir" value="conf" />
 	<property name="data.dir" value="data" />
 	<property name="local.web.dir" value="D:\\projects\\urizone\\output\\tomcat\\webapps\\ddmsence" />
