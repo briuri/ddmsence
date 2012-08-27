@@ -80,7 +80,7 @@ but you can download the Public Release versions from the <a href="http://www.dn
 access to versions from higher classification levels as well. The top-level Schematron file, <code>ISM/Schematron/ISM/ISM_XML.sch</code> is the orchestration
 point for each of the supporting files and the vocabularies needed for validation.</p>
 
-<p>Here is an example which validates one of the sample DDMS resources against the ISM.XML Schematron files. It assumes that the top-level file and all of
+<p>Here is an example which validates one of the sample DDMS metacards against the ISM.XML Schematron files. It assumes that the top-level file and all of
 the files and subdirectories it depends on have been copied into the working directory.</p>
 
 <pre class="brush: java">File schematronFile = new File("ISM_XML.sch");

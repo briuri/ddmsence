@@ -67,11 +67,11 @@ are the builders for any attribute group, such as SecurityAttributes. If the bui
 the building process has no effect up until the moment that <code>commit()</code> is called. In addition, initializing a Builder with an existing resource will not change the current DDMSVersion value.</li>
 </ol>
 
-<p>The third detail is important, because it allows you to load a resource from an old version of DDMS and transform it into a newer version.</p>
+<p>The third detail is important, because it allows you to load a metacard from an old version of DDMS and transform it into a newer version.</p>
 
 <h2>Transforming Between DDMS Versions</h2>
 
-<p>The code sample below takes a DDMS 2.0 resource, adds the new fields required in DDMS 3.0, and commits it. The resulting Resource will use the DDMS 3.0 XML namespace.</p>
+<p>The code sample below takes a DDMS 2.0 metacard, adds the new fields required in DDMS 3.0, and commits it. The resulting Resource will use the DDMS 3.0 XML namespace.</p>
 
 <pre class="brush: java">Resource.Builder builder = new Resource.Builder(my20Resource);
 builder.setResourceElement(Boolean.TRUE);
@@ -82,17 +82,17 @@ builder.getSecurityAttributes().getOwnerProducers().add("USA");
 
 DDMSVersion.setCurrentVersion("3.0");
 Resource my30Resource = builder.commit();</pre>
-<p class="figure">Figure 5. Transforming a DDMS 2.0 resource with the Builder Framework</p>
+<p class="figure">Figure 5. Transforming a DDMS 2.0 metacard with the Builder Framework</p>
 
-<p>The similar code shown below will add the required fields to a 3.0 resource that will make it valid in 3.1.</p>
+<p>The similar code shown below will add the required fields to a 3.0 metacard that will make it valid in 3.1.</p>
 
 <pre class="brush: java">Resource.Builder builder = new Resource.Builder(my30Resource);
 builder.setIsmDESVersion(new Integer(5));
 DDMSVersion.setCurrentVersion("3.1");
 Resource my31Resource = builder.commit();</pre>
-<p class="figure">Figure 6. Transforming a DDMS 3.0 resource with the Builder Framework</p>
+<p class="figure">Figure 6. Transforming a DDMS 3.0 metacard with the Builder Framework</p>
 
-<p>And finally, this code sample will add the required fields to a 3.1 resource that will make it valid in 4.0.</p>
+<p>And finally, this code sample will add the required fields to a 3.1 metacard that will make it valid in 4.0.</p>
 
 <pre class="brush: java">Resource.Builder builder = new Resource.Builder(my31Resource);
 builder.setNtkDESVersion(new Integer(5));
@@ -104,7 +104,7 @@ builder.getMetacardInfo().getPublishers().get(0).setEntityType("organization");
 builder.getMetacardInfo().getPublishers().get(0).getOrganization().setNames(Util.getXsListAsList("DISA"));
 DDMSVersion.setCurrentVersion("4.0");
 Resource my31Resource = builder.commit();</pre>
-<p class="figure">Figure 7. Transforming a DDMS 3.1 resource with the Builder Framework</p>
+<p class="figure">Figure 7. Transforming a DDMS 3.1 metacard with the Builder Framework</p>
 
 <h2>Builders as Form Beans</h2>
 

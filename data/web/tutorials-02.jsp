@@ -33,12 +33,12 @@ command line parameters.</p>
 
 <pre class="brush: xml">Escort: a DDMSence Sample
 
-This program allows you to build a DDMS 4.0.1 resource from scratch using a
+This program allows you to build a DDMS 4.0.1 metacard from scratch using a
 representative subset of possible components. Suggested valid answers are
 provided in square brackets for each prompt. However, these are not default
 values (hitting Enter will answer the prompt with an empty string).
 
-Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the resource? [Y/N]:</pre>
+Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the metacard? [Y/N]:</pre>
 <p class="figure">Figure 1. Starting the Wizard</p>
 
 <p>The wizard will walk you through various components of a DDMS Resource in the order that they are found in the schema. 
@@ -103,7 +103,7 @@ component. Some Builders, like the one for a MetacardInfo will use other Builder
 <p>Let's use the wizard to create a valid Resource. You should be able to follow the prompts to the end, but if not, the output below is one possible
 road to a valid Resource.</p>
 
-<pre class="brush: xml">Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the resource? [Y/N]: Y
+<pre class="brush: xml">Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the metacard? [Y/N]: Y
 
 === ddms:metacardInfo (exactly 1 required) ===
 A minimal metacardInfo consist of an identifier, dates, and a publisher.

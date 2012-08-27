@@ -24,7 +24,7 @@ optional parameter: the name of a file to load upon startup.</p>
 <h3>Walkthrough</h3>
 
 <p>When the application first opens, go to the <i>File</i> menu and choose <i>Open...</i>. You will be able to select an XML file containing
-a DDMS resource. Sample files from various versions of DDMS can be found in the <code>data/sample/</code> directory. Let's start by
+a DDMS resource (also called a "metacard"). Sample files from various versions of DDMS can be found in the <code>data/sample/</code> directory. Let's start by
 selecting the sample file, <code>3.1-identifierPostalAddressExample.xml</code> and clicking on the <i>Open</i> button.</p>
 
 <img src="./images/essentials-02.png" width="300" height="212" title="Essentials File Chooser" />
@@ -53,7 +53,7 @@ String textFormat = getResource().toText();</pre>
 <p>The remaining code in this method merely renders the data on the screen.</p>
 
 <p>As you can see from the code, building an object model from an XML file only requires a single-line call to <code>DDMSReader.getDDMSResource()</code>. The conversion of
-the Resource into XML, HTML, and Text is built-in to the Object. The primary purpose of the DDMSReader class is to load a resource from an XML file. You can also use the <code>getElement()</code> methods of the DDMSReader to load XOM Elements representing any of the global DDMS components.</p>
+the Resource into XML, HTML, and Text is built-in to the Object. The primary purpose of the DDMSReader class is to load a metacard from an XML file. You can also use the <code>getElement()</code> methods of the DDMSReader to load XOM Elements representing any of the global DDMS components.</p>
 
 <p>Now that you have seen a valid Resource, let's try opening an invalid one. Return to the <i>File</i> menu and select the sample file, <code>3.0-invalidResourceExample.xml</code> from the
 samples directory. This XML file is invalid, because it tries to use an incorrect security classification (SuperSecret).</p>
@@ -75,14 +75,14 @@ at any given time.</p>
 
 <ul>
 	<li>The XML file is initially validated by the underlying XML parsers to confirm that it is well-formed and adheres to the DDMS schema.</li>
-	<li>As the objects are built in Java, the schema rules are revalidated in Java. This is not essential for file-based resources, but
+	<li>As the objects are built in Java, the schema rules are revalidated in Java. This is not essential for file-based metacards, but
 	becomes more important when we are building from scratch.</li>
 	<li>Next, any rules mandated in the DDMS Specification but not implemented in the schema are validated (such as constraints on latitude/longitude values). This is done with
 	custom Java code, and you can create your own rules with <a href="documentation-schematron.jsp">ISO Schematron</a>.</li>
 	<li>Any warnings which do not actually result in an invalid component are stored on the component, and can be retrieved via <code>getValidationWarnings()</code>.</li>
 </ul>
 
-<p>The <u>Essentials</u> program can open resources of any supported DDMS Version. An example is provided in the file, <code>2.0-earlierVersionExample.xml</code>. Working with
+<p>The <u>Essentials</u> program can open metacards of any supported DDMS Version. An example is provided in the file, <code>2.0-earlierVersionExample.xml</code>. Working with
 a other versions of DDMS is covered in the <a href="documentation.jsp#tips">Power Tips</a> section.</p>
 
 <h3>Conclusion</h3>
