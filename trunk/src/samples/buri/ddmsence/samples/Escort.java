@@ -121,12 +121,12 @@ public class Escort {
 	private void run() throws IOException {
 		println("Escort: a DDMSence Sample\n");
 		
-		println("This program allows you to build a DDMS 4.0.1 resource from scratch using a");
+		println("This program allows you to build a DDMS 4.1 metacard from scratch using a");
 		println("representative subset of possible components. Suggested valid answers are");
 		println("provided in square brackets for each prompt. However, these are not default");
 		println("values (hitting Enter will answer the prompt with an empty string).\n");
 
-		_useDummySecurityAttributes = confirm("Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the resource?");
+		_useDummySecurityAttributes = confirm("Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the metacard?");
 				
 		DDMSVersion.setCurrentVersion("4.1");
 		

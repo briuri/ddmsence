@@ -125,32 +125,32 @@ set where it was first introduced.</p>
 
 <p>This section describes common use cases that are a good fit for the DDMSence library.</p>
 
-<h4>Reading existing resources</h4>
+<h4>Reading existing metacards</h4>
 
-<p>As the tutorials show, it is trivially easy for DDMSence to load a DDMS resource from an XML file, examine its contents in a Java way, and display it as XML, HTML or Text. If you
-have a search web service which queries a catalog of DDMS resources, DDMSence could be used to process those resources individually, or gather statistics about the catalog as a whole.
-You could also use DDMSence to quickly validate a collection of DDMS resources, simply by loading them into a DDMSReader.</p>
+<p>As the tutorials show, it is trivially easy for DDMSence to load a DDMS metacard from an XML file, examine its contents in a Java way, and display it as XML, HTML or Text. If you
+have a search web service which queries a catalog of DDMS metacards, DDMSence could be used to process those metacards individually, or gather statistics about the catalog as a whole.
+You could also use DDMSence to quickly validate a collection of DDMS metacards, simply by loading them into a DDMSReader.</p>
 
-<h4>Creating new resources</h4>
+<h4>Creating new metacards</h4>
 
-<p>There are two ways to create DDMS resources from scratch in DDMSence. The first way makes use of standard Java constructors to build up each component and then group them together
-into a complete DDMS resource. The second way uses the <a href="documentation-builders.jsp">Component Builder</a> framework to model a top-down construction of a resource, and provides
-more flexibility of implementation. The latter approach follows the pattern of a step-by-step wizard that builds the resource over several steps, and then commits and validates the resource
+<p>There are two ways to create DDMS metacards from scratch in DDMSence. The first way makes use of standard Java constructors to build up each component and then group them together
+into a complete DDMS metacard. The second way uses the <a href="documentation-builders.jsp">Component Builder</a> framework to model a top-down construction of a metacard, and provides
+more flexibility of implementation. The latter approach follows the pattern of a step-by-step wizard that builds the metacard over several steps, and then commits and validates the metacard
 at the very end.</p>
 
-<h4>Editing existing resources</h4>
+<h4>Editing existing metacards</h4>
 
-<p>The Component Builder framework also allows you to load an existing resource, make changes to it, and then revalidate it. It might also be used to programmatically update or
-correct errors in a collection of DDMS resources. For example, if your assets have moved to a different web server, you could programmatically update all of your DDMS Identifiers
+<p>The Component Builder framework also allows you to load an existing metacard, make changes to it, and then revalidate it. It might also be used to programmatically update or
+correct errors in a collection of DDMS metacards. For example, if your assets have moved to a different web server, you could programmatically update all of your DDMS Identifiers
 to point to the new location. Alternately, you could change all occurences of a producer's last name after a marriage.</p>
 
-<p>As a specialized example of editing, you could transform older resources to the latest version of DDMS. With the Component Builder framework, you could load a DDMS 2.0 resource,
-add all of the fields required for DDMS 4.0.1, and then save it as a DDMS 4.0.1 resource. Example code for this use case can be found in the <a href="documentation-builders.jsp">Component Builder</a> Power Tip.</p>
+<p>As a specialized example of editing, you could transform older metacards to the latest version of DDMS. With the Component Builder framework, you could load a DDMS 2.0 metacard,
+add all of the fields required for DDMS 4.0.1, and then save it as a DDMS 4.0.1 metacard. Example code for this use case can be found in the <a href="documentation-builders.jsp">Component Builder</a> Power Tip.</p>
 
 <h4>Applying custom constraints with Schematron</h4>
 
 <p>In many cases, schema validation is not sufficient to truly show conformance. The Intelligence Community codifies constraints on ISM attributes with a set of Schematron files. DDMSence
-requires just a few lines of code to validate your DDMS resources against these Schematron files. You could also validate against Schematron files developed by your Community of Interest.
+requires just a few lines of code to validate your DDMS metacards against these Schematron files. You could also validate against Schematron files developed by your Community of Interest.
 Additional details can be found in the <a href="documentation-schematron.jsp">Schematron Validation</a> Power Tip.</p>
 
 <div class="clear"></div>
@@ -246,7 +246,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 	<li><a href="documentation-attributes.jsp">Common Attribute Groups</a>: Discusses the classes which represent the attribute groups used throughout DDMS, such as
 	Information Security Marking (ISM) attributes.</li><br />
 
-	<li><a href="documentation-builders.jsp">Using Component Builders</a>: Shows a "top-down" alternative to building a DDMS resource from scratch. Components can be built up over
+	<li><a href="documentation-builders.jsp">Using Component Builders</a>: Shows a "top-down" alternative to building a DDMS metacard from scratch. Components can be built up over
 	time and validated once at the end, rather than the "bottoms-up" constructor-based approach which validates each component individually and groups them together.</li><br />
 
 	<li><a href="documentation-schematron.jsp">Schematron Validation</a>: Explains the process for using custom Schematron files with DDMSence, and provides example
@@ -265,8 +265,8 @@ traversed and queried in the same manner, without requiring too much knowledge o
 <p>This section contains links to DDMS-related research and personal experimentation which may be useful to DDMSence in the future.</p>
 
 <ul>
-	<li><a href="builder.uri">DDMS Builder</a>: An experimental tool to build DDMS resources with a form-based UI.</li><br />
-	<li><a href="validator.uri">DDMS Validator</a>: An experimental tool to validate DDMS resources.</li><br />
+	<li><a href="builder.uri">DDMS Builder</a>: An experimental tool to build DDMS metacards with a form-based UI.</li><br />
+	<li><a href="validator.uri">DDMS Validator</a>: An experimental tool to validate DDMS metacards.</li><br />
 	<li><a href="relationalTables.jsp">Relational Database Model for DDMS 3.1</a>: A mapping of the DDMS 3.1 specification to relational database tables (database-agnostic).</li><br />
 	<li><a href="schematron.jsp">Schematron Implementation for DDMS 4.0.1</a>: An attempt to model some of the more complex rules in the DDMS specification with ISO Schematron.</li>
 </ul>

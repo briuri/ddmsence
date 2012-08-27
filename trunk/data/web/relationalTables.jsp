@@ -24,9 +24,9 @@ may be useful when integrating DDMSence with an existing persistence framework l
 	references in child components without requiring the child table to know what kind of parent it has. All <code>id</code> columns could also contain 
 	generated UUID values instead of sequenced integers.</li>
 <li>Child elements will have links back to their parents, but not in the reverse direction. This key is allowed to have an initial 
-	<code>&lt;NULL&gt;</code> value, to support a bottom-up approach to building DDMS resources from scratch.</li>
+	<code>&lt;NULL&gt;</code> value, to support a bottom-up approach to building DDMS metacards from scratch.</li>
 <li>If a table column is a character string and a value is not provided, an empty string should be favored instead of <code>&lt;NULL&gt;</code>.</li>
-<li>The intent of the tables is to model the resource data, not schema data. XML namespaces and other schema constructs are not necessarily modeled.</li>
+<li>The intent of the tables is to model the metacard data, not schema data. XML namespaces and other schema constructs are not necessarily modeled.</li>
 <li>Reference tables (i.e. the four types of producers, or the valid names of ISM security attributes) are not included here. Columns which have string 
 	values for these constants could just as easily have foreign keys to a reference table.</li>
 <li>Most validation constraints are omitted from this model, since it is assumed that a validating library like DDMSence would be placed in front of the tables.</li>

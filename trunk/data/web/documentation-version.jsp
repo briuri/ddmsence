@@ -15,11 +15,11 @@
 DDMSReader class can automatically use the correct version of DDMS based on the XML namespace defined in the file -- you do not need any extra code.</p>
 
 <pre class="brush: java">Resource resource = getReader().getDDMSResource(my40resourceFile);
-System.out.println("This resource was created with DDMS "
+System.out.println("This metacard was created with DDMS "
    + DDMSVersion.getVersionForNamespace(resource.getNamespace()));</pre>
 <p class="figure">Figure 1. Loading resources from XML files</p>
 
-<pre class="brush: xml">This resource was created with DDMS 4.0.1</pre>
+<pre class="brush: xml">This metacard was created with DDMS 4.0.1</pre>
 <p class="figure">Figure 2. Output of the code in Figure 1</p>
 
 <p>When building DDMS components from scratch, the <a href="/docs/index.html?buri/ddmsence/util/DDMSVersion.html">DDMSVersion</a>
@@ -85,8 +85,8 @@ List&lt;String&gt; names = Util.getXsListAsList("UnknownEntity");
 Unknown unknown = new Unknown(names, null, null);</pre>
 <p class="figure">Figure 7. This code will throw an InvalidDDMSException</p>
 
-<p>If you have a set of DDMS resources from an older version of DDMS and wish to transform them to a newer version, you can do so with the <a href="documentation-builders.jsp">Component
-Builder</a> framework. Builders allow you to load the old resource, add any new fields that are required, and save it in the new version.</p>
+<p>If you have a set of DDMS metacards from an older version of DDMS and wish to transform them to a newer version, you can do so with the <a href="documentation-builders.jsp">Component
+Builder</a> framework. Builders allow you to load the old metacard, add any new fields that are required, and save it in the new version.</p>
 
 <p>The tables below identify the key differences between supported versions of DDMS components in DDMSence.</p>
 <table width="100%">

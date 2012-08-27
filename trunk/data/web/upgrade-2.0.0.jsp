@@ -176,13 +176,13 @@ myTopLevelComponents.add(new RelatedResource(links, "http://purl.org/dc/terms/re
 
 <a name="major-04"></a><h4>Non-XML Resources validated against DDMS schemas (<a href="http://code.google.com/p/ddmsence/issues/detail?id=28">Issue #28</a>)</h4>
 <div class="upgradeGuide">
-<p>DDMS resources loaded from an XML file have always been validated against the DDMS schemas. However, DDMS resources built from scratch (either with the data-driven constructors
-or the Component Builder framework) were not. Starting in this release, a resource built from scratch is converted into XML and validated against the schemas, to elminate
+<p>DDMS metacards loaded from an XML file have always been validated against the DDMS schemas. However, DDMS metacards built from scratch (either with the data-driven constructors
+or the Component Builder framework) were not. Starting in this release, a metacard built from scratch is converted into XML and validated against the schemas, to elminate
 any remaining loopholes in data correctness. Individual components which are built from scratch are not validated against the schema until the enclosing Resource is instantiated.</p>
 
 <p><b>How to Upgrade:</b></p>
 <p>There are no upgrade steps required. However, DDMSence v2.0.0 may catch a few additional fringe cases which were mistakenly identified as valid in previous versions. For example,
-the <code>gml:id</code> on GML points is supposed to be unique to the XML resource. By using data-driven constructors in the past, it was possible to create multiple points with the same
+the <code>gml:id</code> on GML points is supposed to be unique to the XML metacard. By using data-driven constructors in the past, it was possible to create multiple points with the same
 ID value, which would result in an invalid XML record.</p>
 
 </div>
@@ -210,7 +210,7 @@ version of DDMS, the DDMS team is strongly encouraging that you go directly to 4
 
 <div class="upgradeGuide">
 <p>Previously, DDMSence would do a basic check to see that security classifications of top-level components
-were never more restrictive than the resource itself, and also checked to see that all classifications used
+were never more restrictive than the metacard itself, and also checked to see that all classifications used
 a consistent system (US vs NATO). In DDMS 4.0.1, classification markings can go much deeper into the object
 hierarchy, and NATO markings are now handled apart from classifications. Rather than reinvent the wheel
 here, it would be better to use the ISM Schematron files to correctly and comprehensively manage your

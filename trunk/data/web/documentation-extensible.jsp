@@ -120,7 +120,7 @@ Resource resource = new Resource(myComponents, null, null, null, null, extension
 <p class="figure">Figure 6. These two approaches for security attributes are both legal in DDMS 2.0</p>
 
 <p>As a best practice, it is recommended that you create these attributes as explicitly as possible: if an attribute can be defined with constructor parameters or inside
-of a SecurityAttributes instance, it should. This will make DDMS 2.0 resources more consistent with their newer counterparts.</p>
+of a SecurityAttributes instance, it should. This will make DDMS 2.0 metacards more consistent with their newer counterparts.</p>
 
 <h2>ExtensibleAttributes on a Keyword or Category</h2>
 
