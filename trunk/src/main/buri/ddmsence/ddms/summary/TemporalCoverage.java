@@ -121,7 +121,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 				if (nameElement != null && !Util.isEmpty(nameElement.getValue()))
 					_name = nameElement.getValue();
 				Element startElement = periodElement.getFirstChildElement(START_NAME, getNamespace());
-				Element endElement = periodElement.getFirstChildElement("end", getNamespace());
+				Element endElement = periodElement.getFirstChildElement(END_NAME, getNamespace());
 				String startString = (startElement == null ? "" : startElement.getValue());
 				String endString = (endElement == null ? "" : endElement.getValue());
 				loadDateCaches(startString, endString);
