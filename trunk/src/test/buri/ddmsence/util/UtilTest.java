@@ -270,6 +270,9 @@ public class UtilTest extends AbstractBaseTestCase {
 	public void testRequireDDMSDateFormatSuccess() {
 		try {
 			Util.requireDDMSDateFormat(DatatypeConstants.DATETIME);
+			Util.requireDDMSDateFormat(DatatypeConstants.DATE);
+			Util.requireDDMSDateFormat(DatatypeConstants.GYEARMONTH);
+			Util.requireDDMSDateFormat(DatatypeConstants.GYEAR);
 		}
 		catch (InvalidDDMSException e) {
 			fail("Did not allow valid data.");
