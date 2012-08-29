@@ -59,6 +59,20 @@ public final class NonStateActor extends AbstractSimpleString {
 	}
 
 	/**
+	 * Constructor for creating a component from raw data. Preserved for backwards compatibility, but may disappear in the next major release.
+	 * 
+	 * @deprecated
+	 * @param value the value of the description child text
+	 * @param order the order of this actor
+	 * @param securityAttributes any security attributes (classification and ownerProducer are optional)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public NonStateActor(String value, Integer order, SecurityAttributes securityAttributes)
+		throws InvalidDDMSException {
+		this(value, order, null, securityAttributes);
+	}
+	
+	/**
 	 * Constructor for creating a component from raw data
 	 * 
 	 * @param value the value of the description child text
