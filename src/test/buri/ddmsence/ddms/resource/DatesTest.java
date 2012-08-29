@@ -205,11 +205,18 @@ public class DatesTest extends AbstractBaseTestCase {
 
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// Wrong date format (using xs:gDay here)
 			getInstance("The date datatype must be one of", "---31", TEST_POSTED, TEST_VALID, TEST_CUTOFF,
 				getApprovedOn(), getReceivedOn());
+			getInstance("The date datatype must be one of", TEST_CREATED, "---31", TEST_VALID, TEST_CUTOFF, getApprovedOn(), getReceivedOn());
+			getInstance("The date datatype must be one of", TEST_CREATED, TEST_POSTED, "---31", TEST_CUTOFF, getApprovedOn(), getReceivedOn());
+			getInstance("The date datatype must be one of", TEST_CREATED, TEST_POSTED, TEST_VALID, "---31", getApprovedOn(), getReceivedOn());
+			if (version.isAtLeast("3.1"))
+				getInstance("The date datatype must be one of", TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, "---31", getReceivedOn());
+			if (version.isAtLeast("4.0.1"))
+			getInstance("The date datatype must be one of", TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(), "---31");
 		}
 	}
 

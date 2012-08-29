@@ -186,6 +186,8 @@ public final class Dates extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getInfoCutOff().getXMLSchemaType());
 		if (getApprovedOn() != null)
 			Util.requireDDMSDateFormat(getApprovedOn().getXMLSchemaType());
+		if (getReceivedOn() != null)
+			Util.requireDDMSDateFormat(getReceivedOn().getXMLSchemaType());
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (!getDDMSVersion().isAtLeast("3.1") && getApprovedOn() != null) {
