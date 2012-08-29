@@ -244,6 +244,15 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testDeprecatedConstructor() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			NonStateActor dataComponent = new NonStateActor(TEST_VALUE, TEST_ORDER, SecurityAttributesTest.getFixture());
+			assertTrue(Util.isEmpty(dataComponent.getQualifier()));
+		}
+	}
+	
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
