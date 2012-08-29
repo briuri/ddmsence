@@ -24,7 +24,7 @@
   	<p>
 	DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
 	<a href="http://metadata.ces.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
-	It transforms XML DDMS Resource records into a Java object model (using XOM and Xerces), allowing them to be 
+	It transforms XML DDMS Resources (metacards) into a Java object model (using XOM and Xerces), allowing them to be 
 	manipulated or traversed within the context of a Java environment. The library is published under the 
 	<a target="_top" href="http://ddmsence.urizone.net/license.jsp">GNU Lesser General Public License</a> (LGPL). 
 	The project's home page can be found at <a target="_top" href="http://ddmsence.urizone.net/">http://ddmsence.urizone.net/</a>.</p>
@@ -33,9 +33,9 @@
 	packages are further divided to identify any components which originate from other XML namespaces, such as GML or XLink. If a component
 	is reused across multiple sets, it will be found in the package of the set where it was first introduced.</p>
 	
-	<h2>DDMS 4.0.1 Hierarchy</h2>
+	<h2>DDMS 4.1 Hierarchy</h2>
 	
-	<p>The table below provides a quick reference of every DDMS 4.0.1 component which has been implemented as a DDMSence class, organized
+	<p>The table below provides a quick reference of every DDMS 4.1 component which has been implemented as a DDMSence class, organized
 	alphabetically within DDMS core sets. The attribute groups which decorate the components are listed in parentheses.</p>
 	
 	<table class="info"><tr>
@@ -63,6 +63,49 @@
 					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
 				</li>
 				<ul>
+					<li>{@link buri.ddmsence.ddms.security.ntk.Access}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.security.ntk.Group}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.security.ntk.GroupValue}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+							<li>{@link buri.ddmsence.ddms.security.ntk.SystemName}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+						</ul>
+						<li>{@link buri.ddmsence.ddms.security.ntk.Individual}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.security.ntk.IndividualValue}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+							<li>{@link buri.ddmsence.ddms.security.ntk.SystemName}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+						</ul>
+						<li>{@link buri.ddmsence.ddms.security.ntk.ProfileList}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.security.ntk.Profile}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+							<ul>
+								<li>{@link buri.ddmsence.ddms.security.ntk.ProfileValue}
+									({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+								</li>
+								<li>{@link buri.ddmsence.ddms.security.ntk.SystemName}
+									({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+								</li>
+							</ul>
+						</ul>
+					</ul>
 					<li>{@link buri.ddmsence.ddms.resource.Contributor}
 						/ {@link buri.ddmsence.ddms.resource.Creator}
 						/ {@link buri.ddmsence.ddms.resource.PointOfContact}
@@ -89,6 +132,9 @@
 						</li>
 					</ul>
 					<li>{@link buri.ddmsence.ddms.resource.Dates}</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.ApproximableDate}</li>
+					</ul>
 					<li>{@link buri.ddmsence.ddms.summary.Description}
 						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
 					</li>
@@ -170,6 +216,9 @@
 					</li>
 				</ul>
 				<li>{@link buri.ddmsence.ddms.resource.Dates}</li>
+				<ul>
+					<li>{@link buri.ddmsence.ddms.ApproximableDate}</li>
+				</ul>
 				<li>{@link buri.ddmsence.ddms.resource.Identifier}</li>
 				<li>{@link buri.ddmsence.ddms.resource.Language}</li>
 				<li>{@link buri.ddmsence.ddms.resource.ResourceManagement}
@@ -403,6 +452,9 @@
 				<li>{@link buri.ddmsence.ddms.summary.TemporalCoverage}
 					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
 				</li>
+				<ul>
+					<li>{@link buri.ddmsence.ddms.ApproximableDate}</li>
+				</ul>
 				<li>{@link buri.ddmsence.ddms.summary.VirtualCoverage}
 					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
 				</li>
