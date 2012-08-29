@@ -202,7 +202,7 @@ public class DatesTest extends AbstractBaseTestCase {
 			getInstance("The date datatype must be one of", element);
 		}
 	}
-
+	
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
