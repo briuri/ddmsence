@@ -202,17 +202,25 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 
 	public void testElementConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// There are no invalid constructors right now -- every field is optional.
+			// Bad qualifier
+			if (version.isAtLeast("4.1")) {
+				Element element = Util.buildDDMSElement(NonStateActor.getName(version), null);
+				Util.addDDMSAttribute(element, "qualifier", INVALID_URI);
+				getInstance("Invalid URI", element);
+			}
 		}
 	}
 
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// There are no invalid constructors right now -- every field is optional.
+			// Bad qualifier
+			if (version.isAtLeast("4.1")) {
+				getInstance("Invalid URI", TEST_VALUE, TEST_ORDER, INVALID_URI);
+			}
 		}
 	}
 
