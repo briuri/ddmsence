@@ -100,10 +100,12 @@ public final class NonStateActor extends AbstractSimpleString {
 	/**
 	 * Validates the component.
 	 * 
-	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody"> <li>The qualified name of
-	 * the element is correct.</li> <li>If a qualifier exists, it is a valid URI.</li> <li>This component cannot be used
-	 * until DDMS 4.0.1 or later.</li> <li>Does not validate the value of the order attribute (this is done at the
-	 * Resource level).</li> </td></tr></table>
+	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody"> 
+	 * <li>The qualified name of the element is correct.</li>
+	 * <li>If a qualifier exists, it is a valid URI.</li>
+	 * <li>This component cannot be used until DDMS 4.0.1 or later.</li>
+	 * <li>Does not validate the value of the order attribute (this is done at the Resource level).</li>
+	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
 	 */
