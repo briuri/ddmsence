@@ -278,8 +278,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A qualifier has been set without an accompanying value attribute.</li>
-	 * <li>A completely empty ddms:extent element was found.</li>
+	 * <li>An ntk:Access element may cause issues for DDMS 4.0 records.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
