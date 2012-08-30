@@ -54,11 +54,12 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 	/**
 	 * Returns a fixture object for testing.
 	 * 
+	 * @param name the element name
 	 * @param includeAllFields true to include optional fields
 	 */
-	public static Element getFixtureElement(boolean includeAllFields) {
+	public static Element getFixtureElement(String name, boolean includeAllFields) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
-		Element element = Util.buildDDMSElement(TEST_NAME, null);
+		Element element = Util.buildDDMSElement(name, null);
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 		if (includeAllFields) {
 			Util.addDDMSChildElement(element, "description", TEST_DESCRIPTION);
@@ -74,7 +75,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		}
 		return (element);
 	}
-
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -157,7 +158,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement(true)), DEFAULT_DDMS_PREFIX, TEST_NAME);
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement(TEST_NAME, true)), DEFAULT_DDMS_PREFIX, TEST_NAME);
 			getInstance("The element name must be one of", getWrongNameElementFixture());
 		}
 	}
@@ -167,10 +168,10 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, getFixtureElement(true));
+			getInstance(SUCCESS, getFixtureElement(TEST_NAME, true));
 
 			// No fields
-			getInstance(SUCCESS, getFixtureElement(false));
+			getInstance(SUCCESS, getFixtureElement(TEST_NAME, false));
 		}
 	}
 
@@ -255,11 +256,11 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// No warnings
-			ApproximableDate component = getInstance(SUCCESS, getFixtureElement(true));
+			ApproximableDate component = getInstance(SUCCESS, getFixtureElement(TEST_NAME, true));
 			assertEquals(0, component.getValidationWarnings().size());
 			
 			// Empty element
-			component = getInstance(SUCCESS, getFixtureElement(false));
+			component = getInstance(SUCCESS, getFixtureElement(TEST_NAME, false));
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A completely empty ddms:acquiredOn";
 			String locator = "ddms:acquiredOn";
@@ -282,7 +283,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ApproximableDate elementComponent = getInstance(SUCCESS, getFixtureElement(true));
+			ApproximableDate elementComponent = getInstance(SUCCESS, getFixtureElement(TEST_NAME, true));
 			ApproximableDate dataComponent = getInstance(SUCCESS, TEST_NAME, TEST_DESCRIPTION, TEST_APPROXIMABLE_DATE,
 				TEST_APPROXIMATION, TEST_START_DATE, TEST_END_DATE);
 			assertEquals(elementComponent, dataComponent);
@@ -294,7 +295,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ApproximableDate elementComponent = getInstance(SUCCESS, getFixtureElement(true));
+			ApproximableDate elementComponent = getInstance(SUCCESS, getFixtureElement(TEST_NAME, true));
 			ApproximableDate dataComponent = getInstance(SUCCESS, "approximableStart", TEST_DESCRIPTION,
 				TEST_APPROXIMABLE_DATE, TEST_APPROXIMATION, TEST_START_DATE, TEST_END_DATE);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -325,7 +326,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ApproximableDate component = getInstance(SUCCESS, getFixtureElement(true));
+			ApproximableDate component = getInstance(SUCCESS, getFixtureElement(TEST_NAME, true));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
@@ -340,7 +341,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ApproximableDate component = getInstance(SUCCESS, getFixtureElement(true));
+			ApproximableDate component = getInstance(SUCCESS, getFixtureElement(TEST_NAME, true));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
 			component = getInstance(SUCCESS, TEST_NAME, TEST_DESCRIPTION, TEST_APPROXIMABLE_DATE, TEST_APPROXIMATION,
@@ -364,7 +365,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			ApproximableDate component = getInstance(SUCCESS, getFixtureElement(true));
+			ApproximableDate component = getInstance(SUCCESS, getFixtureElement(TEST_NAME, true));
 			ApproximableDate.Builder builder = new ApproximableDate.Builder(component);
 			assertEquals(component, builder.commit());
 		}
