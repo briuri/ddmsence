@@ -430,7 +430,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 			components = getChildComponents();
 			components.remove(DatesTest.getFixture());
-			components.add(new Dates(null, null, null, null, null, null));
+			components.add(new Dates(null, null, null, null, null, null, null));
 			dataComponent = getInstance(SUCCESS, components);
 			assertFalse(elementComponent.equals(dataComponent));
 

@@ -276,7 +276,7 @@ public class Escort {
 				String infoCutOff = readString("the infoCutOff date [2010]");
 				String approvedOn = readString("the approvedOn date [2010]");
 				String receivedOn = readString("the receivedOn date [2010]");
-				return (new Dates(created, posted, validTil, infoCutOff, approvedOn, receivedOn));
+				return (new Dates(null, created, posted, validTil, infoCutOff, approvedOn, receivedOn));
 			}		
 		});
 		CONSTRUCTOR_BUILDERS.put(AbstractProducerRole.class, new IConstructorBuilder() {

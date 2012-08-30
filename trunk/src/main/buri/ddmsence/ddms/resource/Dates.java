@@ -20,15 +20,22 @@
 package buri.ddmsence.ddms.resource;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import nu.xom.Element;
+import nu.xom.Elements;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.ApproximableDate;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
@@ -42,10 +49,14 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>A dates element can be used with none of the five date attributes set.</li>
+ * <li>A dates element can be used with none of the seven date values set.</li>
  * </ul>
  * </td></tr></table>
- *  
+ * 
+ * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
+ * <u>ddms:acquiredOn</u>: the acquisition date (0-many, starting in DDMS 4.1), implemented as an {@link ApproximableDate}<br />
+ * </td></tr></table>
+ * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:created</u>: creation date (optional)<br />
  * <u>ddms:posted</u>: posting date (optional)<br />
@@ -66,6 +77,7 @@ public final class Dates extends AbstractBaseComponent {
 	private XMLGregorianCalendar _infoCutOff = null;
 	private XMLGregorianCalendar _approvedOn = null;
 	private XMLGregorianCalendar _receivedOn = null;
+	private List<ApproximableDate> _acquiredOns = null;
 	
 	private static final String CREATED_NAME = "created";
 	private static final String POSTED_NAME = "posted";
@@ -73,6 +85,7 @@ public final class Dates extends AbstractBaseComponent {
 	private static final String INFO_CUT_OFF_NAME = "infoCutOff";
 	private static final String APPROVED_ON_NAME = "approvedOn";
 	private static final String RECEIVED_ON_NAME = "receivedOn";
+	private static final String ACQUIRED_ON_NAME = "acquiredOn";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -83,6 +96,12 @@ public final class Dates extends AbstractBaseComponent {
 	public Dates(Element element) throws InvalidDDMSException {
 		try {
 			setXOMElement(element, false);
+			_acquiredOns = new ArrayList<ApproximableDate>();
+			Elements acquiredOns = element.getChildElements(ACQUIRED_ON_NAME, getNamespace());
+			for (int i = 0; i < acquiredOns.size(); i++) {
+				_acquiredOns.add(new ApproximableDate(acquiredOns.get(i)));
+			}
+			
 			String created = getAttributeValue(CREATED_NAME);
 			if (!Util.isEmpty(created))
 				_created = getFactory().newXMLGregorianCalendar(created);
@@ -110,9 +129,9 @@ public final class Dates extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Constructor for creating a component from raw data. The string-based inputs must conform to one of the XML date
-	 * types: xs:dateTime, xs:date, xs:gYearMonth, or xs:gYear.
+	 * Constructor for creating a component from raw data. Preserved for backwards compatibility, but may disappear in the next major release.
 	 * 
+	 * @deprecated
 	 * @param created the creation date (optional)
 	 * @param posted the posting date (optional)
 	 * @param validTil the expiration date (optional)
@@ -121,11 +140,35 @@ public final class Dates extends AbstractBaseComponent {
 	 * @param receivedOn the received on date (optional, starting in DDMS 4.0.1)
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	public Dates(String created, String posted, String validTil, String infoCutOff, String approvedOn, String receivedOn)
-		throws InvalidDDMSException {
+	public Dates(String created, String posted, String validTil, String infoCutOff, String approvedOn,
+		String receivedOn) throws InvalidDDMSException {
+		this(null, created, posted, validTil, infoCutOff, approvedOn, receivedOn);
+	}
+	
+	/**
+	 * Constructor for creating a component from raw data. The string-based inputs must conform to one of the XML date
+	 * types: xs:dateTime, xs:date, xs:gYearMonth, or xs:gYear.
+	 * @param acquiredOns the acquisition dates (optional, starting in DDMS 4.1)
+	 * @param created the creation date (optional)
+	 * @param posted the posting date (optional)
+	 * @param validTil the expiration date (optional)
+	 * @param infoCutOff the info cutoff date (optional)
+	 * @param approvedOn the approved on date (optional, starting in DDMS 3.1)
+	 * @param receivedOn the received on date (optional, starting in DDMS 4.0.1)
+	 * 
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public Dates(List<ApproximableDate> acquiredOns, String created, String posted, String validTil, String infoCutOff,
+		String approvedOn, String receivedOn) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Dates.getName(DDMSVersion.getCurrentVersion()), null);
 			try {
+				if (acquiredOns == null)
+					acquiredOns = Collections.emptyList();
+				_acquiredOns = acquiredOns;
+				for (ApproximableDate acquiredOn : acquiredOns)
+					element.appendChild(acquiredOn.getXOMElementCopy());
+
 				if (!Util.isEmpty(created)) {
 					_created = getFactory().newXMLGregorianCalendar(created);
 					Util.addDDMSAttribute(element, CREATED_NAME, getCreated().toXMLFormat());
@@ -168,8 +211,9 @@ public final class Dates extends AbstractBaseComponent {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If set, each date attribute adheres to an acceptable date format.</li>
-	 * <li>The approvedOn date cannot exist in DDMS 2.0 or 3.0.</li>
-	 * <li>The receivedOn date cannot exist in DDMS 2.0, 3.0, or 3.1.</li>
+	 * <li>The approvedOn date cannot be used until DDMS 3.1 or later.</li>
+	 * <li>The receivedOn date cannot be used until DDMS 4.0.1 or later.</li>
+	 * <li>An acquiredOn date cannot be used until DDMS 4.1 or later.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -196,6 +240,9 @@ public final class Dates extends AbstractBaseComponent {
 		if (!getDDMSVersion().isAtLeast("4.0.1") && getReceivedOn() != null) {
 			throw new InvalidDDMSException("This component cannot have a receivedOn date until DDMS 4.0.1 or later.");
 		}
+		if (!getDDMSVersion().isAtLeast("4.1") && !getAcquiredOns().isEmpty()) {
+			throw new InvalidDDMSException("This component cannot have an acquiredOn date until DDMS 4.1 or later.");
+		}
 
 		super.validate();
 	}
@@ -205,13 +252,17 @@ public final class Dates extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A completely empty ddms:dates element was found.</li>
+	 * <li>A ddms:acquiredOn element may cause issues for DDMS 4.0 records.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
 		if (getCreated() == null && getPosted() == null && getValidTil() == null && getInfoCutOff() == null
-			&& getApprovedOn() == null && getReceivedOn() == null) {
+			&& getApprovedOn() == null && getReceivedOn() == null && getAcquiredOns().isEmpty()) {
 			addWarning("A completely empty ddms:dates element was found.");
 		}
+		if (!getAcquiredOns().isEmpty())
+			addSameNamespaceWarning("ddms:acquiredOn element");
+		
 		super.validateWarnings();
 	}
 	
@@ -221,6 +272,7 @@ public final class Dates extends AbstractBaseComponent {
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
+		text.append(buildOutput(isHTML, localPrefix, getAcquiredOns()));
 		if (getCreated() != null)
 			text.append(buildOutput(isHTML, localPrefix + CREATED_NAME, getCreated().toXMLFormat()));
 		if (getPosted() != null)
@@ -236,6 +288,15 @@ public final class Dates extends AbstractBaseComponent {
 		return (text.toString());
 	}
 		
+	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.addAll(getAcquiredOns());
+		return (list);
+	}
+	
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -328,6 +389,13 @@ public final class Dates extends AbstractBaseComponent {
 	}
 	
 	/**
+	 * Accessor for the acquiredOn dates (0-many optional). 
+	 */
+	public List<ApproximableDate> getAcquiredOns() {
+		return (Collections.unmodifiableList(_acquiredOns));
+	}
+	
+	/**
 	 * Accesor for the datatype factory
 	 */
 	private static DatatypeFactory getFactory() {
@@ -343,6 +411,7 @@ public final class Dates extends AbstractBaseComponent {
 	 */
 	public static class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = -2857638896738260719L;
+		private List<ApproximableDate.Builder> _acquiredOns;
 		private String _created;
 		private String _posted;
 		private String _validTil;
@@ -359,6 +428,8 @@ public final class Dates extends AbstractBaseComponent {
 		 * Constructor which starts from an existing component.
 		 */
 		public Builder(Dates dates) {
+			for (ApproximableDate acquiredOn : dates.getAcquiredOns())
+				getAcquiredOns().add(new ApproximableDate.Builder(acquiredOn));
 			if (dates.getCreated() != null)
 				setCreated(dates.getCreated().toXMLFormat());
 			if (dates.getPosted() != null)
@@ -377,16 +448,37 @@ public final class Dates extends AbstractBaseComponent {
 		 * @see IBuilder#commit()
 		 */
 		public Dates commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Dates(getCreated(), getPosted(), getValidTil(), getInfoCutOff(),
-				getApprovedOn(), getReceivedOn()));
+			if (isEmpty())
+				return (null);
+			List<ApproximableDate> acquiredOns = new ArrayList<ApproximableDate>();
+			for (IBuilder builder : getAcquiredOns()) {
+				ApproximableDate component = (ApproximableDate) builder.commit();
+				if (component != null)
+					acquiredOns.add(component);
+			}
+			return (new Dates(acquiredOns, getCreated(), getPosted(), getValidTil(),
+				getInfoCutOff(), getApprovedOn(), getReceivedOn()));
 		}
 
 		/**
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			return (Util.isEmpty(getCreated()) && Util.isEmpty(getPosted()) && Util.isEmpty(getValidTil())
-				&& Util.isEmpty(getInfoCutOff()) && Util.isEmpty(getApprovedOn()) && Util.isEmpty(getReceivedOn()));
+			boolean hasValueInList = false;
+			for (IBuilder builder : getAcquiredOns())
+				hasValueInList = hasValueInList || !builder.isEmpty();
+			return (!hasValueInList && Util.isEmpty(getCreated()) && Util.isEmpty(getPosted())
+				&& Util.isEmpty(getValidTil()) && Util.isEmpty(getInfoCutOff()) && Util.isEmpty(getApprovedOn()) && Util
+				.isEmpty(getReceivedOn()));
+		}
+		
+		/**
+		 * Builder accessor for the acquiredOn dates
+		 */
+		public List<ApproximableDate.Builder> getAcquiredOns() {
+			if (_acquiredOns == null)
+				_acquiredOns = new LazyList(ApproximableDate.Builder.class);
+			return _acquiredOns;
 		}
 		
 		/**

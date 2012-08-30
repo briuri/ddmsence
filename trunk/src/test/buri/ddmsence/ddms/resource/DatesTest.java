@@ -19,8 +19,13 @@
  */
 package buri.ddmsence.ddms.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
+import buri.ddmsence.ddms.ApproximableDate;
+import buri.ddmsence.ddms.ApproximableDateTest;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
@@ -52,7 +57,7 @@ public class DatesTest extends AbstractBaseTestCase {
 	 */
 	public static Dates getFixture() {
 		try {
-			return (new Dates("2003", null, null, null, null, null));
+			return (new Dates(null, "2003", null, null, null, null, null));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -86,6 +91,7 @@ public class DatesTest extends AbstractBaseTestCase {
 	 * Helper method to create an object which is expected to be valid.
 	 * 
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
+	 * @param acquiredOns a list of acquisition dates (optional, starting in 4.1)
 	 * @param created the creation date (optional)
 	 * @param posted the posting date (optional)
 	 * @param validTil the expiration date (optional)
@@ -94,12 +100,12 @@ public class DatesTest extends AbstractBaseTestCase {
 	 * @param receivedOn the received on date (optional, starting in 4.0.1)
 	 * @return a valid object
 	 */
-	private Dates getInstance(String message, String created, String posted, String validTil, String infoCutOff,
-		String approvedOn, String receivedOn) {
+	private Dates getInstance(String message, List<ApproximableDate> acquiredOns, String created, String posted,
+		String validTil, String infoCutOff, String approvedOn, String receivedOn) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Dates component = null;
 		try {
-			component = new Dates(created, posted, validTil, infoCutOff, approvedOn, receivedOn);
+			component = new Dates(acquiredOns, created, posted, validTil, infoCutOff, approvedOn, receivedOn);
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -122,6 +128,17 @@ public class DatesTest extends AbstractBaseTestCase {
 	private String getReceivedOn() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? TEST_RECEIVED : "");
 	}
+	
+	/**
+	 * Generates an acquiredOn Date for testing
+	 */
+	private List<ApproximableDate> getAcquiredOns() throws InvalidDDMSException {
+		List<ApproximableDate> list = new ArrayList<ApproximableDate>();
+		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
+			list.add(new ApproximableDate(ApproximableDateTest.getFixtureElement("acquiredOn", true)));
+		}
+		return (list);
+	}
 
 	/**
 	 * Returns the expected HTML or Text output for this unit test
@@ -129,6 +146,11 @@ public class DatesTest extends AbstractBaseTestCase {
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
+		if (version.isAtLeast("4.1")) {
+			for (ApproximableDate acquiredOn : getAcquiredOns()) {
+				text.append(acquiredOn.getOutput(isHTML, "dates.", ""));
+			}
+		}
 		text.append(buildOutput(isHTML, "dates.created", TEST_CREATED));
 		text.append(buildOutput(isHTML, "dates.posted", TEST_POSTED));
 		text.append(buildOutput(isHTML, "dates.validTil", TEST_VALID));
@@ -150,12 +172,21 @@ public class DatesTest extends AbstractBaseTestCase {
 		xml.append("ddms:created=\"").append(TEST_CREATED).append("\" ");
 		xml.append("ddms:posted=\"").append(TEST_POSTED).append("\" ");
 		xml.append("ddms:validTil=\"").append(TEST_VALID).append("\" ");
-		xml.append("ddms:infoCutOff=\"").append(TEST_CUTOFF).append("\" ");
+		xml.append("ddms:infoCutOff=\"").append(TEST_CUTOFF).append("\"");
 		if (version.isAtLeast("3.1"))
-			xml.append("ddms:approvedOn=\"").append(TEST_APPROVED).append("\" ");
+			xml.append(" ddms:approvedOn=\"").append(TEST_APPROVED).append("\"");
 		if (version.isAtLeast("4.0.1"))
-			xml.append("ddms:receivedOn=\"").append(TEST_RECEIVED).append("\" ");
-		xml.append("/>");
+			xml.append(" ddms:receivedOn=\"").append(TEST_RECEIVED).append("\"");
+		if (version.isAtLeast("4.1")) {
+			xml.append("><ddms:acquiredOn>");
+			xml.append("<ddms:description>description</ddms:description>");
+			xml.append("<ddms:approximableDate ddms:approximation=\"1st qtr\">2012</ddms:approximableDate>");
+			xml.append("<ddms:searchableDate><ddms:start>2012-01</ddms:start>");
+			xml.append("<ddms:end>2012-03-31</ddms:end></ddms:searchableDate>");
+			xml.append("</ddms:acquiredOn></ddms:dates>");
+		}
+		else
+			xml.append(" />");
 		return (xml.toString());
 	}
 
@@ -181,15 +212,16 @@ public class DatesTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testDataConstructorValid() {
+	public void testDataConstructorValid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(), getReceivedOn());
+			getInstance(SUCCESS, getAcquiredOns(), TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(),
+				getReceivedOn());
 
 			// No optional fields
-			getInstance(SUCCESS, "", "", "", "", "", "");
+			getInstance(SUCCESS, null, "", "", "", "", "", "");
 		}
 	}
 
@@ -203,29 +235,45 @@ public class DatesTest extends AbstractBaseTestCase {
 		}
 	}
 	
-	public void testDataConstructorInvalid() {
+	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// Wrong date format (using xs:gDay here)
-			getInstance("The date datatype must be one of", "---31", TEST_POSTED, TEST_VALID, TEST_CUTOFF,
-				getApprovedOn(), getReceivedOn());
-			getInstance("The date datatype must be one of", TEST_CREATED, "---31", TEST_VALID, TEST_CUTOFF, getApprovedOn(), getReceivedOn());
-			getInstance("The date datatype must be one of", TEST_CREATED, TEST_POSTED, "---31", TEST_CUTOFF, getApprovedOn(), getReceivedOn());
-			getInstance("The date datatype must be one of", TEST_CREATED, TEST_POSTED, TEST_VALID, "---31", getApprovedOn(), getReceivedOn());
+			getInstance("The date datatype must be one of", getAcquiredOns(), "---31", TEST_POSTED, TEST_VALID,
+				TEST_CUTOFF, getApprovedOn(), getReceivedOn());
+			getInstance("The date datatype must be one of", getAcquiredOns(), TEST_CREATED, "---31", TEST_VALID,
+				TEST_CUTOFF, getApprovedOn(), getReceivedOn());
+			getInstance("The date datatype must be one of", getAcquiredOns(), TEST_CREATED, TEST_POSTED, "---31",
+				TEST_CUTOFF, getApprovedOn(), getReceivedOn());
+			getInstance("The date datatype must be one of", getAcquiredOns(), TEST_CREATED, TEST_POSTED, TEST_VALID,
+				"---31", getApprovedOn(), getReceivedOn());
 			if (version.isAtLeast("3.1"))
-				getInstance("The date datatype must be one of", TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, "---31", getReceivedOn());
+				getInstance("The date datatype must be one of", getAcquiredOns(), TEST_CREATED, TEST_POSTED,
+					TEST_VALID, TEST_CUTOFF, "---31", getReceivedOn());
 			if (version.isAtLeast("4.0.1"))
-			getInstance("The date datatype must be one of", TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(), "---31");
+				getInstance("The date datatype must be one of", getAcquiredOns(), TEST_CREATED, TEST_POSTED,
+					TEST_VALID, TEST_CUTOFF, getApprovedOn(), "---31");
 		}
 	}
 
 	public void testWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			// No warnings
+			
 			Dates component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(0, component.getValidationWarnings().size());
+			
+			// 4.1 ddms:acquiredOn element used
+			if (version.isAtLeast("4.1")) {
+				assertEquals(1, component.getValidationWarnings().size());	
+				String text = "The ddms:acquiredOn element in this DDMS component";
+				String locator = "ddms:dates";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
+			// No warnings 
+			else {
+				assertEquals(0, component.getValidationWarnings().size());
+			}
 
 			// Empty element
 			Element element = Util.buildDDMSElement(Dates.getName(version), null);
@@ -237,47 +285,63 @@ public class DatesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testDeprecatedConstructor() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Dates dataComponent = new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID,
+				TEST_CUTOFF, getApprovedOn(), getReceivedOn());
+			assertTrue(dataComponent.getAcquiredOns().isEmpty());
+		}
+	}
+	
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Dates elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Dates dataComponent = getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
-				getApprovedOn(), getReceivedOn());
+			Dates dataComponent = getInstance(SUCCESS, getAcquiredOns(), TEST_CREATED, TEST_POSTED, TEST_VALID,
+				TEST_CUTOFF, getApprovedOn(), getReceivedOn());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
 	}
 
-	public void testConstructorInequalityDifferentValues() {
+	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			Dates elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Dates dataComponent = getInstance(SUCCESS, "", TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(),
-				getReceivedOn());
+			Dates dataComponent = getInstance(SUCCESS, getAcquiredOns(), "", TEST_POSTED, TEST_VALID, TEST_CUTOFF,
+				getApprovedOn(), getReceivedOn());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_CREATED, "", TEST_VALID, TEST_CUTOFF, getApprovedOn(),
-				getReceivedOn());
+			dataComponent = getInstance(SUCCESS, getAcquiredOns(), TEST_CREATED, "", TEST_VALID, TEST_CUTOFF,
+				getApprovedOn(), getReceivedOn());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, "", TEST_CUTOFF, getApprovedOn(),
-				getReceivedOn());
+			dataComponent = getInstance(SUCCESS, getAcquiredOns(), TEST_CREATED, TEST_POSTED, "", TEST_CUTOFF,
+				getApprovedOn(), getReceivedOn());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, "", getApprovedOn(),
-				getReceivedOn());
+			dataComponent = getInstance(SUCCESS, getAcquiredOns(), TEST_CREATED, TEST_POSTED, TEST_VALID, "",
+				getApprovedOn(), getReceivedOn());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			if (version.isAtLeast("3.1")) {
-				dataComponent = getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, "",
-					getReceivedOn());
+				dataComponent = getInstance(SUCCESS, getAcquiredOns(), TEST_CREATED, TEST_POSTED, TEST_VALID,
+					TEST_CUTOFF, "", getReceivedOn());
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 
 			if (version.isAtLeast("4.0.1")) {
-				dataComponent = getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
+				dataComponent = getInstance(SUCCESS, getAcquiredOns(), TEST_CREATED, TEST_POSTED, TEST_VALID,
+					TEST_CUTOFF, getApprovedOn(), "");
+				assertFalse(elementComponent.equals(dataComponent));
+			}
+
+			if (version.isAtLeast("4.1")) {
+				dataComponent = getInstance(SUCCESS, null, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
 					getApprovedOn(), "");
 				assertFalse(elementComponent.equals(dataComponent));
 			}
@@ -302,22 +366,22 @@ public class DatesTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(),
-				getReceivedOn());
+			component = getInstance(SUCCESS, getAcquiredOns(), TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
+				getApprovedOn(), getReceivedOn());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
 
-	public void testXMLOutput() {
+	public void testXMLOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Dates component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = getInstance(SUCCESS, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(),
-				getReceivedOn());
+			component = getInstance(SUCCESS, getAcquiredOns(), TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF,
+				getApprovedOn(), getReceivedOn());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}
@@ -325,7 +389,7 @@ public class DatesTest extends AbstractBaseTestCase {
 	public void testWrongVersionApprovedOn() {
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
-			new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, TEST_APPROVED, null);
+			new Dates(null, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, TEST_APPROVED, null);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
@@ -336,11 +400,24 @@ public class DatesTest extends AbstractBaseTestCase {
 	public void testWrongVersionReceivedOn() {
 		DDMSVersion.setCurrentVersion("3.0");
 		try {
-			new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, null, TEST_RECEIVED);
+			new Dates(null, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, null, TEST_RECEIVED);
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
 			expectMessage(e, "This component cannot have a receivedOn date ");
+		}
+	}
+	
+	public void testWrongVersionAcquiredOn() {
+		try {
+			DDMSVersion.setCurrentVersion("4.1");
+			List<ApproximableDate> acquiredOns = getAcquiredOns();
+			DDMSVersion.setCurrentVersion("3.0");
+			new Dates(acquiredOns, TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, null, null);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "This component cannot have an acquiredOn date");
 		}
 	}
 
@@ -361,7 +438,9 @@ public class DatesTest extends AbstractBaseTestCase {
 			Dates.Builder builder = new Dates.Builder();
 			assertNull(builder.commit());
 			assertTrue(builder.isEmpty());
-			builder.setCreated(TEST_CREATED);
+			builder.getAcquiredOns().get(0).setDescription("");
+			assertTrue(builder.isEmpty());
+			builder.getAcquiredOns().get(0).setDescription("test");
 			assertFalse(builder.isEmpty());
 
 		}
@@ -382,6 +461,14 @@ public class DatesTest extends AbstractBaseTestCase {
 			}
 			builder.setCreated(TEST_CREATED);
 			builder.commit();
+		}
+	}
+	
+	public void testBuilderLazyList() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+			Dates.Builder builder = new Dates.Builder();
+			assertNotNull(builder.getAcquiredOns().get(1));
 		}
 	}
 }
