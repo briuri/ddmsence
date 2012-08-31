@@ -327,10 +327,13 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 7 * result + getDescription().hashCode();
-		result = 7 * result + getApproximableDate().hashCode();
+		if (getApproximableDate() != null)
+			result = 7 * result + getApproximableDate().hashCode();
 		result = 7 * result + getApproximation().hashCode();
-		result = 7 * result + getSearchableStartDate().hashCode();
-		result = 7 * result + getSearchableEndDate().hashCode();		
+		if (getSearchableStartDate() != null)
+			result = 7 * result + getSearchableStartDate().hashCode();
+		if (getSearchableEndDate() != null)
+			result = 7 * result + getSearchableEndDate().hashCode();		
 		return (result);
 	}
 	
@@ -429,10 +432,11 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		}
 
 		/**
+		 * Does not include the element name.
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			return (Util.isEmpty(getName()) && Util.isEmpty(getDescription()) && Util.isEmpty(getApproximableDate())
+			return (Util.isEmpty(getDescription()) && Util.isEmpty(getApproximableDate())
 				&& Util.isEmpty(getApproximation()) && Util.isEmpty(getSearchableStartDate())
 				&& Util.isEmpty(getSearchableEndDate()));
 		}

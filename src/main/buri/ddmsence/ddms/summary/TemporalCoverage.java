@@ -20,7 +20,9 @@
 package buri.ddmsence.ddms.summary;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.datatype.DatatypeFactory;
@@ -28,7 +30,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
+import buri.ddmsence.ddms.ApproximableDate;
 import buri.ddmsence.ddms.IBuilder;
+import buri.ddmsence.ddms.IDDMSComponent;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.ValidationMessage;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
@@ -44,6 +48,9 @@ import buri.ddmsence.util.Util;
  * It exists only inside of a ddms:temporalCoverage parent, so it is not implemented as a Java object.
  * Starting in DDMS 4.0.1, the TimePeriod wrapper has been removed.
  * </p>
+ * 
+ * <p>Starting in DDMS 4.1, the start and end dates may optionally be replaced by an approximableStart
+ * or approximableEnd date.</p>
  * 
  * <p>To avoid confusion between the name of the temporalCoverage element and the name of the specified time period,
  * the latter is referred to as the "time period name".
@@ -63,14 +70,17 @@ import buri.ddmsence.util.Util;
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>A time period name element can be used with no child text.</li>
+ * <li>A completely empty approximableStart or approximableEnd date can be used.</li>
  * </ul>
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:name</u>: An interval of time, which can be expressed as a named era (0-1 optional, default=Unknown). Zero or
  * 1 of these elements may appear.<br />
- * <u>ddms:start</u>: The start date of a period of time (exactly 1 required, default=Unknown).<br />
- * <u>ddms:end</u>: The end date of a period of time (exactly 1 required, default=Unknown).
+ * <u>ddms:start</u>: The start date of a period of time (exactly 1 optional, default=Unknown).<br />
+ * <u>ddms:end</u>: The end date of a period of time (exactly 1 optional, default=Unknown).<br />
+ * <u>ddms:approximableStart</u>: The approximable start date (exactly 1 optional)<br />
+ * <u>ddms:approximableEnd</u>: The approximable end date (exactly 1 optional)<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -83,10 +93,12 @@ import buri.ddmsence.util.Util;
 public final class TemporalCoverage extends AbstractBaseComponent {
 	
 	private String _name = DEFAULT_VALUE;
-	private String _startString = null;
-	private String _endString = null;
+	private String _startString = "";
+	private String _endString = "";
 	private XMLGregorianCalendar _start = null;
 	private XMLGregorianCalendar _end = null;
+	private ApproximableDate _approximableStart = null;
+	private ApproximableDate _approximableEnd = null;
 	private SecurityAttributes _securityAttributes = null;
 	
 	private static final String DEFAULT_VALUE = "Unknown";
@@ -105,6 +117,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	
 	private static final String START_NAME = "start";
 	private static final String END_NAME = "end";
+	private static final String APPROXIMABLE_START_NAME = "approximableStart";
+	private static final String APPROXIMABLE_END_NAME = "approximableEnd";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -120,11 +134,23 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 				Element nameElement = periodElement.getFirstChildElement(TIME_PERIOD_NAME_NAME, getNamespace());
 				if (nameElement != null && !Util.isEmpty(nameElement.getValue()))
 					_name = nameElement.getValue();
-				Element startElement = periodElement.getFirstChildElement(START_NAME, getNamespace());
-				Element endElement = periodElement.getFirstChildElement(END_NAME, getNamespace());
-				String startString = (startElement == null ? "" : startElement.getValue());
-				String endString = (endElement == null ? "" : endElement.getValue());
-				loadDateCaches(startString, endString);
+				
+				Element approximableStart = element.getFirstChildElement(APPROXIMABLE_START_NAME, getNamespace());
+				if (approximableStart != null)
+					_approximableStart = new ApproximableDate(approximableStart);
+				else {
+					Element startElement = periodElement.getFirstChildElement(START_NAME, getNamespace());
+					_startString = (startElement == null ? DEFAULT_VALUE : startElement.getValue());
+				}
+
+				Element approximableEnd = element.getFirstChildElement(APPROXIMABLE_END_NAME, getNamespace());
+				if (approximableEnd != null)
+					_approximableEnd = new ApproximableDate(approximableEnd);
+				else {
+					Element endElement = periodElement.getFirstChildElement(END_NAME, getNamespace());				
+					_endString = (endElement == null ? DEFAULT_VALUE : endElement.getValue());					
+				}
+				loadDateCaches();
 			}
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
@@ -136,7 +162,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Constructor for creating a component from raw data
+	 * Constructor for creating a component from raw data, using two exact date values.
 	 * 
 	 * @param timePeriodName the time period name (optional) (if empty, defaults to Unknown)
 	 * @param startString a string representation of the date (required) (if empty, defaults to Unknown)
@@ -146,22 +172,98 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 */
 	public TemporalCoverage(String timePeriodName, String startString, String endString,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		this(timePeriodName, startString, null, endString, null, securityAttributes);
+	}
+	
+	/**
+	 * Constructor for creating a component from raw data, using an exact start date
+	 * and an approximable end date.
+	 * 
+	 * @param timePeriodName the time period name (optional) (if empty, defaults to Unknown)
+	 * @param startString a string representation of the date (required) (if empty, defaults to Unknown)
+	 * @param approximableEnd the end date, as an approximable date (required)
+	 * @param securityAttributes any security attributes (optional)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public TemporalCoverage(String timePeriodName, String startString, ApproximableDate approximableEnd,
+		SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		this(timePeriodName, startString, null, null, approximableEnd, securityAttributes);
+	}
+		
+	/**
+	 * Constructor for creating a component from raw data, using an approximable start date
+	 * and an exact end date.
+	 * 
+	 * @param timePeriodName the time period name (optional) (if empty, defaults to Unknown)
+	 * @param approximableStart the start date, as an approximable date (required)
+	 * @param endString a string representation of the end date (required) (if empty, defaults to Unknown)
+	 * @param securityAttributes any security attributes (optional)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public TemporalCoverage(String timePeriodName, ApproximableDate approximableStart, String endString,
+		SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		this(timePeriodName, null, approximableStart, endString, null, securityAttributes);
+	}
+	
+	/**
+	 * Constructor for creating a component from raw data, using two approximable dates.
+	 * 
+	 * @param timePeriodName the time period name (optional) (if empty, defaults to Unknown)
+	 * @param approximableStart the start date, as an approximable date (required)
+	 * @param approximableEnd the end date, as an approximable date (required)
+	 * @param securityAttributes any security attributes (optional)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public TemporalCoverage(String timePeriodName, ApproximableDate approximableStart,
+		ApproximableDate approximableEnd, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		this(timePeriodName, null, approximableStart, null, approximableEnd, securityAttributes);
+	}
+	
+	/**
+	 * Constructor for creating a component from raw data, which handles all permutations of exact and
+	 * approximable date formats.
+	 * 
+	 * @param timePeriodName the time period name (optional) (if empty, defaults to Unknown)
+	 * @param startString a string representation of the date (optional) (if empty, defaults to Unknown)
+	 * @param approximableStart the start date, as an approximable date (optional)
+	 * @param endString a string representation of the end date (optional) (if empty, defaults to Unknown)
+	 * @param approximableEnd the end date, as an approximable date (optional)
+	 * @param securityAttributes any security attributes (optional)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	private TemporalCoverage(String timePeriodName, String startString, ApproximableDate approximableStart,
+		String endString, ApproximableDate approximableEnd, SecurityAttributes securityAttributes)
+		throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(TemporalCoverage.getName(DDMSVersion.getCurrentVersion()), null);
-
-			Element periodElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? element : Util.buildDDMSElement(
-				TIME_PERIOD_NAME, null);
-			if (!Util.isEmpty(timePeriodName))
-				_name = timePeriodName;
-			startString = (Util.isEmpty(startString) ? DEFAULT_VALUE : startString);
-			endString = (Util.isEmpty(endString) ? DEFAULT_VALUE : endString);
-			Util.addDDMSChildElement(periodElement, TIME_PERIOD_NAME_NAME, timePeriodName);
-			periodElement.appendChild(Util.buildDDMSElement(START_NAME, startString));
-			periodElement.appendChild(Util.buildDDMSElement(END_NAME, endString));
-			loadDateCaches(startString, endString);
-
+			Element periodElement = DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? element
+				: Util.buildDDMSElement(TIME_PERIOD_NAME, null);
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
 				element.appendChild(periodElement);
+			if (!Util.isEmpty(timePeriodName))
+				_name = timePeriodName;
+			Util.addDDMSChildElement(periodElement, TIME_PERIOD_NAME_NAME, timePeriodName);
+			
+			if (approximableStart != null) {
+				element.appendChild(approximableStart.getXOMElementCopy());
+				_approximableStart = approximableStart;
+			}
+			else {
+				startString = (Util.isEmpty(startString) ? DEFAULT_VALUE : startString);	
+				periodElement.appendChild(Util.buildDDMSElement(START_NAME, startString));
+				_startString = startString;
+			}
+			
+			if (approximableEnd != null) {
+				element.appendChild(approximableEnd.getXOMElementCopy());
+				_approximableEnd = approximableEnd;
+			}
+			else {
+				endString = (Util.isEmpty(endString) ? DEFAULT_VALUE : endString);			
+				periodElement.appendChild(Util.buildDDMSElement(END_NAME, endString));
+				_endString = endString;
+			}
+			loadDateCaches();
 
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
@@ -172,29 +274,28 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			throw (e);
 		}
 	}
-			
+	
 	/**
 	 * Helper method to populate cached date variables.
-	 * 
-	 * @param startString the start string. Defaults to "Unknown" if empty.
-	 * @param endString the end string. Defaults to "Unknown" if empty.
 	 */
-	private void loadDateCaches(String startString, String endString) {
-		_startString = startString;
-		try {
-			_start = getFactory().newXMLGregorianCalendar(_startString);
+	private void loadDateCaches() {
+		if (!Util.isEmpty(getStartString())) {
+			try {
+				_start = getFactory().newXMLGregorianCalendar(_startString);
+			}
+			catch (IllegalArgumentException e) {
+				// Was not a valid date. validate() will catch this later. If we throw an InvalidDDMSException,
+				// we will prevent the use of the extended date types like Unknown.
+			}
 		}
-		catch (IllegalArgumentException e) {
-			// Was not a valid date. validate() will catch this later. If we throw an InvalidDDMSException,
-			// we will prevent the use of the extended date types like Unknown.
-		}
-		_endString = endString;
-		try {
-			_end = getFactory().newXMLGregorianCalendar(_endString);
-		}
-		catch (IllegalArgumentException e) {
-			// Was not a valid date. validate() will catch this later. If we throw an InvalidDDMSException,
-			// we will prevent the use of the extended date types like Unknown.
+		if (!Util.isEmpty(getEndString())) {
+			try {
+				_end = getFactory().newXMLGregorianCalendar(_endString);
+			}
+			catch (IllegalArgumentException e) {
+				// Was not a valid date. validate() will catch this later. If we throw an InvalidDDMSException,
+				// we will prevent the use of the extended date types like Unknown.
+			}
 		}
 	}
 	
@@ -215,11 +316,12 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>start is a valid date format.</li>
-	 * <li>end is a valid date format.</li>
-	 * <li>0-1 names, exactly 1 start, and exactly 1 end exist.</li>
-	 * <li>The start date is before the end date.</li>
+	 * <li>If start exists, it is a valid date format.</li>
+	 * <li>If end exists, it is a valid date format.</li>
+	 * <li>0-1 names, start, end, approximableStart, approximableEnd exist.</li>
+	 * <li>If both a start and end exist, the start date is before the end date.</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
+	 * <li>approximableStart and approximableEnd do not exist until DDMS 4.1 or later.</li> 
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -230,16 +332,22 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		Element periodElement = getTimePeriodElement();
 		Util.requireDDMSValue("TimePeriod element", periodElement);
 		Util.requireBoundedChildCount(periodElement, TIME_PERIOD_NAME_NAME, 0, 1);
-		Util.requireBoundedChildCount(periodElement, START_NAME, 1, 1);
-		Util.requireBoundedChildCount(periodElement, END_NAME, 1, 1);
-		if (getStart() != null)
-			Util.requireDDMSDateFormat(getStart().getXMLSchemaType());
-		else
-			validateExtendedDateType(getStartString());
-		if (getEnd() != null)
-			Util.requireDDMSDateFormat(getEnd().getXMLSchemaType());
-		else
-			validateExtendedDateType(getEndString());
+		Util.requireBoundedChildCount(periodElement, START_NAME, 0, 1);
+		Util.requireBoundedChildCount(periodElement, END_NAME, 0, 1);
+		Util.requireBoundedChildCount(periodElement, APPROXIMABLE_START_NAME, 0, 1);
+		Util.requireBoundedChildCount(periodElement, APPROXIMABLE_END_NAME, 0, 1);
+		if (getApproximableStart() == null) {
+			if (getStart() != null)
+				Util.requireDDMSDateFormat(getStart().getXMLSchemaType());
+			else
+				validateExtendedDateType(getStartString());
+		}
+		if (getApproximableEnd() == null) {
+			if (getEnd() != null)
+				Util.requireDDMSDateFormat(getEnd().getXMLSchemaType());
+			else
+				validateExtendedDateType(getEndString());
+		}
 		if (getStart() != null && getEnd() != null) {
 			if (getStart().toGregorianCalendar().after(getEnd().toGregorianCalendar())) {
 				throw new InvalidDDMSException("The start date is after the end date.");
@@ -251,6 +359,9 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			throw new InvalidDDMSException(
 				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
+		if (!getDDMSVersion().isAtLeast("4.1") && (getApproximableStart() != null || getApproximableEnd() != null)) {
+			throw new InvalidDDMSException("Approximable dates cannot be used until DDMS 4.1 or later.");
+		}
 		
 		super.validate();
 	}
@@ -260,6 +371,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A ddms:name element was found with no value.</li>
+	 * <li>A ddms:approximableStart or ddms:approximableEnd element may cause issues for DDMS 4.0 records.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
@@ -268,6 +380,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			periodElement.getNamespaceURI());
 		if (timePeriodName != null && Util.isEmpty(timePeriodName.getValue()))
 			addWarning("A ddms:name element was found with no value. Defaulting to \"" + DEFAULT_VALUE + "\".");
+		if (getApproximableStart() != null || getApproximableEnd() != null)
+			addSameNamespaceWarning("ddms:approximableStart or ddms:approximableEnd element");
 		super.validateWarnings();
 	}
 	
@@ -290,10 +404,24 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		text.append(buildOutput(isHTML, localPrefix + TIME_PERIOD_NAME_NAME, getTimePeriodName()));
 		text.append(buildOutput(isHTML, localPrefix + START_NAME, getStartString()));
 		text.append(buildOutput(isHTML, localPrefix + END_NAME, getEndString()));
-		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
+		if (getApproximableStart() != null)
+			text.append(getApproximableStart().getOutput(isHTML, localPrefix, ""));
+		if (getApproximableEnd() != null)
+			text.append(getApproximableEnd().getOutput(isHTML, localPrefix, ""));
+		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));		
 		return (text.toString());
 	}
 	 
+	/**
+	 * @see AbstractBaseComponent#getNestedComponents()
+	 */
+	protected List<IDDMSComponent> getNestedComponents() {
+		List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
+		list.add(getApproximableStart());
+		list.add(getApproximableEnd());
+		return (list);
+	}
+	
 	/**
 	 * @see Object#equals(Object)
 	 */
@@ -346,8 +474,9 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the XML calendar representing the start date. If the start date is "Not Applicable" or "Unknown"
-	 * will return null. Use <code>getStartString</code> to retrieve the string representation.
+	 * Accessor for the XML calendar representing the start date. If the start date is "Not Applicable", "Unknown",
+	 * or an approximable date, this will return null. Use <code>getStartString</code> to retrieve the string 
+	 * representation. Use <code>getApproximableStart</code> to retrieve an approximable representation.
 	 */
 	public XMLGregorianCalendar getStart() {
 		return (_start == null ? null : getFactory().newXMLGregorianCalendar(_start.toXMLFormat()));
@@ -364,8 +493,9 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the XML calendar representing the end date. If the end date is "Not Applicable" or "Unknown"
-	 * will return null. Use <code>getEndString</code> to retrieve the string representation.
+	 * Accessor for the XML calendar representing the end date. If the end date is "Not Applicable", "Unknown"
+	 * or an approximable date, this will return null. Use <code>getEndString</code> to retrieve the string 
+	 * representation. Use <code>getApproximableEnd</code> to retrieve an approximable representation.
 	 */
 	public XMLGregorianCalendar getEnd() {
 		return (_end == null ? null : getFactory().newXMLGregorianCalendar(_end.toXMLFormat()));
@@ -379,6 +509,20 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		if (getEnd() != null)
 			return (getEnd().toXMLFormat());
 		return (_endString);
+	}
+	
+	/**
+	 * Accessor for the approximableStart date.
+	 */
+	public ApproximableDate getApproximableStart() {
+		return (_approximableStart);
+	}
+	
+	/**
+	 * Accessor for the approximableStart date.
+	 */
+	public ApproximableDate getApproximableEnd() {
+		return (_approximableEnd);
 	}
 	
 	/**
@@ -407,6 +551,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		private String _timePeriodName;
 		private String _startString;
 		private String _endString;
+		private ApproximableDate.Builder _approximableStart;
+		private ApproximableDate.Builder _approximableEnd;
 		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
@@ -421,6 +567,10 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			setTimePeriodName(coverage.getTimePeriodName());
 			setStartString(coverage.getStartString());
 			setEndString(coverage.getEndString());
+			if (coverage.getApproximableStart() != null)
+				setApproximableStart(new ApproximableDate.Builder(coverage.getApproximableStart()));
+			if (coverage.getApproximableEnd() != null)
+				setApproximableEnd(new ApproximableDate.Builder(coverage.getApproximableEnd()));
 			setSecurityAttributes(new SecurityAttributes.Builder(coverage.getSecurityAttributes()));
 		}
 		
@@ -428,8 +578,14 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		 * @see IBuilder#commit()
 		 */
 		public TemporalCoverage commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new TemporalCoverage(getTimePeriodName(), getStartString(), getEndString(), 
-				getSecurityAttributes().commit()));
+			if (isEmpty())
+				return (null);
+			if (!getApproximableStart().isEmpty() && !Util.isEmpty(getStartString()))
+				throw new InvalidDDMSException("Only 1 of start or approximableStart can be used.");
+			if (!getApproximableEnd().isEmpty() && !Util.isEmpty(getEndString()))
+				throw new InvalidDDMSException("Only 1 of end or approximableEnd can be used.");
+			return (new TemporalCoverage(getTimePeriodName(), getStartString(), getApproximableStart().commit(), getEndString(), 
+				getApproximableEnd().commit(), getSecurityAttributes().commit()));
 		}
 		
 		/**
@@ -439,6 +595,8 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			return (Util.isEmpty(getTimePeriodName())
 				&& Util.isEmpty(getStartString())
 				&& Util.isEmpty(getEndString())
+				&& getApproximableStart().isEmpty()
+				&& getApproximableEnd().isEmpty()
 				&& getSecurityAttributes().isEmpty());
 		}
 		
@@ -483,6 +641,42 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		public void setEndString(String endString) {
 			_endString = endString;
 		}
+		
+		/**
+		 * Builder accessor for the approximableStart
+		 */
+		public ApproximableDate.Builder getApproximableStart() {
+			if (_approximableStart == null) {
+				_approximableStart = new ApproximableDate.Builder();
+				_approximableStart.setName(APPROXIMABLE_START_NAME);
+			}
+			return _approximableStart;
+		}
+		
+		/**
+		 * Builder accessor for the approximableStart
+		 */
+		public void setApproximableStart(ApproximableDate.Builder approximableStart) {
+			_approximableStart = approximableStart;
+		}	
+		
+		/**
+		 * Builder accessor for the approximableEnd
+		 */
+		public ApproximableDate.Builder getApproximableEnd() {
+			if (_approximableEnd == null) {
+				_approximableEnd = new ApproximableDate.Builder();
+				_approximableEnd.setName(APPROXIMABLE_END_NAME);
+			}
+			return _approximableEnd;
+		}
+		
+		/**
+		 * Builder accessor for the approximableEnd
+		 */
+		public void setApproximableEnd(ApproximableDate.Builder approximableEnd) {
+			_approximableEnd = approximableEnd;
+		}	
 		
 		/**
 		 * Builder accessor for the Security Attributes
