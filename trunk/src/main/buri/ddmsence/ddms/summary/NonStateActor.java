@@ -59,9 +59,11 @@ public final class NonStateActor extends AbstractSimpleString {
 	}
 
 	/**
-	 * Constructor for creating a component from raw data. Preserved for backwards compatibility, but may disappear in the next major release.
+	 * Constructor for creating a component from raw data.
 	 * 
-	 * @deprecated
+	 * @deprecated A new constructor was added for DDMS 4.1 to support ddms:qualifier. This constructor is preserved for 
+	 * backwards compatibility, but may disappear in the next major release.
+	 * 
 	 * @param value the value of the description child text
 	 * @param order the order of this actor
 	 * @param securityAttributes any security attributes (classification and ownerProducer are optional)
