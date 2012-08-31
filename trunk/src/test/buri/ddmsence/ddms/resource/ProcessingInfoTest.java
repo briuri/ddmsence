@@ -238,10 +238,16 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 
 	public void testDeprecatedAccessors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(TEST_DATE_PROCESSED, component.getDateProcessed().toXMLFormat());
+			
+			// Not compatible with XMLGregorianCalendar
+			if (version.isAtLeast("4.1")) {
+				component = new ProcessingInfo(TEST_VALUE, "2012-01-01T01:02Z", SecurityAttributesTest.getFixture());
+				assertNull(component.getDateProcessed());			
+			}
 		}		
 	}
 
