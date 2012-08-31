@@ -34,7 +34,7 @@ command line parameters. A network connection is needed to connect to Google (wh
 <h3>Walkthrough</h3>
 
 <p>When the application first opens, it will search the <code>data/sample/</code> directory for any XML files and try to convert them all into Resource
-objects (DDMSence can currently handle DDMS 2.0, 3.0, 3.1, and 4.0.1 files). You might see an error message appear in your console, because I have included an invalid metacard file (aptly named <code>3.0-invalidResourceExample.xml</code>)
+objects (DDMSence can currently handle DDMS 2.0, 3.0, 3.1, 4.0.1, and 4.1 files). You might see an error message appear in your console, because I have included an invalid metacard file (aptly named <code>3.0-invalidResourceExample.xml</code>)
 in the directory, which is used in the <u>Essentials</u> application. <u>Escape</u> will ignore any files it could not convert, so you can safely ignore this message.</p>
 
 <p>With a collection of Resources in hand, <u>Escape</u> examines the data in each Resource and builds frequency distribution charts based on various metrics. The
@@ -113,6 +113,7 @@ up into single words (to make the visualization more exciting).</p>
 <pre class="brush: java">Distribution distribution = new Distribution();
 for (Resource resource : getResources()) {
    // Examine the ddms:dates element (optional field with optional attributes)
+   // Ignores ddms:DateHourMinType dates, which were introduced in DDMS 4.1, to simplify example
    Dates dates = resource.getDates();
    if (dates != null) {
       if (dates.getCreated() != null)
@@ -151,7 +152,8 @@ return (buildPieGraphURL("DDMS%20Date%20Distribution", distribution, PIE_GRAPH))
 is then tracked as it was in the previous two examples. A more useful graph might show just expiration dates or time periods -- I added the additional
 dates to provide more examples of traversing a Resource, and to make the visualization more exciting.</p>
 
-<p>The final distribution in the "DDMS Versions" tab shows the DDMS versions of the loaded Resources, based on the XML namespaces in the files.</p>
+<p>The final distribution in the "DDMS Versions" tab shows the DDMS versions of the loaded Resources, based on the XML namespaces in the files. Notice that DDMS 4.0.1 instances are grouped
+together with DDMS 4.1 instances as "4.1", since both version share the same XML namespace.</p>
 <img src="./images/escape-04.png" width="400" height="267" title="Fourth Screen" />
 <p class="figure">Figure 6. The Version Distribution</p>
 

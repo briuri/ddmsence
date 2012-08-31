@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ddms:resource xsi:schemaLocation="urn:us:mil:ces:metadata:ddms:4 ../schemas/4.0.1/DDMS/DDMS-v4_0.xsd" 
+<ddms:resource xsi:schemaLocation="urn:us:mil:ces:metadata:ddms:4 ../schemas/4.1/DDMS/ddms.xsd" 
 	xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:ISM="urn:us:gov:ic:ism" 

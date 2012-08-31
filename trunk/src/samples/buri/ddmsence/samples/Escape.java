@@ -200,7 +200,7 @@ public class Escape extends AbstractSample {
 		}
 		return (buildPieGraphURL("DDMS%20Keyword%20Distribution", distribution, PIE_GRAPH));
 	}
-		
+	
 	/**
 	 * Examines every date field in a Resource and creates a distribution of years.
 	 * 
@@ -210,20 +210,20 @@ public class Escape extends AbstractSample {
 		Distribution distribution = new Distribution();
 		for (Resource resource : getResources()) {
 			// Examine the ddms:dates element (optional field with optional attributes)
-			// Ignores dates of type, ddms:DateHourMinType, which was introduced in DDMS 4.1.
+			// Ignores ddms:DateHourMinType dates, which were introduced in DDMS 4.1, to simplify example
 			Dates dates = resource.getDates();
 			if (dates != null) {
-				if (dates.getCreatedString() != null)
+				if (dates.getCreated() != null)
 					distribution.incrementCount(String.valueOf(dates.getCreated().getYear()));
-				if (dates.getPostedString() != null)
+				if (dates.getPosted() != null)
 					distribution.incrementCount(String.valueOf(dates.getPosted().getYear()));
-				if (dates.getValidTilString() != null)
+				if (dates.getValidTil() != null)
 					distribution.incrementCount(String.valueOf(dates.getValidTil().getYear()));
-				if (dates.getInfoCutOffString() != null)
+				if (dates.getInfoCutOff() != null)
 					distribution.incrementCount(String.valueOf(dates.getInfoCutOff().getYear()));
-				if (dates.getApprovedOnString() != null)
+				if (dates.getApprovedOn() != null)
 					distribution.incrementCount(String.valueOf(dates.getApprovedOn().getYear()));
-				if (dates.getReceivedOnString() != null)
+				if (dates.getReceivedOn() != null)
 					distribution.incrementCount(String.valueOf(dates.getReceivedOn().getYear()));
 			}
 			

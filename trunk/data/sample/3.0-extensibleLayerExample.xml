@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ddms:Resource xsi:schemaLocation="http://metadata.dod.mil/mdr/ns/DDMS/3.0/ DDMS-v3_0.xsd" xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ICISM="urn:us:gov:ic:ism" ICISM:resourceElement="true" ICISM:DESVersion="2" ICISM:createDate="2010-01-21" ICISM:classification="U" ICISM:ownerProducer="USA"
+<ddms:Resource xsi:schemaLocation="http://metadata.dod.mil/mdr/ns/DDMS/3.0/ ../schemas/3.0/DDMS/ddms.xsd" xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ICISM="urn:us:gov:ic:ism" ICISM:resourceElement="true" ICISM:DESVersion="2" ICISM:createDate="2010-01-21" ICISM:classification="U" ICISM:ownerProducer="USA"
 	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddmsence="http://ddmsence.urizone.net/"
 	ddmsence:exampleFile="true">
 	<ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence"/>

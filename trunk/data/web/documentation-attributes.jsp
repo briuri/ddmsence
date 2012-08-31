@@ -70,7 +70,7 @@ System.out.println(title.toXML());</pre>
 
 
 <p>The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. A set of Schematron files is 
-bundled with ISM.XML V5 and V7 (which are used by DDMS 3.1 and 4.0.1, respectively),
+bundled with ISM.XML V5, V7, and V9 (which are used by DDMS 3.1, 4.0.1, and 4.1, respectively),
 and sample code for using DDMSence with these files can be found in the <a href="documentation-schematron.jsp">Schematron Validation</a> Power Tip.</p>
 
 <p>The values assigned to some attributes must come from the Controlled Vocabulary Enumerations (CVEs) defined by the Intelligence Community. The 
@@ -79,7 +79,7 @@ higher classification levels. This restriction will be addressed in a future rel
 
 <h2>ISM Notice Attributes</h2>
 
-<p><a href="/docs/index.html?buri/ddmsence/ddms/security/ism/NoticeAttributes.html">NoticeAttributes</a> are new in DDMS 4.0.1, and follow the same patterns used 
+<p><a href="/docs/index.html?buri/ddmsence/ddms/security/ism/NoticeAttributes.html">NoticeAttributes</a> were introduced in DDMS 4.0.1, and follow the same patterns used 
 by the SecurityAttributes. The <code>ISM:noticeType</code> attribute is validated against a CVE when present.</p>
 
 <pre class="brush: java">// Assume that a list of noticeTexts, and the security attributes were previously created.
@@ -96,7 +96,7 @@ System.out.println(notice.toXML());</pre>
 
 <h2>XLink Attributes</h2>
 
-<p><a href="/docs/index.html?buri/ddmsence/ddms/summary/xlink/XLinkAttributes.html">XLinkAttributes</a> are new in DDMS 4.0.1, and support the various components
+<p><a href="/docs/index.html?buri/ddmsence/ddms/summary/xlink/XLinkAttributes.html">XLinkAttributes</a> were introduced in DDMS 4.0.1, and support the various components
 which provide link attributes. An XLinkAttributes instance can function as 3 different types of XLink attribute groups: locator, simple, and resource, based on
 the value of the <code>xlink:type</code> attribute, or the constructor used to build the instance.</p>
 

@@ -33,7 +33,7 @@ command line parameters.</p>
 
 <pre class="brush: xml">Escort: a DDMSence Sample
 
-This program allows you to build a DDMS 4.0.1 metacard from scratch using a
+This program allows you to build a DDMS 4.1 metacard from scratch using a
 representative subset of possible components. Suggested valid answers are
 provided in square brackets for each prompt. However, these are not default
 values (hitting Enter will answer the prompt with an empty string).
@@ -158,9 +158,9 @@ Please enter the keyword value [testValue]: DDMSence
 
 === ddms:resource Attributes (all required) ===
 Does this tag set the classification for the resource as a whole? [Y/N]: Y
-Please enter Resource createDate [2010-04-01]: 2010-04-01
-Please enter the Resource ISM:DESVersion [7]: 7
-Please enter the Resource ntk:DESVersion [5]: 5
+Please enter Resource createDate [2012-09-01]: 2012-09-01
+Please enter the Resource ISM:DESVersion [9]: 9
+Please enter the Resource ntk:DESVersion [7]: 7
 The DDMS Resource is valid!
 No warnings were recorded.</pre>
 <p class="figure">Figure 6. Successful run of the Escort Wizard</p>

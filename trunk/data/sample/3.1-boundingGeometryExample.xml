@@ -7,7 +7,7 @@
 			xmlns:ICISM="urn:us:gov:ic:ism"
 			xmlns:gml="http://www.opengis.net/gml/3.2"
 			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-			xsi:schemaLocation="http://metadata.dod.mil/mdr/ns/DDMS/3.1/ DDMS-v3_1.xsd"
+			xsi:schemaLocation="http://metadata.dod.mil/mdr/ns/DDMS/3.1/ ../schemas/3.1/DDMS/ddms.xsd"
 			ICISM:resourceElement="true" ICISM:DESVersion="5" ICISM:createDate="2010-01-21" ICISM:classification="U" ICISM:ownerProducer="AUS GBR USA">
 	<ddms:identifier ddms:qualifier="http://metadata.dod.mil/mdr/ns/MDR/0.1/MDR.owl#URI" ddms:value="http://www.defenselink.mil/news/May2004/n05172004_200405174.html"/>
 	<ddms:title ICISM:classification="U" ICISM:ownerProducer="AUS GBR USA">Roadside Bomb Releases Sarin Gas in Baghdad</ddms:title>

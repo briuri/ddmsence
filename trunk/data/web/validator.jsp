@@ -135,7 +135,7 @@
 			form.stringRecord.value = exampleRecord;
 		</c:if>
 		<c:if test="${type eq 'url'}">
-			form.url.value = "ddmsence.googlecode.com/svn/trunk/data/sample/4.0.1-ddmsenceExample.xml";
+			form.url.value = "ddmsence.googlecode.com/svn/trunk/data/sample/4.1-ddmsenceExample.xml";
 		</c:if>
 	}
 	
@@ -151,7 +151,7 @@
 
 <a name="top"></a><h1>DDMS Validator</h1>
 
-<p>This experimental tool uses the DDMSence library to validate <b>Unclassified</b> DDMS 2.0, 3.0, 3.1, and 4.0.1 records. Records 
+<p>This experimental tool uses the DDMSence library to validate <b>Unclassified</b> DDMS 2.0, 3.0, 3.1, 4.0.1, and 4.1 records. Records 
 can be submitted by pasting XML text, uploading a file, or referencing a URL. Information submitted through this tool is not retained
 on the server.</p>
 <p>Starred fields (<b>*</b>) are required.</p>

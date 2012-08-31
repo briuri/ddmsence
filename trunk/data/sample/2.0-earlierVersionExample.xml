@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ddms:Resource xsi:schemaLocation="http://metadata.dod.mil/mdr/ns/DDMS/2.0/ DDMS-v2_0.xsd" xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ICISM="urn:us:gov:ic:ism:v2">
+<ddms:Resource xsi:schemaLocation="http://metadata.dod.mil/mdr/ns/DDMS/2.0/ ../schemas/2.0/DDMS/ddms.xsd" xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ICISM="urn:us:gov:ic:ism:v2">
 	<ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence:20"/>
 	<ddms:title ICISM:ownerProducer="USA" ICISM:classification="U">Earlier Version Service</ddms:title>
 	<ddms:description ICISM:ownerProducer="USA" ICISM:classification="U">A service which sends the latest edition of an entity back in time.</ddms:description>
