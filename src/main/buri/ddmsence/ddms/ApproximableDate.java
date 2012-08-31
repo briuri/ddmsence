@@ -23,9 +23,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.util.Util;
@@ -79,10 +76,6 @@ import buri.ddmsence.util.Util;
  */
 public final class ApproximableDate extends AbstractBaseComponent {
 
-	private XMLGregorianCalendar _approximableDate = null;
-	private XMLGregorianCalendar _searchableStartDate = null;
-	private XMLGregorianCalendar _searchableEndDate = null;
-
 	private static final String DESCRIPTION_NAME = "description";
 	private static final String APPROXIMABLE_DATE_NAME = "approximableDate";
 	private static final String APPROXIMATION_NAME = "approximation";
@@ -116,31 +109,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ApproximableDate(Element element) throws InvalidDDMSException {
-		super.setXOMElement(element, false);
-		try {
-			String approximableDate = "";
-			String startString = "";
-			String endString = "";
-			Element approximableDateElement = getXOMElement().getFirstChildElement(APPROXIMABLE_DATE_NAME,
-				getNamespace());
-			if (approximableDateElement != null) {
-				approximableDate = approximableDateElement.getValue();
-			}
-			Element searchableElement = getXOMElement().getFirstChildElement(SEARCHABLE_DATE_NAME,
-				getNamespace());
-			if (searchableElement != null) {
-				Element startElement = searchableElement.getFirstChildElement(START_NAME, getNamespace());
-				startString = startElement.getValue();
-				Element endElement = searchableElement.getFirstChildElement(END_NAME, getNamespace());
-				endString = endElement.getValue();
-			}
-			loadDateCaches(approximableDate, startString, endString);
-			validate();
-		}
-		catch (InvalidDDMSException e) {
-			e.setLocator(getQualifiedName());
-			throw (e);
-		}
+		super.setXOMElement(element, true);
 	}
 
 	/**
@@ -174,40 +143,11 @@ public final class ApproximableDate extends AbstractBaseComponent {
 				Util.addDDMSChildElement(searchableElement, END_NAME, searchableEndDate);
 				getXOMElement().appendChild(searchableElement);
 			}
-			loadDateCaches(approximableDate, searchableStartDate, searchableEndDate);
 			validate();
 		}
 		catch (InvalidDDMSException e) {
 			e.setLocator(getQualifiedName());
 			throw (e);
-		}
-	}
-
-	/**
-	 * Helper method to populate cached date variables.
-	 * 
-	 * @param approximableDate the approximable date string
-	 * @param startString the start string
-	 * @param endString the end string
-	 */
-	private void loadDateCaches(String approximableDate, String startString, String endString) {
-		try {
-			_approximableDate = getFactory().newXMLGregorianCalendar(Util.getNonNullString(approximableDate));
-		}
-		catch (IllegalArgumentException e) {
-			// Was not a valid date. validate() will catch this later.
-		}
-		try {
-			_searchableStartDate = getFactory().newXMLGregorianCalendar(Util.getNonNullString(startString));
-		}
-		catch (IllegalArgumentException e) {
-			// Was not a valid date. validate() will catch this later.
-		}
-		try {
-			_searchableEndDate = getFactory().newXMLGregorianCalendar(Util.getNonNullString(endString));
-		}
-		catch (IllegalArgumentException e) {
-			// Was not a valid date. validate() will catch this later.
 		}
 	}
 	
@@ -244,7 +184,6 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	 * <li>If an approximation exists, it has an appropriate value.</li>
 	 * <li>If start exists, it is a valid date format.</li>
 	 * <li>If end exists, it is a valid date format.</li>
-	 * <li>The start date is before the end date.</li>
 	 * <li>This component cannot be used until DDMS 4.1 or later.</li>
 	 * </td></tr></table>
 	 * 
@@ -252,20 +191,15 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		validateElementName(getName());
-		if (getApproximableDate() != null)
-			Util.requireDDMSDateFormat(getApproximableDate().getXMLSchemaType());
+		if (!Util.isEmpty(getApproximableDateString()))
+			Util.requireDDMSDateFormat(getApproximableDateString(), getNamespace());
 		if (!Util.isEmpty(getApproximation())) {
 			validateApproximation(getApproximation());
 		}
-		if (getSearchableStartDate() != null)
-			Util.requireDDMSDateFormat(getSearchableStartDate().getXMLSchemaType());
-		if (getSearchableEndDate() != null)
-			Util.requireDDMSDateFormat(getSearchableEndDate().getXMLSchemaType());
-		if (getSearchableStartDate() != null && getSearchableEndDate() != null) {
-			if (getSearchableStartDate().toGregorianCalendar().after(getSearchableEndDate().toGregorianCalendar())) {
-				throw new InvalidDDMSException("The start date is after the end date.");
-			}
-		}
+		if (!Util.isEmpty(getSearchableStartString()))
+			Util.requireDDMSDateFormat(getSearchableStartString(), getNamespace());
+		if (!Util.isEmpty(getSearchableEndString()))
+			Util.requireDDMSDateFormat(getSearchableEndString(), getNamespace());
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.1");
@@ -282,7 +216,11 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (Util.isEmpty(getDescription()) && getApproximableDate() == null && Util.isEmpty(getApproximation())) {
+		if (Util.isEmpty(getDescription())
+			&& Util.isEmpty(getApproximableDateString())
+			&& Util.isEmpty(getApproximation())
+			&& Util.isEmpty(getSearchableStartString())
+			&& Util.isEmpty(getSearchableEndString())) {
 			addWarning("A completely empty " + getQualifiedName() + " element was found.");
 		}
 		if (getChild(DESCRIPTION_NAME) != null && Util.isEmpty(getDescription()))
@@ -297,13 +235,10 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		String localPrefix = buildPrefix(prefix, getName(), suffix);
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, localPrefix + "." + DESCRIPTION_NAME, getDescription()));
-		if (getApproximableDate() != null)
-			text.append(buildOutput(isHTML, localPrefix + "." + APPROXIMABLE_DATE_NAME, getApproximableDate().toXMLFormat()));
+		text.append(buildOutput(isHTML, localPrefix + "." + APPROXIMABLE_DATE_NAME, getApproximableDateString()));
 		text.append(buildOutput(isHTML, localPrefix + "." + APPROXIMABLE_DATE_NAME + "." + APPROXIMATION_NAME, getApproximation()));
-		if (getSearchableStartDate() != null)
-			text.append(buildOutput(isHTML, localPrefix + "." + SEARCHABLE_DATE_NAME + "." + START_NAME, getSearchableStartDate().toXMLFormat()));
-		if (getSearchableEndDate() != null)
-			text.append(buildOutput(isHTML, localPrefix + "." + SEARCHABLE_DATE_NAME + "." + END_NAME, getSearchableEndDate().toXMLFormat()));
+		text.append(buildOutput(isHTML, localPrefix + "." + SEARCHABLE_DATE_NAME + "." + START_NAME, getSearchableStartString()));
+		text.append(buildOutput(isHTML, localPrefix + "." + SEARCHABLE_DATE_NAME + "." + END_NAME, getSearchableEndString()));
 		return (text.toString());
 	}
 
@@ -315,10 +250,10 @@ public final class ApproximableDate extends AbstractBaseComponent {
 			return (false);
 		ApproximableDate test = (ApproximableDate) obj;
 		return (getDescription().equals(test.getDescription())
-			&& Util.nullEquals(getApproximableDate(), test.getApproximableDate()) 
+			&& getApproximableDateString().equals(test.getApproximableDateString())
 			&& getApproximation().equals(test.getApproximation())
-			&& Util.nullEquals(getSearchableStartDate(), test.getSearchableStartDate())
-			&& Util.nullEquals(getSearchableEndDate(), test.getSearchableEndDate()));
+			&& getSearchableStartString().equals(test.getSearchableStartString())
+			&& getSearchableEndString().equals(test.getSearchableEndString()));
 	}
 
 	/**
@@ -327,13 +262,10 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	public int hashCode() {
 		int result = super.hashCode();
 		result = 7 * result + getDescription().hashCode();
-		if (getApproximableDate() != null)
-			result = 7 * result + getApproximableDate().hashCode();
+		result = 7 * result + getApproximableDateString().hashCode();
 		result = 7 * result + getApproximation().hashCode();
-		if (getSearchableStartDate() != null)
-			result = 7 * result + getSearchableStartDate().hashCode();
-		if (getSearchableEndDate() != null)
-			result = 7 * result + getSearchableEndDate().hashCode();		
+		result = 7 * result + getSearchableStartString().hashCode();
+		result = 7 * result + getSearchableEndString().hashCode();		
 		return (result);
 	}
 	
@@ -341,19 +273,16 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	 * Accessor for the description.
 	 */
 	public String getDescription() {
-		String description = null;
 		Element descriptionElement = getChild(DESCRIPTION_NAME);
-		if (descriptionElement != null) {
-			description = descriptionElement.getValue();
-		}
-		return (Util.getNonNullString(description));
+		return (descriptionElement == null ? "" : Util.getNonNullString(descriptionElement.getValue()));
 	}
 	
 	/**
-	 * Accessor for the approximableDate (optional). Returns a copy.
+	 * Accessor for the approximableDate (optional).
 	 */
-	public XMLGregorianCalendar getApproximableDate() {
-		return (_approximableDate == null ? null : getFactory().newXMLGregorianCalendar(_approximableDate.toXMLFormat()));
+	public String getApproximableDateString() {
+		Element dateElement = getChild(APPROXIMABLE_DATE_NAME);
+		return (dateElement == null ? "" : Util.getNonNullString(dateElement.getValue()));
 	}
 
 	/**
@@ -369,24 +298,31 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the searchableStartDate (optional). Returns a copy.
+	 * Accessor for the searchableStart date (optional)
 	 */
-	public XMLGregorianCalendar getSearchableStartDate() {
-		return (_searchableStartDate == null ? null : getFactory().newXMLGregorianCalendar(_searchableStartDate.toXMLFormat()));
+	public String getSearchableStartString() {
+		String date = "";
+		Element dateElement = getChild(SEARCHABLE_DATE_NAME);
+		if (dateElement != null) {
+			Element startElement = dateElement.getFirstChildElement(START_NAME, getNamespace());
+			if (startElement != null)
+				date = Util.getNonNullString(startElement.getValue());
+		}
+		return (date);		
 	}
 	
 	/**
-	 * Accessor for the searchableEndDate (optional). Returns a copy.
+	 * Accessor for the searchableEnd date (optional)
 	 */
-	public XMLGregorianCalendar getSearchableEndDate() {
-		return (_searchableEndDate == null ? null : getFactory().newXMLGregorianCalendar(_searchableEndDate.toXMLFormat()));
-	}
-	
-	/**
-	 * Accesor for the datatype factory
-	 */
-	private static DatatypeFactory getFactory() {
-		return (Util.getDataTypeFactory());
+	public String getSearchableEndString() {
+		String date = "";
+		Element dateElement = getChild(SEARCHABLE_DATE_NAME);
+		if (dateElement != null) {
+			Element endElement = dateElement.getFirstChildElement(END_NAME, getNamespace());
+			if (endElement != null)
+				date = Util.getNonNullString(endElement.getValue());
+		}
+		return (date);	
 	}
 
 	/**
@@ -402,8 +338,8 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		private String _description;
 		private String _approximableDate;
 		private String _approximation;
-		private String _searchableStartDate;
-		private String _searchableEndDate;
+		private String _searchableStart;
+		private String _searchableEnd;
 
 		/**
 		 * Empty constructor
@@ -416,11 +352,10 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		public Builder(ApproximableDate approximableDate) {
 			setName(approximableDate.getName());
 			setDescription(approximableDate.getDescription());
-			if (approximableDate.getApproximableDate() != null)
-				setApproximableDate(approximableDate.getApproximableDate().toXMLFormat());
+			setApproximableDate(approximableDate.getApproximableDateString());
 			setApproximation(approximableDate.getApproximation());
-			setSearchableStartDate(approximableDate.getSearchableStartDate().toXMLFormat());
-			setSearchableEndDate(approximableDate.getSearchableEndDate().toXMLFormat());
+			setSearchableStart(approximableDate.getSearchableStartString());
+			setSearchableEnd(approximableDate.getSearchableEndString());
 		}
 
 		/**
@@ -428,7 +363,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		 */
 		public ApproximableDate commit() throws InvalidDDMSException {
 			return (isEmpty() ? null : new ApproximableDate(getName(), getDescription(), getApproximableDate(),
-				getApproximation(), getSearchableStartDate(), getSearchableEndDate()));
+				getApproximation(), getSearchableStart(), getSearchableEnd()));
 		}
 
 		/**
@@ -437,8 +372,8 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		 */
 		public boolean isEmpty() {
 			return (Util.isEmpty(getDescription()) && Util.isEmpty(getApproximableDate())
-				&& Util.isEmpty(getApproximation()) && Util.isEmpty(getSearchableStartDate())
-				&& Util.isEmpty(getSearchableEndDate()));
+				&& Util.isEmpty(getApproximation()) && Util.isEmpty(getSearchableStart())
+				&& Util.isEmpty(getSearchableEnd()));
 		}
 
 		/**
@@ -498,31 +433,31 @@ public final class ApproximableDate extends AbstractBaseComponent {
 		}
 
 		/**
-		 * Builder accessor for the searchableStartDate
+		 * Builder accessor for the searchableStart
 		 */
-		public String getSearchableStartDate() {
-			return _searchableStartDate;
+		public String getSearchableStart() {
+			return _searchableStart;
 		}
 
 		/**
-		 * Builder accessor for the searchableStartDate
+		 * Builder accessor for the searchableStart
 		 */
-		public void setSearchableStartDate(String searchableStartDate) {
-			_searchableStartDate = searchableStartDate;
+		public void setSearchableStart(String searchableStart) {
+			_searchableStart = searchableStart;
 		}
 		
 		/**
-		 * Builder accessor for the searchableEndDate
+		 * Builder accessor for the searchableEnd
 		 */
-		public String getSearchableEndDate() {
-			return _searchableEndDate;
+		public String getSearchableEnd() {
+			return _searchableEnd;
 		}
 
 		/**
-		 * Builder accessor for the searchableEndDate
+		 * Builder accessor for the searchableEnd
 		 */
-		public void setSearchableEndDate(String searchableEndDate) {
-			_searchableEndDate = searchableEndDate;
+		public void setSearchableEnd(String searchableEnd) {
+			_searchableEnd = searchableEnd;
 		}
 	}
 }

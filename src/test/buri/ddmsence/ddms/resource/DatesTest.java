@@ -289,10 +289,27 @@ public class DatesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Dates dataComponent = new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID,
+			Dates component = new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID,
 				TEST_CUTOFF, getApprovedOn(), getReceivedOn());
-			assertTrue(dataComponent.getAcquiredOns().isEmpty());
+			assertTrue(component.getAcquiredOns().isEmpty());
 		}
+	}
+	
+	public void testDeprecatedAccessors() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+
+			Dates component = new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID,
+				TEST_CUTOFF, getApprovedOn(), getReceivedOn());
+			assertEquals(TEST_CREATED, component.getCreated().toXMLFormat());
+			assertEquals(TEST_POSTED, component.getPosted().toXMLFormat());
+			assertEquals(TEST_VALID, component.getValidTil().toXMLFormat());
+			assertEquals(TEST_CUTOFF, component.getInfoCutOff().toXMLFormat());
+			if (version.isAtLeast("3.1"))
+				assertEquals(TEST_APPROVED, component.getApprovedOn().toXMLFormat());
+			if (version.isAtLeast("4.0.1"))
+				assertEquals(TEST_RECEIVED, component.getReceivedOn().toXMLFormat());
+		}		
 	}
 	
 	public void testConstructorEquality() throws InvalidDDMSException {
@@ -457,7 +474,7 @@ public class DatesTest extends AbstractBaseTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "One or more ddms:dates attributes are not in a valid date format.");
+				expectMessage(e, "The date datatype must be one of");
 			}
 			builder.setCreated(TEST_CREATED);
 			builder.commit();

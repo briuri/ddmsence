@@ -219,14 +219,6 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 			Util.addDDMSChildElement(searchableElement, "end", "---31");
 			element.appendChild(searchableElement);
 			getInstance("The date datatype", element);	
-
-			 // end before start date
-			element = Util.buildDDMSElement(TEST_NAME, null);
-			searchableElement = Util.buildDDMSElement("searchableDate", null);
-			Util.addDDMSChildElement(searchableElement, "start", TEST_END_DATE);
-			Util.addDDMSChildElement(searchableElement, "end", TEST_START_DATE);
-			element.appendChild(searchableElement);
-			getInstance("The start date", element);
 		}
 	}
 
@@ -245,9 +237,6 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 			
 			 // Wrong date format: end
 			getInstance("The date datatype", TEST_NAME, TEST_DESCRIPTION, TEST_APPROXIMABLE_DATE, TEST_APPROXIMATION, TEST_START_DATE, "---31");
-
-			 // end before start date
-			getInstance("The start date", TEST_NAME, TEST_DESCRIPTION, TEST_APPROXIMABLE_DATE, TEST_APPROXIMATION, TEST_END_DATE, TEST_START_DATE);
 		}
 	}
 

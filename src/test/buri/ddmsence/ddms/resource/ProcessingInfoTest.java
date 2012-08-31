@@ -200,7 +200,7 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 			getInstance("dateProcessed is required.", TEST_VALUE, null);
 
 			// Invalid date format
-			getInstance("The ddms:dateProcessed attribute is not in a valid date format.", TEST_VALUE, "baboon");
+			getInstance("The date datatype must be one of", TEST_VALUE, "baboon");
 
 			// Wrong date format (using xs:gDay here)
 			getInstance("The date datatype must be one of", TEST_VALUE, "---31");
@@ -234,6 +234,15 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 			String locator = "ddms:processingInfo";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
+	}
+
+	public void testDeprecatedAccessors() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
+			assertEquals(TEST_DATE_PROCESSED, component.getDateProcessed().toXMLFormat());
+		}		
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {

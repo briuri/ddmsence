@@ -39,6 +39,7 @@ import java.util.regex.Pattern;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
 
 import net.sf.saxon.om.Name10Checker;
@@ -245,17 +246,29 @@ public class Util {
 		if (value == null || (value instanceof String && isEmpty((String) value)))
 			throw new InvalidDDMSException(description + " is required.");
 	}
-		
+	
 	/**
-	 * Asserts that a date format is one of the 4 types accepted by DDMS.
+	 * Asserts that a date format is one of the 5 types accepted by DDMS.
 	 * 
-	 * @param dateQName	the QName of the datatype
+	 * @param date the date in its raw XML format
+	 * @param ddmsNamespace the DDMS namespace of this date (DDM 4.0.1 and earlier only support 4 types). 
 	 * @throws InvalidDDMSException if the value is invalid. Does nothing if value is null.
 	 */
-	public static void requireDDMSDateFormat(QName dateQName) throws InvalidDDMSException {
-		if (dateQName != null) {
-			if (!DATE_DATATYPES.contains(dateQName))
-				throw new InvalidDDMSException("The date datatype must be one of " + DATE_DATATYPES);
+	public static void requireDDMSDateFormat(String date, String ddmsNamespace) throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getVersionForNamespace(ddmsNamespace);
+		
+		// TODO: Add the custom DDMS Type. For now, only the original 4 are allowed.
+		
+		boolean isXsdType = false;
+		try {
+			XMLGregorianCalendar calendar = getDataTypeFactory().newXMLGregorianCalendar(date);
+			isXsdType = DATE_DATATYPES.contains(calendar.getXMLSchemaType());
+		}
+		catch (IllegalArgumentException e) {
+			// Fall-through 
+		}
+		if (!isXsdType) {
+			throw new InvalidDDMSException("The date datatype must be one of " + DATE_DATATYPES);
 		}
 	}
 	

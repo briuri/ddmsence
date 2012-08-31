@@ -50,8 +50,6 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public final class ProcessingInfo extends AbstractSimpleString {
-
-	private XMLGregorianCalendar _dateProcessed = null;
 	
 	private static final String DATE_PROCESSED_NAME = "dateProcessed";
 	
@@ -62,17 +60,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ProcessingInfo(Element element) throws InvalidDDMSException {
-		super(element, false);
-		try {
-			String processed = getAttributeValue(DATE_PROCESSED_NAME);
-			if (!Util.isEmpty(processed))
-				_dateProcessed = getFactory().newXMLGregorianCalendar(processed);
-			validate();
-		}
-		catch (InvalidDDMSException e) {
-			e.setLocator(getQualifiedName());
-			throw (e);
-		}
+		super(element, true);
 	}
 	
 	/**
@@ -87,15 +75,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 		throws InvalidDDMSException {
 		super(ProcessingInfo.getName(DDMSVersion.getCurrentVersion()), value, securityAttributes, false);
 		try {
-			try {
-				if (!Util.isEmpty(dateProcessed)) {
-					_dateProcessed = getFactory().newXMLGregorianCalendar(dateProcessed);
-					Util.addDDMSAttribute(getXOMElement(), DATE_PROCESSED_NAME, getDateProcessed().toXMLFormat());
-				}
-			}
-			catch (IllegalArgumentException e) {
-				throw new InvalidDDMSException("The ddms:dateProcessed attribute is not in a valid date format.");
-			}
+			Util.addDDMSAttribute(getXOMElement(), DATE_PROCESSED_NAME, dateProcessed);
 			validate();
 		}
 		catch (InvalidDDMSException e) {
@@ -119,9 +99,8 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), ProcessingInfo.getName(getDDMSVersion()));
-		Util.requireDDMSValue("dateProcessed", getDateProcessed());
-		if (getDateProcessed() != null)
-			Util.requireDDMSDateFormat(getDateProcessed().getXMLSchemaType());
+		Util.requireDDMSValue(DATE_PROCESSED_NAME, getDateProcessedString());
+		Util.requireDDMSDateFormat(getDateProcessedString(), getNamespace());
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
@@ -150,7 +129,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 		String localPrefix = buildPrefix(prefix, getName(), suffix);
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, localPrefix, getValue()));
-		text.append(buildOutput(isHTML, localPrefix + "." + DATE_PROCESSED_NAME, getDateProcessed().toXMLFormat()));
+		text.append(buildOutput(isHTML, localPrefix + "." + DATE_PROCESSED_NAME, getDateProcessedString()));
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix + "."));
 		return (text.toString());
 	}
@@ -162,7 +141,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 		if (!super.equals(obj) || !(obj instanceof ProcessingInfo))
 			return (false);
 		ProcessingInfo test = (ProcessingInfo) obj;
-		return (Util.nullEquals(getDateProcessed(), test.getDateProcessed()));
+		return (Util.nullEquals(getDateProcessedString(), test.getDateProcessedString()));
 	}
 	
 	/**
@@ -178,10 +157,26 @@ public final class ProcessingInfo extends AbstractSimpleString {
 	
 	/**
 	 * Accessor for the processing date (required). Returns a copy.
+	 * 
+	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
+	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 * null for dates in the new format. Use <code>getDateProcessedString()</code> to
+	 * access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getDateProcessed() {
-		return (_dateProcessed == null ? null : getFactory().newXMLGregorianCalendar(
-			_dateProcessed.toXMLFormat()));
+		try {
+			return (getFactory().newXMLGregorianCalendar(getDateProcessedString()));
+		}
+		catch (IllegalArgumentException e) {
+			return (null);
+		}
+	}
+	
+	/**
+	 * Accessor for the processing date (required).
+	 */
+	public String getDateProcessedString() {
+		return (getAttributeValue(DATE_PROCESSED_NAME));
 	}
 	
 	/**
@@ -214,8 +209,7 @@ public final class ProcessingInfo extends AbstractSimpleString {
 		 */
 		public Builder(ProcessingInfo info) {
 			super(info);
-			if (info.getDateProcessed() != null)
-				setDateProcessed(info.getDateProcessed().toXMLFormat());
+			setDateProcessed(info.getDateProcessedString());
 		}
 		
 		/**

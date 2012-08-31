@@ -41,11 +41,6 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:dates.
  * 
- * <p>
- * Date formats must adhere to one of: xs:dateTime, xs:date, xs:gYearMonth, or xs:gYear, and the
- * <code>XMLGregorianCalendar</code> class is used to enforce these restrictions.
- * </p>
- * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
@@ -71,12 +66,6 @@ import buri.ddmsence.util.Util;
  */
 public final class Dates extends AbstractBaseComponent {
 
-	private XMLGregorianCalendar _created = null;
-	private XMLGregorianCalendar _posted = null;
-	private XMLGregorianCalendar _validTil = null;
-	private XMLGregorianCalendar _infoCutOff = null;
-	private XMLGregorianCalendar _approvedOn = null;
-	private XMLGregorianCalendar _receivedOn = null;
 	private List<ApproximableDate> _acquiredOns = null;
 	
 	private static final String CREATED_NAME = "created";
@@ -101,25 +90,6 @@ public final class Dates extends AbstractBaseComponent {
 			for (int i = 0; i < acquiredOns.size(); i++) {
 				_acquiredOns.add(new ApproximableDate(acquiredOns.get(i)));
 			}
-			
-			String created = getAttributeValue(CREATED_NAME);
-			if (!Util.isEmpty(created))
-				_created = getFactory().newXMLGregorianCalendar(created);
-			String posted = getAttributeValue(POSTED_NAME);
-			if (!Util.isEmpty(posted))
-				_posted = getFactory().newXMLGregorianCalendar(posted);
-			String validTil = getAttributeValue(VALID_TIL_NAME);
-			if (!Util.isEmpty(validTil))
-				_validTil = getFactory().newXMLGregorianCalendar(validTil);
-			String infoCutOff = getAttributeValue(INFO_CUT_OFF_NAME);
-			if (!Util.isEmpty(infoCutOff))
-				_infoCutOff = getFactory().newXMLGregorianCalendar(infoCutOff);
-			String approvedOn = getAttributeValue(APPROVED_ON_NAME);
-			if (!Util.isEmpty(approvedOn))
-				_approvedOn = getFactory().newXMLGregorianCalendar(approvedOn);
-			String receivedOn = getAttributeValue(RECEIVED_ON_NAME);
-			if (!Util.isEmpty(receivedOn))
-				_receivedOn = getFactory().newXMLGregorianCalendar(receivedOn);
 			validate();
 		}
 		catch (InvalidDDMSException e) {
@@ -148,8 +118,8 @@ public final class Dates extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Constructor for creating a component from raw data. The string-based inputs must conform to one of the XML date
-	 * types: xs:dateTime, xs:date, xs:gYearMonth, or xs:gYear.
+	 * Constructor for creating a component from raw data. 
+	 * 
 	 * @param acquiredOns the acquisition dates (optional, starting in DDMS 4.1)
 	 * @param created the creation date (optional)
 	 * @param posted the posting date (optional)
@@ -164,41 +134,18 @@ public final class Dates extends AbstractBaseComponent {
 		String approvedOn, String receivedOn) throws InvalidDDMSException {
 		try {
 			Element element = Util.buildDDMSElement(Dates.getName(DDMSVersion.getCurrentVersion()), null);
-			try {
-				if (acquiredOns == null)
-					acquiredOns = Collections.emptyList();
-				_acquiredOns = acquiredOns;
-				for (ApproximableDate acquiredOn : acquiredOns)
-					element.appendChild(acquiredOn.getXOMElementCopy());
+			if (acquiredOns == null)
+				acquiredOns = Collections.emptyList();
+			_acquiredOns = acquiredOns;
+			for (ApproximableDate acquiredOn : acquiredOns)
+				element.appendChild(acquiredOn.getXOMElementCopy());
 
-				if (!Util.isEmpty(created)) {
-					_created = getFactory().newXMLGregorianCalendar(created);
-					Util.addDDMSAttribute(element, CREATED_NAME, getCreated().toXMLFormat());
-				}
-				if (!Util.isEmpty(posted)) {
-					_posted = getFactory().newXMLGregorianCalendar(posted);
-					Util.addDDMSAttribute(element, POSTED_NAME, getPosted().toXMLFormat());
-				}
-				if (!Util.isEmpty(validTil)) {
-					_validTil = getFactory().newXMLGregorianCalendar(validTil);
-					Util.addDDMSAttribute(element, VALID_TIL_NAME, getValidTil().toXMLFormat());
-				}
-				if (!Util.isEmpty(infoCutOff)) {
-					_infoCutOff = getFactory().newXMLGregorianCalendar(infoCutOff);
-					Util.addDDMSAttribute(element, INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat());
-				}
-				if (!Util.isEmpty(approvedOn)) {
-					_approvedOn = getFactory().newXMLGregorianCalendar(approvedOn);
-					Util.addDDMSAttribute(element, APPROVED_ON_NAME, getApprovedOn().toXMLFormat());
-				}
-				if (!Util.isEmpty(receivedOn)) {
-					_receivedOn = getFactory().newXMLGregorianCalendar(receivedOn);
-					Util.addDDMSAttribute(element, RECEIVED_ON_NAME, getReceivedOn().toXMLFormat());
-				}
-			}
-			catch (IllegalArgumentException e) {
-				throw new InvalidDDMSException("One or more ddms:dates attributes are not in a valid date format.");
-			}
+			Util.addDDMSAttribute(element, CREATED_NAME, created);
+			Util.addDDMSAttribute(element, POSTED_NAME, posted);
+			Util.addDDMSAttribute(element, VALID_TIL_NAME, validTil);
+			Util.addDDMSAttribute(element, INFO_CUT_OFF_NAME, infoCutOff);
+			Util.addDDMSAttribute(element, APPROVED_ON_NAME, approvedOn);
+			Util.addDDMSAttribute(element, RECEIVED_ON_NAME, receivedOn);
 			setXOMElement(element, true);
 		}
 		catch (InvalidDDMSException e) {
@@ -222,24 +169,24 @@ public final class Dates extends AbstractBaseComponent {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), Dates.getName(getDDMSVersion()));
-		if (getCreated() != null)
-			Util.requireDDMSDateFormat(getCreated().getXMLSchemaType());
-		if (getPosted() != null)
-			Util.requireDDMSDateFormat(getPosted().getXMLSchemaType());
-		if (getValidTil() != null)
-			Util.requireDDMSDateFormat(getValidTil().getXMLSchemaType());
-		if (getInfoCutOff() != null)
-			Util.requireDDMSDateFormat(getInfoCutOff().getXMLSchemaType());
-		if (getApprovedOn() != null)
-			Util.requireDDMSDateFormat(getApprovedOn().getXMLSchemaType());
-		if (getReceivedOn() != null)
-			Util.requireDDMSDateFormat(getReceivedOn().getXMLSchemaType());
+		if (!Util.isEmpty(getCreatedString()))
+			Util.requireDDMSDateFormat(getCreatedString(), getNamespace());
+		if (!Util.isEmpty(getPostedString()))
+			Util.requireDDMSDateFormat(getPostedString(), getNamespace());
+		if (!Util.isEmpty(getValidTilString()))
+			Util.requireDDMSDateFormat(getValidTilString(), getNamespace());
+		if (!Util.isEmpty(getInfoCutOffString())) 
+			Util.requireDDMSDateFormat(getInfoCutOffString(), getNamespace());
+		if (!Util.isEmpty(getApprovedOnString()))
+			Util.requireDDMSDateFormat(getApprovedOnString(), getNamespace());
+		if (!Util.isEmpty(getReceivedOnString()))
+			Util.requireDDMSDateFormat(getReceivedOnString(), getNamespace());
 		
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (!getDDMSVersion().isAtLeast("3.1") && getApprovedOn() != null) {
+		if (!getDDMSVersion().isAtLeast("3.1") && !Util.isEmpty(getApprovedOnString())) {
 			throw new InvalidDDMSException("This component cannot have an approvedOn date until DDMS 3.1 or later.");
 		}
-		if (!getDDMSVersion().isAtLeast("4.0.1") && getReceivedOn() != null) {
+		if (!getDDMSVersion().isAtLeast("4.0.1") && !Util.isEmpty(getReceivedOnString())) {
 			throw new InvalidDDMSException("This component cannot have a receivedOn date until DDMS 4.0.1 or later.");
 		}
 		if (!getDDMSVersion().isAtLeast("4.1") && !getAcquiredOns().isEmpty()) {
@@ -258,8 +205,13 @@ public final class Dates extends AbstractBaseComponent {
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (getCreated() == null && getPosted() == null && getValidTil() == null && getInfoCutOff() == null
-			&& getApprovedOn() == null && getReceivedOn() == null && getAcquiredOns().isEmpty()) {
+		if (Util.isEmpty(getCreatedString())
+			&& Util.isEmpty(getPostedString())
+			&& Util.isEmpty(getValidTilString())
+			&& Util.isEmpty(getInfoCutOffString())
+			&& Util.isEmpty(getApprovedOnString())
+			&& Util.isEmpty(getReceivedOnString())
+			&& getAcquiredOns().isEmpty()) {
 			addWarning("A completely empty ddms:dates element was found.");
 		}
 		if (!getAcquiredOns().isEmpty())
@@ -275,18 +227,12 @@ public final class Dates extends AbstractBaseComponent {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, localPrefix, getAcquiredOns()));
-		if (getCreated() != null)
-			text.append(buildOutput(isHTML, localPrefix + CREATED_NAME, getCreated().toXMLFormat()));
-		if (getPosted() != null)
-			text.append(buildOutput(isHTML, localPrefix + POSTED_NAME, getPosted().toXMLFormat()));
-		if (getValidTil() != null)
-			text.append(buildOutput(isHTML, localPrefix + VALID_TIL_NAME, getValidTil().toXMLFormat()));
-		if (getInfoCutOff() != null)
-			text.append(buildOutput(isHTML, localPrefix + INFO_CUT_OFF_NAME, getInfoCutOff().toXMLFormat()));
-		if (getApprovedOn() != null)
-			text.append(buildOutput(isHTML, localPrefix + APPROVED_ON_NAME, getApprovedOn().toXMLFormat()));
-		if (getReceivedOn() != null)
-			text.append(buildOutput(isHTML, localPrefix + RECEIVED_ON_NAME, getReceivedOn().toXMLFormat()));
+		text.append(buildOutput(isHTML, localPrefix + CREATED_NAME, getCreatedString()));
+		text.append(buildOutput(isHTML, localPrefix + POSTED_NAME, getPostedString()));
+		text.append(buildOutput(isHTML, localPrefix + VALID_TIL_NAME, getValidTilString()));
+		text.append(buildOutput(isHTML, localPrefix + INFO_CUT_OFF_NAME, getInfoCutOffString()));
+		text.append(buildOutput(isHTML, localPrefix + APPROVED_ON_NAME, getApprovedOnString()));
+		text.append(buildOutput(isHTML, localPrefix + RECEIVED_ON_NAME, getReceivedOnString()));
 		return (text.toString());
 	}
 		
@@ -306,12 +252,12 @@ public final class Dates extends AbstractBaseComponent {
 		if (!super.equals(obj) || !(obj instanceof Dates))
 			return (false);
 		Dates test = (Dates) obj;
-		return (Util.nullEquals(getCreated(), test.getCreated())
-			&& Util.nullEquals(getPosted(), test.getPosted())
-			&& Util.nullEquals(getValidTil(), test.getValidTil())
-			&& Util.nullEquals(getInfoCutOff(), test.getInfoCutOff())
-			&& Util.nullEquals(getApprovedOn(), test.getApprovedOn())
-			&& Util.nullEquals(getReceivedOn(), test.getReceivedOn()));
+		return (getCreatedString().equals(test.getCreatedString())
+			&& getPostedString().equals(test.getPostedString())
+			&& getValidTilString().equals(test.getValidTilString())
+			&& getInfoCutOffString().equals(test.getInfoCutOffString())
+			&& getApprovedOnString().equals(test.getApprovedOnString())
+			&& getReceivedOnString().equals(test.getReceivedOnString()));
 	}
 
 	/**
@@ -319,18 +265,12 @@ public final class Dates extends AbstractBaseComponent {
 	 */
 	public int hashCode() {
 		int result = super.hashCode();
-		if (getCreated() != null)
-			result = 7 * result + getCreated().hashCode();
-		if (getPosted() != null)
-			result = 7 * result + getPosted().hashCode();
-		if (getValidTil() != null)
-			result = 7 * result + getValidTil().hashCode();
-		if (getInfoCutOff() != null)
-			result = 7 * result + getInfoCutOff().hashCode();
-		if (getApprovedOn() != null)
-			result = 7 * result + getApprovedOn().hashCode();
-		if (getReceivedOn() != null)
-			result = 7 * result + getReceivedOn().hashCode();
+		result = 7 * result + getCreatedString().hashCode();
+		result = 7 * result + getPostedString().hashCode();
+		result = 7 * result + getValidTilString().hashCode();
+		result = 7 * result + getInfoCutOffString().hashCode();
+		result = 7 * result + getApprovedOnString().hashCode();
+		result = 7 * result + getReceivedOnString().hashCode();
 		return (result);
 	}
 	
@@ -347,47 +287,146 @@ public final class Dates extends AbstractBaseComponent {
 	
 	/**
 	 * Accessor for the created date (optional). Returns a copy.
+	 * 
+	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
+	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 * null for dates in the new format. Use <code>getCreatedString()</code> to
+	 * access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getCreated() {
-		return (_created == null ? null : getFactory().newXMLGregorianCalendar(_created.toXMLFormat()));
+		try {
+			return (getFactory().newXMLGregorianCalendar(getCreatedString()));
+		}
+		catch (IllegalArgumentException e) {
+			return (null);
+		}
 	}
 
 	/**
+	 * Accessor for the created date (optional).
+	 */
+	public String getCreatedString() {
+		return (getAttributeValue(CREATED_NAME));
+	}
+	
+	/**
 	 * Accessor for the posted date (optional). Returns a copy.
+	 * 
+	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
+	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 * null for dates in the new format. Use <code>getPostedString()</code> to
+	 * access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getPosted() {
-		return (_posted == null ? null : getFactory().newXMLGregorianCalendar(_posted.toXMLFormat()));
+		try {
+			return (getFactory().newXMLGregorianCalendar(getPostedString()));
+		}
+		catch (IllegalArgumentException e) {
+			return (null);
+		}
+	}
+	
+	/**
+	 * Accessor for the posted date (optional).
+	 */
+	public String getPostedString() {
+		return (getAttributeValue(POSTED_NAME));
 	}
 
 	/**
 	 * Accessor for the expiration date (optional). Returns a copy.
+	 * 
+	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
+	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 * null for dates in the new format. Use <code>getValidTilString()</code> to
+	 * access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getValidTil() {
-		return (_validTil == null ? null : getFactory().newXMLGregorianCalendar(_validTil.toXMLFormat()));
+		try {
+			return (getFactory().newXMLGregorianCalendar(getValidTilString()));
+		}
+		catch (IllegalArgumentException e) {
+			return (null);
+		}
+	}
+	
+	/**
+	 * Accessor for the expiration date (optional).
+	 */
+	public String getValidTilString() {
+		return (getAttributeValue(VALID_TIL_NAME));
 	}
 
 	/**
 	 * Accessor for the cutoff date (optional). Returns a copy.
+	 * 
+	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
+	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 * null for dates in the new format. Use <code>getInfoCutOffString()</code> to
+	 * access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getInfoCutOff() {
-		return (_infoCutOff == null ? null
-			: getFactory().newXMLGregorianCalendar(_infoCutOff.toXMLFormat()));
+		try {
+			return (getFactory().newXMLGregorianCalendar(getInfoCutOffString()));
+		}
+		catch (IllegalArgumentException e) {
+			return (null);
+		}
+	}
+	
+	/**
+	 * Accessor for the cutoff date (optional).
+	 */
+	public String getInfoCutOffString() {
+		return (getAttributeValue(INFO_CUT_OFF_NAME));
 	}
 	
 	/**
 	 * Accessor for the approved on date (optional). Returns a copy.
+	 * 
+	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
+	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 * null for dates in the new format. Use <code>getApprovedOnString()</code> to
+	 * access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getApprovedOn() {
-		return (_approvedOn == null ? null
-			: getFactory().newXMLGregorianCalendar(_approvedOn.toXMLFormat()));
+		try {
+			return (getFactory().newXMLGregorianCalendar(getApprovedOnString()));
+		}
+		catch (IllegalArgumentException e) {
+			return (null);
+		}
 	}
 
 	/**
+	 * Accessor for the approved on date (optional).
+	 */
+	public String getApprovedOnString() {
+		return (getAttributeValue(APPROVED_ON_NAME));
+	}
+	
+	/**
 	 * Accessor for the received on date (optional). Returns a copy.
+	 * 
+	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
+	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 * null for dates in the new format. Use <code>getReceivedOnString()</code> to
+	 * access the raw XML format of the date instead.
 	 */
 	public XMLGregorianCalendar getReceivedOn() {
-		return (_receivedOn == null ? null
-			: getFactory().newXMLGregorianCalendar(_receivedOn.toXMLFormat()));
+		try {
+			return (getFactory().newXMLGregorianCalendar(getReceivedOnString()));
+		}
+		catch (IllegalArgumentException e) {
+			return (null);
+		}
+	}
+	
+	/**
+	 * Accessor for the received on date (optional).
+	 */
+	public String getReceivedOnString() {
+		return (getAttributeValue(RECEIVED_ON_NAME));
 	}
 	
 	/**
@@ -432,18 +471,12 @@ public final class Dates extends AbstractBaseComponent {
 		public Builder(Dates dates) {
 			for (ApproximableDate acquiredOn : dates.getAcquiredOns())
 				getAcquiredOns().add(new ApproximableDate.Builder(acquiredOn));
-			if (dates.getCreated() != null)
-				setCreated(dates.getCreated().toXMLFormat());
-			if (dates.getPosted() != null)
-				setPosted(dates.getPosted().toXMLFormat());
-			if (dates.getValidTil() != null)
-				setValidTil(dates.getValidTil().toXMLFormat());
-			if (dates.getInfoCutOff() != null)
-				setInfoCutOff(dates.getInfoCutOff().toXMLFormat());
-			if (dates.getApprovedOn() != null)
-				setApprovedOn(dates.getApprovedOn().toXMLFormat());
-			if (dates.getReceivedOn() != null)
-				setReceivedOn(dates.getReceivedOn().toXMLFormat());
+			setCreated(dates.getCreatedString());
+			setPosted(dates.getPostedString());
+			setValidTil(dates.getValidTilString());
+			setInfoCutOff(dates.getInfoCutOffString());
+			setApprovedOn(dates.getApprovedOnString());
+			setReceivedOn(dates.getReceivedOnString());
 		}
 		
 		/**

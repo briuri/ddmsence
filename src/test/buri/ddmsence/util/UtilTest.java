@@ -26,8 +26,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.datatype.DatatypeConstants;
-
 import nu.xom.Attribute;
 import nu.xom.Document;
 import nu.xom.Element;
@@ -268,24 +266,35 @@ public class UtilTest extends AbstractBaseTestCase {
 	}
 
 	public void testRequireDDMSDateFormatSuccess() {
-		try {
-			Util.requireDDMSDateFormat(DatatypeConstants.DATETIME);
-			Util.requireDDMSDateFormat(DatatypeConstants.DATE);
-			Util.requireDDMSDateFormat(DatatypeConstants.GYEARMONTH);
-			Util.requireDDMSDateFormat(DatatypeConstants.GYEAR);
-		}
-		catch (InvalidDDMSException e) {
-			fail("Did not allow valid data.");
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			try {
+			   Util.requireDDMSDateFormat("2012", version.getNamespace());
+			   Util.requireDDMSDateFormat("2012-01", version.getNamespace());
+			   Util.requireDDMSDateFormat("2012-01-01", version.getNamespace());
+			   Util.requireDDMSDateFormat("2012-01-01T01:02:03Z", version.getNamespace());
+			   Util.requireDDMSDateFormat("2012-01-01T01:02:03+05:00", version.getNamespace());
+			   Util.requireDDMSDateFormat("2012-01-01T01:02:03.4Z", version.getNamespace());
+			   Util.requireDDMSDateFormat("2012-01-01T01:02:03.4+05:00", version.getNamespace());   
+//			   Util.requireDDMSDateFormat("2012-01-01T01:02Z", version.getNamespace());
+//			   Util.requireDDMSDateFormat("2012-01-01T01:02+05:00", version.getNamespace());
+			}
+			catch (InvalidDDMSException e) {
+				fail("Did not allow valid data.");
+			}
 		}
 	}
 
 	public void testRequireDDMSDateFormatFailure() {
-		try {
-			Util.requireDDMSDateFormat(DatatypeConstants.GDAY);
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "The date datatype must be one of");
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			try {
+			   Util.requireDDMSDateFormat("---31", version.getNamespace());
+			   fail("Allowed invalid data.");
+			}
+			catch (InvalidDDMSException e) {
+				expectMessage(e, "The date datatype must be");
+			}
 		}
 	}
 
