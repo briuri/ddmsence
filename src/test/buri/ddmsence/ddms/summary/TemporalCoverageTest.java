@@ -477,9 +477,9 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			assertNull(component.getStart());
 			assertNull(component.getEnd());
 			
-			component = getInstance(SUCCESS, "", TEST_START, null, TEST_END, null);
+			component = getInstance(SUCCESS, "", TEST_START, null, TEST_START, null);
 			assertEquals(TEST_START, component.getStart().toXMLFormat());
-			assertEquals(TEST_END, component.getEnd().toXMLFormat());
+			assertEquals(TEST_START, component.getEnd().toXMLFormat());
 		}		
 	}
 	

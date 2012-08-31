@@ -309,6 +309,18 @@ public class DatesTest extends AbstractBaseTestCase {
 				assertEquals(TEST_APPROVED, component.getApprovedOn().toXMLFormat());
 			if (version.isAtLeast("4.0.1"))
 				assertEquals(TEST_RECEIVED, component.getReceivedOn().toXMLFormat());
+			
+			// Not compatible with XMLGregorianCalendar
+			if (version.isAtLeast("4.1")) {
+				component = new Dates("2012-01-01T01:02Z", "2012-01-01T01:02Z", "2012-01-01T01:02Z",
+					"2012-01-01T01:02Z", "2012-01-01T01:02Z", "2012-01-01T01:02Z");
+				assertNull(component.getCreated());
+				assertNull(component.getPosted());
+				assertNull(component.getValidTil());
+				assertNull(component.getInfoCutOff());
+				assertNull(component.getApprovedOn());
+				assertNull(component.getReceivedOn());			
+			}
 		}		
 	}
 	

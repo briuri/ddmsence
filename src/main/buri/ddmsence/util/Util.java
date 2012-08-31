@@ -81,6 +81,8 @@ public class Util {
 		XML_SPECIAL_CHARS.put(">", "&gt;");
 	}
 
+	private static final String DDMS_DATE_HOUR_MIN_PATTERN = "[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}(Z|[\\-\\+][0-9]{2}:[0-9]{2})?";
+	
 	private static Set<QName> DATE_DATATYPES = new HashSet<QName>();
 	static {
 		DATE_DATATYPES.add(DatatypeConstants.DATE);
@@ -257,7 +259,8 @@ public class Util {
 	public static void requireDDMSDateFormat(String date, String ddmsNamespace) throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.getVersionForNamespace(ddmsNamespace);
 		
-		// TODO: Add the custom DDMS Type. For now, only the original 4 are allowed.
+		if (version.isAtLeast("4.1") && Pattern.matches(DDMS_DATE_HOUR_MIN_PATTERN, date))
+			return;
 		
 		boolean isXsdType = false;
 		try {
@@ -268,7 +271,10 @@ public class Util {
 			// Fall-through 
 		}
 		if (!isXsdType) {
-			throw new InvalidDDMSException("The date datatype must be one of " + DATE_DATATYPES);
+			String message = "The date datatype must be one of " + DATE_DATATYPES;
+			if (version.isAtLeast("4.1"))
+				message += " or ddms:DateHourMinType";
+			throw new InvalidDDMSException(message);
 		}
 	}
 	
