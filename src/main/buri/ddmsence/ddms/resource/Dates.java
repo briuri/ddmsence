@@ -129,9 +129,11 @@ public final class Dates extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Constructor for creating a component from raw data. Preserved for backwards compatibility, but may disappear in the next major release.
+	 * Constructor for creating a component from raw data. 
 	 * 
-	 * @deprecated
+	 * @deprecated A new constructor was added for DDMS 4.1 to support ddms:acquiredOn. This constructor is preserved for 
+	 * backwards compatibility, but may disappear in the next major release.
+	 * 
 	 * @param created the creation date (optional)
 	 * @param posted the posting date (optional)
 	 * @param validTil the expiration date (optional)
