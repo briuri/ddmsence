@@ -210,19 +210,20 @@ public class Escape extends AbstractSample {
 		Distribution distribution = new Distribution();
 		for (Resource resource : getResources()) {
 			// Examine the ddms:dates element (optional field with optional attributes)
+			// Ignores dates of type, ddms:DateHourMinType, which was introduced in DDMS 4.1.
 			Dates dates = resource.getDates();
 			if (dates != null) {
-				if (dates.getCreated() != null)
+				if (dates.getCreatedString() != null)
 					distribution.incrementCount(String.valueOf(dates.getCreated().getYear()));
-				if (dates.getPosted() != null)
+				if (dates.getPostedString() != null)
 					distribution.incrementCount(String.valueOf(dates.getPosted().getYear()));
-				if (dates.getValidTil() != null)
+				if (dates.getValidTilString() != null)
 					distribution.incrementCount(String.valueOf(dates.getValidTil().getYear()));
-				if (dates.getInfoCutOff() != null)
+				if (dates.getInfoCutOffString() != null)
 					distribution.incrementCount(String.valueOf(dates.getInfoCutOff().getYear()));
-				if (dates.getApprovedOn() != null)
+				if (dates.getApprovedOnString() != null)
 					distribution.incrementCount(String.valueOf(dates.getApprovedOn().getYear()));
-				if (dates.getReceivedOn() != null)
+				if (dates.getReceivedOnString() != null)
 					distribution.incrementCount(String.valueOf(dates.getReceivedOn().getYear()));
 			}
 			

@@ -57,8 +57,7 @@ import buri.ddmsence.util.Util;
  * </p>
  * 
  * <p>
- * If not "Not Applicable" or "Unknown", date formats must adhere to one of: xs:dateTime, xs:date, xs:gYearMonth, or
- * xs:gYear, and the <code>XMLGregorianCalendar</code> class is used to enforce these restrictions.
+ * If not "Not Applicable" or "Unknown", date formats must adhere to one of the DDMS-allowed date formats.
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
@@ -93,10 +92,6 @@ import buri.ddmsence.util.Util;
 public final class TemporalCoverage extends AbstractBaseComponent {
 	
 	private String _name = DEFAULT_VALUE;
-	private String _startString = "";
-	private String _endString = "";
-	private XMLGregorianCalendar _start = null;
-	private XMLGregorianCalendar _end = null;
 	private ApproximableDate _approximableStart = null;
 	private ApproximableDate _approximableEnd = null;
 	private SecurityAttributes _securityAttributes = null;
@@ -138,19 +133,9 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 				Element approximableStart = element.getFirstChildElement(APPROXIMABLE_START_NAME, getNamespace());
 				if (approximableStart != null)
 					_approximableStart = new ApproximableDate(approximableStart);
-				else {
-					Element startElement = periodElement.getFirstChildElement(START_NAME, getNamespace());
-					_startString = (startElement == null ? DEFAULT_VALUE : startElement.getValue());
-				}
-
 				Element approximableEnd = element.getFirstChildElement(APPROXIMABLE_END_NAME, getNamespace());
 				if (approximableEnd != null)
 					_approximableEnd = new ApproximableDate(approximableEnd);
-				else {
-					Element endElement = periodElement.getFirstChildElement(END_NAME, getNamespace());				
-					_endString = (endElement == null ? DEFAULT_VALUE : endElement.getValue());					
-				}
-				loadDateCaches();
 			}
 			_securityAttributes = new SecurityAttributes(element);
 			validate();
@@ -251,7 +236,6 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			else {
 				startString = (Util.isEmpty(startString) ? DEFAULT_VALUE : startString);	
 				periodElement.appendChild(Util.buildDDMSElement(START_NAME, startString));
-				_startString = startString;
 			}
 			
 			if (approximableEnd != null) {
@@ -261,9 +245,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 			else {
 				endString = (Util.isEmpty(endString) ? DEFAULT_VALUE : endString);			
 				periodElement.appendChild(Util.buildDDMSElement(END_NAME, endString));
-				_endString = endString;
 			}
-			loadDateCaches();
 
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
@@ -276,42 +258,6 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Helper method to populate cached date variables.
-	 */
-	private void loadDateCaches() {
-		if (!Util.isEmpty(getStartString())) {
-			try {
-				_start = getFactory().newXMLGregorianCalendar(_startString);
-			}
-			catch (IllegalArgumentException e) {
-				// Was not a valid date. validate() will catch this later. If we throw an InvalidDDMSException,
-				// we will prevent the use of the extended date types like Unknown.
-			}
-		}
-		if (!Util.isEmpty(getEndString())) {
-			try {
-				_end = getFactory().newXMLGregorianCalendar(_endString);
-			}
-			catch (IllegalArgumentException e) {
-				// Was not a valid date. validate() will catch this later. If we throw an InvalidDDMSException,
-				// we will prevent the use of the extended date types like Unknown.
-			}
-		}
-	}
-	
-	/**
-	 * Asserts that an extended date is either "Not Applicable" or "Unknown".
-	 * 
-	 * @param dateString	the string to check
-	 * @throws InvalidDDMSException if the value is null, empty or invalid.
-	 */
-	public static void validateExtendedDateType(String dateString) throws InvalidDDMSException {
-		Util.requireDDMSValue("extended date type", dateString);
-		if (!EXTENDED_DATE_TYPES.contains(dateString))
-			throw new InvalidDDMSException("If no date is specified, the value must be one of " + EXTENDED_DATE_TYPES);
-	}
-	
-	/**
 	 * Validates the component.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
@@ -319,7 +265,6 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * <li>If start exists, it is a valid date format.</li>
 	 * <li>If end exists, it is a valid date format.</li>
 	 * <li>0-1 names, start, end, approximableStart, approximableEnd exist.</li>
-	 * <li>If both a start and end exist, the start date is before the end date.</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
 	 * <li>approximableStart and approximableEnd do not exist until DDMS 4.1 or later.</li> 
 	 * </td></tr></table>
@@ -337,21 +282,14 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(periodElement, APPROXIMABLE_START_NAME, 0, 1);
 		Util.requireBoundedChildCount(periodElement, APPROXIMABLE_END_NAME, 0, 1);
 		if (getApproximableStart() == null) {
-			if (getStart() != null)
-				Util.requireDDMSDateFormat(getStart().getXMLSchemaType());
-			else
-				validateExtendedDateType(getStartString());
+			Util.requireDDMSValue("start", getStartString());
+			if (!EXTENDED_DATE_TYPES.contains(getStartString()))
+				Util.requireDDMSDateFormat(getStartString(), getNamespace());
 		}
 		if (getApproximableEnd() == null) {
-			if (getEnd() != null)
-				Util.requireDDMSDateFormat(getEnd().getXMLSchemaType());
-			else
-				validateExtendedDateType(getEndString());
-		}
-		if (getStart() != null && getEnd() != null) {
-			if (getStart().toGregorianCalendar().after(getEnd().toGregorianCalendar())) {
-				throw new InvalidDDMSException("The start date is after the end date.");
-			}
+			Util.requireDDMSValue("end", getEndString());
+			if (!EXTENDED_DATE_TYPES.contains(getEndString()))
+				Util.requireDDMSDateFormat(getEndString(), getNamespace());
 		}
 
 		// Should be reviewed as additional versions of DDMS are supported.
@@ -474,12 +412,20 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	}
 	
 	/**
-	 * Accessor for the XML calendar representing the start date. If the start date is "Not Applicable", "Unknown",
-	 * or an approximable date, this will return null. Use <code>getStartString</code> to retrieve the string 
-	 * representation. Use <code>getApproximableStart</code> to retrieve an approximable representation.
+	 * Accessor for the XML calendar representing the start date
+	 * 
+	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
+	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 * null for dates in the new format. Use <code>getStartString()</code> to
+	 * access the raw XML format of the date, "Not Applicable", or "Unknown" values instead.
 	 */
 	public XMLGregorianCalendar getStart() {
-		return (_start == null ? null : getFactory().newXMLGregorianCalendar(_start.toXMLFormat()));
+		try {
+			return (getFactory().newXMLGregorianCalendar(getStartString()));
+		}
+		catch (IllegalArgumentException e) {
+			return (null);
+		}
 	}
 
 	/**
@@ -487,18 +433,31 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * will return "Not Applicable" or "Unknown". Use <code>getStart</code> to work with this value as a calendar date.
 	 */
 	public String getStartString() {
-		if (getStart() != null)
-			return (getStart().toXMLFormat());
-		return (_startString);
+		Element startElement = getTimePeriodElement().getFirstChildElement(START_NAME, getNamespace());
+		if (startElement == null)
+			return ("");
+		String value = startElement.getValue();
+		if (Util.isEmpty(value))
+			return (DEFAULT_VALUE);
+		return (value);
+//		return (Util.isEmpty(value) ? DEFAULT_VALUE : value);
 	}
 	
 	/**
-	 * Accessor for the XML calendar representing the end date. If the end date is "Not Applicable", "Unknown"
-	 * or an approximable date, this will return null. Use <code>getEndString</code> to retrieve the string 
-	 * representation. Use <code>getApproximableEnd</code> to retrieve an approximable representation.
+	 * Accessor for the XML calendar representing the end date
+	 * 
+	 * @deprecated Because DDMS 4.1 added a new allowable date format (ddms:DateHourMinType),
+	 * XMLGregorianCalendar is no longer a sufficient representation. This accessor will return
+	 * null for dates in the new format. Use <code>getEndString()</code> to
+	 * access the raw XML format of the date, "Not Applicable", or "Unknown" values instead.
 	 */
 	public XMLGregorianCalendar getEnd() {
-		return (_end == null ? null : getFactory().newXMLGregorianCalendar(_end.toXMLFormat()));
+		try {
+			return (getFactory().newXMLGregorianCalendar(getEndString()));
+		}
+		catch (IllegalArgumentException e) {
+			return (null);
+		}
 	}
 
 	/**
@@ -506,9 +465,11 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * return "Not Applicable" or "Unknown". Use <code>getEnd</code> to work with this value as a calendar date.
 	 */
 	public String getEndString() {
-		if (getEnd() != null)
-			return (getEnd().toXMLFormat());
-		return (_endString);
+		Element endElement = getTimePeriodElement().getFirstChildElement(END_NAME, getNamespace());
+		if (endElement == null)
+			return ("");
+		String value = endElement.getValue();
+		return (Util.isEmpty(value) ? DEFAULT_VALUE : value);
 	}
 	
 	/**

@@ -290,18 +290,6 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			periodElement.appendChild(Util.buildDDMSElement("start", "---31"));
 			periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
 			getInstance("The date datatype must be one of", wrapInnerElement(periodElement));
-
-			// Wrong extended value
-			periodElement = Util.buildDDMSElement("TimePeriod", null);
-			periodElement.appendChild(Util.buildDDMSElement("start", "N/A"));
-			periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
-			getInstance("If no date is specified,", wrapInnerElement(periodElement));
-
-			// Bad range
-			periodElement = Util.buildDDMSElement("TimePeriod", null);
-			periodElement.appendChild(Util.buildDDMSElement("start", "2004"));
-			periodElement.appendChild(Util.buildDDMSElement("end", "2003"));
-			getInstance("The start date is after the end date.", wrapInnerElement(periodElement));
 		}
 	}
 
@@ -310,12 +298,6 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Wrong date format (using xs:gDay here)
 			getInstance("The date datatype must be one of", TEST_NAME, "---31", null, TEST_END, null);
-
-			// Wrong extended value
-			getInstance("If no date is specified,", TEST_NAME, "N/A", null, TEST_END, null);
-
-			// Bad range
-			getInstance("The start date is after the end date.", TEST_NAME, "2004", null, "2003", null);
 		}
 	}
 
@@ -465,50 +447,42 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testValidateExtendedDateTypeSuccess() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			try {
-				TemporalCoverage.validateExtendedDateType("Not Applicable");
-			}
-			catch (InvalidDDMSException e) {
-				fail("Did not allow valid data.");
-			}
-		}
-	}
-
-	public void testValidateExtendedDateTypeFailure() {
-		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			try {
-				TemporalCoverage.validateExtendedDateType("N/A");
-				fail("Allowed invalid data.");
-			}
-			catch (InvalidDDMSException e) {
-				expectMessage(e, "If no date is specified,");
-			}
-		}
-	}
-
 	public void testDefaultValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			TemporalCoverage component = getInstance(SUCCESS, "", "", null, "", null);
+			
+			Element periodElement = Util.buildDDMSElement("TimePeriod", null);
+			periodElement.appendChild(Util.buildDDMSElement("start", ""));
+			periodElement.appendChild(Util.buildDDMSElement("end", ""));
+			TemporalCoverage component = getInstance(SUCCESS, wrapInnerElement(periodElement));
+			assertEquals("Unknown", component.getStartString());
+			assertEquals("Unknown", component.getEndString());
+			
+			component = getInstance(SUCCESS, "", "", null, "", null);
 			assertEquals("Unknown", component.getTimePeriodName());
 			assertEquals("Unknown", component.getStartString());
 			assertEquals("Unknown", component.getEndString());
+
 		}
 	}
 
-	public void testDateEquality() {
+	public void testDeprecatedAccessors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			TemporalCoverage component = getInstance(SUCCESS, TEST_NAME, TEST_START, null, "2050", null);
-			assertEquals(component.getStart().toXMLFormat(), component.getStartString());
-			assertEquals(component.getEnd().toXMLFormat(), component.getEndString());
-		}
-	}
 
+			Element periodElement = Util.buildDDMSElement("TimePeriod", null);
+			periodElement.appendChild(Util.buildDDMSElement("start", ""));
+			periodElement.appendChild(Util.buildDDMSElement("end", ""));
+			TemporalCoverage component = getInstance(SUCCESS, wrapInnerElement(periodElement));
+			assertNull(component.getStart());
+			assertNull(component.getEnd());
+			
+			component = getInstance(SUCCESS, "", TEST_START, null, TEST_END, null);
+			assertEquals(TEST_START, component.getStart().toXMLFormat());
+			assertEquals(TEST_END, component.getEnd().toXMLFormat());
+		}		
+	}
+	
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -588,7 +562,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "If no date is specified");
+				expectMessage(e, "The date datatype");
 			}
 			builder.setStartString("2001");
 			builder.setEndString("2002");
