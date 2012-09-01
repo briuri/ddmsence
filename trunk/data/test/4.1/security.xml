@@ -2,7 +2,7 @@
 <!--  Represents a single ddms:security element, for unit testing -->
 <ddms:security xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" xmlns:ISM="urn:us:gov:ic:ism" ISM:excludeFromRollup="true" ISM:classification="U" ISM:ownerProducer="USA">
 	<ddms:noticeList ISM:classification="U" ISM:ownerProducer="USA">
-		<ISM:Notice ISM:noticeType="DoD-Dist-B" ISM:noticeReason="noticeReason" ISM:noticeDate="2011-09-15" ISM:unregisteredNoticeType="unregisteredNoticeType" ISM:classification="U" ISM:ownerProducer="USA">
+		<ISM:Notice ISM:noticeType="DoD-Dist-B" ISM:noticeReason="noticeReason" ISM:noticeDate="2011-09-15" ISM:unregisteredNoticeType="unregisteredNoticeType" ISM:externalNotice="false" ISM:classification="U" ISM:ownerProducer="USA">
 			<ISM:NoticeText ISM:classification="U" ISM:ownerProducer="USA" ISM:pocType="DoD-Dist-B">noticeText</ISM:NoticeText>
 		</ISM:Notice>
 	</ddms:noticeList>

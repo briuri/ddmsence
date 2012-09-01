@@ -261,7 +261,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			return (Integer.valueOf(2));
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
 			return (Integer.valueOf(5));
-		return (Integer.valueOf(7));
+		return (Integer.valueOf(9));
 	}
 
 	/**
@@ -352,6 +352,9 @@ public class ResourceTest extends AbstractBaseTestCase {
 			text.append(buildOutput(isHTML, resourcePrefix + ".noticeReason", "noticeReason"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".noticeDate", "2011-09-15"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".unregisteredNoticeType", "unregisteredNoticeType"));
+			if (version.isAtLeast("4.1")) {
+				text.append(buildOutput(isHTML, resourcePrefix + ".externalNotice", "false"));
+			}
 			text.append(buildOutput(isHTML, "metacardInfo.identifier.qualifier", "URI"));
 			text.append(buildOutput(isHTML, "metacardInfo.identifier.value", "urn:buri:ddmsence:testIdentifier"));
 			text.append(buildOutput(isHTML, "metacardInfo.dates.created", "2003"));
@@ -470,6 +473,9 @@ public class ResourceTest extends AbstractBaseTestCase {
 		if (version.isAtLeast("4.0.1")) {
 			xml.append(" ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
 			xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
+			if (version.isAtLeast("4.1")) {
+				xml.append(" ISM:externalNotice=\"false\"");	
+			}
 		}
 		if (version.isAtLeast("3.0"))
 			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
@@ -984,22 +990,39 @@ public class ResourceTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			createComponents();
 
-			// No warnings
 			Resource component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(0, component.getValidationWarnings().size());
+			
+			// 4.1 ism:Notice used
+			if (version.isAtLeast("4.1")) {
+				assertEquals(1, component.getValidationWarnings().size());	
+				String text = "The ISM:externalNotice attribute in this DDMS component";
+				String locator = "ddms:resource";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
+			// No warnings 
+			else {
+				assertEquals(0, component.getValidationWarnings().size());
+			}
 
+			int countIndex = version.isAtLeast("4.1") ? 1 : 0;
+			
 			// Nested warnings
 			List<IDDMSComponent> components = new ArrayList<IDDMSComponent>(TEST_NO_OPTIONAL_COMPONENTS);
 			components.add(new Format("test", new Extent("test", ""), "test"));
 			component = getInstance(SUCCESS, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null,
-				getIsmDESVersion(), getNtkDESVersion());
-			assertEquals(1, component.getValidationWarnings().size());
+				getIsmDESVersion(), getNtkDESVersion());			
+			assertEquals(countIndex + 1, component.getValidationWarnings().size());
 
+			if (version.isAtLeast("4.1")) {
+				String text = "The ISM:externalNotice attribute";
+				String locator = "ddms:resource";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
 			String resourceName = Resource.getName(version);
 			String text = "A qualifier has been set without an accompanying value attribute.";
 			String locator = (version.isAtLeast("4.0.1")) ? "ddms:" + resourceName + "/ddms:format/ddms:extent" : "ddms:"
 				+ resourceName + "/ddms:format/ddms:Media/ddms:extent";
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(countIndex));
 
 			// More nested warnings
 			Element element = Util.buildDDMSElement(PostalAddress.getName(version), null);
@@ -1008,13 +1031,18 @@ public class ResourceTest extends AbstractBaseTestCase {
 			components.add(new GeospatialCoverage(null, null, null, address, null, null, null, null));
 			component = getInstance(SUCCESS, components, TEST_RESOURCE_ELEMENT, TEST_CREATE_DATE, null,
 				getIsmDESVersion(), getNtkDESVersion());
-			assertEquals(1, component.getValidationWarnings().size());
+			assertEquals(countIndex + 1, component.getValidationWarnings().size());
 
+			if (version.isAtLeast("4.1")) {
+				text = "The ISM:externalNotice attribute";
+				locator = "ddms:resource";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
 			text = "A completely empty ddms:postalAddress element was found.";
 			locator = (version.isAtLeast("4.0.1")) ? "ddms:" + resourceName
 				+ "/ddms:geospatialCoverage/ddms:postalAddress" : "ddms:" + resourceName
 				+ "/ddms:geospatialCoverage/ddms:GeospatialExtent/ddms:postalAddress";
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			assertWarningEquality(text, locator, component.getValidationWarnings().get(countIndex));
 		}
 	}
 
@@ -1715,7 +1743,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 
 		// Adding 4.0.1-specific fields works
 		builder.setNtkDESVersion(Integer.valueOf(7));
-		builder.setIsmDESVersion(Integer.valueOf(7));
+		builder.setIsmDESVersion(Integer.valueOf(9));
 		builder.getMetacardInfo().getIdentifiers().get(0).setQualifier("qualifier");
 		builder.getMetacardInfo().getIdentifiers().get(0).setValue("value");
 		builder.getMetacardInfo().getDates().setCreated("2011-09-25");

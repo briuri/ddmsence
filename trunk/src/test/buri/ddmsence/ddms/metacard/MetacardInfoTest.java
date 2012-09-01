@@ -205,6 +205,8 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		xml.append("<ddms:noticeList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("<ISM:Notice ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
 		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
+		if (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
+			xml.append(" ISM:externalNotice=\"false\"");	
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		xml.append(" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>");
@@ -394,10 +396,15 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 			// 4.1 ntk:Access element used
 			if (version.isAtLeast("4.1")) {
-				assertEquals(1, component.getValidationWarnings().size());	
+				assertEquals(2, component.getValidationWarnings().size());	
 				String text = "The ntk:Access element in this DDMS component";
 				String locator = "ddms:metacardInfo";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+				
+				text = "The ISM:externalNotice attribute in this DDMS component";
+				locator = "ddms:metacardInfo/ddms:noticeList/ISM:Notice";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));
+				
 			}
 			// No warnings 
 			else {
