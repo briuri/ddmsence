@@ -4,7 +4,7 @@
 	xmlns:iso="http://purl.oclc.org/dsdl/schematron"
 	queryBinding="xslt2">
 	
-	<iso:title>Test ISO Schematron File for DDMSence (DDMS 4.0.1)</iso:title>
+	<iso:title>Test ISO Schematron File for DDMSence (DDMS 4.1)</iso:title>
 	<iso:ns prefix='ddms' uri='urn:us:mil:ces:metadata:ddms:4' />
 	<iso:ns prefix='ICISM' uri='urn:us:gov:ic:ism' />
 	<iso:ns prefix='gml' uri='http://www.opengis.net/gml/3.2' />

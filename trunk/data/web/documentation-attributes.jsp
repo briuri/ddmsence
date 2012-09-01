@@ -70,7 +70,7 @@ System.out.println(title.toXML());</pre>
 
 
 <p>The DES also defines many logical constraints on these attributes, but DDMSence does not validate these rules today. A set of Schematron files is 
-bundled with ISM.XML V5, V7, and V9 (which are used by DDMS 3.1, 4.0.1, and 4.1, respectively),
+bundled with ISM.XML V5, and V9 (which are used by DDMS 3.1 and 4.1, respectively),
 and sample code for using DDMSence with these files can be found in the <a href="documentation-schematron.jsp">Schematron Validation</a> Power Tip.</p>
 
 <p>The values assigned to some attributes must come from the Controlled Vocabulary Enumerations (CVEs) defined by the Intelligence Community. The 
