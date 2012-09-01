@@ -13,7 +13,7 @@
 			</ddms:organization>
 		</ddms:publisher>
 		<ddms:description ICISM:classification="U" ICISM:ownerProducer="USA">This is an example of a card produced for DDMS</ddms:description>
-		<ddms:processingInfo ICISM:classification="U" ddms:dateProcessed="2011-08-19" ICISM:ownerProducer="USA">XSLT Transformation to convert DDMS 3.0 to DDMS 4.0.1.		
+		<ddms:processingInfo ICISM:classification="U" ddms:dateProcessed="2011-08-19" ICISM:ownerProducer="USA">XSLT Transformation to convert DDMS 3.0 to DDMS 4.1.		
 		</ddms:processingInfo>
 		<ddms:revisionRecall ddms:revisionID="1" ICISM:classification="U" ddms:revisionType="ADMINISTRATIVE RECALL" ICISM:ownerProducer="USA"/>
 		<ddms:recordsManagementInfo ddms:vitalRecordIndicator="true">
