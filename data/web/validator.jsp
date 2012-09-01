@@ -64,8 +64,8 @@
 				+ "  xmlns:ddms=\"urn:us:mil:ces:metadata:ddms:4\" \n"
 				+ "  xmlns:ISM=\"urn:us:gov:ic:ism\" \n"
 				+ "  xmlns:ntk=\"urn:us:gov:ic:ntk\" \n"
-				+ "  ntk:DESVersion=\"5\" \n"
-				+ "  ISM:resourceElement=\"true\" ISM:DESVersion=\"7\" \n"
+				+ "  ntk:DESVersion=\"7\" \n"
+				+ "  ISM:resourceElement=\"true\" ISM:DESVersion=\"9\" \n"
 				+ "  ISM:createDate=\"2011-09-25\" ISM:classification=\"U\" \n"
 				+ "  ISM:ownerProducer=\"USA\">\n"
 				+ "  <ddms:metacardInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n"
@@ -126,8 +126,11 @@
 				+ "      ddms:code=\"Asset\" ddms:label=\"Asset\"/>\n"
 				+ "</ddms:subjectCoverage>\n"
 				+ "  <ddms:temporalCoverage>\n"
-				+ "    <ddms:start>2010-03-24T12:00:00Z</ddms:start>\n"
-				+ "    <ddms:end>Not Applicable</ddms:end>\n"
+				+ "    <ddms:approximableStart>\n"
+				+ "      <ddms:description>Early 2010</ddms:description>\n"
+				+ "      <ddms:approximableDate ddms:approximation=\"1st qtr\">2010</ddms:approximableDate>\n"
+				+ "    </ddms:approximableStart>\n"
+				+ "    <ddms:end>Unknown</ddms:end>\n"
 				+ "  </ddms:temporalCoverage>\n"
 				+ "  <ddms:security ISM:ownerProducer=\"USA\" ISM:classification=\"U\" \n"
 				+ "    ISM:excludeFromRollup=\"true\"/>\n"
@@ -152,8 +155,7 @@
 <a name="top"></a><h1>DDMS Validator</h1>
 
 <p>This experimental tool uses the DDMSence library to validate <b>Unclassified</b> DDMS 2.0, 3.0, 3.1, 4.0.1, and 4.1 records. Records 
-can be submitted by pasting XML text, uploading a file, or referencing a URL. Information submitted through this tool is not retained
-on the server.</p>
+can be submitted by pasting XML text, uploading a file, or referencing a URL.</p>
 <p>Starred fields (<b>*</b>) are required.</p>
 
 <form:form id="record" commandName="record" method="post" enctype="multipart/form-data">
