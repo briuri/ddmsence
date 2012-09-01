@@ -37,6 +37,7 @@ import buri.ddmsence.util.Util;
  */
 public class AccessTest extends AbstractBaseTestCase {
 
+	private static final Boolean TEST_EXTERNAL = Boolean.TRUE;
 	/**
 	 * Constructor
 	 */
@@ -59,6 +60,13 @@ public class AccessTest extends AbstractBaseTestCase {
 		return (null);
 	}
 
+	/**
+	 * Returns a dummy value for the externalReference attribute, based upon the current DDMS version.
+	 */
+	private static Boolean getExternalReference() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.1") ? TEST_EXTERNAL : null);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -87,13 +95,15 @@ public class AccessTest extends AbstractBaseTestCase {
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param individuals the individuals
 	 * @param groups the groups
-	 * @parma profileList the profilesprofiles the profiles in this list (required)
+	 * @param profileList the profilesprofiles the profiles in this list (required)
+	 * @param externalReference the external reference attribute
 	 */
-	private Access getInstance(String message, List<Individual> individuals, List<Group> groups, ProfileList profileList) {
+	private Access getInstance(String message, List<Individual> individuals, List<Group> groups,
+		ProfileList profileList, Boolean externalReference) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Access component = null;
 		try {
-			component = new Access(individuals, groups, profileList, SecurityAttributesTest.getFixture());
+			component = new Access(individuals, groups, profileList, externalReference, SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -107,10 +117,14 @@ public class AccessTest extends AbstractBaseTestCase {
 	 * Returns the expected HTML or Text output for this unit test
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer text = new StringBuffer();
 		text.append(IndividualTest.getFixture().getOutput(isHTML, "access.individualList.", ""));
 		text.append(GroupTest.getFixture().getOutput(isHTML, "access.groupList.", ""));
 		text.append(ProfileListTest.getFixture().getOutput(isHTML, "access.", ""));
+		if (version.isAtLeast("4.1")) {
+			text.append(buildOutput(isHTML, "access.externalReference", String.valueOf(TEST_EXTERNAL)));
+		}
 		text.append(buildOutput(isHTML, "access.classification", "U"));
 		text.append(buildOutput(isHTML, "access.ownerProducer", "USA"));
 		return (text.toString());
@@ -122,8 +136,12 @@ public class AccessTest extends AbstractBaseTestCase {
 	 * @param preserveFormatting if true, include line breaks and tabs.
 	 */
 	private String getExpectedXMLOutput(boolean preserveFormatting) {
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ntk:Access ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
+		if (version.isAtLeast("4.1")) {
+			xml.append("ntk:externalReference=\"true\" ");
+		}		
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
 		xml.append("\t<ntk:AccessIndividualList>\n");
 		xml.append("\t\t<ntk:AccessIndividual ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
@@ -179,10 +197,10 @@ public class AccessTest extends AbstractBaseTestCase {
 
 			// All fields
 			getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), ProfileListTest
-				.getFixture());
+				.getFixture(), getExternalReference());
 
 			// No optional fields
-			getInstance(SUCCESS, null, null, null);
+			getInstance(SUCCESS, null, null, null, null);
 		}
 	}
 
@@ -214,18 +232,37 @@ public class AccessTest extends AbstractBaseTestCase {
 
 	public void testWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// No warnings
 			Access component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(0, component.getValidationWarnings().size());
 
+			// 4.1 ntk:externalReference used
+			if (version.isAtLeast("4.1")) {
+				assertEquals(1, component.getValidationWarnings().size());	
+				String text = "The ntk:externalReference attribute in this DDMS component";
+				String locator = "ntk:Access";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
+			// No warnings 
+			else {
+				assertEquals(0, component.getValidationWarnings().size());
+			}
+			
 			// Empty
-			component = getInstance(SUCCESS, null, null, null);
+			component = getInstance(SUCCESS, null, null, null, null);
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "An ntk:Access element was found with no";
 			String locator = "ntk:Access";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+		}
+	}
+	
+	public void testDeprecatedConstructor() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			Access component = new Access(IndividualTest.getFixtureList(), null, null, SecurityAttributesTest.getFixture());
+			assertNull(component.isExternalReference());
 		}
 	}
 
@@ -235,7 +272,7 @@ public class AccessTest extends AbstractBaseTestCase {
 
 			Access elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			Access dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
-				ProfileListTest.getFixture());
+				ProfileListTest.getFixture(), getExternalReference());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -243,17 +280,26 @@ public class AccessTest extends AbstractBaseTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			Access elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Access dataComponent = getInstance(SUCCESS, null, GroupTest.getFixtureList(), ProfileListTest.getFixture());
+			Access dataComponent = getInstance(SUCCESS, null, GroupTest.getFixtureList(), ProfileListTest.getFixture(),
+				getExternalReference());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), null, ProfileListTest.getFixture());
+			dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), null, ProfileListTest.getFixture(),
+				getExternalReference());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), null);
+			dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), null,
+				getExternalReference());
 			assertFalse(elementComponent.equals(dataComponent));
+
+			if (version.isAtLeast("4.1")) {
+				dataComponent = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
+					ProfileListTest.getFixture(), Boolean.FALSE);
+				assertFalse(elementComponent.equals(dataComponent));
+			}
 		}
 	}
 
@@ -266,7 +312,7 @@ public class AccessTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
-				ProfileListTest.getFixture());
+				ProfileListTest.getFixture(), getExternalReference());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -280,7 +326,7 @@ public class AccessTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
 			component = getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
-				ProfileListTest.getFixture());
+				ProfileListTest.getFixture(), getExternalReference());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}

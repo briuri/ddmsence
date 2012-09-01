@@ -272,7 +272,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 	private Integer getNtkDESVersion() {
 		if (!DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
 			return (null);
-		return (Integer.valueOf(5));
+		return (Integer.valueOf(7));
 	}
 
 	/**
@@ -1714,7 +1714,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		}
 
 		// Adding 4.0.1-specific fields works
-		builder.setNtkDESVersion(Integer.valueOf(5));
+		builder.setNtkDESVersion(Integer.valueOf(7));
 		builder.setIsmDESVersion(Integer.valueOf(7));
 		builder.getMetacardInfo().getIdentifiers().get(0).setQualifier("qualifier");
 		builder.getMetacardInfo().getIdentifiers().get(0).setValue("value");

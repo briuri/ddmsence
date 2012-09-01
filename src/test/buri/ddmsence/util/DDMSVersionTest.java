@@ -146,7 +146,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		
 		version = DDMSVersion.setCurrentVersion("4.1");
 		assertEquals("urn:us:gov:ic:ntk", version.getNtkNamespace());
-		assertEquals("/schemas/4.1/NTK/Temp-NTK-v5Pub.xsd", version.getNtkSchema());
+		assertEquals("/schemas/4.1/NTK/IC-NTK.xsd", version.getNtkSchema());
 	}
 
 	public void testAliasVersion() {

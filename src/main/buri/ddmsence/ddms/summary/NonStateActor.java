@@ -136,7 +136,7 @@ public final class NonStateActor extends AbstractSimpleString {
 		if (Util.isEmpty(getValue()))
 			addWarning("A ddms:" + getName() + " element was found with no value.");
 		if (!Util.isEmpty(getQualifier()))
-			addSameNamespaceWarning("ddms:qualifier attribute");
+			addDdms40Warning("ddms:qualifier attribute");
 		super.validateWarnings();
 	}
 

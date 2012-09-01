@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	This is a temporarily hacked version of NTK v5 Public Release that pretends to be V7.
+	It is a placeholder until NTK V7 Public Release is available.
+-->	
+	
+<xsd:schema 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:ntk="urn:us:gov:ic:ntk"
+    xmlns:ism="urn:us:gov:ic:ism"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    attributeFormDefault="qualified" 
+    elementFormDefault="qualified"
+    targetNamespace="urn:us:gov:ic:ntk">
+
+    <xsd:import namespace="urn:us:gov:ic:ism" schemaLocation="../ISM/Temp-ISM-v7Pub.xsd"/>
+    
+    <xsd:element name="Access">
+        <xsd:complexType>
+            <xsd:all minOccurs="1" maxOccurs="1">
+                <xsd:element ref="ntk:AccessIndividualList" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="ntk:AccessGroupList" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="ntk:AccessProfileList" minOccurs="0" maxOccurs="1"/>
+            </xsd:all>
+            <xsd:attributeGroup ref="ism:SecurityAttributesGroup"/>
+            <!--  Temporarily added an attribute -->
+            <xsd:attribute  name="externalReference" use="optional">
+           		<xsd:simpleType>
+               	<xsd:restriction base="xsd:boolean"/>
+           		</xsd:simpleType>
+       		</xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:attributeGroup name="NTKRootNodeAttributeGroup">
+    	<!-- Temporarily changed the fixed value to 7 -->
+        <xsd:attribute name="DESVersion" use="required" type="xsd:int" fixed="7" form="qualified" />
+    </xsd:attributeGroup>
+    
+    <xsd:element name="AccessIndividualList">
+        <xsd:complexType>
+            <xsd:sequence minOccurs="1" maxOccurs="unbounded">
+                <xsd:element ref="ntk:AccessIndividual" minOccurs="1" maxOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="AccessIndividual">
+        <xsd:complexType>
+            <xsd:sequence minOccurs="1" maxOccurs="1">
+                <xsd:element ref="ntk:AccessSystemName" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="ntk:AccessIndividualValue" minOccurs="1" maxOccurs="unbounded"/>
+            </xsd:sequence>
+            <xsd:attributeGroup ref="ism:SecurityAttributesGroup"/>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="AccessIndividualValue" type="ntk:StringWithSecurityType"/>
+    
+    
+    <xsd:element name="AccessGroupList">
+        <xsd:complexType>
+            <xsd:sequence minOccurs="1" maxOccurs="1">
+                <xsd:element ref="ntk:AccessGroup" minOccurs="1" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="AccessGroup">
+        <xsd:complexType>
+            <xsd:sequence minOccurs="1" maxOccurs="1">
+                <xsd:element ref="ntk:AccessSystemName" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="ntk:AccessGroupValue" minOccurs="1" maxOccurs="unbounded"/>
+            </xsd:sequence>
+            <xsd:attributeGroup ref="ism:SecurityAttributesGroup"/>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="AccessGroupValue" type="ntk:StringWithSecurityType"/>
+    
+    <xsd:element name="AccessProfileList">
+        <xsd:complexType>
+            <xsd:sequence minOccurs="1" maxOccurs="1">
+                <xsd:element ref="ntk:AccessProfile" minOccurs="1" maxOccurs="unbounded"/>
+            </xsd:sequence>
+            <xsd:attributeGroup ref="ism:SecurityAttributesGroup"/>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="AccessProfile">       
+        <xsd:complexType>
+            <xsd:sequence minOccurs="1" maxOccurs="1">
+                <xsd:element ref="ntk:AccessSystemName" minOccurs="1" maxOccurs="1"/>
+                <xsd:element ref="ntk:AccessProfileValue" minOccurs="1" maxOccurs="unbounded"/>
+            </xsd:sequence>
+            <xsd:attributeGroup ref="ism:SecurityAttributesGroup"/>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="AccessProfileValue">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="ntk:StringWithSecurityType">
+                    <xsd:attribute name="vocabulary" type="xsd:NMTOKEN" use="required" />                    
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="AccessAuthorizationList">
+        <xsd:complexType>
+            <xsd:all minOccurs="1" maxOccurs="1">
+                <xsd:element ref="ntk:AccessIndividualList" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="ntk:AccessGroupList" minOccurs="0" maxOccurs="1"/>
+            </xsd:all>
+            <xsd:attributeGroup ref="ism:SecurityAttributesGroup"/>
+        </xsd:complexType>
+    </xsd:element>
+    
+    <xsd:element name="AccessSystemName" type="ntk:TokenWithSecurityType"/>
+    
+    <xsd:complexType name="TokenWithSecurityType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:NMTOKEN">
+                <xsd:attributeGroup ref="ism:SecurityAttributesGroup"/>
+                <xsd:attributeGroup ref="ntk:CommonAttributesGroup"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="StringWithSecurityType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attributeGroup ref="ism:SecurityAttributesGroup"/>
+                <xsd:attributeGroup ref="ntk:CommonAttributesGroup"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    
+    <!-- Common Attributes Group -->
+    <xsd:attributeGroup name="CommonAttributesGroup">
+        <xsd:attribute name="id" type="xsd:ID" use="optional" />        
+        <xsd:attribute name="IDReference" type="xsd:IDREFS" use="optional" />        
+        <xsd:attribute name="qualifier" type="xsd:string" use="optional" />        
+    </xsd:attributeGroup>
+</xsd:schema>
+
+

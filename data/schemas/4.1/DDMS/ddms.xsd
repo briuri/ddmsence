@@ -14,7 +14,7 @@
    <xs:import namespace="urn:us:gov:ic:common" schemaLocation="../IC-COMMON/IC-Common.xsd" />
    <xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="gml.xsd" />
    <xs:import namespace="urn:us:gov:ic:ism" schemaLocation="../ISM/Temp-ISM-v7Pub.xsd" />
-   <xs:import namespace="urn:us:gov:ic:ntk" schemaLocation="../NTK/Temp-NTK-v5Pub.xsd" />
+   <xs:import namespace="urn:us:gov:ic:ntk" schemaLocation="../NTK/IC-NTK.xsd" />
    <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../XLINK/XLink.xsd" />
    
    <xs:element name="boundingBox" type="BoundingBoxType" />

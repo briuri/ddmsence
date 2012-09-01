@@ -4,7 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:ISM="urn:us:gov:ic:ism" 
 	xmlns:ntk="urn:us:gov:ic:ntk"
-	ntk:DESVersion="5"
+	ntk:DESVersion="7"
 	ISM:resourceElement="true" ISM:DESVersion="7" ISM:createDate="2010-01-21" ISM:classification="U" ISM:ownerProducer="USA">
 	<ddms:metacardInfo ISM:classification="U" ISM:ownerProducer="USA">
 		<ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence:testIdentifier" />

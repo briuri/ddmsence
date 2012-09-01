@@ -283,7 +283,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	 */
 	protected void validateWarnings() {
 		if (getAccess() != null)
-			addSameNamespaceWarning("ntk:Access element");
+			addDdms40Warning("ntk:Access element");
 		
 		super.validateWarnings();
 	}
