@@ -13,7 +13,7 @@
     elementFormDefault="qualified"
     targetNamespace="urn:us:gov:ic:ntk">
 
-    <xsd:import namespace="urn:us:gov:ic:ism" schemaLocation="../ISM/Temp-ISM-v7Pub.xsd"/>
+    <xsd:import namespace="urn:us:gov:ic:ism" schemaLocation="../ISM/IC-ISM.xsd"/>
     
     <xsd:element name="Access">
         <xsd:complexType>

@@ -41,7 +41,8 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 	private static final String TEST_NOTICE_REASON = "noticeReason";
 	private static final String TEST_NOTICE_DATE = "2011-09-15";
 	private static final String TEST_UNREGISTERED_NOTICE_TYPE = "unregisteredNoticeType";
-
+	private static final Boolean TEST_EXTERNAL = Boolean.FALSE;
+	
 	/**
 	 * Constructor
 	 */
@@ -55,8 +56,10 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 	 */
 	public static NoticeAttributes getFixture() {
 		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			Boolean externalNotice = version.isAtLeast("4.1") ? Boolean.FALSE : null;
 			return (new NoticeAttributes(TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE,
-				TEST_UNREGISTERED_NOTICE_TYPE));
+				TEST_UNREGISTERED_NOTICE_TYPE, externalNotice));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -64,6 +67,13 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 		return (null);
 	}
 
+	/**
+	 * Returns a dummy value for the externalNotice attribute, based upon the current DDMS version.
+	 */
+	private static Boolean getExternalNotice() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.1") ? TEST_EXTERNAL : null);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -94,14 +104,15 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 	 * @param noticeReason the reason associated with a notice
 	 * @param noticeDate the date associated with a notice
 	 * @param unregisteredNoticeType a notice type not in the CVE
+	 * @param externalNotice the external notice attribute
 	 * @return a valid object
 	 */
 	private NoticeAttributes getInstance(String message, String noticeType, String noticeReason, String noticeDate,
-		String unregisteredNoticeType) {
+		String unregisteredNoticeType, Boolean externalNotice) {
 		boolean expectFailure = !Util.isEmpty(message);
 		NoticeAttributes attributes = null;
 		try {
-			attributes = new NoticeAttributes(noticeType, noticeReason, noticeDate, unregisteredNoticeType);
+			attributes = new NoticeAttributes(noticeType, noticeReason, noticeDate, unregisteredNoticeType, externalNotice);
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -131,10 +142,11 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
+			getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE,
+				getExternalNotice());
 
 			// No optional fields
-			getInstance(SUCCESS, null, null, null, null);
+			getInstance(SUCCESS, null, null, null, null, getExternalNotice());
 		}
 	}
 
@@ -179,15 +191,15 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 
 			// invalid noticeType
 			getInstance("Unknown is not a valid enumeration token", "Unknown", TEST_NOTICE_REASON, "2001",
-				TEST_UNREGISTERED_NOTICE_TYPE);
+				TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
 
 			// horribly invalid noticeDate
 			getInstance("The ISM:noticeDate attribute is not in a valid date format.", TEST_NOTICE_TYPE,
-				TEST_NOTICE_REASON, "baboon", TEST_UNREGISTERED_NOTICE_TYPE);
+				TEST_NOTICE_REASON, "baboon", TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
 
 			// invalid noticeDate
 			getInstance("The noticeDate attribute must be in the xs:date format", TEST_NOTICE_TYPE, TEST_NOTICE_REASON,
-				"2001", TEST_UNREGISTERED_NOTICE_TYPE);
+				"2001", TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
 
 			StringBuffer longString = new StringBuffer();
 			for (int i = 0; i < NoticeAttributes.MAX_LENGTH / 10 + 1; i++) {
@@ -196,11 +208,11 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 
 			// too long noticeReason
 			getInstance("The noticeReason attribute must be shorter", TEST_NOTICE_TYPE, longString.toString(),
-				TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
+				TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
 
 			// too long unregisteredNoticeType
 			getInstance("The unregisteredNoticeType attribute must be shorter", TEST_NOTICE_TYPE, TEST_NOTICE_REASON,
-				TEST_NOTICE_DATE, longString.toString());
+				TEST_NOTICE_DATE, longString.toString(), getExternalNotice());
 		}
 	}
 
@@ -217,6 +229,15 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testDeprecatedConstructor() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			NoticeAttributes attr = new NoticeAttributes(TEST_NOTICE_TYPE, null, null, null);
+			assertNull(attr.isExternalReference());
+		}
+	}
+	
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -228,7 +249,7 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			getFixture().addTo(element);
 			NoticeAttributes elementAttributes = getInstance(SUCCESS, element);
 			NoticeAttributes dataAttributes = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON,
-				TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE);
+				TEST_NOTICE_DATE, TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
 
 			assertEquals(elementAttributes, elementAttributes);
 			assertEquals(elementAttributes, dataAttributes);
@@ -245,21 +266,26 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			NoticeAttributes expected = getInstance(SUCCESS, element);
 
 			NoticeAttributes test = getInstance(SUCCESS, "DoD-Dist-C", TEST_NOTICE_REASON, TEST_NOTICE_DATE,
-				TEST_UNREGISTERED_NOTICE_TYPE);
+				TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
 			assertFalse(expected.equals(test));
 
 			test = getInstance(SUCCESS, TEST_NOTICE_TYPE, DIFFERENT_VALUE, TEST_NOTICE_DATE,
-				TEST_UNREGISTERED_NOTICE_TYPE);
+				TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
 			assertFalse(expected.equals(test));
 
 			test = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, "2011-08-15",
-				TEST_UNREGISTERED_NOTICE_TYPE);
+				TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
 			assertFalse(expected.equals(test));
 
-			test = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, DIFFERENT_VALUE);
+			test = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, DIFFERENT_VALUE, getExternalNotice());
 			assertFalse(expected.equals(test));
+			
+			if (version.isAtLeast("4.1")) {
+				test = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE,
+					TEST_UNREGISTERED_NOTICE_TYPE, null);
+				assertFalse(expected.equals(test));
+			}
 		}
-
 	}
 
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
@@ -316,9 +342,9 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeAttributes dataAttributes = getInstance(SUCCESS, null, null, null, null);
+			NoticeAttributes dataAttributes = getInstance(SUCCESS, null, null, null, null, null);
 			assertTrue(dataAttributes.isEmpty());
-			dataAttributes = getInstance(SUCCESS, null, null, null, TEST_UNREGISTERED_NOTICE_TYPE);
+			dataAttributes = getInstance(SUCCESS, null, null, null, TEST_UNREGISTERED_NOTICE_TYPE, null);
 			assertFalse(dataAttributes.isEmpty());
 		}
 	}
@@ -327,7 +353,7 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			NoticeAttributes dataAttributes = getInstance(SUCCESS, null, null, "2005-10-10", null);
+			NoticeAttributes dataAttributes = getInstance(SUCCESS, null, null, "2005-10-10", null, null);
 			assertEquals(buildOutput(true, "noticeDate", "2005-10-10"), dataAttributes.getOutput(true, ""));
 			assertEquals(buildOutput(false, "noticeDate", "2005-10-10"), dataAttributes.getOutput(false, ""));
 		}

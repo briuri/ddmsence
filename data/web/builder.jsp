@@ -156,7 +156,7 @@
 		form.elements['security.securityAttributes.ownerProducers'].value = 'USA';
 		form.elements['resourceElement'].checked = true;
 		form.elements['createDate'].value = '2010-01-21';
-		form.elements['ismDESVersion'].value = '7';
+		form.elements['ismDESVersion'].value = '9';
 		form.elements['ntkDESVersion'].value = '7';
 		form.elements['securityAttributes.classification'].value = 'U';
 		form.elements['securityAttributes.ownerProducers'].value = 'USA';

@@ -143,6 +143,9 @@ public class NoticeTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, "notice.noticeReason", "noticeReason"));
 		text.append(buildOutput(isHTML, "notice.noticeDate", "2011-09-15"));
 		text.append(buildOutput(isHTML, "notice.unregisteredNoticeType", "unregisteredNoticeType"));
+		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
+			text.append(buildOutput(isHTML, "notice.externalNotice", "false"));	
+		}
 		return (text.toString());
 	}
 
@@ -153,7 +156,11 @@ public class NoticeTest extends AbstractBaseTestCase {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ISM:Notice ").append(getXmlnsISM()).append(" ");
 		xml.append("ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
-		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
+		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
+			xml.append(" ISM:externalNotice=\"false\"");	
+		}
+		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText></ISM:Notice>");
 		return (xml.toString());
 	}
@@ -216,11 +223,21 @@ public class NoticeTest extends AbstractBaseTestCase {
 
 	public void testWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			// No warnings
 			Notice component = getInstance(SUCCESS, getFixtureElement());
-			assertEquals(0, component.getValidationWarnings().size());
+			
+			// 4.1 ism:Notice used
+			if (version.isAtLeast("4.1")) {
+				assertEquals(1, component.getValidationWarnings().size());	
+				String text = "The ISM:externalNotice attribute in this DDMS component";
+				String locator = "ISM:Notice";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
+			// No warnings 
+			else {
+				assertEquals(0, component.getValidationWarnings().size());
+			}
 		}
 	}
 

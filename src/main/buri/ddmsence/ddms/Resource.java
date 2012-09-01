@@ -769,12 +769,16 @@ public final class Resource extends AbstractBaseComponent {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
+	 * <li>An externalNotice attribute may cause issues for DDMS 4.0 records.</li>
 	 * <li>Add any warnings from the notice attributes.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (!getNoticeAttributes().isEmpty())
+		if (!getNoticeAttributes().isEmpty()) {
 			addWarnings(getNoticeAttributes().getValidationWarnings(), true);
+			if (getNoticeAttributes().isExternalReference() != null)
+				addDdms40Warning("ISM:externalNotice attribute");
+		}
 		super.validateWarnings();
 	}
 		

@@ -38,6 +38,7 @@ import buri.ddmsence.util.Util;
 public class AccessTest extends AbstractBaseTestCase {
 
 	private static final Boolean TEST_EXTERNAL = Boolean.TRUE;
+	
 	/**
 	 * Constructor
 	 */
