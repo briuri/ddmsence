@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Represents a single ddms:subtitle element, for unit testing -->
-<ddms:subtitle 
-	xmlns:ddms="urn:us:mil:ces:metadata:ddms:4"
-	xmlns:ISM="urn:us:gov:ic:ism"
-	ISM:classification="U"
-	ISM:ownerProducer="USA">Version 0.1</ddms:subtitle>

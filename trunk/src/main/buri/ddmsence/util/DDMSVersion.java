@@ -67,8 +67,8 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
  * </p>
  * 
  * <p>Because DDMS 4.1 uses the same XML namespace as DDMS 4.0, resolving the XML namespace to a version
- * will always return 4.1 (because it is newer). You can still force the use of DDMS 4.0 specifically via 
- * <code>setCurrentVersion()</code>.</p>
+ * will always return 4.1 (because it is newer). 4.0.1 is now an alias for 4.1, and warnings will appear when
+ * using new 4.1 components.</p>
  * 
  * <p>
  * This class is intended for use in a single-threaded environment.
@@ -232,15 +232,18 @@ public class DDMSVersion {
 	}
 	
 	/**
-	 * Treats version 3.0.1 of DDMS as an alias for DDMS 3.0. 3.0.1 is syntactically identical,
-	 * and has the same namespaces and schemas.
+	 * Treats version 3.0.1 of DDMS as an alias for DDMS 3.0, and treats version 4.0.1 as an alias for DDMS 4.1. 
+	 * 3.0.1 is syntactically identical, and has the same namespaces and schemas. 4.0.1 shares the same
+	 * XML namespace as 4.1.
 	 * 
 	 * @param version the raw version
-	 * @return 3.0, if the raw version is 3.0.1. Otherwise, the version.
+	 * @return the aliased version
 	 */
 	private static String aliasVersion(String version) {
 		if ("3.0.1".equals(version))
 			return ("3.0");
+		if ("4.0.1".equals(version))
+			return ("4.1");
 		return (version);
 	}
 	

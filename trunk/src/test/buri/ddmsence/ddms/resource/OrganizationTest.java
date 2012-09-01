@@ -331,8 +331,8 @@ public class OrganizationTest extends AbstractBaseTestCase {
 	}
 
 	public void testWrongVersionAcronym() {
-		DDMSVersion.setCurrentVersion("4.0.1");
-		Organization component = getInstance(SUCCESS, getValidElement("4.0.1"));
+		DDMSVersion.setCurrentVersion("4.1");
+		Organization component = getInstance(SUCCESS, getValidElement("4.1"));
 		Organization.Builder builder = new Organization.Builder(component);
 		builder.getSubOrganizations().clear();
 		try {

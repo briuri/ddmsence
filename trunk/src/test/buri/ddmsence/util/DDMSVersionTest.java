@@ -139,10 +139,6 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		assertEquals("/schemas/3.0/DDMS/gml.xsd", version.getGmlSchema());
 		assertEquals("urn:us:gov:ic:ism", version.getIsmNamespace());
 		assertEquals("/schemas/3.0/ISM/CVE/", version.getIsmCveLocation());
-
-		version = DDMSVersion.setCurrentVersion("4.0.1");
-		assertEquals("urn:us:gov:ic:ntk", version.getNtkNamespace());
-		assertEquals("/schemas/4.0.1/NTK/IC-NTK.xsd", version.getNtkSchema());
 		
 		version = DDMSVersion.setCurrentVersion("4.1");
 		assertEquals("urn:us:gov:ic:ntk", version.getNtkNamespace());
@@ -177,13 +173,6 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		assertTrue(DDMSVersion.getVersionFor("3.1").isAtLeast("3.1"));
 		assertFalse(DDMSVersion.getVersionFor("3.1").isAtLeast("4.0.1"));
 		assertFalse(DDMSVersion.getVersionFor("3.1").isAtLeast("4.1"));
-
-		assertTrue(DDMSVersion.getVersionFor("4.0.1").isAtLeast("2.0"));
-		assertTrue(DDMSVersion.getVersionFor("4.0.1").isAtLeast("3.0"));
-		assertTrue(DDMSVersion.getVersionFor("4.0.1").isAtLeast("3.0.1"));
-		assertTrue(DDMSVersion.getVersionFor("4.0.1").isAtLeast("3.1"));
-		assertTrue(DDMSVersion.getVersionFor("4.0.1").isAtLeast("4.0.1"));
-		assertFalse(DDMSVersion.getVersionFor("4.0.1").isAtLeast("4.1"));
 
 		assertTrue(DDMSVersion.getVersionFor("4.1").isAtLeast("2.0"));
 		assertTrue(DDMSVersion.getVersionFor("4.1").isAtLeast("3.0"));
