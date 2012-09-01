@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--  Represents a single ddms:keyword element, for unit testing -->
-<ddms:keyword
-	xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" 
-	xmlns:ISM="urn:us:gov:ic:ism"
-	ddms:value="Tornado" 
-	ISM:classification="U"
-	ISM:ownerProducer="USA" />
