@@ -24,7 +24,8 @@ I have also included a <code>.project</code> file if you wish to import the proj
 
 <h1>Latest Release: v2.1.0</h1>
 
-<p>Version <b>2.1.0</b> (XX/XX/2012) is a stable release, which adds support for DDMS 4.1. It is backwards compatible with 2.0.0.</p>
+<p>Version <b>2.1.0</b> (XX/XX/2012) is a stable release, which adds support for DDMS 4.1. It is backwards compatible with 2.0.0. Because DDMS 4.1 shares an XML namespace with DDMS 4.0.1,
+older 4.0.1 metacards are validated against the DDMS 4.1 schemas in this release.</p>
 
 <ul>
 <li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.1.0.zip"><code>ddmsence-bin-2.1.0.zip</code></a></b> (X.X MB, compiled with JDK1.6.0_25, source level 1.5)</li>

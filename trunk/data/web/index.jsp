@@ -82,7 +82,9 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
-	<div class="newsUpdate"><u>XX/XX/2012</u>: Development on v2.1.0 is complete! v2.1.0 will support DDMS 4.1, and will be released once the "Public Release" versions of IC-ISM and IC-NTK are available to be bundled with DDMSence.</div>
+	<div class="newsUpdate"><u>09/01/2012</u>: Development on v2.1.0 is complete! v2.1.0 will support DDMS 4.1, and will be released once the "Public Release" versions of 
+		<a href="http://www.dni.gov/index.php/about/organization/chief-information-officer/information-security-marking-metadata" target="_new">IC-ISM V9</a> and 
+		<a href="http://www.dni.gov/index.php/about/organization/chief-information-officer/need-to-know-metadata" target="_new">IC-NTK V7</a> are available to be bundled with DDMSence.</div>
 	<div class="newsUpdate"><u>12/01/2011</u>: <a href="downloads.jsp">v2.0.0</a> released, adding support for DDMS 4.0.1.</div>
 	<div class="newsUpdate"><u>10/20/2011</u>: I gave a briefing on DDMSence at the <a href="https://metadata.ces.mil/dse/documents/DoDMWG/2011/10/index.html">DoD Metadata Working Group Meeting</a> on October 20 in Columbia, MD.</div>
 	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
@@ -157,8 +159,8 @@ It transforms XML DDMS Resources (metacards) into a Java object model (using XOM
 <h1>About the Author</h1>
 
 <p><img src="./images/BU.jpg" width="73" height="100" title="BU" class="bordered" align="left" />
-<b><a href="http://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a Technical Lead at <a href="http://www.fgm.com/" target="_new">FGM, Inc.</a> 
-in Reston, Virginia. He has been involved in the development and support of the <a href="http://metadata.ces.mil/" target="_new">DoD Metadata Registry</a>
+<b><a href="http://www.linkedin.com/in/urizone">Brian Uri!</a></b> is a Technical Lead at <a href="http://www.fgm.com/" target="_new">Novetta Solutions</a> 
+in Reston, Virginia. He has been involved in the development and support of the <a href="http://metadata.ces.mil/" target="_new">DoD Data Services Environment</a>
 and other enterprise services since the inception of the Net-Centric Enterprise Services (NCES) program in 2005. He currently supports the Defense
 Information Systems Agency (DISA) in its role as the Technical Agent for Universal Core (UCore). DDMSence was conceived in January 2010 and
 grew out of Brian's desire to gain more practical XML Schema experience, to write something useful which had never been done before, and an 
