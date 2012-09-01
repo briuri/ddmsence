@@ -67,7 +67,7 @@ creator.phone[1]: 703-885-1000</pre>
 <p class="figure">Figure 3. The Text output of this creator when output.indexLevel is 2</p>
 
 <p>Indices are off by default, since this is not a part of the official specification. However, I recently submitted a Change Request to the DDMS team for this system of handling multiples,
-so it might be addressed in the future.</p>
+so it might be accepted in the future.</p>
 
 <p>
 	<a href="#top">Back to Top</a><br>

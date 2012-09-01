@@ -252,7 +252,7 @@ traversed and queried in the same manner, without requiring too much knowledge o
 	<li><a href="documentation-schematron.jsp">Schematron Validation</a>: Explains the process for using custom Schematron files with DDMSence, and provides example
 	code for using the official ISM.XML Schematron files.</li><br />
 
-	<li><a href="documentation-differentIsm.jsp">Using Alternate Versions of ISM</a>: Shows how to use a local set of ISM schemas and CVE files instead of the files bundled with DDMSence.</li><br />
+	<li><a href="documentation-differentIsm.jsp">Using Alternate Versions of ISM/NTK</a>: Shows how to use a local set of ISM/NTK schemas and CVE files instead of the files bundled with DDMSence.</li><br />
 
 	<li><a href="documentation-configuration.jsp">Configurable Properties</a>: Identifies DDMSence properties which can be changed at runtime.</li><br />
 

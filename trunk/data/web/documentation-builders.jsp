@@ -92,7 +92,7 @@ DDMSVersion.setCurrentVersion("3.1");
 Resource my31Resource = builder.commit();</pre>
 <p class="figure">Figure 6. Transforming a DDMS 3.0 metacard with the Builder Framework</p>
 
-<p>And finally, this code sample will add the required fields to a 3.1 metacard that will make it valid in 4.0.</p>
+<p>This code sample will add the required fields to a 3.1 metacard that will make it valid in 4.0.1.</p>
 
 <pre class="brush: java">Resource.Builder builder = new Resource.Builder(my31Resource);
 builder.setNtkDESVersion(new Integer(5));
@@ -102,9 +102,18 @@ builder.getMetacardInfo().getIdentifiers().get(0).setValue("value");
 builder.getMetacardInfo().getDates().setCreated("2011-09-25");
 builder.getMetacardInfo().getPublishers().get(0).setEntityType("organization");
 builder.getMetacardInfo().getPublishers().get(0).getOrganization().setNames(Util.getXsListAsList("DISA"));
-DDMSVersion.setCurrentVersion("4.0");
-Resource my31Resource = builder.commit();</pre>
+DDMSVersion.setCurrentVersion("4.0.1");
+Resource my401Resource = builder.commit();</pre>
 <p class="figure">Figure 7. Transforming a DDMS 3.1 metacard with the Builder Framework</p>
+
+<p>Finally, this code sample will add the required fields to a 4.0.1 metacard that will make it valid in 4.1.</p>
+
+<pre class="brush: java">Resource.Builder builder = new Resource.Builder(my31Resource);
+builder.setNtkDESVersion(new Integer(7));
+builder.setIsmDESVersion(new Integer(9));
+DDMSVersion.setCurrentVersion("4.1");
+Resource my41Resource = builder.commit();</pre>
+<p class="figure">Figure 7. Transforming a DDMS 4.0.1 metacard with the Builder Framework</p>
 
 <h2>Builders as Form Beans</h2>
 

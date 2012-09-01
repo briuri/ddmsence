@@ -88,7 +88,48 @@ Unknown unknown = new Unknown(names, null, null);</pre>
 <p>If you have a set of DDMS metacards from an older version of DDMS and wish to transform them to a newer version, you can do so with the <a href="documentation-builders.jsp">Component
 Builder</a> framework. Builders allow you to load the old metacard, add any new fields that are required, and save it in the new version.</p>
 
+
+<h2>DDMS 3.0.1</h2>
+
+<p>DDMS release 3.0.1 was merely a documentation release which clarified some of the supporting documentation on geospatial elements. Because none of the 
+schemas or components themselves were updated, 3.0.1 reuses all of the same technical information from 3.0 (including XML namespaces). DDMSence treats 3.0.1 as an alias 
+for DDMS 3.0 -- you can set your DDMS version to 3.0.1, but DDMSence will continue to use DDMS 3.0 artifacts.</p>
+
+<pre class="brush: java">DDMSVersion.setCurrentVersion("3.0.1");
+System.out.println(DDMSVersion.getCurrentVersion().getVersion());
+</pre>
+<p class="figure">Figure 8. This code will print out "3.0".</p>
+
+<h2>DDMS 4.0</h2>
+
+<p>DDMS 4.0 was released in September 2011 with an oversight on the technical implementation of the <code>pocType</code> attribute on producer roles. DDMS 4.0
+contained a <code>ddms:POCType</code> attribute for this, but it was soon determined by the IC that this would break IRM instances. DDMS 4.0.1 was quickly released a month
+later and employs <code>ISM:pocType</code> instead.</p>
+
+<p>Although this change (removing the old attribute and adding a new one) breaks backwards compatibility, the decision was made to reuse the DDMS 4.0
+XML namespace, given that the adoption of DDMS 4.0 was assumed to be relatively low. Because DDMS 4.0 is considered to be "broken", I have elected not to
+support it in DDMSence.</p>
+ 
+<h2>DDMS 4.0.1</h2>
+
+<p>DDMS 4.0.1 was released in November 2011. It shares the same XML namespace as DDMS 4.1, and unfortunately DDMS offers no mechanism to tell the difference
+between 4.0.1 instances and 4.1 instances. Because of this, all instances with the shared XML namespace will be validated against 4.1 schemas. In cases where
+new 4.1 elements or attributes are found in the XML instance, DDMSence will provide warnings that the instance might not be parseable by a DDMS 4.0 system.</p>
+ 
+<h2>Tables of Differences</h2>
+
 <p>The tables below identify the key differences between supported versions of DDMS components in DDMSence.</p>
+
+<ul>
+	<li><a href="#20to30">DDMS 2.0 to 3.0</a></li>
+	<li><a href="#30to31">DDMS 3.0 to 3.1</a></li>
+	<li><a href="#31to401">DDMS 3.1 to 4.0.1</a></li>
+	<li><a href="#401to41">DDMS 4.0.1 to 4.1</a></li>
+	<li><a href="#ismSecurity">ISM Security Attributes</li>
+	<li><a href="#ismNotice">ISM Notice Attributes</li>
+</ul>
+	
+<a name="20to30"></a>
 <table width="100%">
 <tr><th width="36%">Component</th><th width="32%">DDMS 2.0 Notes</th><th width="32%">DDMS 3.0 Notes</th></tr>
 <tr><td>XML Namespace</td><td><code>http://metadata.dod.mil/mdr/ns/DDMS/2.0/</code></td><td>Changed to <code>http://metadata.dod.mil/mdr/ns/DDMS/3.0/</code></td></tr>
@@ -109,6 +150,7 @@ Builder</a> framework. Builders allow you to load the old metacard, add any new 
 <p class="figure">Table 1. Component changes from DDMS 2.0 to DDMS 3.0</p>
 <br /><br />
 
+<a name="30to31"></a>
 <table width="100%">
 <tr><th width="36%">Component</th><th width="32%">DDMS 3.0 Notes</th><th width="32%">DDMS 3.1 Notes</th></tr>
 <tr><td>XML Namespace</td><td><code>http://metadata.dod.mil/mdr/ns/DDMS/3.0/</code></td><td>Changed to <code>http://metadata.dod.mil/mdr/ns/DDMS/3.1/</code></td></tr>
@@ -119,6 +161,7 @@ Builder</a> framework. Builders allow you to load the old metacard, add any new 
 <p class="figure">Table 2. Component changes from DDMS 3.0 to DDMS 3.1</p>
 <br /><br />
 
+<a name="31to401"></a>
 <table width="100%">
 <tr><th width="36%">Component</th><th width="32%">DDMS 3.1 Notes</th><th width="32%">DDMS 4.0.1 Notes</th></tr>
 <tr><td>XML Namespace</td><td><code>http://metadata.dod.mil/mdr/ns/DDMS/3.1/</code></td><td>Changed to <code>urn:us:mil:ces:metadata:ddms:4</code></td></tr>
@@ -163,60 +206,71 @@ Builder</a> framework. Builders allow you to load the old metacard, add any new 
 <p class="figure">Table 3. Component changes from DDMS 3.1 to DDMS 4.0.1</p>
 <br /><br />
 
+<a name="401to41"></a>
+<table width="100%">
+<tr><th width="36%">Component</th><th width="32%">DDMS 4.0.1 Notes</th><th width="32%">DDMS 4.1 Notes</th></tr>
+<tr><td>XML Namespace</td><td><code>urn:us:mil:ces:metadata:ddms:4</code></td><td>Remains the same.</td></tr>
+<tr><td><code>ddms:dates/ddms:acquiredOn</code></td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:metacardInfo/ntk:Access</code></td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:nonStateActor/@ddms:qualifier</code></td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:nonStateActor/@ddms:qualifier</code></td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:resource/@ISM:DESVersion</td><td>Required. DESVersion must be 7.</td><td>Required. DESVersion must be 9.</td></tr>
+<tr><td><code>ddms:resource/@NTK:DESVersion</td><td>Required. DESVersion must be 5.</td><td>Required. DESVersion must be 7.</td></tr>
+<tr><td><code>ddms:resource/@ism:externalNotice</code></td><td>Unsupported, but can exist as extensible attributes.</td><td>Optional.</td></tr>
+<tr><td><code>ddms:temporalCoverage/ddms:approximableStart<br />ddms:temporalCoverage/ddms:approximableEnd</code></td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ism:Notice/@ism:externalNotice</code></td><td>Cannot exist.</td><td>Optional.</td></tr>
+<tr><td><code>ntk:Access/@ntk:externalReference</code></td><td>Cannot exist.</td><td>Optional.</td></tr>
+</table>
+<p class="figure">Table 4. Component changes from DDMS 4.0.1 to DDMS 4.1</p>
+<br /><br />
+
+<a name="ismSecurity"></a>
 <p>The table below lists the complete set of ISM security attributes modeled by the <a href="/docs/index.html?buri/ddmsence/ddms/security/ism/SecurityAttributes.html">SecurityAttributes</a> class, 
 and shows which attributes can be used with each version of DDMS.</p>
 
 <table>
-<tr><th>Attribute</th><th>DDMS 2.0 (ISM V2-PR)</th><th>DDMS 3.0 (ISM V2)</th><th>DDMS 3.1 (ISM V5)</th><th>DDMS 4.0.1 (ISM V7)</tr>
-<tr><td><code>@ISM:atomicEnergyMarkings</code></td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:classification</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:classificationReason</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:classifiedBy</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:compilationReason</code></td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:dateOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td></tr>
-<tr><td><code>@ISM:declassDate</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:declassEvent</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:declassException</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:declassManualReview</code></td><td>Yes</td><td>No</td><td>No</td><td>No</td></tr>
-<tr><td><code>@ISM:derivativelyClassifiedBy</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:derivedFrom</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:displayOnlyTo</code></td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:disseminationControls</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:FGIsourceOpen</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:FGIsourceProtected</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:nonICmarkings</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:nonUSControls</code></td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:noticeType</code></td><td>No</td><td>No</td><td>No</td><td>Yes</td></tr>
-<tr><td><code>@ISM:ownerProducer</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:pocType</code></td><td>No</td><td>No</td><td>No</td><td>Yes</td></tr>
-<tr><td><code>@ISM:releasableTo</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:SARIdentifier</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:SCIcontrols</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
-<tr><td><code>@ISM:typeOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td></tr></table>
-<p class="figure">Table 4. Security Attribute changes from DDMS 2.0 to DDMS 4.0.1</p>
+<tr><th>Attribute</th><th>DDMS 2.0 (ISM V2-PR)</th><th>DDMS 3.0 (ISM V2)</th><th>DDMS 3.1 (ISM V5)</th><th>DDMS 4.0.1 (ISM V7)</th><th>DDMS 4.1 (ISM V9)</th></tr>
+<tr><td><code>@ISM:atomicEnergyMarkings</code></td><td>No</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:classification</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:classificationReason</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:classifiedBy</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:compilationReason</code></td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:dateOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td><td>No</td></tr>
+<tr><td><code>@ISM:declassDate</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:declassEvent</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:declassException</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:declassManualReview</code></td><td>Yes</td><td>No</td><td>No</td><td>No</td><td>No</td></tr>
+<tr><td><code>@ISM:derivativelyClassifiedBy</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:derivedFrom</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:displayOnlyTo</code></td><td>No</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:disseminationControls</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:FGIsourceOpen</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:FGIsourceProtected</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:nonICmarkings</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:nonUSControls</code></td><td>No</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:noticeType</code></td><td>No</td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:ownerProducer</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:pocType</code></td><td>No</td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:releasableTo</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:SARIdentifier</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:SCIcontrols</code></td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:typeOfExemptedSource</code></td><td>Yes</td><td>Yes</td><td>No</td><td>No</td><td>No</td></tr></table>
+<p class="figure">Table 5. Security Attribute changes from DDMS 2.0 to DDMS 4.1</p>
 
+<a name="ismNotice"></a>
+<p>The table below lists the complete set of ISM notice attributes modeled by the <a href="/docs/index.html?buri/ddmsence/ddms/security/ism/NoticeAttributes.html">NoticeAttributes</a> class, 
+and shows which attributes can be used with each version of DDMS. These attributes were first introduced in DDMS 4.0.1.</p>
 
-<h2>DDMS 3.0.1</h2>
+<table>
+<tr><th>Attribute</th><th>DDMS 4.0.1 (ISM V7)</th><th>DDMS 4.1 (ISM V9)</th></tr>
+<tr><td><code>@ISM:noticeType</code></td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:noticeReason</code></td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:noticeDate</code></td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:unregisteredNoticeType</code></td><td>Yes</td><td>Yes</td></tr>
+<tr><td><code>@ISM:externalNotice</code></td><td>No</td><td>Yes</td></tr></table>
 
-<p>DDMS release 3.0.1 was merely a documentation release which clarified some of the supporting documentation on geospatial elements. Because none of the 
-schemas or components themselves were updated, 3.0.1 reuses all of the same technical information from 3.0 (including XML namespaces). DDMSence treats 3.0.1 as an alias 
-for DDMS 3.0 -- you can set your DDMS version to 3.0.1, but DDMSence will continue to use DDMS 3.0 artifacts.</p>
+<p class="figure">Table 6. Security Attribute changes from DDMS 4.0.1 to DDMS 4.1</p>
 
-<pre class="brush: java">DDMSVersion.setCurrentVersion("3.0.1");
-System.out.println(DDMSVersion.getCurrentVersion().getVersion());
-</pre>
-<p class="figure">Figure 8. This code will print out "3.0".</p>
-
-<h2>DDMS 4.0</h2>
-
-<p>DDMS 4.0 was released in September 2011 with an oversight on the technical implementation of the <code>pocType</code> attribute on producer roles. DDMS 4.0
-contained a <code>ddms:POCType</code> attribute for this, but it was soon determined by the IC that this would break IRM instances. DDMS 4.0.1 was quickly released a month
-later and employs <code>ISM:pocType</code> instead.</p>
-
-<p>Although this change (removing the old attribute and adding a new one) breaks backwards compatibility, the decision was made to reuse the DDMS 4.0
-XML namespace, given that the adoption of DDMS 4.0 was assumed to be relatively low. Because DDMS 4.0 is considered to be "broken", I have elected not to
-support it in DDMSence.</p>
- 
 <p>
 	<a href="#top">Back to Top</a><br>
 	<a href="documentation.jsp#tips">Back to Power Tips</a>

@@ -106,7 +106,8 @@ Message: [ISM-ID-00100][Error] If ISM-CAPCO-RESOURCE and attribute ownerProducer
 
 <p>DDMSence comes bundled with Saxon Home Edition (v9.4.0.4) because it supports both XSLT1 and XSLT2 transformations. Support for alternate engines is provided through the 
 <code>xml.transform.TransformerFactory</code> configurable property, which can be set to the class name of another processor. Please 
-see the Power Tip on <a href="documentation-configuration.jsp">Configurable Properties</a> for details on how to set this property. The table below lists the engines I have tested with.</p>
+see the Power Tip on <a href="documentation-configuration.jsp">Configurable Properties</a> for details on how to set this property. The table below lists the engines I have tested with.
+None of the engines listed will work with XSLT 2 Schema-Aware (SA) Schematron files.</p>
 
 <table>
 <tr><th>Name and Version</th><th>Class Name</th><th>XSLT1</th><th>XSLT2</th></tr>
