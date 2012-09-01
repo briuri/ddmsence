@@ -44,11 +44,6 @@ import buri.ddmsence.util.Util;
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>The searchable end date cannot be before the searchable start date.</li>
- * </ul>
- * 
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>This component can be used with no description, approximableDate, or searchableDate values.</li>

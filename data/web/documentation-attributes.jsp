@@ -83,12 +83,12 @@ higher classification levels. This restriction will be addressed in a future rel
 by the SecurityAttributes. The <code>ISM:noticeType</code> attribute is validated against a CVE when present.</p>
 
 <pre class="brush: java">// Assume that a list of noticeTexts, and the security attributes were previously created.
-NoticeAttributes noticeAttributes = new NoticeAttributes("POC", "This is a reason.", "2011-09-15", null);
+NoticeAttributes noticeAttributes = new NoticeAttributes("POC", "This is a reason.", "2011-09-15", null, Boolean.TRUE);
 Notice notice = new Notice(noticeTexts, securityAttributes, noticeAttributes);
 System.out.println(notice.toXML());</pre>
 <p class="figure">Figure 6. Code to generate NoticeAttributes</p>
 
-<pre class="brush: xml">&lt;ISM:Notice ISM:noticeType="POC" ISM:noticeReason="This is a reason." ISM:noticeDate="2011-09-15"
+<pre class="brush: xml">&lt;ISM:Notice ISM:noticeType="POC" ISM:noticeReason="This is a reason." ISM:noticeDate="2011-09-15" ISM:externalNotice="true"
    ISM:classification="U" ISM:ownerProducer="USA"&gt;
    [...]
 &lt;/ISM:Notice&gt;</pre>

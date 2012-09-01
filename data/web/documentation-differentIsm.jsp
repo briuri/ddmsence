@@ -1,25 +1,25 @@
 <html>
 <head>
-	<title>DDMSence: Power Tip - Using Alternate Versions of ISM</title>
+	<title>DDMSence: Power Tip - Using Alternate Versions of ISM/NTK</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="An open source Java library for the DoD Discovery Metadata Specification (DDMS)">
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<a name="top"></a><h1>Power Tip: Using Alternate Versions of ISM</h1>
+<a name="top"></a><h1>Power Tip: Using Alternate Versions of ISM/NTK</h1>
 
-<p>DDMSence comes bundled with the Public Release versions of the IC Information Security Marking (ISM) schemas, which allows them to be distributed without
-caveat on the public Internet. For many developers, this should be sufficient. However, some developers may need to make use of ISM values from higher 
-classification versions of ISM (such as the FOUO version). The instructions below show you how to replace the bundled ISM files from one of the supported
-versions of DDMS with your own copies.</p> 
+<p>DDMSence comes bundled with the Public Release versions of the IC Information Security Marking (ISM) and Need-to-Know Metadata (NTK) schemas, which allows them to be distributed without
+caveat on the public Internet. For many developers, this should be sufficient. However, some developers may need to make use of values from higher 
+classification versions of ISM/NTK (such as the FOUO version). The instructions below show you how to replace the bundled ISM files from one of the supported
+versions of DDMS with your own copies. The same pattern can be applied to the NTK schema.</p> 
 
 <h2>Restrictions</h2>
 <img src="./images/ismDirectory.png" width="344" height="327" title="ISM Directory Structure" align="right" border="1"/>
 <ol>
 <li>These instructions assume that you are updating from a Public Release to a more restricted release, and are NOT changing ISM versions altogether. Please 
-remember that each DDMS version identifies one specific supported version of ISM. For example, in DDMS 4.0.1, replacing ISM.XML V7 Public Release 
-with ISM.XML V7 FOUO is supported, but replacing it with ISM.XML V4 FOUO may have unexpected side effects or simply fail to work.</li>
+remember that each DDMS version identifies one specific supported version of ISM. For example, in DDMS 4.1, replacing ISM.XML V9 Public Release 
+with ISM.XML V9 FOUO is supported, but replacing it with ISM.XML V4 FOUO may have unexpected side effects or simply fail to work.</li>
 <li>Out of the box, DDMSence only contains files cleared for Public Release. Using restricted files with DDMSence does not absolve you of your responsibility for
 obeying all handling and dissemination instructions on those files. Do not proceed unless you are comfortable with this responsibility.</li>
 </ol>
@@ -27,10 +27,10 @@ obeying all handling and dissemination instructions on those files. Do not proce
 <h2>What You Need</h2>
 
 <ol>
-<li>The top-level ISM schema files, <code>IC-ISM.xsd</code> and <code>CVEGeneratedTypes.xsd</code>. These files might be found in your ISM archive at 
-<code>ISM7/Schema/ISM/</code>.</li>
-<li>The supporting generated CVE schemas. These files might be found at <code>ISM7/Schema/ISM/CVEGenerated/</code>.</li>
-<li>The raw vocabulary files used to create the schemas. These files might be found at <code>ISM7/CVE/ISM/</code>.</li>
+<li>The top-level ISM schema files, <code>IC-ISM.xsd</code> and <code>CVEGeneratedTypes.xsd</code> (the latter schema only exists in earlier versions). 
+These files might be found in your ISM archive at <code>ISM9/Schema/ISM/</code>.</li>
+<li>The supporting generated CVE schemas. These files might be found at <code>ISM9/Schema/ISM/CVEGenerated/</code>.</li>
+<li>The raw vocabulary files used to create the schemas. These files might be found at <code>ISM9/CVE/ISM/</code>.</li>
 </ol>
  
 <h2>Instructions</h2>
@@ -53,10 +53,10 @@ instance should load correctly.</li>
 <h2>Example</h2>
 
 <ol>
-<li>This example shows how you would swap ISM files for DDMS 4.0.1.</li>
+<li>This example shows how you would swap ISM files for DDMS 4.1.</li>
 <li>Let's use the directory, <code>C:\tomcat\shared\classes</code>, as the location for our schemas.</li>
 <li>After following the instructions for creating the directory structure, you should now have a file at 
-<code>C:\tomcat\shared\classes\schemas\4.0.1\ISM\CVE\CVEnumISMClassificationAll.xml</code>.</li>
+<code>C:\tomcat\shared\classes\schemas\4.1\ISM\CVE\CVEnumISMClassificationAll.xml</code>.</li>
 <li>The commands below show how you would add this custom directory into your classpath. It assumes that your classpath was original stored 
 in an the environment variable (<code>DDMSENCE_CLASSPATH</code>), and places the custom directory first. Afterwards, it runs the <u>Essentials</u>
 sample program.</li>
@@ -66,6 +66,11 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
 <p class="figure">Figure 1. Putting your custom directory at the beginning of your classpath, in Windows/DOS</p>
 
 </ol>
+
+<h2>Need-to-Know Metadata (NTK)</h2>
+
+<p>The same instructions can be used to swap NTK versions. There is only a single NTk schema file, <code>IC-NTK.xsd</code> which DDMSence expects to find at
+<code>schemas\&lt;ddmsVersionNumber&gt;/NTK/</code>.</p>
 
 <p>
 	<a href="#top">Back to Top</a><br>

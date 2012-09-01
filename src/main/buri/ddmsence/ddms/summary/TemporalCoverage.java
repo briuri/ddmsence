@@ -61,11 +61,6 @@ import buri.ddmsence.util.Util;
  * </p>
  * 
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
- * <p>DDMSence is stricter than the specification in the following ways:</p>
- * <ul>
- * <li>The end date cannot be before the start date.</li>
- * </ul>
- * 
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>A time period name element can be used with no child text.</li>
