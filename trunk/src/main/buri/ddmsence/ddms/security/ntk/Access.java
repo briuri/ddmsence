@@ -57,6 +57,8 @@ import buri.ddmsence.util.Util;
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * <u>ntk:externalReference</u>: A boolean attribute, true if this Access element describes an external resource (optional, 
+ * starting in DDMS 4.1)<br />
  * <u>{@link SecurityAttributes}</u>:  The classification and ownerProducer attributes are required.
  * </td></tr></table>
  *  
@@ -72,6 +74,7 @@ public final class Access extends AbstractBaseComponent {
 	
 	private static final String INDIVIDUAL_LIST_NAME = "AccessIndividualList";
 	private static final String GROUP_LIST_NAME = "AccessGroupList";
+	private static final String EXTERNAL_REFERENCE_NAME = "externalReference";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -113,6 +116,9 @@ public final class Access extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
+	 * @deprecated A new constructor was added for DDMS 4.1 to support ntk:externalResource. This constructor is preserved for 
+	 * backwards compatibility, but may disappear in the next major release.
+	 * 
 	 * @param individuals a list of individuals
 	 * @param groups a list of groups
 	 * @param profileList the profile list
@@ -121,7 +127,22 @@ public final class Access extends AbstractBaseComponent {
 	 */
 	public Access(List<Individual> individuals, List<Group> groups, ProfileList profileList,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		try {
+		this(individuals, groups, profileList, null, securityAttributes);
+	}
+	
+	/**
+	 * Constructor for creating a component from raw data
+	 * 
+	 * @param individuals a list of individuals
+	 * @param groups a list of groups
+	 * @param profileList the profile list
+	 * @param externalReference a boolean attribute (optional)
+	 * @param securityAttributes security attributes (required)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public Access(List<Individual> individuals, List<Group> groups, ProfileList profileList,
+		Boolean externalReference, SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		try {		
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
 			String ntkNamespace = version.getNtkNamespace();
@@ -150,6 +171,10 @@ public final class Access extends AbstractBaseComponent {
 			}			
 			if (profileList != null)
 				element.appendChild(profileList.getXOMElementCopy());
+			if (externalReference != null) {
+				Util.addAttribute(element, ntkPrefix, EXTERNAL_REFERENCE_NAME, ntkNamespace, String
+					.valueOf(externalReference));
+			}
 			
 			_individuals = individuals;
 			_groups = groups;
@@ -193,11 +218,14 @@ public final class Access extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>No individuals, groups, or profiles are described in this Access element.</li>
+	 * <li>An externalReference attribute may cause issues for DDMS 4.0 records.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
 		if (getIndividuals().isEmpty() && getGroups().isEmpty() && getProfileList() == null)
 			addWarning("An ntk:Access element was found with no individual, group, or profile information.");
+		if (isExternalReference() != null)
+			addDdms40Warning("ntk:externalReference attribute");		
 		super.validateWarnings();
 	}
 		
@@ -211,6 +239,8 @@ public final class Access extends AbstractBaseComponent {
 		text.append(buildOutput(isHTML, localPrefix + "groupList.", getGroups()));
 		if (getProfileList() != null)
 			text.append(getProfileList().getOutput(isHTML, localPrefix, ""));
+		if (isExternalReference() != null)
+			text.append(buildOutput(isHTML, localPrefix + EXTERNAL_REFERENCE_NAME, String.valueOf(isExternalReference())));
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
@@ -232,7 +262,8 @@ public final class Access extends AbstractBaseComponent {
 	public boolean equals(Object obj) {
 		if (!super.equals(obj) || !(obj instanceof Access))
 			return (false);
-		return (true);		
+		Access test = (Access) obj;
+		return (Util.nullEquals(isExternalReference(), test.isExternalReference()));		
 	}
 
 	/**
@@ -268,6 +299,18 @@ public final class Access extends AbstractBaseComponent {
 	}
 
 	/**
+	 * Accessor for the externalReference attribute. This may be null for Access elements before DDMS 4.1.
+	 */
+	public Boolean isExternalReference() {
+		String value = getAttributeValue(EXTERNAL_REFERENCE_NAME, getDDMSVersion().getNtkNamespace());
+		if ("true".equals(value))
+			return (Boolean.TRUE);
+		if ("false".equals(value))
+			return (Boolean.FALSE);
+		return (null);
+	}
+	
+	/**
 	 * Accessor for the Security Attributes. Will always be non-null even if the attributes are not set.
 	 */
 	public SecurityAttributes getSecurityAttributes() {
@@ -286,6 +329,7 @@ public final class Access extends AbstractBaseComponent {
 		private List<Individual.Builder> _individuals;
 		private List<Group.Builder> _groups;
 		private ProfileList.Builder _profileList;
+		private Boolean _externalReference;
 		private SecurityAttributes.Builder _securityAttributes;
 		
 		/**
@@ -303,6 +347,7 @@ public final class Access extends AbstractBaseComponent {
 				getGroups().add(new Group.Builder(group));
 			if (access.getProfileList() != null)
 				setProfileList(new ProfileList.Builder(access.getProfileList()));
+			setExternalReference(access.isExternalReference());
 			setSecurityAttributes(new SecurityAttributes.Builder(access.getSecurityAttributes()));
 		}
 		
@@ -325,7 +370,7 @@ public final class Access extends AbstractBaseComponent {
 					groups.add(component);
 			}
 
-			return (new Access(individuals, groups, getProfileList().commit(), getSecurityAttributes().commit()));
+			return (new Access(individuals, groups, getProfileList().commit(), getExternalReference(), getSecurityAttributes().commit()));
 		}
 
 		/**
@@ -336,8 +381,9 @@ public final class Access extends AbstractBaseComponent {
 			for (IBuilder builder : getIndividuals())
 				hasValueInList = hasValueInList || !builder.isEmpty();
 			for (IBuilder builder : getGroups())
-				hasValueInList = hasValueInList || !builder.isEmpty();			
-			return (!hasValueInList && getProfileList().isEmpty() && getSecurityAttributes().isEmpty());
+				hasValueInList = hasValueInList || !builder.isEmpty();
+			return (!hasValueInList && getProfileList().isEmpty() && getExternalReference() == null 
+				&& getSecurityAttributes().isEmpty());
 		}
 				
 
@@ -373,6 +419,20 @@ public final class Access extends AbstractBaseComponent {
 		 */
 		public void setProfileList(ProfileList.Builder profileList) {
 			_profileList = profileList;
+		}
+		
+		/**
+		 * Accessor for the externalReference attribute
+		 */
+		public Boolean getExternalReference() {
+			return _externalReference;
+		}
+
+		/**
+		 * Accessor for the externalReference attribute
+		 */
+		public void setExternalReference(Boolean externalReference) {
+			_externalReference = externalReference;
 		}
 		
 		/**

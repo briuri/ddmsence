@@ -165,7 +165,7 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	 * 
 	 * @param component a text description of the component that is being warned about
 	 */
-	protected void addSameNamespaceWarning(String component) {
+	protected void addDdms40Warning(String component) {
 		addWarning("The " + component + " in this DDMS component was introduced in a newer version of DDMS that shares "
 			+ "the same XML namespace as an older version of DDMS.");
 	}

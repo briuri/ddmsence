@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--ANY CLASSIFICATION MARKINGS IN THIS INSTANCE DOCUMENT ARE FOR EXAMPLE PURPOSES ONLY, NOT AN ACTUAL INDICATION OF THE DOCUMENT'S CLASSIFICATION, WHICH IS UNCLASSIFIED-->
-<ddms:resource ICISM:resourceElement="true" ICISM:classification="U" ntk:DESVersion="5" ICISM:DESVersion="7" ICISM:createDate="2011-09-14" ICISM:ownerProducer="USA" xmlns:ICISM="urn:us:gov:ic:ism" xmlns:ntk="urn:us:gov:ic:ntk" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:us:mil:ces:metadata:ddms:4 ../schemas/4.0.1/DDMS/ddms.xsd">
+<ddms:resource ICISM:resourceElement="true" ICISM:classification="U" ntk:DESVersion="7" ICISM:DESVersion="7" ICISM:createDate="2011-09-14" ICISM:ownerProducer="USA" xmlns:ICISM="urn:us:gov:ic:ism" xmlns:ntk="urn:us:gov:ic:ntk" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ddms="urn:us:mil:ces:metadata:ddms:4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:us:mil:ces:metadata:ddms:4 ../schemas/4.0.1/DDMS/ddms.xsd">
 	<ddms:metacardInfo>
 		<ddms:identifier ddms:qualifier="http://purl.org/dc/terms/URI" ddms:value="http://www.dod.mil/index.html"/>
 		<ddms:dates ddms:created="2011-08-11" ddms:receivedOn="2011-08-12"/>
@@ -135,7 +135,7 @@
                 </ICISM:NoticeText>
             </ICISM:Notice>
 		</ddms:noticeList>
-		<ntk:Access ICISM:classification="U" ICISM:ownerProducer="USA">
+		<ntk:Access ICISM:classification="U" ICISM:ownerProducer="USA" ntk:externalResource="true">
             <ntk:AccessGroupList>
                 <ntk:AccessGroup ICISM:classification="U" ICISM:ownerProducer="USA">
                     <ntk:AccessSystemName ICISM:classification="U" ICISM:ownerProducer="USA">DIAS</ntk:AccessSystemName>

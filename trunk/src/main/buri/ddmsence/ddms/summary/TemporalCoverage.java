@@ -319,7 +319,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		if (timePeriodName != null && Util.isEmpty(timePeriodName.getValue()))
 			addWarning("A ddms:name element was found with no value. Defaulting to \"" + DEFAULT_VALUE + "\".");
 		if (getApproximableStart() != null || getApproximableEnd() != null)
-			addSameNamespaceWarning("ddms:approximableStart or ddms:approximableEnd element");
+			addDdms40Warning("ddms:approximableStart or ddms:approximableEnd element");
 		super.validateWarnings();
 	}
 	

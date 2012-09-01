@@ -275,7 +275,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			NonStateActor elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			NonStateActor dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_ORDER, getQualifier());
@@ -284,8 +284,10 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 			dataComponent = getInstance(SUCCESS, TEST_VALUE, null, getQualifier());
 			assertFalse(elementComponent.equals(dataComponent));
 			
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ORDER, DIFFERENT_VALUE);
-			assertFalse(elementComponent.equals(dataComponent));
+			if (version.isAtLeast("4.1")) {
+				dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ORDER, DIFFERENT_VALUE);
+				assertFalse(elementComponent.equals(dataComponent));
+			}
 		}
 	}
 
