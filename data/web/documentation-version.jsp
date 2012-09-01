@@ -11,15 +11,15 @@
 
 <h2>Using Alternate Versions</h2>
 
-<p>DDMSence currently supports four versions of DDMS: 2.0, 3.0, 3.1, and 4.0.1. When loading DDMS components from XML files, the 
+<p>DDMSence currently supports five versions of DDMS: 2.0, 3.0, 3.1, 4.0.1, and 4.1. When loading DDMS components from XML files, the 
 DDMSReader class can automatically use the correct version of DDMS based on the XML namespace defined in the file -- you do not need any extra code.</p>
 
-<pre class="brush: java">Resource resource = getReader().getDDMSResource(my40resourceFile);
+<pre class="brush: java">Resource resource = getReader().getDDMSResource(my41resourceFile);
 System.out.println("This metacard was created with DDMS "
    + DDMSVersion.getVersionForNamespace(resource.getNamespace()));</pre>
 <p class="figure">Figure 1. Loading resources from XML files</p>
 
-<pre class="brush: xml">This metacard was created with DDMS 4.0.1</pre>
+<pre class="brush: xml">This metacard was created with DDMS 4.1</pre>
 <p class="figure">Figure 2. Output of the code in Figure 1</p>
 
 <p>When building DDMS components from scratch, the <a href="/docs/index.html?buri/ddmsence/util/DDMSVersion.html">DDMSVersion</a>
@@ -48,29 +48,29 @@ This identifier was created with DDMS 3.0</pre>
 <p>There is an instance of DDMSVersion for each supported version, and this instance contains the specific XML namespaces used for DDMS, GML, 
 NTK, and ISM components. The NTK namespace is new in DDMS 4.0.1, and will be blank in earlier DDMS versions.</p>
 
-<pre class="brush: java">DDMSVersion version = DDMSVersion.setCurrentVersion("4.0.1");
+<pre class="brush: java">DDMSVersion version = DDMSVersion.setCurrentVersion("4.1");
 System.out.println("In DDMS " + version.getVersion() + ", the following namespaces are used: ");
 System.out.println("ddms: " + version.getNamespace());
 System.out.println("gml: " + version.getGmlNamespace());
 System.out.println("ISM: " + version.getIsmNamespace());
 System.out.println("ntk: " + version.getNtkNamespace());
 System.out.println("xlink: " + version.getXlinkNamespace());
-System.out.println("Are we using DDMS 4.0.1? " + DDMSVersion.isCurrentVersion("4.0.1"));
+System.out.println("Are we using DDMS 4.1? " + DDMSVersion.isCurrentVersion("4.1"));
 System.out.println("Can we use components that were introduced in DDMS 3.1? " + version.isAtLeast("3.1"));</pre>
 <p class="figure">Figure 5. Learning details of the current DDMSVersion</p>
 
-<pre class="brush: xml">In DDMS 4.0.1, the following namespaces are used: 
+<pre class="brush: xml">In DDMS 4.1, the following namespaces are used: 
 ddms: urn:us:mil:ces:metadata:ddms:4
 gml: http://www.opengis.net/gml/3.2
 ISM: urn:us:gov:ic:ism
 ntk: urn:us:gov:ic:ntk
 xlink: http://www.w3.org/1999/xlink
-Are we using DDMS 4.0.1? true
+Are we using DDMS 4.1? true
 Can we use components that were introduced in DDMS 3.1? true</pre>
 <p class="figure">Figure 6. Output of the code in Figure 5</p>
 
 <p>Calling <code>DDMSVersion.setCurrentVersion("2.0")</code> will make any components you create from that point on obey DDMS 2.0 
-validation rules. The default version if you never call this method is "4.0.1" (but you should always explicitly set the current version yourself,
+validation rules. The default version if you never call this method is "4.1" (but you should always explicitly set the current version yourself,
 because this default changes as new versions of DDMS are released). The version is maintained as a static variable, so this 
 is not a thread-safe approach, but I believe that the most common use cases will deal with DDMS components of a single version at a time,
 and I wanted the versioning mechanism to be as unobtrusive as possible.</p>
