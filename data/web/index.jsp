@@ -82,11 +82,13 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
-	<div class="newsUpdate"><u>09/01/2012</u>: Development on v2.1.0 is complete! v2.1.0 will support DDMS 4.1, and will be released once the "Public Release" versions of 
+	<div class="newsUpdate"><u>12/31/2012</u>: I am still waiting for the "Public Release" versions of 
 		<a href="http://www.dni.gov/index.php/about/organization/chief-information-officer/information-security-marking-metadata" target="_new">IC-ISM V9</a> and 
-		<a href="http://www.dni.gov/index.php/about/organization/chief-information-officer/need-to-know-metadata" target="_new">IC-NTK V7</a> are available to be bundled with DDMSence.</div>
+		<a href="http://www.dni.gov/index.php/about/organization/chief-information-officer/need-to-know-metadata" target="_new">IC-NTK V7</a> to become available, so I can release v2.1.0.</div>
+
+	<div class="newsUpdate"><u>09/01/2012</u>: Development on v2.1.0 is complete! v2.1.0 will support DDMS 4.1 when released.</div>
 	<div class="newsUpdate"><u>12/01/2011</u>: <a href="downloads.jsp">v2.0.0</a> released, adding support for DDMS 4.0.1.</div>
-	<div class="newsUpdate"><u>10/20/2011</u>: I gave a briefing on DDMSence at the <a href="https://metadata.ces.mil/dse/documents/DoDMWG/2011/10/index.html">DoD Metadata Working Group Meeting</a> on October 20 in Columbia, MD.</div>
+	<div class="newsUpdate"><u>10/20/2011</u>: I gave a <a href="https://metadata.ces.mil/dse/content_items/document/100100096">briefing</a> on DDMSence at the <a href="https://metadata.ces.mil/dse-help/en/Metadata_Working_Group">DoD Metadata Working Group Meeting</a> on October 20 in Columbia, MD.</div>
 	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
 	<div id="oldNews" class="divHidden">
 		<div class="newsUpdate"><u>07/17/2011</u>: v1.11.0 released, adding <a href="documentation-schematron.jsp">support for XSLT2-based Schematron validation</a>.</div>
