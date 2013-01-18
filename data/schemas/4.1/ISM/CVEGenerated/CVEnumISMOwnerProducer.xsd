@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-            xml:lang="en">
+<xsd:schema xmlns:ismownpro="urn:us:gov:ic:cvenum:ism:ownerproducer"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified"
+            xml:lang="en"
+            targetNamespace="urn:us:gov:ic:cvenum:ism:ownerproducer">
    <xsd:annotation>
       <xsd:documentation>
-                    W3C XML Schema fragment encoding types for Controlled vocabulary encodings CVEnumISMOwnerProducer. This file is generated so edits should be made to the CVEnumISMOwnerProducer the CVE it is based on instead of here.
+                    The W3C XML Schema fragment encoding types for CVEnumISMOwnerProducer Version 2 controlled vocabulary enumerations. This file is generated, so edits should be made to the CVEnumISMOwnerProducer.xml CVE it is based on, instead of here.
                 </xsd:documentation>
    </xsd:annotation>
    <!--*************************************************************-->
@@ -12,7 +15,7 @@
 <xsd:simpleType name="CVEnumISMOwnerProducerValues">
       <xsd:annotation>
          <xsd:documentation>(U) FGI followed by all currently valid ISO Trigraphs in alphabetical order by Trigraph, 
-            followed by all currently valid CAPCO Coalition tetragraphs in alphabetical order by tetragraph.
+			followed by all currently valid CAPCO Coalition tetragraphs in alphabetical order by tetragraph.
                          PERMISSIBLE VALUES
                          
                          The permissible values for this simple type are defined in the Controlled Value Enumeration:
@@ -129,7 +132,7 @@
          </xsd:enumeration>
          <xsd:enumeration value="BES">
             <xsd:annotation>
-               <xsd:documentation>Bonaire, Saint Eustatius and Saba</xsd:documentation>
+               <xsd:documentation>Bonaire, Sint Eustatius and Saba</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
          <xsd:enumeration value="BFA">
@@ -664,7 +667,7 @@
          </xsd:enumeration>
          <xsd:enumeration value="LBY">
             <xsd:annotation>
-               <xsd:documentation>Libyan Arab Jamahiriya</xsd:documentation>
+               <xsd:documentation>Libya</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
          <xsd:enumeration value="LCA">
@@ -1377,6 +1380,11 @@
                <xsd:documentation>North Atlantic Treaty Organization</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
+         <xsd:enumeration value="OSTY">
+            <xsd:annotation>
+               <xsd:documentation>Open Skies Treaty</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
          <xsd:enumeration value="SPAA">
             <xsd:annotation>
                <xsd:documentation>Suppressed</xsd:documentation>
@@ -1397,9 +1405,9 @@
    <xsd:simpleType name="CVEnumISMOwnerProducer">
       <xsd:restriction>
          <xsd:simpleType>
-            <xsd:list itemType="CVEnumISMOwnerProducerValues"/>
+            <xsd:list itemType="ismownpro:CVEnumISMOwnerProducerValues"/>
          </xsd:simpleType>
-         <xsd:maxLength value="274"/>
+         <xsd:maxLength value="275"/>
       </xsd:restriction>
    </xsd:simpleType>
 </xsd:schema>

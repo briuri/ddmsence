@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-            xml:lang="en">
+<xsd:schema xmlns:ismnonic="urn:us:gov:ic:cvenum:ism:nonic"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified"
+            xml:lang="en"
+            targetNamespace="urn:us:gov:ic:cvenum:ism:nonic">
    <xsd:annotation>
       <xsd:documentation>
-                    W3C XML Schema fragment encoding types for Controlled vocabulary encodings CVEnumISMNonIC. This file is generated so edits should be made to the CVEnumISMNonIC the CVE it is based on instead of here.
+                    The W3C XML Schema fragment encoding types for CVEnumISMNonIC Version 1 controlled vocabulary enumerations. This file is generated, so edits should be made to the CVEnumISMNonIC.xml CVE it is based on, instead of here.
                 </xsd:documentation>
    </xsd:annotation>
    <!--*************************************************************-->
@@ -28,20 +31,15 @@
                      <xsd:documentation>The name of the ALTERNATE COMPENSATORY CONTROL MEASURE, substituting "_" for a space.</xsd:documentation>
                   </xsd:annotation>
                </xsd:pattern>
+               <xsd:pattern value="NNPI">
+                  <xsd:annotation>
+                     <xsd:documentation>NAVAL NUCLEAR PROPULSION INFORMATION</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:pattern>
             </xsd:restriction>
          </xsd:simpleType>
          <xsd:simpleType>
             <xsd:restriction base="xsd:token">
-               <xsd:enumeration value="SC">
-                  <xsd:annotation>
-                     <xsd:documentation>SPECIAL CATEGORY</xsd:documentation>
-                  </xsd:annotation>
-               </xsd:enumeration>
-               <xsd:enumeration value="SINFO">
-                  <xsd:annotation>
-                     <xsd:documentation>SENSITIVE INFORMATION</xsd:documentation>
-                  </xsd:annotation>
-               </xsd:enumeration>
                <xsd:enumeration value="DS">
                   <xsd:annotation>
                      <xsd:documentation>LIMITED DISTRIBUTION</xsd:documentation>
@@ -89,7 +87,7 @@
    <xsd:simpleType name="CVEnumISMNonIC">
       <xsd:restriction>
          <xsd:simpleType>
-            <xsd:list itemType="CVEnumISMNonICValues"/>
+            <xsd:list itemType="ismnonic:CVEnumISMNonICValues"/>
          </xsd:simpleType>
          <xsd:maxLength value="1000"/>
       </xsd:restriction>

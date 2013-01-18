@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-            xml:lang="en">
+<xsd:schema xmlns:ismattrib="urn:us:gov:ic:cvenum:ism:attributes"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified"
+            xml:lang="en"
+            targetNamespace="urn:us:gov:ic:cvenum:ism:attributes">
    <xsd:annotation>
       <xsd:documentation>
-                    W3C XML Schema fragment encoding types for Controlled vocabulary encodings CVEnumISMAttributes. This file is generated so edits should be made to the CVEnumISMAttributes the CVE it is based on instead of here.
+                    The W3C XML Schema fragment encoding types for CVEnumISMAttributes Version 1 controlled vocabulary enumerations. This file is generated, so edits should be made to the CVEnumISMAttributes.xml CVE it is based on, instead of here.
                 </xsd:documentation>
    </xsd:annotation>
    <!--*************************************************************-->
@@ -139,6 +142,11 @@
          <xsd:enumeration value="noticeType">
             <xsd:annotation>
                <xsd:documentation>noticeType attribute</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="externalNotice">
+            <xsd:annotation>
+               <xsd:documentation>externalNotice attribute</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
          <xsd:enumeration value="DESVersion">

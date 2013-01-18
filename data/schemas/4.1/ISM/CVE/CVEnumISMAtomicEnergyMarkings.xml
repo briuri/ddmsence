@@ -1,18 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<cve:CVE xmlns:cve="urn:us:gov:ic:cve:v1"
-    xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/"
-    xmlns="urn:us:gov:ic:cve:v1"
+<?xml version="1.0" encoding="UTF-8"?> 
+ <!-- Notices - Distribution Notice: 
+           This document has been approved for Public Release and is available for use without restriction.
+       -->
+<cve:CVE xmlns:cve="urn:us:gov:ic:cve"
+    xmlns:ddms="urn:us:mil:ces:metadata:ddms:4"
+    xmlns="urn:us:gov:ic:cve"
     xmlns:ism="urn:us:gov:ic:ism"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="urn:us:gov:ic:cve:v1 ../Schema/CVEXml.xsd"
+    xsi:schemaLocation="urn:us:gov:ic:cve ../Schema/CVEXml.xsd"
     ism:ownerProducer="USA"
     ism:classification="U"
-    ism:DESVersion="7"
+    ism:DESVersion="9"
     ism:resourceElement="true"
-	ism:createDate="2011-02-04">
+	CVEVersion="1" ism:createDate="2011-09-01">
     
     <cve:IRM>
-        <ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:ism:atomicEnergyMarkings:v1"/>
+        <ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:ism:atomicEnergyMarkings"/>
         <ddms:title ism:ownerProducer="USA" ism:classification="U">CVEnumISMatomicEnergyMarkings</ddms:title>
         <ddms:description ism:ownerProducer="USA" ism:classification="U">All currently valid Atomic Energy information markings from the published register</ddms:description>
         
@@ -20,10 +23,10 @@
         
         <ddms:source ddms:value="CAPCO Register"/>
         <ddms:pointOfContact>
-            <ddms:Organization>
+            <ddms:organization>
                 <ddms:name>Office IC CIO</ddms:name>
                 <ddms:email>datastandardssupport@ugov.gov</ddms:email>
-            </ddms:Organization>
+            </ddms:organization>
         </ddms:pointOfContact>
     </cve:IRM>
     
@@ -38,16 +41,16 @@
             <ddms:description ism:classification="U" ism:ownerProducer="USA">RD-CRITICAL NUCLEAR WEAPON DESIGN INFORMATION</ddms:description>
         </Term>
         <Term ism:classification="U" ism:ownerProducer="USA" >
-            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">RD-SG-[1-9][0-9]?</Value>
-            <ddms:description ism:classification="U" ism:ownerProducer="USA">RD-SIGMA-#, # represents the SIGMA number which may be between 1 and 99.</ddms:description>
+            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">RD-SG-((14)|(15)|(18)|(20))</Value>
+            <ddms:description ism:classification="U" ism:ownerProducer="USA">RD-SIGMA-#, # represents the SIGMA number which may be 14, 15, 18, or 20.</ddms:description>
         </Term>
         <Term ism:classification="U" ism:ownerProducer="USA" >
             <Value ism:classification="U" ism:ownerProducer="USA">FRD</Value>
             <ddms:description ism:classification="U" ism:ownerProducer="USA">FORMERLY RESTRICTED DATA</ddms:description>
         </Term>
         <Term ism:classification="U" ism:ownerProducer="USA" >
-            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">FRD-SG-[1-9][0-9]?</Value>
-            <ddms:description ism:classification="U" ism:ownerProducer="USA">FRD-SIGMA-#, # represents the SIGMA number which may be between 1 and 99.</ddms:description>
+            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">FRD-SG-((14)|(15)|(18)|(20))</Value>
+            <ddms:description ism:classification="U" ism:ownerProducer="USA">FRD-SIGMA-#, # represents the SIGMA number which may be 14, 15, 18, or 20.</ddms:description>
         </Term>
         <Term ism:classification="U" ism:ownerProducer="USA" >
             <Value ism:classification="U" ism:ownerProducer="USA">DCNI</Value>

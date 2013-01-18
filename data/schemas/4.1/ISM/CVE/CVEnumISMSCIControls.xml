@@ -1,29 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<cve:CVE xmlns:cve="urn:us:gov:ic:cve:v1"
-    xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/"
-    xmlns="urn:us:gov:ic:cve:v1"
+<?xml version="1.0" encoding="UTF-8"?> 
+ <!-- Notices - Distribution Notice: 
+           This document has been approved for Public Release and is available for use without restriction.
+       -->
+<cve:CVE xmlns:cve="urn:us:gov:ic:cve"
+    xmlns:ddms="urn:us:mil:ces:metadata:ddms:4"
+    xmlns="urn:us:gov:ic:cve"
     xmlns:ism="urn:us:gov:ic:ism"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="urn:us:gov:ic:cve:v1 ../Schema/CVEXml.xsd"
+    xsi:schemaLocation="urn:us:gov:ic:cve ../Schema/CVEXml.xsd"
     ism:ownerProducer="USA"
     ism:classification="U"
-    ism:DESVersion="7"
+    ism:DESVersion="9"
     ism:resourceElement="true"
-	ism:createDate="2011-03-24">
+    CVEVersion="2" ism:createDate="2012-03-25">
     
     <cve:IRM>
-        <ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:ism:scicontrols:v1"/>
+        <ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:ism:scicontrols"/>
         <ddms:title ism:ownerProducer="USA" ism:classification="U">CVEnumISMSCIControls</ddms:title>
         <ddms:description ism:ownerProducer="USA" ism:classification="U">All currently valid SCI controls from the published register</ddms:description>
         
-        <cve:Created>2011-03-24T11:02:00-04:00</cve:Created>
+        <cve:Created>2012-03-25T18:30:00-04:00</cve:Created>
         
         <ddms:source ddms:value="CAPCO Register"/>
         <ddms:pointOfContact>
-            <ddms:Organization>
+            <ddms:organization>
                 <ddms:name>Office IC CIO</ddms:name>
                 <ddms:email>datastandardssupport@ugov.gov</ddms:email>
-            </ddms:Organization>
+            </ddms:organization>
         </ddms:pointOfContact>
     </cve:IRM>
     
@@ -38,6 +41,21 @@
             <ddms:description ism:classification="U" ism:ownerProducer="USA">KLONDIKE</ddms:description>
         </Term>
         <Term ism:classification="U" ism:ownerProducer="USA" >
+            <Value ism:classification="U" 
+                ism:ownerProducer="USA" 
+                regularExpression="true">KDK-[A-Z0-9]{1,6}</Value>
+            <ddms:description ism:classification="U" 
+                ism:ownerProducer="USA">KDK-xxxxxx, xxxxxx represents up to 6 alpha numeric characters indicating a sub KDK compartment</ddms:description>
+        </Term>
+        <Term ism:classification="U" ism:ownerProducer="USA" >
+            <Value ism:classification="U" ism:ownerProducer="USA">RSV</Value>
+            <ddms:description ism:classification="U" ism:ownerProducer="USA">RESERVE</ddms:description>
+        </Term>
+        <Term ism:classification="U" ism:ownerProducer="USA" >
+            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">RSV-[A-Z0-9]{3}</Value>
+            <ddms:description ism:classification="U" ism:ownerProducer="USA">RSV-XXX, XXX represents 3 alpha numeric characters to indicate sub Reserve compartments</ddms:description>
+        </Term>
+        <Term ism:classification="U" ism:ownerProducer="USA" >
             <Value ism:classification="U" ism:ownerProducer="USA">SI</Value>
             <ddms:description ism:classification="U" ism:ownerProducer="USA">SPECIAL INTELLIGENCE</ddms:description>
         </Term>
@@ -49,9 +67,13 @@
             <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">SI-G-[A-Z]{4}</Value>
             <ddms:description ism:classification="U" ism:ownerProducer="USA">G-AAAA, AAAA represents 4 alpha characters to indicate sub Gamma compartments</ddms:description>
         </Term>
-        <Term ism:classification="U" ism:ownerProducer="USA" deprecated="2011-12-10" >
-            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">SI-ECI-[A-Z]{3}</Value>
-            <ddms:description ism:classification="U" ism:ownerProducer="USA">ECI-AAA, AAA represents 3 alpha characters to indicate ECI compartments</ddms:description>
+        <Term ism:classification="U" ism:ownerProducer="USA" >
+            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">SI-[A-Z]{3}</Value>
+            <ddms:description ism:classification="U" ism:ownerProducer="USA">SPECIAL INTELLIGENCE compartment</ddms:description>
+        </Term>
+        <Term ism:classification="U" ism:ownerProducer="USA" >
+            <Value ism:classification="U" ism:ownerProducer="USA" regularExpression="true">SI-[A-Z]{3}-[A-Z]{4}</Value>
+            <ddms:description ism:classification="U" ism:ownerProducer="USA">SPECIAL INTELLIGENCE sub-compartment</ddms:description>
         </Term>
         <Term ism:classification="U" ism:ownerProducer="USA" >
             <Value ism:classification="U" ism:ownerProducer="USA">TK</Value>

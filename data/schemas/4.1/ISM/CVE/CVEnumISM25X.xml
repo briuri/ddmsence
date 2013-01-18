@@ -1,29 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<cve:CVE xmlns:cve="urn:us:gov:ic:cve:v1"
-	xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/"
-	xmlns="urn:us:gov:ic:cve:v1"
+<?xml version="1.0" encoding="UTF-8"?> 
+ <!-- Notices - Distribution Notice: 
+           This document has been approved for Public Release and is available for use without restriction.
+       -->
+<cve:CVE xmlns:cve="urn:us:gov:ic:cve"
+	xmlns:ddms="urn:us:mil:ces:metadata:ddms:4"
+	xmlns="urn:us:gov:ic:cve"
 	xmlns:ism="urn:us:gov:ic:ism"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="urn:us:gov:ic:cve:v1 ../Schema/CVEXml.xsd"
+	xsi:schemaLocation="urn:us:gov:ic:cve ../Schema/CVEXml.xsd"
 	ism:ownerProducer="USA"
 	ism:classification="U"
-	ism:DESVersion="7"
+	ism:DESVersion="9"
 	ism:resourceElement="true"
-	ism:createDate="2011-08-12">
+	CVEVersion="1" ism:createDate="2012-01-04">
 	
 	<cve:IRM>
-		<ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:ism:25x:v1"/>
+		<ddms:identifier ddms:qualifier="name" ddms:value="urn:us:gov:ic:cvenum:ism:25x"/>
 		<ddms:title ism:ownerProducer="USA" ism:classification="U">CVEnumISM25X</ddms:title>
 		<ddms:description ism:ownerProducer="USA" ism:classification="U">All currently authorized authority block declass date/event exemptions.</ddms:description>
 		
-		<cve:Created>2011-08-12T12:24:23-04:00</cve:Created>
+		<cve:Created>2012-01-04T02:15:00-04:00</cve:Created>
 		
 		<ddms:source ddms:value="Marking Classified National Security Information Directive No. 1"/>
 		<ddms:pointOfContact>
-			<ddms:Organization>
+			<ddms:organization>
 				<ddms:name>Office IC CIO</ddms:name>
 				<ddms:email>datastandardssupport@ugov.gov</ddms:email>
-			</ddms:Organization>
+			</ddms:organization>
 		</ddms:pointOfContact>
 	</cve:IRM>
 	
@@ -57,13 +60,6 @@
 				effectiveness of an intelligence method 
 				currently in use, available for use, or under 
 				development.
-			</ddms:description>
-		</Term>
-		<Term ism:classification="U" ism:ownerProducer="USA">
-			<Value ism:classification="U" ism:ownerProducer="USA">25X1-human</Value>
-			<ddms:description ism:classification="U" ism:ownerProducer="USA">
-				Reveal the identity of a confidential human source or human intelligence source. 
-				See page 25 of the ISOO implementation guide from December 2010 for details and restrictions on use.
 			</ddms:description>
 		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA">

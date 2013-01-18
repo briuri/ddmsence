@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-            xml:lang="en">
+<xsd:schema xmlns:ismcomplies="urn:us:gov:ic:cvenum:ism:complieswith"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified"
+            xml:lang="en"
+            targetNamespace="urn:us:gov:ic:cvenum:ism:complieswith">
    <xsd:annotation>
       <xsd:documentation>
-                    W3C XML Schema fragment encoding types for Controlled vocabulary encodings CVEnumISMCompliesWith. This file is generated so edits should be made to the CVEnumISMCompliesWith the CVE it is based on instead of here.
+                    The W3C XML Schema fragment encoding types for CVEnumISMCompliesWith Version 1 controlled vocabulary enumerations. This file is generated, so edits should be made to the CVEnumISMCompliesWith.xml CVE it is based on, instead of here.
                 </xsd:documentation>
    </xsd:annotation>
    <!--*************************************************************-->
@@ -21,6 +24,12 @@
                      </xsd:documentation>
       </xsd:annotation>
       <xsd:restriction base="xsd:token">
+         <xsd:enumeration value="IntelReport">
+            <xsd:annotation>
+               <xsd:documentation>Document claims compliance with IC rules 
+				that have been encoded into ISM. Currently this includes: ICD-710 POC</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
          <xsd:enumeration value="ICDocument">
             <xsd:annotation>
                <xsd:documentation>Document claims compliance with IC rules 
@@ -37,9 +46,9 @@
    <xsd:simpleType name="CVEnumISMCompliesWith">
       <xsd:restriction>
          <xsd:simpleType>
-            <xsd:list itemType="CVEnumISMCompliesWithValues"/>
+            <xsd:list itemType="ismcomplies:CVEnumISMCompliesWithValues"/>
          </xsd:simpleType>
-         <xsd:maxLength value="2"/>
+         <xsd:maxLength value="3"/>
       </xsd:restriction>
    </xsd:simpleType>
 </xsd:schema>

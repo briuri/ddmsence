@@ -1,37 +1,40 @@
-<?xml version="1.0" encoding="UTF-8"?>
-       <cve:CVE xmlns:cve="urn:us:gov:ic:cve:v1"
-         xmlns:ddms="http://metadata.dod.mil/mdr/ns/DDMS/3.0/"
-         xmlns="urn:us:gov:ic:cve:v1"
-         xmlns:ism="urn:us:gov:ic:ism"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="urn:us:gov:ic:cve:v1 ../Schema/CVEXml.xsd"
-         ism:ownerProducer="USA"
-         ism:classification="U"
-         ism:DESVersion="7"
-         ism:resourceElement="true"
-         ism:createDate="2011-08-10">
-
-                <cve:IRM>
-                    <ddms:identifier ddms:qualifier="name"
-                       ddms:value="urn:us:gov:ic:cvenum:ism:fgiprotected:v1"/>
-                    <ddms:title ism:ownerProducer="USA" ism:classification="U">CVEnumISMFGIProtected</ddms:title>
-                    <ddms:description ism:ownerProducer="USA" ism:classification="U">FGI followed by all currently valid ISO Trigraphs except USA in alphabetical order by Trigraph, 
-            followed by all currently valid CAPCO Coalition tetragraphs in alphabetical order by tetragraph.</ddms:description>
-
-                	<cve:Created>2011-08-10T12:36:00-04:00</cve:Created>
-                    
-                    <ddms:source ddms:value="CAPCO Register Appendix A"/>
-      <ddms:source ddms:value="ISO 3166"/>
-                    <ddms:pointOfContact>
-                        <ddms:Organization>
-                            <ddms:name>Office IC CIO</ddms:name>
-                            <ddms:email>datastandardssupport@ugov.gov</ddms:email>
-                        </ddms:Organization>
-                    </ddms:pointOfContact>
-                </cve:IRM>
-                
-                <cve:Enumeration multivalue="true" ism:ownerProducer="USA" ism:classification="U">
-
+<?xml version="1.0" encoding="UTF-8"?> 
+<!-- Notices - Distribution Notice: 
+           This document has been approved for Public Release and is available for use without restriction.
+       -->
+<cve:CVE xmlns:cve="urn:us:gov:ic:cve"
+	xmlns:ddms="urn:us:mil:ces:metadata:ddms:4"
+	xmlns="urn:us:gov:ic:cve"
+	xmlns:ism="urn:us:gov:ic:ism"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:us:gov:ic:cve ../Schema/CVEXml.xsd"
+	ism:ownerProducer="USA"
+	ism:classification="U"
+	ism:DESVersion="9"
+	ism:resourceElement="true"
+	CVEVersion="2" ism:createDate="2011-06-24">
+	
+	<cve:IRM>
+		<ddms:identifier ddms:qualifier="name"
+			ddms:value="urn:us:gov:ic:cvenum:ism:fgiprotected"/>
+		<ddms:title ism:ownerProducer="USA" ism:classification="U">CVEnumISMFGIProtected</ddms:title>
+		<ddms:description ism:ownerProducer="USA" ism:classification="U">FGI followed by all currently valid ISO Trigraphs except USA in alphabetical order by Trigraph, 
+			followed by all currently valid CAPCO Coalition tetragraphs in alphabetical order by tetragraph.</ddms:description>
+		
+		<cve:Created>2011-11-17T12:36:00-04:00</cve:Created>
+		
+		<ddms:source ddms:value="CAPCO Register Appendix A"/>
+		<ddms:source ddms:value="ISO 3166 http://www.iso.org/iso/country_codes/iso_3166_code_lists.htm"/>
+		<ddms:pointOfContact>
+			<ddms:organization>
+				<ddms:name>Office IC CIO</ddms:name>
+				<ddms:email>datastandardssupport@ugov.gov</ddms:email>
+			</ddms:organization>
+		</ddms:pointOfContact>
+	</cve:IRM>
+	
+	<cve:Enumeration multivalue="true" ism:ownerProducer="USA" ism:classification="U">
+		
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">FGI</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Foreign Government Information</ddms:description>
@@ -118,7 +121,7 @@
 		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">BES</Value>
-			<ddms:description ism:classification="U" ism:ownerProducer="USA">Bonaire, Saint Eustatius and Saba</ddms:description>
+			<ddms:description ism:classification="U" ism:ownerProducer="USA">Bonaire, Sint Eustatius and Saba</ddms:description>
 		</Term>	
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">BFA</Value>
@@ -546,7 +549,7 @@
 		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">LBY</Value>
-			<ddms:description ism:classification="U" ism:ownerProducer="USA">Libyan Arab Jamahiriya</ddms:description>
+			<ddms:description ism:classification="U" ism:ownerProducer="USA">Libya</ddms:description>
 		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">LCA</Value>
@@ -1044,10 +1047,10 @@
 			<Value ism:classification="U" ism:ownerProducer="USA">CFCK</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">ROK/US Combined Forces Command, Korea</ddms:description>
 		</Term>
-        <Term ism:classification="U" ism:ownerProducer="USA" >
-            <Value ism:classification="U" ism:ownerProducer="USA">CFUD</Value>
-        	<ddms:description ism:classification="U" ism:ownerProducer="USA">Coalition Forces Unified Protector</ddms:description>
-        </Term>
+		<Term ism:classification="U" ism:ownerProducer="USA" >
+			<Value ism:classification="U" ism:ownerProducer="USA">CFUD</Value>
+			<ddms:description ism:classification="U" ism:ownerProducer="USA">Coalition Forces Unified Protector</ddms:description>
+		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">CMFC</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Combined Maritime Forces</ddms:description>
@@ -1113,6 +1116,10 @@
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">North Atlantic Treaty Organization</ddms:description>
 		</Term>
 		<Term ism:classification="U" ism:ownerProducer="USA" >
+			<Value ism:classification="U" ism:ownerProducer="USA">OSTY</Value>
+			<ddms:description ism:classification="U" ism:ownerProducer="USA">Open Skies Treaty</ddms:description>
+		</Term>
+		<Term ism:classification="U" ism:ownerProducer="USA" >
 			<Value ism:classification="U" ism:ownerProducer="USA">SPAA</Value>
 			<ddms:description ism:classification="U" ism:ownerProducer="USA">Suppressed</ddms:description>
 		</Term>
@@ -1126,4 +1133,3 @@
 		</Term>
 	</cve:Enumeration>
 </cve:CVE>
-        
