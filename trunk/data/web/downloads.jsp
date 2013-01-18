@@ -28,10 +28,11 @@ I have also included a <code>.project</code> file if you wish to import the proj
 older 4.0.1 metacards are validated against the DDMS 4.1 schemas in this release.</p>
 
 <ul>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.1.0.zip"><code>ddmsence-bin-2.1.0.zip</code></a></b> (X.X MB, compiled with JDK1.6.0_25, source level 1.5)</li>
-<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-2.1.0.zip"><code>ddmsence-src-2.1.0.zip</code></a></b> (X.X MB)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-bin-2.1.0.zip"><code>ddmsence-bin-2.1.0.zip</code></a></b> (6.1 MB, compiled with JDK1.6.0_25, source level 1.5)</li>
+<li><b><a href="http://ddmsence.googlecode.com/files/ddmsence-src-2.1.0.zip"><code>ddmsence-src-2.1.0.zip</code></a></b> (6.2 MB)</li>
 <br />
 <li><a href="http://code.google.com/p/ddmsence/issues/list?can=1&q=milestone=v2.1.0">Complete List of Changes</a></li>
+<li><a href="upgrade-2.0.0.jsp">Upgrade Guide</a> (for migrating from DDMSence v1.x.x)</li>
 </ul>
 
 <h3>Versioning</h3>
@@ -56,7 +57,7 @@ found below.</p>
 
 <p>Version <b>2.0.0</b> (12/01/2011) is a stable, major release, which adds support for DDMS 4.0.1. It is <i>not</i> backwards compatible with previous versions. Upgrading your existing
 code to use this version should be straightforward, but may require a non-trivial effort. An <a href="upgrade-2.0.0.jsp">Upgrade Guide</a> is available for
-migrating from 1.x.x to 2.0.0.</p>
+migrating from 1.x.x to 2.x.x.</p>
 
 <p>Version <b>1.11.0</b> (07/17/2011) is a stable release, which adds support for 
 <a href="documentation-schematron.jsp">XSLT2-based Schematron validation</a> (<a href="http://code.google.com/p/ddmsence/issues/detail?id=79">Issue #79</a>),
