@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-            xml:lang="en">
+<xsd:schema xmlns:ismnonus="urn:us:gov:ic:cvenum:ism:nonuscontrols"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified"
+            xml:lang="en"
+            targetNamespace="urn:us:gov:ic:cvenum:ism:nonuscontrols">
    <xsd:annotation>
       <xsd:documentation>
-                    W3C XML Schema fragment encoding types for Controlled vocabulary encodings CVEnumISMNonUSControls. This file is generated so edits should be made to the CVEnumISMNonUSControls the CVE it is based on instead of here.
+                    The W3C XML Schema fragment encoding types for CVEnumISMNonUSControls Version 1 controlled vocabulary enumerations. This file is generated, so edits should be made to the CVEnumISMNonUSControls.xml CVE it is based on, instead of here.
                 </xsd:documentation>
    </xsd:annotation>
    <!--*************************************************************-->
@@ -41,7 +44,7 @@
    <xsd:simpleType name="CVEnumISMNonUSControls">
       <xsd:restriction>
          <xsd:simpleType>
-            <xsd:list itemType="CVEnumISMNonUSControlsValues"/>
+            <xsd:list itemType="ismnonus:CVEnumISMNonUSControlsValues"/>
          </xsd:simpleType>
          <xsd:maxLength value="3"/>
       </xsd:restriction>

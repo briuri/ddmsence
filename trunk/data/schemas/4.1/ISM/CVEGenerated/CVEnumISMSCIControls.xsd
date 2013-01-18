@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-            xml:lang="en">
+<xsd:schema xmlns:ismscicon="urn:us:gov:ic:cvenum:ism:scicontrols"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            elementFormDefault="qualified"
+            xml:lang="en"
+            targetNamespace="urn:us:gov:ic:cvenum:ism:scicontrols">
    <xsd:annotation>
       <xsd:documentation>
-                    W3C XML Schema fragment encoding types for Controlled vocabulary encodings CVEnumISMSCIControls. This file is generated so edits should be made to the CVEnumISMSCIControls the CVE it is based on instead of here.
+                    The W3C XML Schema fragment encoding types for CVEnumISMSCIControls Version 2 controlled vocabulary enumerations. This file is generated, so edits should be made to the CVEnumISMSCIControls.xml CVE it is based on, instead of here.
                 </xsd:documentation>
    </xsd:annotation>
    <!--*************************************************************-->
@@ -23,14 +26,29 @@
       <xsd:union>
          <xsd:simpleType>
             <xsd:restriction base="xsd:token">
+               <xsd:pattern value="KDK-[A-Z0-9]{1,6}">
+                  <xsd:annotation>
+                     <xsd:documentation>KDK-xxxxxx, xxxxxx represents up to 6 alpha numeric characters indicating a sub KDK compartment</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:pattern>
+               <xsd:pattern value="RSV-[A-Z0-9]{3}">
+                  <xsd:annotation>
+                     <xsd:documentation>RSV-XXX, XXX represents 3 alpha numeric characters to indicate sub Reserve compartments</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:pattern>
                <xsd:pattern value="SI-G-[A-Z]{4}">
                   <xsd:annotation>
                      <xsd:documentation>G-AAAA, AAAA represents 4 alpha characters to indicate sub Gamma compartments</xsd:documentation>
                   </xsd:annotation>
                </xsd:pattern>
-               <xsd:pattern value="SI-ECI-[A-Z]{3}">
+               <xsd:pattern value="SI-[A-Z]{3}">
                   <xsd:annotation>
-                     <xsd:documentation>ECI-AAA, AAA represents 3 alpha characters to indicate ECI compartments</xsd:documentation>
+                     <xsd:documentation>SPECIAL INTELLIGENCE compartment</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:pattern>
+               <xsd:pattern value="SI-[A-Z]{3}-[A-Z]{4}">
+                  <xsd:annotation>
+                     <xsd:documentation>SPECIAL INTELLIGENCE sub-compartment</xsd:documentation>
                   </xsd:annotation>
                </xsd:pattern>
             </xsd:restriction>
@@ -45,6 +63,11 @@
                <xsd:enumeration value="KDK">
                   <xsd:annotation>
                      <xsd:documentation>KLONDIKE</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="RSV">
+                  <xsd:annotation>
+                     <xsd:documentation>RESERVE</xsd:documentation>
                   </xsd:annotation>
                </xsd:enumeration>
                <xsd:enumeration value="SI">
@@ -69,7 +92,7 @@
    <xsd:simpleType name="CVEnumISMSCIControls">
       <xsd:restriction>
          <xsd:simpleType>
-            <xsd:list itemType="CVEnumISMSCIControlsValues"/>
+            <xsd:list itemType="ismscicon:CVEnumISMSCIControlsValues"/>
          </xsd:simpleType>
          <xsd:maxLength value="1000"/>
       </xsd:restriction>

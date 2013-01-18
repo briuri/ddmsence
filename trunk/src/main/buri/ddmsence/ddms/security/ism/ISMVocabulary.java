@@ -245,7 +245,7 @@ public class ISMVocabulary {
 		Document doc = builder.build(stream);
 		Set<String> tokens = new TreeSet<String>();
 		Set<String> patterns = new HashSet<String>();
-		String cveNamespace = PropertyReader.getProperty("ism.cve.xmlNamespace");
+		String cveNamespace = PropertyReader.getProperty(getDDMSVersion().getVersion() + ".ism.cve.xmlNamespace");
 		Element enumerationElement = doc.getRootElement().getFirstChildElement(ENUMERATION_NAME, cveNamespace);
 		Elements terms = enumerationElement.getChildElements(TERM_NAME, cveNamespace);
 		for (int i = 0; i < terms.size(); i++) {
