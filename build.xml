@@ -13,7 +13,7 @@
 		9) Upload new DDMSence JAR to webserver and bounce.
 		10) Test Validator and Builder webapps.
 		11) Commit any remaining changes and tag as new release. 
-		12) Announcements (Google Groups / freshmeat / MDR)
+		12) Announcements (Google Groups / freecode)
 	-->
 	
     <property name="version" value="2.1.0" />
@@ -172,7 +172,7 @@
             windowtitle="DDMSence ${version} API"
             docencoding="UTF-8" charset="UTF-8"
             doctitle="DDMSence ${version}"		
-            bottom="Copyright 2010 - 2012 by Brian Uri!&lt;br /&gt;Generated on ${javadoc.time}&lt;br /&gt;&lt;a target='_top' href='http://ddmsence.urizone.net/'&gt;http://ddmsence.urizone.net/&lt;/a&gt;"
+            bottom="Copyright 2010 - 2013 by Brian Uri!&lt;br /&gt;Generated on ${javadoc.time}&lt;br /&gt;&lt;a target='_top' href='http://ddmsence.urizone.net/'&gt;http://ddmsence.urizone.net/&lt;/a&gt;"
 			stylesheetfile="${conf.dir}/javadoc-stylesheet.css"
 		/>
 	</target>

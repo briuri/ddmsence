@@ -4,12 +4,12 @@ supports the DoD Discovery Metadata Specification (DDMS).
 You can contact the author at ddmsence@urizone.net. The DDMSence
 home page is located at http://ddmsence.urizone.net/ .
 
-Copyright 2010 - 2012 by Brian Uri!
+Copyright 2010 - 2013 by Brian Uri!
 ===========================================================================
 Release History
 ===========================================================================
 
-v 2.1.0 (XX/XX/2012):
+v 2.1.0 (01/20/2013):
 This stable release adds support for DDMS 4.1.
 
 v 2.0.0 (12/01/2011):
