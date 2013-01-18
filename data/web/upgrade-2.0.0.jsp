@@ -1,13 +1,13 @@
 <html>
 <head>
-	<title>DDMSence: Upgrade Guide: Version 1.x to 2.0.0</title>
+	<title>DDMSence: Upgrade Guide: Version 1.x to 2.x</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="An open source Java library for the DoD Discovery Metadata Specification (DDMS)">
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>
 
-<a name="top"></a><h1>Upgrade Guide: Version 1.x to 2.0.0</h1>
+<a name="top"></a><h1>Upgrade Guide: Version 1.x to 2.x</h1>
 
 <p>In order to cleanly and comprehensively support DDMS 4.0.1, DDMSence 2.0.0 required multiple changes which
 might break backwards compatibility with your existing code. Some of these changes are as simple as new package names

@@ -69,7 +69,7 @@ java -cp %DDMSENCE_CLASSPATH% buri.ddmsence.samples.Essentials</pre>
 
 <h2>Need-to-Know Metadata (NTK)</h2>
 
-<p>The same instructions can be used to swap NTK versions. There is only a single NTk schema file, <code>IC-NTK.xsd</code> which DDMSence expects to find at
+<p>The same instructions can be used to swap NTK versions. There is only a single NTK schema file, <code>IC-NTK.xsd</code> which DDMSence expects to find at
 <code>schemas\&lt;ddmsVersionNumber&gt;/NTK/</code>.</p>
 
 <p>
