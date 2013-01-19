@@ -24,7 +24,7 @@ I have also included a <code>.project</code> file if you wish to import the proj
 
 <h1>Latest Release: v2.1.0</h1>
 
-<p>Version <b>2.1.0</b> (01/20/2013) is a stable release, which adds support for DDMS 4.1. It is backwards compatible with 2.0.0. Because DDMS 4.1 shares an XML namespace with DDMS 4.0.1,
+<p>Version <b>2.1.0</b> (01/19/2013) is a stable release, which adds support for DDMS 4.1. It is backwards compatible with 2.0.0. Because DDMS 4.1 shares an XML namespace with DDMS 4.0.1,
 older 4.0.1 metacards are validated against the DDMS 4.1 schemas in this release.</p>
 
 <ul>
