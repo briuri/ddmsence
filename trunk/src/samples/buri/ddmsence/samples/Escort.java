@@ -515,9 +515,9 @@ public class Escort {
 		CONSTRUCTOR_BUILDERS.put(Resource.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				boolean resourceElement = confirm("Does this tag set the classification for the resource as a whole?");
-				String createDate = readString("Resource createDate [2010-04-01]");
-				int ismDESVersion = readInt("the Resource ISM:DESVersion [7]");
-				int ntkDESVersion = readInt("the Resource ntk:DESVersion [5]");
+				String createDate = readString("Resource createDate [2012-09-01]");
+				int ismDESVersion = readInt("the Resource ISM:DESVersion [9]");
+				int ntkDESVersion = readInt("the Resource ntk:DESVersion [7]");
 				return (new Resource(getTopLevelComponents(), resourceElement, createDate, null, new Integer(ismDESVersion), new Integer(ntkDESVersion), 
 					buildSecurityAttributes("resource"), null, null));
 			}		
