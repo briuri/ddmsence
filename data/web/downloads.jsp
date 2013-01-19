@@ -49,7 +49,7 @@ All changes which are not backwards compatible will be linked from this page wit
 
 <h3>Older Releases</h3>
 
-<!-- 238 downloads of 2.0.0 as of 8/26/2012 -->
+<!-- 339 downloads of 2.0.0 as of 1/19/2013 -->
 <!-- 828 downloads of 1.x -->
 
 <p>Versions of DDMSence before 2.1.0 are no longer available for download (although they can still be built from the source code). Historical information about earlier releases can be
