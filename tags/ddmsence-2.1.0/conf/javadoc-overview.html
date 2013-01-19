@@ -1,0 +1,469 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/2000/REC-xhtml1-20000126/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Copyright 2010 - 2013 by Brian Uri!
+   
+   This file is part of DDMSence.
+   
+   This library is free software; you can redistribute it and/or modify
+   it under the terms of version 3.0 of the GNU Lesser General Public 
+   License as published by the Free Software Foundation.
+   
+   This library is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+   GNU Lesser General Public License for more details.
+   
+   You should have received a copy of the GNU Lesser General Public 
+   License along with DDMSence. If not, see <http://www.gnu.org/licenses/>.
+
+   You can contact the author at ddmsence@urizone.net. The DDMSence
+   home page is located at http://ddmsence.urizone.net/
+-->
+<body>
+  
+  	<p>
+	DDMSence (pronounced "<i>dee-dee-em-Essence</i>") is an open source Java API which supports the 
+	<a href="http://metadata.ces.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
+	It transforms XML DDMS Resources (metacards) into a Java object model (using XOM and Xerces), allowing them to be 
+	manipulated or traversed within the context of a Java environment. The library is published under the 
+	<a target="_top" href="http://ddmsence.urizone.net/license.jsp">GNU Lesser General Public License</a> (LGPL). 
+	The project's home page can be found at <a target="_top" href="http://ddmsence.urizone.net/">http://ddmsence.urizone.net/</a>.</p>
+
+	<p>The classes which represent DDMS elements are grouped into packages based on which of the five core sets they belong to. In some cases,
+	packages are further divided to identify any components which originate from other XML namespaces, such as GML or XLink. If a component
+	is reused across multiple sets, it will be found in the package of the set where it was first introduced.</p>
+	
+	<h2>DDMS 4.1 Hierarchy</h2>
+	
+	<p>The table below provides a quick reference of every DDMS 4.1 component which has been implemented as a DDMSence class, organized
+	alphabetically within DDMS core sets. The attribute groups which decorate the components are listed in parentheses.</p>
+	
+	<table class="info"><tr>
+		<td colspan="2" class="hierarchy">
+			<ul>
+				<li>{@link buri.ddmsence.ddms.Resource}
+					({@link buri.ddmsence.ddms.security.ism.NoticeAttributes Notice},
+					{@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM},
+					{@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})					
+				</li>
+			</ul>
+		</td>
+	</tr><tr>
+		<td class="hierarchy">
+			<u>Format Set</u>
+			<ul>
+				<li>{@link buri.ddmsence.ddms.format.Format}</li>
+				<ul>
+					<li>{@link buri.ddmsence.ddms.format.Extent}</li>
+				</ul>				
+			</ul>
+			<u>Metacard Set</u>
+			<ul>
+				<li>{@link buri.ddmsence.ddms.metacard.MetacardInfo}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+				</li>
+				<ul>
+					<li>{@link buri.ddmsence.ddms.security.ntk.Access}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.security.ntk.Group}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.security.ntk.GroupValue}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+							<li>{@link buri.ddmsence.ddms.security.ntk.SystemName}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+						</ul>
+						<li>{@link buri.ddmsence.ddms.security.ntk.Individual}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.security.ntk.IndividualValue}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+							<li>{@link buri.ddmsence.ddms.security.ntk.SystemName}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+						</ul>
+						<li>{@link buri.ddmsence.ddms.security.ntk.ProfileList}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.security.ntk.Profile}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+							<ul>
+								<li>{@link buri.ddmsence.ddms.security.ntk.ProfileValue}
+									({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+								</li>
+								<li>{@link buri.ddmsence.ddms.security.ntk.SystemName}
+									({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+								</li>
+							</ul>
+						</ul>
+					</ul>
+					<li>{@link buri.ddmsence.ddms.resource.Contributor}
+						/ {@link buri.ddmsence.ddms.resource.Creator}
+						/ {@link buri.ddmsence.ddms.resource.PointOfContact}
+						/ {@link buri.ddmsence.ddms.resource.Publisher}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.resource.Organization}
+							({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.resource.SubOrganization}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+						</ul>
+						<li>{@link buri.ddmsence.ddms.resource.Person}
+							({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+						</li>
+						<li>{@link buri.ddmsence.ddms.resource.Service}
+							({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+						</li>
+						<li>{@link buri.ddmsence.ddms.resource.Unknown}
+							({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+						</li>
+					</ul>
+					<li>{@link buri.ddmsence.ddms.resource.Dates}</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.ApproximableDate}</li>
+					</ul>
+					<li>{@link buri.ddmsence.ddms.summary.Description}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+					<li>{@link buri.ddmsence.ddms.resource.Identifier}</li>
+					<li>{@link buri.ddmsence.ddms.security.NoticeList}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.security.ism.Notice}
+							({@link buri.ddmsence.ddms.security.ism.NoticeAttributes Notice},
+							{@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.security.ism.NoticeText}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+						</ul>
+					</ul>
+					<li>{@link buri.ddmsence.ddms.resource.ProcessingInfo}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+					<li>{@link buri.ddmsence.ddms.resource.RecordsManagementInfo}</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.resource.ApplicationSoftware}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<li>{@link buri.ddmsence.ddms.resource.RecordKeeper}</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.resource.Organization}
+								({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+							</li>
+							<ul>
+								<li>{@link buri.ddmsence.ddms.resource.SubOrganization}
+									({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+								</li>
+							</ul>
+						</ul>
+					</ul>
+					<li>{@link buri.ddmsence.ddms.resource.RevisionRecall}
+						({@link buri.ddmsence.ddms.summary.xlink.XLinkAttributes XLink},
+						{@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.resource.Details}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<li>{@link buri.ddmsence.ddms.summary.Link}
+							({@link buri.ddmsence.ddms.summary.xlink.XLinkAttributes XLink},
+							{@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+					</ul>
+				</ul>
+			</ul>
+			<u>Resource Set</u>
+			<ul>
+				<li>{@link buri.ddmsence.ddms.resource.Contributor}
+					/ {@link buri.ddmsence.ddms.resource.Creator}
+					/ {@link buri.ddmsence.ddms.resource.PointOfContact}
+					/ {@link buri.ddmsence.ddms.resource.Publisher}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+				</li>
+				<ul>
+					<li>{@link buri.ddmsence.ddms.resource.Organization}
+						({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+					</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.resource.SubOrganization}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+					</ul>
+					<li>{@link buri.ddmsence.ddms.resource.Person}
+						({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+					</li>
+					<li>{@link buri.ddmsence.ddms.resource.Service}
+						({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+					</li>
+					<li>{@link buri.ddmsence.ddms.resource.Unknown}
+						({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+					</li>
+				</ul>
+				<li>{@link buri.ddmsence.ddms.resource.Dates}</li>
+				<ul>
+					<li>{@link buri.ddmsence.ddms.ApproximableDate}</li>
+				</ul>
+				<li>{@link buri.ddmsence.ddms.resource.Identifier}</li>
+				<li>{@link buri.ddmsence.ddms.resource.Language}</li>
+				<li>{@link buri.ddmsence.ddms.resource.ResourceManagement}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+				</li>
+				<ul>
+					<li>{@link buri.ddmsence.ddms.resource.ProcessingInfo}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+					<li>{@link buri.ddmsence.ddms.resource.RecordsManagementInfo}</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.resource.ApplicationSoftware}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<li>{@link buri.ddmsence.ddms.resource.RecordKeeper}</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.resource.Organization}
+								({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+							</li>
+							<ul>
+								<li>{@link buri.ddmsence.ddms.resource.SubOrganization}
+									({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+								</li>
+							</ul>
+						</ul>
+					</ul>
+					<li>{@link buri.ddmsence.ddms.resource.RevisionRecall}
+						({@link buri.ddmsence.ddms.summary.xlink.XLinkAttributes XLink},
+						{@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.resource.Details}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<li>{@link buri.ddmsence.ddms.summary.Link}
+							({@link buri.ddmsence.ddms.summary.xlink.XLinkAttributes XLink},
+							{@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+					</ul>
+					<li>{@link buri.ddmsence.ddms.resource.TaskingInfo}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.resource.Addressee}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.resource.Organization}
+								({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+							</li>
+							<ul>
+								<li>{@link buri.ddmsence.ddms.resource.SubOrganization}
+									({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+								</li>
+							</ul>
+							<li>{@link buri.ddmsence.ddms.resource.Person}
+								({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+							</li>
+						</ul>
+						<li>{@link buri.ddmsence.ddms.summary.Description}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<li>{@link buri.ddmsence.ddms.resource.RequesterInfo}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.resource.Organization}
+								({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+							</li>
+							<ul>
+								<li>{@link buri.ddmsence.ddms.resource.SubOrganization}
+									({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+								</li>
+							</ul>
+							<li>{@link buri.ddmsence.ddms.resource.Person}
+								({@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+							</li>
+						</ul>
+						<li>{@link buri.ddmsence.ddms.resource.TaskID}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+					</ul>
+				</ul>
+				<li>{@link buri.ddmsence.ddms.resource.Rights}</li>
+				<li>{@link buri.ddmsence.ddms.resource.Source}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+				</li>
+				<li>{@link buri.ddmsence.ddms.resource.Subtitle}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+				</li>
+				<li>{@link buri.ddmsence.ddms.resource.Title}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+				</li>
+				<li>{@link buri.ddmsence.ddms.resource.Type}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+				</li>
+			</ul>
+		</td><td class="hierarchy">
+			<u>Security Set</u>
+			<ul>
+				<li>{@link buri.ddmsence.ddms.security.Security}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})</li>
+				<ul>
+					<li>{@link buri.ddmsence.ddms.security.ntk.Access}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.security.ntk.Group}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.security.ntk.GroupValue}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+							<li>{@link buri.ddmsence.ddms.security.ntk.SystemName}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+						</ul>
+						<li>{@link buri.ddmsence.ddms.security.ntk.Individual}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.security.ntk.IndividualValue}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+							<li>{@link buri.ddmsence.ddms.security.ntk.SystemName}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+						</ul>
+						<li>{@link buri.ddmsence.ddms.security.ntk.ProfileList}
+							({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.security.ntk.Profile}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+							<ul>
+								<li>{@link buri.ddmsence.ddms.security.ntk.ProfileValue}
+									({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+								</li>
+								<li>{@link buri.ddmsence.ddms.security.ntk.SystemName}
+									({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+								</li>
+							</ul>
+						</ul>
+					</ul>
+					<li>{@link buri.ddmsence.ddms.security.NoticeList}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.security.ism.Notice}
+							({@link buri.ddmsence.ddms.security.ism.NoticeAttributes Notice},
+							{@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.security.ism.NoticeText}
+								({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+							</li>
+						</ul>
+					</ul>
+				</ul>
+			</ul>	
+			<u>Summary Set</u>
+			<ul>
+				<li>{@link buri.ddmsence.ddms.summary.Description}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+				</li>
+				<li>{@link buri.ddmsence.ddms.summary.GeospatialCoverage}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+				</li>
+				<ul>
+					<li>{@link buri.ddmsence.ddms.summary.BoundingBox}</li>
+					<li>{@link buri.ddmsence.ddms.summary.BoundingGeometry}</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.summary.gml.Point}
+							({@link buri.ddmsence.ddms.summary.gml.SRSAttributes SRS})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.summary.gml.Position Position}
+								({@link buri.ddmsence.ddms.summary.gml.SRSAttributes SRS})
+							</li>
+						</ul>
+						<li>{@link buri.ddmsence.ddms.summary.gml.Polygon}
+							({@link buri.ddmsence.ddms.summary.gml.SRSAttributes SRS})
+						</li>
+						<ul>
+							<li>{@link buri.ddmsence.ddms.summary.gml.Position Position}
+								({@link buri.ddmsence.ddms.summary.gml.SRSAttributes SRS})
+							</li>
+						</ul>
+					</ul>
+					<li>{@link buri.ddmsence.ddms.summary.GeographicIdentifier}</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.summary.CountryCode}</li>
+						<li>{@link buri.ddmsence.ddms.summary.FacilityIdentifier}</li>
+						<li>{@link buri.ddmsence.ddms.summary.SubDivisionCode}</li>
+					</ul>
+					<li>{@link buri.ddmsence.ddms.summary.PostalAddress}</li>
+					<ul>
+						<li>{@link buri.ddmsence.ddms.summary.CountryCode}</li>
+					</ul>
+					<li>{@link buri.ddmsence.ddms.summary.VerticalExtent}</li>					
+				</ul>
+				<li>{@link buri.ddmsence.ddms.summary.RelatedResource}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+				</li>
+				<ul>
+					<li>{@link buri.ddmsence.ddms.summary.Link}
+						({@link buri.ddmsence.ddms.summary.xlink.XLinkAttributes XLink})
+					</li>
+				</ul>
+				<li>{@link buri.ddmsence.ddms.summary.SubjectCoverage}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+				</li>
+				<ul>
+					<li>{@link buri.ddmsence.ddms.summary.Category}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM},
+						{@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+					</li>
+					<li>{@link buri.ddmsence.ddms.summary.Keyword}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM},
+						{@link buri.ddmsence.ddms.extensible.ExtensibleAttributes Ext})
+					</li>
+					<li>{@link buri.ddmsence.ddms.summary.NonStateActor}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+					<li>{@link buri.ddmsence.ddms.summary.ProductionMetric}
+						({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+					</li>
+				</ul>
+				<li>{@link buri.ddmsence.ddms.summary.TemporalCoverage}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+				</li>
+				<ul>
+					<li>{@link buri.ddmsence.ddms.ApproximableDate}</li>
+				</ul>
+				<li>{@link buri.ddmsence.ddms.summary.VirtualCoverage}
+					({@link buri.ddmsence.ddms.security.ism.SecurityAttributes ISM})
+				</li>
+			</ul>
+			<u>Extensible Layer</u>
+			<ul>
+				<li>{@link buri.ddmsence.ddms.extensible.ExtensibleElement}</li>
+			</ul>
+		</td>
+	</tr></table>
+</body>
+</html>
