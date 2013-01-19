@@ -62,8 +62,6 @@
 	<meta name="temporalCoverage.name" content="Unknown" />
 	<meta name="temporalCoverage.start" content="2010-03-24T12:00:00Z" />
 	<meta name="temporalCoverage.end" content="Not Applicable" />
-	<meta name="ddms.generator" content="DDMSence 2.1.0" />
-	<meta name="ddms.version" content="4.1.0" />
 		
 	<script type="text/javascript" src="./shared/jquery-1.6.4.min.js"></script>
 	<script type="text/javascript">
@@ -82,7 +80,7 @@
 <%@ include file="../shared/header.jspf" %>
 <div class="newsFeed">
 	<b><u>Recent News</u></b><br /><br />
-	<div class="newsUpdate"><u>01/20/2013</u>: <a href="downloads.jsp">v2.1.0</a> released, adding support for DDMS 4.1.</div>
+	<div class="newsUpdate"><u>01/19/2013</u>: <a href="downloads.jsp">v2.1.0</a> released, adding support for DDMS 4.1.</div>
 	<div class="newsUpdate"><u>12/01/2011</u>: v2.0.0 released, adding support for DDMS 4.0.1.</div>
 	<div class="newsUpdate"><u>10/20/2011</u>: I gave a <a href="https://metadata.ces.mil/dse/content_items/document/100100096">briefing</a> on DDMSence at the <a href="https://metadata.ces.mil/dse-help/en/Metadata_Working_Group">DoD Metadata Working Group Meeting</a> on October 20 in Columbia, MD.</div>
 	<div class="divExpand feed"><a href="#" onClick="return false;">more...</a></div>	
