@@ -35,6 +35,18 @@ older 4.0.1 metacards are validated against the DDMS 4.1 schemas in this release
 <li><a href="upgrade-2.0.0.jsp">Upgrade Guide</a> (for migrating from DDMSence v1.x.x)</li>
 </ul>
 
+<h3>DDMSence and Maven</h3>
+
+<p>Starting with v2.1.0, the DDMSence JAR file is also available in the <a href="http://search.maven.org/#browse|829191053">Maven Central Repository</a>. It can be added to your <code>pom.xml</code>
+file as shown in Figure 1.</p>
+
+<pre class="brush: xml">&lt;dependency&gt;
+   &lt;groupId&gt;net.urizone&lt;/groupId&gt;
+   &lt;artifactId&gt;ddmsence&lt;/artifactId&gt;
+   &lt;version&gt;2.1.0&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+<p class="figure">Figure 1. Setting up DDMSence as a Maven dependency</p>
+
 <h3>Versioning</h3>
 
 <p>DDMSence will follow a "major.minor.patch" versioning system for as long as it makes sense to do so:</p>
