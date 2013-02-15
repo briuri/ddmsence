@@ -290,14 +290,18 @@ Information submitted through this tool is not retained on the server.</p>
 
 <h3>How This Works</h3>
 
-<p>Compilable source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework (v2.0). However, all of the pieces you need create 
+<p>Compilable source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework (v3.2.1). However, all of the pieces you need create 
 a similar web application are shown below. A basic understanding of <a href="http://en.wikipedia.org/wiki/Spring_Framework#Model-view-controller_framework">Spring MVC</a> 
 will be necessary to understand the code.</p>
 
 <ol>
 	<li>A Spring configuration file maps the URI, <code>builder.uri</code> to the appropriate Spring controller.
 	 Here is the relevant excerpt from this server's configuration file:</li>
-<pre class="brush: xml; collapse: true">&lt;bean id="builderControl" class="buri.web.ddmsence.BuilderControl" /&gt;
+<pre class="brush: xml; collapse: true">&lt;bean id="builderControl" class="buri.web.ddmsence.BuilderControl"&gt;
+   &lt;property name="commandName" value="resource"/&gt;
+   &lt;property name="commandClass" value="buri.ddmsence.ddms.Resource.Builder"/&gt;
+   &lt;property name="formView" value="builder"/&gt;
+&lt;/bean&gt;
 &lt;bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"&gt;
    &lt;property name="urlMap"&gt;
       &lt;map&gt;
@@ -340,61 +344,52 @@ import buri.ddmsence.util.Util;
 public class BuilderControl extends SimpleFormController {
 	
    protected final Log logger = LogFactory.getLog(getClass());
-               
-    /**
-     * Constructor
-     */
-    public BuilderControl() {
-       setCommandName("resource");
-       setCommandClass(Resource.Builder.class);
-       setFormView("builder");
-    }
     
-    /**
-     * @see SimpleFormController#formBackingObject(HttpServletRequest)
-     */
-    protected Object formBackingObject(HttpServletRequest request) throws Exception {
-       return (new Resource.Builder());
-    }    
+   /**
+    * @see SimpleFormController#formBackingObject(HttpServletRequest)
+    */
+   protected Object formBackingObject(HttpServletRequest request) throws Exception {
+      return (new Resource.Builder());
+   }    
     
-    /**
-     * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest)
-     */
-    public Map&lt;String, Object&gt; referenceData(HttpServletRequest request) throws Exception {
-       Map&lt;String, Object&gt; data = new HashMap&lt;String, Object&gt;();
-       data.put("ownerProducers", ISMVocabulary.getEnumerationTokens(ISMVocabulary.CVE_OWNER_PRODUCERS));
-       return (data);
-    }  
+   /**
+    * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest)
+    */
+   public Map&lt;String, Object&gt; referenceData(HttpServletRequest request) throws Exception {
+      Map&lt;String, Object&gt; data = new HashMap&lt;String, Object&gt;();
+      data.put("ownerProducers", ISMVocabulary.getEnumerationTokens(ISMVocabulary.CVE_OWNER_PRODUCERS));
+      return (data);
+   }  
     
     /**
      * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object, org.springframework.validation.BindException)
      */
    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
       Resource.Builder builder = (Resource.Builder) command;
-       Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
-       try {
-          Resource resource = builder.commit();
-          if (resource == null)
-             throw new InvalidDDMSException("No information was entered to create a DDMS Resource.");
-          // Skipping resource.toXML() so I can control formatting.
-          Document document = new Document(resource.getXOMElementCopy());
-          ByteArrayOutputStream os = new ByteArrayOutputStream();
+      Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
+      try {
+         Resource resource = builder.commit();
+         if (resource == null)
+            throw new InvalidDDMSException("No information was entered to create a DDMS Resource.");
+         // Skipping resource.toXML() so I can control formatting.
+         Document document = new Document(resource.getXOMElementCopy());
+         ByteArrayOutputStream os = new ByteArrayOutputStream();
          Serializer serializer = new Serializer(os, "ISO-8859-1");
          serializer.setIndent(3);
          serializer.setMaxLength(120);
          serializer.write(document);          
-          model.put("xml", os.toString());
+         model.put("xml", os.toString());
          model.put("warnings", resource.getValidationWarnings());
          return (new ModelAndView("builderResult", "model", model));
       }
-        catch (InvalidDDMSException e) {
-           ValidationMessage message = ValidationMessage.newError(e.getMessage(), e.getLocator());
-           String location = Util.isEmpty(message.getLocator()) ? "unknown location" : message.getLocator();
-           errors.reject(null, null, "&lt;b&gt;" + message.getType() + "&lt;/b&gt; at &lt;code&gt;" + location + "&lt;/code&gt;: " + message.getText());
-         }
-         catch (Exception e) {
-            errors.reject(e.getMessage());
-         }
+      catch (InvalidDDMSException e) {
+         ValidationMessage message = ValidationMessage.newError(e.getMessage(), e.getLocator());
+         String location = Util.isEmpty(message.getLocator()) ? "unknown location" : message.getLocator();
+         errors.reject(null, null, "&lt;b&gt;" + message.getType() + "&lt;/b&gt; at &lt;code&gt;" + location + "&lt;/code&gt;: " + message.getText());
+      }
+      catch (Exception e) {
+         errors.reject(e.getMessage());
+      }
       return showForm(request, response, errors, model);       
     }
 }</pre>

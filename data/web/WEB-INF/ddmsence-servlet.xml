@@ -14,7 +14,7 @@
 		<property name="suffix" value=".jsp" />
     </bean>
         
-	<bean id="multipartResolver" class="org.springframework.web.multipart.cos.CosMultipartResolver">
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="maxUploadSize" value="50000" />
 	</bean>
 	<!-- 
@@ -31,8 +31,16 @@
 			The DDMSence web application is deployed in an environment which already has
 			Spring JARs deployed.
 	-->
-	<bean id="builderControl" class="buri.web.ddmsence.BuilderControl" />
-	<bean id="validatorControl" class="buri.web.ddmsence.ValidatorControl" />
+	<bean id="builderControl" class="buri.web.ddmsence.BuilderControl">
+		<property name="commandName" value="resource"/>
+		<property name="commandClass" value="buri.ddmsence.ddms.Resource.Builder"/>
+		<property name="formView" value="builder"/>
+	</bean>   		
+	<bean id="validatorControl" class="buri.web.ddmsence.ValidatorControl">
+		<property name="commandName" value="record"/>
+		<property name="commandClass" value="buri.web.ddmsence.ValidatorRecord"/>
+		<property name="formView" value="validator"/>
+	</bean>
 			
 	<!-- Mappings from URLs to Controls -->							
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
