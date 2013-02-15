@@ -200,17 +200,21 @@ can be submitted by pasting XML text, uploading a file, or referencing a URL.</p
 
 <h3>How This Works</h3>
 
-<p>Compilable source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework (v2.0). However, all of the pieces you need create 
+<p>Compilable source code for this tool is not bundled with DDMSence, because it has dependencies on the Spring Framework (v3.2.1). However, all of the pieces you need create 
 a similar web application are shown below. A basic understanding of <a href="http://en.wikipedia.org/wiki/Spring_Framework#Model-view-controller_framework">Spring MVC</a> 
 will be necessary to understand the code.</p>
 
 <ol>
 	<li>A Spring configuration file maps the URI, <code>validator.uri</code> to the appropriate Spring controller. A <code>multipartResolver</code> bean
 	is used to handle file uploads. Here is the relevant excerpt from this server's configuration file:</li>
-<pre class="brush: xml; collapse: true">&lt;bean id="multipartResolver" class="org.springframework.web.multipart.cos.CosMultipartResolver"&gt;
+<pre class="brush: xml; collapse: true">&lt;bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"&gt;
    &lt;property name="maxUploadSize" value="50000" /&gt;
 &lt;/bean&gt;
-&lt;bean id="validatorControl" class="buri.web.ddmsence.ValidatorControl" /&gt;
+&lt;bean id="validatorControl" class="buri.web.ddmsence.ValidatorControl"&gt;
+   &lt;property name="commandName" value="record"/&gt;
+   &lt;property name="commandClass" value="buri.web.ddmsence.ValidatorRecord"/&gt;
+   &lt;property name="formView" value="validator"/&gt;
+&lt;/bean&gt;
 &lt;bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping"&gt;
    &lt;property name="urlMap"&gt;
       &lt;map&gt;
@@ -263,43 +267,34 @@ import buri.ddmsence.util.Util;
 public class ValidatorControl extends SimpleFormController {
 
    protected final Log logger = LogFactory.getLog(getClass());
-               
-    /**
-     * Constructor
-     */
-    public ValidatorControl() {
-       setCommandName("record");
-       setCommandClass(ValidatorRecord.class);
-       setFormView("validator");
-    }
+
+   /**
+    * @see SimpleFormController#formBackingObject(HttpServletRequest)
+    */
+   protected Object formBackingObject(HttpServletRequest request) throws Exception {
+      String type = request.getParameter("type");
+      return (new ValidatorRecord(type));
+   }    
     
-    /**
-     * @see SimpleFormController#formBackingObject(HttpServletRequest)
-     */
-    protected Object formBackingObject(HttpServletRequest request) throws Exception {
-       String type = request.getParameter("type");
-       return (new ValidatorRecord(type));
-    }    
+   /**
+    * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest)
+    */
+   public Map&lt;String, Object&gt; referenceData(HttpServletRequest request) throws Exception {
+      String type = request.getParameter("type");
+      if (Util.isEmpty(type))
+         type = ValidatorRecord.DEFAULT_TYPE;
+      Map&lt;String, Object&gt; data = new HashMap&lt;String, Object&gt;();
+      data.put("type", type);
+      return (data);
+   }  
     
-    /**
-     * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest)
-     */
-    public Map&lt;String, Object&gt; referenceData(HttpServletRequest request) throws Exception {
-       String type = request.getParameter("type");
-       if (Util.isEmpty(type))
-          type = ValidatorRecord.DEFAULT_TYPE;
-       Map&lt;String, Object&gt; data = new HashMap&lt;String, Object&gt;();
-       data.put("type", type);
-       return (data);
-    }  
-    
-    /**
-     * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object, org.springframework.validation.BindException)
-     */
+   /**
+    * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object, org.springframework.validation.BindException)
+    */
    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-       ValidatorRecord record = (ValidatorRecord) command;
-       Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
-       String stringRepresentation = null;
+      ValidatorRecord record = (ValidatorRecord) command;
+      Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
+      String stringRepresentation = null;
       try {
          if (ValidatorRecord.TYPE_TEXT.equals(record.getType())) {
             stringRepresentation = record.getStringRecord();
@@ -327,16 +322,16 @@ public class ValidatorControl extends SimpleFormController {
             throw new InvalidDDMSException("This tool can only be used on Unclassified data.");
          }
       }
-        catch (InvalidDDMSException e) {
-           ValidationMessage message = ValidationMessage.newError(e.getMessage(), e.getLocator());
-            model.put("error", message);
-         }
-         catch (Exception e) {
-            ValidationMessage message = ValidationMessage.newError(e.getMessage(), null);
-            model.put("error", message);
-         }
-       return (new ModelAndView("validatorResult", "model", model));
-    }
+      catch (InvalidDDMSException e) {
+         ValidationMessage message = ValidationMessage.newError(e.getMessage(), e.getLocator());
+         model.put("error", message);
+      }
+      catch (Exception e) {
+         ValidationMessage message = ValidationMessage.newError(e.getMessage(), null);
+         model.put("error", message);
+      }
+      return (new ModelAndView("validatorResult", "model", model));
+   }
     
    /**
     * Converts the contents of a stream into a String
@@ -355,31 +350,32 @@ public class ValidatorControl extends SimpleFormController {
       }
       return (buffer.toString());
    }
-    /**
-     * Gets the uploaded file from the request if it exists and wraps a reader around it.
-     * 
-     * @param request 
-     * @throws IOException
-     */
-    private Reader getFile(HttpServletRequest request) throws IOException {
-       if (request instanceof MultipartHttpServletRequest) {
-          MultipartHttpServletRequest fileRequest = (MultipartHttpServletRequest) request;
-          MultipartFile file = fileRequest.getFile("upload");
-          if (!file.isEmpty()) {
-             return (new InputStreamReader(new BufferedInputStream(file.getInputStream())));
-          }
-       }       
-       return (null);
-    }
+   
+   /**
+    * Gets the uploaded file from the request if it exists and wraps a reader around it.
+    * 
+    * @param request 
+    * @throws IOException
+    */
+   private Reader getFile(HttpServletRequest request) throws IOException {
+      if (request instanceof MultipartHttpServletRequest) {
+         MultipartHttpServletRequest fileRequest = (MultipartHttpServletRequest) request;
+         MultipartFile file = fileRequest.getFile("upload");
+         if (!file.isEmpty()) {
+            return (new InputStreamReader(new BufferedInputStream(file.getInputStream())));
+         }
+      }       
+      return (null);
+   }
     
-    /**
-     * Prevents classified data from being validated here.
-     * 
-     * @param resource the DDMS Resource
-     */
-    private boolean isUnclassified(Resource resource) throws InvalidDDMSException {
-       Set&lt;SecurityAttributes&gt; allAttributes = new HashSet&lt;SecurityAttributes&gt;();
-       allAttributes.add(resource.getSecurityAttributes());
+   /**
+    * Prevents classified data from being validated here.
+    * 
+    * @param resource the DDMS Resource
+    */
+   private boolean isUnclassified(Resource resource) throws InvalidDDMSException {
+      Set&lt;SecurityAttributes&gt; allAttributes = new HashSet&lt;SecurityAttributes&gt;();
+      allAttributes.add(resource.getSecurityAttributes());
       for (IDDMSComponent component : resource.getTopLevelComponents()) {
          if (component.getSecurityAttributes() != null)
             allAttributes.add(component.getSecurityAttributes());
