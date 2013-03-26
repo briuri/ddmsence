@@ -31,14 +31,18 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:nonStateActor.
  * 
- * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody"> <p>DDMSence allows the
- * following legal, but nonsensical constructs:</p> <ul> <li>A nonStateActor element can be used without any child
- * text.</li> </ul> </td></tr></table>
+ * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
+ * <ul>
+ * <li>A nonStateActor element can be used without any child text.</li>
+ * </ul>
+ * </td></tr></table>
  * 
- * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody"> <u>ddms:order</u>:
- * specifies a user-defined order of an element within the given document (optional)<br /> <u>ddms:qualifier</u>: A
- * URI-based qualifier (optional, starting in DDMS 4.1)<br /> <u>{@link SecurityAttributes}</u>: The classification and
- * ownerProducer attributes are optional. </td></tr></table>
+ * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
+ * <u>ddms:order</u>: specifies a user-defined order of an element within the given document (optional)<br />
+ * <u>ddms:qualifier</u>: A URI-based qualifier (optional, starting in DDMS 4.1)<br />
+ * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional.
+ * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 2.0.0
