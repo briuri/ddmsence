@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>DDMSence: An open source Java library for DDMS</title>
+	<title>DDMSence: An open-source Java library for DDMS</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="keywords" content="DDMSence,DDMS,Metadata,Discovery,Java,DoD,XML,DDMEssence,DDMSense,Essence" />
 
@@ -16,7 +16,7 @@
 	<meta name="title" content="DDMSence Home Page" />
 	<meta name="title.classification" content="U" />
 	<meta name="title.ownerProducer" content="USA" />
-	<meta name="description" content="An open source Java library for the DoD Discovery Metadata Specification (DDMS)" />
+	<meta name="description" content="An open-source Java library for the DoD Discovery Metadata Specification (DDMS)" />
 	<meta name="description.classification" content="U" />
 	<meta name="description.ownerProducer" content="USA" />
 	<meta name="language.qualifier" content="http://purl.org/dc/elements/1.1/language" />
@@ -126,7 +126,7 @@
 <h1>DDMSence v@ddmsence.version@</h1>
 
 <p>
-DDMSence (pronounced "<i>dee-dee-em-<font color="#660000">Essence</font></i>") is an open source Java API which supports the 
+DDMSence (pronounced "<i>dee-dee-em-<font color="#660000">Essence</font></i>") is an open-source Java API which supports the 
 <a href="http://metadata.ces.mil/mdr/irs/DDMS/" target="_new">DoD Discovery Metadata Specification (DDMS)</a>. 
 It transforms XML DDMS Resources (metacards) into a Java object model (using XOM and Xerces), allowing them to be manipulated or traversed within the context of a Java environment. 
 </p>

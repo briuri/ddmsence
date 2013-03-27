@@ -1,4 +1,4 @@
-DDMSence (pronounced "dee-dee-em-Essence") is an open source Java API which 
+DDMSence (pronounced "dee-dee-em-Essence") is an open-source Java API which 
 supports the DoD Discovery Metadata Specification (DDMS).
 
 You can contact the author at ddmsence@urizone.net. The DDMSence

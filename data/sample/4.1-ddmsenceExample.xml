@@ -18,7 +18,7 @@
 	</ddms:metacardInfo>
 	<ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence"/>
 	<ddms:title ISM:ownerProducer="USA" ISM:classification="U">DDMSence</ddms:title>
-	<ddms:description ISM:ownerProducer="USA" ISM:classification="U">An open source Java API for DDMS</ddms:description>
+	<ddms:description ISM:ownerProducer="USA" ISM:classification="U">An open-source Java API for DDMS</ddms:description>
 	<ddms:language ddms:qualifier="http://purl.org/dc/elements/1.1/language" ddms:value="en"/>
 	<ddms:dates ddms:created="2010-03-24" ddms:posted="2010-03-24" ddms:approvedOn="2010-04-01" />
 	<ddms:rights ddms:copyright="true" ddms:privacyAct="false" ddms:intellectualProperty="true"/>

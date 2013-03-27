@@ -20,7 +20,7 @@
 	version="2.4">
 
 	<display-name>DDMSence</display-name>
-	<description>Project page for an open source DDMS library, written in Java</description>
+	<description>Project page for an open-source DDMS library, written in Java</description>
 	
 	<error-page> 
     	<error-code>404</error-code> 

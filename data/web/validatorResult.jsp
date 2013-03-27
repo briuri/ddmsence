@@ -4,7 +4,7 @@
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<title>DDMSence: Online DDMS Validation Result</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="description" content="An open source Java library for the DoD Discovery Metadata Specification (DDMS)">
+	<meta name="description" content="An open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>

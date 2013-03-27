@@ -2,7 +2,7 @@
 <head>
 	<title>DDMSence: Upgrade Guide: Version 1.x to 2.x</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="description" content="An open source Java library for the DoD Discovery Metadata Specification (DDMS)">
+	<meta name="description" content="An open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>

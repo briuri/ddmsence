@@ -6,7 +6,7 @@
 	<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 	<title>DDMSence: Online DDMS Validator</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="description" content="An open source Java library for the DoD Discovery Metadata Specification (DDMS)">
+	<meta name="description" content="An open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
 	<meta name="keywords" content="DDMSence,DDMS,Online,Validator,Validation,DoD" />
 	<script type="text/javascript" src="./shared/jquery-1.6.4.min.js"></script>
 	<script type="text/javascript" src="./shared/jquery.validate-1.8.1.min.js"></script>	
@@ -83,7 +83,7 @@
 				+ "    DDMSence\n"
 				+ "  </ddms:title>\n"
 				+ "  <ddms:description ISM:ownerProducer=\"USA\" ISM:classification=\"U\">\n"
-				+ "    An open source Java API for DDMS\n"
+				+ "    An open-source Java API for DDMS\n"
 				+ "  </ddms:description>\n"
 				+ "  <ddms:language ddms:qualifier=\"http://purl.org/dc/elements/1.1/language\" \n"
 				+ "    ddms:value=\"en\"/>\n"
