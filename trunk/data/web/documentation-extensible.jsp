@@ -2,7 +2,7 @@
 <head>
 	<title>DDMSence: Power Tip -The Extensible Layer</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="description" content="An open source Java library for the DoD Discovery Metadata Specification (DDMS)">
+	<meta name="description" content="An open-source Java library for the DoD Discovery Metadata Specification (DDMS)">
 </head>
 <body>
 <%@ include file="../shared/header.jspf" %>

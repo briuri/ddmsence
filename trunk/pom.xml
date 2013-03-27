@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 	<name>DDMSence</name>
 	<version>2.1.0</version>	
-	<description>DDMSence (pronounced "dee-dee-em-Essence") is an open source Java API which supports the DoD Discovery Metadata Specification (DDMS).</description>
+	<description>DDMSence (pronounced "dee-dee-em-Essence") is an open-source Java API which supports the DoD Discovery Metadata Specification (DDMS).</description>
 	<url>http://ddmsence.urizone.net/</url>
 	<licenses>
 		<license>
