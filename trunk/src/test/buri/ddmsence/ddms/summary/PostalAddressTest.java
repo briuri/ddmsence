@@ -127,8 +127,8 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 		else
 			text.append(buildOutput(isHTML, "postalAddress.province", TEST_PROVINCE));
 		text.append(buildOutput(isHTML, "postalAddress.postalCode", TEST_POSTAL_CODE));
-		text.append(buildOutput(isHTML, "postalAddress.countryCode.qualifier", "ISO-3166"));
-		text.append(buildOutput(isHTML, "postalAddress.countryCode.value", "USA"));
+		text.append(buildOutput(isHTML, "postalAddress.countryCode." + CountryCodeTest.getQualifierName(), "ISO-3166"));
+		text.append(buildOutput(isHTML, "postalAddress.countryCode." + CountryCodeTest.getValueName(), "USA"));
 		return (text.toString());
 	}
 
@@ -148,7 +148,8 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 		else
 			xml.append("<ddms:province>Alberta</ddms:province>\n\t");
 		xml.append("<ddms:postalCode>20500</ddms:postalCode>\n\t");
-		xml.append("<ddms:countryCode ddms:qualifier=\"ISO-3166\" ddms:value=\"USA\" />\n");
+		xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName()).append("=\"ISO-3166\" ddms:")
+			.append(CountryCodeTest.getValueName()).append("=\"USA\" />\n");
 		xml.append("</ddms:postalAddress>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}

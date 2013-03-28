@@ -117,6 +117,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public RelatedResource(Element element) throws InvalidDDMSException {
+		// Defaults to qualifier-value over codespace-code.
 		try {
 			Util.requireDDMSValue("element", element);
 			setXOMElement(element, false);
@@ -149,6 +150,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 */
 	public RelatedResource(List<Link> links, String relationship, String direction, String qualifier, String value,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
+		// Defaults to qualifier-value over codespace-code.
 		try {
 			if (links == null)
 				links = Collections.emptyList();
@@ -157,8 +159,8 @@ public final class RelatedResource extends AbstractQualifierValue {
 			Util.addDDMSAttribute(element, RELATIONSHIP_NAME, relationship);
 			Util.addDDMSAttribute(element, DIRECTION_NAME, direction);
 			Element innerElement = (version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement(OLD_INNER_NAME, null));
-			Util.addDDMSAttribute(innerElement, QUALIFIER_NAME, qualifier);
-			Util.addDDMSAttribute(innerElement, VALUE_NAME, value);
+			Util.addDDMSAttribute(innerElement, getQualifierName(), qualifier);
+			Util.addDDMSAttribute(innerElement, getValueName(), value);
 			for (Link link : links) {
 				innerElement.appendChild(link.getXOMElementCopy());
 			}
@@ -255,8 +257,8 @@ public final class RelatedResource extends AbstractQualifierValue {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, localPrefix + RELATIONSHIP_NAME, getRelationship()));
 		text.append(buildOutput(isHTML, localPrefix + DIRECTION_NAME, getDirection()));
-		text.append(buildOutput(isHTML, localPrefix + QUALIFIER_NAME, getQualifier()));
-		text.append(buildOutput(isHTML, localPrefix + VALUE_NAME, getValue()));
+		text.append(buildOutput(isHTML, localPrefix + getQualifierName(), getQualifier()));
+		text.append(buildOutput(isHTML, localPrefix + getValueName(), getValue()));
 		text.append(buildOutput(isHTML, localPrefix, getLinks()));
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
@@ -340,7 +342,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 */
 	public String getQualifier() {
 		Element innerElement = getInnerElement();
-		String attrValue = innerElement.getAttributeValue(QUALIFIER_NAME, getNamespace());
+		String attrValue = innerElement.getAttributeValue(getQualifierName(), getNamespace());
 		return (Util.getNonNullString(attrValue));
 	}
 	
@@ -349,7 +351,7 @@ public final class RelatedResource extends AbstractQualifierValue {
 	 */
 	public String getValue() {
 		Element innerElement = getInnerElement();
-		String attrValue = innerElement.getAttributeValue(VALUE_NAME, getNamespace());
+		String attrValue = innerElement.getAttributeValue(getValueName(), getNamespace());
 		return (Util.getNonNullString(attrValue));
 	}
 	

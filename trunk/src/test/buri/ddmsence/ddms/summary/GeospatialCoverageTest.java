@@ -196,7 +196,9 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		xml.append(">\n\t");
 		if (version.isAtLeast("4.0.1")) {
 			xml.append("<ddms:geographicIdentifier>\n\t\t");
-			xml.append("<ddms:countryCode ddms:qualifier=\"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1\" ddms:value=\"LAO\" />\n\t");
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName())
+				.append("=\"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1\" ddms:")
+				.append(CountryCodeTest.getValueName()).append("=\"LAO\" />\n\t");
 			xml.append("</ddms:geographicIdentifier>\n");
 		}
 		else {

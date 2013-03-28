@@ -69,6 +69,7 @@ public final class Type extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Type(Element element) throws InvalidDDMSException {
+		// Defaults to qualifier-value over codespace-code.
 		try {
 			_securityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, true);
@@ -91,7 +92,7 @@ public final class Type extends AbstractQualifierValue {
 	 */
 	public Type(String description, String qualifier, String value, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
-		super(Type.getName(DDMSVersion.getCurrentVersion()), qualifier, value, false);
+		super(Type.getName(DDMSVersion.getCurrentVersion()), qualifier, value, false, true);
 		try {
 			Element element = getXOMElement();
 			if (!Util.isEmpty(description))
@@ -161,8 +162,8 @@ public final class Type extends AbstractQualifierValue {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, localPrefix + "description", getDescription()));
-		text.append(buildOutput(isHTML, localPrefix + QUALIFIER_NAME, getQualifier()));
-		text.append(buildOutput(isHTML, localPrefix + VALUE_NAME, getValue()));
+		text.append(buildOutput(isHTML, localPrefix + getQualifierName(), getQualifier()));
+		text.append(buildOutput(isHTML, localPrefix + getValueName(), getValue()));
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}

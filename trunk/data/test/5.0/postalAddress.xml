@@ -5,6 +5,6 @@
 	<ddms:city>Washington</ddms:city>
 	<ddms:state>DC</ddms:state>
 	<ddms:postalCode>20500</ddms:postalCode>
-	<ddms:countryCode ddms:qualifier="ISO-3166" ddms:value="USA"/>
+	<ddms:countryCode ddms:codespace="ISO-3166" ddms:code="USA"/>
 </ddms:postalAddress>
 				
