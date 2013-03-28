@@ -211,7 +211,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 
 	public void testGetExternalSchemaLocation() {
 		String externalLocations = getReader().getExternalSchemaLocations();
-		assertEquals(14, externalLocations.split(" ").length);
+		assertEquals(16, externalLocations.split(" ").length);
 		assertTrue(externalLocations.contains("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
 		assertTrue(externalLocations.contains("http://metadata.dod.mil/mdr/ns/DDMS/3.0/"));
 		assertTrue(externalLocations.contains("http://www.opengis.net/gml"));
