@@ -63,7 +63,7 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:acronym</u>: an acronym for the organization (optional, starting in DDMS 4.0.1)<br />
- * <u>{@link ExtensibleAttributes}</u>
+ * <u>{@link ExtensibleAttributes}</u>: Custom attributes (through DDMS 4.1)
  * </td></tr></table>
  * 
  * @author Brian Uri!
@@ -124,7 +124,7 @@ public final class Organization extends AbstractRoleEntity {
 	public Organization(List<String> names, List<String> phones, List<String> emails,
 		List<SubOrganization> subOrganizations, String acronym, ExtensibleAttributes extensions)
 		throws InvalidDDMSException {
-		super(Organization.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions, false);
+		super(Organization.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions);
 		try {
 			if (subOrganizations == null)
 				subOrganizations = Collections.emptyList();
@@ -146,6 +146,7 @@ public final class Organization extends AbstractRoleEntity {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Acronyms cannot exist until DDMS 4.0.1 or later.</li>
+	 * <li>Extensible attributes cannot be used after DDMS 4.1.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractRoleEntity#validate()
@@ -159,6 +160,9 @@ public final class Organization extends AbstractRoleEntity {
 			if (!Util.isEmpty(getAcronym()))
 				throw new InvalidDDMSException("An organization cannot have an acronym until DDMS 4.0.1 or later.");
 		}
+		
+		if (getDDMSVersion().isAtLeast("5.0") && !getExtensibleAttributes().isEmpty())
+			throw new InvalidDDMSException("ddms:" + getName() + " cannot have extensible attributes after DDMS 4.1.");
 		
 		super.validate();
 	}

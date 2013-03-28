@@ -19,15 +19,18 @@
 */
 package buri.ddmsence.ddms.resource;
 
+import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
+import nu.xom.Elements;
 import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractRoleEntity;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
@@ -55,19 +58,22 @@ import buri.ddmsence.util.Util;
  * <u>ddms:name</u>: names of the producer (1-many, at least 1 required)<br />
  * <u>ddms:surname</u>: surname of the producer (exactly 1 required)<br />
  * <u>ddms:userID</u>: userId of the producer (0-1 optional)<br />
- * <u>ddms:affiliation</u>: organizational affiliation (0-1 optional)<br />
+ * <u>ddms:affiliation</u>: organizational affiliation (0-1 optional through DDMS 4.x, 0-many optional starting 
+ * in DDMS 5.0)<br />
  * <u>ddms:phone</u>: phone numbers of the producer (0-many optional)<br />
  * <u>ddms:email</u>: email addresses of the producer (0-many optional)<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link ExtensibleAttributes}</u>
+ * <u>{@link ExtensibleAttributes}</u>: Custom attributes (through DDMS 3.1).
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class Person extends AbstractRoleEntity {
+
+	private List<String> _affiliations = null;
 	
 	private static final String AFFILIATION_NAME = "affiliation";
 	private static final String USERID_NAME = "userID";
@@ -81,6 +87,7 @@ public final class Person extends AbstractRoleEntity {
 	 */
 	public Person(Element element) throws InvalidDDMSException {
 		super(element, true);
+		_affiliations = Util.getDDMSChildValues(element, AFFILIATION_NAME);		
 	}
 
 	/**
@@ -90,11 +97,11 @@ public final class Person extends AbstractRoleEntity {
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 * @param userID optional unique identifier within an organization
-	 * @param affiliation organizational affiliation of the person
+	 * @param affiliations organizational affiliation of the person
 	 */
 	public Person(List<String> names, String surname, List<String> phones, List<String> emails,
-		String userID, String affiliation) throws InvalidDDMSException {
-		this(names, surname, phones, emails, userID, affiliation, null);
+		String userID, List<String> affiliations) throws InvalidDDMSException {
+		this(names, surname, phones, emails, userID, affiliations, null);
 	}
 
 	/**
@@ -104,15 +111,15 @@ public final class Person extends AbstractRoleEntity {
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 * @param userID optional unique identifier within an organization
-	 * @param affiliation organizational affiliation of the person
+	 * @param affiliations organizational affiliations of the person
 	 * @param extensions extensible attributes (optional)
 	 */
 	public Person(List<String> names, String surname, List<String> phones, List<String> emails, String userID,
-		String affiliation, ExtensibleAttributes extensions) throws InvalidDDMSException {
-		super(Person.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions, false);
+		List<String> affiliations, ExtensibleAttributes extensions) throws InvalidDDMSException {
+		super(Person.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions);
 		try {
 			int insertIndex = (names == null ? 0 : names.size());
-			addExtraElements(insertIndex, surname, userID, affiliation);
+			addExtraElements(insertIndex, surname, userID, affiliations);
 			validate();
 		}
 		catch (InvalidDDMSException e) {
@@ -128,28 +135,31 @@ public final class Person extends AbstractRoleEntity {
 	 * @param insertIndex the index of the position after the last names element
 	 * @param surname the surname of the person
 	 * @param userID optional unique identifier within an organization
-	 * @param affiliation organizational affiliation of the person
+	 * @param affiliations organizational affiliations of the person
 	 * @throws InvalidDDMSException if the result is an invalid component
 	 */
-	private void addExtraElements(int insertIndex, String surname, String userID, String affiliation)
+	private void addExtraElements(int insertIndex, String surname, String userID, List<String> affiliations)
 		throws InvalidDDMSException {
+		if (affiliations == null)
+			affiliations = Collections.emptyList();
 		Element element = getXOMElement();
 		if (getDDMSVersion().isAtLeast("4.0.1")) {
 			element.insertChild(Util.buildDDMSElement(SURNAME_NAME, surname), insertIndex);
 			if (!Util.isEmpty(userID))
 				element.appendChild(Util.buildDDMSElement(USERID_NAME, userID));
-			if (!Util.isEmpty(affiliation))
+			for (String affiliation : affiliations)
 				element.appendChild(Util.buildDDMSElement(AFFILIATION_NAME, affiliation));
 		}
 		else {
 			// 	Inserting in reverse order allow the same index to be reused. Later inserts will "push" the early ones
 			// 	forward.
-			if (!Util.isEmpty(affiliation))
+			for (String affiliation : affiliations)
 				element.insertChild(Util.buildDDMSElement(AFFILIATION_NAME, affiliation), insertIndex);
 			if (!Util.isEmpty(userID))
 				element.insertChild(Util.buildDDMSElement(USERID_NAME, userID), insertIndex);
 			element.insertChild(Util.buildDDMSElement(SURNAME_NAME, surname), insertIndex);
 		}
+		_affiliations = affiliations;
 	}
 
 	/**
@@ -158,7 +168,9 @@ public final class Person extends AbstractRoleEntity {
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>Surname exists and is not empty.</li>
-	 * <li>Exactly 1 surname, 0-1 userIDs, 0-1 affiliations exist.</li>
+	 * <li>Exactly 1 surname, and 0-1 userIDs exist.</li>
+	 * <li>Exactly 0-1 affiliations exist, through DDMS 4.1.</li> 
+	 * <li>Extensible attributes cannot be used after DDMS 3.1.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractRoleEntity#validate()
@@ -169,7 +181,11 @@ public final class Person extends AbstractRoleEntity {
 		Util.requireDDMSValue(SURNAME_NAME, getSurname());
 		Util.requireBoundedChildCount(getXOMElement(), SURNAME_NAME, 1, 1);
 		Util.requireBoundedChildCount(getXOMElement(), USERID_NAME, 0, 1);
-		Util.requireBoundedChildCount(getXOMElement(), AFFILIATION_NAME, 0, 1);
+		if (!getDDMSVersion().isAtLeast("5.0"))
+			Util.requireBoundedChildCount(getXOMElement(), AFFILIATION_NAME, 0, 1);
+		
+		if (getDDMSVersion().isAtLeast("4.0.1") && !getExtensibleAttributes().isEmpty())
+			throw new InvalidDDMSException("ddms:" + getName() + " cannot have extensible attributes after DDMS 3.1.");
 		
 		super.validate();
 	}
@@ -186,9 +202,16 @@ public final class Person extends AbstractRoleEntity {
 		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getUserID())
 			&& getXOMElement().getChildElements(USERID_NAME, getNamespace()).size() == 1)
 			addWarning("A ddms:userID element was found with no value.");
-		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getAffiliation())
-			&& getXOMElement().getChildElements(AFFILIATION_NAME, getNamespace()).size() == 1)
-			addWarning("A ddms:affiliation element was found with no value.");
+		if (!getDDMSVersion().isAtLeast("5.0")) {
+			Elements affiliationElements = getXOMElement().getChildElements(AFFILIATION_NAME, getNamespace());
+			for (int i = 0; i < affiliationElements.size(); i++) {
+				if (Util.isEmpty(affiliationElements.get(i).getValue())) {
+					addWarning("A ddms:affiliation element was found with no value.");
+					break;
+				}
+			}			
+		}
+
 		super.validateWarnings();
 	}
 
@@ -200,7 +223,7 @@ public final class Person extends AbstractRoleEntity {
 		StringBuffer text = new StringBuffer(super.getOutput(isHTML, localPrefix, ""));
 		text.append(buildOutput(isHTML, localPrefix + SURNAME_NAME, getSurname()));
 		text.append(buildOutput(isHTML, localPrefix + USERID_NAME, getUserID()));
-		text.append(buildOutput(isHTML, localPrefix + AFFILIATION_NAME, getAffiliation()));
+		text.append(buildOutput(isHTML, localPrefix + AFFILIATION_NAME, getAffiliations()));
 		return (text.toString());
 	}
 	
@@ -213,7 +236,7 @@ public final class Person extends AbstractRoleEntity {
 		Person test = (Person) obj;
 		return (getSurname().equals(test.getSurname()) 
 			&& getUserID().equals(test.getUserID()) 
-			&& getAffiliation().equals(test.getAffiliation()));
+			&& Util.listEquals(getAffiliations(), test.getAffiliations()));
 	}
 	
 	/**
@@ -223,7 +246,7 @@ public final class Person extends AbstractRoleEntity {
 		int result = super.hashCode();
 		result = 7 * result + getSurname().hashCode();
 		result = 7 * result + getUserID().hashCode();
-		result = 7 * result + getAffiliation().hashCode();
+		result = 7 * result + getAffiliations().hashCode();
 		return (result);
 	}
 	
@@ -253,10 +276,10 @@ public final class Person extends AbstractRoleEntity {
 	}
 	
 	/**
-	 * Accessor for the affiliation of the person
+	 * Accessor for the affiliations of the person
 	 */
-	public String getAffiliation() {
-		return (Util.getFirstDDMSChildValue(getXOMElement(), AFFILIATION_NAME));
+	public List<String> getAffiliations() {
+		return (Collections.unmodifiableList(_affiliations));
 	}
 	
 	/**
@@ -270,7 +293,7 @@ public final class Person extends AbstractRoleEntity {
 		private static final long serialVersionUID = -2933889158864177338L;
 		private String _surname;
 		private String _userID;
-		private String _affliation;
+		private List<String> _affiliations;
 		
 		/**
 		 * Empty constructor
@@ -286,7 +309,7 @@ public final class Person extends AbstractRoleEntity {
 			super(person);
 			setSurname(person.getSurname());
 			setUserID(person.getUserID());
-			setAffliation(person.getAffiliation());
+			setAffiliations(person.getAffiliations());
 		}
 		
 		/**
@@ -294,7 +317,7 @@ public final class Person extends AbstractRoleEntity {
 		 */
 		public Person commit() throws InvalidDDMSException {
 			return (isEmpty() ? null : new Person(getNames(), getSurname(), getPhones(), getEmails(), getUserID(),
-				getAffliation(), getExtensibleAttributes().commit()));
+				getAffiliations(), getExtensibleAttributes().commit()));
 		}
 
 		/**
@@ -306,7 +329,7 @@ public final class Person extends AbstractRoleEntity {
 			return (super.isEmpty()
 				&& Util.isEmpty(getSurname())
 				&& Util.isEmpty(getUserID())
-				&& Util.isEmpty(getAffliation()));
+				&& Util.containsOnlyEmptyValues(getAffiliations()));
 		}
 		
 		/**
@@ -338,17 +361,19 @@ public final class Person extends AbstractRoleEntity {
 		}
 
 		/**
-		 * Builder accessor for the affliation
+		 * Builder accessor for the affiliations
 		 */
-		public String getAffliation() {
-			return _affliation;
+		public List<String> getAffiliations() {
+			if (_affiliations == null)
+				_affiliations = new LazyList(String.class);
+			return _affiliations;
 		}
 
 		/**
-		 * Builder accessor for the affliation
+		 * Builder accessor for the affiliations
 		 */
-		public void setAffliation(String affliation) {
-			_affliation = affliation;
+		public void setAffiliations(List<String> affiliations) {
+			_affiliations = new LazyList(affiliations, String.class);
 		}
 	}
 } 

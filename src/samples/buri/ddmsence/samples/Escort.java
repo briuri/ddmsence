@@ -336,7 +336,7 @@ public class Escort {
 				
 				// Skip optional extensible attributes.
 				
-				return (new Person(names, surname, phones, emails, userID, affiliation));
+				return (new Person(names, surname, phones, emails, userID, Util.getXsListAsList(affiliation)));
 			}		
 		});	
 		CONSTRUCTOR_BUILDERS.put(Organization.class, new IConstructorBuilder() {

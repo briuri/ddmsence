@@ -26,6 +26,8 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
+import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
@@ -374,6 +376,27 @@ public class OrganizationTest extends AbstractBaseTestCase {
 			org.toText());
 	}
 
+	public void testExtensibleAttributes() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+
+			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
+			List<String> names = new ArrayList<String>();
+			names.add("DISA");
+			if (!version.isAtLeast("5.0")) {
+				new Organization(names, null, null, null, null, attr);
+			}
+			else {
+				try {
+					new Organization(names, null, null, null, null, attr);	
+				}
+				catch (InvalidDDMSException e) {
+					expectMessage(e, "ddms:organization cannot have");
+				}
+			}
+		}
+	}
+	
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
