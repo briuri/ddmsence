@@ -91,8 +91,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public SRSAttributes(Element element) throws InvalidDDMSException {
-		// SRS Attributes are in no namespace.
-		super("");
+		setNamespace(NO_NAMESPACE);
 		_srsName = element.getAttributeValue(SRS_NAME_NAME, NO_NAMESPACE);
 		String srsDimension = element.getAttributeValue(SRS_DIMENSION_NAME, NO_NAMESPACE);
 		if (!Util.isEmpty(srsDimension)) {
@@ -122,8 +121,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 */
 	public SRSAttributes(String srsName, Integer srsDimension, List<String> axisLabels, List<String> uomLabels)
 		throws InvalidDDMSException {
-		// SRS Attributes are in no namespace.
-		super("");
+		setNamespace(NO_NAMESPACE);
 		if (axisLabels == null)
 			axisLabels = Collections.emptyList();
 		if (uomLabels == null)

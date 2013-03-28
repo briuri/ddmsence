@@ -142,15 +142,16 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public XLinkAttributes(Element element) throws InvalidDDMSException {
-		super(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()).getXlinkNamespace());
-		_type = element.getAttributeValue(TYPE_NAME, getXmlNamespace());
-		_href = element.getAttributeValue(HREF_NAME, getXmlNamespace());
-		_role = element.getAttributeValue(ROLE_NAME, getXmlNamespace());
-		_title = element.getAttributeValue(TITLE_NAME, getXmlNamespace());
-		_label = element.getAttributeValue(LABEL_NAME, getXmlNamespace());
-		_arcrole = element.getAttributeValue(ARC_ROLE_NAME, getXmlNamespace());
-		_show = element.getAttributeValue(SHOW_NAME, getXmlNamespace());
-		_actuate = element.getAttributeValue(ACTUATE_NAME, getXmlNamespace());
+		DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI()); 
+		setNamespace(version.getXlinkNamespace());
+		_type = element.getAttributeValue(TYPE_NAME, getNamespace());
+		_href = element.getAttributeValue(HREF_NAME, getNamespace());
+		_role = element.getAttributeValue(ROLE_NAME, getNamespace());
+		_title = element.getAttributeValue(TITLE_NAME, getNamespace());
+		_label = element.getAttributeValue(LABEL_NAME, getNamespace());
+		_arcrole = element.getAttributeValue(ARC_ROLE_NAME, getNamespace());
+		_show = element.getAttributeValue(SHOW_NAME, getNamespace());
+		_actuate = element.getAttributeValue(ACTUATE_NAME, getNamespace());
 		validate(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));
 	}
 
@@ -160,7 +161,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException
 	 */
 	public XLinkAttributes() throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion().getXlinkNamespace());
+		setNamespace(DDMSVersion.getCurrentVersion().getXlinkNamespace());
 		validate(DDMSVersion.getCurrentVersion());
 	}
 	
@@ -173,7 +174,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public XLinkAttributes(String role, String title, String label) throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion().getXlinkNamespace());
+		setNamespace(DDMSVersion.getCurrentVersion().getXlinkNamespace());
 		_type = TYPE_RESOURCE;
 		_role = role;
 		_title = title;
@@ -191,7 +192,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public XLinkAttributes(String href, String role, String title, String label) throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion().getXlinkNamespace());
+		setNamespace(DDMSVersion.getCurrentVersion().getXlinkNamespace());
 		_type = TYPE_LOCATOR;
 		_href = href;
 		_role = role;
@@ -213,7 +214,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 */
 	public XLinkAttributes(String href, String role, String title, String arcrole, String show, String actuate)
 		throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion().getXlinkNamespace());
+		setNamespace(DDMSVersion.getCurrentVersion().getXlinkNamespace());
 		_type = TYPE_SIMPLE;
 		_href = href;
 		_role = role;

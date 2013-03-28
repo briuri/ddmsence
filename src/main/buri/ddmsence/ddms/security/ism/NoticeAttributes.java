@@ -107,14 +107,15 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public NoticeAttributes(Element element) throws InvalidDDMSException {
-		super(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()).getIsmNamespace());
-		_noticeType = element.getAttributeValue(NOTICE_TYPE_NAME, getXmlNamespace());
-		_noticeReason = element.getAttributeValue(NOTICE_REASON_NAME, getXmlNamespace());
-		_unregisteredNoticeType = element.getAttributeValue(UNREGISTERED_NOTICE_TYPE_NAME, getXmlNamespace());
-		String noticeDate = element.getAttributeValue(NOTICE_DATE_NAME, getXmlNamespace());
+		DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
+		setNamespace(version.getIsmNamespace());
+		_noticeType = element.getAttributeValue(NOTICE_TYPE_NAME, getNamespace());
+		_noticeReason = element.getAttributeValue(NOTICE_REASON_NAME, getNamespace());
+		_unregisteredNoticeType = element.getAttributeValue(UNREGISTERED_NOTICE_TYPE_NAME, getNamespace());
+		String noticeDate = element.getAttributeValue(NOTICE_DATE_NAME, getNamespace());
 		if (!Util.isEmpty(noticeDate))
 			_noticeDate = getFactory().newXMLGregorianCalendar(noticeDate);
-		String external = element.getAttributeValue(EXTERNAL_NOTICE_NAME, getXmlNamespace());
+		String external = element.getAttributeValue(EXTERNAL_NOTICE_NAME, getNamespace());
 		if (!Util.isEmpty(external))
 			_externalNotice = Boolean.valueOf(external);
 		validate(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));
@@ -149,7 +150,8 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 */
 	public NoticeAttributes(String noticeType, String noticeReason, String noticeDate, String unregisteredNoticeType,
 		Boolean externalNotice) throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion().getIsmNamespace());
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		setNamespace(version.getIsmNamespace());
 		_noticeType = noticeType;
 		_noticeReason = noticeReason;
 		_unregisteredNoticeType = unregisteredNoticeType;
@@ -162,7 +164,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 			}
 		}
 		_externalNotice = externalNotice;
-		validate(DDMSVersion.getCurrentVersion());
+		validate(version);
 	}
 			
 	/**
@@ -205,7 +207,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if the versions do not match
 	 */
 	protected void validateCompatibleVersion(DDMSVersion newParentVersion) throws InvalidDDMSException {
-		if (!newParentVersion.getIsmNamespace().equals(getXmlNamespace()))
+		if (!newParentVersion.getIsmNamespace().equals(getNamespace()))
 			throw new InvalidDDMSException(INCOMPATIBLE_VERSION_ERROR);
 	}
 	

@@ -334,7 +334,7 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "These attributes cannot decorate");
+			expectMessage(e, "The DDMS version of the parent");
 		}
 	}
 

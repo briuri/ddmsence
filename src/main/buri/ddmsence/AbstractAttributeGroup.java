@@ -39,17 +39,15 @@ import buri.ddmsence.util.DDMSVersion;
  */
 public abstract class AbstractAttributeGroup {
 
-	private String _xmlNamespace = null;
+	private String _namespace = null;
 	private List<ValidationMessage> _warnings = null;
 	
-	protected final static String INCOMPATIBLE_VERSION_ERROR = "These attributes cannot decorate a component with a different DDMS version.";
+	protected final static String INCOMPATIBLE_VERSION_ERROR = "The DDMS version of the parent component is incompatible with the XML namespace of these attributes.";
 	
 	/**
-	 * Constructor which stores the XML namespace of these attributes
+	 * Empty constructor
 	 */
-	public AbstractAttributeGroup(String xmlNamespace) {
-		_xmlNamespace = xmlNamespace;
-	}
+	public AbstractAttributeGroup() {}
 		
 	/**
 	 * Base validation case for attribute groups.
@@ -101,7 +99,14 @@ public abstract class AbstractAttributeGroup {
 	/**
 	 * Accessor for the XML namespace of these attributes
 	 */
-	protected String getXmlNamespace() {
-		return (_xmlNamespace);
+	protected String getNamespace() {
+		return (_namespace);
+	}
+	
+	/**
+	 * Accessor for the XML namespace of these attributes
+	 */
+	protected void setNamespace(String namespace) {
+		_namespace = namespace;
 	}
 }

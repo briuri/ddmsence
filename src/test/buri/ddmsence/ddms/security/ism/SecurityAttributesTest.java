@@ -477,7 +477,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			fail("Allowed different versions.");
 		}
 		catch (InvalidDDMSException e) {
-			expectMessage(e, "These attributes cannot decorate");
+			expectMessage(e, "The DDMS version of the parent");
 		}
 	}
 
