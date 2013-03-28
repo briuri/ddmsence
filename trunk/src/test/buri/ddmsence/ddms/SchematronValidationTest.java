@@ -121,6 +121,22 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testSchematronValidationInvalid() throws InvalidDDMSException, IOException, XSLException {
+		String[] supportedXslt1Processors = new String[] { "net.sf.saxon.TransformerFactoryImpl" };
+		for (String processor : supportedXslt1Processors) {
+			PropertyReader.setProperty("xml.transform.TransformerFactory", processor);
+			for (String sVersion : getSupportedVersions()) {
+				Resource resource = versionToResourceMap.get(sVersion);
+				try {
+					resource.validateWithSchematron(new File("data/test/" + sVersion + "/testSchematronInvalid.sch"));
+				}
+				catch (IllegalArgumentException e) {
+					expectMessage(e, "DDMSence currently only supports Schematron files with a queryBinding attribute");
+				}
+			}
+		}
+	}
+	
 	//	public void testIsmXmlV5SchematronValidation() throws SAXException, InvalidDDMSException, IOException, XSLException {
 	//		// For this test to work, the ISM.XML V5 distribution must be unpacked in the data directory.
 	//		File schematronFile = new File("ISM_XML.sch");
