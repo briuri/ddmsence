@@ -56,7 +56,7 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 		}
 		return (null);
 	}
-
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -106,8 +106,8 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedOutput(boolean isHTML) throws InvalidDDMSException {
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, "subDivisionCode.qualifier", TEST_QUALIFIER));
-		text.append(buildOutput(isHTML, "subDivisionCode.value", TEST_VALUE));
+		text.append(buildOutput(isHTML, "subDivisionCode." + CountryCodeTest.getQualifierName(), TEST_QUALIFIER));
+		text.append(buildOutput(isHTML, "subDivisionCode." + CountryCodeTest.getValueName(), TEST_VALUE));
 		return (text.toString());
 	}
 
@@ -116,8 +116,8 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subDivisionCode ").append(getXmlnsDDMS()).append(" ddms:qualifier=\"").append(TEST_QUALIFIER)
-			.append("\" ddms:value=\"").append(TEST_VALUE).append("\" />");
+		xml.append("<ddms:subDivisionCode ").append(getXmlnsDDMS()).append(" ddms:").append(CountryCodeTest.getQualifierName()).append("=\"").append(TEST_QUALIFIER)
+			.append("\" ddms:").append(CountryCodeTest.getValueName()).append("=\"").append(TEST_VALUE).append("\" />");
 		return (xml.toString());
 	}
 
@@ -152,27 +152,30 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String subCode = SubDivisionCode.getName(version);
 
+			String qualifierName = CountryCodeTest.getQualifierName();
+			String valueName = CountryCodeTest.getValueName();
+			
 			// Missing qualifier
 			Element element = Util.buildDDMSElement(subCode, null);
-			Util.addDDMSAttribute(element, "value", TEST_VALUE);
-			getInstance("qualifier attribute is required.", element);
+			Util.addDDMSAttribute(element, valueName, TEST_VALUE);
+			getInstance(qualifierName + " attribute is required.", element);
 
 			// Empty qualifier
 			element = Util.buildDDMSElement(subCode, null);
-			Util.addDDMSAttribute(element, "qualifier", "");
-			Util.addDDMSAttribute(element, "value", TEST_VALUE);
-			getInstance("qualifier attribute is required.", element);
+			Util.addDDMSAttribute(element, qualifierName, "");
+			Util.addDDMSAttribute(element, valueName, TEST_VALUE);
+			getInstance(qualifierName + " attribute is required.", element);
 
 			// Missing value
 			element = Util.buildDDMSElement(subCode, null);
-			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
-			getInstance("value attribute is required.", element);
+			Util.addDDMSAttribute(element, qualifierName, TEST_QUALIFIER);
+			getInstance(valueName + " attribute is required.", element);
 
 			// Empty value
 			element = Util.buildDDMSElement(subCode, null);
-			Util.addDDMSAttribute(element, "qualifier", TEST_QUALIFIER);
-			Util.addDDMSAttribute(element, "value", "");
-			getInstance("value attribute is required.", element);
+			Util.addDDMSAttribute(element, qualifierName, TEST_QUALIFIER);
+			Util.addDDMSAttribute(element, valueName, "");
+			getInstance(valueName + " attribute is required.", element);
 		}
 	}
 
@@ -180,17 +183,20 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
+			String qualifierName = CountryCodeTest.getQualifierName();
+			String valueName = CountryCodeTest.getValueName();
+			
 			// Missing qualifier
-			getInstance("qualifier attribute is required.", null, TEST_VALUE);
+			getInstance(qualifierName + " attribute is required.", null, TEST_VALUE);
 
 			// Empty qualifier
-			getInstance("qualifier attribute is required.", "", TEST_VALUE);
+			getInstance(qualifierName + " attribute is required.", "", TEST_VALUE);
 
 			// Missing value
-			getInstance("value attribute is required.", TEST_QUALIFIER, null);
+			getInstance(valueName + " attribute is required.", TEST_QUALIFIER, null);
 
 			// Empty value
-			getInstance("value attribute is required.", TEST_QUALIFIER, "");
+			getInstance(valueName + " attribute is required.", TEST_QUALIFIER, "");
 		}
 	}
 
@@ -299,7 +305,7 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 				fail("Builder allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
-				expectMessage(e, "qualifier attribute is required.");
+				expectMessage(e, CountryCodeTest.getQualifierName() + " attribute is required.");
 			}
 			builder.setQualifier(TEST_QUALIFIER);
 			builder.commit();

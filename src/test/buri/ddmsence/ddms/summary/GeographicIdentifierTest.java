@@ -156,9 +156,11 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 		xml.append("<ddms:geographicIdentifier ").append(getXmlnsDDMS()).append(">\n\t");
 		xml.append("<ddms:name>The White House</ddms:name>\n\t");
 		xml.append("<ddms:region>Mid-Atlantic States</ddms:region>\n\t");
-		xml.append("<ddms:countryCode ddms:qualifier=\"ISO-3166\" ddms:value=\"USA\" />\n");
+		xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName()).append("=\"ISO-3166\" ddms:")
+			.append(CountryCodeTest.getValueName()).append("=\"USA\" />\n");
 		if (version.isAtLeast("4.0.1"))
-			xml.append("\t<ddms:subDivisionCode ddms:qualifier=\"ISO-3166\" ddms:value=\"USA\" />\n");
+			xml.append("\t<ddms:subDivisionCode ddms:").append(CountryCodeTest.getQualifierName())
+				.append("=\"ISO-3166\" ddms:").append(CountryCodeTest.getValueName()).append("=\"USA\" />\n");
 		xml.append("</ddms:geographicIdentifier>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}

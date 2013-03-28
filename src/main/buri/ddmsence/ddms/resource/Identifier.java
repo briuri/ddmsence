@@ -55,7 +55,7 @@ public final class Identifier extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Identifier(Element element) throws InvalidDDMSException {
-		super(element);
+		super(element, true);
 	}
 	
 	/**
@@ -66,7 +66,7 @@ public final class Identifier extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Identifier(String qualifier, String value) throws InvalidDDMSException {
-		super(Identifier.getName(DDMSVersion.getCurrentVersion()), qualifier, value, true);
+		super(Identifier.getName(DDMSVersion.getCurrentVersion()), qualifier, value, true, true);
 	}
 	
 	/**
@@ -97,8 +97,8 @@ public final class Identifier extends AbstractQualifierValue {
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + QUALIFIER_NAME, getQualifier()));
-		text.append(buildOutput(isHTML, localPrefix + VALUE_NAME, getValue()));
+		text.append(buildOutput(isHTML, localPrefix + getQualifierName(), getQualifier()));
+		text.append(buildOutput(isHTML, localPrefix + getValueName(), getValue()));
 		return (text.toString());
 	}
 		

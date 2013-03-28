@@ -220,8 +220,8 @@
       <xs:anyAttribute namespace="##other" processContents="lax" />
    </xs:complexType>
    <xs:complexType name="CompoundCountryCodeIdentifierType">
-      <xs:attribute name="qualifier" type="simpleTokenType" use="required" />
-      <xs:attribute name="value" type="simpleTokenType" use="required" />
+      <xs:attribute name="codespace" type="simpleTokenType" use="required" />
+      <xs:attribute name="code" type="simpleTokenType" use="required" />
    </xs:complexType>
    <xs:complexType name="CompoundKeywordIdentifierType">
       <xs:attribute name="value" type="simpleTokenType" use="required" />

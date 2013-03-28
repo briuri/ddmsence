@@ -65,6 +65,7 @@ public final class Source extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public Source(Element element) throws InvalidDDMSException {
+		// Defaults to qualifier-value over codespace-code.
 		try {
 			_securityAttributes = new SecurityAttributes(element);
 			setXOMElement(element, true);
@@ -87,7 +88,7 @@ public final class Source extends AbstractQualifierValue {
 	 */
 	public Source(String qualifier, String value, String schemaQualifier, String schemaHref,
 		SecurityAttributes securityAttributes) throws InvalidDDMSException {
-		super(Source.getName(DDMSVersion.getCurrentVersion()), qualifier, value, false);
+		super(Source.getName(DDMSVersion.getCurrentVersion()), qualifier, value, false, true);
 		try {
 			Element element = getXOMElement();
 			Util.addDDMSAttribute(element, SCHEMA_QUALIFIER_NAME, schemaQualifier);
@@ -149,8 +150,8 @@ public final class Source extends AbstractQualifierValue {
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + QUALIFIER_NAME, getQualifier()));
-		text.append(buildOutput(isHTML, localPrefix + VALUE_NAME, getValue()));
+		text.append(buildOutput(isHTML, localPrefix + getQualifierName(), getQualifier()));
+		text.append(buildOutput(isHTML, localPrefix + getValueName(), getValue()));
 		text.append(buildOutput(isHTML, localPrefix + SCHEMA_QUALIFIER_NAME, getSchemaQualifier()));
 		text.append(buildOutput(isHTML, localPrefix + SCHEMA_HREF_NAME, getSchemaHref()));
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));

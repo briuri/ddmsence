@@ -3,7 +3,7 @@
 <ddms:geographicIdentifier xmlns:ddms="urn:us:mil:ces:metadata:ddms:5">
 	<ddms:name>The White House</ddms:name>
 	<ddms:region>Mid-Atlantic States</ddms:region>
-	<ddms:countryCode ddms:qualifier="ISO-3166" ddms:value="USA"/>
-	<ddms:subDivisionCode ddms:qualifier="ISO-3166" ddms:value="USA"/>
+	<ddms:countryCode ddms:codespace="ISO-3166" ddms:code="USA"/>
+	<ddms:subDivisionCode ddms:codespace="ISO-3166" ddms:code="USA"/>
 </ddms:geographicIdentifier>
 				

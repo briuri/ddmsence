@@ -46,6 +46,8 @@ import buri.ddmsence.util.Util;
  * </ul>
  * </td></tr></table>
  * 
+ * <p>In DDMS 5.0, the "qualifier" and "value" attributes are renamed to "codespace" and "code".</p>
+ * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:qualifier</u>: a domain vocabulary (required)<br />
  * <u>ddms:value</u>: a permissible value (required)<br />
@@ -63,7 +65,7 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public CountryCode(Element element) throws InvalidDDMSException {
-		super(element);
+		super(element, !DDMSVersion.getVersionForNamespace(element.getNamespaceURI()).isAtLeast("5.0"));
 	}
 	
 	/**
@@ -74,7 +76,8 @@ public final class CountryCode extends AbstractQualifierValue {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public CountryCode(String qualifier, String value) throws InvalidDDMSException {
-		super(CountryCode.getName(DDMSVersion.getCurrentVersion()), qualifier, value, true);
+		super(CountryCode.getName(DDMSVersion.getCurrentVersion()), qualifier, value, true, 
+			!DDMSVersion.getCurrentVersion().isAtLeast("5.0"));
 	}
 	
 	/**
@@ -92,8 +95,8 @@ public final class CountryCode extends AbstractQualifierValue {
 	 */
 	protected void validate() throws InvalidDDMSException {
 		Util.requireDDMSQName(getXOMElement(), CountryCode.getName(getDDMSVersion()));
-		Util.requireDDMSValue("qualifier attribute", getQualifier());
-		Util.requireDDMSValue("value attribute", getValue());
+		Util.requireDDMSValue(getQualifierName() + " attribute", getQualifier());
+		Util.requireDDMSValue(getValueName() + " attribute", getValue());
 		super.validate();
 	}
 	
@@ -103,8 +106,8 @@ public final class CountryCode extends AbstractQualifierValue {
 	public String getOutput(boolean isHTML, String prefix, String suffix) {
 		String localPrefix = buildPrefix(prefix, getName(), suffix + ".");
 		StringBuffer text = new StringBuffer();
-		text.append(buildOutput(isHTML, localPrefix + QUALIFIER_NAME, getQualifier()));
-		text.append(buildOutput(isHTML, localPrefix + VALUE_NAME, getValue()));
+		text.append(buildOutput(isHTML, localPrefix + getQualifierName(), getQualifier()));
+		text.append(buildOutput(isHTML, localPrefix + getValueName(), getValue()));
 		return (text.toString());
 	}
 		
