@@ -401,7 +401,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 */
 	protected void validateCompatibleVersion(DDMSVersion newParentVersion) throws InvalidDDMSException {
 		if (!newParentVersion.getIsmNamespace().equals(getNamespace()))
-			throw new InvalidDDMSException(INCOMPATIBLE_VERSION_ERROR);
+			throw new InvalidDDMSException(INCOMPATIBLE_VERSION_MESSAGE);
 	}
 	
 	/**

@@ -310,26 +310,28 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty name element
-			Element periodElement = Util.buildDDMSElement("TimePeriod", null);
-			periodElement.appendChild(Util.buildDDMSElement("name", null));
-			periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
-			periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
-			component = getInstance(SUCCESS, wrapInnerElement(periodElement));
-			assertEquals(1, component.getValidationWarnings().size());
-			String text = "A ddms:name element was found with no value.";
-			String locator = version.isAtLeast("4.0.1") ? "ddms:temporalCoverage"
-				: "ddms:temporalCoverage/ddms:TimePeriod";
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			if (!version.isAtLeast("5.0")) {
+				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
+				periodElement.appendChild(Util.buildDDMSElement("name", null));
+				periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
+				periodElement.appendChild(Util.buildDDMSElement("end", TEST_END));
+				component = getInstance(SUCCESS, wrapInnerElement(periodElement));
+				assertEquals(1, component.getValidationWarnings().size());
+				String text = "A ddms:name element was found with no value.";
+				String locator = version.isAtLeast("4.0.1") ? "ddms:temporalCoverage"
+					: "ddms:temporalCoverage/ddms:TimePeriod";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
 			
 			// 4.1 ddms:approximableStart/End element used
 			if (version.isAtLeast("4.1")) {
-				periodElement = Util.buildDDMSElement("TimePeriod", null);
+				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(ApproximableDateTest.getFixtureElement("approximableStart", true));
 				periodElement.appendChild(ApproximableDateTest.getFixtureElement("approximableEnd", true));
 				component = getInstance(SUCCESS, wrapInnerElement(periodElement));
 				assertEquals(1, component.getValidationWarnings().size());	
-				text = "The ddms:approximableStart or ddms:approximableEnd element";
-				locator = "ddms:temporalCoverage";
+				String text = "The ddms:approximableStart or ddms:approximableEnd element";
+				String locator = "ddms:temporalCoverage";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
 		}

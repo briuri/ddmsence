@@ -38,7 +38,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>The child text must not be empty.</li>
+ * <li>The child text must not be empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
  * </ul>
  * </td></tr></table>
  * 

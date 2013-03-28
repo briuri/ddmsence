@@ -63,14 +63,13 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>A time period name element can be used with no child text.</li>
+ * <li>A time period name element can be used with no child text. This loophole goes away in DDMS 5.0.</li>
  * <li>A completely empty approximableStart or approximableEnd date can be used.</li>
  * </ul>
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
- * <u>ddms:name</u>: An interval of time, which can be expressed as a named era (0-1 optional, default=Unknown). Zero or
- * 1 of these elements may appear.<br />
+ * <u>ddms:name</u>: An interval of time, which can be expressed as a named era (0-1 optional, default=Unknown).<br />
  * <u>ddms:start</u>: The start date of a period of time (exactly 1 optional, default=Unknown).<br />
  * <u>ddms:end</u>: The end date of a period of time (exactly 1 optional, default=Unknown).<br />
  * <u>ddms:approximableStart</u>: The approximable start date (exactly 1 optional)<br />
@@ -303,7 +302,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A ddms:name element was found with no value.</li>
+	 * <li>A ddms:name element was found with no value, through DDMS 4.1.</li>
 	 * <li>A ddms:approximableStart or ddms:approximableEnd element may cause issues for DDMS 4.0 records.</li>
 	 * </td></tr></table>
 	 */
@@ -311,7 +310,7 @@ public final class TemporalCoverage extends AbstractBaseComponent {
 		Element periodElement = getTimePeriodElement();
 		Element timePeriodName = periodElement.getFirstChildElement(TIME_PERIOD_NAME_NAME,
 			periodElement.getNamespaceURI());
-		if (timePeriodName != null && Util.isEmpty(timePeriodName.getValue()))
+		if (!getDDMSVersion().isAtLeast("5.0") && timePeriodName != null && Util.isEmpty(timePeriodName.getValue()))
 			addWarning("A ddms:name element was found with no value. Defaulting to \"" + DEFAULT_VALUE + "\".");
 		if (getApproximableStart() != null || getApproximableEnd() != null)
 			addDdms40Warning("ddms:approximableStart or ddms:approximableEnd element");

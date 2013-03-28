@@ -34,7 +34,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>A subtitle element can be used without any child text.</li>
+ * <li>A subtitle element can be used without any child text. This loophole goes away in DDMS 5.0.</li>
  * </ul>
  * </td></tr></table>
  * 
@@ -88,11 +88,11 @@ public final class Subtitle extends AbstractSimpleString {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A ddms:subtitle element was found with no subtitle value.</li>
+	 * <li>A ddms:subtitle element was found with no subtitle value, through DDMS 4.1.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (Util.isEmpty(getValue()))
+		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getValue()))
 			addWarning("A ddms:subtitle element was found with no subtitle value.");
 		super.validateWarnings();
 	}

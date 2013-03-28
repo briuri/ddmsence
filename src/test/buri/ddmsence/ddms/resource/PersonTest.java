@@ -283,26 +283,28 @@ public class PersonTest extends AbstractBaseTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty userID
-			Element entityElement = Util.buildDDMSElement(Person.getName(version), null);
-			entityElement.appendChild(Util.buildDDMSElement("name", "name"));
-			entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
-			entityElement.appendChild(Util.buildDDMSElement("userID", ""));
-			component = new Person(entityElement);
-			assertEquals(1, component.getValidationWarnings().size());
-			String text = "A ddms:userID element was found with no value.";
-			String locator = "ddms:" + Person.getName(version);
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-
-			// Empty affiliation
-			entityElement = Util.buildDDMSElement(Person.getName(version), null);
-			entityElement.appendChild(Util.buildDDMSElement("name", "name"));
-			entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
-			entityElement.appendChild(Util.buildDDMSElement("affiliation", ""));
-			component = new Person(entityElement);
-			assertEquals(1, component.getValidationWarnings().size());
-			text = "A ddms:affiliation element was found with no value.";
-			locator = "ddms:" + Person.getName(version);
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			if (!version.isAtLeast("5.0")) {
+				Element entityElement = Util.buildDDMSElement(Person.getName(version), null);
+				entityElement.appendChild(Util.buildDDMSElement("name", "name"));
+				entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
+				entityElement.appendChild(Util.buildDDMSElement("userID", ""));
+				component = new Person(entityElement);
+				assertEquals(1, component.getValidationWarnings().size());
+				String text = "A ddms:userID element was found with no value.";
+				String locator = "ddms:" + Person.getName(version);
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+	
+				// Empty affiliation
+				entityElement = Util.buildDDMSElement(Person.getName(version), null);
+				entityElement.appendChild(Util.buildDDMSElement("name", "name"));
+				entityElement.appendChild(Util.buildDDMSElement("surname", "name"));
+				entityElement.appendChild(Util.buildDDMSElement("affiliation", ""));
+				component = new Person(entityElement);
+				assertEquals(1, component.getValidationWarnings().size());
+				text = "A ddms:affiliation element was found with no value.";
+				locator = "ddms:" + Person.getName(version);
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
 		}
 	}
 

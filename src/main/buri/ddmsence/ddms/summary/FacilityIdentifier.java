@@ -34,8 +34,8 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>The beNumber value must be non-empty.</li>
- * <li>The osuffix value must be non-empty.</li>
+ * <li>The beNumber value must be non-empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
+ * <li>The osuffix value must be non-empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
  * </ul>
  * </td></tr></table>
  * 

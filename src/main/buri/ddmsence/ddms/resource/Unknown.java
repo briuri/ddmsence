@@ -35,13 +35,13 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>At least 1 name value must be non-empty.</li>
+ * <li>At least 1 name value must be non-empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
  * </ul>
  * 
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>A phone number can be set with no value.</li>
- * <li>An email can be set with no value.</li>
+ * <li>A phone number can be set with no value. This loophole goes away in DDMS 5.0.</li>
+ * <li>An email can be set with no value. This loophole goes away in DDMS 5.0.</li>
  * </ul>
  * </td></tr></table>
  * 

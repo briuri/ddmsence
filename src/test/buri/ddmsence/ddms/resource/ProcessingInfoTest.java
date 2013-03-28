@@ -225,14 +225,16 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// No value
-			Element element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
-			Util.addDDMSAttribute(element, "dateProcessed", TEST_DATE_PROCESSED);
-			SecurityAttributesTest.getFixture().addTo(element);
-			component = getInstance(SUCCESS, element);
-			assertEquals(1, component.getValidationWarnings().size());
-			String text = "A ddms:processingInfo element was found with no value.";
-			String locator = "ddms:processingInfo";
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			if (!version.isAtLeast("5.0")) {
+				Element element = Util.buildDDMSElement(ProcessingInfo.getName(version), null);
+				Util.addDDMSAttribute(element, "dateProcessed", TEST_DATE_PROCESSED);
+				SecurityAttributesTest.getFixture().addTo(element);
+				component = getInstance(SUCCESS, element);
+				assertEquals(1, component.getValidationWarnings().size());
+				String text = "A ddms:processingInfo element was found with no value.";
+				String locator = "ddms:processingInfo";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
 		}
 	}
 

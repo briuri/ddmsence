@@ -54,27 +54,31 @@ public class RoleEntityTest extends AbstractBaseTestCase {
 	}
 
 	public void testSharedWarnings() throws InvalidDDMSException {
-		DDMSVersion version = DDMSVersion.getCurrentVersion();
-
-		// Empty phone
-		Element entityElement = Util.buildDDMSElement(Organization.getName(version), null);
-		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
-		entityElement.appendChild(Util.buildDDMSElement("phone", ""));
-		Organization component = new Organization(entityElement);
-		assertEquals(1, component.getValidationWarnings().size());
-		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-		assertEquals("A ddms:phone element was found with no value.", component.getValidationWarnings().get(0)
-			.getText());
-
-		// Empty email
-		entityElement = Util.buildDDMSElement(Organization.getName(version), null);
-		entityElement.appendChild(Util.buildDDMSElement("name", "name"));
-		entityElement.appendChild(Util.buildDDMSElement("email", ""));
-		component = new Organization(entityElement);
-		assertEquals(1, component.getValidationWarnings().size());
-		assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-		assertEquals("A ddms:email element was found with no value.", component.getValidationWarnings().get(0)
-			.getText());
+		for (String sVersion : DDMSVersion.getSupportedVersions()) {
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			
+			if (!version.isAtLeast("5.0")) {
+				// Empty phone
+				Element entityElement = Util.buildDDMSElement(Organization.getName(version), null);
+				entityElement.appendChild(Util.buildDDMSElement("name", "name"));
+				entityElement.appendChild(Util.buildDDMSElement("phone", ""));
+				Organization component = new Organization(entityElement);
+				assertEquals(1, component.getValidationWarnings().size());
+				assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+				assertEquals("A ddms:phone element was found with no value.", component.getValidationWarnings().get(0)
+					.getText());
+		
+				// Empty email
+				entityElement = Util.buildDDMSElement(Organization.getName(version), null);
+				entityElement.appendChild(Util.buildDDMSElement("name", "name"));
+				entityElement.appendChild(Util.buildDDMSElement("email", ""));
+				component = new Organization(entityElement);
+				assertEquals(1, component.getValidationWarnings().size());
+				assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
+				assertEquals("A ddms:email element was found with no value.", component.getValidationWarnings().get(0)
+					.getText());
+			}
+		}
 	}
 
 	public void testIndexLevelsStringLists() throws InvalidDDMSException {

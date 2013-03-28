@@ -144,23 +144,25 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A ddms:phone element was found with no value.</li>
-	 * <li>A ddms:email element was found with no value.</li>
+	 * <li>A ddms:phone element was found with no value, through DDMS 4.1.</li>
+	 * <li>A ddms:email element was found with no value, through DDMS 4.1.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		Elements phoneElements = getXOMElement().getChildElements(PHONE_NAME, getNamespace());
-		for (int i = 0; i < phoneElements.size(); i++) {
-			if (Util.isEmpty(phoneElements.get(i).getValue())) {
-				addWarning("A ddms:phone element was found with no value.");
-				break;
+		if (!getDDMSVersion().isAtLeast("5.0")) {
+			Elements phoneElements = getXOMElement().getChildElements(PHONE_NAME, getNamespace());
+			for (int i = 0; i < phoneElements.size(); i++) {
+				if (Util.isEmpty(phoneElements.get(i).getValue())) {
+					addWarning("A ddms:phone element was found with no value.");
+					break;
+				}
 			}
-		}
-		Elements emailElements = getXOMElement().getChildElements(EMAIL_NAME, getNamespace());
-		for (int i = 0; i < emailElements.size(); i++) {
-			if (Util.isEmpty(emailElements.get(i).getValue())) {
-				addWarning("A ddms:email element was found with no value.");
-				break;
+			Elements emailElements = getXOMElement().getChildElements(EMAIL_NAME, getNamespace());
+			for (int i = 0; i < emailElements.size(); i++) {
+				if (Util.isEmpty(emailElements.get(i).getValue())) {
+					addWarning("A ddms:email element was found with no value.");
+					break;
+				}
 			}
 		}
 		super.validateWarnings();

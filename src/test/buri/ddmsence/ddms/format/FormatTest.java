@@ -254,20 +254,21 @@ public class FormatTest extends AbstractBaseTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Medium element with no value or empty value
-			Element mediaElement = Util.buildDDMSElement("Media", null);
-			mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
-			mediaElement.appendChild(Util.buildDDMSElement("medium", null));
-			component = getInstance(SUCCESS, wrapInnerElement(mediaElement));
-			assertEquals(1, component.getValidationWarnings().size());
-			String text = "A ddms:medium element was found with no value.";
-			String locator = version.isAtLeast("4.0.1") ? "ddms:format" : "ddms:format/ddms:Media";
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-
+			if (!version.isAtLeast("5.0")) {
+				Element mediaElement = Util.buildDDMSElement("Media", null);
+				mediaElement.appendChild(Util.buildDDMSElement("mimeType", TEST_MIME_TYPE));
+				mediaElement.appendChild(Util.buildDDMSElement("medium", null));
+				component = getInstance(SUCCESS, wrapInnerElement(mediaElement));
+				assertEquals(1, component.getValidationWarnings().size());
+				String text = "A ddms:medium element was found with no value.";
+				String locator = version.isAtLeast("4.0.1") ? "ddms:format" : "ddms:format/ddms:Media";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
 			// Nested warnings
 			component = getInstance(SUCCESS, TEST_MIME_TYPE, new Extent("sizeBytes", ""), TEST_MEDIUM);
 			assertEquals(1, component.getValidationWarnings().size());
-			text = "A qualifier has been set without an accompanying value attribute.";
-			locator = (version.isAtLeast("4.0.1")) ? "ddms:format/ddms:extent" : "ddms:format/ddms:Media/ddms:extent";
+			String text = "A qualifier has been set without an accompanying value attribute.";
+			String locator = (version.isAtLeast("4.0.1")) ? "ddms:format/ddms:extent" : "ddms:format/ddms:Media/ddms:extent";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}

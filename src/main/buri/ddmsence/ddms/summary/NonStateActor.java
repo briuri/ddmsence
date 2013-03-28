@@ -34,7 +34,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>A nonStateActor element can be used without any child text.</li>
+ * <li>A nonStateActor element can be used without any child text. This loophole goes away in DDMS 5.0.</li>
  * </ul>
  * </td></tr></table>
  * 
@@ -137,7 +137,7 @@ public final class NonStateActor extends AbstractSimpleString {
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (Util.isEmpty(getValue()))
+		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getValue()))
 			addWarning("A ddms:" + getName() + " element was found with no value.");
 		if (!Util.isEmpty(getQualifier()))
 			addDdms40Warning("ddms:qualifier attribute");

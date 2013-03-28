@@ -39,8 +39,8 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>A non-empty qualifier value is required.</li>
- * <li>A non-empty value attribute is required.</li>
+ * <li>A non-empty qualifier value is required. This rule is codified in the schema, starting in DDMS 5.0.</li>
+ * <li>A non-empty value attribute is required. This rule is codified in the schema, starting in DDMS 5.0.</li>
  * <li>Although qualifier and value are optional in DDMS 2.0, this is considered invalid data. DDMSence requires
  * a non-empty qualifier and value.</li>
  * </ul>

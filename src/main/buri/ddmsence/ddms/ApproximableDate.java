@@ -47,7 +47,7 @@ import buri.ddmsence.util.Util;
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
  * <li>This component can be used with no description, approximableDate, or searchableDate values.</li>
- * <li>A ddms:description element can be used without child text.</li> 
+ * <li>A ddms:description element can be used without child text. This loophole goes away in DDMS 5.0.</li> 
  * </ul>
  * </td></tr></table>
  * 
@@ -207,7 +207,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>A completely empty element was found.</li>
-	 * <li>A description element can be used without any child text.</li>
+	 * <li>A description element can be used without any child text, through DDMS 4.1.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
@@ -218,7 +218,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 			&& Util.isEmpty(getSearchableEndString())) {
 			addWarning("A completely empty " + getQualifiedName() + " element was found.");
 		}
-		if (getChild(DESCRIPTION_NAME) != null && Util.isEmpty(getDescription()))
+		if (!getDDMSVersion().isAtLeast("5.0") && getChild(DESCRIPTION_NAME) != null && Util.isEmpty(getDescription()))
 			addWarning("A completely empty ddms:description element was found.");
 		super.validateWarnings();
 	}

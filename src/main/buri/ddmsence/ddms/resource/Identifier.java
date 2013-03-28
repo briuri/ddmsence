@@ -34,7 +34,7 @@ import buri.ddmsence.util.Util;
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
  * <li>A non-empty qualifier value is required.</li>
- * <li>A non-empty value attribute is required.</li>
+ * <li>A non-empty value attribute is required. This rule is codified in the schema, starting in DDMS 5.0.</li>
  * </ul>
  * </td></tr></table>
  * 

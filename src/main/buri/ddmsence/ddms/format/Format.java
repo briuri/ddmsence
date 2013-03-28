@@ -45,12 +45,12 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>A non-empty mimeType value is required.</li>
+ * <li>A non-empty mimeType value is required. This rule is codified in the schema, starting in DDMS 5.0.</li>
  * </ul>
  * 
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>A medium element can be used with no child text.</li>
+ * <li>A medium element can be used with no child text. This loophole goes away in DDMS 5.0.</li>
  * </ul>
  * </td></tr></table>
  * 
@@ -163,12 +163,12 @@ public final class Format extends AbstractBaseComponent {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A ddms:medium element was found with no value.</li>
+	 * <li>A ddms:medium element was found with no value, through DDMS 4.1.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
 		Element mediaElement = getMediaElement();
-		if (Util.isEmpty(getMedium())
+		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getMedium())
 			&& mediaElement.getChildElements(MEDIUM_NAME, mediaElement.getNamespaceURI()).size() == 1)
 			addWarning("A ddms:medium element was found with no value.");
 		super.validateWarnings();
