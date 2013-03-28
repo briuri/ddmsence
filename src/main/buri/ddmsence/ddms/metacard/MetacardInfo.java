@@ -50,6 +50,15 @@ import buri.ddmsence.util.Util;
 /**
  * An immutable implementation of ddms:metacardInfo.
  * 
+ * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * <p>DDMSence is stricter than the specification in the following ways:</p>
+ * <ul>
+ * <li>At least one identifier is required. This loophole opened up in DDMS 5.0.</li>
+ * <li>A dates component is required. This loophole opened up in DDMS 5.0.</li>
+ * <li>At least one producer is requried. This loophole opened up in DDMS 5.0.</li>
+ * </ul>
+ * </td></tr></table>
+ * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:identifier</u>: (1-many required), implemented as an {@link Identifier}<br />
  * <u>ddms:dates</u>: (exactly 1 required), implemented as an {@link Dates}<br />
@@ -175,7 +184,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 			for (IDDMSComponent component : childComponents) {
 				if (component == null)
 					continue;
-								
+
 				if (component instanceof Identifier)
 					_identifiers.add((Identifier) component);
 				else if (component instanceof Dates)
@@ -247,7 +256,8 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
 	 * <li>The qualified name of the element is correct.</li>
-	 * <li>At least 1 identifier and publisher must exist.</li>
+	 * <li>At least 1 identifier must exist.</li>
+	 * <li>At least 1 publisher must exist in DDMS 4.0.1 or 4.1. At least 1 of any kind of producer must exist starting in DDMS 5.0.</li>
 	 * <li>Only 1 dates can exist.</li>
 	 * <li>Only 0-1 descriptions, revisionRecalls, recordsManagementInfos, or noticeLists can exist.</li>
 	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
@@ -260,8 +270,14 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		Util.requireDDMSQName(getXOMElement(), MetacardInfo.getName(getDDMSVersion()));
 		if (getIdentifiers().isEmpty())
 			throw new InvalidDDMSException("At least one ddms:identifier must exist within a ddms:metacardInfo element.");
-		if (getPublishers().isEmpty())
-			throw new InvalidDDMSException("At least one ddms:publisher must exist within a ddms:metacardInfo element.");
+		if (!getDDMSVersion().isAtLeast("5.0")) {
+			if (getPublishers().isEmpty())
+				throw new InvalidDDMSException("At least one ddms:publisher must exist within a ddms:metacardInfo element.");
+		}
+		else {
+			if (getContributors().isEmpty() && getCreators().isEmpty() && getPointOfContacts().isEmpty() && getPublishers().isEmpty())
+				throw new InvalidDDMSException("At least one producer must exist within a ddms:metacardInfo element.");
+		}
 		Util.requireBoundedChildCount(getXOMElement(), Dates.getName(getDDMSVersion()), 1, 1);
 		Util.requireBoundedChildCount(getXOMElement(), Description.getName(getDDMSVersion()), 0, 1);
 		Util.requireBoundedChildCount(getXOMElement(), RevisionRecall.getName(getDDMSVersion()), 0, 1);

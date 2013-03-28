@@ -288,7 +288,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 					continue;
 				element.appendChild(component.getXOMElementCopy());
 			}
-			getInstance("At least one ddms:publisher", element);
+			getInstance("At least one", element);
 
 			// Missing dates
 			element = Util.buildDDMSElement(MetacardInfo.getName(version), null);
@@ -349,7 +349,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			// No components
 			getInstance("At least one ddms:identifier", (List) null);
@@ -367,7 +367,12 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 			// Missing publisher
 			components = getChildComponents();
 			components.remove(PublisherTest.getFixture());
-			getInstance("At least one ddms:publisher must exist", components);
+			if (version.isAtLeast("5.0")) {
+				components.remove(ContributorTest.getFixture());
+				components.remove(CreatorTest.getFixture());
+				components.remove(PointOfContactTest.getFixture());
+			}
+			getInstance("At least one", components);
 
 			// Missing dates
 			components = getChildComponents();

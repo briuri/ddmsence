@@ -38,7 +38,8 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>The recordKeeperID must not be empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
+ * <li>The recordKeeperID must not be empty. A competing rule and loophole were established in DDMS 5.0.</li>
+ * <li>The organization must not be empty. This loophole opened up in DDMS 5.0.</li>
  * </ul>
  * </td></tr></table>
  * 
