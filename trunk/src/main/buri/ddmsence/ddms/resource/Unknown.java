@@ -19,14 +19,17 @@
 */
 package buri.ddmsence.ddms.resource;
 
+import java.util.Collections;
 import java.util.List;
 
 import nu.xom.Element;
+import buri.ddmsence.AbstractBaseComponent;
 import buri.ddmsence.AbstractRoleEntity;
 import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.LazyList;
 import buri.ddmsence.util.Util;
 
 /**
@@ -52,16 +55,21 @@ import buri.ddmsence.util.Util;
  * <u>ddms:name</u>: names of the producer (1-many, at least 1 required)<br />
  * <u>ddms:phone</u>: phone numbers of the producer (0-many optional)<br />
  * <u>ddms:email</u>: email addresses of the producer (0-many optional)<br />
+ * <u>ddms:affiliation</u>: organizational affiliation (0-many optional starting in DDMS 5.0)<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
- * <u>{@link ExtensibleAttributes}</u>
+ * <u>{@link ExtensibleAttributes}</u>: Custom attributes.
  * </td></tr></table>
  * 
  * @author Brian Uri!
  * @since 0.9.b
  */
 public final class Unknown extends AbstractRoleEntity {
+	
+	private List<String> _affiliations = null;
+	
+	private static final String AFFILIATION_NAME = "affiliation";
 	
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -71,10 +79,14 @@ public final class Unknown extends AbstractRoleEntity {
 	 */
 	public Unknown(Element element) throws InvalidDDMSException {
 		super(element, true);
+		_affiliations = Util.getDDMSChildValues(element, AFFILIATION_NAME);
 	}
 	
 	/**
 	 * Constructor for creating a component from raw data.
+	 * 
+	 * @deprecated A new constructor was added for DDMS 5.0 to support ddms:affiliation. This constructor is preserved for 
+	 * backwards compatibility, but may disappear in the next major release.
 	 * 
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
@@ -82,7 +94,7 @@ public final class Unknown extends AbstractRoleEntity {
 	 */
 	public Unknown(List<String> names, List<String> phones, List<String> emails)
 		throws InvalidDDMSException {
-		this(names, phones, emails, null);
+		this(names, phones, emails, null, null);
 	}
 	
 	/**
@@ -91,11 +103,25 @@ public final class Unknown extends AbstractRoleEntity {
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
+	 * @param affiliations the affiliations of the unknown entity
 	 * @param extensions extensible attributes (optional)
 	 */
-	public Unknown(List<String> names, List<String> phones, List<String> emails,
+	public Unknown(List<String> names, List<String> phones, List<String> emails, List<String> affiliations,
 		ExtensibleAttributes extensions) throws InvalidDDMSException {
-		super(Unknown.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions, true);
+		super(Unknown.getName(DDMSVersion.getCurrentVersion()), names, phones, emails, extensions);
+		try {
+			if (affiliations == null)
+				affiliations = Collections.emptyList();
+			Element element = getXOMElement();
+			for (String affiliation : affiliations)
+				element.appendChild(Util.buildDDMSElement(AFFILIATION_NAME, affiliation));
+			_affiliations = affiliations;
+			validate();
+		}
+		catch (InvalidDDMSException e) {
+			e.setLocator(getQualifiedName());
+			throw (e);
+		}	
 	}
 	
 	/**
@@ -117,12 +143,41 @@ public final class Unknown extends AbstractRoleEntity {
 		
 		super.validate();
 	}
-		
+	
+	/**
+	 * @see AbstractBaseComponent#getOutput(boolean, String, String)
+	 */
+	public String getOutput(boolean isHTML, String prefix, String suffix) {
+		String localPrefix = buildPrefix(prefix, "", suffix);
+		StringBuffer text = new StringBuffer(super.getOutput(isHTML, localPrefix, ""));
+		text.append(buildOutput(isHTML, localPrefix + AFFILIATION_NAME, getAffiliations()));
+		return (text.toString());
+	}
+	
 	/**
 	 * @see Object#equals(Object)
 	 */
 	public boolean equals(Object obj) {
-		return (super.equals(obj) && (obj instanceof Unknown));
+		if (!super.equals(obj) || !(obj instanceof Unknown))
+			return (false);
+		Unknown test = (Unknown) obj;
+		return (Util.listEquals(getAffiliations(), test.getAffiliations()));
+	}
+	
+	/**
+	 * @see Object#hashCode()
+	 */
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 7 * result + getAffiliations().hashCode();
+		return (result);
+	}
+	
+	/**
+	 * Accessor for the affiliations of the person
+	 */
+	public List<String> getAffiliations() {
+		return (Collections.unmodifiableList(_affiliations));
 	}
 	
 	/**
@@ -145,7 +200,8 @@ public final class Unknown extends AbstractRoleEntity {
 	 */
 	public static class Builder extends AbstractRoleEntity.Builder {
 		private static final long serialVersionUID = -2278534009019179572L;
-
+		private List<String> _affiliations;
+		
 		/**
 		 * Empty constructor
 		 */
@@ -158,14 +214,41 @@ public final class Unknown extends AbstractRoleEntity {
 		 */
 		public Builder(Unknown unknown) {
 			super(unknown);
+			setAffiliations(unknown.getAffiliations());
 		}
 		
 		/**
 		 * @see IBuilder#commit()
 		 */
 		public Unknown commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new Unknown(getNames(), getPhones(), getEmails(), 
+			return (isEmpty() ? null : new Unknown(getNames(), getPhones(), getEmails(), getAffiliations(), 
 				getExtensibleAttributes().commit()));
+		}
+		
+		/**
+		 * Helper method to determine if any values have been entered for this Person.
+		 * 
+		 * @return true if all values are empty
+		 */
+		public boolean isEmpty() {
+			return (super.isEmpty()
+				&& Util.containsOnlyEmptyValues(getAffiliations()));
+		}
+		
+		/**
+		 * Builder accessor for the affiliations
+		 */
+		public List<String> getAffiliations() {
+			if (_affiliations == null)
+				_affiliations = new LazyList(String.class);
+			return _affiliations;
+		}
+
+		/**
+		 * Builder accessor for the affiliations
+		 */
+		public void setAffiliations(List<String> affiliations) {
+			_affiliations = new LazyList(affiliations, String.class);
 		}
 	}
 } 

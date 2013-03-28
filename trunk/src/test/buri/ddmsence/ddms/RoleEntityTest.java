@@ -19,13 +19,10 @@
  */
 package buri.ddmsence.ddms;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
-import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
-import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.ddms.resource.Organization;
 import buri.ddmsence.ddms.resource.Person;
 import buri.ddmsence.util.DDMSVersion;
@@ -96,17 +93,6 @@ public class RoleEntityTest extends AbstractBaseTestCase {
 		PropertyReader.setProperty("output.indexLevel", "2");
 		assertEquals("entityType: person\nname[1]: Brian\nname[2]: BU\nphone[1]: 703-885-1000\nsurname: Uri\n", person
 			.toText());
-	}
-
-	public void testExtensibleSuccess() throws InvalidDDMSException {
-		for (String sVersion : DDMSVersion.getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-
-			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
-			List<String> names = new ArrayList<String>();
-			names.add("DISA");
-			new Organization(names, null, null, null, null, attr);
-		}
 	}
 
 	public void testExtensibleFailure() throws InvalidDDMSException {

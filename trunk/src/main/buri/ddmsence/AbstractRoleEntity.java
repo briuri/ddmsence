@@ -78,46 +78,38 @@ public abstract class AbstractRoleEntity extends AbstractBaseComponent implement
 	}
 	
 	/**
-	 * Constructor which builds from raw data.
+	 * Constructor which builds from raw data. Does not validate.
 	 * 
 	 * @param entityName the element name of this entity (i.e. organization, person)
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 * @param extensibleAttributes extensible attributes (optional)
-	 * @param validateNow true to validate the component immediately. Because Person and Organization entities have
-	 * additional fields they should not be validated in the superconstructor.
 	 */
 	protected AbstractRoleEntity(String entityName, List<String> names, List<String> phones, List<String> emails,
-		ExtensibleAttributes extensibleAttributes, boolean validateNow) throws InvalidDDMSException {
-		try {
-			Util.requireDDMSValue("entityName", entityName);
-			if (names == null)
-				names = Collections.emptyList();
-			if (phones == null)
-				phones = Collections.emptyList();
-			if (emails == null)
-				emails = Collections.emptyList();
-			
-			Element element = Util.buildDDMSElement(entityName, null);
-			for (String name : names)
-				element.appendChild(Util.buildDDMSElement(NAME_NAME, name));
-			for (String phone : phones)
-				element.appendChild(Util.buildDDMSElement(PHONE_NAME, phone));
-			for (String email : emails)
-				element.appendChild(Util.buildDDMSElement(EMAIL_NAME, email));
+		ExtensibleAttributes extensibleAttributes) throws InvalidDDMSException {
+		Util.requireDDMSValue("entityName", entityName);
+		if (names == null)
+			names = Collections.emptyList();
+		if (phones == null)
+			phones = Collections.emptyList();
+		if (emails == null)
+			emails = Collections.emptyList();
 
-			_names = names;
-			_phones = phones;
-			_emails = emails;
-			_extensibleAttributes = ExtensibleAttributes.getNonNullInstance(extensibleAttributes);
-			_extensibleAttributes.addTo(element);
-			setXOMElement(element, validateNow);
-		}
-		catch (InvalidDDMSException e) {
-			e.setLocator(getQualifiedName());
-			throw (e);
-		}
+		Element element = Util.buildDDMSElement(entityName, null);
+		for (String name : names)
+			element.appendChild(Util.buildDDMSElement(NAME_NAME, name));
+		for (String phone : phones)
+			element.appendChild(Util.buildDDMSElement(PHONE_NAME, phone));
+		for (String email : emails)
+			element.appendChild(Util.buildDDMSElement(EMAIL_NAME, email));
+
+		_names = names;
+		_phones = phones;
+		_emails = emails;
+		_extensibleAttributes = ExtensibleAttributes.getNonNullInstance(extensibleAttributes);
+		_extensibleAttributes.addTo(element);
+		setXOMElement(element, false);
 	}
 			
 	/**

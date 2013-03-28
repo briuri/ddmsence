@@ -25,6 +25,8 @@ import java.util.List;
 import nu.xom.Element;
 import buri.ddmsence.AbstractBaseTestCase;
 import buri.ddmsence.ddms.InvalidDDMSException;
+import buri.ddmsence.ddms.extensible.ExtensibleAttributes;
+import buri.ddmsence.ddms.extensible.ExtensibleAttributesTest;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
@@ -39,10 +41,12 @@ public class UnknownTest extends AbstractBaseTestCase {
 	private static final List<String> TEST_NAMES = new ArrayList<String>();
 	private static final List<String> TEST_PHONES = new ArrayList<String>();
 	private static final List<String> TEST_EMAILS = new ArrayList<String>();
+	private static final List<String> TEST_AFFILIATIONS = new ArrayList<String>();
 	static {
 		TEST_NAMES.add("Unknown Entity");
 		TEST_PHONES.add("703-882-1000");
 		TEST_EMAILS.add("ddms@fgm.com");
+		TEST_AFFILIATIONS.add("DISA");
 	}
 
 	/**
@@ -53,6 +57,13 @@ public class UnknownTest extends AbstractBaseTestCase {
 		removeSupportedVersions("2.0");
 	}
 
+	/**
+	 * Generates affiliations for testing.
+	 */
+	private List<String> getAffiliations() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? TEST_AFFILIATIONS : null);
+	}
+	
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -95,12 +106,14 @@ public class UnknownTest extends AbstractBaseTestCase {
 	 * @param names an ordered list of names
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
+	 * @param affiliations organizational affiliations of the unknown entity
 	 */
-	private Unknown getInstance(String message, List<String> names, List<String> phones, List<String> emails) {
+	private Unknown getInstance(String message, List<String> names, List<String> phones, List<String> emails,
+		List<String> affiliations) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Unknown component = null;
 		try {
-			component = new Unknown(names, phones, emails);
+			component = new Unknown(names, phones, emails, affiliations, null);
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -123,6 +136,10 @@ public class UnknownTest extends AbstractBaseTestCase {
 			text.append(buildOutput(isHTML, "phone", phone));
 		for (String email : TEST_EMAILS)
 			text.append(buildOutput(isHTML, "email", email));
+		if (version.isAtLeast("5.0")) {
+			for (String affiliation : TEST_AFFILIATIONS)
+				text.append(buildOutput(isHTML, "affiliation", affiliation));
+		}
 		return (text.toString());
 	}
 
@@ -141,6 +158,10 @@ public class UnknownTest extends AbstractBaseTestCase {
 			xml.append("\t<ddms:phone>").append(phone).append("</ddms:phone>\n");
 		for (String email : TEST_EMAILS)
 			xml.append("\t<ddms:email>").append(email).append("</ddms:email>\n");
+		if (version.isAtLeast("5.0")) {
+			for (String affiliation : TEST_AFFILIATIONS)
+				xml.append("\t<ddms:affiliation>").append(affiliation).append("</ddms:affiliation>\n");
+		}
 		xml.append("</ddms:").append(Unknown.getName(version)).append(">");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
@@ -189,12 +210,12 @@ public class UnknownTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Missing name
-			getInstance("At least 1 name element must exist.", null, TEST_PHONES, TEST_EMAILS);
+			getInstance("At least 1 name element must exist.", null, TEST_PHONES, TEST_EMAILS, getAffiliations());
 
 			// Empty name
 			List<String> names = new ArrayList<String>();
 			names.add("");
-			getInstance("At least 1 name element must have a non-empty value.", names, TEST_PHONES, TEST_EMAILS);
+			getInstance("At least 1 name element must have a non-empty value.", names, TEST_PHONES, TEST_EMAILS, getAffiliations());
 		}
 	}
 
@@ -213,7 +234,7 @@ public class UnknownTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Unknown elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Unknown dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
+			Unknown dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS, getAffiliations());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -221,14 +242,19 @@ public class UnknownTest extends AbstractBaseTestCase {
 
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			Unknown elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Unknown dataComponent = getInstance(SUCCESS, TEST_NAMES, null, TEST_EMAILS);
+			Unknown dataComponent = getInstance(SUCCESS, TEST_NAMES, null, TEST_EMAILS, getAffiliations());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, null);
+			dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, null, getAffiliations());
 			assertFalse(elementComponent.equals(dataComponent));
+			
+			if (version.isAtLeast("5.0")) {
+				dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS, null);
+				assertFalse(elementComponent.equals(dataComponent));
+			}
 		}
 	}
 
@@ -240,7 +266,7 @@ public class UnknownTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
+			component = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS, getAffiliations());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -253,7 +279,7 @@ public class UnknownTest extends AbstractBaseTestCase {
 			Unknown component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
-			component = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS);
+			component = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS, getAffiliations());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -269,6 +295,17 @@ public class UnknownTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testExtensibleAttributes() throws InvalidDDMSException {
+		for (String sVersion : getSupportedVersions()) {
+			DDMSVersion.setCurrentVersion(sVersion);
+
+			ExtensibleAttributes attr = ExtensibleAttributesTest.getFixture();
+			List<String> names = new ArrayList<String>();
+			names.add("DISA");
+			new Unknown(names, null, null, null, attr);
+		}
+	}
+	
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
