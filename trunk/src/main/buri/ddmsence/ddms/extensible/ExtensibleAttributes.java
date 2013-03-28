@@ -109,8 +109,6 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public ExtensibleAttributes(Element element) throws InvalidDDMSException {
-		// Because attributes could come from various namespace, don't set the XML namespace.
-		super("");
 		buildReservedNames(element.getNamespaceURI());
 		DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
 		
@@ -143,8 +141,6 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ExtensibleAttributes(List<Attribute> attributes) throws InvalidDDMSException {
-		// Because attributes could come from various namespace, don't set the XML namespace.
-		super("");
 		if (attributes == null)
 			attributes = Collections.emptyList();
 		_attributes = new ArrayList<Attribute>(attributes);

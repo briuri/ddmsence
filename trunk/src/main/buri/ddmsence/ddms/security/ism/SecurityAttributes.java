@@ -224,39 +224,40 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public SecurityAttributes(Element element) throws InvalidDDMSException {
-		super(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()).getIsmNamespace());
+		DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
+		setNamespace(version.getIsmNamespace());
 		_atomicEnergyMarkings = Util.getXsListAsList(element
-			.getAttributeValue(ATOMIC_ENERGY_MARKINGS_NAME, getXmlNamespace()));
-		_classification = element.getAttributeValue(CLASSIFICATION_NAME, getXmlNamespace());
-		_classificationReason = element.getAttributeValue(CLASSIFICATION_REASON_NAME, getXmlNamespace());
-		_classifiedBy = element.getAttributeValue(CLASSIFIED_BY_NAME, getXmlNamespace());
-		_compilationReason = element.getAttributeValue(COMPILATION_REASON_NAME, getXmlNamespace());
-		String dateOfExemptedSource = element.getAttributeValue(DATE_OF_EXEMPTED_SOURCE_NAME, getXmlNamespace());
+			.getAttributeValue(ATOMIC_ENERGY_MARKINGS_NAME, getNamespace()));
+		_classification = element.getAttributeValue(CLASSIFICATION_NAME, getNamespace());
+		_classificationReason = element.getAttributeValue(CLASSIFICATION_REASON_NAME, getNamespace());
+		_classifiedBy = element.getAttributeValue(CLASSIFIED_BY_NAME, getNamespace());
+		_compilationReason = element.getAttributeValue(COMPILATION_REASON_NAME, getNamespace());
+		String dateOfExemptedSource = element.getAttributeValue(DATE_OF_EXEMPTED_SOURCE_NAME, getNamespace());
 		if (!Util.isEmpty(dateOfExemptedSource))
 			_dateOfExemptedSource = getFactory().newXMLGregorianCalendar(dateOfExemptedSource);
-		String declassDate = element.getAttributeValue(DECLASS_DATE_NAME, getXmlNamespace());
+		String declassDate = element.getAttributeValue(DECLASS_DATE_NAME, getNamespace());
 		if (!Util.isEmpty(declassDate))
 			_declassDate = getFactory().newXMLGregorianCalendar(declassDate);
-		_declassEvent = element.getAttributeValue(DECLASS_EVENT_NAME, getXmlNamespace());
-		_declassException = element.getAttributeValue(DECLASS_EXCEPTION_NAME, getXmlNamespace());
-		String manualReview = element.getAttributeValue(DECLASS_MANUAL_REVIEW_NAME, getXmlNamespace());
+		_declassEvent = element.getAttributeValue(DECLASS_EVENT_NAME, getNamespace());
+		_declassException = element.getAttributeValue(DECLASS_EXCEPTION_NAME, getNamespace());
+		String manualReview = element.getAttributeValue(DECLASS_MANUAL_REVIEW_NAME, getNamespace());
 		if (!Util.isEmpty(manualReview))
 			_declassManualReview = Boolean.valueOf(manualReview);
-		_derivativelyClassifiedBy = element.getAttributeValue(DERIVATIVELY_CLASSIFIED_BY_NAME, getXmlNamespace());
-		_derivedFrom = element.getAttributeValue(DERIVED_FROM_NAME, getXmlNamespace());
-		_displayOnlyTo = Util.getXsListAsList(element.getAttributeValue(DISPLAY_ONLY_TO_NAME, getXmlNamespace()));
+		_derivativelyClassifiedBy = element.getAttributeValue(DERIVATIVELY_CLASSIFIED_BY_NAME, getNamespace());
+		_derivedFrom = element.getAttributeValue(DERIVED_FROM_NAME, getNamespace());
+		_displayOnlyTo = Util.getXsListAsList(element.getAttributeValue(DISPLAY_ONLY_TO_NAME, getNamespace()));
 		_disseminationControls = Util.getXsListAsList(element.getAttributeValue(DISSEMINATION_CONTROLS_NAME,
-			getXmlNamespace()));
-		_FGIsourceOpen = Util.getXsListAsList(element.getAttributeValue(FGI_SOURCE_OPEN_NAME, getXmlNamespace()));
-		_FGIsourceProtected = Util.getXsListAsList(element.getAttributeValue(FGI_SOURCE_PROTECTED_NAME, getXmlNamespace()));
-		_nonICmarkings = Util.getXsListAsList(element.getAttributeValue(NON_IC_MARKINGS_NAME, getXmlNamespace()));
-		_nonUSControls = Util.getXsListAsList(element.getAttributeValue(NON_US_CONTROLS_NAME, getXmlNamespace()));
-		_ownerProducers = Util.getXsListAsList(element.getAttributeValue(OWNER_PRODUCER_NAME, getXmlNamespace()));
-		_releasableTo = Util.getXsListAsList(element.getAttributeValue(RELEASABLE_TO_NAME, getXmlNamespace()));
-		_SARIdentifier = Util.getXsListAsList(element.getAttributeValue(SAR_IDENTIFIER_NAME, getXmlNamespace()));
-		_SCIcontrols = Util.getXsListAsList(element.getAttributeValue(SCI_CONTROLS_NAME, getXmlNamespace()));
-		_typeOfExemptedSource = element.getAttributeValue(TYPE_OF_EXEMPTED_SOURCE_NAME, getXmlNamespace());
-		validate(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));
+			getNamespace()));
+		_FGIsourceOpen = Util.getXsListAsList(element.getAttributeValue(FGI_SOURCE_OPEN_NAME, getNamespace()));
+		_FGIsourceProtected = Util.getXsListAsList(element.getAttributeValue(FGI_SOURCE_PROTECTED_NAME, getNamespace()));
+		_nonICmarkings = Util.getXsListAsList(element.getAttributeValue(NON_IC_MARKINGS_NAME, getNamespace()));
+		_nonUSControls = Util.getXsListAsList(element.getAttributeValue(NON_US_CONTROLS_NAME, getNamespace()));
+		_ownerProducers = Util.getXsListAsList(element.getAttributeValue(OWNER_PRODUCER_NAME, getNamespace()));
+		_releasableTo = Util.getXsListAsList(element.getAttributeValue(RELEASABLE_TO_NAME, getNamespace()));
+		_SARIdentifier = Util.getXsListAsList(element.getAttributeValue(SAR_IDENTIFIER_NAME, getNamespace()));
+		_SCIcontrols = Util.getXsListAsList(element.getAttributeValue(SCI_CONTROLS_NAME, getNamespace()));
+		_typeOfExemptedSource = element.getAttributeValue(TYPE_OF_EXEMPTED_SOURCE_NAME, getNamespace());
+		validate(version);
 	}
 
 	/**
@@ -278,7 +279,8 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 */
 	public SecurityAttributes(String classification, List<String> ownerProducers, Map<String, String> otherAttributes)
 		throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion().getIsmNamespace());
+		DDMSVersion version = DDMSVersion.getCurrentVersion();
+		setNamespace(version.getIsmNamespace());
 		if (ownerProducers == null)
 			ownerProducers = Collections.emptyList();
 		if (otherAttributes == null)
@@ -325,7 +327,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 		_SARIdentifier = Util.getXsListAsList(otherAttributes.get(SAR_IDENTIFIER_NAME));
 		_SCIcontrols = Util.getXsListAsList(otherAttributes.get(SCI_CONTROLS_NAME));
 		_typeOfExemptedSource = otherAttributes.get(TYPE_OF_EXEMPTED_SOURCE_NAME);
-		validate(DDMSVersion.getCurrentVersion());
+		validate(version);
 	}
 
 	/**
@@ -398,7 +400,7 @@ public final class SecurityAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if the versions do not match
 	 */
 	protected void validateCompatibleVersion(DDMSVersion newParentVersion) throws InvalidDDMSException {
-		if (!newParentVersion.getIsmNamespace().equals(getXmlNamespace()))
+		if (!newParentVersion.getIsmNamespace().equals(getNamespace()))
 			throw new InvalidDDMSException(INCOMPATIBLE_VERSION_ERROR);
 	}
 	
