@@ -77,6 +77,19 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testGetVersionForISMNamespace() {
+		assertEquals(DDMSVersion.getVersionFor("2.0"), DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ism:v2"));
+		assertEquals(DDMSVersion.getVersionFor("5.0"), DDMSVersion
+			.getVersionForNamespace("urn:us:gov:ic:ism"));
+		try {
+			DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk:v2");
+			fail("Allowed unsupported version.");
+		}
+		catch (UnsupportedVersionException e) {
+			expectMessage(e, "DDMS Version for XML namespace");
+		}
+	}
+	
 	public void testGetVersionForNTKNamespace() {
 		assertEquals(DDMSVersion.getVersionFor("5.0"), DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk"));
 		try {
@@ -88,6 +101,17 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testGetVersionForXlinkNamespace() {
+		assertEquals(DDMSVersion.getVersionFor("5.0"), DDMSVersion.getVersionForNamespace("http://www.w3.org/1999/xlink"));
+		try {
+			DDMSVersion.getVersionForNamespace("http://www.w3.org/1999/xlink2");
+			fail("Allowed unsupported version.");
+		}
+		catch (UnsupportedVersionException e) {
+			expectMessage(e, "DDMS Version for XML namespace");
+		}
+	}
+	
 	public void testGetSupportedVersions() {
 		assertFalse(DDMSVersion.getSupportedVersions().isEmpty());
 		assertTrue(DDMSVersion.getSupportedVersions().contains("3.0"));

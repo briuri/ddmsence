@@ -207,8 +207,10 @@ public class DDMSVersion {
 		Collections.reverse(versions);
 		for (DDMSVersion version : versions) {
 			if (version.getNamespace().equals(namespace) || version.getIsmNamespace().equals(namespace)
-				|| version.getNtkNamespace().equals(namespace) || version.getGmlNamespace().equals(namespace))
+				|| version.getNtkNamespace().equals(namespace) || version.getGmlNamespace().equals(namespace)
+				|| version.getXlinkNamespace().equals(namespace)) {
 				return (version);
+			}
 		}
 		throw new UnsupportedVersionException("for XML namespace " + namespace);
 	}

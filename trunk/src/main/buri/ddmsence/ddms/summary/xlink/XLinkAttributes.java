@@ -142,17 +142,16 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public XLinkAttributes(Element element) throws InvalidDDMSException {
-		super(element.getNamespaceURI());
-		String xlinkNamespace = getDDMSVersion().getXlinkNamespace();
-		_type = element.getAttributeValue(TYPE_NAME, xlinkNamespace);
-		_href = element.getAttributeValue(HREF_NAME, xlinkNamespace);
-		_role = element.getAttributeValue(ROLE_NAME, xlinkNamespace);
-		_title = element.getAttributeValue(TITLE_NAME, xlinkNamespace);
-		_label = element.getAttributeValue(LABEL_NAME, xlinkNamespace);
-		_arcrole = element.getAttributeValue(ARC_ROLE_NAME, xlinkNamespace);
-		_show = element.getAttributeValue(SHOW_NAME, xlinkNamespace);
-		_actuate = element.getAttributeValue(ACTUATE_NAME, xlinkNamespace);
-		validate();
+		super(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()).getXlinkNamespace());
+		_type = element.getAttributeValue(TYPE_NAME, getXmlNamespace());
+		_href = element.getAttributeValue(HREF_NAME, getXmlNamespace());
+		_role = element.getAttributeValue(ROLE_NAME, getXmlNamespace());
+		_title = element.getAttributeValue(TITLE_NAME, getXmlNamespace());
+		_label = element.getAttributeValue(LABEL_NAME, getXmlNamespace());
+		_arcrole = element.getAttributeValue(ARC_ROLE_NAME, getXmlNamespace());
+		_show = element.getAttributeValue(SHOW_NAME, getXmlNamespace());
+		_actuate = element.getAttributeValue(ACTUATE_NAME, getXmlNamespace());
+		validate(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));
 	}
 
 	/**
@@ -161,8 +160,8 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException
 	 */
 	public XLinkAttributes() throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion().getNamespace());
-		validate();
+		super(DDMSVersion.getCurrentVersion().getXlinkNamespace());
+		validate(DDMSVersion.getCurrentVersion());
 	}
 	
 	/**
@@ -174,12 +173,12 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public XLinkAttributes(String role, String title, String label) throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion().getNamespace());
+		super(DDMSVersion.getCurrentVersion().getXlinkNamespace());
 		_type = TYPE_RESOURCE;
 		_role = role;
 		_title = title;
 		_label = label;
-		validate();
+		validate(DDMSVersion.getCurrentVersion());
 	}
 
 	/**
@@ -192,13 +191,13 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public XLinkAttributes(String href, String role, String title, String label) throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion().getNamespace());
+		super(DDMSVersion.getCurrentVersion().getXlinkNamespace());
 		_type = TYPE_LOCATOR;
 		_href = href;
 		_role = role;
 		_title = title;
 		_label = label;
-		validate();
+		validate(DDMSVersion.getCurrentVersion());
 	}
 	
 	/**
@@ -214,7 +213,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 */
 	public XLinkAttributes(String href, String role, String title, String arcrole, String show, String actuate)
 		throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion().getNamespace());
+		super(DDMSVersion.getCurrentVersion().getXlinkNamespace());
 		_type = TYPE_SIMPLE;
 		_href = href;
 		_role = role;
@@ -222,7 +221,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 		_arcrole = arcrole;
 		_show = show;
 		_actuate = actuate;
-		validate();
+		validate(DDMSVersion.getCurrentVersion());
 	}
 	
 	/**
@@ -233,7 +232,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 */
 	public void addTo(Element element) throws InvalidDDMSException {
 		DDMSVersion elementVersion = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
-		validateSameVersion(elementVersion);
+		validateCompatibleVersion(elementVersion);
 		String xlinkNamespace = elementVersion.getXlinkNamespace();
 		String xlinkPrefix = PropertyReader.getPrefix("xlink");
 		
@@ -248,6 +247,16 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	}
 	 
 	/**
+	 * Compares the DDMS version of these attributes to another DDMS version
+	 * 
+	 * @param newParentVersion the version to test
+	 * @throws InvalidDDMSException if the versions do not match
+	 */
+	protected void validateCompatibleVersion(DDMSVersion newParentVersion) throws InvalidDDMSException {
+		// No test yet, because every version of DDMS uses the same version of XLink.
+	}
+	
+	/**
 	 * Validates the attribute group.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
@@ -261,14 +270,16 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 	 * responsibility to do that.</li>
 	 * </td></tr></table>
 	 * 
+	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
+	 * DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	protected void validate() throws InvalidDDMSException {
+	protected void validate(DDMSVersion version) throws InvalidDDMSException {
 		if (!Util.isEmpty(getHref()))
 			Util.requireDDMSValidURI(getHref());
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		if (getDDMSVersion().isAtLeast("4.0.1")) {
+		if (version.isAtLeast("4.0.1")) {
 			if (!Util.isEmpty(getRole()))
 				Util.requireDDMSValidURI(getRole());
 			if (!Util.isEmpty(getLabel()))
@@ -280,7 +291,7 @@ public final class XLinkAttributes extends AbstractAttributeGroup {
 			throw new InvalidDDMSException("The show attribute must be one of " + SHOW_TYPES);
 		if (!Util.isEmpty(getActuate()) && !ACTUATE_TYPES.contains(getActuate()))
 			throw new InvalidDDMSException("The actuate attribute must be one of " + ACTUATE_TYPES);		
-		super.validate();
+		super.validate(version);
 	}
 	
 	/**
