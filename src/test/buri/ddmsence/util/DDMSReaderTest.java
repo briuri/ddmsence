@@ -188,15 +188,22 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 	}
 
 	public void testGetResourceSuccessString() throws InvalidDDMSException, IOException {
-		LineNumberReader reader = new LineNumberReader(new FileReader(new File(PropertyReader
-			.getProperty("test.unit.data"), "3.0/resource.xml")));
-		StringBuffer xmlString = new StringBuffer();
-		String nextLine = reader.readLine();
-		while (nextLine != null) {
-			xmlString.append(nextLine);
-			nextLine = reader.readLine();
+		LineNumberReader reader = null;
+		try {
+			reader = new LineNumberReader(new FileReader(new File(PropertyReader.getProperty("test.unit.data"),
+				"3.0/resource.xml")));
+			StringBuffer xmlString = new StringBuffer();
+			String nextLine = reader.readLine();
+			while (nextLine != null) {
+				xmlString.append(nextLine);
+				nextLine = reader.readLine();
+			}
+			getReader().getDDMSResource(xmlString.toString());
 		}
-		getReader().getDDMSResource(xmlString.toString());
+		finally {
+			if (reader != null)
+				reader.close();
+		}
 	}
 
 	public void testGetResourceSuccessInputStream() throws InvalidDDMSException, IOException {
