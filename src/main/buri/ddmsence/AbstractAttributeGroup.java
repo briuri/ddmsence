@@ -42,20 +42,15 @@ public abstract class AbstractAttributeGroup {
 	private String _xmlNamespace = null;
 	private List<ValidationMessage> _warnings = null;
 	
+	protected final static String INCOMPATIBLE_VERSION_ERROR = "These attributes cannot decorate a component with a different DDMS version.";
+	
 	/**
-	 * Constructor which stores the XML namespace of the enclosing element
+	 * Constructor which stores the XML namespace of these attributes
 	 */
 	public AbstractAttributeGroup(String xmlNamespace) {
 		_xmlNamespace = xmlNamespace;
 	}
-	
-	/**
-	 * Accessor for the DDMS namespace on the enclosing element.
-	 */
-	public DDMSVersion getDDMSVersion() {
-		return (DDMSVersion.getVersionForNamespace(_xmlNamespace));
-	}
-	
+		
 	/**
 	 * Base validation case for attribute groups.
 	 * 
@@ -63,22 +58,11 @@ public abstract class AbstractAttributeGroup {
 	 * <li>No rules are validated at this level. Extending classes may have additional rules.</li>
 	 * </td></tr></table>
 	 * 
+	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
+	 * DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	protected void validate() throws InvalidDDMSException {}
-		
-	/**
-	 * Compares the DDMS version of these attributes to another DDMS version
-	 * 
-	 * @param version the version to test
-	 * @throws InvalidDDMSException if the versions do not match
-	 */
-	protected void validateSameVersion(DDMSVersion version) throws InvalidDDMSException {
-		if (!getDDMSVersion().equals(version)) {
-			throw new InvalidDDMSException(
-				"These attributes cannot decorate a component with a different DDMS version.");
-		}
-	}
+	protected void validate(DDMSVersion version) throws InvalidDDMSException {}
 	
 	/**
 	 * Returns a list of any warning messages that occurred during validation. Warnings do not prevent a valid component
@@ -113,4 +97,11 @@ public abstract class AbstractAttributeGroup {
 	 * @return the HTML or Text output
 	 */
 	public abstract String getOutput(boolean isHTML, String prefix);
+	
+	/**
+	 * Accessor for the XML namespace of these attributes
+	 */
+	protected String getXmlNamespace() {
+		return (_xmlNamespace);
+	}
 }

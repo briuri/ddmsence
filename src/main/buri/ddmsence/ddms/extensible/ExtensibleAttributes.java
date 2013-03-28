@@ -109,17 +109,18 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public ExtensibleAttributes(Element element) throws InvalidDDMSException {
-		super(element.getNamespaceURI());
+		// Because attributes could come from various namespace, don't set the XML namespace.
+		super("");
 		buildReservedNames(element.getNamespaceURI());
-
+		DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
+		
 		_attributes = new ArrayList<Attribute>();
 		for (int i = 0; i < element.getAttributeCount(); i++) {
 			Attribute attribute = element.getAttribute(i);
 			// Skip ddms: attributes.
 			if (element.getNamespaceURI().equals(attribute.getNamespaceURI()))
 				continue;
-			// Skip reserved ISM attributes on Resource and Category
-			DDMSVersion version = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
+			// Skip reserved ISM attributes on Resource and Category			
 			if (Resource.getName(version).equals(element.getLocalName())
 				|| Category.getName(version).equals(element.getLocalName())
 				|| Keyword.getName(version).equals(element.getLocalName())) {
@@ -130,7 +131,7 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 			}
 			_attributes.add(attribute);
 		}
-		validate();
+		validate(version);
 	}
 	
 	/**
@@ -142,11 +143,12 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
 	public ExtensibleAttributes(List<Attribute> attributes) throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion().getNamespace());
+		// Because attributes could come from various namespace, don't set the XML namespace.
+		super("");
 		if (attributes == null)
 			attributes = Collections.emptyList();
 		_attributes = new ArrayList<Attribute>(attributes);
-		validate();
+		validate(DDMSVersion.getCurrentVersion());
 	}
 		
 	/**
@@ -205,8 +207,8 @@ public final class ExtensibleAttributes extends AbstractAttributeGroup {
 	 * 
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	protected void validate() throws InvalidDDMSException {
-		super.validate();
+	protected void validate(DDMSVersion version) throws InvalidDDMSException {
+		super.validate(version);
 	}
 	
 	/**

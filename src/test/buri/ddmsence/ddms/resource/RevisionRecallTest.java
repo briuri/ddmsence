@@ -532,18 +532,13 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 		}
 	}
 
-	public void testWrongVersion() {
-		try {
-			DDMSVersion.setCurrentVersion("4.0.1");
-			XLinkAttributes attr = XLinkAttributesTest.getSimpleFixture();
-			DDMSVersion.setCurrentVersion("2.0");
-			new RevisionRecall(TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK,
-				attr, SecurityAttributesTest.getFixture());
-			fail("Allowed invalid data.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "These attributes cannot decorate");
-		}
+	public void testWrongVersion() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("4.0.1");
+		XLinkAttributes attr = XLinkAttributesTest.getResourceFixture();
+		DDMSVersion.setCurrentVersion("2.0");
+		// Cross version attributes are allowed, because the version is not set until they are added onto an element.
+		new RevisionRecall(TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK,
+			attr, SecurityAttributesTest.getFixture());
 	}
 
 	public void testBuilderEquality() throws InvalidDDMSException {

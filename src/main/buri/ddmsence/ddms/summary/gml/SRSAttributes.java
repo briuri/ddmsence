@@ -91,7 +91,8 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public SRSAttributes(Element element) throws InvalidDDMSException {
-		super(element.getNamespaceURI());
+		// SRS Attributes are in no namespace.
+		super("");
 		_srsName = element.getAttributeValue(SRS_NAME_NAME, NO_NAMESPACE);
 		String srsDimension = element.getAttributeValue(SRS_DIMENSION_NAME, NO_NAMESPACE);
 		if (!Util.isEmpty(srsDimension)) {
@@ -107,7 +108,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		if (!Util.isEmpty(uomLabels)) {
 			_uomLabels.addAll(Util.getXsListAsList(uomLabels));
 		}
-		validate();
+		validate(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));
 	}
 	
 	/**
@@ -121,7 +122,8 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 */
 	public SRSAttributes(String srsName, Integer srsDimension, List<String> axisLabels, List<String> uomLabels)
 		throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion().getGmlNamespace());
+		// SRS Attributes are in no namespace.
+		super("");
 		if (axisLabels == null)
 			axisLabels = Collections.emptyList();
 		if (uomLabels == null)
@@ -130,7 +132,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 		_srsDimension = srsDimension;
 		_axisLabels = axisLabels;
 		_uomLabels = uomLabels;
-		validate();
+		validate(DDMSVersion.getCurrentVersion());
 	}
 	
 	/**
@@ -140,8 +142,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * @throws InvalidDDMSException if the DDMS version of the element is different
 	 */
 	protected void addTo(Element element) throws InvalidDDMSException {
-		DDMSVersion elementVersion = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
-		validateSameVersion(elementVersion);
+		// No compatible version check, since these attributes are in no namespace.
 		Util.addAttribute(element, NO_PREFIX, SRS_NAME_NAME, NO_NAMESPACE, getSrsName());
 		if (getSrsDimension() != null)
 			Util.addAttribute(element, NO_PREFIX, SRS_DIMENSION_NAME, NO_NAMESPACE, String.valueOf(getSrsDimension()));
@@ -161,9 +162,11 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 	 * <li>Each uomLabel must be a NCName.</li> 
 	 * </td></tr></table>
 	 * 
+	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
+	 * DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	protected void validate() throws InvalidDDMSException {
+	protected void validate(DDMSVersion version) throws InvalidDDMSException {
 		if (!Util.isEmpty(getSrsName()))
 			Util.requireDDMSValidURI(getSrsName());
 		if (getSrsDimension() != null && getSrsDimension().intValue() < 0)
@@ -174,7 +177,7 @@ public final class SRSAttributes extends AbstractAttributeGroup {
 			throw new InvalidDDMSException("The uomLabels attribute can only be used in tandem with axisLabels.");
 		Util.requireValidNCNames(getAxisLabels());
 		Util.requireValidNCNames(getUomLabels());
-		super.validate();
+		super.validate(version);
 	}
 	
 	/**

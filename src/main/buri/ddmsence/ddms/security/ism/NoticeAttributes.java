@@ -107,19 +107,17 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 * @param element the XOM element which is decorated with these attributes.
 	 */
 	public NoticeAttributes(Element element) throws InvalidDDMSException {
-		super(element.getNamespaceURI());
-		String icNamespace = getDDMSVersion().getIsmNamespace();
-
-		_noticeType = element.getAttributeValue(NOTICE_TYPE_NAME, icNamespace);;
-		_noticeReason = element.getAttributeValue(NOTICE_REASON_NAME, icNamespace);;
-		_unregisteredNoticeType = element.getAttributeValue(UNREGISTERED_NOTICE_TYPE_NAME, icNamespace);
-		String noticeDate = element.getAttributeValue(NOTICE_DATE_NAME, icNamespace);
+		super(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()).getIsmNamespace());
+		_noticeType = element.getAttributeValue(NOTICE_TYPE_NAME, getXmlNamespace());
+		_noticeReason = element.getAttributeValue(NOTICE_REASON_NAME, getXmlNamespace());
+		_unregisteredNoticeType = element.getAttributeValue(UNREGISTERED_NOTICE_TYPE_NAME, getXmlNamespace());
+		String noticeDate = element.getAttributeValue(NOTICE_DATE_NAME, getXmlNamespace());
 		if (!Util.isEmpty(noticeDate))
 			_noticeDate = getFactory().newXMLGregorianCalendar(noticeDate);
-		String external = element.getAttributeValue(EXTERNAL_NOTICE_NAME, icNamespace);
+		String external = element.getAttributeValue(EXTERNAL_NOTICE_NAME, getXmlNamespace());
 		if (!Util.isEmpty(external))
 			_externalNotice = Boolean.valueOf(external);
-		validate();
+		validate(DDMSVersion.getVersionForNamespace(element.getNamespaceURI()));
 	}
 	
 	/**
@@ -151,7 +149,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 */
 	public NoticeAttributes(String noticeType, String noticeReason, String noticeDate, String unregisteredNoticeType,
 		Boolean externalNotice) throws InvalidDDMSException {
-		super(DDMSVersion.getCurrentVersion().getNamespace());
+		super(DDMSVersion.getCurrentVersion().getIsmNamespace());
 		_noticeType = noticeType;
 		_noticeReason = noticeReason;
 		_unregisteredNoticeType = unregisteredNoticeType;
@@ -164,7 +162,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 			}
 		}
 		_externalNotice = externalNotice;
-		validate();
+		validate(DDMSVersion.getCurrentVersion());
 	}
 			
 	/**
@@ -174,7 +172,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 */
 	public void addTo(Element element) throws InvalidDDMSException {
 		DDMSVersion elementVersion = DDMSVersion.getVersionForNamespace(element.getNamespaceURI());
-		validateSameVersion(elementVersion);
+		validateCompatibleVersion(elementVersion);
 		String icNamespace = elementVersion.getIsmNamespace();
 		String icPrefix = PropertyReader.getPrefix("ism");
 
@@ -201,6 +199,17 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	}
 
 	/**
+	 * Compares the DDMS version of these attributes to another DDMS version
+	 * 
+	 * @param newParentVersion the version to test
+	 * @throws InvalidDDMSException if the versions do not match
+	 */
+	protected void validateCompatibleVersion(DDMSVersion newParentVersion) throws InvalidDDMSException {
+		if (!newParentVersion.getIsmNamespace().equals(getXmlNamespace()))
+			throw new InvalidDDMSException(INCOMPATIBLE_VERSION_ERROR);
+	}
+	
+	/**
 	 * Validates the attribute group. Where appropriate the {@link ISMVocabulary} enumerations are validated.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
@@ -213,11 +222,12 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 	 * <li>Does NOT do any validation on the constraints described in the DES ISM specification.</li>
 	 * </td></tr></table>
 	 * 
+	 * @param version the DDMS version to validate against. This cannot be stored in the attribute group because some
+	 * DDMSVersions have the same attribute XML namespace (e.g. XLink, ISM, NTK, GML after DDMS 2.0).
 	 * @throws InvalidDDMSException if any required information is missing or malformed
 	 */
-	protected void validate() throws InvalidDDMSException {
-		// Should be reviewed as additional versions of DDMS are supported.
-		DDMSVersion version = getDDMSVersion();
+	protected void validate(DDMSVersion version) throws InvalidDDMSException {
+		// Should be reviewed as additional versions of DDMS are supported.	
 		if (version.isAtLeast("4.0.1") && !Util.isEmpty(getNoticeType()))
 			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_NOTICE_TYPE, getNoticeType());
 		if (!Util.isEmpty(getNoticeReason()) && getNoticeReason().length() > MAX_LENGTH)
@@ -232,7 +242,7 @@ public final class NoticeAttributes extends AbstractAttributeGroup {
 			throw new InvalidDDMSException("Notice attributes cannot be used until DDMS 4.0.1 or later.");
 		// Test for 4.1 externalNotice is implicit, since 4.0.1 and 4.1 have same XML namespace.
 		
-		super.validate();
+		super.validate(version);
 	}
 
 	/**

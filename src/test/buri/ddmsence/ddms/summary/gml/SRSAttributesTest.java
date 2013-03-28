@@ -367,13 +367,8 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		DDMSVersion.setCurrentVersion("3.0");
 		SRSAttributes attr = getFixture();
 		DDMSVersion.setCurrentVersion("2.0");
-		try {
-			new Position(PositionTest.TEST_COORDS, attr);
-			fail("Allowed different versions.");
-		}
-		catch (InvalidDDMSException e) {
-			expectMessage(e, "These attributes cannot decorate");
-		}
+		// Cross version attributes are allowed, because the version is not set until they are added onto an element.
+		new Position(PositionTest.TEST_COORDS, attr);
 	}
 
 	public void testBuilderEquality() throws InvalidDDMSException {
