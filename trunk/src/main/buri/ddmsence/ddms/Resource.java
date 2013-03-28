@@ -95,6 +95,13 @@ import buri.ddmsence.util.Util;
  * 
  * <p>The name of this component was changed from "Resource" to "resource" in DDMS 4.0.1.</p>
  * 
+ * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
+ * <p>DDMSence is stricter than the specification in the following ways:</p>
+ * <ul>
+ * <li>A metacardInfo component is required. This loophole opened up in DDMS 5.0.</li>
+ * </ul>
+ * </td></tr></table>
+ * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:metacardInfo</u>: (exactly 1 required, starting in DDMS 4.0.1), implemented as a {@link MetacardInfo}<br />
  * <u>ddms:identifier</u>: (1-many required), implemented as an {@link Identifier}<br />

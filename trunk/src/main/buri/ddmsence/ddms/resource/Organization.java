@@ -41,7 +41,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>At least 1 name value must be non-empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
+ * <li>At least 1 name value must be non-empty. A competing rule and loophole were established in DDMS 5.0.</li>
  * </ul>
  * 
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
