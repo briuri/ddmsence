@@ -744,6 +744,14 @@ public class UtilTest extends AbstractBaseTestCase {
 		catch (IllegalArgumentException e) {
 			expectMessage(e, "Null lists cannot be compared.");
 		}
+		
+		try {
+			Util.listEquals(new ArrayList<String>(), null);
+			fail("Did not stop on bad data.");
+		}
+		catch (IllegalArgumentException e) {
+			expectMessage(e, "Null lists cannot be compared.");
+		}
 	}
 
 	public void testListEqualsSameList() {
@@ -799,6 +807,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		String testString = "<test>\"Brian's DDMSense & DDMS\"</test>";
 		assertEquals("&lt;test&gt;&quot;Brian&apos;s DDMSense &amp; DDMS&quot;&lt;/test&gt;", Util
 			.xmlEscape(testString));
+		assertEquals(null, Util.xmlEscape(null));
 	}
 
 	public void testCapitalizeEmpty() {
