@@ -36,16 +36,16 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence is stricter than the specification in the following ways:</p>
  * <ul>
- * <li>At least 1 name value must be non-empty.</li>
- * <li>The surname must be non-empty.</li>
+ * <li>At least 1 name value must be non-empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
+ * <li>The surname must be non-empty. This rule is codified in the schema, starting in DDMS 5.0.</li>
  * </ul>
  * 
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>A phone number can be set with no value.</li>
- * <li>An email can be set with no value.</li>
- * <li>A userID can be set with no value.</li>
- * <li>An affiliation can be set with no value.</li>
+ * <li>A phone number can be set with no value. This loophole goes away in DDMS 5.0.</li>
+ * <li>An email can be set with no value. This loophole goes away in DDMS 5.0.</li>
+ * <li>A userID can be set with no value. This loophole goes away in DDMS 5.0.</li>
+ * <li>An affiliation can be set with no value. This loophole goes away in DDMS 5.0.</li>
  * </ul>
  * </td></tr></table>
  * 
@@ -178,14 +178,15 @@ public final class Person extends AbstractRoleEntity {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A ddms:userID element was found with no value.</li>
-	 * <li>A ddms:affiliation element was found with no value.</li>
+	 * <li>A ddms:userID element was found with no value, through DDMS 4.1.</li>
+	 * <li>A ddms:affiliation element was found with no value, through DDMS 4.1.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (Util.isEmpty(getUserID()) && getXOMElement().getChildElements(USERID_NAME, getNamespace()).size() == 1)
+		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getUserID())
+			&& getXOMElement().getChildElements(USERID_NAME, getNamespace()).size() == 1)
 			addWarning("A ddms:userID element was found with no value.");
-		if (Util.isEmpty(getAffiliation())
+		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getAffiliation())
 			&& getXOMElement().getChildElements(AFFILIATION_NAME, getNamespace()).size() == 1)
 			addWarning("A ddms:affiliation element was found with no value.");
 		super.validateWarnings();

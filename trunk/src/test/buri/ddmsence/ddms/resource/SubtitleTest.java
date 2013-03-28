@@ -188,13 +188,15 @@ public class SubtitleTest extends AbstractBaseTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// No value
-			Element element = Util.buildDDMSElement(Subtitle.getName(version), null);
-			SecurityAttributesTest.getFixture().addTo(element);
-			component = getInstance(SUCCESS, element);
-			assertEquals(1, component.getValidationWarnings().size());
-			String text = "A ddms:subtitle element was found with no subtitle value.";
-			String locator = "ddms:subtitle";
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			if (!version.isAtLeast("5.0")) {
+				Element element = Util.buildDDMSElement(Subtitle.getName(version), null);
+				SecurityAttributesTest.getFixture().addTo(element);
+				component = getInstance(SUCCESS, element);
+				assertEquals(1, component.getValidationWarnings().size());
+				String text = "A ddms:subtitle element was found with no subtitle value.";
+				String locator = "ddms:subtitle";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
 		}
 	}
 

@@ -243,12 +243,14 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 			}
 			
 			// Empty value
-			Element element = Util.buildDDMSElement(NonStateActor.getName(version), null);
-			component = getInstance(SUCCESS, element);
-			assertEquals(1, component.getValidationWarnings().size());
-			String text = "A ddms:nonStateActor element was found with no value.";
-			String locator = "ddms:nonStateActor";
-			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			if (!version.isAtLeast("5.0")) {
+				Element element = Util.buildDDMSElement(NonStateActor.getName(version), null);
+				component = getInstance(SUCCESS, element);
+				assertEquals(1, component.getValidationWarnings().size());
+				String text = "A ddms:nonStateActor element was found with no value.";
+				String locator = "ddms:nonStateActor";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
 		}
 	}
 

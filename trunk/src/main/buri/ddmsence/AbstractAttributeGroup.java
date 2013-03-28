@@ -42,7 +42,8 @@ public abstract class AbstractAttributeGroup {
 	private String _namespace = null;
 	private List<ValidationMessage> _warnings = null;
 	
-	protected final static String INCOMPATIBLE_VERSION_ERROR = "The DDMS version of the parent component is incompatible with the XML namespace of these attributes.";
+	protected final static String INCOMPATIBLE_VERSION_MESSAGE
+		= "The DDMS version of the parent component is incompatible with the XML namespace of these attributes.";
 	
 	/**
 	 * Empty constructor

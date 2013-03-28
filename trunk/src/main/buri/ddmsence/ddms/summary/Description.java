@@ -34,7 +34,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>A description element can be used without any child text.</li>
+ * <li>A description element can be used without any child text. This loophole goes away in DDMS 5.0.</li>
  * </ul>
  * </td></tr></table>
  * 
@@ -78,7 +78,7 @@ public final class Description extends AbstractSimpleString {
 	 * @see AbstractBaseComponent#validate()
 	 */
 	protected void validate() throws InvalidDDMSException {
-		Util.requireDDMSQName(getXOMElement(), Description.getName(getDDMSVersion()));			
+		Util.requireDDMSQName(getXOMElement(), Description.getName(getDDMSVersion()));
 		super.validate();
 	}
 	
@@ -86,11 +86,11 @@ public final class Description extends AbstractSimpleString {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A ddms:description element was found with no description value.</li>
+	 * <li>A ddms:description element was found with no description value, through DDMS 4.1.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (Util.isEmpty(getValue()))
+		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getValue()))
 			addWarning("A ddms:" + getName() + " element was found with no description value.");
 		super.validateWarnings();
 	}

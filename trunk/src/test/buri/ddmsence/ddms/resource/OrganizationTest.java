@@ -248,7 +248,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty acronym in DDMS 4.0.1
-			if (version.isAtLeast("4.0.1")) {
+			if (version.getVersion().equals("4.0.1")) {
 				Element element = Util.buildDDMSElement(Organization.getName(version), null);
 				element.appendChild(Util.buildDDMSElement("name", TEST_NAMES.get(0)));
 				element.addAttribute(new Attribute("ddms:acronym", version.getNamespace(), ""));

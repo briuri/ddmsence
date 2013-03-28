@@ -34,7 +34,7 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Strictness</th></tr><tr><td class="infoBody">
  * <p>DDMSence allows the following legal, but nonsensical constructs:</p>
  * <ul>
- * <li>An applicationSoftware element can be used without any child text.</li>
+ * <li>An applicationSoftware element can be used without any child text. This loophole goes away in DDMS 5.0.</li>
  * </ul>
  * </td></tr></table>
  * 
@@ -46,7 +46,7 @@ import buri.ddmsence.util.Util;
  * @since 2.0.0
  */
 public final class ApplicationSoftware extends AbstractSimpleString {
-
+		
 	/**
 	 * Constructor for creating a component from a XOM Element
 	 *  
@@ -85,7 +85,6 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 		
 		// Should be reviewed as additional versions of DDMS are supported.
 		requireVersion("4.0.1");
-		
 		super.validate();
 	}
 	
@@ -93,11 +92,11 @@ public final class ApplicationSoftware extends AbstractSimpleString {
 	 * Validates any conditions that might result in a warning.
 	 * 
 	 * <table class="info"><tr class="infoHeader"><th>Rules</th></tr><tr><td class="infoBody">
-	 * <li>A ddms:applicationSoftware element was found with no child text.</li>
+	 * <li>A ddms:applicationSoftware element was found with no child text, through DDMS 4.1.</li>
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (Util.isEmpty(getValue()))
+		if (!getDDMSVersion().isAtLeast("5.0") && Util.isEmpty(getValue()))
 			addWarning("A ddms:applicationSoftware element was found with no value.");
 		super.validateWarnings();
 	}
