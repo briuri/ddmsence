@@ -61,7 +61,7 @@ public class PropertyReaderTest extends AbstractBaseTestCase {
 
 	public void testGetListPropertyValid() {
 		List<String> properties = PropertyReader.getListProperty("ddms.supportedVersions");
-		assertEquals(4, properties.size());
+		assertEquals(5, properties.size());
 	}
 
 	public void testSetPropertyInvalidName() {
