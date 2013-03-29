@@ -48,11 +48,9 @@
    <xs:element name="identifier" type="CompoundResourceIdentifierType" />
    <xs:element name="keyword" type="CompoundKeywordIdentifierType" />
    <xs:element name="language" type="CompoundLanguageIdentifierType" />
-   <xs:element name="maxVerticalExtent" type="VerticalDistanceType" />
    <xs:element name="medium" type="MediumType" />
    <xs:element name="metacardInfo" type="MetacardInfoType" />
    <xs:element name="mimeType" type="MimeTypeType" />
-   <xs:element name="minVerticalExtent" type="VerticalDistanceType" />
    <xs:element name="nonStateActor" type="NonStateActorCoverageType" />
    <xs:element name="organization" type="OrganizationType" />
    <xs:element name="person" type="PersonType" />
@@ -81,7 +79,6 @@
    <xs:element name="title" type="TitleType" />
    <xs:element name="type" type="CompoundTypeIdentifierType" />
    <xs:element name="unknown" type="UnknownType" />
-   <xs:element name="verticalExtent" type="VerticalExtentType" />
    <xs:element name="virtualCoverage" type="VirtualCoverageType" />
 
    <xs:attribute name="acronym" type="simpleTokenType"/>
@@ -347,7 +344,6 @@
          <xs:element ref="geographicIdentifier" />
          <xs:element ref="boundingGeometry" />
          <xs:element ref="postalAddress" />
-         <xs:element ref="verticalExtent" />
       </xs:choice>
       <xs:attribute name="precedence" type="simpleTokenType" use="optional" />
       <xs:attribute name="order" type="xs:int" use="optional"> </xs:attribute>
@@ -585,22 +581,6 @@
       <xs:complexContent>
          <xs:extension base="AffiliatedProducerType" />
       </xs:complexContent>
-   </xs:complexType>
-   <xs:complexType name="VerticalDistanceType">
-      <xs:simpleContent>
-         <xs:extension base="xs:double">
-            <xs:attribute name="unitOfMeasure" type="LengthMeasureType" use="optional" />
-            <xs:attribute name="datum" type="VerticalDatumType" use="optional" />
-         </xs:extension>
-      </xs:simpleContent>
-   </xs:complexType>
-   <xs:complexType name="VerticalExtentType">
-      <xs:sequence>
-         <xs:element ref="minVerticalExtent" />
-         <xs:element ref="maxVerticalExtent" />
-      </xs:sequence>
-      <xs:attribute name="unitOfMeasure" type="LengthMeasureType" use="required" />
-      <xs:attribute name="datum" type="VerticalDatumType" use="required" />
    </xs:complexType>
    <xs:complexType name="VirtualCoverageType">
       <xs:attribute name="protocol" type="xs:string" use="optional" />

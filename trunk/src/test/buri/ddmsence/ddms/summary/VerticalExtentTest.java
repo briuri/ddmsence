@@ -44,6 +44,7 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 	 */
 	public VerticalExtentTest() {
 		super("verticalExtent.xml");
+		removeSupportedVersions("5.0");
 	}
 
 	/**
@@ -51,6 +52,8 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 	 */
 	public static VerticalExtent getFixture() {
 		try {
+			if (DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+				return (null);
 			return (new VerticalExtent(1.1, 2.2, "Meter", "HAE"));
 		}
 		catch (InvalidDDMSException e) {
@@ -370,6 +373,17 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testWrongVersion() {
+		try {
+			DDMSVersion.setCurrentVersion("5.0");
+			new VerticalExtent(TEST_MIN, TEST_MAX, TEST_UOM, TEST_DATUM);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "The verticalExtent element cannot be used");
+		}
+	}
+	
 	public void testDoubleEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
