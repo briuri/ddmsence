@@ -172,6 +172,7 @@ public final class VerticalExtent extends AbstractBaseComponent {
 	 * <li>If a minVerticalExtent has unitOfMeasure or datum set, its values match the parent attribute values.</li>
 	 * <li>If a maxVerticalExtent has unitOfMeasure or datum set, its values match the parent attribute values.</li>
 	 * <li>The minVerticalExtent is less than the MaxVerticalExtent.</li>
+	 * <li>This component cannot be used after DDMS 4.1.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -188,6 +189,8 @@ public final class VerticalExtent extends AbstractBaseComponent {
 		validateInheritedAttributes(getChild(getMaxVerticalExtentName()));
 		if (getMaxVerticalExtent().compareTo(getMinVerticalExtent()) < 0)
 			throw new InvalidDDMSException("Minimum vertical extent must be less than maximum vertical extent.");
+		
+		requireAtMostVersion("4.1");
 		super.validate();
 	}
 

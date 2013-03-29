@@ -265,9 +265,13 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			// geographicIdentifier
 			getInstance(SUCCESS, getValidElement(sVersion));
 
-			// boundingBox
 			if (!version.isAtLeast("5.0")) {
+				// boundingBox
 				Element element = buildComponentElement(BoundingBoxTest.getFixture());
+				getInstance(SUCCESS, element);
+
+				// verticalExtent
+				element = buildComponentElement(VerticalExtentTest.getFixture());
 				getInstance(SUCCESS, element);
 			}
 
@@ -279,9 +283,6 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			element = buildComponentElement(PostalAddressTest.getFixture());
 			getInstance(SUCCESS, element);
 
-			// verticalExtent
-			element = buildComponentElement(VerticalExtentTest.getFixture());
-			getInstance(SUCCESS, element);
 
 			// everything
 			List<IDDMSComponent> list = new ArrayList<IDDMSComponent>();
@@ -307,9 +308,12 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 					TEST_PRECEDENCE, TEST_ORDER);
 			}
 
-			// boundingBox
 			if (!version.isAtLeast("5.0")) {
+				// boundingBox
 				getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
+				
+				// verticalExtent
+				getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
 			}
 
 			// boundingGeometry
@@ -317,9 +321,6 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 
 			// postalAddress
 			getInstance(SUCCESS, null, null, null, PostalAddressTest.getFixture(), null, null, null);
-
-			// verticalExtent
-			getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
 
 			// everything
 			getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), BoundingGeometryTest.getFixture(),
@@ -342,13 +343,20 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			element = buildComponentElement(list);
 			getInstance("No more than 1 geographicIdentifier", element);
 
-			// Too many boundingBox
 			if (!version.isAtLeast("5.0")) {
+				// Too many boundingBox
 				list = new ArrayList<IDDMSComponent>();
 				list.add(BoundingBoxTest.getFixture());
 				list.add(BoundingBoxTest.getFixture());
 				element = buildComponentElement(list);
 				getInstance("No more than 1 boundingBox", element);
+
+				// Too many verticalExtent
+				list = new ArrayList<IDDMSComponent>();
+				list.add(VerticalExtentTest.getFixture());
+				list.add(VerticalExtentTest.getFixture());
+				element = buildComponentElement(list);
+				getInstance("No more than 1 verticalExtent", element);
 			}
 
 			// Too many boundingGeometry
@@ -365,17 +373,10 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			element = buildComponentElement(list);
 			getInstance("No more than 1 postalAddress", element);
 
-			// Too many verticalExtent
-			list = new ArrayList<IDDMSComponent>();
-			list.add(VerticalExtentTest.getFixture());
-			list.add(VerticalExtentTest.getFixture());
-			element = buildComponentElement(list);
-			getInstance("No more than 1 verticalExtent", element);
-
 			// If facilityIdentifier is used, nothing else can.
 			list = new ArrayList<IDDMSComponent>();
 			list.add(GeographicIdentifierTest.getFacIdBasedFixture());
-			list.add(VerticalExtentTest.getFixture());
+			list.add(BoundingGeometryTest.getFixture());
 			element = buildComponentElement(list);
 			getInstance("A geographicIdentifier containing a facilityIdentifier", element);
 		}
@@ -422,11 +423,18 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 
-			// boundingBox
 			if (!version.isAtLeast("5.0")) {
+				// boundingBox
 				Element element = buildComponentElement(BoundingBoxTest.getFixture());
 				elementComponent = getInstance(SUCCESS, element);
 				dataComponent = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
+				assertEquals(elementComponent, dataComponent);
+				assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+				
+				// verticalExtent
+				element = buildComponentElement(VerticalExtentTest.getFixture());
+				elementComponent = getInstance(SUCCESS, element);
+				dataComponent = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
 				assertEquals(elementComponent, dataComponent);
 				assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 			}
@@ -442,13 +450,6 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			element = buildComponentElement(PostalAddressTest.getFixture());
 			elementComponent = getInstance(SUCCESS, element);
 			dataComponent = getInstance(SUCCESS, null, null, null, PostalAddressTest.getFixture(), null, null, null);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-
-			// verticalExtent
-			element = buildComponentElement(VerticalExtentTest.getFixture());
-			elementComponent = getInstance(SUCCESS, element);
-			dataComponent = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -471,6 +472,9 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			if (!version.isAtLeast("5.0")) {
 				dataComponent = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
 				assertFalse(elementComponent.equals(dataComponent));
+
+				dataComponent = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
+				assertFalse(elementComponent.equals(dataComponent));
 			}
 
 			dataComponent = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
@@ -478,10 +482,6 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 
 			dataComponent = getInstance(SUCCESS, null, null, null, PostalAddressTest.getFixture(), null, null, null);
 			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
-			assertFalse(elementComponent.equals(dataComponent));
-
 		}
 	}
 
@@ -509,6 +509,12 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 					component.toHTML());
 				assertEquals(BoundingBoxTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
 					component.toText());
+				
+				component = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
+				assertEquals(VerticalExtentTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
+					component.toHTML());
+				assertEquals(VerticalExtentTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
+					component.toText());
 			}
 
 			component = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
@@ -521,12 +527,6 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			assertEquals(PostalAddressTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
 				component.toHTML());
 			assertEquals(PostalAddressTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
-				component.toText());
-
-			component = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
-			assertEquals(VerticalExtentTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
-				component.toHTML());
-			assertEquals(VerticalExtentTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
 				component.toText());
 		}
 	}
@@ -587,10 +587,13 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 
 	public void testVerticalExtentReuse() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			VerticalExtent extent = VerticalExtentTest.getFixture();
-			getInstance(SUCCESS, null, null, null, null, extent, null, null);
-			getInstance(SUCCESS, null, null, null, null, extent, null, null);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			
+			if (!version.isAtLeast("5.0")) {
+				VerticalExtent extent = VerticalExtentTest.getFixture();
+				getInstance(SUCCESS, null, null, null, null, extent, null, null);
+				getInstance(SUCCESS, null, null, null, null, extent, null, null);
+			}
 		}
 	}
 
@@ -680,6 +683,10 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 				component = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
 				builder = new GeospatialCoverage.Builder(component);
 				assertEquals(component, builder.commit());
+				
+				component = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
+				builder = new GeospatialCoverage.Builder(component);
+				assertEquals(component, builder.commit());
 			}
 
 			component = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
@@ -687,10 +694,6 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			assertEquals(component, builder.commit());
 
 			component = getInstance(SUCCESS, null, null, null, PostalAddressTest.getFixture(), null, null, null);
-			builder = new GeospatialCoverage.Builder(component);
-			assertEquals(component, builder.commit());
-
-			component = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
 			builder = new GeospatialCoverage.Builder(component);
 			assertEquals(component, builder.commit());
 		}
@@ -722,9 +725,9 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "A ddms:verticalExtent requires ");
 			}
-			builder.getVerticalExtent().setUnitOfMeasure("Fathom");
-			builder.getVerticalExtent().setMaxVerticalExtent(Double.valueOf(2));
-			builder.getVerticalExtent().setMinVerticalExtent(Double.valueOf(1));
+			builder.setVerticalExtent(null);
+			builder.getGeographicIdentifier().getFacilityIdentifier().setBeNumber("beNumber");
+			builder.getGeographicIdentifier().getFacilityIdentifier().setOsuffix("osuffix");
 			builder.commit();
 		}
 	}
