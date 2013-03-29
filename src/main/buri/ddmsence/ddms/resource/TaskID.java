@@ -28,6 +28,7 @@ import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.ISMVocabulary;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -44,8 +45,8 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:taskingSystem</u>: the tasking system (optional)<br />
- * <u>network</u>: the name of the network, taken from a token list (optional)<br />
- * <u>otherNetwork</u>: an alternate network name (optional)<br />
+ * <u>network</u>: the name of the network, taken from a token list (optional)<br /> (becomes virt: in DDMS 5.0)
+ * <u>otherNetwork</u>: an alternate network name (optional)<br /> (goes away in DDMS 5.0)
  * <u>{@link XLinkAttributes}</u>: If set, the xlink:type attribute must have a fixed value of "simple".<br />
  * </td></tr></table>
  * 
@@ -100,7 +101,13 @@ public final class TaskID extends AbstractBaseComponent {
 		try {
 			Element element = Util.buildDDMSElement(TaskID.getName(DDMSVersion.getCurrentVersion()), value);
 			Util.addDDMSAttribute(element, TASKING_SYSTEM_NAME, taskingSystem);
-			Util.addAttribute(element, NO_PREFIX, NETWORK_NAME, NO_NAMESPACE, network);
+			if (DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+				String virtPrefix = PropertyReader.getPrefix("virt");
+				String virtNamespace = DDMSVersion.getCurrentVersion().getVirtNamespace();
+				Util.addAttribute(element, virtPrefix, NETWORK_NAME, virtNamespace, network);
+			}
+			else
+				Util.addAttribute(element, NO_PREFIX, NETWORK_NAME, NO_NAMESPACE, network);
 			Util.addAttribute(element, NO_PREFIX, OTHER_NETWORK_NAME, NO_NAMESPACE, otherNetwork);
 
 			_xlinkAttributes = XLinkAttributes.getNonNullInstance(xlinkAttributes);
@@ -121,6 +128,7 @@ public final class TaskID extends AbstractBaseComponent {
 	 * <li>A child text value is required.</li>
 	 * <li>If set, the xlink:type attribute has a value of "simple".</li>
 	 * <li>If set, the network attribute must be a valid network token.</li>
+	 * <li>The otherNetwork cannot be used after DDMS 4.1.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -132,6 +140,8 @@ public final class TaskID extends AbstractBaseComponent {
 			throw new InvalidDDMSException("The type attribute must have a fixed value of \"" + FIXED_TYPE + "\".");
 		if (!Util.isEmpty(getNetwork()))
 			ISMVocabulary.requireValidNetwork(getNetwork());
+		if (getDDMSVersion().isAtLeast("5.0") && !Util.isEmpty(getOtherNetwork()))
+			throw new InvalidDDMSException("The otherNetwork attribute cannot be used after DDMS 4.1.");
 		super.validate();
 	}
 
@@ -218,7 +228,8 @@ public final class TaskID extends AbstractBaseComponent {
 	 * Accessor for the network attribute.
 	 */
 	public String getNetwork() {
-		return (getAttributeValue(NETWORK_NAME, NO_NAMESPACE));
+		String namespace = getDDMSVersion().isAtLeast("5.0") ? getDDMSVersion().getVirtNamespace() : NO_NAMESPACE;
+		return (getAttributeValue(NETWORK_NAME, namespace));
 	}
 
 	/**

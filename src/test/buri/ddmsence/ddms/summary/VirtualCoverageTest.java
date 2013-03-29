@@ -38,6 +38,8 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 
 	private static final String TEST_ADDRESS = "123.456.789.0";
 	private static final String TEST_PROTOCOL = "IP";
+	private static final String TEST_ACCESS = "namespace1|key1^value1|key2^value1|key2^value2";
+	private static final String TEST_NETWORK = "NIPRNet";
 
 	/**
 	 * Constructor
@@ -46,6 +48,14 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 		super("virtualCoverage.xml");
 	}
 
+	private String getAccess() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? TEST_ACCESS : null);
+	}
+	
+	private String getNetwork() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? TEST_NETWORK : null);
+	}
+	
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -87,15 +97,17 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param address the virtual address (optional)
 	 * @param protocol the network protocol (optional, should be used if address is provided)
+	 * @param access the portion access (optional)
+	 * @param network the network (optional)
 	 * @return a valid object
 	 */
-	private VirtualCoverage getInstance(String message, String address, String protocol) {
+	private VirtualCoverage getInstance(String message, String address, String protocol, String access, String network) {
 		boolean expectFailure = !Util.isEmpty(message);
 		VirtualCoverage component = null;
 		try {
 			SecurityAttributes attr = (!DDMSVersion.getCurrentVersion().isAtLeast("3.0")) ? null
 				: SecurityAttributesTest.getFixture();
-			component = new VirtualCoverage(address, protocol, attr);
+			component = new VirtualCoverage(address, protocol, access, network, attr);
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -112,6 +124,10 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, "virtualCoverage.address", TEST_ADDRESS));
 		text.append(buildOutput(isHTML, "virtualCoverage.protocol", TEST_PROTOCOL));
+		if (DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+			text.append(buildOutput(isHTML, "virtualCoverage.access", TEST_ACCESS));
+			text.append(buildOutput(isHTML, "virtualCoverage.network", TEST_NETWORK));
+		}
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0")) {
 			text.append(buildOutput(isHTML, "virtualCoverage.classification", "U"));
 			text.append(buildOutput(isHTML, "virtualCoverage.ownerProducer", "USA"));
@@ -125,10 +141,17 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:virtualCoverage ").append(getXmlnsDDMS());
+		if (DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+			xml.append(" ").append(getXmlnsVirt());
+			xml.append(" ").append(getXmlnsNTK());
+		}
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			xml.append(" ").append(getXmlnsISM());
-		xml.append(" ddms:address=\"").append(TEST_ADDRESS).append("\" ddms:protocol=\"").append(TEST_PROTOCOL).append(
+		String prefix = DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? "virt" : "ddms";
+		xml.append(" ").append(prefix).append(":address=\"").append(TEST_ADDRESS).append("\" ").append(prefix).append(":protocol=\"").append(TEST_PROTOCOL).append(
 			"\"");
+		if (DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+			xml.append(" ntk:access=\"namespace1|key1^value1|key2^value1|key2^value2\" virt:network=\"NIPRNet\""); 
 		if (DDMSVersion.getCurrentVersion().isAtLeast("3.0"))
 			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		xml.append(" />");
@@ -161,10 +184,10 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL);
+			getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL, getAccess(), getNetwork());
 
 			// No optional fields
-			getInstance(SUCCESS, null, null);
+			getInstance(SUCCESS, null, null, null, null);
 		}
 	}
 
@@ -173,7 +196,10 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// address without protocol
 			Element element = Util.buildDDMSElement(VirtualCoverage.getName(version), null);
-			Util.addDDMSAttribute(element, "address", TEST_ADDRESS);
+			if (version.isAtLeast("5.0"))
+				Util.addAttribute(element, "virt", "address", version.getVirtNamespace(), TEST_ADDRESS);
+			else
+				Util.addDDMSAttribute(element, "address", TEST_ADDRESS);
 			getInstance("protocol is required.", element);
 		}
 	}
@@ -182,7 +208,7 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// address without protocol
-			getInstance("protocol is required.", TEST_ADDRESS, null);
+			getInstance("protocol is required.", TEST_ADDRESS, null, null, null);
 		}
 	}
 
@@ -207,7 +233,7 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			VirtualCoverage elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			VirtualCoverage dataComponent = getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL);
+			VirtualCoverage dataComponent = getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL, getAccess(), getNetwork());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -215,13 +241,21 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			VirtualCoverage elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			VirtualCoverage dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_PROTOCOL);
+			VirtualCoverage dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_PROTOCOL, getAccess(), getNetwork());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_ADDRESS, DIFFERENT_VALUE);
+			dataComponent = getInstance(SUCCESS, TEST_ADDRESS, DIFFERENT_VALUE, getAccess(), getNetwork());
 			assertFalse(elementComponent.equals(dataComponent));
+			
+			if (version.isAtLeast("5.0")) {
+				dataComponent = getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL, null, getNetwork());
+				assertFalse(elementComponent.equals(dataComponent));
+				
+				dataComponent = getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL, getAccess(), DIFFERENT_VALUE);
+				assertFalse(elementComponent.equals(dataComponent));
+			}
 		}
 	}
 
@@ -241,7 +275,7 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL);
+			component = getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL, getAccess(), getNetwork());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -253,7 +287,7 @@ public class VirtualCoverageTest extends AbstractBaseTestCase {
 			VirtualCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL);
+			component = getInstance(SUCCESS, TEST_ADDRESS, TEST_PROTOCOL, getAccess(), getNetwork());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}

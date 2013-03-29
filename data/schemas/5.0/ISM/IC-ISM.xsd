@@ -19,12 +19,16 @@
 	xmlns:ismpoctyp="urn:us:gov:ic:cvenum:ism:pocType" xmlns:xhtml="http://www.w3.org/1999/xhtml"
 	targetNamespace="urn:us:gov:ic:ism" elementFormDefault="qualified"
 	attributeFormDefault="qualified" xml:lang="en" ism:resourceElement="true"
-	ism:createDate="2011-12-01" ism:DESVersion="9" ism:classification="U" ism:ownerProducer="USA"
-	version="9">
+	ism:createDate="2011-12-01" ism:DESVersion="10" ism:classification="U" ism:ownerProducer="USA"
+	version="10">
 	
 	<!--
-   		This is a temporary stand-in schema for DDMSence 2.2.0 development (Issue #191).
-   		As individual enhancements are added to the codebase, these schemas will be updated or replaced until DDMS 5.0 is fully supported.  
+   		This is a temporary stand-in schema for DDMSence 2.2.0 development (Issue #192).
+   		It is the Public Release schema for ISM v9, with the version numbers bumped up to v10.
+   		
+   		Once ISM v10 Public Release is available, this will be swapped out.
+   		
+   		NOTE: The CVE schemas are not touched at all.  
 	-->
 		
 	<xsd:annotation>
@@ -373,7 +377,7 @@
 		</xsd:simpleType>
 	</xsd:attribute>
 
-	<xsd:attribute name="DESVersion" type="ShortStringType" fixed="9">
+	<xsd:attribute name="DESVersion" type="ShortStringType">
 		<xsd:annotation>
 			<xsd:documentation xml:lang="en">
 				<xhtml:p ism:ownerProducer="USA" ism:classification="U"> The version number of the

@@ -45,14 +45,15 @@ import buri.ddmsence.ddms.security.ism.ISMVocabulary;
  * for each DDMS version:
  * </p>
  * 
- * <li><code>&lt;versionNumber&gt;.ddms.xmlNamespace</code>: i.e. "urn:us:mil:ces:metadata:ddms:4"</li>
- * <li><code>&lt;versionNumber&gt;.ddms.xsdLocation</code>: i.e. "/schemas/4.1/DDMS/ddms.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.ddms.xmlNamespace</code>: i.e. "urn:us:mil:ces:metadata:ddms:5"</li>
+ * <li><code>&lt;versionNumber&gt;.ddms.xsdLocation</code>: i.e. "/schemas/5.0/DDMS/ddms.xsd"</li>
  * <li><code>&lt;versionNumber&gt;.gml.xmlNamespace</code>: i.e. "http://www.opengis.net/gml/3.2"</li>
- * <li><code>&lt;versionNumber&gt;.gml.xsdLocation</code>: i.e. "/schemas/4.1/DDMS/gml.xsd"</li>
- * <li><code>&lt;versionNumber&gt;.ism.cveLocation</code>: i.e. "/schemas/4.1/ISM/CVE/"</li>
+ * <li><code>&lt;versionNumber&gt;.gml.xsdLocation</code>: i.e. "/schemas/5.0/DDMS/gml.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.ism.cveLocation</code>: i.e. "/schemas/5.0/ISM/CVE/"</li>
  * <li><code>&lt;versionNumber&gt;.ism.xmlNamespace</code>: i.e. "urn:us:gov:ic:ism"</li>
  * <li><code>&lt;versionNumber&gt;.ntk.xmlNamespace</code>: i.e. "urn:us:gov:ic:ntk"</li>
- * <li><code>&lt;versionNumber&gt;.ntk.xsdLocation</code>: i.e. "/schemas/4.1/NTK/IC-NTK.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.ntk.xsdLocation</code>: i.e. "/schemas/5.0/NTK/IC-NTK.xsd"</li>
+ * <li><code>&lt;versionNumber&gt;.virt.xmlNamespace</code>: i.e. "urn:us:gov:ic:virt"</li>
  * <li><code>&lt;versionNumber&gt;.xlink.xmlNamespace</code>: i.e. "http://www.w3.org/1999/xlink"</li>
  * 
  * <p>
@@ -90,6 +91,7 @@ public class DDMSVersion {
 	private String _ismNamespace;
 	private String _ntkNamespace;
 	private String _ntkSchema;
+	private String _virtNamespace;
 	private String _xlinkNamespace;
 
 	private static DDMSVersion _currentVersion;
@@ -118,6 +120,7 @@ public class DDMSVersion {
 		_ismNamespace = PropertyReader.getProperty(version + ".ism.xmlNamespace");
 		_ntkNamespace = PropertyReader.getProperty(version + ".ntk.xmlNamespace");
 		_ntkSchema = PropertyReader.getProperty(version + ".ntk.xsdLocation");
+		_virtNamespace = PropertyReader.getProperty(version + ".virt.xmlNamespace");
 		_xlinkNamespace = PropertyReader.getProperty(version + ".xlink.xmlNamespace");
 	}
 
@@ -208,7 +211,7 @@ public class DDMSVersion {
 		for (DDMSVersion version : versions) {
 			if (version.getNamespace().equals(namespace) || version.getIsmNamespace().equals(namespace)
 				|| version.getNtkNamespace().equals(namespace) || version.getGmlNamespace().equals(namespace)
-				|| version.getXlinkNamespace().equals(namespace)) {
+				|| version.getVirtNamespace().equals(namespace) || version.getXlinkNamespace().equals(namespace)) {
 				return (version);
 			}
 		}
@@ -333,6 +336,13 @@ public class DDMSVersion {
 		return _ntkSchema;
 	}
 
+	/**
+	 * Accessor for the virt namespace
+	 */
+	public String getVirtNamespace() {
+		return _virtNamespace;
+	}
+	
 	/**
 	 * Accessor for the xlink namespace
 	 */

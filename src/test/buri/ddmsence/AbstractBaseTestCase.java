@@ -256,6 +256,13 @@ public abstract class AbstractBaseTestCase extends TestCase {
 	}
 
 	/**
+	 * Returns a namespace declaration for virt
+	 */
+	protected static String getXmlnsVirt() {
+		return ("xmlns:virt=\"" + DDMSVersion.getCurrentVersion().getVirtNamespace() + "\"");
+	}
+	
+	/**
 	 * Accessor for a valid DDMS XOM Element constructed from the root element of an XML file, which can be used in
 	 * testing as a "correct base case".
 	 */

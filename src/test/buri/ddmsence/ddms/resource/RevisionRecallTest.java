@@ -57,10 +57,21 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 
 	/**
 	 * Returns a fixture object for testing.
+	 * 
+	 * @param stripNetworks true if the network attributes should be removed.
 	 */
-	public static Element getTextFixtureElement() {
+	public static Element getTextFixtureElement(boolean stripNetworks) {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Element element = new Element(new RevisionRecallTest().getValidElement(version.getVersion()));
+		if (stripNetworks) {
+			if (!version.isAtLeast("5.0")) {
+				element.removeAttribute(element.getAttribute("network"));
+				element.removeAttribute(element.getAttribute("otherNetwork"));
+			}
+			else {
+				element.removeAttribute(element.getAttribute("network", "urn:us:gov:ic:virt"));
+			}
+		}
 		element.removeChildren();
 		element.appendChild(TEST_VALUE);
 		return (element);
@@ -71,12 +82,19 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 	 */
 	public static RevisionRecall getTextFixture() {
 		try {
-			return (new RevisionRecall(getTextFixtureElement()));
+			return (new RevisionRecall(getTextFixtureElement(true)));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
 		}
 		return (null);
+	}
+	
+	/**
+	 * Gets an otherNetwork value for the version
+	 */
+	private String getOtherNetwork() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? "" : TEST_OTHER_NETWORK);
 	}
 
 	/**
@@ -166,7 +184,8 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, "revisionRecall.revisionID", "1"));
 		text.append(buildOutput(isHTML, "revisionRecall.revisionType", "ADMINISTRATIVE RECALL"));
 		text.append(buildOutput(isHTML, "revisionRecall.network", "NIPRNet"));
-		text.append(buildOutput(isHTML, "revisionRecall.otherNetwork", "PBS"));
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+			text.append(buildOutput(isHTML, "revisionRecall.otherNetwork", "PBS"));
 		if (hasLinks) {
 			text.append(buildOutput(isHTML, "revisionRecall.link.type", "locator"));
 			text.append(buildOutput(isHTML, "revisionRecall.link.href", "http://en.wikipedia.org/wiki/Tank"));
@@ -189,11 +208,17 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedXMLOutput(boolean hasLinks) {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:revisionRecall ").append(getXmlnsDDMS()).append(
-			" xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+		xml.append("<ddms:revisionRecall ").append(getXmlnsDDMS()).append(" ");
+		if (DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+			xml.append(getXmlnsVirt()).append(" ");
+		xml.append("xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
 		xml.append(getXmlnsISM()).append(" ");
 		xml.append("ddms:revisionID=\"1\" ddms:revisionType=\"ADMINISTRATIVE RECALL\" ");
-		xml.append("network=\"NIPRNet\" otherNetwork=\"PBS\" ");
+		if (DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+			xml.append("virt:");
+		xml.append("network=\"NIPRNet\" ");
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+			xml.append("otherNetwork=\"PBS\" ");
 		xml.append("xlink:type=\"resource\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 
@@ -228,7 +253,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// All fields (text)
-			getInstance(SUCCESS, getTextFixtureElement());
+			getInstance(SUCCESS, getTextFixtureElement(false));
 
 			// No optional fields (links)
 			Element element = Util.buildDDMSElement(RevisionRecall.getName(version), null);
@@ -253,10 +278,10 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 
 			// All fields (links)
 			getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(), TEST_REVISION_ID,
-				TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+				TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
 
 			// All fields (text)
-			getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK,
+			getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(),
 				XLinkAttributesTest.getResourceFixture());
 
 			// No optional fields (links)
@@ -329,12 +354,14 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			getInstance("The revisionType attribute must be one of", element);
 
 			// Bad network
-			element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
-			Util.addAttribute(element, "", "network", "", "PBS");
-			Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
-			Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
-			SecurityAttributesTest.getFixture().addTo(element);
-			getInstance("The network attribute must be one of", element);
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+				element = Util.buildDDMSElement(RevisionRecall.getName(version), TEST_VALUE);
+				Util.addAttribute(element, "", "network", "", "PBS");
+				Util.addDDMSAttribute(element, "revisionID", TEST_REVISION_ID.toString());
+				Util.addDDMSAttribute(element, "revisionType", TEST_REVISION_TYPE);
+				SecurityAttributesTest.getFixture().addTo(element);
+				getInstance("The network attribute must be one of", element);
+			}
 		}
 	}
 
@@ -344,7 +371,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 
 			// Wrong type of XLinkAttributes (locator)
 			getInstance("The type attribute must have a fixed value", LinkTest.getLocatorFixtureList(true),
-				DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK,
+				DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(),
 				XLinkAttributesTest.getLocatorFixture());
 
 			// Links without security attributes
@@ -352,25 +379,25 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			List<Link> linkList = new ArrayList<Link>();
 			linkList.add(link);
 			getInstance("classification is required.", linkList, DetailsTest.getFixtureList(), TEST_REVISION_ID,
-				TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getLocatorFixture());
+				TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), XLinkAttributesTest.getLocatorFixture());
 
 			// Missing revisionID
 			getInstance("revision ID is required.", LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				null, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+				null, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
 
 			// Missing revisionType
 			getInstance("The revisionType attribute must be one of", LinkTest.getLocatorFixtureList(true),
-				DetailsTest.getFixtureList(), TEST_REVISION_ID, null, TEST_NETWORK, TEST_OTHER_NETWORK,
+				DetailsTest.getFixtureList(), TEST_REVISION_ID, null, TEST_NETWORK, getOtherNetwork(),
 				XLinkAttributesTest.getResourceFixture());
 
 			// Bad revisionType
 			getInstance("The revisionType attribute must be one of", LinkTest.getLocatorFixtureList(true),
-				DetailsTest.getFixtureList(), TEST_REVISION_ID, "MISTAKE", TEST_NETWORK, TEST_OTHER_NETWORK,
+				DetailsTest.getFixtureList(), TEST_REVISION_ID, "MISTAKE", TEST_NETWORK, getOtherNetwork(),
 				XLinkAttributesTest.getResourceFixture());
 
 			// Bad network
 			getInstance("The network attribute must be one of", LinkTest.getLocatorFixtureList(true),
-				DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, "PBS", TEST_OTHER_NETWORK,
+				DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, "PBS", getOtherNetwork(),
 				XLinkAttributesTest.getResourceFixture());
 		}
 	}
@@ -392,15 +419,15 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			// links
 			RevisionRecall elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			RevisionRecall dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true),
-				DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK,
+				DetailsTest.getFixtureList(), TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(),
 				XLinkAttributesTest.getResourceFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 
 			// text
-			elementComponent = getInstance(SUCCESS, getTextFixtureElement());
+			elementComponent = getInstance(SUCCESS, getTextFixtureElement(false));
 			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
-				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -413,61 +440,65 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			// links
 			RevisionRecall elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			RevisionRecall dataComponent = getInstance(SUCCESS, null, DetailsTest.getFixtureList(), TEST_REVISION_ID,
-				TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+				TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), null, TEST_REVISION_ID,
-				TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+				TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				Integer.valueOf(2), TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK,
+				Integer.valueOf(2), TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(),
 				XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				TEST_REVISION_ID, "ADMINISTRATIVE REVISION", TEST_NETWORK, TEST_OTHER_NETWORK,
+				TEST_REVISION_ID, "ADMINISTRATIVE REVISION", TEST_NETWORK, getOtherNetwork(),
 				XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				TEST_REVISION_ID, TEST_REVISION_TYPE, "SIPRNet", TEST_OTHER_NETWORK,
+				TEST_REVISION_ID, TEST_REVISION_TYPE, "SIPRNet", getOtherNetwork(),
 				XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, "DoD-Dist-B",
-				XLinkAttributesTest.getResourceFixture());
-			assertFalse(elementComponent.equals(dataComponent));
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+				dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
+					TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, "DoD-Dist-B",
+					XLinkAttributesTest.getResourceFixture());
+				assertFalse(elementComponent.equals(dataComponent));
+			}
 
 			dataComponent = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, null);
+				TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), null);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			// text
-			elementComponent = getInstance(SUCCESS, getTextFixtureElement());
+			elementComponent = getInstance(SUCCESS, getTextFixtureElement(false));
 			dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
-				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, TEST_VALUE, Integer.valueOf(2), TEST_REVISION_TYPE, TEST_NETWORK,
-				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, "ADMINISTRATIVE REVISION", TEST_NETWORK,
-				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, "SIPRNet",
-				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
-				"DoD-Dist-B", XLinkAttributesTest.getResourceFixture());
-			assertFalse(elementComponent.equals(dataComponent));
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+				dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
+					"DoD-Dist-B", XLinkAttributesTest.getResourceFixture());
+				assertFalse(elementComponent.equals(dataComponent));
+			}
 
 			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
-				TEST_OTHER_NETWORK, null);
+				getOtherNetwork(), null);
 			assertFalse(elementComponent.equals(dataComponent));
 
 		}
@@ -493,18 +524,18 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true, false), component.toText());
 
 			component = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK,
+				TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(),
 				XLinkAttributesTest.getResourceFixture());
 			assertEquals(getExpectedOutput(true, true), component.toHTML());
 			assertEquals(getExpectedOutput(true, false), component.toText());
 
 			// text
-			component = getInstance(SUCCESS, getTextFixtureElement());
+			component = getInstance(SUCCESS, getTextFixtureElement(false));
 			assertEquals(getExpectedOutput(false, true), component.toHTML());
 			assertEquals(getExpectedOutput(false, false), component.toText());
 
 			component = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
-				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
 			assertEquals(getExpectedOutput(false, true), component.toHTML());
 			assertEquals(getExpectedOutput(false, false), component.toText());
 		}
@@ -519,16 +550,16 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
 			component = getInstance(SUCCESS, LinkTest.getLocatorFixtureList(true), DetailsTest.getFixtureList(),
-				TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK,
+				TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(),
 				XLinkAttributesTest.getResourceFixture());
 			assertEquals(getExpectedXMLOutput(true), component.toXML());
 
 			// text
-			component = getInstance(SUCCESS, getTextFixtureElement());
+			component = getInstance(SUCCESS, getTextFixtureElement(false));
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 
 			component = getInstance(SUCCESS, TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK,
-				TEST_OTHER_NETWORK, XLinkAttributesTest.getResourceFixture());
+				getOtherNetwork(), XLinkAttributesTest.getResourceFixture());
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
 		}
 	}
@@ -538,7 +569,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 		XLinkAttributes attr = XLinkAttributesTest.getResourceFixture();
 		DDMSVersion.setCurrentVersion("2.0");
 		// Cross version attributes are allowed, because the version is not set until they are added onto an element.
-		new RevisionRecall(TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, TEST_OTHER_NETWORK, attr,
+		new RevisionRecall(TEST_VALUE, TEST_REVISION_ID, TEST_REVISION_TYPE, TEST_NETWORK, getOtherNetwork(), attr,
 			SecurityAttributesTest.getFixture());
 	}
 
@@ -552,7 +583,7 @@ public class RevisionRecallTest extends AbstractBaseTestCase {
 			assertEquals(component, builder.commit());
 
 			// Equality after Building (text)
-			component = getInstance(SUCCESS, getTextFixtureElement());
+			component = getInstance(SUCCESS, getTextFixtureElement(false));
 			builder = new RevisionRecall.Builder(component);
 			assertEquals(component, builder.commit());
 		}

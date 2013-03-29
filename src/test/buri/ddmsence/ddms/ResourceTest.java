@@ -504,6 +504,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 			xml.append(" ").append(getXmlnsNTK());
 		xml.append(" ").append(getXmlnsISM());
 		if (version.isAtLeast("5.0")) {
+			xml.append(" ").append(getXmlnsVirt());
 			xml.append(" ").append("ddms:compliesWith=\"DDMSRules\"");
 		}
 		if (!version.isAtLeast("5.0")) {
@@ -591,7 +592,8 @@ public class ResourceTest extends AbstractBaseTestCase {
 			xml.append("\t\t</ddms:Subject>\n");
 		}
 		xml.append("\t</ddms:subjectCoverage>\n");
-		xml.append("\t<ddms:virtualCoverage ddms:address=\"123.456.789.0\" ddms:protocol=\"IP\" />\n");
+		String prefix = DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? "virt" : "ddms";
+		xml.append("\t<ddms:virtualCoverage ").append(prefix).append(":address=\"123.456.789.0\" ").append(prefix).append(":protocol=\"IP\" />\n");
 		xml.append("\t<ddms:temporalCoverage>\n");
 		if (version.isAtLeast("4.0.1")) {
 			xml.append("\t\t<ddms:start>1979-09-15</ddms:start>\n");

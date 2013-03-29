@@ -59,6 +59,7 @@ public class PropertyReader {
 		CUSTOM_PROPERTIES.add("ntk.prefix");
 		CUSTOM_PROPERTIES.add("output.indexLevel");
 		CUSTOM_PROPERTIES.add("sample.data");
+		CUSTOM_PROPERTIES.add("virt.prefix");
 		CUSTOM_PROPERTIES.add("xlink.prefix");
 		CUSTOM_PROPERTIES.add("xml.transform.TransformerFactory");
 	};

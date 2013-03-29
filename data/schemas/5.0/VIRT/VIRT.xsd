@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?oxygen SCHSchema="../../Schematron/ISM/ISM_XML.sch"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:ism="urn:us:gov:ic:ism" xmlns:ntk="urn:us:gov:ic:ntk" xmlns="urn:us:gov:ic:virt"
+    xmlns:virt="urn:us:gov:ic:virt" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="urn:us:gov:ic:virt" elementFormDefault="qualified"
+    attributeFormDefault="qualified" xml:lang="en">
+        
+    <!--
+   		This is a temporary stand-in schema for DDMSence 2.2.0 development (Issue #192).
+   		It is a generated subset to do kind of the same job as VIRT, which has not yet reached Public Release.
+   		
+   		Once VIRT v1 Public Release is available, this will be swapped out.  
+	-->
+
+    <xsd:import namespace="urn:us:gov:ic:ism" schemaLocation="../ISM/IC-ISM.xsd" />
+    <xsd:import namespace="urn:us:gov:ic:ntk" schemaLocation="../NTK/IC-NTK.xsd" />
+    <xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../w3/1999/xlink/xlink.xsd"/>
+    
+    <xsd:attributeGroup name="SimpleLinkAttributesGroup">
+        <xsd:attributeGroup ref="xlink:simpleAttrs"/>
+        <xsd:attribute name="network" type="xs:string" use="optional" />
+    </xsd:attributeGroup>  
+    <xsd:attributeGroup name="OptionalResourceLinkAttributesGroup">
+        <xsd:attribute ref="xlink:type" fixed="resource" use="optional"/>
+        <xsd:attribute ref="xlink:role" use="optional"/>
+        <xsd:attribute ref="xlink:title" use="optional"/>
+        <xsd:attribute ref="xlink:label" use="optional"/>
+        <xsd:attribute name="network" type="xs:string" use="optional" />
+    </xsd:attributeGroup>    
+    <xsd:complexType name="VirtualCoverageType">
+        <xsd:attribute name="protocol" type="xsd:string" use="optional"/>
+        <xsd:attribute name="address" type="xsd:string" use="optional"/>
+        <xsd:attributeGroup ref="ism:SecurityAttributesOptionGroup"/>
+        <xsd:attributeGroup ref="ntk:NtkPortionAccessGroup"/>
+        <xsd:attribute name="network" type="xs:string" use="optional" />
+    </xsd:complexType>
+
+</xsd:schema>
