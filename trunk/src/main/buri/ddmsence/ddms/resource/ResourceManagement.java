@@ -163,7 +163,7 @@ public final class ResourceManagement extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), RevisionRecall.getName(getDDMSVersion()), 0, 1);
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0.1");
+		requireAtLeastVersion("4.0.1");
 
 		super.validate();
 	}

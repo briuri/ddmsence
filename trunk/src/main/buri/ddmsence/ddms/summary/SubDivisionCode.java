@@ -92,7 +92,7 @@ public final class SubDivisionCode extends AbstractQualifierValue {
 		Util.requireDDMSValue(getValueName() + " attribute", getValue());
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0.1");
+		requireAtLeastVersion("4.0.1");
 		super.validate();
 	}
 

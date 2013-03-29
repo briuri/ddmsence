@@ -197,7 +197,7 @@ public final class ApproximableDate extends AbstractBaseComponent {
 			Util.requireDDMSDateFormat(getSearchableEndString(), getNamespace());
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.1");
+		requireAtLeastVersion("4.1");
 
 		super.validate();
 	}

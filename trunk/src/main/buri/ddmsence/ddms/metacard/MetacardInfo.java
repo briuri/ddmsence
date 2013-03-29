@@ -290,7 +290,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 		Util.requireBoundedChildCount(getXOMElement(), NoticeList.getName(getDDMSVersion()), 0, 1);
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0.1");
+		requireAtLeastVersion("4.0.1");
 
 		super.validate();
 	}

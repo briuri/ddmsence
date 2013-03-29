@@ -138,7 +138,7 @@ public final class Unknown extends AbstractRoleEntity {
 		Util.requireDDMSQName(getXOMElement(), Unknown.getName(getDDMSVersion()));
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("3.0");
+		requireAtLeastVersion("3.0");
 
 		super.validate();
 	}
