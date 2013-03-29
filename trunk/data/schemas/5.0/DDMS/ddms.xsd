@@ -69,7 +69,6 @@
    <xs:element name="resourceManagement" type="ResourceManagementType" />
    <xs:element name="revisionRecall" type="RevisionRecallType" />
    <xs:element name="rights" type="RightsType" />
-   <xs:element name="security" type="SecurityType" />
    <xs:element name="service" type="ServiceType" />
    <xs:element name="source" type="CompoundSourceIdentifierType" />
    <xs:element name="subDivisionCode" type="CompoundCountryCodeIdentifierType" />
@@ -83,11 +82,6 @@
 
    <xs:attribute name="acronym" type="simpleTokenType"/>
 
-   <xs:group name="AccessGroup">
-      <xs:sequence>
-         <xs:element ref="ntk:Access" minOccurs="0" />
-      </xs:sequence>
-   </xs:group>
    <xs:group name="postalAddressGroup">
       <xs:sequence>
          <xs:element name="street" type="xs:string" minOccurs="0" maxOccurs="6" />
@@ -292,8 +286,6 @@
          <xs:element ref="processingInfo" minOccurs="0" maxOccurs="unbounded" />
          <xs:element ref="revisionRecall" minOccurs="0" />
          <xs:element ref="recordsManagementInfo" minOccurs="0" />
-         <xs:element name="noticeList" type="NoticeListType" minOccurs="0" maxOccurs="1" />
-         <xs:group ref="AccessGroup"/>
       </xs:sequence>
       <xs:attributeGroup ref="SecurityAttributesOptionGroup" />
    </xs:complexType>   
@@ -305,12 +297,6 @@
             <xs:attributeGroup ref="SecurityAttributesOptionGroup" />
          </xs:extension>
       </xs:simpleContent>
-   </xs:complexType>
-   <xs:complexType name="NoticeListType">
-      <xs:sequence>
-         <xs:element ref="ICISM:Notice" minOccurs="1" maxOccurs="unbounded" />
-      </xs:sequence>
-      <xs:attributeGroup ref="SecurityAttributesGroup" />
    </xs:complexType>
    <xs:complexType name="OrganizationType">
       <xs:sequence minOccurs="0">
@@ -449,7 +435,6 @@
          <xs:element ref="geospatialCoverage" minOccurs="0" maxOccurs="unbounded" />
          <xs:element ref="relatedResource" minOccurs="0" maxOccurs="unbounded" />
          <xs:element ref="resourceManagement" minOccurs="0" maxOccurs="1" />
-         <xs:element ref="security" />
          <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" /> 
       </xs:sequence>
       <xs:attributeGroup ref="RootSecurityAttributesGroup" />
@@ -492,14 +477,6 @@
       <xs:attribute name="privacyAct" type="xs:boolean" default="false" />
       <xs:attribute name="intellectualProperty" type="xs:boolean" default="false" />
       <xs:attribute name="copyright" type="xs:boolean" default="false" />
-   </xs:complexType>
-   <xs:complexType name="SecurityType">
-      <xs:sequence>
-         <xs:element name="noticeList" type="NoticeListType" minOccurs="0" maxOccurs="1" />
-         <xs:group ref="AccessGroup"/>
-      </xs:sequence>
-      <xs:attribute ref="ICISM:excludeFromRollup" use="required" fixed="true" />
-      <xs:attributeGroup ref="SecurityAttributesGroup" />
    </xs:complexType>
    <xs:complexType name="ServiceType">
       <xs:complexContent>

@@ -215,7 +215,7 @@ public final class Dates extends AbstractBaseComponent {
 			&& getAcquiredOns().isEmpty()) {
 			addWarning("A completely empty ddms:dates element was found.");
 		}
-		if (!getAcquiredOns().isEmpty())
+		if ("4.1".equals(getDDMSVersion().getVersion()) && !getAcquiredOns().isEmpty())
 			addDdms40Warning("ddms:acquiredOn element");
 
 		super.validateWarnings();

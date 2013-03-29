@@ -56,5 +56,4 @@
 		<ddms:link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="locator" xlink:href="http://en.wikipedia.org/wiki/Tank" xlink:role="role"/>
 	</ddms:relatedResource>
 	<ddms:resourceManagement ISM:classification="U" ISM:ownerProducer="USA"><ddms:processingInfo ISM:classification="U" ISM:ownerProducer="USA" ddms:dateProcessed="2011-08-19">XSLT Transformation to convert DDMS 2.0 to DDMS 3.1.</ddms:processingInfo></ddms:resourceManagement>
-	<ddms:security ISM:excludeFromRollup="true" ISM:classification="U" ISM:ownerProducer="USA" />
 </ddms:resource>

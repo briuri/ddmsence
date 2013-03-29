@@ -42,6 +42,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 	 */
 	public SecurityTest() {
 		super("security.xml");
+		removeSupportedVersions("5.0");
 	}
 
 	/**
@@ -49,7 +50,8 @@ public class SecurityTest extends AbstractBaseTestCase {
 	 */
 	public static Security getFixture() {
 		try {
-			return (new Security(null, null, SecurityAttributesTest.getFixture()));
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+				return (new Security(null, null, SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -127,7 +129,8 @@ public class SecurityTest extends AbstractBaseTestCase {
 			}
 			text.append(buildOutput(isHTML, prefix + "noticeList.classification", "U"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.ownerProducer", "USA"));
-			text.append(AccessTest.getFixture().getOutput(isHTML, "security.", ""));
+			if (!version.isAtLeast("5.0"))
+				text.append(AccessTest.getFixture().getOutput(isHTML, "security.", ""));
 		}
 		text.append(SecurityAttributesTest.getFixture().getOutput(isHTML, prefix));
 		return (text.toString());
@@ -158,15 +161,17 @@ public class SecurityTest extends AbstractBaseTestCase {
 			xml.append("\t\t\t<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>\n");
 			xml.append("\t\t</ISM:Notice>\n");
 			xml.append("\t</ddms:noticeList>\n");
-			xml.append("\t<ntk:Access xmlns:ntk=\"urn:us:gov:ic:ntk\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-			xml.append("\t\t<ntk:AccessIndividualList>\n");
-			xml.append("\t\t\t<ntk:AccessIndividual ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
-			xml.append("\t\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
-			xml.append("\t\t\t\t<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-			xml.append("user_2321889:Doe_John_H</ntk:AccessIndividualValue>\n");
-			xml.append("\t\t\t</ntk:AccessIndividual>\n");
-			xml.append("\t\t</ntk:AccessIndividualList>\n");
-			xml.append("\t</ntk:Access>\n");
+			if (!version.isAtLeast("5.0")) {
+				xml.append("\t<ntk:Access xmlns:ntk=\"urn:us:gov:ic:ntk\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
+				xml.append("\t\t<ntk:AccessIndividualList>\n");
+				xml.append("\t\t\t<ntk:AccessIndividual ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
+				xml.append("\t\t\t\t<ntk:AccessSystemName ISM:classification=\"U\" ISM:ownerProducer=\"USA\">DIAS</ntk:AccessSystemName>\n");
+				xml.append("\t\t\t\t<ntk:AccessIndividualValue ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+				xml.append("user_2321889:Doe_John_H</ntk:AccessIndividualValue>\n");
+				xml.append("\t\t\t</ntk:AccessIndividual>\n");
+				xml.append("\t\t</ntk:AccessIndividualList>\n");
+				xml.append("\t</ntk:Access>\n");
+			}
 			xml.append("</ddms:security>");
 		}
 		return (formatXml(xml.toString(), preserveFormatting));
@@ -202,6 +207,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 	public void testDataConstructorValid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
+
 			// All fields
 			getInstance(SUCCESS, NoticeListTest.getFixture(), AccessTest.getFixture());
 
@@ -352,6 +358,17 @@ public class SecurityTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testWrongVersion() {
+		try {
+			DDMSVersion.setCurrentVersion("5.0");
+			new Security(null, null, SecurityAttributesTest.getFixture());			
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "The security element cannot be used");
+		}
+	}
+	
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

@@ -70,8 +70,8 @@ import buri.ddmsence.util.Util;
  * <u>ddms:processingInfo</u>: (0-many optional), implemented as a {@link ProcessingInfo}<br />
  * <u>ddms:revisionRecall</u>: (0-1 optional), implemented as a {@link RevisionRecall}<br />
  * <u>ddms:recordsManagementInfo</u>: (0-1 optional), implemented as a {@link RecordsManagementInfo}<br />
- * <u>ddms:noticeList</u>: (0-1 optional), implemented as a {@link NoticeList}<br />
- * <u>ntk:Access</u>: Need-To-Know access information (optional, starting in DDMS 4.1)<br />
+ * <u>ddms:noticeList</u>: (0-1 optional), implemented as a {@link NoticeList} (optional, only in DDMS 4.1)<br />
+ * <u>ntk:Access</u>: Need-To-Know access information (optional, only in DDMS 4.1)<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
@@ -208,8 +208,9 @@ public final class MetacardInfo extends AbstractBaseComponent {
 					_recordsManagementInfo = (RecordsManagementInfo) component;
 				else if (component instanceof NoticeList)
 					_noticeList = (NoticeList) component;
-				else if (component instanceof Access)
+				else if (component instanceof Access) {
 					_access = (Access) component;
+				}
 				else
 					throw new InvalidDDMSException(component.getName()
 						+ " is not a valid child component in a metacardInfo element.");
@@ -263,6 +264,8 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	 * <li>Only 1 dates can exist.</li>
 	 * <li>Only 0-1 descriptions, revisionRecalls, recordsManagementInfos, or noticeLists can exist.</li>
 	 * <li>This component cannot exist until DDMS 4.0.1 or later.</li>
+	 * <li>ddms:noticeList can only exist in DDMS 4.0.1 or 4.1.</li>
+	 * <li>ntk:Access can only exist in DDMS 4.0.1 or 4.1.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -279,6 +282,8 @@ public final class MetacardInfo extends AbstractBaseComponent {
 					"At least one ddms:publisher must exist within a ddms:metacardInfo element.");
 		}
 		else {
+			if (getAccess() != null)
+				throw new InvalidDDMSException("The Access element cannot be used after DDMS 4.1");
 			if (getContributors().isEmpty() && getCreators().isEmpty() && getPointOfContacts().isEmpty()
 				&& getPublishers().isEmpty())
 				throw new InvalidDDMSException("At least one producer must exist within a ddms:metacardInfo element.");
@@ -303,7 +308,7 @@ public final class MetacardInfo extends AbstractBaseComponent {
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (getAccess() != null)
+		if (!getDDMSVersion().isAtLeast("5.0") && getAccess() != null)
 			addDdms40Warning("ntk:Access element");
 
 		super.validateWarnings();

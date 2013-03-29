@@ -52,9 +52,8 @@ public class VerticalExtentTest extends AbstractBaseTestCase {
 	 */
 	public static VerticalExtent getFixture() {
 		try {
-			if (DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
-				return (null);
-			return (new VerticalExtent(1.1, 2.2, "Meter", "HAE"));
+			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+				return (new VerticalExtent(1.1, 2.2, "Meter", "HAE"));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());

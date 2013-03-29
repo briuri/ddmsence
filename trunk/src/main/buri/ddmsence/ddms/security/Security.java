@@ -133,6 +133,7 @@ public final class Security extends AbstractBaseComponent {
 	 * <li>Only 0-1 noticeLists or Access elements exist.</li>
 	 * <li>At least 1 ownerProducer exists and is non-empty.</li>
 	 * <li>The excludeFromRollup is set and has a value of "true", starting in DDMS 3.0.</li>
+	 * <li>This component cannot be used after DDMS 4.1.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -156,6 +157,7 @@ public final class Security extends AbstractBaseComponent {
 		Util.requireDDMSValue("security attributes", getSecurityAttributes());
 		getSecurityAttributes().requireClassification();
 
+		requireAtMostVersion("4.1");
 		super.validate();
 	}
 

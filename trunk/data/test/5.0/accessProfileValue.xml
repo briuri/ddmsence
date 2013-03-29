@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--  Represents a single ntk:AccessProfileValue element, for unit testing -->
-<ntk:AccessProfileValue xmlns:ISM="urn:us:gov:ic:ism" xmlns:ntk="urn:us:gov:ic:ntk" ntk:id="ID" ntk:IDReference="ID" ntk:qualifier="qualifier" ISM:classification="U" ISM:ownerProducer="USA" ntk:vocabulary="vocabulary">profile</ntk:AccessProfileValue>

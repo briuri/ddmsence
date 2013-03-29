@@ -46,7 +46,9 @@ import buri.ddmsence.ddms.security.NoticeList;
 import buri.ddmsence.ddms.security.NoticeListTest;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.ddms.security.ism.SecurityAttributesTest;
+import buri.ddmsence.ddms.security.ntk.Access;
 import buri.ddmsence.ddms.security.ntk.AccessTest;
+import buri.ddmsence.ddms.security.ntk.IndividualTest;
 import buri.ddmsence.ddms.summary.Description;
 import buri.ddmsence.ddms.summary.DescriptionTest;
 import buri.ddmsence.util.DDMSVersion;
@@ -108,8 +110,8 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		childComponents.add(ProcessingInfoTest.getFixture());
 		childComponents.add(RevisionRecallTest.getTextFixture());
 		childComponents.add(RecordsManagementInfoTest.getFixture());
-		childComponents.add(NoticeListTest.getFixture());
-		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+			childComponents.add(NoticeListTest.getFixture());
 			childComponents.add(AccessTest.getFixture());
 		}
 		return (childComponents);
@@ -202,16 +204,15 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		xml.append("<ddms:applicationSoftware ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("IRM Generator 2L-9</ddms:applicationSoftware>");
 		xml.append("</ddms:recordsManagementInfo>");
-		xml.append("<ddms:noticeList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ISM:Notice ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
-		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
+		if ("4.1".equals(DDMSVersion.getCurrentVersion().getVersion())) {
+			xml.append("<ddms:noticeList ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+			xml.append("<ISM:Notice ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
+			xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
 			xml.append(" ISM:externalNotice=\"false\"");
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
-		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
-		xml.append(" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>");
-		xml.append("</ISM:Notice></ddms:noticeList>");
-		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
+			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
+			xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
+			xml.append(" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>");
+			xml.append("</ISM:Notice></ddms:noticeList>");
 			xml.append("<ntk:Access xmlns:ntk=\"urn:us:gov:ic:ntk\" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 			xml.append("<ntk:AccessIndividualList>");
 			xml.append("<ntk:AccessIndividual ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
@@ -336,14 +337,15 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 			getInstance("No more than 1 recordsManagementInfo", element);
 
 			// Too many noticeLists
-			element = Util.buildDDMSElement(MetacardInfo.getName(version), null);
-			for (IDDMSComponent component : getChildComponents()) {
-				element.appendChild(component.getXOMElementCopy());
-				if (component instanceof NoticeList)
+			if (!version.isAtLeast("5.0")) {
+				element = Util.buildDDMSElement(MetacardInfo.getName(version), null);
+				for (IDDMSComponent component : getChildComponents()) {
 					element.appendChild(component.getXOMElementCopy());
+					if (component instanceof NoticeList)
+						element.appendChild(component.getXOMElementCopy());
+				}
+				getInstance("No more than 1 noticeList element can exist.", element);
 			}
-			getInstance("No more than 1 noticeList element can exist.", element);
-
 		}
 	}
 
@@ -395,12 +397,10 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 	public void testWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-
+			DDMSVersion.setCurrentVersion(sVersion);
 			MetacardInfo component = getInstance(SUCCESS, getValidElement(sVersion));
-
 			// 4.1 ntk:Access element used
-			if (version.isAtLeast("4.1")) {
+			if ("4.1".equals(sVersion)) {
 				assertEquals(2, component.getValidationWarnings().size());
 				String text = "The ntk:Access element in this DDMS component";
 				String locator = "ddms:metacardInfo";
@@ -431,7 +431,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			MetacardInfo elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 
@@ -486,10 +486,12 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 			dataComponent = getInstance(SUCCESS, components);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			components = getChildComponents();
-			components.remove(NoticeListTest.getFixture());
-			dataComponent = getInstance(SUCCESS, components);
-			assertFalse(elementComponent.equals(dataComponent));
+			if (!version.isAtLeast("5.0")) {
+				components = getChildComponents();
+				components.remove(NoticeListTest.getFixture());
+				dataComponent = getInstance(SUCCESS, components);
+				assertFalse(elementComponent.equals(dataComponent));
+			}
 		}
 	}
 
@@ -519,6 +521,13 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testWrongVersion() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("5.0");
+		List<IDDMSComponent> components = getRequiredChildComponents();
+		components.add(new Access(IndividualTest.getFixtureList(), null, null, SecurityAttributesTest.getFixture()));
+		getInstance("The Access element", components);
+	}
+	
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

@@ -265,7 +265,7 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 			SubjectCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// 4.1 ddms:qualifier element used
-			if (version.isAtLeast("4.1")) {
+			if ("4.1".equals(sVersion)) {
 				assertEquals(1, component.getValidationWarnings().size());
 				String text = "The ddms:qualifier attribute in this DDMS component";
 				String locator = "ddms:subjectCoverage/ddms:nonStateActor";

@@ -325,7 +325,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			}
 
 			// 4.1 ddms:approximableStart/End element used
-			if (version.isAtLeast("4.1")) {
+			if ("4.1".equals(sVersion)) {
 				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(ApproximableDateTest.getFixtureElement("approximableStart", true));
 				periodElement.appendChild(ApproximableDateTest.getFixtureElement("approximableEnd", true));
