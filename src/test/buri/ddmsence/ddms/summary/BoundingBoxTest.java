@@ -44,6 +44,7 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 	 */
 	public BoundingBoxTest() {
 		super("boundingBox.xml");
+		removeSupportedVersions("5.0");
 	}
 
 	/**
@@ -51,6 +52,8 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 	 */
 	public static BoundingBox getFixture() {
 		try {
+			if (DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+				return (null);
 			return (new BoundingBox(1.1, 2.2, 3.3, 4.4));
 		}
 		catch (InvalidDDMSException e) {
@@ -334,6 +337,17 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testWrongVersion() {
+		try {
+			DDMSVersion.setCurrentVersion("5.0");
+			new BoundingBox(TEST_WEST, TEST_EAST, TEST_SOUTH, TEST_NORTH);
+			fail("Allowed invalid data.");
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "The boundingBox element cannot be used");
+		}
+	}
+	
 	public void testDoubleEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

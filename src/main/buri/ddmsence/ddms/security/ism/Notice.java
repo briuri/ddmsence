@@ -130,7 +130,7 @@ public final class Notice extends AbstractBaseComponent {
 			throw new InvalidDDMSException("At least one ISM:NoticeText must exist within an ISM:Notice element.");
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0.1");
+		requireAtLeastVersion("4.0.1");
 
 		super.validate();
 	}

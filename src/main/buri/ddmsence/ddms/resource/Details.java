@@ -84,7 +84,7 @@ public final class Details extends AbstractSimpleString {
 		Util.requireDDMSQName(getXOMElement(), Details.getName(getDDMSVersion()));
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0.1");
+		requireAtLeastVersion("4.0.1");
 
 		super.validate();
 	}

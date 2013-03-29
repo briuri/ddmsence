@@ -23,7 +23,6 @@
    <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../w3/1999/xlink/xlink.xsd" />
    
    <xs:element name="affiliation" type="simpleTokenType" />
-   <xs:element name="boundingBox" type="BoundingBoxType" />
    <xs:element name="boundingGeometry" type="BoundingGeometryType" />
    <xs:element name="category" type="CompoundCategoryIdentifierType" />
    <xs:element name="contributor" type="ContactInfoType" />
@@ -198,14 +197,6 @@
          </xs:element>
       </xs:all>
    </xs:complexType>
-   <xs:complexType name="BoundingBoxType">
-      <xs:sequence>
-         <xs:element name="westBL" type="xs:double" />
-         <xs:element name="eastBL" type="xs:double" />
-         <xs:element name="southBL" type="xs:double" />
-         <xs:element name="northBL" type="xs:double" />
-      </xs:sequence>
-   </xs:complexType>
    <xs:complexType name="BoundingGeometryType">
       <xs:choice maxOccurs="unbounded">
          <xs:element ref="gml:Polygon" />
@@ -354,7 +345,6 @@
    <xs:complexType name="PlaceType">
       <xs:choice maxOccurs="unbounded">
          <xs:element ref="geographicIdentifier" />
-         <xs:element ref="boundingBox" />
          <xs:element ref="boundingGeometry" />
          <xs:element ref="postalAddress" />
          <xs:element ref="verticalExtent" />

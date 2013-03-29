@@ -208,7 +208,7 @@ public final class Access extends AbstractBaseComponent {
 		getSecurityAttributes().requireClassification();
 
 		// Should be reviewed as additional versions of DDMS are supported.
-		requireVersion("4.0.1");
+		requireAtLeastVersion("4.0.1");
 
 		super.validate();
 	}

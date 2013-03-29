@@ -362,13 +362,26 @@ public abstract class AbstractBaseComponent implements IDDMSComponent {
 	/**
 	 * Helper method to validate that a specific version of DDMS (or higher) is being used.
 	 * 
-	 * @param version the threshold version
+	 * @param version the inclusive threshold version
 	 * @throws InvalidDDMSException if the version is not high enough
 	 */
-	protected void requireVersion(String version) throws InvalidDDMSException {
+	protected void requireAtLeastVersion(String version) throws InvalidDDMSException {
 		if (!getDDMSVersion().isAtLeast(version))
 			throw new InvalidDDMSException("The " + getName() + " element cannot be used until DDMS " + version
 				+ " or later.");
+	}
+	
+	/**
+	 * Helper method to validate that a specific version of DDMS (or lower) is being used.
+	 * 
+	 * @param version the inclusive threshold version
+	 * @throws InvalidDDMSException if the version is too high enough
+	 */
+	protected void requireAtMostVersion(String version) throws InvalidDDMSException {
+		DDMSVersion ceiling = DDMSVersion.getVersionFor(version);
+		if (!ceiling.isAtLeast(getDDMSVersion().getVersion()))
+			throw new InvalidDDMSException("The " + getName() + " element cannot be used after DDMS " + version
+				+ ".");
 	}
 
 	/**

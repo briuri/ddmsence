@@ -56,7 +56,8 @@ import buri.ddmsence.util.Util;
  * 
  * <table class="info"><tr class="infoHeader"><th>Nested Elements</th></tr><tr><td class="infoBody">
  * <u>ddms:geographicIdentifier</u>: an identifier (0-1 optional) implemented as a {@link GeographicIdentifier}<br />
- * <u>ddms:boundingBox</u>: a bounding box (0-1 optional) implemented as a {@link BoundingBox}<br />
+ * <u>ddms:boundingBox</u>: a bounding box (0-1 optional) implemented as a {@link BoundingBox} (cannot be used after
+ * DDMS 4.1)<br />
  * <u>ddms:boundingGeometry</u>: a set of bounding geometry (0-1 optional) implemented as a {@link BoundingGeometry}<br
  * />
  * <u>ddms:postalAddress</u>: an address (0-1 optional), implemented as a (@link PostalAddress)<br />

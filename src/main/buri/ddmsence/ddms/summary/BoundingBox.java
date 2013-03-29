@@ -112,6 +112,7 @@ public final class BoundingBox extends AbstractBaseComponent {
 	 * <li>A northBL exists.</li>
 	 * <li>westBL and eastBL must be between -180 and 180 degrees.</li>
 	 * <li>southBL and northBL must be between -90 and 90 degrees.</li>
+	 * <li>This component cannot be used after DDMS 4.1.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -126,6 +127,8 @@ public final class BoundingBox extends AbstractBaseComponent {
 		Util.requireValidLongitude(getEastBL());
 		Util.requireValidLatitude(getSouthBL());
 		Util.requireValidLatitude(getNorthBL());
+		
+		requireAtMostVersion("4.1");
 		super.validate();
 	}
 

@@ -261,16 +261,18 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 
 	public void testElementConstructorValid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// geographicIdentifier
 			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// boundingBox
-			Element element = buildComponentElement(BoundingBoxTest.getFixture());
-			getInstance(SUCCESS, element);
+			if (!version.isAtLeast("5.0")) {
+				Element element = buildComponentElement(BoundingBoxTest.getFixture());
+				getInstance(SUCCESS, element);
+			}
 
 			// boundingGeometry
-			element = buildComponentElement(BoundingGeometryTest.getFixture());
+			Element element = buildComponentElement(BoundingGeometryTest.getFixture());
 			getInstance(SUCCESS, element);
 
 			// postalAddress
@@ -306,7 +308,9 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			}
 
 			// boundingBox
-			getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
+			if (!version.isAtLeast("5.0")) {
+				getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
+			}
 
 			// boundingGeometry
 			getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
@@ -325,7 +329,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// At least 1 of geographicIdentifier, boundingBox, boundingGeometry, postalAddress, or verticalExtent
 			// must be used.
 			Element element = buildComponentElement((IDDMSComponent) null);
@@ -339,11 +343,13 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			getInstance("No more than 1 geographicIdentifier", element);
 
 			// Too many boundingBox
-			list = new ArrayList<IDDMSComponent>();
-			list.add(BoundingBoxTest.getFixture());
-			list.add(BoundingBoxTest.getFixture());
-			element = buildComponentElement(list);
-			getInstance("No more than 1 boundingBox", element);
+			if (!version.isAtLeast("5.0")) {
+				list = new ArrayList<IDDMSComponent>();
+				list.add(BoundingBoxTest.getFixture());
+				list.add(BoundingBoxTest.getFixture());
+				element = buildComponentElement(list);
+				getInstance("No more than 1 boundingBox", element);
+			}
 
 			// Too many boundingGeometry
 			list = new ArrayList<IDDMSComponent>();
@@ -384,7 +390,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 
 			// If facilityIdentifier is used, nothing else can.
 			getInstance("A geographicIdentifier containing a facilityIdentifier", GeographicIdentifierTest
-				.getFacIdBasedFixture(), BoundingBoxTest.getFixture(), null, null, null, null, null);
+				.getFacIdBasedFixture(), null, BoundingGeometryTest.getFixture(), null, null, null, null);
 		}
 	}
 
@@ -416,14 +422,16 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 
 			// boundingBox
-			Element element = buildComponentElement(BoundingBoxTest.getFixture());
-			elementComponent = getInstance(SUCCESS, element);
-			dataComponent = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-			assertEquals(elementComponent, dataComponent);
-			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			if (!version.isAtLeast("5.0")) {
+				Element element = buildComponentElement(BoundingBoxTest.getFixture());
+				elementComponent = getInstance(SUCCESS, element);
+				dataComponent = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
+				assertEquals(elementComponent, dataComponent);
+				assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
+			}
 
 			// boundingGeometry
-			element = buildComponentElement(BoundingGeometryTest.getFixture());
+			Element element = buildComponentElement(BoundingGeometryTest.getFixture());
 			elementComponent = getInstance(SUCCESS, element);
 			dataComponent = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
 			assertEquals(elementComponent, dataComponent);
@@ -459,14 +467,10 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 					null, null, null, TEST_ORDER);
 				assertFalse(elementComponent.equals(dataComponent));
 			}
-			dataComponent = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-			assertFalse(elementComponent.equals(dataComponent));
-
-			dataComponent = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-			assertFalse(elementComponent.equals(dataComponent));
+			if (!version.isAtLeast("5.0")) {
+				dataComponent = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
+				assertFalse(elementComponent.equals(dataComponent));
+			}
 
 			dataComponent = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
 			assertFalse(elementComponent.equals(dataComponent));
@@ -498,9 +502,11 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-			assertEquals(BoundingBoxTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(), component.toHTML());
-			assertEquals(BoundingBoxTest.getFixture().getOutput(false, prefix, "") + getTextIcism(), component.toText());
+			if (!version.isAtLeast("5.0")) {
+				component = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
+				assertEquals(BoundingBoxTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(), component.toHTML());
+				assertEquals(BoundingBoxTest.getFixture().getOutput(false, prefix, "") + getTextIcism(), component.toText());
+			}
 
 			component = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
 			assertEquals(BoundingGeometryTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(), component
@@ -548,10 +554,13 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 
 	public void testBoundingBoxReuse() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
-			BoundingBox box = BoundingBoxTest.getFixture();
-			getInstance(SUCCESS, null, box, null, null, null, null, null);
-			getInstance(SUCCESS, null, box, null, null, null, null, null);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
+			
+			if (!version.isAtLeast("5.0")) {
+				BoundingBox box = BoundingBoxTest.getFixture();
+				getInstance(SUCCESS, null, box, null, null, null, null, null);
+				getInstance(SUCCESS, null, box, null, null, null, null, null);
+			}
 		}
 	}
 
@@ -657,16 +666,18 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			GeospatialCoverage component = getInstance(SUCCESS, GeographicIdentifierTest.getCountryCodeBasedFixture(),
 				null, null, null, null, null, null);
 			GeospatialCoverage.Builder builder = new GeospatialCoverage.Builder(component);
 			assertEquals(component, builder.commit());
 
-			component = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-			builder = new GeospatialCoverage.Builder(component);
-			assertEquals(component, builder.commit());
+			if (!version.isAtLeast("5.0")) {
+				component = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
+				builder = new GeospatialCoverage.Builder(component);
+				assertEquals(component, builder.commit());
+			}
 
 			component = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
 			builder = new GeospatialCoverage.Builder(component);
