@@ -17,7 +17,7 @@
 		13) Announcements (Google Groups / freecode)
 	-->
 	
-   <property name="version" value="2.1.0" />
+	<property name="version" value="2.2.0" />
 	<property name="conf.dir" value="conf" />
 	<property name="data.dir" value="data" />
 	<property name="local.web.dir" value="/projects/urizone/output/tomcat/webapps/ddmsence" />

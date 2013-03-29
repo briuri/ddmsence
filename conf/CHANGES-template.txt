@@ -9,6 +9,9 @@ Copyright 2010 - 2013 by Brian Uri!
 Release History
 ===========================================================================
 
+v 2.2.0 (XX/XX/XXXX):
+This stable release adds support for DDMS 5.0.
+
 v 2.1.0 (01/19/2013):
 This stable release adds support for DDMS 4.1.
 
