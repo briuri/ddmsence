@@ -65,7 +65,7 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 			element.appendChild(RequesterInfoTest.getFixtureElement(true));
 			element.appendChild(AddresseeTest.getFixtureElement(true));
 			element.appendChild(DescriptionTest.getFixture().getXOMElementCopy());
-			element.appendChild(TaskIDTest.getFixtureElement());
+			element.appendChild(TaskIDTest.getFixtureElementNoNetwork());
 			return (element);
 		}
 		catch (InvalidDDMSException e) {
@@ -154,8 +154,6 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, "taskingInfo.description.ownerProducer", "USA"));
 		text.append(buildOutput(isHTML, "taskingInfo.taskID", "Task #12345"));
 		text.append(buildOutput(isHTML, "taskingInfo.taskID.taskingSystem", "MDR"));
-		text.append(buildOutput(isHTML, "taskingInfo.taskID.network", "NIPRNet"));
-		text.append(buildOutput(isHTML, "taskingInfo.taskID.otherNetwork", "PBS"));
 		text.append(buildOutput(isHTML, "taskingInfo.taskID.type", "simple"));
 		text.append(buildOutput(isHTML, "taskingInfo.taskID.href", "http://en.wikipedia.org/wiki/Tank"));
 		text.append(buildOutput(isHTML, "taskingInfo.taskID.role", "tank"));
@@ -180,8 +178,10 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 		xml.append("<ddms:organization><ddms:name>DISA</ddms:name></ddms:organization>");
 		xml.append("</ddms:addressee>");
 		xml.append("<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">A transformation service.</ddms:description>");
-		xml.append("<ddms:taskID xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
-		xml.append("ddms:taskingSystem=\"MDR\" network=\"NIPRNet\" otherNetwork=\"PBS\" xlink:type=\"simple\" ");
+		xml.append("<ddms:taskID ");
+		xml.append("xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+		xml.append("ddms:taskingSystem=\"MDR\" ");
+		xml.append("xlink:type=\"simple\" ");
 		xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:arcrole=\"arcrole\" ");
 		xml.append("xlink:show=\"new\" xlink:actuate=\"onLoad\">Task #12345</ddms:taskID>");
 		xml.append("</ddms:taskingInfo>");
@@ -276,7 +276,7 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 
 			TaskingInfo elementComponent = getInstance(SUCCESS, getFixtureElement());
 			TaskingInfo dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(),
-				AddresseeTest.getFixtureList(), DescriptionTest.getFixture(), TaskIDTest.getFixture());
+				AddresseeTest.getFixtureList(), DescriptionTest.getFixture(),  new TaskID(TaskIDTest.getFixtureElementNoNetwork()));
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -315,7 +315,7 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
-				DescriptionTest.getFixture(), TaskIDTest.getFixture());
+				DescriptionTest.getFixture(), new TaskID(TaskIDTest.getFixtureElementNoNetwork()));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -329,7 +329,7 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
 			component = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
-				DescriptionTest.getFixture(), TaskIDTest.getFixture());
+				DescriptionTest.getFixture(), new TaskID(TaskIDTest.getFixtureElementNoNetwork()));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}

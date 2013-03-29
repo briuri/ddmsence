@@ -4,7 +4,7 @@
    xmlns:ddms="urn:us:mil:ces:metadata:ddms:5"
    xmlns:gml="http://www.opengis.net/gml/3.2"
    xmlns:ICISM="urn:us:gov:ic:ism"
-   xmlns:ntk="urn:us:gov:ic:ntk"
+   xmlns:virt="urn:us:gov:ic:virt"
    xmlns:xs="http://www.w3.org/2001/XMLSchema"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="urn:us:mil:ces:metadata:ddms:5"
@@ -16,10 +16,9 @@
    		As individual enhancements are added to the codebase, these schemas will be updated or replaced until DDMS 5.0 is fully supported.  
    -->
    
-   <xs:import namespace="urn:us:gov:ic:common" schemaLocation="../IC-COMMON/IC-Common.xsd" />
    <xs:import namespace="http://www.opengis.net/gml/3.2" schemaLocation="gml.xsd" />
    <xs:import namespace="urn:us:gov:ic:ism" schemaLocation="../ISM/IC-ISM.xsd" />
-   <xs:import namespace="urn:us:gov:ic:ntk" schemaLocation="../NTK/IC-NTK.xsd" />
+   <xs:import namespace="urn:us:gov:ic:virt" schemaLocation="../VIRT/VIRT.xsd" />
    <xs:import namespace="http://www.w3.org/1999/xlink" schemaLocation="../w3/1999/xlink/xlink.xsd" />
    
    <xs:element name="affiliation" type="simpleTokenType" />
@@ -78,7 +77,7 @@
    <xs:element name="title" type="TitleType" />
    <xs:element name="type" type="CompoundTypeIdentifierType" />
    <xs:element name="unknown" type="UnknownType" />
-   <xs:element name="virtualCoverage" type="VirtualCoverageType" />
+   <xs:element name="virtualCoverage" type="virt:VirtualCoverageType" />
 
    <xs:attribute name="acronym" type="simpleTokenType"/>
 
@@ -556,14 +555,9 @@
          <xs:extension base="AffiliatedProducerType" />
       </xs:complexContent>
    </xs:complexType>
-   <xs:complexType name="VirtualCoverageType">
-      <xs:attribute name="protocol" type="xs:string" use="optional" />
-      <xs:attribute name="address" type="xs:string" use="optional" />
-      <xs:attributeGroup ref="SecurityAttributesOptionGroup" />
-   </xs:complexType>
    
    <xs:attributeGroup name="OptionalResourceLinkAttributesGroup">
-      <xs:attributeGroup ref="common:OptionalResourceLinkAttributesGroup" />
+      <xs:attributeGroup ref="virt:OptionalResourceLinkAttributesGroup" />
    </xs:attributeGroup>
    <xs:attributeGroup name="POCAttributesGroup">
       <xs:attributeGroup ref="ICISM:POCAttributeGroup" /> 
@@ -576,6 +570,6 @@
       <xs:attributeGroup ref="ICISM:SecurityAttributesOptionGroup" />
    </xs:attributeGroup>
    <xs:attributeGroup name="SimpleLinkAttributesGroup">
-      <xs:attributeGroup ref="common:SimpleLinkAttributesGroup" />
+      <xs:attributeGroup ref="virt:SimpleLinkAttributesGroup" />
    </xs:attributeGroup>
 </xs:schema>

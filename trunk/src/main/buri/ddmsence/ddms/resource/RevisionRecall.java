@@ -40,6 +40,7 @@ import buri.ddmsence.ddms.summary.Link;
 import buri.ddmsence.ddms.summary.xlink.XLinkAttributes;
 import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.LazyList;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -64,8 +65,8 @@ import buri.ddmsence.util.Util;
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:revisionID</u>: a sequential integer for the recall (required)<br />
  * <u>ddms:revisionType</u>: an enumerated type for the recall (required)<br />
- * <u>network</u>: the name of the network, taken from a token list (optional)<br />
- * <u>otherNetwork</u>: an alternate network name (optional)<br />
+ * <u>network</u>: the name of the network, taken from a token list (optional)<br /> (becomes virt: in DDMS 5.0)
+ * <u>otherNetwork</u>: an alternate network name (optional)<br /> (goes away in DDMS 5.0)
  * <u>{@link XLinkAttributes}</u>: If set, the xlink:type attribute must have a fixed value of "resource".<br />
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required.
  * </td></tr></table>
@@ -209,7 +210,15 @@ public final class RevisionRecall extends AbstractBaseComponent {
 				Util.addDDMSAttribute(element, REVISION_ID_NAME, revisionID.toString());
 			}
 			Util.addDDMSAttribute(element, REVISION_TYPE_NAME, revisionType);
-			Util.addAttribute(element, NO_PREFIX, NETWORK_NAME, NO_NAMESPACE, network);
+			
+			if (DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+				String virtPrefix = PropertyReader.getPrefix("virt");
+				String virtNamespace = DDMSVersion.getCurrentVersion().getVirtNamespace();
+				Util.addAttribute(element, virtPrefix, NETWORK_NAME, virtNamespace, network);
+			}
+			else {
+				Util.addAttribute(element, NO_PREFIX, NETWORK_NAME, NO_NAMESPACE, network);
+			}
 			Util.addAttribute(element, NO_PREFIX, OTHER_NETWORK_NAME, NO_NAMESPACE, otherNetwork);
 			_links = links;
 			_details = details;
@@ -236,6 +245,7 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	 * <li>The revisionType must be a valid type token.</li>
 	 * <li>If set, the xlink:type attribute has a value of "resource".</li>
 	 * <li>If set, the network attribute must be a valid network token.</li>
+	 * <li>The otherNetwork cannot be used after DDMS 4.1.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -265,7 +275,8 @@ public final class RevisionRecall extends AbstractBaseComponent {
 			throw new InvalidDDMSException("The type attribute must have a fixed value of \"" + FIXED_TYPE + "\".");
 		if (!Util.isEmpty(getNetwork()))
 			ISMVocabulary.requireValidNetwork(getNetwork());
-
+		if (getDDMSVersion().isAtLeast("5.0") && !Util.isEmpty(getOtherNetwork()))
+			throw new InvalidDDMSException("The otherNetwork attribute cannot be used after DDMS 4.1.");
 		super.validate();
 	}
 
@@ -391,7 +402,8 @@ public final class RevisionRecall extends AbstractBaseComponent {
 	 * Accessor for the network attribute.
 	 */
 	public String getNetwork() {
-		return (getAttributeValue(NETWORK_NAME, NO_NAMESPACE));
+		String namespace = getDDMSVersion().isAtLeast("5.0") ? getDDMSVersion().getVirtNamespace() : NO_NAMESPACE;
+		return (getAttributeValue(NETWORK_NAME, namespace));
 	}
 
 	/**

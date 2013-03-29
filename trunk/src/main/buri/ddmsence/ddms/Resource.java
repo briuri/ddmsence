@@ -485,11 +485,14 @@ public final class Resource extends AbstractBaseComponent {
 			String ismNamespace = version.getIsmNamespace();
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
 			String ntkNamespace = version.getNtkNamespace();
+			String virtPrefix = PropertyReader.getPrefix("virt");
+			String virtNamespace = version.getVirtNamespace();
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
 			if (!Util.isEmpty(ntkNamespace))
 				element.addNamespaceDeclaration(ntkPrefix, ntkNamespace);
 			element.addNamespaceDeclaration(ismPrefix, ismNamespace);
-
+			if (!Util.isEmpty(virtNamespace))
+				element.addNamespaceDeclaration(virtPrefix, virtNamespace);
 			// Attributes
 			_compliesWiths = compliesWiths;
 			if (!compliesWiths.isEmpty()) {

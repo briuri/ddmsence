@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ddms:resource xmlns:ddms="urn:us:mil:ces:metadata:ddms:5" xmlns:ntk="urn:us:gov:ic:ntk" xmlns:ISM="urn:us:gov:ic:ism" ddms:compliesWith="DDMSRules">
+<ddms:resource xmlns:ddms="urn:us:mil:ces:metadata:ddms:5" xmlns:ntk="urn:us:gov:ic:ntk" xmlns:ISM="urn:us:gov:ic:ism" xmlns:virt="urn:us:gov:ic:virt" ddms:compliesWith="DDMSRules">
 	<ddms:metacardInfo ISM:classification="U" ISM:ownerProducer="USA"><ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence:testIdentifier" /><ddms:dates ddms:created="2003" /><ddms:publisher><ddms:person><ddms:name>Brian</ddms:name><ddms:surname>Uri</ddms:surname></ddms:person></ddms:publisher></ddms:metacardInfo>
 	<ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence:testIdentifier" />
 	<ddms:title ISM:classification="U" ISM:ownerProducer="USA">DDMSence</ddms:title>
@@ -37,7 +37,7 @@
 	<ddms:subjectCoverage>
 		<ddms:keyword ddms:value="DDMSence"/>
 	</ddms:subjectCoverage>
-	<ddms:virtualCoverage ddms:address="123.456.789.0" ddms:protocol="IP" />
+	<ddms:virtualCoverage virt:address="123.456.789.0" virt:protocol="IP" />
 	<ddms:temporalCoverage>
 		<ddms:start>1979-09-15</ddms:start>
 		<ddms:end>Not Applicable</ddms:end>

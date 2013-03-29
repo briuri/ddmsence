@@ -44,7 +44,7 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 		super("resourceManagement.xml");
 		removeSupportedVersions("2.0 3.0 3.1");
 	}
-
+	
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -134,7 +134,7 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 		xml.append("IRM Generator 2L-9</ddms:applicationSoftware>");
 		xml.append("</ddms:recordsManagementInfo>");
 		xml.append("<ddms:revisionRecall xmlns:xlink=\"http://www.w3.org/1999/xlink\" ddms:revisionID=\"1\" ");
-		xml.append("ddms:revisionType=\"ADMINISTRATIVE RECALL\" network=\"NIPRNet\" otherNetwork=\"PBS\" ");
+		xml.append("ddms:revisionType=\"ADMINISTRATIVE RECALL\" ");
 		xml.append("xlink:type=\"resource\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Description of Recall</ddms:revisionRecall>");
 		xml.append("<ddms:taskingInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\"><ddms:requesterInfo ");
@@ -144,7 +144,7 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 		xml.append("<ddms:organization><ddms:name>DISA</ddms:name></ddms:organization></ddms:addressee>");
 		xml.append("<ddms:description ISM:classification=\"U\" ISM:ownerProducer=\"USA\">A transformation service.");
 		xml.append("</ddms:description><ddms:taskID xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
-		xml.append("ddms:taskingSystem=\"MDR\" network=\"NIPRNet\" otherNetwork=\"PBS\" xlink:type=\"simple\" ");
+		xml.append("ddms:taskingSystem=\"MDR\" xlink:type=\"simple\" ");
 		xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" ");
 		xml.append("xlink:arcrole=\"arcrole\" xlink:show=\"new\" xlink:actuate=\"onLoad\">Task #12345</ddms:taskID>");
 		xml.append("</ddms:taskingInfo><ddms:processingInfo ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ");
@@ -201,8 +201,8 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 
 			// Too many revisionRecall elements
 			element = Util.buildDDMSElement(ResourceManagement.getName(version), null);
-			element.appendChild(RevisionRecallTest.getTextFixtureElement());
-			element.appendChild(RevisionRecallTest.getTextFixtureElement());
+			element.appendChild(RevisionRecallTest.getTextFixtureElement(true));
+			element.appendChild(RevisionRecallTest.getTextFixtureElement(true));
 			getInstance("No more than 1 revisionRecall", element);
 		}
 	}

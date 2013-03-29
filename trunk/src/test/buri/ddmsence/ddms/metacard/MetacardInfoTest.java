@@ -195,7 +195,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		xml.append("ddms:dateProcessed=\"2011-08-19\">");
 		xml.append("XSLT Transformation to convert DDMS 2.0 to DDMS 3.1.</ddms:processingInfo>");
 		xml.append("<ddms:revisionRecall xmlns:xlink=\"http://www.w3.org/1999/xlink\" ddms:revisionID=\"1\" ");
-		xml.append("ddms:revisionType=\"ADMINISTRATIVE RECALL\" network=\"NIPRNet\" otherNetwork=\"PBS\" ");
+		xml.append("ddms:revisionType=\"ADMINISTRATIVE RECALL\" ");
 		xml.append("xlink:type=\"resource\" xlink:role=\"tank\" xlink:title=\"Tank Page\" xlink:label=\"tank\" ");
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">Description of Recall</ddms:revisionRecall>");
 		xml.append("<ddms:recordsManagementInfo ddms:vitalRecordIndicator=\"true\">");

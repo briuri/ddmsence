@@ -27,6 +27,7 @@ import buri.ddmsence.ddms.IBuilder;
 import buri.ddmsence.ddms.InvalidDDMSException;
 import buri.ddmsence.ddms.security.ism.SecurityAttributes;
 import buri.ddmsence.util.DDMSVersion;
+import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
@@ -44,10 +45,14 @@ import buri.ddmsence.util.Util;
  * </ul>
  * </td></tr></table>
  * 
+ * <p>Starting in DDMS 5.0, the ddms attributes have moved into the virt namespace.</p>
+ * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ddms:address</u>: a computer or telecommunications network address, or a network name or locale. (optional).<br />
  * <u>ddms:protocol</u>: the type of rules for data transfer that apply to the Virtual Address (can stand alone, but
  * should be used if address is provided)<br />
+ * <u>virt:network</u>
+ * <u>ntk:access</u>
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are optional. (starting in DDMS
  * 3.0)
  * </td></tr></table>
@@ -61,6 +66,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 
 	private static final String ADDRESS_NAME = "address";
 	private static final String PROTOCOL_NAME = "protocol";
+	private static final String ACCESS_NAME = "access";
+	private static final String NETWORK_NAME = "network";
 
 	/**
 	 * Constructor for creating a component from a XOM Element
@@ -82,6 +89,9 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	/**
 	 * Constructor for creating a component from raw data
 	 * 
+	 * @deprecated A new constructor was added for DDMS 5.0 to support ntk:access and virt:network. This constructor is
+	 *             preserved for backwards compatibility, but may disappear in the next major release.
+	 * 
 	 * @param address the virtual address (optional)
 	 * @param protocol the network protocol (optional, should be used if address is provided)
 	 * @param securityAttributes any security attributes (optional)
@@ -89,10 +99,38 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 */
 	public VirtualCoverage(String address, String protocol, SecurityAttributes securityAttributes)
 		throws InvalidDDMSException {
+		this(address, protocol, null, null, securityAttributes);
+	}
+	
+	/**
+	 * Constructor for creating a component from raw data
+	 * 
+	 * @param address the virtual address (optional)
+	 * @param protocol the network protocol (optional, should be used if address is provided)
+	 * @param access an NTK portion access pattern (optional)
+	 * @param network a VIRT network name (optional)
+	 * @param securityAttributes any security attributes (optional)
+	 * @throws InvalidDDMSException if any required information is missing or malformed
+	 */
+	public VirtualCoverage(String address, String protocol, String access, String network, SecurityAttributes securityAttributes)
+		throws InvalidDDMSException {
 		try {
-			Element element = Util.buildDDMSElement(VirtualCoverage.getName(DDMSVersion.getCurrentVersion()), null);
-			Util.addDDMSAttribute(element, ADDRESS_NAME, address);
-			Util.addDDMSAttribute(element, PROTOCOL_NAME, protocol);
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			Element element = Util.buildDDMSElement(VirtualCoverage.getName(version), null);
+			if (version.isAtLeast("5.0")) {
+				String ntkPrefix = PropertyReader.getPrefix("ntk");
+				String ntkNamespace = version.getNtkNamespace();
+				String virtPrefix = PropertyReader.getPrefix("virt");
+				String virtNamespace = version.getVirtNamespace();
+				Util.addAttribute(element, virtPrefix, ADDRESS_NAME, virtNamespace, address);
+				Util.addAttribute(element, virtPrefix, PROTOCOL_NAME, virtNamespace, protocol);
+				Util.addAttribute(element, ntkPrefix, ACCESS_NAME, ntkNamespace, access);
+				Util.addAttribute(element, virtPrefix, NETWORK_NAME, virtNamespace, network);
+			}
+			else {
+				Util.addDDMSAttribute(element, ADDRESS_NAME, address);
+				Util.addDDMSAttribute(element, PROTOCOL_NAME, protocol);
+			}
 			_securityAttributes = SecurityAttributes.getNonNullInstance(securityAttributes);
 			_securityAttributes.addTo(element);
 			setXOMElement(element, true);
@@ -110,6 +148,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * <li>The qualified name of the element is correct.</li>
 	 * <li>If an address is provided, the protocol is required and must not be empty.</li>
 	 * <li>The SecurityAttributes do not exist until DDMS 3.0 or later.</li>
+	 * <li>The access and network attributes cannot be used until DDMS 5.0.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -123,6 +162,14 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 			throw new InvalidDDMSException(
 				"Security attributes cannot be applied to this component until DDMS 3.0 or later.");
 		}
+		if (!getDDMSVersion().isAtLeast("5.0") && !getAccess().isEmpty()) {
+			throw new InvalidDDMSException(
+				"The ntk:access attribute cannot be applied to this component until DDMS 5.0 or later.");
+		}
+		if (!getDDMSVersion().isAtLeast("5.0") && !getNetwork().isEmpty()) {
+			throw new InvalidDDMSException(
+				"The virt:network attribute cannot be applied to this component until DDMS 5.0 or later.");
+		}
 
 		super.validate();
 	}
@@ -135,7 +182,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * </td></tr></table>
 	 */
 	protected void validateWarnings() {
-		if (Util.isEmpty(getAddress()) && Util.isEmpty(getProtocol()))
+		if (Util.isEmpty(getAddress()) && Util.isEmpty(getProtocol()) && Util.isEmpty(getAccess())
+			&& Util.isEmpty(getNetwork()))
 			addWarning("A completely empty ddms:virtualCoverage element was found.");
 		super.validateWarnings();
 	}
@@ -148,6 +196,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, localPrefix + ADDRESS_NAME, getAddress()));
 		text.append(buildOutput(isHTML, localPrefix + PROTOCOL_NAME, getProtocol()));
+		text.append(buildOutput(isHTML, localPrefix + ACCESS_NAME, getAccess()));
+		text.append(buildOutput(isHTML, localPrefix + NETWORK_NAME, getNetwork()));
 		text.append(getSecurityAttributes().getOutput(isHTML, localPrefix));
 		return (text.toString());
 	}
@@ -160,7 +210,9 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 			return (false);
 		VirtualCoverage test = (VirtualCoverage) obj;
 		return (getAddress().equals(test.getAddress()) 
-			&& getProtocol().equals(test.getProtocol()));
+			&& getProtocol().equals(test.getProtocol())
+			&& getAccess().equals(test.getAccess())
+			&& getNetwork().equals(test.getNetwork()));
 	}
 
 	/**
@@ -170,6 +222,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		int result = super.hashCode();
 		result = 7 * result + getAddress().hashCode();
 		result = 7 * result + getProtocol().hashCode();
+		result = 7 * result + getAccess().hashCode();
+		result = 7 * result + getNetwork().hashCode();
 		return (result);
 	}
 
@@ -188,6 +242,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * Accessor for the address attribute (optional)
 	 */
 	public String getAddress() {
+		if (getDDMSVersion().isAtLeast("5.0"))
+			return (getAttributeValue(ADDRESS_NAME, getDDMSVersion().getVirtNamespace()));
 		return (getAttributeValue(ADDRESS_NAME));
 	}
 
@@ -195,9 +251,25 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 * Accessor for the protocol attribute (optional, should be used if address is supplied)
 	 */
 	public String getProtocol() {
+		if (getDDMSVersion().isAtLeast("5.0"))
+			return (getAttributeValue(PROTOCOL_NAME, getDDMSVersion().getVirtNamespace()));
 		return (getAttributeValue(PROTOCOL_NAME));
 	}
 
+	/**
+	 * Accessor for the access attribute (optional)
+	 */
+	public String getAccess() {
+		return (getAttributeValue(ACCESS_NAME, getDDMSVersion().getNtkNamespace()));
+	}
+	
+	/**
+	 * Accessor for the network attribute (optional)
+	 */
+	public String getNetwork() {
+		return (getAttributeValue(NETWORK_NAME, getDDMSVersion().getVirtNamespace()));
+	}
+	
 	/**
 	 * Accessor for the Security Attributes. Will always be non-null, even if it has no values set.
 	 */
@@ -214,8 +286,10 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 	 */
 	public static class Builder implements IBuilder, Serializable {
 		private static final long serialVersionUID = 2986952678400201045L;
+		private String _access;
 		private String _address;
 		private String _protocol;
+		private String _network;
 		private SecurityAttributes.Builder _securityAttributes;
 
 		/**
@@ -229,6 +303,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		public Builder(VirtualCoverage coverage) {
 			setAddress(coverage.getAddress());
 			setProtocol(coverage.getProtocol());
+			setAccess(coverage.getAccess());
+			setNetwork(coverage.getNetwork());
 			setSecurityAttributes(new SecurityAttributes.Builder(coverage.getSecurityAttributes()));
 		}
 
@@ -236,7 +312,7 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		 * @see IBuilder#commit()
 		 */
 		public VirtualCoverage commit() throws InvalidDDMSException {
-			return (isEmpty() ? null : new VirtualCoverage(getAddress(), getProtocol(),
+			return (isEmpty() ? null : new VirtualCoverage(getAddress(), getProtocol(), getAccess(), getNetwork(),
 				getSecurityAttributes().commit()));
 		}
 
@@ -244,7 +320,8 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		 * @see IBuilder#isEmpty()
 		 */
 		public boolean isEmpty() {
-			return (Util.isEmpty(getAddress()) && Util.isEmpty(getProtocol()) && getSecurityAttributes().isEmpty());
+			return (Util.isEmpty(getAddress()) && Util.isEmpty(getProtocol()) && Util.isEmpty(getAccess())
+				&& Util.isEmpty(getNetwork()) && getSecurityAttributes().isEmpty());
 		}
 
 		/**
@@ -274,7 +351,35 @@ public final class VirtualCoverage extends AbstractBaseComponent {
 		public void setProtocol(String protocol) {
 			_protocol = protocol;
 		}
+		
+		/**
+		 * Builder accessor for the access attribute
+		 */
+		public String getAccess() {
+			return _access;
+		}
 
+		/**
+		 * Builder accessor for the access attribute
+		 */
+		public void setAccess(String access) {
+			_access = access;
+		}
+
+		/**
+		 * Builder accessor for the network attribute
+		 */
+		public String getNetwork() {
+			return _network;
+		}
+
+		/**
+		 * Builder accessor for the network attribute
+		 */
+		public void setNetwork(String network) {
+			_network = network;
+		}
+		
 		/**
 		 * Builder accessor for the Security Attributes
 		 */

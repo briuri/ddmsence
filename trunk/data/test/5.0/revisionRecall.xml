@@ -4,7 +4,8 @@
 	xmlns:ddms="urn:us:mil:ces:metadata:ddms:5"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
 	xmlns:ISM="urn:us:gov:ic:ism"
+	xmlns:virt="urn:us:gov:ic:virt"
 	ddms:revisionID="1" ddms:revisionType="ADMINISTRATIVE RECALL"
-	network="NIPRNet" otherNetwork="PBS"
+	virt:network="NIPRNet"
 	xlink:type="resource" xlink:role="tank" xlink:title="Tank Page" xlink:label="tank"
 	ISM:classification="U" ISM:ownerProducer="USA"><ddms:link xlink:type="locator" xlink:href="http://en.wikipedia.org/wiki/Tank" xlink:role="tank" xlink:title="Tank Page" xlink:label="tank" ISM:classification="U" ISM:ownerProducer="USA" /><ddms:details ISM:classification="U" ISM:ownerProducer="USA">Details</ddms:details></ddms:revisionRecall>

@@ -55,16 +55,39 @@ public class TaskIDTest extends AbstractBaseTestCase {
 	/**
 	 * Returns a fixture object for testing.
 	 */
-	public static Element getFixtureElement() {
+	public static Element getFixtureElementNoNetwork() {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-
 			Element element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
 			element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 			element.addNamespaceDeclaration(PropertyReader.getPrefix("xlink"), version.getXlinkNamespace());
 			Util.addDDMSAttribute(element, "taskingSystem", TEST_TASKING_SYSTEM);
-			Util.addAttribute(element, "", "network", "", TEST_NETWORK);
-			Util.addAttribute(element, "", "otherNetwork", "", TEST_OTHER_NETWORK);
+			XLinkAttributesTest.getSimpleFixture().addTo(element);
+			return (element);
+		}
+		catch (InvalidDDMSException e) {
+			fail("Could not create fixture: " + e.getMessage());
+		}
+		return (null);
+	}
+	
+	/**
+	 * Returns a fixture object for testing.
+	 */
+	public static Element getFixtureElement() {
+		try {
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
+			String prefix = version.isAtLeast("5.0") ? PropertyReader.getPrefix("virt") : "";
+			String namespace = version.isAtLeast("5.0") ? version.getVirtNamespace() : "";
+			
+			Element element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
+			element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
+			if (version.isAtLeast("5.0"))
+				element.addNamespaceDeclaration(prefix, namespace);
+			element.addNamespaceDeclaration(PropertyReader.getPrefix("xlink"), version.getXlinkNamespace());
+			Util.addDDMSAttribute(element, "taskingSystem", TEST_TASKING_SYSTEM);
+			Util.addAttribute(element, prefix, "network", namespace, TEST_NETWORK);
+			Util.addAttribute(element, "", "otherNetwork", "", getOtherNetwork());
 			XLinkAttributesTest.getSimpleFixture().addTo(element);
 			return (element);
 		}
@@ -87,6 +110,13 @@ public class TaskIDTest extends AbstractBaseTestCase {
 		return (null);
 	}
 
+	/**
+	 * Gets an otherNetwork value for the version
+	 */
+	private static String getOtherNetwork() {
+		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? "" : TEST_OTHER_NETWORK);
+	}
+	
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -142,7 +172,9 @@ public class TaskIDTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, "taskID", TEST_VALUE));
 		text.append(buildOutput(isHTML, "taskID.taskingSystem", TEST_TASKING_SYSTEM));
 		text.append(buildOutput(isHTML, "taskID.network", TEST_NETWORK));
-		text.append(buildOutput(isHTML, "taskID.otherNetwork", TEST_OTHER_NETWORK));
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+			text.append(buildOutput(isHTML, "taskID.otherNetwork", getOtherNetwork()));
+		}
 		text.append(XLinkAttributesTest.getSimpleFixture().getOutput(isHTML, "taskID."));
 		return (text.toString());
 	}
@@ -153,8 +185,16 @@ public class TaskIDTest extends AbstractBaseTestCase {
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
 		xml.append("<ddms:taskID ").append(getXmlnsDDMS()).append(" ");
-		xml.append("xmlns:xlink=\"http://www.w3.org/1999/xlink\" ddms:taskingSystem=\"MDR\" ");
-		xml.append("network=\"NIPRNet\" otherNetwork=\"PBS\" xlink:type=\"simple\" ");
+		if (DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+			xml.append(getXmlnsVirt()).append(" ");
+		xml.append("xmlns:xlink=\"http://www.w3.org/1999/xlink\" ");
+		xml.append("ddms:taskingSystem=\"MDR\" ");
+		if (DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+			xml.append("virt:");
+		xml.append("network=\"NIPRNet\" ");
+		if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+			xml.append("otherNetwork=\"PBS\" ");
+		xml.append("xlink:type=\"simple\" ");
 		xml.append("xlink:href=\"http://en.wikipedia.org/wiki/Tank\" xlink:role=\"tank\" xlink:title=\"Tank Page\" ");
 		xml.append("xlink:arcrole=\"arcrole\" xlink:show=\"new\" xlink:actuate=\"onLoad\">Task #12345</ddms:taskID>");
 		return (xml.toString());
@@ -188,7 +228,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK,
+			getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, getOtherNetwork(),
 				XLinkAttributesTest.getSimpleFixture());
 
 			// No optional fields
@@ -210,9 +250,11 @@ public class TaskIDTest extends AbstractBaseTestCase {
 			getInstance("value is required.", element);
 
 			// Bad network
-			element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
-			Util.addAttribute(element, "", "network", "", "PBS");
-			getInstance("The network attribute must be one of", element);
+			if (!version.isAtLeast("5.0")) {
+				element = Util.buildDDMSElement(TaskID.getName(version), TEST_VALUE);
+				Util.addAttribute(element, "", "network", "", "PBS");
+				getInstance("The network attribute must be one of", element);
+			}
 
 		}
 	}
@@ -249,7 +291,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 
 			TaskID elementComponent = getInstance(SUCCESS, getFixtureElement());
 			TaskID dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
-				TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
+				getOtherNetwork(), XLinkAttributesTest.getSimpleFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -257,26 +299,29 @@ public class TaskIDTest extends AbstractBaseTestCase {
 
 	public void testConstructorInequalityDifferentValues() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			TaskID elementComponent = getInstance(SUCCESS, getFixtureElement());
 			TaskID dataComponent = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK,
-				TEST_OTHER_NETWORK, XLinkAttributesTest.getSimpleFixture());
+				getOtherNetwork(), XLinkAttributesTest.getSimpleFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, DIFFERENT_VALUE, TEST_NETWORK, TEST_OTHER_NETWORK,
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, DIFFERENT_VALUE, TEST_NETWORK, getOtherNetwork(),
 				XLinkAttributesTest.getSimpleFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, "SIPRNet", TEST_OTHER_NETWORK,
+			
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, "SIPRNet", getOtherNetwork(),
 				XLinkAttributesTest.getSimpleFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, DIFFERENT_VALUE,
-				XLinkAttributesTest.getSimpleFixture());
-			assertFalse(elementComponent.equals(dataComponent));
+			if (!version.isAtLeast("5.0")) {
+				dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, DIFFERENT_VALUE,
+					XLinkAttributesTest.getSimpleFixture());
+				assertFalse(elementComponent.equals(dataComponent));
+			}
 
-			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK,
+			dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, getOtherNetwork(),
 				null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
@@ -300,7 +345,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK,
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, getOtherNetwork(),
 				XLinkAttributesTest.getSimpleFixture());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -314,7 +359,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 			TaskID component = getInstance(SUCCESS, getFixtureElement());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK,
+			component = getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, getOtherNetwork(),
 				XLinkAttributesTest.getSimpleFixture());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
@@ -325,7 +370,7 @@ public class TaskIDTest extends AbstractBaseTestCase {
 		XLinkAttributes attr = XLinkAttributesTest.getSimpleFixture();
 		DDMSVersion.setCurrentVersion("2.0");
 		// Cross version attributes are allowed, because the version is not set until they are added onto an element.
-		new TaskID(TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK, attr);
+		new TaskID(TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, getOtherNetwork(), attr);
 	}
 
 	public void testBuilderEquality() throws InvalidDDMSException {
