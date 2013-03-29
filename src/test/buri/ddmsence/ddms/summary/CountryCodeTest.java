@@ -48,6 +48,8 @@ public class CountryCodeTest extends AbstractBaseTestCase {
 	 */
 	public static CountryCode getFixture() {
 		try {
+			if (DDMSVersion.getCurrentVersion().isAtLeast("5.0"))
+				return (new CountryCode("http://api.nsgreg.nga.mil/geo-political/GENC/2/ed1", "US"));
 			return (new CountryCode("ISO-3166", "USA"));
 		}
 		catch (InvalidDDMSException e) {

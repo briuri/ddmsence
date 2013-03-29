@@ -2,6 +2,6 @@
 <!--  Represents a single ddms:geospatialCoverage element, for unit testing -->
 <ddms:geospatialCoverage xmlns:ddms="urn:us:mil:ces:metadata:ddms:5" xmlns:ISM="urn:us:gov:ic:ism" ISM:classification="U" ISM:ownerProducer="USA" ddms:precedence="Primary" ddms:order="1">
 	<ddms:geographicIdentifier>
-		<ddms:countryCode ddms:codespace="urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1" ddms:code="LAO"/>
+		<ddms:countryCode ddms:codespace="urn:us:gov:dod:nga:def:geo-political:GENC:3:ed1" ddms:code="USA"/>
 	</ddms:geographicIdentifier>
 </ddms:geospatialCoverage>	

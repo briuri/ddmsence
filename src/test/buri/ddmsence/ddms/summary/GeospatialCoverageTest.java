@@ -194,7 +194,14 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		}
 		xml.append(">\n\t");
-		if (version.isAtLeast("4.0.1")) {
+		if (version.isAtLeast("5.0")) {
+			xml.append("<ddms:geographicIdentifier>\n\t\t");
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName())
+				.append("=\"urn:us:gov:dod:nga:def:geo-political:GENC:3:ed1\" ddms:")
+				.append(CountryCodeTest.getValueName()).append("=\"USA\" />\n\t");
+			xml.append("</ddms:geographicIdentifier>\n");
+		}
+		else if (version.isAtLeast("4.0.1")) {
 			xml.append("<ddms:geographicIdentifier>\n\t\t");
 			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName())
 				.append("=\"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1\" ddms:")
@@ -383,10 +390,16 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 
 	public void testWarnings() {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
+			int expectedWarningCount = (version.isAtLeast("5.0") ? 1 : 0);
 			GeospatialCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(0, component.getValidationWarnings().size());
+			assertEquals(expectedWarningCount, component.getValidationWarnings().size());
+			if (version.isAtLeast("5.0")) {
+				String text = "The ddms:countryCode is syntactically correct";
+				String locator = "ddms:geospatialCoverage/ddms:geographicIdentifier";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
 		}
 	}
 

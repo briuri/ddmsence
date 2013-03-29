@@ -58,6 +58,10 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 	 */
 	public static GeographicIdentifier getCountryCodeBasedFixture() throws InvalidDDMSException {
 		try {
+			if(DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
+				return new GeographicIdentifier(null, null, new CountryCode(
+					"urn:us:gov:dod:nga:def:geo-political:GENC:3:ed1", "USA"), null);
+			}
 			return new GeographicIdentifier(null, null, new CountryCode(
 				"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1", "LAO"), null);
 		}
@@ -156,8 +160,15 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 		xml.append("<ddms:geographicIdentifier ").append(getXmlnsDDMS()).append(">\n\t");
 		xml.append("<ddms:name>The White House</ddms:name>\n\t");
 		xml.append("<ddms:region>Mid-Atlantic States</ddms:region>\n\t");
-		xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName()).append("=\"ISO-3166\" ddms:")
-			.append(CountryCodeTest.getValueName()).append("=\"USA\" />\n");
+		if (version.isAtLeast("5.0")) {
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName()).append(
+				"=\"http://api.nsgreg.nga.mil/geo-political/GENC/2/ed1\" ddms:").append(CountryCodeTest.getValueName()).append(
+				"=\"US\" />\n");
+		}
+		else {
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName()).append(
+				"=\"ISO-3166\" ddms:").append(CountryCodeTest.getValueName()).append("=\"USA\" />\n");
+		}	
 		if (version.isAtLeast("4.0.1"))
 			xml.append("\t<ddms:subDivisionCode ddms:").append(CountryCodeTest.getQualifierName())
 				.append("=\"ISO-3166\" ddms:").append(CountryCodeTest.getValueName()).append("=\"USA\" />\n");
@@ -273,10 +284,16 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 
 	public void testWarnings() {
 		for (String sVersion : getSupportedVersions()) {
-			DDMSVersion.setCurrentVersion(sVersion);
+			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
+			int expectedWarningCount = (version.isAtLeast("5.0") ? 1 : 0);
 			GeographicIdentifier component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(0, component.getValidationWarnings().size());
+			assertEquals(expectedWarningCount, component.getValidationWarnings().size());
+			if (version.isAtLeast("5.0")) {
+				String text = "The ddms:countryCode is syntactically correct";
+				String locator = "ddms:geographicIdentifier";
+				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
+			}
 		}
 	}
 
@@ -408,6 +425,42 @@ public class GeographicIdentifierTest extends AbstractBaseTestCase {
 		}
 	}
 
+	public void testGencCountryCodeSuccess() throws InvalidDDMSException {
+		DDMSVersion.setCurrentVersion("5.0");
+		GeographicIdentifier.validateGencCountryCode(new CountryCode("http://api.nsgreg.nga.mil/geo-political/GENC/2/ed1", "US"));
+		GeographicIdentifier.validateGencCountryCode(new CountryCode("urn:us:gov:dod:nga:def:geo-political:GENC:3:ed1", "USA"));
+		GeographicIdentifier.validateGencCountryCode(new CountryCode("geo-political:GENC:3:ed1", "USA"));
+		GeographicIdentifier.validateGencCountryCode(new CountryCode("ge:GENC:n:ed1", "123"));
+	}
+	
+	public void testGencCountryCodeFailure() {
+		DDMSVersion.setCurrentVersion("5.0");
+		try {
+			GeographicIdentifier.validateGencCountryCode(new CountryCode("ISO-3166", "US"));	
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "ddms:countryCode must use a geo-political");
+		}
+		try {
+			GeographicIdentifier.validateGencCountryCode(new CountryCode("urn:us:gov:dod:nga:def:geo-political:GENC:3:ed1", "US"));	
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "A GENC country code in a 3-alpha codespace");
+		}
+		try {
+			GeographicIdentifier.validateGencCountryCode(new CountryCode("urn:us:gov:dod:nga:def:geo-political:GENC:2:ed1", "USA"));	
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "A GENC country code in a 2-alpha codespace");
+		}
+		try {
+			GeographicIdentifier.validateGencCountryCode(new CountryCode("urn:us:gov:dod:nga:def:geo-political:GENC:n:ed1", "USA"));	
+		}
+		catch (InvalidDDMSException e) {
+			expectMessage(e, "A GENC country code in a numeric");
+		}
+	}	
+	
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

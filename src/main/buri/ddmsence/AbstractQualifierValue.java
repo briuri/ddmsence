@@ -131,14 +131,14 @@ public abstract class AbstractQualifierValue extends AbstractBaseComponent {
 	}
 
 	/**
-	 * Accessor for the value of the qualifier attribute
+	 * Accessor for the value of the qualifier attribute (referred to in some DDMS 5.0 components as a "codespace")
 	 */
 	public String getQualifier() {
 		return (getAttributeValue(getQualifierName()));
 	}
 
 	/**
-	 * Accessor for the value of the value attribute
+	 * Accessor for the value of the value attribute (referred to in some DDMS 5.0 components as a "code")
 	 */
 	public String getValue() {
 		return (getAttributeValue(getValueName()));
