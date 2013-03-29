@@ -125,23 +125,25 @@ import buri.ddmsence.util.Util;
  * <u>ddms:relatedResource</u>: (0-many optional), implemented as a {@link RelatedResource}<br />
  * <u>ddms:resourceManagement</u>: (0-1 optional, starting in DDMS 4.0.1), implemented as a {@link ResourceManagement}<br />
  * <u>ddms:security</u>: (exactly 1 required), implemented as a {@link Security}, removed in DDMS 5.0<br />
- * <u>Extensible Layer</u>: (0-many optional), implemented as a {@link ExtensibleElement}<br />
+ * <u>Extensible Layer</u>: (0-many optional), implemented as a {@link ExtensibleElement}, removed in DDMS 5.0<br />
  * </td></tr></table>
  * 
  * <table class="info"><tr class="infoHeader"><th>Attributes</th></tr><tr><td class="infoBody">
  * <u>ISM:resourceElement</u>: Identifies whether this tag sets the classification for the xml file as a whole
- * (required, starting in DDMS 3.0)<br />
+ * (required, starting in DDMS 3.0, ending in DDMS 4.1)<br />
  * <u>ISM:createDate</u>: Specifies the creation or latest modification date (YYYY-MM-DD) (required, starting in
- * DDMS 3.0)<br />
+ * DDMS 3.0, ending in DDMS 4.1)<br />
  * <u>ISM:DESVersion</u>: Specifies the version of the Data Encoding Specification used for the security
- * markings on this record. (required, starting in DDMS 3.0)<br />
+ * markings on this record. (required, starting in DDMS 3.0, ending in DDMS 4.1)<br />
  * <u>ntk:DESVersion</u>: Specifies the version of the Data Encoding Specification used for Need-To-Know markings
- * on this record. (required, starting in DDMS 4.0.1 with a fixed value)<br />
+ * on this record. (required, starting in DDMS 4.0.1 with a fixed value, ending in DDMS 4.1)<br />
+ * <u>ISM:compliesWith</u>: Specifies the rulesets for this document (optional, starting in DDMS 3.1 and ending in DDMS 4.1)<br />
+ * <u>ddms:compliesWith</u>: Specifies the rulesets for this document (optional, starting in DDMS 5.0)<br />  
  * <u>{@link SecurityAttributes}</u>: The classification and ownerProducer attributes are required. (starting in DDMS
- * 3.0)<br />
- * <u>{@link NoticeAttributes}</u>: (optional, starting in DDMS 4.0.1)<br />
- * <u>{@link ExtensibleAttributes}</u>: (optional)<br />
- * <br />
+ * 3.0, ending in DDMS 4.1)<br />
+ * <u>{@link NoticeAttributes}</u>: (optional, starting in DDMS 4.0.1, ending in DDMS 4.1)<br />
+ * <u>{@link ExtensibleAttributes}</u>: (optional, ending in DDMS 4.1, ending in DDMS 4.1)<br />
+ *  * <br />
  * Starting in DDMS 3.0, the ISM attributes explicitly defined in the schema should appear in the SecurityAttributes,
  * not the ExtensibleAttributes. Attempts to load them as ExtensibleAttributes will throw an InvalidDDMSException.
  * In DDMS 2.0, there are no ISM attributes explicitly defined in the schema, so you can load them in any way you
@@ -227,7 +229,8 @@ public final class Resource extends AbstractBaseComponent {
 			String createDate = getAttributeValue(CREATE_DATE_NAME, ismNamespace);
 			if (!Util.isEmpty(createDate))
 				_createDate = getFactory().newXMLGregorianCalendar(createDate);
-			_compliesWiths = Util.getXsListAsList(getAttributeValue(COMPLIES_WITH_NAME, ismNamespace));
+			String compliesNamespace = getDDMSVersion().isAtLeast("5.0") ? getNamespace() : ismNamespace;
+			_compliesWiths = Util.getXsListAsList(getAttributeValue(COMPLIES_WITH_NAME, compliesNamespace));
 			String ismDESVersion = element.getAttributeValue(DES_VERSION_NAME, ismNamespace);
 			if (!Util.isEmpty(ismDESVersion)) {
 				try {
@@ -422,7 +425,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param topLevelComponents a list of top level components
 	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
 	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
-	 * @param compliesWiths shows what ISM rulesets this resource complies with (optional, starting in DDMS 3.1)
+	 * @param compliesWiths shows what rulesets this resource complies with (optional, starting in DDMS 3.1)
 	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
 	 *        DDMS 3.0)
@@ -457,7 +460,7 @@ public final class Resource extends AbstractBaseComponent {
 	 * @param topLevelComponents a list of top level components
 	 * @param resourceElement value of the resourceElement attribute (required, starting in DDMS 3.0)
 	 * @param createDate the create date as an xs:date (YYYY-MM-DD) (required, starting in DDMS 3.0)
-	 * @param compliesWiths shows what ISM rule sets this resource complies with (optional, starting in DDMS 3.1)
+	 * @param compliesWiths shows what rule sets this resource complies with (optional, starting in DDMS 3.1)
 	 * @param ismDESVersion the DES Version as an Integer (required, starting in DDMS 3.0)
 	 * @param ntkDESVersion the DES Version as an Integer (required, starting in DDMS 4.0.1)
 	 * @param securityAttributes any security attributes (classification and ownerProducer are required, starting in
@@ -483,11 +486,17 @@ public final class Resource extends AbstractBaseComponent {
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
 			String ntkNamespace = version.getNtkNamespace();
 			Element element = Util.buildDDMSElement(Resource.getName(version), null);
+			if (!Util.isEmpty(ntkNamespace))
+				element.addNamespaceDeclaration(ntkPrefix, ntkNamespace);
+			element.addNamespaceDeclaration(ismPrefix, ismNamespace);
 
 			// Attributes
 			_compliesWiths = compliesWiths;
 			if (!compliesWiths.isEmpty()) {
-				Util.addAttribute(element, ismPrefix, COMPLIES_WITH_NAME, ismNamespace, Util.getXsList(compliesWiths));
+				if (version.isAtLeast("5.0"))
+					Util.addDDMSAttribute(element, COMPLIES_WITH_NAME, Util.getXsList(compliesWiths));
+				else
+					Util.addAttribute(element, ismPrefix, COMPLIES_WITH_NAME, ismNamespace, Util.getXsList(compliesWiths));
 			}
 			if (ntkDESVersion != null) {
 				_ntkDESVersion = ntkDESVersion;
@@ -679,19 +688,21 @@ public final class Resource extends AbstractBaseComponent {
 	 * <li>Starting in DDMS 4.0.1, 1-many subjectCoverage elements can exist.</li>
 	 * <li>At least 1 of creator, publisher, contributor, or pointOfContact must exist.</li>
 	 * <li>All ddms:order attributes make a complete, consecutive set, starting at 1.</li>
-	 * <li>resourceElement attribute must exist, starting in DDMS 3.0.</li>
-	 * <li>createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD), starting in DDMS 3.0.</li>
-	 * <li>The compliesWith attribute cannot be used until DDMS 3.1 or later.</li>
-	 * <li>If set, the compliesWith attribute must be valid tokens.</li>
-	 * <li>ISM DESVersion must exist and be a valid Integer, starting in DDMS 3.0.</li>
-	 * <li>The value of ISM DESVersion must be fixed, starting in DDMS 3.1. This is checked during schema
+	 * <li>resourceElement attribute must exist, starting in DDMS 3.0 and ending in DDMS 4.1.</li>
+	 * <li>createDate attribute must exist and conform to the xs:date date type (YYYY-MM-DD), starting in DDMS 3.0
+	 * and ending in DDMS 4.1.</li>
+	 * <li>The ism:compliesWith attribute cannot be used until DDMS 3.1 or later, ending in DDMS 4.1 (replaced by ddms:compliesWith).</li>
+	 * <li>If set, the ism:compliesWith attribute must be valid tokens.</li>
+	 * <li>ISM DESVersion must exist and be a valid Integer, starting in DDMS 3.0, and ending in DDMS 4.1.</li>
+	 * <li>The value of ISM DESVersion must be fixed, starting in DDMS 3.1, ending in DDMS 4.1. This is checked during schema
 	 * validation.</li>
-	 * <li>NTK DESVersion must exist and be a valid Integer, starting in DDMS 4.0.1.</li>
-	 * <li>The value of NTK DESVersion must be fixed,s tarting in DDMS 4.0.1. This is checked during schema
+	 * <li>NTK DESVersion must exist and be a valid Integer, starting in DDMS 4.0.1, ending in DDMS 4.1.</li>
+	 * <li>The value of NTK DESVersion must be fixed, starting in DDMS 4.0.1. This is checked during schema
 	 * validation.</li>
-	 * <li>A classification is required, starting in DDMS 3.0.</li>
-	 * <li>At least 1 ownerProducer exists and is non-empty, starting in DDMS 3.0.</li>
+	 * <li>A classification is required, starting in DDMS 3.0, ending in DDMS 4.1.</li>
+	 * <li>At least 1 ownerProducer exists and is non-empty, starting in DDMS 3.0, ending in DDMS 4.1.</li>
 	 * <li>Only 1 extensible element can exist in DDMS 2.0.</li>
+	 * <li>No extensible elements can exist, starting in DDMS 5.0.</li>
 	 * </td></tr></table>
 	 * 
 	 * @see AbstractBaseComponent#validate()
@@ -724,18 +735,22 @@ public final class Resource extends AbstractBaseComponent {
 		// Should be reviewed as additional versions of DDMS are supported.
 		if (getDDMSVersion().isAtLeast("4.0.1")) {
 			validateOrderAttributes();
+		}
+		if (getDDMSVersion().isAtLeast("4.0.1") && !getDDMSVersion().isAtLeast("5.0")) {
 			Util.requireDDMSValue("ntk:" + DES_VERSION_NAME, getNtkDESVersion());
 		}
 		if (!getDDMSVersion().isAtLeast("3.1") && !getCompliesWiths().isEmpty())
 			throw new InvalidDDMSException("The compliesWith attribute cannot be used until DDMS 3.1 or later.");
-		for (String with : getCompliesWiths())
-			ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);
+		if (getDDMSVersion().isAtLeast("3.1") && !getDDMSVersion().isAtLeast("5.0")) {
+			for (String with : getCompliesWiths())
+				ISMVocabulary.validateEnumeration(ISMVocabulary.CVE_COMPLIES_WITH, with);
+		}
 		if (!getDDMSVersion().isAtLeast("3.0") && getExtensibleElements().size() > 1) {
 			throw new InvalidDDMSException("Only 1 extensible element is allowed in DDMS 2.0.");
 		}
 		if (getDDMSVersion().isAtLeast("4.0.1"))
 			Util.requireBoundedChildCount(getXOMElement(), MetacardInfo.getName(getDDMSVersion()), 1, 1);
-		if (getDDMSVersion().isAtLeast("3.0")) {
+		if (getDDMSVersion().isAtLeast("3.0") && !getDDMSVersion().isAtLeast("5.0")) {
 			Util.requireDDMSValue(RESOURCE_ELEMENT_NAME, isResourceElement());
 			Util.requireDDMSValue(CREATE_DATE_NAME, getCreateDate());
 			Util.requireDDMSValue("ISM:" + DES_VERSION_NAME, getIsmDESVersion());
@@ -743,6 +758,13 @@ public final class Resource extends AbstractBaseComponent {
 			getSecurityAttributes().requireClassification();
 			if (!getCreateDate().getXMLSchemaType().equals(DatatypeConstants.DATE))
 				throw new InvalidDDMSException("The createDate must be in the xs:date format (YYYY-MM-DD).");
+		}
+		if (getDDMSVersion().isAtLeast("5.0")) {
+			if (isResourceElement() != null || getCreateDate() != null || getIsmDESVersion() != null || getNtkDESVersion() != null
+				|| !getSecurityAttributes().isEmpty() || !getNoticeAttributes().isEmpty())
+				throw new InvalidDDMSException("The resource cannot have ISM or NTK attributes, starting in DDMS 5.0.");
+			if (!getExtensibleAttributes().isEmpty() || !getExtensibleElements().isEmpty())
+				throw new InvalidDDMSException("The resource cannot have extensible elements or attributes, starting in DDMS 5.0.");
 		}
 
 		super.validate();

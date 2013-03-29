@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ddms:resource xmlns:ddms="urn:us:mil:ces:metadata:ddms:5" xmlns:ntk="urn:us:gov:ic:ntk" xmlns:ISM="urn:us:gov:ic:ism"
-	ntk:DESVersion="7" ISM:resourceElement="true" ISM:DESVersion="9" ISM:createDate="2010-01-21"
-	ISM:classification="U" ISM:ownerProducer="USA">
+<ddms:resource xmlns:ddms="urn:us:mil:ces:metadata:ddms:5" xmlns:ntk="urn:us:gov:ic:ntk" xmlns:ISM="urn:us:gov:ic:ism" ddms:compliesWith="DDMSRules">
 	<ddms:metacardInfo ISM:classification="U" ISM:ownerProducer="USA"><ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence:testIdentifier" /><ddms:dates ddms:created="2003" /><ddms:publisher><ddms:person><ddms:name>Brian</ddms:name><ddms:surname>Uri</ddms:surname></ddms:person></ddms:publisher></ddms:metacardInfo>
 	<ddms:identifier ddms:qualifier="URI" ddms:value="urn:buri:ddmsence:testIdentifier" />
 	<ddms:title ISM:classification="U" ISM:ownerProducer="USA">DDMSence</ddms:title>
