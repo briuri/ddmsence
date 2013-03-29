@@ -164,8 +164,8 @@ public class TaskIDTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX, TaskID
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX,
+				TaskID.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -188,8 +188,8 @@ public class TaskIDTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK, XLinkAttributesTest
-				.getSimpleFixture());
+			getInstance(SUCCESS, TEST_VALUE, TEST_TASKING_SYSTEM, TEST_NETWORK, TEST_OTHER_NETWORK,
+				XLinkAttributesTest.getSimpleFixture());
 
 			// No optional fields
 			getInstance(SUCCESS, TEST_VALUE, null, null, null, null);
@@ -222,8 +222,8 @@ public class TaskIDTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// Wrong type of XLinkAttributes
-			getInstance("The type attribute must have a fixed value", TEST_VALUE, null, null, null, XLinkAttributesTest
-				.getLocatorFixture());
+			getInstance("The type attribute must have a fixed value", TEST_VALUE, null, null, null,
+				XLinkAttributesTest.getLocatorFixture());
 
 			// Missing value
 			getInstance("value is required.", null, null, null, null, null);

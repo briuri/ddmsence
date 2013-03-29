@@ -137,7 +137,7 @@ public class ISMVocabularyTest extends AbstractBaseTestCase {
 	}
 
 	public void testInvalidMessage() {
-		assertEquals("Dog is not a valid enumeration token for this attribute, as specified in Cat.", ISMVocabulary
-			.getInvalidMessage("Cat", "Dog"));
+		assertEquals("Dog is not a valid enumeration token for this attribute, as specified in Cat.",
+			ISMVocabulary.getInvalidMessage("Cat", "Dog"));
 	}
 }

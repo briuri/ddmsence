@@ -73,8 +73,8 @@ import buri.ddmsence.util.Util;
  * the procedural structuring should make it easier to focus on the important sections of the source code.
  * </p>
  * 
- * <p>Currently, the wizard only walks through a minimally representative set of DDMS components. DDMS 4.0.1 introduced a lot of
- * depth and reuse (especially related to the new ddms:metacardInfo element) which gets very confusing when using
+ * <p>Currently, the wizard only walks through a minimally representative set of DDMS components. DDMS 4.0.1 introduced
+ * a lot of depth and reuse (especially related to the new ddms:metacardInfo element) which gets very confusing when using
  * text prompts.</p>
  * 
  * <p>For additional details about this application, please see the tutorial on the Documentation page of the DDMSence
@@ -85,13 +85,13 @@ import buri.ddmsence.util.Util;
  * @since 0.9.b
  */
 public class Escort {
-	
+
 	private boolean _useDummySecurityAttributes = false;
 	private List<IDDMSComponent> _topLevelComponents = new ArrayList<IDDMSComponent>();
 
 	private static final BufferedReader INPUT_STREAM = new BufferedReader(new InputStreamReader(System.in));
 	private static final Map<Class<?>, IConstructorBuilder> CONSTRUCTOR_BUILDERS = new HashMap<Class<?>, IConstructorBuilder>();
-	
+
 	/**
 	 * Entry point
 	 * 
@@ -106,71 +106,71 @@ public class Escort {
 			System.err.println("Could not parse input: " + e.getMessage());
 			System.exit(1);
 		}
-	}	
-	
+	}
+
 	/**
 	 * Loads anonymous builder classes, one for each DDMS Component we will use.
 	 */
 	public Escort() {
 		loadBuilders();
 	}
-	
+
 	/**
 	 * The main execution loop of the program
 	 */
 	private void run() throws IOException {
 		println("Escort: a DDMSence Sample\n");
-		
+
 		println("This program allows you to build a DDMS 4.1 metacard from scratch using a");
 		println("representative subset of possible components. Suggested valid answers are");
 		println("provided in square brackets for each prompt. However, these are not default");
 		println("values (hitting Enter will answer the prompt with an empty string).\n");
 
 		_useDummySecurityAttributes = confirm("Would you like to save time by using dummy security attributes, Unclassified/USA, throughout the metacard?");
-				
+
 		DDMSVersion.setCurrentVersion("4.1");
-		
+
 		printHead("ddms:metacardInfo (exactly 1 required)");
 		getTopLevelComponents().add(inputLoop(MetacardInfo.class));
-		
+
 		printHead("ddms:identifier (at least 1 required)");
 		getTopLevelComponents().add(inputLoop(Identifier.class));
-		
+
 		printHead("ddms:title (at least 1 required)");
 		getTopLevelComponents().add(inputLoop(Title.class));
-		
+
 		// Skip optional subtitle component.
-		
+
 		printHead("ddms:description (only 1 allowed)");
 		if (confirm("Include this component?")) {
-			getTopLevelComponents().add(inputLoop(Description.class));	
+			getTopLevelComponents().add(inputLoop(Description.class));
 		}
-		
+
 		// Skip optional language component.
-		
+
 		printHead("ddms:dates (only 1 allowed)");
 		if (confirm("Include this component?")) {
-			getTopLevelComponents().add(inputLoop(Dates.class));	
+			getTopLevelComponents().add(inputLoop(Dates.class));
 		}
-		
+
 		// Skip optional rights, source, and type components.
-		
+
 		printHead("Producers: creator, publisher, contributor, and pointOfContact (at least 1 required)");
-		getTopLevelComponents().add(inputLoop(AbstractProducerRole.class));	
-		
+		getTopLevelComponents().add(inputLoop(AbstractProducerRole.class));
+
 		// Skip optional format component.
-		
+
 		printHead("ddms:subjectCoverage (at least 1 required)");
 		getTopLevelComponents().add(inputLoop(SubjectCoverage.class));
-				
+
 		// Skip optional virtualCoverage, temporalCoverage, geospatialCoverage, relatedResource,
 		// and resourceManagement components.
-		
+
 		printHead("ddms:security (exactly 1 required)");
 		getTopLevelComponents().add(inputLoop(Security.class));
-		
+
 		// Skip optional extensible elements.
-		
+
 		printHead("ddms:resource Attributes (all required)");
 		Resource resource = (Resource) inputLoop(Resource.class);
 		println("The DDMS Resource is valid!");
@@ -181,7 +181,7 @@ public class Escort {
 			for (ValidationMessage warning : resource.getValidationWarnings())
 				println("   [WARNING] " + warning.getLocator() + ": " + warning.getText());
 		}
-		
+
 		printHead("Saving the Resource");
 		if (confirm("Would you like to save this file?")) {
 			println("This Resource will be saved as XML in the " + PropertyReader.getProperty("sample.data")
@@ -194,7 +194,7 @@ public class Escort {
 				}
 			}
 			println("\nYou can now open your saved file with the Essentials application.");
-		}	
+		}
 		println("The Escort wizard is now finished.");
 	}
 
@@ -217,7 +217,7 @@ public class Escort {
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Helper method to load the builder classes.
 	 */
@@ -238,35 +238,35 @@ public class Escort {
 					entity = (Organization) inputLoop(Organization.class);
 				else if (Service.getName(version).equals(entityType))
 					entity = (Service) inputLoop(Service.class);
-				else if (Unknown.getName(version).equals(entityType)) 
+				else if (Unknown.getName(version).equals(entityType))
 					entity = (Unknown) inputLoop(Unknown.class);
 				components.add(new Publisher(entity, null, buildSecurityAttributes("publisher")));
-				
-				// Skip all optional fields in the metacard (other producers, description, processingInfo, 
+
+				// Skip all optional fields in the metacard (other producers, description, processingInfo,
 				// revisionRecall, recordsManagementInfo, and noticeList.
-				
+
 				return (new MetacardInfo(components, buildSecurityAttributes("subject")));
-			}		
+			}
 		});
 		CONSTRUCTOR_BUILDERS.put(Identifier.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String qualifier = readString("the qualifier [testQualifier]");
 				String value = readString("the value [testValue]");
 				return (new Identifier(qualifier, value));
-			}		
+			}
 		});
 		CONSTRUCTOR_BUILDERS.put(Title.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String text = readString("the title text [testTitle]");
 				return (new Title(text, buildSecurityAttributes("title")));
-			}		
+			}
 		});
 		CONSTRUCTOR_BUILDERS.put(Description.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String text = readString("the description text [testDescription]");
 				SecurityAttributes attr = buildSecurityAttributes("description");
 				return (new Description(text, attr));
-			}		
+			}
 		});
 		CONSTRUCTOR_BUILDERS.put(Dates.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
@@ -277,16 +277,16 @@ public class Escort {
 				String approvedOn = readString("the approvedOn date [2010]");
 				String receivedOn = readString("the receivedOn date [2010]");
 				return (new Dates(null, created, posted, validTil, infoCutOff, approvedOn, receivedOn));
-			}		
+			}
 		});
 		CONSTRUCTOR_BUILDERS.put(AbstractProducerRole.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				DDMSVersion version = DDMSVersion.getCurrentVersion();
 				String producerType = readString("the producer type [creator]");
 				String entityType = readString("the entity type [organization]");
-				String pocTypes =  readString("the pocType [DoD-Dist-B]");
+				String pocTypes = readString("the pocType [DoD-Dist-B]");
 				SecurityAttributes attr = buildSecurityAttributes("producer");
-				
+
 				IRoleEntity entity = null;
 				if (Person.getName(version).equals(entityType))
 					entity = (Person) inputLoop(Person.class);
@@ -294,9 +294,9 @@ public class Escort {
 					entity = (Organization) inputLoop(Organization.class);
 				else if (Service.getName(version).equals(entityType))
 					entity = (Service) inputLoop(Service.class);
-				else if (Unknown.getName(version).equals(entityType)) 
+				else if (Unknown.getName(version).equals(entityType))
 					entity = (Unknown) inputLoop(Unknown.class);
-				
+
 				if (Creator.getName(version).equals(producerType))
 					return (new Creator(entity, null, attr));
 				if (Contributor.getName(version).equals(producerType))
@@ -306,8 +306,8 @@ public class Escort {
 				if (PointOfContact.getName(version).equals(producerType))
 					return (new PointOfContact(entity, Util.getXsListAsList(pocTypes), attr));
 				throw new InvalidDDMSException("Unknown producerType: " + producerType);
-			}		
-		});	
+			}
+		});
 		CONSTRUCTOR_BUILDERS.put(Person.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				int numNames = readInt("the number of names this person has [1]");
@@ -333,12 +333,12 @@ public class Escort {
 				String surname = readString("the person surname [testSurname]");
 				String userID = readString("the person userID [testID]");
 				String affiliation = readString("the person affiliation [testOrg]");
-				
+
 				// Skip optional extensible attributes.
-				
+
 				return (new Person(names, surname, phones, emails, userID, Util.getXsListAsList(affiliation)));
-			}		
-		});	
+			}
+		});
 		CONSTRUCTOR_BUILDERS.put(Organization.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				int numNames = readInt("the number of names this organization has [1]");
@@ -365,14 +365,14 @@ public class Escort {
 				for (int i = 0; i < numSubs; i++) {
 					println("* SubOrganization #" + (i + 1));
 					subOrgs.add((SubOrganization) inputLoop(SubOrganization.class));
-				}		
+				}
 				String acronym = readString("the Organization acronym [testAcronym]");
-				
+
 				// Skip optional extensible attributes.
-				
+
 				return (new Organization(names, phones, emails, subOrgs, acronym));
-			}		
-		});	
+			}
+		});
 		CONSTRUCTOR_BUILDERS.put(SubOrganization.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String value = readString("the value [testSubOrganization]");
@@ -401,11 +401,11 @@ public class Escort {
 				for (int i = 0; i < numEmails; i++) {
 					emails.add(readString("entity email #" + (i + 1) + " [testEmail" + (i + 1) + "]"));
 				}
-				
+
 				// Skip optional extensible attributes.
-				
+
 				return (new Service(names, phones, emails));
-			}		
+			}
 		});
 		CONSTRUCTOR_BUILDERS.put(Unknown.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
@@ -428,19 +428,19 @@ public class Escort {
 				for (int i = 0; i < numEmails; i++) {
 					emails.add(readString("entity email #" + (i + 1) + " [testEmail" + (i + 1) + "]"));
 				}
-				
+
 				// Skip optional extensible attributes.
-				
+
 				return (new Unknown(names, phones, emails));
-			}		
-		});	
+			}
+		});
 		CONSTRUCTOR_BUILDERS.put(Keyword.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
 				String keyword = readString("the keyword value [testValue]");
 				SecurityAttributes attr = buildSecurityAttributes("keyword");
-				
+
 				// Skip optional extensible attributes.
-				
+
 				return (new Keyword(keyword, attr));
 			}
 		});
@@ -449,9 +449,9 @@ public class Escort {
 				String qualifier = readString("the qualifier [testQualifier]");
 				String code = readString("the code [testCode]");
 				String label = readString("the label [testLabel]");
-				
+
 				// Skip optional extensible attributes.
-				
+
 				return (new Category(qualifier, code, label, buildSecurityAttributes("category")));
 			}
 		});
@@ -502,15 +502,15 @@ public class Escort {
 					actors.add((NonStateActor) inputLoop(NonStateActor.class));
 				}
 				return (new SubjectCoverage(keywords, categories, metrics, actors, buildSecurityAttributes("subject")));
-			}		
+			}
 		});
 		CONSTRUCTOR_BUILDERS.put(Security.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
-				
+
 				// Skip optional noticeList and Access components.
-				
+
 				return (new Security(null, null, buildSecurityAttributes("security element")));
-			}		
+			}
 		});
 		CONSTRUCTOR_BUILDERS.put(Resource.class, new IConstructorBuilder() {
 			public IDDMSComponent build() throws IOException, InvalidDDMSException {
@@ -518,12 +518,12 @@ public class Escort {
 				String createDate = readString("Resource createDate [2012-09-01]");
 				int ismDESVersion = readInt("the Resource ISM:DESVersion [9]");
 				int ntkDESVersion = readInt("the Resource ntk:DESVersion [7]");
-				return (new Resource(getTopLevelComponents(), resourceElement, createDate, null, new Integer(ismDESVersion), new Integer(ntkDESVersion), 
-					buildSecurityAttributes("resource"), null, null));
-			}		
+				return (new Resource(getTopLevelComponents(), resourceElement, createDate, null, new Integer(
+					ismDESVersion), new Integer(ntkDESVersion), buildSecurityAttributes("resource"), null, null));
+			}
 		});
 	}
-	
+
 	/**
 	 * Helper method to build a security attributes object
 	 * 
@@ -538,7 +538,7 @@ public class Escort {
 			+ "'s ownerProducers as a space-delimited string [USA]");
 		return (new SecurityAttributes(classification, Util.getXsListAsList(ownerProducers), null));
 	}
-	
+
 	/**
 	 * Saves the valid resource to a file.
 	 * 
@@ -557,7 +557,8 @@ public class Escort {
 			serializer.setIndent(3);
 			serializer.write(doc);
 			println("File saved at \"" + outputFile.getAbsolutePath() + "\".");
-		} finally {
+		}
+		finally {
 			if (os != null)
 				os.close();
 		}
@@ -582,13 +583,13 @@ public class Escort {
 			}
 		}
 	}
-	
+
 	/**
 	 * Reads a number from the command line.
 	 * 
-	 * @param name the descriptive name of the value	
+	 * @param name the descriptive name of the value
 	 * @return the value as an int
-	 *
+	 * 
 	 * @throws IOException
 	 */
 	private int readInt(String name) throws IOException {
@@ -599,7 +600,8 @@ public class Escort {
 				if (value >= 0)
 					return (value);
 				println("A positive integer is required.");
-			} catch (NumberFormatException nfe) {
+			}
+			catch (NumberFormatException nfe) {
 				println("This could not be converted into a number: " + input);
 			}
 		}
@@ -619,7 +621,7 @@ public class Escort {
 			System.out.flush();
 			String result = INPUT_STREAM.readLine();
 			result = result.trim();
-			return (result);				
+			return (result);
 		}
 	}
 
@@ -631,14 +633,14 @@ public class Escort {
 	private void printHead(String title) {
 		println("\n=== " + title + " ===");
 	}
-	
+
 	/**
 	 * Formats an error message
 	 * 
 	 * @param e the exception
 	 */
 	private void printError(Exception e) {
-		//e.printStackTrace();
+		// e.printStackTrace();
 		if (e instanceof InvalidDDMSException) {
 			InvalidDDMSException ide = (InvalidDDMSException) e;
 			String prefix = (Util.isEmpty(ide.getLocator()) ? "" : ide.getLocator() + ": ");
@@ -647,7 +649,7 @@ public class Escort {
 		else
 			println("[ERROR]: " + e.getMessage());
 	}
-	
+
 	/**
 	 * Convenience method to print a string.
 	 * 

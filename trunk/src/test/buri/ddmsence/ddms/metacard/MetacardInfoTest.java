@@ -111,7 +111,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		childComponents.add(NoticeListTest.getFixture());
 		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
 			childComponents.add(AccessTest.getFixture());
-		}			
+		}
 		return (childComponents);
 	}
 
@@ -206,7 +206,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		xml.append("<ISM:Notice ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
 		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1"))
-			xml.append(" ISM:externalNotice=\"false\"");	
+			xml.append(" ISM:externalNotice=\"false\"");
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
 		xml.append(" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>");
@@ -220,8 +220,8 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 			xml.append("user_2321889:Doe_John_H</ntk:AccessIndividualValue>");
 			xml.append("</ntk:AccessIndividual>");
 			xml.append("</ntk:AccessIndividualList>");
-			xml.append("</ntk:Access>");	
-		}		
+			xml.append("</ntk:Access>");
+		}
 		xml.append("</ddms:metacardInfo>");
 		return (formatXml(xml.toString(), preserveFormatting));
 	}
@@ -230,8 +230,8 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, MetacardInfo
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				MetacardInfo.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -401,17 +401,17 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 
 			// 4.1 ntk:Access element used
 			if (version.isAtLeast("4.1")) {
-				assertEquals(2, component.getValidationWarnings().size());	
+				assertEquals(2, component.getValidationWarnings().size());
 				String text = "The ntk:Access element in this DDMS component";
 				String locator = "ddms:metacardInfo";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-				
+
 				text = "The ISM:externalNotice attribute in this DDMS component";
 				locator = "ddms:metacardInfo/ddms:noticeList/ISM:Notice";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(1));
-				
+
 			}
-			// No warnings 
+			// No warnings
 			else {
 				assertEquals(0, component.getValidationWarnings().size());
 			}
@@ -506,7 +506,7 @@ public class MetacardInfoTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
 	}
-	
+
 	public void testXMLOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

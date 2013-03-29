@@ -158,8 +158,8 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, PointOfContact
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				PointOfContact.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -189,11 +189,11 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String ismPrefix = PropertyReader.getPrefix("ism");
-			
+
 			// Missing entity
 			Element element = Util.buildDDMSElement(PointOfContact.getName(version), null);
 			getInstance("entity is required.", element);
-			
+
 			if (version.isAtLeast("4.0.1")) {
 				// Invalid pocType
 				element = Util.buildDDMSElement(PointOfContact.getName(version), null);
@@ -213,16 +213,18 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			// Missing entity
 			getInstance("entity is required.", (IRoleEntity) null, null);
-			
+
 			if (version.isAtLeast("4.0.1")) {
 				// Invalid pocType
-				getInstance("Unknown is not a valid enumeration token", getEntityFixture(), Util.getXsListAsList("Unknown"));
+				getInstance("Unknown is not a valid enumeration token", getEntityFixture(),
+					Util.getXsListAsList("Unknown"));
 
 				// Partial Invalid pocType
-				getInstance("Unknown is not a valid enumeration token", getEntityFixture(), Util.getXsListAsList("DoD-Dist-B Unknown"));
+				getInstance("Unknown is not a valid enumeration token", getEntityFixture(),
+					Util.getXsListAsList("DoD-Dist-B Unknown"));
 			}
 		}
 	}
@@ -250,8 +252,8 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			PointOfContact elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			PointOfContact dataComponent = getInstance(SUCCESS, new Service(Util.getXsListAsList("DISA PEO-GES"), Util
-				.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
+			PointOfContact dataComponent = getInstance(SUCCESS, new Service(Util.getXsListAsList("DISA PEO-GES"),
+				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -291,7 +293,8 @@ public class PointOfContactTest extends AbstractBaseTestCase {
 	public void testWrongVersionPocType() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new PointOfContact(getEntityFixture(), Util.getXsListAsList("DoD-Dist-B"), SecurityAttributesTest.getFixture());
+			new PointOfContact(getEntityFixture(), Util.getXsListAsList("DoD-Dist-B"),
+				SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

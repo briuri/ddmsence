@@ -239,7 +239,7 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 	 * @param classification the classification level, which must be a legal classification type (optional)
 	 * @param ownerProducers a list of ownerProducers (optional)
 	 * @param otherAttributes a name/value mapping of other ISM attributes. The value will be a String value, as it
-	 * appears in XML.
+	 *        appears in XML.
 	 * @return a valid object
 	 */
 	private SecurityAttributes getInstance(String message, String classification, List<String> ownerProducers,
@@ -273,8 +273,8 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			element = Util.buildDDMSElement(Security.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
-			Util.addAttribute(element, ismPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace, Util
-				.getXsList(TEST_OWNERS));
+			Util.addAttribute(element, ismPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace,
+				Util.getXsList(TEST_OWNERS));
 			getInstance(SUCCESS, element);
 		}
 	}
@@ -304,8 +304,8 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			Element element = Util.buildDDMSElement(Security.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
-			Util.addAttribute(element, ismPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace, Util
-				.getXsList(TEST_OWNERS));
+			Util.addAttribute(element, ismPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace,
+				Util.getXsList(TEST_OWNERS));
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.DECLASS_DATE_NAME, icNamespace, "2001");
 			getInstance("The declassDate must be in the xs:date format", element);
 
@@ -313,8 +313,8 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 			element = Util.buildDDMSElement(Security.getName(version), null);
 			Util.addAttribute(element, ismPrefix, Security.EXCLUDE_FROM_ROLLUP_NAME, icNamespace, "true");
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.CLASSIFICATION_NAME, icNamespace, TEST_CLASS);
-			Util.addAttribute(element, ismPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace, Util
-				.getXsList(TEST_OWNERS));
+			Util.addAttribute(element, ismPrefix, SecurityAttributes.OWNER_PRODUCER_NAME, icNamespace,
+				Util.getXsList(TEST_OWNERS));
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.DECLASS_DATE_NAME, icNamespace, "2001");
 			Util.addAttribute(element, ismPrefix, SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, icNamespace, "2001");
 			String message = (version.isAtLeast("3.1") ? "The dateOfExemptedSource attribute can only be used in DDMS 2.0 or 3.0."
@@ -590,8 +590,8 @@ public class SecurityAttributesTest extends AbstractBaseTestCase {
 				others = new HashMap<String, String>();
 				others.put(SecurityAttributes.DATE_OF_EXEMPTED_SOURCE_NAME, "2005-10-10");
 				dataAttributes = getInstance(SUCCESS, null, null, others);
-				assertEquals(buildOutput(true, "dateOfExemptedSource", "2005-10-10"), dataAttributes
-					.getOutput(true, ""));
+				assertEquals(buildOutput(true, "dateOfExemptedSource", "2005-10-10"),
+					dataAttributes.getOutput(true, ""));
 				assertEquals(buildOutput(false, "dateOfExemptedSource", "2005-10-10"), dataAttributes.getOutput(false,
 					""));
 			}

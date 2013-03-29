@@ -143,8 +143,8 @@ public class IndividualTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, Individual
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
+				Individual.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -173,8 +173,7 @@ public class IndividualTest extends AbstractBaseTestCase {
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
 
 			// Missing systemName
-			Element element = Util
-				.buildElement(ntkPrefix, Individual.getName(version), version.getNtkNamespace(), null);
+			Element element = Util.buildElement(ntkPrefix, Individual.getName(version), version.getNtkNamespace(), null);
 			for (IndividualValue value : IndividualValueTest.getFixtureList())
 				element.appendChild(value.getXOMElementCopy());
 			SecurityAttributesTest.getFixture().addTo(element);
@@ -231,8 +230,8 @@ public class IndividualTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Individual elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Individual dataComponent = getInstance(SUCCESS, SystemNameTest.getFixture(), IndividualValueTest
-				.getFixtureList());
+			Individual dataComponent = getInstance(SUCCESS, SystemNameTest.getFixture(),
+				IndividualValueTest.getFixtureList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}

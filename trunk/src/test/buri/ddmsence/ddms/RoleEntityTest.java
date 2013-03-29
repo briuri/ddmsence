@@ -47,13 +47,14 @@ public class RoleEntityTest extends AbstractBaseTestCase {
 	 * Helper method to generate a pocType for producers
 	 */
 	public static List<String> getPocTypes() {
-		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? Util.getXsListAsList(TEST_POC_TYPE) : Util.getXsListAsList(""));
+		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? Util.getXsListAsList(TEST_POC_TYPE)
+			: Util.getXsListAsList(""));
 	}
 
 	public void testSharedWarnings() throws InvalidDDMSException {
 		for (String sVersion : DDMSVersion.getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			if (!version.isAtLeast("5.0")) {
 				// Empty phone
 				Element entityElement = Util.buildDDMSElement(Organization.getName(version), null);
@@ -62,9 +63,9 @@ public class RoleEntityTest extends AbstractBaseTestCase {
 				Organization component = new Organization(entityElement);
 				assertEquals(1, component.getValidationWarnings().size());
 				assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-				assertEquals("A ddms:phone element was found with no value.", component.getValidationWarnings().get(0)
-					.getText());
-		
+				assertEquals("A ddms:phone element was found with no value.",
+					component.getValidationWarnings().get(0).getText());
+
 				// Empty email
 				entityElement = Util.buildDDMSElement(Organization.getName(version), null);
 				entityElement.appendChild(Util.buildDDMSElement("name", "name"));
@@ -72,8 +73,8 @@ public class RoleEntityTest extends AbstractBaseTestCase {
 				component = new Organization(entityElement);
 				assertEquals(1, component.getValidationWarnings().size());
 				assertEquals(ValidationMessage.WARNING_TYPE, component.getValidationWarnings().get(0).getType());
-				assertEquals("A ddms:email element was found with no value.", component.getValidationWarnings().get(0)
-					.getText());
+				assertEquals("A ddms:email element was found with no value.",
+					component.getValidationWarnings().get(0).getText());
 			}
 		}
 	}
@@ -87,12 +88,12 @@ public class RoleEntityTest extends AbstractBaseTestCase {
 		assertEquals("entityType: person\nname: Brian\nname: BU\nphone: 703-885-1000\nsurname: Uri\n", person.toText());
 
 		PropertyReader.setProperty("output.indexLevel", "1");
-		assertEquals("entityType: person\nname[1]: Brian\nname[2]: BU\nphone: 703-885-1000\nsurname: Uri\n", person
-			.toText());
+		assertEquals("entityType: person\nname[1]: Brian\nname[2]: BU\nphone: 703-885-1000\nsurname: Uri\n",
+			person.toText());
 
 		PropertyReader.setProperty("output.indexLevel", "2");
-		assertEquals("entityType: person\nname[1]: Brian\nname[2]: BU\nphone[1]: 703-885-1000\nsurname: Uri\n", person
-			.toText());
+		assertEquals("entityType: person\nname[1]: Brian\nname[2]: BU\nphone[1]: 703-885-1000\nsurname: Uri\n",
+			person.toText());
 	}
 
 	public void testExtensibleFailure() throws InvalidDDMSException {

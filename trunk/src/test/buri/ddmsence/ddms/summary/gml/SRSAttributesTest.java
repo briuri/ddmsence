@@ -145,8 +145,8 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		String uomLabels) {
 		Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE, srsName);
 		if (srsDimension != null) {
-			Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsDimension", SRSAttributes.NO_NAMESPACE, String
-				.valueOf(srsDimension));
+			Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsDimension", SRSAttributes.NO_NAMESPACE,
+				String.valueOf(srsDimension));
 		}
 		Util.addAttribute(element, SRSAttributes.NO_PREFIX, "axisLabels", SRSAttributes.NO_NAMESPACE, axisLabels);
 		Util.addAttribute(element, SRSAttributes.NO_PREFIX, "uomLabels", SRSAttributes.NO_NAMESPACE, uomLabels);
@@ -156,15 +156,15 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version), version
-				.getGmlNamespace(), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
-				.getXsList(TEST_UOM_LABELS));
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
+				version.getGmlNamespace(), null);
+			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
+				Util.getXsList(TEST_UOM_LABELS));
 			getInstance(SUCCESS, element);
 
 			// No optional fields
-			element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version), version
-				.getGmlNamespace(), null);
+			element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
+				version.getGmlNamespace(), null);
 			getInstance(SUCCESS, element);
 		}
 	}
@@ -185,14 +185,14 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// srsName not a URI
 			Element element = Util.buildDDMSElement(Position.getName(version), null);
-			addAttributes(element, INVALID_URI, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
-				.getXsList(TEST_UOM_LABELS));
+			addAttributes(element, INVALID_URI, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
+				Util.getXsList(TEST_UOM_LABELS));
 			getInstance("Invalid URI", element);
 
 			// axisLabels without srsName
 			element = Util.buildDDMSElement(Position.getName(version), null);
-			addAttributes(element, null, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
-				.getXsList(TEST_UOM_LABELS));
+			addAttributes(element, null, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
+				Util.getXsList(TEST_UOM_LABELS));
 			getInstance("The axisLabels attribute can only be used", element);
 
 			// uomLabels without axisLabels
@@ -204,16 +204,16 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 			List<String> newLabels = new ArrayList<String>(TEST_AXIS_LABELS);
 			newLabels.add("1TEST");
 			element = Util.buildDDMSElement(Position.getName(version), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(newLabels), Util
-				.getXsList(TEST_UOM_LABELS));
+			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(newLabels),
+				Util.getXsList(TEST_UOM_LABELS));
 			getInstance("\"1TEST\" is not a valid NCName.", element);
 
 			// Non-NCNames in uomLabels
 			newLabels = new ArrayList<String>(TEST_UOM_LABELS);
 			newLabels.add("TEST:TEST");
 			element = Util.buildDDMSElement(Position.getName(version), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
-				.getXsList(newLabels));
+			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
+				Util.getXsList(newLabels));
 			getInstance("\"TEST:TEST\" is not a valid NCName.", element);
 
 			// Dimension is a positive integer
@@ -259,10 +259,10 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			// No warnings
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version), version
-				.getGmlNamespace(), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
-				.getXsList(TEST_UOM_LABELS));
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
+				version.getGmlNamespace(), null);
+			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
+				Util.getXsList(TEST_UOM_LABELS));
 			SRSAttributes component = getInstance(SUCCESS, element);
 			assertEquals(0, component.getValidationWarnings().size());
 		}
@@ -271,10 +271,10 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 	public void testConstructorEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version), version
-				.getGmlNamespace(), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
-				.getXsList(TEST_UOM_LABELS));
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
+				version.getGmlNamespace(), null);
+			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
+				Util.getXsList(TEST_UOM_LABELS));
 			SRSAttributes elementAttributes = getInstance(SUCCESS, element);
 			SRSAttributes dataAttributes = getInstance(SUCCESS, TEST_SRS_NAME, TEST_SRS_DIMENSION, TEST_AXIS_LABELS,
 				TEST_UOM_LABELS);
@@ -287,10 +287,10 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 	public void testConstructorInequalityDifferentValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version), version
-				.getGmlNamespace(), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
-				.getXsList(TEST_UOM_LABELS));
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
+				version.getGmlNamespace(), null);
+			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
+				Util.getXsList(TEST_UOM_LABELS));
 			SRSAttributes elementAttributes = getInstance(SUCCESS, element);
 			SRSAttributes dataAttributes = getInstance(SUCCESS, DIFFERENT_VALUE, TEST_SRS_DIMENSION, TEST_AXIS_LABELS,
 				TEST_UOM_LABELS);
@@ -312,10 +312,10 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 	public void testConstructorInequalityWrongClass() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version), version
-				.getGmlNamespace(), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
-				.getXsList(TEST_UOM_LABELS));
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
+				version.getGmlNamespace(), null);
+			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
+				Util.getXsList(TEST_UOM_LABELS));
 			SRSAttributes attributes = new SRSAttributes(element);
 			Rights wrongComponent = new Rights(true, true, true);
 			assertFalse(attributes.equals(wrongComponent));
@@ -326,10 +326,10 @@ public class SRSAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version), version
-				.getGmlNamespace(), null);
-			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS), Util
-				.getXsList(TEST_UOM_LABELS));
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Position.getName(version),
+				version.getGmlNamespace(), null);
+			addAttributes(element, TEST_SRS_NAME, TEST_SRS_DIMENSION, Util.getXsList(TEST_AXIS_LABELS),
+				Util.getXsList(TEST_UOM_LABELS));
 			SRSAttributes attributes = new SRSAttributes(element);
 			assertEquals(getExpectedOutput(true), attributes.getOutput(true, ""));
 			assertEquals(getExpectedOutput(false), attributes.getOutput(false, ""));

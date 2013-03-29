@@ -94,8 +94,8 @@ public class TypeTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Type component = null;
 		try {
-			component = new Type(description, qualifier, value, version.isAtLeast("4.0.1") ? SecurityAttributesTest
-				.getFixture() : null);
+			component = new Type(description, qualifier, value,
+				version.isAtLeast("4.0.1") ? SecurityAttributesTest.getFixture() : null);
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -146,8 +146,8 @@ public class TypeTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Type
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				Type.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -223,8 +223,8 @@ public class TypeTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			Type elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0.1") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
-				TEST_VALUE);
+			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0.1") ? TEST_DESCRIPTION : "",
+				TEST_QUALIFIER, TEST_VALUE);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -234,8 +234,8 @@ public class TypeTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			Type elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0.1") ? TEST_DESCRIPTION : "", TEST_QUALIFIER,
-				DIFFERENT_VALUE);
+			Type dataComponent = getInstance(SUCCESS, version.isAtLeast("4.0.1") ? TEST_DESCRIPTION : "",
+				TEST_QUALIFIER, DIFFERENT_VALUE);
 			assertFalse(elementComponent.equals(dataComponent));
 			if (version.isAtLeast("4.0.1")) {
 				dataComponent = getInstance(SUCCESS, "differentDescription", TEST_QUALIFIER, TEST_VALUE);

@@ -56,7 +56,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	 */
 	public static NonStateActor getFixture(int order) {
 		try {
-			DDMSVersion version = DDMSVersion.getCurrentVersion();			
+			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			return (version.isAtLeast("4.0.1") ? new NonStateActor(TEST_VALUE, Integer.valueOf(order), getQualifier(),
 				SecurityAttributesTest.getFixture()) : null);
 		}
@@ -72,7 +72,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	private static String getQualifier() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("4.1") ? TEST_QUALIFIER : null);
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -81,7 +81,8 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			List<NonStateActor> actors = new ArrayList<NonStateActor>();
 			if (version.isAtLeast("4.0.1"))
-				actors.add(new NonStateActor(TEST_VALUE, TEST_ORDER, getQualifier(), SecurityAttributesTest.getFixture()));
+				actors.add(new NonStateActor(TEST_VALUE, TEST_ORDER, getQualifier(),
+					SecurityAttributesTest.getFixture()));
 			return (actors);
 		}
 		catch (InvalidDDMSException e) {
@@ -169,8 +170,8 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, NonStateActor
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				NonStateActor.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -232,16 +233,16 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 
 			// 4.1 ddms:qualifier element used
 			if (version.isAtLeast("4.1")) {
-				assertEquals(1, component.getValidationWarnings().size());	
+				assertEquals(1, component.getValidationWarnings().size());
 				String text = "The ddms:qualifier attribute in this DDMS component";
 				String locator = "ddms:nonStateActor";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
-			// No warnings 
+			// No warnings
 			else {
 				assertEquals(0, component.getValidationWarnings().size());
 			}
-			
+
 			// Empty value
 			if (!version.isAtLeast("5.0")) {
 				Element element = Util.buildDDMSElement(NonStateActor.getName(version), null);
@@ -262,7 +263,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 			assertTrue(Util.isEmpty(dataComponent.getQualifier()));
 		}
 	}
-	
+
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -285,7 +286,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 
 			dataComponent = getInstance(SUCCESS, TEST_VALUE, null, getQualifier());
 			assertFalse(elementComponent.equals(dataComponent));
-			
+
 			if (version.isAtLeast("4.1")) {
 				dataComponent = getInstance(SUCCESS, TEST_VALUE, TEST_ORDER, DIFFERENT_VALUE);
 				assertFalse(elementComponent.equals(dataComponent));
@@ -310,7 +311,7 @@ public class NonStateActorTest extends AbstractBaseTestCase {
 	public void testXMLOutput() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-						
+
 			NonStateActor component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 

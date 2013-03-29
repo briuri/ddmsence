@@ -269,13 +269,13 @@ public class UtilTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			try {
-			   Util.requireDDMSDateFormat("2012", version.getNamespace());
-			   Util.requireDDMSDateFormat("2012-01", version.getNamespace());
-			   Util.requireDDMSDateFormat("2012-01-01", version.getNamespace());
-			   Util.requireDDMSDateFormat("2012-01-01T01:02:03Z", version.getNamespace());
-			   Util.requireDDMSDateFormat("2012-01-01T01:02:03+05:00", version.getNamespace());
-			   Util.requireDDMSDateFormat("2012-01-01T01:02:03.4Z", version.getNamespace());
-			   Util.requireDDMSDateFormat("2012-01-01T01:02:03.4+05:00", version.getNamespace());
+				Util.requireDDMSDateFormat("2012", version.getNamespace());
+				Util.requireDDMSDateFormat("2012-01", version.getNamespace());
+				Util.requireDDMSDateFormat("2012-01-01", version.getNamespace());
+				Util.requireDDMSDateFormat("2012-01-01T01:02:03Z", version.getNamespace());
+				Util.requireDDMSDateFormat("2012-01-01T01:02:03+05:00", version.getNamespace());
+				Util.requireDDMSDateFormat("2012-01-01T01:02:03.4Z", version.getNamespace());
+				Util.requireDDMSDateFormat("2012-01-01T01:02:03.4+05:00", version.getNamespace());
 				if (version.isAtLeast("4.1")) {
 					Util.requireDDMSDateFormat("2012-01-01T01:02Z", version.getNamespace());
 					Util.requireDDMSDateFormat("2012-01-01T01:02+05:00", version.getNamespace());
@@ -290,41 +290,41 @@ public class UtilTest extends AbstractBaseTestCase {
 	public void testRequireDDMSDateFormatFailure() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			// Another XSD date type
 			try {
-			   Util.requireDDMSDateFormat("---31", version.getNamespace());
-			   fail("Allowed invalid data.");
+				Util.requireDDMSDateFormat("---31", version.getNamespace());
+				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "The date datatype must be");
 			}
-			
+
 			// Not a date
 			try {
-			   Util.requireDDMSDateFormat("baboon", version.getNamespace());
-			   fail("Allowed invalid data.");
+				Util.requireDDMSDateFormat("baboon", version.getNamespace());
+				fail("Allowed invalid data.");
 			}
 			catch (InvalidDDMSException e) {
 				expectMessage(e, "The date datatype must be");
 			}
-			
+
 			// ddms:DateHourMinType (specifying 4.0.1 here, since you can't tell if it's 4.0.1 or 4.1 by XML namespace)
 			if (!version.isAtLeast("4.0.1")) {
 				try {
-				   Util.requireDDMSDateFormat("2012-01-01T01:02Z", version.getNamespace());
-				   fail("Allowed invalid data.");
+					Util.requireDDMSDateFormat("2012-01-01T01:02Z", version.getNamespace());
+					fail("Allowed invalid data.");
 				}
 				catch (InvalidDDMSException e) {
 					expectMessage(e, "The date datatype must be");
 				}
 				try {
-				   Util.requireDDMSDateFormat("2012-01-01T01:02+05:00", version.getNamespace());
-				   fail("Allowed invalid data.");
+					Util.requireDDMSDateFormat("2012-01-01T01:02+05:00", version.getNamespace());
+					fail("Allowed invalid data.");
 				}
 				catch (InvalidDDMSException e) {
 					expectMessage(e, "The date datatype must be");
-				}				
+				}
 			}
 		}
 	}
@@ -744,7 +744,7 @@ public class UtilTest extends AbstractBaseTestCase {
 		catch (IllegalArgumentException e) {
 			expectMessage(e, "Null lists cannot be compared.");
 		}
-		
+
 		try {
 			Util.listEquals(new ArrayList<String>(), null);
 			fail("Did not stop on bad data.");
@@ -805,8 +805,8 @@ public class UtilTest extends AbstractBaseTestCase {
 
 	public void testXmlEscape() {
 		String testString = "<test>\"Brian's DDMSense & DDMS\"</test>";
-		assertEquals("&lt;test&gt;&quot;Brian&apos;s DDMSense &amp; DDMS&quot;&lt;/test&gt;", Util
-			.xmlEscape(testString));
+		assertEquals("&lt;test&gt;&quot;Brian&apos;s DDMSense &amp; DDMS&quot;&lt;/test&gt;",
+			Util.xmlEscape(testString));
 		assertEquals(null, Util.xmlEscape(null));
 	}
 

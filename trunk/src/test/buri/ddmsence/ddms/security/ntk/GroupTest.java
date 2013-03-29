@@ -51,8 +51,8 @@ public class GroupTest extends AbstractBaseTestCase {
 	 */
 	public static Group getFixture() {
 		try {
-			return (new Group(SystemNameTest.getFixture(), GroupValueTest.getFixtureList(), SecurityAttributesTest
-				.getFixture()));
+			return (new Group(SystemNameTest.getFixture(), GroupValueTest.getFixtureList(),
+				SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -143,8 +143,8 @@ public class GroupTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, Group
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
+				Group.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -241,8 +241,8 @@ public class GroupTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Group elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Group dataComponent = getInstance(SUCCESS, new SystemName("MDR", null, null, null, SecurityAttributesTest
-				.getFixture()), GroupValueTest.getFixtureList());
+			Group dataComponent = getInstance(SUCCESS, new SystemName("MDR", null, null, null,
+				SecurityAttributesTest.getFixture()), GroupValueTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			List<GroupValue> list = new ArrayList<GroupValue>();

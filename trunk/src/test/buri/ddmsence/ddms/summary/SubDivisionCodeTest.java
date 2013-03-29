@@ -56,7 +56,7 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -116,8 +116,9 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:subDivisionCode ").append(getXmlnsDDMS()).append(" ddms:").append(CountryCodeTest.getQualifierName()).append("=\"").append(TEST_QUALIFIER)
-			.append("\" ddms:").append(CountryCodeTest.getValueName()).append("=\"").append(TEST_VALUE).append("\" />");
+		xml.append("<ddms:subDivisionCode ").append(getXmlnsDDMS()).append(" ddms:").append(
+			CountryCodeTest.getQualifierName()).append("=\"").append(TEST_QUALIFIER).append("\" ddms:").append(
+			CountryCodeTest.getValueName()).append("=\"").append(TEST_VALUE).append("\" />");
 		return (xml.toString());
 	}
 
@@ -154,7 +155,7 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 
 			String qualifierName = CountryCodeTest.getQualifierName();
 			String valueName = CountryCodeTest.getValueName();
-			
+
 			// Missing qualifier
 			Element element = Util.buildDDMSElement(subCode, null);
 			Util.addDDMSAttribute(element, valueName, TEST_VALUE);
@@ -185,7 +186,7 @@ public class SubDivisionCodeTest extends AbstractBaseTestCase {
 
 			String qualifierName = CountryCodeTest.getQualifierName();
 			String valueName = CountryCodeTest.getValueName();
-			
+
 			// Missing qualifier
 			getInstance(qualifierName + " attribute is required.", null, TEST_VALUE);
 

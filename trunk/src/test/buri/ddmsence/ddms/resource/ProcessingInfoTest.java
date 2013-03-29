@@ -142,8 +142,8 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, ProcessingInfo
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				ProcessingInfo.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -244,13 +244,13 @@ public class ProcessingInfoTest extends AbstractBaseTestCase {
 
 			ProcessingInfo component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(TEST_DATE_PROCESSED, component.getDateProcessed().toXMLFormat());
-			
+
 			// Not compatible with XMLGregorianCalendar
 			if (version.isAtLeast("4.1")) {
 				component = new ProcessingInfo(TEST_VALUE, "2012-01-01T01:02Z", SecurityAttributesTest.getFixture());
-				assertNull(component.getDateProcessed());			
+				assertNull(component.getDateProcessed());
 			}
-		}		
+		}
 	}
 
 	public void testConstructorEquality() throws InvalidDDMSException {

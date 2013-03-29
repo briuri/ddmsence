@@ -137,8 +137,8 @@ public class SystemNameTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, SystemName
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
+				SystemName.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -177,8 +177,7 @@ public class SystemNameTest extends AbstractBaseTestCase {
 			String ntkPrefix = PropertyReader.getPrefix("ntk");
 
 			// Missing value
-			Element element = Util
-				.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(), null);
+			Element element = Util.buildElement(ntkPrefix, SystemName.getName(version), version.getNtkNamespace(), null);
 			SecurityAttributesTest.getFixture().addTo(element);
 			getInstance("\"\" is not a valid NMTOKEN.", element);
 

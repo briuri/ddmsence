@@ -32,7 +32,8 @@ import buri.ddmsence.util.DDMSVersion;
 import buri.ddmsence.util.Util;
 
 /**
- * <p> Tests related to DDMS 2.0, 3.0, 3.1 ddms:RelatedResources elements or DDMS 4.0.1 ddms:relatedResource elements </p>
+ * <p> Tests related to DDMS 2.0, 3.0, 3.1 ddms:RelatedResources elements or DDMS 4.0.1 ddms:relatedResource elements
+ * </p>
  * 
  * @author Brian Uri!
  * @since 0.9.b
@@ -103,8 +104,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 		boolean expectFailure = !Util.isEmpty(message);
 		RelatedResource component = null;
 		try {
-			component = new RelatedResource(links, relationship, direction, qualifier, value, SecurityAttributesTest
-				.getFixture());
+			component = new RelatedResource(links, relationship, direction, qualifier, value,
+				SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -186,7 +187,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 			// No optional fields
 			Element element = Util.buildDDMSElement(RelatedResource.getName(version), null);
 			Util.addDDMSAttribute(element, "relationship", TEST_RELATIONSHIP);
-			Element innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
+			Element innerElement = version.isAtLeast("4.0.1") ? element
+				: Util.buildDDMSElement("RelatedResource", null);
 			if (!version.isAtLeast("4.0.1"))
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);
@@ -216,7 +218,8 @@ public class RelatedResourceTest extends AbstractBaseTestCase {
 
 			// Missing relationship
 			Element element = Util.buildDDMSElement(RelatedResource.getName(version), null);
-			Element innerElement = version.isAtLeast("4.0.1") ? element : Util.buildDDMSElement("RelatedResource", null);
+			Element innerElement = version.isAtLeast("4.0.1") ? element
+				: Util.buildDDMSElement("RelatedResource", null);
 			if (!version.isAtLeast("4.0.1"))
 				element.appendChild(innerElement);
 			Util.addDDMSAttribute(innerElement, "qualifier", TEST_QUALIFIER);

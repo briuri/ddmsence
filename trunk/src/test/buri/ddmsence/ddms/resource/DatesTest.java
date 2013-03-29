@@ -128,7 +128,7 @@ public class DatesTest extends AbstractBaseTestCase {
 	private String getReceivedOn() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? TEST_RECEIVED : "");
 	}
-	
+
 	/**
 	 * Generates an acquiredOn Date for testing
 	 */
@@ -194,8 +194,8 @@ public class DatesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Dates
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				Dates.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -234,7 +234,7 @@ public class DatesTest extends AbstractBaseTestCase {
 			getInstance("The date datatype must be one of", element);
 		}
 	}
-	
+
 	public void testDataConstructorInvalid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -260,17 +260,17 @@ public class DatesTest extends AbstractBaseTestCase {
 	public void testWarnings() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Dates component = getInstance(SUCCESS, getValidElement(sVersion));
-			
+
 			// 4.1 ddms:acquiredOn element used
 			if (version.isAtLeast("4.1")) {
-				assertEquals(1, component.getValidationWarnings().size());	
+				assertEquals(1, component.getValidationWarnings().size());
 				String text = "The ddms:acquiredOn element in this DDMS component";
 				String locator = "ddms:dates";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
-			// No warnings 
+			// No warnings
 			else {
 				assertEquals(0, component.getValidationWarnings().size());
 			}
@@ -289,18 +289,18 @@ public class DatesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Dates component = new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID,
-				TEST_CUTOFF, getApprovedOn(), getReceivedOn());
+			Dates component = new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(),
+				getReceivedOn());
 			assertTrue(component.getAcquiredOns().isEmpty());
 		}
 	}
-	
+
 	public void testDeprecatedAccessors() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			Dates component = new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID,
-				TEST_CUTOFF, getApprovedOn(), getReceivedOn());
+			Dates component = new Dates(TEST_CREATED, TEST_POSTED, TEST_VALID, TEST_CUTOFF, getApprovedOn(),
+				getReceivedOn());
 			assertEquals(TEST_CREATED, component.getCreated().toXMLFormat());
 			assertEquals(TEST_POSTED, component.getPosted().toXMLFormat());
 			assertEquals(TEST_VALID, component.getValidTil().toXMLFormat());
@@ -309,7 +309,7 @@ public class DatesTest extends AbstractBaseTestCase {
 				assertEquals(TEST_APPROVED, component.getApprovedOn().toXMLFormat());
 			if (version.isAtLeast("4.0.1"))
 				assertEquals(TEST_RECEIVED, component.getReceivedOn().toXMLFormat());
-			
+
 			// Not compatible with XMLGregorianCalendar
 			if (version.isAtLeast("4.1")) {
 				component = new Dates("2012-01-01T01:02Z", "2012-01-01T01:02Z", "2012-01-01T01:02Z",
@@ -319,11 +319,11 @@ public class DatesTest extends AbstractBaseTestCase {
 				assertNull(component.getValidTil());
 				assertNull(component.getInfoCutOff());
 				assertNull(component.getApprovedOn());
-				assertNull(component.getReceivedOn());			
+				assertNull(component.getReceivedOn());
 			}
-		}		
+		}
 	}
-	
+
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -436,7 +436,7 @@ public class DatesTest extends AbstractBaseTestCase {
 			expectMessage(e, "This component cannot have a receivedOn date ");
 		}
 	}
-	
+
 	public void testWrongVersionAcquiredOn() {
 		try {
 			DDMSVersion.setCurrentVersion("4.1");
@@ -492,7 +492,7 @@ public class DatesTest extends AbstractBaseTestCase {
 			builder.commit();
 		}
 	}
-	
+
 	public void testBuilderLazyList() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

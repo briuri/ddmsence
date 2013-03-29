@@ -190,8 +190,8 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, BoundingBox
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				BoundingBox.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -218,28 +218,28 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 			getInstance("westbound longitude is required.", element);
 
 			// Not Double
-			element = buildComponentElement("west", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), String
-				.valueOf(TEST_NORTH));
+			element = buildComponentElement("west", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH),
+				String.valueOf(TEST_NORTH));
 			getInstance("westbound longitude is required.", element);
 
 			// Longitude too small
-			element = buildComponentElement("-181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), String
-				.valueOf(TEST_NORTH));
+			element = buildComponentElement("-181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH),
+				String.valueOf(TEST_NORTH));
 			getInstance("A longitude value must be between", element);
 
 			// Longitude too big
-			element = buildComponentElement("181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH), String
-				.valueOf(TEST_NORTH));
+			element = buildComponentElement("181", String.valueOf(TEST_EAST), String.valueOf(TEST_SOUTH),
+				String.valueOf(TEST_NORTH));
 			getInstance("A longitude value must be between", element);
 
 			// Latitude too small
-			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "-91", String
-				.valueOf(TEST_NORTH));
+			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "-91",
+				String.valueOf(TEST_NORTH));
 			getInstance("A latitude value must be between", element);
 
 			// Latitude too big
-			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "91", String
-				.valueOf(TEST_NORTH));
+			element = buildComponentElement(String.valueOf(TEST_WEST), String.valueOf(TEST_EAST), "91",
+				String.valueOf(TEST_NORTH));
 			getInstance("A latitude value must be between", element);
 		}
 	}
@@ -347,7 +347,7 @@ public class BoundingBoxTest extends AbstractBaseTestCase {
 			expectMessage(e, "The boundingBox element cannot be used");
 		}
 	}
-	
+
 	public void testDoubleEquality() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

@@ -109,8 +109,8 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 				assertEquals(1, messages.size());
 
 				String text = "The second coordinate in a gml:pos element must be 40.2 degrees.";
-				String extent = version.isAtLeast("4.0.1") ? "" : "/*:GeospatialExtent[namespace-uri()='" + ddmsNamespace
-					+ "'][1]";
+				String extent = version.isAtLeast("4.0.1") ? "" : "/*:GeospatialExtent[namespace-uri()='"
+					+ ddmsNamespace + "'][1]";
 				String resourceName = Resource.getName(version);
 				String locator = "/*:" + resourceName + "[namespace-uri()='" + ddmsNamespace + "'][1]"
 					+ "/*:geospatialCoverage[namespace-uri()='" + ddmsNamespace + "'][1]" + extent
@@ -136,15 +136,16 @@ public class SchematronValidationTest extends AbstractBaseTestCase {
 			}
 		}
 	}
-	
-	//	public void testIsmXmlV5SchematronValidation() throws SAXException, InvalidDDMSException, IOException, XSLException {
-	//		// For this test to work, the ISM.XML V5 distribution must be unpacked in the data directory.
-	//		File schematronFile = new File("ISM_XML.sch");
-	//		Resource resource = new DDMSReader().getDDMSResource(new File("data/sample/DDMSence_Example_v3_1.xml"));
-	//		List<ValidationMessage> messages = resource.validateWithSchematron(schematronFile);
-	//		for (ValidationMessage message : messages) {
-	//			System.out.println("Location: " + message.getLocator());
-	//			System.out.println("Message: " + message.getText());
-	//		}
-	//	}
+
+	// public void testIsmXmlV5SchematronValidation() throws SAXException, InvalidDDMSException, IOException,
+	// XSLException {
+	// // For this test to work, the ISM.XML V5 distribution must be unpacked in the data directory.
+	// File schematronFile = new File("ISM_XML.sch");
+	// Resource resource = new DDMSReader().getDDMSResource(new File("data/sample/DDMSence_Example_v3_1.xml"));
+	// List<ValidationMessage> messages = resource.validateWithSchematron(schematronFile);
+	// for (ValidationMessage message : messages) {
+	// System.out.println("Location: " + message.getLocator());
+	// System.out.println("Message: " + message.getText());
+	// }
+	// }
 }

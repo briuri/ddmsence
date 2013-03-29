@@ -63,7 +63,7 @@ public class UnknownTest extends AbstractBaseTestCase {
 	private List<String> getAffiliations() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? TEST_AFFILIATIONS : null);
 	}
-	
+
 	/**
 	 * Returns a fixture object for testing.
 	 */
@@ -170,8 +170,8 @@ public class UnknownTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Unknown
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				Unknown.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -215,7 +215,8 @@ public class UnknownTest extends AbstractBaseTestCase {
 			// Empty name
 			List<String> names = new ArrayList<String>();
 			names.add("");
-			getInstance("At least 1 name element must have a non-empty value.", names, TEST_PHONES, TEST_EMAILS, getAffiliations());
+			getInstance("At least 1 name element must have a non-empty value.", names, TEST_PHONES, TEST_EMAILS,
+				getAffiliations());
 		}
 	}
 
@@ -250,7 +251,7 @@ public class UnknownTest extends AbstractBaseTestCase {
 
 			dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, null, getAffiliations());
 			assertFalse(elementComponent.equals(dataComponent));
-			
+
 			if (version.isAtLeast("5.0")) {
 				dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS, null);
 				assertFalse(elementComponent.equals(dataComponent));
@@ -305,7 +306,7 @@ public class UnknownTest extends AbstractBaseTestCase {
 			new Unknown(names, null, null, null, attr);
 		}
 	}
-	
+
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

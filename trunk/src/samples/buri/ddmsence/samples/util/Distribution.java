@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.samples.util;
 
 import java.util.HashMap;
@@ -37,12 +37,12 @@ import java.util.Set;
 public class Distribution {
 
 	private Map<String, Integer> _map = new HashMap<String, Integer>();
-	
+
 	/**
 	 * Empty constructor
 	 */
 	public Distribution() {}
-	
+
 	/**
 	 * Increments the count for a particular key.
 	 * 
@@ -52,14 +52,14 @@ public class Distribution {
 		Integer count = getCount(key);
 		getMap().put(key, new Integer(count + 1));
 	}
-	
+
 	/**
 	 * Accessor for the keys
 	 */
 	public Set<String> getKeys() {
 		return (getMap().keySet());
 	}
-	
+
 	/**
 	 * Accessor for a count
 	 */
@@ -69,7 +69,7 @@ public class Distribution {
 			count = new Integer(0);
 		return (count);
 	}
-	
+
 	/**
 	 * Accessor for the map
 	 */

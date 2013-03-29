@@ -58,8 +58,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	public static GeospatialCoverage getFixture(int order) {
 		try {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
-			return (new GeospatialCoverage(null, null, null, PostalAddressTest.getFixture(), null, null, version
-				.isAtLeast("4.0.1") ? Integer.valueOf(order) : null, null));
+			return (new GeospatialCoverage(null, null, null, PostalAddressTest.getFixture(), null, null,
+				version.isAtLeast("4.0.1") ? Integer.valueOf(order) : null, null));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -196,16 +196,16 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 		xml.append(">\n\t");
 		if (version.isAtLeast("5.0")) {
 			xml.append("<ddms:geographicIdentifier>\n\t\t");
-			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName())
-				.append("=\"urn:us:gov:dod:nga:def:geo-political:GENC:3:ed1\" ddms:")
-				.append(CountryCodeTest.getValueName()).append("=\"USA\" />\n\t");
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName()).append(
+				"=\"urn:us:gov:dod:nga:def:geo-political:GENC:3:ed1\" ddms:").append(CountryCodeTest.getValueName()).append(
+				"=\"USA\" />\n\t");
 			xml.append("</ddms:geographicIdentifier>\n");
 		}
 		else if (version.isAtLeast("4.0.1")) {
 			xml.append("<ddms:geographicIdentifier>\n\t\t");
-			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName())
-				.append("=\"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1\" ddms:")
-				.append(CountryCodeTest.getValueName()).append("=\"LAO\" />\n\t");
+			xml.append("<ddms:countryCode ddms:").append(CountryCodeTest.getQualifierName()).append(
+				"=\"urn:us:gov:ic:cvenum:irm:coverage:iso3166:trigraph:v1\" ddms:").append(
+				CountryCodeTest.getValueName()).append("=\"LAO\" />\n\t");
 			xml.append("</ddms:geographicIdentifier>\n");
 		}
 		else {
@@ -389,8 +389,9 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			getInstance("At least 1 of ", null, null, null, null, null, null, null);
 
 			// If facilityIdentifier is used, nothing else can.
-			getInstance("A geographicIdentifier containing a facilityIdentifier", GeographicIdentifierTest
-				.getFacIdBasedFixture(), null, BoundingGeometryTest.getFixture(), null, null, null, null);
+			getInstance("A geographicIdentifier containing a facilityIdentifier",
+				GeographicIdentifierTest.getFacIdBasedFixture(), null, BoundingGeometryTest.getFixture(), null, null,
+				null, null);
 		}
 	}
 
@@ -416,8 +417,8 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 			Integer order = version.isAtLeast("4.0.1") ? TEST_ORDER : null;
 
 			GeospatialCoverage elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			GeospatialCoverage dataComponent = getInstance(SUCCESS, GeographicIdentifierTest
-				.getCountryCodeBasedFixture(), null, null, null, null, precedence, order);
+			GeospatialCoverage dataComponent = getInstance(SUCCESS,
+				GeographicIdentifierTest.getCountryCodeBasedFixture(), null, null, null, null, precedence, order);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 
@@ -504,27 +505,29 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 
 			if (!version.isAtLeast("5.0")) {
 				component = getInstance(SUCCESS, null, BoundingBoxTest.getFixture(), null, null, null, null, null);
-				assertEquals(BoundingBoxTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(), component.toHTML());
-				assertEquals(BoundingBoxTest.getFixture().getOutput(false, prefix, "") + getTextIcism(), component.toText());
+				assertEquals(BoundingBoxTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
+					component.toHTML());
+				assertEquals(BoundingBoxTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
+					component.toText());
 			}
 
 			component = getInstance(SUCCESS, null, null, BoundingGeometryTest.getFixture(), null, null, null, null);
-			assertEquals(BoundingGeometryTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(), component
-				.toHTML());
-			assertEquals(BoundingGeometryTest.getFixture().getOutput(false, prefix, "") + getTextIcism(), component
-				.toText());
+			assertEquals(BoundingGeometryTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
+				component.toHTML());
+			assertEquals(BoundingGeometryTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
+				component.toText());
 
 			component = getInstance(SUCCESS, null, null, null, PostalAddressTest.getFixture(), null, null, null);
-			assertEquals(PostalAddressTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(), component
-				.toHTML());
-			assertEquals(PostalAddressTest.getFixture().getOutput(false, prefix, "") + getTextIcism(), component
-				.toText());
+			assertEquals(PostalAddressTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
+				component.toHTML());
+			assertEquals(PostalAddressTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
+				component.toText());
 
 			component = getInstance(SUCCESS, null, null, null, null, VerticalExtentTest.getFixture(), null, null);
-			assertEquals(VerticalExtentTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(), component
-				.toHTML());
-			assertEquals(VerticalExtentTest.getFixture().getOutput(false, prefix, "") + getTextIcism(), component
-				.toText());
+			assertEquals(VerticalExtentTest.getFixture().getOutput(true, prefix, "") + getHtmlIcism(),
+				component.toHTML());
+			assertEquals(VerticalExtentTest.getFixture().getOutput(false, prefix, "") + getTextIcism(),
+				component.toText());
 		}
 	}
 
@@ -555,7 +558,7 @@ public class GeospatialCoverageTest extends AbstractBaseTestCase {
 	public void testBoundingBoxReuse() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			if (!version.isAtLeast("5.0")) {
 				BoundingBox box = BoundingBoxTest.getFixture();
 				getInstance(SUCCESS, null, box, null, null, null, null, null);

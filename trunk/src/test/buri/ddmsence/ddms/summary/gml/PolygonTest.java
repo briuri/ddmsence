@@ -185,8 +185,8 @@ public class PolygonTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_GML_PREFIX, Polygon
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_GML_PREFIX,
+				Polygon.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -334,8 +334,8 @@ public class PolygonTest extends AbstractBaseTestCase {
 			getInstance("id is required.", PositionTest.getFixtureList(), SRSAttributesTest.getFixture(), "");
 
 			// ID not NCName
-			getInstance("\"1TEST\" is not a valid NCName.", PositionTest.getFixtureList(), SRSAttributesTest
-				.getFixture(), "1TEST");
+			getInstance("\"1TEST\" is not a valid NCName.", PositionTest.getFixtureList(),
+				SRSAttributesTest.getFixture(), "1TEST");
 
 			// Missing Positions
 			getInstance("At least 4 positions are required", null, SRSAttributesTest.getFixture(), TEST_ID);

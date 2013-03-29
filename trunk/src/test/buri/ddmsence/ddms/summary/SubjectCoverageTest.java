@@ -54,8 +54,8 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 		try {
 			List<NonStateActor> actors = new ArrayList<NonStateActor>();
 			actors.add(NonStateActorTest.getFixture(order));
-			return (new SubjectCoverage(KeywordTest.getFixtureList(), null, null, DDMSVersion.getCurrentVersion()
-				.isAtLeast("4.0.1") ? actors : null, null));
+			return (new SubjectCoverage(KeywordTest.getFixtureList(), null, null,
+				DDMSVersion.getCurrentVersion().isAtLeast("4.0.1") ? actors : null, null));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -198,8 +198,8 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 			xml.append("\t<ddms:Subject>\n");
 			xml.append("\t\t<ddms:keyword ddms:value=\"DDMSence\" />\n");
 			xml.append("\t\t<ddms:keyword ddms:value=\"Uri\" />\n");
-			xml.append("\t\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ")
-				.append("ddms:label=\"DDMS\" />\n");
+			xml.append("\t\t<ddms:category ddms:qualifier=\"urn:buri:ddmsence:categories\" ddms:code=\"DDMS\" ").append(
+				"ddms:label=\"DDMS\" />\n");
 			xml.append("\t</ddms:Subject>\n");
 		}
 		xml.append("</ddms:subjectCoverage>");
@@ -233,8 +233,8 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// All fields
-			getInstance(SUCCESS, KeywordTest.getFixtureList(), CategoryTest.getFixtureList(), ProductionMetricTest
-				.getFixtureList(), NonStateActorTest.getFixtureList());
+			getInstance(SUCCESS, KeywordTest.getFixtureList(), CategoryTest.getFixtureList(),
+				ProductionMetricTest.getFixtureList(), NonStateActorTest.getFixtureList());
 
 			// No optional fields
 			getInstance(SUCCESS, KeywordTest.getFixtureList(), null, null, null);
@@ -261,21 +261,21 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 	public void testWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			SubjectCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
 
 			// 4.1 ddms:qualifier element used
 			if (version.isAtLeast("4.1")) {
-				assertEquals(1, component.getValidationWarnings().size());	
+				assertEquals(1, component.getValidationWarnings().size());
 				String text = "The ddms:qualifier attribute in this DDMS component";
 				String locator = "ddms:subjectCoverage/ddms:nonStateActor";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
-			// No warnings 
+			// No warnings
 			else {
 				assertEquals(0, component.getValidationWarnings().size());
 			}
-			
+
 			// Identical keywords
 			Element subjectElement = Util.buildDDMSElement("Subject", null);
 			subjectElement.appendChild(KeywordTest.getFixtureList().get(0).getXOMElementCopy());
@@ -315,8 +315,9 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			SubjectCoverage elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			SubjectCoverage dataComponent = getInstance(SUCCESS, KeywordTest.getFixtureList(), CategoryTest
-				.getFixtureList(), ProductionMetricTest.getFixtureList(), NonStateActorTest.getFixtureList());
+			SubjectCoverage dataComponent = getInstance(SUCCESS, KeywordTest.getFixtureList(),
+				CategoryTest.getFixtureList(), ProductionMetricTest.getFixtureList(),
+				NonStateActorTest.getFixtureList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -330,8 +331,8 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 				ProductionMetricTest.getFixtureList(), NonStateActorTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, KeywordTest.getFixtureList(), null, ProductionMetricTest
-				.getFixtureList(), NonStateActorTest.getFixtureList());
+			dataComponent = getInstance(SUCCESS, KeywordTest.getFixtureList(), null,
+				ProductionMetricTest.getFixtureList(), NonStateActorTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			if (version.isAtLeast("4.0.1")) {
@@ -349,7 +350,7 @@ public class SubjectCoverageTest extends AbstractBaseTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			SubjectCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());

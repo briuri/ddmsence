@@ -169,8 +169,7 @@ public class DDMSReaderTest extends AbstractBaseTestCase {
 	}
 
 	public void testGetElementReaderSuccess() throws InvalidDDMSException, IOException {
-		getReader()
-			.getElement(new FileReader(new File(PropertyReader.getProperty("test.unit.data"), "3.0/rights.xml")));
+		getReader().getElement(new FileReader(new File(PropertyReader.getProperty("test.unit.data"), "3.0/rights.xml")));
 	}
 
 	public void testGetResourceFailure() throws IOException {

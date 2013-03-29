@@ -51,8 +51,8 @@ public class ProfileTest extends AbstractBaseTestCase {
 	 */
 	public static Profile getFixture() {
 		try {
-			return (new Profile(SystemNameTest.getFixture(), ProfileValueTest.getFixtureList(), SecurityAttributesTest
-				.getFixture()));
+			return (new Profile(SystemNameTest.getFixture(), ProfileValueTest.getFixtureList(),
+				SecurityAttributesTest.getFixture()));
 		}
 		catch (InvalidDDMSException e) {
 			fail("Could not create fixture: " + e.getMessage());
@@ -143,8 +143,8 @@ public class ProfileTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, Profile
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
+				Profile.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -241,8 +241,8 @@ public class ProfileTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			Profile elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Profile dataComponent = getInstance(SUCCESS, new SystemName("MDR", null, null, null, SecurityAttributesTest
-				.getFixture()), ProfileValueTest.getFixtureList());
+			Profile dataComponent = getInstance(SUCCESS, new SystemName("MDR", null, null, null,
+				SecurityAttributesTest.getFixture()), ProfileValueTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			List<ProfileValue> list = new ArrayList<ProfileValue>();

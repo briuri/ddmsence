@@ -124,8 +124,8 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 		xml.append("<ddms:boundingGeometry ").append(getXmlnsDDMS()).append(">\n\t");
 		xml.append("<gml:Point ").append(getXmlnsGML()).append(" ");
 		xml.append(
-			"gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ")
-			.append("axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n\t\t");
+			"gml:id=\"IDValue\" srsName=\"http://metadata.dod.mil/mdr/ns/GSIP/crs/WGS84E_2D\" srsDimension=\"10\" ").append(
+			"axisLabels=\"A B C\" uomLabels=\"Meter Meter Meter\">\n\t\t");
 		xml.append("<gml:pos>32.1 40.1</gml:pos>\n\t");
 		xml.append("</gml:Point>\n");
 		xml.append("</ddms:boundingGeometry>");
@@ -215,8 +215,8 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			BoundingGeometry elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			BoundingGeometry dataComponent = getInstance(SUCCESS, PolygonTest.getFixtureList(), PointTest
-				.getFixtureList());
+			BoundingGeometry dataComponent = getInstance(SUCCESS, PolygonTest.getFixtureList(),
+				PointTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, PolygonTest.getFixtureList(), null);
@@ -227,8 +227,7 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 	public void testHTMLTextOutput() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
-			
+
 			BoundingGeometry component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
@@ -236,12 +235,12 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 			component = getInstance(SUCCESS, null, PointTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
-			
+
 			component = getInstance(SUCCESS, PolygonTest.getFixtureList(), null);
-			assertEquals(PolygonTest.getFixtureList().get(0).getOutput(true, "boundingGeometry.", ""), component
-				.toHTML());
-			assertEquals(PolygonTest.getFixtureList().get(0).getOutput(false, "boundingGeometry.", ""), component
-				.toText());
+			assertEquals(PolygonTest.getFixtureList().get(0).getOutput(true, "boundingGeometry.", ""),
+				component.toHTML());
+			assertEquals(PolygonTest.getFixtureList().get(0).getOutput(false, "boundingGeometry.", ""),
+				component.toText());
 		}
 	}
 
@@ -333,15 +332,11 @@ public class BoundingGeometryTest extends AbstractBaseTestCase {
 			fullPolygonBuilder.getPositions().get(0).getCoordinates().get(0).setValue(PositionTest.TEST_COORDS.get(0));
 			fullPolygonBuilder.getPositions().get(0).getCoordinates().get(1).setValue(PositionTest.TEST_COORDS.get(1));
 
-			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(0)
-				.setValue(PositionTest.TEST_COORDS_2.get(0));
-			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(1)
-				.setValue(PositionTest.TEST_COORDS_2.get(1));
+			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(0).setValue(PositionTest.TEST_COORDS_2.get(0));
+			fullPolygonBuilder.getPositions().get(1).getCoordinates().get(1).setValue(PositionTest.TEST_COORDS_2.get(1));
 
-			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(0)
-				.setValue(PositionTest.TEST_COORDS_3.get(0));
-			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(1)
-				.setValue(PositionTest.TEST_COORDS_3.get(1));
+			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(0).setValue(PositionTest.TEST_COORDS_3.get(0));
+			fullPolygonBuilder.getPositions().get(2).getCoordinates().get(1).setValue(PositionTest.TEST_COORDS_3.get(1));
 
 			fullPolygonBuilder.getPositions().get(3).getCoordinates().get(0).setValue(PositionTest.TEST_COORDS.get(0));
 			fullPolygonBuilder.getPositions().get(3).getCoordinates().get(1).setValue(PositionTest.TEST_COORDS.get(1));
