@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.samples;
 
 import java.awt.Dimension;
@@ -38,7 +38,8 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * DDMSsentials is a simple reader application which loads a DDMS Resource from a file, and displays it in three formats.
+ * DDMSsentials is a simple reader application which loads a DDMS Resource from a file, and displays it in three
+ * formats.
  * 
  * <ol>
  * <li>The original XML</li>
@@ -78,7 +79,7 @@ public class Essentials extends AbstractSample {
 			System.exit(1);
 		}
 	}
-	
+
 	/**
 	 * Sets up the UI and DDMSReader (which is base functionality of all sample apps)
 	 */
@@ -92,7 +93,7 @@ public class Essentials extends AbstractSample {
 	protected String getDefaultInstructions() {
 		return (INSTRUCTIONS);
 	}
-	
+
 	/**
 	 * Attempts to convert a file into a Resource object and then render it in the frame.
 	 * 
@@ -108,12 +109,12 @@ public class Essentials extends AbstractSample {
 		try {
 			// The DDMS reader builds a Resource object from the XML in the file.
 			_resource = getReader().getDDMSResource(file);
-			
+
 			// The three output formats
 			String xmlFormat = getResource().toXML();
 			String htmlFormat = getResource().toHTML();
 			String textFormat = getResource().toText();
-					
+
 			// Render the formats in the Swing GUI
 			JPanel htmlTextPanel = new JPanel(new GridLayout(1, 0));
 			htmlTextPanel.add(buildLabelledPanel(file.getName() + " in HTML", htmlFormat));
@@ -139,24 +140,25 @@ public class Essentials extends AbstractSample {
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
 		if (OPEN.equals(e.getActionCommand())) {
-		    JFileChooser chooser = new JFileChooser();
-		    FileFilter filter = new FileFilter() {
+			JFileChooser chooser = new JFileChooser();
+			FileFilter filter = new FileFilter() {
 				public String getDescription() {
 					return ("XML files");
 				}
+
 				public boolean accept(File pathname) {
 					return (pathname.getAbsolutePath().endsWith(".xml"));
 				}
 			};
-		    chooser.setFileFilter(filter);
-		    chooser.setCurrentDirectory(new File(PropertyReader.getProperty("sample.data")));
-		    int returnVal = chooser.showOpenDialog(getFrame());
-		    if (returnVal == JFileChooser.APPROVE_OPTION) {
-		    	loadFile(chooser.getSelectedFile());
-		    }
+			chooser.setFileFilter(filter);
+			chooser.setCurrentDirectory(new File(PropertyReader.getProperty("sample.data")));
+			int returnVal = chooser.showOpenDialog(getFrame());
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				loadFile(chooser.getSelectedFile());
+			}
 		}
 	}
-	
+
 	/**
 	 * Accessor for the currently loaded ddms:resource
 	 */

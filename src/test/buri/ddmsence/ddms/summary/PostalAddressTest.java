@@ -97,7 +97,7 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 	 * @param postalCode the postal code (optional)
 	 * @param countryCode the country code (optional)
 	 * @param hasState true if the stateOrProvince is a state, false if it is a province (only 1 of state or province
-	 * can exist in a postalAddress)
+	 *        can exist in a postalAddress)
 	 * @return a valid object
 	 */
 	private PostalAddress getInstance(String message, List<String> streets, String city, String stateOrProvince,
@@ -164,8 +164,8 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, PostalAddress
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				PostalAddress.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -296,20 +296,20 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 				CountryCodeTest.getFixture(), true);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_STREETS, null, TEST_STATE, TEST_POSTAL_CODE, CountryCodeTest
-				.getFixture(), true);
+			dataComponent = getInstance(SUCCESS, TEST_STREETS, null, TEST_STATE, TEST_POSTAL_CODE,
+				CountryCodeTest.getFixture(), true);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, null, TEST_POSTAL_CODE, CountryCodeTest
-				.getFixture(), true);
+			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, null, TEST_POSTAL_CODE,
+				CountryCodeTest.getFixture(), true);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, null, TEST_POSTAL_CODE, CountryCodeTest
-				.getFixture(), false);
+			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, null, TEST_POSTAL_CODE,
+				CountryCodeTest.getFixture(), false);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, null, CountryCodeTest
-				.getFixture(), true);
+			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, null,
+				CountryCodeTest.getFixture(), true);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, null, true);
@@ -325,13 +325,13 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true, true), component.toHTML());
 			assertEquals(getExpectedOutput(false, true), component.toText());
 
-			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, CountryCodeTest
-				.getFixture(), true);
+			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE,
+				CountryCodeTest.getFixture(), true);
 			assertEquals(getExpectedOutput(true, true), component.toHTML());
 			assertEquals(getExpectedOutput(false, true), component.toText());
 
-			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, CountryCodeTest
-				.getFixture(), false);
+			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE,
+				CountryCodeTest.getFixture(), false);
 			assertEquals(getExpectedOutput(true, false), component.toHTML());
 			assertEquals(getExpectedOutput(false, false), component.toText());
 		}
@@ -344,12 +344,12 @@ public class PostalAddressTest extends AbstractBaseTestCase {
 			PostalAddress component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(true, true), component.toXML());
 
-			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE, CountryCodeTest
-				.getFixture(), true);
+			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_STATE, TEST_POSTAL_CODE,
+				CountryCodeTest.getFixture(), true);
 			assertEquals(getExpectedXMLOutput(false, true), component.toXML());
 
-			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE, CountryCodeTest
-				.getFixture(), false);
+			component = getInstance(SUCCESS, TEST_STREETS, TEST_CITY, TEST_PROVINCE, TEST_POSTAL_CODE,
+				CountryCodeTest.getFixture(), false);
 			assertEquals(getExpectedXMLOutput(false, false), component.toXML());
 		}
 	}

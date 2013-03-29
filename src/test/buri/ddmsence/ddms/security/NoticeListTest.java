@@ -141,7 +141,7 @@ public class NoticeListTest extends AbstractBaseTestCase {
 		text.append(buildOutput(isHTML, "noticeList.notice.noticeDate", "2011-09-15"));
 		text.append(buildOutput(isHTML, "noticeList.notice.unregisteredNoticeType", "unregisteredNoticeType"));
 		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
-			text.append(buildOutput(isHTML, "noticeList.notice.externalNotice", "false"));	
+			text.append(buildOutput(isHTML, "noticeList.notice.externalNotice", "false"));
 		}
 		text.append(buildOutput(isHTML, "noticeList.classification", "U"));
 		text.append(buildOutput(isHTML, "noticeList.ownerProducer", "USA"));
@@ -158,7 +158,7 @@ public class NoticeListTest extends AbstractBaseTestCase {
 		xml.append("<ISM:Notice ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
 		xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
 		if (DDMSVersion.getCurrentVersion().isAtLeast("4.1")) {
-			xml.append(" ISM:externalNotice=\"false\"");	
+			xml.append(" ISM:externalNotice=\"false\"");
 		}
 		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">");
 		xml.append("<ISM:NoticeText ISM:classification=\"U\" ISM:ownerProducer=\"USA\" ISM:pocType=\"DoD-Dist-B\">noticeText</ISM:NoticeText>");
@@ -171,8 +171,8 @@ public class NoticeListTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX, NoticeList
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX,
+				NoticeList.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -232,12 +232,12 @@ public class NoticeListTest extends AbstractBaseTestCase {
 
 			// 4.1 ISM:externalNotice used
 			if (version.isAtLeast("4.1")) {
-				assertEquals(1, component.getValidationWarnings().size());	
+				assertEquals(1, component.getValidationWarnings().size());
 				String text = "The ISM:externalNotice attribute in this DDMS component";
 				String locator = "ddms:noticeList/ISM:Notice";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
-			// No warnings 
+			// No warnings
 			else {
 				assertEquals(0, component.getValidationWarnings().size());
 			}

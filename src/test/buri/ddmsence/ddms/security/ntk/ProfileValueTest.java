@@ -114,8 +114,8 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 		boolean expectFailure = !Util.isEmpty(message);
 		ProfileValue component = null;
 		try {
-			component = new ProfileValue(value, vocabulary, id, idReference, qualifier, SecurityAttributesTest
-				.getFixture());
+			component = new ProfileValue(value, vocabulary, id, idReference, qualifier,
+				SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -156,8 +156,8 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, ProfileValue
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
+				ProfileValue.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -203,8 +203,7 @@ public class ProfileValueTest extends AbstractBaseTestCase {
 			getInstance("\"\" is not a valid NMTOKEN.", element);
 
 			// Missing security attributes
-			element = Util
-				.buildElement(ntkPrefix, ProfileValue.getName(version), version.getNtkNamespace(), TEST_VALUE);
+			element = Util.buildElement(ntkPrefix, ProfileValue.getName(version), version.getNtkNamespace(), TEST_VALUE);
 			Util.addAttribute(element, ntkPrefix, "vocabulary", version.getNtkNamespace(), TEST_VOCABULARY);
 			getInstance("classification is required.", element);
 		}

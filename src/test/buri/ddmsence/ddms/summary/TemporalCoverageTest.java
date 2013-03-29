@@ -71,7 +71,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Generates an approximableDate for testing
 	 */
@@ -81,7 +81,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Helper method to create an object which is expected to be valid.
 	 * 
@@ -168,7 +168,8 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 		StringBuffer text = new StringBuffer();
 		text.append(buildOutput(isHTML, prefix + "name", TEST_NAME));
 		if (isApproximable) {
-			ApproximableDate start = new ApproximableDate(ApproximableDateTest.getFixtureElement("approximableStart", true));
+			ApproximableDate start = new ApproximableDate(ApproximableDateTest.getFixtureElement("approximableStart",
+				true));
 			ApproximableDate end = new ApproximableDate(ApproximableDateTest.getFixtureElement("approximableEnd", true));
 			text.append(start.getOutput(isHTML, prefix, ""));
 			text.append(end.getOutput(isHTML, prefix, ""));
@@ -235,7 +236,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 
 			// All fields, exact-exact
 			getInstance(SUCCESS, getValidElement(sVersion));
-			
+
 			// No optional fields
 			Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 			periodElement.appendChild(Util.buildDDMSElement("start", TEST_START));
@@ -249,7 +250,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 				periodElement.appendChild(ApproximableDateTest.getFixtureElement("approximableEnd", false));
 				getInstance(SUCCESS, wrapInnerElement(periodElement));
 			}
-			
+
 			// No optional fields, empty name element rather than no name element
 			periodElement = Util.buildDDMSElement("TimePeriod", null);
 			periodElement.appendChild(Util.buildDDMSElement("name", ""));
@@ -268,14 +269,14 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			if (version.isAtLeast("4.1")) {
 				// All fields, exact-approx
 				getInstance(SUCCESS, TEST_NAME, TEST_START, null, null, getApproximableEnd(false));
-			
+
 				// All fields, approx-exact
 				getInstance(SUCCESS, TEST_NAME, null, getApproximableStart(false), TEST_END, null);
-				
+
 				// All fields, approx-approx
 				getInstance(SUCCESS, TEST_NAME, null, getApproximableStart(false), null, getApproximableEnd(false));
 			}
-			
+
 			// No optional fields
 			getInstance(SUCCESS, "", TEST_START, null, TEST_END, null);
 		}
@@ -322,14 +323,14 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 					: "ddms:temporalCoverage/ddms:TimePeriod";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
-			
+
 			// 4.1 ddms:approximableStart/End element used
 			if (version.isAtLeast("4.1")) {
 				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(ApproximableDateTest.getFixtureElement("approximableStart", true));
 				periodElement.appendChild(ApproximableDateTest.getFixtureElement("approximableEnd", true));
 				component = getInstance(SUCCESS, wrapInnerElement(periodElement));
-				assertEquals(1, component.getValidationWarnings().size());	
+				assertEquals(1, component.getValidationWarnings().size());
 				String text = "The ddms:approximableStart or ddms:approximableEnd element";
 				String locator = "ddms:temporalCoverage";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
@@ -340,20 +341,21 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			// exact-exact
 			TemporalCoverage elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			TemporalCoverage dataComponent = getInstance(SUCCESS, TEST_NAME, TEST_START, null, TEST_END, null);
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
-			
+
 			// approx-approx
 			if (version.isAtLeast("4.1")) {
 				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(ApproximableDateTest.getFixtureElement("approximableStart", false));
 				periodElement.appendChild(ApproximableDateTest.getFixtureElement("approximableEnd", false));
 				elementComponent = getInstance(SUCCESS, wrapInnerElement(periodElement));
-				dataComponent = getInstance(SUCCESS, null, null, getApproximableStart(false), null, getApproximableEnd(false));
+				dataComponent = getInstance(SUCCESS, null, null, getApproximableStart(false), null,
+					getApproximableEnd(false));
 				assertEquals(elementComponent, dataComponent);
 				assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 			}
@@ -372,18 +374,19 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 
 			dataComponent = getInstance(SUCCESS, TEST_NAME, TEST_START, null, "2050", null);
 			assertFalse(elementComponent.equals(dataComponent));
-			
+
 			if (version.isAtLeast("4.1")) {
 				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(ApproximableDateTest.getFixtureElement("approximableStart", false));
 				periodElement.appendChild(ApproximableDateTest.getFixtureElement("approximableEnd", false));
 				elementComponent = getInstance(SUCCESS, wrapInnerElement(periodElement));
-				dataComponent = getInstance(SUCCESS, TEST_NAME, null, getApproximableStart(false), null, getApproximableEnd(false));
+				dataComponent = getInstance(SUCCESS, TEST_NAME, null, getApproximableStart(false), null,
+					getApproximableEnd(false));
 				assertFalse(elementComponent.equals(dataComponent));
-				
+
 				dataComponent = getInstance(SUCCESS, null, null, getApproximableStart(false), TEST_END, null);
 				assertFalse(elementComponent.equals(dataComponent));
-				
+
 				dataComponent = getInstance(SUCCESS, null, TEST_START, null, null, getApproximableEnd(false));
 				assertFalse(elementComponent.equals(dataComponent));
 			}
@@ -409,7 +412,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			component = getInstance(SUCCESS, TEST_NAME, TEST_START, null, TEST_END, null);
 			assertEquals(getExpectedOutput(true, false), component.toHTML());
 			assertEquals(getExpectedOutput(false, false), component.toText());
-			
+
 			if (version.isAtLeast("4.1")) {
 				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(Util.buildDDMSElement("name", TEST_NAME));
@@ -418,8 +421,9 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 				component = getInstance(SUCCESS, wrapInnerElement(periodElement));
 				assertEquals(getExpectedOutput(true, true), component.toHTML());
 				assertEquals(getExpectedOutput(false, true), component.toText());
-				
-				component = getInstance(SUCCESS, TEST_NAME, null, getApproximableStart(true), null, getApproximableEnd(true));
+
+				component = getInstance(SUCCESS, TEST_NAME, null, getApproximableStart(true), null,
+					getApproximableEnd(true));
 				assertEquals(getExpectedOutput(true, true), component.toHTML());
 				assertEquals(getExpectedOutput(false, true), component.toText());
 			}
@@ -434,7 +438,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 
 			component = getInstance(SUCCESS, TEST_NAME, TEST_START, null, TEST_END, null);
 			assertEquals(getExpectedXMLOutput(false), component.toXML());
-			
+
 			if (version.isAtLeast("4.1")) {
 				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(Util.buildDDMSElement("name", TEST_NAME));
@@ -442,8 +446,9 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 				periodElement.appendChild(ApproximableDateTest.getFixtureElement("approximableEnd", true));
 				component = getInstance(SUCCESS, wrapInnerElement(periodElement));
 				assertEquals(getExpectedXMLOutput(true), component.toXML());
-				
-				component = getInstance(SUCCESS, TEST_NAME, null, getApproximableStart(true), null, getApproximableEnd(true));
+
+				component = getInstance(SUCCESS, TEST_NAME, null, getApproximableStart(true), null,
+					getApproximableEnd(true));
 				assertEquals(getExpectedXMLOutput(true), component.toXML());
 			}
 		}
@@ -452,14 +457,14 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 	public void testDefaultValues() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 			periodElement.appendChild(Util.buildDDMSElement("start", ""));
 			periodElement.appendChild(Util.buildDDMSElement("end", ""));
 			TemporalCoverage component = getInstance(SUCCESS, wrapInnerElement(periodElement));
 			assertEquals("Unknown", component.getStartString());
 			assertEquals("Unknown", component.getEndString());
-			
+
 			component = getInstance(SUCCESS, "", "", null, "", null);
 			assertEquals("Unknown", component.getTimePeriodName());
 			assertEquals("Unknown", component.getStartString());
@@ -478,13 +483,13 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			TemporalCoverage component = getInstance(SUCCESS, wrapInnerElement(periodElement));
 			assertNull(component.getStart());
 			assertNull(component.getEnd());
-			
+
 			component = getInstance(SUCCESS, "", TEST_START, null, TEST_START, null);
 			assertEquals(TEST_START, component.getStart().toXMLFormat());
 			assertEquals(TEST_START, component.getEnd().toXMLFormat());
-		}		
+		}
 	}
-	
+
 	public void testSecurityAttributes() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -520,7 +525,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			expectMessage(e, "Approximable dates cannot be used until DDMS 4.1 or later.");
 		}
 	}
-	
+
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -528,7 +533,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			TemporalCoverage component = getInstance(SUCCESS, getValidElement(sVersion));
 			TemporalCoverage.Builder builder = new TemporalCoverage.Builder(component);
 			assertEquals(component, builder.commit());
-			
+
 			if (version.isAtLeast("4.1")) {
 				Element periodElement = Util.buildDDMSElement("TimePeriod", null);
 				periodElement.appendChild(Util.buildDDMSElement("name", TEST_NAME));
@@ -569,7 +574,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 			builder.setStartString("2001");
 			builder.setEndString("2002");
 			builder.commit();
-			
+
 			if (version.isAtLeast("4.1")) {
 				builder.getApproximableStart().setDescription("test");
 				try {
@@ -579,7 +584,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 				catch (InvalidDDMSException e) {
 					expectMessage(e, "Only 1 of start or approximableStart");
 				}
-				
+
 				builder.getApproximableStart().setDescription(null);
 				builder.getApproximableEnd().setDescription("test");
 				try {
@@ -589,7 +594,7 @@ public class TemporalCoverageTest extends AbstractBaseTestCase {
 				catch (InvalidDDMSException e) {
 					expectMessage(e, "Only 1 of end or approximableEnd");
 				}
-				
+
 				builder.getApproximableStart().setDescription("test");
 				builder.setStartString(null);
 				builder.setEndString(null);

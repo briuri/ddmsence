@@ -158,8 +158,8 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_ISM_PREFIX, NoticeText
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_ISM_PREFIX,
+				NoticeText.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -173,8 +173,7 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			getInstance(SUCCESS, getFixtureElement());
 
 			// No optional fields
-			Element element = Util
-				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
+			Element element = Util.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			SecurityAttributesTest.getFixture().addTo(element);
 			getInstance(SUCCESS, element);
 		}
@@ -198,8 +197,7 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			String ismPrefix = PropertyReader.getPrefix("ism");
 
 			// Invalid pocType
-			Element element = Util
-				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
+			Element element = Util.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			Util.addAttribute(element, ismPrefix, "pocType", version.getIsmNamespace(), "Unknown");
 			getInstance("Unknown is not a valid enumeration token", element);
 
@@ -218,7 +216,8 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			getInstance("Unknown is not a valid enumeration token", TEST_VALUE, Util.getXsListAsList("Unknown"));
 
 			// Partial Invalid pocType
-			getInstance("Unknown is not a valid enumeration token", TEST_VALUE, Util.getXsListAsList("DoD-Dist-B Unknown"));
+			getInstance("Unknown is not a valid enumeration token", TEST_VALUE,
+				Util.getXsListAsList("DoD-Dist-B Unknown"));
 		}
 	}
 
@@ -232,8 +231,7 @@ public class NoticeTextTest extends AbstractBaseTestCase {
 			assertEquals(0, component.getValidationWarnings().size());
 
 			// Empty value
-			Element element = Util
-				.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
+			Element element = Util.buildElement(ismPrefix, NoticeText.getName(version), version.getIsmNamespace(), null);
 			SecurityAttributesTest.getFixture().addTo(element);
 			component = getInstance(SUCCESS, element);
 			assertEquals(1, component.getValidationWarnings().size());

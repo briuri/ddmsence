@@ -123,8 +123,7 @@ public class SecurityTest extends AbstractBaseTestCase {
 			text.append(buildOutput(isHTML, prefix + "noticeList.notice.unregisteredNoticeType",
 				"unregisteredNoticeType"));
 			if (version.isAtLeast("4.1")) {
-				text.append(buildOutput(isHTML, prefix + "noticeList.notice.externalNotice",
-				"false"));				
+				text.append(buildOutput(isHTML, prefix + "noticeList.notice.externalNotice", "false"));
 			}
 			text.append(buildOutput(isHTML, prefix + "noticeList.classification", "U"));
 			text.append(buildOutput(isHTML, prefix + "noticeList.ownerProducer", "USA"));
@@ -177,8 +176,8 @@ public class SecurityTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Security
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				Security.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -192,8 +191,8 @@ public class SecurityTest extends AbstractBaseTestCase {
 			// No optional fields
 			if (version.isAtLeast("4.0.1")) {
 				Element element = Util.buildDDMSElement(Security.getName(version), null);
-				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version
-					.getIsmNamespace(), "true");
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
+					version.getIsmNamespace(), "true");
 				SecurityAttributesTest.getFixture().addTo(element);
 				getInstance(SUCCESS, element);
 			}
@@ -222,14 +221,14 @@ public class SecurityTest extends AbstractBaseTestCase {
 
 				// Incorrect excludeFromRollup
 				element = Util.buildDDMSElement(Security.getName(version), null);
-				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version
-					.getIsmNamespace(), "false");
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
+					version.getIsmNamespace(), "false");
 				getInstance("The excludeFromRollup attribute must have a fixed value", element);
 
 				// Invalid excludeFromRollup
 				element = Util.buildDDMSElement(Security.getName(version), null);
-				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version
-					.getIsmNamespace(), "aardvark");
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
+					version.getIsmNamespace(), "aardvark");
 				getInstance("The excludeFromRollup attribute is required.", element);
 			}
 		}
@@ -254,15 +253,15 @@ public class SecurityTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
 			Security component = getInstance(SUCCESS, getValidElement(sVersion));
-			
+
 			// 4.1 ISM:externalNotice used
 			if (version.isAtLeast("4.1")) {
-				assertEquals(1, component.getValidationWarnings().size());	
+				assertEquals(1, component.getValidationWarnings().size());
 				String text = "The ISM:externalNotice attribute in this DDMS component";
 				String locator = "ddms:security/ddms:noticeList/ISM:Notice";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
-			// No warnings 
+			// No warnings
 			else {
 				assertEquals(0, component.getValidationWarnings().size());
 			}
@@ -270,8 +269,8 @@ public class SecurityTest extends AbstractBaseTestCase {
 			// Nested warnings
 			if (version.isAtLeast("4.0.1")) {
 				Element element = Util.buildDDMSElement(Security.getName(version), null);
-				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup", version
-					.getIsmNamespace(), "true");
+				Util.addAttribute(element, PropertyReader.getPrefix("ism"), "excludeFromRollup",
+					version.getIsmNamespace(), "true");
 				Element accessElement = Util.buildElement(PropertyReader.getPrefix("ntk"), Access.getName(version),
 					version.getNtkNamespace(), null);
 				SecurityAttributesTest.getFixture().addTo(accessElement);

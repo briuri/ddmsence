@@ -241,8 +241,8 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 
 			ResourceManagement elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
 			ResourceManagement dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(),
-				RevisionRecallTest.getTextFixture(), TaskingInfoTest.getFixtureList(), ProcessingInfoTest
-					.getFixtureList());
+				RevisionRecallTest.getTextFixture(), TaskingInfoTest.getFixtureList(),
+				ProcessingInfoTest.getFixtureList());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -257,16 +257,16 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 				TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), null, TaskingInfoTest
-				.getFixtureList(), ProcessingInfoTest.getFixtureList());
+			dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), null,
+				TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest
-				.getTextFixture(), null, ProcessingInfoTest.getFixtureList());
+			dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(),
+				RevisionRecallTest.getTextFixture(), null, ProcessingInfoTest.getFixtureList());
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest
-				.getTextFixture(), TaskingInfoTest.getFixtureList(), null);
+			dataComponent = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(),
+				RevisionRecallTest.getTextFixture(), TaskingInfoTest.getFixtureList(), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -279,8 +279,9 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
-			component = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest
-				.getTextFixture(), TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
+			component = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(),
+				RevisionRecallTest.getTextFixture(), TaskingInfoTest.getFixtureList(),
+				ProcessingInfoTest.getFixtureList());
 			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 		}
@@ -293,8 +294,9 @@ public class ResourceManagementTest extends AbstractBaseTestCase {
 			ResourceManagement component = getInstance(SUCCESS, getValidElement(sVersion));
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 
-			component = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(), RevisionRecallTest
-				.getTextFixture(), TaskingInfoTest.getFixtureList(), ProcessingInfoTest.getFixtureList());
+			component = getInstance(SUCCESS, RecordsManagementInfoTest.getFixture(),
+				RevisionRecallTest.getTextFixture(), TaskingInfoTest.getFixtureList(),
+				ProcessingInfoTest.getFixtureList());
 			assertEquals(getExpectedXMLOutput(), component.toXML());
 		}
 	}

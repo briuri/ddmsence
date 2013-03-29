@@ -62,8 +62,8 @@ public class LazyListTest extends AbstractBaseTestCase {
 		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(serialized));
 		LazyList unserializedList = (LazyList) ois.readObject();
 		assertEquals(list.size(), unserializedList.size());
-		assertEquals(((Dates.Builder) (list.get(0))).getCreated(), ((Dates.Builder) (unserializedList.get(0)))
-			.getCreated());
+		assertEquals(((Dates.Builder) (list.get(0))).getCreated(),
+			((Dates.Builder) (unserializedList.get(0))).getCreated());
 	}
 
 	public void testUnmodifiableList() {

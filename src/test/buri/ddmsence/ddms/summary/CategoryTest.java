@@ -103,8 +103,8 @@ public class CategoryTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Category component = null;
 		try {
-			component = new Category(qualifier, code, label, version.isAtLeast("4.0.1") ? SecurityAttributesTest
-				.getFixture() : null);
+			component = new Category(qualifier, code, label,
+				version.isAtLeast("4.0.1") ? SecurityAttributesTest.getFixture() : null);
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -154,8 +154,8 @@ public class CategoryTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Category
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				Category.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}

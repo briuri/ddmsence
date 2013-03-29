@@ -57,7 +57,7 @@ public class CountryCodeTest extends AbstractBaseTestCase {
 		}
 		return (null);
 	}
-	
+
 	/**
 	 * Returns the name of the qualifier attribute, based on DDMS version
 	 */
@@ -71,7 +71,7 @@ public class CountryCodeTest extends AbstractBaseTestCase {
 	public static String getValueName() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("5.0") ? "code" : "value");
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -131,8 +131,9 @@ public class CountryCodeTest extends AbstractBaseTestCase {
 	 */
 	private String getExpectedXMLOutput() {
 		StringBuffer xml = new StringBuffer();
-		xml.append("<ddms:countryCode ").append(getXmlnsDDMS()).append(" ddms:").append(getQualifierName()).append("=\"").append(TEST_QUALIFIER)
-			.append("\" ddms:").append(getValueName()).append("=\"").append(TEST_VALUE).append("\" />");
+		xml.append("<ddms:countryCode ").append(getXmlnsDDMS()).append(" ddms:").append(getQualifierName()).append(
+			"=\"").append(TEST_QUALIFIER).append("\" ddms:").append(getValueName()).append("=\"").append(TEST_VALUE).append(
+			"\" />");
 		return (xml.toString());
 	}
 
@@ -140,8 +141,8 @@ public class CountryCodeTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, CountryCode
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				CountryCode.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -164,7 +165,7 @@ public class CountryCodeTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String countryCodeName = CountryCode.getName(version);
-			
+
 			String qualifierName = getQualifierName();
 			String valueName = getValueName();
 
@@ -195,10 +196,10 @@ public class CountryCodeTest extends AbstractBaseTestCase {
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			String qualifierName = getQualifierName();
 			String valueName = getValueName();
-			
+
 			// Missing qualifier
 			getInstance(qualifierName + " attribute is required.", null, TEST_VALUE);
 

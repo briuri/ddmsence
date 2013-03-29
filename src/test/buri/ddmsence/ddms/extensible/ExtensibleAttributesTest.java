@@ -297,7 +297,8 @@ public class ExtensibleAttributesTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// No invalid cases right now, because validation cannot occur until these attributes are attached to something.
+			// No invalid cases right now, because validation cannot occur until these attributes are attached to
+			// something.
 		}
 	}
 

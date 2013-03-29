@@ -128,8 +128,8 @@ public class PublisherTest extends AbstractBaseTestCase {
 		xml.append("<ddms:publisher ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
 		if (version.isAtLeast("4.0.1"))
 			xml.append(" ISM:pocType=\"DoD-Dist-B\"");
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(Service.getName(version))
-			.append(">\n");
+		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(Service.getName(version)).append(
+			">\n");
 		xml.append("\t\t<ddms:name>https://metadata.dod.mil/ebxmlquery/soap</ddms:name>\n");
 		xml.append("\t</ddms:").append(Service.getName(version)).append(">\n</ddms:publisher>");
 		return (formatXml(xml.toString(), preserveFormatting));
@@ -139,8 +139,8 @@ public class PublisherTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Publisher
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				Publisher.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -170,11 +170,11 @@ public class PublisherTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String ismPrefix = PropertyReader.getPrefix("ism");
-			
+
 			// Missing entity
 			Element element = Util.buildDDMSElement(Publisher.getName(version), null);
 			getInstance("entity is required.", element);
-			
+
 			if (version.isAtLeast("4.0.1")) {
 				// Invalid pocType
 				element = Util.buildDDMSElement(Publisher.getName(version), null);
@@ -194,16 +194,18 @@ public class PublisherTest extends AbstractBaseTestCase {
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			// Missing entity
 			getInstance("entity is required.", (IRoleEntity) null, null);
-			
+
 			if (version.isAtLeast("4.0.1")) {
 				// Invalid pocType
-				getInstance("Unknown is not a valid enumeration token", ServiceTest.getFixture(), Util.getXsListAsList("Unknown"));
+				getInstance("Unknown is not a valid enumeration token", ServiceTest.getFixture(),
+					Util.getXsListAsList("Unknown"));
 
 				// Partial Invalid pocType
-				getInstance("Unknown is not a valid enumeration token", ServiceTest.getFixture(), Util.getXsListAsList("DoD-Dist-B Unknown"));
+				getInstance("Unknown is not a valid enumeration token", ServiceTest.getFixture(),
+					Util.getXsListAsList("DoD-Dist-B Unknown"));
 			}
 		}
 	}
@@ -231,8 +233,8 @@ public class PublisherTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Publisher elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Publisher dataComponent = getInstance(SUCCESS, new Service(Util.getXsListAsList("DISA PEO-GES"), Util
-				.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
+			Publisher dataComponent = getInstance(SUCCESS, new Service(Util.getXsListAsList("DISA PEO-GES"),
+				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -241,7 +243,7 @@ public class PublisherTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Publisher component = getInstance(SUCCESS, getValidElement(sVersion));
-			assertEquals(getExpectedOutput(true), component.toHTML()); 
+			assertEquals(getExpectedOutput(true), component.toHTML());
 			assertEquals(getExpectedOutput(false), component.toText());
 
 			component = getInstance(SUCCESS, ServiceTest.getFixture(), RoleEntityTest.getPocTypes());
@@ -272,7 +274,8 @@ public class PublisherTest extends AbstractBaseTestCase {
 	public void testWrongVersionPocType() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new Publisher(ServiceTest.getFixture(), Util.getXsListAsList("DoD-Dist-B"), SecurityAttributesTest.getFixture());
+			new Publisher(ServiceTest.getFixture(), Util.getXsListAsList("DoD-Dist-B"),
+				SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

@@ -144,8 +144,8 @@ public class KeywordTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Keyword
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				Keyword.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -321,7 +321,8 @@ public class KeywordTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			// No invalid cases that span all versions of DDMS. The only field is "value" and if that is missing, the builder is empty.
+			// No invalid cases that span all versions of DDMS. The only field is "value" and if that is missing, the
+			// builder is empty.
 		}
 	}
 }

@@ -42,7 +42,7 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 	private static final String TEST_NOTICE_DATE = "2011-09-15";
 	private static final String TEST_UNREGISTERED_NOTICE_TYPE = "unregisteredNoticeType";
 	private static final Boolean TEST_EXTERNAL = Boolean.FALSE;
-	
+
 	/**
 	 * Constructor
 	 */
@@ -73,7 +73,7 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 	private static Boolean getExternalNotice() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("4.1") ? TEST_EXTERNAL : null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -112,7 +112,8 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 		boolean expectFailure = !Util.isEmpty(message);
 		NoticeAttributes attributes = null;
 		try {
-			attributes = new NoticeAttributes(noticeType, noticeReason, noticeDate, unregisteredNoticeType, externalNotice);
+			attributes = new NoticeAttributes(noticeType, noticeReason, noticeDate, unregisteredNoticeType,
+				externalNotice);
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -173,8 +174,8 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 
 			// too long noticeReason
 			element = Util.buildDDMSElement(Resource.getName(version), null);
-			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_REASON_NAME, icNamespace, longString
-				.toString());
+			Util.addAttribute(element, ismPrefix, NoticeAttributes.NOTICE_REASON_NAME, icNamespace,
+				longString.toString());
 			getInstance("The noticeReason attribute must be shorter", element);
 
 			// too long unregisteredNoticeType
@@ -237,7 +238,7 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 			assertNull(attr.isExternalReference());
 		}
 	}
-	
+
 	public void testConstructorEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
@@ -277,9 +278,10 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 				TEST_UNREGISTERED_NOTICE_TYPE, getExternalNotice());
 			assertFalse(expected.equals(test));
 
-			test = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, DIFFERENT_VALUE, getExternalNotice());
+			test = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE, DIFFERENT_VALUE,
+				getExternalNotice());
 			assertFalse(expected.equals(test));
-			
+
 			if (version.isAtLeast("4.1")) {
 				test = getInstance(SUCCESS, TEST_NOTICE_TYPE, TEST_NOTICE_REASON, TEST_NOTICE_DATE,
 					TEST_UNREGISTERED_NOTICE_TYPE, null);
@@ -323,8 +325,8 @@ public class NoticeAttributesTest extends AbstractBaseTestCase {
 	public void testWrongVersion() throws InvalidDDMSException {
 		DDMSVersion version = DDMSVersion.setCurrentVersion("2.0");
 		Element element = Util.buildDDMSElement(Resource.getName(version), null);
-		Util.addAttribute(element, PropertyReader.getPrefix("ism"), NoticeAttributes.NOTICE_DATE_NAME, version
-			.getIsmNamespace(), "2011-09-15");
+		Util.addAttribute(element, PropertyReader.getPrefix("ism"), NoticeAttributes.NOTICE_DATE_NAME,
+			version.getIsmNamespace(), "2011-09-15");
 		getInstance("Notice attributes cannot be used", element);
 
 		DDMSVersion.setCurrentVersion("4.0.1");

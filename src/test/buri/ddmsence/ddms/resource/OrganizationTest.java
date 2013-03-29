@@ -182,8 +182,8 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Organization
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				Organization.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -231,8 +231,8 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			// Missing name
-			getInstance("At least 1 name element must exist.", null, TEST_PHONES, TEST_EMAILS, SubOrganizationTest
-				.getFixtureList(), getAcronym());
+			getInstance("At least 1 name element must exist.", null, TEST_PHONES, TEST_EMAILS,
+				SubOrganizationTest.getFixtureList(), getAcronym());
 
 			// Empty name
 			List<String> names = new ArrayList<String>();
@@ -267,8 +267,8 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Organization elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Organization dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS, SubOrganizationTest
-				.getFixtureList(), getAcronym());
+			Organization dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS,
+				SubOrganizationTest.getFixtureList(), getAcronym());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -278,8 +278,8 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			Organization elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Organization dataComponent = getInstance(SUCCESS, TEST_NAMES, null, TEST_EMAILS, SubOrganizationTest
-				.getFixtureList(), getAcronym());
+			Organization dataComponent = getInstance(SUCCESS, TEST_NAMES, null, TEST_EMAILS,
+				SubOrganizationTest.getFixtureList(), getAcronym());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, null, SubOrganizationTest.getFixtureList(),
@@ -290,8 +290,8 @@ public class OrganizationTest extends AbstractBaseTestCase {
 				dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS, null, getAcronym());
 				assertFalse(elementComponent.equals(dataComponent));
 
-				dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS, SubOrganizationTest
-					.getFixtureList(), "NewACRONYM");
+				dataComponent = getInstance(SUCCESS, TEST_NAMES, TEST_PHONES, TEST_EMAILS,
+					SubOrganizationTest.getFixtureList(), "NewACRONYM");
 				assertFalse(elementComponent.equals(dataComponent));
 			}
 		}
@@ -358,8 +358,8 @@ public class OrganizationTest extends AbstractBaseTestCase {
 		PropertyReader.setProperty("output.indexLevel", "0");
 		assertEquals("entityType: organization\nname: DISA\n"
 			+ "subOrganization: sub1\nsubOrganization.classification: U\nsubOrganization.ownerProducer: USA\n"
-			+ "subOrganization: sub2\nsubOrganization.classification: U\nsubOrganization.ownerProducer: USA\n", org
-			.toText());
+			+ "subOrganization: sub2\nsubOrganization.classification: U\nsubOrganization.ownerProducer: USA\n",
+			org.toText());
 
 		PropertyReader.setProperty("output.indexLevel", "1");
 		assertEquals(
@@ -388,7 +388,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 			}
 			else {
 				try {
-					new Organization(names, null, null, null, null, attr);	
+					new Organization(names, null, null, null, null, attr);
 				}
 				catch (InvalidDDMSException e) {
 					expectMessage(e, "ddms:organization cannot have");
@@ -396,7 +396,7 @@ public class OrganizationTest extends AbstractBaseTestCase {
 			}
 		}
 	}
-	
+
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

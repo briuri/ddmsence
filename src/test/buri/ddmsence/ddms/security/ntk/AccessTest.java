@@ -38,7 +38,7 @@ import buri.ddmsence.util.Util;
 public class AccessTest extends AbstractBaseTestCase {
 
 	private static final Boolean TEST_EXTERNAL = Boolean.TRUE;
-	
+
 	/**
 	 * Constructor
 	 */
@@ -67,7 +67,7 @@ public class AccessTest extends AbstractBaseTestCase {
 	private static Boolean getExternalReference() {
 		return (DDMSVersion.getCurrentVersion().isAtLeast("4.1") ? TEST_EXTERNAL : null);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -104,7 +104,8 @@ public class AccessTest extends AbstractBaseTestCase {
 		boolean expectFailure = !Util.isEmpty(message);
 		Access component = null;
 		try {
-			component = new Access(individuals, groups, profileList, externalReference, SecurityAttributesTest.getFixture());
+			component = new Access(individuals, groups, profileList, externalReference,
+				SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -142,7 +143,7 @@ public class AccessTest extends AbstractBaseTestCase {
 		xml.append("<ntk:Access ").append(getXmlnsNTK()).append(" ").append(getXmlnsISM()).append(" ");
 		if (version.isAtLeast("4.1")) {
 			xml.append("ntk:externalReference=\"true\" ");
-		}		
+		}
 		xml.append("ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
 		xml.append("\t<ntk:AccessIndividualList>\n");
 		xml.append("\t\t<ntk:AccessIndividual ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n");
@@ -171,8 +172,8 @@ public class AccessTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX, Access
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_NTK_PREFIX,
+				Access.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -197,8 +198,8 @@ public class AccessTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(), ProfileListTest
-				.getFixture(), getExternalReference());
+			getInstance(SUCCESS, IndividualTest.getFixtureList(), GroupTest.getFixtureList(),
+				ProfileListTest.getFixture(), getExternalReference());
 
 			// No optional fields
 			getInstance(SUCCESS, null, null, null, null);
@@ -239,16 +240,16 @@ public class AccessTest extends AbstractBaseTestCase {
 
 			// 4.1 ntk:externalReference used
 			if (version.isAtLeast("4.1")) {
-				assertEquals(1, component.getValidationWarnings().size());	
+				assertEquals(1, component.getValidationWarnings().size());
 				String text = "The ntk:externalReference attribute in this DDMS component";
 				String locator = "ntk:Access";
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 			}
-			// No warnings 
+			// No warnings
 			else {
 				assertEquals(0, component.getValidationWarnings().size());
 			}
-			
+
 			// Empty
 			component = getInstance(SUCCESS, null, null, null, null);
 			assertEquals(1, component.getValidationWarnings().size());
@@ -257,12 +258,13 @@ public class AccessTest extends AbstractBaseTestCase {
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
 		}
 	}
-	
+
 	public void testDeprecatedConstructor() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			Access component = new Access(IndividualTest.getFixtureList(), null, null, SecurityAttributesTest.getFixture());
+			Access component = new Access(IndividualTest.getFixtureList(), null, null,
+				SecurityAttributesTest.getFixture());
 			assertNull(component.isExternalReference());
 		}
 	}

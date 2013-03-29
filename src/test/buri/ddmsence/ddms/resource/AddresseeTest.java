@@ -60,8 +60,8 @@ public class AddresseeTest extends AbstractBaseTestCase {
 			DDMSVersion version = DDMSVersion.getCurrentVersion();
 			Element element = Util.buildDDMSElement(Addressee.getName(version), null);
 			element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
-			element.appendChild(useOrg ? OrganizationTest.getFixture().getXOMElementCopy() : PersonTest.getFixture()
-				.getXOMElementCopy());
+			element.appendChild(useOrg ? OrganizationTest.getFixture().getXOMElementCopy()
+				: PersonTest.getFixture().getXOMElementCopy());
 			SecurityAttributesTest.getFixture().addTo(element);
 			return (element);
 		}
@@ -157,8 +157,8 @@ public class AddresseeTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement(true)), DEFAULT_DDMS_PREFIX, Addressee
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement(true)), DEFAULT_DDMS_PREFIX,
+				Addressee.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}

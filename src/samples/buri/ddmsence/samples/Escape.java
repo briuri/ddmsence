@@ -16,7 +16,7 @@
 
    You can contact the author at ddmsence@urizone.net. The DDMSence
    home page is located at http://ddmsence.urizone.net/
-*/
+ */
 package buri.ddmsence.samples;
 
 import java.awt.BorderLayout;
@@ -75,10 +75,10 @@ public class Escape extends AbstractSample {
 
 	private List<Resource> _resources;
 	private static final String GOOGLE_URL = "http://chart.apis.google.com/chart?";
-	
+
 	private static final String PIE_GRAPH = "p";
 	private static final String PIE_GRAPH_3D = "p3";
-	
+
 	/**
 	 * Entry point
 	 * 
@@ -99,7 +99,7 @@ public class Escape extends AbstractSample {
 			e.printStackTrace();
 			System.exit(1);
 		}
-	}	
+	}
 
 	/**
 	 * This application loads immediately and has no default instructions.
@@ -109,31 +109,31 @@ public class Escape extends AbstractSample {
 	protected String getDefaultInstructions() {
 		return ("");
 	}
-	
+
 	/**
 	 * Sets up the UI and DDMSReader (which is base functionality of all sample apps)
 	 */
 	public Escape() throws SAXException, IOException {
 		super("Escape", new Dimension(600, 400), false);
-		
+
 		_resources = new ArrayList<Resource>();
 		loadValidResources();
-		
+
 		// Create the URLs for the data
 		URL mimeTypeUrl = buildMimeTypeGraph();
 		URL keywordUrl = buildKeywordGraph();
 		URL dateUrl = buildDateGraph();
 		URL versionUrl = buildVersionGraph();
-		
+
 		// Render the data in the Swing UI
 		JTabbedPane pane = new JTabbedPane(JTabbedPane.TOP);
 		pane.add("Mime Types", buildVisualizationPanel(mimeTypeUrl));
 		pane.add("Keywords", buildVisualizationPanel(keywordUrl));
 		pane.add("Dates", buildVisualizationPanel(dateUrl));
 		pane.add("DDMS Versions", buildVisualizationPanel(versionUrl));
-		getFrame().getContentPane().add(pane, BorderLayout.CENTER);		
+		getFrame().getContentPane().add(pane, BorderLayout.CENTER);
 	}
-	
+
 	/**
 	 * Searches the sample directory for valid DDMS Resources and builds
 	 * object models for them.
@@ -156,7 +156,7 @@ public class Escape extends AbstractSample {
 			}
 		}
 	}
-	
+
 	/**
 	 * Traverses the mimeTypes of any loaded records and creates a
 	 * Google Pie Graph of the distribution.
@@ -170,11 +170,11 @@ public class Escape extends AbstractSample {
 			if (resource.getFormat() != null) {
 				String mimeType = resource.getFormat().getMimeType();
 				distribution.incrementCount(mimeType);
-			}			
+			}
 		}
 		return (buildPieGraphURL("DDMS%20MimeType%20Distribution", distribution, PIE_GRAPH_3D));
 	}
-	
+
 	/**
 	 * Traverses the keywords of any loaded records and creates a Google Pie Graph of the distribution.
 	 * 
@@ -195,12 +195,12 @@ public class Escape extends AbstractSample {
 							distribution.incrementCount(splitValues[i]);
 						}
 					}
-				}			
+				}
 			}
 		}
 		return (buildPieGraphURL("DDMS%20Keyword%20Distribution", distribution, PIE_GRAPH));
 	}
-	
+
 	/**
 	 * Examines every date field in a Resource and creates a distribution of years.
 	 * 
@@ -226,11 +226,11 @@ public class Escape extends AbstractSample {
 				if (dates.getReceivedOn() != null)
 					distribution.incrementCount(String.valueOf(dates.getReceivedOn().getYear()));
 			}
-			
+
 			// Resource createDate (required field in starting 3.0, optional in 2.0)
 			if (resource.getCreateDate() != null)
 				distribution.incrementCount(String.valueOf(resource.getCreateDate().getYear()));
-			
+
 			// ddms:temporalCoverage (optional field)
 			// getStart() returns the date if present. getStartString() returns the XML format or
 			// the two allowed strings, Not Applicable, and Unknown.
@@ -240,11 +240,11 @@ public class Escape extends AbstractSample {
 					distribution.incrementCount(String.valueOf(timePeriod.getStart().getYear()));
 				if (timePeriod.getEnd() != null)
 					distribution.incrementCount(String.valueOf(timePeriod.getEnd().getYear()));
-			}	
+			}
 		}
 		return (buildPieGraphURL("DDMS%20Date%20Distribution", distribution, PIE_GRAPH));
-	}	
-	
+	}
+
 	/**
 	 * Examines every Resource and creates a distribution of DDMS Versions
 	 * 
@@ -256,8 +256,8 @@ public class Escape extends AbstractSample {
 			distribution.incrementCount(DDMSVersion.getVersionForNamespace(resource.getNamespace()).getVersion());
 		}
 		return (buildPieGraphURL("DDMS%20Version%20Distribution", distribution, PIE_GRAPH));
-	}	
-	
+	}
+
 	/**
 	 * Helper method to convert a map of keys to counts into a Google Pie Graph URL
 	 * 
@@ -285,7 +285,7 @@ public class Escape extends AbstractSample {
 		}
 		return (new URL(url.toString()));
 	}
-		
+
 	/**
 	 * Accessor for the resources
 	 */

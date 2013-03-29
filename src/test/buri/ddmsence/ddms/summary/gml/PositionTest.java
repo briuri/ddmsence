@@ -168,8 +168,8 @@ public class PositionTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_GML_PREFIX, Position
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_GML_PREFIX,
+				Position.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -221,8 +221,7 @@ public class PositionTest extends AbstractBaseTestCase {
 			getInstance("A position must be represented by", element);
 
 			// No more than 3 coordinates
-			element = Util
-				.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, TEST_XS_LIST + " 25.0 35.0");
+			element = Util.buildElement(gmlPrefix, Position.getName(version), gmlNamespace, TEST_XS_LIST + " 25.0 35.0");
 			SRSAttributesTest.getFixture().addTo(element);
 			getInstance("A position must be represented by", element);
 

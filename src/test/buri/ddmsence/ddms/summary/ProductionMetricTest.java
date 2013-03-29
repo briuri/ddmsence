@@ -93,9 +93,9 @@ public class ProductionMetricTest extends AbstractBaseTestCase {
 	 * 
 	 * @param message an expected error message. If empty, the constructor is expected to succeed.
 	 * @param subject a method of categorizing the subject of a document in a fashion understandable by DDNI-A
-	 * (required)
+	 *        (required)
 	 * @param coverage a method of categorizing the coverage of a document in a fashion understandable by DDNI-A
-	 * (required)
+	 *        (required)
 	 * @param label the label (required)
 	 * @return a valid object
 	 */

@@ -45,16 +45,16 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 	}
 
 	public void testGetVersionForDDMSNamespace() {
-		assertEquals(DDMSVersion.getVersionFor("2.0"), DDMSVersion
-			.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
-		assertEquals(DDMSVersion.getVersionFor("3.0"), DDMSVersion
-			.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/"));
-		assertEquals(DDMSVersion.getVersionFor("3.1"), DDMSVersion
-			.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.1/"));
-		assertEquals(DDMSVersion.getVersionFor("4.1"), DDMSVersion
-			.getVersionForNamespace("urn:us:mil:ces:metadata:ddms:4"));
-		assertEquals(DDMSVersion.getVersionFor("5.0"), DDMSVersion
-			.getVersionForNamespace("urn:us:mil:ces:metadata:ddms:5"));		
+		assertEquals(DDMSVersion.getVersionFor("2.0"),
+			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/2.0/"));
+		assertEquals(DDMSVersion.getVersionFor("3.0"),
+			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.0/"));
+		assertEquals(DDMSVersion.getVersionFor("3.1"),
+			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/3.1/"));
+		assertEquals(DDMSVersion.getVersionFor("4.1"),
+			DDMSVersion.getVersionForNamespace("urn:us:mil:ces:metadata:ddms:4"));
+		assertEquals(DDMSVersion.getVersionFor("5.0"),
+			DDMSVersion.getVersionForNamespace("urn:us:mil:ces:metadata:ddms:5"));
 		try {
 			DDMSVersion.getVersionForNamespace("http://metadata.dod.mil/mdr/ns/DDMS/1.4/");
 			fail("Allowed unsupported version.");
@@ -66,8 +66,8 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 
 	public void testGetVersionForGMLNamespace() {
 		assertEquals(DDMSVersion.getVersionFor("2.0"), DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml"));
-		assertEquals(DDMSVersion.getVersionFor("5.0"), DDMSVersion
-			.getVersionForNamespace("http://www.opengis.net/gml/3.2"));
+		assertEquals(DDMSVersion.getVersionFor("5.0"),
+			DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml/3.2"));
 		try {
 			DDMSVersion.getVersionForNamespace("http://www.opengis.net/gml/3.2.1");
 			fail("Allowed unsupported version.");
@@ -79,8 +79,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 
 	public void testGetVersionForISMNamespace() {
 		assertEquals(DDMSVersion.getVersionFor("2.0"), DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ism:v2"));
-		assertEquals(DDMSVersion.getVersionFor("5.0"), DDMSVersion
-			.getVersionForNamespace("urn:us:gov:ic:ism"));
+		assertEquals(DDMSVersion.getVersionFor("5.0"), DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ism"));
 		try {
 			DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk:v2");
 			fail("Allowed unsupported version.");
@@ -89,7 +88,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 			expectMessage(e, "DDMS Version for XML namespace");
 		}
 	}
-	
+
 	public void testGetVersionForNTKNamespace() {
 		assertEquals(DDMSVersion.getVersionFor("5.0"), DDMSVersion.getVersionForNamespace("urn:us:gov:ic:ntk"));
 		try {
@@ -102,7 +101,8 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 	}
 
 	public void testGetVersionForXlinkNamespace() {
-		assertEquals(DDMSVersion.getVersionFor("5.0"), DDMSVersion.getVersionForNamespace("http://www.w3.org/1999/xlink"));
+		assertEquals(DDMSVersion.getVersionFor("5.0"),
+			DDMSVersion.getVersionForNamespace("http://www.w3.org/1999/xlink"));
 		try {
 			DDMSVersion.getVersionForNamespace("http://www.w3.org/1999/xlink2");
 			fail("Allowed unsupported version.");
@@ -111,7 +111,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 			expectMessage(e, "DDMS Version for XML namespace");
 		}
 	}
-	
+
 	public void testGetSupportedVersions() {
 		assertFalse(DDMSVersion.getSupportedVersions().isEmpty());
 		assertTrue(DDMSVersion.getSupportedVersions().contains("3.0"));
@@ -165,7 +165,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		assertEquals("/schemas/3.0/DDMS/gml.xsd", version.getGmlSchema());
 		assertEquals("urn:us:gov:ic:ism", version.getIsmNamespace());
 		assertEquals("/schemas/3.0/ISM/CVE/", version.getIsmCveLocation());
-		
+
 		version = DDMSVersion.setCurrentVersion("4.1");
 		assertEquals("urn:us:gov:ic:ntk", version.getNtkNamespace());
 		assertEquals("/schemas/4.1/NTK/IC-NTK.xsd", version.getNtkSchema());
@@ -210,7 +210,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		assertTrue(DDMSVersion.getVersionFor("4.1").isAtLeast("4.0.1"));
 		assertTrue(DDMSVersion.getVersionFor("4.1").isAtLeast("4.1"));
 		assertFalse(DDMSVersion.getVersionFor("4.1").isAtLeast("5.0"));
-		
+
 		assertTrue(DDMSVersion.getVersionFor("5.0").isAtLeast("2.0"));
 		assertTrue(DDMSVersion.getVersionFor("5.0").isAtLeast("3.0"));
 		assertTrue(DDMSVersion.getVersionFor("5.0").isAtLeast("3.0.1"));
@@ -218,7 +218,7 @@ public class DDMSVersionTest extends AbstractBaseTestCase {
 		assertTrue(DDMSVersion.getVersionFor("5.0").isAtLeast("4.0.1"));
 		assertTrue(DDMSVersion.getVersionFor("5.0").isAtLeast("4.1"));
 		assertTrue(DDMSVersion.getVersionFor("5.0").isAtLeast("5.0"));
-		
+
 		try {
 			DDMSVersion.getCurrentVersion().isAtLeast("dog");
 			fail("Allowed invalid data.");

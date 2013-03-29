@@ -105,8 +105,8 @@ public class PersonTest extends AbstractBaseTestCase {
 	 * @param phones an ordered list of phone numbers
 	 * @param emails an ordered list of email addresses
 	 */
-	private Person getInstance(String message, String surname, List<String> names, String userID, List<String> affiliations,
-		List<String> phones, List<String> emails) {
+	private Person getInstance(String message, String surname, List<String> names, String userID,
+		List<String> affiliations, List<String> phones, List<String> emails) {
 		boolean expectFailure = !Util.isEmpty(message);
 		Person component = null;
 		try {
@@ -178,8 +178,8 @@ public class PersonTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Person
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				Person.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -261,7 +261,7 @@ public class PersonTest extends AbstractBaseTestCase {
 			else {
 				getInstance(SUCCESS, entityElement);
 			}
-		
+
 		}
 	}
 
@@ -283,7 +283,8 @@ public class PersonTest extends AbstractBaseTestCase {
 				TEST_EMAILS);
 
 			// Empty surname
-			getInstance("surname is required.", "", TEST_NAMES, TEST_USERID, TEST_AFFILIATIONS, TEST_PHONES, TEST_EMAILS);
+			getInstance("surname is required.", "", TEST_NAMES, TEST_USERID, TEST_AFFILIATIONS, TEST_PHONES,
+				TEST_EMAILS);
 		}
 	}
 
@@ -305,7 +306,7 @@ public class PersonTest extends AbstractBaseTestCase {
 				String text = "A ddms:userID element was found with no value.";
 				String locator = "ddms:" + Person.getName(version);
 				assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-	
+
 				// Empty affiliation
 				entityElement = Util.buildDDMSElement(Person.getName(version), null);
 				entityElement.appendChild(Util.buildDDMSElement("name", "name"));
@@ -349,8 +350,7 @@ public class PersonTest extends AbstractBaseTestCase {
 				TEST_PHONES, TEST_EMAILS);
 			assertFalse(elementComponent.equals(dataComponent));
 
-			dataComponent = getInstance(SUCCESS, TEST_SURNAME, TEST_NAMES, TEST_USERID, null, TEST_PHONES,
-				TEST_EMAILS);
+			dataComponent = getInstance(SUCCESS, TEST_SURNAME, TEST_NAMES, TEST_USERID, null, TEST_PHONES, TEST_EMAILS);
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, TEST_SURNAME, TEST_NAMES, TEST_USERID, TEST_AFFILIATIONS, null,
@@ -401,7 +401,7 @@ public class PersonTest extends AbstractBaseTestCase {
 			}
 			else {
 				try {
-					new Person(names, TEST_SURNAME, null, null, null, null, attr);	
+					new Person(names, TEST_SURNAME, null, null, null, null, attr);
 				}
 				catch (InvalidDDMSException e) {
 					expectMessage(e, "ddms:person cannot have");
@@ -409,7 +409,7 @@ public class PersonTest extends AbstractBaseTestCase {
 			}
 		}
 	}
-	
+
 	public void testBuilderEquality() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);

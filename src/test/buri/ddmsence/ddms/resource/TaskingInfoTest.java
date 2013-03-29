@@ -125,8 +125,8 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 		boolean expectFailure = !Util.isEmpty(message);
 		TaskingInfo component = null;
 		try {
-			component = new TaskingInfo(requesterInfos, addressees, description, taskID, SecurityAttributesTest
-				.getFixture());
+			component = new TaskingInfo(requesterInfos, addressees, description, taskID,
+				SecurityAttributesTest.getFixture());
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -192,8 +192,8 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX, TaskingInfo
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement()), DEFAULT_DDMS_PREFIX,
+				TaskingInfo.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -218,8 +218,8 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(), DescriptionTest
-				.getFixture(), TaskIDTest.getFixture());
+			getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest.getFixtureList(),
+				DescriptionTest.getFixture(), TaskIDTest.getFixture());
 
 			// No optional fields
 			getInstance(SUCCESS, null, null, null, TaskIDTest.getFixture());
@@ -275,8 +275,8 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			TaskingInfo elementComponent = getInstance(SUCCESS, getFixtureElement());
-			TaskingInfo dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), AddresseeTest
-				.getFixtureList(), DescriptionTest.getFixture(), TaskIDTest.getFixture());
+			TaskingInfo dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(),
+				AddresseeTest.getFixtureList(), DescriptionTest.getFixture(), TaskIDTest.getFixture());
 			assertEquals(elementComponent, dataComponent);
 			assertEquals(elementComponent.hashCode(), dataComponent.hashCode());
 		}
@@ -287,8 +287,8 @@ public class TaskingInfoTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			TaskingInfo elementComponent = getInstance(SUCCESS, getFixtureElement());
-			TaskingInfo dataComponent = getInstance(SUCCESS, null, AddresseeTest.getFixtureList(), DescriptionTest
-				.getFixture(), TaskIDTest.getFixture());
+			TaskingInfo dataComponent = getInstance(SUCCESS, null, AddresseeTest.getFixtureList(),
+				DescriptionTest.getFixture(), TaskIDTest.getFixture());
 			assertFalse(elementComponent.equals(dataComponent));
 
 			dataComponent = getInstance(SUCCESS, RequesterInfoTest.getFixtureList(), null,

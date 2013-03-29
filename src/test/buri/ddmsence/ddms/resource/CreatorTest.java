@@ -128,8 +128,8 @@ public class CreatorTest extends AbstractBaseTestCase {
 		xml.append("<ddms:creator ").append(getXmlnsDDMS()).append(" ").append(getXmlnsISM());
 		if (version.isAtLeast("4.0.1"))
 			xml.append(" ISM:pocType=\"DoD-Dist-B\"");
-		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(Person.getName(version))
-			.append(">\n");
+		xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\">\n\t<ddms:").append(Person.getName(version)).append(
+			">\n");
 		xml.append("\t\t<ddms:name>Brian</ddms:name>\n");
 		xml.append("\t\t<ddms:surname>Uri</ddms:surname>\n");
 		xml.append("\t</ddms:").append(Person.getName(version)).append(">\n</ddms:creator>");
@@ -140,8 +140,8 @@ public class CreatorTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX, Creator
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_DDMS_PREFIX,
+				Creator.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -171,11 +171,11 @@ public class CreatorTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 			String ismPrefix = PropertyReader.getPrefix("ism");
-			
+
 			// Missing entity
 			Element element = Util.buildDDMSElement(Creator.getName(version), null);
 			getInstance("entity is required.", element);
-			
+
 			if (version.isAtLeast("4.0.1")) {
 				// Invalid pocType
 				element = Util.buildDDMSElement(Creator.getName(version), null);
@@ -195,16 +195,18 @@ public class CreatorTest extends AbstractBaseTestCase {
 	public void testDataConstructorInvalid() {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
-			
+
 			// Missing entity
 			getInstance("entity is required.", (IRoleEntity) null, null);
-			
+
 			if (version.isAtLeast("4.0.1")) {
 				// Invalid pocType
-				getInstance("Unknown is not a valid enumeration token", PersonTest.getFixture(), Util.getXsListAsList("Unknown"));
+				getInstance("Unknown is not a valid enumeration token", PersonTest.getFixture(),
+					Util.getXsListAsList("Unknown"));
 
 				// Partial Invalid pocType
-				getInstance("Unknown is not a valid enumeration token", PersonTest.getFixture(), Util.getXsListAsList("DoD-Dist-B Unknown"));
+				getInstance("Unknown is not a valid enumeration token", PersonTest.getFixture(),
+					Util.getXsListAsList("DoD-Dist-B Unknown"));
 			}
 		}
 	}
@@ -232,8 +234,8 @@ public class CreatorTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 			Creator elementComponent = getInstance(SUCCESS, getValidElement(sVersion));
-			Creator dataComponent = getInstance(SUCCESS, new Service(Util.getXsListAsList("DISA PEO-GES"), Util
-				.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
+			Creator dataComponent = getInstance(SUCCESS, new Service(Util.getXsListAsList("DISA PEO-GES"),
+				Util.getXsListAsList("703-882-1000 703-885-1000"), Util.getXsListAsList("ddms@fgm.com")), null);
 			assertFalse(elementComponent.equals(dataComponent));
 		}
 	}
@@ -273,7 +275,8 @@ public class CreatorTest extends AbstractBaseTestCase {
 	public void testWrongVersionPocType() {
 		DDMSVersion.setCurrentVersion("3.1");
 		try {
-			new Creator(PersonTest.getFixture(), Util.getXsListAsList("DoD-Dist-B"), SecurityAttributesTest.getFixture());
+			new Creator(PersonTest.getFixture(), Util.getXsListAsList("DoD-Dist-B"),
+				SecurityAttributesTest.getFixture());
 			fail("Allowed invalid data.");
 		}
 		catch (InvalidDDMSException e) {

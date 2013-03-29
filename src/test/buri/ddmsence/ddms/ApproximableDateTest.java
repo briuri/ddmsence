@@ -26,7 +26,8 @@ import buri.ddmsence.util.PropertyReader;
 import buri.ddmsence.util.Util;
 
 /**
- * <p> Tests related to elements of type ddms:ApproximableDateType (includes ddms:acquiredOn, and the ddms:start / ddms:end values in a ddms:temporalCoverage element.</p>
+ * <p> Tests related to elements of type ddms:ApproximableDateType (includes ddms:acquiredOn, and the ddms:start /
+ * ddms:end values in a ddms:temporalCoverage element.</p>
  * 
  * <p> Because these are local components, we cannot load a valid document from a unit test data file. We
  * have to build the well-formed Element ourselves. </p>
@@ -42,7 +43,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 	private static final String TEST_APPROXIMATION = "1st qtr";
 	private static final String TEST_START_DATE = "2012-01";
 	private static final String TEST_END_DATE = "2012-03-31";
-	
+
 	/**
 	 * Constructor
 	 */
@@ -63,11 +64,11 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		element.addNamespaceDeclaration(PropertyReader.getPrefix("ddms"), version.getNamespace());
 		if (includeAllFields) {
 			Util.addDDMSChildElement(element, "description", TEST_DESCRIPTION);
-			
+
 			Element approximableElment = Util.buildDDMSElement("approximableDate", TEST_APPROXIMABLE_DATE);
 			Util.addDDMSAttribute(approximableElment, "approximation", TEST_APPROXIMATION);
 			element.appendChild(approximableElment);
-			
+
 			Element searchableElement = Util.buildDDMSElement("searchableDate", null);
 			Util.addDDMSChildElement(searchableElement, "start", TEST_START_DATE);
 			Util.addDDMSChildElement(searchableElement, "end", TEST_END_DATE);
@@ -75,7 +76,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		}
 		return (element);
 	}
-	
+
 	/**
 	 * Attempts to build a component from a XOM element.
 	 * 
@@ -111,12 +112,13 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 	 * @param entity the person or organization in this role
 	 * @param org the organization
 	 */
-	private ApproximableDate getInstance(String message, String name, String description, String approximableDate, String approximation,
-		String searchableStartDate, String searchableEndDate) {
+	private ApproximableDate getInstance(String message, String name, String description, String approximableDate,
+		String approximation, String searchableStartDate, String searchableEndDate) {
 		boolean expectFailure = !Util.isEmpty(message);
 		ApproximableDate component = null;
 		try {
-			component = new ApproximableDate(name, description, approximableDate, approximation, searchableStartDate, searchableEndDate);
+			component = new ApproximableDate(name, description, approximableDate, approximation, searchableStartDate,
+				searchableEndDate);
 			checkConstructorSuccess(expectFailure);
 		}
 		catch (InvalidDDMSException e) {
@@ -125,7 +127,7 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		}
 		return (component);
 	}
-	
+
 	/**
 	 * Returns the expected HTML or Text output for this unit test
 	 */
@@ -158,7 +160,8 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement(TEST_NAME, true)), DEFAULT_DDMS_PREFIX, TEST_NAME);
+			assertNameAndNamespace(getInstance(SUCCESS, getFixtureElement(TEST_NAME, true)), DEFAULT_DDMS_PREFIX,
+				TEST_NAME);
 			getInstance("The element name must be one of", getWrongNameElementFixture());
 		}
 	}
@@ -180,7 +183,8 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 			DDMSVersion.setCurrentVersion(sVersion);
 
 			// All fields
-			getInstance(SUCCESS, TEST_NAME, TEST_DESCRIPTION, TEST_APPROXIMABLE_DATE, TEST_APPROXIMATION, TEST_START_DATE, TEST_END_DATE);
+			getInstance(SUCCESS, TEST_NAME, TEST_DESCRIPTION, TEST_APPROXIMABLE_DATE, TEST_APPROXIMATION,
+				TEST_START_DATE, TEST_END_DATE);
 
 			// No fields
 			getInstance(SUCCESS, TEST_NAME, null, null, null, null, null);
@@ -190,35 +194,35 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 	public void testElementConstructorInvalid() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
-			 
-			 // Wrong date format: approximableDate
+
+			// Wrong date format: approximableDate
 			Element element = Util.buildDDMSElement(TEST_NAME, null);
 			Element approximableElment = Util.buildDDMSElement("approximableDate", "---31");
 			element.appendChild(approximableElment);
-			getInstance("The date datatype", element);			
-			
-			 // Invalid approximation
+			getInstance("The date datatype", element);
+
+			// Invalid approximation
 			element = Util.buildDDMSElement(TEST_NAME, null);
 			approximableElment = Util.buildDDMSElement("approximableDate", TEST_APPROXIMABLE_DATE);
 			Util.addDDMSAttribute(approximableElment, "approximation", "almost-nearly");
 			element.appendChild(approximableElment);
-			getInstance("The approximation must be one of", element);	
-			 
-			 // Wrong date format: start
+			getInstance("The approximation must be one of", element);
+
+			// Wrong date format: start
 			element = Util.buildDDMSElement(TEST_NAME, null);
 			Element searchableElement = Util.buildDDMSElement("searchableDate", null);
 			Util.addDDMSChildElement(searchableElement, "start", "---31");
 			Util.addDDMSChildElement(searchableElement, "end", TEST_END_DATE);
 			element.appendChild(searchableElement);
-			getInstance("The date datatype", element);	
-			
-			 // Wrong date format: end
+			getInstance("The date datatype", element);
+
+			// Wrong date format: end
 			element = Util.buildDDMSElement(TEST_NAME, null);
 			searchableElement = Util.buildDDMSElement("searchableDate", null);
 			Util.addDDMSChildElement(searchableElement, "start", TEST_START_DATE);
 			Util.addDDMSChildElement(searchableElement, "end", "---31");
 			element.appendChild(searchableElement);
-			getInstance("The date datatype", element);	
+			getInstance("The date datatype", element);
 		}
 	}
 
@@ -226,20 +230,24 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
 
-			 // Wrong date format: approximableDate
-			getInstance("The date datatype", TEST_NAME, TEST_DESCRIPTION, "---31", TEST_APPROXIMATION, TEST_START_DATE, TEST_END_DATE);	
-			
-			 // Invalid approximation
-			getInstance("The approximation", TEST_NAME, TEST_DESCRIPTION, TEST_APPROXIMABLE_DATE, "almost-nearly", TEST_START_DATE, TEST_END_DATE);
-			 
-			 // Wrong date format: start
-			getInstance("The date datatype", TEST_NAME, TEST_DESCRIPTION, TEST_APPROXIMABLE_DATE, TEST_APPROXIMATION, "---31", TEST_END_DATE);
-			
-			 // Wrong date format: end
-			getInstance("The date datatype", TEST_NAME, TEST_DESCRIPTION, TEST_APPROXIMABLE_DATE, TEST_APPROXIMATION, TEST_START_DATE, "---31");
+			// Wrong date format: approximableDate
+			getInstance("The date datatype", TEST_NAME, TEST_DESCRIPTION, "---31", TEST_APPROXIMATION, TEST_START_DATE,
+				TEST_END_DATE);
+
+			// Invalid approximation
+			getInstance("The approximation", TEST_NAME, TEST_DESCRIPTION, TEST_APPROXIMABLE_DATE, "almost-nearly",
+				TEST_START_DATE, TEST_END_DATE);
+
+			// Wrong date format: start
+			getInstance("The date datatype", TEST_NAME, TEST_DESCRIPTION, TEST_APPROXIMABLE_DATE, TEST_APPROXIMATION,
+				"---31", TEST_END_DATE);
+
+			// Wrong date format: end
+			getInstance("The date datatype", TEST_NAME, TEST_DESCRIPTION, TEST_APPROXIMABLE_DATE, TEST_APPROXIMATION,
+				TEST_START_DATE, "---31");
 		}
 	}
-	
+
 	public void testWarnings() throws InvalidDDMSException {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion.setCurrentVersion(sVersion);
@@ -247,14 +255,14 @@ public class ApproximableDateTest extends AbstractBaseTestCase {
 			// No warnings
 			ApproximableDate component = getInstance(SUCCESS, getFixtureElement(TEST_NAME, true));
 			assertEquals(0, component.getValidationWarnings().size());
-			
+
 			// Empty element
 			component = getInstance(SUCCESS, getFixtureElement(TEST_NAME, false));
 			assertEquals(1, component.getValidationWarnings().size());
 			String text = "A completely empty ddms:acquiredOn";
 			String locator = "ddms:acquiredOn";
 			assertWarningEquality(text, locator, component.getValidationWarnings().get(0));
-			
+
 			// Description element with no child text
 			if (!DDMSVersion.getCurrentVersion().isAtLeast("5.0")) {
 				Element element = Util.buildDDMSElement(TEST_NAME, null);

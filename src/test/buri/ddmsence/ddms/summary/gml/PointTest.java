@@ -51,8 +51,7 @@ public class PointTest extends AbstractBaseTestCase {
 	public static List<Point> getFixtureList() {
 		try {
 			List<Point> points = new ArrayList<Point>();
-			points
-				.add(new Point(new Position(PositionTest.TEST_COORDS, null), SRSAttributesTest.getFixture(), TEST_ID));
+			points.add(new Point(new Position(PositionTest.TEST_COORDS, null), SRSAttributesTest.getFixture(), TEST_ID));
 			return (points);
 		}
 		catch (InvalidDDMSException e) {
@@ -145,8 +144,8 @@ public class PointTest extends AbstractBaseTestCase {
 		for (String sVersion : getSupportedVersions()) {
 			DDMSVersion version = DDMSVersion.setCurrentVersion(sVersion);
 
-			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_GML_PREFIX, Point
-				.getName(version));
+			assertNameAndNamespace(getInstance(SUCCESS, getValidElement(sVersion)), DEFAULT_GML_PREFIX,
+				Point.getName(version));
 			getInstance(WRONG_NAME_MESSAGE, getWrongNameElementFixture());
 		}
 	}
@@ -158,8 +157,8 @@ public class PointTest extends AbstractBaseTestCase {
 			getInstance(SUCCESS, getValidElement(sVersion));
 
 			// No optional fields
-			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Point.getName(version), version
-				.getGmlNamespace(), null);
+			Element element = Util.buildElement(PropertyReader.getPrefix("gml"), Point.getName(version),
+				version.getGmlNamespace(), null);
 			Util.addAttribute(element, SRSAttributes.NO_PREFIX, "srsName", SRSAttributes.NO_NAMESPACE,
 				SRSAttributesTest.getFixture().getSrsName());
 			Util.addAttribute(element, PropertyReader.getPrefix("gml"), "id", version.getGmlNamespace(), TEST_ID);
