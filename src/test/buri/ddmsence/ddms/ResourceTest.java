@@ -316,7 +316,7 @@ public class ResourceTest extends AbstractBaseTestCase {
 		DDMSVersion version = DDMSVersion.getCurrentVersion();
 		Resource component = null;
 		try {
-			NoticeAttributes notice = (!version.isAtLeast("4.0.1") ? null : NoticeAttributesTest.getFixture());
+			NoticeAttributes notice = (!"4.1".equals(version.getVersion()) ? null : NoticeAttributesTest.getFixture());
 			SecurityAttributes attr = (!version.isAtLeast("3.0") ? null : SecurityAttributesTest.getFixture());
 			component = new Resource(topLevelComponents, resourceElement, createDate, compliesWiths, ismDESVersion,
 				ntkDESVersion, attr, notice, null);
@@ -348,14 +348,14 @@ public class ResourceTest extends AbstractBaseTestCase {
 			text.append(buildOutput(isHTML, resourcePrefix + ".classification", "U"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".ownerProducer", "USA"));
 		}
-		if (version.isAtLeast("4.0.1")) {
+		if ("4.1".equals(version.getVersion())) {
 			text.append(buildOutput(isHTML, resourcePrefix + ".noticeType", "DoD-Dist-B"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".noticeReason", "noticeReason"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".noticeDate", "2011-09-15"));
 			text.append(buildOutput(isHTML, resourcePrefix + ".unregisteredNoticeType", "unregisteredNoticeType"));
-			if (version.isAtLeast("4.1")) {
-				text.append(buildOutput(isHTML, resourcePrefix + ".externalNotice", "false"));
-			}
+			text.append(buildOutput(isHTML, resourcePrefix + ".externalNotice", "false"));
+		}
+		if (version.isAtLeast("4.0.1")) {
 			text.append(buildOutput(isHTML, "metacardInfo.identifier.qualifier", "URI"));
 			text.append(buildOutput(isHTML, "metacardInfo.identifier.value", "urn:buri:ddmsence:testIdentifier"));
 			text.append(buildOutput(isHTML, "metacardInfo.dates.created", "2003"));
@@ -474,12 +474,10 @@ public class ResourceTest extends AbstractBaseTestCase {
 		xml.append(" ISM:DESVersion=\"").append(getIsmDESVersion()).append("\"");
 		if (version.isAtLeast("3.0"))
 			xml.append(" ISM:createDate=\"2010-01-21\"");
-		if (version.isAtLeast("4.0.1")) {
+		if ("4.1".equals(version.getVersion())) {
 			xml.append(" ISM:noticeType=\"DoD-Dist-B\" ISM:noticeReason=\"noticeReason\" ISM:noticeDate=\"2011-09-15\" ");
 			xml.append("ISM:unregisteredNoticeType=\"unregisteredNoticeType\"");
-			if (version.isAtLeast("4.1")) {
-				xml.append(" ISM:externalNotice=\"false\"");
-			}
+			xml.append(" ISM:externalNotice=\"false\"");
 		}
 		if (version.isAtLeast("3.0"))
 			xml.append(" ISM:classification=\"U\" ISM:ownerProducer=\"USA\"");
